@@ -12,7 +12,6 @@ using System;
 using System.Activities.Presentation.Model;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
@@ -20,7 +19,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Xml;
-using System.Xml.Linq;
 using Caliburn.Micro;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Activities.Utils;
@@ -32,7 +30,6 @@ using Dev2.Common.Interfaces.Security;
 using Dev2.Common.Interfaces.Threading;
 using Dev2.Common.Utils;
 using Dev2.Communication;
-using Dev2.DataList.Contract;
 using Dev2.Interfaces;
 using Dev2.Network;
 using Dev2.Providers.Errors;
@@ -46,8 +43,6 @@ using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Interfaces.DataList;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.Views;
-using Dev2.Studio.Factory;
-using Dev2.Studio.ViewModels.DataList;
 using Dev2.Threading;
 using Warewolf.Resource.Errors;
 // ReSharper disable NonLocalizedString
@@ -65,7 +60,7 @@ namespace Dev2.Activities.Designers2.Service
             ErrorType = ErrorType.None,
             Message = "Service Working Normally"
         };
-        private bool _resourcesUpdated;
+        public bool _resourcesUpdated;
         private readonly IEventAggregator _eventPublisher;
 
         private IDesignValidationService _validationService;
@@ -89,6 +84,7 @@ namespace Dev2.Activities.Designers2.Service
         public ServiceDesignerViewModel(ModelItem modelItem, IContextualResourceModel rootModel, IEnvironmentRepository environmentRepository, IEventAggregator eventPublisher, IAsyncWorker asyncWorker)
             : base(modelItem)
         {
+            MappingManager = new MappingManager(this);
             if (modelItem.ItemType != typeof(DsfDatabaseActivity) && modelItem.ItemType != typeof(DsfPluginActivity) && modelItem.ItemType != typeof(DsfWebserviceActivity))
             {
                 AddTitleBarEditToggle();
@@ -146,7 +142,7 @@ namespace Dev2.Activities.Designers2.Service
             }
             if (!IsDeleted)
             {
-                InitializeMappings();
+                MappingManager.InitializeMappings();
                 InitializeLastValidationMemo(_environment);
                 if (IsItemDragged.Instance.IsDragged)
                 {
@@ -222,7 +218,7 @@ namespace Dev2.Activities.Designers2.Service
                     FixType = FixType.InvalidPermissions,
                     Message = ErrorResource.NoPermissionToExecuteTool
                 });
-                UpdateLastValidationMemo(memo);
+                MappingManager.UpdateLastValidationMemo(memo);
             }
         }
 
@@ -259,7 +255,6 @@ namespace Dev2.Activities.Designers2.Service
 
         public static readonly DependencyProperty IsFixedProperty = DependencyProperty.Register("IsFixed", typeof(bool), typeof(ServiceDesignerViewModel), new PropertyMetadata(true));
 
-        public event EventHandler<DesignValidationMemo> OnDesignValidationReceived;
 
         public ICommand FixErrorsCommand { get; private set; }
 
@@ -269,30 +264,17 @@ namespace Dev2.Activities.Designers2.Service
 
         public ICommand DoneCompletedCommand { get; private set; }
 
-        public IDataMappingViewModel DataMappingViewModel { get; private set; }
-
         public List<KeyValuePair<string, string>> Properties { get; private set; }
 
-        public IContextualResourceModel ResourceModel { get; private set; }
+        public IContextualResourceModel ResourceModel { get; set; }
 
-        public IContextualResourceModel RootModel { get; private set; }
+        public IContextualResourceModel RootModel { get; set; }
 
-        public DesignValidationMemo LastValidationMemo { get; private set; }
+        public DesignValidationMemo LastValidationMemo { get; set; }
 
-        public ObservableCollection<IErrorInfo> DesignValidationErrors { get; private set; }
+        public ObservableCollection<IErrorInfo> DesignValidationErrors { get; set; }
 
-        public IWebActivityFactory ActivityFactory
-        {
-            get { return _activityFactory ?? new InstanceWebActivityFactory(); }
-            set { _activityFactory = value; }
-        }
-
-        public IDataMappingViewModelFactory MappingFactory
-        {
-            get { return _mappingFactory ?? new DataMappingViewModelFactory(); }
-            set { _mappingFactory = value; }
-        }
-
+        
         public ErrorType WorstError
         {
             get { return (ErrorType)GetValue(WorstErrorProperty); }
@@ -320,13 +302,27 @@ namespace Dev2.Activities.Designers2.Service
             }
         }
 
+        protected override void OnToggleCheckedChanged(string propertyName, bool isChecked)
+        {
+            base.OnToggleCheckedChanged(propertyName, isChecked);
+
+            if (propertyName == ShowLargeProperty.Name)
+            {
+                if (!isChecked)
+                {
+                    MappingManager.UpdateMappings();
+                    MappingManager.CheckForRequiredMapping();
+                }
+            }
+        }
+
         public static readonly DependencyProperty IsWorstErrorReadOnlyProperty =
             DependencyProperty.Register("IsWorstErrorReadOnly", typeof(bool), typeof(ServiceDesignerViewModel), new PropertyMetadata(false));
 
         public bool IsDeleted
         {
             get { return (bool)GetValue(IsDeletedProperty); }
-            private set { if (!(bool)GetValue(IsDeletedProperty)) SetValue(IsDeletedProperty, value); }
+            set { if (!(bool)GetValue(IsDeletedProperty)) SetValue(IsDeletedProperty, value); }
         }
 
         public static readonly DependencyProperty IsDeletedProperty =
@@ -335,7 +331,7 @@ namespace Dev2.Activities.Designers2.Service
         public bool IsEditable
         {
             get { return (bool)GetValue(IsEditableProperty); }
-            private set { SetValue(IsEditableProperty, value); }
+            set { SetValue(IsEditableProperty, value); }
         }
 
         public bool IsAsyncVisible
@@ -402,7 +398,7 @@ namespace Dev2.Activities.Designers2.Service
             }
         }
 
-        IErrorInfo WorstDesignError
+        public IErrorInfo WorstDesignError
         {
             get { return _worstDesignError; }
             set
@@ -417,7 +413,7 @@ namespace Dev2.Activities.Designers2.Service
         }
 
         string ServiceUri => GetProperty<string>();
-        string ServiceName => GetProperty<string>();
+        public string ServiceName => GetProperty<string>();
         string ActionName => GetProperty<string>();
 
         string FriendlySourceName
@@ -438,7 +434,7 @@ namespace Dev2.Activities.Designers2.Service
         Guid EnvironmentID => GetProperty<Guid>();
 
         Guid ResourceID => GetProperty<Guid>();
-        Guid UniqueID => GetProperty<Guid>();
+        public Guid UniqueID => GetProperty<Guid>();
         public string OutputMapping { get { return GetProperty<string>(); } set { SetProperty(value); } }
         public string InputMapping { get { return GetProperty<string>(); } set { SetProperty(value); } }
 
@@ -453,8 +449,6 @@ namespace Dev2.Activities.Designers2.Service
         bool _runWorkflowAsync;
         private readonly IAsyncWorker _worker;
         private bool _versionsDifferent;
-        private IWebActivityFactory _activityFactory;
-        private IDataMappingViewModelFactory _mappingFactory;
 
         public override void Validate()
         {
@@ -467,84 +461,6 @@ namespace Dev2.Activities.Designers2.Service
             else
             {
                 RemovePermissionsError();
-            }
-        }
-
-        public void UpdateMappings()
-        {
-            if (!_resourcesUpdated)
-            {
-                SetInputs();
-                SetOuputs();
-            }
-        }
-
-
-        protected override void OnToggleCheckedChanged(string propertyName, bool isChecked)
-        {
-            base.OnToggleCheckedChanged(propertyName, isChecked);
-
-            if (propertyName == ShowLargeProperty.Name)
-            {
-                if (!isChecked)
-                {
-                    UpdateMappings();
-                    CheckForRequiredMapping();
-                }
-            }
-        }
-
-        void SetInputs()
-        {
-            if (DataMappingViewModel != null)
-            {
-                InputMapping = DataMappingViewModel.GetInputString(DataMappingViewModel.Inputs);
-            }
-        }
-
-        void SetOuputs()
-        {
-            if (DataMappingViewModel != null)
-            {
-                OutputMapping = DataMappingViewModel.GetOutputString(DataMappingViewModel.Outputs);
-            }
-        }
-
-        void InitializeMappings()
-        {
-            var webAct = ActivityFactory.CreateWebActivity(ModelItem, ResourceModel, ServiceName);
-            DataMappingViewModel = new DataMappingViewModel(webAct, OnMappingCollectionChanged);
-        }
-
-        void OnMappingCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
-        {
-            if (e.NewItems != null)
-            {
-                foreach (IInputOutputViewModel mapping in e.NewItems)
-                {
-                    mapping.PropertyChanged += OnMappingPropertyChanged;
-                }
-            }
-            if (e.OldItems != null)
-            {
-                foreach (IInputOutputViewModel mapping in e.OldItems)
-                {
-                    mapping.PropertyChanged -= OnMappingPropertyChanged;
-                }
-            }
-        }
-
-        void OnMappingPropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-            switch (e.PropertyName)
-            {
-                case "MapsTo":
-                    SetInputs();
-                    break;
-
-                case "Value":
-                    SetOuputs();
-                    break;
             }
         }
 
@@ -584,7 +500,7 @@ namespace Dev2.Activities.Designers2.Service
                 });
             }
 
-            UpdateLastValidationMemo(designValidationMemo);
+            MappingManager.UpdateLastValidationMemo(designValidationMemo);
         }
 
         bool InitializeResourceModel(IEnvironmentModel environmentModel)
@@ -620,7 +536,7 @@ namespace Dev2.Activities.Designers2.Service
         void OnEnvironmentModel_ResourcesLoaded(object sender, ResourcesLoadedEventArgs e)
         // ReSharper restore InconsistentNaming
         {
-            _worker.Start(() => GetResourceModel(e.Model), CheckVersions);
+            _worker.Start(() => GetResourceModel(e.Model), () => MappingManager.CheckVersions(this));
             e.Model.ResourcesLoaded -= OnEnvironmentModel_ResourcesLoaded;
         }
 
@@ -635,27 +551,7 @@ namespace Dev2.Activities.Designers2.Service
             }            
         }
 
-        private void CheckVersions()
-        {
-            if (LastValidationMemo != null && LastValidationMemo.Errors.Any(a => a.Message.Contains("This service will only execute when the server is online.")))
-            {
-                RemoveErrors(LastValidationMemo.Errors.Where(
-                        a => a.Message.Contains("This service will only execute when the server is online.")).ToList());
-                UpdateWorstError();
-            }
-            var webAct = ActivityFactory.CreateWebActivity(NewModel, NewModel, ServiceName);
-            var newMapping = MappingFactory.CreateModel(webAct, OnMappingCollectionChanged);
-            if (newMapping.GetInputString(DataMappingViewModel.Inputs) != DataMappingViewModel.GetInputString(DataMappingViewModel.Inputs) ||
-                newMapping.GetOutputString(DataMappingViewModel.Outputs) != DataMappingViewModel.GetOutputString(DataMappingViewModel.Outputs))
-            {
-                UpdateLastValidationMemoWithVersionChanged();
-                _resourcesUpdated = true;
-                _versionsDifferent = true;
-            }
-        }
-
-
-        protected IContextualResourceModel NewModel { get; set; }
+        public IContextualResourceModel NewModel { get; set; }
 
         private bool InitializeResourceModelSync(IEnvironmentModel environmentModel)
         {
@@ -677,7 +573,7 @@ namespace Dev2.Activities.Designers2.Service
             return true;
         }
 
-        private void UpdateLastValidationMemoWithVersionChanged()
+        public void UpdateLastValidationMemoWithVersionChanged()
         {
             var memo = new DesignValidationMemo
             {
@@ -691,39 +587,36 @@ namespace Dev2.Activities.Designers2.Service
                 FixType = FixType.ReloadMapping,
                 Message = "Incorrect Version. The remote workflow has changed.Please refresh"
             });
-            UpdateLastValidationMemo(memo, false);
+            MappingManager.UpdateLastValidationMemo(memo, false);
         }
 
-        bool CheckSourceMissing()
+        public bool CheckSourceMissing()
         {
-            if (ResourceModel != null && ResourceModel.ResourceType == Studio.Core.AppResources.Enums.ResourceType.Service && _environment != null)
+            if (ResourceModel != null && _environment != null)
             {
                 var resourceModel = ResourceModel;
-                if (resourceModel != null)
+                string srcId;
+                var workflowXml = resourceModel?.WorkflowXaml;
+                try
                 {
-                    string srcId;
-                    var workflowXml = resourceModel.WorkflowXaml;
-                    try
-                    {
-                        var xe = workflowXml.Replace("&", "&amp;").ToXElement();
-                        srcId = xe.AttributeSafe("SourceID");
-                    }
-                    catch (XmlException xe)
-                    {
-                        Dev2Logger.Error(xe);
-                        srcId = workflowXml.ExtractXmlAttributeFromUnsafeXml("SourceID=\"");
-                    }
+                    var xe = workflowXml?.Replace("&", "&amp;").ToXElement();
+                    srcId = xe?.AttributeSafe("SourceID");
+                }
+                catch(XmlException xe)
+                {
+                    Dev2Logger.Error(xe);
+                    srcId = workflowXml.ExtractXmlAttributeFromUnsafeXml("SourceID=\"");
+                }
 
-                    Guid sourceId;
-                    if (Guid.TryParse(srcId, out sourceId))
+                Guid sourceId;
+                if(Guid.TryParse(srcId, out sourceId))
+                {
+                    SourceId = sourceId;
+                    var sourceResource = _environment.ResourceRepository.LoadContextualResourceModel(sourceId);
+                    if(sourceResource == null)
                     {
-                        SourceId = sourceId;
-                        var sourceResource = _environment.ResourceRepository.LoadContextualResourceModel(sourceId);
-                        if (sourceResource == null)
-                        {
-                            UpdateLastValidationMemoWithSourceNotFoundError();
-                            return false;
-                        }
+                        UpdateLastValidationMemoWithSourceNotFoundError();
+                        return false;
                     }
                 }
             }
@@ -738,7 +631,7 @@ namespace Dev2.Activities.Designers2.Service
             if (environmentModel?.Connection?.ServerEvents != null)
             {
                 _validationService = new DesignValidationService(environmentModel.Connection.ServerEvents);
-                _validationService.Subscribe(UniqueID, a => UpdateLastValidationMemo(a));
+                _validationService.Subscribe(UniqueID, a => MappingManager.UpdateLastValidationMemo(a));
             }
         }
 
@@ -768,6 +661,18 @@ namespace Dev2.Activities.Designers2.Service
         {
             get;
             set;
+        }
+        public MappingManager MappingManager { get; }
+        public bool VersionsDifferent
+        {
+            set
+            {
+                _versionsDifferent = value;
+            }
+            get
+            {
+                return _versionsDifferent;
+            }
         }
 
         string GetIconPath(Common.Interfaces.Core.DynamicServices.enActionType actionType)
@@ -816,25 +721,6 @@ namespace Dev2.Activities.Designers2.Service
             }
         }
 
-        void UpdateLastValidationMemo(DesignValidationMemo memo, bool checkSource = true)
-        {
-            LastValidationMemo = memo;
-
-            CheckRequiredMappingChangedErrors(memo);
-            CheckIsDeleted(memo);
-
-            UpdateDesignValidationErrors(memo.Errors.Where(info => info.InstanceID == UniqueID && info.ErrorType != ErrorType.None));
-            if (SourceId == Guid.Empty)
-            {
-                if (checkSource && CheckSourceMissing())
-                {
-                    InitializeMappings();
-                    UpdateMappings();
-                }
-            }
-            OnDesignValidationReceived?.Invoke(this, memo);
-        }
-
         void UpdateLastValidationMemoWithSourceNotFoundError()
         {
             var memo = new DesignValidationMemo
@@ -877,109 +763,10 @@ namespace Dev2.Activities.Designers2.Service
                                           ? "Server is offline. This service will only execute when the server is online."
                                           : "Server login failed. This service will only execute when the login permissions issues have been resolved."
                         });
-                        UpdateLastValidationMemo(memo);
+                        MappingManager.UpdateLastValidationMemo(memo);
                         break;
                 }
             });
-        }
-
-        void CheckRequiredMappingChangedErrors(DesignValidationMemo memo)
-        {
-            var keepError = false;
-            var reqiredMappingChanged = memo.Errors.FirstOrDefault(c => c.FixType == FixType.IsRequiredChanged);
-            if (reqiredMappingChanged != null)
-            {
-                if (reqiredMappingChanged.FixData != null)
-                {
-                    var xElement = XElement.Parse(reqiredMappingChanged.FixData);
-                    var inputOutputViewModels = DeserializeMappings(true, xElement);
-
-                    foreach (var input in inputOutputViewModels)
-                    {
-                        IInputOutputViewModel currentInputViewModel = input;
-                        var inputOutputViewModel = DataMappingViewModel?.Inputs.FirstOrDefault(c => c.Name == currentInputViewModel.Name);
-                        if (inputOutputViewModel != null)
-                        {
-                            inputOutputViewModel.Required = input.Required;
-                            if (inputOutputViewModel.MapsTo == string.Empty && inputOutputViewModel.Required)
-                            {
-                                keepError = true;
-                            }
-                        }
-                    }
-                }
-
-                if (!keepError)
-                {
-                    var worstErrors = memo.Errors.Where(c => c.FixType == FixType.IsRequiredChanged && c.InstanceID == UniqueID).ToList();
-                    memo.Errors.RemoveAll(c => c.FixType == FixType.IsRequiredChanged && c.InstanceID == UniqueID);
-                    RemoveErrors(worstErrors);
-                }
-            }
-        }
-
-        void CheckIsDeleted(DesignValidationMemo memo)
-        {
-            var error = memo.Errors.FirstOrDefault(c => c.FixType == FixType.Delete);
-            IsDeleted = error != null;
-            IsEditable = !IsDeleted;
-            if (IsDeleted)
-            {
-                while (memo.Errors.Count > 1)
-                {
-                    error = memo.Errors.FirstOrDefault(c => c.FixType != FixType.Delete);
-                    if (error != null)
-                    {
-                        memo.Errors.Remove(error);
-                    }
-                }
-            }
-        }
-
-        void CheckForRequiredMapping()
-        {
-            if (DataMappingViewModel != null && DataMappingViewModel.Inputs.Any(c => c.Required && String.IsNullOrEmpty(c.MapsTo)))
-            {
-                if (DesignValidationErrors.All(c => c.FixType != FixType.IsRequiredChanged))
-                {
-                    var listToRemove = DesignValidationErrors.Where(c => c.FixType == FixType.None && c.ErrorType == ErrorType.None).ToList();
-
-                    foreach (var errorInfo in listToRemove)
-                    {
-                        DesignValidationErrors.Remove(errorInfo);
-                    }
-
-                    var mappingIsRequiredMessage = CreateMappingIsRequiredMessage();
-                    DesignValidationErrors.Add(mappingIsRequiredMessage);
-                    RootModel.AddError(mappingIsRequiredMessage);
-                }
-                UpdateWorstError();
-                return;
-            }
-
-            if (DesignValidationErrors.Any(c => c.FixType == FixType.IsRequiredChanged))
-            {
-                var listToRemove = DesignValidationErrors.Where(c => c.FixType == FixType.IsRequiredChanged).ToList();
-
-                foreach (var errorInfo in listToRemove)
-                {
-                    DesignValidationErrors.Remove(errorInfo);
-                    RootModel.RemoveError(errorInfo);
-                }
-                UpdateWorstError();
-            }
-        }
-
-        ErrorInfo CreateMappingIsRequiredMessage()
-        {
-            return new ErrorInfo { ErrorType = ErrorType.Critical, FixData = CreateFixedData(), FixType = FixType.IsRequiredChanged, InstanceID = UniqueID };
-        }
-
-        string CreateFixedData()
-        {
-            var serializer = new Dev2JsonSerializer();
-            var result = serializer.Serialize(DataMappingListFactory.CreateListInputMapping(DataMappingViewModel.GetInputString(DataMappingViewModel.Inputs)));
-            return string.Concat("<Input>", result, "</Input>");
         }
 
         void FixErrors()
@@ -995,30 +782,30 @@ namespace Dev2.Activities.Designers2.Service
                     ShowLarge = true;
                     if (!_versionsDifferent)
                     {
-                        var xml = FetchXElementFromFixData();
-                        var inputs = GetMapping(xml, true, DataMappingViewModel.Inputs);
-                        var outputs = GetMapping(xml, false, DataMappingViewModel.Outputs);
+                        var xml = MappingManager.FetchXElementFromFixData();
+                        var inputs = MappingManager.GetMapping(xml, true, MappingManager.DataMappingViewModel.Inputs);
+                        var outputs = MappingManager.GetMapping(xml, false, MappingManager.DataMappingViewModel.Outputs);
 
-                        DataMappingViewModel.Inputs.Clear();
+                        MappingManager.DataMappingViewModel.Inputs.Clear();
                         foreach (var input in inputs)
                         {
-                            DataMappingViewModel.Inputs.Add(input);
+                            MappingManager.DataMappingViewModel.Inputs.Add(input);
                         }
 
-                        DataMappingViewModel.Outputs.Clear();
+                        MappingManager.DataMappingViewModel.Outputs.Clear();
                         foreach (var output in outputs)
                         {
-                            DataMappingViewModel.Outputs.Add(output);
+                            MappingManager.DataMappingViewModel.Outputs.Add(output);
                         }
-                        SetInputs();
-                        SetOuputs();
+                        MappingManager.SetInputs();
+                        MappingManager.SetOuputs();
                         RemoveError(WorstDesignError);
                         UpdateWorstError();
                     }
                     else if (_versionsDifferent)
                     {
                         ResourceModel = NewModel;
-                        InitializeMappings();
+                        MappingManager.InitializeMappings();
                         RemoveErrors(
                       LastValidationMemo.Errors.Where(a => a.Message.Contains("Incorrect Version")).ToList());
                         UpdateWorstError();
@@ -1027,11 +814,11 @@ namespace Dev2.Activities.Designers2.Service
 
                 case FixType.IsRequiredChanged:
                     ShowLarge = true;
-                    var inputOutputViewModels = DeserializeMappings(true, FetchXElementFromFixData());
+                    var inputOutputViewModels = MappingManager.DeserializeMappings(true, MappingManager.FetchXElementFromFixData());
                     foreach (var inputOutputViewModel in inputOutputViewModels.Where(c => c.Required))
                     {
                         IInputOutputViewModel model = inputOutputViewModel;
-                        var actualViewModel = DataMappingViewModel.Inputs.FirstOrDefault(c => c.Name == model.Name);
+                        var actualViewModel = MappingManager.DataMappingViewModel.Inputs.FirstOrDefault(c => c.Name == model.Name);
                         if (actualViewModel != null)
                         {
                             if (actualViewModel.Value == string.Empty)
@@ -1045,72 +832,6 @@ namespace Dev2.Activities.Designers2.Service
             }
         }
 
-        XElement FetchXElementFromFixData()
-        {
-            if (!string.IsNullOrEmpty(WorstDesignError?.FixData))
-            {
-                try
-                {
-                    return XElement.Parse(WorstDesignError.FixData);
-                }
-                catch (Exception e)
-                {
-                    Dev2Logger.Error(e);
-                }
-            }
-
-            return XElement.Parse("<x/>");
-        }
-
-        IEnumerable<IInputOutputViewModel> GetMapping(XContainer xml, bool isInput, ObservableCollection<IInputOutputViewModel> oldMappings)
-        {
-            var result = new ObservableCollection<IInputOutputViewModel>();
-
-            var input = xml.Descendants(isInput ? "Input" : "Output").FirstOrDefault();
-            if (input != null)
-            {
-                var newMappings = DeserializeMappings(isInput, input);
-
-                foreach (var newMapping in newMappings)
-                {
-                    IInputOutputViewModel mapping = newMapping;
-                    var oldMapping = oldMappings.FirstOrDefault(m => m.Name.Equals(mapping.Name, StringComparison.InvariantCultureIgnoreCase));
-                    if (oldMapping != null)
-                    {
-                        newMapping.MapsTo = oldMapping.MapsTo;
-                        newMapping.Value = oldMapping.Value;
-                    }
-                    else
-                    {
-                        newMapping.IsNew = true;
-                    }
-                    result.Add(newMapping);
-                }
-            }
-            return result;
-        }
-
-        IEnumerable<IInputOutputViewModel> DeserializeMappings(bool isInput, XElement input)
-        {
-            try
-            {
-                var serializer = new Dev2JsonSerializer();
-                var defs = serializer.Deserialize<List<Dev2Definition>>(input.Value);
-                IList<IDev2Definition> idefs = new List<IDev2Definition>(defs);
-                var newMappings = isInput
-                    ? InputOutputViewModelFactory.CreateListToDisplayInputs(idefs)
-                    : InputOutputViewModelFactory.CreateListToDisplayOutputs(idefs);
-                return newMappings;
-            }
-            catch (Exception e)
-            {
-                Dev2Logger.Error(e);
-            }
-
-            return new List<IInputOutputViewModel>();
-        }
-
-
         void RemoveError(IErrorInfo worstError)
         {
             DesignValidationErrors.Remove(worstError);
@@ -1118,14 +839,13 @@ namespace Dev2.Activities.Designers2.Service
         }
 
         // ReSharper disable ParameterTypeCanBeEnumerable.Local
-        void RemoveErrors(IList<IErrorInfo> worstErrors)
+        public void RemoveErrors(IList<IErrorInfo> worstErrors)
         // ReSharper restore ParameterTypeCanBeEnumerable.Local
         {
             worstErrors.ToList().ForEach(RemoveError);
         }
 
-
-        void UpdateWorstError()
+        public void UpdateWorstError()
         {
             if (DesignValidationErrors.Count == 0)
             {
@@ -1149,7 +869,7 @@ namespace Dev2.Activities.Designers2.Service
             WorstDesignError = worstError[0];
         }
 
-        void UpdateDesignValidationErrors(IEnumerable<IErrorInfo> errors)
+        public void UpdateDesignValidationErrors(IEnumerable<IErrorInfo> errors)
         {
             DesignValidationErrors.Clear();
             RootModel.ClearErrors();
@@ -1172,8 +892,8 @@ namespace Dev2.Activities.Designers2.Service
                     {
                         RemoveError(sourceNotAvailableMessage);
                         UpdateWorstError();
-                        InitializeMappings();
-                        UpdateMappings();
+                        MappingManager.InitializeMappings();
+                        MappingManager.UpdateMappings();
                     }
                 }
             }

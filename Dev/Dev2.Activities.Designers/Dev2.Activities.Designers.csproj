@@ -756,6 +756,7 @@
     <Compile Include="Designers2\Service\Large.xaml.cs">
       <DependentUpon>Large.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Designers2\Service\MappingManager.cs" />
     <Compile Include="Designers2\Service\ServiceDesigner.xaml.cs">
       <DependentUpon>ServiceDesigner.xaml</DependentUpon>
     </Compile>
