@@ -48,13 +48,25 @@ namespace Dev2.Data.Tests.DecisionsTests
             string[] cols = new string[2];
             cols[0] = "TestData";
             cols[1] = "No";
-
             //------------Execute Test---------------------------
 
             bool result = notStartsWith.Invoke(cols);
 
             //------------Assert Results-------------------------
             Assert.IsTrue(result);
+        }
+
+        [TestMethod]
+        [Owner("Sanele Mthmembu")]
+        [TestCategory("NotStartsWith_HandlesType")]
+        public void NotStartsWith_HandlesType_ReturnsNotStartWithType()
+        {
+            var startsWith = enDecisionType.NotStartsWith;
+            //------------Setup for test--------------------------
+            var notStartsWith = new NotStartsWith();
+            //------------Execute Test---------------------------
+            //------------Assert Results-------------------------
+            Assert.AreEqual(startsWith, notStartsWith.HandlesType());
         }
     }
 }
