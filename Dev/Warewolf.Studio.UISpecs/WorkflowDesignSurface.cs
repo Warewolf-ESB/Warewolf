@@ -28,11 +28,12 @@ namespace Warewolf.Studio.UISpecs
             Uimap.Assert_NewWorkFlow_RibbonButton_Exists();
             Uimap.Click_New_Workflow_Ribbon_Button();
             Uimap.Assert_StartNode_Exists();
-            Uimap.Assert_Toolbox_Multiassign_Exists();
 
-            //Given that the unit before this one passed its post asserts
-            //UIMap.Assert_StartNode_Exists();
-            //Uimap.Assert_Toolbox_Multiassign_Exists();
+            //Action Unit: Dragging a multiassign tool from the toolbox onto the design surface creates that tool on the workflow
+            //Given the start node exists
+            Uimap.Assert_Toolbox_FilterTextbox_Exists();
+            Uimap.Assert_Toolbox_RefreshButton_Exists();
+            Uimap.Assert_Toolbox_Multiassign_Exists();
             Uimap.Drag_Toolbox_MultiAssign_Onto_DesignSurface();
             Uimap.Assert_Assign_Small_View_Row1_Variable_Textbox_Exists();
 
@@ -54,6 +55,7 @@ namespace Warewolf.Studio.UISpecs
             //Uimap.Assert_Assign_Large_View_Row1_Variable_Textbox_Text_Equals_SomeVariable();
             Uimap.Click_Assign_Tool_Large_View_DoneButton();
             Uimap.Assert_Assign_Small_View_Row1_Variable_Textbox_Text_is_SomeVariable();
+            Uimap.Assert_VariableList_Exists();
             Uimap.Assert_VariableList_Scalar_Row1_Textbox_Equals_SomeVariable();
 
             //Action Unit: Click Assign Tool QVI Button Opens Qvi
@@ -64,6 +66,16 @@ namespace Warewolf.Studio.UISpecs
             //Action Unit: Clicking the save ribbon button opens save dialog
             Uimap.Assert_Save_Ribbon_Button_Exists();
             Uimap.Click_Save_Ribbon_Button();
+            Uimap.Assert_SaveDialog_CancelButton_Exists();
+            Uimap.Assert_SaveDialog_ErrorLabel_Exists();
+            Uimap.Assert_SaveDialog_ExplorerTree_Exists();
+            Uimap.Assert_SaveDialog_ExplorerTreeItem_Exists();
+            Uimap.Assert_SaveDialog_ExplorerView_Exists();
+            Uimap.Assert_SaveDialog_FilterTextbox_Exists();
+            Uimap.Assert_SaveDialog_NameLabel_Exists();
+            Uimap.Assert_SaveDialog_RefreshButton_Exists();
+            Uimap.Assert_SaveDialog_SaveButton_Exists();
+            Uimap.Assert_SaveDialog_WorkspaceName_Exists();
             Uimap.Assert_SaveDialog_Exists();
             Uimap.Assert_SaveDialog_ServiceName_Textbox_Exists();
             Playback.Wait(2000);
@@ -86,6 +98,7 @@ namespace Warewolf.Studio.UISpecs
 
             //Action Unit: Filtering the explorer tree shows only SomeWorkflow on local server
             Uimap.Enter_SomeWorkflow_Into_Explorer_Filter();
+            Uimap.Click_Explorer_Refresh_Button();
             Uimap.Assert_Explorer_Localhost_First_Item_Exists();
 
             /**TODO: Re-introduce these units after bug WOLF-1923 is fixed
@@ -95,6 +108,16 @@ namespace Warewolf.Studio.UISpecs
             Uimap.Click_Debug_Ribbon_Button();
             Uimap.Assert_DebugInput_Window_Exists();
             Uimap.Assert_DebugInput_DebugButton_Exists();
+	        Uimap.Assert_DebugInput_CancelButton_Exists();
+	        Uimap.Assert_DebugInput_RememberCheckbox_Exists();
+	        Uimap.Assert_DebugInput_ViewInBrowser_Button_Exists();
+	        Uimap.Assert_DebugInput_DebugButton_Exists();
+	        Uimap.Assert_DebugInput_InputData_Window_Exists();
+	        Uimap.Assert_DebugInput_InputData_Field_Exists();
+	        Uimap.Assert_DebugInput_Xml_Tab_Exists();
+	        Uimap.Assert_DebugInput_Xml_Window_Exists();
+	        Uimap.Assert_DebugInput_Json_Tab_Exists();
+	        Uimap.Assert_DebugInput_Json_Window_Exists();
 
             //Action Unit: Clicking Debug Button In Debug Input Dialog Generates Debug Output
             //UIMap.Assert_Debug_Input_Dialog_Exists();
@@ -103,6 +126,10 @@ namespace Warewolf.Studio.UISpecs
             Uimap.Assert_DebugOutput_Exists();
             Uimap.Assert_DebugOutput_SettingsButton_Exists();
             Uimap.Assert_DebugOutput_Contains_SomeVariable();
+	        Uimap.Assert_DebugOutput_ExpandCollapseButton_Exists();
+	        Uimap.Assert_DebugOutput_FilterTextbox_Exists();
+	        Uimap.Assert_DebugOutput_ResultsTree_Exists();
+	        Uimap.Assert_DebugOutput_SettingsButton_Exists();
             **/
         }
 
@@ -125,6 +152,7 @@ namespace Warewolf.Studio.UISpecs
         /// <summary> PlaybackError event handler. </summary>
         private static void Playback_PlaybackError(object sender, PlaybackErrorEventArgs e)
         {
+            Console.WriteLine(e.Error.Message);
             (sender as UITestControl)?.DrawHighlight();
 
             // Wait a second
