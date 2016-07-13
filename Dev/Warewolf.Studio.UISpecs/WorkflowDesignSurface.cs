@@ -66,24 +66,29 @@ namespace Warewolf.Studio.UISpecs
             Uimap.Click_Save_Ribbon_Button();
             Uimap.Assert_SaveDialog_Exists();
             Uimap.Assert_SaveDialog_ServiceName_Textbox_Exists();
+            Playback.Wait(2000);
 
             //Action Unit: Entering a valid workflow name into the save dialog does not set the error state of the textbox to true
             //UIMap.Assert_Save_Workflow_Dialog_Exists();
             //Uimap.Assert_Workflow_Name_Textbox_Exists();
             Uimap.Enter_Servicename_As_SomeWorkflow();
+            if (!Uimap.SaveDialogWindow.SaveButton.Enabled)
+            {
+                Uimap.SaveDialogWindow.SaveButton.DrawHighlight();
+            }
             Uimap.Assert_SaveDialog_SaveButton_Enabled();
 
             //Action Unit: Clicking the save button in the save dialog dismisses save dialog
             //UIMap.Assert_SaveDialog_SaveButton_Enabled();
             Uimap.Click_SaveDialog_YesButton();
-            Playback.Wait(1000);
+            Playback.Wait(2000);
             Uimap.Assert_MessageBox_Does_Not_Exist();
 
             //Action Unit: Filtering the explorer tree shows only SomeWorkflow on local server
             Uimap.Enter_SomeWorkflow_Into_Explorer_Filter();
             Uimap.Assert_Explorer_Localhost_First_Item_Exists();
 
-            /**TODO: Re-introduce these units after bug is fixed
+            /**TODO: Re-introduce these units after bug WOLF-1923 is fixed
             //Action Unit: Clicking Debug Button Shows Debug Input Dialog
             //UIMap.Assert_MultiAssign_Exists_OnDesignSurface();
             //Uimap.Assert_Assign_Small_View_Row1_Variable_Textbox_Text_is_SomeVariable();
@@ -112,13 +117,33 @@ namespace Warewolf.Studio.UISpecs
             Playback.PlaybackSettings.WaitForReadyLevel = WaitForReadyLevel.Disabled;
             Playback.PlaybackSettings.ShouldSearchFailFast = false;
             Playback.PlaybackSettings.SearchTimeout = 10000;
-            //ActionSteps.StartTest();
+            // Ensure the error handler is 
+            Playback.PlaybackError -= Playback_PlaybackError;
+            Playback.PlaybackError += Playback_PlaybackError;
+        }
+
+        /// <summary> PlaybackError event handler. </summary>
+        private static void Playback_PlaybackError(object sender, PlaybackErrorEventArgs e)
+        {
+            (sender as UITestControl)?.DrawHighlight();
+
+            // Wait a second
+            System.Threading.Thread.Sleep(1000);
+
+            // Retry the failed test operation
+            e.Result = PlaybackErrorOptions.Retry;
         }
 
         //Use TestCleanup to run code after each test has run
         [TestCleanup()]
         public void MyTestCleanup()
         {
+            //Action Unit: Try close any hanging save dialogs
+            if (Uimap.SaveDialogWindow.CancelButton.Exists)
+            {
+                Uimap.Click_SaveDialog_CancelButton();
+            }
+
             //Action Unit: Explorer context menu delete exists
             //Given "localhost\SomeWorkflow" exists in the explorer tree
             Uimap.RightClick_Explorer_Localhost_First_Item();

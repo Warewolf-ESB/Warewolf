@@ -33,9 +33,30 @@ namespace Dev2.Data.Tests.Operations
 
             //exe
             var actual = comparer.Invoke(new[] { "2", "100" });
-
             //assert
             Assert.IsTrue(actual, "IsLessThan returned the wrong result when comparing integers");
+
+            //exe
+            actual = comparer.Invoke(new[] { "SomeVal", "Val2" });
+            //assert
+            Assert.IsTrue(actual, "IsLessThan returned the wrong result when comparing strings");
+
+            //exe
+            actual = comparer.Invoke(new[] { string.Empty });
+            //assert
+            Assert.IsFalse(actual, "IsLessThan returned the wrong result when comparing empty string");
+        }
+
+        [TestMethod]
+        [Owner("Sanele Mthmembu")]        
+        public void IsLessThan_HandleType_ShouldReturnIsLessThan()
+        {
+            var decisionType = enDecisionType.IsLessThan;
+            //------------Setup for test--------------------------
+            var isLessThan = new IsLessThan();
+            //------------Execute Test---------------------------
+            //------------Assert Results-------------------------
+            Assert.AreEqual(decisionType, isLessThan.HandlesType());
         }
 
         [TestMethod]
@@ -112,7 +133,111 @@ namespace Dev2.Data.Tests.Operations
 
             //assert
             Assert.IsFalse(actual, "IsGreaterThan returned the wrong result when comparing integers");
+
+            //exe
+            actual = comparer.Invoke(new[] { "SomeVal", "AnotherVal" });
+            //assert
+            Assert.IsTrue(actual, "IsGreaterThan returned the wrong result when comparing strings");
+
+            //exe
+            actual = comparer.Invoke(new[] { string.Empty });
+            //assert
+            Assert.IsFalse(actual, "IsGreaterThan returned the wrong result when comparing empty string");
         }
+
+
+        [TestMethod]
+        [Owner("Sanele Mthmembu")]
+        public void IsGreaterThan_HandleType_ShouldReturnIsGreaterThan()
+        {
+            var decisionType = enDecisionType.IsGreaterThan;
+            //------------Setup for test--------------------------
+            var greaterThan = new IsGreaterThan();
+            //------------Execute Test---------------------------
+            //------------Assert Results-------------------------
+            Assert.AreEqual(decisionType, greaterThan.HandlesType());
+        }
+
+        #endregion
+
+        #region IsGreaterThanOrEqual
+
+        [TestMethod]
+        [TestCategory("UnitTest")]
+        [Description("Test for invoking IsGreaterThanOrEqual with an array of strings that can be parsed to integers, true is expected")]
+        [Owner("Ashley Lewis")]
+        // ReSharper disable InconsistentNaming
+        public void IsGreaterThanOrEqual_IsGreaterThanOrEqualUnitTest_InvokeWithEqualStrings_TrueIsReturned()
+            // ReSharper restore InconsistentNaming
+        {
+            //init
+            var comparer = new IsGreaterThanOrEqual();
+
+            //exe
+            var actual = comparer.Invoke(new[] { "2", "2" });
+
+            //assert
+            Assert.IsTrue(actual, "IsGreaterThanOrEqual returned the wrong result when comparing integers");
+        }
+
+        [TestMethod]
+        [TestCategory("UnitTest")]
+        [Description("Test for invoking IsGreaterThanOrEqual with an array of equal strings that can be parsed to integers, true is expected")]
+        [Owner("Ashley Lewis")]
+        // ReSharper disable InconsistentNaming
+        public void IsGreaterThanOrEqual_IsGreaterThanOrEqualUnitTest_Invoke_TrueIsReturned()
+            // ReSharper restore InconsistentNaming
+        {
+            //init
+            var comparer = new IsGreaterThanOrEqual();
+
+            //exe
+            var actual = comparer.Invoke(new[] { "100", "2" });
+
+            //assert
+            Assert.IsTrue(actual, "IsGreaterThanOrEqual returned the wrong result when comparing integers");
+            //exe
+            actual = comparer.Invoke(new[] { "Vals", "Val2" });
+            //assert
+            Assert.IsTrue(actual, "IsGreaterThanOrEqual returned the wrong result when comparing strings");
+
+            //exe
+            actual = comparer.Invoke(new[] { string.Empty });
+            //assert
+            Assert.IsFalse(actual, "IsGreaterThanOrEqual returned the wrong result when comparing empty string");
+        }
+
+        [TestMethod]
+        [TestCategory("UnitTest")]
+        [Description("Test for invoking IsGreaterThanOrEqual with an array of strings that can be parsed to integers, false is expected")]
+        [Owner("Ashley Lewis")]
+        // ReSharper disable InconsistentNaming
+        public void IsGreaterThanOrEqual_IsGreaterThanOrEqualUnitTest_Invoke_FalseIsReturned()
+            // ReSharper restore InconsistentNaming
+        {
+            //init
+            var comparer = new IsGreaterThanOrEqual();
+
+            //exe
+            var actual = comparer.Invoke(new[] { "2", "100" });
+
+            //assert
+            Assert.IsFalse(actual, "IsGreaterThanOrEqual returned the wrong result when comparing integers");
+        }
+
+
+        [TestMethod]
+        [Owner("Sanele Mthmembu")]
+        public void IsGreaterThanOrEqual_HandleType_ShouldReturbIsGreaterThanOrEqual()
+        {
+            var decisionType = enDecisionType.IsGreaterThanOrEqual;
+            //------------Setup for test--------------------------
+            var isGreaterThanOrEqual = new IsGreaterThanOrEqual();
+            //------------Execute Test---------------------------
+            //------------Assert Results-------------------------
+            Assert.AreEqual(decisionType, isGreaterThanOrEqual.HandlesType());
+        }
+
 
         #endregion
 
@@ -149,9 +274,30 @@ namespace Dev2.Data.Tests.Operations
 
             //exe
             var actual = comparer.Invoke(new[] { "2", "2" });
-
             //assert
             Assert.IsTrue(actual, "IsLessThanOrEqual returned the wrong result when comparing integers");
+
+            //exe
+            actual = comparer.Invoke(new[] { "SomeVal", "SomeVal" });
+            //assert
+            Assert.IsTrue(actual, "IsLessThanOrEqual returned the wrong result when comparing strings");
+
+            //exe
+            actual = comparer.Invoke(new[] {string.Empty});
+            //assert
+            Assert.IsFalse(actual, "IsLessThanOrEqual returned the wrong result when comparing empty string");
+        }
+
+        [TestMethod]
+        [Owner("Sanele Mthmembu")]
+        public void IsLessThanOrEqual_ShouldReturnedIsLessThanOrEqualDecisionType()
+        {
+            var decisionType = enDecisionType.IsLessThanOrEqual;
+            //------------Setup for test--------------------------
+            var isLessThanOrEqual = new IsLessThanOrEqual();
+            //------------Execute Test---------------------------
+            //------------Assert Results-------------------------
+            Assert.AreEqual(decisionType, isLessThanOrEqual.HandlesType());
         }
 
         [TestMethod]
@@ -172,63 +318,6 @@ namespace Dev2.Data.Tests.Operations
             Assert.IsFalse(actual, "IsLessThanOrEqual returned the wrong result when comparing integers");
         }
 
-        #endregion
-
-        #region IsGreaterThanOrEqual
-
-        [TestMethod]
-        [TestCategory("UnitTest")]
-        [Description("Test for invoking IsGreaterThanOrEqual with an array of strings that can be parsed to integers, true is expected")]
-        [Owner("Ashley Lewis")]
-        // ReSharper disable InconsistentNaming
-        public void IsGreaterThanOrEqual_IsGreaterThanOrEqualUnitTest_InvokeWithEqualStrings_TrueIsReturned()
-        // ReSharper restore InconsistentNaming
-        {
-            //init
-            var comparer = new IsGreaterThanOrEqual();
-
-            //exe
-            var actual = comparer.Invoke(new[] { "2", "2" });
-
-            //assert
-            Assert.IsTrue(actual, "IsGreaterThanOrEqual returned the wrong result when comparing integers");
-        }
-
-        [TestMethod]
-        [TestCategory("UnitTest")]
-        [Description("Test for invoking IsGreaterThanOrEqual with an array of equal strings that can be parsed to integers, true is expected")]
-        [Owner("Ashley Lewis")]
-        // ReSharper disable InconsistentNaming
-        public void IsGreaterThanOrEqual_IsGreaterThanOrEqualUnitTest_Invoke_TrueIsReturned()
-        // ReSharper restore InconsistentNaming
-        {
-            //init
-            var comparer = new IsGreaterThanOrEqual();
-
-            //exe
-            var actual = comparer.Invoke(new[] { "100", "2" });
-
-            //assert
-            Assert.IsTrue(actual, "IsGreaterThanOrEqual returned the wrong result when comparing integers");
-        }
-
-        [TestMethod]
-        [TestCategory("UnitTest")]
-        [Description("Test for invoking IsGreaterThanOrEqual with an array of strings that can be parsed to integers, false is expected")]
-        [Owner("Ashley Lewis")]
-        // ReSharper disable InconsistentNaming
-        public void IsGreaterThanOrEqual_IsGreaterThanOrEqualUnitTest_Invoke_FalseIsReturned()
-        // ReSharper restore InconsistentNaming
-        {
-            //init
-            var comparer = new IsGreaterThanOrEqual();
-
-            //exe
-            var actual = comparer.Invoke(new[] { "2", "100" });
-
-            //assert
-            Assert.IsFalse(actual, "IsGreaterThanOrEqual returned the wrong result when comparing integers");
-        }
 
         #endregion
 
@@ -268,7 +357,21 @@ namespace Dev2.Data.Tests.Operations
 
             //assert
             Assert.IsFalse(actual, "IsBetween returned the wrong result when comparing integers");
+
         }
+
+        [TestMethod]
+        [Owner("Sanele Mthmembu")]
+        public void IsBetween_HandleType_ShouldReturneIsBetween()
+        {
+            var decisionType = enDecisionType.IsBetween;
+            //------------Setup for test--------------------------
+            var isBetween = new IsBetween();
+            //------------Execute Test---------------------------
+            //------------Assert Results-------------------------
+            Assert.AreEqual(decisionType, isBetween.HandlesType());
+        }
+
 
         #endregion
 
@@ -308,9 +411,34 @@ namespace Dev2.Data.Tests.Operations
 
             //assert
             Assert.IsTrue(actual, "IsEqual returned the wrong result when comparing integers");
-        }     
+
+            //exe
+            actual = comparer.Invoke(new[] { "Val", "Val" });
+            //assert
+            Assert.IsTrue(actual, "IsEqual returned the wrong result when comparing strings");
+
+            //exe
+            actual = comparer.Invoke(new[] { string.Empty, "Something" });
+            //assert
+            Assert.IsFalse(actual, "IsEqual returned the wrong result when comparing empty string");
+        }
+
+
+        [TestMethod]
+        [Owner("Sanele Mthmembu")]
+        public void IsEqual_IsEqualUnitTest_HandleType_ShouldReturnIsEqual()
+        {
+            var decisionType = enDecisionType.IsEqual;
+            //------------Setup for test--------------------------
+            var isEqual = new IsEqual();
+            //------------Execute Test---------------------------
+            //------------Assert Results-------------------------
+            Assert.AreEqual(decisionType, isEqual.HandlesType());
+        }
+
 
         #endregion
+
         #endregion
     }
 }

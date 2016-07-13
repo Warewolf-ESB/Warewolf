@@ -29,7 +29,7 @@ namespace Dev2.Activities.Designers2.Service
         protected override void OnLostFocus(RoutedEventArgs e)
         {
             base.OnLostFocus(e);
-            ViewModel.UpdateMappings();
+            ViewModel.MappingManager.UpdateMappings();
         }
     }
 }
