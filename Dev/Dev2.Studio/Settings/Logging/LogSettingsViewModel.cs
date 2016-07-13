@@ -88,6 +88,7 @@ namespace Dev2.Settings.Logging
             _studioLogMaxSize = Dev2Logger.GetLogMaxSize().ToString(CultureInfo.InvariantCulture);
         }
 
+        [ExcludeFromCodeCoverage]
         void OpenServerLogFile(object o)
         {
             WebClient client = new WebClient { Credentials = CurrentEnvironment.Connection.HubConnection.Credentials };
@@ -125,6 +126,7 @@ namespace Dev2.Settings.Logging
             _progressDialogViewModel.StatusChanged("Server Log File", e.ProgressPercentage, e.TotalBytesToReceive);
         }
 
+        [ExcludeFromCodeCoverage]
         void OpenStudioLogFile(object o)
         {
             var localAppDataFolder = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
@@ -143,6 +145,7 @@ namespace Dev2.Settings.Logging
 
         public bool CanEditStudioLogSettings => CurrentEnvironment.IsLocalHost;
 
+        [ExcludeFromCodeCoverage]
         public virtual void Save(LoggingSettingsTo logSettings)
         {
             logSettings.FileLoggerLogLevel = ServerFileLogLevel.ToString();

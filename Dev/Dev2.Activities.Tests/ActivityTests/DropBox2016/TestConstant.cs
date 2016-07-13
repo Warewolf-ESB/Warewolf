@@ -9,28 +9,28 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016
 {
     public static class TestConstant
     {
-        public static Lazy<FileMetadata> FileMetadataInstance = new Lazy<FileMetadata>(() =>
+        public static readonly Lazy<FileMetadata> FileMetadataInstance = new Lazy<FileMetadata>(() =>
         {
             var mock = new Mock<FileMetadata>();
             var fileMetadata = mock.Object;
             return fileMetadata;
         });
 
-        public static Lazy<Exception> ExceptionInstance = new Lazy<Exception>(() =>
+        public static readonly Lazy<Exception> ExceptionInstance = new Lazy<Exception>(() =>
         {
             var exception = new Exception(ErrorMessage);
             return exception;
         });
 
-        public static Lazy<DropboxClient> DropboxClientInstance = new Lazy<DropboxClient>(() => new DropboxClient("random.net"));
-        public static string ErrorMessage = "Error Messege";
-        public static Lazy<IDownloadResponse<FileMetadata>> FileDownloadResponseInstance = new Lazy<IDownloadResponse<FileMetadata>>(() =>
+        public static readonly Lazy<DropboxClient> DropboxClientInstance = new Lazy<DropboxClient>(() => new DropboxClient("random.net"));
+        private const string ErrorMessage = "Error Messege";
+        public static readonly Lazy<IDownloadResponse<FileMetadata>> FileDownloadResponseInstance = new Lazy<IDownloadResponse<FileMetadata>>(() =>
         {
             var mock = new Mock<IDownloadResponse<FileMetadata>>();
             return mock.Object;
         });
 
-        public static Lazy<ListFolderResult> ListFolderResultInstance=new Lazy<ListFolderResult>(() =>
+        public static readonly Lazy<ListFolderResult> ListFolderResultInstance=new Lazy<ListFolderResult>(() =>
         {
             
     

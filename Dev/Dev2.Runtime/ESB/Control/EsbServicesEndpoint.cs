@@ -9,9 +9,6 @@
 */
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ServiceModel;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -36,137 +33,11 @@ namespace Dev2.Runtime.ESB.Control
     /// Amended as per PBI 7913
     /// </summary>
     /// IEsbActivityChannel
-    public class EsbServicesEndpoint : IFrameworkDuplexDataChannel, IEsbWorkspaceChannel
+    public class EsbServicesEndpoint :  IEsbWorkspaceChannel
     {
 
-        #region IFrameworkDuplexDataChannel Members
 
-        private readonly Dictionary<string, IFrameworkDuplexCallbackChannel> _users = new Dictionary<string, IFrameworkDuplexCallbackChannel>();
         private readonly IEnvironmentOutputMappingManager _environmentOutputMappingManager = new EnvironmentOutputMappingManager();
-        public void Register(string userName)
-        {
-            if (_users.ContainsKey(userName))
-            {
-                _users.Remove(userName);
-            }
-
-            var channel = ((OperationContext)GetCurrentOperationContext()).GetCallbackChannel<IFrameworkDuplexCallbackChannel>();
-            _users.Add(userName, channel);
-            NotifyAllClients($"User '{userName}' logged in");
-
-        }
-
-        public IExtensibleObject<OperationContext> GetCurrentOperationContext()
-        {
-            return OperationContext.Current;
-        }
-
-        public void Unregister(string userName)
-        {
-            if (UserExists(userName))
-            {
-                _users.Remove(userName);
-                NotifyAllClients($"User '{userName}' logged out");
-            }
-        }
-
-        public void ShowUsers(string userName)
-        {
-            StringBuilder sb = new StringBuilder();
-            sb.Append("=========Current Users==========");
-            sb.Append("\r\n");
-            _users.ToList().ForEach(c => sb.Append(c.Key + "\r\n"));
-            SendPrivateMessage("System", userName, sb.ToString());
-
-        }
-
-        public void SendMessage(string userName, string message)
-        {
-            string suffix = " Said:";
-            if (userName == "System")
-            {
-                suffix = string.Empty;
-            }
-            NotifyAllClients($"{userName} {suffix} {message}");
-        }
-
-        public void SendPrivateMessage(string userName, string targetUserName, string message)
-        {
-            string suffix = " Said:";
-            if (userName == "System")
-            {
-                suffix = string.Empty;
-            }
-            if (UserExists(userName))
-            {
-                if (!UserExists(targetUserName))
-                {
-                    NotifyClient(userName, $"System: Message failed - User '{targetUserName}' has logged out ");
-                }
-                else
-                {
-                    NotifyClient(targetUserName, $"{userName} {suffix} {message}");
-                }
-            }
-        }
-
-        public void SetDebug(string userName, string serviceName, bool debugOn)
-        {
-
-        }
-
-        public void Rollback(string userName, string serviceName, int versionNo)
-        {
-
-        }
-
-        public void Rename(string userName, string resourceType, string resourceName, string newResourceName)
-        {
-
-
-        }
-
-        public void ReloadSpecific(string userName, string serviceName)
-        {
-
-
-        }
-
-        public void Reload()
-        {
-
-        }
-
-        private bool UserExists(string userName)
-        {
-            return _users.ContainsKey(userName) || userName.Equals("System", StringComparison.InvariantCultureIgnoreCase);
-        }
-
-        private void NotifyAllClients(string message)
-        {
-            _users.ToList().ForEach(c => NotifyClient(c.Key, message));
-        }
-
-        private void NotifyClient(string userName, string message)
-        {
-
-            try
-            {
-                if (UserExists(userName))
-                {
-                    _users[userName].CallbackNotification(message);
-                }
-            }
-            catch (Exception ex)
-            {
-                Dev2Logger.Error(ex);
-                _users.Remove(userName);
-            }
-        }
-
-        #endregion
-
-
         /// <summary>
         ///Loads service definitions.
         ///This is a singleton service so this object
@@ -236,7 +107,7 @@ namespace Dev2.Runtime.ESB.Control
             {
                 // Setup the invoker endpoint ;)
                 Dev2Logger.Debug("Creating Invoker");
-                using (var invoker = new EsbServiceInvoker(this, this, theWorkspace, request))
+                using (var invoker = new EsbServiceInvoker(this,theWorkspace, request))
                 {
                     // Should return the top level DLID
                     ErrorResultTO invokeErrors;
@@ -431,7 +302,7 @@ namespace Dev2.Runtime.ESB.Control
 
         protected virtual IEsbServiceInvoker CreateEsbServicesInvoker(IWorkspace theWorkspace)
         {
-            return new EsbServiceInvoker(this, this, theWorkspace);
+            return new EsbServiceInvoker(this, theWorkspace);
         }
 
     }

@@ -243,8 +243,7 @@ namespace WarewolfParsingTest
             Assert.AreEqual("dora", token);
         }
 
-
-        public static DataStorage.WarewolfEnvironment CreateEnvironmentWithData()
+        private static DataStorage.WarewolfEnvironment CreateEnvironmentWithData()
         {
 
             ExecutionEnvironment env = new ExecutionEnvironment();
