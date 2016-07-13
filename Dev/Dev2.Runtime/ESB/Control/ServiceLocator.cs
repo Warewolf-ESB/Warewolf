@@ -22,7 +22,7 @@ namespace Dev2.Runtime.ESB.Control
     /// <summary>
     /// Used to locate a service to execute ;)
     /// </summary>
-    public class ServiceLocator
+    public class ServiceLocator : IServiceLocator
     {
         readonly IPerformanceCounter _perfCounter = CustomContainer.Get<IWarewolfPerformanceCounterLocater>().GetCounter("Count of requests for workflows which don’t exist");
         private readonly IResourceCatalog _resourceCatalog = ResourceCatalog.Instance;
