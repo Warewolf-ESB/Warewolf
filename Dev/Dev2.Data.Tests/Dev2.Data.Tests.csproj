@@ -148,6 +148,8 @@
     <Compile Include="Operations\Dev2DecisionOperationTests.cs" />
     <Compile Include="Operations\Dev2IndexFinderTests.cs" />
     <Compile Include="Operations\Dev2IOBrokerTests.cs" />
+    <Compile Include="TO\UpsertTOTests.cs" />
+    <Compile Include="Operations\Dev2ReplaceOperationTest.cs" />
     <Compile Include="Operations\Dev2MergeOperationsTests.cs" />
     <Compile Include="Operations\Dev2NumberFormatterTests.cs" />
     <Compile Include="Parsers\Dev2DataLanguageParserTests.cs" />
@@ -156,6 +158,7 @@
     <Compile Include="ServiceModel\ServiceUtilsTests.cs" />
     <Compile Include="TO\ErrorResultTOTests.cs" />
     <Compile Include="TO\CompileMessageTOTests.cs" />
+    <Compile Include="Util\ScrubberTests.cs" />
     <Compile Include="WarewolfListIteratorTests.cs" />
     <Compile Include="XmlHelperTest.cs" />
     <Compile Include="XPathParserTests.cs" />
