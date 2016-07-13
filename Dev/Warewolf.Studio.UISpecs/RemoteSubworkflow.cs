@@ -95,7 +95,7 @@ namespace Warewolf.Studio.UISpecs
             //Action Unit: filtering and refreshing the explorer tree shows only RemoteServerUITestWorkflow on local server
             Uimap.Enter_TSTCIREMOTE_Into_Explorer_Filter();
             Uimap.Click_Explorer_Refresh_Button();
-            explorerTreeItemActionSteps.AssertExistsInExplorerTree("localhost\\TSTCIREMOTE");
+            Uimap.Assert_Explorer_Localhost_First_Item_Exists();
 
             //Action Step: TSTCIREMOTE server source exists in remote server dropdown list
             //Given: explorerTreeItemActionSteps.AssertExistsInExplorerTree("localhost\\TSTCIREMOTE");
@@ -111,16 +111,16 @@ namespace Warewolf.Studio.UISpecs
             //Given: Uimap.Assert_Explorer_Remote_Server_DropdownList_Has_TSTCIREMOTE_Selected();
             Uimap.Click_Explorer_RemoteServer_Connect_Button();
             Playback.Wait(2000);
-            explorerTreeItemActionSteps.AssertExistsInExplorerTree("TSTCIREMOTE");
+            Uimap.Assert_Explorer_First_Remote_Server_Exists();
 
             //Action Unit: filtering and refreshing the explorer tree shows only workflow1 on remote server
             Uimap.Enter_workflow1_Into_Explorer_Filter();
             Uimap.Click_Explorer_Refresh_Button();
-            explorerTreeItemActionSteps.AssertExistsInExplorerTree("TSTCIREMOTE\\workflow1");
+            Uimap.Assert_Explorer_First_Remote_Server_First_Item_Exists();
 
             //Action Unit: Dragging on a remote workflow onto a local workflow design surface
-            //Given: explorerTreeItemActionSteps.AssertExistsInExplorerTree("TSTCIREMOTE\\workflow1");
-            explorerTreeItemActionSteps.WhenIDragTheItemFromTheExplorerTreeOntoTheDesignSurface("TSTCIREMOTE\\workflow1");
+            //Given: Uimap.Assert_Explorer_First_Remote_Server_First_Item_Exists();
+            Uimap.Drag_Explorer_First_Remote_Server_First_Item_Onto_Workflow_Design_Surface();
             Uimap.Assert_Workflow_Exists_OnDesignSurface();
 
             //Action Unit: Clicking the save ribbon button opens save dialog
@@ -144,7 +144,7 @@ namespace Warewolf.Studio.UISpecs
             //Action Unit: filtering and refreshing the explorer tree shows only RemoteServerUITestWorkflow on local server
             Uimap.Enter_RemoteServerUITestWorkflow_Into_Explorer_Filter();
             Uimap.Click_Explorer_Refresh_Button();
-            explorerTreeItemActionSteps.AssertExistsInExplorerTree("localhost\\RemoteServerUITestWorkflow");
+            Uimap.Assert_Explorer_Localhost_First_Item_Exists();
 
             /**TODO: Re-introduce these units after bug is fixed
             //Action Unit: Clicking Debug Button Shows Debug Input Dialog
@@ -163,8 +163,8 @@ namespace Warewolf.Studio.UISpecs
             **/
 
             //Action Unit: Right clicking an item in the explorer shows 'show dependency' option
-            //Given: explorerTreeItemActionSteps.AssertExistsInExplorerTree("localhost\\TSTCIREMOTE");
-            explorerTreeItemActionSteps.WhenIRightClickTheItemInTheExplorerTree("localhost\\TSTCIREMOTE");
+            //Given: Uimap.Assert_Explorer_Localhost_First_Item_Exists();
+            Uimap.RightClick_Explorer_Localhost_First_Item();
             Uimap.Assert_ShowDependencies_Exists_In_Explorer_Context_Menu();
 
             //Action Unit: Clicking show dependencies explorer context menu button opens the dependencies tab for that workflow
@@ -220,11 +220,11 @@ namespace Warewolf.Studio.UISpecs
                 //Action Unit: Filtering and refreshing the explorer tree shows only workflow1 on local server
                 Uimap.Enter_RemoteServerUITestWorkflow_Into_Explorer_Filter();
                 Uimap.Click_Explorer_Refresh_Button();
-                explorerTreeItemActionSteps.AssertExistsInExplorerTree("localhost\\RemoteServerUITestWorkflow");
+                Uimap.Assert_Explorer_Localhost_First_Item_Exists();
 
                 //Action Unit: Explorer context menu delete exists
                 //Given "localhost\RemoteServerUITestWorkflow" exists in the explorer tree
-                explorerTreeItemActionSteps.WhenIRightClickTheItemInTheExplorerTree("localhost\\RemoteServerUITestWorkflow");
+                Uimap.RightClick_Explorer_Localhost_First_Item();
                 Uimap.Assert_ExplorerContextMenu_Delete_Exists();
 
                 //Action Unit: Clicking delete in the explorer context menu on SomeWorkflow shows message box
@@ -240,7 +240,7 @@ namespace Warewolf.Studio.UISpecs
                 //Action Unit: Clearing and refreshing the explorer filter removes RemoteServerUITestWorkflow from the explorer tree
                 Uimap.Click_Explorer_Filter_Clear_Button();
                 Uimap.Click_Explorer_Refresh_Button();
-                explorerTreeItemActionSteps.AssertDoesNotExistInExplorerTree("localhost\\RemoteServerUITestWorkflow");
+                Uimap.Assert_Explorer_Localhost_First_Item_Exists();
             }
             catch (Exception e)
             {
@@ -270,11 +270,11 @@ namespace Warewolf.Studio.UISpecs
                 //Action Unit: filtering and refreshing the explorer tree shows only TSTCIREMOTE on local server
                 Uimap.Enter_TSTCIREMOTE_Into_Explorer_Filter();
                 Uimap.Click_Explorer_Refresh_Button();
-                explorerTreeItemActionSteps.AssertExistsInExplorerTree("localhost\\TSTCIREMOTE");
+                Uimap.Assert_Explorer_Localhost_First_Item_Exists();
 
                 //Action Unit: Explorer context menu delete exists
                 //Given "localhost\TSTCIREMOTE" exists in the explorer tree
-                explorerTreeItemActionSteps.WhenIRightClickTheItemInTheExplorerTree("localhost\\TSTCIREMOTE");
+                Uimap.RightClick_Explorer_Localhost_First_Item();
                 Uimap.Assert_ExplorerContextMenu_Delete_Exists();
 
                 //Action Unit: Clicking delete in the explorer context menu on TSTCIREMOTE server source shows message box
@@ -290,7 +290,7 @@ namespace Warewolf.Studio.UISpecs
                 //Action Unit: Clearing and refreshing the explorer filter removes TSTCIREMOTE from the explorer tree
                 Uimap.Click_Explorer_Filter_Clear_Button();
                 Uimap.Click_Explorer_Refresh_Button();
-                explorerTreeItemActionSteps.AssertDoesNotExistInExplorerTree("localhost\\TSTCIREMOTE");
+                Uimap.Assert_Explorer_Localhost_First_Item_Does_Not_Exist();
 
                 //Action Unit: When a server source is deleted from the explorer tree it must be removed from the explorer remote server dropdown list
                 //Given "localhost\TSTCIREMOTE" does not exist in the explorer tree
@@ -338,20 +338,5 @@ namespace Warewolf.Studio.UISpecs
         }
 
         private UIMap _uiMap;
-
-        Explorer_Tree_Item_Action_Steps explorerTreeItemActionSteps
-        {
-            get
-            {
-                if ((_explorerTreeItemActionSteps == null))
-                {
-                    _explorerTreeItemActionSteps = new Explorer_Tree_Item_Action_Steps();
-                }
-
-                return _explorerTreeItemActionSteps;
-            }
-        }
-
-        private Explorer_Tree_Item_Action_Steps _explorerTreeItemActionSteps;
     }
 }
