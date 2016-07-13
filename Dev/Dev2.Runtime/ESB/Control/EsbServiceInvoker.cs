@@ -47,6 +47,8 @@ namespace Dev2.Runtime.ESB
 
     public class EsbServiceInvoker : IEsbServiceInvoker, IDisposable
     {
+        private readonly IServiceLocator _serviceLocator;
+
         #region Fields
         private readonly IEsbChannel _esbChannel;
 
@@ -56,13 +58,14 @@ namespace Dev2.Runtime.ESB
 
         #endregion
 
-        static readonly ConcurrentDictionary<Guid, ServiceAction> Cache = new ConcurrentDictionary<Guid, ServiceAction>();
+       private readonly ConcurrentDictionary<Guid, ServiceAction> _cache = new ConcurrentDictionary<Guid, ServiceAction>();
 
         // 2012.10.17 - 5782: TWR - Changed to work off the workspace host and made read only
 
         #region Constructors
 
         public EsbServiceInvoker(IEsbChannel esbChannel,IWorkspace workspace, EsbExecuteRequest request = null)
+            :this(new ServiceLocator())
         {
             _esbChannel = esbChannel;
           
@@ -71,6 +74,11 @@ namespace Dev2.Runtime.ESB
             _workspace = workspace;
 
             _request = request;
+        }
+
+        private EsbServiceInvoker(IServiceLocator serviceLocator)
+        {
+            _serviceLocator = serviceLocator;
         }
 
         #endregion
@@ -114,9 +122,8 @@ namespace Dev2.Runtime.ESB
 
                     try
                     {
-                        var sl = new ServiceLocator();
                         Dev2Logger.Debug("Finding service");
-                        var theService = serviceId == Guid.Empty ? sl.FindService(serviceName, _workspace.ID) : sl.FindService(serviceId, _workspace.ID);
+                        var theService = serviceId == Guid.Empty ? _serviceLocator.FindService(serviceName, _workspace.ID) : _serviceLocator.FindService(serviceId, _workspace.ID);
 
                         if(theService == null)
                         {
@@ -132,7 +139,7 @@ namespace Dev2.Runtime.ESB
                                 throw new Exception(ErrorResource.CanOnlyExecuteWorkflowsFromWebBrowser);
                             }
                             Dev2Logger.Debug("Mapping Action Dependencies");
-                            MapServiceActionDependencies(theStart, sl);
+                            MapServiceActionDependencies(theStart, _serviceLocator);
 
                             // Invoke based upon type ;)
                             if(theStart != null)
@@ -197,21 +204,20 @@ namespace Dev2.Runtime.ESB
             if(isLocalInvoke)
             {
                 ServiceAction sa;
-                if(Cache.ContainsKey(dataObject.ResourceID))
+                if(_cache.ContainsKey(dataObject.ResourceID))
                 {
-                    sa = Cache[dataObject.ResourceID];
+                    sa = _cache[dataObject.ResourceID];
   
                     return GenerateContainer(sa, dataObject, _workspace);
                 }
 
 
-                ServiceLocator sl = new ServiceLocator();
-                var theService = sl.FindService(serviceId, _workspace.ID);
+                var theService = _serviceLocator.FindService(serviceId, _workspace.ID);
                 if(theService != null && theService.Actions.Any())
                 {
                     sa = theService.Actions.FirstOrDefault();
-                    MapServiceActionDependencies(sa, sl);
-                    Cache.TryAdd(dataObject.ResourceID, sa);
+                    MapServiceActionDependencies(sa, _serviceLocator);
+                    _cache.TryAdd(dataObject.ResourceID, sa);
                     return GenerateContainer(sa, dataObject, _workspace);
                 }
 
@@ -221,6 +227,7 @@ namespace Dev2.Runtime.ESB
             // TODO : Set Output description for shaping ;)
             return GenerateContainer(new ServiceAction { ActionType = Common.Interfaces.Core.DynamicServices.enActionType.RemoteService }, dataObject, null);
         }
+
 
         /// <summary>
         /// Generates the invoke container.
@@ -235,9 +242,9 @@ namespace Dev2.Runtime.ESB
             if(isLocalInvoke)
             {
 
-                if (Cache.ContainsKey(dataObject.ResourceID))
+                if (_cache.ContainsKey(dataObject.ResourceID))
                 {
-                    ServiceAction sa = Cache[dataObject.ResourceID];
+                    ServiceAction sa = _cache[dataObject.ResourceID];
 
                     return GenerateContainer(sa, dataObject, _workspace);
                 }
@@ -245,17 +252,16 @@ namespace Dev2.Runtime.ESB
                 else
                     // ReSharper restore RedundantIfElseBlock
                 {
-                    ServiceLocator sl = new ServiceLocator();
                     var resourceId = dataObject.ResourceID;
-                    DynamicService theService = GetService(serviceName, resourceId, sl);
+                    DynamicService theService = GetService(serviceName, resourceId, _serviceLocator);
                     IEsbExecutionContainer executionContainer = null;
 
 
                     if (theService != null && theService.Actions.Any())
                     {
                         var sa = theService.Actions.FirstOrDefault();
-                        MapServiceActionDependencies(sa, sl);
-                        Cache.TryAdd(dataObject.ResourceID, sa);
+                        MapServiceActionDependencies(sa, _serviceLocator);
+                        _cache.TryAdd(dataObject.ResourceID, sa);
                         executionContainer = GenerateContainer(sa, dataObject, _workspace);
                     }
 
@@ -268,9 +274,7 @@ namespace Dev2.Runtime.ESB
             return GenerateContainer(new ServiceAction { ActionType = Common.Interfaces.Core.DynamicServices.enActionType.RemoteService }, dataObject, null);
         }
 
-
-
-        DynamicService GetService(string serviceName, Guid resourceId, ServiceLocator sl)
+        private DynamicService GetService(string serviceName, Guid resourceId, IServiceLocator sl)
         {
             try
             {
@@ -314,7 +318,7 @@ namespace Dev2.Runtime.ESB
             return result;
         }
 
-        private void MapServiceActionDependencies(ServiceAction serviceAction, ServiceLocator serviceLocator)
+        private void MapServiceActionDependencies(ServiceAction serviceAction, IServiceLocator serviceLocator)
         {
 
             serviceAction.Service = GetService(serviceAction.ServiceName, serviceAction.ServiceID, serviceLocator);
