@@ -51,12 +51,12 @@ namespace Dev2.Runtime.ESB.Execution
         {
         }
 
-        protected RemoteWorkflowExecutionContainer(ServiceAction sa, IDSFDataObject dataObj, IWorkspace workspace, IEsbChannel esbChannel, IResourceCatalog resourceCatalog)
+        public RemoteWorkflowExecutionContainer(ServiceAction sa, IDSFDataObject dataObj, IWorkspace workspace, IEsbChannel esbChannel, IResourceCatalog resourceCatalog)
             : base(sa, dataObj, workspace, esbChannel)
         {
             if (resourceCatalog == null)
             {
-                throw new ArgumentNullException(nameof(resourceCatalog));
+                throw new ArgumentNullException("resourceCatalog");
             }
             _resourceCatalog = resourceCatalog;
         }
@@ -83,12 +83,16 @@ namespace Dev2.Runtime.ESB.Execution
 
         protected virtual void ExecuteWebRequestAsync(WebRequest buildGetWebRequest)
         {
-            buildGetWebRequest?.GetResponseAsync();
+            if (buildGetWebRequest == null)
+            {
+                return;
+            }
+            buildGetWebRequest.GetResponseAsync();
         }
 
         public override Guid Execute(out ErrorResultTO errors, int update)
         {
-            Dev2Logger.Info($"Starting Remote Execution. Service Name:{DataObject.ServiceName} Resource Id:{DataObject.ResourceID} Mode:{(DataObject.IsDebug ? "Debug" : "Execute")}");
+            Dev2Logger.Info(String.Format("Starting Remote Execution. Service Name:{0} Resource Id:{1} Mode:{2}", DataObject.ServiceName, DataObject.ResourceID, DataObject.IsDebug ? "Debug" : "Execute"));
 
             var serviceName = DataObject.ServiceName;
 
@@ -123,7 +127,7 @@ namespace Dev2.Runtime.ESB.Execution
 
             // Create tmpDL
             ExecutionEnvironmentUtils.UpdateEnvironmentFromOutputPayload(DataObject,result.ToStringBuilder(),DataObject.RemoteInvokeResultShape.ToString(), update);
-            Dev2Logger.Info($"Completed Remote Execution. Service Name:{DataObject.ServiceName} Resource Id:{DataObject.ResourceID} Mode:{(DataObject.IsDebug ? "Debug" : "Execute")}");
+            Dev2Logger.Info(String.Format("Completed Remote Execution. Service Name:{0} Resource Id:{1} Mode:{2}", DataObject.ServiceName, DataObject.ResourceID, DataObject.IsDebug ? "Debug" : "Execute"));
 
             return Guid.Empty;
         }
@@ -330,7 +334,7 @@ namespace Dev2.Runtime.ESB.Execution
             return new Connection(xe);
         }
 
-        public override SerializableResource FetchRemoteResource(Guid serviceId, string serviceName, bool isDebugMode)
+        public SerializableResource FetchRemoteResource(Guid serviceId, string serviceName, bool isDebugMode)
         {
             var connection = GetConnection(DataObject.EnvironmentID);
             if (connection == null)
@@ -339,7 +343,7 @@ namespace Dev2.Runtime.ESB.Execution
             }
             try
             {
-                var returnData = ExecuteGetRequest(connection, "FindResourceService", $"ResourceType={"TypeWorkflowService"}&ResourceName={serviceName}&ResourceId={serviceId}", isDebugMode);
+                var returnData = ExecuteGetRequest(connection, "FindResourceService", string.Format("ResourceType={0}&ResourceName={1}&ResourceId={2}", "TypeWorkflowService", serviceName, serviceId), isDebugMode);
                 if (!string.IsNullOrEmpty(returnData))
                 {
                     Dev2JsonSerializer serializer = new Dev2JsonSerializer();
