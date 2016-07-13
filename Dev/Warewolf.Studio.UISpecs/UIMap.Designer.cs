@@ -3003,7 +3003,7 @@ namespace Warewolf.Studio.UISpecs
         public void Assert_Service_Picker_Cancel_Button_Exists()
         {
             #region Variable Declarations
-            WpfButton cancel = this.MainStudioWindow.ServicePickerDialog.Cancel;
+            WpfButton cancel = this.ServicePickerDialog.Cancel;
             #endregion
 
             // Verify that the 'Exists' property of 'Cancel' button equals 'True'
@@ -3016,10 +3016,10 @@ namespace Warewolf.Studio.UISpecs
         public void Assert_Service_Picker_Dialog_Does_Not_Exist()
         {
             #region Variable Declarations
-            WpfWindow servicePickerDialog = this.MainStudioWindow.ServicePickerDialog;
+            WpfWindow servicePickerDialog = this.ServicePickerDialog;
             #endregion
 
-            // Verify that the 'Exists' property of 'Wpf' window equals 'False'
+            // Verify that the 'Exists' property of 'ServicePickerDialog' window equals 'False'
             Assert.AreEqual(this.Assert_Service_Picker_Dialog_Does_Not_ExistExpectedValues.ServicePickerDialogExists, servicePickerDialog.Exists, "Service picker dialog does exist");
         }
         
@@ -3029,10 +3029,10 @@ namespace Warewolf.Studio.UISpecs
         public void Assert_Service_Picker_Dialog_Exists()
         {
             #region Variable Declarations
-            WpfWindow servicePickerDialog = this.MainStudioWindow.ServicePickerDialog;
+            WpfWindow servicePickerDialog = this.ServicePickerDialog;
             #endregion
 
-            // Verify that the 'Exists' property of 'Wpf' window equals 'True'
+            // Verify that the 'Exists' property of 'ServicePickerDialog' window equals 'True'
             Assert.AreEqual(this.Assert_Service_Picker_Dialog_ExistsExpectedValues.ServicePickerDialogExists, servicePickerDialog.Exists, "Service picker dialog does not exist");
         }
         
@@ -3042,7 +3042,7 @@ namespace Warewolf.Studio.UISpecs
         public void Assert_Service_Picker_Filter_Textbox_Exists()
         {
             #region Variable Declarations
-            WpfEdit filterTextbox = this.MainStudioWindow.ServicePickerDialog.Explorer.FilterTextbox;
+            WpfEdit filterTextbox = this.ServicePickerDialog.Explorer.FilterTextbox;
             #endregion
 
             // Verify that the 'Exists' property of 'SearchTextBox' text box equals 'True'
@@ -3055,7 +3055,7 @@ namespace Warewolf.Studio.UISpecs
         public void Assert_Service_Picker_OK_Button_Enabled()
         {
             #region Variable Declarations
-            WpfButton ok = this.MainStudioWindow.ServicePickerDialog.OK;
+            WpfButton ok = this.ServicePickerDialog.OK;
             #endregion
 
             // Verify that the 'Enabled' property of 'OK' button equals 'True'
@@ -3068,7 +3068,7 @@ namespace Warewolf.Studio.UISpecs
         public void Assert_Service_Picker_OK_Button_Exists()
         {
             #region Variable Declarations
-            WpfButton ok = this.MainStudioWindow.ServicePickerDialog.OK;
+            WpfButton ok = this.ServicePickerDialog.OK;
             #endregion
 
             // Verify that the 'Exists' property of 'OK' button equals 'True'
@@ -3081,7 +3081,7 @@ namespace Warewolf.Studio.UISpecs
         public void Assert_Service_Picker_Refresh_Button_Exists()
         {
             #region Variable Declarations
-            WpfButton refresh = this.MainStudioWindow.ServicePickerDialog.Explorer.Refresh;
+            WpfButton refresh = this.ServicePickerDialog.Explorer.Refresh;
             #endregion
 
             // Verify that the 'Exists' property of '' button equals 'True'
@@ -4790,7 +4790,7 @@ namespace Warewolf.Studio.UISpecs
         public void Click_Service_Picker_Dialog_First_Service_In_Explorer()
         {
             #region Variable Declarations
-            WpfTreeItem subTreeItem1 = this.MainStudioWindow.ServicePickerDialog.Explorer.ExplorerTree.TreeItem1.SubTreeItem1;
+            WpfTreeItem subTreeItem1 = this.ServicePickerDialog.Explorer.ExplorerTree.TreeItem1.SubTreeItem1;
             #endregion
 
             // Click 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item
@@ -4803,7 +4803,7 @@ namespace Warewolf.Studio.UISpecs
         public void Click_Service_Picker_Dialog_OK()
         {
             #region Variable Declarations
-            WpfButton ok = this.MainStudioWindow.ServicePickerDialog.OK;
+            WpfButton ok = this.ServicePickerDialog.OK;
             #endregion
 
             // Click 'OK' button
@@ -5963,7 +5963,7 @@ namespace Warewolf.Studio.UISpecs
         public void Enter_RemoteServerUITestWorkflow_Into_Service_Picker_Dialog()
         {
             #region Variable Declarations
-            WpfEdit filterTextbox = this.MainStudioWindow.ServicePickerDialog.Explorer.FilterTextbox;
+            WpfEdit filterTextbox = this.ServicePickerDialog.Explorer.FilterTextbox;
             #endregion
 
             // Type 'RemoteServerUITestWorkflow' in 'SearchTextBox' text box
@@ -11979,6 +11979,18 @@ namespace Warewolf.Studio.UISpecs
                 return this.mSelectWindowsGroupDialog;
             }
         }
+        
+        public ServicePickerDialog ServicePickerDialog
+        {
+            get
+            {
+                if ((this.mServicePickerDialog == null))
+                {
+                    this.mServicePickerDialog = new ServicePickerDialog();
+                }
+                return this.mServicePickerDialog;
+            }
+        }
         #endregion
         
         #region Fields
@@ -12677,6 +12689,8 @@ namespace Warewolf.Studio.UISpecs
         private DecisionDialog mDecisionDialog;
         
         private SelectWindowsGroupDialog mSelectWindowsGroupDialog;
+        
+        private ServicePickerDialog mServicePickerDialog;
         #endregion
     }
     
@@ -16119,7 +16133,7 @@ namespace Warewolf.Studio.UISpecs
         
         #region Fields
         /// <summary>
-        /// Verify that the 'Exists' property of 'Wpf' window equals 'False'
+        /// Verify that the 'Exists' property of 'ServicePickerDialog' window equals 'False'
         /// </summary>
         public bool ServicePickerDialogExists = false;
         #endregion
@@ -16134,7 +16148,7 @@ namespace Warewolf.Studio.UISpecs
         
         #region Fields
         /// <summary>
-        /// Verify that the 'Exists' property of 'Wpf' window equals 'True'
+        /// Verify that the 'Exists' property of 'ServicePickerDialog' window equals 'True'
         /// </summary>
         public bool ServicePickerDialogExists = true;
         #endregion
@@ -17986,18 +18000,6 @@ namespace Warewolf.Studio.UISpecs
             }
         }
         
-        public ServicePickerDialog ServicePickerDialog
-        {
-            get
-            {
-                if ((this.mServicePickerDialog == null))
-                {
-                    this.mServicePickerDialog = new ServicePickerDialog(this);
-                }
-                return this.mServicePickerDialog;
-            }
-        }
-        
         public DebugInputDialog DebugInputDialog
         {
             get
@@ -18126,8 +18128,6 @@ namespace Warewolf.Studio.UISpecs
         private SideMenuBar mSideMenuBar;
         
         private DockManager mDockManager;
-        
-        private ServicePickerDialog mServicePickerDialog;
         
         private DebugInputDialog mDebugInputDialog;
         
@@ -38902,215 +38902,6 @@ namespace Warewolf.Studio.UISpecs
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class ServicePickerDialog : WpfWindow
-    {
-        
-        public ServicePickerDialog(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfWindow.PropertyNames.Name] = "Select A Service";
-            this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
-            this.SearchProperties[WpfWindow.PropertyNames.AutomationId] = "UI_SelectServiceWindow_AutoID";
-            this.WindowTitles.Add("Warewolf");
-            #endregion
-        }
-        
-        #region Properties
-        public Explorer1 Explorer
-        {
-            get
-            {
-                if ((this.mExplorer == null))
-                {
-                    this.mExplorer = new Explorer1(this);
-                }
-                return this.mExplorer;
-            }
-        }
-        
-        public WpfButton OK
-        {
-            get
-            {
-                if ((this.mOK == null))
-                {
-                    this.mOK = new WpfButton(this);
-                    #region Search Criteria
-                    this.mOK.SearchProperties[WpfButton.PropertyNames.AutomationId] = "UI_SelectServiceOKButton_AutoID";
-                    this.mOK.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
-                    #endregion
-                }
-                return this.mOK;
-            }
-        }
-        
-        public WpfButton Cancel
-        {
-            get
-            {
-                if ((this.mCancel == null))
-                {
-                    this.mCancel = new WpfButton(this);
-                    #region Search Criteria
-                    this.mCancel.SearchProperties[WpfButton.PropertyNames.AutomationId] = "UI_SelectServiceCancelButton_AutoID";
-                    this.mCancel.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mCancel;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private Explorer1 mExplorer;
-        
-        private WpfButton mOK;
-        
-        private WpfButton mCancel;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Explorer1 : WpfCustom
-    {
-        
-        public Explorer1(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ExplorerView";
-            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "ExplorerView";
-            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
-            #endregion
-        }
-        
-        #region Properties
-        public WpfEdit FilterTextbox
-        {
-            get
-            {
-                if ((this.mFilterTextbox == null))
-                {
-                    this.mFilterTextbox = new WpfEdit(this);
-                    #region Search Criteria
-                    this.mFilterTextbox.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "SearchTextBox";
-                    this.mFilterTextbox.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
-                    #endregion
-                }
-                return this.mFilterTextbox;
-            }
-        }
-        
-        public WpfButton Refresh
-        {
-            get
-            {
-                if ((this.mRefresh == null))
-                {
-                    this.mRefresh = new WpfButton(this);
-                    #region Search Criteria
-                    this.mRefresh.SearchProperties[WpfButton.PropertyNames.Name] = "";
-                    this.mRefresh.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
-                    #endregion
-                }
-                return this.mRefresh;
-            }
-        }
-        
-        public ExplorerTree1 ExplorerTree
-        {
-            get
-            {
-                if ((this.mExplorerTree == null))
-                {
-                    this.mExplorerTree = new ExplorerTree1(this);
-                }
-                return this.mExplorerTree;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfEdit mFilterTextbox;
-        
-        private WpfButton mRefresh;
-        
-        private ExplorerTree1 mExplorerTree;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class ExplorerTree1 : WpfTree
-    {
-        
-        public ExplorerTree1(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfTree.PropertyNames.AutomationId] = "ExplorerTree";
-            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
-            #endregion
-        }
-        
-        #region Properties
-        public TreeItem1 TreeItem1
-        {
-            get
-            {
-                if ((this.mTreeItem1 == null))
-                {
-                    this.mTreeItem1 = new TreeItem1(this);
-                }
-                return this.mTreeItem1;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private TreeItem1 mTreeItem1;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class TreeItem1 : WpfTreeItem
-    {
-        
-        public TreeItem1(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfTreeItem.PropertyNames.Name] = "Infragistics.Controls.Menus.XamDataTreeNodeDataContext";
-            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
-            #endregion
-        }
-        
-        #region Properties
-        public WpfTreeItem SubTreeItem1
-        {
-            get
-            {
-                if ((this.mSubTreeItem1 == null))
-                {
-                    this.mSubTreeItem1 = new WpfTreeItem(this);
-                    #region Search Criteria
-                    this.mSubTreeItem1.SearchProperties[WpfTreeItem.PropertyNames.Name] = "Infragistics.Controls.Menus.XamDataTreeNodeDataContext";
-                    this.mSubTreeItem1.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mSubTreeItem1.SearchConfigurations.Add(SearchConfiguration.DisambiguateChild);
-                    this.mSubTreeItem1.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
-                    #endregion
-                }
-                return this.mSubTreeItem1;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfTreeItem mSubTreeItem1;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class DebugInputDialog : WpfWindow
     {
         
@@ -39843,13 +39634,13 @@ namespace Warewolf.Studio.UISpecs
             }
         }
         
-        public ExplorerTree2 ExplorerTree
+        public ExplorerTree1 ExplorerTree
         {
             get
             {
                 if ((this.mExplorerTree == null))
                 {
-                    this.mExplorerTree = new ExplorerTree2(this);
+                    this.mExplorerTree = new ExplorerTree1(this);
                 }
                 return this.mExplorerTree;
             }
@@ -39861,15 +39652,15 @@ namespace Warewolf.Studio.UISpecs
         
         private WpfButton mRefreshButton;
         
-        private ExplorerTree2 mExplorerTree;
+        private ExplorerTree1 mExplorerTree;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class ExplorerTree2 : WpfTree
+    public class ExplorerTree1 : WpfTree
     {
         
-        public ExplorerTree2(UITestControl searchLimitContainer) : 
+        public ExplorerTree1(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -40062,6 +39853,214 @@ namespace Warewolf.Studio.UISpecs
         
         #region Fields
         private WinButton mOK;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class ServicePickerDialog : WpfWindow
+    {
+        
+        public ServicePickerDialog()
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfWindow.PropertyNames.Name] = "Select A Service";
+            this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
+            this.SearchProperties[WpfWindow.PropertyNames.AutomationId] = "UI_SelectServiceWindow_AutoID";
+            this.WindowTitles.Add("Warewolf");
+            #endregion
+        }
+        
+        #region Properties
+        public Explorer1 Explorer
+        {
+            get
+            {
+                if ((this.mExplorer == null))
+                {
+                    this.mExplorer = new Explorer1(this);
+                }
+                return this.mExplorer;
+            }
+        }
+        
+        public WpfButton OK
+        {
+            get
+            {
+                if ((this.mOK == null))
+                {
+                    this.mOK = new WpfButton(this);
+                    #region Search Criteria
+                    this.mOK.SearchProperties[WpfButton.PropertyNames.AutomationId] = "UI_SelectServiceOKButton_AutoID";
+                    this.mOK.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mOK;
+            }
+        }
+        
+        public WpfButton Cancel
+        {
+            get
+            {
+                if ((this.mCancel == null))
+                {
+                    this.mCancel = new WpfButton(this);
+                    #region Search Criteria
+                    this.mCancel.SearchProperties[WpfButton.PropertyNames.AutomationId] = "UI_SelectServiceCancelButton_AutoID";
+                    this.mCancel.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mCancel;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private Explorer1 mExplorer;
+        
+        private WpfButton mOK;
+        
+        private WpfButton mCancel;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Explorer1 : WpfCustom
+    {
+        
+        public Explorer1(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ExplorerView";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "ExplorerView";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfEdit FilterTextbox
+        {
+            get
+            {
+                if ((this.mFilterTextbox == null))
+                {
+                    this.mFilterTextbox = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mFilterTextbox.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "SearchTextBox";
+                    this.mFilterTextbox.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mFilterTextbox;
+            }
+        }
+        
+        public WpfButton Refresh
+        {
+            get
+            {
+                if ((this.mRefresh == null))
+                {
+                    this.mRefresh = new WpfButton(this);
+                    #region Search Criteria
+                    this.mRefresh.SearchProperties[WpfButton.PropertyNames.Name] = "";
+                    this.mRefresh.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mRefresh;
+            }
+        }
+        
+        public ExplorerTree2 ExplorerTree
+        {
+            get
+            {
+                if ((this.mExplorerTree == null))
+                {
+                    this.mExplorerTree = new ExplorerTree2(this);
+                }
+                return this.mExplorerTree;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfEdit mFilterTextbox;
+        
+        private WpfButton mRefresh;
+        
+        private ExplorerTree2 mExplorerTree;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class ExplorerTree2 : WpfTree
+    {
+        
+        public ExplorerTree2(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfTree.PropertyNames.AutomationId] = "ExplorerTree";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public TreeItem1 TreeItem1
+        {
+            get
+            {
+                if ((this.mTreeItem1 == null))
+                {
+                    this.mTreeItem1 = new TreeItem1(this);
+                }
+                return this.mTreeItem1;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private TreeItem1 mTreeItem1;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class TreeItem1 : WpfTreeItem
+    {
+        
+        public TreeItem1(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfTreeItem.PropertyNames.Name] = "Infragistics.Controls.Menus.XamDataTreeNodeDataContext";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfTreeItem SubTreeItem1
+        {
+            get
+            {
+                if ((this.mSubTreeItem1 == null))
+                {
+                    this.mSubTreeItem1 = new WpfTreeItem(this);
+                    #region Search Criteria
+                    this.mSubTreeItem1.SearchProperties[WpfTreeItem.PropertyNames.Name] = "Infragistics.Controls.Menus.XamDataTreeNodeDataContext";
+                    this.mSubTreeItem1.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mSubTreeItem1.SearchConfigurations.Add(SearchConfiguration.DisambiguateChild);
+                    this.mSubTreeItem1.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mSubTreeItem1;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfTreeItem mSubTreeItem1;
         #endregion
     }
 }
