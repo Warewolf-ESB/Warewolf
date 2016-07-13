@@ -4,6 +4,7 @@ using System.Linq;
 using Dev2.Common.Interfaces;
 using Dev2.Data;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+// ReSharper disable InconsistentNaming
 
 namespace Warewolf.Storage.Tests
 {

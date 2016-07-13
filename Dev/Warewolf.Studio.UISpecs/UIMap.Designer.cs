@@ -1299,7 +1299,46 @@ namespace Warewolf.Studio.UISpecs
             #endregion
 
             // Verify that the 'Exists' property of 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item equals 'True'
-            Assert.AreEqual(this.Assert_Explorer_Localhost_First_Item_ExistsExpectedValues.FirstItemExists, firstItem.Exists, "Server Name does not exist in the Explorer");
+            Assert.AreEqual(this.Assert_Explorer_Localhost_First_Item_ExistsExpectedValues.FirstItemExists, firstItem.Exists, "Explorer localhost does not contain any items.");
+        }
+        
+        /// <summary>
+        /// Assert_Explorer_Localhost_First_Item_Does_Not_Exist - Use 'Assert_Explorer_Localhost_First_Item_Does_Not_ExistExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void Assert_Explorer_Localhost_First_Item_Does_Not_Exist()
+        {
+            #region Variable Declarations
+            WpfTreeItem firstItem = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem;
+            #endregion
+
+            // Verify that the 'Exists' property of 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item equals 'False'
+            Assert.AreEqual(this.Assert_Explorer_Localhost_First_Item_Does_Not_ExistExpectedValues.FirstItemExists, firstItem.Exists, "Service does exist in explorer.");
+        }
+        
+        /// <summary>
+        /// Assert_Explorer_First_Remote_Server_First_Item_Exists - Use 'Assert_Explorer_First_Remote_Server_First_Item_ExistsExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void Assert_Explorer_First_Remote_Server_First_Item_Exists()
+        {
+            #region Variable Declarations
+            WpfTreeItem firstItem = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.FirstItem;
+            #endregion
+
+            // Verify that the 'Exists' property of 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item equals 'True'
+            Assert.AreEqual(this.Assert_Explorer_First_Remote_Server_First_Item_ExistsExpectedValues.FirstItemExists, firstItem.Exists, "Explorer first remote server does not contain any items.");
+        }
+        
+        /// <summary>
+        /// Assert_Explorer_First_Remote_Server_Exists - Use 'Assert_Explorer_First_Remote_Server_ExistsExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void Assert_Explorer_First_Remote_Server_Exists()
+        {
+            #region Variable Declarations
+            WpfTreeItem firstRemoteServer = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer;
+            #endregion
+
+            // Verify that the 'Exists' property of 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item equals 'True'
+            Assert.AreEqual(this.Assert_Explorer_First_Remote_Server_ExistsExpectedValues.FirstRemoteServerExists, firstRemoteServer.Exists, "No remote servers in explorer.");
         }
         
         /// <summary>
@@ -4866,6 +4905,32 @@ namespace Warewolf.Studio.UISpecs
         }
         
         /// <summary>
+        /// DoubleClick_Explorer_Localhost_First_Item
+        /// </summary>
+        public void DoubleClick_Explorer_Localhost_First_Item()
+        {
+            #region Variable Declarations
+            WpfTreeItem firstItem = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem;
+            #endregion
+
+            // Double-Click 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item
+            Mouse.DoubleClick(firstItem, new Point(63, 11));
+        }
+        
+        /// <summary>
+        /// DoubleClick_Explorer_First_Remote_Server_First_Item
+        /// </summary>
+        public void DoubleClick_Explorer_First_Remote_Server_First_Item()
+        {
+            #region Variable Declarations
+            WpfTreeItem firstItem = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.FirstItem;
+            #endregion
+
+            // Double-Click 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item
+            Mouse.DoubleClick(firstItem, new Point(63, 11));
+        }
+        
+        /// <summary>
         /// Drag_DotNet_DLL_Connector_Onto_DesignSurface
         /// </summary>
         public void Drag_DotNet_DLL_Connector_Onto_DesignSurface()
@@ -4879,6 +4944,38 @@ namespace Warewolf.Studio.UISpecs
             flowchart.EnsureClickable(new Point(308, 127));
             Mouse.StartDragging(dotNetDLLConnectorImage, new Point(16, 25));
             Mouse.StopDragging(flowchart, new Point(308, 127));
+        }
+        
+        /// <summary>
+        /// Drag_Explorer_Localhost_First_Item_Onto_Workflow_Design_Surface
+        /// </summary>
+        public void Drag_Explorer_Localhost_First_Item_Onto_Workflow_Design_Surface()
+        {
+            #region Variable Declarations
+            WpfTreeItem firstItem = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem;
+            WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
+            #endregion
+
+            // Move 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item to 'Flowchart' custom control
+            flowchart.EnsureClickable(new Point(307, 128));
+            Mouse.StartDragging(firstItem, new Point(16, 5));
+            Mouse.StopDragging(flowchart, new Point(307, 128));
+        }
+        
+        /// <summary>
+        /// Drag_Explorer_First_Remote_Server_First_Item_Onto_Workflow_Design_Surface
+        /// </summary>
+        public void Drag_Explorer_First_Remote_Server_First_Item_Onto_Workflow_Design_Surface()
+        {
+            #region Variable Declarations
+            WpfTreeItem firstItem = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.FirstItem;
+            WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
+            #endregion
+
+            // Move 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item to 'Flowchart' custom control
+            flowchart.EnsureClickable(new Point(307, 128));
+            Mouse.StartDragging(firstItem, new Point(16, 5));
+            Mouse.StopDragging(flowchart, new Point(307, 128));
         }
         
         /// <summary>
@@ -6702,12 +6799,25 @@ namespace Warewolf.Studio.UISpecs
         }
         
         /// <summary>
-        /// RightClick_Explorer_localhost_First_Item
+        /// RightClick_Explorer_Localhost_First_Item
         /// </summary>
-        public void RightClick_Explorer_localhost_First_Item()
+        public void RightClick_Explorer_Localhost_First_Item()
         {
             #region Variable Declarations
             WpfTreeItem firstItem = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem;
+            #endregion
+
+            // Right-Click 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item
+            Mouse.Click(firstItem, MouseButtons.Right, ModifierKeys.None, new Point(107, 9));
+        }
+        
+        /// <summary>
+        /// RightClick_Explorer_First_Remote_Server_First_Item
+        /// </summary>
+        public void RightClick_Explorer_First_Remote_Server_First_Item()
+        {
+            #region Variable Declarations
+            WpfTreeItem firstItem = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.FirstItem;
             #endregion
 
             // Right-Click 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item
@@ -8721,6 +8831,42 @@ namespace Warewolf.Studio.UISpecs
                     this.mAssert_Explorer_Localhost_First_Item_ExistsExpectedValues = new Assert_Explorer_Localhost_First_Item_ExistsExpectedValues();
                 }
                 return this.mAssert_Explorer_Localhost_First_Item_ExistsExpectedValues;
+            }
+        }
+        
+        public virtual Assert_Explorer_Localhost_First_Item_Does_Not_ExistExpectedValues Assert_Explorer_Localhost_First_Item_Does_Not_ExistExpectedValues
+        {
+            get
+            {
+                if ((this.mAssert_Explorer_Localhost_First_Item_Does_Not_ExistExpectedValues == null))
+                {
+                    this.mAssert_Explorer_Localhost_First_Item_Does_Not_ExistExpectedValues = new Assert_Explorer_Localhost_First_Item_Does_Not_ExistExpectedValues();
+                }
+                return this.mAssert_Explorer_Localhost_First_Item_Does_Not_ExistExpectedValues;
+            }
+        }
+        
+        public virtual Assert_Explorer_First_Remote_Server_First_Item_ExistsExpectedValues Assert_Explorer_First_Remote_Server_First_Item_ExistsExpectedValues
+        {
+            get
+            {
+                if ((this.mAssert_Explorer_First_Remote_Server_First_Item_ExistsExpectedValues == null))
+                {
+                    this.mAssert_Explorer_First_Remote_Server_First_Item_ExistsExpectedValues = new Assert_Explorer_First_Remote_Server_First_Item_ExistsExpectedValues();
+                }
+                return this.mAssert_Explorer_First_Remote_Server_First_Item_ExistsExpectedValues;
+            }
+        }
+        
+        public virtual Assert_Explorer_First_Remote_Server_ExistsExpectedValues Assert_Explorer_First_Remote_Server_ExistsExpectedValues
+        {
+            get
+            {
+                if ((this.mAssert_Explorer_First_Remote_Server_ExistsExpectedValues == null))
+                {
+                    this.mAssert_Explorer_First_Remote_Server_ExistsExpectedValues = new Assert_Explorer_First_Remote_Server_ExistsExpectedValues();
+                }
+                return this.mAssert_Explorer_First_Remote_Server_ExistsExpectedValues;
             }
         }
         
@@ -11788,6 +11934,12 @@ namespace Warewolf.Studio.UISpecs
         
         private Assert_Explorer_Localhost_First_Item_ExistsExpectedValues mAssert_Explorer_Localhost_First_Item_ExistsExpectedValues;
         
+        private Assert_Explorer_Localhost_First_Item_Does_Not_ExistExpectedValues mAssert_Explorer_Localhost_First_Item_Does_Not_ExistExpectedValues;
+        
+        private Assert_Explorer_First_Remote_Server_First_Item_ExistsExpectedValues mAssert_Explorer_First_Remote_Server_First_Item_ExistsExpectedValues;
+        
+        private Assert_Explorer_First_Remote_Server_ExistsExpectedValues mAssert_Explorer_First_Remote_Server_ExistsExpectedValues;
+        
         private Assert_Explorer_Remote_Server_DropdownList_Contains_NewRemoteServerExpectedValues mAssert_Explorer_Remote_Server_DropdownList_Contains_NewRemoteServerExpectedValues;
         
         private Assert_Explorer_Remote_Server_DropdownList_Contains_TSTCIREMOTEExpectedValues mAssert_Explorer_Remote_Server_DropdownList_Contains_TSTCIREMOTEExpectedValues;
@@ -13725,6 +13877,51 @@ namespace Warewolf.Studio.UISpecs
         /// Verify that the 'Exists' property of 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item equals 'True'
         /// </summary>
         public bool FirstItemExists = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Assert_Explorer_Localhost_First_Item_Does_Not_Exist'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Assert_Explorer_Localhost_First_Item_Does_Not_ExistExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item equals 'False'
+        /// </summary>
+        public bool FirstItemExists = false;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Assert_Explorer_First_Remote_Server_First_Item_Exists'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Assert_Explorer_First_Remote_Server_First_Item_ExistsExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item equals 'True'
+        /// </summary>
+        public bool FirstItemExists = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Assert_Explorer_First_Remote_Server_Exists'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Assert_Explorer_First_Remote_Server_ExistsExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item equals 'True'
+        /// </summary>
+        public bool FirstRemoteServerExists = true;
         #endregion
     }
     

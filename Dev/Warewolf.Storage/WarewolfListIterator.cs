@@ -26,7 +26,7 @@ namespace Warewolf.Storage
         public string FetchNextValue(int position)
         {
             var warewolfEvalResult = _variablesToIterateOn[position];
-            return warewolfEvalResult?.GetNextValue();
+            return warewolfEvalResult != null ? warewolfEvalResult.GetNextValue() : null;
         }
 
 
@@ -245,7 +245,7 @@ namespace Warewolf.Storage
         /// <param name="i">The index of the field to find. </param><exception cref="T:System.IndexOutOfRangeException">The index passed was outside the range of 0 through <see cref="P:System.Data.IDataRecord.FieldCount"/>. </exception>
         public Guid GetGuid(int i)
         {
-            return Guid.Parse( FetchNextValue(i));
+            return Guid.Parse(FetchNextValue(i));
         }
 
         /// <summary>
@@ -257,7 +257,7 @@ namespace Warewolf.Storage
         /// <param name="i">The index of the field to find. </param><exception cref="T:System.IndexOutOfRangeException">The index passed was outside the range of 0 through <see cref="P:System.Data.IDataRecord.FieldCount"/>. </exception>
         public short GetInt16(int i)
         {
-            return short.Parse( FetchNextValue(i));
+            return short.Parse(FetchNextValue(i));
         }
 
         /// <summary>
