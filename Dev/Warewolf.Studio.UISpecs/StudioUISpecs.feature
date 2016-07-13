@@ -3,81 +3,6 @@
 	As a workflow designer
 	I want to see the layout and function of workflows
 
-@NeedsBlankWorkflow
-Scenario: Variable List Exists
-	Then I "Assert_VariableList_Exists"
-	Then I "Assert_VariableList_DeleteButton_Exists"
-	Then I "Assert_VariableList_Recordset_ChildTextBox_Exists"
-	Then I "Assert_VariableList_RecordsetInput_CheckBox_Exists"
-	Then I "Assert_VariableList_RecordsetInput_ChildCheckBox_Exists"
-	Then I "Assert_VariableList_RecordsetItem_Exists"
-	Then I "Assert_VariableList_RecordsetOutput_CheckBox_Exists"
-	Then I "Assert_VariableList_RecordsetOutput_ChildCheckBox_Exists"
-	Then I "Assert_VariableList_RecordsetTextBox_Exists"
-	Then I "Assert_VariableList_SortButton_Exists"
-	Then I "Assert_VariableList_VariableInput_CheckBox_Exists"
-	Then I "Assert_VariableList_VariableItem_Exists"
-	Then I "Assert_VariableList_VariableOutput_CheckBox_Exists"
-	Then I "Assert_VariableList_VariableTextBox_Exists"
-	Then I "Assert_VariableList_DataInputTree_Exists"
-	
-Scenario: Toolbox Exists
-	Then I "Assert_Toolbox_FilterTextbox_Exists"
-	Then I "Assert_Toolbox_RefreshButton_Exists"
-
-Scenario: Explorer Exists
-	Then I "Assert_Explorer_Exists"
-	Then I "Assert_Explorer_ServerName_Exists"
-
-Scenario: Connect Control Exists
-	Then I "Assert_Connect_Control_Exists_InExplorer"
-	Then I "Assert_Connect_ConnectControl_Button_Exists_InExplorer"
-	Then I "Assert_Explorer_Edit_Connect_Control_Button_Exists"
-
-@ignore	
-Scenario: Settings Ribbon Button
-	Given I "Assert_Settings_Button_Exists_OnDesignSurface"
-	When I "Click_Settings_Ribbon_Button"
-	Then I "Assert_Settings_LoggingTab_Exists"
-	Then I "Assert_Settings_ResourcePermissions_Exists"
-	Then I "Assert_Settings_SecurityTab_Exists"
-	Then I "Assert_Settings_ServerPermissions_Exists"
-	
-#@NeedsNewSettingsTab
-#Scenario: Click Close Settings Tab Button
-	#Given I "Assert_Close_Settings_Tab_Button_Exists"
-	#When I "Click_Close_Settings_Tab_Button"
-	Then I "Assert_MessageBox_No_Button_Exists"
-
-#Scenario: Click MessageBox No
-	#Given I "Assert_Messagebox_No_Exists"
-	When I "Click_MessageBox_No"
-	#Then I "Assert_Tab_Closed"
-	
-Scenario: Deploy Ribbon Button
-	Given I "Assert_Deploy_Ribbon_Button_Exists"
-	When I "Click_Deploy_Ribbon_Button"
-	Then I "Assert_Source_Server_Name_Exists"
-	Then I "Assert_Refresh_Button_Source_Server_Exists"
-	Then I "Assert_Filter_Source_Server_Exists"
-	Then I "Assert_Connect_Control_DestinationServer_Exists"
-	Then I "Assert_Override_Count_Exists"
-	Then I "Assert_NewResource_Count_Exists"
-	Then I "Assert_Source_Server_Edit_Exists"
-	Then I "Assert_Connect_Button_Source_Server_Exists"
-	Then I "Assert_Edit_Button_Destination_Server_Exists"
-	Then I "Assert_Connect_button_Destination_Server_Exists"
-	Then I "Assert_Connect_Control_SourceServer_Exists"
-	Then I "Assert_ShowDependencies_Button_DestinationServer_Exists"
-	Then I "Assert_ServiceLabel_DestinationServer_Exists"
-	Then I "Assert_ServicesCount_Label_Exists"
-	Then I "Assert_SourceLabel_DestinationServer_Exists"
-	Then I "Assert_SourceCount_DestinationServer_Exists"
-	Then I "Assert_NewResource_Label_Exists"
-	Then I "Assert_Override_Label_DestinationServer_Exists"
-	Then I "Assert_DeployButton_DestinationServer_Exists"
-	Then I "Assert_SuccessMessage_Label_Exists"
-
 @ignore	
 Scenario: Knowledge Base Ribbon Button
 	Given I "Assert_Knowledge_Base_Exists_OnDesignSurface"
@@ -95,6 +20,7 @@ Scenario: Knowledge Base Ribbon Button
 	When I "Click_MessageBox_No"
 	#Then I "Assert_Tab_Closed"
 	
+@ignore
 Scenario: Lock Menu Ribbon Button
 	Given I "Assert_Lock_Button_Exists_OnDesignSurface"
 	When I "Click_Unlock_Ribbon_Button"
@@ -150,7 +76,8 @@ Scenario: New Web Connector Ribbon Button
 	#Given I "Assert_Messagebox_No_Exists"
 	When I "Click_MessageBox_No"
 	#Then I "Assert_Tab_Closed"
-	
+
+@ignore	
 Scenario: Scheduler Ribbon Button
 	Given I "Assert_Scheduler_Button_Exists_OnDesignSurface"
 	When I "Click_Scheduler_Ribbon_Button"
@@ -213,70 +140,6 @@ Scenario: Scheduler Ribbon Button
 	Then I "Assert_Scheduler_Usernamelabel_Exists"
 	Then I "Assert_Scheduler_WorkflowInput_Exists"
 	Then I "Assert_Scheduler_WorkflowLabel_Exists"
-	
-@NeedsBlankWorkflow
-Scenario: Debug Ribbon Button
-	When I "Click_Debug_Ribbon_Button"
-	Then I "Assert_DebugInput_Window_Exists"
-	Then I "Assert_DebugInput_CancelButton_Exists"
-	Then I "Assert_DebugInput_RememberCheckbox_Exists"
-	Then I "Assert_DebugInput_ViewInBrowser_Button_Exists"
-	Then I "Assert_DebugInput_DebugButton_Exists"
-	Then I "Assert_DebugInput_InputData_Window_Exists"
-	Then I "Assert_DebugInput_InputData_Field_Exists"
-	Then I "Assert_DebugInput_Xml_Tab_Exists"
-	Then I "Assert_DebugInput_Xml_Window_Exists"
-	Then I "Assert_DebugInput_Json_Tab_Exists"
-	Then I "Assert_DebugInput_Json_Window_Exists"
-		
-Scenario: Save Dialog
-	Given I "Assert_NewWorkFlow_RibbonButton_Exists"
-	When I "Click_New_Workflow_Ribbon_Button"
-	Then I "Assert_StartNode_Exists"
-	
-#@NeedsSaveDialog
-#Scenario: Click Save Ribbon Button
-	Given I "Assert_Save_Button_Exists_OnDesignSurface"
-	When I "Click_Save_Ribbon_Button"
-	Then I "Assert_SaveDialog_Exists"
-	Then I "Assert_SaveDialog_CancelButton_Exists"
-	Then I "Assert_SaveDialog_ErrorLabel_Exists"
-	Then I "Assert_SaveDialog_ExplorerTree_Exists"
-	Then I "Assert_SaveDialog_ExplorerTreeItem_Exists"
-	Then I "Assert_SaveDialog_ExplorerView_Exists"
-	Then I "Assert_SaveDialog_FilterTextbox_Exists"
-	Then I "Assert_SaveDialog_NameLabel_Exists"
-	Then I "Assert_SaveDialog_RefreshButton_Exists"
-	Then I "Assert_SaveDialog_SaveButton_Exists"
-	Then I "Assert_SaveDialog_ServiceName_Textbox_Exists"
-	Then I "Assert_SaveDialog_WorkspaceName_Exists"
-	
-#@NeedsSaveDialog
-#Scenario: Click Save Dialog Cancel Button
-	#Given I "Assert_Save_Dialog_Cancel_Button_Exists"
-	When I "Click_SaveDialog_CancelButton"
-	Then I "Assert_StartNode_Exists"
-	
-Scenario: Debug Output Window
-	Given I "DebugOutput_Exists"
-	Given I "DebugOutput_ExpandCollapseButton_Exists"
-	Given I "DebugOutput_FilterTextbox_Exists"
-	Given I "DebugOutput_ResultsTree_Exists"
-	Given I "DebugOutput_SettingsButton_Exists"
-	When I "Click_ExpandAndStepIn_NestedWorkflow"
-	#Then I "Assert_DebugOutput_Cell_Exists"
-	
-#@NeedsDebugOutput
-#Scenario: Click Cell Highlights Workflow OnDesignSurface
-	#Given I "Assert_DebugOutput_Cell_Exists"
-	When I "Click_Cell_Highlights_Workflow_OnDesignSurface"
-	#Then "Assert_Nested_Workflow_Name_Exists"
-	
-#@NeedsNestedWorkflowDebugOutput
-#Scenario: Click Nested Workflow Name Opens Nested Workflow Edit Tab
-	#Given I "Assert_Nested_Workflow_Name_Exists"
-	When I "Click_Nested_Workflow_Name"
-	#Then I "Assert_NestedWorkflow_Tab_Exists"
 	
 @NeedsBlankWorkflow
 Scenario: Dragging Database Connector Onto Design Surface Should not be droppable

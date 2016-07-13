@@ -7774,6 +7774,19 @@ namespace Warewolf.Studio.UISpecs
             addressEditBox.Text = this.Type_tstci_into_Server_Source_Wizard_Address_TextboxParams.AddressEditBoxText;
         }
         
+        /// <summary>
+        /// Assert_Explorer_Localhost_Icon_Exists - Use 'Assert_Explorer_Localhost_Icon_ExistsExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void Assert_Explorer_Localhost_Icon_Exists()
+        {
+            #region Variable Declarations
+            WpfButton uIItemButton = this.UIWarewolfDEV2ASHLEYLEWindow.UIUI_ExplorerControl_ACustom.UIExplorerTreeTree.UIInfragisticsControlsTreeItem.UICheckboxCheckBox.UIItemButton;
+            #endregion
+
+            // Verify that the 'Exists' property of first button next to 'Checkbox' check box equals 'True'
+            Assert.AreEqual(this.Assert_Explorer_Localhost_Icon_ExistsExpectedValues.UIItemButtonExists, uIItemButton.Exists, "Explorer localhost icon does not exist");
+        }
+        
         #region Properties
         public virtual AAAExpectedValues AAAExpectedValues
         {
@@ -11867,6 +11880,18 @@ namespace Warewolf.Studio.UISpecs
             }
         }
         
+        public virtual Assert_Explorer_Localhost_Icon_ExistsExpectedValues Assert_Explorer_Localhost_Icon_ExistsExpectedValues
+        {
+            get
+            {
+                if ((this.mAssert_Explorer_Localhost_Icon_ExistsExpectedValues == null))
+                {
+                    this.mAssert_Explorer_Localhost_Icon_ExistsExpectedValues = new Assert_Explorer_Localhost_Icon_ExistsExpectedValues();
+                }
+                return this.mAssert_Explorer_Localhost_Icon_ExistsExpectedValues;
+            }
+        }
+        
         public MainStudioWindow MainStudioWindow
         {
             get
@@ -11936,6 +11961,18 @@ namespace Warewolf.Studio.UISpecs
                     this.mSelectWindowsGroupDialog = new SelectWindowsGroupDialog();
                 }
                 return this.mSelectWindowsGroupDialog;
+            }
+        }
+        
+        public UIWarewolfDEV2ASHLEYLEWindow UIWarewolfDEV2ASHLEYLEWindow
+        {
+            get
+            {
+                if ((this.mUIWarewolfDEV2ASHLEYLEWindow == null))
+                {
+                    this.mUIWarewolfDEV2ASHLEYLEWindow = new UIWarewolfDEV2ASHLEYLEWindow();
+                }
+                return this.mUIWarewolfDEV2ASHLEYLEWindow;
             }
         }
         #endregion
@@ -12623,6 +12660,8 @@ namespace Warewolf.Studio.UISpecs
         
         private Type_tstci_into_Server_Source_Wizard_Address_TextboxParams mType_tstci_into_Server_Source_Wizard_Address_TextboxParams;
         
+        private Assert_Explorer_Localhost_Icon_ExistsExpectedValues mAssert_Explorer_Localhost_Icon_ExistsExpectedValues;
+        
         private MainStudioWindow mMainStudioWindow;
         
         private MessageBoxWindow mMessageBoxWindow;
@@ -12634,6 +12673,8 @@ namespace Warewolf.Studio.UISpecs
         private DecisionDialog mDecisionDialog;
         
         private SelectWindowsGroupDialog mSelectWindowsGroupDialog;
+        
+        private UIWarewolfDEV2ASHLEYLEWindow mUIWarewolfDEV2ASHLEYLEWindow;
         #endregion
     }
     
@@ -17759,6 +17800,21 @@ namespace Warewolf.Studio.UISpecs
         /// Type 'tst-ci-' in 'Text' text box
         /// </summary>
         public string AddressEditBoxText = "tst-ci-";
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Assert_Explorer_Localhost_Icon_Exists'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Assert_Explorer_Localhost_Icon_ExistsExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of first button next to 'Checkbox' check box equals 'True'
+        /// </summary>
+        public bool UIItemButtonExists = true;
         #endregion
     }
     
@@ -39767,6 +39823,173 @@ namespace Warewolf.Studio.UISpecs
         
         #region Fields
         private WinButton mOK;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIWarewolfDEV2ASHLEYLEWindow : WpfWindow
+    {
+        
+        public UIWarewolfDEV2ASHLEYLEWindow()
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfWindow.PropertyNames.Name] = "Warewolf (DEV2\\ASHLEY.LEWIS)";
+            this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public UIUI_ExplorerControl_ACustom UIUI_ExplorerControl_ACustom
+        {
+            get
+            {
+                if ((this.mUIUI_ExplorerControl_ACustom == null))
+                {
+                    this.mUIUI_ExplorerControl_ACustom = new UIUI_ExplorerControl_ACustom(this);
+                }
+                return this.mUIUI_ExplorerControl_ACustom;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIUI_ExplorerControl_ACustom mUIUI_ExplorerControl_ACustom;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIUI_ExplorerControl_ACustom : WpfCustom
+    {
+        
+        public UIUI_ExplorerControl_ACustom(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ExplorerView";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "UI_ExplorerControl_AutoID";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public UIExplorerTreeTree UIExplorerTreeTree
+        {
+            get
+            {
+                if ((this.mUIExplorerTreeTree == null))
+                {
+                    this.mUIExplorerTreeTree = new UIExplorerTreeTree(this);
+                }
+                return this.mUIExplorerTreeTree;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIExplorerTreeTree mUIExplorerTreeTree;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIExplorerTreeTree : WpfTree
+    {
+        
+        public UIExplorerTreeTree(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfTree.PropertyNames.AutomationId] = "ExplorerTree";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public UIInfragisticsControlsTreeItem UIInfragisticsControlsTreeItem
+        {
+            get
+            {
+                if ((this.mUIInfragisticsControlsTreeItem == null))
+                {
+                    this.mUIInfragisticsControlsTreeItem = new UIInfragisticsControlsTreeItem(this);
+                }
+                return this.mUIInfragisticsControlsTreeItem;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIInfragisticsControlsTreeItem mUIInfragisticsControlsTreeItem;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIInfragisticsControlsTreeItem : WpfTreeItem
+    {
+        
+        public UIInfragisticsControlsTreeItem(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfTreeItem.PropertyNames.Name] = "Infragistics.Controls.Menus.XamDataTreeNodeDataContext";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public UICheckboxCheckBox UICheckboxCheckBox
+        {
+            get
+            {
+                if ((this.mUICheckboxCheckBox == null))
+                {
+                    this.mUICheckboxCheckBox = new UICheckboxCheckBox(this);
+                }
+                return this.mUICheckboxCheckBox;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UICheckboxCheckBox mUICheckboxCheckBox;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UICheckboxCheckBox : WpfCheckBox
+    {
+        
+        public UICheckboxCheckBox(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "Checkbox";
+            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfButton UIItemButton
+        {
+            get
+            {
+                if ((this.mUIItemButton == null))
+                {
+                    this.mUIItemButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mUIItemButton.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mUIItemButton.SearchConfigurations.Add(SearchConfiguration.NextSibling);
+                    this.mUIItemButton.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mUIItemButton;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfButton mUIItemButton;
         #endregion
     }
 }
