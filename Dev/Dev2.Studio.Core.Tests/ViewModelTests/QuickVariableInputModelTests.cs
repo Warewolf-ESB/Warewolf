@@ -165,5 +165,140 @@ namespace Dev2.Core.Tests.ViewModelTests
             Assert.IsFalse(quickVariableInputViewModel.CanAdd);
             Assert.AreEqual(list.Count, quickVariableInputViewModel.SplitTypeList.Count);
         }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("QuickVariableInputViewModel_CancelCommand")]
+        public void QuickVariableInputViewModel_CancelCommand_ClearData_ShouldResetValues()
+        {
+            //------------Setup for test--------------------------
+            var quickVariableInputViewModel = new QuickVariableInputViewModel(new QuickVariableInputModel(ModelItemUtils.CreateModelItem(), null));
+
+            //------------Execute Test---------------------------
+            quickVariableInputViewModel.SplitType = "Space";
+            quickVariableInputViewModel.SplitToken = "-";
+
+            quickVariableInputViewModel.CancelCommand.Execute(null);
+            //------------Assert Results-------------------------
+            Assert.AreEqual("Chars", quickVariableInputViewModel.SplitType);
+            Assert.AreEqual("", quickVariableInputViewModel.SplitToken);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("QuickVariableInputViewModel_AddCommand")]
+        public void QuickVariableInputViewModel_AddCommand_WhenNoItems_ShouldReturnFalse()
+        {
+            //------------Setup for test--------------------------
+            var quickVariableInputViewModel = new QuickVariableInputViewModel(new QuickVariableInputModel(ModelItemUtils.CreateModelItem(), null));
+
+            //------------Execute Test---------------------------
+            quickVariableInputViewModel.SplitType = "Space";
+            quickVariableInputViewModel.SplitToken = "-";
+
+            quickVariableInputViewModel.AddCommand.Execute(null);
+            //------------Assert Results-------------------------
+            Assert.AreEqual("Space", quickVariableInputViewModel.SplitType);
+            Assert.AreEqual("-", quickVariableInputViewModel.SplitToken);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("QuickVariableInputViewModel_AddCommand")]
+        public void QuickVariableInputViewModel_AddCommand_IncorrectIndex_ShouldFail()
+        {
+            //------------Setup for test--------------------------
+            var quickVariableInputViewModel = new QuickVariableInputViewModel(new QuickVariableInputModel(ModelItemUtils.CreateModelItem(), null));
+
+            //------------Execute Test---------------------------
+            quickVariableInputViewModel.SplitType = "Index";
+            quickVariableInputViewModel.SplitToken = "T";
+            quickVariableInputViewModel.MakeDataListReady(new List<string> { "Test 1", "Test 4", "T e s t" });
+            
+            quickVariableInputViewModel.AddCommand.Execute(null);
+            //------------Assert Results-------------------------
+            Assert.AreEqual("Index", quickVariableInputViewModel.SplitType);
+            Assert.AreEqual("T", quickVariableInputViewModel.SplitToken);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("QuickVariableInputViewModel_AddCommand")]
+        public void QuickVariableInputViewModel_AddCommand_CorrectIndex_ShouldPass()
+        {
+            //------------Setup for test--------------------------
+            var quickVariableInputViewModel = new QuickVariableInputViewModel(new QuickVariableInputModel(ModelItemUtils.CreateModelItem(), null));
+
+            //------------Execute Test---------------------------
+            quickVariableInputViewModel.SplitType = "Index";
+            quickVariableInputViewModel.SplitToken = "0";
+            quickVariableInputViewModel.MakeDataListReady(new List<string> { "Test 1", "Test 4", "T e s t" });
+
+            quickVariableInputViewModel.AddCommand.Execute(null);
+            //------------Assert Results-------------------------
+            Assert.AreEqual("Index", quickVariableInputViewModel.SplitType);
+            Assert.AreEqual("0", quickVariableInputViewModel.SplitToken);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("QuickVariableInputViewModel_AddCommand")]
+        public void QuickVariableInputViewModel_AddCommand_Chars_ShouldPass()
+        {
+            //------------Setup for test--------------------------
+            var quickVariableInputViewModel = new QuickVariableInputViewModel(new QuickVariableInputModel(ModelItemUtils.CreateModelItem(), null));
+
+            //------------Execute Test---------------------------
+            quickVariableInputViewModel.SplitType = "Chars";
+            quickVariableInputViewModel.SplitToken = "";
+            quickVariableInputViewModel.MakeDataListReady(new List<string> { "Test 1", "Test 4", "T e s t" });
+
+            quickVariableInputViewModel.AddCommand.Execute(null);
+            //------------Assert Results-------------------------
+            Assert.AreEqual("Chars", quickVariableInputViewModel.SplitType);
+            Assert.AreEqual("", quickVariableInputViewModel.SplitToken);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("QuickVariableInputViewModel_AddCommand")]
+        public void QuickVariableInputViewModel_AddCommand_RecordSet_ShouldPass()
+        {
+            //------------Setup for test--------------------------
+            DsfCaseConvertActivity activity = new DsfCaseConvertActivity();
+            activity.ConvertCollection.Add(new CaseConvertTO("[[result1]]", "UPPER", "[[result1]]", 1));
+            activity.ConvertCollection.Add(new CaseConvertTO("[[result2]]", "UPPER", "[[result2]]", 2));
+            activity.ConvertCollection.Add(new CaseConvertTO("[[result3]]", "UPPER", "[[result3]]", 3));
+            QuickVariableInputModel model = new QuickVariableInputModel(TestModelItemFactory.CreateModelItem(activity), activity);
+            var quickVariableInputViewModel = new QuickVariableInputViewModel(model);
+
+            //------------Execute Test---------------------------
+            quickVariableInputViewModel.SplitType = "Chars";
+            quickVariableInputViewModel.SplitToken = "(";
+            quickVariableInputViewModel.MakeDataListReady(new List<string> { "rec().set", "Test 4", "T e s t" });
+            quickVariableInputViewModel.VariableListString = "rec().set";
+            quickVariableInputViewModel.Prefix = "rec().set";
+            quickVariableInputViewModel.AddCommand.Execute(null);
+            //------------Assert Results-------------------------
+            Assert.AreEqual("Chars", quickVariableInputViewModel.SplitType);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("QuickVariableInputViewModel_PreviewCommand")]
+        public void QuickVariableInputViewModel_PreviewCommand_WhenItemsHaveValues_ShouldResetValues()
+        {
+            //------------Setup for test--------------------------
+            var quickVariableInputViewModel = new QuickVariableInputViewModel(new QuickVariableInputModel(ModelItemUtils.CreateModelItem(), null));
+
+            //------------Execute Test---------------------------
+            quickVariableInputViewModel.SplitType = "Space";
+            quickVariableInputViewModel.SplitToken = "-";
+
+            quickVariableInputViewModel.PreviewCommand.Execute(null);
+            //------------Assert Results-------------------------
+            Assert.AreEqual("Space", quickVariableInputViewModel.SplitType);
+            Assert.AreEqual("-", quickVariableInputViewModel.SplitToken);
+        }
     }
 }

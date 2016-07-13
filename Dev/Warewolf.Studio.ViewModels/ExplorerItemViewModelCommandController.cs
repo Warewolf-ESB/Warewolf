@@ -4,6 +4,9 @@ using System.Windows;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Common.Interfaces.Versioning;
+using Dev2.Studio.Core.Interfaces;
+using Warewolf.Studio.Core.Popup;
+// ReSharper disable NonLocalizedString
 
 namespace Warewolf.Studio.ViewModels
 {
@@ -24,10 +27,21 @@ namespace Warewolf.Studio.ViewModels
             parent.ResourceName = output.DisplayName;
         }
 
-        internal void OpenCommand(Guid resourceId, IServer server)
+        internal void OpenCommand(ExplorerItemViewModel item, IServer server)
         {
-            SetActiveStates(_shellViewModel, server);
-            _shellViewModel.OpenResource(resourceId, server);
+            if (item.IsFolder)
+            {
+                item.IsExpanded = !item.IsExpanded;
+            }
+            else if (item.IsResourceVersion)
+            {
+                OpenVersionCommand(item.Parent.ResourceId,item.VersionInfo);
+            }
+            else
+            {
+                SetActiveStates(_shellViewModel, server);
+                _shellViewModel.OpenResource(item.ResourceId, server);
+            }                        
         }
 
         public void OpenVersionCommand(Guid resourceId, IVersionInfo versionInfo)
@@ -108,13 +122,46 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        public IDeletedFileMetadata DeleteCommand(Guid resourceId, Guid id, IExplorerTreeItem parent, IExplorerRepository explorerRepository, ExplorerItemViewModel explorerItemViewModel)
+        public void DeleteCommand(IEnvironmentModel environmentModel, IExplorerTreeItem parent, IExplorerRepository explorerRepository, ExplorerItemViewModel explorerItemViewModel, IPopupController popupController,IServer server)
         {
-            _shellViewModel.CloseResource(resourceId, id);
-            // Remove the item from the parent for studio change to show, then do the delete from the server.
-            parent?.RemoveChild(explorerItemViewModel);
-            //This Delete process is quite long and should happen after the studio change so that the user caqn continue without the studio hanging
-            return explorerRepository.Delete(explorerItemViewModel);
+            try
+            {
+                if (explorerItemViewModel.IsResourceVersion)
+                {
+                    DeleteVersionCommand(explorerRepository, explorerItemViewModel, parent, explorerItemViewModel.ResourceName);
+                }
+                else
+                {
+                    if (environmentModel != null && popupController.Show(PopupMessages.GetDeleteConfirmation(explorerItemViewModel.ResourceName)) == MessageBoxResult.Yes)
+                    {
+                        _shellViewModel.CloseResource(explorerItemViewModel.ResourceId, environmentModel.ID);
+                        // Remove the item from the parent for studio change to show, then do the delete from the server.
+                        parent?.RemoveChild(explorerItemViewModel);
+                        //This Delete process is quite long and should happen after the studio change so that the user caqn continue without the studio hanging
+                        var deletedFileMetadata = explorerRepository.Delete(explorerItemViewModel);
+                        if (deletedFileMetadata.IsDeleted)
+                        {
+                            if (explorerItemViewModel.ResourceType == @"ServerSource" || explorerItemViewModel.IsServer)
+                            {
+                                server.UpdateRepository.FireServerSaved();
+                            }
+                        }
+                        else
+                        {
+                            explorerItemViewModel.ResourceId = deletedFileMetadata.ResourceId;
+                            explorerItemViewModel.ShowDependencies();
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                // If the delete did not happen, we need to add the item back to the original state for studio changes to re-occur
+                parent?.AddChild(explorerItemViewModel);
+                explorerItemViewModel.ShowErrorMessage(ex.Message, @"Delete not allowed");
+            }
+
+            
         }
 
         internal void CreateFolderCommand(IExplorerRepository explorerRepository, string resourcePath, string name, Guid id)
@@ -128,7 +175,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 ResourceName = name,
                 ResourceId = id,
-                ResourceType = "Folder",
+                ResourceType = @"Folder",
                 AllowResourceCheck = explorerItem.AllowResourceCheck,
                 IsResourceChecked = explorerItem.IsResourceChecked,
                 CanCreateFolder = explorerItem.CanCreateFolder,

@@ -191,9 +191,9 @@ namespace Warewolf.Studio.ViewModels.Tests
             _target.ResourceType = "Version";
             _target.IsResourceVersion = true;
             _target.ResourceName = Guid.NewGuid().ToString();
+            _target.EnvironmentModel = new Mock<IEnvironmentModel>().Object;
             _explorerTreeItemMock.SetupGet(it => it.Children)
-                .Returns(new ObservableCollection<IExplorerItemViewModel>() { _target });
-            //if (_popupController.ShowDeleteVersionMessage(ResourceName) == MessageBoxResult.Yes)
+                .Returns(new ObservableCollection<IExplorerItemViewModel> { _target });
 
             _popupControllerMock.Setup(it => it.ShowDeleteVersionMessage(It.IsAny<string>())).Returns(MessageBoxResult.Yes);
 

@@ -1,5 +1,4 @@
-﻿using System;
-using Dev2.Common.Interfaces;
+﻿using Dev2.Common.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 // ReSharper disable InconsistentNaming
@@ -30,6 +29,9 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsNotNull(p.GetField("_queryManager"));
             Assert.IsNotNull(p.GetField("_shellViewModel"));
         }
+
+        
+
 
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
