@@ -152,6 +152,7 @@ namespace Warewolf.Studio.UISpecs
         /// <summary> PlaybackError event handler. </summary>
         private static void Playback_PlaybackError(object sender, PlaybackErrorEventArgs e)
         {
+            Console.WriteLine(e.Error.Message);
             (sender as UITestControl)?.DrawHighlight();
 
             // Wait a second
