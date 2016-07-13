@@ -189,6 +189,7 @@
     </CodeAnalysisDependentAssemblyPaths>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ESB\Control\EnvironmentOutputMappingManagerTests.cs" />
     <Compile Include="ESB\Control\EsbServicesEndpointTests.cs" />
     <Compile Include="ESB\Control\ServiceLocatorTests.cs" />
     <Compile Include="ESB\EsbServicesEndpointMock.cs" />

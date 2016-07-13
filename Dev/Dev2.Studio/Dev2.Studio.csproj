@@ -437,11 +437,6 @@
       <DependentUpon>ReportsViewerView.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Views\DropBox2016\DropBoxHelper.cs" />
-    <Compile Include="Views\DropBox2016\DropBoxSource.xaml.cs">
-      <DependentUpon>DropBoxSource.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\DropBox2016\IDropBoxHelper.cs" />
     <Compile Include="Views\Help\HelpView.xaml.cs">
       <DependentUpon>HelpView.xaml</DependentUpon>
     </Compile>
@@ -656,10 +651,6 @@
     <Page Include="Views\Dialogs\Dev2MessageBoxView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\DropBox2016\DropBoxSource.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\ImageWindow.xaml">
       <SubType>Designer</SubType>
@@ -982,9 +973,7 @@
       <Name>WarewolfParserInterop</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Views\Explorer\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Content Include="Help\PageMissing.htm">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
