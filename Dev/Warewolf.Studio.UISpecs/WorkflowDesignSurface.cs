@@ -83,7 +83,7 @@ namespace Warewolf.Studio.UISpecs
             Uimap.Enter_SomeWorkflow_Into_Explorer_Filter();
             Uimap.Assert_Explorer_Localhost_First_Item_Exists();
 
-            /**TODO: Re-introduce these units after bug is fixed
+            /**TODO: Re-introduce these units after bug WOLF-1923 is fixed
             //Action Unit: Clicking Debug Button Shows Debug Input Dialog
             //UIMap.Assert_MultiAssign_Exists_OnDesignSurface();
             //Uimap.Assert_Assign_Small_View_Row1_Variable_Textbox_Text_is_SomeVariable();
