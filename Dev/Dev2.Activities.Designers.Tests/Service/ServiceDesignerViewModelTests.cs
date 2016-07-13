@@ -61,8 +61,8 @@ namespace Dev2.Activities.Designers.Tests.Service
             var model = GenerateServiceDesignerViewModel(ExpectedName);
 
             //------------Assert Results-------------------------
-            Assert.AreEqual(1, model.DesignValidationErrors.Count);
-            var msg = model.DesignValidationErrors[0];
+            Assert.AreEqual(1, model.ValidationMemoManager.DesignValidationErrors.Count);
+            var msg = model.ValidationMemoManager.DesignValidationErrors[0];
             StringAssert.Contains("Service Working Normally", msg.Message);
             Assert.AreEqual(ErrorType.None, msg.ErrorType);
         }
@@ -156,7 +156,7 @@ namespace Dev2.Activities.Designers.Tests.Service
             Assert.IsNotNull(viewModel.ModelItem);
             Assert.IsNotNull(viewModel.MappingManager.DataMappingViewModel);
             Assert.IsNotNull(viewModel.FixErrorsCommand);
-            Assert.IsNotNull(viewModel.DesignValidationErrors);
+            Assert.IsNotNull(viewModel.ValidationMemoManager.DesignValidationErrors);
             Assert.IsNotNull(viewModel.RootModel);
             Assert.IsNull(viewModel.ResourceModel);
             Assert.IsNotNull(viewModel.ImageSource);
@@ -178,7 +178,7 @@ namespace Dev2.Activities.Designers.Tests.Service
             Assert.IsNotNull(viewModel.ModelItem);
             Assert.IsNotNull(viewModel.MappingManager.DataMappingViewModel);
             Assert.IsNotNull(viewModel.FixErrorsCommand);
-            Assert.IsNotNull(viewModel.DesignValidationErrors);
+            Assert.IsNotNull(viewModel.ValidationMemoManager.DesignValidationErrors);
             Assert.IsNotNull(viewModel.RootModel);
             Assert.IsNotNull(viewModel.ResourceModel);
             Assert.IsNotNull(viewModel.ImageSource);
@@ -283,8 +283,8 @@ namespace Dev2.Activities.Designers.Tests.Service
         {
             var model = CreateServiceDesignerViewModel(Guid.NewGuid());
 
-            Assert.AreEqual(1, model.DesignValidationErrors.Count);
-            Assert.AreSame(ServiceDesignerViewModel.NoError, model.DesignValidationErrors[0], model.DesignValidationErrors[0].Message);
+            Assert.AreEqual(1, model.ValidationMemoManager.DesignValidationErrors.Count);
+            Assert.AreSame(ValidationMemoManager.NoError, model.ValidationMemoManager.DesignValidationErrors[0], model.ValidationMemoManager.DesignValidationErrors[0].Message);
         }
 
         [TestMethod]
@@ -298,11 +298,11 @@ namespace Dev2.Activities.Designers.Tests.Service
 
             var model = CreateServiceDesignerViewModel(instanceID, error);
 
-            Assert.IsNotNull(model.LastValidationMemo);
-            Assert.AreEqual(instanceID, model.LastValidationMemo.InstanceID);
+            Assert.IsNotNull(model.ValidationMemoManager.LastValidationMemo);
+            Assert.AreEqual(instanceID, model.ValidationMemoManager.LastValidationMemo.InstanceID);
 
-            Assert.AreEqual(1, model.DesignValidationErrors.Count);
-            Assert.AreSame(error, model.DesignValidationErrors[0], model.DesignValidationErrors[0].Message);
+            Assert.AreEqual(1, model.ValidationMemoManager.DesignValidationErrors.Count);
+            Assert.AreSame(error, model.ValidationMemoManager.DesignValidationErrors[0], model.ValidationMemoManager.DesignValidationErrors[0].Message);
         }
 
         
@@ -322,7 +322,7 @@ namespace Dev2.Activities.Designers.Tests.Service
             var vm = CreateServiceDesignerViewModel(instanceID, error1, error2);
 
             Assert.IsTrue(vm.IsDeleted, "Constructor did not set IsDeleted to true when the resource model has any errors where the FixType is Delete.");
-            Assert.AreEqual(1, vm.LastValidationMemo.Errors.Count, "Constructor did not remove non delete errors.");
+            Assert.AreEqual(1, vm.ValidationMemoManager.LastValidationMemo.Errors.Count, "Constructor did not remove non delete errors.");
             Assert.IsTrue(vm.IsWorstErrorReadOnly, "Constructor did set IsWorstErrorReadOnly to true for Delete.");
             Assert.IsTrue(vm.IsFixed);
             Assert.IsFalse(vm.IsEditable, "Constructor did set IsEditable to false for Delete.");
@@ -345,7 +345,7 @@ namespace Dev2.Activities.Designers.Tests.Service
 
             //-----------------------------------------Assertions -----------------------------------------------------------------------------------------
             Assert.IsFalse(vm.IsDeleted, "Constructor did not set IsDeleted to true when the resource model has any errors where the FixType is Delete.");
-            Assert.AreEqual(0, vm.LastValidationMemo.Errors.Count, "Constructor has no errors.");
+            Assert.AreEqual(0, vm.ValidationMemoManager.LastValidationMemo.Errors.Count, "Constructor has no errors.");
             Assert.IsNotNull(vm.ResourceModel);
             Assert.AreEqual(rootModel.Object, resourceModel);
         }
@@ -365,7 +365,7 @@ namespace Dev2.Activities.Designers.Tests.Service
 
             //-----------------------------------------Assertions -----------------------------------------------------------------------------------------
             Assert.IsFalse(vm.IsDeleted, "Constructor did not set IsDeleted to true when the resource model has any errors where the FixType is Delete.");
-            Assert.AreEqual(0, vm.LastValidationMemo.Errors.Count, "Constructor has no errors.");
+            Assert.AreEqual(0, vm.ValidationMemoManager.LastValidationMemo.Errors.Count, "Constructor has no errors.");
             Assert.IsNotNull(vm.ResourceModel);
             Assert.AreEqual(rootModel.Object, resourceModel);
         }
@@ -412,9 +412,9 @@ namespace Dev2.Activities.Designers.Tests.Service
             //------------Execute Test---------------------------
             var model = CreateServiceDesignerViewModel(instanceID, false, new Mock<IEventAggregator>().Object, null, resourceModel);
             //------------Assert Results-------------------------
-            Assert.AreEqual(1, model.DesignValidationErrors.Count);
-            Assert.AreEqual(ErrorType.None, model.DesignValidationErrors[0].ErrorType);
-            Assert.AreEqual(FixType.None, model.DesignValidationErrors[0].FixType);
+            Assert.AreEqual(1, model.ValidationMemoManager.DesignValidationErrors.Count);
+            Assert.AreEqual(ErrorType.None, model.ValidationMemoManager.DesignValidationErrors[0].ErrorType);
+            Assert.AreEqual(FixType.None, model.ValidationMemoManager.DesignValidationErrors[0].FixType);
 
         }
 
@@ -439,8 +439,8 @@ namespace Dev2.Activities.Designers.Tests.Service
             //------------Execute Test---------------------------
             var model = CreateServiceDesignerViewModel(instanceID, false, new Mock<IEventAggregator>().Object, null, resourceModel);
             //------------Assert Results-------------------------
-            Assert.AreEqual(1, model.DesignValidationErrors.Count);
-            Assert.AreEqual(ErrorType.None, model.DesignValidationErrors[0].ErrorType);
+            Assert.AreEqual(1, model.ValidationMemoManager.DesignValidationErrors.Count);
+            Assert.AreEqual(ErrorType.None, model.ValidationMemoManager.DesignValidationErrors[0].ErrorType);
 
         }
 
@@ -661,8 +661,8 @@ namespace Dev2.Activities.Designers.Tests.Service
             outputMapping.Verify(p => p.SetValue(It.IsAny<object>()), Times.Exactly(4));
 
             // Always expect at least one error in the activity's error list - the no error
-            Assert.AreEqual(ErrorType.None, vm.WorstError, "Fix errors failed to clear the error.");
-            Assert.AreEqual(1, vm.DesignValidationErrors.Count, "Fix errors failed to remove the worst error from the activity.");
+            Assert.AreEqual(ErrorType.None, vm.ValidationMemoManager.WorstError, "Fix errors failed to clear the error.");
+            Assert.AreEqual(1, vm.ValidationMemoManager.DesignValidationErrors.Count, "Fix errors failed to remove the worst error from the activity.");
 
             Assert.AreEqual(0, vm.RootModel.Errors.Count, "Fix errors failed to remove the worst error from the activity's root model.");
             Assert.IsTrue(vm.IsWorstErrorReadOnly);
@@ -706,8 +706,8 @@ namespace Dev2.Activities.Designers.Tests.Service
             Assert.IsFalse(vm.IsFixed);
             Assert.AreEqual(3, vm.RootModel.Errors.Count);
             //-----------------------------Execute-----------------------------------------------------------------------------------------
-            vm.DesignValidationErrors.RemoveAt(2);
-            vm.DesignValidationErrors.RemoveAt(1);
+            vm.ValidationMemoManager.DesignValidationErrors.RemoveAt(2);
+            vm.ValidationMemoManager.DesignValidationErrors.RemoveAt(1);
             vm.FixErrorsCommand.Execute(null);
             Assert.IsTrue(vm.IsWorstErrorReadOnly);
             vm.DoneCompletedCommand.Execute(null);
@@ -757,7 +757,7 @@ namespace Dev2.Activities.Designers.Tests.Service
             vm.ShowLarge = false;
 
             Assert.IsFalse(vm.ShowLarge, "Fix errors failed to show the mapping.");
-            Assert.AreEqual(1, vm.DesignValidationErrors.Count, "Fix errors failed to remove the worst error from the activity.");
+            Assert.AreEqual(1, vm.ValidationMemoManager.DesignValidationErrors.Count, "Fix errors failed to remove the worst error from the activity.");
         }
 
         [TestMethod]
@@ -803,8 +803,8 @@ namespace Dev2.Activities.Designers.Tests.Service
             Assert.IsFalse(vm.ShowLarge, "Fix errors failed to show the mapping.");
 
             // Always expect at least one error in the activity's error list - the no error
-            Assert.AreEqual(ErrorType.None, vm.WorstError, "Fix errors failed to clear the error.");
-            Assert.AreEqual(1, vm.DesignValidationErrors.Count, "Fix errors failed to remove the worst error from the activity.");
+            Assert.AreEqual(ErrorType.None, vm.ValidationMemoManager.WorstError, "Fix errors failed to clear the error.");
+            Assert.AreEqual(1, vm.ValidationMemoManager.DesignValidationErrors.Count, "Fix errors failed to remove the worst error from the activity.");
 
             Assert.AreEqual(0, vm.RootModel.Errors.Count, "Fix errors failed to remove the worst error from the activity's root model.");
         }
@@ -843,8 +843,8 @@ namespace Dev2.Activities.Designers.Tests.Service
             Assert.IsFalse(vm.ShowLarge, "Fix errors failed to show the mapping.");
 
             // Always expect at least one error in the activity's error list - the no error
-            Assert.AreEqual(ErrorType.None, vm.WorstError, "Fix errors failed to clear the error.");
-            Assert.AreEqual(1, vm.DesignValidationErrors.Count, "Fix errors failed to remove the worst error from the activity.");
+            Assert.AreEqual(ErrorType.None, vm.ValidationMemoManager.WorstError, "Fix errors failed to clear the error.");
+            Assert.AreEqual(1, vm.ValidationMemoManager.DesignValidationErrors.Count, "Fix errors failed to remove the worst error from the activity.");
 
             Assert.AreEqual(0, vm.RootModel.Errors.Count, "Fix errors failed to remove the worst error from the activity's root model.");
         }
@@ -882,8 +882,8 @@ namespace Dev2.Activities.Designers.Tests.Service
             Assert.IsFalse(vm.ShowLarge, "Fix errors failed to show the mapping.");
 
             // Always expect at least one error in the activity's error list - the no error
-            Assert.AreEqual(ErrorType.None, vm.WorstError, "Fix errors failed to clear the error.");
-            Assert.AreEqual(1, vm.DesignValidationErrors.Count, "Fix errors failed to remove the worst error from the activity.");
+            Assert.AreEqual(ErrorType.None, vm.ValidationMemoManager.WorstError, "Fix errors failed to clear the error.");
+            Assert.AreEqual(1, vm.ValidationMemoManager.DesignValidationErrors.Count, "Fix errors failed to remove the worst error from the activity.");
 
             Assert.AreEqual(0, vm.RootModel.Errors.Count, "Fix errors failed to remove the worst error from the activity's root model.");
         }
@@ -1264,7 +1264,7 @@ namespace Dev2.Activities.Designers.Tests.Service
             environment.Raise(a => a.ResourcesLoaded += null, new ResourcesLoadedEventArgs { Model = environment.Object });
 
             //------------Assert Results-------------------------
-            Assert.IsTrue(viewModel.LastValidationMemo.Errors.First().Message.Contains("Incorrect Version. The remote workflow has changed.Please refresh"));
+            Assert.IsTrue(viewModel.ValidationMemoManager.LastValidationMemo.Errors.First().Message.Contains("Incorrect Version. The remote workflow has changed.Please refresh"));
 
         }
 
@@ -1364,9 +1364,9 @@ namespace Dev2.Activities.Designers.Tests.Service
             environment.Raise(a => a.ResourcesLoaded += null, new ResourcesLoadedEventArgs { Model = environment.Object });
 
             //------------Assert Results-------------------------
-            Assert.IsTrue(viewModel.LastValidationMemo.Errors.First().Message.Contains("Incorrect Version. The remote workflow has changed.Please refresh"));
+            Assert.IsTrue(viewModel.ValidationMemoManager.LastValidationMemo.Errors.First().Message.Contains("Incorrect Version. The remote workflow has changed.Please refresh"));
             viewModel.FixErrorsCommand.Execute(this);
-            Assert.IsTrue(viewModel.DesignValidationErrors.First().Message.Contains("Service Working Normally"));
+            Assert.IsTrue(viewModel.ValidationMemoManager.DesignValidationErrors.First().Message.Contains("Service Working Normally"));
         }
 
         [TestMethod]
@@ -1465,7 +1465,7 @@ namespace Dev2.Activities.Designers.Tests.Service
             environment.Raise(a => a.ResourcesLoaded += null, new ResourcesLoadedEventArgs { Model = environment.Object });
 
             //------------Assert Results-------------------------
-            Assert.IsTrue(viewModel.LastValidationMemo.Errors.First().Message.Contains("Incorrect Version. The remote workflow has changed.Please refresh"));
+            Assert.IsTrue(viewModel.ValidationMemoManager.LastValidationMemo.Errors.First().Message.Contains("Incorrect Version. The remote workflow has changed.Please refresh"));
 
         }
         [TestMethod]
@@ -1554,7 +1554,7 @@ namespace Dev2.Activities.Designers.Tests.Service
             environment.Raise(a => a.ResourcesLoaded += null, new ResourcesLoadedEventArgs { Model = environment.Object });
 
             //------------Assert Results-------------------------
-            Assert.IsTrue(viewModel.LastValidationMemo.Errors.Count == 0);
+            Assert.IsTrue(viewModel.ValidationMemoManager.LastValidationMemo.Errors.Count == 0);
 
         }
 
@@ -1667,7 +1667,7 @@ namespace Dev2.Activities.Designers.Tests.Service
 
             //------------Assert Results-------------------------
 
-            Assert.IsTrue(viewModel.LastValidationMemo.Errors.First().Message.Contains("Incorrect Version. The remote workflow has changed.Please refresh"));
+            Assert.IsTrue(viewModel.ValidationMemoManager.LastValidationMemo.Errors.First().Message.Contains("Incorrect Version. The remote workflow has changed.Please refresh"));
 
         }
 

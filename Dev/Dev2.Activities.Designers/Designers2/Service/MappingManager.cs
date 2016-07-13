@@ -24,19 +24,20 @@ namespace Dev2.Activities.Designers2.Service
         private readonly ServiceDesignerViewModel _serviceDesignerViewModel;
         private IWebActivityFactory _activityFactory;
         private IDataMappingViewModelFactory _mappingFactory;
+        bool _resourcesUpdated;
 
         internal MappingManager(ServiceDesignerViewModel serviceDesignerViewModel)
         {
             _serviceDesignerViewModel = serviceDesignerViewModel;
         }
 
-        public IDataMappingViewModel DataMappingViewModel { get; set; }
+        public IDataMappingViewModel DataMappingViewModel { get; private set; }
 
         
 
         public void UpdateMappings()
         {
-            if (!_serviceDesignerViewModel._resourcesUpdated)
+            if (!_resourcesUpdated)
             {
                 SetInputs();
                 SetOuputs();
@@ -46,13 +47,13 @@ namespace Dev2.Activities.Designers2.Service
 
         public IWebActivityFactory ActivityFactory
         {
-            get { return _activityFactory ?? new InstanceWebActivityFactory(); }
+            private get { return _activityFactory ?? new InstanceWebActivityFactory(); }
             set { _activityFactory = value; }
         }
 
         public IDataMappingViewModelFactory MappingFactory
         {
-            get { return _mappingFactory ?? new DataMappingViewModelFactory(); }
+            private get { return _mappingFactory ?? new DataMappingViewModelFactory(); }
             set { _mappingFactory = value; }
         }
 
@@ -79,7 +80,7 @@ namespace Dev2.Activities.Designers2.Service
             DataMappingViewModel = new DataMappingViewModel(webAct, OnMappingCollectionChanged);
         }
 
-        public void OnMappingCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        private void OnMappingCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             if (e.NewItems != null)
             {
@@ -113,12 +114,12 @@ namespace Dev2.Activities.Designers2.Service
 
         public void UpdateLastValidationMemo(DesignValidationMemo memo, bool checkSource = true)
         {
-            _serviceDesignerViewModel.LastValidationMemo = memo;
+            _serviceDesignerViewModel.ValidationMemoManager.LastValidationMemo = memo;
 
             CheckRequiredMappingChangedErrors(memo);
             CheckIsDeleted(memo);
 
-            _serviceDesignerViewModel.UpdateDesignValidationErrors(memo.Errors.Where(info => info.InstanceID == _serviceDesignerViewModel.UniqueID && info.ErrorType != ErrorType.None));
+            _serviceDesignerViewModel.ValidationMemoManager.UpdateDesignValidationErrors(memo.Errors.Where(info => info.InstanceID == _serviceDesignerViewModel.UniqueID && info.ErrorType != ErrorType.None));
             if (_serviceDesignerViewModel.SourceId == Guid.Empty)
             {
                 if (checkSource && _serviceDesignerViewModel.CheckSourceMissing())
@@ -159,7 +160,7 @@ namespace Dev2.Activities.Designers2.Service
                 {
                     var worstErrors = memo.Errors.Where(c => c.FixType == FixType.IsRequiredChanged && c.InstanceID == _serviceDesignerViewModel.UniqueID).ToList();
                     memo.Errors.RemoveAll(c => c.FixType == FixType.IsRequiredChanged && c.InstanceID == _serviceDesignerViewModel.UniqueID);
-                    _serviceDesignerViewModel.RemoveErrors(worstErrors);
+                    _serviceDesignerViewModel.ValidationMemoManager.RemoveErrors(worstErrors);
                 }
             }
         }
@@ -186,33 +187,33 @@ namespace Dev2.Activities.Designers2.Service
         {
             if (DataMappingViewModel != null && DataMappingViewModel.Inputs.Any(c => c.Required && String.IsNullOrEmpty(c.MapsTo)))
             {
-                if (_serviceDesignerViewModel.DesignValidationErrors.All(c => c.FixType != FixType.IsRequiredChanged))
+                if (_serviceDesignerViewModel.ValidationMemoManager.DesignValidationErrors.All(c => c.FixType != FixType.IsRequiredChanged))
                 {
-                    var listToRemove = _serviceDesignerViewModel.DesignValidationErrors.Where(c => c.FixType == FixType.None && c.ErrorType == ErrorType.None).ToList();
+                    var listToRemove = _serviceDesignerViewModel.ValidationMemoManager.DesignValidationErrors.Where(c => c.FixType == FixType.None && c.ErrorType == ErrorType.None).ToList();
 
                     foreach (var errorInfo in listToRemove)
                     {
-                        _serviceDesignerViewModel.DesignValidationErrors.Remove(errorInfo);
+                        _serviceDesignerViewModel.ValidationMemoManager.DesignValidationErrors.Remove(errorInfo);
                     }
 
                     var mappingIsRequiredMessage = CreateMappingIsRequiredMessage();
-                    _serviceDesignerViewModel.DesignValidationErrors.Add(mappingIsRequiredMessage);
+                    _serviceDesignerViewModel.ValidationMemoManager.DesignValidationErrors.Add(mappingIsRequiredMessage);
                     _serviceDesignerViewModel.RootModel.AddError(mappingIsRequiredMessage);
                 }
-                _serviceDesignerViewModel.UpdateWorstError();
+                _serviceDesignerViewModel.ValidationMemoManager.UpdateWorstError();
                 return;
             }
 
-            if (_serviceDesignerViewModel.DesignValidationErrors.Any(c => c.FixType == FixType.IsRequiredChanged))
+            if (_serviceDesignerViewModel.ValidationMemoManager.DesignValidationErrors.Any(c => c.FixType == FixType.IsRequiredChanged))
             {
-                var listToRemove = _serviceDesignerViewModel.DesignValidationErrors.Where(c => c.FixType == FixType.IsRequiredChanged).ToList();
+                var listToRemove = _serviceDesignerViewModel.ValidationMemoManager.DesignValidationErrors.Where(c => c.FixType == FixType.IsRequiredChanged).ToList();
 
                 foreach (var errorInfo in listToRemove)
                 {
-                    _serviceDesignerViewModel.DesignValidationErrors.Remove(errorInfo);
+                    _serviceDesignerViewModel.ValidationMemoManager.DesignValidationErrors.Remove(errorInfo);
                     _serviceDesignerViewModel.RootModel.RemoveError(errorInfo);
                 }
-                _serviceDesignerViewModel.UpdateWorstError();
+                _serviceDesignerViewModel.ValidationMemoManager.UpdateWorstError();
             }
         }
 
@@ -230,11 +231,11 @@ namespace Dev2.Activities.Designers2.Service
 
         public XElement FetchXElementFromFixData()
         {
-            if (!string.IsNullOrEmpty(_serviceDesignerViewModel.WorstDesignError?.FixData))
+            if (!string.IsNullOrEmpty(_serviceDesignerViewModel.ValidationMemoManager.WorstDesignError?.FixData))
             {
                 try
                 {
-                    return XElement.Parse(_serviceDesignerViewModel.WorstDesignError.FixData);
+                    return XElement.Parse(_serviceDesignerViewModel.ValidationMemoManager.WorstDesignError.FixData);
                 }
                 catch (Exception e)
                 {
@@ -295,20 +296,20 @@ namespace Dev2.Activities.Designers2.Service
 
         public void CheckVersions(ServiceDesignerViewModel serviceDesignerViewModel)
         {
-            if (serviceDesignerViewModel.LastValidationMemo != null && serviceDesignerViewModel.LastValidationMemo.Errors.Any(a => a.Message.Contains("This service will only execute when the server is online.")))
+            if (serviceDesignerViewModel.ValidationMemoManager.LastValidationMemo != null && serviceDesignerViewModel.ValidationMemoManager.LastValidationMemo.Errors.Any(a => a.Message.Contains("This service will only execute when the server is online.")))
             {
-                serviceDesignerViewModel.RemoveErrors(serviceDesignerViewModel.LastValidationMemo.Errors.Where(
+                serviceDesignerViewModel.ValidationMemoManager.RemoveErrors(serviceDesignerViewModel.ValidationMemoManager.LastValidationMemo.Errors.Where(
                     a => a.Message.Contains("This service will only execute when the server is online.")).ToList());
-                serviceDesignerViewModel.UpdateWorstError();
+                serviceDesignerViewModel.ValidationMemoManager.UpdateWorstError();
             }
             var webAct = ActivityFactory.CreateWebActivity(serviceDesignerViewModel.NewModel, serviceDesignerViewModel.NewModel, serviceDesignerViewModel.ServiceName);
             var newMapping = MappingFactory.CreateModel(webAct, OnMappingCollectionChanged);
             if (newMapping.GetInputString(DataMappingViewModel.Inputs) != DataMappingViewModel.GetInputString(DataMappingViewModel.Inputs) ||
                 newMapping.GetOutputString(DataMappingViewModel.Outputs) != DataMappingViewModel.GetOutputString(DataMappingViewModel.Outputs))
             {
-                serviceDesignerViewModel.UpdateLastValidationMemoWithVersionChanged();
-                serviceDesignerViewModel._resourcesUpdated = true;
-                serviceDesignerViewModel.VersionsDifferent = true;
+                serviceDesignerViewModel.ValidationMemoManager.UpdateLastValidationMemoWithVersionChanged();
+                _resourcesUpdated = true;
+                serviceDesignerViewModel.ValidationMemoManager.VersionsDifferent = true;
             }
         }
     }
