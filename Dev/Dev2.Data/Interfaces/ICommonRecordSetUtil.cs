@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using Dev2.Data.TO;
 using Dev2.DataList.Contract;
 
 namespace Dev2.Data.Interfaces
@@ -20,5 +22,10 @@ namespace Dev2.Data.Interfaces
         bool IsValueRecordset(string value);
         string ReplaceRecordsetIndexWithStar(string expression);
         string ReplaceRecordsetIndexWithBlank(string expression);
+        string RemoveRecordSetBraces(string search, ref bool isRs);
+        void ProcessRecordSetFields(ParseTO payload, bool addCompleteParts, IList<IIntellisenseResult> result, IDev2DataLanguageIntellisensePart t1);
+        void ProcessNonRecordsetFields(ParseTO payload, IList<IIntellisenseResult> result, IDev2DataLanguageIntellisensePart t1);
+        bool RecordsetMatch(ParseTO payload, bool addCompleteParts, IList<IIntellisenseResult> result, string rawSearch, string search, bool emptyOk, string[] parts, IDev2DataLanguageIntellisensePart t1);
+        void OpenRecordsetItem(ParseTO payload, IList<IIntellisenseResult> result, IDev2DataLanguageIntellisensePart t1);
     }
 }
