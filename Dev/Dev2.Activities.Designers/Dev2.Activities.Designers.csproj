@@ -764,6 +764,7 @@
     <Compile Include="Designers2\Service\Small.xaml.cs">
       <DependentUpon>Small.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Designers2\Service\ValidationMemoManager.cs" />
     <Compile Include="Designers2\SharePointCopyFile\Large.xaml.cs">
       <DependentUpon>Large.xaml</DependentUpon>
     </Compile>

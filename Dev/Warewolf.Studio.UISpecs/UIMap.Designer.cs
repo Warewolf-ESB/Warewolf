@@ -3236,6 +3236,20 @@ namespace Warewolf.Studio.UISpecs
         }
         
         /// <summary>
+        /// Assert_Settings_SecurityTab_Resource_Permissions_Row1_Execute_Checkbox_Is_Checked - Use 'Assert_Settings_SecurityTab_Resource_Permissions_Row1_Execute_Checkbox_Is_CheckedExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void Assert_Settings_SecurityTab_Resource_Permissions_Row1_Execute_Checkbox_Is_Checked()
+        {
+            #region Variable Declarations
+            WpfCheckBox executeCheckBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1.PermissionsCell.ExecuteCheckBox;
+            #endregion
+
+            // Verify that the 'Checked' property of 'UI__ExecutePermissionCheckBox_AutoID' check box equals 'True'
+            Assert.AreEqual(this.Assert_Settings_SecurityTab_Resource_Permissions_Row1_Execute_Checkbox_Is_CheckedExpectedValues.ExecuteCheckBoxChecked, executeCheckBox.Checked, "Settings security tab resource permissions row 1 execute checkbox is not checked." +
+                    "");
+        }
+        
+        /// <summary>
         /// Assert_Settings_SecurityTab_Resource_Permissions_Row1_Exists - Use 'Assert_Settings_SecurityTab_Resource_Permissions_Row1_ExistsExpectedValues' to pass parameters into this method.
         /// </summary>
         public void Assert_Settings_SecurityTab_Resource_Permissions_Row1_Exists()
@@ -3259,6 +3273,19 @@ namespace Warewolf.Studio.UISpecs
 
             // Verify that the 'Exists' property of 'UI__ViewPermissionCheckBox_AutoID' check box equals 'True'
             Assert.AreEqual(this.Assert_Settings_SecurityTab_Resource_Permissions_Row1_View_Checkbox_ExistsExpectedValues.ViewCheckBoxExists, viewCheckBox.Exists, "Settings security tab resource permissions row1 view checkbox does not exist.");
+        }
+        
+        /// <summary>
+        /// Assert_Settings_SecurityTab_Resource_Permissions_Row1_View_Checkbox_Is_Checked - Use 'Assert_Settings_SecurityTab_Resource_Permissions_Row1_View_Checkbox_Is_CheckedExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void Assert_Settings_SecurityTab_Resource_Permissions_Row1_View_Checkbox_Is_Checked()
+        {
+            #region Variable Declarations
+            WpfCheckBox viewCheckBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1.PermissionsCell.ViewCheckBox;
+            #endregion
+
+            // Verify that the 'Checked' property of 'UI__ViewPermissionCheckBox_AutoID' check box equals 'True'
+            Assert.AreEqual(this.Assert_Settings_SecurityTab_Resource_Permissions_Row1_View_Checkbox_Is_CheckedExpectedValues.ViewCheckBoxChecked, viewCheckBox.Checked, "Settings resource permissions row1 view checkbox is not checked.");
         }
         
         /// <summary>
@@ -7747,33 +7774,6 @@ namespace Warewolf.Studio.UISpecs
             addressEditBox.Text = this.Type_tstci_into_Server_Source_Wizard_Address_TextboxParams.AddressEditBoxText;
         }
         
-        /// <summary>
-        /// Assert_Settings_SecurityTab_Resource_Permissions_Row1_View_Checkbox_Is_Checked - Use 'Assert_Settings_SecurityTab_Resource_Permissions_Row1_View_Checkbox_Is_CheckedExpectedValues' to pass parameters into this method.
-        /// </summary>
-        public void Assert_Settings_SecurityTab_Resource_Permissions_Row1_View_Checkbox_Is_Checked()
-        {
-            #region Variable Declarations
-            WpfCheckBox viewCheckBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1.PermissionsCell.ViewCheckBox;
-            #endregion
-
-            // Verify that the 'Checked' property of 'UI__ViewPermissionCheckBox_AutoID' check box equals 'True'
-            Assert.AreEqual(this.Assert_Settings_SecurityTab_Resource_Permissions_Row1_View_Checkbox_Is_CheckedExpectedValues.ViewCheckBoxChecked, viewCheckBox.Checked, "Settings resource permissions row1 view checkbox is not checked.");
-        }
-        
-        /// <summary>
-        /// Assert_Settings_SecurityTab_Resource_Permissions_Row1_Execute_Checkbox_Is_Checked - Use 'Assert_Settings_SecurityTab_Resource_Permissions_Row1_Execute_Checkbox_Is_CheckedExpectedValues' to pass parameters into this method.
-        /// </summary>
-        public void Assert_Settings_SecurityTab_Resource_Permissions_Row1_Execute_Checkbox_Is_Checked()
-        {
-            #region Variable Declarations
-            WpfCheckBox executeCheckBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1.PermissionsCell.ExecuteCheckBox;
-            #endregion
-
-            // Verify that the 'Checked' property of 'UI__ExecutePermissionCheckBox_AutoID' check box equals 'True'
-            Assert.AreEqual(this.Assert_Settings_SecurityTab_Resource_Permissions_Row1_Execute_Checkbox_Is_CheckedExpectedValues.ExecuteCheckBoxChecked, executeCheckBox.Checked, "Settings security tab resource permissions row 1 execute checkbox is not checked." +
-                    "");
-        }
-        
         #region Properties
         public virtual AAAExpectedValues AAAExpectedValues
         {
@@ -10715,6 +10715,18 @@ namespace Warewolf.Studio.UISpecs
             }
         }
         
+        public virtual Assert_Settings_SecurityTab_Resource_Permissions_Row1_Execute_Checkbox_Is_CheckedExpectedValues Assert_Settings_SecurityTab_Resource_Permissions_Row1_Execute_Checkbox_Is_CheckedExpectedValues
+        {
+            get
+            {
+                if ((this.mAssert_Settings_SecurityTab_Resource_Permissions_Row1_Execute_Checkbox_Is_CheckedExpectedValues == null))
+                {
+                    this.mAssert_Settings_SecurityTab_Resource_Permissions_Row1_Execute_Checkbox_Is_CheckedExpectedValues = new Assert_Settings_SecurityTab_Resource_Permissions_Row1_Execute_Checkbox_Is_CheckedExpectedValues();
+                }
+                return this.mAssert_Settings_SecurityTab_Resource_Permissions_Row1_Execute_Checkbox_Is_CheckedExpectedValues;
+            }
+        }
+        
         public virtual Assert_Settings_SecurityTab_Resource_Permissions_Row1_ExistsExpectedValues Assert_Settings_SecurityTab_Resource_Permissions_Row1_ExistsExpectedValues
         {
             get
@@ -10736,6 +10748,18 @@ namespace Warewolf.Studio.UISpecs
                     this.mAssert_Settings_SecurityTab_Resource_Permissions_Row1_View_Checkbox_ExistsExpectedValues = new Assert_Settings_SecurityTab_Resource_Permissions_Row1_View_Checkbox_ExistsExpectedValues();
                 }
                 return this.mAssert_Settings_SecurityTab_Resource_Permissions_Row1_View_Checkbox_ExistsExpectedValues;
+            }
+        }
+        
+        public virtual Assert_Settings_SecurityTab_Resource_Permissions_Row1_View_Checkbox_Is_CheckedExpectedValues Assert_Settings_SecurityTab_Resource_Permissions_Row1_View_Checkbox_Is_CheckedExpectedValues
+        {
+            get
+            {
+                if ((this.mAssert_Settings_SecurityTab_Resource_Permissions_Row1_View_Checkbox_Is_CheckedExpectedValues == null))
+                {
+                    this.mAssert_Settings_SecurityTab_Resource_Permissions_Row1_View_Checkbox_Is_CheckedExpectedValues = new Assert_Settings_SecurityTab_Resource_Permissions_Row1_View_Checkbox_Is_CheckedExpectedValues();
+                }
+                return this.mAssert_Settings_SecurityTab_Resource_Permissions_Row1_View_Checkbox_Is_CheckedExpectedValues;
             }
         }
         
@@ -11843,30 +11867,6 @@ namespace Warewolf.Studio.UISpecs
             }
         }
         
-        public virtual Assert_Settings_SecurityTab_Resource_Permissions_Row1_View_Checkbox_Is_CheckedExpectedValues Assert_Settings_SecurityTab_Resource_Permissions_Row1_View_Checkbox_Is_CheckedExpectedValues
-        {
-            get
-            {
-                if ((this.mAssert_Settings_SecurityTab_Resource_Permissions_Row1_View_Checkbox_Is_CheckedExpectedValues == null))
-                {
-                    this.mAssert_Settings_SecurityTab_Resource_Permissions_Row1_View_Checkbox_Is_CheckedExpectedValues = new Assert_Settings_SecurityTab_Resource_Permissions_Row1_View_Checkbox_Is_CheckedExpectedValues();
-                }
-                return this.mAssert_Settings_SecurityTab_Resource_Permissions_Row1_View_Checkbox_Is_CheckedExpectedValues;
-            }
-        }
-        
-        public virtual Assert_Settings_SecurityTab_Resource_Permissions_Row1_Execute_Checkbox_Is_CheckedExpectedValues Assert_Settings_SecurityTab_Resource_Permissions_Row1_Execute_Checkbox_Is_CheckedExpectedValues
-        {
-            get
-            {
-                if ((this.mAssert_Settings_SecurityTab_Resource_Permissions_Row1_Execute_Checkbox_Is_CheckedExpectedValues == null))
-                {
-                    this.mAssert_Settings_SecurityTab_Resource_Permissions_Row1_Execute_Checkbox_Is_CheckedExpectedValues = new Assert_Settings_SecurityTab_Resource_Permissions_Row1_Execute_Checkbox_Is_CheckedExpectedValues();
-                }
-                return this.mAssert_Settings_SecurityTab_Resource_Permissions_Row1_Execute_Checkbox_Is_CheckedExpectedValues;
-            }
-        }
-        
         public MainStudioWindow MainStudioWindow
         {
             get
@@ -12431,9 +12431,13 @@ namespace Warewolf.Studio.UISpecs
         
         private Assert_Settings_SecurityTab_Resource_Permissions_Row1_Execute_Checkbox_ExistsExpectedValues mAssert_Settings_SecurityTab_Resource_Permissions_Row1_Execute_Checkbox_ExistsExpectedValues;
         
+        private Assert_Settings_SecurityTab_Resource_Permissions_Row1_Execute_Checkbox_Is_CheckedExpectedValues mAssert_Settings_SecurityTab_Resource_Permissions_Row1_Execute_Checkbox_Is_CheckedExpectedValues;
+        
         private Assert_Settings_SecurityTab_Resource_Permissions_Row1_ExistsExpectedValues mAssert_Settings_SecurityTab_Resource_Permissions_Row1_ExistsExpectedValues;
         
         private Assert_Settings_SecurityTab_Resource_Permissions_Row1_View_Checkbox_ExistsExpectedValues mAssert_Settings_SecurityTab_Resource_Permissions_Row1_View_Checkbox_ExistsExpectedValues;
+        
+        private Assert_Settings_SecurityTab_Resource_Permissions_Row1_View_Checkbox_Is_CheckedExpectedValues mAssert_Settings_SecurityTab_Resource_Permissions_Row1_View_Checkbox_Is_CheckedExpectedValues;
         
         private Assert_Settings_ServerPermissions_ExistsExpectedValues mAssert_Settings_ServerPermissions_ExistsExpectedValues;
         
@@ -12618,10 +12622,6 @@ namespace Warewolf.Studio.UISpecs
         private Type_S_Into_DebugInput_Row1_InputDataParams mType_S_Into_DebugInput_Row1_InputDataParams;
         
         private Type_tstci_into_Server_Source_Wizard_Address_TextboxParams mType_tstci_into_Server_Source_Wizard_Address_TextboxParams;
-        
-        private Assert_Settings_SecurityTab_Resource_Permissions_Row1_View_Checkbox_Is_CheckedExpectedValues mAssert_Settings_SecurityTab_Resource_Permissions_Row1_View_Checkbox_Is_CheckedExpectedValues;
-        
-        private Assert_Settings_SecurityTab_Resource_Permissions_Row1_Execute_Checkbox_Is_CheckedExpectedValues mAssert_Settings_SecurityTab_Resource_Permissions_Row1_Execute_Checkbox_Is_CheckedExpectedValues;
         
         private MainStudioWindow mMainStudioWindow;
         
@@ -16323,6 +16323,21 @@ namespace Warewolf.Studio.UISpecs
     }
     
     /// <summary>
+    /// Parameters to be passed into 'Assert_Settings_SecurityTab_Resource_Permissions_Row1_Execute_Checkbox_Is_Checked'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Assert_Settings_SecurityTab_Resource_Permissions_Row1_Execute_Checkbox_Is_CheckedExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Checked' property of 'UI__ExecutePermissionCheckBox_AutoID' check box equals 'True'
+        /// </summary>
+        public bool ExecuteCheckBoxChecked = true;
+        #endregion
+    }
+    
+    /// <summary>
     /// Parameters to be passed into 'Assert_Settings_SecurityTab_Resource_Permissions_Row1_Exists'
     /// </summary>
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
@@ -16349,6 +16364,21 @@ namespace Warewolf.Studio.UISpecs
         /// Verify that the 'Exists' property of 'UI__ViewPermissionCheckBox_AutoID' check box equals 'True'
         /// </summary>
         public bool ViewCheckBoxExists = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Assert_Settings_SecurityTab_Resource_Permissions_Row1_View_Checkbox_Is_Checked'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Assert_Settings_SecurityTab_Resource_Permissions_Row1_View_Checkbox_Is_CheckedExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Checked' property of 'UI__ViewPermissionCheckBox_AutoID' check box equals 'True'
+        /// </summary>
+        public bool ViewCheckBoxChecked = true;
         #endregion
     }
     
@@ -17729,36 +17759,6 @@ namespace Warewolf.Studio.UISpecs
         /// Type 'tst-ci-' in 'Text' text box
         /// </summary>
         public string AddressEditBoxText = "tst-ci-";
-        #endregion
-    }
-    
-    /// <summary>
-    /// Parameters to be passed into 'Assert_Settings_SecurityTab_Resource_Permissions_Row1_View_Checkbox_Is_Checked'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Assert_Settings_SecurityTab_Resource_Permissions_Row1_View_Checkbox_Is_CheckedExpectedValues
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Verify that the 'Checked' property of 'UI__ViewPermissionCheckBox_AutoID' check box equals 'True'
-        /// </summary>
-        public bool ViewCheckBoxChecked = true;
-        #endregion
-    }
-    
-    /// <summary>
-    /// Parameters to be passed into 'Assert_Settings_SecurityTab_Resource_Permissions_Row1_Execute_Checkbox_Is_Checked'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Assert_Settings_SecurityTab_Resource_Permissions_Row1_Execute_Checkbox_Is_CheckedExpectedValues
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Verify that the 'Checked' property of 'UI__ExecutePermissionCheckBox_AutoID' check box equals 'True'
-        /// </summary>
-        public bool ExecuteCheckBoxChecked = true;
         #endregion
     }
     
@@ -19779,9 +19779,10 @@ namespace Warewolf.Studio.UISpecs
                     this.mFirstItem = new WpfTreeItem(this);
                     #region Search Criteria
                     this.mFirstItem.SearchProperties[WpfTreeItem.PropertyNames.Name] = "Infragistics.Controls.Menus.XamDataTreeNodeDataContext";
-                    this.mFirstItem.SearchProperties[WpfTreeItem.PropertyNames.Instance] = "1";
+                    this.mFirstItem.SearchProperties[WpfTreeItem.PropertyNames.Instance] = "2";
                     this.mFirstItem.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
                     this.mFirstItem.SearchConfigurations.Add(SearchConfiguration.DisambiguateChild);
+                    this.mFirstItem.SearchConfigurations.Add(SearchConfiguration.AlwaysSearch);
                     this.mFirstItem.WindowTitles.Add("Warewolf");
                     #endregion
                 }
@@ -19819,7 +19820,7 @@ namespace Warewolf.Studio.UISpecs
                     this.mFirstItem = new WpfTreeItem(this);
                     #region Search Criteria
                     this.mFirstItem.SearchProperties[WpfTreeItem.PropertyNames.Name] = "Infragistics.Controls.Menus.XamDataTreeNodeDataContext";
-                    this.mFirstItem.SearchProperties[WpfTreeItem.PropertyNames.Instance] = "1";
+                    this.mFirstItem.SearchProperties[WpfTreeItem.PropertyNames.Instance] = "2";
                     this.mFirstItem.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
                     this.mFirstItem.SearchConfigurations.Add(SearchConfiguration.DisambiguateChild);
                     this.mFirstItem.WindowTitles.Add("Warewolf");
