@@ -23,7 +23,6 @@ using Dev2.Collections;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.Common.Interfaces.Threading;
-using Dev2.Communication;
 using Dev2.DataList.Contract;
 using Dev2.Network;
 using Dev2.Providers.Errors;
@@ -155,7 +154,7 @@ namespace Dev2.Activities.Designers.Tests.Service
 
             //------------Assert Results-------------------------
             Assert.IsNotNull(viewModel.ModelItem);
-            Assert.IsNotNull(viewModel.DataMappingViewModel);
+            Assert.IsNotNull(viewModel.MappingManager.DataMappingViewModel);
             Assert.IsNotNull(viewModel.FixErrorsCommand);
             Assert.IsNotNull(viewModel.DesignValidationErrors);
             Assert.IsNotNull(viewModel.RootModel);
@@ -177,7 +176,7 @@ namespace Dev2.Activities.Designers.Tests.Service
 
             //------------Assert Results-------------------------
             Assert.IsNotNull(viewModel.ModelItem);
-            Assert.IsNotNull(viewModel.DataMappingViewModel);
+            Assert.IsNotNull(viewModel.MappingManager.DataMappingViewModel);
             Assert.IsNotNull(viewModel.FixErrorsCommand);
             Assert.IsNotNull(viewModel.DesignValidationErrors);
             Assert.IsNotNull(viewModel.RootModel);
@@ -306,17 +305,7 @@ namespace Dev2.Activities.Designers.Tests.Service
             Assert.AreSame(error, model.DesignValidationErrors[0], model.DesignValidationErrors[0].Message);
         }
 
-        [TestMethod]
-        [TestCategory("ServiceDesignerViewModel_Constructor")]
-        [Description("ServiceDesignerViewModel constructor with any args must create subscription to connection server events.")]
-        [Owner("Trevor Williams-Ros")]
-        public void ServiceDesignerViewModel_Constructor_AnyArgs_CreatesServerEventsSubscription()
-        {
-            var model = CreateServiceDesignerViewModel(Guid.NewGuid());
-            model.OnDesignValidationReceived += (sender, memo) => Assert.IsTrue(true);
-
-            model.ResourceModel.Environment.Connection.ServerEvents.Publish(new DesignValidationMemo());
-        }
+        
 
         [TestMethod]
         [TestCategory("ServiceDesignerViewModel_Constructor")]
@@ -398,55 +387,8 @@ namespace Dev2.Activities.Designers.Tests.Service
 
         #region Design Validation Service
 
-        [TestMethod]
-        [TestCategory("ServiceDesignerViewModel_DesignValidationService")]
-        [Description("Published design validation memo with errors must be added to the errors list.")]
-        [Owner("Trevor Williams-Ros")]
-        public void ServiceDesignerViewModel_DesignValidation_ServicePublishingErrors_UpdatesErrors()
-        {
-            var instanceID = Guid.NewGuid();
-            var model = CreateServiceDesignerViewModel(instanceID);
+       
 
-            var memo = new DesignValidationMemo { InstanceID = instanceID };
-            memo.Errors.Add(new ErrorInfo { ErrorType = ErrorType.Critical, Message = "Critical error.", InstanceID = instanceID });
-            memo.Errors.Add(new ErrorInfo { ErrorType = ErrorType.Warning, Message = "Warning error.", InstanceID = instanceID });
-
-            model.OnDesignValidationReceived += (s, m) =>
-            {
-                Assert.AreEqual(m.Errors.Count, model.DesignValidationErrors.Count);
-                Assert.AreEqual(ErrorType.Critical, model.WorstError);
-
-                foreach (var error in m.Errors)
-                {
-                    IErrorInfo currentError = error;
-                    var modelError = model.DesignValidationErrors.FirstOrDefault(me => me.ErrorType == currentError.ErrorType && me.Message == currentError.Message);
-                    Assert.AreSame(error, modelError);
-                }
-                Assert.AreEqual(m.Errors.Count, model.DesignValidationErrors.Count);
-            };
-
-            model.RootModel.Environment.Connection.ServerEvents.Publish(memo);
-        }
-
-        [TestMethod]
-        [TestCategory("ServiceDesignerViewModel_DesignValidationService")]
-        [Description("Published design validation memo without errors must not be added to the errors list.")]
-        [Owner("Trevor Williams-Ros")]
-        public void ServiceDesignerViewModel_DesignValidation_ServicePublishingNoErrors_UpdatesErrorsWithNoError()
-        {
-            var instanceID = Guid.NewGuid();
-            var model = CreateServiceDesignerViewModel(instanceID);
-
-            var memo = new DesignValidationMemo { InstanceID = instanceID };
-
-            model.OnDesignValidationReceived += (s, m) =>
-            {
-                Assert.AreEqual(1, model.DesignValidationErrors.Count);
-                Assert.AreSame(ServiceDesignerViewModel.NoError, model.DesignValidationErrors[0]);
-            };
-
-            model.RootModel.Environment.Connection.ServerEvents.Publish(memo);
-        }
 
         #endregion
 
@@ -586,8 +528,8 @@ namespace Dev2.Activities.Designers.Tests.Service
             var vm = CreateServiceDesignerViewModel(instanceID, new[] { inputMapping.Object, outputMapping.Object }, worstError);
             vm.FixErrorsCommand.Execute(null);
 
-            var actualInputs = vm.DataMappingViewModel.Inputs;
-            var actualOutputs = vm.DataMappingViewModel.Outputs;
+            var actualInputs = vm.MappingManager.DataMappingViewModel.Inputs;
+            var actualOutputs = vm.MappingManager.DataMappingViewModel.Outputs;
 
 
             //------------Assert Results-------------------------
@@ -627,8 +569,8 @@ namespace Dev2.Activities.Designers.Tests.Service
             var vm = CreateServiceDesignerViewModel(instanceID, new[] { inputMapping.Object, outputMapping.Object }, worstError);
             vm.FixErrorsCommand.Execute(null);
 
-            var actualInputs = vm.DataMappingViewModel.Inputs;
-            var actualOutputs = vm.DataMappingViewModel.Outputs;
+            var actualInputs = vm.MappingManager.DataMappingViewModel.Inputs;
+            var actualOutputs = vm.MappingManager.DataMappingViewModel.Outputs;
 
 
             //------------Assert Results-------------------------
@@ -687,8 +629,8 @@ namespace Dev2.Activities.Designers.Tests.Service
             var vm = CreateServiceDesignerViewModel(instanceID, new[] { inputMapping.Object, outputMapping.Object }, worstError);
             vm.FixErrorsCommand.Execute(null);
 
-            var actualInputs = vm.DataMappingViewModel.Inputs;
-            var actualOutputs = vm.DataMappingViewModel.Outputs;
+            var actualInputs = vm.MappingManager.DataMappingViewModel.Inputs;
+            var actualOutputs = vm.MappingManager.DataMappingViewModel.Outputs;
 
             Assert.AreEqual(3, actualInputs.Count, "Fix errors returned an incorrect number of outputmappings");
             Assert.AreEqual("n1", actualInputs[0].Name, "Fix errors failed to fix a mapping error. The first output mapping contains an incorrect Name value");
@@ -800,7 +742,7 @@ namespace Dev2.Activities.Designers.Tests.Service
             var vm = CreateServiceDesignerViewModel(instanceID, new[] { inputMapping.Object, outputMapping.Object }, worstError);
 
             vm.FixErrorsCommand.Execute(null);
-            var actualInputs = vm.DataMappingViewModel.Inputs;
+            var actualInputs = vm.MappingManager.DataMappingViewModel.Inputs;
 
             //asserts
             Assert.AreEqual(1, actualInputs.Count, "Fix errors returned an incorrect number of outputmappings");
@@ -810,8 +752,8 @@ namespace Dev2.Activities.Designers.Tests.Service
             Assert.IsTrue(vm.ShowLarge, "Fix errors failed to show the mapping.");
 
             // Simulate fixing error...
-            vm.DataMappingViewModel.Inputs[0].MapsTo = string.Empty;
-            vm.DataMappingViewModel.Inputs[0].Required = true;
+            vm.MappingManager.DataMappingViewModel.Inputs[0].MapsTo = string.Empty;
+            vm.MappingManager.DataMappingViewModel.Inputs[0].Required = true;
             vm.ShowLarge = false;
 
             Assert.IsFalse(vm.ShowLarge, "Fix errors failed to show the mapping.");
@@ -844,7 +786,7 @@ namespace Dev2.Activities.Designers.Tests.Service
             var vm = CreateServiceDesignerViewModel(instanceID, new[] { inputMapping.Object, outputMapping.Object }, worstError);
 
             vm.FixErrorsCommand.Execute(null);
-            var actualInputs = vm.DataMappingViewModel.Inputs;
+            var actualInputs = vm.MappingManager.DataMappingViewModel.Inputs;
 
             //asserts
             Assert.AreEqual(1, actualInputs.Count, "Fix errors returned an incorrect number of outputmappings");
@@ -854,10 +796,10 @@ namespace Dev2.Activities.Designers.Tests.Service
             Assert.IsTrue(vm.ShowLarge, "Fix errors failed to show the mapping.");
 
             // Simulate fixing error...
-            vm.DataMappingViewModel.Inputs[0].MapsTo = "somevalue";
+            vm.MappingManager.DataMappingViewModel.Inputs[0].MapsTo = "somevalue";
             vm.ShowLarge = false;
 
-            Assert.IsFalse(string.IsNullOrEmpty(vm.DataMappingViewModel.Inputs[0].MapsTo), "Test did not simulate fixing error by setting MapsTo.");
+            Assert.IsFalse(string.IsNullOrEmpty(vm.MappingManager.DataMappingViewModel.Inputs[0].MapsTo), "Test did not simulate fixing error by setting MapsTo.");
             Assert.IsFalse(vm.ShowLarge, "Fix errors failed to show the mapping.");
 
             // Always expect at least one error in the activity's error list - the no error
@@ -893,7 +835,7 @@ namespace Dev2.Activities.Designers.Tests.Service
 
             var vm = CreateServiceDesignerViewModel(instanceID, new[] { inputMapping.Object, outputMapping.Object }, worstError);
 
-            var actualInputs = vm.DataMappingViewModel.Inputs;
+            var actualInputs = vm.MappingManager.DataMappingViewModel.Inputs;
 
             Assert.AreEqual(1, actualInputs.Count, "Fix errors returned an incorrect number of outputmappings");
             Assert.AreEqual("n1", actualInputs[0].Name, "Fix errors failed to fix a mapping error. The first output mapping contains an incorrect Name value");
@@ -932,7 +874,7 @@ namespace Dev2.Activities.Designers.Tests.Service
 
             var vm = CreateServiceDesignerViewModel(instanceID, new[] { inputMapping.Object, outputMapping.Object }, worstError, worstError);
 
-            var actualInputs = vm.DataMappingViewModel.Inputs;
+            var actualInputs = vm.MappingManager.DataMappingViewModel.Inputs;
 
             Assert.AreEqual(1, actualInputs.Count, "Fix errors returned an incorrect number of outputmappings");
             Assert.AreEqual("n1", actualInputs[0].Name, "Fix errors failed to fix a mapping error. The first output mapping contains an incorrect Name value");
@@ -950,57 +892,6 @@ namespace Dev2.Activities.Designers.Tests.Service
 
         #region OnDesignValidationReceived
 
-        [TestMethod]
-        [TestCategory("ServiceDesignerViewModel_DesignValidationService")]
-        [Description("Activity must receive memo's that match it's instance ID (unique ID).")]
-        [Owner("Trevor Williams-Ros")]
-        // ReSharper disable InconsistentNaming
-        public void ServiceDesignerViewModel_DesignValidation_ForThisActivity_Received()
-        // ReSharper restore InconsistentNaming
-        {
-            var instanceID = Guid.NewGuid();
-
-            var hitCount = 0;
-            var model = CreateServiceDesignerViewModel(instanceID);
-            model.OnDesignValidationReceived += (s, m) =>
-            {
-                hitCount++;
-            };
-
-            var memo = new DesignValidationMemo { InstanceID = instanceID };
-            model.ResourceModel.Environment.Connection.ServerEvents.Publish(memo);
-
-            Assert.AreEqual(1, hitCount, "Activity did not receive a memo matching it's instance ID.");
-            Assert.AreSame(memo, model.LastValidationMemo, "Activity did not update LastValidationMemo with a memo matching it's instance ID.");
-        }
-
-        [TestMethod]
-        [TestCategory("ServiceDesignerViewModel_DesignValidationService")]
-        [Description("Activity must not receive memo's for other activities i.e. a different instance ID (unique ID).")]
-        [Owner("Trevor Williams-Ros")]
-        // ReSharper disable InconsistentNaming
-        public void ServiceDesignerViewModel_DesignValidation_ForOtherActivity_NotReceived()
-        // ReSharper restore InconsistentNaming
-        {
-            var instanceID = Guid.NewGuid();
-            var instanceID2 = Guid.NewGuid();
-
-            var hitCount = 0;
-            var model = CreateServiceDesignerViewModel(instanceID);
-            model.OnDesignValidationReceived += (s, m) =>
-            {
-                hitCount++;
-            };
-
-            var expected = model.LastValidationMemo;
-
-            var memo = new DesignValidationMemo { InstanceID = instanceID2 };
-            model.ResourceModel.Environment.Connection.ServerEvents.Publish(memo);
-
-            Assert.AreEqual(0, hitCount, "Activity received memo for a different instance ID.");
-            Assert.AreNotSame(memo, model.LastValidationMemo, "Activity updated LastValidationMemo with memo for a different instance ID.");
-            Assert.AreSame(expected, model.LastValidationMemo, "Activity updated LastValidationMemo with memo for a different instance ID.");
-        }
 
         #endregion
 
@@ -1040,9 +931,9 @@ namespace Dev2.Activities.Designers.Tests.Service
 
 
             //------------Execute Test---------------------------
-            viewModel.DataMappingViewModel.Inputs[0].MapsTo = "[[a1]]";
-            viewModel.DataMappingViewModel.Outputs[0].Value = "[[b1]]";
-            viewModel.UpdateMappings();
+            viewModel.MappingManager.DataMappingViewModel.Inputs[0].MapsTo = "[[a1]]";
+            viewModel.MappingManager.DataMappingViewModel.Outputs[0].Value = "[[b1]]";
+            viewModel.MappingManager.UpdateMappings();
 
             //------------Assert Results-------------------------
             inputMapping = viewModel.ModelItem.GetProperty<string>("InputMapping");
@@ -1366,7 +1257,7 @@ namespace Dev2.Activities.Designers.Tests.Service
             mappingF.Setup(a => a.CreateModel(It.IsAny<IWebActivity>(), It.IsAny<NotifyCollectionChangedEventHandler>()))
                     .Returns(mapping.Object);
             // ReSharper restore MaximumChainedReferences
-            viewModel.MappingFactory = mappingF.Object;
+            viewModel.MappingManager.MappingFactory = mappingF.Object;
             // ReSharper restore UnusedVariable
             environment.Setup(a => a.IsConnected).Returns(true);
             connection.Setup(a => a.Verify(It.IsAny<Action<ConnectResult>>(), true)).Verifiable();
@@ -1466,7 +1357,7 @@ namespace Dev2.Activities.Designers.Tests.Service
             mappingF.Setup(a => a.CreateModel(It.IsAny<IWebActivity>(), It.IsAny<NotifyCollectionChangedEventHandler>()))
                     .Returns(mapping.Object);
             // ReSharper restore MaximumChainedReferences
-            viewModel.MappingFactory = mappingF.Object;
+            viewModel.MappingManager.MappingFactory = mappingF.Object;
             // ReSharper restore UnusedVariable
             environment.Setup(a => a.IsConnected).Returns(true);
             connection.Setup(a => a.Verify(It.IsAny<Action<ConnectResult>>(), true)).Verifiable();
@@ -1567,7 +1458,7 @@ namespace Dev2.Activities.Designers.Tests.Service
             mappingF.Setup(a => a.CreateModel(It.IsAny<IWebActivity>(), It.IsAny<NotifyCollectionChangedEventHandler>()))
                     .Returns(mapping.Object);
             // ReSharper restore MaximumChainedReferences
-            viewModel.MappingFactory = mappingF.Object;
+            viewModel.MappingManager.MappingFactory = mappingF.Object;
             // ReSharper restore UnusedVariable
             environment.Setup(a => a.IsConnected).Returns(true);
             connection.Setup(a => a.Verify(It.IsAny<Action<ConnectResult>>(), true)).Verifiable();
@@ -1751,7 +1642,7 @@ namespace Dev2.Activities.Designers.Tests.Service
             webFact.Setup(
                 a => a.CreateWebActivity(It.IsAny<Object>(), It.IsAny<IContextualResourceModel>(), It.IsAny<string>())).Returns(wa.Object).Verifiable();
             // ReSharper restore MaximumChainedReferences
-            viewModel.ActivityFactory = webFact.Object;
+            viewModel.MappingManager.ActivityFactory = webFact.Object;
 
             var mappingF = new Mock<IDataMappingViewModelFactory>();
             var mapping = new Mock<IDataMappingViewModel>();
@@ -1759,7 +1650,7 @@ namespace Dev2.Activities.Designers.Tests.Service
             // ReSharper disable once MaximumChainedReferences
             mappingF.Setup(a => a.CreateModel(It.IsAny<IWebActivity>(), It.IsAny<NotifyCollectionChangedEventHandler>()))
                     .Returns(mapping.Object);
-            viewModel.MappingFactory = mappingF.Object;
+            viewModel.MappingManager.MappingFactory = mappingF.Object;
 
             // ReSharper restore UnusedVariable
             // ReSharper disable MaximumChainedReferences

@@ -43,10 +43,10 @@ namespace Dev2.Activities.Designers2.Service
         {
             var viewModel = (ServiceDesignerViewModel)DataContext;
 
-            if(viewModel.DataMappingViewModel != null)
+            if(viewModel.MappingManager.DataMappingViewModel != null)
             {
-                var inputsCount = viewModel.DataMappingViewModel.Inputs.Count;
-                var outputsCount = viewModel.DataMappingViewModel.Outputs.Count;
+                var inputsCount = viewModel.MappingManager.DataMappingViewModel.Inputs.Count;
+                var outputsCount = viewModel.MappingManager.DataMappingViewModel.Outputs.Count;
 
                 if(inputsCount == 0 && outputsCount == 0)
                 {
