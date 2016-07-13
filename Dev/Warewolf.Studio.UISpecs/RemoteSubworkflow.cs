@@ -23,6 +23,7 @@ namespace Warewolf.Studio.UISpecs
         }
 
         [TestMethod]
+        [Ignore]//TODO: Re-intoduce when WOLF-1925 is done
         public void BigRemoteSubworkflowUITest()
         {
             Uimap.Assert_NewWorkFlow_RibbonButton_Exists();
@@ -242,7 +243,7 @@ namespace Warewolf.Studio.UISpecs
         }
 
         //Use TestCleanup to run code after each test has run
-        //[TestCleanup()]
+        [TestCleanup()]
         public void MyTestCleanup()
         {
             try
