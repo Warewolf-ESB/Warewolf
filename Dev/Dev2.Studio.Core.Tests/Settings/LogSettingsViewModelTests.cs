@@ -1,11 +1,9 @@
 ﻿using System;
 using System.IO;
-using System.Net;
 using Dev2.Common.Interfaces.Help;
 using Dev2.Interfaces;
 using Dev2.Services.Security;
 using Dev2.Settings.Logging;
-using Dev2.SignalR.Wrappers;
 using Dev2.Studio.Core.Interfaces;
 using log4net.Config;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
