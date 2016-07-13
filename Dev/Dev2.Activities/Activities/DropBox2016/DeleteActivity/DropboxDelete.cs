@@ -29,8 +29,6 @@ namespace Dev2.Activities.DropBox2016.DeleteActivity
             InitializeCertPinning();
         }
 
-        public bool IsValid { get; set; }
-
         #region Implementation of IDropboxSingleExecutor<IDropboxResult>
         public IDropboxResult ExecuteTask(DropboxClient client)
         {

@@ -273,7 +273,7 @@ namespace Warewolf.Storage
             AssignWithFrameAndList(exp, recsetResult.Item, exists, update);
         }
 
-        public void AssignWithFrameAndList(string assignValue, WarewolfAtomList<DataStorage.WarewolfAtom> item, bool shouldUseLast, int update)
+        public void AssignWithFrameAndList(string assignValue, IEnumerable<DataStorage.WarewolfAtom> item, bool shouldUseLast, int update)
         {
             _env = PublicFunctions.EvalAssignFromList(assignValue, item, _env, update, shouldUseLast);
         }

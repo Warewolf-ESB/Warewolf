@@ -81,7 +81,7 @@ namespace Warewolf.Studio.UISpecs
 
             //Action Unit: Filtering the explorer tree shows only SomeWorkflow on local server
             Uimap.Enter_SomeWorkflow_Into_Explorer_Filter();
-            explorerTreeItemActionSteps.AssertExistsInExplorerTree("localhost\\SomeWorkflow");
+            Uimap.Assert_Explorer_Localhost_First_Item_Exists();
 
             /**TODO: Re-introduce these units after bug is fixed
             //Action Unit: Clicking Debug Button Shows Debug Input Dialog
@@ -121,7 +121,7 @@ namespace Warewolf.Studio.UISpecs
         {
             //Action Unit: Explorer context menu delete exists
             //Given "localhost\SomeWorkflow" exists in the explorer tree
-            explorerTreeItemActionSteps.WhenIRightClickTheItemInTheExplorerTree("localhost\\SomeWorkflow");
+            Uimap.RightClick_Explorer_Localhost_First_Item();
             Uimap.Assert_ExplorerContextMenu_Delete_Exists();
 
             //Action Unit: Clicking delete in the explorer context menu on SomeWorkflow shows message box
@@ -134,10 +134,10 @@ namespace Warewolf.Studio.UISpecs
             Uimap.Click_MessageBox_Yes();
             Uimap.Assert_MessageBox_Does_Not_Exist();
 
-            //Action Unit: Clearing and refreshing the explorer filter removes SomeWorkflow from the explorer tree
-            Uimap.Click_Explorer_Filter_Clear_Button();
+            //Action Unit: Entering 'SomeWorkflow' and refreshing the explorer filter removes SomeWorkflow from the explorer tree
+            Uimap.Enter_SomeWorkflow_Into_Explorer_Filter();
             Uimap.Click_Explorer_Refresh_Button();
-            explorerTreeItemActionSteps.AssertDoesNotExistInExplorerTree("localhost\\SomeWorkflow");
+            Uimap.Assert_Explorer_Localhost_First_Item_Does_Not_Exist();
         }
 
         #endregion
@@ -174,20 +174,5 @@ namespace Warewolf.Studio.UISpecs
         }
 
         private UIMap _uiMap;
-
-        Explorer_Tree_Item_Action_Steps explorerTreeItemActionSteps
-        {
-            get
-            {
-                if ((_explorerTreeItemActionSteps == null))
-                {
-                    _explorerTreeItemActionSteps = new Explorer_Tree_Item_Action_Steps();
-                }
-
-                return _explorerTreeItemActionSteps;
-            }
-        }
-
-        private Explorer_Tree_Item_Action_Steps _explorerTreeItemActionSteps;
     }
 }
