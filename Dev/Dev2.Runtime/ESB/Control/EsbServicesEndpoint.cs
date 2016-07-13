@@ -38,25 +38,8 @@ namespace Dev2.Runtime.ESB.Control
 
 
         private readonly IEnvironmentOutputMappingManager _environmentOutputMappingManager = new EnvironmentOutputMappingManager();
-        /// <summary>
-        ///Loads service definitions.
-        ///This is a singleton service so this object
-        ///will be visible in every call 
-        /// </summary>
-        public EsbServicesEndpoint()
-        {
-            try
-            {
-
-            }
-            catch (Exception ex)
-            {
-                Dev2Logger.Error(ex);
-                throw;
-            }
-        }
-
-
+        private static WorkspaceRepository wRepository => WorkspaceRepository.Instance;
+        private static ResourceCatalog rCatalog => ResourceCatalog.Instance;
         /// <summary>
         /// Executes the request.
         /// </summary>
@@ -73,7 +56,7 @@ namespace Dev2.Runtime.ESB.Control
             IWorkspace theWorkspace = null;
             Common.Utilities.PerformActionInsideImpersonatedContext(Common.Utilities.ServerUser, () =>
             {
-                theWorkspace = WorkspaceRepository.Instance.Get(workspaceId);
+                theWorkspace = wRepository.Get(workspaceId);
             });
             // If no DLID, we need to make it based upon the request ;)
             if (dataObject.DataListID == GlobalConstants.NullDataListID)
@@ -128,14 +111,16 @@ namespace Dev2.Runtime.ESB.Control
 
         private static IResource GetResource(Guid workspaceId, Guid resourceId)
         {
-            var resource = ResourceCatalog.Instance.GetResource(workspaceId, resourceId) ?? ResourceCatalog.Instance.GetResource(GlobalConstants.ServerWorkspaceID, resourceId);
+            var resource = rCatalog.GetResource(workspaceId, resourceId) ?? rCatalog.GetResource(GlobalConstants.ServerWorkspaceID, resourceId);
 
             return resource;
         }
 
+        
+
         private static IResource GetResource(Guid workspaceId, string resourceName)
         {
-            var resource = ResourceCatalog.Instance.GetResource(workspaceId, resourceName) ?? ResourceCatalog.Instance.GetResource(GlobalConstants.ServerWorkspaceID, resourceName);
+            var resource = rCatalog.GetResource(workspaceId, resourceName) ?? rCatalog.GetResource(GlobalConstants.ServerWorkspaceID, resourceName);
             return resource;
         }
 
@@ -144,7 +129,7 @@ namespace Dev2.Runtime.ESB.Control
         public void ExecuteLogErrorRequest(IDSFDataObject dataObject, Guid workspaceId, string uri, out ErrorResultTO errors, int update)
         {
             errors = null;
-            var theWorkspace = WorkspaceRepository.Instance.Get(workspaceId);
+            var theWorkspace = wRepository.Get(workspaceId);
             var executionContainer = new RemoteWorkflowExecutionContainer(null, dataObject, theWorkspace, this);
             executionContainer.PerformLogExecution(uri, update);
         }
@@ -164,7 +149,7 @@ namespace Dev2.Runtime.ESB.Control
         /// <returns></returns>
         public IExecutionEnvironment ExecuteSubRequest(IDSFDataObject dataObject, Guid workspaceId, string inputDefs, string outputDefs, out ErrorResultTO errors, int update, bool handleErrors)
         {
-            var theWorkspace = WorkspaceRepository.Instance.Get(workspaceId);
+            var theWorkspace = wRepository.Get(workspaceId);
             var invoker = CreateEsbServicesInvoker(theWorkspace);
             ErrorResultTO invokeErrors;
             var oldID = dataObject.DataListID;
@@ -220,6 +205,8 @@ namespace Dev2.Runtime.ESB.Control
             }
             return new ExecutionEnvironment();
         }
+
+       
 
         public IExecutionEnvironment UpdatePreviousEnvironmentWithSubExecutionResultUsingOutputMappings(IDSFDataObject dataObject, string outputDefs, int update, bool handleErrors, ErrorResultTO errors)
         {

@@ -57,7 +57,7 @@ namespace Dev2.Runtime.ESB.Control
             return innerEnvironment;
         }
 
-        public static void OutputsToEnvironment(IExecutionEnvironment innerEnvironment, IExecutionEnvironment environment, string outputDefs, int update)
+        private static void OutputsToEnvironment(IExecutionEnvironment innerEnvironment, IExecutionEnvironment environment, string outputDefs, int update)
         {
             try
             {
