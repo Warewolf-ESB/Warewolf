@@ -696,34 +696,31 @@ namespace Dev2.Activities.Designers2.Service
 
         bool CheckSourceMissing()
         {
-            if (ResourceModel != null && ResourceModel.ResourceType == Studio.Core.AppResources.Enums.ResourceType.Service && _environment != null)
+            if (ResourceModel != null && _environment != null)
             {
                 var resourceModel = ResourceModel;
-                if (resourceModel != null)
+                string srcId;
+                var workflowXml = resourceModel?.WorkflowXaml;
+                try
                 {
-                    string srcId;
-                    var workflowXml = resourceModel.WorkflowXaml;
-                    try
-                    {
-                        var xe = workflowXml.Replace("&", "&amp;").ToXElement();
-                        srcId = xe.AttributeSafe("SourceID");
-                    }
-                    catch (XmlException xe)
-                    {
-                        Dev2Logger.Error(xe);
-                        srcId = workflowXml.ExtractXmlAttributeFromUnsafeXml("SourceID=\"");
-                    }
+                    var xe = workflowXml.Replace("&", "&amp;").ToXElement();
+                    srcId = xe.AttributeSafe("SourceID");
+                }
+                catch(XmlException xe)
+                {
+                    Dev2Logger.Error(xe);
+                    srcId = workflowXml.ExtractXmlAttributeFromUnsafeXml("SourceID=\"");
+                }
 
-                    Guid sourceId;
-                    if (Guid.TryParse(srcId, out sourceId))
+                Guid sourceId;
+                if(Guid.TryParse(srcId, out sourceId))
+                {
+                    SourceId = sourceId;
+                    var sourceResource = _environment.ResourceRepository.LoadContextualResourceModel(sourceId);
+                    if(sourceResource == null)
                     {
-                        SourceId = sourceId;
-                        var sourceResource = _environment.ResourceRepository.LoadContextualResourceModel(sourceId);
-                        if (sourceResource == null)
-                        {
-                            UpdateLastValidationMemoWithSourceNotFoundError();
-                            return false;
-                        }
+                        UpdateLastValidationMemoWithSourceNotFoundError();
+                        return false;
                     }
                 }
             }

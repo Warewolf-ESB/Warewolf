@@ -103,7 +103,6 @@ namespace Warewolf.Studio.ViewModels
             return !Equals(left, right);
         }
 
-        private IDeletedFileMetadata _fileMetadata;
         public Action<IExplorerItemViewModel> SelectAction { get; set; }
         string _resourceName;
         private bool _isVisible;
@@ -136,13 +135,8 @@ namespace Warewolf.Studio.ViewModels
         private IEnvironmentModel _environmentModel;
         private readonly ExplorerItemViewModelCommandController _explorerItemViewModelCommandController;
 
-        private ExplorerItemViewModel(IDeletedFileMetadata fileMetadata)
-        {
-            _fileMetadata = fileMetadata;
-        }
-
+       
         public ExplorerItemViewModel(IServer server, IExplorerTreeItem parent, Action<IExplorerItemViewModel> selectAction, IShellViewModel shellViewModel, IPopupController popupController)
-            : this(new DeletedFileMetadata())
         {
             VerifyArgument.AreNotNull(new Dictionary<string, object> { { "server", server }, });
 
@@ -331,11 +325,9 @@ namespace Warewolf.Studio.ViewModels
                     a.IsExpanded = true;
                     a.IsSelected = true;
                     foundAction(a);
+                    continue;
                 }
-                else
-                {
-                    a.SelectItem(id, foundAction);
-                }
+                a.SelectItem(id, foundAction);
             }
         }
 
@@ -462,14 +454,13 @@ namespace Warewolf.Studio.ViewModels
             if (permissions != null)
             {
                 var resourcePermission = permissions.FirstOrDefault(permission => permission.ResourceID == ResourceId);
+                var serverPermission = permissions.FirstOrDefault(permission => permission.IsServer && permission.ResourceID == Guid.Empty);
                 if (resourcePermission != null)
                 {
                     SetPermission(resourcePermission, isDeploy);
                 }
                 else
                 {
-                    var serverPermission =
-                        permissions.FirstOrDefault(permission => permission.IsServer && permission.ResourceID == Guid.Empty);
                     if (serverPermission != null)
                     {
                         SetPermission(serverPermission, isDeploy);
@@ -661,7 +652,7 @@ namespace Warewolf.Studio.ViewModels
                 IsVersion = _resourceType == "Version";
                 OnPropertyChanged(() => CanView);
                 OnPropertyChanged(() => CanShowVersions);
-                if (Server.Permissions != null && ResourceType != "Version")
+                if (ResourceType != "Version")
                 {
                     SetPermissions(Server.Permissions);
                 }
@@ -1184,81 +1175,5 @@ namespace Warewolf.Studio.ViewModels
                     explorerItemViewModel?.Dispose();
                 }
         }
-    }
-    public class VersionViewModel : ExplorerItemViewModel
-    {
-        public VersionViewModel(IServer server, IExplorerTreeItem parent, Action<IExplorerItemViewModel> selectAction, IShellViewModel shellViewModel, IPopupController popupController)
-            : base(server, parent, selectAction, shellViewModel, popupController)
-        {
-        }
-
-        #region Equality members
-
-        /// <summary>
-        /// Indicates whether the current object is equal to another object of the same type.
-        /// </summary>
-        /// <returns>
-        /// true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.
-        /// </returns>
-        /// <param name="other">An object to compare with this object.</param>
-        private bool Equals(VersionViewModel other)
-        {
-            if (ReferenceEquals(null, other))
-            {
-                return false;
-            }
-            if (ReferenceEquals(this, other))
-            {
-                return true;
-            }
-            return ResourceName.Equals(other.ResourceName);
-        }
-
-        /// <summary>
-        /// Determines whether the specified <see cref="T:System.Object"/> is equal to the current <see cref="T:System.Object"/>.
-        /// </summary>
-        /// <returns>
-        /// true if the specified object  is equal to the current object; otherwise, false.
-        /// </returns>
-        /// <param name="obj">The object to compare with the current object. </param>
-        public override bool Equals(object obj)
-        {
-            if (ReferenceEquals(null, obj))
-            {
-                return false;
-            }
-            if (ReferenceEquals(this, obj))
-            {
-                return true;
-            }
-            if (obj.GetType() != GetType())
-            {
-                return false;
-            }
-            return Equals((VersionViewModel)obj);
-        }
-
-        /// <summary>
-        /// Serves as a hash function for a particular type. 
-        /// </summary>
-        /// <returns>
-        /// A hash code for the current <see cref="T:System.Object"/>.
-        /// </returns>
-        public override int GetHashCode()
-        {
-            return ResourceId.GetHashCode();
-        }
-
-        public static bool operator ==(VersionViewModel left, VersionViewModel right)
-        {
-            return Equals(left, right);
-        }
-
-        public static bool operator !=(VersionViewModel left, VersionViewModel right)
-        {
-            return !Equals(left, right);
-        }
-
-        #endregion
     }
 }
