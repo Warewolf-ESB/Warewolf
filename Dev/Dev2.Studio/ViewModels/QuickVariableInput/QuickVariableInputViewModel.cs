@@ -57,7 +57,7 @@ namespace Dev2.ViewModels.QuickVariableInput
             {
                 return _canAdd;
             }
-            set
+            private set
             {
                 _canAdd = value;
                 OnPropertyChanged("CanAdd");
@@ -72,7 +72,7 @@ namespace Dev2.ViewModels.QuickVariableInput
             {
                 return _splitTypeList;
             }
-            set
+            private set
             {
                 _splitTypeList = value;
                 OnPropertyChanged("SplitTypeList");
@@ -105,7 +105,7 @@ namespace Dev2.ViewModels.QuickVariableInput
             }
         }
 
-        public string Suffix
+        private string Suffix
         {
             get
             {
@@ -144,7 +144,7 @@ namespace Dev2.ViewModels.QuickVariableInput
             }
         }
 
-        public bool Overwrite
+        private bool Overwrite
         {
             get
             {
@@ -157,7 +157,7 @@ namespace Dev2.ViewModels.QuickVariableInput
             }
         }
 
-        public string PreviewText
+        private string PreviewText
         {
             get
             {
@@ -170,7 +170,7 @@ namespace Dev2.ViewModels.QuickVariableInput
             }
         }
 
-        public bool ShowPreview
+        private bool ShowPreview
         {
             get
             {
@@ -238,7 +238,7 @@ namespace Dev2.ViewModels.QuickVariableInput
         /// </summary>
         public event EventHandler CloseAdornersRequested;
 
-        protected void OnClose()
+        private void OnClose()
         {
             CloseAdornersRequested?.Invoke(this, new EventArgs());
         }
@@ -247,7 +247,7 @@ namespace Dev2.ViewModels.QuickVariableInput
 
         #region Clear
 
-        protected void ClearData()
+        private void ClearData()
         {
             SplitType = "Chars";
             SplitToken = string.Empty;
@@ -264,7 +264,7 @@ namespace Dev2.ViewModels.QuickVariableInput
 
         #region Methods
 
-        public void AddToActivity()
+        private void AddToActivity()
         {
             if (!ValidateFields())
             {
@@ -283,12 +283,11 @@ namespace Dev2.ViewModels.QuickVariableInput
             if (listToAdd != null && listToAdd.Count > 0)
             {
                 _model.AddListToCollection(listToAdd, Overwrite);
-                //    _eventPublisher.Publish(new AddStringListToDataListMessage(listToAdd));  
             }
             ClearData();
         }
 
-        public void Preview()
+        private void Preview()
         {
             if (!ValidateFields())
             {
@@ -340,7 +339,7 @@ namespace Dev2.ViewModels.QuickVariableInput
             }
         }
 
-        public List<string> Split()
+        private List<string> Split()
         {
             List<string> results = new List<string>();
             try
