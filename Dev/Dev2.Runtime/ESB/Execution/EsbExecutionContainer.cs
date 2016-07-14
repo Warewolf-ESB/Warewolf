@@ -10,7 +10,6 @@
 
 using System;
 using Dev2.Communication;
-using Dev2.Data.ServiceModel;
 using Dev2.DataList.Contract;
 using Dev2.DynamicServices.Objects;
 using Dev2.Interfaces;
@@ -59,6 +58,5 @@ namespace Dev2.Runtime.ESB.Execution
         public abstract Guid Execute(out ErrorResultTO errors, int update);
 
         public abstract IDSFDataObject Execute(IDSFDataObject inputs, IDev2Activity activity);
-        public virtual SerializableResource FetchRemoteResource(Guid serviceId, string serviceName, bool isDebugMode) { throw new NotImplementedException(); }
     }
 }

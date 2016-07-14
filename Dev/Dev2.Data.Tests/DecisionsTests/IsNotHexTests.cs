@@ -10,19 +10,28 @@
 
 using System;
 using Dev2.Common.ExtMethods;
+using Dev2.Data.Decisions.Operations;
 
-namespace Dev2.Data.Decisions.Operations
+namespace Dev2.Data.Tests.DecisionsTests
 {
-   public class IsEmail : IDecisionOperation
+    /// <summary>
+    /// Is Not Hex Decision
+    /// </summary>
+    public class IsNotHexTests
     {
-        public Enum HandlesType()
-        {
-            return enDecisionType.IsEmail;
-        }
-
         public bool Invoke(string[] cols)
         {
-            return cols[0].IsEmail();
+            if (!string.IsNullOrEmpty(cols[0]))
+            {
+                return !cols[0].IsHex();
+            }
+
+            return false;
+        }
+
+        public Enum HandlesType()
+        {
+            return enDecisionType.IsNotHex;
         }
     }
 }
