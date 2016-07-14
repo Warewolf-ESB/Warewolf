@@ -1749,6 +1749,23 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Assertion</MarkerRegionType>
     </TestStepMarkerAction>
+    <AssertAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.IconButton">
+      <ParameterName />
+      <PropertyName>Exists</PropertyName>
+      <ExpectedValue>True</ExpectedValue>
+      <MessageOnValidationFailure>Explorer localhost icon does not exist</MessageOnValidationFailure>
+      <Type>String</Type>
+      <PropertyCondition>AreEqual</PropertyCondition>
+    </AssertAction>
+    <TestStepMarkerAction Comment="" MarkerInformation="Assert_Explorer_Localhost_Icon_Exists">
+      <ParameterName />
+      <StepId>-1</StepId>
+      <Direction>Start</Direction>
+      <Outcome />
+      <Disabled>false</Disabled>
+      <WorkItemId>0</WorkItemId>
+      <MarkerRegionType>Assertion</MarkerRegionType>
+    </TestStepMarkerAction>
     <AssertAction UIObjectName="UIMap.MainStudioWindow.NewRemoteServerListItem">
       <ParameterName />
       <PropertyName>Exists</PropertyName>
@@ -3899,7 +3916,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Assertion</MarkerRegionType>
     </TestStepMarkerAction>
-    <AssertAction UIObjectName="UIMap.MainStudioWindow.ServicePickerDialog.Cancel">
+    <AssertAction UIObjectName="UIMap.ServicePickerDialog.Cancel">
       <ParameterName />
       <PropertyName>Exists</PropertyName>
       <ExpectedValue>True</ExpectedValue>
@@ -3916,7 +3933,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Assertion</MarkerRegionType>
     </TestStepMarkerAction>
-    <AssertAction UIObjectName="UIMap.MainStudioWindow.ServicePickerDialog">
+    <AssertAction UIObjectName="UIMap.ServicePickerDialog">
       <ParameterName />
       <PropertyName>Exists</PropertyName>
       <ExpectedValue>False</ExpectedValue>
@@ -3933,7 +3950,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Assertion</MarkerRegionType>
     </TestStepMarkerAction>
-    <AssertAction UIObjectName="UIMap.MainStudioWindow.ServicePickerDialog">
+    <AssertAction UIObjectName="UIMap.ServicePickerDialog">
       <ParameterName />
       <PropertyName>Exists</PropertyName>
       <ExpectedValue>True</ExpectedValue>
@@ -3950,7 +3967,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Assertion</MarkerRegionType>
     </TestStepMarkerAction>
-    <AssertAction UIObjectName="UIMap.MainStudioWindow.ServicePickerDialog.Explorer.FilterTextbox">
+    <AssertAction UIObjectName="UIMap.ServicePickerDialog.Explorer.FilterTextbox">
       <ParameterName />
       <PropertyName>Exists</PropertyName>
       <ExpectedValue>True</ExpectedValue>
@@ -3967,7 +3984,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Assertion</MarkerRegionType>
     </TestStepMarkerAction>
-    <AssertAction UIObjectName="UIMap.MainStudioWindow.ServicePickerDialog.OK">
+    <AssertAction UIObjectName="UIMap.ServicePickerDialog.OK">
       <ParameterName />
       <PropertyName>Enabled</PropertyName>
       <ExpectedValue>True</ExpectedValue>
@@ -3984,7 +4001,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Assertion</MarkerRegionType>
     </TestStepMarkerAction>
-    <AssertAction UIObjectName="UIMap.MainStudioWindow.ServicePickerDialog.OK">
+    <AssertAction UIObjectName="UIMap.ServicePickerDialog.OK">
       <ParameterName />
       <PropertyName>Exists</PropertyName>
       <ExpectedValue>True</ExpectedValue>
@@ -4001,7 +4018,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Assertion</MarkerRegionType>
     </TestStepMarkerAction>
-    <AssertAction UIObjectName="UIMap.MainStudioWindow.ServicePickerDialog.Explorer.Refresh">
+    <AssertAction UIObjectName="UIMap.ServicePickerDialog.Explorer.Refresh">
       <ParameterName />
       <PropertyName>Exists</PropertyName>
       <ExpectedValue>True</ExpectedValue>
@@ -4222,6 +4239,23 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Assertion</MarkerRegionType>
     </TestStepMarkerAction>
+    <AssertAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1.PermissionsCell.ExecuteCheckBox">
+      <ParameterName />
+      <PropertyName>Checked</PropertyName>
+      <ExpectedValue>True</ExpectedValue>
+      <MessageOnValidationFailure>Settings security tab resource permissions row 1 execute checkbox is not checked.</MessageOnValidationFailure>
+      <Type>String</Type>
+      <PropertyCondition>AreEqual</PropertyCondition>
+    </AssertAction>
+    <TestStepMarkerAction Comment="" MarkerInformation="Assert_Settings_SecurityTab_Resource_Permissions_Row1_Execute_Checkbox_Is_Checked">
+      <ParameterName />
+      <StepId>-1</StepId>
+      <Direction>Start</Direction>
+      <Outcome />
+      <Disabled>false</Disabled>
+      <WorkItemId>0</WorkItemId>
+      <MarkerRegionType>Assertion</MarkerRegionType>
+    </TestStepMarkerAction>
     <AssertAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1">
       <ParameterName />
       <PropertyName>Exists</PropertyName>
@@ -4248,6 +4282,23 @@
       <PropertyCondition>AreEqual</PropertyCondition>
     </AssertAction>
     <TestStepMarkerAction Comment="" MarkerInformation="Assert_Settings_SecurityTab_Resource_Permissions_Row1_View_Checkbox_Exists">
+      <ParameterName />
+      <StepId>-1</StepId>
+      <Direction>Start</Direction>
+      <Outcome />
+      <Disabled>false</Disabled>
+      <WorkItemId>0</WorkItemId>
+      <MarkerRegionType>Assertion</MarkerRegionType>
+    </TestStepMarkerAction>
+    <AssertAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1.PermissionsCell.ViewCheckBox">
+      <ParameterName />
+      <PropertyName>Checked</PropertyName>
+      <ExpectedValue>True</ExpectedValue>
+      <MessageOnValidationFailure>Settings resource permissions row1 view checkbox is not checked.</MessageOnValidationFailure>
+      <Type>String</Type>
+      <PropertyCondition>AreEqual</PropertyCondition>
+    </AssertAction>
+    <TestStepMarkerAction Comment="" MarkerInformation="Assert_Settings_SecurityTab_Resource_Permissions_Row1_View_Checkbox_Is_Checked">
       <ParameterName />
       <StepId>-1</StepId>
       <Direction>Start</Direction>
@@ -6220,7 +6271,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
-    <MouseAction UIObjectName="UIMap.MainStudioWindow.ServicePickerDialog.Explorer.ExplorerTree.TreeItem1.SubTreeItem1">
+    <MouseAction UIObjectName="UIMap.ServicePickerDialog.Explorer.ExplorerTree.TreeItem1.SubTreeItem1">
       <ParameterName />
       <ModifierKeys>None</ModifierKeys>
       <IsGlobalHotkey>false</IsGlobalHotkey>
@@ -6238,7 +6289,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
-    <MouseAction UIObjectName="UIMap.MainStudioWindow.ServicePickerDialog.OK">
+    <MouseAction UIObjectName="UIMap.ServicePickerDialog.OK">
       <ParameterName />
       <ModifierKeys>None</ModifierKeys>
       <IsGlobalHotkey>false</IsGlobalHotkey>
@@ -6902,7 +6953,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
-    <DragDropAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.StorageTools.DropboxDownload.DropboxDownloadImage">
+    <DragDropAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.StorageTools.Download.DownloadImage">
       <ParameterName />
       <ModifierKeys>None</ModifierKeys>
       <IsGlobalHotkey>false</IsGlobalHotkey>
@@ -6920,7 +6971,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
-    <DragDropAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.StorageTools.DropboxUpload.DropboxUploadImage">
+    <DragDropAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.StorageTools.Upload.UploadImage">
       <ParameterName />
       <ModifierKeys>None</ModifierKeys>
       <IsGlobalHotkey>false</IsGlobalHotkey>
@@ -6938,7 +6989,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
-    <DragDropAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.UtilityTools.Email.EmailImage">
+    <DragDropAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.Email.ExchangeSend.ExchangeSendImage">
       <ParameterName />
       <ModifierKeys>None</ModifierKeys>
       <IsGlobalHotkey>false</IsGlobalHotkey>
@@ -6947,7 +6998,7 @@
       <StartLocation X="16" Y="-39" />
       <StopLocation X="308" Y="129" />
     </DragDropAction>
-    <TestStepMarkerAction Comment="" MarkerInformation="Drag_Toolbox_Email_Onto_DesignSurface">
+    <TestStepMarkerAction Comment="" MarkerInformation="Drag_Toolbox_Exchange_Email_Onto_DesignSurface">
       <ParameterName />
       <StepId>-1</StepId>
       <Direction>Start</Direction>
@@ -7334,6 +7385,24 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
+    <DragDropAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.Email.SMTPSend.SMTPSendImage">
+      <ParameterName />
+      <ModifierKeys>None</ModifierKeys>
+      <IsGlobalHotkey>false</IsGlobalHotkey>
+      <TargetElementName>UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart</TargetElementName>
+      <MouseButton>Left</MouseButton>
+      <StartLocation X="16" Y="-39" />
+      <StopLocation X="308" Y="129" />
+    </DragDropAction>
+    <TestStepMarkerAction Comment="" MarkerInformation="Drag_Toolbox_SMTP_Email_Onto_DesignSurface">
+      <ParameterName />
+      <StepId>-1</StepId>
+      <Direction>Start</Direction>
+      <Outcome />
+      <Disabled>false</Disabled>
+      <WorkItemId>0</WorkItemId>
+      <MarkerRegionType>Action</MarkerRegionType>
+    </TestStepMarkerAction>
     <DragDropAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.RecordsetTools.Sort.SortImage">
       <ParameterName />
       <ModifierKeys>None</ModifierKeys>
@@ -7560,7 +7629,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
-    <SetValueAction UIObjectName="UIMap.MainStudioWindow.ServicePickerDialog.Explorer.FilterTextbox">
+    <SetValueAction UIObjectName="UIMap.ServicePickerDialog.Explorer.FilterTextbox">
       <ParameterName />
       <Value Encoded="false">RemoteServerUITestWorkflow</Value>
       <Type>String</Type>
@@ -10029,40 +10098,6 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
-    <AssertAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1.PermissionsCell.ViewCheckBox">
-      <ParameterName />
-      <PropertyName>Checked</PropertyName>
-      <ExpectedValue>True</ExpectedValue>
-      <MessageOnValidationFailure>Settings resource permissions row1 view checkbox is not checked.</MessageOnValidationFailure>
-      <Type>String</Type>
-      <PropertyCondition>AreEqual</PropertyCondition>
-    </AssertAction>
-    <TestStepMarkerAction Comment="" MarkerInformation="Assert_Settings_SecurityTab_Resource_Permissions_Row1_View_Checkbox_Is_Checked">
-      <ParameterName />
-      <StepId>-1</StepId>
-      <Direction>Start</Direction>
-      <Outcome />
-      <Disabled>false</Disabled>
-      <WorkItemId>0</WorkItemId>
-      <MarkerRegionType>Assertion</MarkerRegionType>
-    </TestStepMarkerAction>
-    <AssertAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1.PermissionsCell.ExecuteCheckBox">
-      <ParameterName />
-      <PropertyName>Checked</PropertyName>
-      <ExpectedValue>True</ExpectedValue>
-      <MessageOnValidationFailure>Settings security tab resource permissions row 1 execute checkbox is not checked.</MessageOnValidationFailure>
-      <Type>String</Type>
-      <PropertyCondition>AreEqual</PropertyCondition>
-    </AssertAction>
-    <TestStepMarkerAction Comment="" MarkerInformation="Assert_Settings_SecurityTab_Resource_Permissions_Row1_Execute_Checkbox_Is_Checked">
-      <ParameterName />
-      <StepId>-1</StepId>
-      <Direction>Start</Direction>
-      <Outcome />
-      <Disabled>false</Disabled>
-      <WorkItemId>0</WorkItemId>
-      <MarkerRegionType>Assertion</MarkerRegionType>
-    </TestStepMarkerAction>
   </ExecuteActions>
   <CleanupActions />
   <OnErrorActions />
@@ -11247,20 +11282,50 @@
                               </AndCondition>
                               <SupportLevel>0</SupportLevel>
                               <Descendants>
+                                <UIObject ControlType="CheckBox" Id="Checkbox" FriendlyName="Checkbox" SpecialControlType="None">
+                                  <TechnologyName>UIA</TechnologyName>
+                                  <WindowTitles>
+                                    <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
+                                  </WindowTitles>
+                                  <AndCondition>
+                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                    <PropertyCondition Name="ControlType">CheckBox</PropertyCondition>
+                                    <PropertyCondition Name="AutomationId">Checkbox</PropertyCondition>
+                                  </AndCondition>
+                                  <SupportLevel>0</SupportLevel>
+                                  <Descendants>
+                                    <UIObject ControlType="Button" Id="IconButton" FriendlyName="" SpecialControlType="None">
+                                      <TechnologyName>UIA</TechnologyName>
+                                      <WindowTitles>
+                                        <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
+                                      </WindowTitles>
+                                      <SearchConfigurations>
+                                        <SearchConfiguration>NextTo</SearchConfiguration>
+                                      </SearchConfigurations>
+                                      <AndCondition>
+                                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                        <PropertyCondition Name="ControlType">Button</PropertyCondition>
+                                      </AndCondition>
+                                      <SupportLevel>0</SupportLevel>
+                                      <Descendants />
+                                    </UIObject>
+                                  </Descendants>
+                                </UIObject>
                                 <UIObject ControlType="TreeItem" Id="FirstItem" FriendlyName="Infragistics.Controls.Menus.XamDataTreeNodeDataCon..." SpecialControlType="None">
                                   <TechnologyName>UIA</TechnologyName>
                                   <WindowTitles>
                                     <WindowTitle>Warewolf</WindowTitle>
                                   </WindowTitles>
                                   <SearchConfigurations>
-                                    <SearchConfiguration>Distinct</SearchConfiguration>
                                     <SearchConfiguration>Expand</SearchConfiguration>
+                                    <SearchConfiguration>Distinct</SearchConfiguration>
+                                    <SearchConfiguration>AlwaysSearch</SearchConfiguration>
                                   </SearchConfigurations>
                                   <AndCondition>
                                     <PropertyCondition Name="ControlType">TreeItem</PropertyCondition>
                                     <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                     <PropertyCondition Name="Name">Infragistics.Controls.Menus.XamDataTreeNodeDataContext</PropertyCondition>
-                                    <PropertyCondition Name="Instance">1</PropertyCondition>
+                                    <PropertyCondition Name="Instance">2</PropertyCondition>
                                   </AndCondition>
                                   <SupportLevel>0</SupportLevel>
                                   <Descendants />
@@ -11296,7 +11361,7 @@
                                     <PropertyCondition Name="ControlType">TreeItem</PropertyCondition>
                                     <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                     <PropertyCondition Name="Name">Infragistics.Controls.Menus.XamDataTreeNodeDataContext</PropertyCondition>
-                                    <PropertyCondition Name="Instance">1</PropertyCondition>
+                                    <PropertyCondition Name="Instance">2</PropertyCondition>
                                   </AndCondition>
                                   <SupportLevel>0</SupportLevel>
                                   <Descendants />
@@ -11784,6 +11849,76 @@
                                         <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                         <PropertyCondition Name="ControlType">Image</PropertyCondition>
                                         <PropertyCondition Name="AutomationId">SQL Server</PropertyCondition>
+                                      </AndCondition>
+                                      <SupportLevel>0</SupportLevel>
+                                      <Descendants />
+                                    </UIObject>
+                                  </Descendants>
+                                </UIObject>
+                              </Descendants>
+                            </UIObject>
+                            <UIObject ControlType="Group" Id="Email" FriendlyName="Email" SpecialControlType="None">
+                              <TechnologyName>UIA</TechnologyName>
+                              <WindowTitles>
+                                <WindowTitle>Warewolf</WindowTitle>
+                              </WindowTitles>
+                              <AndCondition>
+                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                <PropertyCondition Name="ControlType">Group</PropertyCondition>
+                                <PropertyCondition Name="Name">Email</PropertyCondition>
+                              </AndCondition>
+                              <SupportLevel>0</SupportLevel>
+                              <Descendants>
+                                <UIObject ControlType="ListItem" Id="SMTPSend" FriendlyName="Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV..." SpecialControlType="None">
+                                  <TechnologyName>UIA</TechnologyName>
+                                  <WindowTitles>
+                                    <WindowTitle>Warewolf</WindowTitle>
+                                  </WindowTitles>
+                                  <AndCondition>
+                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                    <PropertyCondition Name="ControlType">ListItem</PropertyCondition>
+                                    <PropertyCondition Name="Name">Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorViewModel</PropertyCondition>
+                                    <PropertyCondition Name="AutomationId">SMTP Send</PropertyCondition>
+                                  </AndCondition>
+                                  <SupportLevel>0</SupportLevel>
+                                  <Descendants>
+                                    <UIObject ControlType="Image" Id="SMTPSendImage" FriendlyName="MySQL" SpecialControlType="None">
+                                      <TechnologyName>UIA</TechnologyName>
+                                      <WindowTitles>
+                                        <WindowTitle>Warewolf</WindowTitle>
+                                      </WindowTitles>
+                                      <AndCondition>
+                                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                        <PropertyCondition Name="ControlType">Image</PropertyCondition>
+                                        <PropertyCondition Name="AutomationId">SMTP Send</PropertyCondition>
+                                      </AndCondition>
+                                      <SupportLevel>0</SupportLevel>
+                                      <Descendants />
+                                    </UIObject>
+                                  </Descendants>
+                                </UIObject>
+                                <UIObject ControlType="ListItem" Id="ExchangeSend" FriendlyName="Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV..." SpecialControlType="None">
+                                  <TechnologyName>UIA</TechnologyName>
+                                  <WindowTitles>
+                                    <WindowTitle>Warewolf</WindowTitle>
+                                  </WindowTitles>
+                                  <AndCondition>
+                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                    <PropertyCondition Name="ControlType">ListItem</PropertyCondition>
+                                    <PropertyCondition Name="Name">Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorViewModel</PropertyCondition>
+                                    <PropertyCondition Name="AutomationId">Exchange Send</PropertyCondition>
+                                  </AndCondition>
+                                  <SupportLevel>0</SupportLevel>
+                                  <Descendants>
+                                    <UIObject ControlType="Image" Id="ExchangeSendImage" FriendlyName="SQLBulkInsert" SpecialControlType="None">
+                                      <TechnologyName>UIA</TechnologyName>
+                                      <WindowTitles>
+                                        <WindowTitle>Warewolf</WindowTitle>
+                                      </WindowTitles>
+                                      <AndCondition>
+                                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                        <PropertyCondition Name="ControlType">Image</PropertyCondition>
+                                        <PropertyCondition Name="AutomationId">Exchange Send</PropertyCondition>
                                       </AndCondition>
                                       <SupportLevel>0</SupportLevel>
                                       <Descendants />
@@ -12710,11 +12845,11 @@
                               <AndCondition>
                                 <PropertyCondition Name="ControlType">Group</PropertyCondition>
                                 <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                <PropertyCondition Name="Name">Storage</PropertyCondition>
+                                <PropertyCondition Name="Name">Storage: Dropbox</PropertyCondition>
                               </AndCondition>
                               <SupportLevel>0</SupportLevel>
                               <Descendants>
-                                <UIObject ControlType="ListItem" Id="DropboxDownload" FriendlyName="Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV..." SpecialControlType="None">
+                                <UIObject ControlType="ListItem" Id="Download" FriendlyName="Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV..." SpecialControlType="None">
                                   <TechnologyName>UIA</TechnologyName>
                                   <WindowTitles>
                                     <WindowTitle>Warewolf</WindowTitle>
@@ -12723,11 +12858,11 @@
                                     <PropertyCondition Name="ControlType">ListItem</PropertyCondition>
                                     <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                     <PropertyCondition Name="Name">Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorViewModel</PropertyCondition>
-                                    <PropertyCondition Name="AutomationId">Dropbox Download</PropertyCondition>
+                                    <PropertyCondition Name="AutomationId">Download</PropertyCondition>
                                   </AndCondition>
                                   <SupportLevel>0</SupportLevel>
                                   <Descendants>
-                                    <UIObject ControlType="Image" Id="DropboxDownloadImage" FriendlyName="DropboxDownload" SpecialControlType="None">
+                                    <UIObject ControlType="Image" Id="DownloadImage" FriendlyName="DropboxDownload" SpecialControlType="None">
                                       <TechnologyName>UIA</TechnologyName>
                                       <WindowTitles>
                                         <WindowTitle>Warewolf</WindowTitle>
@@ -12742,7 +12877,7 @@
                                     </UIObject>
                                   </Descendants>
                                 </UIObject>
-                                <UIObject ControlType="ListItem" Id="DropboxUpload" FriendlyName="Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV..." SpecialControlType="None">
+                                <UIObject ControlType="ListItem" Id="Upload" FriendlyName="Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV..." SpecialControlType="None">
                                   <TechnologyName>UIA</TechnologyName>
                                   <WindowTitles>
                                     <WindowTitle>Warewolf</WindowTitle>
@@ -12751,11 +12886,11 @@
                                     <PropertyCondition Name="ControlType">ListItem</PropertyCondition>
                                     <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                     <PropertyCondition Name="Name">Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorViewModel</PropertyCondition>
-                                    <PropertyCondition Name="AutomationId">Dropbox Upload</PropertyCondition>
+                                    <PropertyCondition Name="AutomationId">Upload</PropertyCondition>
                                   </AndCondition>
                                   <SupportLevel>0</SupportLevel>
                                   <Descendants>
-                                    <UIObject ControlType="Image" Id="DropboxUploadImage" FriendlyName="DropboxUpload" SpecialControlType="None">
+                                    <UIObject ControlType="Image" Id="UploadImage" FriendlyName="DropboxUpload" SpecialControlType="None">
                                       <TechnologyName>UIA</TechnologyName>
                                       <WindowTitles>
                                         <WindowTitle>Warewolf</WindowTitle>
@@ -12770,7 +12905,7 @@
                                     </UIObject>
                                   </Descendants>
                                 </UIObject>
-                                <UIObject ControlType="ListItem" Id="SelectandApply" FriendlyName="Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV..." SpecialControlType="None">
+                                <UIObject ControlType="ListItem" Id="ListContents" FriendlyName="Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV..." SpecialControlType="None">
                                   <TechnologyName>UIA</TechnologyName>
                                   <WindowTitles>
                                     <WindowTitle>Warewolf</WindowTitle>
@@ -12779,19 +12914,47 @@
                                     <PropertyCondition Name="ControlType">ListItem</PropertyCondition>
                                     <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                     <PropertyCondition Name="Name">Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorViewModel</PropertyCondition>
-                                    <PropertyCondition Name="AutomationId">Select and apply</PropertyCondition>
+                                    <PropertyCondition Name="AutomationId">List Contents</PropertyCondition>
                                   </AndCondition>
                                   <SupportLevel>0</SupportLevel>
                                   <Descendants>
-                                    <UIObject ControlType="Image" Id="SelectandApplyImage" FriendlyName="SelectandApply" SpecialControlType="None">
+                                    <UIObject ControlType="Image" Id="ListContentsImage" FriendlyName="SelectandApply" SpecialControlType="None">
                                       <TechnologyName>UIA</TechnologyName>
                                       <WindowTitles>
                                         <WindowTitle>Warewolf</WindowTitle>
                                       </WindowTitles>
                                       <AndCondition>
-                                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                         <PropertyCondition Name="ControlType">Image</PropertyCondition>
-                                        <PropertyCondition Name="AutomationId">Select and apply</PropertyCondition>
+                                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                        <PropertyCondition Name="AutomationId">List Contents</PropertyCondition>
+                                      </AndCondition>
+                                      <SupportLevel>0</SupportLevel>
+                                      <Descendants />
+                                    </UIObject>
+                                  </Descendants>
+                                </UIObject>
+                                <UIObject ControlType="ListItem" Id="Delete" FriendlyName="Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV..." SpecialControlType="None">
+                                  <TechnologyName>UIA</TechnologyName>
+                                  <WindowTitles>
+                                    <WindowTitle>Warewolf</WindowTitle>
+                                  </WindowTitles>
+                                  <AndCondition>
+                                    <PropertyCondition Name="ControlType">ListItem</PropertyCondition>
+                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                    <PropertyCondition Name="Name">Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorViewModel</PropertyCondition>
+                                    <PropertyCondition Name="AutomationId">Delete</PropertyCondition>
+                                  </AndCondition>
+                                  <SupportLevel>0</SupportLevel>
+                                  <Descendants>
+                                    <UIObject ControlType="Image" Id="DeleteImage" FriendlyName="SelectandApply" SpecialControlType="None">
+                                      <TechnologyName>UIA</TechnologyName>
+                                      <WindowTitles>
+                                        <WindowTitle>Warewolf</WindowTitle>
+                                      </WindowTitles>
+                                      <AndCondition>
+                                        <PropertyCondition Name="ControlType">Image</PropertyCondition>
+                                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                        <PropertyCondition Name="AutomationId">Delete</PropertyCondition>
                                       </AndCondition>
                                       <SupportLevel>0</SupportLevel>
                                       <Descendants />
@@ -22096,137 +22259,6 @@
                 </UIObject>
               </Descendants>
             </UIObject>
-            <UIObject ControlType="Window" Id="ServicePickerDialog" FriendlyName="Wpf" SpecialControlType="None">
-              <TechnologyName>UIA</TechnologyName>
-              <WindowTitles>
-                <WindowTitle>Warewolf</WindowTitle>
-              </WindowTitles>
-              <AndCondition>
-                <PropertyCondition Name="ControlType">Window</PropertyCondition>
-                <PropertyCondition Name="Name">Select A Service</PropertyCondition>
-                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                <PropertyCondition Name="ClassName" Operator="Contains">HwndWrapper</PropertyCondition>
-                <PropertyCondition Name="AutomationId">UI_SelectServiceWindow_AutoID</PropertyCondition>
-              </AndCondition>
-              <SupportLevel>0</SupportLevel>
-              <Descendants>
-                <UIObject ControlType="Custom" Id="Explorer" FriendlyName="ExplorerView" SpecialControlType="None">
-                  <TechnologyName>UIA</TechnologyName>
-                  <WindowTitles>
-                    <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
-                  </WindowTitles>
-                  <AndCondition>
-                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                    <PropertyCondition Name="ControlType">Custom</PropertyCondition>
-                    <PropertyCondition Name="ClassName">Uia.ExplorerView</PropertyCondition>
-                    <PropertyCondition Name="AutomationId">ExplorerView</PropertyCondition>
-                  </AndCondition>
-                  <SupportLevel>0</SupportLevel>
-                  <Descendants>
-                    <UIObject ControlType="Edit" Id="FilterTextbox" FriendlyName="SearchTextBox" SpecialControlType="None">
-                      <TechnologyName>UIA</TechnologyName>
-                      <WindowTitles>
-                        <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
-                      </WindowTitles>
-                      <AndCondition>
-                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                        <PropertyCondition Name="ControlType">Edit</PropertyCondition>
-                        <PropertyCondition Name="AutomationId">SearchTextBox</PropertyCondition>
-                      </AndCondition>
-                      <SupportLevel>0</SupportLevel>
-                      <Descendants />
-                    </UIObject>
-                    <UIObject ControlType="Button" Id="Refresh" FriendlyName="" SpecialControlType="None">
-                      <TechnologyName>UIA</TechnologyName>
-                      <WindowTitles>
-                        <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
-                      </WindowTitles>
-                      <AndCondition>
-                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                        <PropertyCondition Name="ControlType">Button</PropertyCondition>
-                        <PropertyCondition Name="Name"></PropertyCondition>
-                      </AndCondition>
-                      <SupportLevel>0</SupportLevel>
-                      <Descendants />
-                    </UIObject>
-                    <UIObject ControlType="Tree" Id="ExplorerTree" FriendlyName="ExplorerTree" SpecialControlType="None">
-                      <TechnologyName>UIA</TechnologyName>
-                      <WindowTitles>
-                        <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
-                      </WindowTitles>
-                      <AndCondition>
-                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                        <PropertyCondition Name="ControlType">Tree</PropertyCondition>
-                        <PropertyCondition Name="AutomationId">ExplorerTree</PropertyCondition>
-                      </AndCondition>
-                      <SupportLevel>0</SupportLevel>
-                      <Descendants>
-                        <UIObject ControlType="TreeItem" Id="TreeItem1" FriendlyName="Infragistics.Controls.Menus.XamDataTreeNodeDataCon..." SpecialControlType="None">
-                          <TechnologyName>UIA</TechnologyName>
-                          <WindowTitles>
-                            <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
-                          </WindowTitles>
-                          <SearchConfigurations>
-                            <SearchConfiguration>Expand</SearchConfiguration>
-                          </SearchConfigurations>
-                          <AndCondition>
-                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                            <PropertyCondition Name="ControlType">TreeItem</PropertyCondition>
-                            <PropertyCondition Name="Name">Infragistics.Controls.Menus.XamDataTreeNodeDataContext</PropertyCondition>
-                          </AndCondition>
-                          <SupportLevel>0</SupportLevel>
-                          <Descendants>
-                            <UIObject ControlType="TreeItem" Id="SubTreeItem1" FriendlyName="Infragistics.Controls.Menus.XamDataTreeNodeDataCon..." SpecialControlType="None">
-                              <TechnologyName>UIA</TechnologyName>
-                              <WindowTitles>
-                                <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
-                              </WindowTitles>
-                              <SearchConfigurations>
-                                <SearchConfiguration>Distinct</SearchConfiguration>
-                                <SearchConfiguration>Expand</SearchConfiguration>
-                              </SearchConfigurations>
-                              <AndCondition>
-                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                <PropertyCondition Name="ControlType">TreeItem</PropertyCondition>
-                                <PropertyCondition Name="Name">Infragistics.Controls.Menus.XamDataTreeNodeDataContext</PropertyCondition>
-                              </AndCondition>
-                              <SupportLevel>0</SupportLevel>
-                              <Descendants />
-                            </UIObject>
-                          </Descendants>
-                        </UIObject>
-                      </Descendants>
-                    </UIObject>
-                  </Descendants>
-                </UIObject>
-                <UIObject ControlType="Button" Id="OK" FriendlyName="OK" SpecialControlType="None">
-                  <TechnologyName>UIA</TechnologyName>
-                  <WindowTitles>
-                    <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
-                  </WindowTitles>
-                  <AndCondition>
-                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                    <PropertyCondition Name="ControlType">Button</PropertyCondition>
-                    <PropertyCondition Name="AutomationId">UI_SelectServiceOKButton_AutoID</PropertyCondition>
-                  </AndCondition>
-                  <SupportLevel>0</SupportLevel>
-                  <Descendants />
-                </UIObject>
-                <UIObject ControlType="Button" Id="Cancel" FriendlyName="Cancel" SpecialControlType="None">
-                  <TechnologyName>UIA</TechnologyName>
-                  <WindowTitles>
-                    <WindowTitle>Warewolf</WindowTitle>
-                  </WindowTitles>
-                  <AndCondition>
-                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                    <PropertyCondition Name="ControlType">Button</PropertyCondition>
-                    <PropertyCondition Name="AutomationId">UI_SelectServiceCancelButton_AutoID</PropertyCondition>
-                  </AndCondition>
-                  <SupportLevel>0</SupportLevel>
-                  <Descendants />
-                </UIObject>
-              </Descendants>
-            </UIObject>
             <UIObject ControlType="Window" Id="DebugInputDialog" FriendlyName="Wpf" SpecialControlType="None">
               <TechnologyName>UIA</TechnologyName>
               <WindowTitles>
@@ -22889,6 +22921,137 @@
                   <Descendants />
                 </UIObject>
               </Descendants>
+            </UIObject>
+          </Descendants>
+        </TopLevelWindow>
+        <TopLevelWindow ControlType="Window" Id="ServicePickerDialog" FriendlyName="ServicePickerDialog" SpecialControlType="None">
+          <TechnologyName>UIA</TechnologyName>
+          <WindowTitles>
+            <WindowTitle>Warewolf</WindowTitle>
+          </WindowTitles>
+          <AndCondition>
+            <PropertyCondition Name="ControlType">Window</PropertyCondition>
+            <PropertyCondition Name="Name">Select A Service</PropertyCondition>
+            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+            <PropertyCondition Name="ClassName" Operator="Contains">HwndWrapper</PropertyCondition>
+            <PropertyCondition Name="AutomationId">UI_SelectServiceWindow_AutoID</PropertyCondition>
+          </AndCondition>
+          <SupportLevel>0</SupportLevel>
+          <Descendants>
+            <UIObject ControlType="Custom" Id="Explorer" FriendlyName="ExplorerView" SpecialControlType="None">
+              <TechnologyName>UIA</TechnologyName>
+              <WindowTitles>
+                <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
+              </WindowTitles>
+              <AndCondition>
+                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                <PropertyCondition Name="ControlType">Custom</PropertyCondition>
+                <PropertyCondition Name="ClassName">Uia.ExplorerView</PropertyCondition>
+                <PropertyCondition Name="AutomationId">ExplorerView</PropertyCondition>
+              </AndCondition>
+              <SupportLevel>0</SupportLevel>
+              <Descendants>
+                <UIObject ControlType="Edit" Id="FilterTextbox" FriendlyName="SearchTextBox" SpecialControlType="None">
+                  <TechnologyName>UIA</TechnologyName>
+                  <WindowTitles>
+                    <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
+                  </WindowTitles>
+                  <AndCondition>
+                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                    <PropertyCondition Name="ControlType">Edit</PropertyCondition>
+                    <PropertyCondition Name="AutomationId">SearchTextBox</PropertyCondition>
+                  </AndCondition>
+                  <SupportLevel>0</SupportLevel>
+                  <Descendants />
+                </UIObject>
+                <UIObject ControlType="Button" Id="Refresh" FriendlyName="" SpecialControlType="None">
+                  <TechnologyName>UIA</TechnologyName>
+                  <WindowTitles>
+                    <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
+                  </WindowTitles>
+                  <AndCondition>
+                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                    <PropertyCondition Name="ControlType">Button</PropertyCondition>
+                    <PropertyCondition Name="Name"></PropertyCondition>
+                  </AndCondition>
+                  <SupportLevel>0</SupportLevel>
+                  <Descendants />
+                </UIObject>
+                <UIObject ControlType="Tree" Id="ExplorerTree" FriendlyName="ExplorerTree" SpecialControlType="None">
+                  <TechnologyName>UIA</TechnologyName>
+                  <WindowTitles>
+                    <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
+                  </WindowTitles>
+                  <AndCondition>
+                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                    <PropertyCondition Name="ControlType">Tree</PropertyCondition>
+                    <PropertyCondition Name="AutomationId">ExplorerTree</PropertyCondition>
+                  </AndCondition>
+                  <SupportLevel>0</SupportLevel>
+                  <Descendants>
+                    <UIObject ControlType="TreeItem" Id="TreeItem1" FriendlyName="Infragistics.Controls.Menus.XamDataTreeNodeDataCon..." SpecialControlType="None">
+                      <TechnologyName>UIA</TechnologyName>
+                      <WindowTitles>
+                        <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
+                      </WindowTitles>
+                      <SearchConfigurations>
+                        <SearchConfiguration>Expand</SearchConfiguration>
+                      </SearchConfigurations>
+                      <AndCondition>
+                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                        <PropertyCondition Name="ControlType">TreeItem</PropertyCondition>
+                        <PropertyCondition Name="Name">Infragistics.Controls.Menus.XamDataTreeNodeDataContext</PropertyCondition>
+                      </AndCondition>
+                      <SupportLevel>0</SupportLevel>
+                      <Descendants>
+                        <UIObject ControlType="TreeItem" Id="SubTreeItem1" FriendlyName="Infragistics.Controls.Menus.XamDataTreeNodeDataCon..." SpecialControlType="None">
+                          <TechnologyName>UIA</TechnologyName>
+                          <WindowTitles>
+                            <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
+                          </WindowTitles>
+                          <SearchConfigurations>
+                            <SearchConfiguration>Distinct</SearchConfiguration>
+                            <SearchConfiguration>Expand</SearchConfiguration>
+                          </SearchConfigurations>
+                          <AndCondition>
+                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                            <PropertyCondition Name="ControlType">TreeItem</PropertyCondition>
+                            <PropertyCondition Name="Name">Infragistics.Controls.Menus.XamDataTreeNodeDataContext</PropertyCondition>
+                          </AndCondition>
+                          <SupportLevel>0</SupportLevel>
+                          <Descendants />
+                        </UIObject>
+                      </Descendants>
+                    </UIObject>
+                  </Descendants>
+                </UIObject>
+              </Descendants>
+            </UIObject>
+            <UIObject ControlType="Button" Id="OK" FriendlyName="OK" SpecialControlType="None">
+              <TechnologyName>UIA</TechnologyName>
+              <WindowTitles>
+                <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
+              </WindowTitles>
+              <AndCondition>
+                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                <PropertyCondition Name="ControlType">Button</PropertyCondition>
+                <PropertyCondition Name="AutomationId">UI_SelectServiceOKButton_AutoID</PropertyCondition>
+              </AndCondition>
+              <SupportLevel>0</SupportLevel>
+              <Descendants />
+            </UIObject>
+            <UIObject ControlType="Button" Id="Cancel" FriendlyName="Cancel" SpecialControlType="None">
+              <TechnologyName>UIA</TechnologyName>
+              <WindowTitles>
+                <WindowTitle>Warewolf</WindowTitle>
+              </WindowTitles>
+              <AndCondition>
+                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                <PropertyCondition Name="ControlType">Button</PropertyCondition>
+                <PropertyCondition Name="AutomationId">UI_SelectServiceCancelButton_AutoID</PropertyCondition>
+              </AndCondition>
+              <SupportLevel>0</SupportLevel>
+              <Descendants />
             </UIObject>
           </Descendants>
         </TopLevelWindow>

@@ -375,6 +375,63 @@ namespace Dev2.Data.Tests.Operations
 
         #endregion
 
+        #region NotBetween
+
+        [TestMethod]
+        [Owner("Massimo Guerrera")]
+        [TestCategory("NotBetween_Invoke")]
+        public void NotBetween_Invoke_IsBetween_ReturnsFalse()
+        {
+            //------------Setup for test--------------------------
+            var notBetween = new NotBetween();
+            string[] cols = new string[3];
+            cols[0] = "15";
+            cols[1] = "10";
+            cols[2] = "20";
+
+            //------------Execute Test---------------------------
+
+            bool result = notBetween.Invoke(cols);
+
+            //------------Assert Results-------------------------
+            Assert.IsFalse(result);
+        }
+
+        [TestMethod]
+        [Owner("Massimo Guerrera")]
+        [TestCategory("NotBetween_Invoke")]
+        public void NotBetween_Invoke_NotBetween_ReturnsTrue()
+        {
+            //------------Setup for test--------------------------
+            var notBetween = new NotBetween();
+            string[] cols = new string[3];
+            cols[0] = "30";
+            cols[1] = "10";
+            cols[2] = "20";
+
+            //------------Execute Test---------------------------
+
+            bool result = notBetween.Invoke(cols);
+
+            //------------Assert Results-------------------------
+            Assert.IsTrue(result);
+        }
+        
+        [TestMethod]
+        [Owner("Sanele Mthmembu")]
+        [TestCategory("NotBetween_HandlesType")]
+        public void NotBetween_HandlesType_ReturnsNotBetweenType()
+        {
+            var decisionType = enDecisionType.NotBetween;
+            //------------Setup for test--------------------------
+            var notBetween = new NotBetween();
+            //------------Execute Test---------------------------
+            //------------Assert Results-------------------------
+            Assert.AreEqual(decisionType, notBetween.HandlesType());
+        }
+
+        #endregion
+
         #region Equal
 
         [TestMethod]
@@ -434,6 +491,46 @@ namespace Dev2.Data.Tests.Operations
             //------------Execute Test---------------------------
             //------------Assert Results-------------------------
             Assert.AreEqual(decisionType, isEqual.HandlesType());
+        }
+
+
+        #endregion
+
+        #region Equal
+
+        [TestMethod]
+        [Owner("Sanele Mthembu")]        
+        public void IsNotEqual_IsNotEqualUnitTest_Invoke_TrueIsReturned()
+        {
+            var comparer = new IsNotEqual();            
+            var actual = comparer.Invoke(new[] { "100", "100" });
+            Assert.IsFalse(actual, "IsNotEqual returned the wrong result when comparing integers");
+        }
+
+        [TestMethod]
+        [Owner("Sanele Mthembu")]        
+        public void IsNotEqual_IsNotEqualUnitTest_Invoke_TrueIsReturned_Decimal()
+        // ReSharper restore InconsistentNaming
+        {            
+            var comparer = new IsNotEqual();
+            var actual = comparer.Invoke(new[] { "1.08", "1.80" });
+            Assert.IsTrue(actual, "IsNotEqual returned the wrong result when comparing integers");
+            
+            actual = comparer.Invoke(new[] { "Val", "Val" });
+            Assert.IsFalse(actual, "IsNotEqual returned the wrong result when comparing strings");
+        }
+
+
+        [TestMethod]
+        [Owner("Sanele Mthmembu")]
+        public void IsNotEqual_IsNotEqualUnitTest_HandleType_ShouldReturnIsNotEqual()
+        {
+            var decisionType = enDecisionType.IsNotEqual;
+            //------------Setup for test--------------------------
+            var isNotEqual = new IsNotEqual();
+            //------------Execute Test---------------------------
+            //------------Assert Results-------------------------
+            Assert.AreEqual(decisionType, isNotEqual.HandlesType());
         }
 
 

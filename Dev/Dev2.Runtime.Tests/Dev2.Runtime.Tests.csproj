@@ -138,6 +138,7 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
     </Reference>
+    <Reference Include="ServiceStack.Common, Version=3.9.37.0, Culture=neutral, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Activities" />
     <Reference Include="System.Activities.Presentation">
@@ -190,9 +191,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ESB\Control\EnvironmentOutputMappingManagerTests.cs" />
+    <Compile Include="ESB\Control\EsbServiceInvokerTests.cs" />
     <Compile Include="ESB\Control\EsbServicesEndpointTests.cs" />
     <Compile Include="ESB\Control\ServiceLocatorTests.cs" />
     <Compile Include="ESB\EsbServicesEndpointMock.cs" />
+    <Compile Include="ESB\Execution\WfExecutionContainerTests.cs" />
     <Compile Include="ESB\Plugin\PluginRuntimeHandlerTest.cs" />
     <Compile Include="ESB\Plugin\PluginServiceExecutionFactoryTest.cs" />
     <Compile Include="Hosting\ExplorerItemFactoryTests.cs" />

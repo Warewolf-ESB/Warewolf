@@ -8,17 +8,21 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using System.Collections.Generic;
-using Dev2.Common.Interfaces.Data;
+using System;
+using Dev2.Data.Decisions.Operations;
 
-namespace Dev2.DynamicServices {
-    public class ServiceHydrationTO {
+namespace Dev2.Data.Tests.DecisionsTests
+{
+    public class IsNotEqualTests
+    {
+        public Enum HandlesType()
+        {
+            return enDecisionType.IsNotEqual;
+        }
 
-        public string DataList { get; set; }
-
-        public IList<IDev2Definition> InputMapping { get; set; }
-
-        public IList<IDev2Definition> OutputMapping { get; set; }
-
+        public bool Invoke(string[] cols)
+        {
+            return !cols[0].Equals(cols[1], StringComparison.InvariantCulture);
+        }
     }
 }
