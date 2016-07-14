@@ -384,6 +384,7 @@
     <Compile Include="Settings\Perfcounters\PerformanceCountersByResource.cs" />
     <Compile Include="Settings\Scheduler\CredentialUI.cs" />
     <Compile Include="Settings\Scheduler\DummyResource.cs" />
+    <Compile Include="Settings\Scheduler\SchedulerTaskManager.cs" />
     <Compile Include="Settings\Scheduler\SchedulerView.xaml.cs">
       <DependentUpon>SchedulerView.xaml</DependentUpon>
     </Compile>
