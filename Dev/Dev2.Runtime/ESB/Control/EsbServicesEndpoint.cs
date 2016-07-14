@@ -35,9 +35,17 @@ namespace Dev2.Runtime.ESB.Control
     /// IEsbActivityChannel
     public class EsbServicesEndpoint :  IEsbWorkspaceChannel
     {
+        public EsbServicesEndpoint(IEnvironmentOutputMappingManager environmentOutputMappingManager)
+        {
+            _environmentOutputMappingManager = environmentOutputMappingManager;
+        }
 
-
-        private readonly IEnvironmentOutputMappingManager _environmentOutputMappingManager = new EnvironmentOutputMappingManager();
+        public EsbServicesEndpoint()
+            :this(new EnvironmentOutputMappingManager())
+        {
+            
+        }
+        private readonly IEnvironmentOutputMappingManager _environmentOutputMappingManager;
         private static WorkspaceRepository wRepository => WorkspaceRepository.Instance;
         private static ResourceCatalog rCatalog => ResourceCatalog.Instance;
         /// <summary>
@@ -130,11 +138,14 @@ namespace Dev2.Runtime.ESB.Control
         {
             errors = null;
             var theWorkspace = wRepository.Get(workspaceId);
-            var executionContainer = new RemoteWorkflowExecutionContainer(null, dataObject, theWorkspace, this);
+            var executionContainer = CreateExecutionContainer(dataObject, theWorkspace);
             executionContainer.PerformLogExecution(uri, update);
         }
 
-
+        private RemoteWorkflowExecutionContainer CreateExecutionContainer(IDSFDataObject dataObject, IWorkspace theWorkspace)
+        {
+            return new RemoteWorkflowExecutionContainer(null, dataObject, theWorkspace, this);
+        }
 
         /// <summary>
         /// Executes the sub request.
@@ -215,7 +226,7 @@ namespace Dev2.Runtime.ESB.Control
         }
 
         public void CreateNewEnvironmentFromInputMappings(IDSFDataObject dataObject, string inputDefs, int update)
-        {
+        {   
             var shapeDefinitionsToEnvironment = DataListUtil.InputsToEnvironment(dataObject.Environment, inputDefs, update);
             dataObject.PushEnvironment(shapeDefinitionsToEnvironment);
         }
