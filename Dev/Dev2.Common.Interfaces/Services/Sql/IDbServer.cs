@@ -38,5 +38,7 @@ namespace Dev2.Common.Interfaces.Services.Sql
         bool continueOnProcessorException = false, string dbName = "");
 
         IDbCommand CreateCommand();
+
+        bool Connect(string connectionString, CommandType commandType, string commandText);
     }
 }
