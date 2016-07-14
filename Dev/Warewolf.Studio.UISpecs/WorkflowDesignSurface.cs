@@ -25,6 +25,10 @@ namespace Warewolf.Studio.UISpecs
         [TestMethod]
         public void BigWorkflowDesignSurfaceUITest()
         {
+            if (!Uimap.MainStudioWindow.SideMenuBar.CollapsedSideMenu.NewWorkflowIcon.Exists)
+            {
+                Uimap.MainStudioWindow.DrawHighlight();
+            }
             Uimap.Assert_NewWorkFlow_RibbonButton_Exists();
             Uimap.Click_New_Workflow_Ribbon_Button();
             Uimap.Assert_StartNode_Exists();
