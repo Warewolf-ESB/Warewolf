@@ -5041,13 +5041,13 @@ namespace Warewolf.Studio.UISpecs
         public void Drag_DotNet_DLL_Connector_Onto_DesignSurface()
         {
             #region Variable Declarations
-            WpfImage dotNetDLLConnectorImage = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.ResourceTools.DotNetDLLConnector.DotNetDLLConnectorImage;
+            WpfImage dotNetDLLImage = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.ResourceTools.DotNetDLL.DotNetDLLImage;
             WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
             #endregion
 
             // Move 'DotNetDLLConnector' image to 'Flowchart' custom control
             flowchart.EnsureClickable(new Point(308, 127));
-            Mouse.StartDragging(dotNetDLLConnectorImage, new Point(16, 25));
+            Mouse.StartDragging(dotNetDLLImage, new Point(16, 25));
             Mouse.StopDragging(flowchart, new Point(308, 127));
         }
         
@@ -22227,15 +22227,15 @@ namespace Warewolf.Studio.UISpecs
         }
         
         #region Properties
-        public DotNetDLLConnector DotNetDLLConnector
+        public DotNetDLL DotNetDLL
         {
             get
             {
-                if ((this.mDotNetDLLConnector == null))
+                if ((this.mDotNetDLL == null))
                 {
-                    this.mDotNetDLLConnector = new DotNetDLLConnector(this);
+                    this.mDotNetDLL = new DotNetDLL(this);
                 }
-                return this.mDotNetDLLConnector;
+                return this.mDotNetDLL;
             }
         }
         
@@ -22253,46 +22253,46 @@ namespace Warewolf.Studio.UISpecs
         #endregion
         
         #region Fields
-        private DotNetDLLConnector mDotNetDLLConnector;
+        private DotNetDLL mDotNetDLL;
         
         private Service mService;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class DotNetDLLConnector : WpfListItem
+    public class DotNetDLL : WpfListItem
     {
         
-        public DotNetDLLConnector(UITestControl searchLimitContainer) : 
+        public DotNetDLL(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
             this.SearchProperties[WpfListItem.PropertyNames.Name] = "Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorViewModel";
-            this.SearchProperties[WpfListItem.PropertyNames.AutomationId] = "DotNet DLL Connector";
+            this.SearchProperties[WpfListItem.PropertyNames.AutomationId] = "DotNet DLL";
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
         
         #region Properties
-        public WpfImage DotNetDLLConnectorImage
+        public WpfImage DotNetDLLImage
         {
             get
             {
-                if ((this.mDotNetDLLConnectorImage == null))
+                if ((this.mDotNetDLLImage == null))
                 {
-                    this.mDotNetDLLConnectorImage = new WpfImage(this);
+                    this.mDotNetDLLImage = new WpfImage(this);
                     #region Search Criteria
-                    this.mDotNetDLLConnectorImage.SearchProperties[WpfImage.PropertyNames.AutomationId] = "DotNet DLL Connector";
-                    this.mDotNetDLLConnectorImage.WindowTitles.Add("Warewolf");
+                    this.mDotNetDLLImage.SearchProperties[WpfImage.PropertyNames.AutomationId] = "DotNet DLL";
+                    this.mDotNetDLLImage.WindowTitles.Add("Warewolf");
                     #endregion
                 }
-                return this.mDotNetDLLConnectorImage;
+                return this.mDotNetDLLImage;
             }
         }
         #endregion
         
         #region Fields
-        private WpfImage mDotNetDLLConnectorImage;
+        private WpfImage mDotNetDLLImage;
         #endregion
     }
     
@@ -26432,7 +26432,7 @@ namespace Warewolf.Studio.UISpecs
                     this.mDotNetDll = new WpfCustom(this);
                     #region Search Criteria
                     this.mDotNetDll.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.DotNetDllDesigner";
-                    this.mDotNetDll.SearchProperties[WpfControl.PropertyNames.AutomationId] = "DotNet DLL Connector(DotNetDllDesigner)";
+                    this.mDotNetDll.SearchProperties[WpfControl.PropertyNames.AutomationId] = "DotNet DLL(DotNetDllDesigner)";
                     this.mDotNetDll.WindowTitles.Add("Warewolf");
                     #endregion
                 }
