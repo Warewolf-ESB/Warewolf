@@ -128,8 +128,7 @@
     <Compile Include="DependencyVisualization\CircularDependency.cs" />
     <Compile Include="DependencyVisualization\Graph.cs" />
     <Compile Include="DependencyVisualization\Node.cs" />
-    <Compile Include="Dev2EnumConverter.cs" />
-    <Compile Include="Dev2IJsonListEvaluator.cs" />
+    <Compile Include="Dev2EnumConverter.cs" />    
     <Compile Include="Dev2Tokenizer.cs" />
     <Compile Include="Exchange\ExchangeEmailSender.cs" />
     <Compile Include="Exchange\ExchangeServiceFactory.cs" />
@@ -137,8 +136,7 @@
     <Compile Include="ExtMethods\BaseEnumExtensions.cs" />
     <Compile Include="ExtMethods\StringExtension.cs" />
     <Compile Include="ExtMethods\TypeExtensions.cs" />
-    <Compile Include="GlobalConstants.cs" />
-    <Compile Include="IDev2IJsonListEvaluator.cs" />
+    <Compile Include="GlobalConstants.cs" />    
     <Compile Include="IncludeApi.cs" />
     <Compile Include="Interfaces\IAssignManager.cs" />
     <Compile Include="Interfaces\IDateTimeFormatForwardLookup.cs" />

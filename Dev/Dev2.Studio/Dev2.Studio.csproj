@@ -384,6 +384,7 @@
     <Compile Include="Settings\Perfcounters\PerformanceCountersByResource.cs" />
     <Compile Include="Settings\Scheduler\CredentialUI.cs" />
     <Compile Include="Settings\Scheduler\DummyResource.cs" />
+    <Compile Include="Settings\Scheduler\SchedulerTaskManager.cs" />
     <Compile Include="Settings\Scheduler\SchedulerView.xaml.cs">
       <DependentUpon>SchedulerView.xaml</DependentUpon>
     </Compile>
@@ -869,17 +870,9 @@
       <Project>{db2fbc8d-3271-4d1d-a6bc-f4dfc530918b}</Project>
       <Name>Dev2.Intellisense</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Dev2.Network\Dev2.Network.csproj">
-      <Project>{14f1e4aa-b9a8-45dd-af2a-059eff29201b}</Project>
-      <Name>Dev2.Network</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Dev2.Common\Dev2.Common.csproj">
       <Project>{84405fdf-0ff8-49a2-8925-8a4aeba8104a}</Project>
       <Name>Dev2.Common</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Dev2.OutputLibraries\Dev2.OutputLibraries.csproj">
-      <Project>{38650e4e-90e2-44de-a32f-30f3c4d1438b}</Project>
-      <Name>Dev2.OutputLibraries</Name>
     </ProjectReference>
     <ProjectReference Include="..\Dev2.Runtime.Configuration\Dev2.Runtime.Configuration.csproj">
       <Project>{9C43D5A2-FEFD-4632-9BF2-EE0E4C05BEBC}</Project>

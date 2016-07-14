@@ -341,17 +341,10 @@ namespace Dev2.Core.Tests
                 MainViewModel.Items.ToList()
                     .First(i => i.WorkSurfaceViewModel.WorkSurfaceContext == WorkSurfaceContext.Workflow);
 
-            EventAggregator.Setup(e => e.Publish(It.IsAny<TabClosedMessage>()))
-                .Callback<object>(o =>
-                {
-                    var msg = (TabClosedMessage)o;
-                    Assert.IsTrue(msg.Context.Equals(activetx));
-                });
-
+            
             MainViewModel.DeactivateItem(activetx, true);
             MockWorkspaceRepo.Verify(c => c.Remove(FirstResource.Object), Times.Once());
             Assert.IsTrue(MainViewModel.Items.Count == 1);
-            EventAggregator.Verify(e => e.Publish(It.IsAny<TabClosedMessage>()), Times.Once());
         }
 
         [TestMethod]
@@ -368,13 +361,7 @@ namespace Dev2.Core.Tests
                 MainViewModel.Items.ToList()
                     .First(i => i.WorkSurfaceViewModel.WorkSurfaceContext == WorkSurfaceContext.Workflow);
 
-            EventAggregator.Setup(e => e.Publish(It.IsAny<TabClosedMessage>()))
-                .Callback<object>(o =>
-                {
-                    var msg = (TabClosedMessage)o;
-                    Assert.IsTrue(msg.Context.Equals(activetx));
-                });
-
+           
             EventAggregator.Setup(e => e.Publish(It.IsAny<SaveResourceMessage>()))
                 .Callback<object>(o =>
                 {
@@ -385,7 +372,6 @@ namespace Dev2.Core.Tests
             MainViewModel.DeactivateItem(activetx, true);
             MockWorkspaceRepo.Verify(c => c.Remove(FirstResource.Object), Times.Once());
             Assert.IsTrue(MainViewModel.Items.Count == 1);
-            EventAggregator.Verify(e => e.Publish(It.IsAny<TabClosedMessage>()), Times.Once());
             EventAggregator.Verify(e => e.Publish(It.IsAny<SaveResourceMessage>()), Times.Once());
         }
 
