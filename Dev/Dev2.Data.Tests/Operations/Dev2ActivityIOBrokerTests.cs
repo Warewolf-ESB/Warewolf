@@ -365,6 +365,7 @@ namespace Dev2.Data.Tests.Operations
 
                 var success = privateObject.Invoke("Create", dst.Object, args, true);
                 Assert.AreEqual("Success".ToUpper(), success.ToString().ToUpper());
+                File.Delete(tempFileName);
             }
         }
 
@@ -560,6 +561,9 @@ namespace Dev2.Data.Tests.Operations
                 {
                     path = Path.GetTempFileName();
                     privateObject.Invoke("DoFileTransfer", src.Object, dst.Object, args, dstPath.Object, p.Object, path, result);
+
+                    File.Delete(path);
+
                 }
                 catch (Exception e1)
                 {
@@ -567,6 +571,7 @@ namespace Dev2.Data.Tests.Operations
                     var actualError = e1.Message;
                     //---------------Test Result -----------------------
                     Assert.AreEqual(actualError, error);
+
                 }
             }
         }
@@ -662,11 +667,8 @@ namespace Dev2.Data.Tests.Operations
         public void ExtractFile_GivenGivenValidArgs_ShouldNotThrowExc()
         {
             //---------------Set up test pack-------------------
-            var activityOperationsBroker = CreateBroker();
-            
             var tempFileName = Path.GetTempFileName();
             var tempPath = Path.GetDirectoryName(tempFileName);
-            PrivateObject privateObject = new PrivateObject(activityOperationsBroker);
             Dev2UnZipOperationTO operationTO = new Dev2UnZipOperationTO("Password", false);
             ZipFile file = new ZipFile();
             file.AddFile(tempFileName);
@@ -683,7 +685,10 @@ namespace Dev2.Data.Tests.Operations
                 Assert.AreEqual("",ex.Message);
                 
             }
-            
+            finally
+            {
+                File.Delete(tempFileName);
+            }
 
             //---------------Test Result -----------------------
         }
@@ -717,7 +722,10 @@ namespace Dev2.Data.Tests.Operations
             {
                 Assert.Fail(ex.Message);
             }
-            
+            finally
+            {
+                File.Delete(tempFileName);
+            }
 
             //---------------Test Result -----------------------
         }
@@ -765,6 +773,11 @@ namespace Dev2.Data.Tests.Operations
                 }
                
 
+            }
+            finally
+            {
+                File.Delete(tempFileName);
+                File.Delete(tempSrcName);
             }
             
             
