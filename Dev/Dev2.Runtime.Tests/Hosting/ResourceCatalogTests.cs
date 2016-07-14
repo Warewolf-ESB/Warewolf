@@ -1559,7 +1559,7 @@ namespace Dev2.Tests.Runtime.Hosting
             //------------Assert Results-------------------------
             foreach (var model in models)
             {
-                Assert.AreEqual(typeof(OauthSource), model.GetType());
+                Assert.AreEqual(typeof(DropBoxSource), model.GetType());
             }
 
             var payload = JsonConvert.SerializeObject(models);
