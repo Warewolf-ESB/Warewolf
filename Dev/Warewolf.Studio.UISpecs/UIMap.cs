@@ -28,7 +28,7 @@ namespace Warewolf.Studio.UISpecs
         [Then(@"I ""(.*)""")]
         public void TheRecordedActionIsPerformed(string p0)
         {
-            MethodInfo getActionRecording = this.GetMethod(p0);
+            MethodInfo getActionRecording = typeof(UIMap).GetMethod(p0);
             if (getActionRecording != null)
             {
                 getActionRecording.Invoke(this, new object[] { });
