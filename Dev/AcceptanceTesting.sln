@@ -271,6 +271,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ResourceDecryptScript", "Re
 		Dev2.Server\Decrypt Server Resources.ps1 = Dev2.Server\Decrypt Server Resources.ps1
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Services.Execution.Tests", "Dev2.Services.Execution.Tests\Dev2.Services.Execution.Tests.csproj", "{907D00EB-B773-4D6E-A5DB-CBE1AAF0B477}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -595,6 +597,10 @@ Global
 		{18717E42-DF21-45A4-9527-F0BB95D7135D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{18717E42-DF21-45A4-9527-F0BB95D7135D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{18717E42-DF21-45A4-9527-F0BB95D7135D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{907D00EB-B773-4D6E-A5DB-CBE1AAF0B477}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{907D00EB-B773-4D6E-A5DB-CBE1AAF0B477}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{907D00EB-B773-4D6E-A5DB-CBE1AAF0B477}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{907D00EB-B773-4D6E-A5DB-CBE1AAF0B477}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
