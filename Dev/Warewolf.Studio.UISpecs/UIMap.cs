@@ -43,11 +43,12 @@ namespace Warewolf.Studio.UISpecs
         public static void WaitForStudioStart()
         {
             Playback.Initialize();
-            Playback.PlaybackSettings.WaitForReadyLevel = WaitForReadyLevel.Disabled;
-            Playback.PlaybackSettings.ShouldSearchFailFast = false;
-            Playback.PlaybackSettings.SearchTimeout = 10000;
+        }
 
-            var sleepTimer = 10;
+        [AssemblyInitialize]
+        public static void WaitForStudio()
+        {
+            var sleepTimer = 20;
             while (true)
             {
                 try
@@ -68,6 +69,31 @@ namespace Warewolf.Studio.UISpecs
                     throw new InvalidOperationException("Warewolf studio is not running. You are expected to run \"Dev\\TestScripts\\Studio\\Startup.bat\" as an administrator and wait for it to complete before running any coded UI tests");
                 }
             }
+        }
+
+        public void SetGlobalPlaybackSettings()
+        {
+            Playback.PlaybackSettings.WaitForReadyLevel = WaitForReadyLevel.Disabled;
+            Playback.PlaybackSettings.ShouldSearchFailFast = false;
+            Playback.PlaybackSettings.SearchTimeout = 5000;
+            // Ensure the error handler is attached
+            Playback.PlaybackError -= Playback_PlaybackError;
+            Playback.PlaybackError += Playback_PlaybackError;
+        }
+
+        /// <summary> PlaybackError event handler. </summary>
+        private static void Playback_PlaybackError(object sender, PlaybackErrorEventArgs e)
+        {
+            Console.WriteLine("Error from " + sender.GetType() + "\n" + e.Error.Message);
+            if (sender is UITestControl)
+            {
+                (sender as UITestControl).DrawHighlight();
+            }
+            else
+            {
+                Playback.Wait(1000);
+            }
+            e.Result = PlaybackErrorOptions.Retry;
         }
 
         [BeforeScenario]
