@@ -36,7 +36,8 @@ IF EXIST "%PROGRAMDATA%\Warewolf\Workspaces" echo ERROR CANNOT DELETE %PROGRAMDA
 IF EXIST "%PROGRAMDATA%\Warewolf\Server Settings" echo ERROR CANNOT DELETE %PROGRAMDATA%\Warewolf\Server Settings
 @echo on
 
-REM ** Run disk cleanup, temp directories, etc.
-CLEANMGR /VERYLOWDISK
+REM ** Clean temp directories
+IF EXIST "%windir%\Temp\*.*" del /s /q "%windir%\Temp\*.*"
+IF EXIST "%temp%\*.*" del /s /q "%temp%\*.*"
 
 exit 0
