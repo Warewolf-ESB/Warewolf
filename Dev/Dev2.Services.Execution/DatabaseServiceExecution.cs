@@ -25,6 +25,7 @@ using MySql.Data.MySqlClient;
 using Warewolf.Storage;
 using Oracle.ManagedDataAccess.Client;
 using System.Data.Odbc;
+using Dev2.Common.Interfaces.Data.TO;
 using Dev2.Interfaces;
 using Npgsql;
 using Warewolf.Resource.Errors;
@@ -35,22 +36,20 @@ namespace Dev2.Services.Execution
 {
     public class DatabaseServiceExecution : ServiceExecutionAbstract<DbService, DbSource>
     {
-        private SqlServer _sqlServer;
-
         public DatabaseServiceExecution(IDSFDataObject dataObj)
-            : base(dataObj, true, false)
+            : base(dataObj, true)
         {
         }
 
-        SqlServer SqlServer => _sqlServer;
+        private SqlServer SqlServer { get; set; }
         public string ProcedureName { private get; set; }
 
-        private void SetupSqlServer(ErrorResultTO errors)
+        private void SetupSqlServer(IErrorResultTO errors)
         {
             try
             {
-                _sqlServer = new SqlServer();
-                bool connected = SqlServer.Connect(Source.ConnectionString, CommandType.StoredProcedure, ProcedureName);
+                SqlServer = new SqlServer();
+                var connected = SqlServer.Connect(Source.ConnectionString, CommandType.StoredProcedure, ProcedureName);
                 if (!connected)
                 {
                     Dev2Logger.Error(string.Format(ErrorResource.FailedToConnectWithConnectionString,
@@ -60,7 +59,7 @@ namespace Dev2.Services.Execution
             catch (SqlException sex)
             {
                 var errorMessages = new StringBuilder();
-                for (int i = 0; i < sex.Errors.Count; i++)
+                for (var i = 0; i < sex.Errors.Count; i++)
                 {
                     errorMessages.Append("Index #" + i + Environment.NewLine +
                                          "Message: " + sex.Errors[i].Message + Environment.NewLine +
@@ -73,7 +72,7 @@ namespace Dev2.Services.Execution
             }
             catch (Exception ex)
             {
-                errors.AddError(string.Format("{0}{1}{2}", ex.Message, Environment.NewLine, ex.StackTrace));
+                errors.AddError($"{ex.Message}{Environment.NewLine}{ex.StackTrace}");
                 Dev2Logger.Error(ex);
             }
         }
@@ -83,7 +82,7 @@ namespace Dev2.Services.Execution
             var server = new MySqlServer();
             try
             {
-                bool connected = server.Connect(Source.ConnectionString, CommandType.StoredProcedure, ProcedureName);
+                var connected = server.Connect(Source.ConnectionString, CommandType.StoredProcedure, ProcedureName);
                 if (!connected)
                 {
                     Dev2Logger.Error(string.Format(ErrorResource.FailedToConnectWithConnectionString,
@@ -100,7 +99,7 @@ namespace Dev2.Services.Execution
             }
             catch (Exception ex)
             {
-                errors.AddError(string.Format("{0}{1}{2}", ex.Message, Environment.NewLine, ex.StackTrace));
+                errors.AddError($"{ex.Message}{Environment.NewLine}{ex.StackTrace}");
                 Dev2Logger.Error(ex);
             }
             return server;
@@ -113,7 +112,7 @@ namespace Dev2.Services.Execution
                 return;
             }
             SqlServer.Dispose();
-            _sqlServer = null;
+            SqlServer = null;
         }
 
         public override void BeforeExecution(ErrorResultTO errors)
@@ -135,41 +134,6 @@ namespace Dev2.Services.Execution
         // ReSharper disable once OptionalParameterHierarchyMismatch
         protected override object ExecuteService(int update, out ErrorResultTO errors, IOutputFormatter formater = null)
         {
-//            ODBCServer Odbc = new ODBCServer();
-//            List<DbSource> list = new List<DbSource>();
-//            var Dsns = Odbc.GetDSN();
-//            for (int i = 0; i < Dsns.Count; i++)
-//            {
-//                string input = Dsns[i];
-//                using (MD5 md5 = MD5.Create())
-//                {
-//                    byte[] hash = md5.ComputeHash(Encoding.Default.GetBytes(input));
-//                    Guid result = new Guid(hash);
-//
-//                    list.Add(
-//
-//                            new DbSource
-//                            {
-//                                ResourceName = Dsns[i],
-//                                ResourceType = "DbSource",
-//                                ResourceID = result,
-//                                ServerType = enSourceType.ODBC,
-//                                DatabaseName = Dsns[i],
-//                                ConnectionString = "DSN=" + Dsns[i]
-//
-//                            }
-//
-//                  );
-//                }
-//
-//            }
-
-            //var temp = list.Find(S => S.ResourceID == Source.ResourceID);
-
-//            if (temp != null)
-//            {
-//                Source = temp;
-//            }
             errors = new ErrorResultTO();
             var invokeErrors = new ErrorResultTO();
             switch (Source.ServerType)
@@ -210,15 +174,15 @@ namespace Dev2.Services.Execution
             return null;
         }
 
-        void TranslateDataTableToEnvironment(DataTable executeService, IExecutionEnvironment environment, int update)
+        private void TranslateDataTableToEnvironment(DataTable executeService, IExecutionEnvironment environment, int update)
         {
-            bool started = true;
+            var started = true;
             if (executeService != null && Outputs != null && Outputs.Count != 0)
             {
                 if (executeService.Rows != null)
                 {
 
-                    int rowIdx = 1;
+                    var rowIdx = 1;
                     foreach (DataRow row in executeService.Rows)
                     {
                         foreach (var serviceOutputMapping in Outputs)
@@ -278,11 +242,11 @@ namespace Dev2.Services.Execution
             {
                 if (SqlServer != null)
                 {
-                    List<SqlParameter> parameters = GetSqlParameters();
+                    var parameters = GetSqlParameters();
                     if (parameters != null)
                     {
                         // ReSharper disable CoVariantArrayConversion
-                        using (DataTable dataSet = SqlServer.FetchDataTable(parameters.ToArray()))
+                        using (var dataSet = SqlServer.FetchDataTable(parameters.ToArray()))
                         // ReSharper restore CoVariantArrayConversion
                         {
                             TranslateDataTableToEnvironment(dataSet, DataObj.Environment, update);
@@ -293,7 +257,7 @@ namespace Dev2.Services.Execution
             catch (Exception ex)
             {
                 Dev2Logger.Error("Sql Error:", ex);
-                errors.AddError(string.Format("{0}{1}", "Sql Error: ", ex.Message));
+                errors.AddError($"{"Sql Error: "}{ex.Message}");
             }
         }
 
@@ -302,14 +266,14 @@ namespace Dev2.Services.Execution
             try
             {
 
-                List<MySqlParameter> parameters = GetMySqlParameters(Inputs);
-                using (MySqlServer server = SetupMySqlServer(errors))
+                var parameters = GetMySqlParameters(Inputs);
+                using (var server = SetupMySqlServer(errors))
                 {
 
                     if (parameters != null)
                     {
                         // ReSharper disable CoVariantArrayConversion
-                        using (DataTable dataSet = server.FetchDataTable(parameters.ToArray(), server.GetProcedureOutParams(ProcedureName, Source.DatabaseName)))
+                        using (var dataSet = server.FetchDataTable(parameters.ToArray(), server.GetProcedureOutParams(ProcedureName, Source.DatabaseName)))
                         // ReSharper restore CoVariantArrayConversion
                         {
                             TranslateDataTableToEnvironment(dataSet, DataObj.Environment, update);
@@ -320,7 +284,7 @@ namespace Dev2.Services.Execution
             }
             catch (Exception ex)
             {
-                errors.AddError(string.Format("{0}{1}{2}", ex.Message, Environment.NewLine, ex.StackTrace));
+                errors.AddError($"{ex.Message}{Environment.NewLine}{ex.StackTrace}");
             }
             return false;
         }
@@ -337,11 +301,11 @@ namespace Dev2.Services.Execution
                         (parameter.Value == null ||
                          string.Compare(parameter.Value, string.Empty, StringComparison.InvariantCultureIgnoreCase) == 0))
                     {
-                        sqlParameters.Add(new SqlParameter(string.Format("@{0}", parameter.Name), DBNull.Value));
+                        sqlParameters.Add(new SqlParameter($"@{parameter.Name}", DBNull.Value));
                     }
                     else
                     {
-                        sqlParameters.Add(new SqlParameter(string.Format("@{0}", parameter.Name), parameter.Value));
+                        sqlParameters.Add(new SqlParameter($"@{parameter.Name}", parameter.Value));
                     }
                 }
             }
@@ -360,11 +324,11 @@ namespace Dev2.Services.Execution
                         (parameter.Value == null ||
                          string.Compare(parameter.Value, string.Empty, StringComparison.InvariantCultureIgnoreCase) == 0))
                     {
-                        sqlParameters.Add(new MySqlParameter(string.Format("@{0}", parameter.Name), DBNull.Value));
+                        sqlParameters.Add(new MySqlParameter($"@{parameter.Name}", DBNull.Value));
                     }
                     else
                     {
-                        sqlParameters.Add(new MySqlParameter(string.Format("@{0}", parameter.Name), parameter.Value));
+                        sqlParameters.Add(new MySqlParameter($"@{parameter.Name}", parameter.Value));
                     }
                 }
             }
@@ -376,7 +340,7 @@ namespace Dev2.Services.Execution
             var server = new OracleServer();
             try
             {
-                bool connected = server.Connect(Source.ConnectionString, CommandType.StoredProcedure, ProcedureName);
+                var connected = server.Connect(Source.ConnectionString, CommandType.StoredProcedure, ProcedureName);
                 if (!connected)
                 {
                     Dev2Logger.Error(string.Format(ErrorResource.FailedToConnectWithConnectionString,
@@ -393,7 +357,7 @@ namespace Dev2.Services.Execution
             }
             catch (Exception ex)
             {
-                errors.AddError(string.Format("{0}{1}{2}", ex.Message, Environment.NewLine, ex.StackTrace));
+                errors.AddError($"{ex.Message}{Environment.NewLine}{ex.StackTrace}");
                 Dev2Logger.Error(ex);
             }
             return server;
@@ -404,14 +368,14 @@ namespace Dev2.Services.Execution
             try
             {
 
-                List<OracleParameter> parameters = GetOracleParameters(Inputs);
-                using (OracleServer server = SetupOracleServer(errors))
+                var parameters = GetOracleParameters(Inputs);
+                using (var server = SetupOracleServer(errors))
                 {
 
                     if (parameters != null)
                     {
                         // ReSharper disable CoVariantArrayConversion
-                        using (DataTable dataSet = server.FetchDataTable(parameters.ToArray(), server.GetProcedureOutParams(ProcedureName, Source.DatabaseName)))
+                        using (var dataSet = server.FetchDataTable(parameters.ToArray(), server.GetProcedureOutParams(ProcedureName, Source.DatabaseName)))
                         // ReSharper restore CoVariantArrayConversion
                         {
                             TranslateDataTableToEnvironment(dataSet, DataObj.Environment, update);
@@ -422,7 +386,7 @@ namespace Dev2.Services.Execution
             }
             catch (Exception ex)
             {
-                errors.AddError(string.Format("{0}{1}{2}", ex.Message, Environment.NewLine, ex.StackTrace));
+                errors.AddError($"{ex.Message}{Environment.NewLine}{ex.StackTrace}");
             }
             return false;
         }
@@ -435,7 +399,7 @@ namespace Dev2.Services.Execution
             {
                 foreach (var parameter in methodParameters)
                 {
-                    var dbDataParameter = new OracleParameter(string.Format("@{0}", parameter.Name), parameter.Value);
+                    var dbDataParameter = new OracleParameter($"@{parameter.Name}", parameter.Value);
                     if (parameter.EmptyIsNull &&
                         (parameter.Value == null ||
                          string.Compare(parameter.Value, string.Empty, StringComparison.InvariantCultureIgnoreCase) == 0))
@@ -454,7 +418,7 @@ namespace Dev2.Services.Execution
             var server = new ODBCServer();
             try
             {
-                bool connected = server.Connect(Source.ConnectionString, CommandType.StoredProcedure, ProcedureName);
+                var connected = server.Connect(Source.ConnectionString, CommandType.StoredProcedure, ProcedureName);
                 if (!connected)
                 {
                     Dev2Logger.Error(string.Format(ErrorResource.FailedToConnectWithConnectionString,
@@ -471,7 +435,7 @@ namespace Dev2.Services.Execution
             }
             catch (Exception ex)
             {
-                errors.AddError(string.Format("{0}{1}{2}", ex.Message, Environment.NewLine, ex.StackTrace));
+                errors.AddError($"{ex.Message}{Environment.NewLine}{ex.StackTrace}");
                 Dev2Logger.Error(ex);
             }
             return server;
@@ -482,14 +446,14 @@ namespace Dev2.Services.Execution
             try
             {
 
-                List<OdbcParameter> parameters = GetODBCParameters(Inputs);
-                using (ODBCServer server = SetupODBCServer(errors))
+                var parameters = GetODBCParameters(Inputs);
+                using (var server = SetupODBCServer(errors))
                 {
 
                     if (parameters != null)
                     {
                         // ReSharper disable CoVariantArrayConversion
-                        using (DataTable dataSet = server.FetchDataTable())
+                        using (var dataSet = server.FetchDataTable())
                         //// ReSharper restore CoVariantArrayConversion
                         {
                             TranslateDataTableToEnvironment(dataSet, DataObj.Environment, update);
@@ -500,7 +464,7 @@ namespace Dev2.Services.Execution
             }
             catch (Exception ex)
             {
-                errors.AddError(string.Format("{0}{1}{2}", ex.Message, Environment.NewLine, ex.StackTrace));
+                errors.AddError($"{ex.Message}{Environment.NewLine}{ex.StackTrace}");
             }
             return false;
         }
@@ -520,11 +484,11 @@ namespace Dev2.Services.Execution
                         (parameter.Value == null ||
                          string.Compare(parameter.Value, string.Empty, StringComparison.InvariantCultureIgnoreCase) == 0))
                     {
-                        sqlParameters.Add(new OdbcParameter(string.Format("@{0}", parameter.Name), DBNull.Value));
+                        sqlParameters.Add(new OdbcParameter($"@{parameter.Name}", DBNull.Value));
                     }
                     else
                     {
-                        sqlParameters.Add(new OdbcParameter(string.Format("@{0}", parameter.Name), parameter.Value));
+                        sqlParameters.Add(new OdbcParameter($"@{parameter.Name}", parameter.Value));
                     }
                 }
             }
@@ -536,7 +500,7 @@ namespace Dev2.Services.Execution
             var server = new PostgreServer();
             try
             {
-                bool connected = server.Connect(Source.ConnectionString, CommandType.StoredProcedure, ProcedureName);
+                var connected = server.Connect(Source.ConnectionString, CommandType.StoredProcedure, ProcedureName);
                 if (!connected)
                 {
                     Dev2Logger.Error(string.Format(ErrorResource.FailedToConnectWithConnectionString,
@@ -553,7 +517,7 @@ namespace Dev2.Services.Execution
             }
             catch (Exception ex)
             {
-                errors.AddError(string.Format("{0}{1}{2}", ex.Message, Environment.NewLine, ex.StackTrace));
+                errors.AddError($"{ex.Message}{Environment.NewLine}{ex.StackTrace}");
                 Dev2Logger.Error(ex);
             }
             return server;
@@ -563,14 +527,14 @@ namespace Dev2.Services.Execution
         {
             try
             {
-                List<NpgsqlParameter> parameters = GetPostgreSqlParameters(Inputs);
-                using (PostgreServer server = SetupPostgreServer(errors))
+                var parameters = GetPostgreSqlParameters(Inputs);
+                using (var server = SetupPostgreServer(errors))
                 {
 
                     if (parameters != null)
                     {
                         // ReSharper disable CoVariantArrayConversion
-                        using (DataTable dataSet = server.FetchDataTable(parameters.ToArray(), server.GetProcedureOutParams(ProcedureName, Source.DatabaseName)))
+                        using (var dataSet = server.FetchDataTable(parameters.ToArray(), server.GetProcedureOutParams(ProcedureName, Source.DatabaseName)))
                         // ReSharper restore CoVariantArrayConversion
                         {
                             TranslateDataTableToEnvironment(dataSet, DataObj.Environment, update);
@@ -581,7 +545,7 @@ namespace Dev2.Services.Execution
             }
             catch (Exception ex)
             {
-                errors.AddError(string.Format("{0}{1}{2}", ex.Message, Environment.NewLine, ex.StackTrace));
+                errors.AddError($"{ex.Message}{Environment.NewLine}{ex.StackTrace}");
             }
             return false;
         }
@@ -601,11 +565,11 @@ namespace Dev2.Services.Execution
                              string.Compare(parameter.Value, string.Empty, StringComparison.InvariantCultureIgnoreCase) ==
                              0))
                         {
-                            sqlParameters.Add(new NpgsqlParameter(string.Format("@{0}", parameter.Name), DBNull.Value));
+                            sqlParameters.Add(new NpgsqlParameter($"@{parameter.Name}", DBNull.Value));
                         }
                         else
                         {
-                            sqlParameters.Add(new NpgsqlParameter(string.Format("@{0}", parameter.Name), parameter.Value));
+                            sqlParameters.Add(new NpgsqlParameter($"@{parameter.Name}", parameter.Value));
                         }
                     }
                 }
@@ -613,4 +577,6 @@ namespace Dev2.Services.Execution
             return sqlParameters;
         }
     }
+
+    
 }

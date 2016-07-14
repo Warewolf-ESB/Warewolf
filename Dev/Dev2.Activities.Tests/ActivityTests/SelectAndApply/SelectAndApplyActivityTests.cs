@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using ActivityUnitTests;
 using Dev2.Activities.SelectAndApply;
-using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces.Core.Convertors.Case;
 using Dev2.Common.Interfaces.Enums.Enums;
 using Dev2.DataList.Contract;
@@ -256,48 +255,6 @@ namespace Dev2.Tests.Activities.ActivityTests.SelectAndApply
             var ages = DataObject.Environment.EvalAsListOfStrings("[[Person(*).Age]]", 0);
             var evalAsList = DataObject.Environment.EvalAsList("[[b]]", 1);
         }
-
-        [TestMethod]
-        [Owner("Nkosinathi Sangweni")]
-        public void EvalaJsonAsList_GivenJsonString_ShouldEvaluateCorrectly()
-        {
-            //---------------Set up test pack-------------------
-            var outJson  = "{\"var\": [{\"id\": \"10\"},{\"id\": \"20\"},{\"id\": \"30\"},{\"id\": \"40\"}]}";
-
-
-            DsfSelectAndApplyActivity activity = new DsfSelectAndApplyActivity();
-            //---------------Assert Precondition----------------
-            //---------------Execute Test ----------------------
-            var dev2IJsonListEvaluator = activity.GetDev2IJsonListEvaluator(outJson);
-            var evalaJsonAsList = dev2IJsonListEvaluator.EvalaJsonAsList();
-            Assert.IsNotNull(evalaJsonAsList);
-            //---------------Test Result -----------------------
-            Assert.AreEqual(4, evalaJsonAsList.Count());
-        }
-
-        [TestMethod]
-        [Owner("Nkosinathi Sangweni")]
-        public void EvalaJsonAsList_GivenJsonString_ShouldEvaluateValues()
-        {
-            //---------------Set up test pack-------------------
-            var outJson  = "{\"var\": [{\"id\": \"10\"},{\"id\": \"20\"},{\"id\": \"30\"},{\"id\": \"40\"}]}";
-
-
-            DsfSelectAndApplyActivity activity = new DsfSelectAndApplyActivity();
-            //---------------Assert Precondition----------------
-            //---------------Execute Test ----------------------
-            var dev2IJsonListEvaluator = activity.GetDev2IJsonListEvaluator(outJson);
-            var evalaJsonAsList = dev2IJsonListEvaluator.EvalaJsonAsList().ToList();
-            Assert.IsNotNull(evalaJsonAsList);
-            //---------------Test Result -----------------------
-            Assert.AreEqual("\"10\"".ToCleanString(), evalaJsonAsList[0].ToString().ToCleanString());
-            Assert.AreEqual("\"20\"", evalaJsonAsList[1]);
-            Assert.AreEqual("\"30\"", evalaJsonAsList[2]);
-            Assert.AreEqual("\"40\"", evalaJsonAsList[3]);
-        }
-
-
-     
 
         #region Private Test Methods
 
