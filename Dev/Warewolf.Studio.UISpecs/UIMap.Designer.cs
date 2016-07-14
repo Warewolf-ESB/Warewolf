@@ -4777,11 +4777,11 @@ namespace Warewolf.Studio.UISpecs
         public void Click_Service_Picker_Dialog_Cancel()
         {
             #region Variable Declarations
-            WpfButton cancelButton = this.SaveDialogWindow.CancelButton;
+            WpfButton cancel = this.ServicePickerDialog.Cancel;
             #endregion
 
             // Click 'Cancel' button
-            Mouse.Click(cancelButton, new Point(57, 6));
+            Mouse.Click(cancel, new Point(57, 6));
         }
         
         /// <summary>
