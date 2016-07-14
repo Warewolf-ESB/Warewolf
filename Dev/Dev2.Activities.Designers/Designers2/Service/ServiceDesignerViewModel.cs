@@ -388,6 +388,9 @@ namespace Dev2.Activities.Designers2.Service
                 
             }
         }
+
+        public IDataMappingViewModel DataMappingViewModel => MappingManager.DataMappingViewModel;
+
         public string Type => GetProperty<string>();
         // ReSharper disable InconsistentNaming
         Guid EnvironmentID => GetProperty<Guid>();
