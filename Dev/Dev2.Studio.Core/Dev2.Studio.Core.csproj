@@ -267,6 +267,7 @@
     <Compile Include="Controller\ICommunicationControllerFactory.cs" />
     <Compile Include="Common.cs" />
     <Compile Include="DataList\ComplexObjectHandler.cs" />
+    <Compile Include="DataList\DataListViewModelHelper.cs" />
     <Compile Include="DataList\MissingDataList.cs" />
     <Compile Include="DataList\Dev2TrieSugggestionProvider.cs" />
     <Compile Include="DataList\PartIsUsed.cs" />
@@ -279,6 +280,7 @@
     <Compile Include="Interfaces\DataList\IRecordSetItemModel.cs" />
     <Compile Include="Interfaces\DataList\IScalarItemModel.cs" />
     <Compile Include="Interfaces\IComplexObjectHandler.cs" />
+    <Compile Include="Interfaces\IDataListViewModelHelper.cs" />
     <Compile Include="Interfaces\IFilePersistenceProvider.cs" />
     <Compile Include="Interfaces\IMainViewModel.cs" />
     <Compile Include="Interfaces\IPartIsUsed.cs" />
