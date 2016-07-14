@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using Dev2.Common;
 using Dev2.DynamicServices;
+using Dev2.Runtime.Interfaces;
 using Warewolf.Resource.Errors;
 
 namespace Dev2.Runtime.ESB.Management
@@ -20,13 +21,13 @@ namespace Dev2.Runtime.ESB.Management
     /// Responsible for loading all the managment services ;)
     /// Replaces GetDefaultServices() in DynamicservicesHost
     /// </summary>
-    public class EsbManagementServiceLocator : SpookyAction<IEsbManagementEndpoint, string>
+    public class EsbManagementServiceLocator : SpookyAction<IEsbManagementEndpoint, string>, IEsbManagementServiceLocator
     {
         /// <summary>
         /// Loads the managment services.
         /// </summary>
         /// <returns></returns>
-        public IList<IEsbManagementEndpoint> FetchManagmentServices()
+        public IEnumerable<IEsbManagementEndpoint> FetchManagmentServices()
         {
             return FindAll();
         }
@@ -41,7 +42,7 @@ namespace Dev2.Runtime.ESB.Management
             return FindMatch(serviceName);
         }
 
-        public static List<DynamicService> GetServices()
+        public static IEnumerable<DynamicService> GetServices()
         {
             var result = new List<DynamicService>();
 
