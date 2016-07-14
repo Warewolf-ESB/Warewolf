@@ -292,9 +292,8 @@ namespace Warewolf.Studio.UISpecs
         [TestInitialize()]
         public void MyTestInitialize()
         {
-            Playback.PlaybackSettings.WaitForReadyLevel = WaitForReadyLevel.Disabled;
-            Playback.PlaybackSettings.ShouldSearchFailFast = false;
-            Playback.PlaybackSettings.SearchTimeout = 10000;
+            Uimap.SetGlobalPlaybackSettings();
+            Console.WriteLine("Test \"" + TestContext.TestName + "\" starting on " + System.Environment.MachineName);
         }
 
         //Use TestCleanup to run code after each test has run

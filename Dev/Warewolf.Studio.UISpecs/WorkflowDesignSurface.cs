@@ -141,25 +141,8 @@ namespace Warewolf.Studio.UISpecs
         [TestInitialize()]
         public void MyTestInitialize()
         {
-            Playback.PlaybackSettings.WaitForReadyLevel = WaitForReadyLevel.Disabled;
-            Playback.PlaybackSettings.ShouldSearchFailFast = false;
-            Playback.PlaybackSettings.SearchTimeout = 10000;
-            // Ensure the error handler is 
-            Playback.PlaybackError -= Playback_PlaybackError;
-            Playback.PlaybackError += Playback_PlaybackError;
-        }
-
-        /// <summary> PlaybackError event handler. </summary>
-        private static void Playback_PlaybackError(object sender, PlaybackErrorEventArgs e)
-        {
-            Console.WriteLine(e.Error.Message);
-            (sender as UITestControl)?.DrawHighlight();
-
-            // Wait a second
-            System.Threading.Thread.Sleep(1000);
-
-            // Retry the failed test operation
-            e.Result = PlaybackErrorOptions.Retry;
+            Uimap.SetGlobalPlaybackSettings();
+            Console.WriteLine("Test \"" + TestContext.TestName + "\" starting on " + System.Environment.MachineName);
         }
 
         //Use TestCleanup to run code after each test has run
