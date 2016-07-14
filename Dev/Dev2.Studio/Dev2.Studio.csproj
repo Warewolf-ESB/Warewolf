@@ -412,6 +412,7 @@
     <Compile Include="ViewModels\SourceViewModel.cs" />
     <Compile Include="ViewModels\Workflow\DataListConversionUtils.cs" />
     <Compile Include="ViewModels\Workflow\WorkflowDesignerDataPartUtils.cs" />
+    <Compile Include="ViewModels\WorksurfaceContextManager.cs" />
     <Compile Include="ViewModels\WorkSurface\IWorkSurfaceContextViewModel.cs" />
     <Compile Include="Views\DependencyVisualization\DependencyVisualiserView.xaml.cs">
       <DependentUpon>DependencyVisualiserView.xaml</DependentUpon>
