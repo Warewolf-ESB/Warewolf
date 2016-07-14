@@ -392,7 +392,6 @@
     <Compile Include="Messages\SetSelectedItemInExplorerTree.cs" />
     <Compile Include="Messages\ShowDependenciesMessage.cs" />
     <Compile Include="Messages\ShowReverseDependencyVisualizer.cs" />
-    <Compile Include="Messages\TabClosedMessage.cs" />
     <Compile Include="Messages\UpdateActiveEnvironmentMessage.cs" />
     <Compile Include="Messages\UpdateExplorerMessage.cs" />
     <Compile Include="Messages\UpdateIntellisenseMessage.cs" />
@@ -527,10 +526,6 @@
     <ProjectReference Include="..\Dev2.Infrastructure\Dev2.Infrastructure.csproj">
       <Project>{615EAE6D-040C-4364-B708-63DC8755CD4F}</Project>
       <Name>Dev2.Infrastructure</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Dev2.Network\Dev2.Network.csproj">
-      <Project>{14f1e4aa-b9a8-45dd-af2a-059eff29201b}</Project>
-      <Name>Dev2.Network</Name>
     </ProjectReference>
     <ProjectReference Include="..\Dev2.Common\Dev2.Common.csproj">
       <Project>{84405fdf-0ff8-49a2-8925-8a4aeba8104a}</Project>
