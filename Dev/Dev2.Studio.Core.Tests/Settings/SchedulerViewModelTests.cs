@@ -14,6 +14,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using Caliburn.Micro;
@@ -1821,7 +1822,7 @@ namespace Dev2.Core.Tests.Settings
             schedulerViewModel.EditTriggerCommand.Execute(null);
             //------------Assert Results-------------------------
 
-            Assert.IsNotNull(schedulerViewModel.TriggerEditDialog);
+            Assert.IsNotNull(schedulerViewModel.SchedulerTaskManager.TriggerEditDialog);
             Assert.IsTrue(_triggerTextChange);
             Assert.AreEqual("bob", schedulerViewModel.SelectedTask.Name);
             Assert.AreEqual(2013, schedulerViewModel.SelectedTask.NextRunDate.Year);
@@ -1857,16 +1858,18 @@ namespace Dev2.Core.Tests.Settings
             resourceRepo.Add(Dev2MockFactory.SetupResourceModelMock(ResourceType.WorkflowService, "TestFlow3").Object);
             mockEnvironmentModel.Setup(c => c.ResourceRepository).Returns(resourceRepo);
 
-            var schedulerViewModel = new SchedulerViewModel(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IPopupController>().Object, new SynchronousAsyncWorker(), new Mock<IServer>().Object, a => new Mock<IEnvironmentModel>().Object) { CurrentEnvironment = mockEnvironmentModel.Object };
             Mock<IResourcePickerDialog> mockResourcePickerDialog = new Mock<IResourcePickerDialog>();
             mockResourcePickerDialog.Setup(c => c.ShowDialog(It.IsAny<IEnvironmentModel>())).Returns(true);
+
+            var schedulerViewModel = new SchedulerViewModel(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IPopupController>().Object, new SynchronousAsyncWorker(), new Mock<IServer>().Object, a => new Mock<IEnvironmentModel>().Object) { CurrentEnvironment = mockEnvironmentModel.Object };
+            
             var treeItem = new Mock<IExplorerTreeItem>();
             treeItem.Setup(a => a.ResourceName).Returns("TestFlow2");
             treeItem.Setup(a => a.ResourceId).Returns(resId);
             treeItem.Setup(a => a.ResourcePath).Returns("Category\\Testing");
             mockResourcePickerDialog.Setup(c => c.SelectedResource).Returns(treeItem.Object);
 
-            schedulerViewModel.CurrentResourcePickerDialog = mockResourcePickerDialog.Object;
+            schedulerViewModel.SchedulerTaskManager.CurrentResourcePickerDialog = mockResourcePickerDialog.Object;
 
             Mock<IScheduledResourceModel> scheduledResourceModelMock = new Mock<IScheduledResourceModel>();
             scheduledResourceModelMock.Setup(c => c.ScheduledResources).Returns(resources);
@@ -1878,6 +1881,8 @@ namespace Dev2.Core.Tests.Settings
             var _nameChange = false;
             var _workflowNameChange = false;
             var _taskListChange = false;
+
+            
 
             schedulerViewModel.PropertyChanged += delegate(object sender, PropertyChangedEventArgs args)
             {
@@ -1959,7 +1964,7 @@ namespace Dev2.Core.Tests.Settings
             //------------Execute Test---------------------------
 
             //------------Assert Results-------------------------
-            Assert.IsTrue(SchedulerViewModel.TriggerEquals(t, t2));
+            Assert.IsTrue(SchedulerTaskManager.TriggerEquals(t, t2));
         }
 
 
@@ -1980,7 +1985,7 @@ namespace Dev2.Core.Tests.Settings
             //------------Execute Test---------------------------
 
             //------------Assert Results-------------------------
-            Assert.IsFalse(SchedulerViewModel.TriggerEquals(t, t2));
+            Assert.IsFalse(SchedulerTaskManager.TriggerEquals(t, t2));
         }
 
         [TestMethod]
@@ -2127,27 +2132,25 @@ namespace Dev2.Core.Tests.Settings
 
     internal class SchedulerViewModelForTest : SchedulerViewModel
     {
-        public SchedulerViewModelForTest()
-        {
-
-        }
-
         public SchedulerViewModelForTest(IEnvironmentModel env) : base( a => env)
         {
-            
+            SchedulerTaskManager = new ScheduleTaskManagerStub(this,System.Threading.Tasks.Task.FromResult(new Mock<IResourcePickerDialog>().Object));
         }
 
         public SchedulerViewModelForTest(IEventAggregator eventPublisher, DirectoryObjectPickerDialog directoryObjectPicker, IPopupController popupController, IAsyncWorker asyncWorker)
             : base(eventPublisher, directoryObjectPicker, popupController, asyncWorker, new Mock<IServer>().Object, a => new Mock<IEnvironmentModel>().Object)
         {
-
+            SchedulerTaskManager = new ScheduleTaskManagerStub(this, System.Threading.Tasks.Task.FromResult(new Mock<IResourcePickerDialog>().Object));
         }
         #region Overrides of SchedulerViewModel
 
         public bool GetCredentialsCalled
         {
-            get;
-            private set;
+            get
+            {
+                var stub = SchedulerTaskManager as ScheduleTaskManagerStub;
+                return stub != null && stub.GetCredentialsCalled;
+            }
         }
 
         public bool ShowSaveErrorDialogCalled
@@ -2160,9 +2163,26 @@ namespace Dev2.Core.Tests.Settings
         {
             base.ShowSaveErrorDialog(error);
         }
-        protected override void ShowSaveErrorDialog(string error)
+        protected internal override void ShowSaveErrorDialog(string error)
         {
             ShowSaveErrorDialogCalled = true;
+        }
+
+        
+        #endregion
+    }
+
+    internal class ScheduleTaskManagerStub : SchedulerTaskManager
+    {
+        public ScheduleTaskManagerStub(SchedulerViewModel schedulerViewModel, Task<IResourcePickerDialog> getResourcePicker)
+            : base(schedulerViewModel, getResourcePicker)
+        {
+        }
+
+        public bool GetCredentialsCalled
+        {
+            get;
+            private set;
         }
 
         protected override void GetCredentials(IScheduledResource scheduledResource)
@@ -2181,6 +2201,5 @@ namespace Dev2.Core.Tests.Settings
             return SchedulerFactory.CreateTrigger(TaskState.Disabled, new Dev2Trigger(null, dailyTrigger));
         }
 
-        #endregion
     }
 }
