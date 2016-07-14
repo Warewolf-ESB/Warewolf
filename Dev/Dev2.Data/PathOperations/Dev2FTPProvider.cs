@@ -315,9 +315,7 @@ namespace Dev2.Data.PathOperations
                 {
                     using (src)
                     {
-                        //byte[] payload = src.ToByteArray();
-                        //var tempFileName = Path.Combine(Path.GetTempPath(), Path.GetTempFileName());
-                        //File.WriteAllBytes(tempFileName, payload);
+
                         try
                         {
                             var path = ExtractFileNameFromPath(dst.Path);
