@@ -10,19 +10,29 @@
 
 using System;
 using Dev2.Common.ExtMethods;
+using Dev2.Data.Decisions.Operations;
 
-namespace Dev2.Data.Decisions.Operations
+namespace Dev2.Data.Tests.DecisionsTests
 {
-   public class IsEmail : IDecisionOperation
+    /// <summary>
+    /// Is Not Binary Decision
+    /// </summary>
+    public class IsNotBinaryTests
     {
-        public Enum HandlesType()
-        {
-            return enDecisionType.IsEmail;
-        }
 
         public bool Invoke(string[] cols)
         {
-            return cols[0].IsEmail();
+            if (!string.IsNullOrEmpty(cols[0]))
+            {
+                return !cols[0].IsBinary();
+            }
+
+            return false;
+        }
+
+        public Enum HandlesType()
+        {
+            return enDecisionType.IsNotBinary;
         }
     }
 }

@@ -48,9 +48,10 @@ namespace Dev2.Studio.ViewModels.DataList
     {
         #region Fields
 
-        readonly IComplexObjectHandler _complexObjectHandler;
-        readonly IScalarHandler _scalarHandler;
-        readonly IRecordsetHandler _recordsetHandler;
+        private readonly IComplexObjectHandler _complexObjectHandler;
+        private readonly IScalarHandler _scalarHandler;
+        private readonly IRecordsetHandler _recordsetHandler;
+        readonly IDataListViewModelHelper _helper;
         private ObservableCollection<DataListHeaderItemModel> _baseCollection;
         private RelayCommand _findUnusedAndMissingDataListItems;
         private ObservableCollection<IRecordSetItemModel> _recsetCollection;
@@ -226,6 +227,7 @@ namespace Dev2.Studio.ViewModels.DataList
             _complexObjectHandler = new ComplexObjectHandler(this);
             _scalarHandler = new ScalarHandler(this);
             _recordsetHandler = new RecordsetHandler(this);
+            _helper = new DataListViewModelHelper(this);
         }
 
         public IJsonObjectsView JsonObjectsView
@@ -692,23 +694,7 @@ namespace Dev2.Studio.ViewModels.DataList
         ///     Creates the full data list.
         /// </summary>
         /// <returns></returns>
-        private OptomizedObservableCollection<IDataListItemModel> CreateFullDataList()
-        {
-            var fullDataList = new OptomizedObservableCollection<IDataListItemModel>();
-            foreach (var item in ScalarCollection)
-            {
-                fullDataList.Add(item);
-            }
-            foreach (var item in RecsetCollection)
-            {
-                fullDataList.Add(item);
-            }
-            foreach (var item in ComplexObjectCollection)
-            {
-                fullDataList.Add(item);
-            }
-            return fullDataList;
-        }
+        private OptomizedObservableCollection<IDataListItemModel> CreateFullDataList() => _helper.CreateFullDataList();
 
         /// <summary>
         ///     Sorts the items.
@@ -836,15 +822,7 @@ namespace Dev2.Studio.ViewModels.DataList
             }
         }
 
-        private static bool IsJsonAttribute(XmlNode child)
-        {
-            var jsonAttribute = false;
-            if (child.Attributes == null) return false;
-            var xmlAttribute = child.Attributes["IsJson"];
-            if (xmlAttribute != null)
-                bool.TryParse(xmlAttribute.Value, out jsonAttribute);
-            return jsonAttribute;
-        } 
+        private bool IsJsonAttribute(XmlNode child) => _helper.IsJsonAttribute(child);
 
         void AddScalars(XmlNode c)
         {
@@ -898,16 +876,10 @@ namespace Dev2.Studio.ViewModels.DataList
             return result.ToString();
         }
 
-        void AddItemToBuilder(StringBuilder result, IDataListItemModel item)
+        private void AddItemToBuilder(StringBuilder result, IDataListItemModel item)
         {
-            result.AppendFormat("<{0} {1}=\"{2}\" {3}=\"{4}\" {5}=\"{6}\" ",
-                item.DisplayName
-                , Description
-                , item.Description
-                , IsEditable
-                , item.IsEditable
-                , GlobalConstants.DataListIoColDirection
-                , item.ColumnIODirection);
+            _helper.AddItemToBuilder(result, item);
+
         }
 
         /// <summary>

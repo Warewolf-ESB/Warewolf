@@ -9,20 +9,20 @@
 */
 
 using System;
-using Dev2.Common.ExtMethods;
+using Dev2.Data.Decisions.Operations;
 
-namespace Dev2.Data.Decisions.Operations
+namespace Dev2.Data.Tests.DecisionsTests
 {
-   public class IsEmail : IDecisionOperation
+    public class IsNotEqualTests
     {
         public Enum HandlesType()
         {
-            return enDecisionType.IsEmail;
+            return enDecisionType.IsNotEqual;
         }
 
         public bool Invoke(string[] cols)
         {
-            return cols[0].IsEmail();
+            return !cols[0].Equals(cols[1], StringComparison.InvariantCulture);
         }
     }
 }

@@ -13,6 +13,8 @@ using System.Collections.Specialized;
 using System.Security.Claims;
 using System.Security.Principal;
 using Dev2.Common;
+using Dev2.Common.Interfaces.Monitoring;
+using Dev2.PerformanceCounters.Counters;
 using Dev2.Runtime.WebServer;
 using Dev2.Runtime.WebServer.Handlers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -23,6 +25,15 @@ namespace Dev2.Tests.Runtime.WebServer
     [TestClass]
     public class WebGetRequestHandlerTest
     {
+        [ClassInitialize]
+        public static void Init(TestContext context)
+        {
+            var pCounter = new Mock<IWarewolfPerformanceCounterLocater>();
+            pCounter.Setup(locater => locater.GetCounter(It.IsAny<Guid>(), It.IsAny<WarewolfPerfCounterType>())).Returns(new EmptyCounter());
+            pCounter.Setup(locater => locater.GetCounter(It.IsAny<WarewolfPerfCounterType>())).Returns(new EmptyCounter());
+            pCounter.Setup(locater => locater.GetCounter(It.IsAny<string>())).Returns(new EmptyCounter());
+            CustomContainer.Register(pCounter.Object);
+        }
 
         [TestMethod]
         [Owner("Travis Frisinger")]
