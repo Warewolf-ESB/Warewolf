@@ -172,7 +172,6 @@
     <Compile Include="TranslationConstantsTest.cs" />
     <Compile Include="WarewolfListIteratorTests.cs" />
     <Compile Include="XmlHelperTest.cs" />
-    <Compile Include="SettingsTests.cs" />
     <Compile Include="XPathParserTests.cs" />
   </ItemGroup>
   <ItemGroup>

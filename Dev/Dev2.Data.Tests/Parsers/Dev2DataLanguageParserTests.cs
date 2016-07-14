@@ -112,6 +112,7 @@ namespace Dev2.Data.Tests.Parsers
             //---------------Test Result -----------------------
             Assert.AreEqual(1, expressionIntoParts.Count);
         }
+
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void ParseDataLanguageForIntellisense_GivenEmpty_ShouldExecutesCorreclty()
