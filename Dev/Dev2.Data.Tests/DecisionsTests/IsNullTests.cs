@@ -1,4 +1,3 @@
-using System;
 using Dev2.Data.Decisions.Operations;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 

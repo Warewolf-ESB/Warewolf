@@ -103,6 +103,8 @@ namespace Dev2.Diagnostics.Test
             Dev2JsonSerializer  serialiser = new Dev2JsonSerializer();
             var persisted = serialiser.Deserialize<IList<IPerformanceCounter>>(saved);
             Assert.IsNotNull(persisted);
+
+            File.Delete(fileName);
         }
 
 
@@ -122,6 +124,8 @@ namespace Dev2.Diagnostics.Test
             var persisted = serialiser.Deserialize<IList<IPerformanceCounter>>(saved);
             Assert.AreEqual(persisted.Count,1);
             Assert.IsTrue(persisted.First() is TestCounter);
+
+            File.Delete(fileName);
         }
 
 
@@ -148,6 +152,8 @@ namespace Dev2.Diagnostics.Test
             var persisted = obj.LoadOrCreate(fileName);
             Assert.AreEqual(persisted.Count, 1);
             Assert.IsTrue(persisted.First() is TestCounter);
+
+            File.Delete(fileName);
         }
 
 
@@ -169,6 +175,8 @@ namespace Dev2.Diagnostics.Test
             obj.Save(counters, fileName);
             var persisted = obj.LoadOrCreate(fileName);
             Assert.AreEqual(persisted.Count, 6);
+
+            File.Delete(fileName);
 
         }
 
@@ -195,6 +203,7 @@ namespace Dev2.Diagnostics.Test
             Assert.AreEqual(0,obj.DefaultResourceCounters.Count);
             Assert.AreEqual(persisted.Count, 1);
 
+            File.Delete(fileName);
         }
 
         [TestMethod]
@@ -220,6 +229,7 @@ namespace Dev2.Diagnostics.Test
             Assert.AreEqual(0, obj.DefaultResourceCounters.Count);
             Assert.AreEqual(persisted.Count, 0);
 
+            File.Delete(fileName);
         }
 
     }

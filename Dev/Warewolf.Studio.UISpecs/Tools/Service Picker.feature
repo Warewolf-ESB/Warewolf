@@ -9,7 +9,7 @@ Scenario: Drag toolbox Service Picker onto a new workflow
 	Then I "Assert_Service_Picker_Cancel_Button_Exists"
 
 #@NeedsServicePickerDialog
-#Scenario: Click Cancel Service Picker Dialog Creates Service Picker on Design Surface
+#Scenario: Click Cancel Service Picker Dialog Dismisses Service Picker Dialog
 	#Given I "Assert_Service_Picker_Cancel_Button_Exists"
 	When I "Click_Service_Picker_Dialog_Cancel"
-	Then I "Assert_Service_Picker_Exists_OnDesignSurface"
+	Then I "Assert_Service_Picker_Dialog_Does_Not_Exist"

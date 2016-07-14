@@ -12,7 +12,6 @@ using System;
 using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces;
 using Dev2.Factory;
-using Dev2.Helpers;
 using Dev2.Settings;
 using Dev2.Settings.Scheduler;
 using Dev2.Studio.AppResources.Comparers;
@@ -83,23 +82,13 @@ namespace Dev2.Studio.Factory
             return context;
         }
 
-        public static WorkSurfaceContextViewModel Create<T>(WorkSurfaceContext workSurfaceContext, Tuple<string, object>[] initParms, out T vmr)
+        public static WorkSurfaceContextViewModel Create<T>(WorkSurfaceContext workSurfaceContext, out T vmr)
             where T : IWorkSurfaceViewModel
         {
             var vm = Activator.CreateInstance<T>();
-            PropertyHelper.SetValues(vm, initParms);
             var context = CreateUniqueWorkSurfaceContextViewModel(vm, workSurfaceContext);
 
             vmr = vm;
-            return context;
-        }
-
-        public static WorkSurfaceContextViewModel Create<T>(WorkSurfaceKey key, Tuple<string, object>[] initParms)
-            where T : IWorkSurfaceViewModel
-        {
-            var vm = Activator.CreateInstance<T>();
-            PropertyHelper.SetValues(vm, initParms);
-            var context = CreateWorkSurfaceContextViewModel(vm, key.WorkSurfaceContext, key);
             return context;
         }
     }

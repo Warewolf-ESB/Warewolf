@@ -295,6 +295,7 @@
     <Compile Include="Hosting\UpgradePath.cs" />
     <Compile Include="Hosting\VersionStrategy.cs" />
     <Compile Include="Hosting\ServerExplorerRepository.cs" />
+    <Compile Include="Interfaces\IEsbManagementServiceLocator.cs" />
     <Compile Include="Interfaces\IResourceCatalog.cs" />
     <Compile Include="Interfaces\IResourceCopyProvider.cs" />
     <Compile Include="Interfaces\IResourceDeleteProvider.cs" />
@@ -450,10 +451,6 @@
       <Project>{615eae6d-040c-4364-b708-63dc8755cd4f}</Project>
       <Name>Dev2.Infrastructure</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Dev2.Network\Dev2.Network.csproj">
-      <Project>{14F1E4AA-B9A8-45DD-AF2A-059EFF29201B}</Project>
-      <Name>Dev2.Network</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Dev2.Runtime.Configuration\Dev2.Runtime.Configuration.csproj">
       <Project>{9c43d5a2-fefd-4632-9bf2-ee0e4c05bebc}</Project>
       <Name>Dev2.Runtime.Configuration</Name>
@@ -504,7 +501,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
-  
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

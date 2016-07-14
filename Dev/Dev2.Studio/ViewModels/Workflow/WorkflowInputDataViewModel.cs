@@ -35,6 +35,7 @@ using Dev2.Threading;
 using Dev2.ViewModels.Workflow;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+// ReSharper disable MemberCanBePrivate.Global
 
 // ReSharper disable CheckNamespace
 namespace Dev2.Studio.ViewModels.Workflow
@@ -210,7 +211,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
         }
 
-        private RelayCommand OkCommand
+        public RelayCommand OkCommand
         {
             get
             {
@@ -218,7 +219,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
         }
 
-        private RelayCommand ViewInBrowserCommand
+        public RelayCommand ViewInBrowserCommand
         {
             get
             {

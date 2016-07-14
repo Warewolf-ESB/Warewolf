@@ -81,10 +81,6 @@
       <Project>{615eae6d-040c-4364-b708-63dc8755cd4f}</Project>
       <Name>Dev2.Infrastructure</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Dev2.Network\Dev2.Network.csproj">
-      <Project>{14f1e4aa-b9a8-45dd-af2a-059eff29201b}</Project>
-      <Name>Dev2.Network</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Dev2.Runtime.WebServer\Dev2.Runtime.WebServer.csproj">
       <Project>{4d0919c0-8fa4-480c-8629-00eb128ddee9}</Project>
       <Name>Dev2.Runtime.WebServer</Name>

@@ -1,11 +1,25 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using Dev2.Data.Interfaces;
+using Dev2.Data.Parsers;
+using Dev2.Data.TO;
 using Dev2.DataList.Contract;
 
 namespace Dev2.Data.Util
 {
     internal class CommonRecordSetUtil : ICommonRecordSetUtil
     {
+        private Dev2DataLanguageParser _dev2DataLanguageParser;
+
+        public CommonRecordSetUtil()
+        {
+            
+        }
+        public CommonRecordSetUtil(Dev2DataLanguageParser dev2DataLanguageParser)
+        {
+            _dev2DataLanguageParser = dev2DataLanguageParser;
+        }
         #region Implementation of ICommonRecordSetUtil
 
         public string ReplaceRecordBlankWithStar(string fullRecSetName)
@@ -220,6 +234,171 @@ namespace Dev2.Data.Util
             string extractIndexRegionFromRecordset = $"({index})";
             return string.IsNullOrEmpty(extractIndexRegionFromRecordset) ? expression :
                                         expression.Replace(extractIndexRegionFromRecordset, "()");
+        }
+
+        public string RemoveRecordSetBraces(string search, ref bool isRs)
+        {
+            if (search.Contains(DataListUtil.RecordsetIndexOpeningBracket))
+            {
+                isRs = true;
+                int pos = search.IndexOf(DataListUtil.RecordsetIndexOpeningBracket, StringComparison.Ordinal);
+                search = search.Substring(0, search.Length - (search.Length - pos));
+            }
+            return search;
+        }
+
+        public void ProcessRecordSetFields(ParseTO payload, bool addCompleteParts, IList<IIntellisenseResult> result, IDev2DataLanguageIntellisensePart t1)
+        {
+            IDataListVerifyPart part;
+
+            // only add hanging open if we want incomplete parts
+            if (!addCompleteParts)
+            {
+                part = IntellisenseFactory.CreateDataListValidationScalarPart(t1.Name + DataListUtil.RecordsetIndexOpeningBracket, t1.Description + " / Select a specific row or Close");
+
+                result.Add(IntellisenseFactory.CreateSelectableResult(payload.StartIndex, payload.EndIndex, part, part.Description));
+            }
+
+            part = IntellisenseFactory.CreateDataListValidationRecordsetPart(t1.Name, "", t1.Description + " / Takes all rows ", "*");
+            result.Add(IntellisenseFactory.CreateSelectableResult(payload.StartIndex, payload.EndIndex, part, part.Description));
+
+            part = IntellisenseFactory.CreateDataListValidationRecordsetPart(t1.Name, "", t1.Description + " / Take last row");
+
+            result.Add(IntellisenseFactory.CreateSelectableResult(payload.StartIndex, payload.EndIndex, part, part.Description));
+            // add all children for them
+            foreach (IDev2DataLanguageIntellisensePart t in t1.Children)
+            {
+                part = IntellisenseFactory.CreateDataListValidationRecordsetPart(t1.Name, t.Name, t1.Description + " / Use the field of a Recordset");
+                result.Add(IntellisenseFactory.CreateSelectableResult(payload.StartIndex, payload.EndIndex, part, part.Description));
+            }
+        }
+
+        public void ProcessNonRecordsetFields(ParseTO payload, IList<IIntellisenseResult> result, IDev2DataLanguageIntellisensePart t1)
+        {
+            if (payload.Parent != null && payload.Parent.Payload.IndexOf(DataListUtil.RecordsetIndexOpeningBracket, StringComparison.Ordinal) >= 0)
+            {
+                IDataListVerifyPart part = IntellisenseFactory.CreateDataListValidationScalarPart(t1.Name, t1.Description + " / Use row at this index");
+
+                result.Add(IntellisenseFactory.CreateSelectableResult(payload.StartIndex, payload.EndIndex, part, part.Description));
+            }
+            else
+            {
+                IDataListVerifyPart part;
+                if (t1.Name.Contains('(') && t1.Name.Contains(')'))
+                {
+                    part = IntellisenseFactory.CreateDataListValidationRecordsetPart(string.Empty, t1.Name, true);
+                }
+                else
+                {
+                    part = IntellisenseFactory.CreateDataListValidationScalarPart(t1.Name, t1.Description);
+                }
+
+                result.Add(IntellisenseFactory.CreateSelectableResult(payload.StartIndex, payload.EndIndex, part, part.Description));
+            }
+        }
+
+        public void ProcessRecordSetMatch(ParseTO payload, IList<IIntellisenseResult> result, string rawSearch, string search, IDev2DataLanguageIntellisensePart t1)
+        {
+            // only process if it is an open region
+            // we need to add all children
+            string idx;
+            if (!payload.IsLeaf && !payload.Child.HangingOpen)
+            {
+                idx = DataListUtil.OpeningSquareBrackets + payload.Child.Payload + DataListUtil.ClosingSquareBrackets;
+            }
+            else
+            {
+                // we need to extract the index
+                idx = DataListUtil.ExtractIndexRegionFromRecordset(rawSearch);
+            }
+            // add general closed recordset
+            string rsName = search;
+            if (idx == string.Empty)
+            {
+                rsName = payload.Payload;
+            }
+            IDataListVerifyPart part = IntellisenseFactory.CreateDataListValidationRecordsetPart(rsName, "", t1.Description + " / Select a specific row", idx);
+            result.Add(IntellisenseFactory.CreateSelectableResult(payload.StartIndex, payload.EndIndex, part, part.Description));
+
+            IList<IDev2DataLanguageIntellisensePart> children = t1.Children;
+            if (children != null)
+            {
+                foreach (IDev2DataLanguageIntellisensePart t in children)
+                {
+                    part = IntellisenseFactory.CreateDataListValidationRecordsetPart(rsName, t.Name, t.Description + " / Select a specific field at a specific row", idx);
+                    result.Add(IntellisenseFactory.CreateSelectableResult(payload.StartIndex, payload.EndIndex, part, part.Description));
+                }
+            }
+        }
+
+        public bool AddRecordSetIndex(ParseTO payload, bool addCompleteParts, IList<IIntellisenseResult> result, string[] parts, IDev2DataLanguageIntellisensePart t1, bool emptyOk)
+        {
+            if (addCompleteParts)
+            {
+                string idx = DataListUtil.ExtractIndexRegionFromRecordset(parts[0]);
+                string recset = DataListUtil.ExtractRecordsetNameFromValue(parts[0]);
+
+                IDataListVerifyPart p = IntellisenseFactory.CreateDataListValidationRecordsetPart(recset, string.Empty, t1.Description, payload.Child != null ? payload.Child.Payload : idx);
+
+                result.Add(IntellisenseFactory.CreateSelectableResult(payload.StartIndex, payload.EndIndex, p, p.Description));
+            }
+            else
+            {
+                emptyOk = true;
+            }
+            return emptyOk;
+        }
+
+        public bool RecordsetMatch(ParseTO payload, bool addCompleteParts, IList<IIntellisenseResult> result, string rawSearch, string search, bool emptyOk, string[] parts, IDev2DataLanguageIntellisensePart t1)
+        {
+            if (payload.HangingOpen)
+            {
+                ProcessRecordSetMatch(payload, result, rawSearch, search, t1);
+            }
+            else
+            {
+                // add in recordset with index if around
+                emptyOk = AddRecordSetIndex(payload, addCompleteParts, result, parts, t1, emptyOk);
+            }
+            return emptyOk;
+        }
+
+        public void OpenRecordsetItem(ParseTO payload, IList<IIntellisenseResult> result, IDev2DataLanguageIntellisensePart t1)
+        {
+            if (payload.Child != null)
+            {
+                string indx = payload.Child.Payload;
+                int end = indx.IndexOf(DataListUtil.RecordsetIndexClosingBracket, StringComparison.Ordinal);
+                if (end > 0)
+                {
+                    // malformed index -- correct it
+                    indx = indx.Substring(0, end);
+                }
+
+                indx = DataListUtil.AddBracketsToValueIfNotExist(indx);
+
+                string rs = payload.Payload;
+                end = rs.IndexOf(DataListUtil.RecordsetIndexOpeningBracket, StringComparison.Ordinal);
+                if (end > 0)
+                {
+                    rs = rs.Substring(0, end);
+                }
+
+                IDataListVerifyPart prt = IntellisenseFactory.CreateDataListValidationRecordsetPart(rs, "", " / Select a specific row", indx);
+
+                result.Add(IntellisenseFactory.CreateSelectableResult(payload.StartIndex, payload.EndIndex, prt, prt.Description));
+
+                // now add all fields to collection too ;)
+                if (t1.Children != null)
+                {
+                    IList<IDev2DataLanguageIntellisensePart> cParts = t1.Children;
+                    foreach (IDev2DataLanguageIntellisensePart t in cParts)
+                    {
+                        prt = IntellisenseFactory.CreateDataListValidationRecordsetPart(rs, t.Name, " / Select a specific row", indx);
+                        result.Add(IntellisenseFactory.CreateSelectableResult(payload.StartIndex, payload.EndIndex, prt, prt.Description));
+                    }
+                }
+            }
         }
 
         #endregion

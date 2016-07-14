@@ -26,11 +26,11 @@ namespace Dev2.Runtime.ESB.Execution
         protected ServiceAction ServiceAction { get; private set; }
         protected IDSFDataObject DataObject { get; private set; }
         protected IWorkspace TheWorkspace { get; private set; }
-        protected IEsbChannel EsbChannel { get; private set; }
+        private IEsbChannel EsbChannel { get; set; }
         protected EsbExecuteRequest Request { get; private set; }
 
-        public String InstanceOutputDefinition { get; set; }
-        public String InstanceInputDefinition { get; set; }
+        public string InstanceOutputDefinition { get; set; }
+        public string InstanceInputDefinition { get; set; }
 
         public IDSFDataObject GetDataObject()
         {

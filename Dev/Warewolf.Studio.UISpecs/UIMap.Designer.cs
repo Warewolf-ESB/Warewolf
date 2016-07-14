@@ -1216,11 +1216,11 @@ namespace Warewolf.Studio.UISpecs
         public void Assert_Email_Large_View_Exists_OnDesignSurface()
         {
             #region Variable Declarations
-            WpfCustom sendEmail = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SendEmail;
+            WpfCustom largeView = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SendEmail.LargeView;
             #endregion
 
-            // Verify that the 'Exists' property of 'DsfSendEmailActivity' custom control equals 'True'
-            Assert.AreEqual(this.Assert_Email_Large_View_Exists_OnDesignSurfaceExpectedValues.SendEmailExists, sendEmail.Exists, "Email Tool large view does not exist on the design surface");
+            // Verify that the 'Exists' property of 'LargeViewContent' custom control equals 'True'
+            Assert.AreEqual(this.Assert_Email_Large_View_Exists_OnDesignSurfaceExpectedValues.LargeViewExists, largeView.Exists, "Email Tool large view does not exist on the design surface");
         }
         
         /// <summary>
@@ -1248,6 +1248,32 @@ namespace Warewolf.Studio.UISpecs
             // Verify that the 'Exists' property of 'UI__Variable_AutoID' text box equals 'True'
             Assert.AreEqual(this.Assert_Error_Variable_Textbox_Exists_On_Assign_Object_Large_ViewExpectedValues.ErrorVariableExists, errorVariable.Exists, "Error variable text box does not exist on Assign Object large view on the design " +
                     "surface");
+        }
+        
+        /// <summary>
+        /// Assert_Exchange_Email_Exists_OnDesignSurface - Use 'Assert_Exchange_Email_Exists_OnDesignSurfaceExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void Assert_Exchange_Email_Exists_OnDesignSurface()
+        {
+            #region Variable Declarations
+            WpfCustom exchangeEmail = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ExchangeEmail;
+            #endregion
+
+            // Verify that the 'Exists' property of 'DsfSendEmailActivity' custom control equals 'True'
+            Assert.AreEqual(this.Assert_Exchange_Email_Exists_OnDesignSurfaceExpectedValues.ExchangeEmailExists, exchangeEmail.Exists, "Email tool on the design surface does not exist");
+        }
+        
+        /// <summary>
+        /// Assert_Exchange_Email_Large_View_Exists_OnDesignSurface - Use 'Assert_Exchange_Email_Large_View_Exists_OnDesignSurfaceExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void Assert_Exchange_Email_Large_View_Exists_OnDesignSurface()
+        {
+            #region Variable Declarations
+            WpfCustom largeView = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ExchangeEmail.LargeView;
+            #endregion
+
+            // Verify that the 'Exists' property of 'LargeViewContent' custom control equals 'True'
+            Assert.AreEqual(this.Assert_Exchange_Email_Large_View_Exists_OnDesignSurfaceExpectedValues.LargeViewExists, largeView.Exists, "Exchange email large view does not exist on design surface.");
         }
         
         /// <summary>
@@ -1542,11 +1568,11 @@ namespace Warewolf.Studio.UISpecs
         public void Assert_GetWeb_RequestTool_Large_View_Exists_OnDesignSurface()
         {
             #region Variable Declarations
-            WpfCustom webGet = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebGet;
+            WpfCustom webRequest = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebRequest;
             #endregion
 
-            // Verify that the 'Exists' property of 'DsfWebGetActivity' custom control equals 'True'
-            Assert.AreEqual(this.Assert_GetWeb_RequestTool_Large_View_Exists_OnDesignSurfaceExpectedValues.WebGetExists, webGet.Exists, "Web Get Request Tool does not exist on the design surface");
+            // Verify that the 'Exists' property of 'DsfWebRequestActivity' custom control equals 'True'
+            Assert.AreEqual(this.Assert_GetWeb_RequestTool_Large_View_Exists_OnDesignSurfaceExpectedValues.WebRequestExists, webRequest.Exists, "Web Get Request Tool does not exist on the design surface");
         }
         
         /// <summary>
@@ -1555,11 +1581,11 @@ namespace Warewolf.Studio.UISpecs
         public void Assert_GetWeb_RequestTool_small_View_Exists_OnDesignSurface()
         {
             #region Variable Declarations
-            WpfCustom webGet = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebGet;
+            WpfCustom webRequest = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebRequest;
             #endregion
 
-            // Verify that the 'Exists' property of 'DsfWebGetActivity' custom control equals 'True'
-            Assert.AreEqual(this.Assert_GetWeb_RequestTool_small_View_Exists_OnDesignSurfaceExpectedValues.WebGetExists, webGet.Exists, "Web Get Request small view does not exist on the design surface");
+            // Verify that the 'Exists' property of 'DsfWebRequestActivity' custom control equals 'True'
+            Assert.AreEqual(this.Assert_GetWeb_RequestTool_small_View_Exists_OnDesignSurfaceExpectedValues.WebRequestExists, webRequest.Exists, "Web Get Request small view does not exist on the design surface");
         }
         
         /// <summary>
@@ -1906,11 +1932,11 @@ namespace Warewolf.Studio.UISpecs
         public void Assert_PostWeb_RequestTool_Large_View_Exists_OnDesignSurface()
         {
             #region Variable Declarations
-            WpfCustom webPost = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebPost;
+            WpfCustom largeView = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebPost.LargeView;
             #endregion
 
-            // Verify that the 'Exists' property of 'DsfWebPostActivity' custom control equals 'True'
-            Assert.AreEqual(this.Assert_PostWeb_RequestTool_Large_View_Exists_OnDesignSurfaceExpectedValues.WebPostExists, webPost.Exists, "Web Post Request Tool does not exist on the design surface ");
+            // Verify that the 'Exists' property of 'LargeViewContent' custom control equals 'True'
+            Assert.AreEqual(this.Assert_PostWeb_RequestTool_Large_View_Exists_OnDesignSurfaceExpectedValues.LargeViewExists, largeView.Exists, "Post web request large view does not exist on design surface.");
         }
         
         /// <summary>
@@ -3927,6 +3953,19 @@ namespace Warewolf.Studio.UISpecs
         }
         
         /// <summary>
+        /// Assert_Web_Request_Exists_OnDesignSurface - Use 'Assert_Web_Request_Exists_OnDesignSurfaceExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void Assert_Web_Request_Exists_OnDesignSurface()
+        {
+            #region Variable Declarations
+            WpfCustom webRequest = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebRequest;
+            #endregion
+
+            // Verify that the 'Exists' property of 'DsfWebRequestActivity' custom control equals 'True'
+            Assert.AreEqual(this.Assert_Web_Request_Exists_OnDesignSurfaceExpectedValues.WebRequestExists, webRequest.Exists, "Web Request on the design surface does not exist");
+        }
+        
+        /// <summary>
         /// Assert_Web_Source_Exists - Use 'Assert_Web_Source_ExistsExpectedValues' to pass parameters into this method.
         /// </summary>
         public void Assert_Web_Source_Exists()
@@ -4777,11 +4816,11 @@ namespace Warewolf.Studio.UISpecs
         public void Click_Service_Picker_Dialog_Cancel()
         {
             #region Variable Declarations
-            WpfButton cancelButton = this.SaveDialogWindow.CancelButton;
+            WpfButton cancel = this.ServicePickerDialog.Cancel;
             #endregion
 
             // Click 'Cancel' button
-            Mouse.Click(cancelButton, new Point(57, 6));
+            Mouse.Click(cancel, new Point(57, 6));
         }
         
         /// <summary>
@@ -5041,13 +5080,13 @@ namespace Warewolf.Studio.UISpecs
         public void Drag_DotNet_DLL_Connector_Onto_DesignSurface()
         {
             #region Variable Declarations
-            WpfImage dotNetDLLConnectorImage = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.ResourceTools.DotNetDLLConnector.DotNetDLLConnectorImage;
+            WpfImage dotNetDLLImage = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.ResourceTools.DotNetDLL.DotNetDLLImage;
             WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
             #endregion
 
             // Move 'DotNetDLLConnector' image to 'Flowchart' custom control
             flowchart.EnsureClickable(new Point(308, 127));
-            Mouse.StartDragging(dotNetDLLConnectorImage, new Point(16, 25));
+            Mouse.StartDragging(dotNetDLLImage, new Point(16, 25));
             Mouse.StopDragging(flowchart, new Point(308, 127));
         }
         
@@ -5105,13 +5144,13 @@ namespace Warewolf.Studio.UISpecs
         public void Drag_PostWeb_RequestTool_Onto_DesignSurface()
         {
             #region Variable Declarations
-            WpfCustom webPost = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebPost;
+            WpfImage pOSTImage = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.HTTPWebMethods.POST.POSTImage;
             WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
             #endregion
 
-            // Move 'DsfWebPostActivity' custom control to 'Flowchart' custom control
+            // Move 'POST' image to 'Flowchart' custom control
             flowchart.EnsureClickable(new Point(306, 128));
-            Mouse.StartDragging(webPost, new Point(20, 35));
+            Mouse.StartDragging(pOSTImage, new Point(20, 35));
             Mouse.StopDragging(flowchart, new Point(306, 128));
         }
         
@@ -5361,7 +5400,7 @@ namespace Warewolf.Studio.UISpecs
         public void Drag_Toolbox_Dropbox_Download_Onto_DesignSurface()
         {
             #region Variable Declarations
-            WpfImage downloadImage = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.StorageTools.Download.DownloadImage;
+            WpfImage downloadImage = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.StorageDropbox.Download.DownloadImage;
             WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
             #endregion
 
@@ -5377,7 +5416,7 @@ namespace Warewolf.Studio.UISpecs
         public void Drag_Toolbox_Dropbox_Upload_Onto_DesignSurface()
         {
             #region Variable Declarations
-            WpfImage uploadImage = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.StorageTools.Upload.UploadImage;
+            WpfImage uploadImage = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.StorageDropbox.Upload.UploadImage;
             WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
             #endregion
 
@@ -6283,6 +6322,19 @@ namespace Warewolf.Studio.UISpecs
         }
         
         /// <summary>
+        /// Open_Exchange_Email_Tool_Large_View
+        /// </summary>
+        public void Open_Exchange_Email_Tool_Large_View()
+        {
+            #region Variable Declarations
+            WpfCustom exchangeEmail = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ExchangeEmail;
+            #endregion
+
+            // Double-Click 'DsfSendEmailActivity' custom control
+            Mouse.DoubleClick(exchangeEmail, new Point(168, 11));
+        }
+        
+        /// <summary>
         /// Open_ExecuteCommandline_LargeView
         /// </summary>
         public void Open_ExecuteCommandline_LargeView()
@@ -6327,11 +6379,11 @@ namespace Warewolf.Studio.UISpecs
         public void Open_GetWeb_RequestTool_small_View()
         {
             #region Variable Declarations
-            WpfCustom webGet = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebGet;
+            WpfCustom webRequest = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebRequest;
             #endregion
 
-            // Double-Click 'DsfWebGetActivity' custom control
-            Mouse.DoubleClick(webGet, new Point(237, 7));
+            // Double-Click 'DsfWebRequestActivity' custom control
+            Mouse.DoubleClick(webRequest, new Point(237, 7));
         }
         
         /// <summary>
@@ -6387,9 +6439,9 @@ namespace Warewolf.Studio.UISpecs
         }
         
         /// <summary>
-        /// Open_PostWeb_RequestTool_small_View
+        /// Open_PostWeb_RequestTool_Large_View
         /// </summary>
-        public void Open_PostWeb_RequestTool_small_View()
+        public void Open_PostWeb_RequestTool_Large_View()
         {
             #region Variable Declarations
             WpfCustom webPost = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebPost;
@@ -6587,11 +6639,11 @@ namespace Warewolf.Studio.UISpecs
         public void Open_WebRequest_LargeView()
         {
             #region Variable Declarations
-            WpfCustom webGet = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebGet;
+            WpfCustom webRequest = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebRequest;
             #endregion
 
-            // Double-Click 'DsfWebGetActivity' custom control
-            Mouse.DoubleClick(webGet, new Point(126, 13));
+            // Double-Click 'DsfWebRequestActivity' custom control
+            Mouse.DoubleClick(webRequest, new Point(126, 13));
         }
         
         /// <summary>
@@ -7302,11 +7354,11 @@ namespace Warewolf.Studio.UISpecs
         public void RightClick_WebRequest_OnDesignSurface()
         {
             #region Variable Declarations
-            WpfCustom webGet = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebGet;
+            WpfCustom webRequest = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebRequest;
             #endregion
 
-            // Right-Click 'DsfWebGetActivity' custom control
-            Mouse.Click(webGet, MouseButtons.Right, ModifierKeys.None, new Point(165, 8));
+            // Right-Click 'DsfWebRequestActivity' custom control
+            Mouse.Click(webRequest, MouseButtons.Right, ModifierKeys.None, new Point(165, 8));
         }
         
         /// <summary>
@@ -7801,6 +7853,19 @@ namespace Warewolf.Studio.UISpecs
 
             // Type 'tst-ci-' in 'Text' text box
             addressEditBox.Text = this.Type_tstci_into_Server_Source_Wizard_Address_TextboxParams.AddressEditBoxText;
+        }
+        
+        /// <summary>
+        /// Assert_Web_Request_Large_View_Exists_OnDesignSurface - Use 'Assert_Web_Request_Large_View_Exists_OnDesignSurfaceExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void Assert_Web_Request_Large_View_Exists_OnDesignSurface()
+        {
+            #region Variable Declarations
+            WpfCustom largeView = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebRequest.LargeView;
+            #endregion
+
+            // Verify that the 'Exists' property of 'LargeViewContent' custom control equals 'True'
+            Assert.AreEqual(this.Assert_Web_Request_Large_View_Exists_OnDesignSurfaceExpectedValues.LargeViewExists, largeView.Exists, "Web request large view does not exist on design surface.");
         }
         
         #region Properties
@@ -8917,6 +8982,30 @@ namespace Warewolf.Studio.UISpecs
                     this.mAssert_Error_Variable_Textbox_Exists_On_Assign_Object_Large_ViewExpectedValues = new Assert_Error_Variable_Textbox_Exists_On_Assign_Object_Large_ViewExpectedValues();
                 }
                 return this.mAssert_Error_Variable_Textbox_Exists_On_Assign_Object_Large_ViewExpectedValues;
+            }
+        }
+        
+        public virtual Assert_Exchange_Email_Exists_OnDesignSurfaceExpectedValues Assert_Exchange_Email_Exists_OnDesignSurfaceExpectedValues
+        {
+            get
+            {
+                if ((this.mAssert_Exchange_Email_Exists_OnDesignSurfaceExpectedValues == null))
+                {
+                    this.mAssert_Exchange_Email_Exists_OnDesignSurfaceExpectedValues = new Assert_Exchange_Email_Exists_OnDesignSurfaceExpectedValues();
+                }
+                return this.mAssert_Exchange_Email_Exists_OnDesignSurfaceExpectedValues;
+            }
+        }
+        
+        public virtual Assert_Exchange_Email_Large_View_Exists_OnDesignSurfaceExpectedValues Assert_Exchange_Email_Large_View_Exists_OnDesignSurfaceExpectedValues
+        {
+            get
+            {
+                if ((this.mAssert_Exchange_Email_Large_View_Exists_OnDesignSurfaceExpectedValues == null))
+                {
+                    this.mAssert_Exchange_Email_Large_View_Exists_OnDesignSurfaceExpectedValues = new Assert_Exchange_Email_Large_View_Exists_OnDesignSurfaceExpectedValues();
+                }
+                return this.mAssert_Exchange_Email_Large_View_Exists_OnDesignSurfaceExpectedValues;
             }
         }
         
@@ -11380,6 +11469,18 @@ namespace Warewolf.Studio.UISpecs
             }
         }
         
+        public virtual Assert_Web_Request_Exists_OnDesignSurfaceExpectedValues Assert_Web_Request_Exists_OnDesignSurfaceExpectedValues
+        {
+            get
+            {
+                if ((this.mAssert_Web_Request_Exists_OnDesignSurfaceExpectedValues == null))
+                {
+                    this.mAssert_Web_Request_Exists_OnDesignSurfaceExpectedValues = new Assert_Web_Request_Exists_OnDesignSurfaceExpectedValues();
+                }
+                return this.mAssert_Web_Request_Exists_OnDesignSurfaceExpectedValues;
+            }
+        }
+        
         public virtual Assert_Web_Source_ExistsExpectedValues Assert_Web_Source_ExistsExpectedValues
         {
             get
@@ -11908,6 +12009,18 @@ namespace Warewolf.Studio.UISpecs
             }
         }
         
+        public virtual Assert_Web_Request_Large_View_Exists_OnDesignSurfaceExpectedValues Assert_Web_Request_Large_View_Exists_OnDesignSurfaceExpectedValues
+        {
+            get
+            {
+                if ((this.mAssert_Web_Request_Large_View_Exists_OnDesignSurfaceExpectedValues == null))
+                {
+                    this.mAssert_Web_Request_Large_View_Exists_OnDesignSurfaceExpectedValues = new Assert_Web_Request_Large_View_Exists_OnDesignSurfaceExpectedValues();
+                }
+                return this.mAssert_Web_Request_Large_View_Exists_OnDesignSurfaceExpectedValues;
+            }
+        }
+        
         public MainStudioWindow MainStudioWindow
         {
             get
@@ -12179,6 +12292,10 @@ namespace Warewolf.Studio.UISpecs
         private Assert_end_this_workflow_checkbox_exists_on_Assign_Object_large_viewExpectedValues mAssert_end_this_workflow_checkbox_exists_on_Assign_Object_large_viewExpectedValues;
         
         private Assert_Error_Variable_Textbox_Exists_On_Assign_Object_Large_ViewExpectedValues mAssert_Error_Variable_Textbox_Exists_On_Assign_Object_Large_ViewExpectedValues;
+        
+        private Assert_Exchange_Email_Exists_OnDesignSurfaceExpectedValues mAssert_Exchange_Email_Exists_OnDesignSurfaceExpectedValues;
+        
+        private Assert_Exchange_Email_Large_View_Exists_OnDesignSurfaceExpectedValues mAssert_Exchange_Email_Large_View_Exists_OnDesignSurfaceExpectedValues;
         
         private Assert_Explorer_Edit_Connect_Control_Button_ExistsExpectedValues mAssert_Explorer_Edit_Connect_Control_Button_ExistsExpectedValues;
         
@@ -12590,6 +12707,8 @@ namespace Warewolf.Studio.UISpecs
         
         private Assert_Web_Connectors_Exists_OnDesignSurfaceExpectedValues mAssert_Web_Connectors_Exists_OnDesignSurfaceExpectedValues;
         
+        private Assert_Web_Request_Exists_OnDesignSurfaceExpectedValues mAssert_Web_Request_Exists_OnDesignSurfaceExpectedValues;
+        
         private Assert_Web_Source_ExistsExpectedValues mAssert_Web_Source_ExistsExpectedValues;
         
         private Assert_WebSource_ReqTypeComboBox_ExistsExpectedValues mAssert_WebSource_ReqTypeComboBox_ExistsExpectedValues;
@@ -12677,6 +12796,8 @@ namespace Warewolf.Studio.UISpecs
         private Type_S_Into_DebugInput_Row1_InputDataParams mType_S_Into_DebugInput_Row1_InputDataParams;
         
         private Type_tstci_into_Server_Source_Wizard_Address_TextboxParams mType_tstci_into_Server_Source_Wizard_Address_TextboxParams;
+        
+        private Assert_Web_Request_Large_View_Exists_OnDesignSurfaceExpectedValues mAssert_Web_Request_Large_View_Exists_OnDesignSurfaceExpectedValues;
         
         private MainStudioWindow mMainStudioWindow;
         
@@ -14058,9 +14179,9 @@ namespace Warewolf.Studio.UISpecs
         
         #region Fields
         /// <summary>
-        /// Verify that the 'Exists' property of 'DsfSendEmailActivity' custom control equals 'True'
+        /// Verify that the 'Exists' property of 'LargeViewContent' custom control equals 'True'
         /// </summary>
-        public bool SendEmailExists = true;
+        public bool LargeViewExists = true;
         #endregion
     }
     
@@ -14091,6 +14212,36 @@ namespace Warewolf.Studio.UISpecs
         /// Verify that the 'Exists' property of 'UI__Variable_AutoID' text box equals 'True'
         /// </summary>
         public bool ErrorVariableExists = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Assert_Exchange_Email_Exists_OnDesignSurface'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Assert_Exchange_Email_Exists_OnDesignSurfaceExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'DsfSendEmailActivity' custom control equals 'True'
+        /// </summary>
+        public bool ExchangeEmailExists = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Assert_Exchange_Email_Large_View_Exists_OnDesignSurface'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Assert_Exchange_Email_Large_View_Exists_OnDesignSurfaceExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'LargeViewContent' custom control equals 'True'
+        /// </summary>
+        public bool LargeViewExists = true;
         #endregion
     }
     
@@ -14433,9 +14584,9 @@ namespace Warewolf.Studio.UISpecs
         
         #region Fields
         /// <summary>
-        /// Verify that the 'Exists' property of 'DsfWebGetActivity' custom control equals 'True'
+        /// Verify that the 'Exists' property of 'DsfWebRequestActivity' custom control equals 'True'
         /// </summary>
-        public bool WebGetExists = true;
+        public bool WebRequestExists = true;
         #endregion
     }
     
@@ -14448,9 +14599,9 @@ namespace Warewolf.Studio.UISpecs
         
         #region Fields
         /// <summary>
-        /// Verify that the 'Exists' property of 'DsfWebGetActivity' custom control equals 'True'
+        /// Verify that the 'Exists' property of 'DsfWebRequestActivity' custom control equals 'True'
         /// </summary>
-        public bool WebGetExists = true;
+        public bool WebRequestExists = true;
         #endregion
     }
     
@@ -14853,9 +15004,9 @@ namespace Warewolf.Studio.UISpecs
         
         #region Fields
         /// <summary>
-        /// Verify that the 'Exists' property of 'DsfWebPostActivity' custom control equals 'True'
+        /// Verify that the 'Exists' property of 'LargeViewContent' custom control equals 'True'
         /// </summary>
-        public bool WebPostExists = true;
+        public bool LargeViewExists = true;
         #endregion
     }
     
@@ -17175,6 +17326,21 @@ namespace Warewolf.Studio.UISpecs
     }
     
     /// <summary>
+    /// Parameters to be passed into 'Assert_Web_Request_Exists_OnDesignSurface'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Assert_Web_Request_Exists_OnDesignSurfaceExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'DsfWebRequestActivity' custom control equals 'True'
+        /// </summary>
+        public bool WebRequestExists = true;
+        #endregion
+    }
+    
+    /// <summary>
     /// Parameters to be passed into 'Assert_Web_Source_Exists'
     /// </summary>
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
@@ -17831,6 +17997,21 @@ namespace Warewolf.Studio.UISpecs
         /// Type 'tst-ci-' in 'Text' text box
         /// </summary>
         public string AddressEditBoxText = "tst-ci-";
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Assert_Web_Request_Large_View_Exists_OnDesignSurface'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Assert_Web_Request_Large_View_Exists_OnDesignSurfaceExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'LargeViewContent' custom control equals 'True'
+        /// </summary>
+        public bool LargeViewExists = true;
         #endregion
     }
     
@@ -20179,15 +20360,15 @@ namespace Warewolf.Studio.UISpecs
             }
         }
         
-        public StorageTools StorageTools
+        public StorageDropbox StorageDropbox
         {
             get
             {
-                if ((this.mStorageTools == null))
+                if ((this.mStorageDropbox == null))
                 {
-                    this.mStorageTools = new StorageTools(this);
+                    this.mStorageDropbox = new StorageDropbox(this);
                 }
-                return this.mStorageTools;
+                return this.mStorageDropbox;
             }
         }
         
@@ -20227,7 +20408,7 @@ namespace Warewolf.Studio.UISpecs
         
         private SharepointTools mSharepointTools;
         
-        private StorageTools mStorageTools;
+        private StorageDropbox mStorageDropbox;
         
         private UtilityTools mUtilityTools;
         #endregion
@@ -22227,15 +22408,15 @@ namespace Warewolf.Studio.UISpecs
         }
         
         #region Properties
-        public DotNetDLLConnector DotNetDLLConnector
+        public DotNetDLL DotNetDLL
         {
             get
             {
-                if ((this.mDotNetDLLConnector == null))
+                if ((this.mDotNetDLL == null))
                 {
-                    this.mDotNetDLLConnector = new DotNetDLLConnector(this);
+                    this.mDotNetDLL = new DotNetDLL(this);
                 }
-                return this.mDotNetDLLConnector;
+                return this.mDotNetDLL;
             }
         }
         
@@ -22253,46 +22434,46 @@ namespace Warewolf.Studio.UISpecs
         #endregion
         
         #region Fields
-        private DotNetDLLConnector mDotNetDLLConnector;
+        private DotNetDLL mDotNetDLL;
         
         private Service mService;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class DotNetDLLConnector : WpfListItem
+    public class DotNetDLL : WpfListItem
     {
         
-        public DotNetDLLConnector(UITestControl searchLimitContainer) : 
+        public DotNetDLL(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
             this.SearchProperties[WpfListItem.PropertyNames.Name] = "Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorViewModel";
-            this.SearchProperties[WpfListItem.PropertyNames.AutomationId] = "DotNet DLL Connector";
+            this.SearchProperties[WpfListItem.PropertyNames.AutomationId] = "DotNet DLL";
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
         
         #region Properties
-        public WpfImage DotNetDLLConnectorImage
+        public WpfImage DotNetDLLImage
         {
             get
             {
-                if ((this.mDotNetDLLConnectorImage == null))
+                if ((this.mDotNetDLLImage == null))
                 {
-                    this.mDotNetDLLConnectorImage = new WpfImage(this);
+                    this.mDotNetDLLImage = new WpfImage(this);
                     #region Search Criteria
-                    this.mDotNetDLLConnectorImage.SearchProperties[WpfImage.PropertyNames.AutomationId] = "DotNet DLL Connector";
-                    this.mDotNetDLLConnectorImage.WindowTitles.Add("Warewolf");
+                    this.mDotNetDLLImage.SearchProperties[WpfImage.PropertyNames.AutomationId] = "DotNet DLL";
+                    this.mDotNetDLLImage.WindowTitles.Add("Warewolf");
                     #endregion
                 }
-                return this.mDotNetDLLConnectorImage;
+                return this.mDotNetDLLImage;
             }
         }
         #endregion
         
         #region Fields
-        private WpfImage mDotNetDLLConnectorImage;
+        private WpfImage mDotNetDLLImage;
         #endregion
     }
     
@@ -22676,10 +22857,10 @@ namespace Warewolf.Studio.UISpecs
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class StorageTools : WpfGroup
+    public class StorageDropbox : WpfGroup
     {
         
-        public StorageTools(UITestControl searchLimitContainer) : 
+        public StorageDropbox(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -22772,7 +22953,7 @@ namespace Warewolf.Studio.UISpecs
                 {
                     this.mDownloadImage = new WpfImage(this);
                     #region Search Criteria
-                    this.mDownloadImage.SearchProperties[WpfImage.PropertyNames.AutomationId] = "Dropbox Download";
+                    this.mDownloadImage.SearchProperties[WpfImage.PropertyNames.AutomationId] = "Download";
                     this.mDownloadImage.WindowTitles.Add("Warewolf");
                     #endregion
                 }
@@ -22809,7 +22990,7 @@ namespace Warewolf.Studio.UISpecs
                 {
                     this.mUploadImage = new WpfImage(this);
                     #region Search Criteria
-                    this.mUploadImage.SearchProperties[WpfImage.PropertyNames.AutomationId] = "Dropbox Upload";
+                    this.mUploadImage.SearchProperties[WpfImage.PropertyNames.AutomationId] = "Upload";
                     this.mUploadImage.WindowTitles.Add("Warewolf");
                     #endregion
                 }
@@ -26389,37 +26570,15 @@ namespace Warewolf.Studio.UISpecs
             }
         }
         
-        public WpfCustom WebGet
+        public WebRequest1 WebRequest
         {
             get
             {
-                if ((this.mWebGet == null))
+                if ((this.mWebRequest == null))
                 {
-                    this.mWebGet = new WpfCustom(this);
-                    #region Search Criteria
-                    this.mWebGet.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.GetWebRequestWithTimeOutDesigner";
-                    this.mWebGet.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Web Request(GetWebRequestWithTimeOutDesigner)";
-                    this.mWebGet.WindowTitles.Add("Warewolf");
-                    #endregion
+                    this.mWebRequest = new WebRequest1(this);
                 }
-                return this.mWebGet;
-            }
-        }
-        
-        public WpfCustom WebPost
-        {
-            get
-            {
-                if ((this.mWebPost == null))
-                {
-                    this.mWebPost = new WpfCustom(this);
-                    #region Search Criteria
-                    this.mWebPost.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.WebServicePostDesigner";
-                    this.mWebPost.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Web Post Request Connector(WebServicePostDesigner)";
-                    this.mWebPost.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mWebPost;
+                return this.mWebRequest;
             }
         }
         
@@ -26432,7 +26591,7 @@ namespace Warewolf.Studio.UISpecs
                     this.mDotNetDll = new WpfCustom(this);
                     #region Search Criteria
                     this.mDotNetDll.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.DotNetDllDesigner";
-                    this.mDotNetDll.SearchProperties[WpfControl.PropertyNames.AutomationId] = "DotNet DLL Connector(DotNetDllDesigner)";
+                    this.mDotNetDll.SearchProperties[WpfControl.PropertyNames.AutomationId] = "DotNet DLL(DotNetDllDesigner)";
                     this.mDotNetDll.WindowTitles.Add("Warewolf");
                     #endregion
                 }
@@ -26932,20 +27091,27 @@ namespace Warewolf.Studio.UISpecs
             }
         }
         
-        public WpfCustom SendEmail
+        public SendEmail SendEmail
         {
             get
             {
                 if ((this.mSendEmail == null))
                 {
-                    this.mSendEmail = new WpfCustom(this);
-                    #region Search Criteria
-                    this.mSendEmail.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.EmailDesigner";
-                    this.mSendEmail.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Email(EmailDesigner)";
-                    this.mSendEmail.WindowTitles.Add("Warewolf");
-                    #endregion
+                    this.mSendEmail = new SendEmail(this);
                 }
                 return this.mSendEmail;
+            }
+        }
+        
+        public ExchangeEmail ExchangeEmail
+        {
+            get
+            {
+                if ((this.mExchangeEmail == null))
+                {
+                    this.mExchangeEmail = new ExchangeEmail(this);
+                }
+                return this.mExchangeEmail;
             }
         }
         
@@ -27295,14 +27461,24 @@ namespace Warewolf.Studio.UISpecs
                 return this.mStartNode;
             }
         }
+        
+        public WebPost WebPost
+        {
+            get
+            {
+                if ((this.mWebPost == null))
+                {
+                    this.mWebPost = new WebPost(this);
+                }
+                return this.mWebPost;
+            }
+        }
         #endregion
         
         #region Fields
         private AssignObject mAssignObject;
         
-        private WpfCustom mWebGet;
-        
-        private WpfCustom mWebPost;
+        private WebRequest1 mWebRequest;
         
         private WpfCustom mDotNetDll;
         
@@ -27368,7 +27544,9 @@ namespace Warewolf.Studio.UISpecs
         
         private WpfCustom mRandom;
         
-        private WpfCustom mSendEmail;
+        private SendEmail mSendEmail;
+        
+        private ExchangeEmail mExchangeEmail;
         
         private WpfCustom mComment;
         
@@ -27411,6 +27589,8 @@ namespace Warewolf.Studio.UISpecs
         private MultiAssign1 mMultiAssign;
         
         private WpfCustom mStartNode;
+        
+        private WebPost mWebPost;
         #endregion
     }
     
@@ -28345,6 +28525,44 @@ namespace Warewolf.Studio.UISpecs
         private WpfEdit mErrorWebservice;
         
         private WpfCheckBox mEndthisworkflowCheckBox;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class WebRequest1 : WpfCustom
+    {
+        
+        public WebRequest1(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.GetWebRequestWithTimeOutDesigner";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Web Request(GetWebRequestWithTimeOutDesigner)";
+            this.WindowTitles.Add("Warewolf");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfCustom LargeView
+        {
+            get
+            {
+                if ((this.mLargeView == null))
+                {
+                    this.mLargeView = new WpfCustom(this);
+                    #region Search Criteria
+                    this.mLargeView.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.Large";
+                    this.mLargeView.SearchProperties[WpfControl.PropertyNames.AutomationId] = "LargeViewContent";
+                    this.mLargeView.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mLargeView;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfCustom mLargeView;
         #endregion
     }
     
@@ -29471,6 +29689,82 @@ namespace Warewolf.Studio.UISpecs
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class SendEmail : WpfCustom
+    {
+        
+        public SendEmail(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.EmailDesigner";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Email(EmailDesigner)";
+            this.WindowTitles.Add("Warewolf");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfCustom LargeView
+        {
+            get
+            {
+                if ((this.mLargeView == null))
+                {
+                    this.mLargeView = new WpfCustom(this);
+                    #region Search Criteria
+                    this.mLargeView.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.Large";
+                    this.mLargeView.SearchProperties[WpfControl.PropertyNames.AutomationId] = "LargeViewContent";
+                    this.mLargeView.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mLargeView;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfCustom mLargeView;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class ExchangeEmail : WpfCustom
+    {
+        
+        public ExchangeEmail(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ExchangeEmailDesigner";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Exchange Email(ExchangeEmailDesigner)";
+            this.WindowTitles.Add("Warewolf");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfCustom LargeView
+        {
+            get
+            {
+                if ((this.mLargeView == null))
+                {
+                    this.mLargeView = new WpfCustom(this);
+                    #region Search Criteria
+                    this.mLargeView.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.Large";
+                    this.mLargeView.SearchProperties[WpfControl.PropertyNames.AutomationId] = "LargeViewContent";
+                    this.mLargeView.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mLargeView;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfCustom mLargeView;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class XPath1 : WpfCustom
     {
         
@@ -29909,6 +30203,44 @@ namespace Warewolf.Studio.UISpecs
         
         #region Fields
         private WpfEdit mTextBox;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class WebPost : WpfCustom
+    {
+        
+        public WebPost(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.WebServicePostDesigner";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "POST Web Method(WebServicePostDesigner)";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfCustom LargeView
+        {
+            get
+            {
+                if ((this.mLargeView == null))
+                {
+                    this.mLargeView = new WpfCustom(this);
+                    #region Search Criteria
+                    this.mLargeView.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.Large";
+                    this.mLargeView.SearchProperties[WpfControl.PropertyNames.AutomationId] = "LargeViewContent";
+                    this.mLargeView.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mLargeView;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfCustom mLargeView;
         #endregion
     }
     

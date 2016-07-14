@@ -11,10 +11,8 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
-using System.Net;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -36,19 +34,14 @@ using Dev2.DataList.Contract;
 using Dev2.Dialogs;
 using Dev2.Interfaces;
 using Dev2.Runtime.Configuration.ViewModels.Base;
-using Dev2.Scheduler;
 using Dev2.Services.Events;
-using Dev2.Services.Security;
 using Dev2.Studio.Controller;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.Models;
-using Dev2.Studio.Enums;
 using Dev2.Studio.ViewModels.WorkSurface;
-using Dev2.TaskScheduler.Wrappers;
 using Dev2.Threading;
-using Microsoft.Win32.TaskScheduler;
 using Warewolf.Studio.AntiCorruptionLayer;
 using Warewolf.Studio.Resources.Languages;
 using Warewolf.Studio.ViewModels;
@@ -58,17 +51,13 @@ namespace Dev2.Settings.Scheduler
 {
     public class SchedulerViewModel : BaseWorkSurfaceViewModel, IHelpSource, IStudioTab
     {
-        IResourcePickerDialog _currentResourcePicker;
-        private int _newTaskCounter = 1;
         private ICommand _saveCommand;
         private ICommand _newCommand;
         private ICommand _deleteCommand;
         private ICommand _editTriggerCommand;
         private ICommand _addWorkflowCommand;
 
-        private IClientSchedulerFactory _schedulerFactory;
         private IScheduledResource _selectedTask;
-        private TriggerEditDialog _triggerEditDialog;
         private readonly IPopupController _popupController;
         private readonly IAsyncWorker _asyncWorker;
 
@@ -82,12 +71,9 @@ namespace Dev2.Settings.Scheduler
         private string _connectionError;
         private bool _hasConnectionError;
         private IEnvironmentModel _currentEnvironment;
-        private Task<IResourcePickerDialog> _task;
         private IScheduledResourceModel _scheduledResourceModel;
         private Func<IServer, IEnvironmentModel> _toEnvironmentModel;
         private bool _errorShown;
-        private EnvironmentViewModel _source;
-        private readonly Task<IResourcePickerDialog> _resourcePickerDialogTask;
 
         // ReSharper disable once MemberCanBeProtected.Global
         public SchedulerViewModel()
@@ -99,9 +85,11 @@ namespace Dev2.Settings.Scheduler
             : this(EventPublishers.Aggregator, new DirectoryObjectPickerDialog(), new PopupController(), new AsyncWorker(), CustomContainer.Get<IShellViewModel>().ActiveServer, toEnvironmentModel)
         {
         }
+
         public SchedulerViewModel(IEventAggregator eventPublisher, DirectoryObjectPickerDialog directoryObjectPicker, IPopupController popupController, IAsyncWorker asyncWorker, IServer server, Func<IServer, IEnvironmentModel> toEnvironmentModel,Task<IResourcePickerDialog> getResourcePicker = null)
             : base(eventPublisher)
         {
+            SchedulerTaskManager = new SchedulerTaskManager(this, getResourcePicker);
             VerifyArgument.IsNotNull("directoryObjectPicker", directoryObjectPicker);
             DirectoryObjectPickerDialog directoryObjectPicker1 = directoryObjectPicker;
 
@@ -123,10 +111,8 @@ namespace Dev2.Settings.Scheduler
 
             InitializeHelp();
 
-            var taskServiceConvertorFactory = new TaskServiceConvertorFactory();
-            SchedulerFactory = new ClientSchedulerFactory(new Dev2TaskService(taskServiceConvertorFactory), taskServiceConvertorFactory);
+           
             Server = server;
-            _resourcePickerDialogTask = getResourcePicker;
             SetupServer(server);
         }
 
@@ -184,19 +170,6 @@ namespace Dev2.Settings.Scheduler
             }
         }
 
-        public IResourcePickerDialog CurrentResourcePickerDialog
-        {
-            private get
-            {
-                return _currentResourcePicker;
-            }
-            set
-            {
-                _currentResourcePicker = value;
-                NotifyOfPropertyChange(() => CurrentResourcePickerDialog);
-            }
-        }
-
         public bool IsLoading
         {
             get
@@ -211,12 +184,6 @@ namespace Dev2.Settings.Scheduler
         }
 
         public ActivityDesignerToggle HelpToggle { get; private set; }
-
-        protected IClientSchedulerFactory SchedulerFactory
-        {
-            get { return _schedulerFactory; }
-            private set { _schedulerFactory = value; }
-        }
 
         public IScheduleTrigger Trigger
         {
@@ -424,30 +391,9 @@ namespace Dev2.Settings.Scheduler
             }
         }
 
-        public ObservableCollection<IScheduledResource> TaskList
-        {
-            get
-            {
-                if (ScheduledResourceModel != null)
-                {
-                    return ScheduledResourceModel.ScheduledResources;
-                }
+        public ObservableCollection<IScheduledResource> TaskList => ScheduledResourceModel != null ? ScheduledResourceModel.ScheduledResources : new ObservableCollection<IScheduledResource>();
 
-                return new ObservableCollection<IScheduledResource>();
-            }
-        }
-
-        public string TriggerText
-        {
-            get
-            {
-                if (SelectedTask != null)
-                {
-                    return SelectedTask.Trigger.Trigger.Instance.ToString();
-                }
-                return string.Empty;
-            }
-        }
+        public string TriggerText => SelectedTask != null ? SelectedTask.Trigger.Trigger.Instance.ToString() : string.Empty;
 
         public IScheduledResource SelectedTask
         {
@@ -488,19 +434,6 @@ namespace Dev2.Settings.Scheduler
                     SelectedHistory = null;
                     NotifyOfPropertyChange(() => History);
                 }
-            }
-        }
-
-        public TriggerEditDialog TriggerEditDialog
-        {
-            get
-            {
-                return _triggerEditDialog;
-            }
-            private set
-            {
-                _triggerEditDialog = value;
-                NotifyOfPropertyChange(() => TriggerEditDialog);
             }
         }
 
@@ -614,17 +547,7 @@ namespace Dev2.Settings.Scheduler
             }
         }
 
-        public string Error
-        {
-            get
-            {
-                if (HasErrors)
-                {
-                    return Errors.FetchErrors()[0];
-                }
-                return string.Empty;
-            }
-        }
+        public string Error => HasErrors ? Errors.FetchErrors()[0] : string.Empty;
 
         public TabItem ActiveItem
         {
@@ -663,7 +586,7 @@ namespace Dev2.Settings.Scheduler
             get
             {
                 return _saveCommand ??
-                       (_saveCommand = new DelegateCommand(param => SaveTasks()));
+                       (_saveCommand = new DelegateCommand(param => SchedulerTaskManager.SaveTasks()));
             }
         }
 
@@ -672,7 +595,7 @@ namespace Dev2.Settings.Scheduler
             get
             {
                 return _newCommand ??
-                       (_newCommand = new DelegateCommand(param => CreateNewTask()));
+                       (_newCommand = new DelegateCommand(param => SchedulerTaskManager.CreateNewTask()));
             }
         }
 
@@ -684,11 +607,9 @@ namespace Dev2.Settings.Scheduler
                        (_deleteCommand = new DelegateCommand(param =>
                        {
                            var taskToBeDeleted = param as IScheduledResource;
-                           if (taskToBeDeleted != null)
-                           {
-                               SelectedTask = taskToBeDeleted;
-                               DeleteTask();
-                           }
+                           if(taskToBeDeleted == null) return;
+                           SelectedTask = taskToBeDeleted;
+                           SchedulerTaskManager.DeleteTask();
                        }));
             }
         }
@@ -698,17 +619,12 @@ namespace Dev2.Settings.Scheduler
             get
             {
                 return _editTriggerCommand ??
-                       (_editTriggerCommand = new DelegateCommand(param => EditTrigger()));
+                       (_editTriggerCommand = new DelegateCommand(param => SchedulerTaskManager.EditTrigger()));
             }
         }
 
         public ICommand AddWorkflowCommand => _addWorkflowCommand ??
-                                              (_addWorkflowCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(AddWorkflow, CanSelectWorkflow));
-
-        private bool CanSelectWorkflow()
-        {
-            return CurrentResourcePickerDialog != null;
-        }
+                                              (_addWorkflowCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(SchedulerTaskManager.AddWorkflow, SchedulerTaskManager.CanSelectWorkflow));
 
         private void InitializeHelp()
         {
@@ -723,205 +639,7 @@ namespace Dev2.Settings.Scheduler
             return toggle;
         }
 
-        bool SaveTasks()
-        {
-            if (CurrentEnvironment.IsConnected)
-            {
-                var authService = CurrentEnvironment.AuthorizationService;
-
-                if (authService != null && authService.IsAuthorized(AuthorizationContext.Administrator, null))
-                {
-                    if (!ValidateSelectedTask())
-                        return false;
-
-                    GetCredentials(SelectedTask);
-                    string errorMessage;
-                    if (!ScheduledResourceModel.Save(SelectedTask, out errorMessage))
-                    {
-                        ShowSaveErrorDialog(errorMessage);
-                        ShowError(errorMessage);
-                        return false;
-                    }
-                    Dev2Logger.Info($"Save Schedule. Environment: {CurrentEnvironment.Name} Name:{(SelectedTask != null ? SelectedTask.Name : "")} ");
-                    if (SelectedTask != null)
-                    {
-                        SelectedTask.Errors.ClearErrors();
-                        NotifyOfPropertyChange(() => Error);
-                        NotifyOfPropertyChange(() => Errors);
-                        SelectedTask.IsDirty = false;
-                        SelectedTask.OldName = SelectedTask.Name;
-                        SelectedTask.IsNew = false;
-                    }
-                    NotifyOfPropertyChange(() => TaskList);
-                }
-                else
-                {
-                    ShowError(@"Error while saving: You don't have permission to schedule on this server. You need Administrator permission.");
-                    return false;
-                }
-                return true;
-            }
-            ShowError(Core.SchedulerNotConnectedErrorMessage);
-            return false;
-        }
-
-        private bool ValidateSelectedTask()
-        {
-            if (SelectedTask.IsDirty)
-            {
-                if (HasErrors && !Error.StartsWith(Core.SchedulerSaveErrorPrefix))
-                {
-                    ShowSaveErrorDialog(Error);
-                    return false;
-                }
-
-                var oldName = SelectedTask?.OldName;
-                if (oldName != null)
-                {
-                    if (oldName != SelectedTask.Name && !oldName.Contains(Core.SchedulerNewTaskName) && !SelectedTask.IsNew)
-                    {
-                        var showNameChangedConflict = _popupController.ShowNameChangedConflict(oldName, SelectedTask.Name);
-                        if (showNameChangedConflict == MessageBoxResult.Cancel || showNameChangedConflict == MessageBoxResult.None)
-                        {
-                            return false;
-                        }
-                        if (showNameChangedConflict == MessageBoxResult.No)
-                        {
-                            SelectedTask.Name = oldName;
-                            NotifyOfPropertyChange(() => Name);
-                        }
-                    }
-                    if (SelectedTask.OldName != SelectedTask.Name && SelectedTask.OldName.Contains(Core.SchedulerNewTaskName))
-                    {
-                        SelectedTask.OldName = SelectedTask.Name;
-                    }
-                }
-            }
-            return true;
-        }
-
-        public void CreateNewTask()
-        {
-            if (IsDirty)
-            {
-                _popupController.Show("Please save currently edited Task(s) before creating a new one.", "Save before continuing", MessageBoxButton.OK, MessageBoxImage.Error, null, false, true, false, false);
-                return;
-            }
-
-            var dev2DailyTrigger = new Dev2DailyTrigger(new TaskServiceConvertorFactory(), new DailyTrigger());
-            var scheduleTrigger = _schedulerFactory.CreateTrigger(TaskState.Ready, dev2DailyTrigger);
-            ScheduledResource scheduledResource = new ScheduledResource(Core.SchedulerNewTaskName + _newTaskCounter, SchedulerStatus.Enabled, scheduleTrigger.Trigger.Instance.StartBoundary, scheduleTrigger, string.Empty, Guid.NewGuid().ToString()) { IsDirty = true };
-            scheduledResource.OldName = scheduledResource.Name;
-            var newres = ScheduledResourceModel.ScheduledResources[ScheduledResourceModel.ScheduledResources.Count == 1 ? 0 : ScheduledResourceModel.ScheduledResources.Count - 1];
-            ScheduledResourceModel.ScheduledResources[ScheduledResourceModel.ScheduledResources.Count == 1 ? 0 : ScheduledResourceModel.ScheduledResources.Count - 1] = scheduledResource;
-            ScheduledResourceModel.ScheduledResources.Add(newres);
-
-            _newTaskCounter++;
-
-            NotifyOfPropertyChange(() => TaskList);
-            SelectedTask = ScheduledResourceModel.ScheduledResources[ScheduledResourceModel.ScheduledResources.Count == 1 ? 1 : ScheduledResourceModel.ScheduledResources.Count - 2];
-            WorkflowName = string.Empty;
-            SelectedTask.IsNew = true;
-            ViewModelUtils.RaiseCanExecuteChanged(NewCommand);
-        }
-
-        void DeleteTask()
-        {
-            if (SelectedTask != null && CurrentEnvironment != null)
-            {
-                if (CurrentEnvironment.IsConnected)
-                {
-                    if (CurrentEnvironment.AuthorizationService.IsAuthorized(AuthorizationContext.Administrator, null))
-                    {
-                        if (_popupController.ShowDeleteConfirmation(SelectedTask.Name) == MessageBoxResult.Yes)
-                        {
-                            int index = ScheduledResourceModel.ScheduledResources.IndexOf(SelectedTask);
-                            int indexInFilteredList = TaskList.IndexOf(SelectedTask);
-                            if (index != -1)
-                            {
-                                Dev2Logger.Info($"Delete Schedule Name: {SelectedTask.Name} Resource:{SelectedTask.ResourceId} Env:{CurrentEnvironment.Name}");
-
-                                ScheduledResourceModel.DeleteSchedule(SelectedTask);
-                                //if delete is successfull then do the code below
-                                ScheduledResourceModel.ScheduledResources.RemoveAt(index);
-                                NotifyOfPropertyChange(() => TaskList);
-                                if (indexInFilteredList <= TaskList.Count && indexInFilteredList > 0)
-                                {
-                                    SelectedTask = TaskList[indexInFilteredList - 1];
-                                }
-                                else if (indexInFilteredList == 0 && TaskList.Count > 0)
-                                {
-                                    SelectedTask = TaskList[0];
-                                }
-                            }
-                            NotifyOfPropertyChange(() => History);
-                        }
-                    }
-                    else
-                    {
-                        ShowError(@"Error while saving: You don't have permission to schedule on this server. You need Administrator permission.");
-                    }
-                }
-                else
-                {
-                    ShowError(Core.SchedulerNotConnectedErrorMessage);
-                }
-            }
-        }
-
-        void EditTrigger()
-        {
-            if (SelectedTask != null)
-            {
-                TriggerEditDialog = new TriggerEditDialog(SelectedTask.Trigger.Trigger.Instance, false);
-                var tempTrigger = ShowEditTriggerDialog();
-                if (tempTrigger != null)
-                {
-                    Trigger = tempTrigger;
-                    SelectedTask.NextRunDate = Trigger.Trigger.StartBoundary;
-                }
-                NotifyOfPropertyChange(() => TriggerText);
-            }
-        }
-
-        void AddWorkflow()
-        {
-            if (SelectedTask != null && CurrentEnvironment != null)
-            {
-                if (_task?.Status == TaskStatus.Running)
-                {
-                    _task.Wait();
-                    if (!_task.IsFaulted)
-                        CurrentResourcePickerDialog = _task.Result;
-                }
-
-                if (!string.IsNullOrEmpty(WorkflowName) && CurrentEnvironment.ResourceRepository != null)
-                {
-                    var resourceModel = CurrentEnvironment.ResourceRepository.FindSingle(c => c.ResourceName == WorkflowName);
-                    if (resourceModel != null)
-                    {
-                        CurrentResourcePickerDialog.SelectResource(resourceModel.ID);
-                    }
-                }
-                var hasResult = CurrentResourcePickerDialog.ShowDialog(CurrentEnvironment);
-                if (hasResult)
-                {
-                    WorkflowName = CurrentResourcePickerDialog.SelectedResource.ResourcePath;
-
-                    SelectedTask.ResourceId = CurrentResourcePickerDialog.SelectedResource.ResourceId;
-                    if (SelectedTask.Name.StartsWith("New Task"))
-                    {
-                        Name = CurrentResourcePickerDialog.SelectedResource.ResourceName;
-                        NotifyOfPropertyChange(() => Name);
-                    }
-                    SelectedTask.IsDirty = true;
-                    NotifyOfPropertyChange(() => WorkflowName);
-                    NotifyOfPropertyChange(() => TaskList);
-                }
-            }
-        }
-
-        private Task<IResourcePickerDialog> GetResourcePickerDialog => _resourcePickerDialogTask ?? ResourcePickerDialog.CreateAsync(enDsfActivityType.Workflow, _source);
+        
 
         void SetupServer(IServer tmpEnv)
         {
@@ -938,23 +656,22 @@ namespace Dev2.Settings.Scheduler
                     server.Permissions = new List<IWindowsGroupPermission>();
                     server.Permissions.AddRange(environment.AuthorizationService.SecurityService.Permissions);
                 }
-                _source = new EnvironmentViewModel(server, CustomContainer.Get<IShellViewModel>(), true);
+                SchedulerTaskManager.Source = new EnvironmentViewModel(server, CustomContainer.Get<IShellViewModel>(), true);
 
-                ScheduledResourceModel = new ClientScheduledResourceModel(CurrentEnvironment, CreateNewTask);
+                ScheduledResourceModel = new ClientScheduledResourceModel(CurrentEnvironment, SchedulerTaskManager.CreateNewTask);
                 IsLoading = true;
 
                 _asyncWorker.Start(() =>
                 {
-                    if (_currentResourcePicker == null)
+                    if (SchedulerTaskManager.CurrentResourcePickerDialog == null)
                     {
-                        _task = GetResourcePickerDialog;
-                        _task.Wait();
+                        SchedulerTaskManager.GetResourcePickerDialog.Wait();
                     }
                 }, () =>
                 {
                     try
                     {
-                        CurrentResourcePickerDialog = _task.Result;
+                        SchedulerTaskManager.CurrentResourcePickerDialog = SchedulerTaskManager.GetResourcePickerDialog.Result;
                         var cmd = AddWorkflowCommand as Microsoft.Practices.Prism.Commands.DelegateCommand;
                         cmd?.RaiseCanExecuteChanged();
 
@@ -1066,65 +783,26 @@ namespace Dev2.Settings.Scheduler
                 if (SelectedTask != null && SelectedTask.IsDirty)
                 {
                     MessageBoxResult showSchedulerCloseConfirmation = _popupController.ShowSchedulerCloseConfirmation();
-                    if (showSchedulerCloseConfirmation == MessageBoxResult.Cancel || showSchedulerCloseConfirmation == MessageBoxResult.None)
+                    switch(showSchedulerCloseConfirmation)
                     {
-                        return false;
+                        case MessageBoxResult.Cancel:
+                        case MessageBoxResult.None:
+                            return false;
+                        case MessageBoxResult.No:
+                            return true;
                     }
-                    if (showSchedulerCloseConfirmation == MessageBoxResult.No)
-                    {
-                        return true;
-                    }
-                    return SaveTasks();
+                    return SchedulerTaskManager.SaveTasks();
                 }
             }
             if (SelectedTask != null && !showMessage)
-                return SaveTasks();
+                return SchedulerTaskManager.SaveTasks();
             return true;
         }
 
-        protected virtual void ShowSaveErrorDialog(string error)
+        protected internal virtual void ShowSaveErrorDialog(string error)
         {
             _popupController.ShowSaveErrorDialog(error);
-        }
-
-        [ExcludeFromCodeCoverage]
-        protected virtual IScheduleTrigger ShowEditTriggerDialog()
-        {
-            var tmpTrigger = SelectedTask.Trigger.Trigger.Instance;
-            if (TriggerEditDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
-            {
-                if (!TriggerEquals(TriggerEditDialog.Trigger, tmpTrigger))
-                {
-                    return _schedulerFactory.CreateTrigger(TaskState.Disabled, new Dev2Trigger(null, TriggerEditDialog.Trigger));
-                }
-            }
-            return null;
-        }
-
-        public static bool TriggerEquals(Microsoft.Win32.TaskScheduler.Trigger a, Microsoft.Win32.TaskScheduler.Trigger b)
-        {
-            return a.ToString() == b.ToString() && a.StartBoundary == b.StartBoundary && a.EndBoundary == b.EndBoundary && a.ExecutionTimeLimit == b.ExecutionTimeLimit;
-        }
-
-        [ExcludeFromCodeCoverage]
-        protected virtual void GetCredentials(IScheduledResource scheduledResource)
-        {
-            var cancelled = false;
-            while ((String.IsNullOrEmpty(AccountName) || String.IsNullOrEmpty(Password)) && !cancelled)
-            {
-                NetworkCredential cred;
-                CredentialUI.GetCredentialsVistaAndUp(scheduledResource.Name, out cred);
-                if (cred == null)
-                {
-                    cancelled = true;
-                }
-                else
-                {
-                    AccountName = cred.UserName;
-                    Password = cred.Password;
-                }
-            }
-        }
+        }       
 
         public string HelpText
         {
@@ -1144,6 +822,19 @@ namespace Dev2.Settings.Scheduler
         public IServer Server { private get; set; }
 
         public string ResourceType => "Scheduler";
+        internal SchedulerTaskManager SchedulerTaskManager { get; set; }
+        public IPopupController PopupController
+        {
+            get
+            {
+                return _popupController;
+            }
+        }
+
+        public void CreateNewTask()
+        {
+            SchedulerTaskManager.CreateNewTask();
+        }
     }
 
     public static class SchedulerServerExtensions

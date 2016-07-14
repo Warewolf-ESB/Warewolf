@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Reflection;
-using System.Text;
 using Dev2.Common.Interfaces.Monitoring;
 using Dev2.Data.ServiceModel;
 using Dev2.DataList.Contract;
@@ -13,6 +12,7 @@ using Dev2.Runtime.Interfaces;
 using Dev2.Workspaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using Warewolf.Storage;
 
 // ReSharper disable InconsistentNaming
 
@@ -50,7 +50,6 @@ namespace Dev2.Tests.Runtime.ESB.Control
             }
             //---------------Test Result -----------------------
         }
-
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void SetRemoteExecutionDataList_GivenDataObject_ShouldSetValuesCorreclty()
@@ -73,11 +72,60 @@ namespace Dev2.Tests.Runtime.ESB.Control
             //---------------Assert Precondition----------------
             Assert.IsNotNull(methodInfo);
             //---------------Execute Test ----------------------
-            methodInfo.Invoke(null, new object[] { obj.Object, execContainer.Object, new ErrorResultTO() });
-          
-            //---------------Test Result -----------------------
-           // Assert.AreEqual(new StringBuilder("<DataList></DataList>").ToString(), dataObj.Object.RemoteInvokeResultShape.ToString());
-         //   Assert.AreEqual("Cat", dataObj.Object.ServiceName);
+            try
+            {
+                //---------------Test Result -----------------------
+                methodInfo.Invoke(null, new object[] { obj.Object, execContainer.Object, new ErrorResultTO() });
+                obj.VerifyAll();
+            }
+            catch (Exception ex)
+            {
+                Assert.AreEqual("", ex.Message);
+
+            }
         }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void CreateNewEnvironmentFromInputMappings_GivenInputsDefs_ShouldCreateNewEnvWithMappings()
+        {
+            //---------------Set up test pack-------------------
+            var dataObj = new Mock<IDSFDataObject>();
+            dataObj.SetupAllProperties();
+            IExecutionEnvironment executionEnvironment = new ExecutionEnvironment();
+            dataObj.Setup(o => o.Environment).Returns(executionEnvironment).Verifiable();
+            dataObj.Setup(o => o.PushEnvironment(It.IsAny<IExecutionEnvironment>())).Verifiable();
+            const string inputMappings = @"<Inputs><Input Name=""f1"" Source=""[[recset1(*).f1a]]"" Recordset=""recset1"" /><Input Name=""f2"" Source=""[[recset2(*).f2a]]"" Recordset=""recset2"" /></Inputs>";
+            var esbServicesEndpoint = new EsbServicesEndpoint();
+            //---------------Assert Precondition----------------
+            //---------------Execute Test ----------------------
+            esbServicesEndpoint.CreateNewEnvironmentFromInputMappings(dataObj.Object, inputMappings, 0);
+            //---------------Test Result -----------------------
+            dataObj.Verify(o => o.PushEnvironment(It.IsAny<IExecutionEnvironment>()), Times.Once);
+
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void UpdatePreviousEnvironmentWithSubExecutionResultUsingOutputMappings_GivenOutPuts_ShouldReturnCorrectly()
+        {
+            //---------------Set up test pack-------------------
+            const string outPuts = "<Outputs><Output Name=\"n1\" MapsTo=\"[[n1]]\" Value=\"[[n1]]\" IsObject=\"False\" /></Outputs>";
+            var dataObj = new Mock<IDSFDataObject>();
+            dataObj.SetupAllProperties();
+            
+            var mapManager = new Mock<IEnvironmentOutputMappingManager>();
+            mapManager.Setup(manager => manager.UpdatePreviousEnvironmentWithSubExecutionResultUsingOutputMappings(It.IsAny<IDSFDataObject>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<bool>(), It.IsAny<ErrorResultTO>())).Returns(new ExecutionEnvironment());
+            var esbServicesEndpoint = new EsbServicesEndpoint(mapManager.Object);
+            //---------------Assert Precondition----------------
+            //---------------Execute Test ----------------------
+            var executionEnvironment = esbServicesEndpoint.UpdatePreviousEnvironmentWithSubExecutionResultUsingOutputMappings(dataObj.Object, outPuts, 0, true, new ErrorResultTO());
+            //---------------Test Result -----------------------
+            Assert.IsNotNull(executionEnvironment);
+            mapManager.VerifyAll();
+        }
+
+
+       
     }
 }

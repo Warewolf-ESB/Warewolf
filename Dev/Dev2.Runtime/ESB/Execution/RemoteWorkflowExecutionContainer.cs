@@ -63,7 +63,7 @@ namespace Dev2.Runtime.ESB.Execution
 
         public void PerformLogExecution(string logUri, int update)
         {
-            
+
             var expressionsEntry = DataObject.Environment.Eval(logUri, update);
             var itr = new WarewolfIterator(expressionsEntry);
             while (itr.HasMoreData())
@@ -111,7 +111,7 @@ namespace Dev2.Runtime.ESB.Execution
             {
                 // Invoke Remote WF Here ;)
                 result = ExecutePostRequest(connection, serviceName, dataListFragment);
-                IList<IDebugState> msg = DataObject.IsDebug? FetchRemoteDebugItems(connection):new List<IDebugState>();
+                IList<IDebugState> msg = DataObject.IsDebug ? FetchRemoteDebugItems(connection) : new List<IDebugState>();
                 DataObject.RemoteDebugItems = msg; // set them so they can be acted upon
             }
             catch (Exception e)
@@ -122,7 +122,7 @@ namespace Dev2.Runtime.ESB.Execution
             }
 
             // Create tmpDL
-            ExecutionEnvironmentUtils.UpdateEnvironmentFromOutputPayload(DataObject,result.ToStringBuilder(),DataObject.RemoteInvokeResultShape.ToString(), update);
+            ExecutionEnvironmentUtils.UpdateEnvironmentFromOutputPayload(DataObject, result.ToStringBuilder(), DataObject.RemoteInvokeResultShape.ToString(), update);
             Dev2Logger.Info($"Completed Remote Execution. Service Name:{DataObject.ServiceName} Resource Id:{DataObject.ResourceID} Mode:{(DataObject.IsDebug ? "Debug" : "Execute")}");
 
             return Guid.Empty;
@@ -173,7 +173,7 @@ namespace Dev2.Runtime.ESB.Execution
             return null;
         }
 
-        public bool ServerIsUp()
+        internal bool ServerIsUp()
         {
             var connection = GetConnection(DataObject.EnvironmentID);
             if (connection == null)
@@ -182,7 +182,7 @@ namespace Dev2.Runtime.ESB.Execution
             }
             try
             {
-                var returnData = ExecuteGetRequest(connection, "ping", "<DataList></DataList>",false);
+                var returnData = ExecuteGetRequest(connection, "ping", "<DataList></DataList>", false);
                 if (!string.IsNullOrEmpty(returnData))
                 {
                     if (returnData.Contains("Pong"))
@@ -198,15 +198,15 @@ namespace Dev2.Runtime.ESB.Execution
             return false;
         }
 
-        protected virtual string ExecuteGetRequest(Connection connection, string serviceName, string payload, bool isDebugMode=true)
+        protected virtual string ExecuteGetRequest(Connection connection, string serviceName, string payload, bool isDebugMode = true)
         {
             var result = string.Empty;
 
             var serviceToExecute = GetServiceToExecute(connection, serviceName);
             var requestUri = serviceToExecute + "?" + payload;
-            var req = BuildGetWebRequest(requestUri, connection.AuthenticationType, connection.UserName, connection.Password,isDebugMode) ?? BuildPostRequest(serviceToExecute, payload, connection.AuthenticationType, connection.UserName, connection.Password, isDebugMode);
+            var req = BuildGetWebRequest(requestUri, connection.AuthenticationType, connection.UserName, connection.Password, isDebugMode) ?? BuildPostRequest(serviceToExecute, payload, connection.AuthenticationType, connection.UserName, connection.Password, isDebugMode);
             Dev2Logger.Debug("Executing the remote request.");
-            if(req != null)
+            if (req != null)
             {
                 using (var response = req.GetResponse() as HttpWebResponse)
                 {
@@ -214,7 +214,7 @@ namespace Dev2.Runtime.ESB.Execution
                     {
                         // ReSharper disable AssignNullToNotNullAttribute
                         using (StreamReader reader = new StreamReader(response.GetResponseStream()))
-                            // ReSharper restore AssignNullToNotNullAttribute
+                        // ReSharper restore AssignNullToNotNullAttribute
                         {
                             result = reader.ReadToEnd();
                         }
@@ -227,7 +227,7 @@ namespace Dev2.Runtime.ESB.Execution
 
         private static string GetServiceToExecute(Connection connection, string serviceName)
         {
-            return connection.WebAddress + "Secure/" + serviceName+".json";
+            return connection.WebAddress + "Secure/" + serviceName + ".json";
         }
 
         private WebRequest BuildPostRequest(string serviceToExecute, string payload, AuthenticationType authenticationType, string userName, string password, bool isDebug)
@@ -242,17 +242,17 @@ namespace Dev2.Runtime.ESB.Execution
             req.ContentType = "application/x-www-form-urlencoded";
             req.ContentLength = data.Length;
 
-            using(Stream requestStream = req.GetRequestStream())
+            using (Stream requestStream = req.GetRequestStream())
             {
                 requestStream.Write(data, 0, data.Length);
                 requestStream.Close();
-            }       
+            }
             return req;
         }
 
         private void UpdateRequest(AuthenticationType authenticationType, string userName, string password, bool isDebug, WebRequest req)
         {
-            if(authenticationType == AuthenticationType.Windows)
+            if (authenticationType == AuthenticationType.Windows)
             {
                 req.UseDefaultCredentials = true;
             }
@@ -261,7 +261,7 @@ namespace Dev2.Runtime.ESB.Execution
                 req.UseDefaultCredentials = false;
 
                 // we to default to the hidden public user name of \, silly know but that is how to get around ntlm auth ;)
-                if(authenticationType == AuthenticationType.Public)
+                if (authenticationType == AuthenticationType.Public)
                 {
                     userName = GlobalConstants.PublicUsername;
                     password = string.Empty;
@@ -270,7 +270,7 @@ namespace Dev2.Runtime.ESB.Execution
                 req.Credentials = new NetworkCredential(userName, password);
             }
             var remoteInvokerId = DataObject.RemoteInvokerID;
-            if(remoteInvokerId == Guid.Empty.ToString())
+            if (remoteInvokerId == Guid.Empty.ToString())
             {
                 throw new Exception(ErrorResource.RemoteServerIDNull);
             }
@@ -279,7 +279,7 @@ namespace Dev2.Runtime.ESB.Execution
             ServicePointManager.ServerCertificateValidationCallback += (sender, certificate, chain, sslPolicyErrors) => true;
         }
 
-        WebRequest BuildGetWebRequest(string requestUri, AuthenticationType authenticationType, string userName, string password,bool isdebug)
+        private WebRequest BuildGetWebRequest(string requestUri, AuthenticationType authenticationType, string userName, string password, bool isdebug)
         {
             try
             {
@@ -293,7 +293,7 @@ namespace Dev2.Runtime.ESB.Execution
             }
         }
 
-        WebRequest BuildSimpleGetWebRequest(string requestUri)
+        private WebRequest BuildSimpleGetWebRequest(string requestUri)
         {
             try
             {
@@ -308,7 +308,7 @@ namespace Dev2.Runtime.ESB.Execution
             }
         }
 
-        Connection GetConnection(Guid environmentId)
+        private Connection GetConnection(Guid environmentId)
         {
             if (environmentId == Guid.Empty)
             {
