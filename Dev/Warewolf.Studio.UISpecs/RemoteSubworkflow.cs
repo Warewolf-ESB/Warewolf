@@ -293,6 +293,7 @@ namespace Warewolf.Studio.UISpecs
         public void MyTestInitialize()
         {
             Uimap.SetGlobalPlaybackSettings();
+            Uimap.WaitForStudioStart();
             Console.WriteLine("Test \"" + TestContext.TestName + "\" starting on " + System.Environment.MachineName);
         }
 
