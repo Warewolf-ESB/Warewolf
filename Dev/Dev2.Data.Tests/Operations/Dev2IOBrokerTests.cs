@@ -72,6 +72,8 @@ namespace Dev2.Data.Tests.Operations
             var newFilePath = Path.Combine(dst, innerDir, tempFileName);
             Assert.IsTrue(File.Exists(newFilePath));
             Assert.IsTrue(File.Exists(tempFile));
+
+            File.Delete(tempFileName);
         }
     }
 }

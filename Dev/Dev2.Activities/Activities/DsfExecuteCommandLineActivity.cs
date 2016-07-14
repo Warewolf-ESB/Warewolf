@@ -179,6 +179,14 @@ namespace Dev2.Activities
             }
             finally
             {
+
+                if (!string.IsNullOrEmpty(_fullPath))
+                {
+                    File.Delete(_fullPath);
+                    string tmpFile = _fullPath.Replace(".bat", "");
+                    if (File.Exists(tmpFile))
+                        File.Delete(tmpFile);
+                }
                 // Handle Errors    
                 var hasErrors = allErrors.HasErrors();
                 if(hasErrors)
@@ -201,13 +209,6 @@ namespace Dev2.Activities
                     DispatchDebugState(dataObject, StateType.After, update);
                 }
 
-                if(!string.IsNullOrEmpty(_fullPath))
-                {
-                    File.Delete(_fullPath);
-                    string tmpFile = _fullPath.Replace(".bat", "");
-                    if(File.Exists(tmpFile))
-                        File.Delete(tmpFile);
-                }
             }
         }
 

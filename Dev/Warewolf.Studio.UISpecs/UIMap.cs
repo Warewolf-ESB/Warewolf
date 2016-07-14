@@ -28,7 +28,7 @@ namespace Warewolf.Studio.UISpecs
         [Then(@"I ""(.*)""")]
         public void TheRecordedActionIsPerformed(string p0)
         {
-            MethodInfo getActionRecording = this.GetMethod(p0);
+            MethodInfo getActionRecording = typeof(UIMap).GetMethod(p0);
             if (getActionRecording != null)
             {
                 getActionRecording.Invoke(this, new object[] { });
@@ -39,29 +39,50 @@ namespace Warewolf.Studio.UISpecs
             }
         }
 
-        [BeforeTestRun]
-        public static void WaitForStudioStart()
+        public void SetGlobalPlaybackSettings()
         {
-            Playback.Initialize();
             Playback.PlaybackSettings.WaitForReadyLevel = WaitForReadyLevel.Disabled;
             Playback.PlaybackSettings.ShouldSearchFailFast = false;
-            Playback.PlaybackSettings.SearchTimeout = 10000;
+            Playback.PlaybackSettings.SearchTimeout = 5000;
+            // Ensure the error handler is attached
+            Playback.PlaybackError -= Playback_PlaybackError;
+            Playback.PlaybackError += Playback_PlaybackError;
+        }
 
-            var sleepTimer = 10;
+        /// <summary> PlaybackError event handler. </summary>
+        private static void Playback_PlaybackError(object sender, PlaybackErrorEventArgs e)
+        {
+            Console.WriteLine("Error from " + sender.GetType() + "\n" + e.Error.Message);
+            if (sender is UITestControl)
+            {
+                (sender as UITestControl).DrawHighlight();
+            }
+            else
+            {
+                Playback.Wait(1000);
+            }
+            e.Result = PlaybackErrorOptions.Retry;
+        }
+
+        public void WaitForStudioStart()
+        {
+            var sleepTimer = 20;
             while (true)
             {
                 try
                 {
-                    WpfWindow getStudioWindow = new UIMap().MainStudioWindow;
-                    getStudioWindow.WaitForControlExist(100);
-                    if (getStudioWindow.Exists)
+                    if (this.MainStudioWindow.Exists)
                     {
+                        Console.WriteLine("Studio has now started.");
                         break;
                     }
+                    Console.WriteLine("Waiting for studio to start.");
+                    Playback.Wait(2000);
                 }
                 catch (UITestControlNotFoundException)
                 {
-                    Thread.Sleep(100);
+                    Console.WriteLine("Waiting for studio to start.");
+                    Playback.Wait(2000);
                 }
                 if (sleepTimer-- <= 0)
                 {
@@ -71,8 +92,11 @@ namespace Warewolf.Studio.UISpecs
         }
 
         [BeforeScenario]
-        public static void LogComputerName()
+        public static void ScenarioInit()
         {
+            var uiMap = new UIMap();
+            uiMap.SetGlobalPlaybackSettings();
+            uiMap.WaitForStudioStart();
             Console.WriteLine("Test \"" + ScenarioContext.Current.ScenarioInfo.Title + "\" starting on " + System.Environment.MachineName);
         }
 

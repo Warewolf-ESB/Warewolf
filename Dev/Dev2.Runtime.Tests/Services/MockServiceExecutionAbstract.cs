@@ -23,7 +23,7 @@ namespace Dev2.Services.Execution
         public bool DidExecuteServiceInvoke { get; private set; }
         public string ReturnFromExecute { get; set; }
         public MockServiceExecutionAbstract(IDSFDataObject dataObj, bool handlesOutputFormatting = false)
-            : base(dataObj, handlesOutputFormatting, false)
+            : base(dataObj, handlesOutputFormatting)
         {
         }
 

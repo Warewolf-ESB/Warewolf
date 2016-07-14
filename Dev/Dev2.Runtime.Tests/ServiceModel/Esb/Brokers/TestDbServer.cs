@@ -72,6 +72,11 @@ namespace Dev2.Tests.Runtime.ServiceModel.Esb.Brokers
             return new SqlCommand();
         }
 
+        public bool Connect(string connectionString, CommandType commandType, string commandText)
+        {
+            return false;
+        }
+
         #endregion
     }
 }
