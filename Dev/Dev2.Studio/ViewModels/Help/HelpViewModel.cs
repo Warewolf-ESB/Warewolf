@@ -13,7 +13,6 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using Caliburn.Micro;
-using Dev2.Common;
 using Dev2.Services.Events;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Helpers;
@@ -28,8 +27,7 @@ using Dev2.Studio.Core;
 namespace Dev2.Studio.ViewModels.Help
 // ReSharper restore CheckNamespace
 {
-    public class HelpViewModel : BaseWorkSurfaceViewModel,
-        IHandle<TabClosedMessage>
+    public class HelpViewModel : BaseWorkSurfaceViewModel
     {
         readonly INetworkHelper _network;
 
@@ -94,38 +92,35 @@ namespace Dev2.Studio.ViewModels.Help
             else
             {
                 IsViewAvailable = true;
-                //_network.HasConnectionAsync(uri).ContinueWith(task =>
-                //{
-                    //var hasConnection = task.Result;
-                    var hasConnection = await _network.HasConnectionAsync(uri);
-                    if (hasConnection)
-                        {
 
-                            
-                            HelpViewWrapper.WebBrowser.Navigated += (sender, args) => SuppressJavaScriptsErrors(HelpViewWrapper.WebBrowser);
-                            HelpViewWrapper.WebBrowser.LoadCompleted +=(sender, args) => Execute.OnUIThread(() =>
-                                                                                                            {
-                                                                                                                HelpViewWrapper.CircularProgressBarVisibility = Visibility.Collapsed;
-                                                                                                                HelpViewWrapper.WebBrowserVisibility = Visibility.Visible;
-                                                                                                            });
-                            Execute.OnUIThread(() =>
-                            {
-                                HelpViewWrapper.Navigate(Uri);
-                            });
-                            
-                        }
-                        else
-                        {
-                            ResourcePath = FileHelper.GetFullPath(StringResources.Uri_Studio_PageNotAvailable);
-                            Execute.OnUIThread(() =>
-                                               {
-                                                   HelpViewWrapper.Navigate(ResourcePath);
-                                                   HelpViewWrapper.CircularProgressBarVisibility = Visibility.Collapsed;
-                                                   HelpViewWrapper.WebBrowserVisibility = Visibility.Visible; 
-                                               });
-                            
-                        }
-                //});
+                var hasConnection = await _network.HasConnectionAsync(uri);
+                if (hasConnection)
+                {
+
+
+                    HelpViewWrapper.WebBrowser.Navigated += (sender, args) => SuppressJavaScriptsErrors(HelpViewWrapper.WebBrowser);
+                    HelpViewWrapper.WebBrowser.LoadCompleted += (sender, args) => Execute.OnUIThread(() =>
+                                                                                                     {
+                                                                                                         HelpViewWrapper.CircularProgressBarVisibility = Visibility.Collapsed;
+                                                                                                         HelpViewWrapper.WebBrowserVisibility = Visibility.Visible;
+                                                                                                     });
+                    Execute.OnUIThread(() =>
+                    {
+                        HelpViewWrapper.Navigate(Uri);
+                    });
+
+                }
+                else
+                {
+                    ResourcePath = FileHelper.GetFullPath(StringResources.Uri_Studio_PageNotAvailable);
+                    Execute.OnUIThread(() =>
+                                       {
+                                           HelpViewWrapper.Navigate(ResourcePath);
+                                           HelpViewWrapper.CircularProgressBarVisibility = Visibility.Collapsed;
+                                           HelpViewWrapper.WebBrowserVisibility = Visibility.Visible;
+                                       });
+
+                }
             }
         }
 
@@ -145,16 +140,23 @@ namespace Dev2.Studio.ViewModels.Help
 
             objComWebBrowser.GetType().InvokeMember("Silent", BindingFlags.SetProperty, null, objComWebBrowser, new object[] { true });
         }
-        
-        public void Handle(TabClosedMessage message)
-        {   
-            Dev2Logger.Info(message.GetType().Name);
-            if(!message.Context.Equals(this)) return;
 
-            EventPublisher.Unsubscribe(this);
-            HelpViewWrapper.WebBrowser.Dispose();
-            HelpViewDisposed = true;
+        #region Overrides of Screen
+
+        /// <summary>Called when deactivating.</summary>
+        /// <param name="close">Inidicates whether this instance will be closed.</param>
+        protected override void OnDeactivate(bool close)
+        {
+            if (close)
+            {
+                EventPublisher.Unsubscribe(this);
+                HelpViewWrapper.WebBrowser.Dispose();
+                HelpViewDisposed = true;
+            }
+            base.OnDeactivate(close);
         }
+
+        #endregion
 
         public string ResourceType => "StartPage";
     }
