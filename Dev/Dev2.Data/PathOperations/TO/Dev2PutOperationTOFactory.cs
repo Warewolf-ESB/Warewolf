@@ -18,19 +18,11 @@ namespace Dev2.PathOperations
     /// Status : New
     /// Purpose : To provide a TO for Put operations
     /// </summary>
-    public class Dev2PutOperationTO : IFileWrite, IPathOverwrite
+    public class Dev2PutOperationTOFactory
     {
-        internal Dev2PutOperationTO(bool append, string contents, bool overwrite)
+        public IFileWrite CreateDev2PutOperationTO(bool append, string content, bool overwrite)
         {
-            Append = append;
-            FileContents = contents;
-            Overwrite = overwrite;
+            return new Dev2PutOperationTO(append, content, overwrite);
         }
-
-        public bool Append { get; set; }
-
-        public string FileContents { get; set; }
-
-        public bool Overwrite { get; set; }
     }
 }

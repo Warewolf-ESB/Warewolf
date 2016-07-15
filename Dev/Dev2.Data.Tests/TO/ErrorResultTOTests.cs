@@ -8,6 +8,8 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using System.Collections.Generic;
+using System.Text;
 using Dev2.DataList.Contract;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -68,6 +70,98 @@ namespace Dev2.Data.Tests.TO
             //------------Assert Results-------------------------
             Assert.AreEqual(1, makeErrorResultFromDataListString.FetchErrors().Count);
             Assert.AreEqual("<Error><InnerError>Could not insert <> into a field</InnerError></Error>", makeErrorResultFromDataListString.FetchErrors()[0]);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        public void ErrorResultTO_MergeErrors_ShouldJustRemoveTheErrorInTheCollection()
+        {
+            ErrorResultTO errorResultTo = new ErrorResultTO();
+            Assert.IsNotNull(errorResultTo);
+            var prObj = new PrivateObject(errorResultTo);
+            var errors = prObj.GetField("_errorList") as IList<string>;
+            Assert.IsNotNull(errors);
+            Assert.AreEqual(0, errors.Count);
+            errorResultTo.AddError("SomeError");
+            errors = prObj.GetField("_errorList") as IList<string>;
+            if (errors != null) Assert.AreEqual(1, errors.Count);
+            var merge = new ErrorResultTO();
+            merge.AddError("Error to merge");
+            errorResultTo.MergeErrors(merge);
+            if (errors != null) Assert.AreEqual(2, errors.Count);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        public void ErrorResultTO_Remove_ShouldJustRemoveTheErrorInTheCollection()
+        {
+            ErrorResultTO errorResultTo = new ErrorResultTO();
+            Assert.IsNotNull(errorResultTo);
+            var prObj = new PrivateObject(errorResultTo);
+            var errors = prObj.GetField("_errorList") as IList<string>;
+            Assert.IsNotNull(errors);
+            Assert.AreEqual(0, errors.Count);
+            errorResultTo.AddError("SomeError");
+            errors = prObj.GetField("_errorList") as IList<string>;
+            if (errors != null) Assert.AreEqual(1, errors.Count);
+            errorResultTo.RemoveError("SomeError");
+            if (errors != null) Assert.AreEqual(0, errors.Count);
+        }
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        public void ErrorResultTO_Clear_ShouldEmptyTheErrorCollection()
+        {
+            var errorResultTo = new ErrorResultTO();
+            Assert.IsNotNull(errorResultTo);
+            var prObj = new PrivateObject(errorResultTo);
+            var errors = prObj.GetField("_errorList") as IList<string>;
+            Assert.IsNotNull(errors);
+            Assert.AreEqual(0, errors.Count);
+            errorResultTo.AddError("SomeError");
+            errorResultTo.AddError("AnotherError");
+            errors = prObj.GetField("_errorList") as IList<string>;
+            if (errors != null) Assert.AreEqual(2, errors.Count);
+            errorResultTo.ClearErrors();
+            if (errors != null) Assert.AreEqual(0, errors.Count);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        public void ErrorResultTO_MakeDisplayReady_ShouldReturnAllErrorsAsOne()
+        {
+            var result = new StringBuilder();
+            result.AppendLine("SomeError");
+            result.Append("AnotherError");
+            var errorResultTo = new ErrorResultTO();
+            Assert.IsNotNull(errorResultTo);
+            var prObj = new PrivateObject(errorResultTo);
+            var errors = prObj.GetField("_errorList") as IList<string>;
+            Assert.IsNotNull(errors);
+            Assert.AreEqual(0, errors.Count);
+            errorResultTo.AddError("SomeError");
+            errorResultTo.AddError("AnotherError");
+            errors = prObj.GetField("_errorList") as IList<string>;
+            if (errors != null) Assert.AreEqual(2, errors.Count);
+            var makeDisplayReady = errorResultTo.MakeDisplayReady();            
+            Assert.AreEqual(result.ToString(), makeDisplayReady);
+        }
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        public void ErrorResultTO_MakeDataListReady_ShouldReturnAllErrorsAsOne()
+        {
+            var result = "<InnerError>SomeError</InnerError><InnerError>AnotherError</InnerError>";
+            var errorResultTo = new ErrorResultTO();
+            Assert.IsNotNull(errorResultTo);
+            var prObj = new PrivateObject(errorResultTo);
+            var errors = prObj.GetField("_errorList") as IList<string>;
+            Assert.IsNotNull(errors);
+            Assert.AreEqual(0, errors.Count);
+            errorResultTo.AddError("SomeError");
+            errorResultTo.AddError("AnotherError");
+            errors = prObj.GetField("_errorList") as IList<string>;
+            if (errors != null) Assert.AreEqual(2, errors.Count);
+            var makeDisplayReady = errorResultTo.MakeDataListReady();            
+            Assert.AreEqual(result.ToString(), makeDisplayReady);
         }
     }
 }

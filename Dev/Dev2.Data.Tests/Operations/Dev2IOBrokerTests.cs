@@ -75,5 +75,40 @@ namespace Dev2.Data.Tests.Operations
 
             File.Delete(tempFileName);
         }
+
+        [TestMethod]
+        public void PutRaw_Should()
+        {
+            const string newFileName = "tempTextFile";
+            var tempPath = Path.GetTempPath() + newFileName + ".txt";
+            IActivityIOOperationsEndPoint scrEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(ActivityIOFactory.CreatePathFromString(tempPath, string.Empty, null, true, ""));
+            var activityOperationsBroker = ActivityIOFactory.CreateOperationsBroker();
+            var raw = activityOperationsBroker.PutRaw(scrEndPoint,
+                new Dev2PutRawOperationTO(WriteType.Overwrite, "Some content to write"));
+            Assert.AreEqual("Success", raw);
+        }
+
+        [TestMethod]
+        public void Create_Should()
+        {
+            var tempPath = Path.GetTempPath() + "SomeName.zip";
+            IActivityIOOperationsEndPoint scrEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(ActivityIOFactory.CreatePathFromString(tempPath, string.Empty, null, true, ""));
+            var activityOperationsBroker = ActivityIOFactory.CreateOperationsBroker();
+            var create = activityOperationsBroker.Create(scrEndPoint, new Dev2CRUDOperationTO(false,false), false);
+            Assert.AreEqual("Success", create);
+        }
+        
+        [TestMethod]
+        public void GivenExistingFile_PutRawAppendTop_ShouldShouldAppendContent()
+        {
+            const string newFileName = "tempTextFile";
+            var path = Path.GetTempPath() + newFileName + ".txt";
+            IActivityIOOperationsEndPoint scrEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(
+                ActivityIOFactory.CreatePathFromString(path, string.Empty, null, true));
+            var activityOperationsBroker = ActivityIOFactory.CreateOperationsBroker();
+            var raw = activityOperationsBroker.PutRaw(scrEndPoint,
+                new Dev2PutRawOperationTO(WriteType.AppendTop, "Some content to write"));
+            Assert.AreEqual("Success", raw);
+        }        
     }
 }
