@@ -16,10 +16,7 @@ namespace Dev2.Common.Interfaces.Core
         public string Password { get; set; }
         public enSourceType Type { get; set; }
         public string ResourceType { get; set; }
-        public bool EnableSsl { get; set; }
-        public int Port { get; set; }
         public int Timeout { get; set; }
-        public string EmailFrom { get; set; }
         public string EmailTo { get; set; }
         public string Path { get; set; }
         public Guid Id { get; set; }
@@ -45,7 +42,7 @@ namespace Dev2.Common.Interfaces.Core
                 return true;
             }
             return string.Equals(AutoDiscoverUrl, other.AutoDiscoverUrl) && string.Equals(UserName, other.UserName) && string.Equals(Password, other.Password)
-                && EnableSsl == other.EnableSsl && string.Equals(Port, other.Port) && string.Equals(Timeout, other.Timeout);
+                && Timeout == other.Timeout;
         }
 
         /// <summary>
