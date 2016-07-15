@@ -28,14 +28,16 @@ namespace Dev2.Data
         public void IndexListIndexIterator_HasMore_ShouldReturnTrue()
         {
             var indexes = new List<int> {1, 2, 3};
-            IndexListIndexIterator indexListIndexIterator = new IndexListIndexIterator(indexes);
+            var indexListIndexIterator = new IndexListIndexIterator(indexes);
             Assert.IsNotNull(indexListIndexIterator);
             var prObj = new PrivateObject(indexListIndexIterator);
             Assert.IsFalse(indexListIndexIterator.IsEmpty);
-            prObj.SetField("_enumerator", 2);
+            var current = (int) prObj.GetField("_current");
+            Assert.IsNotNull(current);
+            Assert.AreEqual(0, current);
             Assert.IsTrue(indexListIndexIterator.HasMore());
-            prObj.SetField("_enumerator", 3);
-            Assert.IsFalse(indexListIndexIterator.HasMore());
+            var fetchNextIndex = indexListIndexIterator.FetchNextIndex();
+            Assert.AreEqual(1, fetchNextIndex);
         }
     }
 }

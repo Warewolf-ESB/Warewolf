@@ -1,8 +1,6 @@
-using System;
 using System.Collections.Generic;
 using Dev2.Common.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Warewolf.Storage;
 using WarewolfParserInterop;
 
 // ReSharper disable InconsistentNaming
