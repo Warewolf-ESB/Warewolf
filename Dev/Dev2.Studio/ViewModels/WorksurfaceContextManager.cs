@@ -78,7 +78,7 @@ namespace Dev2.Studio.ViewModels
             }
             else
             {
-                _mainViewModel.DeactivateItem(wfscvm, true);
+                _mainViewModel.BaseDeactivateItem(wfscvm, true);
             }
 
             _mainViewModel.PreviousActive = null;
