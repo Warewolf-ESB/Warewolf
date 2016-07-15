@@ -1198,29 +1198,16 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
-        /// Assert_Email_Exists_OnDesignSurface - Use 'Assert_Email_Exists_OnDesignSurfaceExpectedValues' to pass parameters into this method.
+        /// Assert_SMTP_Email_Large_View_Exists_OnDesignSurface - Use 'Assert_SMTP_Email_Large_View_Exists_OnDesignSurfaceExpectedValues' to pass parameters into this method.
         /// </summary>
-        public void Assert_Email_Exists_OnDesignSurface()
+        public void Assert_SMTP_Email_Large_View_Exists_OnDesignSurface()
         {
             #region Variable Declarations
-            WpfCustom sendEmail = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SendEmail;
-            #endregion
-
-            // Verify that the 'Exists' property of 'DsfSendEmailActivity' custom control equals 'True'
-            Assert.AreEqual(this.Assert_Email_Exists_OnDesignSurfaceExpectedValues.SendEmailExists, sendEmail.Exists, "Email tool on the design surface does not exist");
-        }
-        
-        /// <summary>
-        /// Assert_Email_Large_View_Exists_OnDesignSurface - Use 'Assert_Email_Large_View_Exists_OnDesignSurfaceExpectedValues' to pass parameters into this method.
-        /// </summary>
-        public void Assert_Email_Large_View_Exists_OnDesignSurface()
-        {
-            #region Variable Declarations
-            WpfCustom largeView = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SendEmail.LargeView;
+            WpfCustom largeView = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SMTPEmail.LargeView;
             #endregion
 
             // Verify that the 'Exists' property of 'LargeViewContent' custom control equals 'True'
-            Assert.AreEqual(this.Assert_Email_Large_View_Exists_OnDesignSurfaceExpectedValues.LargeViewExists, largeView.Exists, "Email Tool large view does not exist on the design surface");
+            Assert.AreEqual(this.Assert_SMTP_Email_Large_View_Exists_OnDesignSurfaceExpectedValues.LargeViewExists, largeView.Exists, "Email Tool large view does not exist on the design surface");
         }
         
         /// <summary>
@@ -2321,6 +2308,19 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
+        /// Assert_SaveDialog_Does_Not_Exist - Use 'Assert_SaveDialog_Does_Not_ExistExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void Assert_SaveDialog_Does_Not_Exist()
+        {
+            #region Variable Declarations
+            WpfWindow saveDialogWindow = this.SaveDialogWindow;
+            #endregion
+
+            // Verify that the 'Exists' property of 'SaveDialogView' window equals 'False'
+            Assert.AreEqual(this.Assert_SaveDialog_Does_Not_ExistExpectedValues.SaveDialogWindowExists, saveDialogWindow.Exists, "Save dialog window does not exist");
+        }
+        
+        /// <summary>
         /// Assert_SaveDialog_ErrorLabel_Exists - Use 'Assert_SaveDialog_ErrorLabel_ExistsExpectedValues' to pass parameters into this method.
         /// </summary>
         public void Assert_SaveDialog_ErrorLabel_Exists()
@@ -2344,19 +2344,6 @@ namespace Warewolf.UITests
 
             // Verify that the 'Exists' property of 'SaveDialogView' window equals 'True'
             Assert.AreEqual(this.Assert_SaveDialog_ExistsExpectedValues.SaveDialogWindowExists, saveDialogWindow.Exists, "Save dialog window does not exist");
-        }
-        
-        /// <summary>
-        /// Assert_SaveDialog_Does_Not_Exist - Use 'Assert_SaveDialog_Does_Not_ExistExpectedValues' to pass parameters into this method.
-        /// </summary>
-        public void Assert_SaveDialog_Does_Not_Exist()
-        {
-            #region Variable Declarations
-            WpfWindow saveDialogWindow = this.SaveDialogWindow;
-            #endregion
-
-            // Verify that the 'Exists' property of 'SaveDialogView' window equals 'False'
-            Assert.AreEqual(this.Assert_SaveDialog_Does_Not_ExistExpectedValues.SaveDialogWindowExists, saveDialogWindow.Exists, "Save dialog window does not exist");
         }
         
         /// <summary>
@@ -3484,6 +3471,19 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
+        /// Assert_SMTP_Email_Exists_OnDesignSurface - Use 'Assert_SMTP_Email_Exists_OnDesignSurfaceExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void Assert_SMTP_Email_Exists_OnDesignSurface()
+        {
+            #region Variable Declarations
+            WpfCustom sMTPEmail = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SMTPEmail;
+            #endregion
+
+            // Verify that the 'Exists' property of 'DsfSendEmailActivity' custom control equals 'True'
+            Assert.AreEqual(this.Assert_SMTP_Email_Exists_OnDesignSurfaceExpectedValues.SMTPEmailExists, sMTPEmail.Exists, "Email tool on the design surface does not exist");
+        }
+        
+        /// <summary>
         /// Assert_Sort_Records_Exists_OnDesignSurface - Use 'Assert_Sort_Records_Exists_OnDesignSurfaceExpectedValues' to pass parameters into this method.
         /// </summary>
         public void Assert_Sort_Records_Exists_OnDesignSurface()
@@ -3976,6 +3976,19 @@ namespace Warewolf.UITests
 
             // Verify that the 'Exists' property of 'DsfWebRequestActivity' custom control equals 'True'
             Assert.AreEqual(this.Assert_Web_Request_Exists_OnDesignSurfaceExpectedValues.WebRequestExists, webRequest.Exists, "Web Request on the design surface does not exist");
+        }
+        
+        /// <summary>
+        /// Assert_Web_Request_Large_View_Exists_OnDesignSurface - Use 'Assert_Web_Request_Large_View_Exists_OnDesignSurfaceExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void Assert_Web_Request_Large_View_Exists_OnDesignSurface()
+        {
+            #region Variable Declarations
+            WpfCustom largeView = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebRequest.LargeView;
+            #endregion
+
+            // Verify that the 'Exists' property of 'LargeViewContent' custom control equals 'True'
+            Assert.AreEqual(this.Assert_Web_Request_Large_View_Exists_OnDesignSurfaceExpectedValues.LargeViewExists, largeView.Exists, "Web request large view does not exist on design surface.");
         }
         
         /// <summary>
@@ -6322,19 +6335,6 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
-        /// Open_Email_Tool_Large_View
-        /// </summary>
-        public void Open_Email_Tool_Large_View()
-        {
-            #region Variable Declarations
-            WpfCustom sendEmail = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SendEmail;
-            #endregion
-
-            // Double-Click 'DsfSendEmailActivity' custom control
-            Mouse.DoubleClick(sendEmail, new Point(168, 11));
-        }
-        
-        /// <summary>
         /// Open_Exchange_Email_Tool_Large_View
         /// </summary>
         public void Open_Exchange_Email_Tool_Large_View()
@@ -6553,6 +6553,19 @@ namespace Warewolf.UITests
 
             // Double-Click 'SharepointUpdateListItemActivity' custom control
             Mouse.DoubleClick(sharepointUpdate, new Point(230, 11));
+        }
+        
+        /// <summary>
+        /// Open_SMTP_Email_Tool_Large_View
+        /// </summary>
+        public void Open_SMTP_Email_Tool_Large_View()
+        {
+            #region Variable Declarations
+            WpfCustom sMTPEmail = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SMTPEmail;
+            #endregion
+
+            // Double-Click 'DsfSendEmailActivity' custom control
+            Mouse.DoubleClick(sMTPEmail, new Point(168, 11));
         }
         
         /// <summary>
@@ -6977,11 +6990,11 @@ namespace Warewolf.UITests
         public void RightClick_Email_OnDesignSurface()
         {
             #region Variable Declarations
-            WpfCustom sendEmail = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SendEmail;
+            WpfCustom sMTPEmail = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SMTPEmail;
             #endregion
 
             // Right-Click 'DsfSendEmailActivity' custom control
-            Mouse.Click(sendEmail, MouseButtons.Right, ModifierKeys.None, new Point(129, 11));
+            Mouse.Click(sMTPEmail, MouseButtons.Right, ModifierKeys.None, new Point(129, 11));
         }
         
         /// <summary>
@@ -7866,19 +7879,6 @@ namespace Warewolf.UITests
 
             // Type 'tst-ci-' in 'Text' text box
             addressEditBox.Text = this.Type_tstci_into_Server_Source_Wizard_Address_TextboxParams.AddressEditBoxText;
-        }
-        
-        /// <summary>
-        /// Assert_Web_Request_Large_View_Exists_OnDesignSurface - Use 'Assert_Web_Request_Large_View_Exists_OnDesignSurfaceExpectedValues' to pass parameters into this method.
-        /// </summary>
-        public void Assert_Web_Request_Large_View_Exists_OnDesignSurface()
-        {
-            #region Variable Declarations
-            WpfCustom largeView = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebRequest.LargeView;
-            #endregion
-
-            // Verify that the 'Exists' property of 'LargeViewContent' custom control equals 'True'
-            Assert.AreEqual(this.Assert_Web_Request_Large_View_Exists_OnDesignSurfaceExpectedValues.LargeViewExists, largeView.Exists, "Web request large view does not exist on design surface.");
         }
         
         #region Properties
@@ -8950,27 +8950,15 @@ namespace Warewolf.UITests
             }
         }
         
-        public virtual Assert_Email_Exists_OnDesignSurfaceExpectedValues Assert_Email_Exists_OnDesignSurfaceExpectedValues
+        public virtual Assert_SMTP_Email_Large_View_Exists_OnDesignSurfaceExpectedValues Assert_SMTP_Email_Large_View_Exists_OnDesignSurfaceExpectedValues
         {
             get
             {
-                if ((this.mAssert_Email_Exists_OnDesignSurfaceExpectedValues == null))
+                if ((this.mAssert_SMTP_Email_Large_View_Exists_OnDesignSurfaceExpectedValues == null))
                 {
-                    this.mAssert_Email_Exists_OnDesignSurfaceExpectedValues = new Assert_Email_Exists_OnDesignSurfaceExpectedValues();
+                    this.mAssert_SMTP_Email_Large_View_Exists_OnDesignSurfaceExpectedValues = new Assert_SMTP_Email_Large_View_Exists_OnDesignSurfaceExpectedValues();
                 }
-                return this.mAssert_Email_Exists_OnDesignSurfaceExpectedValues;
-            }
-        }
-        
-        public virtual Assert_Email_Large_View_Exists_OnDesignSurfaceExpectedValues Assert_Email_Large_View_Exists_OnDesignSurfaceExpectedValues
-        {
-            get
-            {
-                if ((this.mAssert_Email_Large_View_Exists_OnDesignSurfaceExpectedValues == null))
-                {
-                    this.mAssert_Email_Large_View_Exists_OnDesignSurfaceExpectedValues = new Assert_Email_Large_View_Exists_OnDesignSurfaceExpectedValues();
-                }
-                return this.mAssert_Email_Large_View_Exists_OnDesignSurfaceExpectedValues;
+                return this.mAssert_SMTP_Email_Large_View_Exists_OnDesignSurfaceExpectedValues;
             }
         }
         
@@ -9982,6 +9970,18 @@ namespace Warewolf.UITests
             }
         }
         
+        public virtual Assert_SaveDialog_Does_Not_ExistExpectedValues Assert_SaveDialog_Does_Not_ExistExpectedValues
+        {
+            get
+            {
+                if ((this.mAssert_SaveDialog_Does_Not_ExistExpectedValues == null))
+                {
+                    this.mAssert_SaveDialog_Does_Not_ExistExpectedValues = new Assert_SaveDialog_Does_Not_ExistExpectedValues();
+                }
+                return this.mAssert_SaveDialog_Does_Not_ExistExpectedValues;
+            }
+        }
+        
         public virtual Assert_SaveDialog_ErrorLabel_ExistsExpectedValues Assert_SaveDialog_ErrorLabel_ExistsExpectedValues
         {
             get
@@ -10003,18 +10003,6 @@ namespace Warewolf.UITests
                     this.mAssert_SaveDialog_ExistsExpectedValues = new Assert_SaveDialog_ExistsExpectedValues();
                 }
                 return this.mAssert_SaveDialog_ExistsExpectedValues;
-            }
-        }
-        
-        public virtual Assert_SaveDialog_Does_Not_ExistExpectedValues Assert_SaveDialog_Does_Not_ExistExpectedValues
-        {
-            get
-            {
-                if ((this.mAssert_SaveDialog_Does_Not_ExistExpectedValues == null))
-                {
-                    this.mAssert_SaveDialog_Does_Not_ExistExpectedValues = new Assert_SaveDialog_Does_Not_ExistExpectedValues();
-                }
-                return this.mAssert_SaveDialog_Does_Not_ExistExpectedValues;
             }
         }
         
@@ -11050,6 +11038,18 @@ namespace Warewolf.UITests
             }
         }
         
+        public virtual Assert_SMTP_Email_Exists_OnDesignSurfaceExpectedValues Assert_SMTP_Email_Exists_OnDesignSurfaceExpectedValues
+        {
+            get
+            {
+                if ((this.mAssert_SMTP_Email_Exists_OnDesignSurfaceExpectedValues == null))
+                {
+                    this.mAssert_SMTP_Email_Exists_OnDesignSurfaceExpectedValues = new Assert_SMTP_Email_Exists_OnDesignSurfaceExpectedValues();
+                }
+                return this.mAssert_SMTP_Email_Exists_OnDesignSurfaceExpectedValues;
+            }
+        }
+        
         public virtual Assert_Sort_Records_Exists_OnDesignSurfaceExpectedValues Assert_Sort_Records_Exists_OnDesignSurfaceExpectedValues
         {
             get
@@ -11503,6 +11503,18 @@ namespace Warewolf.UITests
                     this.mAssert_Web_Request_Exists_OnDesignSurfaceExpectedValues = new Assert_Web_Request_Exists_OnDesignSurfaceExpectedValues();
                 }
                 return this.mAssert_Web_Request_Exists_OnDesignSurfaceExpectedValues;
+            }
+        }
+        
+        public virtual Assert_Web_Request_Large_View_Exists_OnDesignSurfaceExpectedValues Assert_Web_Request_Large_View_Exists_OnDesignSurfaceExpectedValues
+        {
+            get
+            {
+                if ((this.mAssert_Web_Request_Large_View_Exists_OnDesignSurfaceExpectedValues == null))
+                {
+                    this.mAssert_Web_Request_Large_View_Exists_OnDesignSurfaceExpectedValues = new Assert_Web_Request_Large_View_Exists_OnDesignSurfaceExpectedValues();
+                }
+                return this.mAssert_Web_Request_Large_View_Exists_OnDesignSurfaceExpectedValues;
             }
         }
         
@@ -12034,18 +12046,6 @@ namespace Warewolf.UITests
             }
         }
         
-        public virtual Assert_Web_Request_Large_View_Exists_OnDesignSurfaceExpectedValues Assert_Web_Request_Large_View_Exists_OnDesignSurfaceExpectedValues
-        {
-            get
-            {
-                if ((this.mAssert_Web_Request_Large_View_Exists_OnDesignSurfaceExpectedValues == null))
-                {
-                    this.mAssert_Web_Request_Large_View_Exists_OnDesignSurfaceExpectedValues = new Assert_Web_Request_Large_View_Exists_OnDesignSurfaceExpectedValues();
-                }
-                return this.mAssert_Web_Request_Large_View_Exists_OnDesignSurfaceExpectedValues;
-            }
-        }
-        
         public MainStudioWindow MainStudioWindow
         {
             get
@@ -12310,9 +12310,7 @@ namespace Warewolf.UITests
         
         private Assert_Edit_Button_Destination_Server_ExistsExpectedValues mAssert_Edit_Button_Destination_Server_ExistsExpectedValues;
         
-        private Assert_Email_Exists_OnDesignSurfaceExpectedValues mAssert_Email_Exists_OnDesignSurfaceExpectedValues;
-        
-        private Assert_Email_Large_View_Exists_OnDesignSurfaceExpectedValues mAssert_Email_Large_View_Exists_OnDesignSurfaceExpectedValues;
+        private Assert_SMTP_Email_Large_View_Exists_OnDesignSurfaceExpectedValues mAssert_SMTP_Email_Large_View_Exists_OnDesignSurfaceExpectedValues;
         
         private Assert_end_this_workflow_checkbox_exists_on_Assign_Object_large_viewExpectedValues mAssert_end_this_workflow_checkbox_exists_on_Assign_Object_large_viewExpectedValues;
         
@@ -12482,11 +12480,11 @@ namespace Warewolf.UITests
         
         private Assert_SaveDialog_CancelButton_ExistsExpectedValues mAssert_SaveDialog_CancelButton_ExistsExpectedValues;
         
+        private Assert_SaveDialog_Does_Not_ExistExpectedValues mAssert_SaveDialog_Does_Not_ExistExpectedValues;
+        
         private Assert_SaveDialog_ErrorLabel_ExistsExpectedValues mAssert_SaveDialog_ErrorLabel_ExistsExpectedValues;
         
         private Assert_SaveDialog_ExistsExpectedValues mAssert_SaveDialog_ExistsExpectedValues;
-        
-        private Assert_SaveDialog_Does_Not_ExistExpectedValues mAssert_SaveDialog_Does_Not_ExistExpectedValues;
         
         private Assert_SaveDialog_ExplorerTree_ExistsExpectedValues mAssert_SaveDialog_ExplorerTree_ExistsExpectedValues;
         
@@ -12660,6 +12658,8 @@ namespace Warewolf.UITests
         
         private Assert_ShowDependencies_Exists_In_Explorer_Context_MenuExpectedValues mAssert_ShowDependencies_Exists_In_Explorer_Context_MenuExpectedValues;
         
+        private Assert_SMTP_Email_Exists_OnDesignSurfaceExpectedValues mAssert_SMTP_Email_Exists_OnDesignSurfaceExpectedValues;
+        
         private Assert_Sort_Records_Exists_OnDesignSurfaceExpectedValues mAssert_Sort_Records_Exists_OnDesignSurfaceExpectedValues;
         
         private Assert_Source_Server_Name_ExistsExpectedValues mAssert_Source_Server_Name_ExistsExpectedValues;
@@ -12735,6 +12735,8 @@ namespace Warewolf.UITests
         private Assert_Web_Connectors_Exists_OnDesignSurfaceExpectedValues mAssert_Web_Connectors_Exists_OnDesignSurfaceExpectedValues;
         
         private Assert_Web_Request_Exists_OnDesignSurfaceExpectedValues mAssert_Web_Request_Exists_OnDesignSurfaceExpectedValues;
+        
+        private Assert_Web_Request_Large_View_Exists_OnDesignSurfaceExpectedValues mAssert_Web_Request_Large_View_Exists_OnDesignSurfaceExpectedValues;
         
         private Assert_Web_Source_ExistsExpectedValues mAssert_Web_Source_ExistsExpectedValues;
         
@@ -12823,8 +12825,6 @@ namespace Warewolf.UITests
         private Type_S_Into_DebugInput_Row1_InputDataParams mType_S_Into_DebugInput_Row1_InputDataParams;
         
         private Type_tstci_into_Server_Source_Wizard_Address_TextboxParams mType_tstci_into_Server_Source_Wizard_Address_TextboxParams;
-        
-        private Assert_Web_Request_Large_View_Exists_OnDesignSurfaceExpectedValues mAssert_Web_Request_Large_View_Exists_OnDesignSurfaceExpectedValues;
         
         private MainStudioWindow mMainStudioWindow;
         
@@ -14183,25 +14183,10 @@ namespace Warewolf.UITests
     }
     
     /// <summary>
-    /// Parameters to be passed into 'Assert_Email_Exists_OnDesignSurface'
+    /// Parameters to be passed into 'Assert_SMTP_Email_Large_View_Exists_OnDesignSurface'
     /// </summary>
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Assert_Email_Exists_OnDesignSurfaceExpectedValues
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Verify that the 'Exists' property of 'DsfSendEmailActivity' custom control equals 'True'
-        /// </summary>
-        public bool SendEmailExists = true;
-        #endregion
-    }
-    
-    /// <summary>
-    /// Parameters to be passed into 'Assert_Email_Large_View_Exists_OnDesignSurface'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Assert_Email_Large_View_Exists_OnDesignSurfaceExpectedValues
+    public class Assert_SMTP_Email_Large_View_Exists_OnDesignSurfaceExpectedValues
     {
         
         #region Fields
@@ -15478,6 +15463,21 @@ namespace Warewolf.UITests
     }
     
     /// <summary>
+    /// Parameters to be passed into 'Assert_SaveDialog_Does_Not_Exist'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Assert_SaveDialog_Does_Not_ExistExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'SaveDialogView' window equals 'False'
+        /// </summary>
+        public bool SaveDialogWindowExists = false;
+        #endregion
+    }
+    
+    /// <summary>
     /// Parameters to be passed into 'Assert_SaveDialog_ErrorLabel_Exists'
     /// </summary>
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
@@ -15504,21 +15504,6 @@ namespace Warewolf.UITests
         /// Verify that the 'Exists' property of 'SaveDialogView' window equals 'True'
         /// </summary>
         public bool SaveDialogWindowExists = true;
-        #endregion
-    }
-    
-    /// <summary>
-    /// Parameters to be passed into 'Assert_SaveDialog_Does_Not_Exist'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Assert_SaveDialog_Does_Not_ExistExpectedValues
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Verify that the 'Exists' property of 'SaveDialogView' window equals 'False'
-        /// </summary>
-        public bool SaveDialogWindowExists = false;
         #endregion
     }
     
@@ -16813,6 +16798,21 @@ namespace Warewolf.UITests
     }
     
     /// <summary>
+    /// Parameters to be passed into 'Assert_SMTP_Email_Exists_OnDesignSurface'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Assert_SMTP_Email_Exists_OnDesignSurfaceExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'DsfSendEmailActivity' custom control equals 'True'
+        /// </summary>
+        public bool SMTPEmailExists = true;
+        #endregion
+    }
+    
+    /// <summary>
     /// Parameters to be passed into 'Assert_Sort_Records_Exists_OnDesignSurface'
     /// </summary>
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
@@ -17379,6 +17379,21 @@ namespace Warewolf.UITests
         /// Verify that the 'Exists' property of 'DsfWebRequestActivity' custom control equals 'True'
         /// </summary>
         public bool WebRequestExists = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Assert_Web_Request_Large_View_Exists_OnDesignSurface'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Assert_Web_Request_Large_View_Exists_OnDesignSurfaceExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'LargeViewContent' custom control equals 'True'
+        /// </summary>
+        public bool LargeViewExists = true;
         #endregion
     }
     
@@ -18039,21 +18054,6 @@ namespace Warewolf.UITests
         /// Type 'tst-ci-' in 'Text' text box
         /// </summary>
         public string AddressEditBoxText = "tst-ci-";
-        #endregion
-    }
-    
-    /// <summary>
-    /// Parameters to be passed into 'Assert_Web_Request_Large_View_Exists_OnDesignSurface'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Assert_Web_Request_Large_View_Exists_OnDesignSurfaceExpectedValues
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Verify that the 'Exists' property of 'LargeViewContent' custom control equals 'True'
-        /// </summary>
-        public bool LargeViewExists = true;
         #endregion
     }
     
@@ -27133,15 +27133,15 @@ namespace Warewolf.UITests
             }
         }
         
-        public SendEmail SendEmail
+        public SMTPEmail SMTPEmail
         {
             get
             {
-                if ((this.mSendEmail == null))
+                if ((this.mSMTPEmail == null))
                 {
-                    this.mSendEmail = new SendEmail(this);
+                    this.mSMTPEmail = new SMTPEmail(this);
                 }
-                return this.mSendEmail;
+                return this.mSMTPEmail;
             }
         }
         
@@ -27586,7 +27586,7 @@ namespace Warewolf.UITests
         
         private WpfCustom mRandom;
         
-        private SendEmail mSendEmail;
+        private SMTPEmail mSMTPEmail;
         
         private ExchangeEmail mExchangeEmail;
         
@@ -29731,10 +29731,10 @@ namespace Warewolf.UITests
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class SendEmail : WpfCustom
+    public class SMTPEmail : WpfCustom
     {
         
-        public SendEmail(UITestControl searchLimitContainer) : 
+        public SMTPEmail(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
