@@ -53,7 +53,7 @@ namespace Dev2.Activities.Designers.Tests.Core.DotNet
             var act = new DsfPluginActivity { SourceId = id };
             var src = new Mock<IPluginServiceModel>();
             var dotNetsrc = new PluginSourceDefinition { Id = id, Name = "johnny" };
-            var action = new PluginAction { FullName = "bravo" };
+            var action = new PluginAction { FullName = "bravo", Method = "bravo", ReturnType = typeof(string), Variables = new List<INameValue>()};
             src.Setup(a => a.RetrieveSources()).Returns(new ObservableCollection<IPluginSource>() { dotNetsrc });
 
             DotNetSourceRegion sourceRegion = new DotNetSourceRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfPluginActivity()));
@@ -69,6 +69,10 @@ namespace Dev2.Activities.Designers.Tests.Core.DotNet
 
             //------------Assert Results-------------------------
             Assert.AreEqual(action, dotNetActionRegion.SelectedAction);
+            Assert.AreEqual(action.FullName, dotNetActionRegion.SelectedAction.FullName);
+            Assert.AreEqual(action.Method, dotNetActionRegion.SelectedAction.Method);
+            Assert.AreEqual(typeof(string), dotNetActionRegion.SelectedAction.ReturnType);
+            Assert.AreEqual(0, dotNetActionRegion.SelectedAction.Variables.Count);
             Assert.IsTrue(dotNetActionRegion.CanRefresh());
         }
 
