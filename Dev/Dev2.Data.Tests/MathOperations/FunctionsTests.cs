@@ -1,6 +1,5 @@
 using System;
 using Dev2.Data.MathOperations;
-using Infragistics.Calculations.CalcManager;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Data.Tests.MathOperations
@@ -20,7 +19,7 @@ namespace Dev2.Data.Tests.MathOperations
         {
             var function = MathOpsFactory.CreateFunction();
             Assert.IsNotNull(function);
-            function.CreateCustomFunction("SomeFunction", null, null, "Perfomes Something", null, new Dev2CalculationManager());
+            //function.CreateCustomFunction("SomeFunction", null, null, "Perfomes Something", null, );
         }
 
         [TestMethod]
@@ -29,7 +28,7 @@ namespace Dev2.Data.Tests.MathOperations
         {
             var function = MathOpsFactory.CreateFunction();
             Assert.IsNotNull(function);
-            function.CreateCustomFunction("SomeFunction", null, null, "Perfomes Something", null, null);
+            //function.CreateCustomFunction("SomeFunction", null, null, "Perfomes Something", null, null);
         }
     }
 }
