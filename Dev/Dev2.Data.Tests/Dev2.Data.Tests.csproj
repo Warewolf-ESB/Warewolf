@@ -143,7 +143,12 @@
     <Compile Include="DecisionsTests\IsStartsWithTests.cs" />
     <Compile Include="DecisionsTests\NotRegexTests.cs" />
     <Compile Include="DecisionsTests\NotStartsWithTests.cs" />
+    <Compile Include="Dev2ColumnTests.cs" />
     <Compile Include="EnumTests\enTypeOfSystemInformationTests.cs" />
+    <Compile Include="ServiceModel\SharePointSourceTests.cs" />
+    <Compile Include="ServiceModel\RabbitMQSourceTests.cs" />
+    <Compile Include="ServiceModel\OauthSourceTests.cs" />
+    <Compile Include="SetingTest.cs" />
     <Compile Include="ListIndexIteratorTests.cs" />
     <Compile Include="LoopedIndexIteratorTests.cs" />
     <Compile Include="MathOperations\EvaluationFunctionTOTests.cs" />
@@ -202,6 +207,14 @@
     <ProjectReference Include="..\Dev2.Infrastructure\Dev2.Infrastructure.csproj">
       <Project>{615eae6d-040c-4364-b708-63dc8755cd4f}</Project>
       <Name>Dev2.Infrastructure</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Runtime.Services\Dev2.Runtime.Services.csproj">
+      <Project>{B48FFDF5-6B1B-4279-A93F-2913B9D3BE83}</Project>
+      <Name>Dev2.Runtime.Services</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Runtime.Tests\Dev2.Runtime.Tests.csproj">
+      <Project>{85617545-2121-4683-9828-DAEDB5878CE9}</Project>
+      <Name>Dev2.Runtime.Tests</Name>
     </ProjectReference>
     <ProjectReference Include="..\Warewolf.Resource\Warewolf.Resource.csproj">
       <Project>{DFF93ECB-FDD1-405E-AE02-9F4BC7571C1B}</Project>
