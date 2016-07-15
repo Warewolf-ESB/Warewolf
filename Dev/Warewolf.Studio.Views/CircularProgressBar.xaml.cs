@@ -126,7 +126,7 @@ namespace Warewolf.Studio.Views
         /// <param name="e">The <see cref="System.EventArgs" /> instance containing the event data.</param>
         private void OnAnimationTick(object sender, EventArgs e)
         {
-            _spinnerRotate.Angle = (_spinnerRotate.Angle + 36)%360;
+            SpinnerRotate.Angle = (SpinnerRotate.Angle + 36)%360;
         }
 
         /// <summary>
@@ -139,15 +139,15 @@ namespace Warewolf.Studio.Views
             const double offset = Math.PI;
             const double step = Math.PI*2/10.0;
 
-            SetPosition(_circle0, offset, 0.0, step);
-            SetPosition(_circle1, offset, 1.0, step);
-            SetPosition(_circle2, offset, 2.0, step);
-            SetPosition(_circle3, offset, 3.0, step);
-            SetPosition(_circle4, offset, 4.0, step);
-            SetPosition(_circle5, offset, 5.0, step);
-            SetPosition(_circle6, offset, 6.0, step);
-            SetPosition(_circle7, offset, 7.0, step);
-            SetPosition(_circle8, offset, 8.0, step);
+            SetPosition(Circle0, offset, 0.0, step);
+            SetPosition(Circle1, offset, 1.0, step);
+            SetPosition(Circle2, offset, 2.0, step);
+            SetPosition(Circle3, offset, 3.0, step);
+            SetPosition(Circle4, offset, 4.0, step);
+            SetPosition(Circle5, offset, 5.0, step);
+            SetPosition(Circle6, offset, 6.0, step);
+            SetPosition(Circle7, offset, 7.0, step);
+            SetPosition(Circle8, offset, 8.0, step);
         }
 
         /// <summary>

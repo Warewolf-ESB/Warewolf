@@ -4,7 +4,7 @@
              Background="Transparent">
 
     <UserControl.Resources>
-        <SolidColorBrush x:Key="progressCirclesColor" Color="#ffff8613" />
+        <SolidColorBrush x:Key="ProgressCirclesColor" Color="#ffff8613" />
     </UserControl.Resources>
 
     <Viewbox HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
@@ -17,89 +17,89 @@
                     Loaded="OnCanvasLoaded"
                     Unloaded="OnCanvasUnloaded">
 
-                <Ellipse x:Name="_circle0"
+                <Ellipse x:Name="Circle0"
                          Width="20"
                          Height="20"
                          Canvas.Left="0"
                          Canvas.Top="0"
                          Stretch="Fill"
-                         Fill="{StaticResource progressCirclesColor}"
+                         Fill="{StaticResource ProgressCirclesColor}"
                          Opacity="1.0" />
 
-                <Ellipse x:Name="_circle1"
+                <Ellipse x:Name="Circle1"
                          Width="20"
                          Height="20"
                          Canvas.Left="0"
                          Canvas.Top="0"
                          Stretch="Fill"
-                         Fill="{StaticResource progressCirclesColor}"
+                         Fill="{StaticResource ProgressCirclesColor}"
                          Opacity="0.9" />
 
-                <Ellipse x:Name="_circle2"
+                <Ellipse x:Name="Circle2"
                          Width="20"
                          Height="20"
                          Canvas.Left="0"
                          Canvas.Top="0"
                          Stretch="Fill"
-                         Fill="{StaticResource progressCirclesColor}"
+                         Fill="{StaticResource ProgressCirclesColor}"
                          Opacity="0.8" />
 
-                <Ellipse x:Name="_circle3"
+                <Ellipse x:Name="Circle3"
                          Width="20"
                          Height="20"
                          Canvas.Left="0"
                          Canvas.Top="0"
                          Stretch="Fill"
-                         Fill="{StaticResource progressCirclesColor}"
+                         Fill="{StaticResource ProgressCirclesColor}"
                          Opacity="0.7" />
 
-                <Ellipse x:Name="_circle4"
+                <Ellipse x:Name="Circle4"
                          Width="20"
                          Height="20"
                          Canvas.Left="0"
                          Canvas.Top="0"
                          Stretch="Fill"
-                         Fill="{StaticResource progressCirclesColor}"
+                         Fill="{StaticResource ProgressCirclesColor}"
                          Opacity="0.6" />
 
-                <Ellipse x:Name="_circle5"
+                <Ellipse x:Name="Circle5"
                          Width="20"
                          Height="20"
                          Canvas.Left="0"
                          Canvas.Top="0"
                          Stretch="Fill"
-                         Fill="{StaticResource progressCirclesColor}"
+                         Fill="{StaticResource ProgressCirclesColor}"
                          Opacity="0.5" />
 
-                <Ellipse x:Name="_circle6"
+                <Ellipse x:Name="Circle6"
                          Width="20"
                          Height="20"
                          Canvas.Left="0"
                          Canvas.Top="0"
                          Stretch="Fill"
-                         Fill="{StaticResource progressCirclesColor}"
+                         Fill="{StaticResource ProgressCirclesColor}"
                          Opacity="0.4" />
 
-                <Ellipse x:Name="_circle7"
+                <Ellipse x:Name="Circle7"
                          Width="20"
                          Height="20"
                          Canvas.Left="0"
                          Canvas.Top="0"
                          Stretch="Fill"
-                         Fill="{StaticResource progressCirclesColor}"
+                         Fill="{StaticResource ProgressCirclesColor}"
                          Opacity="0.3" />
 
-                <Ellipse x:Name="_circle8"
+                <Ellipse x:Name="Circle8"
                          Width="20"
                          Height="20"
                          Canvas.Left="0"
                          Canvas.Top="0"
                          Stretch="Fill"
-                         Fill="{StaticResource progressCirclesColor}"
+                         Fill="{StaticResource ProgressCirclesColor}"
                          Opacity="0.2" />
 
                 <Canvas.RenderTransform>
-                    <RotateTransform x:Name="_spinnerRotate" Angle="0" />
+                    <RotateTransform x:Name="SpinnerRotate" Angle="0" />
                 </Canvas.RenderTransform>
             </Canvas>
         </Grid>

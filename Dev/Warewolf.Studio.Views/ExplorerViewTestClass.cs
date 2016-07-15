@@ -366,12 +366,12 @@ namespace Warewolf.Studio.Views
             var node = VerifyItemExists(path);
             var item = node.Data as IExplorerTreeItem;
             var items = new List<IExplorerTreeItem>();
-            const string Name = "Resource ";
+            const string name = "Resource ";
             for (int i = 0; i < count; i++)
             {
                 if (item != null)
                 {
-                    items.Add(new ExplorerItemViewModel(item.Server, item, a => { }, null, null) { ResourceName = Name + i, ResourceType = "Version" });
+                    items.Add(new ExplorerItemViewModel(item.Server, item, a => { }, null, null) { ResourceName = name + i, ResourceType = "Version" });
                 }
             }
             return items;
