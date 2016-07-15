@@ -23,7 +23,7 @@ namespace Warewolf.Studio.UISpecs
         }
 
         [TestMethod]
-        [Ignore]//Ignored until WOLF-1929
+        [Ignore]//Re-introduce before WOLF-1929 can be moved to done
         public void BigWorkflowDesignSurfaceUITest()
         {
             if (!Uimap.MainStudioWindow.SideMenuBar.CollapsedSideMenu.NewWorkflowIcon.Exists)
@@ -106,7 +106,7 @@ namespace Warewolf.Studio.UISpecs
             Uimap.Click_Explorer_Refresh_Button();
             Uimap.Assert_Explorer_Localhost_First_Item_Exists();
 
-            /**TODO: Re-introduce these units after bug WOLF-1923 is fixed
+            /**TODO: Re-introduce these units before WOLF-1923 can be moved to done.
             //Action Unit: Clicking Debug Button Shows Debug Input Dialog
             //UIMap.Assert_MultiAssign_Exists_OnDesignSurface();
             //Uimap.Assert_Assign_Small_View_Row1_Variable_Textbox_Text_is_SomeVariable();
