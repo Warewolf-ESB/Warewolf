@@ -2347,6 +2347,19 @@ namespace Warewolf.Studio.UISpecs
         }
         
         /// <summary>
+        /// Assert_SaveDialog_Does_Not_Exist - Use 'Assert_SaveDialog_Does_Not_ExistExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void Assert_SaveDialog_Does_Not_Exist()
+        {
+            #region Variable Declarations
+            WpfWindow saveDialogWindow = this.SaveDialogWindow;
+            #endregion
+
+            // Verify that the 'Exists' property of 'SaveDialogView' window equals 'False'
+            Assert.AreEqual(this.Assert_SaveDialog_Does_Not_ExistExpectedValues.SaveDialogWindowExists, saveDialogWindow.Exists, "Save dialog window does not exist");
+        }
+        
+        /// <summary>
         /// Assert_SaveDialog_ExplorerTree_Exists - Use 'Assert_SaveDialog_ExplorerTree_ExistsExpectedValues' to pass parameters into this method.
         /// </summary>
         public void Assert_SaveDialog_ExplorerTree_Exists()
@@ -9993,6 +10006,18 @@ namespace Warewolf.Studio.UISpecs
             }
         }
         
+        public virtual Assert_SaveDialog_Does_Not_ExistExpectedValues Assert_SaveDialog_Does_Not_ExistExpectedValues
+        {
+            get
+            {
+                if ((this.mAssert_SaveDialog_Does_Not_ExistExpectedValues == null))
+                {
+                    this.mAssert_SaveDialog_Does_Not_ExistExpectedValues = new Assert_SaveDialog_Does_Not_ExistExpectedValues();
+                }
+                return this.mAssert_SaveDialog_Does_Not_ExistExpectedValues;
+            }
+        }
+        
         public virtual Assert_SaveDialog_ExplorerTree_ExistsExpectedValues Assert_SaveDialog_ExplorerTree_ExistsExpectedValues
         {
             get
@@ -12460,6 +12485,8 @@ namespace Warewolf.Studio.UISpecs
         private Assert_SaveDialog_ErrorLabel_ExistsExpectedValues mAssert_SaveDialog_ErrorLabel_ExistsExpectedValues;
         
         private Assert_SaveDialog_ExistsExpectedValues mAssert_SaveDialog_ExistsExpectedValues;
+        
+        private Assert_SaveDialog_Does_Not_ExistExpectedValues mAssert_SaveDialog_Does_Not_ExistExpectedValues;
         
         private Assert_SaveDialog_ExplorerTree_ExistsExpectedValues mAssert_SaveDialog_ExplorerTree_ExistsExpectedValues;
         
@@ -15477,6 +15504,21 @@ namespace Warewolf.Studio.UISpecs
         /// Verify that the 'Exists' property of 'SaveDialogView' window equals 'True'
         /// </summary>
         public bool SaveDialogWindowExists = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Assert_SaveDialog_Does_Not_Exist'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Assert_SaveDialog_Does_Not_ExistExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'SaveDialogView' window equals 'False'
+        /// </summary>
+        public bool SaveDialogWindowExists = false;
         #endregion
     }
     

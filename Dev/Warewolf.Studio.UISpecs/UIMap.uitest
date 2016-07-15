@@ -3066,6 +3066,23 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Assertion</MarkerRegionType>
     </TestStepMarkerAction>
+    <AssertAction UIObjectName="UIMap.SaveDialogWindow">
+      <ParameterName />
+      <PropertyName>Exists</PropertyName>
+      <ExpectedValue>False</ExpectedValue>
+      <MessageOnValidationFailure>Save dialog window does not exist</MessageOnValidationFailure>
+      <Type>String</Type>
+      <PropertyCondition>AreEqual</PropertyCondition>
+    </AssertAction>
+    <TestStepMarkerAction Comment="" MarkerInformation="Assert_SaveDialog_Does_Not_Exist">
+      <ParameterName />
+      <StepId>-1</StepId>
+      <Direction>Start</Direction>
+      <Outcome />
+      <Disabled>false</Disabled>
+      <WorkItemId>0</WorkItemId>
+      <MarkerRegionType>Assertion</MarkerRegionType>
+    </TestStepMarkerAction>
     <AssertAction UIObjectName="UIMap.SaveDialogWindow.ExplorerView.ExplorerTree">
       <ParameterName />
       <PropertyName>Exists</PropertyName>

@@ -23,6 +23,7 @@ namespace Warewolf.Studio.UISpecs
         }
 
         [TestMethod]
+        [Ignore]//Ignored until WOLF-1929
         public void BigWorkflowDesignSurfaceUITest()
         {
             if (!Uimap.MainStudioWindow.SideMenuBar.CollapsedSideMenu.NewWorkflowIcon.Exists)
@@ -98,7 +99,7 @@ namespace Warewolf.Studio.UISpecs
             //UIMap.Assert_SaveDialog_SaveButton_Enabled();
             Uimap.Click_SaveDialog_YesButton();
             Playback.Wait(2000);
-            Uimap.Assert_MessageBox_Does_Not_Exist();
+            Uimap.Assert_SaveDialog_Does_Not_Exist();
 
             //Action Unit: Filtering the explorer tree shows only SomeWorkflow on local server
             Uimap.Enter_SomeWorkflow_Into_Explorer_Filter();
