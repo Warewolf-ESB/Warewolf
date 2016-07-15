@@ -109,33 +109,19 @@
     <Compile Include="Behavior\ActualSizeBindingBehavior.cs" />
     <Compile Include="Converters\DoubleToMarginLeftConverter.cs" />
     <Compile Include="Converters\FilterStringToBoolConvert.cs" />
-    <Compile Include="Converters\GridLengthConverter.cs" />
     <Compile Include="Converters\IsValidDateTimeConverter.cs" />
     <Compile Include="Converters\MultipleBoolToEnabledConverter.cs" />
     <Compile Include="Converters\RowToIndexConverter.cs" />
     <Compile Include="Converters\StringToTimespanConverter.cs" />
-    <Compile Include="Data\DataContextSpy.cs" />
-    <Compile Include="Data\ValueConverters\EnumValueToDescriptionConverter.cs" />
-    <Compile Include="Data\ValueConverters\ResourceKeyToResourceConverter.cs" />
     <Compile Include="Data\ValueConverters\ValueConverterGroup.cs" />
-    <Compile Include="Data\ValueConverters\XamlToObjectConverter.cs" />
     <Compile Include="FilterTextBox.cs" />
-    <Compile Include="Input\CommandGroup.cs" />
-    <Compile Include="Input\SmartRoutedCommand.cs" />
-    <Compile Include="Markup\IfFullTrustExtension.cs" />
-    <Compile Include="Panels\ConceptualPanel.cs" />
     <Compile Include="Panels\DisconnectedUIElementCollection.cs" />
-    <Compile Include="Panels\DragCanvas.cs" />
-    <Compile Include="Panels\LogicalPanel.cs" />
-    <Compile Include="Panels\Viewport3DEx.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Compile Include="Trigger\FocusContentTrigger.cs" />
-    <Compile Include="Trigger\KeyPressedTrigger.cs" />
     <Compile Include="Trigger\DelayTextChangedEventTrigger.cs" />
     <Compile Include="Utils\WatermarkSential.cs" />
     <Compile Include="WatermarkAdorner.cs" />
