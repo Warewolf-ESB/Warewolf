@@ -11,6 +11,7 @@ using Dev2.Explorer;
 using Dev2.Interfaces;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Services.Security;
+using Dev2.Studio.Controller;
 using Dev2.Studio.Core.Interfaces;
 using Microsoft.Practices.Prism.PubSubEvents;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -586,7 +587,8 @@ namespace Warewolf.AcceptanceTesting.Explorer
         public void ThenConflictErrorMessageOccurs()
         {
             var mockShellViewModel = ScenarioContext.Current.Get<Mock<IShellViewModel>>("mockShellViewModel");
-            mockShellViewModel.Object.ShowPopup(PopupMessages.GetDuplicateMessage("Workflow1"));
+            var popupController = new PopupController();
+            mockShellViewModel.Object.ShowPopup(popupController.GetDuplicateMessage("Workflow1"));
         }
 
         [Then(@"""(.*)"" is Disconnected")]

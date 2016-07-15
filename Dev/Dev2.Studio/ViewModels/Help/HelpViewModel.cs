@@ -132,12 +132,8 @@ namespace Dev2.Studio.ViewModels.Help
             }
 
             object objComWebBrowser = fiComWebBrowser.GetValue(webBrowser);
-            if(objComWebBrowser == null)
-            {
-                return;
-            }
 
-            objComWebBrowser.GetType().InvokeMember("Silent", BindingFlags.SetProperty, null, objComWebBrowser, new object[] { true });
+            objComWebBrowser?.GetType().InvokeMember("Silent", BindingFlags.SetProperty, null, objComWebBrowser, new object[] { true });
         }
 
         #region Overrides of Screen
@@ -149,7 +145,7 @@ namespace Dev2.Studio.ViewModels.Help
             if (close)
             {
                 EventPublisher.Unsubscribe(this);
-                HelpViewWrapper.WebBrowser.Dispose();
+                HelpViewWrapper?.WebBrowser?.Dispose();
                 HelpViewDisposed = true;
             }
             base.OnDeactivate(close);
