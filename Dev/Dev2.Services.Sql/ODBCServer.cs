@@ -203,8 +203,13 @@ namespace Dev2.Services.Sql
         {
             try
             {
-                using (IDataReader reader = command.ExecuteReader(commandBehavior))
+                
+                
+                using (OdbcDataAdapter adapter = new OdbcDataAdapter(command as OdbcCommand))
                 {
+                    var dataTable = new DataTable();
+                    adapter.Fill(dataTable);
+                    var reader = dataTable.CreateDataReader();
                     return handler(reader);
                 }
             }
