@@ -16,7 +16,7 @@ namespace Warewolf.UITests.Tools
     public class SMTP_Send
     {
         [TestMethod]
-        public void ToolNameToolUITest()
+        public void SMTPSendToolUITest()
         {
             //Scenario: Dragging tool onto design surface creates small view
             Uimap.Drag_Toolbox_SMTP_Email_Onto_DesignSurface();
