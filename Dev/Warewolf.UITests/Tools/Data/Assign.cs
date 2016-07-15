@@ -1,30 +1,22 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text.RegularExpressions;
-using System.Windows.Input;
-using System.Windows.Forms;
-using System.Drawing;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Microsoft.VisualStudio.TestTools.UITest.Extension;
-using Keyboard = Microsoft.VisualStudio.TestTools.UITesting.Keyboard;
 
-
-namespace Warewolf.Studio.UISpecs
+namespace Warewolf.UITests.Tools.Data
 {
     /// <summary>
     /// Summary description for WorkflowDesignSurface
     /// </summary>
     [CodedUITest]
-    public class WorkflowDesignSurface
+    public class Assign
     {
-        public WorkflowDesignSurface()
+        public Assign()
         {
         }
 
         [TestMethod]
         [Ignore]//Re-introduce before WOLF-1929 can be moved to done
-        public void BigWorkflowDesignSurfaceUITest()
+        public void AssignToolUITest()
         {
             if (!Uimap.MainStudioWindow.SideMenuBar.CollapsedSideMenu.NewWorkflowIcon.Exists)
             {
