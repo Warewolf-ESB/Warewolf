@@ -20,7 +20,8 @@ namespace Dev2.DataList.Contract
         #endregion
 
         #region Ctor
-        internal SystemTag(string tagName) {
+
+        public SystemTag(string tagName) {
             _startTag = string.Concat("<", tagName, ">");
             _endTag = string.Concat("</", tagName, ">");
         }

@@ -103,8 +103,8 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
 
         public override IOutputDescription TestService(DbService dbService)
         {
-            VerifyArgument.IsNotNull("dbService", dbService);
-            VerifyArgument.IsNotNull("dbService.Source", dbService.Source);
+            VerifyArgument.IsNotNull(@"dbService", dbService);
+            VerifyArgument.IsNotNull(@"dbService.Source", dbService.Source);
 
             IOutputDescription result;
             using (var server = CreateDbServer(dbService.Source as DbSource))
@@ -119,7 +119,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
                     var command = CommandFromServiceMethod(server, dbService.Method);
                   
                     var dataTable = server.FetchDataTable(command);
-
+                    dataTable.TableName = @"Unnamed";
                     //
                     // Map shape of XML
                     //
@@ -128,7 +128,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
                     result.DataSourceShapes.Add(dataSourceShape);
 
                     var dataBrowser = DataBrowserFactory.CreateDataBrowser();
-                    dataSourceShape.Paths.AddRange(dataBrowser.Map(dataTable));
+                    dataSourceShape.Paths.AddRange(dataBrowser.Map(dataTable));                    
                 }
                 finally
                 {
