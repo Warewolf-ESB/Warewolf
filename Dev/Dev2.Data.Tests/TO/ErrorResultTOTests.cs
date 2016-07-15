@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Text;
 using Dev2.DataList.Contract;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+// ReSharper disable InconsistentNaming
 
 namespace Dev2.Data.Tests.TO
 {
@@ -161,7 +162,7 @@ namespace Dev2.Data.Tests.TO
             errors = prObj.GetField("_errorList") as IList<string>;
             if (errors != null) Assert.AreEqual(2, errors.Count);
             var makeDisplayReady = errorResultTo.MakeDataListReady();            
-            Assert.AreEqual(result.ToString(), makeDisplayReady);
+            Assert.AreEqual(result, makeDisplayReady);
         }
     }
 }
