@@ -13,12 +13,19 @@ using Keyboard = Microsoft.VisualStudio.TestTools.UITesting.Keyboard;
 namespace Warewolf.UITests.Tools
 {
     [CodedUITest]
-    public class ToolName
+    public class GET
     {
         [TestMethod]
-        public void ToolNameToolUITest()
+        public void GETToolUITest()
         {
-		
+            //Scenario: Drag toolbox Get Web Request Tool onto a new workflow creates Get Web Request tool with large view on the design surface
+            Uimap.Drag_GetWeb_RequestTool_Onto_DesignSurface();
+            Uimap.Assert_GetWeb_RequestTool_small_View_Exists_OnDesignSurface();
+
+            //@NeedsWebRequestSmallViewOnTheDesignSurface
+            // Scenario: Double Clicking Web Request Tool Small View on the Design Surface Opens Large View
+            Uimap.Open_WebRequest_LargeView();
+            Uimap.Assert_GetWeb_RequestTool_Large_View_Exists_OnDesignSurface();
         }
 
         #region Additional test attributes

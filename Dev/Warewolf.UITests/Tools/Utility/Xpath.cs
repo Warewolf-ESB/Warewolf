@@ -13,12 +13,24 @@ using Keyboard = Microsoft.VisualStudio.TestTools.UITesting.Keyboard;
 namespace Warewolf.UITests.Tools
 {
     [CodedUITest]
-    public class ToolName
+    public class Xpath
     {
         [TestMethod]
-        public void ToolNameToolUITest()
+        public void XpathToolUITest()
         {
-		
+            //Scenario: Drag toolbox XPath onto a new workflow
+            Uimap.Drag_Toolbox_XPath_Onto_DesignSurface();
+            Uimap.Assert_XPath_Exists_OnDesignSurface();
+
+            //@NeedsXPathToolSmallViewOnTheDesignSurface
+            // Scenario: Double Clicking XPath Tool Small View on the Design Surface Opens Large View
+            Uimap.Open_Xpath_Tool_Large_View();
+            Uimap.Assert_Xpath_Large_View_Exists_OnDesignSurface();
+
+            //@NeedsXPathLargeViewOnTheDesignSurface
+            // Scenario: Click XPath Tool QVI Button Opens Qvi
+            Uimap.Open_Xpath_Tool_Qvi_Large_View();
+            Uimap.Assert_Xpath_Qvi_Large_View_Exists_OnDesignSurface();
         }
 
         #region Additional test attributes
