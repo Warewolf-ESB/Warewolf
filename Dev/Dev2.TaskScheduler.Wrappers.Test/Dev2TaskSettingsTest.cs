@@ -12,6 +12,7 @@ using System;
 using System.Diagnostics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Microsoft.Win32.TaskScheduler;
+// ReSharper disable InconsistentNaming
 
 namespace Dev2.TaskScheduler.Wrappers.Test
 {
@@ -26,6 +27,7 @@ namespace Dev2.TaskScheduler.Wrappers.Test
         {
             var service = new TaskService();
             var task =service.NewTask();
+            // ReSharper disable once UseObjectOrCollectionInitializer
             var settings = new Dev2TaskSettings(task.Settings);
             settings.AllowDemandStart = true;
             settings.DeleteExpiredTaskAfter = new TimeSpan(2);
@@ -40,8 +42,10 @@ namespace Dev2.TaskScheduler.Wrappers.Test
             settings.StartWhenAvailable = false;
             settings.WakeToRun = true;
             var native = task.Settings;
-            Assert.AreEqual(settings.AllowDemandStart,native.AllowDemandStart);
-            Assert.AreEqual(settings.AllowHardTerminate,native.AllowHardTerminate);
+            var allowDemandStart = settings.AllowDemandStart;
+            Assert.AreEqual(allowDemandStart,native.AllowDemandStart);
+            var allowHardTerminate = settings.AllowHardTerminate;
+            Assert.AreEqual(allowHardTerminate,native.AllowHardTerminate);
             Assert.AreEqual(settings.DeleteExpiredTaskAfter,native.DeleteExpiredTaskAfter);
             Assert.AreEqual(settings.DisallowStartOnRemoteAppSession,native.DisallowStartIfOnBatteries);
             Assert.AreEqual(settings.Enabled,settings.Enabled);
@@ -58,5 +62,7 @@ namespace Dev2.TaskScheduler.Wrappers.Test
 
 
         }
+
+
     }
 }
