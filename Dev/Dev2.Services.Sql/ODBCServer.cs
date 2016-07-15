@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
 using System.Data.Odbc;
+using Dev2.Common;
 using Dev2.Common.Interfaces.Services.Sql;
 using Microsoft.Win32;
 // ReSharper disable InconsistentNaming
@@ -90,7 +91,14 @@ namespace Dev2.Services.Sql
         {
             if (IsConnected)
             {
-                _transaction = _connection.BeginTransaction();
+                try
+                {
+                    _transaction = _connection.BeginTransaction();
+                }
+                catch(Exception e)
+                {
+                    Dev2Logger.Error(@"Error creating transaction",e);
+                }
             }
         }
 

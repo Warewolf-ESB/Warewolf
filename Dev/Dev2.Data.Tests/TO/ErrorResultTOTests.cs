@@ -161,7 +161,7 @@ namespace Dev2.Data.Tests.TO
             errors = prObj.GetField("_errorList") as IList<string>;
             if (errors != null) Assert.AreEqual(2, errors.Count);
             var makeDisplayReady = errorResultTo.MakeDataListReady();            
-            Assert.AreEqual(result.ToString(), makeDisplayReady);
+            Assert.AreEqual(result, makeDisplayReady);
         }
     }
 }
