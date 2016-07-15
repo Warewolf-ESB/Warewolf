@@ -275,10 +275,6 @@ namespace Dev2.Services.Execution
 
         #endregion
 
-        #region ExecuteServiceAndMergeResultIntoDataList
-
-        #endregion
-
         #region ExecuteService
 
         private void ExecuteService(IWarewolfListIterator itrCollection,

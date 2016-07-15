@@ -16,7 +16,6 @@ using Caliburn.Micro;
 using Dev2.Services.Events;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Helpers;
-using Dev2.Studio.Core.Messages;
 using Dev2.Studio.ViewModels.WorkSurface;
 using Dev2.Studio.Views.Help;
 using Dev2.ViewModels.Help;
@@ -133,12 +132,8 @@ namespace Dev2.Studio.ViewModels.Help
             }
 
             object objComWebBrowser = fiComWebBrowser.GetValue(webBrowser);
-            if(objComWebBrowser == null)
-            {
-                return;
-            }
 
-            objComWebBrowser.GetType().InvokeMember("Silent", BindingFlags.SetProperty, null, objComWebBrowser, new object[] { true });
+            objComWebBrowser?.GetType().InvokeMember("Silent", BindingFlags.SetProperty, null, objComWebBrowser, new object[] { true });
         }
 
         #region Overrides of Screen
@@ -150,7 +145,7 @@ namespace Dev2.Studio.ViewModels.Help
             if (close)
             {
                 EventPublisher.Unsubscribe(this);
-                HelpViewWrapper.WebBrowser.Dispose();
+                HelpViewWrapper?.WebBrowser?.Dispose();
                 HelpViewDisposed = true;
             }
             base.OnDeactivate(close);
