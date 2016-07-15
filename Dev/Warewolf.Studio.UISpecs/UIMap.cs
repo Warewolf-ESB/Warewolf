@@ -64,30 +64,29 @@ namespace Warewolf.Studio.UISpecs
             e.Result = PlaybackErrorOptions.Retry;
         }
 
-        public void WaitForStudioStart()
+        public void WaitIfStudioDoesNotExist()
         {
-            var sleepTimer = 20;
-            while (true)
+            var sleepTimer = 30;
+            try
             {
-                try
+                if (!this.MainStudioWindow.Exists)
                 {
-                    if (this.MainStudioWindow.Exists)
-                    {
-                        Console.WriteLine("Studio has now started.");
-                        break;
-                    }
-                    Console.WriteLine("Waiting for studio to start.");
-                    Playback.Wait(2000);
+                    WaitForStudioStart(sleepTimer * 1000);
                 }
-                catch (UITestControlNotFoundException)
-                {
-                    Console.WriteLine("Waiting for studio to start.");
-                    Playback.Wait(2000);
-                }
-                if (sleepTimer-- <= 0)
-                {
-                    throw new InvalidOperationException("Warewolf studio is not running. You are expected to run \"Dev\\TestScripts\\Studio\\Startup.bat\" as an administrator and wait for it to complete before running any coded UI tests");
-                }
+            }
+            catch (UITestControlNotFoundException)
+            {
+                WaitForStudioStart(sleepTimer * 1000);
+            }
+        }
+
+        private void WaitForStudioStart(int timeout)
+        {
+            Console.WriteLine("Waiting for studio to start.");
+            Playback.Wait(30000);
+            if (!this.MainStudioWindow.Exists)
+            {
+                throw new InvalidOperationException("Warewolf studio is not running. You are expected to run \"Dev\\TestScripts\\Studio\\Startup.bat\" as an administrator and wait for it to complete before running any coded UI tests");
             }
         }
 
@@ -96,7 +95,7 @@ namespace Warewolf.Studio.UISpecs
         {
             var uiMap = new UIMap();
             uiMap.SetGlobalPlaybackSettings();
-            uiMap.WaitForStudioStart();
+            uiMap.WaitIfStudioDoesNotExist();
             Console.WriteLine("Test \"" + ScenarioContext.Current.ScenarioInfo.Title + "\" starting on " + System.Environment.MachineName);
         }
 
