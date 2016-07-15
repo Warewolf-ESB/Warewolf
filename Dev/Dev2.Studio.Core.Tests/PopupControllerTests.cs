@@ -406,6 +406,54 @@ namespace Dev2.Core.Tests
 
         [TestMethod]
         [Owner("Pieter Terblanche")]
+        [TestCategory("PopupController_GetDeleteConfirmation")]
+        public void PopupController_GetDeleteConfirmation_SetProperties_AllPropertiesDisplayed()
+        {
+            //------------Setup for test--------------------------
+            var popupController = new PopupController();
+
+            //------------Execute Test---------------------------
+            string displayName = "DisplayName";
+            var popup = popupController.GetDeleteConfirmation(displayName);
+
+            var message = string.Format(Warewolf.Studio.Resources.Languages.Core.DeleteConfirmation, displayName);
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual(MessageBoxButton.YesNo, popup.Buttons);
+            Assert.AreEqual(Warewolf.Studio.Resources.Languages.Core.GenericConfirmation, popup.Header);
+            Assert.AreEqual(message, popup.Description);
+            Assert.IsTrue(popup.IsInfo);
+            Assert.IsFalse(popup.IsDependenciesButtonVisible);
+            Assert.IsFalse(popup.IsError);
+            Assert.IsFalse(popup.IsQuestion);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("PopupController_GetDuplicateMessage")]
+        public void PopupController_GetDuplicateMessage_SetProperties_AllPropertiesDisplayed()
+        {
+            //------------Setup for test--------------------------
+            var popupController = new PopupController();
+
+            //------------Execute Test---------------------------
+            string displayName = "DisplayName";
+            var popup = popupController.GetDuplicateMessage(displayName);
+
+            var message = $"The name {displayName} already exists. Please choose a different name.";
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual(MessageBoxButton.OK, popup.Buttons);
+            Assert.AreEqual(Warewolf.Studio.Resources.Languages.Core.InvalidPermissionHeader, popup.Header);
+            Assert.AreEqual(message, popup.Description);
+            Assert.IsFalse(popup.IsInfo);
+            Assert.IsFalse(popup.IsDependenciesButtonVisible);
+            Assert.IsFalse(popup.IsError);
+            Assert.IsFalse(popup.IsQuestion);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
         [TestCategory("PopupController_ShowServerNotConnected")]
         public void PopupController_ShowServerNotConnected_SetProperties_AllPropertiesDisplayed()
         {
