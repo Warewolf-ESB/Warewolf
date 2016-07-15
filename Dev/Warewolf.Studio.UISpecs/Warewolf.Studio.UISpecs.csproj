@@ -72,7 +72,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>StudioUISpecs.feature</DependentUpon>
     </Compile>
-    <Compile Include="ActionSteps.cs" />
     <Compile Include="Tools\Base Conversion.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

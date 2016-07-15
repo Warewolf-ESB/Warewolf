@@ -173,6 +173,19 @@ namespace Dev2.Data.Tests.Operations
         }
 
         [TestMethod]
+        public void Format_Given_NegativeNumberWithDecimalsAndNoneRoundingType_ShouldNotRoundDown()
+        {
+            var formatNumberTO = new FormatNumberTO();
+            Assert.IsNotNull(formatNumberTO);
+            formatNumberTO = new FormatNumberTO("123.12345", "None", 2, false, 0);
+            Dev2NumberFormatter dev2NumberFormatter = new Dev2NumberFormatter();
+            string actual = dev2NumberFormatter.Format(formatNumberTO);
+            const double expectedDouble = 123.12345d;
+            string expected = expectedDouble.ToString(CultureInfo.InvariantCulture);
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
         public void Format_Given_NegativeNumberWithDecimalsThatShouldRoundDown_Where_RoundingTypeIsNormalWithDecimalPlaces_Expected_RoundedDown()
         {
             FormatNumberTO formatNumberTO = new FormatNumberTO("-123.12345", enRoundingType.Normal, 2, false, 0);

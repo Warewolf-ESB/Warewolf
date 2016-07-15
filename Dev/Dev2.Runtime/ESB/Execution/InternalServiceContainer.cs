@@ -19,6 +19,7 @@ using Dev2.DataList.Contract;
 using Dev2.DynamicServices.Objects;
 using Dev2.Interfaces;
 using Dev2.Runtime.ESB.Management;
+using Dev2.Runtime.Interfaces;
 using Dev2.Workspaces;
 using Warewolf.Resource.Errors;
 
@@ -29,8 +30,9 @@ namespace Dev2.Runtime.ESB.Execution
     /// </summary>
     public class InternalServiceContainer : EsbExecutionContainer
     {
-
-        public InternalServiceContainer(ServiceAction sa, IDSFDataObject dataObj, IWorkspace theWorkspace, IEsbChannel esbChannel, EsbExecuteRequest request)
+        private readonly IEsbManagementServiceLocator _managementServiceLocator;
+        
+        public InternalServiceContainer(ServiceAction sa, IDSFDataObject dataObj, IWorkspace theWorkspace, IEsbChannel esbChannel, EsbExecuteRequest request, IEsbManagementServiceLocator managementServiceLocator = null)
             : base(sa, dataObj, theWorkspace, esbChannel, request)
         {
             var dataListTO = new DataListTO(sa.DataListSpecification.ToString());
@@ -39,7 +41,7 @@ namespace Dev2.Runtime.ESB.Execution
                 request.Args = new Dictionary<string, StringBuilder>();
                 foreach(var input in dataListTO.Inputs)
                 {
-                    var warewolfEvalResult = dataObj.Environment.Eval(DataListUtil.AddBracketsToValueIfNotExist(input),0,false);
+                    var warewolfEvalResult = dataObj.Environment.Eval(DataListUtil.AddBracketsToValueIfNotExist(input),0);
                     if(warewolfEvalResult.IsWarewolfAtomResult)
                     {
                         var scalarResult = warewolfEvalResult as CommonFunctions.WarewolfEvalResult.WarewolfAtomResult;
@@ -50,6 +52,8 @@ namespace Dev2.Runtime.ESB.Execution
                     }
                 }
             }
+
+            _managementServiceLocator = managementServiceLocator ?? new EsbManagementServiceLocator();
         }
 
         public override Guid Execute(out ErrorResultTO errors, int update)
@@ -60,8 +64,7 @@ namespace Dev2.Runtime.ESB.Execution
 
             try
             {
-                EsbManagementServiceLocator emsl = new EsbManagementServiceLocator();
-                IEsbManagementEndpoint eme = emsl.LocateManagementService(ServiceAction.Name);
+                IEsbManagementEndpoint eme = _managementServiceLocator.LocateManagementService(ServiceAction.Name);
 
                 if(eme != null)
                 {
@@ -90,6 +93,8 @@ namespace Dev2.Runtime.ESB.Execution
 
             return result;
         }
+
+        
 
         public override IDSFDataObject Execute(IDSFDataObject inputs, IDev2Activity activity)
         {

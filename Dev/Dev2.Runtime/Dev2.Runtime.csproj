@@ -120,6 +120,7 @@
     <Compile Include="ESB\Control\EsbServiceInvoker.cs" />
     <Compile Include="ESB\Control\IEnvironmentOutputMappingManager.cs" />
     <Compile Include="ESB\Control\IEsbServiceInvoker.cs" />
+    <Compile Include="ESB\Control\IServiceLocator.cs" />
     <Compile Include="ESB\Control\ServiceLocator.cs" />
     <Compile Include="ESB\Execution\DatabaseServiceContainer.cs" />
     <Compile Include="ESB\Execution\EsbExecutionContainer.cs" />
@@ -132,7 +133,6 @@
     <Compile Include="ESB\Execution\WfExecutionContainer.cs" />
     <Compile Include="ESB\WF\WFApplicationUtils.cs" />
     <Compile Include="ESB\Control\EsbServicesEndpoint.cs" />
-    <Compile Include="TO\ServiceHydrationTO.cs" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.0">
@@ -186,10 +186,6 @@
       <Project>{52f26184-cb50-4d82-b8a2-83f73d2b5011}</Project>
       <Name>Dev2.Instrumentation</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Dev2.Network\Dev2.Network.csproj">
-      <Project>{14f1e4aa-b9a8-45dd-af2a-059eff29201b}</Project>
-      <Name>Dev2.Network</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Dev2.Common\Dev2.Common.csproj">
       <Project>{84405fdf-0ff8-49a2-8925-8a4aeba8104a}</Project>
       <Name>Dev2.Common</Name>
@@ -223,7 +219,9 @@
       <Name>WarewolfParserInterop</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="TO\" />
+  </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />

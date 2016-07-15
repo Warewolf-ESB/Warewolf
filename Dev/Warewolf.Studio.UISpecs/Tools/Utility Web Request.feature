@@ -10,5 +10,5 @@ Scenario: Drag toolbox Web_Request onto a new workflow
 
 #@NeedsWeb_RequestToolSmallViewOnTheDesignSurface
 #Scenario: Double Clicking Web_Request Tool Small View on the Design Surface Opens Large View
-	When I "Open_Web_Request_Tool_Large_View"
+	When I "Open_WebRequest_LargeView"
 	Then I "Assert_Web_Request_Large_View_Exists_OnDesignSurface"

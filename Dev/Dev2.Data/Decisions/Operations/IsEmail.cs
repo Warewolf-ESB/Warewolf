@@ -13,7 +13,7 @@ using Dev2.Common.ExtMethods;
 
 namespace Dev2.Data.Decisions.Operations
 {
-    class IsEmail : IDecisionOperation
+   public class IsEmail : IDecisionOperation
     {
         public Enum HandlesType()
         {

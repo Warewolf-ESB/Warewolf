@@ -2,7 +2,8 @@
 	In order to share settings
 	I want to save my Email source Settings
 	So that I can reuse them
-
+	
+@ignore
 @EmailSource
 Scenario: Creating New Email Source Opened
 	Given I have New Email Source tab opened
@@ -15,8 +16,8 @@ Scenario: Creating New Email Source Opened
 	And "Test Connection" is "Disabled"
 	And Save Email Source is "Disabled"
 	And cancel is "Enabled"
-
-
+	
+@ignore
 Scenario: Creating Email Source with valid credentials
 	Given I have New Email Source tab opened
 	And "Host Textbox" is focussed 
@@ -43,8 +44,8 @@ Scenario: Creating Email Source with valid credentials
 	And cancel is "Disabled"
 	When Test Connecton is "Successful"
 	Then Save Email Source is "Enabled"
-
-
+		
+@ignore
 Scenario: Not allowing to save email source with test connection is unsuccessful
 	Given I have New Email Source tab opened
 	And "Host Textbox" is focussed 

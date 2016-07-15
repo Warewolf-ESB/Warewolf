@@ -139,6 +139,7 @@
     <Compile Include="PathOperations\Enums\ReadTypes.cs" />
     <Compile Include="PathOperations\Extension\PathExtensions.cs" />
     <Compile Include="PathOperations\Interfaces\IDestinationUserNamePassword.cs" />
+    <Compile Include="PathOperations\TO\Dev2PutOperationTOFactory.cs" />
     <Compile Include="PulseLogger.cs" />
     <Compile Include="RecordSet.cs" />
     <Compile Include="ReverseIndexIterator.cs" />
@@ -337,10 +338,6 @@
     <ProjectReference Include="..\Dev2.Instrumentation\Dev2.Instrumentation.csproj">
       <Project>{52F26184-CB50-4D82-B8A2-83F73D2B5011}</Project>
       <Name>Dev2.Instrumentation</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Dev2.Network\Dev2.Network.csproj">
-      <Project>{14f1e4aa-b9a8-45dd-af2a-059eff29201b}</Project>
-      <Name>Dev2.Network</Name>
     </ProjectReference>
     <ProjectReference Include="..\Dev2.Common\Dev2.Common.csproj">
       <Project>{84405fdf-0ff8-49a2-8925-8a4aeba8104a}</Project>

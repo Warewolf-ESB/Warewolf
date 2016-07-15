@@ -106,11 +106,6 @@ namespace Dev2.Activities.SelectAndApply
 
         #endregion Get Debug Inputs/Outputs
 
-        public IDev2IJsonListEvaluator GetDev2IJsonListEvaluator(string json)
-        {
-            return new Dev2IJsonListEvaluator(json);
-        }
-
         protected override void ExecuteTool(IDSFDataObject dataObject, int update)
         {
 
