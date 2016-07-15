@@ -149,9 +149,9 @@ namespace Warewolf.Studio.Views
             {
                 var items = menuTree.ItemsSource;
             }
-            selectNode(ExplorerTree.Nodes, "KEYTOSELECT");
+            SelectNode(ExplorerTree.Nodes, "KEYTOSELECT");
         }
-        void selectNode(XamDataTreeNodesCollection nodes, string nodeKey)
+        void SelectNode(XamDataTreeNodesCollection nodes, string nodeKey)
         {
             
         }
