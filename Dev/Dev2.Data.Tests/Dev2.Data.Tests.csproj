@@ -145,6 +145,8 @@
     <Compile Include="DecisionsTests\NotStartsWithTests.cs" />
     <Compile Include="Dev2ColumnTests.cs" />
     <Compile Include="EnumTests\enTypeOfSystemInformationTests.cs" />
+    <Compile Include="EnvironmentIndexIteratorTests.cs" />
+    <Compile Include="IndexListIndexIteratorTests.cs" />
     <Compile Include="ServiceModel\SharePointSourceTests.cs" />
     <Compile Include="ServiceModel\RabbitMQSourceTests.cs" />
     <Compile Include="ServiceModel\OauthSourceTests.cs" />
@@ -178,6 +180,7 @@
     <Compile Include="TO\CompileMessageTOTests.cs" />
     <Compile Include="UtilTests\CommonDataUtilTests.cs" />
     <Compile Include="TranslationConstantsTest.cs" />
+    <Compile Include="WarewolfIteratorTests.cs" />
     <Compile Include="WarewolfListIteratorTests.cs" />
     <Compile Include="XmlHelperTest.cs" />
     <Compile Include="ExtensionClassesTests.cs" />
@@ -227,6 +230,10 @@
     <ProjectReference Include="..\WarewolfLanguageParser\WarewolfLanguageParser.fsproj">
       <Project>{e0f7c709-a61b-4829-a659-d7780052326a}</Project>
       <Name>WarewolfLanguageParser</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WarewolfParserInterop\WarewolfParserInterop.csproj">
+      <Project>{6EB59EEE-4E16-4F29-B1B0-715E56E9139D}</Project>
+      <Name>WarewolfParserInterop</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
