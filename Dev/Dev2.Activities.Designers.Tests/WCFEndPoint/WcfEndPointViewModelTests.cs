@@ -229,7 +229,10 @@ namespace Dev2.Activities.Designers.Tests.WCFEndPoint
             model.TestProcedure();
 
             Assert.IsNotNull(model.IsWorstErrorReadOnly);
-
+            Assert.AreEqual("test", model.ActionRegion.SelectedAction.FullName);
+            Assert.AreEqual("test", model.ActionRegion.SelectedAction.Method);
+            Assert.AreEqual(typeof(string), model.ActionRegion.SelectedAction.ReturnType);
+            Assert.AreEqual(0, model.ActionRegion.SelectedAction.Variables.Count);
         }
     }
 }
