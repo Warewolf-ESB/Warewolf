@@ -275,20 +275,18 @@ namespace Dev2.Activities.Designers2.ODBC
             var service = ToModel();
             if (!string.IsNullOrEmpty(CommandText))
             {
-                if ((CommandText.IndexOf("[[", StringComparison.Ordinal) >= 0 && CommandText.IndexOf("]]", StringComparison.Ordinal) >= 0))
-                {
-                    ErrorMessage(new Exception("Action cannot contain paramenters while generating outputs"), true);
-                }
-                else
-                {
-                    ManageServiceInputViewModel.InputArea.Inputs = service.Inputs;
-                    ManageServiceInputViewModel.Model = service;
+                ServiceInputBuilder builder = new ServiceInputBuilder();
+                var serviceInputs = new List<IServiceInput>();
+                builder.GetValue(CommandText, serviceInputs);
+                service.Inputs = serviceInputs;
+                ManageServiceInputViewModel.InputArea.Inputs = service.Inputs;
+                ManageServiceInputViewModel.Model = service;
 
-                    ManageServiceInputViewModel.OutputCountExpandAllowed = true;
+                ManageServiceInputViewModel.OutputCountExpandAllowed = true;
 
-                    GenerateOutputsVisible = true;
-                    SetDisplayName(OutputDisplayName);
-                }
+                GenerateOutputsVisible = true;
+                SetDisplayName(OutputDisplayName);
+
             }
             else
             {
