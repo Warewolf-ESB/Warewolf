@@ -96,7 +96,8 @@ namespace Dev2.DataList.Contract.Binary_Objects
         /// <param name="columnName">Name of the column.</param>
         /// <param name="columnDesciption">The column desciption.</param>
         /// <param name="isEditable">if set to <c>true</c> [is editable].</param>
-        internal Dev2Column(string columnName, string columnDesciption,bool isEditable) : this(columnName, columnDesciption, isEditable, enDev2ColumnArgumentDirection.None)
+        internal Dev2Column(string columnName, string columnDesciption,bool isEditable) 
+            : this(columnName, columnDesciption, isEditable, enDev2ColumnArgumentDirection.None)
         {
         }
 
