@@ -23,7 +23,7 @@ namespace Warewolf.Studio.UISpecs
         }
 
         [TestMethod]
-        [Ignore]//TODO: Re-intoduce when WOLF-1925 is done
+        [Ignore]//TODO: Re-intoduce before WOLF-1925 can be moved to done
         public void BigRemoteSubworkflowUITest()
         {
             Uimap.Assert_NewWorkFlow_RibbonButton_Exists();
@@ -151,7 +151,7 @@ namespace Warewolf.Studio.UISpecs
             Uimap.Click_Explorer_Refresh_Button();
             Uimap.Assert_Explorer_Localhost_First_Item_Exists();
 
-            /**TODO: Re-introduce these units after bug WOLF-1923 is fixed
+            /**TODO: Re-introduce these units before WOLF-1923 can be moved to done
             //Action Unit: Clicking Debug Button Shows Debug Input Dialog
             //Uimap.Assert_Workflow_Exists_OnDesignSurface();
             Uimap.Click_Debug_Ribbon_Button();
