@@ -26,7 +26,7 @@ namespace Dev2.DataList.Contract
         #endregion
 
         #region Ctor
-        internal InputDefinition(string name, string mapsTo, bool isEvaluated){
+        public InputDefinition(string name, string mapsTo, bool isEvaluated){
             _name = name;
             _mapsTo = mapsTo;
             _startTagSearch = string.Concat("<", mapsTo, ">");

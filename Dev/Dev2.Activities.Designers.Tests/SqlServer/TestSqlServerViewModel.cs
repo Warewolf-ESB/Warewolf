@@ -132,7 +132,7 @@ namespace Dev2.Activities.Designers.Tests.SqlServer
 
             sqlServer.ManageServiceInputViewModel.OkCommand.Execute(null);
 #pragma warning restore 4014
-
+            var hashCode = sqlServer.SourceRegion.SelectedSource.GetHashCode();
             //------------Assert Results-------------------------
             Assert.IsTrue(sqlServer.SourceRegion.IsEnabled);
             Assert.IsTrue(sqlServer.OutputsRegion.IsEnabled);
@@ -140,6 +140,8 @@ namespace Dev2.Activities.Designers.Tests.SqlServer
             Assert.IsTrue(sqlServer.ErrorRegion.IsEnabled);
             Assert.IsFalse(sqlServer.ManageServiceInputViewModel.InputArea.IsEnabled);
             Assert.AreEqual(0, sqlServer.ManageServiceInputViewModel.Errors.Count);
+            Assert.AreEqual("j_bravo", sqlServer.SourceRegion.SelectedSource.ToString());
+            Assert.AreEqual(hashCode, sqlServer.SourceRegion.SelectedSource.GetHashCode());
         }
 
         [TestMethod]

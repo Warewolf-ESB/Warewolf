@@ -122,12 +122,21 @@ namespace Dev2.Activities.Designers.Tests.WebGetTool
             var webget = new WebServiceGetViewModel(ModelItemUtils.CreateModelItem(act), mod);
             webget.ManageServiceInputViewModel = new InputViewForTest(webget, mod);
             webget.SourceRegion.SelectedSource = webget.SourceRegion.Sources.First();
+            webget.SourceRegion.SelectedSource.AuthenticationType = AuthenticationType.Public;
+            webget.SourceRegion.SelectedSource.UserName = "";
+            webget.SourceRegion.SelectedSource.Password = "";
+            webget.SourceRegion.SelectedSource.Path = "";
             //------------Execute Test---------------------------
+            var hashCode = webget.SourceRegion.SelectedSource.GetHashCode();
             Assert.IsTrue(webget.SourceRegion.IsEnabled);
             Assert.IsFalse(webget.OutputsRegion.IsEnabled);
             Assert.IsTrue(webget.InputArea.IsEnabled);
             Assert.IsTrue(webget.ErrorRegion.IsEnabled);
-
+            Assert.AreEqual("", webget.SourceRegion.SelectedSource.UserName);
+            Assert.AreEqual("", webget.SourceRegion.SelectedSource.Password);
+            Assert.AreEqual(AuthenticationType.Public, webget.SourceRegion.SelectedSource.AuthenticationType);
+            Assert.AreEqual("", webget.SourceRegion.SelectedSource.Path);
+            Assert.AreEqual(hashCode, webget.SourceRegion.SelectedSource.GetHashCode());
             //------------Assert Results-------------------------
         }
 
