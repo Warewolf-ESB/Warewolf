@@ -69,27 +69,7 @@ namespace Dev2.Activities.Designers.Tests.Core.Database
             Assert.IsTrue(called);
             Assert.IsTrue(calledOk);
         }
-
-        [TestMethod]
-        [Owner("Leon Rajindrapersadh")]
-        [TestCategory("Webget_MethodName")]
-        public void ManageDatabaseServiceInputViewModel_TestActionSetSourceAndTest()
-        {
-            //------------Setup for test--------------------------
-            var mod = new SqlServerModel();
-
-            var act = new DsfSqlServerDatabaseActivity();
-
-            var webget = new SqlServerDatabaseDesignerViewModel(ModelItemUtils.CreateModelItem(act), mod);
-            var inputview = new ManageDatabaseServiceInputViewModel(webget, mod);
-            inputview.Model = new DatabaseService();
-            //------------Execute Test---------------------------
-            inputview.ExecuteTest();
-            //------------Assert Results-------------------------
-            Assert.IsTrue(inputview.InputArea.IsEnabled);
-            Assert.IsTrue(inputview.OutputArea.IsEnabled);
-
-        }
+        
 
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
