@@ -26,6 +26,7 @@ using Warewolf.Storage;
 using Oracle.ManagedDataAccess.Client;
 using System.Data.Odbc;
 using Dev2.Common.Interfaces.Data.TO;
+using Dev2.Common.Interfaces.Services.Sql;
 using Dev2.Interfaces;
 using Npgsql;
 using Warewolf.Resource.Errors;
@@ -39,17 +40,20 @@ namespace Dev2.Services.Execution
         public DatabaseServiceExecution(IDSFDataObject dataObj)
             : base(dataObj, true)
         {
+            _sqlServer = new SqlServer();
         }
 
-        private SqlServer SqlServer { get; set; }
+
+
+
+        private IDbServer _sqlServer; 
         public string ProcedureName { private get; set; }
 
         private void SetupSqlServer(IErrorResultTO errors)
         {
             try
             {
-                SqlServer = new SqlServer();
-                var connected = SqlServer.Connect(Source.ConnectionString, CommandType.StoredProcedure, ProcedureName);
+                var connected = _sqlServer.Connect(Source.ConnectionString, CommandType.StoredProcedure, ProcedureName);
                 if (!connected)
                 {
                     Dev2Logger.Error(string.Format(ErrorResource.FailedToConnectWithConnectionString,
@@ -107,12 +111,12 @@ namespace Dev2.Services.Execution
 
         private void DestroySqlServer()
         {
-            if (SqlServer == null)
+            if (_sqlServer == null)
             {
                 return;
             }
-            SqlServer.Dispose();
-            SqlServer = null;
+            _sqlServer.Dispose();
+            _sqlServer = null;
         }
 
         public override void BeforeExecution(ErrorResultTO errors)
@@ -240,13 +244,13 @@ namespace Dev2.Services.Execution
         {
             try
             {
-                if (SqlServer != null)
+                if (_sqlServer != null)
                 {
                     var parameters = GetSqlParameters();
                     if (parameters != null)
                     {
                         // ReSharper disable CoVariantArrayConversion
-                        using (var dataSet = SqlServer.FetchDataTable(parameters.ToArray()))
+                        using (var dataSet = ((SqlServer)_sqlServer).FetchDataTable(parameters.ToArray()))
                         // ReSharper restore CoVariantArrayConversion
                         {
                             TranslateDataTableToEnvironment(dataSet, DataObj.Environment, update);

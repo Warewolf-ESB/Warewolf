@@ -135,14 +135,10 @@
     <Compile Include="Infragistics Prism Region Adapter\TabGroupPaneRegionAdapter.cs" />
     <Compile Include="IWebBrowser.cs" />
     <Compile Include="PopupViewManageEffects.cs" />
-    <Compile Include="Popup\PopupController.cs" />
     <Compile Include="Popup\PopupMessage.cs" />
-    <Compile Include="Popup\PopupMessageBoxFactory.cs" />
-    <Compile Include="Popup\PopupMessages.cs" />
     <Compile Include="..\AssemblyCommonInfo.cs">
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
-    <Compile Include="Popup\WarewolfPopupMessage.cs" />
     <Compile Include="RegionNames.cs" />
     <Compile Include="ResourceTypeToIconConverter.cs" />
     <Compile Include="ResourceTypeToIconVisibility.cs" />

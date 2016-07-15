@@ -15,6 +15,7 @@ namespace Warewolf.Studio.CustomControls
         
     }
 
+    // ReSharper disable once UnusedMember.Global
     public class CustomViewModel : INotifyPropertyChanged
     {
         readonly IEnvironmentModel _environmentModel;

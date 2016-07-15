@@ -23,8 +23,13 @@ namespace Warewolf.Studio.UISpecs
         }
 
         [TestMethod]
+        [Ignore]//Ignored until WOLF-1929
         public void BigWorkflowDesignSurfaceUITest()
         {
+            if (!Uimap.MainStudioWindow.SideMenuBar.CollapsedSideMenu.NewWorkflowIcon.Exists)
+            {
+                Uimap.MainStudioWindow.DrawHighlight();
+            }
             Uimap.Assert_NewWorkFlow_RibbonButton_Exists();
             Uimap.Click_New_Workflow_Ribbon_Button();
             Uimap.Assert_StartNode_Exists();
@@ -94,7 +99,7 @@ namespace Warewolf.Studio.UISpecs
             //UIMap.Assert_SaveDialog_SaveButton_Enabled();
             Uimap.Click_SaveDialog_YesButton();
             Playback.Wait(2000);
-            Uimap.Assert_MessageBox_Does_Not_Exist();
+            Uimap.Assert_SaveDialog_Does_Not_Exist();
 
             //Action Unit: Filtering the explorer tree shows only SomeWorkflow on local server
             Uimap.Enter_SomeWorkflow_Into_Explorer_Filter();
@@ -141,25 +146,9 @@ namespace Warewolf.Studio.UISpecs
         [TestInitialize()]
         public void MyTestInitialize()
         {
-            Playback.PlaybackSettings.WaitForReadyLevel = WaitForReadyLevel.Disabled;
-            Playback.PlaybackSettings.ShouldSearchFailFast = false;
-            Playback.PlaybackSettings.SearchTimeout = 10000;
-            // Ensure the error handler is 
-            Playback.PlaybackError -= Playback_PlaybackError;
-            Playback.PlaybackError += Playback_PlaybackError;
-        }
-
-        /// <summary> PlaybackError event handler. </summary>
-        private static void Playback_PlaybackError(object sender, PlaybackErrorEventArgs e)
-        {
-            Console.WriteLine(e.Error.Message);
-            (sender as UITestControl)?.DrawHighlight();
-
-            // Wait a second
-            System.Threading.Thread.Sleep(1000);
-
-            // Retry the failed test operation
-            e.Result = PlaybackErrorOptions.Retry;
+            Uimap.SetGlobalPlaybackSettings();
+            Uimap.WaitIfStudioDoesNotExist();
+            Console.WriteLine("Test \"" + TestContext.TestName + "\" starting on " + System.Environment.MachineName);
         }
 
         //Use TestCleanup to run code after each test has run
