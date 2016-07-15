@@ -1,9 +1,7 @@
-using System;
 using System.Collections;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Translators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using ServiceStack.Common.Extensions;
 
 // ReSharper disable InconsistentNaming
 namespace Dev2.Data.Tests

@@ -11,6 +11,7 @@
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Microsoft.Win32.TaskScheduler;
+// ReSharper disable InconsistentNaming
 
 namespace Dev2.TaskScheduler.Wrappers.Test
 {
