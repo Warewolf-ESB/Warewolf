@@ -331,10 +331,8 @@
     <Compile Include="Patterns\ISpookyLoadable.cs" />
     <Compile Include="Person.cs" />
     <Compile Include="PluginServiceDefinition.cs" />
-    <Compile Include="PopupController\IDev2MessageBoxViewModel.cs" />
     <Compile Include="PopupController\IMessage.cs" />
     <Compile Include="PopupController\IPopupController.cs" />
-    <Compile Include="PopupController\IPopupMessageBoxFactory.cs" />
     <Compile Include="RabbitMQ\IRabbitMQSourceModel.cs" />
     <Compile Include="Runtime\Configuration\Settings\ILoggingSettings.cs" />
     <Compile Include="Runtime\IExplorerItemFactory.cs" />

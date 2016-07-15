@@ -132,7 +132,7 @@ namespace Warewolf.Studio.ViewModels
                 }
                 else
                 {
-                    if (environmentModel != null && popupController.Show(PopupMessages.GetDeleteConfirmation(explorerItemViewModel.ResourceName)) == MessageBoxResult.Yes)
+                    if (environmentModel != null && popupController.Show(popupController.GetDeleteConfirmation(explorerItemViewModel.ResourceName)) == MessageBoxResult.Yes)
                     {
                         _shellViewModel.CloseResource(explorerItemViewModel.ResourceId, environmentModel.ID);
                         // Remove the item from the parent for studio change to show, then do the delete from the server.
