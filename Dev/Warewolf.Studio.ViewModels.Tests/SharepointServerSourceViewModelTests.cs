@@ -1017,7 +1017,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
             //act
             var value = _target.ToModel();
-
+            var hashcode = value.GetHashCode();
             //assert
             Assert.AreEqual(expectedAuthenticationType, value.AuthenticationType);
             Assert.AreEqual(expectedServer, value.Server);
@@ -1026,6 +1026,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual(expectedUserName, value.UserName);
             Assert.AreEqual(expectedId, value.Id);
             Assert.AreEqual(expectedPath, value.Path);
+            Assert.AreEqual(hashcode, value.GetHashCode());
         }
 
         [TestMethod]
