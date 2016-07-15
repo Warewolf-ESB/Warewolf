@@ -216,6 +216,19 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
+        public void TestIsEmptyServerNameNonEmptyToString()
+        {
+            //arrange
+            _targetAsyncWorker.ServerName = new ComputerName() { Name = "someName" };
+
+            //act
+            
+
+            //assert
+            Assert.AreEqual("someName", _targetAsyncWorker.ServerName.ToString());
+        }
+
+        [TestMethod]
         public void TestIsEmptyAuthenticationTypeNonWindows()
         {
             //arrange
