@@ -66,7 +66,7 @@ namespace Warewolf.Studio.UISpecs
 
         public void WaitIfStudioDoesNotExist()
         {
-            var sleepTimer = 30;
+            var sleepTimer = 60;
             try
             {
                 if (!this.MainStudioWindow.Exists)
@@ -83,7 +83,7 @@ namespace Warewolf.Studio.UISpecs
         private void WaitForStudioStart(int timeout)
         {
             Console.WriteLine("Waiting for studio to start.");
-            Playback.Wait(30000);
+            Playback.Wait(timeout);
             if (!this.MainStudioWindow.Exists)
             {
                 throw new InvalidOperationException("Warewolf studio is not running. You are expected to run \"Dev\\TestScripts\\Studio\\Startup.bat\" as an administrator and wait for it to complete before running any coded UI tests");
