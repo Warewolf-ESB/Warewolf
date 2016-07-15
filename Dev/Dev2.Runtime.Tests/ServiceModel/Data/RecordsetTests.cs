@@ -12,7 +12,6 @@ using System.Collections.Generic;
 using Dev2.Data;
 using Dev2.Runtime.ServiceModel.Data;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Newtonsoft.Json;
 
 namespace Dev2.Tests.Runtime.ServiceModel.Data
 {

@@ -1,10 +1,8 @@
 using System;
 using System.Collections.Generic;
 using Dev2.Data.Binary_Objects;
-using Dev2.Data.Interfaces;
 using Dev2.Data.MathOperations;
 using Dev2.Data.SystemTemplates;
-using Dev2.Data.Tests.MathOperations;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.EqualityComparers;
 using Dev2.Runtime.ServiceModel.Data;
