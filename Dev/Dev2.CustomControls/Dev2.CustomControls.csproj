@@ -90,14 +90,9 @@
     <Compile Include="..\AssemblyCommonInfo.cs">
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
-    <Compile Include="Adorners\DragAdorner.cs" />
-    <Compile Include="Behavior\BindableSelectedItemBehavior.cs" />
-    <Compile Include="Behavior\DataGridColumnSizeSynchronizationBehavior.cs" />
     <Compile Include="Behavior\DataGridWatermarkModifier.cs" />
     <Compile Include="Behavior\ThumbResizeBehavior.cs" />
-    <Compile Include="Behavior\VisibilityChangedToFocusBehavior.cs" />
     <Compile Include="Controls\SimpleGridSplitter.cs" />
-    <Compile Include="Controls\TreeViewCustom.cs" />
     <Compile Include="Converters\BoolToStringConvert.cs" />
     <Compile Include="Converters\EmptyStringToBoolConverter.cs" />
     <Compile Include="Converters\EmptyStringToVisibilityConverter.cs" />
@@ -112,13 +107,6 @@
       <DependentUpon>CircularProgressBar.xaml</DependentUpon>
     </Compile>
     <Compile Include="Behavior\ActualSizeBindingBehavior.cs" />
-    <Compile Include="Controls\CenteredContentControl.cs" />
-    <Compile Include="Controls\RoutedDataTemplateSelector.cs" />
-    <Compile Include="Controls\SlidingListBox.cs" />
-    <Compile Include="Controls\SmartTextBox.cs" />
-    <Compile Include="Controls\Utilities\MouseUtilities.cs" />
-    <Compile Include="Controls\Validation\RegexValidationRule.cs" />
-    <Compile Include="Controls\Validation\RegexValidator.cs" />
     <Compile Include="Converters\DoubleToMarginLeftConverter.cs" />
     <Compile Include="Converters\FilterStringToBoolConvert.cs" />
     <Compile Include="Converters\GridLengthConverter.cs" />
@@ -146,8 +134,6 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Compile Include="ServiceProviders\UI\ListViewDragDropManager.cs" />
-    <Compile Include="ServiceProviders\UI\UnloadedManager.cs" />
     <Compile Include="Trigger\FocusContentTrigger.cs" />
     <Compile Include="Trigger\KeyPressedTrigger.cs" />
     <Compile Include="Trigger\DelayTextChangedEventTrigger.cs" />

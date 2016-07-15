@@ -5,7 +5,7 @@ using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Common.Interfaces.Versioning;
 using Dev2.Studio.Core.Interfaces;
-using Warewolf.Studio.Core.Popup;
+
 // ReSharper disable NonLocalizedString
 
 namespace Warewolf.Studio.ViewModels
