@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using Dev2.Data;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
