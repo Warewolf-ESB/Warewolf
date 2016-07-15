@@ -16,7 +16,6 @@ using Caliburn.Micro;
 using Dev2.Services.Events;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Helpers;
-using Dev2.Studio.Core.Messages;
 using Dev2.Studio.ViewModels.WorkSurface;
 using Dev2.Studio.Views.Help;
 using Dev2.ViewModels.Help;
