@@ -27,23 +27,23 @@ namespace Dev2.Runtime.ServiceModel
             switch (dbSourceDetails.ServerType)
             {
                 case enSourceType.SqlDatabase:
-                    var broker = CreateDatabaseBroker(dbSourceDetails.ServerType);
+                    var broker = CreateDatabaseBroker();
                     result.DatabaseList = broker.GetDatabases(dbSourceDetails);
                     break;
                 case enSourceType.MySqlDatabase:
-                    var mybroker = CreateMySqlDatabaseBroker(dbSourceDetails.ServerType);
+                    var mybroker = CreateMySqlDatabaseBroker();
                     result.DatabaseList = mybroker.GetDatabases(dbSourceDetails);
                     break;
                 case enSourceType.Oracle:
-                    var obroker = CreateOracleDatabaseBroker(dbSourceDetails.ServerType);
+                    var obroker = CreateOracleDatabaseBroker();
                     result.DatabaseList = obroker.GetDatabases(dbSourceDetails);
                     break;
                 case enSourceType.ODBC:
-                    var odbcbroker = CreateODBCDatabaseBroker(dbSourceDetails.ServerType);
+                    var odbcbroker = CreateODBCDatabaseBroker();
                     result.DatabaseList = odbcbroker.GetDatabases(dbSourceDetails);
                     break;
                 case enSourceType.PostgreSql:
-                    var postgreBroker = CreatePostgreDatabaseBroker(dbSourceDetails.ServerType);
+                    var postgreBroker = CreatePostgreDatabaseBroker();
                     result.DatabaseList = postgreBroker.GetDatabases(dbSourceDetails);
                     break;
                 default:
@@ -55,24 +55,24 @@ namespace Dev2.Runtime.ServiceModel
 
         #endregion
 
-        protected virtual SqlDatabaseBroker CreateDatabaseBroker(enSourceType type)
+        protected SqlDatabaseBroker CreateDatabaseBroker()
         {
             return new SqlDatabaseBroker();
         }
-        protected virtual MySqlDatabaseBroker CreateMySqlDatabaseBroker(enSourceType type)
+        protected MySqlDatabaseBroker CreateMySqlDatabaseBroker()
         {
             return new MySqlDatabaseBroker();
         }
-        protected virtual OracleDatabaseBroker CreateOracleDatabaseBroker(enSourceType type)
+        protected OracleDatabaseBroker CreateOracleDatabaseBroker()
         {
             return new OracleDatabaseBroker();
         }
-        protected virtual ODBCDatabaseBroker CreateODBCDatabaseBroker(enSourceType type)
+        protected ODBCDatabaseBroker CreateODBCDatabaseBroker()
         {
             return new ODBCDatabaseBroker();
         }
 
-        protected virtual PostgreSqlDataBaseBroker CreatePostgreDatabaseBroker(enSourceType type)
+        protected PostgreSqlDataBaseBroker CreatePostgreDatabaseBroker()
         {
             return new PostgreSqlDataBaseBroker();
         }
