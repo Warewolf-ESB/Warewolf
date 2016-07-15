@@ -13,18 +13,24 @@ using Keyboard = Microsoft.VisualStudio.TestTools.UITesting.Keyboard;
 namespace Warewolf.UITests.Tools
 {
     [CodedUITest]
-    public class ToolName
+    public class SMTP_Send
     {
         [TestMethod]
         public void ToolNameToolUITest()
         {
-			//Scenario: Dragging tool onto design surface creates small view
-			//Scenario: Double clicking small view opens large view
-			//Scenario: Enter values into large view
-			//Scenario: Clicking the Done button passes validation and all variables are in the variable list
-			//Scenario: Clicking QVI button opens QVI
-			//Scenario: Clicking debug button shows debug input dialog
-			//Scenario: Clicking debug button in debug input dialog generates the proper debug output
+            //Scenario: Dragging tool onto design surface creates small view
+            Uimap.Drag_Toolbox_SMTP_Email_Onto_DesignSurface();
+            Uimap.Assert_SMTP_Email_Exists_OnDesignSurface();
+
+            //Scenario: Double clicking small view opens large view
+            Uimap.Open_SMTP_Email_Tool_Large_View();
+            Uimap.Assert_SMTP_Email_Large_View_Exists_OnDesignSurface();
+
+            //Scenario: Enter values into large view
+            //Scenario: Clicking the Done button passes validation and all variables are in the variable list
+            //Scenario: Clicking QVI button opens QVI
+            //Scenario: Clicking debug button shows debug input dialog
+            //Scenario: Clicking debug button in debug input dialog generates the proper debug output
         }
 
         #region Additional test attributes

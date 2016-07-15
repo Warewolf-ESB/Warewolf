@@ -41,7 +41,7 @@ namespace Warewolf.UITests.Tools.Data
             Uimap.Assert_Assign_Large_View_Exists_OnDesignSurface();
             Uimap.Assert_Assign_Large_View_Row1_Variable_Textbox_Exists();
 
-            //Action Unit: Enter Text into Multi Assign Tool Small View Grid Column 1 Row 1 Textbox has text in text property
+            //Action Unit: Enter Text into Multi Assign Tool Large View Grid Column 1 Row 1 Textbox has text in text property
             //UIMap.Assert_Assign_Large_View_Exists_OnDesignSurface();
             //Uimap.Assert_Assign_Large_View_Row1_Variable_Textbox_Exists();
             Uimap.Enter_Text_Into_Assign_Large_View_Row1_Variable_Textbox_As_SomeVariable();
