@@ -20,7 +20,7 @@ namespace Warewolf.Studio.Views
             InitializeComponent();
         }
 
-        public void EnterServerName(string serverName, bool add = false)
+        private void EnterServerName(string serverName)
         {
             ServerTextBox.Text = serverName;
         }
@@ -28,10 +28,7 @@ namespace Warewolf.Studio.Views
         public Visibility GetDatabaseDropDownVisibility()
         {
             BindingExpression be = DatabaseComboxContainer.GetBindingExpression(VisibilityProperty);
-            if (be != null)
-            {
-                be.UpdateTarget();
-            }
+            be?.UpdateTarget();
             return DatabaseComboxContainer.Visibility;
         }
 
@@ -96,32 +93,17 @@ namespace Warewolf.Studio.Views
             }
         }
 
-        public bool GetAuthenticationEnabledState(AuthenticationType authenticationType)
-        {
-            if (authenticationType == AuthenticationType.Windows)
-            {
-                return WindowsRadioButton.IsChecked != null && (bool) WindowsRadioButton.IsChecked;
-            }
-            return UserRadioButton.IsChecked != null && (bool) UserRadioButton.IsChecked;
-        }
-
         public Visibility GetUsernameVisibility()
         {
             BindingExpression be = UserNamePasswordContainer.GetBindingExpression(VisibilityProperty);
-            if (be != null)
-            {
-                be.UpdateTarget();
-            }
+            be?.UpdateTarget();
             return UserNamePasswordContainer.Visibility;
         }
 
         public Visibility GetPasswordVisibility()
         {
             BindingExpression be = UserNamePasswordContainer.GetBindingExpression(VisibilityProperty);
-            if (be != null)
-            {
-                be.UpdateTarget();
-            }
+            be?.UpdateTarget();
             return UserNamePasswordContainer.Visibility;
         }
 
@@ -133,10 +115,7 @@ namespace Warewolf.Studio.Views
         public void PerformSave()
         {
             var viewModel = DataContext as ManageDatabaseSourceViewModel;
-            if (viewModel != null)
-            {
-                viewModel.OkCommand.Execute(null);
-            }
+            viewModel?.OkCommand.Execute(null);
         }
 
         public void EnterUserName(string userName)
@@ -199,11 +178,6 @@ namespace Warewolf.Studio.Views
         public object GetPassword()
         {
             return PasswordTextBox.Password;
-        }
-
-        public void Cancel()
-        {
-
         }
 
         public string GetHeader()
