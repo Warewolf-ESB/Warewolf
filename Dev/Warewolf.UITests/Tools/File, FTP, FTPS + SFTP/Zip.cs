@@ -19,13 +19,13 @@ namespace Warewolf.UITests.Tools
         public void ZipToolUITest()
         {
             //Scenario: Drag toolbox Zip onto a new workflow
-            Uimap.Drag_Toolbox_Zip_Onto_DesignSurface():
-            Uimap.Assert_Zip_Exists_OnDesignSurface():
+            Uimap.Drag_Toolbox_Zip_Onto_DesignSurface();
+            Uimap.Assert_Zip_Exists_OnDesignSurface();
 
             //@NeedsZipToolSmallViewOnTheDesignSurface
             //Scenario: Double Clicking Zip Tool Small View on the Design Surface Opens Large View
-            Uimap.Open_Zip_Tool_Large_View():
-            Uimap.Assert_Zip_Large_View_Exists_OnDesignSurface():
+            Uimap.Open_Zip_Tool_Large_View();
+            Uimap.Assert_Zip_Large_View_Exists_OnDesignSurface();
         }
 
         #region Additional test attributes
