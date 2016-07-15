@@ -23,15 +23,12 @@ namespace Dev2.CustomControls.Converters
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             var row = value as ModelItem;
+            var collection = row?.Parent as ModelItemCollection;
             if (row != null)
             {
-                var collection = row.Parent as ModelItemCollection;
-                if (row != null)
+                if (collection != null)
                 {
-                    if (collection != null)
-                    {
-                        return collection.IndexOf(row) + 1;
-                    }
+                    return collection.IndexOf(row) + 1;
                 }
             }
             return -1;

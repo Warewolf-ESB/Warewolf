@@ -9,7 +9,6 @@
 */
 
 using System;
-using System.DirectoryServices.ActiveDirectory;
 using System.Reflection;
 using Dev2.Services.Security.MoqInstallerActions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -141,38 +140,7 @@ namespace Dev2.Infrastructure.Tests.MoqInstallerActions
             //------------Execute Test---------------------------
             warewolfGroupOps.AddAdministratorsGroupToWarewolf();
         }
-
-        [TestMethod]
-        [Owner("Travis Frisinger")]
-        [TestCategory("WarewolfSecurityOperations_DeleteGroup")]
-        public void WarewolfSecurityOperations_AddDomainUserToWarewolfGroup_WhenUserNotPresent_ExpectUserAdded()
-        {
-            //------------Setup for test--------------------------
-	        var inDomain = true;
-	        try
-	        {
-	            Domain.GetComputerDomain();
-	        }
-	        catch (ActiveDirectoryObjectNotFoundException)
-	        {
-	            inDomain = false;
-	        }
-            var warewolfGroupOps = MoqInstallerActionFactory.CreateSecurityOperationsObject();
-            warewolfGroupOps.DeleteWarewolfGroup();
-            warewolfGroupOps.AddWarewolfGroup();
-            var myPc = Environment.MachineName;
-            var user = (inDomain?"Dev2\\":string.Empty)+Environment.UserName;
-
-            var userStr = warewolfGroupOps.FormatUserForInsert(user, myPc);
-
-            //------------Execute Test---------------------------
-            warewolfGroupOps.AddUserToWarewolf(userStr);
-            var result = warewolfGroupOps.IsUserInGroup(user);
-
-            //------------Assert Results-------------------------
-            Assert.IsTrue(result);
-        }
-
+        
         [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("WarewolfSecurityOperations_DeleteGroup")]
