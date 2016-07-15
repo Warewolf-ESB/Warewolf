@@ -19,7 +19,6 @@ using Moq;
 using TechTalk.SpecFlow;
 using Warewolf.AcceptanceTesting.Core;
 using Warewolf.Studio.Core;
-using Warewolf.Studio.Core.Popup;
 using Warewolf.Studio.ViewModels;
 using Warewolf.Studio.Views;
 using Warewolf.Testing;

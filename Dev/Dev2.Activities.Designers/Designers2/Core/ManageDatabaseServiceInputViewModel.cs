@@ -7,6 +7,7 @@ using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using System.Windows.Media;
 using Dev2.Common.Interfaces;
+using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Core.Graph;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.ToolBase;
@@ -137,7 +138,7 @@ namespace Dev2.Activities.Designers2.Core
                     _viewmodel.OutputsRegion.RecordsetName = String.Empty;
                     throw new Exception("Invalid table returned. Please check parameter or stored procedure.");
                 }
-                var recordsetName = Model.Action.Name.Replace(".", "_");
+                var recordsetName = string.IsNullOrEmpty(testResults.TableName) ? Model.Action.Name.Replace(".", "_") : testResults.TableName;
                 _viewmodel.OutputsRegion.RecordsetName = recordsetName;
                 for (int i = 0; i < testResults.Columns.Count; i++)
                 {
@@ -160,6 +161,10 @@ namespace Dev2.Activities.Designers2.Core
             try
             {
                 TestResults = _serverModel.TestService(Model);
+                if (Model.Source.Type == enSourceType.ODBC)
+                {
+                    TestResults.TableName = @"Unnamed";
+                }
                 if (TestResults != null)
                 {
                     if (TestResults.Columns.Count < 1)
