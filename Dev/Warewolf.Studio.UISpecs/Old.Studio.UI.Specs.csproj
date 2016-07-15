@@ -64,9 +64,8 @@
     <Compile Include="..\AssemblyCommonInfo.cs">
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
-    <Compile Include="RemoteSubworkflow.cs" />
+    <Compile Include="Action Steps.cs" />
     <Compile Include="SettingsResourcePermissionsPerRowCellActions.cs" />
-    <Compile Include="WorkflowDesignSurface.cs" />
     <Compile Include="StudioUISpecs.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

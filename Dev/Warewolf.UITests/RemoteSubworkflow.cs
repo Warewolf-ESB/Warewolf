@@ -10,7 +10,7 @@ using Microsoft.VisualStudio.TestTools.UITest.Extension;
 using Keyboard = Microsoft.VisualStudio.TestTools.UITesting.Keyboard;
 
 
-namespace Warewolf.Studio.UISpecs
+namespace Warewolf.UITests
 {
     /// <summary>
     /// Summary description for RemoteServer
@@ -217,7 +217,7 @@ namespace Warewolf.Studio.UISpecs
             Uimap.Assert_Settings_SecurityTab_Resource_Permissions_Row1_Exists();
 
             //Action Unit: Clicking the add resource button shows resource picker
-            Mouse.Click(SettingsResourcePermissionsPerRowCellActions.FindAddResourceButton(Uimap.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1));
+            Mouse.Click(Uimap.FindAddResourceButton(Uimap.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1));
             Uimap.Assert_Service_Picker_Dialog_Exists();
 
             //Action Unit: Selecting RemoteServerUITestWorkflow enabled the OK button
@@ -230,7 +230,7 @@ namespace Warewolf.Studio.UISpecs
             Uimap.Assert_Service_Picker_Dialog_Does_Not_Exist();
 
             //Action Unit: Clicking the add windows group button shows windows group dialog
-            Mouse.Click(SettingsResourcePermissionsPerRowCellActions.FindAddWindowsGroupButton(Uimap.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1));
+            Mouse.Click(Uimap.FindAddWindowsGroupButton(Uimap.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1));
             Uimap.Assert_Select_Windows_Group_Dialog_Exists();
             Uimap.Assert_Select_Windows_Group_Dialog_Object_Name_Textbox_Exists();
 
