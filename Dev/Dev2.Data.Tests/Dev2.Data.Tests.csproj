@@ -150,6 +150,7 @@
     <Compile Include="EnumTests\enTypeOfSystemInformationTests.cs" />
     <Compile Include="EnvironmentIndexIteratorTests.cs" />
     <Compile Include="IndexListIndexIteratorTests.cs" />
+    <Compile Include="PulseTrackerTests.cs" />
     <Compile Include="ServiceModel\SharePointSourceTests.cs" />
     <Compile Include="ServiceModel\RabbitMQSourceTests.cs" />
     <Compile Include="ServiceModel\OauthSourceTests.cs" />
