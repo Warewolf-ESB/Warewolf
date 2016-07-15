@@ -28,23 +28,21 @@ namespace Warewolf.Studio.Views
             XamRichTextEditor.CaretColor = colorInfo;
         }
 
-        public void HideScriptErrors(WebBrowser wb, bool Hide)
+        private void HideScriptErrors(WebBrowser wb, bool hide)
         {
             FieldInfo fiComWebBrowser = typeof(WebBrowser)
                 .GetField("_axIWebBrowser2",
                           BindingFlags.Instance | BindingFlags.NonPublic);
-            if (fiComWebBrowser == null) return;
-            object objComWebBrowser = fiComWebBrowser.GetValue(wb);
-            if (objComWebBrowser == null) return;
-            objComWebBrowser.GetType().InvokeMember(
+            object objComWebBrowser = fiComWebBrowser?.GetValue(wb);
+            objComWebBrowser?.GetType().InvokeMember(
                 "Silent", BindingFlags.SetProperty, null, objComWebBrowser,
-                new object[] { Hide });
+                new object[] { hide });
         }
         void WebBrowserHost_OnLoadCompleted(object sender, NavigationEventArgs e)
         {
             var browser = sender as WebBrowser;
 
-            if (browser == null || browser.Document == null)
+            if (browser?.Document == null)
                 return;
 
             dynamic document = browser.Document;
