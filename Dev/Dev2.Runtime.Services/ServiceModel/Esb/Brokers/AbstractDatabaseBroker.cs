@@ -15,6 +15,7 @@ using System.Data;
 using System.Linq;
 using Dev2.Common.Interfaces.Core.Graph;
 using Dev2.Common.Interfaces.Services.Sql;
+using Dev2.Data.Util;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Services.Sql;
 using Unlimited.Framework.Converters.Graph;
@@ -186,13 +187,14 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
             command.CommandText = serviceMethod.ExecuteAction;
             command.CommandType = serviceMethod.ExecuteAction.Contains("select") ? CommandType.Text : CommandType.StoredProcedure;
 
-            foreach(var methodParameter in serviceMethod.Parameters)
-            {
-                var dataParameter = DataParameterFromMethodParameter(command, methodParameter);
-                command.Parameters.Add(dataParameter);
-            }
+//            foreach(var methodParameter in serviceMethod.Parameters)
+//            {
+//                var dataParameter = DataParameterFromMethodParameter(command, methodParameter);
+//                command.Parameters.Add(dataParameter);
+//            }
 
-
+            var newCommandText = serviceMethod.Parameters.Aggregate(command.CommandText ?? "", (current, parameter) => current.Replace(DataListUtil.AddBracketsToValueIfNotExist(parameter.Name), parameter.Value));
+            command.CommandText = newCommandText;
             return command;
         }
 

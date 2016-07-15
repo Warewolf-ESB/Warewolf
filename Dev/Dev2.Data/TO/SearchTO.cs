@@ -19,7 +19,7 @@ namespace Dev2.DataList.Contract
         /// <summary>
         /// Internal constructor, must be created from the DTOFactory
         /// </summary>
-        internal SearchTO(string fieldsToSearch, string searchType, string searchCriteria, string result)
+        public SearchTO(string fieldsToSearch, string searchType, string searchCriteria, string result)
             : this(fieldsToSearch, searchType, searchCriteria, string.Empty, result,false,string.Empty,string.Empty)
         {
 

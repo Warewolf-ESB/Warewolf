@@ -183,7 +183,7 @@ namespace Dev2.Runtime.ServiceModel
                             ServiceMappingHelper smh = new ServiceMappingHelper();
 
                             smh.MapDbOutputs(outputDescription, ref dbService, addFields);
-
+                            
                             return dbService.Recordset;
                         }
                     case enSourceType.ODBC:
@@ -201,7 +201,7 @@ namespace Dev2.Runtime.ServiceModel
                             ServiceMappingHelper smh = new ServiceMappingHelper();
 
                             smh.MapDbOutputs(outputDescription, ref dbService, addFields);
-
+                            dbService.Recordset.Name = @"Unnamed";
                             return dbService.Recordset;
                         }
                     default: return null;

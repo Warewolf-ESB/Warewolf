@@ -118,8 +118,8 @@ namespace Warewolf.Studio.ViewModels
                 new NameValue { Name = "Microsoft SQL Server", Value = enSourceType.SqlDatabase.ToString() },
                 new NameValue { Name = "MySql Database", Value = enSourceType.MySqlDatabase.ToString() },
                 new NameValue { Name = "PostgreSql Database", Value = enSourceType.PostgreSql.ToString() },
-                new NameValue { Name = "Oracle Database", Value = enSourceType.Oracle.ToString() }
-                //new NameValue { Name = "ODBC Database", Value = enSourceType.ODBC.ToString() }
+                new NameValue { Name = "Oracle Database", Value = enSourceType.Oracle.ToString() },
+                new NameValue { Name = "ODBC Database", Value = enSourceType.ODBC.ToString() }
             };
             ServerType = Types[0];
             _testPassed = false;
