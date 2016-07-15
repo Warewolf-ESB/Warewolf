@@ -13,6 +13,7 @@ using System.Windows;
 using Dev2.Common;
 using Dev2.Common.Interfaces.PopupController;
 using Dev2.Studio.ViewModels.Dialogs;
+using Warewolf.Studio.Core.Popup;
 
 // ReSharper disable CheckNamespace
 namespace Dev2.Studio.Controller
@@ -396,6 +397,35 @@ namespace Dev2.Studio.Controller
             IsError = false;
             IsQuestion = false;
             return Show();
+        }
+
+        #region Implementation of IPopupMessages
+
+        public IPopupMessage GetDeleteConfirmation(string nameOfItemBeingDeleted)
+        {
+            return new PopupMessage
+            {
+                Buttons = MessageBoxButton.YesNo,
+                Header = Warewolf.Studio.Resources.Languages.Core.GenericConfirmation,
+                Description = string.Format(Warewolf.Studio.Resources.Languages.Core.DeleteConfirmation, nameOfItemBeingDeleted),
+                Image = MessageBoxImage.Warning,
+                IsInfo = true,
+                IsError = false,
+                IsQuestion = false
+            };
+        }
+
+        #endregion
+
+        public IPopupMessage GetDuplicateMessage(string name)
+        {
+            return new PopupMessage
+            {
+                Buttons = MessageBoxButton.OK,
+                Header = Warewolf.Studio.Resources.Languages.Core.InvalidPermissionHeader,
+                Description = $"The name {name} already exists. Please choose a different name.",
+
+            };
         }
     }
 }

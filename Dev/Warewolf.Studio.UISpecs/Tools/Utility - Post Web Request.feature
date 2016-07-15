@@ -6,9 +6,9 @@
 @NeedsBlankWorkflow
 Scenario: Drag toolbox Post Web Request Tool onto a new workflow creates Post Web Request tool with large view on the design surface
 	When I "Drag_PostWeb_RequestTool_Onto_DesignSurface"
-	Then I "Assert_PostWeb_RequestTool_Large_View_Exists_OnDesignSurface"
+	Then I "Assert_PostWeb_RequestTool_Small_View_Exists_OnDesignSurface"
 
 #@NeedsPostWebRequestToolLargeViewOnTheDesignSurface
 #Scenario: Double Clicking Post Web Request Tool Large View on the Design Surface Collapses it to Small View
-	When I "Open_PostWeb_RequestTool_small_View"
-	Then I "Assert_PostWeb_RequestTool_Small_View_Exists_OnDesignSurface"
+	When I "Open_PostWeb_RequestTool_Large_View"
+	Then I "Assert_PostWeb_RequestTool_Large_View_Exists_OnDesignSurface"

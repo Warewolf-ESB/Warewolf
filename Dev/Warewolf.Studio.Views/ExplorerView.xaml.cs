@@ -25,7 +25,7 @@ namespace Warewolf.Studio.Views
         private readonly ExplorerViewTestClass _explorerViewTestClass;
         private bool _exceptionThrown;
         private string _errorMessage;
-        private bool _isDropOntoNode;
+        //private bool _isDropOntoNode;
 
         public ExplorerView()
         {

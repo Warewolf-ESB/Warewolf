@@ -39,40 +39,63 @@ namespace Warewolf.Studio.UISpecs
             }
         }
 
-        [BeforeTestRun]
-        public static void WaitForStudioStart()
+        public void SetGlobalPlaybackSettings()
         {
-            Playback.Initialize();
             Playback.PlaybackSettings.WaitForReadyLevel = WaitForReadyLevel.Disabled;
             Playback.PlaybackSettings.ShouldSearchFailFast = false;
-            Playback.PlaybackSettings.SearchTimeout = 10000;
+            Playback.PlaybackSettings.SearchTimeout = 5000;
+            // Ensure the error handler is attached
+            Playback.PlaybackError -= Playback_PlaybackError;
+            Playback.PlaybackError += Playback_PlaybackError;
+        }
 
-            var sleepTimer = 10;
-            while (true)
+        /// <summary> PlaybackError event handler. </summary>
+        private static void Playback_PlaybackError(object sender, PlaybackErrorEventArgs e)
+        {
+            Console.WriteLine("Error from " + sender.GetType() + "\n" + e.Error.Message);
+            if (sender is UITestControl)
             {
-                try
+                (sender as UITestControl).DrawHighlight();
+            }
+            else
+            {
+                Playback.Wait(1000);
+            }
+            e.Result = PlaybackErrorOptions.Retry;
+        }
+
+        public void WaitIfStudioDoesNotExist()
+        {
+            var sleepTimer = 30;
+            try
+            {
+                if (!this.MainStudioWindow.Exists)
                 {
-                    WpfWindow getStudioWindow = new UIMap().MainStudioWindow;
-                    getStudioWindow.WaitForControlExist(100);
-                    if (getStudioWindow.Exists)
-                    {
-                        break;
-                    }
+                    WaitForStudioStart(sleepTimer * 1000);
                 }
-                catch (UITestControlNotFoundException)
-                {
-                    Thread.Sleep(100);
-                }
-                if (sleepTimer-- <= 0)
-                {
-                    throw new InvalidOperationException("Warewolf studio is not running. You are expected to run \"Dev\\TestScripts\\Studio\\Startup.bat\" as an administrator and wait for it to complete before running any coded UI tests");
-                }
+            }
+            catch (UITestControlNotFoundException)
+            {
+                WaitForStudioStart(sleepTimer * 1000);
+            }
+        }
+
+        private void WaitForStudioStart(int timeout)
+        {
+            Console.WriteLine("Waiting for studio to start.");
+            Playback.Wait(30000);
+            if (!this.MainStudioWindow.Exists)
+            {
+                throw new InvalidOperationException("Warewolf studio is not running. You are expected to run \"Dev\\TestScripts\\Studio\\Startup.bat\" as an administrator and wait for it to complete before running any coded UI tests");
             }
         }
 
         [BeforeScenario]
-        public static void LogComputerName()
+        public static void ScenarioInit()
         {
+            var uiMap = new UIMap();
+            uiMap.SetGlobalPlaybackSettings();
+            uiMap.WaitIfStudioDoesNotExist();
             Console.WriteLine("Test \"" + ScenarioContext.Current.ScenarioInfo.Title + "\" starting on " + System.Environment.MachineName);
         }
 

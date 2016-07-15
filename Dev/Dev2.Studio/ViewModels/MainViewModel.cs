@@ -798,7 +798,10 @@ namespace Dev2.Studio.ViewModels
             RefreshActiveEnvironment();
         }
 
-
+        public void BaseDeactivateItem(WorkSurfaceContextViewModel item, bool close)
+        {
+            base.DeactivateItem(item,close);
+        }
         public override void DeactivateItem(WorkSurfaceContextViewModel item, bool close)
         {
             if (item == null)

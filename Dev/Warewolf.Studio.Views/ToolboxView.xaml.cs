@@ -22,8 +22,7 @@ namespace Warewolf.Studio.Views
             if (grid != null && e.LeftButton == MouseButtonState.Pressed)
             {
                 var dataContext = grid.DataContext as ToolDescriptorViewModel;
-                if (dataContext != null &&
-                    dataContext.ActivityType != null)
+                if (dataContext?.ActivityType != null)
                 {
                     DragDrop.DoDragDrop((DependencyObject)e.Source, dataContext.ActivityType, DragDropEffects.Copy);
                 }
@@ -32,8 +31,7 @@ namespace Warewolf.Studio.Views
 
         void UIElement_OnDragEnter(object sender, DragEventArgs e)
         {
-            var Source = e.Source;
-            var originalSource = e.OriginalSource;
+            
         }
     }
 }

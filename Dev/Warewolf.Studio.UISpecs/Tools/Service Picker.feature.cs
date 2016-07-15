@@ -85,7 +85,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 14
  testRunner.When("I \"Click_Service_Picker_Dialog_Cancel\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 15
- testRunner.Then("I \"Assert_Service_Picker_Exists_OnDesignSurface\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("I \"Assert_Service_Picker_Dialog_Does_Not_Exist\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }

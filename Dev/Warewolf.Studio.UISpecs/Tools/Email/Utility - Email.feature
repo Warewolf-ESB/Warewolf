@@ -17,13 +17,13 @@ Scenario: Drag toolbox SMTP Email onto a new workflow
 @NeedsBlankWorkflow
 Scenario: Drag toolbox Exchange Email onto a new workflow
 	When I "Drag_Toolbox_Exchange_Email_Onto_DesignSurface"
-	Then I "Assert_Email_Exists_OnDesignSurface"
+	Then I "Assert_Exchange_Email_Exists_OnDesignSurface"
 
 #@NeedsEmailOnDesignSurface
 #Scenario: Click Nested Workflow Name Opens Nested Workflow Edit Tab
 	#Given I "Assert_Email_Exists_OnDesignSurface"
-	When I "Open_Email_Tool_Large_View"
-	Then I "Assert_Email_Large_View_Exists_OnDesignSurface"
+	When I "Open_Exchange_Email_Tool_Large_View"
+	Then I "Assert_Exchange_Email_Large_View_Exists_OnDesignSurface"
 
 @Email
 @Ignore
