@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Text;
 using Dev2.DataList.Contract;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+// ReSharper disable InconsistentNaming
 
 namespace Dev2.Data.Tests.TO
 {

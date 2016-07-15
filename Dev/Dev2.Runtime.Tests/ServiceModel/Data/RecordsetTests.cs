@@ -8,6 +8,7 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using Dev2.Data;
 using Dev2.Runtime.ServiceModel.Data;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
@@ -70,6 +71,13 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             rs.Fields.Add(new RecordsetField { Name = "MyField", Alias = "MyField" });
             rs.SetValue(0, 0, "MyTestData");
             Assert.AreEqual("MyTestData", rs.Records[0][0].Value);
+        }
+
+        [TestMethod]
+        public void RecordSet_AddColumn_ShouldAddColumnOnTheRecSet()
+        {
+            var recordset = new RecordSet { Name = "MyRec" };
+            Assert.IsNotNull(recordset);
         }
 
         [TestMethod]
