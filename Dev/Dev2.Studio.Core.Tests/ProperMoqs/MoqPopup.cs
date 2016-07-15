@@ -179,5 +179,15 @@ namespace Dev2.Core.Tests.ProperMoqs
         {
             throw new NotImplementedException();
         }
+
+        public IPopupMessage GetDeleteConfirmation(string nameOfItemBeingDeleted)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IPopupMessage GetDuplicateMessage(string name)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
