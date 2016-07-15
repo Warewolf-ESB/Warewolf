@@ -1,4 +1,6 @@
-﻿namespace Warewolf.Studio.UISpecs
+﻿using System.Linq;
+
+namespace Warewolf.UITests
 {
     using Microsoft.VisualStudio.TestTools.UITesting.HtmlControls;
     using Microsoft.VisualStudio.TestTools.UITesting.WinControls;
@@ -17,7 +19,6 @@
     using System.Text.RegularExpressions;
     using System.Reflection;
     using System.Threading;
-    using TechTalk.SpecFlow;
     
     public partial class UIMap
     {
@@ -70,6 +71,56 @@
             {
                 throw new InvalidOperationException("Warewolf studio is not running. You are expected to run \"Dev\\TestScripts\\Studio\\Startup.bat\" as an administrator and wait for it to complete before running any coded UI tests");
             }
+        }
+        
+        public void InitializeABlankWorkflow()
+        {
+            Assert_NewWorkFlow_RibbonButton_Exists();
+            Click_New_Workflow_Ribbon_Button();
+            Assert_StartNode_Exists();
+        }
+        
+        public void CleanupWorkflow()
+        {
+            try
+            {
+                Assert_Close_Tab_Button_Exists();
+                Click_Close_Tab_Button();
+                Click_MessageBox_No();
+            }
+            catch (UITestControlNotFoundException e)
+            {
+                //Test may have crashed before tab is even openned
+            }
+        }
+        public UITestControl FindAddResourceButton(UITestControl row)
+        {
+            var firstOrDefaultCell = row.GetChildren().Where(child => child.ControlType == ControlType.Cell).ElementAtOrDefault(0);
+            return firstOrDefaultCell?.GetChildren().FirstOrDefault(child => child.ControlType == ControlType.Button);
+        }
+
+        public UITestControl FindAddWindowsGroupButton(UITestControl row)
+        {
+            var firstOrDefaultCell = row.GetChildren().Where(child => child.ControlType == ControlType.Cell).ElementAtOrDefault(1);
+            return firstOrDefaultCell?.GetChildren().FirstOrDefault(child => child.ControlType == ControlType.Button);
+        }
+
+        public UITestControl FindViewPermissionsCheckbox(UITestControl row)
+        {
+            var firstOrDefaultCell = row.GetChildren().Where(child => child.ControlType == ControlType.Cell).ElementAtOrDefault(2);
+            return firstOrDefaultCell?.GetChildren().FirstOrDefault(child => child.ControlType == ControlType.CheckBox);
+        }
+
+        public UITestControl FindExecutePermissionsCheckbox(UITestControl row)
+        {
+            var firstOrDefaultCell = row.GetChildren().Where(child => child.ControlType == ControlType.Cell).ElementAtOrDefault(3);
+            return firstOrDefaultCell?.GetChildren().FirstOrDefault(child => child.ControlType == ControlType.CheckBox);
+        }
+
+        public UITestControl FindContributePermissionsCheckbox(UITestControl row)
+        {
+            var firstOrDefaultCell = row.GetChildren().Where(child => child.ControlType == ControlType.Cell).ElementAtOrDefault(4);
+            return firstOrDefaultCell?.GetChildren().FirstOrDefault(child => child.ControlType == ControlType.CheckBox);
         }
     }
 }
