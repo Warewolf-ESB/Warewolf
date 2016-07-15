@@ -31,10 +31,7 @@ namespace Warewolf.Studio.Views
 
             WebBrowserHost.Navigated += (sender, args) =>
             {
-                if (Navigated != null)
-                {
-                    Navigated.Invoke(args.Uri);
-                }
+                Navigated?.Invoke(args.Uri);
             };
         }
 
@@ -45,26 +42,22 @@ namespace Warewolf.Studio.Views
 
         public event Action<Uri> Navigated;
 
-        public ManageOAuthSourceViewModel ViewModel { get; set; }
+        private ManageOAuthSourceViewModel ViewModel { get; set; }
 
-        public void HideScriptErrors(WebBrowser wb, bool Hide)
+        private void HideScriptErrors(WebBrowser wb, bool hide)
         {
             FieldInfo fiComWebBrowser = typeof(WebBrowser).GetField("_axIWebBrowser2", BindingFlags.Instance | BindingFlags.NonPublic);
-            if (fiComWebBrowser == null)
-                return;
 
-            object objComWebBrowser = fiComWebBrowser.GetValue(wb);
-            if (objComWebBrowser == null)
-                return;
+            object objComWebBrowser = fiComWebBrowser?.GetValue(wb);
 
-            objComWebBrowser.GetType().InvokeMember("Silent", BindingFlags.SetProperty, null, objComWebBrowser, new object[] { Hide });
+            objComWebBrowser?.GetType().InvokeMember("Silent", BindingFlags.SetProperty, null, objComWebBrowser, new object[] { hide });
         }
 
         private void WebBrowserHost_OnLoadCompleted(object sender, NavigationEventArgs e)
         {
             var browser = sender as WebBrowser;
 
-            if (browser == null || browser.Document == null)
+            if (browser?.Document == null)
                 return;
 
             dynamic document = browser.Document;
