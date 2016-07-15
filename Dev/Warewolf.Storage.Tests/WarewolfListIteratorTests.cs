@@ -26,7 +26,7 @@ namespace Warewolf.Storage.Tests
         {
             _environment = new ExecutionEnvironment();
             _warewolfListIterator = new WarewolfListIterator();
-                        
+
             _environment.Assign(Result, "Success", 0);
             _expr1 = new WarewolfIterator(_environment.Eval(Result, 0));
             _expr2 = new WarewolfIterator(_environment.Eval("[[@Parent()]]", 0));

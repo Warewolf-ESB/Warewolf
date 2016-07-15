@@ -12,6 +12,7 @@ using Dev2.Data.TO;
 using Dev2.DataList.Contract;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+// ReSharper disable UnusedVariable
 
 // ReSharper disable InconsistentNaming
 
@@ -111,6 +112,7 @@ namespace Dev2.Data.Tests.Parsers
             //---------------Test Result -----------------------
             Assert.AreEqual(1, expressionIntoParts.Count);
         }
+
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void ParseDataLanguageForIntellisense_GivenEmpty_ShouldExecutesCorreclty()
@@ -430,8 +432,7 @@ namespace Dev2.Data.Tests.Parsers
             //ProcessForOnlyOpenRegion(ParseTO payload, IEnumerable<IDev2DataLanguageIntellisensePart> refParts, IList<IIntellisenseResult> result)
             var parser = new Dev2DataLanguageParser();
             var privateObject = new PrivateObject(parser);
-            var refParts = new List<IDev2DataLanguageIntellisensePart>();
-            refParts.Add(new Dev2DataLanguageIntellisensePart("Rec().Name", "rec", null));
+            var refParts = new List<IDev2DataLanguageIntellisensePart> { new Dev2DataLanguageIntellisensePart("Rec().Name", "rec", null) };
             var result = new List<IIntellisenseResult>();
             var parseTO = new ParseTO()
             {
@@ -583,8 +584,7 @@ namespace Dev2.Data.Tests.Parsers
             //---------------Set up test pack-------------------
             //RecordsetMatch(IList<IIntellisenseResult> result, string rawSearch, string search)
             var parser = new Dev2DataLanguageParser();
-            var intellisenseResults = new List<IIntellisenseResult>();
-            intellisenseResults.Add(IntellisenseFactory.CreateErrorResult(1, 2, new Mock<IDataListVerifyPart>().Object, "msg", enIntellisenseErrorCode.None, false));
+            var intellisenseResults = new List<IIntellisenseResult> { IntellisenseFactory.CreateErrorResult(1, 2, new Mock<IDataListVerifyPart>().Object, "msg", enIntellisenseErrorCode.None, false) };
             var privateObject = new PrivateObject(parser);
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------

@@ -66,15 +66,15 @@ namespace Dev2.Data.Util
 
         public void AppendToTemp(Stream originalFileStream, string temp)
         {
-            const int BufferSize = 1024 * 1024;
-            var buffer = new char[BufferSize];
+            const int bufferSize = 1024 * 1024;
+            var buffer = new char[bufferSize];
 
             using (var writer = new StreamWriter(temp, true))
             {
                 using (var reader = new StreamReader(originalFileStream))
                 {
                     int bytesRead;
-                    while ((bytesRead = reader.ReadBlock(buffer, 0, BufferSize)) != 0)
+                    while ((bytesRead = reader.ReadBlock(buffer, 0, bufferSize)) != 0)
                     {
                         writer.Write(buffer, 0, bytesRead);
                     }
@@ -374,8 +374,8 @@ namespace Dev2.Data.Util
                             {
                                 var xmlNode = childNl[q];
                                 if (xmlNode == null) continue;
-                                var fieldIODirection = DataListUtil.GetDev2ColumnArgumentDirection(xmlNode);
-                                if (DataListUtil.CheckIODirection(dev2ColumnArgumentDirection, fieldIODirection))
+                                var fieldIoDirection = DataListUtil.GetDev2ColumnArgumentDirection(xmlNode);
+                                if (DataListUtil.CheckIODirection(dev2ColumnArgumentDirection, fieldIoDirection))
                                 {
                                     result.Add(DataListFactory.CreateDefinition(xmlNode.Name, "", "", recordsetName, false, "",
                                                                                 false, "", false));
@@ -444,8 +444,8 @@ namespace Dev2.Data.Util
                         for (int q = 0; q < childNl.Count; q++)
                         {
                             var xmlNode = childNl[q];
-                            var fieldIODirection = DataListUtil.GetDev2ColumnArgumentDirection(xmlNode);
-                            if (DataListUtil.CheckIODirection(dev2ColumnArgumentDirection, fieldIODirection))
+                            var fieldIoDirection = DataListUtil.GetDev2ColumnArgumentDirection(xmlNode);
+                            if (DataListUtil.CheckIODirection(dev2ColumnArgumentDirection, fieldIoDirection))
                             {
                                 result.Add(DataListFactory.CreateDefinition(xmlNode.Name, "", "", recordsetName, false, "",
                                                                             false, "", false));

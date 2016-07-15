@@ -39,7 +39,7 @@ namespace Dev2.Services.Execution
     {
         // Plugins need to handle formatting inside the RemoteObjectHandler 
         // and NOT here otherwise serialization issues occur!
-        public readonly ErrorResultTO ErrorResult;
+        protected readonly ErrorResultTO ErrorResult;
 
         /// <summary>
         ///     Construction for ServiceExecution
@@ -49,26 +49,19 @@ namespace Dev2.Services.Execution
         ///     Does the ServiceExecution handle its own output formatting i.e. is it formatted
         ///     as part of its execution or must it be formatted before merging into the Datalist
         /// </param>
-        /// <param name="requiresFormatting">
-        ///     Has the execution been put into a DataList already or must its payload be put into the
-        ///     DataList
-        /// </param>
-        protected ServiceExecutionAbstract(IDSFDataObject dataObj, bool handlesOutputFormatting = true,
-            bool requiresFormatting = true)
+        protected ServiceExecutionAbstract(IDSFDataObject dataObj, bool handlesOutputFormatting = true)
         {
             ErrorResult = new ErrorResultTO();
             DataObj = dataObj;
             HandlesOutputFormatting = handlesOutputFormatting;
-            RequiresFormatting = requiresFormatting;
             if (DataObj.ResourceID != Guid.Empty || !string.IsNullOrEmpty(dataObj.ServiceName))
             {
                 CreateService(ResourceCatalog.Instance);
             }
         }
 
-        public bool HandlesOutputFormatting { get; private set; }
-        public bool RequiresFormatting { get; set; }
-        public TSource Source { get; set; }
+        private bool HandlesOutputFormatting { get; }
+        protected TSource Source { get; private set; }
         public string InstanceOutputDefintions { get; set; }
         public IDSFDataObject DataObj { get; set; }
 
@@ -85,7 +78,7 @@ namespace Dev2.Services.Execution
 
         public abstract void AfterExecution(ErrorResultTO errors);
 
-        protected void CreateService(ResourceCatalog catalog)
+        private void CreateService(ResourceCatalog catalog)
         {
             if (!GetService(catalog)) return;
             GetSource(catalog);
@@ -105,33 +98,6 @@ namespace Dev2.Services.Execution
         public void GetSource(Guid sourceId)
         {
             var catalog = ResourceCatalog.Instance;
-//            ODBCServer Odbc = new ODBCServer();
-//            List<TSource> list = new List<TSource>();
-//            var Dsns = Odbc.GetDSN();
-//            for (int i = 0; i < Dsns.Count; i++)
-//            {
-//                string input = Dsns[i];
-//                using (MD5 md5 = MD5.Create())
-//                {
-//                    byte[] hash = md5.ComputeHash(Encoding.Default.GetBytes(input));
-//                    Guid result = new Guid(hash);
-//
-//                    list.Add(
-//
-//                            new TSource
-//                            {
-//                                ResourceName = Dsns[i],
-//                                ResourceType = "DbSource",
-//                                ResourceID = result
-//
-//                            }
-//
-//                  );
-//                }
-//
-//            }
-//
-//            Source = list.Find(S => S.ResourceID == sourceId);
             if(Source == null)
             {
                 Source = catalog.GetResource<TSource>(GlobalConstants.ServerWorkspaceID, sourceId);
@@ -143,7 +109,8 @@ namespace Dev2.Services.Execution
             }
           
         }
-        protected virtual bool GetService(ResourceCatalog catalog)
+
+        private bool GetService(ResourceCatalog catalog)
         {
             Service = catalog.GetResource<TService>(GlobalConstants.ServerWorkspaceID, DataObj.ResourceID) ??
                       catalog.GetResource<TService>(GlobalConstants.ServerWorkspaceID, DataObj.ServiceName);
@@ -159,10 +126,10 @@ namespace Dev2.Services.Execution
 
         #region ExecuteImpl
 
-        public TService Service { get; set; }
+        public TService Service { protected get; set; }
         public string InstanceInputDefinitions { get; set; }
-        public ICollection<IServiceInput> Inputs { get; set; }
-        public ICollection<IServiceOutputMapping> Outputs { get; set; }
+        public ICollection<IServiceInput> Inputs { protected get; set; }
+        public ICollection<IServiceOutputMapping> Outputs { protected get; set; }
 
         protected void ExecuteImpl(out ErrorResultTO errors, int update)
         {
@@ -247,17 +214,14 @@ namespace Dev2.Services.Execution
             finally
             {
                 var disposable = Service as IDisposable;
-                if (disposable != null)
-                {
-                    disposable.Dispose();
-                }
+                disposable?.Dispose();
 
                 // ensure errors bubble up ;)
                 errors.MergeErrors(ErrorResult);
             }
         }
 
-        private void BuildParameterIterators(int update, List<MethodParameter> inputs, IWarewolfListIterator itrCollection, List<IWarewolfIterator> itrs)
+        private void BuildParameterIterators(int update, IEnumerable<MethodParameter> inputs, IWarewolfListIterator itrCollection, ICollection<IWarewolfIterator> itrs)
         {
             if(string.IsNullOrEmpty(InstanceInputDefinitions))
             {
@@ -364,18 +328,22 @@ namespace Dev2.Services.Execution
                 if (Service is WebService)
                 {
                     var webService = Service as WebService;
-                    if (!String.IsNullOrEmpty(webService.RequestBody))
+                    if (!string.IsNullOrEmpty(webService.RequestBody))
                     {
-                        var methodParameter = new MethodParameter();
-                        methodParameter.Name = DataListUtil.RemoveLanguageBrackets(webService.RequestBody);
-                        methodParameter.Value = ExecutionEnvironment.WarewolfEvalResultToString(DataObj.Environment.Eval(webService.RequestBody, update));
+                        var methodParameter = new MethodParameter
+                        {
+                            Name = DataListUtil.RemoveLanguageBrackets(webService.RequestBody),
+                            Value = ExecutionEnvironment.WarewolfEvalResultToString(DataObj.Environment.Eval(webService.RequestBody, update))
+                        };
                         parameters.Add(methodParameter);
                     }
-                    if (!String.IsNullOrEmpty(webService.RequestHeaders))
+                    if (!string.IsNullOrEmpty(webService.RequestHeaders))
                     {
-                        var methodParameter = new MethodParameter();
-                        methodParameter.Name = DataListUtil.RemoveLanguageBrackets(webService.RequestHeaders);
-                        methodParameter.Value = ExecutionEnvironment.WarewolfEvalResultToString(DataObj.Environment.Eval(webService.RequestHeaders, update));
+                        var methodParameter = new MethodParameter
+                        {
+                            Name = DataListUtil.RemoveLanguageBrackets(webService.RequestHeaders),
+                            Value = ExecutionEnvironment.WarewolfEvalResultToString(DataObj.Environment.Eval(webService.RequestHeaders, update))
+                        };
                         parameters.Add(methodParameter);
                     }
                 }
@@ -412,7 +380,7 @@ namespace Dev2.Services.Execution
 
         #region MergeResultIntoDataList
 
-        public void PushXmlIntoEnvironment(string input,int update)
+        private void PushXmlIntoEnvironment(string input,int update)
         {
 
             if (input != string.Empty)
@@ -553,7 +521,7 @@ namespace Dev2.Services.Execution
 
         #region GetOutputFormatter
 
-        protected virtual IOutputFormatter GetOutputFormatter(TService service)
+        private IOutputFormatter GetOutputFormatter(TService service)
         {
             return OutputFormatterFactory.CreateOutputFormatter(service.OutputDescription, "root");
         }

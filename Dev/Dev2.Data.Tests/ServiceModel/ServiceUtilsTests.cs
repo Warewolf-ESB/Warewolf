@@ -9,6 +9,7 @@
 */
 
 using System.Collections.Generic;
+using System.Text;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Data.ServiceModel.Helper;
 using Dev2.DataList.Contract;
@@ -51,6 +52,24 @@ namespace Dev2.Data.Tests.ServiceModel
 
             //------------Assert Results-------------------------
             Assert.IsTrue(actual);
+        }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("ServiceUtils_MappingNamesChanged")]
+        public void GivenXmlDoesNotContainDatalist_ServiceUtils_ExtractDataListShouldReturnEmptyString()
+        {
+            const string xmlDocument = "<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"no\"?>" +
+                                   "<dotfuscator version=\"2.3\">\n" +
+                                   "<excludelist>" + "<namespace name=\"Unlimited.Applications.BusinessDesignStudio.Activities\" />" + "<namespace name=\"Dev2.Studio.Core.AppResources.Behaviors\" />" + "<namespace name=\"Dev2.Studio.Core.AppResources.WindowManagers\" />" + "<namespace name=\"Dev2.Studio.ActivityDesigners\" />" + "<namespace name=\"Dev2.Studio.Views.Workflow\" />" + "<type name=\"Dev2.Activities.DsfExecuteCommandLineActivity\" />" + "<type name=\"Dev2.Activities.DsfForEachItem\" />" + "<type name=\"Dev2.Activities.DsfGatherSystemInformationActivity\" />" + "<type name=\"Dev2.Activities.DsfRandomActivity\" />" + "<type name=\"Dev2.DynamicServices.DsfDataObject\" excludetype=\"false\">" + "<method name=\"ExtractInMergeDataFromRequest\" signature=\"void(object)\" />" + "<method name=\"ExtractOutMergeDataFromRequest\" signature=\"void(object)\" />" + "</type>" + "<type name=\"Dev2.Runtime.Hosting.DynamicObjectHelper\" excludetype=\"false\">" + "<method name=\"SetID\" signature=\"void(Dev2.DynamicServices.IDynamicServiceObject, object)\" />" + "</type>" + "<type name=\"Dev2.CommandLineParameters\">" + "<method name=\"&lt;GetUsage&gt;b__0\" signature=\"void(CommandLine.Text.HelpText)\" />" + "<method name=\"GetUsage\" signature=\"string()\" />" + "<field name=\"&lt;Install&gt;k__BackingField\" signature=\"bool\" />" + "<field name=\"&lt;IntegrationTestMode&gt;k__BackingField\" signature=\"bool\" />" + "<field name=\"&lt;StartService&gt;k__BackingField\" signature=\"bool\" />" + "<field name=\"&lt;StopService&gt;k__BackingField\" signature=\"bool\" />" + "<field name=\"&lt;Uninstall&gt;k__BackingField\" signature=\"bool\" />" + "<propertymember name=\"Install\" />" + "<propertymember name=\"IntegrationTestMode\" />" + "<propertymember name=\"StartService\" />" + "<propertymember name=\"StopService\" />" + "<propertymember name=\"Uninstall\" />" + "</type>" + "<type name=\"Dev2.WebServer\" excludetype=\"false\">" + "<method name=\"CreateForm\" signature=\"Unlimited.Applications.WebServer.Responses.CommunicationResponseWriter(object, string, string)\" />" + "</type>" + "</excludelist>" +
+                                   "</dotfuscator>";
+            //------------Setup for test--------------------------
+            //------------Execute Test---------------------------
+            var stringBuilder = new StringBuilder();
+            stringBuilder.AppendLine(xmlDocument);
+            var actual = ServiceUtils.ExtractDataList(stringBuilder);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(string.Empty, actual);
         }
 
         [TestMethod]

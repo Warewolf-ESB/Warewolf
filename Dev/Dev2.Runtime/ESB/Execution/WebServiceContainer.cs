@@ -20,24 +20,24 @@ namespace Dev2.Runtime.ESB.Execution
     // BUG 9619 - 2013.06.05 - TWR - Refactored
     public class WebServiceContainer : EsbExecutionContainer
     {
-        protected IServiceExecution WebserviceExecution;
+        private readonly IServiceExecution _webserviceExecution;
 
         public WebServiceContainer(ServiceAction sa, IDSFDataObject dataObj, IWorkspace theWorkspace, IEsbChannel esbChannel)
             : base(sa, dataObj, theWorkspace, esbChannel)
         {
-            WebserviceExecution = new WebserviceExecution(dataObj, false);
+            _webserviceExecution = new WebserviceExecution(dataObj, false);
         }
 
         public WebServiceContainer(IServiceExecution webServiceExecution)
         {
-            WebserviceExecution = webServiceExecution;
+            _webserviceExecution = webServiceExecution;
         }
 
         public override Guid Execute(out ErrorResultTO errors, int update)
         {
-            WebserviceExecution.InstanceInputDefinitions = InstanceInputDefinition;
-            WebserviceExecution.InstanceOutputDefintions = InstanceOutputDefinition;
-            var result = WebserviceExecution.Execute(out errors, update);
+            _webserviceExecution.InstanceInputDefinitions = InstanceInputDefinition;
+            _webserviceExecution.InstanceOutputDefintions = InstanceOutputDefinition;
+            var result = _webserviceExecution.Execute(out errors, update);
             return result;
         }
 
