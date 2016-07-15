@@ -39,38 +39,6 @@ namespace Warewolf.Studio.UISpecs
             }
         }
 
-        [BeforeTestRun]
-        public static void WaitForStudioStart()
-        {
-            Playback.Initialize();
-        }
-
-        [AssemblyInitialize]
-        public static void WaitForStudio()
-        {
-            var sleepTimer = 20;
-            while (true)
-            {
-                try
-                {
-                    WpfWindow getStudioWindow = new UIMap().MainStudioWindow;
-                    getStudioWindow.WaitForControlExist(100);
-                    if (getStudioWindow.Exists)
-                    {
-                        break;
-                    }
-                }
-                catch (UITestControlNotFoundException)
-                {
-                    Thread.Sleep(100);
-                }
-                if (sleepTimer-- <= 0)
-                {
-                    throw new InvalidOperationException("Warewolf studio is not running. You are expected to run \"Dev\\TestScripts\\Studio\\Startup.bat\" as an administrator and wait for it to complete before running any coded UI tests");
-                }
-            }
-        }
-
         public void SetGlobalPlaybackSettings()
         {
             Playback.PlaybackSettings.WaitForReadyLevel = WaitForReadyLevel.Disabled;
@@ -96,9 +64,38 @@ namespace Warewolf.Studio.UISpecs
             e.Result = PlaybackErrorOptions.Retry;
         }
 
-        [BeforeScenario]
-        public static void LogComputerName()
+        public void WaitIfStudioDoesNotExist()
         {
+            var sleepTimer = 30;
+            try
+            {
+                if (!this.MainStudioWindow.Exists)
+                {
+                    WaitForStudioStart(sleepTimer * 1000);
+                }
+            }
+            catch (UITestControlNotFoundException)
+            {
+                WaitForStudioStart(sleepTimer * 1000);
+            }
+        }
+
+        private void WaitForStudioStart(int timeout)
+        {
+            Console.WriteLine("Waiting for studio to start.");
+            Playback.Wait(30000);
+            if (!this.MainStudioWindow.Exists)
+            {
+                throw new InvalidOperationException("Warewolf studio is not running. You are expected to run \"Dev\\TestScripts\\Studio\\Startup.bat\" as an administrator and wait for it to complete before running any coded UI tests");
+            }
+        }
+
+        [BeforeScenario]
+        public static void ScenarioInit()
+        {
+            var uiMap = new UIMap();
+            uiMap.SetGlobalPlaybackSettings();
+            uiMap.WaitIfStudioDoesNotExist();
             Console.WriteLine("Test \"" + ScenarioContext.Current.ScenarioInfo.Title + "\" starting on " + System.Environment.MachineName);
         }
 

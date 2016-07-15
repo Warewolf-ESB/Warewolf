@@ -139,6 +139,7 @@
     <Compile Include="PathOperations\Enums\ReadTypes.cs" />
     <Compile Include="PathOperations\Extension\PathExtensions.cs" />
     <Compile Include="PathOperations\Interfaces\IDestinationUserNamePassword.cs" />
+    <Compile Include="PathOperations\TO\Dev2PutOperationTOFactory.cs" />
     <Compile Include="PulseLogger.cs" />
     <Compile Include="RecordSet.cs" />
     <Compile Include="ReverseIndexIterator.cs" />
