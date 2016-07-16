@@ -25,9 +25,9 @@ namespace Warewolf.UITests
         public void SetGlobalPlaybackSettings()
         {
             Playback.PlaybackSettings.WaitForReadyLevel = WaitForReadyLevel.Disabled;
+            Playback.PlaybackSettings.MaximumRetryCount = 5;
             Playback.PlaybackSettings.ShouldSearchFailFast = false;
             Playback.PlaybackSettings.SearchTimeout = 5000;
-            // Ensure the error handler is attached
             Playback.PlaybackError -= Playback_PlaybackError;
             Playback.PlaybackError += Playback_PlaybackError;
         }
