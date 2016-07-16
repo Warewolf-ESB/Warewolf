@@ -3412,14 +3412,6 @@
       <StartLocation X="50" Y="5" />
       <StopLocation X="304" Y="126" />
     </DragDropAction>
-    <AssertAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1">
-      <ParameterName />
-      <PropertyName>Exists</PropertyName>
-      <ExpectedValue>True</ExpectedValue>
-      <MessageOnValidationFailure>No connectors exist on design surface.</MessageOnValidationFailure>
-      <Type>String</Type>
-      <PropertyCondition>AreEqual</PropertyCondition>
-    </AssertAction>
     <AssertAction UIObjectName="UIMap.ServicePickerDialog.Cancel">
       <ParameterName />
       <PropertyName>Exists</PropertyName>
@@ -13967,7 +13959,7 @@
                                                             </UIObject>
                                                           </Descendants>
                                                         </UIObject>
-                                                        <UIObject ControlType="Custom" Id="Connector1" FriendlyName="5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,..." SpecialControlType="None">
+                                                        <UIObject ControlType="Custom" Id="Connector1" FriendlyName="Connector1" SpecialControlType="None">
                                                           <TechnologyName>UIA</TechnologyName>
                                                           <WindowTitles>
                                                             <WindowTitle>Warewolf (ASH\ASH)</WindowTitle>
