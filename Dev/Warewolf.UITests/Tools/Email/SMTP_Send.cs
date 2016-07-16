@@ -18,19 +18,14 @@ namespace Warewolf.UITests.Tools
         [TestMethod]
         public void SMTPSendToolUITest()
         {
-            //Scenario: Dragging tool onto design surface creates small view
             Uimap.Drag_Toolbox_SMTP_Email_Onto_DesignSurface();
-            Uimap.Assert_SMTP_Email_Exists_OnDesignSurface();
-
-            //Scenario: Double clicking small view opens large view
             Uimap.Open_SMTP_Email_Tool_Large_View();
-            Uimap.Assert_SMTP_Email_Large_View_Exists_OnDesignSurface();
-
-            //Scenario: Enter values into large view
-            //Scenario: Clicking the Done button passes validation and all variables are in the variable list
-            //Scenario: Clicking QVI button opens QVI
-            //Scenario: Clicking debug button shows debug input dialog
-            //Scenario: Clicking debug button in debug input dialog generates the proper debug output
+            //Uimap.Enter_Values_Into_SMTP_Email_Tool_Large_View();
+            //Uimap.Click_SMTP_Email_Tool_Large_View_Done_Button();
+            //Uimap.Click_SMTP_Email_Tool_QVI_Button();
+            //Uimap.Click_Debug_Bibbon_Button();
+            //Uimap.Click_Debug_Input_Dialog_Debug_ButtonParams.SMTPEmailToolDebugOutputExists = true;
+            //Uimap.Click_Debug_Input_Dialog_Debug_Button();
         }
 
         #region Additional test attributes

@@ -10,9 +10,7 @@ namespace Warewolf.UITests.Tools.Control_Flow
         [TestMethod]
         public void SequenceToolUITest()
         {
-            //Scenario: Drag toolbox sequence onto a new workflow creates sequence on the design surface
             Uimap.Drag_Toolbox_Sequence_Onto_DesignSurface();
-            Uimap.Assert_Sequence_Exists_OnDesignSurface();
         }
 
         #region Additional test attributes
@@ -31,13 +29,7 @@ namespace Warewolf.UITests.Tools.Control_Flow
         {
             Uimap.CleanupWorkflow();
         }
-
-        #endregion
-
-        /// <summary>
-        ///Gets or sets the test context which provides
-        ///information about and functionality for the current test run.
-        ///</summary>
+        
         public TestContext TestContext
         {
             get
@@ -56,7 +48,7 @@ namespace Warewolf.UITests.Tools.Control_Flow
         {
             get
             {
-                if ((_uiMap == null))
+                if (_uiMap == null)
                 {
                     _uiMap = new UIMap();
                 }
@@ -66,5 +58,7 @@ namespace Warewolf.UITests.Tools.Control_Flow
         }
 
         private UIMap _uiMap;
+
+        #endregion
     }
 }

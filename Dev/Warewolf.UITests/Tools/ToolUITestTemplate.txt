@@ -18,13 +18,14 @@ namespace Warewolf.UITests.Tools
         [TestMethod]
         public void ToolNameToolUITest()
         {
-			//Scenario: Dragging tool onto design surface creates small view
-			//Scenario: Double clicking small view opens large view
-			//Scenario: Enter values into large view
-			//Scenario: Clicking the Done button passes validation and all variables are in the variable list
-			//Scenario: Clicking QVI button opens QVI
-			//Scenario: Clicking debug button shows debug input dialog
-			//Scenario: Clicking debug button in debug input dialog generates the proper debug output
+			Uimap.Drag_Tool_Onto_DesignSurface();
+			Uimap.Open_Tool_Large_View();
+			Uimap.Enter_Values_Into_Tool_Large_View();
+			Uimap.Click_Tool_Large_View_Done_Button();
+			Uimap.Click_Tool_QVI_Button();
+			Uimap.Click_Debug_Bibbon_Button();
+            Uimap.Click_Debug_Input_Dialog_Debug_ButtonParams.ToolDebugOutputExists = true;
+			Uimap.Click_Debug_Input_Dialog_Debug_Button();
         }
 
         #region Additional test attributes
@@ -43,11 +44,7 @@ namespace Warewolf.UITests.Tools
         {
             Uimap.CleanupWorkflow();
         }
-
-        /// <summary>
-        ///Gets or sets the test context which provides
-        ///information about and functionality for the current test run.
-        ///</summary>
+		
         public TestContext TestContext
         {
             get

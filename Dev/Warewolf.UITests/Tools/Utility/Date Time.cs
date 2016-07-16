@@ -10,9 +10,7 @@ namespace Warewolf.UITests.Tools.Utility
         [TestMethod]
         public void DateTimeToolUITest()
         {
-            //Scenario: Drag toolbox Date_And_Time onto a new workflow
             Uimap.Drag_Toolbox_Date_And_Time_Onto_DesignSurface();
-            Uimap.Assert_Date_And_Time_Exists_OnDesignSurface();
         }
 
         #region Additional test attributes

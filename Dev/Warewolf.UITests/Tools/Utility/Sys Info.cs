@@ -18,14 +18,8 @@ namespace Warewolf.UITests.Tools
         [TestMethod]
         public void SysInfoToolUITest()
         {
-            //Scenario: Drag toolbox System_Information onto a new workflow creates small view on the design surface
             Uimap.Drag_Toolbox_System_Information_Onto_DesignSurface();
-            Uimap.Assert_System_information_Exists_OnDesignSurface();
-
-            //@NeedsSystem_InformationToolSmallViewOnTheDesignSurface
-            //Scenario: Double Clicking System_Information Tool Small View on the Design Surface Opens Large View
             Uimap.Open_System_Information_Tool_Qvi_Large_View();
-            Uimap.Assert_System_Info_Qvi_Large_View_Exists_OnDesignSurface();
         }
 
         #region Additional test attributes
@@ -44,11 +38,7 @@ namespace Warewolf.UITests.Tools
         {
             Uimap.CleanupWorkflow();
         }
-
-        /// <summary>
-        ///Gets or sets the test context which provides
-        ///information about and functionality for the current test run.
-        ///</summary>
+        
         public TestContext TestContext
         {
             get

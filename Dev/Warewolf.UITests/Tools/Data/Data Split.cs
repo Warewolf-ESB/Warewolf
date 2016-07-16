@@ -10,19 +10,14 @@ namespace Warewolf.UITests.Tools.Data
         [TestMethod]
         public void DataSplitToolUITest()
         {
-            //Scenario: Drag toolbox Data_Split onto a new workflow creates small view on design surface
             Uimap.Drag_Toolbox_Data_Split_Onto_DesignSurface();
-            Uimap.Assert_Data_Split_Exists_OnDesignSurface();
-
-            //@NeedsDataSplitToolSmallViewOnTheDesignSurface
-            // Scenario: Double Clicking Data Split Tool Small View on the Design Surface Opens Large View
             Uimap.Open_Data_Split_Large_View();
-            Uimap.Assert_Data_Split_Large_View_Exists_OnDesignSurface();
-
-            //@NeedsDataSplitLargeViewOnTheDesignSurface
-            // Scenario: Click Data Split Tool QVI Button Opens Qvi
+            //Uimap.Enter_Values_Into_Data_Split_Tool_Large_View();
+            //Uimap.Click_Data_Split_Tool_Large_View_Done_Button();
             Uimap.Open_Data_Split_Tool_Qvi_Large_View();
-            Uimap.Assert_Data_Split_Qvi_Large_View_Exists_OnDesignSurface();
+            //Uimap.Click_Debug_Bibbon_Button();
+            //Uimap.Click_Debug_Input_Dialog_Debug_ButtonParams.DataSplitToolDebugOutputExists = true;
+            //Uimap.Click_Debug_Input_Dialog_Debug_Button();
         }
 
         #region Additional test attributes
@@ -41,13 +36,7 @@ namespace Warewolf.UITests.Tools.Data
         {
             Uimap.CleanupWorkflow();
         }
-
-        #endregion
-
-        /// <summary>
-        ///Gets or sets the test context which provides
-        ///information about and functionality for the current test run.
-        ///</summary>
+        
         public TestContext TestContext
         {
             get
@@ -66,7 +55,7 @@ namespace Warewolf.UITests.Tools.Data
         {
             get
             {
-                if ((_uiMap == null))
+                if (_uiMap == null)
                 {
                     _uiMap = new UIMap();
                 }
@@ -76,5 +65,7 @@ namespace Warewolf.UITests.Tools.Data
         }
 
         private UIMap _uiMap;
+
+        #endregion
     }
 }

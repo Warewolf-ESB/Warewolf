@@ -18,15 +18,8 @@ namespace Warewolf.UITests.Tools
         [TestMethod]
         public void MoveToolUITest()
         {
-            //Scenario: Drag toolbox Move onto a new workflow creates small view on the design surface
             Uimap.Drag_Toolbox_Move_Onto_DesignSurface();
-            Uimap.Assert_Move_Exists_OnDesignSurface();
-
-            //@NeedsMoveToolOnTheDesignSurface
-            //Scenario: Open Move Tool Large View
-            Uimap.Assert_Move_Exists_OnDesignSurface();
             Uimap.Open_Move_Tool_Large_View();
-            Uimap.Assert_Move_Large_View_Exists_OnDesignSurface();
         }
 
         #region Additional test attributes

@@ -18,9 +18,7 @@ namespace Warewolf.UITests.Tools
         [TestMethod]
         public void RandomToolUITest()
         {
-            //Scenario: Drag toolbox Random onto a new workflow
             Uimap.Drag_Toolbox_Random_Onto_DesignSurface();
-            Uimap.Assert_Random_Exists_OnDesignSurface();
         }
 
         #region Additional test attributes

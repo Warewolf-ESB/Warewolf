@@ -10,14 +10,8 @@ namespace Warewolf.UITests.Tools.Resources
         [TestMethod]
         public void DotNetDLLToolUITest()
         {
-            //Scenario: Drag toolbox DotNet Dll Tool onto a new workflow creates base conversion tool with small view on the design surface
             Uimap.Drag_DotNet_DLL_Connector_Onto_DesignSurface();
-            Uimap.Assert_DotNet_DLL_Connector_Exists_OnDesignSurface();
-
-            //@NeedsDotNetDllToolLargeViewOnTheDesignSurface
-            // Scenario: Double Clicking DotNet Dll Tool Large View on the Design Surface Collapses it to Small View
             Uimap.Open_DotNet_DLL_Connector_Tool_Small_View();
-            Uimap.Assert_DotNet_DLL_Connector_Exists_OnDesignSurface();
         }
 
         #region Additional test attributes
