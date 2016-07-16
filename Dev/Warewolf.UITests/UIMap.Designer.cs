@@ -1406,6 +1406,7 @@ namespace Warewolf.UITests
             #region Variable Declarations
             WpfListItem dotNetDLL = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.ResourceTools.DotNetDLL;
             WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
+            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
             WpfCustom dotNetDll1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll;
             #endregion
 
@@ -1413,6 +1414,9 @@ namespace Warewolf.UITests
             flowchart.EnsureClickable(new Point(308, 127));
             Mouse.StartDragging(dotNetDLL, new Point(16, 25));
             Mouse.StopDragging(flowchart, new Point(308, 127));
+
+            // Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+            Assert.AreEqual(this.Drag_DotNet_DLL_Connector_Onto_DesignSurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
 
             // Verify that the 'Exists' property of 'DsfDotNetDllActivity' custom control equals 'True'
             Assert.AreEqual(this.Drag_DotNet_DLL_Connector_Onto_DesignSurfaceParams.DotNetDllExists, dotNetDll1.Exists, "DotNet DLL tool does not exist on the design surface");
@@ -1426,6 +1430,7 @@ namespace Warewolf.UITests
             #region Variable Declarations
             WpfTreeItem firstItem = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.FirstItem;
             WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
+            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
             WpfCustom subWorkflow = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SubWorkflow;
             #endregion
 
@@ -1434,24 +1439,31 @@ namespace Warewolf.UITests
             Mouse.StartDragging(firstItem, new Point(16, 5));
             Mouse.StopDragging(flowchart, new Point(307, 128));
 
+            // Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+            Assert.AreEqual(this.Drag_Explorer_First_Remote_Server_First_Item_Onto_Workflow_Design_SurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
+
             // Verify that the 'Exists' property of 'DsfActivity' custom control equals 'True'
             Assert.AreEqual(this.Drag_Explorer_First_Remote_Server_First_Item_Onto_Workflow_Design_SurfaceParams.SubWorkflowExists, subWorkflow.Exists, "Workflow on the design surface does not exist");
         }
         
         /// <summary>
-        /// Drag_Explorer_Localhost_First_Item_Onto_Workflow_Design_Surface
+        /// Drag_Explorer_Localhost_First_Item_Onto_Workflow_Design_Surface - Use 'Drag_Explorer_Localhost_First_Item_Onto_Workflow_Design_SurfaceParams' to pass parameters into this method.
         /// </summary>
         public void Drag_Explorer_Localhost_First_Item_Onto_Workflow_Design_Surface()
         {
             #region Variable Declarations
             WpfTreeItem firstItem = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem;
             WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
+            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
             #endregion
 
             // Move 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item to 'Flowchart' custom control
             flowchart.EnsureClickable(new Point(307, 128));
             Mouse.StartDragging(firstItem, new Point(16, 5));
             Mouse.StopDragging(flowchart, new Point(307, 128));
+
+            // Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+            Assert.AreEqual(this.Drag_Explorer_Localhost_First_Item_Onto_Workflow_Design_SurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
         }
         
         /// <summary>
@@ -1462,6 +1474,7 @@ namespace Warewolf.UITests
             #region Variable Declarations
             WpfListItem webRequest = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.UtilityTools.WebRequest;
             WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
+            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
             WpfCustom webRequest1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebRequest;
             #endregion
 
@@ -1469,6 +1482,9 @@ namespace Warewolf.UITests
             flowchart.EnsureClickable(new Point(305, 124));
             Mouse.StartDragging(webRequest, new Point(12, 3));
             Mouse.StopDragging(flowchart, new Point(305, 124));
+
+            // Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+            Assert.AreEqual(this.Drag_GetWeb_RequestTool_Onto_DesignSurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
 
             // Verify that the 'Exists' property of 'DsfWebRequestActivity' custom control equals 'True'
             Assert.AreEqual(this.Drag_GetWeb_RequestTool_Onto_DesignSurfaceParams.WebRequestExists, webRequest1.Exists, "Web Get Request small view does not exist on the design surface");
@@ -1482,6 +1498,7 @@ namespace Warewolf.UITests
             #region Variable Declarations
             WpfListItem pOST = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.HTTPWebMethods.POST;
             WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
+            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
             WpfCustom webPost = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebPost;
             #endregion
 
@@ -1489,6 +1506,9 @@ namespace Warewolf.UITests
             flowchart.EnsureClickable(new Point(306, 128));
             Mouse.StartDragging(pOST, new Point(20, 35));
             Mouse.StopDragging(flowchart, new Point(306, 128));
+
+            // Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+            Assert.AreEqual(this.Drag_PostWeb_RequestTool_Onto_DesignSurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
 
             // Verify that the 'Exists' property of 'DsfWebPostActivity' custom control equals 'True'
             Assert.AreEqual(this.Drag_PostWeb_RequestTool_Onto_DesignSurfaceParams.WebPostExists, webPost.Exists, "Web Post Request small view does not exist on the design surface");
@@ -1502,6 +1522,7 @@ namespace Warewolf.UITests
             #region Variable Declarations
             WpfListItem baseConvert = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.DataTools.BaseConvert;
             WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
+            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
             WpfCustom baseConvert1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.BaseConvert;
             #endregion
 
@@ -1509,6 +1530,9 @@ namespace Warewolf.UITests
             flowchart.EnsureClickable(new Point(303, 128));
             Mouse.StartDragging(baseConvert, new Point(12, 12));
             Mouse.StopDragging(flowchart, new Point(303, 128));
+
+            // Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+            Assert.AreEqual(this.Drag_Toolbox_Base_Conversion_Onto_DesignSurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
 
             // Verify that the 'Exists' property of 'DsfBaseConvertActivity' custom control equals 'True'
             Assert.AreEqual(this.Drag_Toolbox_Base_Conversion_Onto_DesignSurfaceParams.BaseConvertExists, baseConvert1.Exists, "Base Conversion on the design surface does not exist");
@@ -1522,6 +1546,7 @@ namespace Warewolf.UITests
             #region Variable Declarations
             WpfListItem calculate = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.UtilityTools.Calculate;
             WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
+            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
             WpfCustom calculate1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Calculate;
             #endregion
 
@@ -1529,6 +1554,9 @@ namespace Warewolf.UITests
             flowchart.EnsureClickable(new Point(305, 131));
             Mouse.StartDragging(calculate, new Point(59, -17));
             Mouse.StopDragging(flowchart, new Point(305, 131));
+
+            // Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+            Assert.AreEqual(this.Drag_Toolbox_Calculate_Onto_DesignSurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
 
             // Verify that the 'Exists' property of 'DsfCalculateActivity' custom control equals 'True'
             Assert.AreEqual(this.Drag_Toolbox_Calculate_Onto_DesignSurfaceParams.CalculateExists, calculate1.Exists, "Calculate tool on the design surface does not exist");
@@ -1542,6 +1570,7 @@ namespace Warewolf.UITests
             #region Variable Declarations
             WpfListItem caseConvert = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.DataTools.CaseConvert;
             WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
+            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
             WpfCustom caseConvert1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.CaseConvert;
             #endregion
 
@@ -1549,6 +1578,9 @@ namespace Warewolf.UITests
             flowchart.EnsureClickable(new Point(303, 130));
             Mouse.StartDragging(caseConvert, new Point(19, 13));
             Mouse.StopDragging(flowchart, new Point(303, 130));
+
+            // Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+            Assert.AreEqual(this.Drag_Toolbox_Case_Conversion_Onto_DesignSurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
 
             // Verify that the 'Exists' property of 'DsfCaseConvertActivity' custom control equals 'True'
             Assert.AreEqual(this.Drag_Toolbox_Case_Conversion_Onto_DesignSurfaceParams.CaseConvertExists, caseConvert1.Exists, "Case Conversion on the design surface does not exist");
@@ -1562,6 +1594,7 @@ namespace Warewolf.UITests
             #region Variable Declarations
             WpfListItem cMDScript = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.ScriptingTools.CMDScript;
             WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
+            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
             WpfCustom executeCommandLine = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ExecuteCommandLine;
             #endregion
 
@@ -1569,6 +1602,9 @@ namespace Warewolf.UITests
             flowchart.EnsureClickable(new Point(305, 122));
             Mouse.StartDragging(cMDScript, new Point(19, 19));
             Mouse.StopDragging(flowchart, new Point(305, 122));
+
+            // Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+            Assert.AreEqual(this.Drag_Toolbox_CMD_Line_Onto_DesignSurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
 
             // Verify that the 'Exists' property of 'DsfExecuteCommandLineActivity' custom control equals 'True'
             Assert.AreEqual(this.Drag_Toolbox_CMD_Line_Onto_DesignSurfaceParams.ExecuteCommandLineExists, executeCommandLine.Exists, "CMD Line tool on the design surface tool does not exist");
@@ -1582,6 +1618,7 @@ namespace Warewolf.UITests
             #region Variable Declarations
             WpfListItem comment = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.UtilityTools.Comment;
             WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
+            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
             WpfCustom comment1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Comment;
             #endregion
 
@@ -1589,6 +1626,9 @@ namespace Warewolf.UITests
             flowchart.EnsureClickable(new Point(308, 129));
             Mouse.StartDragging(comment, new Point(40, 15));
             Mouse.StopDragging(flowchart, new Point(308, 129));
+
+            // Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+            Assert.AreEqual(this.Drag_Toolbox_Comment_Onto_DesignSurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
 
             // Verify that the 'Exists' property of 'DsfCommentActivity' custom control equals 'True'
             Assert.AreEqual(this.Drag_Toolbox_Comment_Onto_DesignSurfaceParams.CommentExists, comment1.Exists, "Comment tool on the design surface does not exist");
@@ -1602,6 +1642,7 @@ namespace Warewolf.UITests
             #region Variable Declarations
             WpfListItem copy = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.FileAndFTP.Copy;
             WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
+            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
             WpfCustom pathCopy = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PathCopy;
             #endregion
 
@@ -1610,24 +1651,31 @@ namespace Warewolf.UITests
             Mouse.StartDragging(copy, new Point(19, -3));
             Mouse.StopDragging(flowchart, new Point(310, 129));
 
+            // Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+            Assert.AreEqual(this.Drag_Toolbox_Copy_Onto_DesignSurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
+
             // Verify that the 'Exists' property of 'DsfPathCopy' custom control equals 'True'
             Assert.AreEqual(this.Drag_Toolbox_Copy_Onto_DesignSurfaceParams.PathCopyExists, pathCopy.Exists, "Copy on the design surface does not exist");
         }
         
         /// <summary>
-        /// Drag_Toolbox_Count_Records_Onto_DesignSurface
+        /// Drag_Toolbox_Count_Records_Onto_DesignSurface - Use 'Drag_Toolbox_Count_Records_Onto_DesignSurfaceParams' to pass parameters into this method.
         /// </summary>
         public void Drag_Toolbox_Count_Records_Onto_DesignSurface()
         {
             #region Variable Declarations
             WpfListItem count = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.RecordsetTools.Count;
             WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
+            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
             #endregion
 
             // Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
             flowchart.EnsureClickable(new Point(307, 125));
             Mouse.StartDragging(count, new Point(13, 18));
             Mouse.StopDragging(flowchart, new Point(307, 125));
+
+            // Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+            Assert.AreEqual(this.Drag_Toolbox_Count_Records_Onto_DesignSurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
         }
         
         /// <summary>
@@ -1638,6 +1686,7 @@ namespace Warewolf.UITests
             #region Variable Declarations
             WpfListItem create = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.FileAndFTP.Create;
             WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
+            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
             WpfCustom pathCreate = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PathCreate;
             #endregion
 
@@ -1645,6 +1694,9 @@ namespace Warewolf.UITests
             flowchart.EnsureClickable(new Point(308, 131));
             Mouse.StartDragging(create, new Point(9, 16));
             Mouse.StopDragging(flowchart, new Point(308, 131));
+
+            // Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+            Assert.AreEqual(this.Drag_Toolbox_Create_Onto_DesignSurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
 
             // Verify that the 'Exists' property of 'DsfPathCreate' custom control equals 'True'
             Assert.AreEqual(this.Drag_Toolbox_Create_Onto_DesignSurfaceParams.PathCreateExists, pathCreate.Exists, "Create tool on the design surface does not exist");
@@ -1658,6 +1710,7 @@ namespace Warewolf.UITests
             #region Variable Declarations
             WpfListItem dataMerge = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.DataTools.DataMerge;
             WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
+            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
             WpfCustom dataMerge1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DataMerge;
             #endregion
 
@@ -1665,6 +1718,9 @@ namespace Warewolf.UITests
             flowchart.EnsureClickable(new Point(305, 133));
             Mouse.StartDragging(dataMerge, new Point(54, 23));
             Mouse.StopDragging(flowchart, new Point(305, 133));
+
+            // Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+            Assert.AreEqual(this.Drag_Toolbox_Data_Merge_Onto_DesignSurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
 
             // Verify that the 'Exists' property of 'DsfDataMergeActivity' custom control equals 'True'
             Assert.AreEqual(this.Drag_Toolbox_Data_Merge_Onto_DesignSurfaceParams.DataMergeExists, dataMerge1.Exists, "Data Merge on the design surface does not exist");
@@ -1678,6 +1734,7 @@ namespace Warewolf.UITests
             #region Variable Declarations
             WpfListItem dataSplit = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.DataTools.DataSplit;
             WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
+            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
             WpfCustom dataSplit1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DataSplit;
             #endregion
 
@@ -1685,6 +1742,9 @@ namespace Warewolf.UITests
             flowchart.EnsureClickable(new Point(308, 129));
             Mouse.StartDragging(dataSplit, new Point(3, 8));
             Mouse.StopDragging(flowchart, new Point(308, 129));
+
+            // Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+            Assert.AreEqual(this.Drag_Toolbox_Data_Split_Onto_DesignSurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
 
             // Verify that the 'Exists' property of 'DsfDataSplitActivity' custom control equals 'True'
             Assert.AreEqual(this.Drag_Toolbox_Data_Split_Onto_DesignSurfaceParams.DataSplitExists, dataSplit1.Exists, "Data Split on the design surface does not exist");
@@ -1698,6 +1758,7 @@ namespace Warewolf.UITests
             #region Variable Declarations
             WpfListItem dateTime = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.UtilityTools.DateTime;
             WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
+            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
             WpfCustom dateTime1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DateTime;
             #endregion
 
@@ -1705,6 +1766,9 @@ namespace Warewolf.UITests
             flowchart.EnsureClickable(new Point(304, 127));
             Mouse.StartDragging(dateTime, new Point(20, -1));
             Mouse.StopDragging(flowchart, new Point(304, 127));
+
+            // Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+            Assert.AreEqual(this.Drag_Toolbox_Date_And_Time_Onto_DesignSurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
 
             // Verify that the 'Exists' property of 'DsfDateTimeActivity' custom control equals 'True'
             Assert.AreEqual(this.Drag_Toolbox_Date_And_Time_Onto_DesignSurfaceParams.DateTimeExists, dateTime1.Exists, "Date and Time tool on the design surface does not exist");
@@ -1718,6 +1782,7 @@ namespace Warewolf.UITests
             #region Variable Declarations
             WpfListItem dateTimeDifference = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.UtilityTools.DateTimeDifference;
             WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
+            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
             WpfCustom dateTimeDifference1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DateTimeDifference;
             #endregion
 
@@ -1725,6 +1790,9 @@ namespace Warewolf.UITests
             flowchart.EnsureClickable(new Point(306, 131));
             Mouse.StartDragging(dateTimeDifference, new Point(48, 7));
             Mouse.StopDragging(flowchart, new Point(306, 131));
+
+            // Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+            Assert.AreEqual(this.Drag_Toolbox_DateTime_Difference_Onto_DesignSurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
 
             // Verify that the 'Exists' property of 'DsfDateTimeDifferenceActivity' custom control equals 'True'
             Assert.AreEqual(this.Drag_Toolbox_DateTime_Difference_Onto_DesignSurfaceParams.DateTimeDifferenceExists, dateTimeDifference1.Exists, "Date And Time Difference tool on the design surface does not exist");
@@ -1738,6 +1806,7 @@ namespace Warewolf.UITests
             #region Variable Declarations
             WpfListItem decision = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.FlowTools.Decision;
             WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
+            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
             WpfButton doneButton = this.DecisionDialog.DoneButton;
             #endregion
 
@@ -1745,6 +1814,9 @@ namespace Warewolf.UITests
             flowchart.EnsureClickable(new Point(309, 128));
             Mouse.StartDragging(decision, new Point(16, 11));
             Mouse.StopDragging(flowchart, new Point(309, 128));
+
+            // Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+            Assert.AreEqual(this.Drag_Toolbox_Decision_Onto_DesignSurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
 
             // Verify that the 'Exists' property of 'Done' button equals 'True'
             Assert.AreEqual(this.Drag_Toolbox_Decision_Onto_DesignSurfaceParams.DoneButtonExists, doneButton.Exists, "Decision dialog done button does not exist");
@@ -1758,6 +1830,7 @@ namespace Warewolf.UITests
             #region Variable Declarations
             WpfListItem delete = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.FileAndFTP.Delete;
             WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
+            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
             WpfCustom pathDelete = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PathDelete;
             #endregion
 
@@ -1766,72 +1839,91 @@ namespace Warewolf.UITests
             Mouse.StartDragging(delete, new Point(13, 9));
             Mouse.StopDragging(flowchart, new Point(306, 125));
 
+            // Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+            Assert.AreEqual(this.Drag_Toolbox_Delete_Onto_DesignSurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
+
             // Verify that the 'Exists' property of 'DsfPathDelete' custom control equals 'True'
             Assert.AreEqual(this.Drag_Toolbox_Delete_Onto_DesignSurfaceParams.PathDeleteExists, pathDelete.Exists, "Delete tool on the design surface does not exist");
         }
         
         /// <summary>
-        /// Drag_Toolbox_Delete_Record_Onto_DesignSurface
+        /// Drag_Toolbox_Delete_Record_Onto_DesignSurface - Use 'Drag_Toolbox_Delete_Record_Onto_DesignSurfaceParams' to pass parameters into this method.
         /// </summary>
         public void Drag_Toolbox_Delete_Record_Onto_DesignSurface()
         {
             #region Variable Declarations
             WpfListItem delete = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.RecordsetTools.Delete;
             WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
+            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
             #endregion
 
             // Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
             flowchart.EnsureClickable(new Point(309, 128));
             Mouse.StartDragging(delete, new Point(1, 15));
             Mouse.StopDragging(flowchart, new Point(309, 128));
+
+            // Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+            Assert.AreEqual(this.Drag_Toolbox_Delete_Record_Onto_DesignSurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
         }
         
         /// <summary>
-        /// Drag_Toolbox_Dropbox_Download_Onto_DesignSurface
+        /// Drag_Toolbox_Dropbox_Download_Onto_DesignSurface - Use 'Drag_Toolbox_Dropbox_Download_Onto_DesignSurfaceParams' to pass parameters into this method.
         /// </summary>
         public void Drag_Toolbox_Dropbox_Download_Onto_DesignSurface()
         {
             #region Variable Declarations
             WpfListItem download = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.StorageDropbox.Download;
             WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
+            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
             #endregion
 
             // Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
             flowchart.EnsureClickable(new Point(307, 131));
             Mouse.StartDragging(download, new Point(30, 8));
             Mouse.StopDragging(flowchart, new Point(307, 131));
+
+            // Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+            Assert.AreEqual(this.Drag_Toolbox_Dropbox_Download_Onto_DesignSurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
         }
         
         /// <summary>
-        /// Drag_Toolbox_Dropbox_Upload_Onto_DesignSurface
+        /// Drag_Toolbox_Dropbox_Upload_Onto_DesignSurface - Use 'Drag_Toolbox_Dropbox_Upload_Onto_DesignSurfaceParams' to pass parameters into this method.
         /// </summary>
         public void Drag_Toolbox_Dropbox_Upload_Onto_DesignSurface()
         {
             #region Variable Declarations
             WpfListItem upload = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.StorageDropbox.Upload;
             WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
+            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
             #endregion
 
             // Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
             flowchart.EnsureClickable(new Point(307, 131));
             Mouse.StartDragging(upload, new Point(30, 8));
             Mouse.StopDragging(flowchart, new Point(307, 131));
+
+            // Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+            Assert.AreEqual(this.Drag_Toolbox_Dropbox_Upload_Onto_DesignSurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
         }
         
         /// <summary>
-        /// Drag_Toolbox_Exchange_Email_Onto_DesignSurface
+        /// Drag_Toolbox_Exchange_Email_Onto_DesignSurface - Use 'Drag_Toolbox_Exchange_Email_Onto_DesignSurfaceParams' to pass parameters into this method.
         /// </summary>
         public void Drag_Toolbox_Exchange_Email_Onto_DesignSurface()
         {
             #region Variable Declarations
             WpfListItem exchangeSend = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.Email.ExchangeSend;
             WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
+            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
             #endregion
 
             // Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
             flowchart.EnsureClickable(new Point(308, 129));
             Mouse.StartDragging(exchangeSend, new Point(16, -39));
             Mouse.StopDragging(flowchart, new Point(308, 129));
+
+            // Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+            Assert.AreEqual(this.Drag_Toolbox_Exchange_Email_Onto_DesignSurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
         }
         
         /// <summary>
@@ -1842,6 +1934,7 @@ namespace Warewolf.UITests
             #region Variable Declarations
             WpfListItem findIndex = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.DataTools.FindIndex;
             WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
+            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
             WpfCustom findIndex1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FindIndex;
             #endregion
 
@@ -1850,24 +1943,31 @@ namespace Warewolf.UITests
             Mouse.StartDragging(findIndex, new Point(9, 5));
             Mouse.StopDragging(flowchart, new Point(305, 131));
 
+            // Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+            Assert.AreEqual(this.Drag_Toolbox_Find_Index_Onto_DesignSurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
+
             // Verify that the 'Exists' property of 'DsfIndexActivity' custom control equals 'True'
             Assert.AreEqual(this.Drag_Toolbox_Find_Index_Onto_DesignSurfaceParams.FindIndexExists, findIndex1.Exists, "Find Index on the design surface does not exist");
         }
         
         /// <summary>
-        /// Drag_Toolbox_Find_Record_Index_Onto_DesignSurface
+        /// Drag_Toolbox_Find_Record_Index_Onto_DesignSurface - Use 'Drag_Toolbox_Find_Record_Index_Onto_DesignSurfaceParams' to pass parameters into this method.
         /// </summary>
         public void Drag_Toolbox_Find_Record_Index_Onto_DesignSurface()
         {
             #region Variable Declarations
             WpfListItem findRecords = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.RecordsetTools.FindRecords;
             WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
+            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
             #endregion
 
             // Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
             flowchart.EnsureClickable(new Point(307, 130));
             Mouse.StartDragging(findRecords, new Point(8, 8));
             Mouse.StopDragging(flowchart, new Point(307, 130));
+
+            // Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+            Assert.AreEqual(this.Drag_Toolbox_Find_Record_Index_Onto_DesignSurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
         }
         
         /// <summary>
@@ -1878,6 +1978,7 @@ namespace Warewolf.UITests
             #region Variable Declarations
             WpfListItem forEach = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.LoopTools.ForEach;
             WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
+            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
             WpfCustom forEach1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ForEach;
             #endregion
 
@@ -1885,6 +1986,9 @@ namespace Warewolf.UITests
             flowchart.EnsureClickable(new Point(307, 129));
             Mouse.StartDragging(forEach, new Point(40, 19));
             Mouse.StopDragging(flowchart, new Point(307, 129));
+
+            // Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+            Assert.AreEqual(this.Drag_Toolbox_For_Each_Onto_DesignSurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
 
             // Verify that the 'Exists' property of 'DsfForEachActivity' custom control equals 'True'
             Assert.AreEqual(this.Drag_Toolbox_For_Each_Onto_DesignSurfaceParams.ForEachExists, forEach1.Exists, "For Each tool on the design surface does not exist");
@@ -1898,6 +2002,7 @@ namespace Warewolf.UITests
             #region Variable Declarations
             WpfListItem formatNumber = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.UtilityTools.FormatNumber;
             WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
+            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
             WpfCustom formatNumber1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FormatNumber;
             #endregion
 
@@ -1905,6 +2010,9 @@ namespace Warewolf.UITests
             flowchart.EnsureClickable(new Point(305, 131));
             Mouse.StartDragging(formatNumber, new Point(18, 11));
             Mouse.StopDragging(flowchart, new Point(305, 131));
+
+            // Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+            Assert.AreEqual(this.Drag_Toolbox_Format_Number_Onto_DesignSurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
 
             // Verify that the 'Exists' property of 'DsfNumberFormatActivity' custom control equals 'True'
             Assert.AreEqual(this.Drag_Toolbox_Format_Number_Onto_DesignSurfaceParams.FormatNumberExists, formatNumber1.Exists, "Format Number tool on the design surface does not exist");
@@ -1918,6 +2026,7 @@ namespace Warewolf.UITests
             #region Variable Declarations
             WpfListItem createJSON = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.UtilityTools.CreateJSON;
             WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
+            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
             WpfCustom createJson1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.CreateJson;
             #endregion
 
@@ -1925,6 +2034,9 @@ namespace Warewolf.UITests
             flowchart.EnsureClickable(new Point(305, 127));
             Mouse.StartDragging(createJSON, new Point(0, 10));
             Mouse.StopDragging(flowchart, new Point(305, 127));
+
+            // Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+            Assert.AreEqual(this.Drag_Toolbox_JSON_Onto_DesignSurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
 
             // Verify that the 'Exists' property of 'DsfCreateJsonActivity' custom control equals 'True'
             Assert.AreEqual(this.Drag_Toolbox_JSON_Onto_DesignSurfaceParams.CreateJsonExists, createJson1.Exists, "Create JSON tool on the design surface does not exist");
@@ -1938,6 +2050,7 @@ namespace Warewolf.UITests
             #region Variable Declarations
             WpfListItem length = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.RecordsetTools.Length;
             WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
+            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
             WpfCustom length1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Length;
             #endregion
 
@@ -1945,6 +2058,9 @@ namespace Warewolf.UITests
             flowchart.EnsureClickable(new Point(308, 125));
             Mouse.StartDragging(length, new Point(16, 6));
             Mouse.StopDragging(flowchart, new Point(308, 125));
+
+            // Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+            Assert.AreEqual(this.Drag_Toolbox_Length_Onto_DesignSurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
 
             // Verify that the 'Exists' property of 'DsfRecordsetLengthActivity' custom control equals 'True'
             Assert.AreEqual(this.Drag_Toolbox_Length_Onto_DesignSurfaceParams.LengthExists, length1.Exists, "Length tool on the design surface does not exist");
@@ -1958,6 +2074,7 @@ namespace Warewolf.UITests
             #region Variable Declarations
             WpfListItem move = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.FileAndFTP.Move;
             WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
+            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
             WpfCustom pathMove = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PathMove;
             #endregion
 
@@ -1965,6 +2082,9 @@ namespace Warewolf.UITests
             flowchart.EnsureClickable(new Point(306, 129));
             Mouse.StartDragging(move, new Point(32, 4));
             Mouse.StopDragging(flowchart, new Point(306, 129));
+
+            // Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+            Assert.AreEqual(this.Drag_Toolbox_Move_Onto_DesignSurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
 
             // Verify that the 'Exists' property of 'DsfPathMove' custom control equals 'True'
             Assert.AreEqual(this.Drag_Toolbox_Move_Onto_DesignSurfaceParams.PathMoveExists, pathMove.Exists, "Move tool on the design surface does not exist");
@@ -1978,6 +2098,7 @@ namespace Warewolf.UITests
             #region Variable Declarations
             WpfListItem multiAssign = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.DataTools.MultiAssign;
             WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
+            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
             WpfEdit textbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView.DataGrid.Row1.VariableCell.Textbox;
             #endregion
 
@@ -1989,24 +2110,31 @@ namespace Warewolf.UITests
             Mouse.StartDragging(multiAssign, new Point(13, 17));
             Mouse.StopDragging(flowchart, new Point(307, 128));
 
+            // Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+            Assert.AreEqual(this.Drag_Toolbox_MultiAssign_Onto_DesignSurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
+
             // Verify that the 'Exists' property of 'UI_TextBox_AutoID' text box equals 'True'
             Assert.AreEqual(this.Drag_Toolbox_MultiAssign_Onto_DesignSurfaceParams.TextboxExists, textbox.Exists, "Assign small view row 1 variable textbox does not exist");
         }
         
         /// <summary>
-        /// Drag_Toolbox_MySql_Database_Onto_DesignSurface
+        /// Drag_Toolbox_MySql_Database_Onto_DesignSurface - Use 'Drag_Toolbox_MySql_Database_Onto_DesignSurfaceParams' to pass parameters into this method.
         /// </summary>
         public void Drag_Toolbox_MySql_Database_Onto_DesignSurface()
         {
             #region Variable Declarations
             WpfListItem mySQL = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.Database.MySQL;
             WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
+            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
             #endregion
 
             // Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
             flowchart.EnsureClickable(new Point(306, 130));
             Mouse.StartDragging(mySQL, new Point(4, 2));
             Mouse.StopDragging(flowchart, new Point(306, 130));
+
+            // Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+            Assert.AreEqual(this.Drag_Toolbox_MySql_Database_Onto_DesignSurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
         }
         
         /// <summary>
@@ -2017,6 +2145,7 @@ namespace Warewolf.UITests
             #region Variable Declarations
             WpfListItem random = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.UtilityTools.Random;
             WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
+            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
             WpfCustom random1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Random;
             #endregion
 
@@ -2024,6 +2153,9 @@ namespace Warewolf.UITests
             flowchart.EnsureClickable(new Point(308, 127));
             Mouse.StartDragging(random, new Point(9, -21));
             Mouse.StopDragging(flowchart, new Point(308, 127));
+
+            // Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+            Assert.AreEqual(this.Drag_Toolbox_Random_Onto_DesignSurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
 
             // Verify that the 'Exists' property of 'DsfRandomActivity' custom control equals 'True'
             Assert.AreEqual(this.Drag_Toolbox_Random_Onto_DesignSurfaceParams.RandomExists, random1.Exists, "Random tool on the design surface does not exist");
@@ -2037,6 +2169,7 @@ namespace Warewolf.UITests
             #region Variable Declarations
             WpfListItem readFile = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.FileAndFTP.ReadFile;
             WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
+            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
             WpfCustom fileRead = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FileRead;
             #endregion
 
@@ -2044,6 +2177,9 @@ namespace Warewolf.UITests
             flowchart.EnsureClickable(new Point(304, 125));
             Mouse.StartDragging(readFile, new Point(12, 15));
             Mouse.StopDragging(flowchart, new Point(304, 125));
+
+            // Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+            Assert.AreEqual(this.Drag_Toolbox_Read_File_Onto_DesignSurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
 
             // Verify that the 'Exists' property of 'DsfFileRead' custom control equals 'True'
             Assert.AreEqual(this.Drag_Toolbox_Read_File_Onto_DesignSurfaceParams.FileReadExists, fileRead.Exists, "Read File tool on the design surface does not exist");
@@ -2057,6 +2193,7 @@ namespace Warewolf.UITests
             #region Variable Declarations
             WpfListItem readFolder = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.FileAndFTP.ReadFolder;
             WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
+            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
             WpfCustom folderRead = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FolderRead;
             #endregion
 
@@ -2064,6 +2201,9 @@ namespace Warewolf.UITests
             flowchart.EnsureClickable(new Point(305, 129));
             Mouse.StartDragging(readFolder, new Point(14, 3));
             Mouse.StopDragging(flowchart, new Point(305, 129));
+
+            // Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+            Assert.AreEqual(this.Drag_Toolbox_Read_Folder_Onto_DesignSurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
 
             // Verify that the 'Exists' property of 'DsfFolderRead' custom control equals 'True'
             Assert.AreEqual(this.Drag_Toolbox_Read_Folder_Onto_DesignSurfaceParams.FolderReadExists, folderRead.Exists, "Read folder tool on the design surface does not exist");
@@ -2077,6 +2217,7 @@ namespace Warewolf.UITests
             #region Variable Declarations
             WpfListItem rename = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.FileAndFTP.Rename;
             WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
+            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
             WpfCustom pathRename = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PathRename;
             #endregion
 
@@ -2084,6 +2225,9 @@ namespace Warewolf.UITests
             flowchart.EnsureClickable(new Point(305, 128));
             Mouse.StartDragging(rename, new Point(6, 11));
             Mouse.StopDragging(flowchart, new Point(305, 128));
+
+            // Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+            Assert.AreEqual(this.Drag_Toolbox_Rename_Onto_DesignSurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
 
             // Verify that the 'Exists' property of 'DsfPathRename' custom control equals 'True'
             Assert.AreEqual(this.Drag_Toolbox_Rename_Onto_DesignSurfaceParams.PathRenameExists, pathRename.Exists, "Rename tool on the design surface does not exist");
@@ -2097,6 +2241,7 @@ namespace Warewolf.UITests
             #region Variable Declarations
             WpfListItem replace = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.DataTools.Replace;
             WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
+            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
             WpfCustom replace1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Replace;
             #endregion
 
@@ -2104,6 +2249,9 @@ namespace Warewolf.UITests
             flowchart.EnsureClickable(new Point(306, 121));
             Mouse.StartDragging(replace, new Point(16, 10));
             Mouse.StopDragging(flowchart, new Point(306, 121));
+
+            // Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+            Assert.AreEqual(this.Drag_Toolbox_Replace_Onto_DesignSurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
 
             // Verify that the 'Exists' property of 'DsfReplaceActivity' custom control equals 'True'
             Assert.AreEqual(this.Drag_Toolbox_Replace_Onto_DesignSurfaceParams.ReplaceExists, replace1.Exists, "Replace on the design surface does not exist");
@@ -2117,6 +2265,7 @@ namespace Warewolf.UITests
             #region Variable Declarations
             WpfListItem script = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.ScriptingTools.Script;
             WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
+            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
             WpfCustom scripting = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Scripting;
             #endregion
 
@@ -2124,6 +2273,9 @@ namespace Warewolf.UITests
             flowchart.EnsureClickable(new Point(307, 130));
             Mouse.StartDragging(script, new Point(49, 17));
             Mouse.StopDragging(flowchart, new Point(307, 130));
+
+            // Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+            Assert.AreEqual(this.Drag_Toolbox_Script_Onto_DesignSurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
 
             // Verify that the 'Exists' property of 'DsfScriptingActivity' custom control equals 'True'
             Assert.AreEqual(this.Drag_Toolbox_Script_Onto_DesignSurfaceParams.ScriptingExists, scripting.Exists, "Script tool on the design surface does not exist");
@@ -2137,6 +2289,7 @@ namespace Warewolf.UITests
             #region Variable Declarations
             WpfListItem sequence = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.FlowTools.Sequence;
             WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
+            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
             WpfCustom sequence1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Sequence;
             #endregion
 
@@ -2144,6 +2297,9 @@ namespace Warewolf.UITests
             flowchart.EnsureClickable(new Point(305, 131));
             Mouse.StartDragging(sequence, new Point(18, -12));
             Mouse.StopDragging(flowchart, new Point(305, 131));
+
+            // Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+            Assert.AreEqual(this.Drag_Toolbox_Sequence_Onto_DesignSurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
 
             // Verify that the 'Exists' property of 'DsfSequenceActivity' custom control equals 'True'
             Assert.AreEqual(this.Drag_Toolbox_Sequence_Onto_DesignSurfaceParams.SequenceExists, sequence1.Exists, "Sequence on the design surface does not exist");
@@ -2157,6 +2313,7 @@ namespace Warewolf.UITests
             #region Variable Declarations
             WpfListItem service = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.ResourceTools.Service;
             WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
+            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
             WpfButton cancel = this.ServicePickerDialog.Cancel;
             #endregion
 
@@ -2165,72 +2322,91 @@ namespace Warewolf.UITests
             Mouse.StartDragging(service, new Point(50, 5));
             Mouse.StopDragging(flowchart, new Point(304, 126));
 
+            // Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+            Assert.AreEqual(this.Drag_Toolbox_Service_Picker_Onto_DesignSurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
+
             // Verify that the 'Exists' property of 'Cancel' button equals 'True'
             Assert.AreEqual(this.Drag_Toolbox_Service_Picker_Onto_DesignSurfaceParams.CancelExists, cancel.Exists, "Service picker dialog cancel button does not exist");
         }
         
         /// <summary>
-        /// Drag_Toolbox_Sharepoint_Create_Onto_DesignSurface
+        /// Drag_Toolbox_Sharepoint_Create_Onto_DesignSurface - Use 'Drag_Toolbox_Sharepoint_Create_Onto_DesignSurfaceParams' to pass parameters into this method.
         /// </summary>
         public void Drag_Toolbox_Sharepoint_Create_Onto_DesignSurface()
         {
             #region Variable Declarations
             WpfListItem createListItems = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.SharepointTools.CreateListItems;
             WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
+            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
             #endregion
 
             // Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
             flowchart.EnsureClickable(new Point(311, 128));
             Mouse.StartDragging(createListItems, new Point(10, 16));
             Mouse.StopDragging(flowchart, new Point(311, 128));
+
+            // Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+            Assert.AreEqual(this.Drag_Toolbox_Sharepoint_Create_Onto_DesignSurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
         }
         
         /// <summary>
-        /// Drag_Toolbox_Sharepoint_Delete_Onto_DesignSurface
+        /// Drag_Toolbox_Sharepoint_Delete_Onto_DesignSurface - Use 'Drag_Toolbox_Sharepoint_Delete_Onto_DesignSurfaceParams' to pass parameters into this method.
         /// </summary>
         public void Drag_Toolbox_Sharepoint_Delete_Onto_DesignSurface()
         {
             #region Variable Declarations
             WpfListItem deleteListItems = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.SharepointTools.DeleteListItems;
             WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
+            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
             #endregion
 
             // Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
             flowchart.EnsureClickable(new Point(306, 131));
             Mouse.StartDragging(deleteListItems, new Point(16, 5));
             Mouse.StopDragging(flowchart, new Point(306, 131));
+
+            // Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+            Assert.AreEqual(this.Drag_Toolbox_Sharepoint_Delete_Onto_DesignSurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
         }
         
         /// <summary>
-        /// Drag_Toolbox_Sharepoint_Read_Onto_DesignSurface
+        /// Drag_Toolbox_Sharepoint_Read_Onto_DesignSurface - Use 'Drag_Toolbox_Sharepoint_Read_Onto_DesignSurfaceParams' to pass parameters into this method.
         /// </summary>
         public void Drag_Toolbox_Sharepoint_Read_Onto_DesignSurface()
         {
             #region Variable Declarations
             WpfListItem readListItems = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.SharepointTools.ReadListItems;
             WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
+            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
             #endregion
 
             // Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
             flowchart.EnsureClickable(new Point(303, 128));
             Mouse.StartDragging(readListItems, new Point(13, 15));
             Mouse.StopDragging(flowchart, new Point(303, 128));
+
+            // Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+            Assert.AreEqual(this.Drag_Toolbox_Sharepoint_Read_Onto_DesignSurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
         }
         
         /// <summary>
-        /// Drag_Toolbox_Sharepoint_Update_Onto_DesignSurface
+        /// Drag_Toolbox_Sharepoint_Update_Onto_DesignSurface - Use 'Drag_Toolbox_Sharepoint_Update_Onto_DesignSurfaceParams' to pass parameters into this method.
         /// </summary>
         public void Drag_Toolbox_Sharepoint_Update_Onto_DesignSurface()
         {
             #region Variable Declarations
             WpfListItem updateListItems = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.SharepointTools.UpdateListItems;
             WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
+            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
             #endregion
 
             // Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
             flowchart.EnsureClickable(new Point(300, 127));
             Mouse.StartDragging(updateListItems, new Point(17, 9));
             Mouse.StopDragging(flowchart, new Point(300, 127));
+
+            // Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+            Assert.AreEqual(this.Drag_Toolbox_Sharepoint_Update_Onto_DesignSurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
         }
         
         /// <summary>
@@ -2241,6 +2417,7 @@ namespace Warewolf.UITests
             #region Variable Declarations
             WpfListItem sMTPSend = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.Email.SMTPSend;
             WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
+            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
             WpfCustom sMTPEmail = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SMTPEmail;
             #endregion
 
@@ -2249,24 +2426,31 @@ namespace Warewolf.UITests
             Mouse.StartDragging(sMTPSend, new Point(16, -39));
             Mouse.StopDragging(flowchart, new Point(308, 129));
 
+            // Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+            Assert.AreEqual(this.Drag_Toolbox_SMTP_Email_Onto_DesignSurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
+
             // Verify that the 'Exists' property of 'DsfSendEmailActivity' custom control equals 'True'
             Assert.AreEqual(this.Drag_Toolbox_SMTP_Email_Onto_DesignSurfaceParams.SMTPEmailExists, sMTPEmail.Exists, "Email tool on the design surface does not exist");
         }
         
         /// <summary>
-        /// Drag_Toolbox_Sort_Record_Onto_DesignSurface
+        /// Drag_Toolbox_Sort_Record_Onto_DesignSurface - Use 'Drag_Toolbox_Sort_Record_Onto_DesignSurfaceParams' to pass parameters into this method.
         /// </summary>
         public void Drag_Toolbox_Sort_Record_Onto_DesignSurface()
         {
             #region Variable Declarations
             WpfListItem sort = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.RecordsetTools.Sort;
             WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
+            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
             #endregion
 
             // Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
             flowchart.EnsureClickable(new Point(300, 122));
             Mouse.StartDragging(sort, new Point(7, 8));
             Mouse.StopDragging(flowchart, new Point(300, 122));
+
+            // Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+            Assert.AreEqual(this.Drag_Toolbox_Sort_Record_Onto_DesignSurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
         }
         
         /// <summary>
@@ -2277,6 +2461,7 @@ namespace Warewolf.UITests
             #region Variable Declarations
             WpfListItem sQLBulkInsert = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.Database.SQLBulkInsert;
             WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
+            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
             WpfCustom sqlBulkInsert1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlBulkInsert;
             #endregion
 
@@ -2285,24 +2470,31 @@ namespace Warewolf.UITests
             Mouse.StartDragging(sQLBulkInsert, new Point(11, 16));
             Mouse.StopDragging(flowchart, new Point(304, 129));
 
+            // Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+            Assert.AreEqual(this.Drag_Toolbox_SQL_Bulk_Insert_Onto_DesignSurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
+
             // Verify that the 'Exists' property of 'DsfSqlBulkInsertActivity' custom control equals 'True'
             Assert.AreEqual(this.Drag_Toolbox_SQL_Bulk_Insert_Onto_DesignSurfaceParams.SqlBulkInsertExists, sqlBulkInsert1.Exists, "Sql Bulk Insert tool on the design surface does not exist");
         }
         
         /// <summary>
-        /// Drag_Toolbox_SQL_Server_Tool_Onto_DesignSurface
+        /// Drag_Toolbox_SQL_Server_Tool_Onto_DesignSurface - Use 'Drag_Toolbox_SQL_Server_Tool_Onto_DesignSurfaceParams' to pass parameters into this method.
         /// </summary>
         public void Drag_Toolbox_SQL_Server_Tool_Onto_DesignSurface()
         {
             #region Variable Declarations
             WpfListItem sQLServer = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.Database.SQLServer;
             WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
+            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
             #endregion
 
             // Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
             flowchart.EnsureClickable(new Point(304, 127));
             Mouse.StartDragging(sQLServer, new Point(10, -7));
             Mouse.StopDragging(flowchart, new Point(304, 127));
+
+            // Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+            Assert.AreEqual(this.Drag_Toolbox_SQL_Server_Tool_Onto_DesignSurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
         }
         
         /// <summary>
@@ -2313,6 +2505,7 @@ namespace Warewolf.UITests
             #region Variable Declarations
             WpfListItem switch1 = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.FlowTools.Switch;
             WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
+            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
             WpfButton doneButton = this.DecisionDialog.DoneButton;
             #endregion
 
@@ -2320,6 +2513,9 @@ namespace Warewolf.UITests
             flowchart.EnsureClickable(new Point(303, 126));
             Mouse.StartDragging(switch1, new Point(22, 30));
             Mouse.StopDragging(flowchart, new Point(303, 126));
+
+            // Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+            Assert.AreEqual(this.Drag_Toolbox_Switch_Onto_DesignSurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
 
             // Verify that the 'Exists' property of 'Done' button equals 'True'
             Assert.AreEqual(this.Drag_Toolbox_Switch_Onto_DesignSurfaceParams.DoneButtonExists, doneButton.Exists, "Decision dialog done button does not exist");
@@ -2333,6 +2529,7 @@ namespace Warewolf.UITests
             #region Variable Declarations
             WpfListItem sysInfo = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.UtilityTools.SysInfo;
             WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
+            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
             WpfCustom gatherSystemInfo = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.GatherSystemInfo;
             #endregion
 
@@ -2341,24 +2538,31 @@ namespace Warewolf.UITests
             Mouse.StartDragging(sysInfo, new Point(8, 12));
             Mouse.StopDragging(flowchart, new Point(304, 129));
 
+            // Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+            Assert.AreEqual(this.Drag_Toolbox_System_Information_Onto_DesignSurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
+
             // Verify that the 'Exists' property of 'DsfGatherSystemInformationActivity' custom control equals 'True'
             Assert.AreEqual(this.Drag_Toolbox_System_Information_Onto_DesignSurfaceParams.GatherSystemInfoExists, gatherSystemInfo.Exists, "System Info tool on the design surface does not exist");
         }
         
         /// <summary>
-        /// Drag_Toolbox_Unique_Records_Onto_DesignSurface
+        /// Drag_Toolbox_Unique_Records_Onto_DesignSurface - Use 'Drag_Toolbox_Unique_Records_Onto_DesignSurfaceParams' to pass parameters into this method.
         /// </summary>
         public void Drag_Toolbox_Unique_Records_Onto_DesignSurface()
         {
             #region Variable Declarations
             WpfListItem uniqueRecords = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.RecordsetTools.UniqueRecords;
             WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
+            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
             #endregion
 
             // Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
             flowchart.EnsureClickable(new Point(304, 133));
             Mouse.StartDragging(uniqueRecords, new Point(43, 6));
             Mouse.StopDragging(flowchart, new Point(304, 133));
+
+            // Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+            Assert.AreEqual(this.Drag_Toolbox_Unique_Records_Onto_DesignSurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
         }
         
         /// <summary>
@@ -2369,6 +2573,7 @@ namespace Warewolf.UITests
             #region Variable Declarations
             WpfListItem unZip = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.FileAndFTP.UnZip;
             WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
+            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
             WpfCustom unZip1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.UnZip;
             #endregion
 
@@ -2376,6 +2581,9 @@ namespace Warewolf.UITests
             flowchart.EnsureClickable(new Point(306, 128));
             Mouse.StartDragging(unZip, new Point(15, 0));
             Mouse.StopDragging(flowchart, new Point(306, 128));
+
+            // Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+            Assert.AreEqual(this.Drag_Toolbox_Unzip_Onto_DesignSurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
 
             // Verify that the 'Exists' property of 'DsfUnZip' custom control equals 'True'
             Assert.AreEqual(this.Drag_Toolbox_Unzip_Onto_DesignSurfaceParams.UnZipExists, unZip1.Exists, "Unzip on the design surface does not exist");
@@ -2389,6 +2597,7 @@ namespace Warewolf.UITests
             #region Variable Declarations
             WpfListItem webRequest = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.UtilityTools.WebRequest;
             WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
+            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
             WpfCustom webRequest1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebRequest;
             #endregion
 
@@ -2396,6 +2605,9 @@ namespace Warewolf.UITests
             flowchart.EnsureClickable(new Point(308, 128));
             Mouse.StartDragging(webRequest, new Point(14, 3));
             Mouse.StopDragging(flowchart, new Point(308, 128));
+
+            // Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+            Assert.AreEqual(this.Drag_Toolbox_Web_Request_Onto_DesignSurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
 
             // Verify that the 'Exists' property of 'DsfWebRequestActivity' custom control equals 'True'
             Assert.AreEqual(this.Drag_Toolbox_Web_Request_Onto_DesignSurfaceParams.WebRequestExists, webRequest1.Exists, "Web Request on the design surface does not exist");
@@ -2409,6 +2621,7 @@ namespace Warewolf.UITests
             #region Variable Declarations
             WpfListItem writeFile = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.FileAndFTP.WriteFile;
             WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
+            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
             WpfCustom fileWrite = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FileWrite;
             #endregion
 
@@ -2416,6 +2629,9 @@ namespace Warewolf.UITests
             flowchart.EnsureClickable(new Point(306, 132));
             Mouse.StartDragging(writeFile, new Point(10, 18));
             Mouse.StopDragging(flowchart, new Point(306, 132));
+
+            // Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+            Assert.AreEqual(this.Drag_Toolbox_Write_File_Onto_DesignSurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
 
             // Verify that the 'Exists' property of 'DsfFileWrite' custom control equals 'True'
             Assert.AreEqual(this.Drag_Toolbox_Write_File_Onto_DesignSurfaceParams.FileWriteExists, fileWrite.Exists, "Write File tool on the design surface does not exist");
@@ -2429,6 +2645,7 @@ namespace Warewolf.UITests
             #region Variable Declarations
             WpfListItem xPath = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.UtilityTools.XPath;
             WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
+            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
             WpfCustom xPath1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.XPath;
             #endregion
 
@@ -2436,6 +2653,9 @@ namespace Warewolf.UITests
             flowchart.EnsureClickable(new Point(307, 123));
             Mouse.StartDragging(xPath, new Point(12, -13));
             Mouse.StopDragging(flowchart, new Point(307, 123));
+
+            // Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+            Assert.AreEqual(this.Drag_Toolbox_XPath_Onto_DesignSurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
 
             // Verify that the 'Exists' property of 'DsfXPathActivity' custom control equals 'True'
             Assert.AreEqual(this.Drag_Toolbox_XPath_Onto_DesignSurfaceParams.XPathExists, xPath1.Exists, "XPath tool on the design surface does not exist");
@@ -2449,6 +2669,7 @@ namespace Warewolf.UITests
             #region Variable Declarations
             WpfListItem zip = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.FileAndFTP.Zip;
             WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
+            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
             WpfCustom zip1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Zip;
             #endregion
 
@@ -2456,6 +2677,9 @@ namespace Warewolf.UITests
             flowchart.EnsureClickable(new Point(306, 131));
             Mouse.StartDragging(zip, new Point(16, 4));
             Mouse.StopDragging(flowchart, new Point(306, 131));
+
+            // Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+            Assert.AreEqual(this.Drag_Toolbox_Zip_Onto_DesignSurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
 
             // Verify that the 'Exists' property of 'DsfZip' custom control equals 'True'
             Assert.AreEqual(this.Drag_Toolbox_Zip_Onto_DesignSurfaceParams.ZipExists, zip1.Exists, "Zip tool on the design surface does not exist");
@@ -5005,6 +5229,18 @@ namespace Warewolf.UITests
             }
         }
         
+        public virtual Drag_Explorer_Localhost_First_Item_Onto_Workflow_Design_SurfaceParams Drag_Explorer_Localhost_First_Item_Onto_Workflow_Design_SurfaceParams
+        {
+            get
+            {
+                if ((this.mDrag_Explorer_Localhost_First_Item_Onto_Workflow_Design_SurfaceParams == null))
+                {
+                    this.mDrag_Explorer_Localhost_First_Item_Onto_Workflow_Design_SurfaceParams = new Drag_Explorer_Localhost_First_Item_Onto_Workflow_Design_SurfaceParams();
+                }
+                return this.mDrag_Explorer_Localhost_First_Item_Onto_Workflow_Design_SurfaceParams;
+            }
+        }
+        
         public virtual Drag_GetWeb_RequestTool_Onto_DesignSurfaceParams Drag_GetWeb_RequestTool_Onto_DesignSurfaceParams
         {
             get
@@ -5101,6 +5337,18 @@ namespace Warewolf.UITests
             }
         }
         
+        public virtual Drag_Toolbox_Count_Records_Onto_DesignSurfaceParams Drag_Toolbox_Count_Records_Onto_DesignSurfaceParams
+        {
+            get
+            {
+                if ((this.mDrag_Toolbox_Count_Records_Onto_DesignSurfaceParams == null))
+                {
+                    this.mDrag_Toolbox_Count_Records_Onto_DesignSurfaceParams = new Drag_Toolbox_Count_Records_Onto_DesignSurfaceParams();
+                }
+                return this.mDrag_Toolbox_Count_Records_Onto_DesignSurfaceParams;
+            }
+        }
+        
         public virtual Drag_Toolbox_Create_Onto_DesignSurfaceParams Drag_Toolbox_Create_Onto_DesignSurfaceParams
         {
             get
@@ -5185,6 +5433,54 @@ namespace Warewolf.UITests
             }
         }
         
+        public virtual Drag_Toolbox_Delete_Record_Onto_DesignSurfaceParams Drag_Toolbox_Delete_Record_Onto_DesignSurfaceParams
+        {
+            get
+            {
+                if ((this.mDrag_Toolbox_Delete_Record_Onto_DesignSurfaceParams == null))
+                {
+                    this.mDrag_Toolbox_Delete_Record_Onto_DesignSurfaceParams = new Drag_Toolbox_Delete_Record_Onto_DesignSurfaceParams();
+                }
+                return this.mDrag_Toolbox_Delete_Record_Onto_DesignSurfaceParams;
+            }
+        }
+        
+        public virtual Drag_Toolbox_Dropbox_Download_Onto_DesignSurfaceParams Drag_Toolbox_Dropbox_Download_Onto_DesignSurfaceParams
+        {
+            get
+            {
+                if ((this.mDrag_Toolbox_Dropbox_Download_Onto_DesignSurfaceParams == null))
+                {
+                    this.mDrag_Toolbox_Dropbox_Download_Onto_DesignSurfaceParams = new Drag_Toolbox_Dropbox_Download_Onto_DesignSurfaceParams();
+                }
+                return this.mDrag_Toolbox_Dropbox_Download_Onto_DesignSurfaceParams;
+            }
+        }
+        
+        public virtual Drag_Toolbox_Dropbox_Upload_Onto_DesignSurfaceParams Drag_Toolbox_Dropbox_Upload_Onto_DesignSurfaceParams
+        {
+            get
+            {
+                if ((this.mDrag_Toolbox_Dropbox_Upload_Onto_DesignSurfaceParams == null))
+                {
+                    this.mDrag_Toolbox_Dropbox_Upload_Onto_DesignSurfaceParams = new Drag_Toolbox_Dropbox_Upload_Onto_DesignSurfaceParams();
+                }
+                return this.mDrag_Toolbox_Dropbox_Upload_Onto_DesignSurfaceParams;
+            }
+        }
+        
+        public virtual Drag_Toolbox_Exchange_Email_Onto_DesignSurfaceParams Drag_Toolbox_Exchange_Email_Onto_DesignSurfaceParams
+        {
+            get
+            {
+                if ((this.mDrag_Toolbox_Exchange_Email_Onto_DesignSurfaceParams == null))
+                {
+                    this.mDrag_Toolbox_Exchange_Email_Onto_DesignSurfaceParams = new Drag_Toolbox_Exchange_Email_Onto_DesignSurfaceParams();
+                }
+                return this.mDrag_Toolbox_Exchange_Email_Onto_DesignSurfaceParams;
+            }
+        }
+        
         public virtual Drag_Toolbox_Find_Index_Onto_DesignSurfaceParams Drag_Toolbox_Find_Index_Onto_DesignSurfaceParams
         {
             get
@@ -5194,6 +5490,18 @@ namespace Warewolf.UITests
                     this.mDrag_Toolbox_Find_Index_Onto_DesignSurfaceParams = new Drag_Toolbox_Find_Index_Onto_DesignSurfaceParams();
                 }
                 return this.mDrag_Toolbox_Find_Index_Onto_DesignSurfaceParams;
+            }
+        }
+        
+        public virtual Drag_Toolbox_Find_Record_Index_Onto_DesignSurfaceParams Drag_Toolbox_Find_Record_Index_Onto_DesignSurfaceParams
+        {
+            get
+            {
+                if ((this.mDrag_Toolbox_Find_Record_Index_Onto_DesignSurfaceParams == null))
+                {
+                    this.mDrag_Toolbox_Find_Record_Index_Onto_DesignSurfaceParams = new Drag_Toolbox_Find_Record_Index_Onto_DesignSurfaceParams();
+                }
+                return this.mDrag_Toolbox_Find_Record_Index_Onto_DesignSurfaceParams;
             }
         }
         
@@ -5266,6 +5574,18 @@ namespace Warewolf.UITests
                     this.mDrag_Toolbox_MultiAssign_Onto_DesignSurfaceParams = new Drag_Toolbox_MultiAssign_Onto_DesignSurfaceParams();
                 }
                 return this.mDrag_Toolbox_MultiAssign_Onto_DesignSurfaceParams;
+            }
+        }
+        
+        public virtual Drag_Toolbox_MySql_Database_Onto_DesignSurfaceParams Drag_Toolbox_MySql_Database_Onto_DesignSurfaceParams
+        {
+            get
+            {
+                if ((this.mDrag_Toolbox_MySql_Database_Onto_DesignSurfaceParams == null))
+                {
+                    this.mDrag_Toolbox_MySql_Database_Onto_DesignSurfaceParams = new Drag_Toolbox_MySql_Database_Onto_DesignSurfaceParams();
+                }
+                return this.mDrag_Toolbox_MySql_Database_Onto_DesignSurfaceParams;
             }
         }
         
@@ -5365,6 +5685,54 @@ namespace Warewolf.UITests
             }
         }
         
+        public virtual Drag_Toolbox_Sharepoint_Create_Onto_DesignSurfaceParams Drag_Toolbox_Sharepoint_Create_Onto_DesignSurfaceParams
+        {
+            get
+            {
+                if ((this.mDrag_Toolbox_Sharepoint_Create_Onto_DesignSurfaceParams == null))
+                {
+                    this.mDrag_Toolbox_Sharepoint_Create_Onto_DesignSurfaceParams = new Drag_Toolbox_Sharepoint_Create_Onto_DesignSurfaceParams();
+                }
+                return this.mDrag_Toolbox_Sharepoint_Create_Onto_DesignSurfaceParams;
+            }
+        }
+        
+        public virtual Drag_Toolbox_Sharepoint_Delete_Onto_DesignSurfaceParams Drag_Toolbox_Sharepoint_Delete_Onto_DesignSurfaceParams
+        {
+            get
+            {
+                if ((this.mDrag_Toolbox_Sharepoint_Delete_Onto_DesignSurfaceParams == null))
+                {
+                    this.mDrag_Toolbox_Sharepoint_Delete_Onto_DesignSurfaceParams = new Drag_Toolbox_Sharepoint_Delete_Onto_DesignSurfaceParams();
+                }
+                return this.mDrag_Toolbox_Sharepoint_Delete_Onto_DesignSurfaceParams;
+            }
+        }
+        
+        public virtual Drag_Toolbox_Sharepoint_Read_Onto_DesignSurfaceParams Drag_Toolbox_Sharepoint_Read_Onto_DesignSurfaceParams
+        {
+            get
+            {
+                if ((this.mDrag_Toolbox_Sharepoint_Read_Onto_DesignSurfaceParams == null))
+                {
+                    this.mDrag_Toolbox_Sharepoint_Read_Onto_DesignSurfaceParams = new Drag_Toolbox_Sharepoint_Read_Onto_DesignSurfaceParams();
+                }
+                return this.mDrag_Toolbox_Sharepoint_Read_Onto_DesignSurfaceParams;
+            }
+        }
+        
+        public virtual Drag_Toolbox_Sharepoint_Update_Onto_DesignSurfaceParams Drag_Toolbox_Sharepoint_Update_Onto_DesignSurfaceParams
+        {
+            get
+            {
+                if ((this.mDrag_Toolbox_Sharepoint_Update_Onto_DesignSurfaceParams == null))
+                {
+                    this.mDrag_Toolbox_Sharepoint_Update_Onto_DesignSurfaceParams = new Drag_Toolbox_Sharepoint_Update_Onto_DesignSurfaceParams();
+                }
+                return this.mDrag_Toolbox_Sharepoint_Update_Onto_DesignSurfaceParams;
+            }
+        }
+        
         public virtual Drag_Toolbox_SMTP_Email_Onto_DesignSurfaceParams Drag_Toolbox_SMTP_Email_Onto_DesignSurfaceParams
         {
             get
@@ -5377,6 +5745,18 @@ namespace Warewolf.UITests
             }
         }
         
+        public virtual Drag_Toolbox_Sort_Record_Onto_DesignSurfaceParams Drag_Toolbox_Sort_Record_Onto_DesignSurfaceParams
+        {
+            get
+            {
+                if ((this.mDrag_Toolbox_Sort_Record_Onto_DesignSurfaceParams == null))
+                {
+                    this.mDrag_Toolbox_Sort_Record_Onto_DesignSurfaceParams = new Drag_Toolbox_Sort_Record_Onto_DesignSurfaceParams();
+                }
+                return this.mDrag_Toolbox_Sort_Record_Onto_DesignSurfaceParams;
+            }
+        }
+        
         public virtual Drag_Toolbox_SQL_Bulk_Insert_Onto_DesignSurfaceParams Drag_Toolbox_SQL_Bulk_Insert_Onto_DesignSurfaceParams
         {
             get
@@ -5386,6 +5766,18 @@ namespace Warewolf.UITests
                     this.mDrag_Toolbox_SQL_Bulk_Insert_Onto_DesignSurfaceParams = new Drag_Toolbox_SQL_Bulk_Insert_Onto_DesignSurfaceParams();
                 }
                 return this.mDrag_Toolbox_SQL_Bulk_Insert_Onto_DesignSurfaceParams;
+            }
+        }
+        
+        public virtual Drag_Toolbox_SQL_Server_Tool_Onto_DesignSurfaceParams Drag_Toolbox_SQL_Server_Tool_Onto_DesignSurfaceParams
+        {
+            get
+            {
+                if ((this.mDrag_Toolbox_SQL_Server_Tool_Onto_DesignSurfaceParams == null))
+                {
+                    this.mDrag_Toolbox_SQL_Server_Tool_Onto_DesignSurfaceParams = new Drag_Toolbox_SQL_Server_Tool_Onto_DesignSurfaceParams();
+                }
+                return this.mDrag_Toolbox_SQL_Server_Tool_Onto_DesignSurfaceParams;
             }
         }
         
@@ -5410,6 +5802,18 @@ namespace Warewolf.UITests
                     this.mDrag_Toolbox_System_Information_Onto_DesignSurfaceParams = new Drag_Toolbox_System_Information_Onto_DesignSurfaceParams();
                 }
                 return this.mDrag_Toolbox_System_Information_Onto_DesignSurfaceParams;
+            }
+        }
+        
+        public virtual Drag_Toolbox_Unique_Records_Onto_DesignSurfaceParams Drag_Toolbox_Unique_Records_Onto_DesignSurfaceParams
+        {
+            get
+            {
+                if ((this.mDrag_Toolbox_Unique_Records_Onto_DesignSurfaceParams == null))
+                {
+                    this.mDrag_Toolbox_Unique_Records_Onto_DesignSurfaceParams = new Drag_Toolbox_Unique_Records_Onto_DesignSurfaceParams();
+                }
+                return this.mDrag_Toolbox_Unique_Records_Onto_DesignSurfaceParams;
             }
         }
         
@@ -6156,6 +6560,18 @@ namespace Warewolf.UITests
                 return this.mServicePickerDialog;
             }
         }
+        
+        public UIWarewolfASHASHWindow UIWarewolfASHASHWindow
+        {
+            get
+            {
+                if ((this.mUIWarewolfASHASHWindow == null))
+                {
+                    this.mUIWarewolfASHASHWindow = new UIWarewolfASHASHWindow();
+                }
+                return this.mUIWarewolfASHASHWindow;
+            }
+        }
         #endregion
         
         #region Fields
@@ -6231,6 +6647,8 @@ namespace Warewolf.UITests
         
         private Drag_Explorer_First_Remote_Server_First_Item_Onto_Workflow_Design_SurfaceParams mDrag_Explorer_First_Remote_Server_First_Item_Onto_Workflow_Design_SurfaceParams;
         
+        private Drag_Explorer_Localhost_First_Item_Onto_Workflow_Design_SurfaceParams mDrag_Explorer_Localhost_First_Item_Onto_Workflow_Design_SurfaceParams;
+        
         private Drag_GetWeb_RequestTool_Onto_DesignSurfaceParams mDrag_GetWeb_RequestTool_Onto_DesignSurfaceParams;
         
         private Drag_PostWeb_RequestTool_Onto_DesignSurfaceParams mDrag_PostWeb_RequestTool_Onto_DesignSurfaceParams;
@@ -6247,6 +6665,8 @@ namespace Warewolf.UITests
         
         private Drag_Toolbox_Copy_Onto_DesignSurfaceParams mDrag_Toolbox_Copy_Onto_DesignSurfaceParams;
         
+        private Drag_Toolbox_Count_Records_Onto_DesignSurfaceParams mDrag_Toolbox_Count_Records_Onto_DesignSurfaceParams;
+        
         private Drag_Toolbox_Create_Onto_DesignSurfaceParams mDrag_Toolbox_Create_Onto_DesignSurfaceParams;
         
         private Drag_Toolbox_Data_Merge_Onto_DesignSurfaceParams mDrag_Toolbox_Data_Merge_Onto_DesignSurfaceParams;
@@ -6261,7 +6681,17 @@ namespace Warewolf.UITests
         
         private Drag_Toolbox_Delete_Onto_DesignSurfaceParams mDrag_Toolbox_Delete_Onto_DesignSurfaceParams;
         
+        private Drag_Toolbox_Delete_Record_Onto_DesignSurfaceParams mDrag_Toolbox_Delete_Record_Onto_DesignSurfaceParams;
+        
+        private Drag_Toolbox_Dropbox_Download_Onto_DesignSurfaceParams mDrag_Toolbox_Dropbox_Download_Onto_DesignSurfaceParams;
+        
+        private Drag_Toolbox_Dropbox_Upload_Onto_DesignSurfaceParams mDrag_Toolbox_Dropbox_Upload_Onto_DesignSurfaceParams;
+        
+        private Drag_Toolbox_Exchange_Email_Onto_DesignSurfaceParams mDrag_Toolbox_Exchange_Email_Onto_DesignSurfaceParams;
+        
         private Drag_Toolbox_Find_Index_Onto_DesignSurfaceParams mDrag_Toolbox_Find_Index_Onto_DesignSurfaceParams;
+        
+        private Drag_Toolbox_Find_Record_Index_Onto_DesignSurfaceParams mDrag_Toolbox_Find_Record_Index_Onto_DesignSurfaceParams;
         
         private Drag_Toolbox_For_Each_Onto_DesignSurfaceParams mDrag_Toolbox_For_Each_Onto_DesignSurfaceParams;
         
@@ -6274,6 +6704,8 @@ namespace Warewolf.UITests
         private Drag_Toolbox_Move_Onto_DesignSurfaceParams mDrag_Toolbox_Move_Onto_DesignSurfaceParams;
         
         private Drag_Toolbox_MultiAssign_Onto_DesignSurfaceParams mDrag_Toolbox_MultiAssign_Onto_DesignSurfaceParams;
+        
+        private Drag_Toolbox_MySql_Database_Onto_DesignSurfaceParams mDrag_Toolbox_MySql_Database_Onto_DesignSurfaceParams;
         
         private Drag_Toolbox_Random_Onto_DesignSurfaceParams mDrag_Toolbox_Random_Onto_DesignSurfaceParams;
         
@@ -6291,13 +6723,27 @@ namespace Warewolf.UITests
         
         private Drag_Toolbox_Service_Picker_Onto_DesignSurfaceParams mDrag_Toolbox_Service_Picker_Onto_DesignSurfaceParams;
         
+        private Drag_Toolbox_Sharepoint_Create_Onto_DesignSurfaceParams mDrag_Toolbox_Sharepoint_Create_Onto_DesignSurfaceParams;
+        
+        private Drag_Toolbox_Sharepoint_Delete_Onto_DesignSurfaceParams mDrag_Toolbox_Sharepoint_Delete_Onto_DesignSurfaceParams;
+        
+        private Drag_Toolbox_Sharepoint_Read_Onto_DesignSurfaceParams mDrag_Toolbox_Sharepoint_Read_Onto_DesignSurfaceParams;
+        
+        private Drag_Toolbox_Sharepoint_Update_Onto_DesignSurfaceParams mDrag_Toolbox_Sharepoint_Update_Onto_DesignSurfaceParams;
+        
         private Drag_Toolbox_SMTP_Email_Onto_DesignSurfaceParams mDrag_Toolbox_SMTP_Email_Onto_DesignSurfaceParams;
         
+        private Drag_Toolbox_Sort_Record_Onto_DesignSurfaceParams mDrag_Toolbox_Sort_Record_Onto_DesignSurfaceParams;
+        
         private Drag_Toolbox_SQL_Bulk_Insert_Onto_DesignSurfaceParams mDrag_Toolbox_SQL_Bulk_Insert_Onto_DesignSurfaceParams;
+        
+        private Drag_Toolbox_SQL_Server_Tool_Onto_DesignSurfaceParams mDrag_Toolbox_SQL_Server_Tool_Onto_DesignSurfaceParams;
         
         private Drag_Toolbox_Switch_Onto_DesignSurfaceParams mDrag_Toolbox_Switch_Onto_DesignSurfaceParams;
         
         private Drag_Toolbox_System_Information_Onto_DesignSurfaceParams mDrag_Toolbox_System_Information_Onto_DesignSurfaceParams;
+        
+        private Drag_Toolbox_Unique_Records_Onto_DesignSurfaceParams mDrag_Toolbox_Unique_Records_Onto_DesignSurfaceParams;
         
         private Drag_Toolbox_Unzip_Onto_DesignSurfaceParams mDrag_Toolbox_Unzip_Onto_DesignSurfaceParams;
         
@@ -6422,6 +6868,8 @@ namespace Warewolf.UITests
         private SelectWindowsGroupDialog mSelectWindowsGroupDialog;
         
         private ServicePickerDialog mServicePickerDialog;
+        
+        private UIWarewolfASHASHWindow mUIWarewolfASHASHWindow;
         #endregion
     }
     
@@ -7329,6 +7777,11 @@ namespace Warewolf.UITests
         
         #region Fields
         /// <summary>
+        /// Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+        /// </summary>
+        public bool Connector1Exists = true;
+        
+        /// <summary>
         /// Verify that the 'Exists' property of 'DsfDotNetDllActivity' custom control equals 'True'
         /// </summary>
         public bool DotNetDllExists = true;
@@ -7344,9 +7797,29 @@ namespace Warewolf.UITests
         
         #region Fields
         /// <summary>
+        /// Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+        /// </summary>
+        public bool Connector1Exists = true;
+        
+        /// <summary>
         /// Verify that the 'Exists' property of 'DsfActivity' custom control equals 'True'
         /// </summary>
         public bool SubWorkflowExists = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Drag_Explorer_Localhost_First_Item_Onto_Workflow_Design_Surface'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Drag_Explorer_Localhost_First_Item_Onto_Workflow_Design_SurfaceParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+        /// </summary>
+        public bool Connector1Exists = true;
         #endregion
     }
     
@@ -7358,6 +7831,11 @@ namespace Warewolf.UITests
     {
         
         #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+        /// </summary>
+        public bool Connector1Exists = true;
+        
         /// <summary>
         /// Verify that the 'Exists' property of 'DsfWebRequestActivity' custom control equals 'True'
         /// </summary>
@@ -7374,6 +7852,11 @@ namespace Warewolf.UITests
         
         #region Fields
         /// <summary>
+        /// Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+        /// </summary>
+        public bool Connector1Exists = true;
+        
+        /// <summary>
         /// Verify that the 'Exists' property of 'DsfWebPostActivity' custom control equals 'True'
         /// </summary>
         public bool WebPostExists = true;
@@ -7388,6 +7871,11 @@ namespace Warewolf.UITests
     {
         
         #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+        /// </summary>
+        public bool Connector1Exists = true;
+        
         /// <summary>
         /// Verify that the 'Exists' property of 'DsfBaseConvertActivity' custom control equals 'True'
         /// </summary>
@@ -7404,6 +7892,11 @@ namespace Warewolf.UITests
         
         #region Fields
         /// <summary>
+        /// Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+        /// </summary>
+        public bool Connector1Exists = true;
+        
+        /// <summary>
         /// Verify that the 'Exists' property of 'DsfCalculateActivity' custom control equals 'True'
         /// </summary>
         public bool CalculateExists = true;
@@ -7418,6 +7911,11 @@ namespace Warewolf.UITests
     {
         
         #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+        /// </summary>
+        public bool Connector1Exists = true;
+        
         /// <summary>
         /// Verify that the 'Exists' property of 'DsfCaseConvertActivity' custom control equals 'True'
         /// </summary>
@@ -7434,6 +7932,11 @@ namespace Warewolf.UITests
         
         #region Fields
         /// <summary>
+        /// Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+        /// </summary>
+        public bool Connector1Exists = true;
+        
+        /// <summary>
         /// Verify that the 'Exists' property of 'DsfExecuteCommandLineActivity' custom control equals 'True'
         /// </summary>
         public bool ExecuteCommandLineExists = true;
@@ -7448,6 +7951,11 @@ namespace Warewolf.UITests
     {
         
         #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+        /// </summary>
+        public bool Connector1Exists = true;
+        
         /// <summary>
         /// Verify that the 'Exists' property of 'DsfCommentActivity' custom control equals 'True'
         /// </summary>
@@ -7464,9 +7972,29 @@ namespace Warewolf.UITests
         
         #region Fields
         /// <summary>
+        /// Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+        /// </summary>
+        public bool Connector1Exists = true;
+        
+        /// <summary>
         /// Verify that the 'Exists' property of 'DsfPathCopy' custom control equals 'True'
         /// </summary>
         public bool PathCopyExists = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Drag_Toolbox_Count_Records_Onto_DesignSurface'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Drag_Toolbox_Count_Records_Onto_DesignSurfaceParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+        /// </summary>
+        public bool Connector1Exists = true;
         #endregion
     }
     
@@ -7478,6 +8006,11 @@ namespace Warewolf.UITests
     {
         
         #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+        /// </summary>
+        public bool Connector1Exists = true;
+        
         /// <summary>
         /// Verify that the 'Exists' property of 'DsfPathCreate' custom control equals 'True'
         /// </summary>
@@ -7494,6 +8027,11 @@ namespace Warewolf.UITests
         
         #region Fields
         /// <summary>
+        /// Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+        /// </summary>
+        public bool Connector1Exists = true;
+        
+        /// <summary>
         /// Verify that the 'Exists' property of 'DsfDataMergeActivity' custom control equals 'True'
         /// </summary>
         public bool DataMergeExists = true;
@@ -7508,6 +8046,11 @@ namespace Warewolf.UITests
     {
         
         #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+        /// </summary>
+        public bool Connector1Exists = true;
+        
         /// <summary>
         /// Verify that the 'Exists' property of 'DsfDataSplitActivity' custom control equals 'True'
         /// </summary>
@@ -7524,6 +8067,11 @@ namespace Warewolf.UITests
         
         #region Fields
         /// <summary>
+        /// Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+        /// </summary>
+        public bool Connector1Exists = true;
+        
+        /// <summary>
         /// Verify that the 'Exists' property of 'DsfDateTimeActivity' custom control equals 'True'
         /// </summary>
         public bool DateTimeExists = true;
@@ -7538,6 +8086,11 @@ namespace Warewolf.UITests
     {
         
         #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+        /// </summary>
+        public bool Connector1Exists = true;
+        
         /// <summary>
         /// Verify that the 'Exists' property of 'DsfDateTimeDifferenceActivity' custom control equals 'True'
         /// </summary>
@@ -7554,6 +8107,11 @@ namespace Warewolf.UITests
         
         #region Fields
         /// <summary>
+        /// Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+        /// </summary>
+        public bool Connector1Exists = true;
+        
+        /// <summary>
         /// Verify that the 'Exists' property of 'Done' button equals 'True'
         /// </summary>
         public bool DoneButtonExists = true;
@@ -7569,9 +8127,74 @@ namespace Warewolf.UITests
         
         #region Fields
         /// <summary>
+        /// Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+        /// </summary>
+        public bool Connector1Exists = true;
+        
+        /// <summary>
         /// Verify that the 'Exists' property of 'DsfPathDelete' custom control equals 'True'
         /// </summary>
         public bool PathDeleteExists = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Drag_Toolbox_Delete_Record_Onto_DesignSurface'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Drag_Toolbox_Delete_Record_Onto_DesignSurfaceParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+        /// </summary>
+        public bool Connector1Exists = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Drag_Toolbox_Dropbox_Download_Onto_DesignSurface'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Drag_Toolbox_Dropbox_Download_Onto_DesignSurfaceParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+        /// </summary>
+        public bool Connector1Exists = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Drag_Toolbox_Dropbox_Upload_Onto_DesignSurface'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Drag_Toolbox_Dropbox_Upload_Onto_DesignSurfaceParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+        /// </summary>
+        public bool Connector1Exists = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Drag_Toolbox_Exchange_Email_Onto_DesignSurface'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Drag_Toolbox_Exchange_Email_Onto_DesignSurfaceParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+        /// </summary>
+        public bool Connector1Exists = true;
         #endregion
     }
     
@@ -7584,9 +8207,29 @@ namespace Warewolf.UITests
         
         #region Fields
         /// <summary>
+        /// Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+        /// </summary>
+        public bool Connector1Exists = true;
+        
+        /// <summary>
         /// Verify that the 'Exists' property of 'DsfIndexActivity' custom control equals 'True'
         /// </summary>
         public bool FindIndexExists = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Drag_Toolbox_Find_Record_Index_Onto_DesignSurface'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Drag_Toolbox_Find_Record_Index_Onto_DesignSurfaceParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+        /// </summary>
+        public bool Connector1Exists = true;
         #endregion
     }
     
@@ -7598,6 +8241,11 @@ namespace Warewolf.UITests
     {
         
         #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+        /// </summary>
+        public bool Connector1Exists = true;
+        
         /// <summary>
         /// Verify that the 'Exists' property of 'DsfForEachActivity' custom control equals 'True'
         /// </summary>
@@ -7614,6 +8262,11 @@ namespace Warewolf.UITests
         
         #region Fields
         /// <summary>
+        /// Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+        /// </summary>
+        public bool Connector1Exists = true;
+        
+        /// <summary>
         /// Verify that the 'Exists' property of 'DsfNumberFormatActivity' custom control equals 'True'
         /// </summary>
         public bool FormatNumberExists = true;
@@ -7628,6 +8281,11 @@ namespace Warewolf.UITests
     {
         
         #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+        /// </summary>
+        public bool Connector1Exists = true;
+        
         /// <summary>
         /// Verify that the 'Exists' property of 'DsfCreateJsonActivity' custom control equals 'True'
         /// </summary>
@@ -7644,6 +8302,11 @@ namespace Warewolf.UITests
         
         #region Fields
         /// <summary>
+        /// Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+        /// </summary>
+        public bool Connector1Exists = true;
+        
+        /// <summary>
         /// Verify that the 'Exists' property of 'DsfRecordsetLengthActivity' custom control equals 'True'
         /// </summary>
         public bool LengthExists = true;
@@ -7658,6 +8321,11 @@ namespace Warewolf.UITests
     {
         
         #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+        /// </summary>
+        public bool Connector1Exists = true;
+        
         /// <summary>
         /// Verify that the 'Exists' property of 'DsfPathMove' custom control equals 'True'
         /// </summary>
@@ -7679,9 +8347,29 @@ namespace Warewolf.UITests
         public bool MultiAssignExists = true;
         
         /// <summary>
+        /// Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+        /// </summary>
+        public bool Connector1Exists = true;
+        
+        /// <summary>
         /// Verify that the 'Exists' property of 'UI_TextBox_AutoID' text box equals 'True'
         /// </summary>
         public bool TextboxExists = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Drag_Toolbox_MySql_Database_Onto_DesignSurface'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Drag_Toolbox_MySql_Database_Onto_DesignSurfaceParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+        /// </summary>
+        public bool Connector1Exists = true;
         #endregion
     }
     
@@ -7693,6 +8381,11 @@ namespace Warewolf.UITests
     {
         
         #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+        /// </summary>
+        public bool Connector1Exists = true;
+        
         /// <summary>
         /// Verify that the 'Exists' property of 'DsfRandomActivity' custom control equals 'True'
         /// </summary>
@@ -7709,6 +8402,11 @@ namespace Warewolf.UITests
         
         #region Fields
         /// <summary>
+        /// Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+        /// </summary>
+        public bool Connector1Exists = true;
+        
+        /// <summary>
         /// Verify that the 'Exists' property of 'DsfFileRead' custom control equals 'True'
         /// </summary>
         public bool FileReadExists = true;
@@ -7723,6 +8421,11 @@ namespace Warewolf.UITests
     {
         
         #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+        /// </summary>
+        public bool Connector1Exists = true;
+        
         /// <summary>
         /// Verify that the 'Exists' property of 'DsfFolderRead' custom control equals 'True'
         /// </summary>
@@ -7739,6 +8442,11 @@ namespace Warewolf.UITests
         
         #region Fields
         /// <summary>
+        /// Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+        /// </summary>
+        public bool Connector1Exists = true;
+        
+        /// <summary>
         /// Verify that the 'Exists' property of 'DsfPathRename' custom control equals 'True'
         /// </summary>
         public bool PathRenameExists = true;
@@ -7753,6 +8461,11 @@ namespace Warewolf.UITests
     {
         
         #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+        /// </summary>
+        public bool Connector1Exists = true;
+        
         /// <summary>
         /// Verify that the 'Exists' property of 'DsfReplaceActivity' custom control equals 'True'
         /// </summary>
@@ -7769,6 +8482,11 @@ namespace Warewolf.UITests
         
         #region Fields
         /// <summary>
+        /// Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+        /// </summary>
+        public bool Connector1Exists = true;
+        
+        /// <summary>
         /// Verify that the 'Exists' property of 'DsfScriptingActivity' custom control equals 'True'
         /// </summary>
         public bool ScriptingExists = true;
@@ -7783,6 +8501,11 @@ namespace Warewolf.UITests
     {
         
         #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+        /// </summary>
+        public bool Connector1Exists = true;
+        
         /// <summary>
         /// Verify that the 'Exists' property of 'DsfSequenceActivity' custom control equals 'True'
         /// </summary>
@@ -7799,9 +8522,74 @@ namespace Warewolf.UITests
         
         #region Fields
         /// <summary>
+        /// Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+        /// </summary>
+        public bool Connector1Exists = true;
+        
+        /// <summary>
         /// Verify that the 'Exists' property of 'Cancel' button equals 'True'
         /// </summary>
         public bool CancelExists = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Drag_Toolbox_Sharepoint_Create_Onto_DesignSurface'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Drag_Toolbox_Sharepoint_Create_Onto_DesignSurfaceParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+        /// </summary>
+        public bool Connector1Exists = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Drag_Toolbox_Sharepoint_Delete_Onto_DesignSurface'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Drag_Toolbox_Sharepoint_Delete_Onto_DesignSurfaceParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+        /// </summary>
+        public bool Connector1Exists = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Drag_Toolbox_Sharepoint_Read_Onto_DesignSurface'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Drag_Toolbox_Sharepoint_Read_Onto_DesignSurfaceParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+        /// </summary>
+        public bool Connector1Exists = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Drag_Toolbox_Sharepoint_Update_Onto_DesignSurface'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Drag_Toolbox_Sharepoint_Update_Onto_DesignSurfaceParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+        /// </summary>
+        public bool Connector1Exists = true;
         #endregion
     }
     
@@ -7814,9 +8602,29 @@ namespace Warewolf.UITests
         
         #region Fields
         /// <summary>
+        /// Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+        /// </summary>
+        public bool Connector1Exists = true;
+        
+        /// <summary>
         /// Verify that the 'Exists' property of 'DsfSendEmailActivity' custom control equals 'True'
         /// </summary>
         public bool SMTPEmailExists = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Drag_Toolbox_Sort_Record_Onto_DesignSurface'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Drag_Toolbox_Sort_Record_Onto_DesignSurfaceParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+        /// </summary>
+        public bool Connector1Exists = true;
         #endregion
     }
     
@@ -7829,9 +8637,29 @@ namespace Warewolf.UITests
         
         #region Fields
         /// <summary>
+        /// Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+        /// </summary>
+        public bool Connector1Exists = true;
+        
+        /// <summary>
         /// Verify that the 'Exists' property of 'DsfSqlBulkInsertActivity' custom control equals 'True'
         /// </summary>
         public bool SqlBulkInsertExists = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Drag_Toolbox_SQL_Server_Tool_Onto_DesignSurface'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Drag_Toolbox_SQL_Server_Tool_Onto_DesignSurfaceParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+        /// </summary>
+        public bool Connector1Exists = true;
         #endregion
     }
     
@@ -7843,6 +8671,11 @@ namespace Warewolf.UITests
     {
         
         #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+        /// </summary>
+        public bool Connector1Exists = true;
+        
         /// <summary>
         /// Verify that the 'Exists' property of 'Done' button equals 'True'
         /// </summary>
@@ -7859,9 +8692,29 @@ namespace Warewolf.UITests
         
         #region Fields
         /// <summary>
+        /// Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+        /// </summary>
+        public bool Connector1Exists = true;
+        
+        /// <summary>
         /// Verify that the 'Exists' property of 'DsfGatherSystemInformationActivity' custom control equals 'True'
         /// </summary>
         public bool GatherSystemInfoExists = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Drag_Toolbox_Unique_Records_Onto_DesignSurface'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Drag_Toolbox_Unique_Records_Onto_DesignSurfaceParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+        /// </summary>
+        public bool Connector1Exists = true;
         #endregion
     }
     
@@ -7873,6 +8726,11 @@ namespace Warewolf.UITests
     {
         
         #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+        /// </summary>
+        public bool Connector1Exists = true;
+        
         /// <summary>
         /// Verify that the 'Exists' property of 'DsfUnZip' custom control equals 'True'
         /// </summary>
@@ -7889,6 +8747,11 @@ namespace Warewolf.UITests
         
         #region Fields
         /// <summary>
+        /// Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+        /// </summary>
+        public bool Connector1Exists = true;
+        
+        /// <summary>
         /// Verify that the 'Exists' property of 'DsfWebRequestActivity' custom control equals 'True'
         /// </summary>
         public bool WebRequestExists = true;
@@ -7903,6 +8766,11 @@ namespace Warewolf.UITests
     {
         
         #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+        /// </summary>
+        public bool Connector1Exists = true;
+        
         /// <summary>
         /// Verify that the 'Exists' property of 'DsfFileWrite' custom control equals 'True'
         /// </summary>
@@ -7919,6 +8787,11 @@ namespace Warewolf.UITests
         
         #region Fields
         /// <summary>
+        /// Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+        /// </summary>
+        public bool Connector1Exists = true;
+        
+        /// <summary>
         /// Verify that the 'Exists' property of 'DsfXPathActivity' custom control equals 'True'
         /// </summary>
         public bool XPathExists = true;
@@ -7933,6 +8806,11 @@ namespace Warewolf.UITests
     {
         
         #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+        /// </summary>
+        public bool Connector1Exists = true;
+        
         /// <summary>
         /// Verify that the 'Exists' property of 'DsfZip' custom control equals 'True'
         /// </summary>
@@ -18268,6 +19146,23 @@ namespace Warewolf.UITests
                 return this.mWebPost;
             }
         }
+        
+        public WpfCustom Connector1
+        {
+            get
+            {
+                if ((this.mConnector1 == null))
+                {
+                    this.mConnector1 = new WpfCustom(this);
+                    #region Search Criteria
+                    this.mConnector1.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ConnectorWithoutStartDot";
+                    this.mConnector1.SearchProperties[WpfControl.PropertyNames.Instance] = "1";
+                    this.mConnector1.WindowTitles.Add("Warewolf (ASH\\ASH)");
+                    #endregion
+                }
+                return this.mConnector1;
+            }
+        }
         #endregion
         
         #region Fields
@@ -18386,6 +19281,8 @@ namespace Warewolf.UITests
         private WpfCustom mStartNode;
         
         private WebPost mWebPost;
+        
+        private WpfCustom mConnector1;
         #endregion
     }
     
@@ -31188,6 +32085,76 @@ namespace Warewolf.UITests
         
         #region Fields
         private WpfTreeItem mSubTreeItem1;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIWarewolfASHASHWindow : WpfWindow
+    {
+        
+        public UIWarewolfASHASHWindow()
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfWindow.PropertyNames.Name] = "Warewolf (ASH\\ASH)";
+            this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
+            this.WindowTitles.Add("Warewolf (ASH\\ASH)");
+            #endregion
+        }
+        
+        #region Properties
+        public UIWorkflowItemPresenteCustom UIWorkflowItemPresenteCustom
+        {
+            get
+            {
+                if ((this.mUIWorkflowItemPresenteCustom == null))
+                {
+                    this.mUIWorkflowItemPresenteCustom = new UIWorkflowItemPresenteCustom(this);
+                }
+                return this.mUIWorkflowItemPresenteCustom;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIWorkflowItemPresenteCustom mUIWorkflowItemPresenteCustom;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIWorkflowItemPresenteCustom : WpfCustom
+    {
+        
+        public UIWorkflowItemPresenteCustom(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.WorkflowItemPresenter";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "WorkflowItemPresenter";
+            this.WindowTitles.Add("Warewolf (ASH\\ASH)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfCustom UIFlowchartCustom
+        {
+            get
+            {
+                if ((this.mUIFlowchartCustom == null))
+                {
+                    this.mUIFlowchartCustom = new WpfCustom(this);
+                    #region Search Criteria
+                    this.mUIFlowchartCustom.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.FlowchartDesigner";
+                    this.mUIFlowchartCustom.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Unsaved 2(FlowchartDesigner)";
+                    this.mUIFlowchartCustom.WindowTitles.Add("Warewolf (ASH\\ASH)");
+                    #endregion
+                }
+                return this.mUIFlowchartCustom;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfCustom mUIFlowchartCustom;
         #endregion
     }
 }
