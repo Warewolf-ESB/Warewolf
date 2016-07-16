@@ -1415,7 +1415,7 @@ namespace Warewolf.UITests
             Mouse.StartDragging(dotNetDLL, new Point(16, 25));
             Mouse.StopDragging(flowchart, new Point(308, 127));
 
-            // Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+            // Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
             Assert.AreEqual(this.Drag_DotNet_DLL_Connector_Onto_DesignSurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
 
             // Verify that the 'Exists' property of 'DsfDotNetDllActivity' custom control equals 'True'
@@ -1439,7 +1439,7 @@ namespace Warewolf.UITests
             Mouse.StartDragging(firstItem, new Point(16, 5));
             Mouse.StopDragging(flowchart, new Point(307, 128));
 
-            // Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+            // Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
             Assert.AreEqual(this.Drag_Explorer_First_Remote_Server_First_Item_Onto_Workflow_Design_SurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
 
             // Verify that the 'Exists' property of 'DsfActivity' custom control equals 'True'
@@ -1462,7 +1462,7 @@ namespace Warewolf.UITests
             Mouse.StartDragging(firstItem, new Point(16, 5));
             Mouse.StopDragging(flowchart, new Point(307, 128));
 
-            // Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+            // Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
             Assert.AreEqual(this.Drag_Explorer_Localhost_First_Item_Onto_Workflow_Design_SurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
         }
         
@@ -1483,7 +1483,7 @@ namespace Warewolf.UITests
             Mouse.StartDragging(webRequest, new Point(12, 3));
             Mouse.StopDragging(flowchart, new Point(305, 124));
 
-            // Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+            // Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
             Assert.AreEqual(this.Drag_GetWeb_RequestTool_Onto_DesignSurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
 
             // Verify that the 'Exists' property of 'DsfWebRequestActivity' custom control equals 'True'
@@ -1507,7 +1507,7 @@ namespace Warewolf.UITests
             Mouse.StartDragging(pOST, new Point(20, 35));
             Mouse.StopDragging(flowchart, new Point(306, 128));
 
-            // Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+            // Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
             Assert.AreEqual(this.Drag_PostWeb_RequestTool_Onto_DesignSurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
 
             // Verify that the 'Exists' property of 'DsfWebPostActivity' custom control equals 'True'
@@ -1531,7 +1531,7 @@ namespace Warewolf.UITests
             Mouse.StartDragging(baseConvert, new Point(12, 12));
             Mouse.StopDragging(flowchart, new Point(303, 128));
 
-            // Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+            // Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
             Assert.AreEqual(this.Drag_Toolbox_Base_Conversion_Onto_DesignSurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
 
             // Verify that the 'Exists' property of 'DsfBaseConvertActivity' custom control equals 'True'
@@ -1555,7 +1555,7 @@ namespace Warewolf.UITests
             Mouse.StartDragging(calculate, new Point(59, -17));
             Mouse.StopDragging(flowchart, new Point(305, 131));
 
-            // Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+            // Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
             Assert.AreEqual(this.Drag_Toolbox_Calculate_Onto_DesignSurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
 
             // Verify that the 'Exists' property of 'DsfCalculateActivity' custom control equals 'True'
@@ -1579,7 +1579,7 @@ namespace Warewolf.UITests
             Mouse.StartDragging(caseConvert, new Point(19, 13));
             Mouse.StopDragging(flowchart, new Point(303, 130));
 
-            // Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+            // Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
             Assert.AreEqual(this.Drag_Toolbox_Case_Conversion_Onto_DesignSurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
 
             // Verify that the 'Exists' property of 'DsfCaseConvertActivity' custom control equals 'True'
@@ -1603,7 +1603,7 @@ namespace Warewolf.UITests
             Mouse.StartDragging(cMDScript, new Point(19, 19));
             Mouse.StopDragging(flowchart, new Point(305, 122));
 
-            // Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+            // Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
             Assert.AreEqual(this.Drag_Toolbox_CMD_Line_Onto_DesignSurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
 
             // Verify that the 'Exists' property of 'DsfExecuteCommandLineActivity' custom control equals 'True'
@@ -1627,7 +1627,7 @@ namespace Warewolf.UITests
             Mouse.StartDragging(comment, new Point(40, 15));
             Mouse.StopDragging(flowchart, new Point(308, 129));
 
-            // Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+            // Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
             Assert.AreEqual(this.Drag_Toolbox_Comment_Onto_DesignSurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
 
             // Verify that the 'Exists' property of 'DsfCommentActivity' custom control equals 'True'
@@ -1651,7 +1651,7 @@ namespace Warewolf.UITests
             Mouse.StartDragging(copy, new Point(19, -3));
             Mouse.StopDragging(flowchart, new Point(310, 129));
 
-            // Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+            // Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
             Assert.AreEqual(this.Drag_Toolbox_Copy_Onto_DesignSurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
 
             // Verify that the 'Exists' property of 'DsfPathCopy' custom control equals 'True'
@@ -1674,7 +1674,7 @@ namespace Warewolf.UITests
             Mouse.StartDragging(count, new Point(13, 18));
             Mouse.StopDragging(flowchart, new Point(307, 125));
 
-            // Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+            // Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
             Assert.AreEqual(this.Drag_Toolbox_Count_Records_Onto_DesignSurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
         }
         
@@ -1695,7 +1695,7 @@ namespace Warewolf.UITests
             Mouse.StartDragging(create, new Point(9, 16));
             Mouse.StopDragging(flowchart, new Point(308, 131));
 
-            // Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+            // Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
             Assert.AreEqual(this.Drag_Toolbox_Create_Onto_DesignSurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
 
             // Verify that the 'Exists' property of 'DsfPathCreate' custom control equals 'True'
@@ -1719,7 +1719,7 @@ namespace Warewolf.UITests
             Mouse.StartDragging(dataMerge, new Point(54, 23));
             Mouse.StopDragging(flowchart, new Point(305, 133));
 
-            // Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+            // Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
             Assert.AreEqual(this.Drag_Toolbox_Data_Merge_Onto_DesignSurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
 
             // Verify that the 'Exists' property of 'DsfDataMergeActivity' custom control equals 'True'
@@ -1743,7 +1743,7 @@ namespace Warewolf.UITests
             Mouse.StartDragging(dataSplit, new Point(3, 8));
             Mouse.StopDragging(flowchart, new Point(308, 129));
 
-            // Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+            // Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
             Assert.AreEqual(this.Drag_Toolbox_Data_Split_Onto_DesignSurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
 
             // Verify that the 'Exists' property of 'DsfDataSplitActivity' custom control equals 'True'
@@ -1767,7 +1767,7 @@ namespace Warewolf.UITests
             Mouse.StartDragging(dateTime, new Point(20, -1));
             Mouse.StopDragging(flowchart, new Point(304, 127));
 
-            // Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+            // Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
             Assert.AreEqual(this.Drag_Toolbox_Date_And_Time_Onto_DesignSurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
 
             // Verify that the 'Exists' property of 'DsfDateTimeActivity' custom control equals 'True'
@@ -1791,7 +1791,7 @@ namespace Warewolf.UITests
             Mouse.StartDragging(dateTimeDifference, new Point(48, 7));
             Mouse.StopDragging(flowchart, new Point(306, 131));
 
-            // Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+            // Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
             Assert.AreEqual(this.Drag_Toolbox_DateTime_Difference_Onto_DesignSurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
 
             // Verify that the 'Exists' property of 'DsfDateTimeDifferenceActivity' custom control equals 'True'
@@ -1815,7 +1815,7 @@ namespace Warewolf.UITests
             Mouse.StartDragging(decision, new Point(16, 11));
             Mouse.StopDragging(flowchart, new Point(309, 128));
 
-            // Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+            // Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
             Assert.AreEqual(this.Drag_Toolbox_Decision_Onto_DesignSurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
 
             // Verify that the 'Exists' property of 'Done' button equals 'True'
@@ -1839,7 +1839,7 @@ namespace Warewolf.UITests
             Mouse.StartDragging(delete, new Point(13, 9));
             Mouse.StopDragging(flowchart, new Point(306, 125));
 
-            // Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+            // Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
             Assert.AreEqual(this.Drag_Toolbox_Delete_Onto_DesignSurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
 
             // Verify that the 'Exists' property of 'DsfPathDelete' custom control equals 'True'
@@ -1862,7 +1862,7 @@ namespace Warewolf.UITests
             Mouse.StartDragging(delete, new Point(1, 15));
             Mouse.StopDragging(flowchart, new Point(309, 128));
 
-            // Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+            // Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
             Assert.AreEqual(this.Drag_Toolbox_Delete_Record_Onto_DesignSurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
         }
         
@@ -1882,7 +1882,7 @@ namespace Warewolf.UITests
             Mouse.StartDragging(download, new Point(30, 8));
             Mouse.StopDragging(flowchart, new Point(307, 131));
 
-            // Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+            // Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
             Assert.AreEqual(this.Drag_Toolbox_Dropbox_Download_Onto_DesignSurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
         }
         
@@ -1902,7 +1902,7 @@ namespace Warewolf.UITests
             Mouse.StartDragging(upload, new Point(30, 8));
             Mouse.StopDragging(flowchart, new Point(307, 131));
 
-            // Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+            // Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
             Assert.AreEqual(this.Drag_Toolbox_Dropbox_Upload_Onto_DesignSurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
         }
         
@@ -1922,7 +1922,7 @@ namespace Warewolf.UITests
             Mouse.StartDragging(exchangeSend, new Point(16, -39));
             Mouse.StopDragging(flowchart, new Point(308, 129));
 
-            // Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+            // Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
             Assert.AreEqual(this.Drag_Toolbox_Exchange_Email_Onto_DesignSurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
         }
         
@@ -1943,7 +1943,7 @@ namespace Warewolf.UITests
             Mouse.StartDragging(findIndex, new Point(9, 5));
             Mouse.StopDragging(flowchart, new Point(305, 131));
 
-            // Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+            // Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
             Assert.AreEqual(this.Drag_Toolbox_Find_Index_Onto_DesignSurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
 
             // Verify that the 'Exists' property of 'DsfIndexActivity' custom control equals 'True'
@@ -1966,7 +1966,7 @@ namespace Warewolf.UITests
             Mouse.StartDragging(findRecords, new Point(8, 8));
             Mouse.StopDragging(flowchart, new Point(307, 130));
 
-            // Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+            // Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
             Assert.AreEqual(this.Drag_Toolbox_Find_Record_Index_Onto_DesignSurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
         }
         
@@ -1987,7 +1987,7 @@ namespace Warewolf.UITests
             Mouse.StartDragging(forEach, new Point(40, 19));
             Mouse.StopDragging(flowchart, new Point(307, 129));
 
-            // Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+            // Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
             Assert.AreEqual(this.Drag_Toolbox_For_Each_Onto_DesignSurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
 
             // Verify that the 'Exists' property of 'DsfForEachActivity' custom control equals 'True'
@@ -2011,7 +2011,7 @@ namespace Warewolf.UITests
             Mouse.StartDragging(formatNumber, new Point(18, 11));
             Mouse.StopDragging(flowchart, new Point(305, 131));
 
-            // Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+            // Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
             Assert.AreEqual(this.Drag_Toolbox_Format_Number_Onto_DesignSurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
 
             // Verify that the 'Exists' property of 'DsfNumberFormatActivity' custom control equals 'True'
@@ -2035,7 +2035,7 @@ namespace Warewolf.UITests
             Mouse.StartDragging(createJSON, new Point(0, 10));
             Mouse.StopDragging(flowchart, new Point(305, 127));
 
-            // Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+            // Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
             Assert.AreEqual(this.Drag_Toolbox_JSON_Onto_DesignSurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
 
             // Verify that the 'Exists' property of 'DsfCreateJsonActivity' custom control equals 'True'
@@ -2059,7 +2059,7 @@ namespace Warewolf.UITests
             Mouse.StartDragging(length, new Point(16, 6));
             Mouse.StopDragging(flowchart, new Point(308, 125));
 
-            // Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+            // Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
             Assert.AreEqual(this.Drag_Toolbox_Length_Onto_DesignSurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
 
             // Verify that the 'Exists' property of 'DsfRecordsetLengthActivity' custom control equals 'True'
@@ -2083,7 +2083,7 @@ namespace Warewolf.UITests
             Mouse.StartDragging(move, new Point(32, 4));
             Mouse.StopDragging(flowchart, new Point(306, 129));
 
-            // Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+            // Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
             Assert.AreEqual(this.Drag_Toolbox_Move_Onto_DesignSurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
 
             // Verify that the 'Exists' property of 'DsfPathMove' custom control equals 'True'
@@ -2110,7 +2110,7 @@ namespace Warewolf.UITests
             Mouse.StartDragging(multiAssign, new Point(13, 17));
             Mouse.StopDragging(flowchart, new Point(307, 128));
 
-            // Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+            // Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
             Assert.AreEqual(this.Drag_Toolbox_MultiAssign_Onto_DesignSurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
 
             // Verify that the 'Exists' property of 'UI_TextBox_AutoID' text box equals 'True'
@@ -2133,7 +2133,7 @@ namespace Warewolf.UITests
             Mouse.StartDragging(mySQL, new Point(4, 2));
             Mouse.StopDragging(flowchart, new Point(306, 130));
 
-            // Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+            // Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
             Assert.AreEqual(this.Drag_Toolbox_MySql_Database_Onto_DesignSurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
         }
         
@@ -2154,7 +2154,7 @@ namespace Warewolf.UITests
             Mouse.StartDragging(random, new Point(9, -21));
             Mouse.StopDragging(flowchart, new Point(308, 127));
 
-            // Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+            // Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
             Assert.AreEqual(this.Drag_Toolbox_Random_Onto_DesignSurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
 
             // Verify that the 'Exists' property of 'DsfRandomActivity' custom control equals 'True'
@@ -2178,7 +2178,7 @@ namespace Warewolf.UITests
             Mouse.StartDragging(readFile, new Point(12, 15));
             Mouse.StopDragging(flowchart, new Point(304, 125));
 
-            // Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+            // Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
             Assert.AreEqual(this.Drag_Toolbox_Read_File_Onto_DesignSurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
 
             // Verify that the 'Exists' property of 'DsfFileRead' custom control equals 'True'
@@ -2202,7 +2202,7 @@ namespace Warewolf.UITests
             Mouse.StartDragging(readFolder, new Point(14, 3));
             Mouse.StopDragging(flowchart, new Point(305, 129));
 
-            // Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+            // Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
             Assert.AreEqual(this.Drag_Toolbox_Read_Folder_Onto_DesignSurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
 
             // Verify that the 'Exists' property of 'DsfFolderRead' custom control equals 'True'
@@ -2226,7 +2226,7 @@ namespace Warewolf.UITests
             Mouse.StartDragging(rename, new Point(6, 11));
             Mouse.StopDragging(flowchart, new Point(305, 128));
 
-            // Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+            // Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
             Assert.AreEqual(this.Drag_Toolbox_Rename_Onto_DesignSurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
 
             // Verify that the 'Exists' property of 'DsfPathRename' custom control equals 'True'
@@ -2250,7 +2250,7 @@ namespace Warewolf.UITests
             Mouse.StartDragging(replace, new Point(16, 10));
             Mouse.StopDragging(flowchart, new Point(306, 121));
 
-            // Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+            // Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
             Assert.AreEqual(this.Drag_Toolbox_Replace_Onto_DesignSurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
 
             // Verify that the 'Exists' property of 'DsfReplaceActivity' custom control equals 'True'
@@ -2274,7 +2274,7 @@ namespace Warewolf.UITests
             Mouse.StartDragging(script, new Point(49, 17));
             Mouse.StopDragging(flowchart, new Point(307, 130));
 
-            // Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+            // Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
             Assert.AreEqual(this.Drag_Toolbox_Script_Onto_DesignSurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
 
             // Verify that the 'Exists' property of 'DsfScriptingActivity' custom control equals 'True'
@@ -2298,7 +2298,7 @@ namespace Warewolf.UITests
             Mouse.StartDragging(sequence, new Point(18, -12));
             Mouse.StopDragging(flowchart, new Point(305, 131));
 
-            // Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+            // Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
             Assert.AreEqual(this.Drag_Toolbox_Sequence_Onto_DesignSurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
 
             // Verify that the 'Exists' property of 'DsfSequenceActivity' custom control equals 'True'
@@ -2313,7 +2313,6 @@ namespace Warewolf.UITests
             #region Variable Declarations
             WpfListItem service = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.ResourceTools.Service;
             WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
-            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
             WpfButton cancel = this.ServicePickerDialog.Cancel;
             #endregion
 
@@ -2321,9 +2320,6 @@ namespace Warewolf.UITests
             flowchart.EnsureClickable(new Point(304, 126));
             Mouse.StartDragging(service, new Point(50, 5));
             Mouse.StopDragging(flowchart, new Point(304, 126));
-
-            // Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
-            Assert.AreEqual(this.Drag_Toolbox_Service_Picker_Onto_DesignSurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
 
             // Verify that the 'Exists' property of 'Cancel' button equals 'True'
             Assert.AreEqual(this.Drag_Toolbox_Service_Picker_Onto_DesignSurfaceParams.CancelExists, cancel.Exists, "Service picker dialog cancel button does not exist");
@@ -2345,7 +2341,7 @@ namespace Warewolf.UITests
             Mouse.StartDragging(createListItems, new Point(10, 16));
             Mouse.StopDragging(flowchart, new Point(311, 128));
 
-            // Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+            // Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
             Assert.AreEqual(this.Drag_Toolbox_Sharepoint_Create_Onto_DesignSurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
         }
         
@@ -2365,7 +2361,7 @@ namespace Warewolf.UITests
             Mouse.StartDragging(deleteListItems, new Point(16, 5));
             Mouse.StopDragging(flowchart, new Point(306, 131));
 
-            // Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+            // Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
             Assert.AreEqual(this.Drag_Toolbox_Sharepoint_Delete_Onto_DesignSurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
         }
         
@@ -2385,7 +2381,7 @@ namespace Warewolf.UITests
             Mouse.StartDragging(readListItems, new Point(13, 15));
             Mouse.StopDragging(flowchart, new Point(303, 128));
 
-            // Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+            // Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
             Assert.AreEqual(this.Drag_Toolbox_Sharepoint_Read_Onto_DesignSurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
         }
         
@@ -2405,7 +2401,7 @@ namespace Warewolf.UITests
             Mouse.StartDragging(updateListItems, new Point(17, 9));
             Mouse.StopDragging(flowchart, new Point(300, 127));
 
-            // Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+            // Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
             Assert.AreEqual(this.Drag_Toolbox_Sharepoint_Update_Onto_DesignSurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
         }
         
@@ -2426,7 +2422,7 @@ namespace Warewolf.UITests
             Mouse.StartDragging(sMTPSend, new Point(16, -39));
             Mouse.StopDragging(flowchart, new Point(308, 129));
 
-            // Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+            // Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
             Assert.AreEqual(this.Drag_Toolbox_SMTP_Email_Onto_DesignSurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
 
             // Verify that the 'Exists' property of 'DsfSendEmailActivity' custom control equals 'True'
@@ -2449,7 +2445,7 @@ namespace Warewolf.UITests
             Mouse.StartDragging(sort, new Point(7, 8));
             Mouse.StopDragging(flowchart, new Point(300, 122));
 
-            // Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+            // Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
             Assert.AreEqual(this.Drag_Toolbox_Sort_Record_Onto_DesignSurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
         }
         
@@ -2470,7 +2466,7 @@ namespace Warewolf.UITests
             Mouse.StartDragging(sQLBulkInsert, new Point(11, 16));
             Mouse.StopDragging(flowchart, new Point(304, 129));
 
-            // Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+            // Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
             Assert.AreEqual(this.Drag_Toolbox_SQL_Bulk_Insert_Onto_DesignSurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
 
             // Verify that the 'Exists' property of 'DsfSqlBulkInsertActivity' custom control equals 'True'
@@ -2493,7 +2489,7 @@ namespace Warewolf.UITests
             Mouse.StartDragging(sQLServer, new Point(10, -7));
             Mouse.StopDragging(flowchart, new Point(304, 127));
 
-            // Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+            // Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
             Assert.AreEqual(this.Drag_Toolbox_SQL_Server_Tool_Onto_DesignSurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
         }
         
@@ -2514,7 +2510,7 @@ namespace Warewolf.UITests
             Mouse.StartDragging(switch1, new Point(22, 30));
             Mouse.StopDragging(flowchart, new Point(303, 126));
 
-            // Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+            // Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
             Assert.AreEqual(this.Drag_Toolbox_Switch_Onto_DesignSurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
 
             // Verify that the 'Exists' property of 'Done' button equals 'True'
@@ -2538,7 +2534,7 @@ namespace Warewolf.UITests
             Mouse.StartDragging(sysInfo, new Point(8, 12));
             Mouse.StopDragging(flowchart, new Point(304, 129));
 
-            // Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+            // Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
             Assert.AreEqual(this.Drag_Toolbox_System_Information_Onto_DesignSurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
 
             // Verify that the 'Exists' property of 'DsfGatherSystemInformationActivity' custom control equals 'True'
@@ -2561,7 +2557,7 @@ namespace Warewolf.UITests
             Mouse.StartDragging(uniqueRecords, new Point(43, 6));
             Mouse.StopDragging(flowchart, new Point(304, 133));
 
-            // Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+            // Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
             Assert.AreEqual(this.Drag_Toolbox_Unique_Records_Onto_DesignSurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
         }
         
@@ -2582,7 +2578,7 @@ namespace Warewolf.UITests
             Mouse.StartDragging(unZip, new Point(15, 0));
             Mouse.StopDragging(flowchart, new Point(306, 128));
 
-            // Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+            // Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
             Assert.AreEqual(this.Drag_Toolbox_Unzip_Onto_DesignSurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
 
             // Verify that the 'Exists' property of 'DsfUnZip' custom control equals 'True'
@@ -2606,7 +2602,7 @@ namespace Warewolf.UITests
             Mouse.StartDragging(webRequest, new Point(14, 3));
             Mouse.StopDragging(flowchart, new Point(308, 128));
 
-            // Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+            // Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
             Assert.AreEqual(this.Drag_Toolbox_Web_Request_Onto_DesignSurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
 
             // Verify that the 'Exists' property of 'DsfWebRequestActivity' custom control equals 'True'
@@ -2630,7 +2626,7 @@ namespace Warewolf.UITests
             Mouse.StartDragging(writeFile, new Point(10, 18));
             Mouse.StopDragging(flowchart, new Point(306, 132));
 
-            // Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+            // Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
             Assert.AreEqual(this.Drag_Toolbox_Write_File_Onto_DesignSurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
 
             // Verify that the 'Exists' property of 'DsfFileWrite' custom control equals 'True'
@@ -2654,7 +2650,7 @@ namespace Warewolf.UITests
             Mouse.StartDragging(xPath, new Point(12, -13));
             Mouse.StopDragging(flowchart, new Point(307, 123));
 
-            // Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+            // Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
             Assert.AreEqual(this.Drag_Toolbox_XPath_Onto_DesignSurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
 
             // Verify that the 'Exists' property of 'DsfXPathActivity' custom control equals 'True'
@@ -2678,7 +2674,7 @@ namespace Warewolf.UITests
             Mouse.StartDragging(zip, new Point(16, 4));
             Mouse.StopDragging(flowchart, new Point(306, 131));
 
-            // Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+            // Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
             Assert.AreEqual(this.Drag_Toolbox_Zip_Onto_DesignSurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
 
             // Verify that the 'Exists' property of 'DsfZip' custom control equals 'True'
@@ -7777,7 +7773,7 @@ namespace Warewolf.UITests
         
         #region Fields
         /// <summary>
-        /// Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+        /// Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
         /// </summary>
         public bool Connector1Exists = true;
         
@@ -7797,7 +7793,7 @@ namespace Warewolf.UITests
         
         #region Fields
         /// <summary>
-        /// Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+        /// Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
         /// </summary>
         public bool Connector1Exists = true;
         
@@ -7817,7 +7813,7 @@ namespace Warewolf.UITests
         
         #region Fields
         /// <summary>
-        /// Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+        /// Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
         /// </summary>
         public bool Connector1Exists = true;
         #endregion
@@ -7832,7 +7828,7 @@ namespace Warewolf.UITests
         
         #region Fields
         /// <summary>
-        /// Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+        /// Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
         /// </summary>
         public bool Connector1Exists = true;
         
@@ -7852,7 +7848,7 @@ namespace Warewolf.UITests
         
         #region Fields
         /// <summary>
-        /// Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+        /// Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
         /// </summary>
         public bool Connector1Exists = true;
         
@@ -7872,7 +7868,7 @@ namespace Warewolf.UITests
         
         #region Fields
         /// <summary>
-        /// Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+        /// Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
         /// </summary>
         public bool Connector1Exists = true;
         
@@ -7892,7 +7888,7 @@ namespace Warewolf.UITests
         
         #region Fields
         /// <summary>
-        /// Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+        /// Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
         /// </summary>
         public bool Connector1Exists = true;
         
@@ -7912,7 +7908,7 @@ namespace Warewolf.UITests
         
         #region Fields
         /// <summary>
-        /// Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+        /// Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
         /// </summary>
         public bool Connector1Exists = true;
         
@@ -7932,7 +7928,7 @@ namespace Warewolf.UITests
         
         #region Fields
         /// <summary>
-        /// Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+        /// Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
         /// </summary>
         public bool Connector1Exists = true;
         
@@ -7952,7 +7948,7 @@ namespace Warewolf.UITests
         
         #region Fields
         /// <summary>
-        /// Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+        /// Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
         /// </summary>
         public bool Connector1Exists = true;
         
@@ -7972,7 +7968,7 @@ namespace Warewolf.UITests
         
         #region Fields
         /// <summary>
-        /// Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+        /// Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
         /// </summary>
         public bool Connector1Exists = true;
         
@@ -7992,7 +7988,7 @@ namespace Warewolf.UITests
         
         #region Fields
         /// <summary>
-        /// Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+        /// Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
         /// </summary>
         public bool Connector1Exists = true;
         #endregion
@@ -8007,7 +8003,7 @@ namespace Warewolf.UITests
         
         #region Fields
         /// <summary>
-        /// Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+        /// Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
         /// </summary>
         public bool Connector1Exists = true;
         
@@ -8027,7 +8023,7 @@ namespace Warewolf.UITests
         
         #region Fields
         /// <summary>
-        /// Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+        /// Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
         /// </summary>
         public bool Connector1Exists = true;
         
@@ -8047,7 +8043,7 @@ namespace Warewolf.UITests
         
         #region Fields
         /// <summary>
-        /// Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+        /// Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
         /// </summary>
         public bool Connector1Exists = true;
         
@@ -8067,7 +8063,7 @@ namespace Warewolf.UITests
         
         #region Fields
         /// <summary>
-        /// Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+        /// Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
         /// </summary>
         public bool Connector1Exists = true;
         
@@ -8087,7 +8083,7 @@ namespace Warewolf.UITests
         
         #region Fields
         /// <summary>
-        /// Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+        /// Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
         /// </summary>
         public bool Connector1Exists = true;
         
@@ -8107,7 +8103,7 @@ namespace Warewolf.UITests
         
         #region Fields
         /// <summary>
-        /// Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+        /// Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
         /// </summary>
         public bool Connector1Exists = true;
         
@@ -8127,7 +8123,7 @@ namespace Warewolf.UITests
         
         #region Fields
         /// <summary>
-        /// Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+        /// Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
         /// </summary>
         public bool Connector1Exists = true;
         
@@ -8147,7 +8143,7 @@ namespace Warewolf.UITests
         
         #region Fields
         /// <summary>
-        /// Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+        /// Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
         /// </summary>
         public bool Connector1Exists = true;
         #endregion
@@ -8162,7 +8158,7 @@ namespace Warewolf.UITests
         
         #region Fields
         /// <summary>
-        /// Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+        /// Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
         /// </summary>
         public bool Connector1Exists = true;
         #endregion
@@ -8177,7 +8173,7 @@ namespace Warewolf.UITests
         
         #region Fields
         /// <summary>
-        /// Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+        /// Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
         /// </summary>
         public bool Connector1Exists = true;
         #endregion
@@ -8192,7 +8188,7 @@ namespace Warewolf.UITests
         
         #region Fields
         /// <summary>
-        /// Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+        /// Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
         /// </summary>
         public bool Connector1Exists = true;
         #endregion
@@ -8207,7 +8203,7 @@ namespace Warewolf.UITests
         
         #region Fields
         /// <summary>
-        /// Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+        /// Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
         /// </summary>
         public bool Connector1Exists = true;
         
@@ -8227,7 +8223,7 @@ namespace Warewolf.UITests
         
         #region Fields
         /// <summary>
-        /// Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+        /// Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
         /// </summary>
         public bool Connector1Exists = true;
         #endregion
@@ -8242,7 +8238,7 @@ namespace Warewolf.UITests
         
         #region Fields
         /// <summary>
-        /// Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+        /// Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
         /// </summary>
         public bool Connector1Exists = true;
         
@@ -8262,7 +8258,7 @@ namespace Warewolf.UITests
         
         #region Fields
         /// <summary>
-        /// Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+        /// Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
         /// </summary>
         public bool Connector1Exists = true;
         
@@ -8282,7 +8278,7 @@ namespace Warewolf.UITests
         
         #region Fields
         /// <summary>
-        /// Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+        /// Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
         /// </summary>
         public bool Connector1Exists = true;
         
@@ -8302,7 +8298,7 @@ namespace Warewolf.UITests
         
         #region Fields
         /// <summary>
-        /// Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+        /// Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
         /// </summary>
         public bool Connector1Exists = true;
         
@@ -8322,7 +8318,7 @@ namespace Warewolf.UITests
         
         #region Fields
         /// <summary>
-        /// Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+        /// Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
         /// </summary>
         public bool Connector1Exists = true;
         
@@ -8347,7 +8343,7 @@ namespace Warewolf.UITests
         public bool MultiAssignExists = true;
         
         /// <summary>
-        /// Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+        /// Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
         /// </summary>
         public bool Connector1Exists = true;
         
@@ -8367,7 +8363,7 @@ namespace Warewolf.UITests
         
         #region Fields
         /// <summary>
-        /// Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+        /// Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
         /// </summary>
         public bool Connector1Exists = true;
         #endregion
@@ -8382,7 +8378,7 @@ namespace Warewolf.UITests
         
         #region Fields
         /// <summary>
-        /// Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+        /// Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
         /// </summary>
         public bool Connector1Exists = true;
         
@@ -8402,7 +8398,7 @@ namespace Warewolf.UITests
         
         #region Fields
         /// <summary>
-        /// Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+        /// Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
         /// </summary>
         public bool Connector1Exists = true;
         
@@ -8422,7 +8418,7 @@ namespace Warewolf.UITests
         
         #region Fields
         /// <summary>
-        /// Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+        /// Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
         /// </summary>
         public bool Connector1Exists = true;
         
@@ -8442,7 +8438,7 @@ namespace Warewolf.UITests
         
         #region Fields
         /// <summary>
-        /// Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+        /// Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
         /// </summary>
         public bool Connector1Exists = true;
         
@@ -8462,7 +8458,7 @@ namespace Warewolf.UITests
         
         #region Fields
         /// <summary>
-        /// Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+        /// Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
         /// </summary>
         public bool Connector1Exists = true;
         
@@ -8482,7 +8478,7 @@ namespace Warewolf.UITests
         
         #region Fields
         /// <summary>
-        /// Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+        /// Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
         /// </summary>
         public bool Connector1Exists = true;
         
@@ -8502,7 +8498,7 @@ namespace Warewolf.UITests
         
         #region Fields
         /// <summary>
-        /// Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+        /// Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
         /// </summary>
         public bool Connector1Exists = true;
         
@@ -8522,11 +8518,6 @@ namespace Warewolf.UITests
         
         #region Fields
         /// <summary>
-        /// Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
-        /// </summary>
-        public bool Connector1Exists = true;
-        
-        /// <summary>
         /// Verify that the 'Exists' property of 'Cancel' button equals 'True'
         /// </summary>
         public bool CancelExists = true;
@@ -8542,7 +8533,7 @@ namespace Warewolf.UITests
         
         #region Fields
         /// <summary>
-        /// Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+        /// Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
         /// </summary>
         public bool Connector1Exists = true;
         #endregion
@@ -8557,7 +8548,7 @@ namespace Warewolf.UITests
         
         #region Fields
         /// <summary>
-        /// Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+        /// Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
         /// </summary>
         public bool Connector1Exists = true;
         #endregion
@@ -8572,7 +8563,7 @@ namespace Warewolf.UITests
         
         #region Fields
         /// <summary>
-        /// Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+        /// Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
         /// </summary>
         public bool Connector1Exists = true;
         #endregion
@@ -8587,7 +8578,7 @@ namespace Warewolf.UITests
         
         #region Fields
         /// <summary>
-        /// Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+        /// Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
         /// </summary>
         public bool Connector1Exists = true;
         #endregion
@@ -8602,7 +8593,7 @@ namespace Warewolf.UITests
         
         #region Fields
         /// <summary>
-        /// Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+        /// Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
         /// </summary>
         public bool Connector1Exists = true;
         
@@ -8622,7 +8613,7 @@ namespace Warewolf.UITests
         
         #region Fields
         /// <summary>
-        /// Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+        /// Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
         /// </summary>
         public bool Connector1Exists = true;
         #endregion
@@ -8637,7 +8628,7 @@ namespace Warewolf.UITests
         
         #region Fields
         /// <summary>
-        /// Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+        /// Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
         /// </summary>
         public bool Connector1Exists = true;
         
@@ -8657,7 +8648,7 @@ namespace Warewolf.UITests
         
         #region Fields
         /// <summary>
-        /// Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+        /// Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
         /// </summary>
         public bool Connector1Exists = true;
         #endregion
@@ -8672,7 +8663,7 @@ namespace Warewolf.UITests
         
         #region Fields
         /// <summary>
-        /// Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+        /// Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
         /// </summary>
         public bool Connector1Exists = true;
         
@@ -8692,7 +8683,7 @@ namespace Warewolf.UITests
         
         #region Fields
         /// <summary>
-        /// Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+        /// Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
         /// </summary>
         public bool Connector1Exists = true;
         
@@ -8712,7 +8703,7 @@ namespace Warewolf.UITests
         
         #region Fields
         /// <summary>
-        /// Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+        /// Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
         /// </summary>
         public bool Connector1Exists = true;
         #endregion
@@ -8727,7 +8718,7 @@ namespace Warewolf.UITests
         
         #region Fields
         /// <summary>
-        /// Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+        /// Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
         /// </summary>
         public bool Connector1Exists = true;
         
@@ -8747,7 +8738,7 @@ namespace Warewolf.UITests
         
         #region Fields
         /// <summary>
-        /// Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+        /// Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
         /// </summary>
         public bool Connector1Exists = true;
         
@@ -8767,7 +8758,7 @@ namespace Warewolf.UITests
         
         #region Fields
         /// <summary>
-        /// Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+        /// Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
         /// </summary>
         public bool Connector1Exists = true;
         
@@ -8787,7 +8778,7 @@ namespace Warewolf.UITests
         
         #region Fields
         /// <summary>
-        /// Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+        /// Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
         /// </summary>
         public bool Connector1Exists = true;
         
@@ -8807,7 +8798,7 @@ namespace Warewolf.UITests
         
         #region Fields
         /// <summary>
-        /// Verify that the 'Exists' property of '5fab8b52-7dc5-421e-8bc8-66fec964975f,300,77.5 300,...' custom control equals 'True'
+        /// Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
         /// </summary>
         public bool Connector1Exists = true;
         
