@@ -18,9 +18,14 @@ namespace Warewolf.UITests.Tools
         [TestMethod]
         public void ReplaceToolUITest()
         {
-            //Scenario: Drag toolbox Replace onto a new workflow
             Uimap.Drag_Toolbox_Replace_Onto_DesignSurface();
-            Uimap.Assert_Replace_Exists_OnDesignSurface();
+            //Uimap.Open_Replace_Tool_Large_View();
+            //Uimap.Enter_Values_Into_Replace_Tool_Large_View();
+            //Uimap.Click_Replace_Tool_Large_View_Done_Button();
+            //Uimap.Click_Replace_Tool_QVI_Button();
+            //Uimap.Click_Debug_Bibbon_Button();
+            //Uimap.Click_Debug_Input_Dialog_Debug_ButtonParams.ReplaceToolDebugOutputExists = true;
+            //Uimap.Click_Debug_Input_Dialog_Debug_Button();
         }
 
         #region Additional test attributes
@@ -39,11 +44,7 @@ namespace Warewolf.UITests.Tools
         {
             Uimap.CleanupWorkflow();
         }
-
-        /// <summary>
-        ///Gets or sets the test context which provides
-        ///information about and functionality for the current test run.
-        ///</summary>
+        
         public TestContext TestContext
         {
             get
@@ -62,7 +63,7 @@ namespace Warewolf.UITests.Tools
         {
             get
             {
-                if ((_uiMap == null))
+                if (_uiMap == null)
                 {
                     _uiMap = new UIMap();
                 }

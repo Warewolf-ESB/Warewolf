@@ -18,19 +18,9 @@ namespace Warewolf.UITests.Tools
         [TestMethod]
         public void SQLBulkInsertToolUITest()
         {
-            //Scenario: Drag toolbox SQL_Bulk_Insert onto a new workflow
             Uimap.Drag_Toolbox_SQL_Bulk_Insert_Onto_DesignSurface();
-            Uimap.Assert_Sql_Bulk_insert_Exists_OnDesignSurface();
-
-            //@NeedsSQL_Bulk_InsertToolSmallViewOnTheDesignSurface
-            //Scenario: Double Clicking SQL_Bulk_Insert Tool Small View on the Design Surface Opens Large View
             Uimap.Open_SQL_Bulk_Insert_Tool_Large_View();
-            Uimap.Assert_SQL_Bulk_Insert_Large_View_Exists_OnDesignSurface();
-
-            //@NeedsSQLBulkInsertLargeViewOnTheDesignSurface
-            //Scenario: Click SQL Bulk Insert Tool QVI Button Opens Qvi
             Uimap.Open_SQL_Bulk_Insert_Tool_Qvi_Large_View();
-            Uimap.Assert_Sql_Bulk_insert_Qvi_Exists_OnDesignSurface();
         }
 
         #region Additional test attributes

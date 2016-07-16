@@ -18,9 +18,7 @@ namespace Warewolf.UITests.Tools
         [TestMethod]
         public void FindRecordsToolUITest()
         {
-            //Scenario: Drag toolbox Find_Index onto a new workflow
             Uimap.Drag_Toolbox_Find_Index_Onto_DesignSurface();
-            Uimap.Assert_Find_Index_Exists_OnDesignSurface();
         }
 
         #region Additional test attributes

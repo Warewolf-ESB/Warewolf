@@ -13,14 +13,8 @@ namespace Warewolf.UITests.Tools.Scripting
         [TestMethod]
         public void CMDScriptToolUITest()
         {
-            //Scenario: Drag toolbox CMD_Line onto a new workflow
             Uimap.Drag_Toolbox_CMD_Line_Onto_DesignSurface();
-            Uimap.Assert_CMD_Line_Exists_OnDesignSurface();
-
-            //@NeedsCMDLineToolSmallViewOnTheDesignSurface
-            //Scenario: Double Clicking CMD Line Tool Small View on the Design Surface Opens Large View
             Uimap.Open_CMD_Line_Tool_Large_View();
-            Uimap.Assert_CMD_Line_Large_View_Exists_OnDesignSurface();
         }
 
         #region Additional test attributes
@@ -39,13 +33,7 @@ namespace Warewolf.UITests.Tools.Scripting
         {
             Uimap.CleanupWorkflow();
         }
-
-        #endregion
-
-        /// <summary>
-        ///Gets or sets the test context which provides
-        ///information about and functionality for the current test run.
-        ///</summary>
+        
         public TestContext TestContext
         {
             get
@@ -64,7 +52,7 @@ namespace Warewolf.UITests.Tools.Scripting
         {
             get
             {
-                if ((_uiMap == null))
+                if (_uiMap == null)
                 {
                     _uiMap = new UIMap();
                 }
@@ -74,5 +62,7 @@ namespace Warewolf.UITests.Tools.Scripting
         }
 
         private UIMap _uiMap;
+
+        #endregion
     }
 }

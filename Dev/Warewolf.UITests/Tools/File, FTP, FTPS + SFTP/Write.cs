@@ -18,14 +18,8 @@ namespace Warewolf.UITests.Tools
         [TestMethod]
         public void WriteToolUITest()
         {
-            //Scenario: Drag toolbox Write_File onto a new workflow
             Uimap.Drag_Toolbox_Write_File_Onto_DesignSurface();
-            Uimap.Assert_Write_File_Exists_OnDesignSurface();
-
-            //@NeedsWrite_FileToolSmallViewOnTheDesignSurface
-            //Scenario: Double Clicking Write_File Tool Small View on the Design Surface Opens Large View
             Uimap.Open_Write_File_Tool_Large_View();
-            Uimap.Assert_Write_File_Large_View_Exists_OnDesignSurface();
         }
 
         #region Additional test attributes

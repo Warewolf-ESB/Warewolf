@@ -19,7 +19,7 @@ namespace Warewolf.UITests
     using System.Text.RegularExpressions;
     using System.Reflection;
     using System.Threading;
-    
+
     public partial class UIMap
     {
         public void SetGlobalPlaybackSettings()
@@ -72,27 +72,38 @@ namespace Warewolf.UITests
                 throw new InvalidOperationException("Warewolf studio is not running. You are expected to run \"Dev\\TestScripts\\Studio\\Startup.bat\" as an administrator and wait for it to complete before running any coded UI tests");
             }
         }
-        
+
         public void InitializeABlankWorkflow()
         {
-            Assert_NewWorkFlow_RibbonButton_Exists();
             Click_New_Workflow_Ribbon_Button();
-            Assert_StartNode_Exists();
         }
-        
+
         public void CleanupWorkflow()
         {
             try
             {
-                Assert_Close_Tab_Button_Exists();
                 Click_Close_Tab_Button();
                 Click_MessageBox_No();
             }
             catch (UITestControlNotFoundException e)
             {
-                //Test may have crashed before tab is even openned
+                Console.WriteLine("Error during test cleanup: " + e.Message);
             }
         }
+
+        public void Click_Settings_Resource_Permissions_Row1_Add_Resource_Button()
+        {
+            Mouse.Click(this.FindAddResourceButton(this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1));
+            Assert.AreEqual(true, this.ServicePickerDialog.Exists, "Service picker dialog does not exist.");
+        }
+
+        public void Click_Settings_Resource_Permissions_Row1_Windows_Group_Button()
+        {
+            Mouse.Click(this.FindAddWindowsGroupButton(this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1));
+            Assert.AreEqual(true, this.SelectWindowsGroupDialog.Exists, "Select windows group dialog does not exist.");
+            Assert.AreEqual(true, this.SelectWindowsGroupDialog.ItemPanel.ObjectNameTextbox.Exists, "Select windows group object name textbox does not exist.");
+        }
+
         public UITestControl FindAddResourceButton(UITestControl row)
         {
             var firstOrDefaultCell = row.GetChildren().Where(child => child.ControlType == ControlType.Cell).ElementAtOrDefault(0);
