@@ -1404,18 +1404,18 @@ namespace Warewolf.UITests
         public void Drag_DotNet_DLL_Connector_Onto_DesignSurface()
         {
             #region Variable Declarations
-            WpfImage dotNetDLLImage = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.ResourceTools.DotNetDLL.DotNetDLLImage;
+            WpfListItem dotNetDLL = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.ResourceTools.DotNetDLL;
             WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
-            WpfCustom dotNetDll = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll;
+            WpfCustom dotNetDll1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll;
             #endregion
 
-            // Move 'DotNetDLLConnector' image to 'Flowchart' custom control
+            // Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
             flowchart.EnsureClickable(new Point(308, 127));
-            Mouse.StartDragging(dotNetDLLImage, new Point(16, 25));
+            Mouse.StartDragging(dotNetDLL, new Point(16, 25));
             Mouse.StopDragging(flowchart, new Point(308, 127));
 
             // Verify that the 'Exists' property of 'DsfDotNetDllActivity' custom control equals 'True'
-            Assert.AreEqual(this.Drag_DotNet_DLL_Connector_Onto_DesignSurfaceParams.DotNetDllExists, dotNetDll.Exists, "DotNet DLL tool does not exist on the design surface");
+            Assert.AreEqual(this.Drag_DotNet_DLL_Connector_Onto_DesignSurfaceParams.DotNetDllExists, dotNetDll1.Exists, "DotNet DLL tool does not exist on the design surface");
         }
         
         /// <summary>
@@ -1460,18 +1460,18 @@ namespace Warewolf.UITests
         public void Drag_GetWeb_RequestTool_Onto_DesignSurface()
         {
             #region Variable Declarations
-            WpfImage webRequestImage = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.UtilityTools.WebRequest.WebRequestImage;
+            WpfListItem webRequest = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.UtilityTools.WebRequest;
             WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
-            WpfCustom webRequest = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebRequest;
+            WpfCustom webRequest1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebRequest;
             #endregion
 
-            // Move 'WebRequest' image to 'Flowchart' custom control
+            // Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
             flowchart.EnsureClickable(new Point(305, 124));
-            Mouse.StartDragging(webRequestImage, new Point(12, 3));
+            Mouse.StartDragging(webRequest, new Point(12, 3));
             Mouse.StopDragging(flowchart, new Point(305, 124));
 
             // Verify that the 'Exists' property of 'DsfWebRequestActivity' custom control equals 'True'
-            Assert.AreEqual(this.Drag_GetWeb_RequestTool_Onto_DesignSurfaceParams.WebRequestExists, webRequest.Exists, "Web Get Request small view does not exist on the design surface");
+            Assert.AreEqual(this.Drag_GetWeb_RequestTool_Onto_DesignSurfaceParams.WebRequestExists, webRequest1.Exists, "Web Get Request small view does not exist on the design surface");
         }
         
         /// <summary>
@@ -1480,14 +1480,14 @@ namespace Warewolf.UITests
         public void Drag_PostWeb_RequestTool_Onto_DesignSurface()
         {
             #region Variable Declarations
-            WpfImage pOSTImage = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.HTTPWebMethods.POST.POSTImage;
+            WpfListItem pOST = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.HTTPWebMethods.POST;
             WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
             WpfCustom webPost = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebPost;
             #endregion
 
-            // Move 'POST' image to 'Flowchart' custom control
+            // Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
             flowchart.EnsureClickable(new Point(306, 128));
-            Mouse.StartDragging(pOSTImage, new Point(20, 35));
+            Mouse.StartDragging(pOST, new Point(20, 35));
             Mouse.StopDragging(flowchart, new Point(306, 128));
 
             // Verify that the 'Exists' property of 'DsfWebPostActivity' custom control equals 'True'
@@ -1500,18 +1500,18 @@ namespace Warewolf.UITests
         public void Drag_Toolbox_Base_Conversion_Onto_DesignSurface()
         {
             #region Variable Declarations
-            WpfImage baseConvertImage = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.DataTools.BaseConvert.BaseConvertImage;
+            WpfListItem baseConvert = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.DataTools.BaseConvert;
             WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
-            WpfCustom baseConvert = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.BaseConvert;
+            WpfCustom baseConvert1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.BaseConvert;
             #endregion
 
-            // Move 'BaseConvert' image to 'Flowchart' custom control
+            // Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
             flowchart.EnsureClickable(new Point(303, 128));
-            Mouse.StartDragging(baseConvertImage, new Point(12, 12));
+            Mouse.StartDragging(baseConvert, new Point(12, 12));
             Mouse.StopDragging(flowchart, new Point(303, 128));
 
             // Verify that the 'Exists' property of 'DsfBaseConvertActivity' custom control equals 'True'
-            Assert.AreEqual(this.Drag_Toolbox_Base_Conversion_Onto_DesignSurfaceParams.BaseConvertExists, baseConvert.Exists, "Base Conversion on the design surface does not exist");
+            Assert.AreEqual(this.Drag_Toolbox_Base_Conversion_Onto_DesignSurfaceParams.BaseConvertExists, baseConvert1.Exists, "Base Conversion on the design surface does not exist");
         }
         
         /// <summary>
@@ -1520,18 +1520,18 @@ namespace Warewolf.UITests
         public void Drag_Toolbox_Calculate_Onto_DesignSurface()
         {
             #region Variable Declarations
-            WpfImage calculateImage = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.UtilityTools.Calculate.CalculateImage;
+            WpfListItem calculate = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.UtilityTools.Calculate;
             WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
-            WpfCustom calculate = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Calculate;
+            WpfCustom calculate1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Calculate;
             #endregion
 
-            // Move 'Calculate' image to 'Flowchart' custom control
+            // Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
             flowchart.EnsureClickable(new Point(305, 131));
-            Mouse.StartDragging(calculateImage, new Point(59, -17));
+            Mouse.StartDragging(calculate, new Point(59, -17));
             Mouse.StopDragging(flowchart, new Point(305, 131));
 
             // Verify that the 'Exists' property of 'DsfCalculateActivity' custom control equals 'True'
-            Assert.AreEqual(this.Drag_Toolbox_Calculate_Onto_DesignSurfaceParams.CalculateExists, calculate.Exists, "Calculate tool on the design surface does not exist");
+            Assert.AreEqual(this.Drag_Toolbox_Calculate_Onto_DesignSurfaceParams.CalculateExists, calculate1.Exists, "Calculate tool on the design surface does not exist");
         }
         
         /// <summary>
@@ -1540,18 +1540,18 @@ namespace Warewolf.UITests
         public void Drag_Toolbox_Case_Conversion_Onto_DesignSurface()
         {
             #region Variable Declarations
-            WpfImage caseConvertImage = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.DataTools.CaseConvert.CaseConvertImage;
+            WpfListItem caseConvert = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.DataTools.CaseConvert;
             WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
-            WpfCustom caseConvert = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.CaseConvert;
+            WpfCustom caseConvert1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.CaseConvert;
             #endregion
 
-            // Move 'CaseConvert' image to 'Flowchart' custom control
+            // Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
             flowchart.EnsureClickable(new Point(303, 130));
-            Mouse.StartDragging(caseConvertImage, new Point(19, 13));
+            Mouse.StartDragging(caseConvert, new Point(19, 13));
             Mouse.StopDragging(flowchart, new Point(303, 130));
 
             // Verify that the 'Exists' property of 'DsfCaseConvertActivity' custom control equals 'True'
-            Assert.AreEqual(this.Drag_Toolbox_Case_Conversion_Onto_DesignSurfaceParams.CaseConvertExists, caseConvert.Exists, "Case Conversion on the design surface does not exist");
+            Assert.AreEqual(this.Drag_Toolbox_Case_Conversion_Onto_DesignSurfaceParams.CaseConvertExists, caseConvert1.Exists, "Case Conversion on the design surface does not exist");
         }
         
         /// <summary>
@@ -1560,14 +1560,14 @@ namespace Warewolf.UITests
         public void Drag_Toolbox_CMD_Line_Onto_DesignSurface()
         {
             #region Variable Declarations
-            WpfImage cMDScriptImage = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.ScriptingTools.CMDScript.CMDScriptImage;
+            WpfListItem cMDScript = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.ScriptingTools.CMDScript;
             WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
             WpfCustom executeCommandLine = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ExecuteCommandLine;
             #endregion
 
-            // Move 'CMDScript' image to 'Flowchart' custom control
+            // Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
             flowchart.EnsureClickable(new Point(305, 122));
-            Mouse.StartDragging(cMDScriptImage, new Point(19, 19));
+            Mouse.StartDragging(cMDScript, new Point(19, 19));
             Mouse.StopDragging(flowchart, new Point(305, 122));
 
             // Verify that the 'Exists' property of 'DsfExecuteCommandLineActivity' custom control equals 'True'
@@ -1580,18 +1580,18 @@ namespace Warewolf.UITests
         public void Drag_Toolbox_Comment_Onto_DesignSurface()
         {
             #region Variable Declarations
-            WpfImage commentImage = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.UtilityTools.Comment.CommentImage;
+            WpfListItem comment = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.UtilityTools.Comment;
             WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
-            WpfCustom comment = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Comment;
+            WpfCustom comment1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Comment;
             #endregion
 
-            // Move 'Comment' image to 'Flowchart' custom control
+            // Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
             flowchart.EnsureClickable(new Point(308, 129));
-            Mouse.StartDragging(commentImage, new Point(40, 15));
+            Mouse.StartDragging(comment, new Point(40, 15));
             Mouse.StopDragging(flowchart, new Point(308, 129));
 
             // Verify that the 'Exists' property of 'DsfCommentActivity' custom control equals 'True'
-            Assert.AreEqual(this.Drag_Toolbox_Comment_Onto_DesignSurfaceParams.CommentExists, comment.Exists, "Comment tool on the design surface does not exist");
+            Assert.AreEqual(this.Drag_Toolbox_Comment_Onto_DesignSurfaceParams.CommentExists, comment1.Exists, "Comment tool on the design surface does not exist");
         }
         
         /// <summary>
@@ -1600,14 +1600,14 @@ namespace Warewolf.UITests
         public void Drag_Toolbox_Copy_Onto_DesignSurface()
         {
             #region Variable Declarations
-            WpfImage copyImage = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.FileAndFTP.Copy.CopyImage;
+            WpfListItem copy = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.FileAndFTP.Copy;
             WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
             WpfCustom pathCopy = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PathCopy;
             #endregion
 
-            // Move 'Copy' image to 'Flowchart' custom control
+            // Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
             flowchart.EnsureClickable(new Point(310, 129));
-            Mouse.StartDragging(copyImage, new Point(19, -3));
+            Mouse.StartDragging(copy, new Point(19, -3));
             Mouse.StopDragging(flowchart, new Point(310, 129));
 
             // Verify that the 'Exists' property of 'DsfPathCopy' custom control equals 'True'
@@ -1620,13 +1620,13 @@ namespace Warewolf.UITests
         public void Drag_Toolbox_Count_Records_Onto_DesignSurface()
         {
             #region Variable Declarations
-            WpfImage countImage = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.RecordsetTools.Count.CountImage;
+            WpfListItem count = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.RecordsetTools.Count;
             WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
             #endregion
 
-            // Move 'Count' image to 'Flowchart' custom control
+            // Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
             flowchart.EnsureClickable(new Point(307, 125));
-            Mouse.StartDragging(countImage, new Point(13, 18));
+            Mouse.StartDragging(count, new Point(13, 18));
             Mouse.StopDragging(flowchart, new Point(307, 125));
         }
         
@@ -1636,14 +1636,14 @@ namespace Warewolf.UITests
         public void Drag_Toolbox_Create_Onto_DesignSurface()
         {
             #region Variable Declarations
-            WpfImage createImage = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.FileAndFTP.Create.CreateImage;
+            WpfListItem create = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.FileAndFTP.Create;
             WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
             WpfCustom pathCreate = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PathCreate;
             #endregion
 
-            // Move 'Create' image to 'Flowchart' custom control
+            // Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
             flowchart.EnsureClickable(new Point(308, 131));
-            Mouse.StartDragging(createImage, new Point(9, 16));
+            Mouse.StartDragging(create, new Point(9, 16));
             Mouse.StopDragging(flowchart, new Point(308, 131));
 
             // Verify that the 'Exists' property of 'DsfPathCreate' custom control equals 'True'
@@ -1656,18 +1656,18 @@ namespace Warewolf.UITests
         public void Drag_Toolbox_Data_Merge_Onto_DesignSurface()
         {
             #region Variable Declarations
-            WpfImage dataMergeImage = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.DataTools.DataMerge.DataMergeImage;
+            WpfListItem dataMerge = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.DataTools.DataMerge;
             WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
-            WpfCustom dataMerge = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DataMerge;
+            WpfCustom dataMerge1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DataMerge;
             #endregion
 
-            // Move 'DataMerge' image to 'Flowchart' custom control
+            // Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
             flowchart.EnsureClickable(new Point(305, 133));
-            Mouse.StartDragging(dataMergeImage, new Point(54, 23));
+            Mouse.StartDragging(dataMerge, new Point(54, 23));
             Mouse.StopDragging(flowchart, new Point(305, 133));
 
             // Verify that the 'Exists' property of 'DsfDataMergeActivity' custom control equals 'True'
-            Assert.AreEqual(this.Drag_Toolbox_Data_Merge_Onto_DesignSurfaceParams.DataMergeExists, dataMerge.Exists, "Data Merge on the design surface does not exist");
+            Assert.AreEqual(this.Drag_Toolbox_Data_Merge_Onto_DesignSurfaceParams.DataMergeExists, dataMerge1.Exists, "Data Merge on the design surface does not exist");
         }
         
         /// <summary>
@@ -1676,18 +1676,18 @@ namespace Warewolf.UITests
         public void Drag_Toolbox_Data_Split_Onto_DesignSurface()
         {
             #region Variable Declarations
-            WpfImage dataSplitImage = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.DataTools.DataSplit.DataSplitImage;
+            WpfListItem dataSplit = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.DataTools.DataSplit;
             WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
-            WpfCustom dataSplit = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DataSplit;
+            WpfCustom dataSplit1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DataSplit;
             #endregion
 
-            // Move 'DataSplit' image to 'Flowchart' custom control
+            // Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
             flowchart.EnsureClickable(new Point(308, 129));
-            Mouse.StartDragging(dataSplitImage, new Point(3, 8));
+            Mouse.StartDragging(dataSplit, new Point(3, 8));
             Mouse.StopDragging(flowchart, new Point(308, 129));
 
             // Verify that the 'Exists' property of 'DsfDataSplitActivity' custom control equals 'True'
-            Assert.AreEqual(this.Drag_Toolbox_Data_Split_Onto_DesignSurfaceParams.DataSplitExists, dataSplit.Exists, "Data Split on the design surface does not exist");
+            Assert.AreEqual(this.Drag_Toolbox_Data_Split_Onto_DesignSurfaceParams.DataSplitExists, dataSplit1.Exists, "Data Split on the design surface does not exist");
         }
         
         /// <summary>
@@ -1696,18 +1696,18 @@ namespace Warewolf.UITests
         public void Drag_Toolbox_Date_And_Time_Onto_DesignSurface()
         {
             #region Variable Declarations
-            WpfImage dateTimeImage = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.UtilityTools.DateTime.DateTimeImage;
+            WpfListItem dateTime = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.UtilityTools.DateTime;
             WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
-            WpfCustom dateTime = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DateTime;
+            WpfCustom dateTime1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DateTime;
             #endregion
 
-            // Move 'DateTime' image to 'Flowchart' custom control
+            // Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
             flowchart.EnsureClickable(new Point(304, 127));
-            Mouse.StartDragging(dateTimeImage, new Point(20, -1));
+            Mouse.StartDragging(dateTime, new Point(20, -1));
             Mouse.StopDragging(flowchart, new Point(304, 127));
 
             // Verify that the 'Exists' property of 'DsfDateTimeActivity' custom control equals 'True'
-            Assert.AreEqual(this.Drag_Toolbox_Date_And_Time_Onto_DesignSurfaceParams.DateTimeExists, dateTime.Exists, "Date and Time tool on the design surface does not exist");
+            Assert.AreEqual(this.Drag_Toolbox_Date_And_Time_Onto_DesignSurfaceParams.DateTimeExists, dateTime1.Exists, "Date and Time tool on the design surface does not exist");
         }
         
         /// <summary>
@@ -1716,18 +1716,18 @@ namespace Warewolf.UITests
         public void Drag_Toolbox_DateTime_Difference_Onto_DesignSurface()
         {
             #region Variable Declarations
-            WpfImage dateTimeDifferenceImage = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.UtilityTools.DateTimeDifference.DateTimeDifferenceImage;
+            WpfListItem dateTimeDifference = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.UtilityTools.DateTimeDifference;
             WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
-            WpfCustom dateTimeDifference = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DateTimeDifference;
+            WpfCustom dateTimeDifference1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DateTimeDifference;
             #endregion
 
-            // Move 'DateTimeDifference' image to 'Flowchart' custom control
+            // Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
             flowchart.EnsureClickable(new Point(306, 131));
-            Mouse.StartDragging(dateTimeDifferenceImage, new Point(48, 7));
+            Mouse.StartDragging(dateTimeDifference, new Point(48, 7));
             Mouse.StopDragging(flowchart, new Point(306, 131));
 
             // Verify that the 'Exists' property of 'DsfDateTimeDifferenceActivity' custom control equals 'True'
-            Assert.AreEqual(this.Drag_Toolbox_DateTime_Difference_Onto_DesignSurfaceParams.DateTimeDifferenceExists, dateTimeDifference.Exists, "Date And Time Difference tool on the design surface does not exist");
+            Assert.AreEqual(this.Drag_Toolbox_DateTime_Difference_Onto_DesignSurfaceParams.DateTimeDifferenceExists, dateTimeDifference1.Exists, "Date And Time Difference tool on the design surface does not exist");
         }
         
         /// <summary>
@@ -1736,14 +1736,14 @@ namespace Warewolf.UITests
         public void Drag_Toolbox_Decision_Onto_DesignSurface()
         {
             #region Variable Declarations
-            WpfImage decisionImage = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.FlowTools.Decision.DecisionImage;
+            WpfListItem decision = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.FlowTools.Decision;
             WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
             WpfButton doneButton = this.DecisionDialog.DoneButton;
             #endregion
 
-            // Move 'Decision' image to 'Flowchart' custom control
+            // Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
             flowchart.EnsureClickable(new Point(309, 128));
-            Mouse.StartDragging(decisionImage, new Point(16, 11));
+            Mouse.StartDragging(decision, new Point(16, 11));
             Mouse.StopDragging(flowchart, new Point(309, 128));
 
             // Verify that the 'Exists' property of 'Done' button equals 'True'
@@ -1756,14 +1756,14 @@ namespace Warewolf.UITests
         public void Drag_Toolbox_Delete_Onto_DesignSurface()
         {
             #region Variable Declarations
-            WpfImage deleteImage = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.FileAndFTP.Delete.DeleteImage;
+            WpfListItem delete = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.FileAndFTP.Delete;
             WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
             WpfCustom pathDelete = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PathDelete;
             #endregion
 
-            // Move 'Delete' image to 'Flowchart' custom control
+            // Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
             flowchart.EnsureClickable(new Point(306, 125));
-            Mouse.StartDragging(deleteImage, new Point(13, 9));
+            Mouse.StartDragging(delete, new Point(13, 9));
             Mouse.StopDragging(flowchart, new Point(306, 125));
 
             // Verify that the 'Exists' property of 'DsfPathDelete' custom control equals 'True'
@@ -1776,13 +1776,13 @@ namespace Warewolf.UITests
         public void Drag_Toolbox_Delete_Record_Onto_DesignSurface()
         {
             #region Variable Declarations
-            WpfImage deleteImage = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.RecordsetTools.Delete.DeleteImage;
+            WpfListItem delete = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.RecordsetTools.Delete;
             WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
             #endregion
 
-            // Move 'Delete' image to 'Flowchart' custom control
+            // Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
             flowchart.EnsureClickable(new Point(309, 128));
-            Mouse.StartDragging(deleteImage, new Point(1, 15));
+            Mouse.StartDragging(delete, new Point(1, 15));
             Mouse.StopDragging(flowchart, new Point(309, 128));
         }
         
@@ -1792,13 +1792,13 @@ namespace Warewolf.UITests
         public void Drag_Toolbox_Dropbox_Download_Onto_DesignSurface()
         {
             #region Variable Declarations
-            WpfImage downloadImage = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.StorageDropbox.Download.DownloadImage;
+            WpfListItem download = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.StorageDropbox.Download;
             WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
             #endregion
 
-            // Move 'DropboxDownload' image to 'Flowchart' custom control
+            // Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
             flowchart.EnsureClickable(new Point(307, 131));
-            Mouse.StartDragging(downloadImage, new Point(30, 8));
+            Mouse.StartDragging(download, new Point(30, 8));
             Mouse.StopDragging(flowchart, new Point(307, 131));
         }
         
@@ -1808,13 +1808,13 @@ namespace Warewolf.UITests
         public void Drag_Toolbox_Dropbox_Upload_Onto_DesignSurface()
         {
             #region Variable Declarations
-            WpfImage uploadImage = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.StorageDropbox.Upload.UploadImage;
+            WpfListItem upload = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.StorageDropbox.Upload;
             WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
             #endregion
 
-            // Move 'DropboxUpload' image to 'Flowchart' custom control
+            // Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
             flowchart.EnsureClickable(new Point(307, 131));
-            Mouse.StartDragging(uploadImage, new Point(30, 8));
+            Mouse.StartDragging(upload, new Point(30, 8));
             Mouse.StopDragging(flowchart, new Point(307, 131));
         }
         
@@ -1824,13 +1824,13 @@ namespace Warewolf.UITests
         public void Drag_Toolbox_Exchange_Email_Onto_DesignSurface()
         {
             #region Variable Declarations
-            WpfImage exchangeSendImage = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.Email.ExchangeSend.ExchangeSendImage;
+            WpfListItem exchangeSend = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.Email.ExchangeSend;
             WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
             #endregion
 
-            // Move 'SQLBulkInsert' image to 'Flowchart' custom control
+            // Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
             flowchart.EnsureClickable(new Point(308, 129));
-            Mouse.StartDragging(exchangeSendImage, new Point(16, -39));
+            Mouse.StartDragging(exchangeSend, new Point(16, -39));
             Mouse.StopDragging(flowchart, new Point(308, 129));
         }
         
@@ -1840,18 +1840,18 @@ namespace Warewolf.UITests
         public void Drag_Toolbox_Find_Index_Onto_DesignSurface()
         {
             #region Variable Declarations
-            WpfImage findIndexImage = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.DataTools.FindIndex.FindIndexImage;
+            WpfListItem findIndex = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.DataTools.FindIndex;
             WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
-            WpfCustom findIndex = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FindIndex;
+            WpfCustom findIndex1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FindIndex;
             #endregion
 
-            // Move 'FindIndex' image to 'Flowchart' custom control
+            // Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
             flowchart.EnsureClickable(new Point(305, 131));
-            Mouse.StartDragging(findIndexImage, new Point(9, 5));
+            Mouse.StartDragging(findIndex, new Point(9, 5));
             Mouse.StopDragging(flowchart, new Point(305, 131));
 
             // Verify that the 'Exists' property of 'DsfIndexActivity' custom control equals 'True'
-            Assert.AreEqual(this.Drag_Toolbox_Find_Index_Onto_DesignSurfaceParams.FindIndexExists, findIndex.Exists, "Find Index on the design surface does not exist");
+            Assert.AreEqual(this.Drag_Toolbox_Find_Index_Onto_DesignSurfaceParams.FindIndexExists, findIndex1.Exists, "Find Index on the design surface does not exist");
         }
         
         /// <summary>
@@ -1860,13 +1860,13 @@ namespace Warewolf.UITests
         public void Drag_Toolbox_Find_Record_Index_Onto_DesignSurface()
         {
             #region Variable Declarations
-            WpfImage findRecordsImage = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.RecordsetTools.FindRecords.FindRecordsImage;
+            WpfListItem findRecords = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.RecordsetTools.FindRecords;
             WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
             #endregion
 
-            // Move 'FindRecords' image to 'Flowchart' custom control
+            // Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
             flowchart.EnsureClickable(new Point(307, 130));
-            Mouse.StartDragging(findRecordsImage, new Point(8, 8));
+            Mouse.StartDragging(findRecords, new Point(8, 8));
             Mouse.StopDragging(flowchart, new Point(307, 130));
         }
         
@@ -1876,18 +1876,18 @@ namespace Warewolf.UITests
         public void Drag_Toolbox_For_Each_Onto_DesignSurface()
         {
             #region Variable Declarations
-            WpfImage forEachImage = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.LoopTools.ForEach.ForEachImage;
+            WpfListItem forEach = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.LoopTools.ForEach;
             WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
-            WpfCustom forEach = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ForEach;
+            WpfCustom forEach1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ForEach;
             #endregion
 
-            // Move 'ForEach' image to 'Flowchart' custom control
+            // Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
             flowchart.EnsureClickable(new Point(307, 129));
-            Mouse.StartDragging(forEachImage, new Point(40, 19));
+            Mouse.StartDragging(forEach, new Point(40, 19));
             Mouse.StopDragging(flowchart, new Point(307, 129));
 
             // Verify that the 'Exists' property of 'DsfForEachActivity' custom control equals 'True'
-            Assert.AreEqual(this.Drag_Toolbox_For_Each_Onto_DesignSurfaceParams.ForEachExists, forEach.Exists, "For Each tool on the design surface does not exist");
+            Assert.AreEqual(this.Drag_Toolbox_For_Each_Onto_DesignSurfaceParams.ForEachExists, forEach1.Exists, "For Each tool on the design surface does not exist");
         }
         
         /// <summary>
@@ -1896,18 +1896,18 @@ namespace Warewolf.UITests
         public void Drag_Toolbox_Format_Number_Onto_DesignSurface()
         {
             #region Variable Declarations
-            WpfImage formatNumberImage = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.UtilityTools.FormatNumber.FormatNumberImage;
+            WpfListItem formatNumber = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.UtilityTools.FormatNumber;
             WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
-            WpfCustom formatNumber = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FormatNumber;
+            WpfCustom formatNumber1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FormatNumber;
             #endregion
 
-            // Move 'FormatNumber' image to 'Flowchart' custom control
+            // Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
             flowchart.EnsureClickable(new Point(305, 131));
-            Mouse.StartDragging(formatNumberImage, new Point(18, 11));
+            Mouse.StartDragging(formatNumber, new Point(18, 11));
             Mouse.StopDragging(flowchart, new Point(305, 131));
 
             // Verify that the 'Exists' property of 'DsfNumberFormatActivity' custom control equals 'True'
-            Assert.AreEqual(this.Drag_Toolbox_Format_Number_Onto_DesignSurfaceParams.FormatNumberExists, formatNumber.Exists, "Format Number tool on the design surface does not exist");
+            Assert.AreEqual(this.Drag_Toolbox_Format_Number_Onto_DesignSurfaceParams.FormatNumberExists, formatNumber1.Exists, "Format Number tool on the design surface does not exist");
         }
         
         /// <summary>
@@ -1916,18 +1916,18 @@ namespace Warewolf.UITests
         public void Drag_Toolbox_JSON_Onto_DesignSurface()
         {
             #region Variable Declarations
-            WpfImage createJSONImage = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.UtilityTools.CreateJSON.CreateJSONImage;
+            WpfListItem createJSON = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.UtilityTools.CreateJSON;
             WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
-            WpfCustom createJson = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.CreateJson;
+            WpfCustom createJson1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.CreateJson;
             #endregion
 
-            // Move 'CreateJSON' image to 'Flowchart' custom control
+            // Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
             flowchart.EnsureClickable(new Point(305, 127));
-            Mouse.StartDragging(createJSONImage, new Point(0, 10));
+            Mouse.StartDragging(createJSON, new Point(0, 10));
             Mouse.StopDragging(flowchart, new Point(305, 127));
 
             // Verify that the 'Exists' property of 'DsfCreateJsonActivity' custom control equals 'True'
-            Assert.AreEqual(this.Drag_Toolbox_JSON_Onto_DesignSurfaceParams.CreateJsonExists, createJson.Exists, "Create JSON tool on the design surface does not exist");
+            Assert.AreEqual(this.Drag_Toolbox_JSON_Onto_DesignSurfaceParams.CreateJsonExists, createJson1.Exists, "Create JSON tool on the design surface does not exist");
         }
         
         /// <summary>
@@ -1936,18 +1936,18 @@ namespace Warewolf.UITests
         public void Drag_Toolbox_Length_Onto_DesignSurface()
         {
             #region Variable Declarations
-            WpfImage lengthImage = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.RecordsetTools.Length.LengthImage;
+            WpfListItem length = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.RecordsetTools.Length;
             WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
-            WpfCustom length = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Length;
+            WpfCustom length1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Length;
             #endregion
 
-            // Move 'Length' image to 'Flowchart' custom control
+            // Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
             flowchart.EnsureClickable(new Point(308, 125));
-            Mouse.StartDragging(lengthImage, new Point(16, 6));
+            Mouse.StartDragging(length, new Point(16, 6));
             Mouse.StopDragging(flowchart, new Point(308, 125));
 
             // Verify that the 'Exists' property of 'DsfRecordsetLengthActivity' custom control equals 'True'
-            Assert.AreEqual(this.Drag_Toolbox_Length_Onto_DesignSurfaceParams.LengthExists, length.Exists, "Length tool on the design surface does not exist");
+            Assert.AreEqual(this.Drag_Toolbox_Length_Onto_DesignSurfaceParams.LengthExists, length1.Exists, "Length tool on the design surface does not exist");
         }
         
         /// <summary>
@@ -1956,14 +1956,14 @@ namespace Warewolf.UITests
         public void Drag_Toolbox_Move_Onto_DesignSurface()
         {
             #region Variable Declarations
-            WpfImage moveImage = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.FileAndFTP.Move.MoveImage;
+            WpfListItem move = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.FileAndFTP.Move;
             WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
             WpfCustom pathMove = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PathMove;
             #endregion
 
-            // Move 'Move' image to 'Flowchart' custom control
+            // Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
             flowchart.EnsureClickable(new Point(306, 129));
-            Mouse.StartDragging(moveImage, new Point(32, 4));
+            Mouse.StartDragging(move, new Point(32, 4));
             Mouse.StopDragging(flowchart, new Point(306, 129));
 
             // Verify that the 'Exists' property of 'DsfPathMove' custom control equals 'True'
@@ -1977,7 +1977,6 @@ namespace Warewolf.UITests
         {
             #region Variable Declarations
             WpfListItem multiAssign = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.DataTools.MultiAssign;
-            WpfImage assignImage = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.DataTools.MultiAssign.AssignImage;
             WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
             WpfEdit textbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView.DataGrid.Row1.VariableCell.Textbox;
             #endregion
@@ -1985,9 +1984,9 @@ namespace Warewolf.UITests
             // Verify that the 'Exists' property of 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item equals 'True'
             Assert.AreEqual(this.Drag_Toolbox_MultiAssign_Onto_DesignSurfaceParams.MultiAssignExists, multiAssign.Exists, "Toolbox Multiassign does not exist");
 
-            // Move 'Assign' image to 'Flowchart' custom control
+            // Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
             flowchart.EnsureClickable(new Point(307, 128));
-            Mouse.StartDragging(assignImage, new Point(13, 17));
+            Mouse.StartDragging(multiAssign, new Point(13, 17));
             Mouse.StopDragging(flowchart, new Point(307, 128));
 
             // Verify that the 'Exists' property of 'UI_TextBox_AutoID' text box equals 'True'
@@ -2000,13 +1999,13 @@ namespace Warewolf.UITests
         public void Drag_Toolbox_MySql_Database_Onto_DesignSurface()
         {
             #region Variable Declarations
-            WpfImage mySQLImage = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.Database.MySQL.MySQLImage;
+            WpfListItem mySQL = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.Database.MySQL;
             WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
             #endregion
 
-            // Move 'MySQL' image to 'Flowchart' custom control
+            // Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
             flowchart.EnsureClickable(new Point(306, 130));
-            Mouse.StartDragging(mySQLImage, new Point(4, 2));
+            Mouse.StartDragging(mySQL, new Point(4, 2));
             Mouse.StopDragging(flowchart, new Point(306, 130));
         }
         
@@ -2016,18 +2015,18 @@ namespace Warewolf.UITests
         public void Drag_Toolbox_Random_Onto_DesignSurface()
         {
             #region Variable Declarations
-            WpfImage randomImage = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.UtilityTools.Random.RandomImage;
+            WpfListItem random = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.UtilityTools.Random;
             WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
-            WpfCustom random = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Random;
+            WpfCustom random1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Random;
             #endregion
 
-            // Move 'Random' image to 'Flowchart' custom control
+            // Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
             flowchart.EnsureClickable(new Point(308, 127));
-            Mouse.StartDragging(randomImage, new Point(9, -21));
+            Mouse.StartDragging(random, new Point(9, -21));
             Mouse.StopDragging(flowchart, new Point(308, 127));
 
             // Verify that the 'Exists' property of 'DsfRandomActivity' custom control equals 'True'
-            Assert.AreEqual(this.Drag_Toolbox_Random_Onto_DesignSurfaceParams.RandomExists, random.Exists, "Random tool on the design surface does not exist");
+            Assert.AreEqual(this.Drag_Toolbox_Random_Onto_DesignSurfaceParams.RandomExists, random1.Exists, "Random tool on the design surface does not exist");
         }
         
         /// <summary>
@@ -2036,14 +2035,14 @@ namespace Warewolf.UITests
         public void Drag_Toolbox_Read_File_Onto_DesignSurface()
         {
             #region Variable Declarations
-            WpfImage readFileImage = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.FileAndFTP.ReadFile.ReadFileImage;
+            WpfListItem readFile = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.FileAndFTP.ReadFile;
             WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
             WpfCustom fileRead = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FileRead;
             #endregion
 
-            // Move 'ReadFile' image to 'Flowchart' custom control
+            // Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
             flowchart.EnsureClickable(new Point(304, 125));
-            Mouse.StartDragging(readFileImage, new Point(12, 15));
+            Mouse.StartDragging(readFile, new Point(12, 15));
             Mouse.StopDragging(flowchart, new Point(304, 125));
 
             // Verify that the 'Exists' property of 'DsfFileRead' custom control equals 'True'
@@ -2056,14 +2055,14 @@ namespace Warewolf.UITests
         public void Drag_Toolbox_Read_Folder_Onto_DesignSurface()
         {
             #region Variable Declarations
-            WpfImage readFolderImage = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.FileAndFTP.ReadFolder.ReadFolderImage;
+            WpfListItem readFolder = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.FileAndFTP.ReadFolder;
             WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
             WpfCustom folderRead = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FolderRead;
             #endregion
 
-            // Move 'ReadFolder' image to 'Flowchart' custom control
+            // Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
             flowchart.EnsureClickable(new Point(305, 129));
-            Mouse.StartDragging(readFolderImage, new Point(14, 3));
+            Mouse.StartDragging(readFolder, new Point(14, 3));
             Mouse.StopDragging(flowchart, new Point(305, 129));
 
             // Verify that the 'Exists' property of 'DsfFolderRead' custom control equals 'True'
@@ -2076,14 +2075,14 @@ namespace Warewolf.UITests
         public void Drag_Toolbox_Rename_Onto_DesignSurface()
         {
             #region Variable Declarations
-            WpfImage renameImage = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.FileAndFTP.Rename.RenameImage;
+            WpfListItem rename = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.FileAndFTP.Rename;
             WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
             WpfCustom pathRename = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PathRename;
             #endregion
 
-            // Move 'Rename' image to 'Flowchart' custom control
+            // Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
             flowchart.EnsureClickable(new Point(305, 128));
-            Mouse.StartDragging(renameImage, new Point(6, 11));
+            Mouse.StartDragging(rename, new Point(6, 11));
             Mouse.StopDragging(flowchart, new Point(305, 128));
 
             // Verify that the 'Exists' property of 'DsfPathRename' custom control equals 'True'
@@ -2096,18 +2095,18 @@ namespace Warewolf.UITests
         public void Drag_Toolbox_Replace_Onto_DesignSurface()
         {
             #region Variable Declarations
-            WpfImage replaceImage = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.DataTools.Replace.ReplaceImage;
+            WpfListItem replace = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.DataTools.Replace;
             WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
-            WpfCustom replace = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Replace;
+            WpfCustom replace1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Replace;
             #endregion
 
-            // Move 'Replace' image to 'Flowchart' custom control
+            // Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
             flowchart.EnsureClickable(new Point(306, 121));
-            Mouse.StartDragging(replaceImage, new Point(16, 10));
+            Mouse.StartDragging(replace, new Point(16, 10));
             Mouse.StopDragging(flowchart, new Point(306, 121));
 
             // Verify that the 'Exists' property of 'DsfReplaceActivity' custom control equals 'True'
-            Assert.AreEqual(this.Drag_Toolbox_Replace_Onto_DesignSurfaceParams.ReplaceExists, replace.Exists, "Replace on the design surface does not exist");
+            Assert.AreEqual(this.Drag_Toolbox_Replace_Onto_DesignSurfaceParams.ReplaceExists, replace1.Exists, "Replace on the design surface does not exist");
         }
         
         /// <summary>
@@ -2116,14 +2115,14 @@ namespace Warewolf.UITests
         public void Drag_Toolbox_Script_Onto_DesignSurface()
         {
             #region Variable Declarations
-            WpfImage scriptImage = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.ScriptingTools.Script.ScriptImage;
+            WpfListItem script = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.ScriptingTools.Script;
             WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
             WpfCustom scripting = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Scripting;
             #endregion
 
-            // Move 'Script' image to 'Flowchart' custom control
+            // Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
             flowchart.EnsureClickable(new Point(307, 130));
-            Mouse.StartDragging(scriptImage, new Point(49, 17));
+            Mouse.StartDragging(script, new Point(49, 17));
             Mouse.StopDragging(flowchart, new Point(307, 130));
 
             // Verify that the 'Exists' property of 'DsfScriptingActivity' custom control equals 'True'
@@ -2136,18 +2135,18 @@ namespace Warewolf.UITests
         public void Drag_Toolbox_Sequence_Onto_DesignSurface()
         {
             #region Variable Declarations
-            WpfImage sequenceImage = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.FlowTools.Sequence.SequenceImage;
+            WpfListItem sequence = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.FlowTools.Sequence;
             WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
-            WpfCustom sequence = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Sequence;
+            WpfCustom sequence1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Sequence;
             #endregion
 
-            // Move 'Sequence' image to 'Flowchart' custom control
+            // Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
             flowchart.EnsureClickable(new Point(305, 131));
-            Mouse.StartDragging(sequenceImage, new Point(18, -12));
+            Mouse.StartDragging(sequence, new Point(18, -12));
             Mouse.StopDragging(flowchart, new Point(305, 131));
 
             // Verify that the 'Exists' property of 'DsfSequenceActivity' custom control equals 'True'
-            Assert.AreEqual(this.Drag_Toolbox_Sequence_Onto_DesignSurfaceParams.SequenceExists, sequence.Exists, "Sequence on the design surface does not exist");
+            Assert.AreEqual(this.Drag_Toolbox_Sequence_Onto_DesignSurfaceParams.SequenceExists, sequence1.Exists, "Sequence on the design surface does not exist");
         }
         
         /// <summary>
@@ -2156,14 +2155,14 @@ namespace Warewolf.UITests
         public void Drag_Toolbox_Service_Picker_Onto_DesignSurface()
         {
             #region Variable Declarations
-            WpfImage serviceImage = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.ResourceTools.Service.ServiceImage;
+            WpfListItem service = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.ResourceTools.Service;
             WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
             WpfButton cancel = this.ServicePickerDialog.Cancel;
             #endregion
 
-            // Move 'Service' image to 'Flowchart' custom control
+            // Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
             flowchart.EnsureClickable(new Point(304, 126));
-            Mouse.StartDragging(serviceImage, new Point(50, 5));
+            Mouse.StartDragging(service, new Point(50, 5));
             Mouse.StopDragging(flowchart, new Point(304, 126));
 
             // Verify that the 'Exists' property of 'Cancel' button equals 'True'
@@ -2176,13 +2175,13 @@ namespace Warewolf.UITests
         public void Drag_Toolbox_Sharepoint_Create_Onto_DesignSurface()
         {
             #region Variable Declarations
-            WpfImage createListItemsImage = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.SharepointTools.CreateListItems.CreateListItemsImage;
+            WpfListItem createListItems = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.SharepointTools.CreateListItems;
             WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
             #endregion
 
-            // Move 'CreateListItems' image to 'Flowchart' custom control
+            // Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
             flowchart.EnsureClickable(new Point(311, 128));
-            Mouse.StartDragging(createListItemsImage, new Point(10, 16));
+            Mouse.StartDragging(createListItems, new Point(10, 16));
             Mouse.StopDragging(flowchart, new Point(311, 128));
         }
         
@@ -2192,13 +2191,13 @@ namespace Warewolf.UITests
         public void Drag_Toolbox_Sharepoint_Delete_Onto_DesignSurface()
         {
             #region Variable Declarations
-            WpfImage deleteListItemsImage = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.SharepointTools.DeleteListItems.DeleteListItemsImage;
+            WpfListItem deleteListItems = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.SharepointTools.DeleteListItems;
             WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
             #endregion
 
-            // Move 'DeleteListItems' image to 'Flowchart' custom control
+            // Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
             flowchart.EnsureClickable(new Point(306, 131));
-            Mouse.StartDragging(deleteListItemsImage, new Point(16, 5));
+            Mouse.StartDragging(deleteListItems, new Point(16, 5));
             Mouse.StopDragging(flowchart, new Point(306, 131));
         }
         
@@ -2208,13 +2207,13 @@ namespace Warewolf.UITests
         public void Drag_Toolbox_Sharepoint_Read_Onto_DesignSurface()
         {
             #region Variable Declarations
-            WpfImage readListItemsImage = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.SharepointTools.ReadListItems.ReadListItemsImage;
+            WpfListItem readListItems = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.SharepointTools.ReadListItems;
             WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
             #endregion
 
-            // Move 'ReadListItems' image to 'Flowchart' custom control
+            // Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
             flowchart.EnsureClickable(new Point(303, 128));
-            Mouse.StartDragging(readListItemsImage, new Point(13, 15));
+            Mouse.StartDragging(readListItems, new Point(13, 15));
             Mouse.StopDragging(flowchart, new Point(303, 128));
         }
         
@@ -2224,13 +2223,13 @@ namespace Warewolf.UITests
         public void Drag_Toolbox_Sharepoint_Update_Onto_DesignSurface()
         {
             #region Variable Declarations
-            WpfImage updateListItemsImage = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.SharepointTools.UpdateListItems.UpdateListItemsImage;
+            WpfListItem updateListItems = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.SharepointTools.UpdateListItems;
             WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
             #endregion
 
-            // Move 'UpdateListItems' image to 'Flowchart' custom control
+            // Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
             flowchart.EnsureClickable(new Point(300, 127));
-            Mouse.StartDragging(updateListItemsImage, new Point(17, 9));
+            Mouse.StartDragging(updateListItems, new Point(17, 9));
             Mouse.StopDragging(flowchart, new Point(300, 127));
         }
         
@@ -2240,14 +2239,14 @@ namespace Warewolf.UITests
         public void Drag_Toolbox_SMTP_Email_Onto_DesignSurface()
         {
             #region Variable Declarations
-            WpfImage sMTPSendImage = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.Email.SMTPSend.SMTPSendImage;
+            WpfListItem sMTPSend = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.Email.SMTPSend;
             WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
             WpfCustom sMTPEmail = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SMTPEmail;
             #endregion
 
-            // Move 'MySQL' image to 'Flowchart' custom control
+            // Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
             flowchart.EnsureClickable(new Point(308, 129));
-            Mouse.StartDragging(sMTPSendImage, new Point(16, -39));
+            Mouse.StartDragging(sMTPSend, new Point(16, -39));
             Mouse.StopDragging(flowchart, new Point(308, 129));
 
             // Verify that the 'Exists' property of 'DsfSendEmailActivity' custom control equals 'True'
@@ -2260,13 +2259,13 @@ namespace Warewolf.UITests
         public void Drag_Toolbox_Sort_Record_Onto_DesignSurface()
         {
             #region Variable Declarations
-            WpfImage sortImage = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.RecordsetTools.Sort.SortImage;
+            WpfListItem sort = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.RecordsetTools.Sort;
             WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
             #endregion
 
-            // Move 'Sort' image to 'Flowchart' custom control
+            // Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
             flowchart.EnsureClickable(new Point(300, 122));
-            Mouse.StartDragging(sortImage, new Point(7, 8));
+            Mouse.StartDragging(sort, new Point(7, 8));
             Mouse.StopDragging(flowchart, new Point(300, 122));
         }
         
@@ -2276,18 +2275,18 @@ namespace Warewolf.UITests
         public void Drag_Toolbox_SQL_Bulk_Insert_Onto_DesignSurface()
         {
             #region Variable Declarations
-            WpfImage sQLBulkInsertImage = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.Database.SQLBulkInsert.SQLBulkInsertImage;
+            WpfListItem sQLBulkInsert = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.Database.SQLBulkInsert;
             WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
-            WpfCustom sqlBulkInsert = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlBulkInsert;
+            WpfCustom sqlBulkInsert1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlBulkInsert;
             #endregion
 
-            // Move 'SQLBulkInsert' image to 'Flowchart' custom control
+            // Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
             flowchart.EnsureClickable(new Point(304, 129));
-            Mouse.StartDragging(sQLBulkInsertImage, new Point(11, 16));
+            Mouse.StartDragging(sQLBulkInsert, new Point(11, 16));
             Mouse.StopDragging(flowchart, new Point(304, 129));
 
             // Verify that the 'Exists' property of 'DsfSqlBulkInsertActivity' custom control equals 'True'
-            Assert.AreEqual(this.Drag_Toolbox_SQL_Bulk_Insert_Onto_DesignSurfaceParams.SqlBulkInsertExists, sqlBulkInsert.Exists, "Sql Bulk Insert tool on the design surface does not exist");
+            Assert.AreEqual(this.Drag_Toolbox_SQL_Bulk_Insert_Onto_DesignSurfaceParams.SqlBulkInsertExists, sqlBulkInsert1.Exists, "Sql Bulk Insert tool on the design surface does not exist");
         }
         
         /// <summary>
@@ -2296,13 +2295,13 @@ namespace Warewolf.UITests
         public void Drag_Toolbox_SQL_Server_Tool_Onto_DesignSurface()
         {
             #region Variable Declarations
-            WpfImage sQLServerImage = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.Database.SQLServer.SQLServerImage;
+            WpfListItem sQLServer = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.Database.SQLServer;
             WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
             #endregion
 
-            // Move 'SQLServer' image to 'Flowchart' custom control
+            // Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
             flowchart.EnsureClickable(new Point(304, 127));
-            Mouse.StartDragging(sQLServerImage, new Point(10, -7));
+            Mouse.StartDragging(sQLServer, new Point(10, -7));
             Mouse.StopDragging(flowchart, new Point(304, 127));
         }
         
@@ -2312,14 +2311,14 @@ namespace Warewolf.UITests
         public void Drag_Toolbox_Switch_Onto_DesignSurface()
         {
             #region Variable Declarations
-            WpfImage switchImage = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.FlowTools.Switch.SwitchImage;
+            WpfListItem switch1 = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.FlowTools.Switch;
             WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
             WpfButton doneButton = this.DecisionDialog.DoneButton;
             #endregion
 
-            // Move 'Switch' image to 'Flowchart' custom control
+            // Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
             flowchart.EnsureClickable(new Point(303, 126));
-            Mouse.StartDragging(switchImage, new Point(22, 30));
+            Mouse.StartDragging(switch1, new Point(22, 30));
             Mouse.StopDragging(flowchart, new Point(303, 126));
 
             // Verify that the 'Exists' property of 'Done' button equals 'True'
@@ -2332,14 +2331,14 @@ namespace Warewolf.UITests
         public void Drag_Toolbox_System_Information_Onto_DesignSurface()
         {
             #region Variable Declarations
-            WpfImage sysInfoImage = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.UtilityTools.SysInfo.SysInfoImage;
+            WpfListItem sysInfo = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.UtilityTools.SysInfo;
             WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
             WpfCustom gatherSystemInfo = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.GatherSystemInfo;
             #endregion
 
-            // Move 'SysInfo' image to 'Flowchart' custom control
+            // Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
             flowchart.EnsureClickable(new Point(304, 129));
-            Mouse.StartDragging(sysInfoImage, new Point(8, 12));
+            Mouse.StartDragging(sysInfo, new Point(8, 12));
             Mouse.StopDragging(flowchart, new Point(304, 129));
 
             // Verify that the 'Exists' property of 'DsfGatherSystemInformationActivity' custom control equals 'True'
@@ -2352,13 +2351,13 @@ namespace Warewolf.UITests
         public void Drag_Toolbox_Unique_Records_Onto_DesignSurface()
         {
             #region Variable Declarations
-            WpfImage uniqueRecordsImage = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.RecordsetTools.UniqueRecords.UniqueRecordsImage;
+            WpfListItem uniqueRecords = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.RecordsetTools.UniqueRecords;
             WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
             #endregion
 
-            // Move 'UniqueRecords' image to 'Flowchart' custom control
+            // Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
             flowchart.EnsureClickable(new Point(304, 133));
-            Mouse.StartDragging(uniqueRecordsImage, new Point(43, 6));
+            Mouse.StartDragging(uniqueRecords, new Point(43, 6));
             Mouse.StopDragging(flowchart, new Point(304, 133));
         }
         
@@ -2368,18 +2367,18 @@ namespace Warewolf.UITests
         public void Drag_Toolbox_Unzip_Onto_DesignSurface()
         {
             #region Variable Declarations
-            WpfImage unZipImage = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.FileAndFTP.UnZip.UnZipImage;
+            WpfListItem unZip = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.FileAndFTP.UnZip;
             WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
-            WpfCustom unZip = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.UnZip;
+            WpfCustom unZip1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.UnZip;
             #endregion
 
-            // Move 'UnZip' image to 'Flowchart' custom control
+            // Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
             flowchart.EnsureClickable(new Point(306, 128));
-            Mouse.StartDragging(unZipImage, new Point(15, 0));
+            Mouse.StartDragging(unZip, new Point(15, 0));
             Mouse.StopDragging(flowchart, new Point(306, 128));
 
             // Verify that the 'Exists' property of 'DsfUnZip' custom control equals 'True'
-            Assert.AreEqual(this.Drag_Toolbox_Unzip_Onto_DesignSurfaceParams.UnZipExists, unZip.Exists, "Unzip on the design surface does not exist");
+            Assert.AreEqual(this.Drag_Toolbox_Unzip_Onto_DesignSurfaceParams.UnZipExists, unZip1.Exists, "Unzip on the design surface does not exist");
         }
         
         /// <summary>
@@ -2388,18 +2387,18 @@ namespace Warewolf.UITests
         public void Drag_Toolbox_Web_Request_Onto_DesignSurface()
         {
             #region Variable Declarations
-            WpfImage webRequestImage = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.UtilityTools.WebRequest.WebRequestImage;
+            WpfListItem webRequest = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.UtilityTools.WebRequest;
             WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
-            WpfCustom webRequest = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebRequest;
+            WpfCustom webRequest1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebRequest;
             #endregion
 
-            // Move 'WebRequest' image to 'Flowchart' custom control
+            // Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
             flowchart.EnsureClickable(new Point(308, 128));
-            Mouse.StartDragging(webRequestImage, new Point(14, 3));
+            Mouse.StartDragging(webRequest, new Point(14, 3));
             Mouse.StopDragging(flowchart, new Point(308, 128));
 
             // Verify that the 'Exists' property of 'DsfWebRequestActivity' custom control equals 'True'
-            Assert.AreEqual(this.Drag_Toolbox_Web_Request_Onto_DesignSurfaceParams.WebRequestExists, webRequest.Exists, "Web Request on the design surface does not exist");
+            Assert.AreEqual(this.Drag_Toolbox_Web_Request_Onto_DesignSurfaceParams.WebRequestExists, webRequest1.Exists, "Web Request on the design surface does not exist");
         }
         
         /// <summary>
@@ -2408,14 +2407,14 @@ namespace Warewolf.UITests
         public void Drag_Toolbox_Write_File_Onto_DesignSurface()
         {
             #region Variable Declarations
-            WpfImage writeFileImage = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.FileAndFTP.WriteFile.WriteFileImage;
+            WpfListItem writeFile = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.FileAndFTP.WriteFile;
             WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
             WpfCustom fileWrite = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FileWrite;
             #endregion
 
-            // Move 'WriteFile' image to 'Flowchart' custom control
+            // Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
             flowchart.EnsureClickable(new Point(306, 132));
-            Mouse.StartDragging(writeFileImage, new Point(10, 18));
+            Mouse.StartDragging(writeFile, new Point(10, 18));
             Mouse.StopDragging(flowchart, new Point(306, 132));
 
             // Verify that the 'Exists' property of 'DsfFileWrite' custom control equals 'True'
@@ -2428,18 +2427,18 @@ namespace Warewolf.UITests
         public void Drag_Toolbox_XPath_Onto_DesignSurface()
         {
             #region Variable Declarations
-            WpfImage xPathImage = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.UtilityTools.XPath.XPathImage;
+            WpfListItem xPath = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.UtilityTools.XPath;
             WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
-            WpfCustom xPath = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.XPath;
+            WpfCustom xPath1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.XPath;
             #endregion
 
-            // Move 'XPath' image to 'Flowchart' custom control
+            // Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
             flowchart.EnsureClickable(new Point(307, 123));
-            Mouse.StartDragging(xPathImage, new Point(12, -13));
+            Mouse.StartDragging(xPath, new Point(12, -13));
             Mouse.StopDragging(flowchart, new Point(307, 123));
 
             // Verify that the 'Exists' property of 'DsfXPathActivity' custom control equals 'True'
-            Assert.AreEqual(this.Drag_Toolbox_XPath_Onto_DesignSurfaceParams.XPathExists, xPath.Exists, "XPath tool on the design surface does not exist");
+            Assert.AreEqual(this.Drag_Toolbox_XPath_Onto_DesignSurfaceParams.XPathExists, xPath1.Exists, "XPath tool on the design surface does not exist");
         }
         
         /// <summary>
@@ -2448,18 +2447,18 @@ namespace Warewolf.UITests
         public void Drag_Toolbox_Zip_Onto_DesignSurface()
         {
             #region Variable Declarations
-            WpfImage zipImage = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.FileAndFTP.Zip.ZipImage;
+            WpfListItem zip = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.FileAndFTP.Zip;
             WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
-            WpfCustom zip = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Zip;
+            WpfCustom zip1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Zip;
             #endregion
 
-            // Move 'Zip' image to 'Flowchart' custom control
+            // Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
             flowchart.EnsureClickable(new Point(306, 131));
-            Mouse.StartDragging(zipImage, new Point(16, 4));
+            Mouse.StartDragging(zip, new Point(16, 4));
             Mouse.StopDragging(flowchart, new Point(306, 131));
 
             // Verify that the 'Exists' property of 'DsfZip' custom control equals 'True'
-            Assert.AreEqual(this.Drag_Toolbox_Zip_Onto_DesignSurfaceParams.ZipExists, zip.Exists, "Zip tool on the design surface does not exist");
+            Assert.AreEqual(this.Drag_Toolbox_Zip_Onto_DesignSurfaceParams.ZipExists, zip1.Exists, "Zip tool on the design surface does not exist");
         }
         
         /// <summary>
