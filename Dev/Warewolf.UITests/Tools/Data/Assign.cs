@@ -31,6 +31,7 @@ namespace Warewolf.UITests.Tools.Data
 
             /**TODO: Re-introduce these units before WOLF-1923 can be moved to done.
             Uimap.Click_Debug_Ribbon_Button();
+            Uimap.Click_Debug_Input_Dialog_Debug_ButtonParams.AssignToolDebugOutputExists = true;
             Uimap.Click_DebugInput_DebugButton();
             **/
         }

@@ -16,7 +16,7 @@ namespace Warewolf.UITests.Tools.Utility
             Uimap.Click_Calculate_Large_View_Done_Button();
             //TODO: Re-introduce these units before WOLF-1923 can be moved to done.
             //Uimap.Click_Debug_Ribbon_Button();
-            //Uimap.Click_Debug_Input_Dialog_Debug_ButtonParams.BaseConversionToolDebugOutputExists = true;
+            //Uimap.Click_Debug_Input_Dialog_Debug_ButtonParams.CalculateToolDebugOutputExists = true;
             //Uimap.Click_Debug_Input_Dialog_Debug_Button();
         }
 
