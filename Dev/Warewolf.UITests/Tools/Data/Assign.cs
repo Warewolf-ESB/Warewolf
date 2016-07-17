@@ -22,7 +22,7 @@ namespace Warewolf.UITests.Tools.Data
             Uimap.Drag_Toolbox_MultiAssign_Onto_DesignSurface();
             Uimap.Open_Assign_Tool_Large_View();
             Uimap.Enter_Text_Into_Assign_Large_View_Row1_Variable_Textbox_As_SomeVariable();
-            Uimap.Click_Assign_Tool_Large_View_DoneButton();
+            Uimap.Click_Assign_Tool_Large_View_Done_Button();
             Uimap.Open_Assign_Tool_Qvi_Large_View();
             Uimap.Click_Save_Ribbon_Button();
             Uimap.Enter_Servicename_As_SomeWorkflow();

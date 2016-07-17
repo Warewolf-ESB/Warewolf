@@ -11,11 +11,12 @@ namespace Warewolf.UITests.Tools.Data
         public void BaseConvertToolUITest()
         {
             Uimap.Drag_Toolbox_Base_Conversion_Onto_DesignSurface();
-            //Uimap.Open_Base_Conversion_Tool_Large_View();
-            //Uimap.Enter_Values_Into_Base_Conversion_Tool_Large_View();
-            //Uimap.Click_Base_Conversion_Tool_Large_View_Done_Button();
+            Uimap.Open_Base_Conversion_Tool_Large_View();
+            Uimap.Enter_SomeVariable_Into_Base_Convert_Large_View_Row1_Value_Textbox();
+            Uimap.Click_Base_Convert_Large_View_Done_Button();
             Uimap.Open_Base_Conversion_Tool_Qvi_Large_View();
-            //Uimap.Click_Debug_Bibbon_Button();
+            //TODO: Re-introduce these units before WOLF-1923 can be moved to done.
+            //Uimap.Click_Debug_Ribbon_Button();
             //Uimap.Click_Debug_Input_Dialog_Debug_ButtonParams.BaseConversionToolDebugOutputExists = true;
             //Uimap.Click_Debug_Input_Dialog_Debug_Button();
         }
