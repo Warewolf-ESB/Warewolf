@@ -6721,18 +6721,6 @@ namespace Warewolf.UITests
                 return this.mServicePickerDialog;
             }
         }
-        
-        public UIWarewolfASHASHWindow UIWarewolfASHASHWindow
-        {
-            get
-            {
-                if ((this.mUIWarewolfASHASHWindow == null))
-                {
-                    this.mUIWarewolfASHASHWindow = new UIWarewolfASHASHWindow();
-                }
-                return this.mUIWarewolfASHASHWindow;
-            }
-        }
         #endregion
         
         #region Fields
@@ -7041,8 +7029,6 @@ namespace Warewolf.UITests
         private SelectWindowsGroupDialog mSelectWindowsGroupDialog;
         
         private ServicePickerDialog mServicePickerDialog;
-        
-        private UIWarewolfASHASHWindow mUIWarewolfASHASHWindow;
         #endregion
     }
     
@@ -32810,128 +32796,6 @@ namespace Warewolf.UITests
         
         #region Fields
         private WpfTreeItem mSubTreeItem1;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class UIWarewolfASHASHWindow : WpfWindow
-    {
-        
-        public UIWarewolfASHASHWindow()
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfWindow.PropertyNames.Name] = "Warewolf (ASH\\ASH)";
-            this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
-            this.WindowTitles.Add("Warewolf (ASH\\ASH)");
-            #endregion
-        }
-        
-        #region Properties
-        public UIWorkflowItemPresenteCustom UIWorkflowItemPresenteCustom
-        {
-            get
-            {
-                if ((this.mUIWorkflowItemPresenteCustom == null))
-                {
-                    this.mUIWorkflowItemPresenteCustom = new UIWorkflowItemPresenteCustom(this);
-                }
-                return this.mUIWorkflowItemPresenteCustom;
-            }
-        }
-        
-        public WpfCustom UIDsfCalculateActivityCustom
-        {
-            get
-            {
-                if ((this.mUIDsfCalculateActivityCustom == null))
-                {
-                    this.mUIDsfCalculateActivityCustom = new WpfCustom(this);
-                    #region Search Criteria
-                    this.mUIDsfCalculateActivityCustom.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.CalculateDesigner";
-                    this.mUIDsfCalculateActivityCustom.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Calculate(CalculateDesigner)";
-                    this.mUIDsfCalculateActivityCustom.WindowTitles.Add("Warewolf (ASH\\ASH)");
-                    #endregion
-                }
-                return this.mUIDsfCalculateActivityCustom;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private UIWorkflowItemPresenteCustom mUIWorkflowItemPresenteCustom;
-        
-        private WpfCustom mUIDsfCalculateActivityCustom;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class UIWorkflowItemPresenteCustom : WpfCustom
-    {
-        
-        public UIWorkflowItemPresenteCustom(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.WorkflowItemPresenter";
-            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "WorkflowItemPresenter";
-            this.WindowTitles.Add("Warewolf (ASH\\ASH)");
-            #endregion
-        }
-        
-        #region Properties
-        public UIFlowchartCustom UIFlowchartCustom
-        {
-            get
-            {
-                if ((this.mUIFlowchartCustom == null))
-                {
-                    this.mUIFlowchartCustom = new UIFlowchartCustom(this);
-                }
-                return this.mUIFlowchartCustom;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private UIFlowchartCustom mUIFlowchartCustom;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class UIFlowchartCustom : WpfCustom
-    {
-        
-        public UIFlowchartCustom(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.FlowchartDesigner";
-            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Unsaved 1(FlowchartDesigner)";
-            this.WindowTitles.Add("Warewolf (ASH\\ASH)");
-            #endregion
-        }
-        
-        #region Properties
-        public WpfCustom UIDsfCalculateActivityCustom
-        {
-            get
-            {
-                if ((this.mUIDsfCalculateActivityCustom == null))
-                {
-                    this.mUIDsfCalculateActivityCustom = new WpfCustom(this);
-                    #region Search Criteria
-                    this.mUIDsfCalculateActivityCustom.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.CalculateDesigner";
-                    this.mUIDsfCalculateActivityCustom.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Calculate(CalculateDesigner)";
-                    this.mUIDsfCalculateActivityCustom.WindowTitles.Add("Warewolf (ASH\\ASH)");
-                    #endregion
-                }
-                return this.mUIDsfCalculateActivityCustom;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfCustom mUIDsfCalculateActivityCustom;
         #endregion
     }
 }
