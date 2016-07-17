@@ -3753,7 +3753,7 @@
       <IsGlobalHotkey>false</IsGlobalHotkey>
       <TargetElementName>UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart</TargetElementName>
       <MouseButton>Left</MouseButton>
-      <StartLocation X="15" Y="0" />
+      <StartLocation X="15" Y="15" />
       <StopLocation X="306" Y="128" />
     </DragDropAction>
     <AssertAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1">
