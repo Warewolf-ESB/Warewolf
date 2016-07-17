@@ -32,19 +32,6 @@ namespace Warewolf.UITests
     {
         
         /// <summary>
-        /// Click_Assign_Small_View_Row1_Variable_Textbox
-        /// </summary>
-        public void Click_Assign_Small_View_Row1_Variable_Textbox()
-        {
-            #region Variable Declarations
-            WpfEdit textbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView.DataGrid.Row1.VariableCell.Textbox;
-            #endregion
-
-            // Click 'UI_TextBox_AutoID' text box
-            Mouse.Click(textbox, new Point(38, 9));
-        }
-        
-        /// <summary>
         /// Click_Assign_Tool_Large_View_Done_Button - Use 'Click_Assign_Tool_Large_View_Done_ButtonParams' to pass parameters into this method.
         /// </summary>
         public void Click_Assign_Tool_Large_View_Done_Button()
@@ -85,6 +72,23 @@ namespace Warewolf.UITests
 
             // Verify that the 'Text' property of 'UI_NameTextBox_AutoID' text box equals 'SomeVariable'
             Assert.AreEqual(this.Click_Base_Convert_Large_View_Done_ButtonParams.TextBoxText, textBox.Text, "Variable list scalar row 1 textbox text does not equal somevariable");
+        }
+        
+        /// <summary>
+        /// Click_Calculate_Large_View_Done_Button - Use 'Click_Calculate_Large_View_Done_ButtonParams' to pass parameters into this method.
+        /// </summary>
+        public void Click_Calculate_Large_View_Done_Button()
+        {
+            #region Variable Declarations
+            WpfEdit functionTextbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Calculate.SmallView.FunctionTextbox;
+            WpfButton doneButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Calculate.DoneButton;
+            #endregion
+
+            // Verify that the 'Text' property of 'UI__fxtxt_AutoID' text box equals '[[SomeVariable]]'
+            Assert.AreEqual(this.Click_Calculate_Large_View_Done_ButtonParams.FunctionTextboxText, functionTextbox.Text, "Calculate small view function textbox text does not equal SomeVariable.");
+
+            // Click 'Done' button
+            Mouse.Click(doneButton, new Point(45, 8));
         }
         
         /// <summary>
@@ -2831,6 +2835,22 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
+        /// Enter_SomeVariable_Into_Calculate_Large_View_Function_Textbox - Use 'Enter_SomeVariable_Into_Calculate_Large_View_Function_TextboxParams' to pass parameters into this method.
+        /// </summary>
+        public void Enter_SomeVariable_Into_Calculate_Large_View_Function_Textbox()
+        {
+            #region Variable Declarations
+            WpfEdit functionTextbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Calculate.LargeView.FunctionTextbox;
+            #endregion
+
+            // Type '[[SomeVariable]]' in 'UI__fxtxt_AutoID' text box
+            functionTextbox.Text = this.Enter_SomeVariable_Into_Calculate_Large_View_Function_TextboxParams.FunctionTextboxText;
+
+            // Verify that the 'Text' property of 'UI__fxtxt_AutoID' text box equals '[[SomeVariable]]'
+            Assert.AreEqual(this.Enter_SomeVariable_Into_Calculate_Large_View_Function_TextboxParams.FunctionTextboxText1, functionTextbox.Text, "Calculate large view function textbox text does not equal \"[[SomeVariable]]\"");
+        }
+        
+        /// <summary>
         /// Enter_SomeWorkflow_Into_Explorer_Filter - Use 'Enter_SomeWorkflow_Into_Explorer_FilterParams' to pass parameters into this method.
         /// </summary>
         public void Enter_SomeWorkflow_Into_Explorer_Filter()
@@ -2978,6 +2998,27 @@ namespace Warewolf.UITests
 
             // Verify that the 'Exists' property of 'DsfBaseConvertActivity' custom control equals 'True'
             Assert.AreEqual(this.Open_Base_Conversion_Tool_Qvi_Large_ViewParams.BaseConvertExists, baseConvert.Exists, "Base Conversion QVI Window does not exist on the design surface");
+        }
+        
+        /// <summary>
+        /// Open_Calculate_Tool_Large_View - Use 'Open_Calculate_Tool_Large_ViewParams' to pass parameters into this method.
+        /// </summary>
+        public void Open_Calculate_Tool_Large_View()
+        {
+            #region Variable Declarations
+            WpfCustom calculate = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Calculate;
+            WpfCustom largeView = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Calculate.LargeView;
+            WpfEdit functionTextbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Calculate.LargeView.FunctionTextbox;
+            #endregion
+
+            // Double-Click 'DsfCalculateActivity' custom control
+            Mouse.DoubleClick(calculate, new Point(105, 7));
+
+            // Verify that the 'Exists' property of 'LargeViewContent' custom control equals 'True'
+            Assert.AreEqual(this.Open_Calculate_Tool_Large_ViewParams.LargeViewExists, largeView.Exists, "Calculate tool large view does not exist on design surface.");
+
+            // Verify that the 'Exists' property of 'UI__fxtxt_AutoID' text box equals 'True'
+            Assert.AreEqual(this.Open_Calculate_Tool_Large_ViewParams.FunctionTextboxExists, functionTextbox.Exists, "Function textbox does not exist on calculate tool large view.");
         }
         
         /// <summary>
@@ -4869,6 +4910,18 @@ namespace Warewolf.UITests
             }
         }
         
+        public virtual Click_Calculate_Large_View_Done_ButtonParams Click_Calculate_Large_View_Done_ButtonParams
+        {
+            get
+            {
+                if ((this.mClick_Calculate_Large_View_Done_ButtonParams == null))
+                {
+                    this.mClick_Calculate_Large_View_Done_ButtonParams = new Click_Calculate_Large_View_Done_ButtonParams();
+                }
+                return this.mClick_Calculate_Large_View_Done_ButtonParams;
+            }
+        }
+        
         public virtual Click_Close_Server_Source_Wizard_Tab_ButtonParams Click_Close_Server_Source_Wizard_Tab_ButtonParams
         {
             get
@@ -6021,6 +6074,18 @@ namespace Warewolf.UITests
             }
         }
         
+        public virtual Enter_SomeVariable_Into_Calculate_Large_View_Function_TextboxParams Enter_SomeVariable_Into_Calculate_Large_View_Function_TextboxParams
+        {
+            get
+            {
+                if ((this.mEnter_SomeVariable_Into_Calculate_Large_View_Function_TextboxParams == null))
+                {
+                    this.mEnter_SomeVariable_Into_Calculate_Large_View_Function_TextboxParams = new Enter_SomeVariable_Into_Calculate_Large_View_Function_TextboxParams();
+                }
+                return this.mEnter_SomeVariable_Into_Calculate_Large_View_Function_TextboxParams;
+            }
+        }
+        
         public virtual Enter_SomeWorkflow_Into_Explorer_FilterParams Enter_SomeWorkflow_Into_Explorer_FilterParams
         {
             get
@@ -6114,6 +6179,18 @@ namespace Warewolf.UITests
                     this.mOpen_Base_Conversion_Tool_Qvi_Large_ViewParams = new Open_Base_Conversion_Tool_Qvi_Large_ViewParams();
                 }
                 return this.mOpen_Base_Conversion_Tool_Qvi_Large_ViewParams;
+            }
+        }
+        
+        public virtual Open_Calculate_Tool_Large_ViewParams Open_Calculate_Tool_Large_ViewParams
+        {
+            get
+            {
+                if ((this.mOpen_Calculate_Tool_Large_ViewParams == null))
+                {
+                    this.mOpen_Calculate_Tool_Large_ViewParams = new Open_Calculate_Tool_Large_ViewParams();
+                }
+                return this.mOpen_Calculate_Tool_Large_ViewParams;
             }
         }
         
@@ -6644,12 +6721,26 @@ namespace Warewolf.UITests
                 return this.mServicePickerDialog;
             }
         }
+        
+        public UIWarewolfASHASHWindow UIWarewolfASHASHWindow
+        {
+            get
+            {
+                if ((this.mUIWarewolfASHASHWindow == null))
+                {
+                    this.mUIWarewolfASHASHWindow = new UIWarewolfASHASHWindow();
+                }
+                return this.mUIWarewolfASHASHWindow;
+            }
+        }
         #endregion
         
         #region Fields
         private Click_Assign_Tool_Large_View_Done_ButtonParams mClick_Assign_Tool_Large_View_Done_ButtonParams;
         
         private Click_Base_Convert_Large_View_Done_ButtonParams mClick_Base_Convert_Large_View_Done_ButtonParams;
+        
+        private Click_Calculate_Large_View_Done_ButtonParams mClick_Calculate_Large_View_Done_ButtonParams;
         
         private Click_Close_Server_Source_Wizard_Tab_ButtonParams mClick_Close_Server_Source_Wizard_Tab_ButtonParams;
         
@@ -6843,6 +6934,8 @@ namespace Warewolf.UITests
         
         private Enter_SomeVariable_Into_Base_Convert_Large_View_Row1_Value_TextboxParams mEnter_SomeVariable_Into_Base_Convert_Large_View_Row1_Value_TextboxParams;
         
+        private Enter_SomeVariable_Into_Calculate_Large_View_Function_TextboxParams mEnter_SomeVariable_Into_Calculate_Large_View_Function_TextboxParams;
+        
         private Enter_SomeWorkflow_Into_Explorer_FilterParams mEnter_SomeWorkflow_Into_Explorer_FilterParams;
         
         private Enter_Text_Into_Assign_Large_View_Row1_Variable_Textbox_As_SomeVariableParams mEnter_Text_Into_Assign_Large_View_Row1_Variable_Textbox_As_SomeVariableParams;
@@ -6858,6 +6951,8 @@ namespace Warewolf.UITests
         private Open_Base_Conversion_Tool_Large_ViewParams mOpen_Base_Conversion_Tool_Large_ViewParams;
         
         private Open_Base_Conversion_Tool_Qvi_Large_ViewParams mOpen_Base_Conversion_Tool_Qvi_Large_ViewParams;
+        
+        private Open_Calculate_Tool_Large_ViewParams mOpen_Calculate_Tool_Large_ViewParams;
         
         private Open_Case_Conversion_Tool_Qvi_Large_ViewParams mOpen_Case_Conversion_Tool_Qvi_Large_ViewParams;
         
@@ -6946,6 +7041,8 @@ namespace Warewolf.UITests
         private SelectWindowsGroupDialog mSelectWindowsGroupDialog;
         
         private ServicePickerDialog mServicePickerDialog;
+        
+        private UIWarewolfASHASHWindow mUIWarewolfASHASHWindow;
         #endregion
     }
     
@@ -6986,6 +7083,21 @@ namespace Warewolf.UITests
         /// Verify that the 'Text' property of 'UI_NameTextBox_AutoID' text box equals 'SomeVariable'
         /// </summary>
         public string TextBoxText = "SomeVariable";
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Click_Calculate_Large_View_Done_Button'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Click_Calculate_Large_View_Done_ButtonParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Text' property of 'UI__fxtxt_AutoID' text box equals '[[SomeVariable]]'
+        /// </summary>
+        public string FunctionTextboxText = "[[SomeVariable]]";
         #endregion
     }
     
@@ -9045,6 +9157,26 @@ namespace Warewolf.UITests
     }
     
     /// <summary>
+    /// Parameters to be passed into 'Enter_SomeVariable_Into_Calculate_Large_View_Function_Textbox'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Enter_SomeVariable_Into_Calculate_Large_View_Function_TextboxParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Type '[[SomeVariable]]' in 'UI__fxtxt_AutoID' text box
+        /// </summary>
+        public string FunctionTextboxText = "[[SomeVariable]]";
+        
+        /// <summary>
+        /// Verify that the 'Text' property of 'UI__fxtxt_AutoID' text box equals '[[SomeVariable]]'
+        /// </summary>
+        public string FunctionTextboxText1 = "[[SomeVariable]]";
+        #endregion
+    }
+    
+    /// <summary>
     /// Parameters to be passed into 'Enter_SomeWorkflow_Into_Explorer_Filter'
     /// </summary>
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
@@ -9196,6 +9328,26 @@ namespace Warewolf.UITests
         /// Verify that the 'Exists' property of 'DsfBaseConvertActivity' custom control equals 'True'
         /// </summary>
         public bool BaseConvertExists = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Open_Calculate_Tool_Large_View'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Open_Calculate_Tool_Large_ViewParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'LargeViewContent' custom control equals 'True'
+        /// </summary>
+        public bool LargeViewExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'UI__fxtxt_AutoID' text box equals 'True'
+        /// </summary>
+        public bool FunctionTextboxExists = true;
         #endregion
     }
     
@@ -18788,18 +18940,13 @@ namespace Warewolf.UITests
             }
         }
         
-        public WpfCustom Calculate
+        public Calculate1 Calculate
         {
             get
             {
                 if ((this.mCalculate == null))
                 {
-                    this.mCalculate = new WpfCustom(this);
-                    #region Search Criteria
-                    this.mCalculate.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.CalculateDesigner";
-                    this.mCalculate.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Calculate(CalculateDesigner)";
-                    this.mCalculate.WindowTitles.Add("Warewolf");
-                    #endregion
+                    this.mCalculate = new Calculate1(this);
                 }
                 return this.mCalculate;
             }
@@ -19343,7 +19490,7 @@ namespace Warewolf.UITests
         
         private WpfCustom mSharepointUpdate;
         
-        private WpfCustom mCalculate;
+        private Calculate1 mCalculate;
         
         private WpfCustom mDateTime;
         
@@ -21783,6 +21930,145 @@ namespace Warewolf.UITests
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Calculate1 : WpfCustom
+    {
+        
+        public Calculate1(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.CalculateDesigner";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Calculate(CalculateDesigner)";
+            this.WindowTitles.Add("Warewolf");
+            #endregion
+        }
+        
+        #region Properties
+        public LargeView3 LargeView
+        {
+            get
+            {
+                if ((this.mLargeView == null))
+                {
+                    this.mLargeView = new LargeView3(this);
+                }
+                return this.mLargeView;
+            }
+        }
+        
+        public WpfButton DoneButton
+        {
+            get
+            {
+                if ((this.mDoneButton == null))
+                {
+                    this.mDoneButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mDoneButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "DoneButton";
+                    this.mDoneButton.WindowTitles.Add("Warewolf (ASH\\ASH)");
+                    #endregion
+                }
+                return this.mDoneButton;
+            }
+        }
+        
+        public SmallView3 SmallView
+        {
+            get
+            {
+                if ((this.mSmallView == null))
+                {
+                    this.mSmallView = new SmallView3(this);
+                }
+                return this.mSmallView;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private LargeView3 mLargeView;
+        
+        private WpfButton mDoneButton;
+        
+        private SmallView3 mSmallView;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class LargeView3 : WpfCustom
+    {
+        
+        public LargeView3(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.Large";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "LargeViewContent";
+            this.WindowTitles.Add("Warewolf (ASH\\ASH)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfEdit FunctionTextbox
+        {
+            get
+            {
+                if ((this.mFunctionTextbox == null))
+                {
+                    this.mFunctionTextbox = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mFunctionTextbox.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "UI__fxtxt_AutoID";
+                    this.mFunctionTextbox.WindowTitles.Add("Warewolf (ASH\\ASH)");
+                    #endregion
+                }
+                return this.mFunctionTextbox;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfEdit mFunctionTextbox;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class SmallView3 : WpfCustom
+    {
+        
+        public SmallView3(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.Small";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "SmallViewContent";
+            this.WindowTitles.Add("Warewolf (ASH\\ASH)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfEdit FunctionTextbox
+        {
+            get
+            {
+                if ((this.mFunctionTextbox == null))
+                {
+                    this.mFunctionTextbox = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mFunctionTextbox.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "UI__fxtxt_AutoID";
+                    this.mFunctionTextbox.WindowTitles.Add("Warewolf (ASH\\ASH)");
+                    #endregion
+                }
+                return this.mFunctionTextbox;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfEdit mFunctionTextbox;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class GatherSystemInfo : WpfCustom
     {
         
@@ -21947,25 +22233,25 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public SmallView3 SmallView
+        public SmallView4 SmallView
         {
             get
             {
                 if ((this.mSmallView == null))
                 {
-                    this.mSmallView = new SmallView3(this);
+                    this.mSmallView = new SmallView4(this);
                 }
                 return this.mSmallView;
             }
         }
         
-        public LargeView3 LargeView
+        public LargeView4 LargeView
         {
             get
             {
                 if ((this.mLargeView == null))
                 {
-                    this.mLargeView = new LargeView3(this);
+                    this.mLargeView = new LargeView4(this);
                 }
                 return this.mLargeView;
             }
@@ -22022,9 +22308,9 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private SmallView3 mSmallView;
+        private SmallView4 mSmallView;
         
-        private LargeView3 mLargeView;
+        private LargeView4 mLargeView;
         
         private WpfButton mDoneButton;
         
@@ -22035,10 +22321,10 @@ namespace Warewolf.UITests
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class SmallView3 : WpfCustom
+    public class SmallView4 : WpfCustom
     {
         
-        public SmallView3(UITestControl searchLimitContainer) : 
+        public SmallView4(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -22203,10 +22489,10 @@ namespace Warewolf.UITests
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class LargeView3 : WpfCustom
+    public class LargeView4 : WpfCustom
     {
         
-        public LargeView3(UITestControl searchLimitContainer) : 
+        public LargeView4(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -32524,6 +32810,128 @@ namespace Warewolf.UITests
         
         #region Fields
         private WpfTreeItem mSubTreeItem1;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIWarewolfASHASHWindow : WpfWindow
+    {
+        
+        public UIWarewolfASHASHWindow()
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfWindow.PropertyNames.Name] = "Warewolf (ASH\\ASH)";
+            this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
+            this.WindowTitles.Add("Warewolf (ASH\\ASH)");
+            #endregion
+        }
+        
+        #region Properties
+        public UIWorkflowItemPresenteCustom UIWorkflowItemPresenteCustom
+        {
+            get
+            {
+                if ((this.mUIWorkflowItemPresenteCustom == null))
+                {
+                    this.mUIWorkflowItemPresenteCustom = new UIWorkflowItemPresenteCustom(this);
+                }
+                return this.mUIWorkflowItemPresenteCustom;
+            }
+        }
+        
+        public WpfCustom UIDsfCalculateActivityCustom
+        {
+            get
+            {
+                if ((this.mUIDsfCalculateActivityCustom == null))
+                {
+                    this.mUIDsfCalculateActivityCustom = new WpfCustom(this);
+                    #region Search Criteria
+                    this.mUIDsfCalculateActivityCustom.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.CalculateDesigner";
+                    this.mUIDsfCalculateActivityCustom.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Calculate(CalculateDesigner)";
+                    this.mUIDsfCalculateActivityCustom.WindowTitles.Add("Warewolf (ASH\\ASH)");
+                    #endregion
+                }
+                return this.mUIDsfCalculateActivityCustom;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIWorkflowItemPresenteCustom mUIWorkflowItemPresenteCustom;
+        
+        private WpfCustom mUIDsfCalculateActivityCustom;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIWorkflowItemPresenteCustom : WpfCustom
+    {
+        
+        public UIWorkflowItemPresenteCustom(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.WorkflowItemPresenter";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "WorkflowItemPresenter";
+            this.WindowTitles.Add("Warewolf (ASH\\ASH)");
+            #endregion
+        }
+        
+        #region Properties
+        public UIFlowchartCustom UIFlowchartCustom
+        {
+            get
+            {
+                if ((this.mUIFlowchartCustom == null))
+                {
+                    this.mUIFlowchartCustom = new UIFlowchartCustom(this);
+                }
+                return this.mUIFlowchartCustom;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIFlowchartCustom mUIFlowchartCustom;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIFlowchartCustom : WpfCustom
+    {
+        
+        public UIFlowchartCustom(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.FlowchartDesigner";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Unsaved 1(FlowchartDesigner)";
+            this.WindowTitles.Add("Warewolf (ASH\\ASH)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfCustom UIDsfCalculateActivityCustom
+        {
+            get
+            {
+                if ((this.mUIDsfCalculateActivityCustom == null))
+                {
+                    this.mUIDsfCalculateActivityCustom = new WpfCustom(this);
+                    #region Search Criteria
+                    this.mUIDsfCalculateActivityCustom.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.CalculateDesigner";
+                    this.mUIDsfCalculateActivityCustom.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Calculate(CalculateDesigner)";
+                    this.mUIDsfCalculateActivityCustom.WindowTitles.Add("Warewolf (ASH\\ASH)");
+                    #endregion
+                }
+                return this.mUIDsfCalculateActivityCustom;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfCustom mUIDsfCalculateActivityCustom;
         #endregion
     }
 }

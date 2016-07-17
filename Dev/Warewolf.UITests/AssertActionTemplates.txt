@@ -7,12 +7,12 @@
     <Type>String</Type>
     <PropertyCondition>AreEqual</PropertyCondition>
 </AssertAction>
-<TestStepMarkerAction Comment="" MarkerInformation="Assert_[[UITestControlOneWordFriendlyName]]_Exists_In_[[Context]]">
+-------------Simple Assert Textbox Text:---------------
+<AssertAction UIObjectName="[[TextboxUITestControlReference]]">
     <ParameterName />
-    <StepId>-1</StepId>
-    <Direction>Start</Direction>
-    <Outcome />
-    <Disabled>false</Disabled>
-    <WorkItemId>0</WorkItemId>
-    <MarkerRegionType>Assertion</MarkerRegionType>
-</TestStepMarkerAction>
+    <PropertyName>Text</PropertyName>
+    <ExpectedValue>[[SomeVariable]]</ExpectedValue>
+    <MessageOnValidationFailure>Textbox text does not equal "[[SomeVariable]]".</MessageOnValidationFailure>
+    <Type>String</Type>
+    <PropertyCondition>AreEqual</PropertyCondition>
+</AssertAction>
