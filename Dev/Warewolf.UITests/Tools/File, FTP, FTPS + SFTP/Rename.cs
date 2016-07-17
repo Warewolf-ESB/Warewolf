@@ -18,14 +18,8 @@ namespace Warewolf.UITests.Tools
         [TestMethod]
         public void RenameToolUITest()
         {
-            //Scenario: Drag toolbox Rename onto a new workflow
             Uimap.Drag_Toolbox_Rename_Onto_DesignSurface();
-            Uimap.Assert_Rename_Exists_OnDesignSurface();
-
-            //@NeedsRename_FolderToolSmallViewOnTheDesignSurface
-            //Scenario: Double Clicking Rename_Folder Tool Small View on the Design Surface Opens Large View
             Uimap.Open_Rename_Tool_Large_View();
-            Uimap.Assert_Rename_Large_View_Exists_OnDesignSurface();
         }
 
         #region Additional test attributes

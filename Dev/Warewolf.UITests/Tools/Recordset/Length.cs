@@ -10,9 +10,7 @@ namespace Warewolf.UITests.Tools.Recordset
         [TestMethod]
         public void LengthToolUITest()
         {
-            //Scenario: Drag toolbox Length onto a new workflow creates small view on design surface
             Uimap.Drag_Toolbox_Length_Onto_DesignSurface();
-            Uimap.Assert_Length_Exists_OnDesignSurface();
         }
 
         #region Additional test attributes

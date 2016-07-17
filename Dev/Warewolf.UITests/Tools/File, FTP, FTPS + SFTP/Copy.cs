@@ -10,14 +10,8 @@ namespace Warewolf.UITests.Tools
         [TestMethod]
         public void CopyToolUITest()
         {
-            //Scenario: Drag toolbox Copy Path onto a new workflow should create small view on the design surface
             Uimap.Drag_Toolbox_Copy_Onto_DesignSurface();
-            Uimap.Assert_Copy_Exists_OnDesignSurface();
-
-            //@NeedsCopy_PathToolSmallViewOnTheDesignSurface
-            // Scenario: Double Clicking Copy_Path Tool Small View on the Design Surface Opens Large View
             Uimap.Open_Copy_Tool_Large_View();
-            Uimap.Assert_Copy_Large_View_Exists_OnDesignSurface();
         }
 
         #region Additional test attributes

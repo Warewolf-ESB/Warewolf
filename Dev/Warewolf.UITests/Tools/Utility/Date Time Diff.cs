@@ -10,9 +10,7 @@ namespace Warewolf.UITests.Tools.Utility
         [TestMethod]
         public void DateTimeDiffToolUITest()
         {
-            //Scenario: Drag toolbox DateTime_Difference onto a new workflow
             Uimap.Drag_Toolbox_DateTime_Difference_Onto_DesignSurface();
-            Uimap.Assert_DateTime_Difference_Conversion_Exists_OnDesignSurface();
         }
 
         #region Additional test attributes

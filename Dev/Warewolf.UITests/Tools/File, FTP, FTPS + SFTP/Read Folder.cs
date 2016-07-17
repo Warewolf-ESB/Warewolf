@@ -18,14 +18,8 @@ namespace Warewolf.UITests.Tools
         [TestMethod]
         public void ReadFolderToolUITest()
         {
-            //Scenario: Drag toolbox Read_Folder onto a new workflow
             Uimap.Drag_Toolbox_Read_Folder_Onto_DesignSurface();
-            Uimap.Assert_Read_Folder_Exists_OnDesignSurface();
-
-            //@NeedsRead_FolderToolSmallViewOnTheDesignSurface
-            //Scenario: Double Clicking Read_Folder Tool Small View on the Design Surface Opens Large View
             Uimap.Open_Read_Folder_Tool_Large_View();
-            Uimap.Assert_Read_Folder_Large_View_Exists_OnDesignSurface();
         }
 
         #region Additional test attributes
@@ -44,11 +38,7 @@ namespace Warewolf.UITests.Tools
         {
             Uimap.CleanupWorkflow();
         }
-
-        /// <summary>
-        ///Gets or sets the test context which provides
-        ///information about and functionality for the current test run.
-        ///</summary>
+        
         public TestContext TestContext
         {
             get
@@ -67,7 +57,7 @@ namespace Warewolf.UITests.Tools
         {
             get
             {
-                if ((_uiMap == null))
+                if (_uiMap == null)
                 {
                     _uiMap = new UIMap();
                 }

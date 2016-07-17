@@ -13,13 +13,13 @@ using Keyboard = Microsoft.VisualStudio.TestTools.UITesting.Keyboard;
 namespace Warewolf.UITests.Tools
 {
     [CodedUITest]
-    public class Write
+    public class Web_Request
     {
         [TestMethod]
-        public void WriteToolUITest()
+        public void WebRequestToolUITest()
         {
-            Uimap.Drag_Toolbox_Write_File_Onto_DesignSurface();
-            Uimap.Open_Write_File_Tool_Large_View();
+            Uimap.Drag_Toolbox_Web_Request_Onto_DesignSurface();
+            Uimap.Open_WebRequest_LargeView();
         }
 
         #region Additional test attributes
@@ -38,11 +38,7 @@ namespace Warewolf.UITests.Tools
         {
             Uimap.CleanupWorkflow();
         }
-
-        /// <summary>
-        ///Gets or sets the test context which provides
-        ///information about and functionality for the current test run.
-        ///</summary>
+        
         public TestContext TestContext
         {
             get
@@ -61,7 +57,7 @@ namespace Warewolf.UITests.Tools
         {
             get
             {
-                if ((_uiMap == null))
+                if (_uiMap == null)
                 {
                     _uiMap = new UIMap();
                 }

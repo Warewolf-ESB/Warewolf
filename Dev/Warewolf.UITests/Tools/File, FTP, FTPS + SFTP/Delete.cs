@@ -10,14 +10,8 @@ namespace Warewolf.UITests.Tools
         [TestMethod]
         public void DeleteToolUITest()
         {
-            //Scenario: Drag toolbox Create_Path onto a new workflow
-            Uimap.Drag_Toolbox_Create_Onto_DesignSurface();
-            Uimap.Assert_Create_Exists_OnDesignSurface();
-
-            //@NeedsCreate_PathToolSmallViewOnTheDesignSurface
-            // Scenario: Double Clicking Create_Path Tool Small View on the Design Surface Opens Large View
-            Uimap.Open_Create_Tool_Large_View();
-            Uimap.Assert_Create_Path_Large_View_Exists_OnDesignSurface();
+            Uimap.Drag_Toolbox_Delete_Onto_DesignSurface();
+            Uimap.Open_Delete_Tool_Large_View();
         }
 
         #region Additional test attributes

@@ -13,13 +13,14 @@ using Keyboard = Microsoft.VisualStudio.TestTools.UITesting.Keyboard;
 namespace Warewolf.UITests.Tools
 {
     [CodedUITest]
-    public class Write
+    public class Xpath
     {
         [TestMethod]
-        public void WriteToolUITest()
+        public void XpathToolUITest()
         {
-            Uimap.Drag_Toolbox_Write_File_Onto_DesignSurface();
-            Uimap.Open_Write_File_Tool_Large_View();
+            Uimap.Drag_Toolbox_XPath_Onto_DesignSurface();
+            Uimap.Open_Xpath_Tool_Large_View();
+            Uimap.Open_Xpath_Tool_Qvi_Large_View();
         }
 
         #region Additional test attributes
@@ -61,7 +62,7 @@ namespace Warewolf.UITests.Tools
         {
             get
             {
-                if ((_uiMap == null))
+                if (_uiMap == null)
                 {
                     _uiMap = new UIMap();
                 }

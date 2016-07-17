@@ -10,13 +10,14 @@ namespace Warewolf.UITests.Tools.Utility
         [TestMethod]
         public void CalculateToolUITest()
         {
-            Uimap.Assert_NewWorkFlow_RibbonButton_Exists();
-            Uimap.Click_New_Workflow_Ribbon_Button();
-            Uimap.Assert_StartNode_Exists();
-
-            //Scenario: Drag toolbox Calculate onto a new workflow
             Uimap.Drag_Toolbox_Calculate_Onto_DesignSurface();
-            Uimap.Assert_Calculate_Exists_OnDesignSurface();
+            Uimap.Open_Calculate_Tool_Large_View();
+            Uimap.Enter_SomeVariable_Into_Calculate_Large_View_Function_Textbox();
+            Uimap.Click_Calculate_Large_View_Done_Button();
+            //TODO: Re-introduce these units before WOLF-1923 can be moved to done.
+            //Uimap.Click_Debug_Ribbon_Button();
+            //Uimap.Click_Debug_Input_Dialog_Debug_ButtonParams.CalculateToolDebugOutputExists = true;
+            //Uimap.Click_Debug_Input_Dialog_Debug_Button();
         }
 
         #region Additional test attributes
@@ -36,12 +37,6 @@ namespace Warewolf.UITests.Tools.Utility
             Uimap.CleanupWorkflow();
         }
 
-        #endregion
-
-        /// <summary>
-        ///Gets or sets the test context which provides
-        ///information about and functionality for the current test run.
-        ///</summary>
         public TestContext TestContext
         {
             get
@@ -60,7 +55,7 @@ namespace Warewolf.UITests.Tools.Utility
         {
             get
             {
-                if ((_uiMap == null))
+                if (_uiMap == null)
                 {
                     _uiMap = new UIMap();
                 }
@@ -70,5 +65,7 @@ namespace Warewolf.UITests.Tools.Utility
         }
 
         private UIMap _uiMap;
+
+        #endregion
     }
 }
