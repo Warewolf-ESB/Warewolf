@@ -2575,7 +2575,7 @@ namespace Warewolf.UITests
 
             // Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
             flowchart.EnsureClickable(new Point(306, 128));
-            Mouse.StartDragging(unZip, new Point(15, 0));
+            Mouse.StartDragging(unZip, new Point(15, 15));
             Mouse.StopDragging(flowchart, new Point(306, 128));
 
             // Verify that the 'Exists' property of 'Connector1' custom control equals 'True'

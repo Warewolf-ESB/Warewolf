@@ -38,11 +38,7 @@ namespace Warewolf.UITests.Tools
         {
             Uimap.CleanupWorkflow();
         }
-
-        /// <summary>
-        ///Gets or sets the test context which provides
-        ///information about and functionality for the current test run.
-        ///</summary>
+        
         public TestContext TestContext
         {
             get
@@ -61,7 +57,7 @@ namespace Warewolf.UITests.Tools
         {
             get
             {
-                if ((_uiMap == null))
+                if (_uiMap == null)
                 {
                     _uiMap = new UIMap();
                 }
