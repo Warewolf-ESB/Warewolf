@@ -13,13 +13,19 @@ using Keyboard = Microsoft.VisualStudio.TestTools.UITesting.Keyboard;
 namespace Warewolf.UITests.Tools
 {
     [CodedUITest]
-    public class Write
+    public class SMTP_Send
     {
         [TestMethod]
-        public void WriteToolUITest()
+        public void SMTPSendToolUITest()
         {
-            Uimap.Drag_Toolbox_Write_File_Onto_DesignSurface();
-            Uimap.Open_Write_File_Tool_Large_View();
+            Uimap.Drag_Toolbox_SMTP_Email_Onto_DesignSurface();
+            Uimap.Open_SMTP_Email_Tool_Large_View();
+            //Uimap.Enter_Values_Into_SMTP_Email_Tool_Large_View();
+            //Uimap.Click_SMTP_Email_Tool_Large_View_Done_Button();
+            //Uimap.Click_SMTP_Email_Tool_QVI_Button();
+            //Uimap.Click_Debug_Bibbon_Button();
+            //Uimap.Click_Debug_Input_Dialog_Debug_ButtonParams.SMTPEmailToolDebugOutputExists = true;
+            //Uimap.Click_Debug_Input_Dialog_Debug_Button();
         }
 
         #region Additional test attributes
@@ -61,7 +67,7 @@ namespace Warewolf.UITests.Tools
         {
             get
             {
-                if ((_uiMap == null))
+                if (_uiMap == null)
                 {
                     _uiMap = new UIMap();
                 }

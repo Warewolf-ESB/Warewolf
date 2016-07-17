@@ -18,14 +18,8 @@ namespace Warewolf.UITests.Tools
         [TestMethod]
         public void ReadToolUITest()
         {
-            //Scenario: Drag toolbox Read_File onto a new workflow
             Uimap.Drag_Toolbox_Read_File_Onto_DesignSurface();
-            Uimap.Assert_Read_File_Exists_OnDesignSurface();
-
-            //@NeedsRead_FileToolSmallViewOnTheDesignSurface
-            //Scenario: Double Clicking Read_File Tool Small View on the Design Surface Opens Large View
             Uimap.Open_Read_File_Tool_Large_View();
-            Uimap.Assert_Read_File_Large_View_Exists_OnDesignSurface();
         }
 
         #region Additional test attributes

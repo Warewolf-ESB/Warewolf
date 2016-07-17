@@ -19,13 +19,7 @@ namespace Warewolf.UITests.Tools
         public void ServiceToolUITest()
         {
             Uimap.Drag_Toolbox_Service_Picker_Onto_DesignSurface();
-            Uimap.Assert_Service_Picker_Cancel_Button_Exists();
-
-            //@NeedsServicePickerDialog
-            //Scenario: Click Cancel Service Picker Dialog Dismisses Service Picker Dialog
-            //Given I "Assert_Service_Picker_Cancel_Button_Exists"
             Uimap.Click_Service_Picker_Dialog_Cancel();
-            Uimap.Assert_Service_Picker_Dialog_Does_Not_Exist();
         }
 
         #region Additional test attributes

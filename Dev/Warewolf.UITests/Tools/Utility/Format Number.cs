@@ -18,9 +18,7 @@ namespace Warewolf.UITests.Tools
         [TestMethod]
         public void FormatNumberToolUITest()
         {
-            //Scenario: Drag toolbox Format_Number onto a new workflow creates small view on design surface
             Uimap.Drag_Toolbox_Format_Number_Onto_DesignSurface();
-            Uimap.Assert_Format_Number_Exists_OnDesignSurface();
         }
 
         #region Additional test attributes

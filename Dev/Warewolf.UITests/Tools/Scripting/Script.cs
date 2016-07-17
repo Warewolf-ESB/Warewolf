@@ -18,9 +18,7 @@ namespace Warewolf.UITests.Tools
         [TestMethod]
         public void ScriptToolUITest()
         {
-            //Scenario: Drag toolbox Script onto a new workflow
             Uimap.Drag_Toolbox_Script_Onto_DesignSurface();
-            Uimap.Assert_Script_Exists_OnDesignSurface();
         }
 
         #region Additional test attributes

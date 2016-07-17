@@ -10,9 +10,7 @@ namespace Warewolf.UITests.Tools.Utility
         [TestMethod]
         public void CommentToolUITest()
         {
-            //Scenario: Drag toolbox Comment onto a new workflow
             Uimap.Drag_Toolbox_Comment_Onto_DesignSurface();
-            Uimap.Assert_Comment_Exists_OnDesignSurface();
         }
 
         #region Additional test attributes
@@ -32,12 +30,6 @@ namespace Warewolf.UITests.Tools.Utility
             Uimap.CleanupWorkflow();
         }
 
-        #endregion
-
-        /// <summary>
-        ///Gets or sets the test context which provides
-        ///information about and functionality for the current test run.
-        ///</summary>
         public TestContext TestContext
         {
             get
@@ -56,7 +48,7 @@ namespace Warewolf.UITests.Tools.Utility
         {
             get
             {
-                if ((_uiMap == null))
+                if (_uiMap == null)
                 {
                     _uiMap = new UIMap();
                 }
@@ -66,5 +58,7 @@ namespace Warewolf.UITests.Tools.Utility
         }
 
         private UIMap _uiMap;
+
+        #endregion
     }
 }

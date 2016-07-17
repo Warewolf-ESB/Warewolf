@@ -18,14 +18,8 @@ namespace Warewolf.UITests.Tools
         [TestMethod]
         public void UnzipToolUITest()
         {
-            //Scenario: Drag toolbox Unzip onto a new workflow
             Uimap.Drag_Toolbox_Unzip_Onto_DesignSurface();
-            Uimap.Assert_Unzip_Exists_OnDesignSurface();
-
-            //@NeedsUnzipToolSmallViewOnTheDesignSurface
-            //Scenario: Double Clicking Unzip Tool Small View on the Design Surface Opens Large View
             Uimap.Open_Unzip_Tool_Large_View();
-            Uimap.Assert_Unzip_Large_View_Exists_OnDesignSurface();
         }
 
         #region Additional test attributes
