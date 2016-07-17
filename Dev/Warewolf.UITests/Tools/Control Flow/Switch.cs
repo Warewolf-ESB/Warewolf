@@ -8,7 +8,7 @@ namespace Warewolf.UITests.Tools.Control_Flow
     public class Switch
     {
         [TestMethod]
-        [Ignore]//Re-ntroduce before moving WOLF-1932 to done
+        [Ignore]//Re-introduce before moving WOLF-1932 to done
         public void SwitchToolUITest()
         {
             Uimap.Drag_Toolbox_Switch_Onto_DesignSurface();
@@ -31,7 +31,7 @@ namespace Warewolf.UITests.Tools.Control_Flow
         {
             Uimap.CleanupWorkflow();
         }
-        
+
         public TestContext TestContext
         {
             get

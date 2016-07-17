@@ -8,7 +8,7 @@ namespace Warewolf.UITests.Tools.Control_Flow
     public class Decision
     {
         [TestMethod]
-        [Ignore]//Re-ntroduce before moving WOLF-1932 to done
+        [Ignore]//Re-introduce before moving WOLF-1932 to done
         public void DecisionToolUITest()
         {
             Uimap.Drag_Toolbox_Decision_Onto_DesignSurface();
