@@ -102,7 +102,7 @@
       <ActionType>Click</ActionType>
       <MouseButton>Left</MouseButton>
     </MouseAction>
-    <AssertAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.BaseConvert.SmallView.DataGrid.Row1.Cell.ValueTextbox">
+    <AssertAction UIObjectName="UIMap.UIWarewolfASHASHWindow.UISmallViewContentCustom.UISmallDataGridTable.UIItemRow.UIItemDev2BaseConvertTCell.UIUI__Row1_FromExpressEdit">
       <ParameterName />
       <PropertyName>Text</PropertyName>
       <ExpectedValue>[[SomeVariable]]</ExpectedValue>
@@ -4103,7 +4103,7 @@
     </TestStepMarkerAction>
     <SetValueAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.BaseConvert.LargeView.DataGrid.Row1.Cell.ValueTextbox">
       <ParameterName />
-      <Value Encoded="false">[[SomeVariable]]</Value>
+      <Value Encoded="false">[[SomerVariable]]</Value>
       <Type>String</Type>
     </SetValueAction>
     <TestStepMarkerAction Comment="" MarkerInformation="Enter_SomeVariable_Into_Base_Convert_Large_View_Row1_Value_Textbox">
@@ -13048,7 +13048,6 @@
                                                                       <AndCondition>
                                                                         <PropertyCondition Name="ControlType">Row</PropertyCondition>
                                                                         <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                                                        <PropertyCondition Name="Instance">1</PropertyCondition>
                                                                       </AndCondition>
                                                                       <SupportLevel>0</SupportLevel>
                                                                       <Descendants>
@@ -13099,81 +13098,6 @@
                                                               </AndCondition>
                                                               <SupportLevel>0</SupportLevel>
                                                               <Descendants />
-                                                            </UIObject>
-                                                            <UIObject ControlType="Custom" Id="SmallView" FriendlyName="SmallViewContent" SpecialControlType="None">
-                                                              <TechnologyName>UIA</TechnologyName>
-                                                              <WindowTitles>
-                                                                <WindowTitle>Warewolf (ASH\ASH)</WindowTitle>
-                                                              </WindowTitles>
-                                                              <AndCondition>
-                                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                                                <PropertyCondition Name="ControlType">Custom</PropertyCondition>
-                                                                <PropertyCondition Name="ClassName">Uia.Small</PropertyCondition>
-                                                                <PropertyCondition Name="AutomationId">SmallViewContent</PropertyCondition>
-                                                              </AndCondition>
-                                                              <SupportLevel>0</SupportLevel>
-                                                              <Descendants>
-                                                                <UIObject ControlType="Table" Id="DataGrid" FriendlyName="SmallDataGrid" SpecialControlType="None">
-                                                                  <TechnologyName>UIA</TechnologyName>
-                                                                  <WindowTitles>
-                                                                    <WindowTitle>Warewolf (ASH\ASH)</WindowTitle>
-                                                                  </WindowTitles>
-                                                                  <AndCondition>
-                                                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                                                    <PropertyCondition Name="ControlType">Table</PropertyCondition>
-                                                                    <PropertyCondition Name="AutomationId">SmallDataGrid</PropertyCondition>
-                                                                  </AndCondition>
-                                                                  <SupportLevel>0</SupportLevel>
-                                                                  <Descendants>
-                                                                    <UIObject ControlType="Row" Id="Row1" FriendlyName="" SpecialControlType="None">
-                                                                      <TechnologyName>UIA</TechnologyName>
-                                                                      <WindowTitles>
-                                                                        <WindowTitle>Warewolf (ASH\ASH)</WindowTitle>
-                                                                      </WindowTitles>
-                                                                      <SearchConfigurations>
-                                                                        <SearchConfiguration>AlwaysSearch</SearchConfiguration>
-                                                                      </SearchConfigurations>
-                                                                      <AndCondition>
-                                                                        <PropertyCondition Name="ControlType">Row</PropertyCondition>
-                                                                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                                                        <PropertyCondition Name="Instance">1</PropertyCondition>
-                                                                      </AndCondition>
-                                                                      <SupportLevel>0</SupportLevel>
-                                                                      <Descendants>
-                                                                        <UIObject ControlType="Cell" Id="Cell" FriendlyName="Item: Dev2.BaseConvertTO, Column Display Index: 1" SpecialControlType="None">
-                                                                          <TechnologyName>UIA</TechnologyName>
-                                                                          <WindowTitles>
-                                                                            <WindowTitle>Warewolf (ASH\ASH)</WindowTitle>
-                                                                          </WindowTitles>
-                                                                          <AndCondition>
-                                                                            <PropertyCondition Name="ColumnHeader" />
-                                                                            <PropertyCondition Name="ColumnIndex">1</PropertyCondition>
-                                                                            <PropertyCondition Name="AutomationId">UI_DataGridCell_AutoID</PropertyCondition>
-                                                                            <PropertyCondition Name="ControlType">Cell</PropertyCondition>
-                                                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                                                          </AndCondition>
-                                                                          <SupportLevel>0</SupportLevel>
-                                                                          <Descendants>
-                                                                            <UIObject ControlType="Edit" Id="ValueTextbox" FriendlyName="UI__Row1_FromExpressiontxt_AutoID" SpecialControlType="None">
-                                                                              <TechnologyName>UIA</TechnologyName>
-                                                                              <WindowTitles>
-                                                                                <WindowTitle>Warewolf (ASH\ASH)</WindowTitle>
-                                                                              </WindowTitles>
-                                                                              <AndCondition>
-                                                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                                                                <PropertyCondition Name="ControlType">Edit</PropertyCondition>
-                                                                                <PropertyCondition Name="AutomationId">UI__Row1_FromExpressiontxt_AutoID</PropertyCondition>
-                                                                              </AndCondition>
-                                                                              <SupportLevel>0</SupportLevel>
-                                                                              <Descendants />
-                                                                            </UIObject>
-                                                                          </Descendants>
-                                                                        </UIObject>
-                                                                      </Descendants>
-                                                                    </UIObject>
-                                                                  </Descendants>
-                                                                </UIObject>
-                                                              </Descendants>
                                                             </UIObject>
                                                           </Descendants>
                                                         </UIObject>
@@ -20205,7 +20129,82 @@
             <PropertyCondition Name="ClassName" Operator="Contains">HwndWrapper</PropertyCondition>
           </AndCondition>
           <SupportLevel>0</SupportLevel>
-          <Descendants />
+          <Descendants>
+            <UIObject ControlType="Custom" Id="UISmallViewContentCustom" FriendlyName="SmallViewContent" SpecialControlType="None">
+              <TechnologyName>UIA</TechnologyName>
+              <WindowTitles>
+                <WindowTitle>Warewolf (ASH\ASH)</WindowTitle>
+              </WindowTitles>
+              <AndCondition>
+                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                <PropertyCondition Name="ControlType">Custom</PropertyCondition>
+                <PropertyCondition Name="ClassName">Uia.Small</PropertyCondition>
+                <PropertyCondition Name="AutomationId">SmallViewContent</PropertyCondition>
+              </AndCondition>
+              <SupportLevel>0</SupportLevel>
+              <Descendants>
+                <UIObject ControlType="Table" Id="UISmallDataGridTable" FriendlyName="SmallDataGrid" SpecialControlType="None">
+                  <TechnologyName>UIA</TechnologyName>
+                  <WindowTitles>
+                    <WindowTitle>Warewolf (ASH\ASH)</WindowTitle>
+                  </WindowTitles>
+                  <AndCondition>
+                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                    <PropertyCondition Name="ControlType">Table</PropertyCondition>
+                    <PropertyCondition Name="AutomationId">SmallDataGrid</PropertyCondition>
+                  </AndCondition>
+                  <SupportLevel>0</SupportLevel>
+                  <Descendants>
+                    <UIObject ControlType="Row" Id="UIItemRow" FriendlyName="" SpecialControlType="None">
+                      <TechnologyName>UIA</TechnologyName>
+                      <WindowTitles>
+                        <WindowTitle>Warewolf (ASH\ASH)</WindowTitle>
+                      </WindowTitles>
+                      <SearchConfigurations>
+                        <SearchConfiguration>AlwaysSearch</SearchConfiguration>
+                      </SearchConfigurations>
+                      <AndCondition>
+                        <PropertyCondition Name="ControlType">Row</PropertyCondition>
+                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                      </AndCondition>
+                      <SupportLevel>0</SupportLevel>
+                      <Descendants>
+                        <UIObject ControlType="Cell" Id="UIItemDev2BaseConvertTCell" FriendlyName="Item: Dev2.BaseConvertTO, Column Display Index: 1" SpecialControlType="None">
+                          <TechnologyName>UIA</TechnologyName>
+                          <WindowTitles>
+                            <WindowTitle>Warewolf (ASH\ASH)</WindowTitle>
+                          </WindowTitles>
+                          <AndCondition>
+                            <PropertyCondition Name="ColumnHeader" />
+                            <PropertyCondition Name="ColumnIndex">1</PropertyCondition>
+                            <PropertyCondition Name="AutomationId">UI_DataGridCell_AutoID</PropertyCondition>
+                            <PropertyCondition Name="ControlType">Cell</PropertyCondition>
+                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                          </AndCondition>
+                          <SupportLevel>0</SupportLevel>
+                          <Descendants>
+                            <UIObject ControlType="Edit" Id="UIUI__Row1_FromExpressEdit" FriendlyName="UI__Row1_FromExpressiontxt_AutoID" SpecialControlType="None">
+                              <TechnologyName>UIA</TechnologyName>
+                              <WindowTitles>
+                                <WindowTitle>Warewolf (ASH\ASH)</WindowTitle>
+                              </WindowTitles>
+                              <AndCondition>
+                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                <PropertyCondition Name="ControlType">Edit</PropertyCondition>
+                                <PropertyCondition Name="AutomationId">UI__Row1_FromExpressiontxt_AutoID</PropertyCondition>
+                              </AndCondition>
+                              <SupportLevel>0</SupportLevel>
+                              <Descendants />
+                            </UIObject>
+                          </Descendants>
+                        </UIObject>
+                      </Descendants>
+                    </UIObject>
+                  </Descendants>
+                </UIObject>
+              </Descendants>
+            </UIObject>
+          </Descendants>
         </TopLevelWindow>
       </TopLevelWindows>
     </UIMap>

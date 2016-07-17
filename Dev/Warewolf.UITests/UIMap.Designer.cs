@@ -45,14 +45,13 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
-        /// Click_Assign_Tool_Large_View_DoneButton - Use 'Click_Assign_Tool_Large_View_DoneButtonParams' to pass parameters into this method.
+        /// Click_Assign_Tool_Large_View_Done_Button - Use 'Click_Assign_Tool_Large_View_Done_ButtonParams' to pass parameters into this method.
         /// </summary>
-        public void Click_Assign_Tool_Large_View_DoneButton()
+        public void Click_Assign_Tool_Large_View_Done_Button()
         {
             #region Variable Declarations
             WpfButton doneButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.DoneButton;
             WpfEdit textbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView.DataGrid.Row1.VariableCell.Textbox;
-            WpfCustom variablesControl = this.MainStudioWindow.DockManager.SplitPaneRight.Variables.VariablesControl;
             WpfEdit textBox1 = this.MainStudioWindow.DockManager.SplitPaneRight.Variables.VariablesControl.XtgDataPresenter.Table.VariableDataItem.List.ListItem.Table.DataItem1.VariableNameCell.ValueEditor.TextBox;
             #endregion
 
@@ -60,13 +59,32 @@ namespace Warewolf.UITests
             Mouse.Click(doneButton, new Point(35, 6));
 
             // Verify that the 'Text' property of 'UI_TextBox_AutoID' text box equals '[[SomeVariable]]'
-            Assert.AreEqual(this.Click_Assign_Tool_Large_View_DoneButtonParams.TextboxText, textbox.Text, "Assign small view row1 variable textbox does not contain text somevariable");
-
-            // Verify that the 'Exists' property of 'UI_VariablesControl_AutoID' custom control equals 'True'
-            Assert.AreEqual(this.Click_Assign_Tool_Large_View_DoneButtonParams.VariablesControlExists, variablesControl.Exists, "Variable list view does not exist");
+            Assert.AreEqual(this.Click_Assign_Tool_Large_View_Done_ButtonParams.TextboxText, textbox.Text, "Assign small view row1 variable textbox does not contain text somevariable");
 
             // Verify that the 'Text' property of 'UI_NameTextBox_AutoID' text box equals 'SomeVariable'
-            Assert.AreEqual(this.Click_Assign_Tool_Large_View_DoneButtonParams.TextBoxText1, textBox1.Text, "Variable list scalar row 1 textbox text does not equal somevariable");
+            Assert.AreEqual(this.Click_Assign_Tool_Large_View_Done_ButtonParams.TextBoxText1, textBox1.Text, "Variable list scalar row 1 textbox text does not equal somevariable");
+        }
+        
+        /// <summary>
+        /// Click_Base_Convert_Large_View_Done_Button - Use 'Click_Base_Convert_Large_View_Done_ButtonParams' to pass parameters into this method.
+        /// </summary>
+        public void Click_Base_Convert_Large_View_Done_Button()
+        {
+            #region Variable Declarations
+            WpfButton doneButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.BaseConvert.DoneButton;
+            WpfEdit valueTextbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.BaseConvert.SmallView.DataGrid.Row1.Cell.ValueTextbox;
+            WpfEdit textBox = this.MainStudioWindow.DockManager.SplitPaneRight.Variables.VariablesControl.XtgDataPresenter.Table.VariableDataItem.List.ListItem.Table.DataItem1.VariableNameCell.ValueEditor.TextBox;
+            #endregion
+
+            // Click 'Done' button
+            Mouse.Click(doneButton, new Point(36, 11));
+
+            // Verify that the 'Text' property of 'UI__Row1_FromExpressiontxt_AutoID' text box equals '[[SomeVariable]]'
+            Assert.AreEqual(this.Click_Base_Convert_Large_View_Done_ButtonParams.ValueTextboxText, valueTextbox.Text, "Base convert small view row1 variable textbox does not contain text somevariable." +
+                    "");
+
+            // Verify that the 'Text' property of 'UI_NameTextBox_AutoID' text box equals 'SomeVariable'
+            Assert.AreEqual(this.Click_Base_Convert_Large_View_Done_ButtonParams.TextBoxText, textBox.Text, "Variable list scalar row 1 textbox text does not equal somevariable");
         }
         
         /// <summary>
@@ -615,6 +633,7 @@ namespace Warewolf.UITests
             WpfButton serverListComboBox = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.ServerListComboBox;
             WpfButton connectServerButton = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ConnectServerButton;
             WpfButton editServerButton = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.EditServerButton;
+            WpfCustom variablesControl = this.MainStudioWindow.DockManager.SplitPaneRight.Variables.VariablesControl;
             #endregion
 
             // Verify that the 'Exists' property of '' label equals 'True'
@@ -647,6 +666,9 @@ namespace Warewolf.UITests
 
             // Verify that the 'Exists' property of '...' button equals 'True'
             Assert.AreEqual(this.Click_New_Workflow_Ribbon_ButtonParams.EditServerButtonExists, editServerButton.Exists, "Edit Connect control button does not exist");
+
+            // Verify that the 'Exists' property of 'UI_VariablesControl_AutoID' custom control equals 'True'
+            Assert.AreEqual(this.Click_New_Workflow_Ribbon_ButtonParams.VariablesControlExists, variablesControl.Exists, "Variable list view does not exist");
         }
         
         /// <summary>
@@ -2796,6 +2818,19 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
+        /// Enter_SomeVariable_Into_Base_Convert_Large_View_Row1_Value_Textbox - Use 'Enter_SomeVariable_Into_Base_Convert_Large_View_Row1_Value_TextboxParams' to pass parameters into this method.
+        /// </summary>
+        public void Enter_SomeVariable_Into_Base_Convert_Large_View_Row1_Value_Textbox()
+        {
+            #region Variable Declarations
+            WpfEdit valueTextbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.BaseConvert.LargeView.DataGrid.Row1.Cell.ValueTextbox;
+            #endregion
+
+            // Type '[[SomeVariable]]' in 'UI__Row1_FromExpressiontxt_AutoID' text box
+            valueTextbox.Text = this.Enter_SomeVariable_Into_Base_Convert_Large_View_Row1_Value_TextboxParams.ValueTextboxText;
+        }
+        
+        /// <summary>
         /// Enter_SomeWorkflow_Into_Explorer_Filter - Use 'Enter_SomeWorkflow_Into_Explorer_FilterParams' to pass parameters into this method.
         /// </summary>
         public void Enter_SomeWorkflow_Into_Explorer_Filter()
@@ -2909,6 +2944,23 @@ namespace Warewolf.UITests
 
             // Verify that the 'Exists' property of 'QuickVariableInputContent' custom control equals 'True'
             Assert.AreEqual(this.Open_Assign_Tool_Qvi_Large_ViewParams.QuickVariableInputContentExists, quickVariableInputContent.Exists, "QVI on assign is not open");
+        }
+        
+        /// <summary>
+        /// Open_Base_Conversion_Tool_Large_View - Use 'Open_Base_Conversion_Tool_Large_ViewParams' to pass parameters into this method.
+        /// </summary>
+        public void Open_Base_Conversion_Tool_Large_View()
+        {
+            #region Variable Declarations
+            WpfCustom baseConvert = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.BaseConvert;
+            WpfEdit valueTextbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.BaseConvert.LargeView.DataGrid.Row1.Cell.ValueTextbox;
+            #endregion
+
+            // Double-Click 'DsfBaseConvertActivity' custom control
+            Mouse.DoubleClick(baseConvert, new Point(160, 15));
+
+            // Verify that the 'Enabled' property of 'UI__Row1_FromExpressiontxt_AutoID' text box equals 'True'
+            Assert.AreEqual(this.Open_Base_Conversion_Tool_Large_ViewParams.ValueTextboxEnabled, valueTextbox.Enabled, "Base convert large view row 1 data testbox does not exist.");
         }
         
         /// <summary>
@@ -4793,15 +4845,27 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public virtual Click_Assign_Tool_Large_View_DoneButtonParams Click_Assign_Tool_Large_View_DoneButtonParams
+        public virtual Click_Assign_Tool_Large_View_Done_ButtonParams Click_Assign_Tool_Large_View_Done_ButtonParams
         {
             get
             {
-                if ((this.mClick_Assign_Tool_Large_View_DoneButtonParams == null))
+                if ((this.mClick_Assign_Tool_Large_View_Done_ButtonParams == null))
                 {
-                    this.mClick_Assign_Tool_Large_View_DoneButtonParams = new Click_Assign_Tool_Large_View_DoneButtonParams();
+                    this.mClick_Assign_Tool_Large_View_Done_ButtonParams = new Click_Assign_Tool_Large_View_Done_ButtonParams();
                 }
-                return this.mClick_Assign_Tool_Large_View_DoneButtonParams;
+                return this.mClick_Assign_Tool_Large_View_Done_ButtonParams;
+            }
+        }
+        
+        public virtual Click_Base_Convert_Large_View_Done_ButtonParams Click_Base_Convert_Large_View_Done_ButtonParams
+        {
+            get
+            {
+                if ((this.mClick_Base_Convert_Large_View_Done_ButtonParams == null))
+                {
+                    this.mClick_Base_Convert_Large_View_Done_ButtonParams = new Click_Base_Convert_Large_View_Done_ButtonParams();
+                }
+                return this.mClick_Base_Convert_Large_View_Done_ButtonParams;
             }
         }
         
@@ -5945,6 +6009,18 @@ namespace Warewolf.UITests
             }
         }
         
+        public virtual Enter_SomeVariable_Into_Base_Convert_Large_View_Row1_Value_TextboxParams Enter_SomeVariable_Into_Base_Convert_Large_View_Row1_Value_TextboxParams
+        {
+            get
+            {
+                if ((this.mEnter_SomeVariable_Into_Base_Convert_Large_View_Row1_Value_TextboxParams == null))
+                {
+                    this.mEnter_SomeVariable_Into_Base_Convert_Large_View_Row1_Value_TextboxParams = new Enter_SomeVariable_Into_Base_Convert_Large_View_Row1_Value_TextboxParams();
+                }
+                return this.mEnter_SomeVariable_Into_Base_Convert_Large_View_Row1_Value_TextboxParams;
+            }
+        }
+        
         public virtual Enter_SomeWorkflow_Into_Explorer_FilterParams Enter_SomeWorkflow_Into_Explorer_FilterParams
         {
             get
@@ -6014,6 +6090,18 @@ namespace Warewolf.UITests
                     this.mOpen_Assign_Tool_Qvi_Large_ViewParams = new Open_Assign_Tool_Qvi_Large_ViewParams();
                 }
                 return this.mOpen_Assign_Tool_Qvi_Large_ViewParams;
+            }
+        }
+        
+        public virtual Open_Base_Conversion_Tool_Large_ViewParams Open_Base_Conversion_Tool_Large_ViewParams
+        {
+            get
+            {
+                if ((this.mOpen_Base_Conversion_Tool_Large_ViewParams == null))
+                {
+                    this.mOpen_Base_Conversion_Tool_Large_ViewParams = new Open_Base_Conversion_Tool_Large_ViewParams();
+                }
+                return this.mOpen_Base_Conversion_Tool_Large_ViewParams;
             }
         }
         
@@ -6571,7 +6659,9 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private Click_Assign_Tool_Large_View_DoneButtonParams mClick_Assign_Tool_Large_View_DoneButtonParams;
+        private Click_Assign_Tool_Large_View_Done_ButtonParams mClick_Assign_Tool_Large_View_Done_ButtonParams;
+        
+        private Click_Base_Convert_Large_View_Done_ButtonParams mClick_Base_Convert_Large_View_Done_ButtonParams;
         
         private Click_Close_Server_Source_Wizard_Tab_ButtonParams mClick_Close_Server_Source_Wizard_Tab_ButtonParams;
         
@@ -6763,6 +6853,8 @@ namespace Warewolf.UITests
         
         private Enter_Servicename_As_TSTCIREMOTEParams mEnter_Servicename_As_TSTCIREMOTEParams;
         
+        private Enter_SomeVariable_Into_Base_Convert_Large_View_Row1_Value_TextboxParams mEnter_SomeVariable_Into_Base_Convert_Large_View_Row1_Value_TextboxParams;
+        
         private Enter_SomeWorkflow_Into_Explorer_FilterParams mEnter_SomeWorkflow_Into_Explorer_FilterParams;
         
         private Enter_Text_Into_Assign_Large_View_Row1_Variable_Textbox_As_SomeVariableParams mEnter_Text_Into_Assign_Large_View_Row1_Variable_Textbox_As_SomeVariableParams;
@@ -6774,6 +6866,8 @@ namespace Warewolf.UITests
         private Open_Assign_Tool_Large_ViewParams mOpen_Assign_Tool_Large_ViewParams;
         
         private Open_Assign_Tool_Qvi_Large_ViewParams mOpen_Assign_Tool_Qvi_Large_ViewParams;
+        
+        private Open_Base_Conversion_Tool_Large_ViewParams mOpen_Base_Conversion_Tool_Large_ViewParams;
         
         private Open_Base_Conversion_Tool_Qvi_Large_ViewParams mOpen_Base_Conversion_Tool_Qvi_Large_ViewParams;
         
@@ -6870,10 +6964,10 @@ namespace Warewolf.UITests
     }
     
     /// <summary>
-    /// Parameters to be passed into 'Click_Assign_Tool_Large_View_DoneButton'
+    /// Parameters to be passed into 'Click_Assign_Tool_Large_View_Done_Button'
     /// </summary>
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Click_Assign_Tool_Large_View_DoneButtonParams
+    public class Click_Assign_Tool_Large_View_Done_ButtonParams
     {
         
         #region Fields
@@ -6883,14 +6977,29 @@ namespace Warewolf.UITests
         public string TextboxText = "[[SomeVariable]]";
         
         /// <summary>
-        /// Verify that the 'Exists' property of 'UI_VariablesControl_AutoID' custom control equals 'True'
+        /// Verify that the 'Text' property of 'UI_NameTextBox_AutoID' text box equals 'SomeVariable'
         /// </summary>
-        public bool VariablesControlExists = true;
+        public string TextBoxText1 = "SomeVariable";
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Click_Base_Convert_Large_View_Done_Button'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Click_Base_Convert_Large_View_Done_ButtonParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Text' property of 'UI__Row1_FromExpressiontxt_AutoID' text box equals '[[SomeVariable]]'
+        /// </summary>
+        public string ValueTextboxText = "[[SomeVariable]]";
         
         /// <summary>
         /// Verify that the 'Text' property of 'UI_NameTextBox_AutoID' text box equals 'SomeVariable'
         /// </summary>
-        public string TextBoxText1 = "SomeVariable";
+        public string TextBoxText = "SomeVariable";
         #endregion
     }
     
@@ -7301,6 +7410,11 @@ namespace Warewolf.UITests
         /// Verify that the 'Exists' property of '...' button equals 'True'
         /// </summary>
         public bool EditServerButtonExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'UI_VariablesControl_AutoID' custom control equals 'True'
+        /// </summary>
+        public bool VariablesControlExists = true;
         #endregion
     }
     
@@ -8930,6 +9044,21 @@ namespace Warewolf.UITests
     }
     
     /// <summary>
+    /// Parameters to be passed into 'Enter_SomeVariable_Into_Base_Convert_Large_View_Row1_Value_Textbox'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Enter_SomeVariable_Into_Base_Convert_Large_View_Row1_Value_TextboxParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Type '[[SomeVariable]]' in 'UI__Row1_FromExpressiontxt_AutoID' text box
+        /// </summary>
+        public string ValueTextboxText = "[[SomeVariable]]";
+        #endregion
+    }
+    
+    /// <summary>
     /// Parameters to be passed into 'Enter_SomeWorkflow_Into_Explorer_Filter'
     /// </summary>
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
@@ -9046,6 +9175,21 @@ namespace Warewolf.UITests
         /// Verify that the 'Exists' property of 'QuickVariableInputContent' custom control equals 'True'
         /// </summary>
         public bool QuickVariableInputContentExists = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Open_Base_Conversion_Tool_Large_View'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Open_Base_Conversion_Tool_Large_ViewParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Enabled' property of 'UI__Row1_FromExpressiontxt_AutoID' text box equals 'True'
+        /// </summary>
+        public bool ValueTextboxEnabled = true;
         #endregion
     }
     
@@ -21216,10 +21360,328 @@ namespace Warewolf.UITests
                 return this.mOpenQuickVariableInpToggleButton;
             }
         }
+        
+        public LargeView2 LargeView
+        {
+            get
+            {
+                if ((this.mLargeView == null))
+                {
+                    this.mLargeView = new LargeView2(this);
+                }
+                return this.mLargeView;
+            }
+        }
+        
+        public WpfButton DoneButton
+        {
+            get
+            {
+                if ((this.mDoneButton == null))
+                {
+                    this.mDoneButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mDoneButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "DoneButton";
+                    this.mDoneButton.WindowTitles.Add("Warewolf (ASH\\ASH)");
+                    #endregion
+                }
+                return this.mDoneButton;
+            }
+        }
+        
+        public SmallView2 SmallView
+        {
+            get
+            {
+                if ((this.mSmallView == null))
+                {
+                    this.mSmallView = new SmallView2(this);
+                }
+                return this.mSmallView;
+            }
+        }
         #endregion
         
         #region Fields
         private WpfToggleButton mOpenQuickVariableInpToggleButton;
+        
+        private LargeView2 mLargeView;
+        
+        private WpfButton mDoneButton;
+        
+        private SmallView2 mSmallView;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class LargeView2 : WpfCustom
+    {
+        
+        public LargeView2(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.Large";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "LargeViewContent";
+            this.WindowTitles.Add("Warewolf (ASH\\ASH)");
+            #endregion
+        }
+        
+        #region Properties
+        public DataGrid2 DataGrid
+        {
+            get
+            {
+                if ((this.mDataGrid == null))
+                {
+                    this.mDataGrid = new DataGrid2(this);
+                }
+                return this.mDataGrid;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private DataGrid2 mDataGrid;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class DataGrid2 : WpfTable
+    {
+        
+        public DataGrid2(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfTable.PropertyNames.AutomationId] = "SmallDataGrid";
+            this.WindowTitles.Add("Warewolf (ASH\\ASH)");
+            #endregion
+        }
+        
+        #region Properties
+        public Row13 Row1
+        {
+            get
+            {
+                if ((this.mRow1 == null))
+                {
+                    this.mRow1 = new Row13(this);
+                }
+                return this.mRow1;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private Row13 mRow1;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Row13 : WpfRow
+    {
+        
+        public Row13(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfRow.PropertyNames.Instance] = "1";
+            this.SearchConfigurations.Add(SearchConfiguration.AlwaysSearch);
+            this.WindowTitles.Add("Warewolf (ASH\\ASH)");
+            #endregion
+        }
+        
+        #region Properties
+        public Cell Cell
+        {
+            get
+            {
+                if ((this.mCell == null))
+                {
+                    this.mCell = new Cell(this);
+                }
+                return this.mCell;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private Cell mCell;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Cell : WpfCell
+    {
+        
+        public Cell(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = null;
+            this.SearchProperties[WpfCell.PropertyNames.ColumnIndex] = "1";
+            this.SearchProperties[WpfCell.PropertyNames.AutomationId] = "UI_DataGridCell_AutoID";
+            this.WindowTitles.Add("Warewolf (ASH\\ASH)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfEdit ValueTextbox
+        {
+            get
+            {
+                if ((this.mValueTextbox == null))
+                {
+                    this.mValueTextbox = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mValueTextbox.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "UI__Row1_FromExpressiontxt_AutoID";
+                    this.mValueTextbox.WindowTitles.Add("Warewolf (ASH\\ASH)");
+                    #endregion
+                }
+                return this.mValueTextbox;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfEdit mValueTextbox;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class SmallView2 : WpfCustom
+    {
+        
+        public SmallView2(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.Small";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "SmallViewContent";
+            this.WindowTitles.Add("Warewolf (ASH\\ASH)");
+            #endregion
+        }
+        
+        #region Properties
+        public DataGrid3 DataGrid
+        {
+            get
+            {
+                if ((this.mDataGrid == null))
+                {
+                    this.mDataGrid = new DataGrid3(this);
+                }
+                return this.mDataGrid;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private DataGrid3 mDataGrid;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class DataGrid3 : WpfTable
+    {
+        
+        public DataGrid3(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfTable.PropertyNames.AutomationId] = "SmallDataGrid";
+            this.WindowTitles.Add("Warewolf (ASH\\ASH)");
+            #endregion
+        }
+        
+        #region Properties
+        public Row14 Row1
+        {
+            get
+            {
+                if ((this.mRow1 == null))
+                {
+                    this.mRow1 = new Row14(this);
+                }
+                return this.mRow1;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private Row14 mRow1;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Row14 : WpfRow
+    {
+        
+        public Row14(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfRow.PropertyNames.Instance] = "1";
+            this.SearchConfigurations.Add(SearchConfiguration.AlwaysSearch);
+            this.WindowTitles.Add("Warewolf (ASH\\ASH)");
+            #endregion
+        }
+        
+        #region Properties
+        public Cell1 Cell
+        {
+            get
+            {
+                if ((this.mCell == null))
+                {
+                    this.mCell = new Cell1(this);
+                }
+                return this.mCell;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private Cell1 mCell;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Cell1 : WpfCell
+    {
+        
+        public Cell1(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = null;
+            this.SearchProperties[WpfCell.PropertyNames.ColumnIndex] = "1";
+            this.SearchProperties[WpfCell.PropertyNames.AutomationId] = "UI_DataGridCell_AutoID";
+            this.WindowTitles.Add("Warewolf (ASH\\ASH)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfEdit ValueTextbox
+        {
+            get
+            {
+                if ((this.mValueTextbox == null))
+                {
+                    this.mValueTextbox = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mValueTextbox.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "UI__Row1_FromExpressiontxt_AutoID";
+                    this.mValueTextbox.WindowTitles.Add("Warewolf (ASH\\ASH)");
+                    #endregion
+                }
+                return this.mValueTextbox;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfEdit mValueTextbox;
         #endregion
     }
     
@@ -21499,25 +21961,25 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public SmallView2 SmallView
+        public SmallView3 SmallView
         {
             get
             {
                 if ((this.mSmallView == null))
                 {
-                    this.mSmallView = new SmallView2(this);
+                    this.mSmallView = new SmallView3(this);
                 }
                 return this.mSmallView;
             }
         }
         
-        public LargeView2 LargeView
+        public LargeView3 LargeView
         {
             get
             {
                 if ((this.mLargeView == null))
                 {
-                    this.mLargeView = new LargeView2(this);
+                    this.mLargeView = new LargeView3(this);
                 }
                 return this.mLargeView;
             }
@@ -21574,9 +22036,9 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private SmallView2 mSmallView;
+        private SmallView3 mSmallView;
         
-        private LargeView2 mLargeView;
+        private LargeView3 mLargeView;
         
         private WpfButton mDoneButton;
         
@@ -21587,10 +22049,10 @@ namespace Warewolf.UITests
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class SmallView2 : WpfCustom
+    public class SmallView3 : WpfCustom
     {
         
-        public SmallView2(UITestControl searchLimitContainer) : 
+        public SmallView3(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -21601,13 +22063,13 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public DataGrid2 DataGrid
+        public DataGrid4 DataGrid
         {
             get
             {
                 if ((this.mDataGrid == null))
                 {
-                    this.mDataGrid = new DataGrid2(this);
+                    this.mDataGrid = new DataGrid4(this);
                 }
                 return this.mDataGrid;
             }
@@ -21615,15 +22077,15 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private DataGrid2 mDataGrid;
+        private DataGrid4 mDataGrid;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class DataGrid2 : WpfTable
+    public class DataGrid4 : WpfTable
     {
         
-        public DataGrid2(UITestControl searchLimitContainer) : 
+        public DataGrid4(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -21633,13 +22095,13 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public Row13 Row1
+        public Row15 Row1
         {
             get
             {
                 if ((this.mRow1 == null))
                 {
-                    this.mRow1 = new Row13(this);
+                    this.mRow1 = new Row15(this);
                 }
                 return this.mRow1;
             }
@@ -21647,15 +22109,15 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private Row13 mRow1;
+        private Row15 mRow1;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Row13 : WpfRow
+    public class Row15 : WpfRow
     {
         
-        public Row13(UITestControl searchLimitContainer) : 
+        public Row15(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -21755,10 +22217,10 @@ namespace Warewolf.UITests
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class LargeView2 : WpfCustom
+    public class LargeView3 : WpfCustom
     {
         
-        public LargeView2(UITestControl searchLimitContainer) : 
+        public LargeView3(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -21769,13 +22231,13 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public DataGrid3 DataGrid
+        public DataGrid5 DataGrid
         {
             get
             {
                 if ((this.mDataGrid == null))
                 {
-                    this.mDataGrid = new DataGrid3(this);
+                    this.mDataGrid = new DataGrid5(this);
                 }
                 return this.mDataGrid;
             }
@@ -21783,15 +22245,15 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private DataGrid3 mDataGrid;
+        private DataGrid5 mDataGrid;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class DataGrid3 : WpfTable
+    public class DataGrid5 : WpfTable
     {
         
-        public DataGrid3(UITestControl searchLimitContainer) : 
+        public DataGrid5(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -21801,13 +22263,13 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public Row14 Row1
+        public Row16 Row1
         {
             get
             {
                 if ((this.mRow1 == null))
                 {
-                    this.mRow1 = new Row14(this);
+                    this.mRow1 = new Row16(this);
                 }
                 return this.mRow1;
             }
@@ -21815,15 +22277,15 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private Row14 mRow1;
+        private Row16 mRow1;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Row14 : WpfRow
+    public class Row16 : WpfRow
     {
         
-        public Row14(UITestControl searchLimitContainer) : 
+        public Row16(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -32091,61 +32553,5 @@ namespace Warewolf.UITests
             this.WindowTitles.Add("Warewolf (ASH\\ASH)");
             #endregion
         }
-        
-        #region Properties
-        public UIWorkflowItemPresenteCustom UIWorkflowItemPresenteCustom
-        {
-            get
-            {
-                if ((this.mUIWorkflowItemPresenteCustom == null))
-                {
-                    this.mUIWorkflowItemPresenteCustom = new UIWorkflowItemPresenteCustom(this);
-                }
-                return this.mUIWorkflowItemPresenteCustom;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private UIWorkflowItemPresenteCustom mUIWorkflowItemPresenteCustom;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class UIWorkflowItemPresenteCustom : WpfCustom
-    {
-        
-        public UIWorkflowItemPresenteCustom(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.WorkflowItemPresenter";
-            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "WorkflowItemPresenter";
-            this.WindowTitles.Add("Warewolf (ASH\\ASH)");
-            #endregion
-        }
-        
-        #region Properties
-        public WpfCustom UIFlowchartCustom
-        {
-            get
-            {
-                if ((this.mUIFlowchartCustom == null))
-                {
-                    this.mUIFlowchartCustom = new WpfCustom(this);
-                    #region Search Criteria
-                    this.mUIFlowchartCustom.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.FlowchartDesigner";
-                    this.mUIFlowchartCustom.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Unsaved 2(FlowchartDesigner)";
-                    this.mUIFlowchartCustom.WindowTitles.Add("Warewolf (ASH\\ASH)");
-                    #endregion
-                }
-                return this.mUIFlowchartCustom;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfCustom mUIFlowchartCustom;
-        #endregion
     }
 }
