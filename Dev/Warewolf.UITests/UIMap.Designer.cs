@@ -6644,18 +6644,6 @@ namespace Warewolf.UITests
                 return this.mServicePickerDialog;
             }
         }
-        
-        public UIWarewolfASHASHWindow UIWarewolfASHASHWindow
-        {
-            get
-            {
-                if ((this.mUIWarewolfASHASHWindow == null))
-                {
-                    this.mUIWarewolfASHASHWindow = new UIWarewolfASHASHWindow();
-                }
-                return this.mUIWarewolfASHASHWindow;
-            }
-        }
         #endregion
         
         #region Fields
@@ -6958,8 +6946,6 @@ namespace Warewolf.UITests
         private SelectWindowsGroupDialog mSelectWindowsGroupDialog;
         
         private ServicePickerDialog mServicePickerDialog;
-        
-        private UIWarewolfASHASHWindow mUIWarewolfASHASHWindow;
         #endregion
     }
     
@@ -32539,19 +32525,5 @@ namespace Warewolf.UITests
         #region Fields
         private WpfTreeItem mSubTreeItem1;
         #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class UIWarewolfASHASHWindow : WpfWindow
-    {
-        
-        public UIWarewolfASHASHWindow()
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfWindow.PropertyNames.Name] = "Warewolf (ASH\\ASH)";
-            this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
-            this.WindowTitles.Add("Warewolf (ASH\\ASH)");
-            #endregion
-        }
     }
 }
