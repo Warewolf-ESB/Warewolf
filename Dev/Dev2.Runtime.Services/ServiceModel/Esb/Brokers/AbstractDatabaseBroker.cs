@@ -186,15 +186,19 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
 
             command.CommandText = serviceMethod.ExecuteAction;
             command.CommandType = serviceMethod.ExecuteAction.Contains("select") ? CommandType.Text : CommandType.StoredProcedure;
-
-//            foreach(var methodParameter in serviceMethod.Parameters)
-//            {
-//                var dataParameter = DataParameterFromMethodParameter(command, methodParameter);
-//                command.Parameters.Add(dataParameter);
-//            }
-
-            var newCommandText = serviceMethod.Parameters.Aggregate(command.CommandText ?? "", (current, parameter) => current.Replace(DataListUtil.AddBracketsToValueIfNotExist(parameter.Name), parameter.Value));
-            command.CommandText = newCommandText;
+            if (server.GetType() != typeof(ODBCServer))
+            {
+                foreach (var methodParameter in serviceMethod.Parameters)
+                {
+                    var dataParameter = DataParameterFromMethodParameter(command, methodParameter);
+                    command.Parameters.Add(dataParameter);
+                }
+            }
+            else
+            {
+                var newCommandText = serviceMethod.Parameters.Aggregate(command.CommandText ?? string.Empty, (current, parameter) => current.Replace(DataListUtil.AddBracketsToValueIfNotExist(parameter.Name), parameter.Value));
+                command.CommandText = newCommandText;
+            }
             return command;
         }
 
