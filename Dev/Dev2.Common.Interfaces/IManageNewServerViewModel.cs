@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Windows.Input;
 using Dev2.Runtime.ServiceModel.Data;
 
@@ -48,5 +49,10 @@ namespace Dev2.Common.Interfaces
         /// The Server Name
         /// </summary>
         string EmptyServerName { get; set; }
+
+        string[] Protocols { get; set; }
+        ObservableCollection<string> Ports { get; set; }
+        string Protocol { get; set; }
+        string SelectedPort { get; set; }
     }
 }
