@@ -305,6 +305,7 @@ namespace Warewolf.UITests
             #region Variable Declarations
             WpfButton doneButton = this.DecisionDialog.DoneButton;
             WpfCustom decision = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Decision;
+            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
             #endregion
 
             // Click 'Done' button
@@ -312,6 +313,9 @@ namespace Warewolf.UITests
 
             // Verify that the 'Exists' property of 'FlowDecision' custom control equals 'True'
             Assert.AreEqual(this.Click_Decision_Dialog_Done_ButtonParams.DecisionExists, decision.Exists, "Decision on the design surface does not exist");
+
+            // Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
+            Assert.AreEqual(this.Click_Decision_Dialog_Done_ButtonParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
         }
         
         /// <summary>
@@ -1294,6 +1298,7 @@ namespace Warewolf.UITests
             #region Variable Declarations
             WpfButton doneButton = this.DecisionDialog.DoneButton;
             WpfCustom switch1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Switch;
+            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
             #endregion
 
             // Click 'Done' button
@@ -1301,6 +1306,9 @@ namespace Warewolf.UITests
 
             // Verify that the 'Exists' property of 'FlowSwitch`1[String]' custom control equals 'True'
             Assert.AreEqual(this.Click_Switch_Dialog_Done_ButtonParams.SwitchExists, switch1.Exists, "Switch on the design surface does not exist");
+
+            // Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
+            Assert.AreEqual(this.Click_Switch_Dialog_Done_ButtonParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
         }
         
         /// <summary>
@@ -1832,7 +1840,6 @@ namespace Warewolf.UITests
             #region Variable Declarations
             WpfListItem decision = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.FlowTools.Decision;
             WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
-            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
             WpfButton doneButton = this.DecisionDialog.DoneButton;
             #endregion
 
@@ -1840,9 +1847,6 @@ namespace Warewolf.UITests
             flowchart.EnsureClickable(new Point(309, 128));
             Mouse.StartDragging(decision, new Point(16, 11));
             Mouse.StopDragging(flowchart, new Point(309, 128));
-
-            // Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
-            Assert.AreEqual(this.Drag_Toolbox_Decision_Onto_DesignSurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
 
             // Verify that the 'Exists' property of 'Done' button equals 'True'
             Assert.AreEqual(this.Drag_Toolbox_Decision_Onto_DesignSurfaceParams.DoneButtonExists, doneButton.Exists, "Decision dialog done button does not exist");
@@ -2527,7 +2531,6 @@ namespace Warewolf.UITests
             #region Variable Declarations
             WpfListItem switch1 = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.FlowTools.Switch;
             WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
-            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
             WpfButton doneButton = this.DecisionDialog.DoneButton;
             #endregion
 
@@ -2535,9 +2538,6 @@ namespace Warewolf.UITests
             flowchart.EnsureClickable(new Point(303, 126));
             Mouse.StartDragging(switch1, new Point(22, 30));
             Mouse.StopDragging(flowchart, new Point(303, 126));
-
-            // Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
-            Assert.AreEqual(this.Drag_Toolbox_Switch_Onto_DesignSurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
 
             // Verify that the 'Exists' property of 'Done' button equals 'True'
             Assert.AreEqual(this.Drag_Toolbox_Switch_Onto_DesignSurfaceParams.DoneButtonExists, doneButton.Exists, "Decision dialog done button does not exist");
@@ -7264,6 +7264,11 @@ namespace Warewolf.UITests
         /// Verify that the 'Exists' property of 'FlowDecision' custom control equals 'True'
         /// </summary>
         public bool DecisionExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
+        /// </summary>
+        public bool Connector1Exists = true;
         #endregion
     }
     
@@ -7914,6 +7919,11 @@ namespace Warewolf.UITests
         /// Verify that the 'Exists' property of 'FlowSwitch`1[String]' custom control equals 'True'
         /// </summary>
         public bool SwitchExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
+        /// </summary>
+        public bool Connector1Exists = true;
         #endregion
     }
     
@@ -8300,11 +8310,6 @@ namespace Warewolf.UITests
     {
         
         #region Fields
-        /// <summary>
-        /// Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
-        /// </summary>
-        public bool Connector1Exists = true;
-        
         /// <summary>
         /// Verify that the 'Exists' property of 'Done' button equals 'True'
         /// </summary>
@@ -8860,11 +8865,6 @@ namespace Warewolf.UITests
     {
         
         #region Fields
-        /// <summary>
-        /// Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
-        /// </summary>
-        public bool Connector1Exists = true;
-        
         /// <summary>
         /// Verify that the 'Exists' property of 'Done' button equals 'True'
         /// </summary>
