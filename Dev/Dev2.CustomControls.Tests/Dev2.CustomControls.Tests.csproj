@@ -90,9 +90,9 @@
     <Compile Include="Converters\BoolToStringConvertTests.cs" />
     <Compile Include="Converters\FilterStringToBoolConverterTests.cs" />
     <Compile Include="Converters\IsValidDateTimeConverterTests.cs" />
-    <Compile Include="Converters\Person.cs" />
     <Compile Include="Converters\StringToTimespanConverterTests.cs" />
     <Compile Include="DelayTextChangedEventTriggerTests.cs" />
+    <Compile Include="Person.cs" />
     <Compile Include="ValueConverterGroupTests.cs" />
   </ItemGroup>
   <Choose>
