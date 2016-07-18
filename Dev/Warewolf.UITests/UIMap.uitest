@@ -481,7 +481,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
-    <MouseAction UIObjectName="UIMap.DecisionDialog.DoneButton">
+    <MouseAction UIObjectName="UIMap.DecisionOrSwitchDialog.DoneButton">
       <ParameterName />
       <ModifierKeys>None</ModifierKeys>
       <IsGlobalHotkey>false</IsGlobalHotkey>
@@ -2000,7 +2000,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
-    <MouseAction UIObjectName="UIMap.DecisionDialog.DoneButton">
+    <MouseAction UIObjectName="UIMap.DecisionOrSwitchDialog.DoneButton">
       <ParameterName />
       <ModifierKeys>None</ModifierKeys>
       <IsGlobalHotkey>false</IsGlobalHotkey>
@@ -2762,7 +2762,7 @@
       <StartLocation X="16" Y="11" />
       <StopLocation X="309" Y="128" />
     </DragDropAction>
-    <AssertAction UIObjectName="UIMap.DecisionDialog.DoneButton">
+    <AssertAction UIObjectName="UIMap.DecisionOrSwitchDialog.DoneButton">
       <ParameterName />
       <PropertyName>Exists</PropertyName>
       <ExpectedValue>True</ExpectedValue>
@@ -3712,7 +3712,7 @@
       <StartLocation X="22" Y="30" />
       <StopLocation X="303" Y="126" />
     </DragDropAction>
-    <AssertAction UIObjectName="UIMap.DecisionDialog.DoneButton">
+    <AssertAction UIObjectName="UIMap.DecisionOrSwitchDialog.DoneButton">
       <ParameterName />
       <PropertyName>Exists</PropertyName>
       <ExpectedValue>True</ExpectedValue>
@@ -20095,13 +20095,14 @@
           <SupportLevel>0</SupportLevel>
           <Descendants />
         </TopLevelWindow>
-        <TopLevelWindow ControlType="Window" Id="DecisionDialog" FriendlyName="Wpf" SpecialControlType="None" SessionId="986346">
+        <TopLevelWindow ControlType="Window" Id="DecisionOrSwitchDialog" FriendlyName="Wpf" SpecialControlType="None" SessionId="986346">
           <TechnologyName>UIA</TechnologyName>
           <WindowTitles />
           <AndCondition>
             <PropertyCondition Name="ControlType">Window</PropertyCondition>
             <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
             <PropertyCondition Name="ClassName" Operator="Contains">HwndWrapper</PropertyCondition>
+            <PropertyCondition Name="Name">ActivityDefaultWindow</PropertyCondition>
           </AndCondition>
           <SupportLevel>0</SupportLevel>
           <Descendants>

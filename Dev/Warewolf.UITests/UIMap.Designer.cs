@@ -303,7 +303,7 @@ namespace Warewolf.UITests
         public void Click_Decision_Dialog_Done_Button()
         {
             #region Variable Declarations
-            WpfButton doneButton = this.DecisionDialog.DoneButton;
+            WpfButton doneButton = this.DecisionOrSwitchDialog.DoneButton;
             WpfCustom decision = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Decision;
             WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
             #endregion
@@ -1296,7 +1296,7 @@ namespace Warewolf.UITests
         public void Click_Switch_Dialog_Done_Button()
         {
             #region Variable Declarations
-            WpfButton doneButton = this.DecisionDialog.DoneButton;
+            WpfButton doneButton = this.DecisionOrSwitchDialog.DoneButton;
             WpfCustom switch1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Switch;
             WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
             #endregion
@@ -1840,7 +1840,7 @@ namespace Warewolf.UITests
             #region Variable Declarations
             WpfListItem decision = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.FlowTools.Decision;
             WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
-            WpfButton doneButton = this.DecisionDialog.DoneButton;
+            WpfButton doneButton = this.DecisionOrSwitchDialog.DoneButton;
             #endregion
 
             // Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
@@ -2531,7 +2531,7 @@ namespace Warewolf.UITests
             #region Variable Declarations
             WpfListItem switch1 = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.FlowTools.Switch;
             WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
-            WpfButton doneButton = this.DecisionDialog.DoneButton;
+            WpfButton doneButton = this.DecisionOrSwitchDialog.DoneButton;
             #endregion
 
             // Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
@@ -6686,15 +6686,15 @@ namespace Warewolf.UITests
             }
         }
         
-        public DecisionDialog DecisionDialog
+        public DecisionOrSwitchDialog DecisionOrSwitchDialog
         {
             get
             {
-                if ((this.mDecisionDialog == null))
+                if ((this.mDecisionOrSwitchDialog == null))
                 {
-                    this.mDecisionDialog = new DecisionDialog();
+                    this.mDecisionOrSwitchDialog = new DecisionOrSwitchDialog();
                 }
-                return this.mDecisionDialog;
+                return this.mDecisionOrSwitchDialog;
             }
         }
         
@@ -7024,7 +7024,7 @@ namespace Warewolf.UITests
         
         private SplashPageWindow mSplashPageWindow;
         
-        private DecisionDialog mDecisionDialog;
+        private DecisionOrSwitchDialog mDecisionOrSwitchDialog;
         
         private SelectWindowsGroupDialog mSelectWindowsGroupDialog;
         
@@ -32442,13 +32442,14 @@ namespace Warewolf.UITests
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class DecisionDialog : WpfWindow
+    public class DecisionOrSwitchDialog : WpfWindow
     {
         
-        public DecisionDialog()
+        public DecisionOrSwitchDialog()
         {
             #region Search Criteria
             this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
+            this.SearchProperties[WpfWindow.PropertyNames.Name] = "ActivityDefaultWindow";
             #endregion
         }
         
