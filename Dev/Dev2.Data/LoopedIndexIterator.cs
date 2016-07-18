@@ -20,7 +20,7 @@ namespace Dev2.Data.Binary_Objects
 
         public bool IsEmpty => _itrCnt > 0;
 
-        internal LoopedIndexIterator(int val, int itrCnt)
+        public LoopedIndexIterator(int val, int itrCnt)
         {
             _loopedIdx = val;
             _itrCnt = itrCnt;

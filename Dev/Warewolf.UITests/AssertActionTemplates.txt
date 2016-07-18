@@ -1,0 +1,18 @@
+﻿----------------Simple Assert Exists:------------------
+<AssertAction UIObjectName="[[UITestControlReference]]">
+    <ParameterName />
+    <PropertyName>Exists</PropertyName>
+    <ExpectedValue>True</ExpectedValue>
+    <MessageOnValidationFailure>[[UITestControlFriendlyName]] does not exist in [[Context]].</MessageOnValidationFailure>
+    <Type>String</Type>
+    <PropertyCondition>AreEqual</PropertyCondition>
+</AssertAction>
+-------------Simple Assert Textbox Text:---------------
+<AssertAction UIObjectName="[[TextboxUITestControlReference]]">
+    <ParameterName />
+    <PropertyName>Text</PropertyName>
+    <ExpectedValue>[[SomeVariable]]</ExpectedValue>
+    <MessageOnValidationFailure>Textbox text does not equal "[[SomeVariable]]".</MessageOnValidationFailure>
+    <Type>String</Type>
+    <PropertyCondition>AreEqual</PropertyCondition>
+</AssertAction>
