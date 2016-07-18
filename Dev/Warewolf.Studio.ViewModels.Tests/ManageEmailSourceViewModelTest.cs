@@ -690,7 +690,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             var expectedEnableSsl = true;
             var expectedEmailFrom = "EmailFrom";
             var expectedEmailTo = "EmailTo@example.com";
-            var expectedId = Guid.NewGuid();
+            var expectedPath = "";
+            var expectedResourceName = "ResourceName";
 
             _target.HostName = expectedHostName;
             _target.Password = expectedPassword;
@@ -703,6 +704,9 @@ namespace Warewolf.Studio.ViewModels.Tests
 
             //act
             var result = _target.ToModel();
+            result.Path = expectedPath;
+            result.ResourceName = expectedResourceName;
+            var hashcode = result.GetHashCode();
 
             //assert
             Assert.IsNotNull(result);
@@ -711,6 +715,9 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual(expectedPassword, result.Password);
             Assert.AreEqual(expectedUserName, result.UserName);
             Assert.AreEqual(expectedPort, result.Port);
+            Assert.AreEqual(expectedResourceName, result.ResourceName);
+            Assert.AreEqual(expectedPath, result.Path);
+            Assert.AreEqual(hashcode, result.GetHashCode());
             Assert.AreEqual(expectedTimeout, result.Timeout);
             Assert.AreEqual(expectedEnableSsl, result.EnableSsl);
             Assert.AreEqual(expectedEmailFrom, result.EmailFrom);
