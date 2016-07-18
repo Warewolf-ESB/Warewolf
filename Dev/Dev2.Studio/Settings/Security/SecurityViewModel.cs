@@ -37,7 +37,7 @@ namespace Dev2.Settings.Security
 {
     public class SecurityViewModel : SettingsItemViewModel, IHelpSource, IUpdatesHelp
     {
-         IResourcePickerDialog _resourcePicker;
+        IResourcePickerDialog _resourcePicker;
         readonly DirectoryObjectPickerDialog _directoryObjectPicker;
         readonly IWin32Window _parentWindow;
         readonly IEnvironmentModel _environment;
@@ -256,6 +256,7 @@ namespace Dev2.Settings.Security
 
         DirectoryObject PickWindowsGroup()
         {
+            
             var dialogResult = ShowDirectoryObjectPickerDialog(_parentWindow);
             if(dialogResult != DialogResult.OK)
             {
@@ -483,6 +484,13 @@ namespace Dev2.Settings.Security
         }
 
         #endregion
+
+        #region Implementation of IBelongToDomain
+
+        public Visibility Visibility => string.IsNullOrEmpty(Environment.UserDomainName) ? Visibility.Hidden : Visibility.Visible;
+
+        #endregion
     }
 
+  
 }
