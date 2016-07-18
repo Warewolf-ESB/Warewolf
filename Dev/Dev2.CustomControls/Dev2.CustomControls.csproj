@@ -98,8 +98,6 @@
     <Compile Include="Converters\EmptyStringToVisibilityConverter.cs" />
     <Compile Include="Converters\MathFunction.cs" />
     <Compile Include="Converters\MathFunctionDoubleConverter.cs" />
-    <Compile Include="Adorners\SingleChildAdornerBase.cs" />
-    <Compile Include="Adorners\UIElementAdorner.cs" />
     <Compile Include="Behavior\AttachBehaviorAttachedProperty.cs" />
     <Compile Include="Behavior\ControlEnterToTabBehavior.cs" />
     <Compile Include="Behavior\EmptyListBoxWaterMarkBehavior.cs" />
@@ -113,9 +111,7 @@
     <Compile Include="Converters\MultipleBoolToEnabledConverter.cs" />
     <Compile Include="Converters\RowToIndexConverter.cs" />
     <Compile Include="Converters\StringToTimespanConverter.cs" />
-    <Compile Include="Data\ValueConverters\ValueConverterGroup.cs" />
     <Compile Include="FilterTextBox.cs" />
-    <Compile Include="Panels\DisconnectedUIElementCollection.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>

@@ -1,6 +1,6 @@
 using System;
 
-namespace Dev2.CustomControls.Tests.Converters
+namespace Dev2.CustomControls.Tests
 {
     internal class Person
     {
