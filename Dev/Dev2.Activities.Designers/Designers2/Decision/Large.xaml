@@ -19,7 +19,7 @@
                                xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
                                xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna;assembly=Warewolf.Studio.Themes.Luna"
                                Width="Auto"
-                               Height="350"
+                               Height="390"
                                mc:Ignorable="d"
                                d:DesignWidth="280"
                                d:DataContext="{d:DesignInstance decision:DecisionDesignerViewModel}">
@@ -55,14 +55,18 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <controls:Dev2DataGrid Grid.Row="0"
+        <StackPanel Background="{StaticResource WareWolfMenuBrush}" HorizontalAlignment="Stretch" Orientation="Horizontal" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">
+            <TextBlock Margin="5" Text="Decision" Style="{StaticResource SourceHeader}" />
+        </StackPanel>
+        
+        <controls:Dev2DataGrid Grid.Row="1"
                                Grid.Column="0"
                                Grid.ColumnSpan="2"
                                VerticalScrollBarVisibility="Hidden"
                                x:Name="LargeDataGrid"
+                               Margin="{StaticResource ControlBorderTop}"
                                ItemsSource="{Binding Collection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                Style="{StaticResource ActivityMapppingDataGridStyle}"
                                Height="90">
@@ -294,7 +298,7 @@
             </DataGrid.Columns>
         </controls:Dev2DataGrid>
 
-        <CheckBox Grid.Row="1"
+        <CheckBox Grid.Row="2"
                   Margin="-6,0,0,0"
                   Grid.Column="0"
                   Grid.ColumnSpan="2"
@@ -309,7 +313,7 @@
             </i:Interaction.Behaviors>
         </CheckBox>
 
-        <Grid Grid.Row="2"
+        <Grid Grid.Row="3"
               Grid.Column="0"
               Grid.ColumnSpan="2">
             <Grid.ColumnDefinitions>
@@ -335,7 +339,7 @@
                 </i:Interaction.Behaviors>
             </TextBox>
         </Grid>
-        <Grid Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2">
+        <Grid Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*" />
@@ -359,7 +363,7 @@
                 </i:Interaction.Behaviors>
             </TextBox>
         </Grid>
-        <Grid Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2">
+        <Grid Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="{Binding ElementName=TrueArmLabel, Path=ActualWidth}" />
                 <ColumnDefinition Width="*" />
@@ -384,7 +388,7 @@
             </TextBox>
         </Grid>
         <errors:OnError Grid.Column="0"
-                        Grid.Row="7"
+                        Grid.Row="6"
                         Grid.ColumnSpan="2" />
     </Grid>
 </core:ActivityDesignerTemplate>
