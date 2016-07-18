@@ -375,11 +375,17 @@ namespace Dev2.Activities.Designers.Tests.SqlServer
 
         #endregion
     }
-    public class InputViewForTest : ManageDatabaseServiceInputViewModel
+    internal class InputViewForTest : ManageDatabaseServiceInputViewModel
     {
         public InputViewForTest(IDatabaseServiceViewModel model, IDbServiceModel serviceModel)
             : base(model, serviceModel)
         {
+            var sqlModel = serviceModel as SqlServerModel;
+            if (sqlModel != null && sqlModel.HasRecError)
+            {
+                OkCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(() =>
+                { throw new Exception("Error in mappings."); });
+            }
         }
     }
 }

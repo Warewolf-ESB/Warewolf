@@ -18,6 +18,7 @@ using Dev2.Studio.Core.Activities.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Warewolf.Core;
+// ReSharper disable InconsistentNaming
 
 namespace Dev2.Activities.Designers.Tests.MySql
 {
@@ -363,6 +364,14 @@ namespace Dev2.Activities.Designers.Tests.MySql
         public InputViewForTest(IDatabaseServiceViewModel model, IDbServiceModel serviceModel)
             : base(model, serviceModel)
         {
+            var sqlModel = serviceModel as MySqlModel;
+            if (sqlModel != null && sqlModel.HasRecError)
+            {
+                OkCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(() =>
+                            { throw new Exception("Error in mappings."); });
+            }
         }
+
+
     }
 }
