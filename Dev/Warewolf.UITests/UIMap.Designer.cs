@@ -1089,7 +1089,8 @@ namespace Warewolf.UITests
             // Click 'Test Connection' button
             Mouse.Click(testConnectionButton, new Point(51, 8));
 
-            // Verify that the 'Enabled' property of 'Save this tab' button equals 'True'
+            // Wait for 2 seconds for user delay between actions; Verify that the 'Enabled' property of 'Save this tab' button equals 'True'
+            Playback.Wait(2000);
             Assert.AreEqual(this.Click_Server_Source_Wizard_Test_Connection_ButtonParams.SaveButtonEnabled, saveButton.Enabled, "Save ribbon button is not enabled");
         }
         
@@ -7892,7 +7893,7 @@ namespace Warewolf.UITests
         
         #region Fields
         /// <summary>
-        /// Verify that the 'Enabled' property of 'Save this tab' button equals 'True'
+        /// Wait for 2 seconds for user delay between actions; Verify that the 'Enabled' property of 'Save this tab' button equals 'True'
         /// </summary>
         public bool SaveButtonEnabled = true;
         #endregion
