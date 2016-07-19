@@ -41,6 +41,23 @@
   </Configuration>
   <InitializeActions />
   <ExecuteActions>
+    <AssertAction UIObjectName="UIMap.MainStudioWindow.SideMenuBar.NewWorkflowButton.Text">
+      <ParameterName />
+      <PropertyName>Exists</PropertyName>
+      <ExpectedValue>True</ExpectedValue>
+      <MessageOnValidationFailure>New workflow ribbon button does not exist.</MessageOnValidationFailure>
+      <Type>String</Type>
+      <PropertyCondition>AreEqual</PropertyCondition>
+    </AssertAction>
+    <TestStepMarkerAction Comment="" MarkerInformation="AssertMethod1">
+      <ParameterName />
+      <StepId>-1</StepId>
+      <Direction>Start</Direction>
+      <Outcome />
+      <Disabled>false</Disabled>
+      <WorkItemId>0</WorkItemId>
+      <MarkerRegionType>Assertion</MarkerRegionType>
+    </TestStepMarkerAction>
     <MouseAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.DoneButton">
       <ParameterName />
       <ModifierKeys>None</ModifierKeys>
@@ -973,43 +990,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
-    <MouseAction UIObjectName="UIMap.MainStudioWindow.SideMenuBar.DatabaseConnectorButton">
-      <ParameterName />
-      <ModifierKeys>None</ModifierKeys>
-      <IsGlobalHotkey>false</IsGlobalHotkey>
-      <Location X="8" Y="22" />
-      <WheelDirection>0</WheelDirection>
-      <ActionType>Click</ActionType>
-      <MouseButton>Left</MouseButton>
-    </MouseAction>
-    <TestStepMarkerAction Comment="" MarkerInformation="Click_New_DB_Connector_Ribbon_Button">
-      <ParameterName />
-      <StepId>-1</StepId>
-      <Direction>Start</Direction>
-      <Outcome />
-      <Disabled>false</Disabled>
-      <WorkItemId>0</WorkItemId>
-      <MarkerRegionType>Action</MarkerRegionType>
-    </TestStepMarkerAction>
-    <MouseAction UIObjectName="UIMap.MainStudioWindow.SideMenuBar.PluginConnectorButton">
-      <ParameterName />
-      <ModifierKeys>None</ModifierKeys>
-      <IsGlobalHotkey>false</IsGlobalHotkey>
-      <Location X="35" Y="12" />
-      <WheelDirection>0</WheelDirection>
-      <ActionType>Click</ActionType>
-      <MouseButton>Left</MouseButton>
-    </MouseAction>
-    <TestStepMarkerAction Comment="" MarkerInformation="Click_New_Plugin_Connector_Ribbon_Button">
-      <ParameterName />
-      <StepId>-1</StepId>
-      <Direction>Start</Direction>
-      <Outcome />
-      <Disabled>false</Disabled>
-      <WorkItemId>0</WorkItemId>
-      <MarkerRegionType>Action</MarkerRegionType>
-    </TestStepMarkerAction>
-    <AssertAction UIObjectName="UIMap.MainStudioWindow.SideMenuBar.CollapsedSideMenu.NewWorkflowIcon">
+    <AssertAction UIObjectName="UIMap.MainStudioWindow.SideMenuBar.NewWorkflowButton">
       <ParameterName />
       <PropertyName>Exists</PropertyName>
       <ExpectedValue>True</ExpectedValue>
@@ -1017,7 +998,7 @@
       <Type>String</Type>
       <PropertyCondition>AreEqual</PropertyCondition>
     </AssertAction>
-    <MouseAction UIObjectName="UIMap.MainStudioWindow.SideMenuBar.CollapsedSideMenu.NewWorkflowIcon">
+    <MouseAction UIObjectName="UIMap.MainStudioWindow.SideMenuBar.NewWorkflowButton">
       <ParameterName />
       <ModifierKeys>None</ModifierKeys>
       <IsGlobalHotkey>false</IsGlobalHotkey>
@@ -1099,7 +1080,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
-    <MouseAction UIObjectName="UIMap.MainStudioWindow.SideMenuBar.CollapsedSideMenu.CreateanewdatabasesoButton">
+    <MouseAction UIObjectName="UIMap.MainStudioWindow.SideMenuBar.DatabaseSourceButton">
       <ParameterName />
       <ModifierKeys>None</ModifierKeys>
       <IsGlobalHotkey>false</IsGlobalHotkey>
@@ -1117,7 +1098,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
-    <MouseAction UIObjectName="UIMap.MainStudioWindow.SideMenuBar.CollapsedSideMenu.CreateanewpluginsourButton">
+    <MouseAction UIObjectName="UIMap.MainStudioWindow.SideMenuBar.PluginSourceButton">
       <ParameterName />
       <ModifierKeys>None</ModifierKeys>
       <IsGlobalHotkey>false</IsGlobalHotkey>
@@ -1135,7 +1116,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
-    <MouseAction UIObjectName="UIMap.MainStudioWindow.SideMenuBar.CollapsedSideMenu.CreateanewwebsourceButton">
+    <MouseAction UIObjectName="UIMap.MainStudioWindow.SideMenuBar.WebSourceButton">
       <ParameterName />
       <ModifierKeys>None</ModifierKeys>
       <IsGlobalHotkey>false</IsGlobalHotkey>
@@ -1577,7 +1558,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
-    <MouseAction UIObjectName="UIMap.MainStudioWindow.SideMenuBar.CollapsedSideMenu.NewScheduledTaskIcon">
+    <MouseAction UIObjectName="UIMap.MainStudioWindow.SideMenuBar.SchedulerButton">
       <ParameterName />
       <ModifierKeys>None</ModifierKeys>
       <IsGlobalHotkey>false</IsGlobalHotkey>
@@ -1756,7 +1737,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
-    <AssertAction UIObjectName="UIMap.MainStudioWindow.SideMenuBar.CollapsedSideMenu.SettingsIcon">
+    <AssertAction UIObjectName="UIMap.MainStudioWindow.SideMenuBar.ConfigureSettingsButton">
       <ParameterName />
       <PropertyName>Exists</PropertyName>
       <ExpectedValue>True</ExpectedValue>
@@ -1764,7 +1745,7 @@
       <Type>String</Type>
       <PropertyCondition>AreEqual</PropertyCondition>
     </AssertAction>
-    <MouseAction UIObjectName="UIMap.MainStudioWindow.SideMenuBar.CollapsedSideMenu.SettingsIcon">
+    <MouseAction UIObjectName="UIMap.MainStudioWindow.SideMenuBar.ConfigureSettingsButton">
       <ParameterName />
       <ModifierKeys>None</ModifierKeys>
       <IsGlobalHotkey>false</IsGlobalHotkey>
@@ -7908,32 +7889,6 @@
                   <SupportLevel>0</SupportLevel>
                   <Descendants />
                 </UIObject>
-                <UIObject ControlType="Button" Id="DatabaseConnectorButton" FriendlyName="Create a new database connector" SpecialControlType="None">
-                  <TechnologyName>UIA</TechnologyName>
-                  <WindowTitles>
-                    <WindowTitle>Warewolf</WindowTitle>
-                  </WindowTitles>
-                  <AndCondition>
-                    <PropertyCondition Name="ControlType">Button</PropertyCondition>
-                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                    <PropertyCondition Name="HelpText" Operator="Contains">Create a new database connector</PropertyCondition>
-                  </AndCondition>
-                  <SupportLevel>0</SupportLevel>
-                  <Descendants />
-                </UIObject>
-                <UIObject ControlType="Button" Id="PluginConnectorButton" FriendlyName="Create a new plugin connector" SpecialControlType="None">
-                  <TechnologyName>UIA</TechnologyName>
-                  <WindowTitles>
-                    <WindowTitle>Warewolf</WindowTitle>
-                  </WindowTitles>
-                  <AndCondition>
-                    <PropertyCondition Name="ControlType">Button</PropertyCondition>
-                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                    <PropertyCondition Name="HelpText" Operator="Contains">Create a new plugin connector</PropertyCondition>
-                  </AndCondition>
-                  <SupportLevel>0</SupportLevel>
-                  <Descendants />
-                </UIObject>
                 <UIObject ControlType="Button" Id="WebSourceButton" FriendlyName="Create a new web source" SpecialControlType="None">
                   <TechnologyName>UIA</TechnologyName>
                   <WindowTitles>
@@ -8026,163 +7981,6 @@
                   <SupportLevel>0</SupportLevel>
                   <Descendants />
                 </UIObject>
-                <UIObject ControlType="Text" Id="CollapsedSideMenu" FriendlyName=" " SpecialControlType="None">
-                  <TechnologyName>UIA</TechnologyName>
-                  <WindowTitles>
-                    <WindowTitle>Warewolf</WindowTitle>
-                  </WindowTitles>
-                  <AndCondition>
-                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                    <PropertyCondition Name="ControlType">Text</PropertyCondition>
-                    <PropertyCondition Name="Name">\ </PropertyCondition>
-                  </AndCondition>
-                  <SupportLevel>0</SupportLevel>
-                  <Descendants>
-                    <UIObject ControlType="Button" Id="CreateanewdatabasesoButton" FriendlyName="Create a new database source" SpecialControlType="None">
-                      <TechnologyName>UIA</TechnologyName>
-                      <WindowTitles>
-                        <WindowTitle>Warewolf</WindowTitle>
-                      </WindowTitles>
-                      <AndCondition>
-                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                        <PropertyCondition Name="ControlType">Button</PropertyCondition>
-                        <PropertyCondition Name="HelpText">Create a new database source</PropertyCondition>
-                      </AndCondition>
-                      <SupportLevel>0</SupportLevel>
-                      <Descendants />
-                    </UIObject>
-                    <UIObject ControlType="Button" Id="CreateanewpluginsourButton" FriendlyName="Create a new plugin source" SpecialControlType="None">
-                      <TechnologyName>UIA</TechnologyName>
-                      <WindowTitles>
-                        <WindowTitle>Warewolf</WindowTitle>
-                      </WindowTitles>
-                      <AndCondition>
-                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                        <PropertyCondition Name="ControlType">Button</PropertyCondition>
-                        <PropertyCondition Name="HelpText">Create a new plugin source</PropertyCondition>
-                      </AndCondition>
-                      <SupportLevel>0</SupportLevel>
-                      <Descendants />
-                    </UIObject>
-                    <UIObject ControlType="Button" Id="CreateanewwebsourceButton" FriendlyName="Create a new web source" SpecialControlType="None">
-                      <TechnologyName>UIA</TechnologyName>
-                      <WindowTitles>
-                        <WindowTitle>Warewolf</WindowTitle>
-                      </WindowTitles>
-                      <AndCondition>
-                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                        <PropertyCondition Name="ControlType">Button</PropertyCondition>
-                        <PropertyCondition Name="HelpText">Create a new web source</PropertyCondition>
-                      </AndCondition>
-                      <SupportLevel>0</SupportLevel>
-                      <Descendants />
-                    </UIObject>
-                    <UIObject ControlType="Text" Id="NewWorkflowIcon" FriendlyName="" SpecialControlType="None">
-                      <TechnologyName>UIA</TechnologyName>
-                      <WindowTitles>
-                        <WindowTitle>Warewolf</WindowTitle>
-                      </WindowTitles>
-                      <AndCondition>
-                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                        <PropertyCondition Name="ControlType">Text</PropertyCondition>
-                        <PropertyCondition Name="Name"></PropertyCondition>
-                      </AndCondition>
-                      <SupportLevel>0</SupportLevel>
-                      <Descendants />
-                    </UIObject>
-                    <UIObject ControlType="Text" Id="DeployIcon" FriendlyName="" SpecialControlType="None">
-                      <TechnologyName>UIA</TechnologyName>
-                      <WindowTitles>
-                        <WindowTitle>Warewolf</WindowTitle>
-                      </WindowTitles>
-                      <AndCondition>
-                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                        <PropertyCondition Name="ControlType">Text</PropertyCondition>
-                        <PropertyCondition Name="Name"></PropertyCondition>
-                      </AndCondition>
-                      <SupportLevel>0</SupportLevel>
-                      <Descendants />
-                    </UIObject>
-                    <UIObject ControlType="Text" Id="NewDatabseConnIcon" FriendlyName="" SpecialControlType="None">
-                      <TechnologyName>UIA</TechnologyName>
-                      <WindowTitles>
-                        <WindowTitle>Warewolf</WindowTitle>
-                      </WindowTitles>
-                      <AndCondition>
-                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                        <PropertyCondition Name="ControlType">Text</PropertyCondition>
-                        <PropertyCondition Name="Name"></PropertyCondition>
-                      </AndCondition>
-                      <SupportLevel>0</SupportLevel>
-                      <Descendants />
-                    </UIObject>
-                    <UIObject ControlType="Text" Id="NewPluginConnIcon" FriendlyName="" SpecialControlType="None">
-                      <TechnologyName>UIA</TechnologyName>
-                      <WindowTitles>
-                        <WindowTitle>Warewolf</WindowTitle>
-                      </WindowTitles>
-                      <AndCondition>
-                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                        <PropertyCondition Name="ControlType">Text</PropertyCondition>
-                        <PropertyCondition Name="Name"></PropertyCondition>
-                      </AndCondition>
-                      <SupportLevel>0</SupportLevel>
-                      <Descendants />
-                    </UIObject>
-                    <UIObject ControlType="Text" Id="NewWebConnIcon" FriendlyName="" SpecialControlType="None">
-                      <TechnologyName>UIA</TechnologyName>
-                      <WindowTitles>
-                        <WindowTitle>Warewolf</WindowTitle>
-                      </WindowTitles>
-                      <AndCondition>
-                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                        <PropertyCondition Name="ControlType">Text</PropertyCondition>
-                        <PropertyCondition Name="Name"></PropertyCondition>
-                      </AndCondition>
-                      <SupportLevel>0</SupportLevel>
-                      <Descendants />
-                    </UIObject>
-                    <UIObject ControlType="Text" Id="NewScheduledTaskIcon" FriendlyName="" SpecialControlType="None">
-                      <TechnologyName>UIA</TechnologyName>
-                      <WindowTitles>
-                        <WindowTitle>Warewolf</WindowTitle>
-                      </WindowTitles>
-                      <AndCondition>
-                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                        <PropertyCondition Name="ControlType">Text</PropertyCondition>
-                        <PropertyCondition Name="Name"></PropertyCondition>
-                      </AndCondition>
-                      <SupportLevel>0</SupportLevel>
-                      <Descendants />
-                    </UIObject>
-                    <UIObject ControlType="Text" Id="SettingsIcon" FriendlyName="" SpecialControlType="None">
-                      <TechnologyName>UIA</TechnologyName>
-                      <WindowTitles>
-                        <WindowTitle>Warewolf</WindowTitle>
-                      </WindowTitles>
-                      <AndCondition>
-                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                        <PropertyCondition Name="ControlType">Text</PropertyCondition>
-                        <PropertyCondition Name="Name"></PropertyCondition>
-                      </AndCondition>
-                      <SupportLevel>0</SupportLevel>
-                      <Descendants />
-                    </UIObject>
-                    <UIObject ControlType="Text" Id="HelpIcon" FriendlyName="" SpecialControlType="None">
-                      <TechnologyName>UIA</TechnologyName>
-                      <WindowTitles>
-                        <WindowTitle>Warewolf</WindowTitle>
-                      </WindowTitles>
-                      <AndCondition>
-                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                        <PropertyCondition Name="ControlType">Text</PropertyCondition>
-                        <PropertyCondition Name="Name"></PropertyCondition>
-                      </AndCondition>
-                      <SupportLevel>0</SupportLevel>
-                      <Descendants />
-                    </UIObject>
-                  </Descendants>
-                </UIObject>
                 <UIObject ControlType="Button" Id="NewWorkflowButton" FriendlyName="Create a new service" SpecialControlType="None">
                   <TechnologyName>UIA</TechnologyName>
                   <WindowTitles>
@@ -8194,7 +7992,21 @@
                     <PropertyCondition Name="HelpText" Operator="Contains">Create a new service</PropertyCondition>
                   </AndCondition>
                   <SupportLevel>0</SupportLevel>
-                  <Descendants />
+                  <Descendants>
+                    <UIObject ControlType="Text" Id="Text" FriendlyName=" " SpecialControlType="None">
+                      <TechnologyName>UIA</TechnologyName>
+                      <WindowTitles>
+                        <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
+                      </WindowTitles>
+                      <AndCondition>
+                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                        <PropertyCondition Name="ControlType">Text</PropertyCondition>
+                        <PropertyCondition Name="Name">\ </PropertyCondition>
+                      </AndCondition>
+                      <SupportLevel>0</SupportLevel>
+                      <Descendants />
+                    </UIObject>
+                  </Descendants>
                 </UIObject>
                 <UIObject ControlType="Button" Id="NewWebServiceButton" FriendlyName="Create a new web service" SpecialControlType="None">
                   <TechnologyName>UIA</TechnologyName>
