@@ -441,14 +441,13 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
-        /// Click_Explorer_Filter_Clear_Button - Use 'Click_Explorer_Filter_Clear_ButtonParams' to pass parameters into this method.
+        /// Click_Explorer_Filter_Clear_Button
         /// </summary>
         public void Click_Explorer_Filter_Clear_Button()
         {
             #region Variable Declarations
             WpfButton uIClearSearchButtonButton = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.SearchTextBox.UIClearSearchButtonButton;
             WpfButton explorerRefreshButton = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerRefreshButton;
-            WpfTreeItem firstItem = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem;
             #endregion
 
             // Click 'ClearSearchButton' button
@@ -456,9 +455,6 @@ namespace Warewolf.UITests
 
             // Click '' button
             Mouse.Click(explorerRefreshButton, new Point(10, 10));
-
-            // Verify that the 'Exists' property of 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item equals 'True'
-            Assert.AreEqual(this.Click_Explorer_Filter_Clear_ButtonParams.FirstItemExists, firstItem.Exists, "Explorer localhost does not contain any items.");
         }
         
         /// <summary>
@@ -650,7 +646,6 @@ namespace Warewolf.UITests
             WpfEdit searchTextBox = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox;
             WpfButton refreshButton = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.RefreshButton;
             WpfCustom explorer = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer;
-            WpfButton iconButton = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.IconButton;
             WpfButton serverListComboBox = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.ServerListComboBox;
             WpfButton connectServerButton = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ConnectServerButton;
             WpfButton editServerButton = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.EditServerButton;
@@ -675,9 +670,6 @@ namespace Warewolf.UITests
 
             // Verify that the 'Exists' property of 'UI_ExplorerControl_AutoID' custom control equals 'True'
             Assert.AreEqual(this.Click_New_Workflow_Ribbon_ButtonParams.ExplorerExists, explorer.Exists, "Explorer does not exist in the studio");
-
-            // Verify that the 'Exists' property of first button next to 'Checkbox' check box equals 'True'
-            Assert.AreEqual(this.Click_New_Workflow_Ribbon_ButtonParams.IconButtonExists, iconButton.Exists, "Explorer localhost icon does not exist");
 
             // Verify that the 'Exists' property of 'ToggleButton' button equals 'True'
             Assert.AreEqual(this.Click_New_Workflow_Ribbon_ButtonParams.ServerListComboBoxExists, serverListComboBox.Exists, "Explorer connect control does not exist");
@@ -1097,7 +1089,8 @@ namespace Warewolf.UITests
             // Click 'Test Connection' button
             Mouse.Click(testConnectionButton, new Point(51, 8));
 
-            // Verify that the 'Enabled' property of 'Save this tab' button equals 'True'
+            // Wait for 2 seconds for user delay between actions; Verify that the 'Enabled' property of 'Save this tab' button equals 'True'
+            Playback.Wait(2000);
             Assert.AreEqual(this.Click_Server_Source_Wizard_Test_Connection_ButtonParams.SaveButtonEnabled, saveButton.Enabled, "Save ribbon button is not enabled");
         }
         
@@ -1483,7 +1476,7 @@ namespace Warewolf.UITests
 
             // Move 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item to 'Flowchart' custom control
             flowchart.EnsureClickable(new Point(307, 128));
-            Mouse.StartDragging(firstItem, new Point(16, 5));
+            Mouse.StartDragging(firstItem, new Point(32, 5));
             Mouse.StopDragging(flowchart, new Point(307, 128));
 
             // Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
@@ -5236,18 +5229,6 @@ namespace Warewolf.UITests
             }
         }
         
-        public virtual Click_Explorer_Filter_Clear_ButtonParams Click_Explorer_Filter_Clear_ButtonParams
-        {
-            get
-            {
-                if ((this.mClick_Explorer_Filter_Clear_ButtonParams == null))
-                {
-                    this.mClick_Explorer_Filter_Clear_ButtonParams = new Click_Explorer_Filter_Clear_ButtonParams();
-                }
-                return this.mClick_Explorer_Filter_Clear_ButtonParams;
-            }
-        }
-        
         public virtual Click_Explorer_RemoteServer_Connect_ButtonParams Click_Explorer_RemoteServer_Connect_ButtonParams
         {
             get
@@ -6964,8 +6945,6 @@ namespace Warewolf.UITests
         
         private Click_ExpandAndStepIn_NestedWorkflowParams mClick_ExpandAndStepIn_NestedWorkflowParams;
         
-        private Click_Explorer_Filter_Clear_ButtonParams mClick_Explorer_Filter_Clear_ButtonParams;
-        
         private Click_Explorer_RemoteServer_Connect_ButtonParams mClick_Explorer_RemoteServer_Connect_ButtonParams;
         
         private Click_MessageBox_YesParams mClick_MessageBox_YesParams;
@@ -7621,21 +7600,6 @@ namespace Warewolf.UITests
     }
     
     /// <summary>
-    /// Parameters to be passed into 'Click_Explorer_Filter_Clear_Button'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Click_Explorer_Filter_Clear_ButtonParams
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Verify that the 'Exists' property of 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item equals 'True'
-        /// </summary>
-        public bool FirstItemExists = true;
-        #endregion
-    }
-    
-    /// <summary>
     /// Parameters to be passed into 'Click_Explorer_RemoteServer_Connect_Button'
     /// </summary>
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
@@ -7697,11 +7661,6 @@ namespace Warewolf.UITests
         /// Verify that the 'Exists' property of 'UI_ExplorerControl_AutoID' custom control equals 'True'
         /// </summary>
         public bool ExplorerExists = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of first button next to 'Checkbox' check box equals 'True'
-        /// </summary>
-        public bool IconButtonExists = true;
         
         /// <summary>
         /// Verify that the 'Exists' property of 'ToggleButton' button equals 'True'
@@ -7934,7 +7893,7 @@ namespace Warewolf.UITests
         
         #region Fields
         /// <summary>
-        /// Verify that the 'Enabled' property of 'Save this tab' button equals 'True'
+        /// Wait for 2 seconds for user delay between actions; Verify that the 'Enabled' property of 'Save this tab' button equals 'True'
         /// </summary>
         public bool SaveButtonEnabled = true;
         #endregion
@@ -12430,7 +12389,7 @@ namespace Warewolf.UITests
                     this.mFirstItem = new WpfTreeItem(this);
                     #region Search Criteria
                     this.mFirstItem.SearchProperties[WpfTreeItem.PropertyNames.Name] = "Infragistics.Controls.Menus.XamDataTreeNodeDataContext";
-                    this.mFirstItem.SearchProperties[WpfTreeItem.PropertyNames.Instance] = "2";
+                    this.mFirstItem.SearchProperties[WpfTreeItem.PropertyNames.Instance] = "1";
                     this.mFirstItem.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
                     this.mFirstItem.SearchConfigurations.Add(SearchConfiguration.DisambiguateChild);
                     this.mFirstItem.SearchConfigurations.Add(SearchConfiguration.AlwaysSearch);
@@ -12511,7 +12470,7 @@ namespace Warewolf.UITests
                     this.mFirstItem = new WpfTreeItem(this);
                     #region Search Criteria
                     this.mFirstItem.SearchProperties[WpfTreeItem.PropertyNames.Name] = "Infragistics.Controls.Menus.XamDataTreeNodeDataContext";
-                    this.mFirstItem.SearchProperties[WpfTreeItem.PropertyNames.Instance] = "2";
+                    this.mFirstItem.SearchProperties[WpfTreeItem.PropertyNames.Instance] = "1";
                     this.mFirstItem.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
                     this.mFirstItem.SearchConfigurations.Add(SearchConfiguration.DisambiguateChild);
                     this.mFirstItem.WindowTitles.Add("Warewolf");
