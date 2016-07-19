@@ -27,7 +27,7 @@ namespace Warewolf.UITests
             Playback.PlaybackSettings.WaitForReadyLevel = WaitForReadyLevel.Disabled;
             Playback.PlaybackSettings.MaximumRetryCount = 5;
             Playback.PlaybackSettings.ShouldSearchFailFast = false;
-            Playback.PlaybackSettings.SearchTimeout = 5000;
+            Playback.PlaybackSettings.SearchTimeout = 1000;
             if (Environment.ProcessorCount <= 4)
             {
                 Playback.PlaybackSettings.ThinkTimeMultiplier = 2;
@@ -86,7 +86,7 @@ namespace Warewolf.UITests
                 Click_Close_Tab_Button();
                 Click_MessageBox_No();
             }
-            catch (UITestControlNotFoundException e)
+            catch (Exception e)
             {
                 Console.WriteLine("Error during test cleanup: " + e.Message);
             }
