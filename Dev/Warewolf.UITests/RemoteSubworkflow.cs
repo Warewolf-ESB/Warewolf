@@ -37,6 +37,7 @@ namespace Warewolf.UITests
             Uimap.Click_Save_Ribbon_Button();
             Uimap.Enter_Servicename_As_TSTCIREMOTE();
             Uimap.Click_SaveDialog_YesButton();
+            Uimap.Click_Close_Server_Source_Wizard_Tab_Button();
             Uimap.Enter_TSTCIREMOTE_Into_Explorer_Filter();
             Uimap.Click_Connect_Control_InExplorerParams.ComboboxListItemAsTSTCIREMOTEExists = true;
             Uimap.Click_Connect_Control_InExplorer();
