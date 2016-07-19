@@ -128,13 +128,7 @@ namespace Warewolf.UITests
                 Uimap.Click_Explorer_Filter_Clear_Button();
             }
         }
-
-        #endregion
-
-        /// <summary>
-        ///Gets or sets the test context which provides
-        ///information about and functionality for the current test run.
-        ///</summary>
+        
         public TestContext TestContext
         {
             get
@@ -163,5 +157,7 @@ namespace Warewolf.UITests
         }
 
         private UIMap _uiMap;
+
+        #endregion
     }
 }
