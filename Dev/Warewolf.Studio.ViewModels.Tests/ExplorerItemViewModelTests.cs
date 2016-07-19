@@ -463,6 +463,36 @@ namespace Warewolf.Studio.ViewModels.Tests
             _explorerTreeItemMock.Verify(it => it.RemoveChild(_target));
         }
 
+        [TestMethod]
+        public void TestDeleteFolderCommandExpectException()
+        {
+            //arrange
+            var childMock = new Mock<IExplorerItemViewModel>();
+            childMock.SetupGet(it => it.ResourceType).Returns("WorkflowService");
+            childMock.SetupGet(it => it.ResourceName).Returns("Message");
+            _target.EnvironmentModel = new Mock<IEnvironmentModel>().Object;
+            _target.ResourceName = "someResource";
+            _target.ResourceType = "Folder";
+            _target.IsFolder = true;
+            _target.Children.Add(childMock.Object);
+
+            _explorerTreeItemMock.SetupGet(it => it.Children)
+                .Returns(new ObservableCollection<IExplorerItemViewModel>() { _target });
+
+            _popupControllerMock.Setup(it => it.Show(It.IsAny<IPopupMessage>())).Returns(MessageBoxResult.Yes);
+
+            //act
+            Assert.IsTrue(_target.DeleteCommand.CanExecute(null));
+            _target.DeleteCommand.Execute(null);
+
+            //assert
+            _explorerRepositoryMock.Verify(it => it.Delete(_target));
+            _explorerTreeItemMock.Verify(it => it.RemoveChild(_target));
+
+            Assert.AreEqual(1, _target.ChildrenCount);
+            _explorerTreeItemMock.Verify(it => it.AddChild(_target));
+        }
+
         #endregion Test commands
 
         #region Test equality
