@@ -7,7 +7,8 @@
         xmlns:ui="clr-namespace:Dev2.UI;assembly=Dev2.Intellisense"
         xmlns:provider="clr-namespace:Dev2.Intellisense.Provider;assembly=Dev2.Intellisense"
         xmlns:interfaceImplementors="clr-namespace:Dev2.Studio.InterfaceImplementors;assembly=Dev2.Intellisense"
-        xmlns:ig="http://schemas.infragistics.com/xaml"
+        xmlns:ig="http://schemas.infragistics.com/xaml" xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d"
         Title="Debug"         
         Width="470" 
         Height="400"
@@ -19,7 +20,8 @@
         WindowStartupLocation="CenterOwner"
         cal:Message.Attach="[Event Closed] = [Action ViewClosed]"
         FocusManager.FocusedElement="{Binding ElementName=DataListInputs}"
-        AutomationProperties.AutomationId="UI_DebugInputWindow_AutoID">
+        AutomationProperties.AutomationId="UI_DebugInputWindow_AutoID" 
+        d:DataContext="{d:DesignInstance}">
 
     <Window.Icon>
         <Binding Source="{StaticResource ExecuteDebugStart-32}"/>
@@ -55,29 +57,29 @@
                                     KeyboardNavigation="CurrentLayout"
                                     Visibility="{Binding WorkflowInputCount, Converter={StaticResource IntToVisibilityConverter}}"
                                     Loaded="DataListInputs_OnLoaded"
-                                    x:Name="DataListInputs">                             
+                                    x:Name="DataListInputs">
                             <ig:XamGrid.Columns>
                                 <ig:TemplateColumn Key="Description" Width="1*" IsReadOnly="True" HorizontalContentAlignment="Stretch">
                                     <ig:TemplateColumn.ItemTemplate>
                                         <DataTemplate>
                                             <Grid PreviewKeyDown="GridPreviewKeyDown" Background="Transparent" HorizontalAlignment="Stretch">
-                                            <Grid.ContextMenu>
-                                                <ContextMenu>
+                                                <Grid.ContextMenu>
+                                                    <ContextMenu>
                                                         <MenuItem Header="Delete Last Recordset Row" InputGestureText="[Shift + Delete]" Click="MenuItemDeleteRow"/>
                                                         <MenuItem Header="AddMode Blank Row To Recordset" InputGestureText="[Shift + Insert]" Click="MenuItemAddRow"/>
-                                                </ContextMenu>
-                                            </Grid.ContextMenu>
+                                                    </ContextMenu>
+                                                </Grid.ContextMenu>
                                                 <TextBlock  KeyboardNavigation.IsTabStop="False" Focusable="True" ToolTip="{Binding Path=Description}" 
                                                    Text="{Binding Path=DisplayValue, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" />
-                                        </Grid>
-                                    </DataTemplate>
-                                </ig:TemplateColumn.ItemTemplate>
-                            </ig:TemplateColumn>
-                            <ig:TemplateColumn Key="Value" Width="1*" IsReadOnly="False" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
-                                <ig:TemplateColumn.ItemTemplate>
-                                    <DataTemplate>
-                                        <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                                            <ui:IntellisenseTextBox x:Name="txtValue" 
+                                            </Grid>
+                                        </DataTemplate>
+                                    </ig:TemplateColumn.ItemTemplate>
+                                </ig:TemplateColumn>
+                                <ig:TemplateColumn Key="Value" Width="1*" IsReadOnly="False" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
+                                    <ig:TemplateColumn.ItemTemplate>
+                                        <DataTemplate>
+                                            <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                                                <ui:IntellisenseTextBox x:Name="txtValue" 
                                                                     FilterType="All" 
                                                                     WrapInBrackets="False" 
                                                                     Text="{Binding Path=Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
@@ -90,31 +92,31 @@
                                                                     SelectAllOnGotFocus="True"
                                                                     PreviewKeyDown="IntellisenseTextBoxPreviewKeyDown" 
                                                                     TextChanged="TextBoxTextChanged">
-                                                <AutomationProperties.AutomationId>
-                                                    <MultiBinding StringFormat="UI_{0}txt_AutoID">
-                                                        <Binding Path="DisplayValue"/>
-                                                    </MultiBinding>
-                                                </AutomationProperties.AutomationId>
-                                                <ui:IntellisenseTextBox.IntellisenseProvider>
-                                                    <interfaceImplementors:CompositeIntellisenseProvider>
-                                                        <provider:BlankIntellisenseProvider />
-                                                    </interfaceImplementors:CompositeIntellisenseProvider>
-                                                </ui:IntellisenseTextBox.IntellisenseProvider>
-                                            </ui:IntellisenseTextBox>
-                                        </Grid>
-                                    </DataTemplate>
-                                </ig:TemplateColumn.ItemTemplate>
-                            </ig:TemplateColumn>
-                        </ig:XamGrid.Columns>
-                    </ig:XamGrid>
+                                                    <AutomationProperties.AutomationId>
+                                                        <MultiBinding StringFormat="UI_{0}txt_AutoID">
+                                                            <Binding Path="DisplayValue"/>
+                                                        </MultiBinding>
+                                                    </AutomationProperties.AutomationId>
+                                                    <ui:IntellisenseTextBox.IntellisenseProvider>
+                                                        <interfaceImplementors:CompositeIntellisenseProvider>
+                                                            <provider:BlankIntellisenseProvider />
+                                                        </interfaceImplementors:CompositeIntellisenseProvider>
+                                                    </ui:IntellisenseTextBox.IntellisenseProvider>
+                                                </ui:IntellisenseTextBox>
+                                            </Grid>
+                                        </DataTemplate>
+                                    </ig:TemplateColumn.ItemTemplate>
+                                </ig:TemplateColumn>
+                            </ig:XamGrid.Columns>
+                        </ig:XamGrid>
                     </Border>
                 </Grid>
             </TabItem>
             <TabItem Style="{StaticResource TabItemStyle}" Header="XML" AutomationProperties.AutomationId="UI_XMLTab_AutoID">
                 <Border BorderBrush="{StaticResource XamGridBorderBrush}" BorderThickness="1">
                     <Grid Background="White">
-                    <ContentControl x:Name="XmlOutput" AllowDrop="False" />
-                </Grid>
+                        <ContentControl x:Name="XmlOutput" AllowDrop="False" />
+                    </Grid>
                 </Border>
             </TabItem>
             <TabItem Style="{StaticResource TabItemStyle}" Header="JSON" AutomationProperties.AutomationId="UI_XMLTab_AutoID">
