@@ -23,7 +23,6 @@ namespace Warewolf.UITests
         }
 
         [TestMethod]
-        [Ignore]//TODO: Re-intoduce before WOLF-1925 can be moved to done
         public void BigRemoteSubworkflowUITest()
         {
             Uimap.Click_New_Workflow_Ribbon_Button();
