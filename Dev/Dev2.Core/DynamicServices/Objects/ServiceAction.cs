@@ -224,26 +224,6 @@ namespace Dev2.DynamicServices.Objects
             return result;
         }
 
-        /// <summary>
-        ///     Pushes a previously released activity back into the activity pool.
-        /// </summary>
-        /// <param name="activity"></param>
-        public void PushActivity(PooledServiceActivity activity)
-        {
-            if (activity != null)
-            {
-                lock (_poolGuard)
-                {
-                    if (activity.Generation == _generation)
-                    {
-                        if (_workflowPool.Count < 10)
-                            if (_xamlStream != null)
-                                _workflowPool.Enqueue(activity);
-                    }
-                }
-            }
-        }
-
         public override bool Compile()
         {
             base.Compile();

@@ -19,10 +19,6 @@ namespace Dev2.Common.Interfaces
         void AddResources(int resourceNumber, string path, string type, string name);
         int GetResourcesVisible (string path);
 
-        void VerifyItemDoesNotExist(string path);
-
-        void Refresh();
-
         IExplorerTreeItem OpenItem(string resourceName, string folderName);
 
         void Move(string originalPath, string destinationPath);

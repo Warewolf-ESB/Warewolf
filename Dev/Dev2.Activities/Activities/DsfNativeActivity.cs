@@ -887,6 +887,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region Get Debug State
 
+        //Used for Testing
         public IDebugState GetDebugState()
         {
             return _debugState;

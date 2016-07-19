@@ -75,6 +75,8 @@ namespace Dev2.Studio.Core.Helpers
                 writer.Write(outputTxt);
             }
         }
+
+        //Used for Testing
         public static string CreateATemporaryFile(StringBuilder fileContent, string uniqueOutputPath)
         {
             CreateTextFile(fileContent, uniqueOutputPath);

@@ -103,19 +103,6 @@ namespace Dev2.Network.Execution
             }
         }
 
-        /// <summary>
-        ///     A wrapper for the Post method which will only post a message if the callbackID isn't empty.
-        /// </summary>
-        /// <param name="callbackID">The callback ID.</param>
-        /// <param name="messageType">Type of the message.</param>
-        public void Post(Guid callbackID, ExecutionStatusCallbackMessageType messageType)
-        {
-            if (callbackID != Guid.Empty)
-            {
-                Post(new ExecutionStatusCallbackMessage(callbackID, messageType));
-            }
-        }
-
         #endregion Methods
 
         #region Tear Down
