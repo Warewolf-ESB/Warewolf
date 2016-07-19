@@ -9,8 +9,6 @@ namespace Dev2.Studio.Core.Models.DataList
 {
     public class RecordSetItemModel : DataListItemModel, IRecordSetItemModel
     {
-        private ObservableCollection<IRecordSetFieldItemModel> _backupChildren;
-
         private ObservableCollection<IRecordSetFieldItemModel> _children;
 
         public RecordSetItemModel(string displayname, enDev2ColumnArgumentDirection dev2ColumnArgumentDirection = enDev2ColumnArgumentDirection.None, string description = "", IDataListItemModel parent = null, OptomizedObservableCollection<IRecordSetFieldItemModel> children = null, bool hasError = false, string errorMessage = "", bool isEditable = true, bool isVisible = true, bool isSelected = false, bool isExpanded = true) 
