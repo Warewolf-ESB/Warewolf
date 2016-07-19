@@ -1669,7 +1669,7 @@
       <ActionType>Click</ActionType>
       <MouseButton>Left</MouseButton>
     </MouseAction>
-    <AssertAction UIObjectName="UIMap.MainStudioWindow.SideMenuBar.SaveButton">
+    <AssertAction UIObjectName="UIMap.MainStudioWindow.SideMenuBar.SaveButton" ThinkTime="2000">
       <ParameterName />
       <PropertyName>Enabled</PropertyName>
       <ExpectedValue>True</ExpectedValue>
