@@ -20,7 +20,21 @@ namespace Dev2.Common
 
         public void OpenInBrowser(Uri url)
         {
-            Process.Start(url.ToString());
+            Process start = null;
+            try
+            {
+                start = Process.Start(url.ToString());
+            }
+            catch (TimeoutException)
+            {
+                start?.Kill();
+                start?.Dispose();
+            }
+            catch (System.Runtime.InteropServices.COMException)
+            {
+                start?.Kill();
+                start?.Dispose();
+            }
         }
 
         #endregion Implementation of IExternalProcessExecutor
