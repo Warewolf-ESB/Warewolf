@@ -135,6 +135,24 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
+    <MouseAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox.ClearFilterButton">
+      <ParameterName />
+      <ModifierKeys>None</ModifierKeys>
+      <IsGlobalHotkey>false</IsGlobalHotkey>
+      <Location X="8" Y="7" />
+      <WheelDirection>0</WheelDirection>
+      <ActionType>Click</ActionType>
+      <MouseButton>Left</MouseButton>
+    </MouseAction>
+    <TestStepMarkerAction Comment="" MarkerInformation="Click_Clear_Toolbox_Filter_Button">
+      <ParameterName />
+      <StepId>-1</StepId>
+      <Direction>Start</Direction>
+      <Outcome />
+      <Disabled>false</Disabled>
+      <WorkItemId>0</WorkItemId>
+      <MarkerRegionType>Action</MarkerRegionType>
+    </TestStepMarkerAction>
     <MouseAction UIObjectName="UIMap.MainStudioWindow.ExitFullScreenF11Text.ExitFullScreenF11Hyperlink">
       <ParameterName />
       <ModifierKeys>None</ModifierKeys>
@@ -1374,14 +1392,6 @@
       <Type>String</Type>
       <PropertyCondition>AreEqual</PropertyCondition>
     </AssertAction>
-    <AssertAction UIObjectName="UIMap.SaveDialogWindow.WorkspaceName">
-      <ParameterName />
-      <PropertyName>Exists</PropertyName>
-      <ExpectedValue>True</ExpectedValue>
-      <MessageOnValidationFailure>Save dialog workspace name does not exist</MessageOnValidationFailure>
-      <Type>String</Type>
-      <PropertyCondition>AreEqual</PropertyCondition>
-    </AssertAction>
     <AssertAction UIObjectName="UIMap.SaveDialogWindow">
       <ParameterName />
       <PropertyName>Exists</PropertyName>
@@ -2362,6 +2372,11 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
+    <SetValueAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox">
+      <ParameterName />
+      <Value Encoded="false">Base Convert</Value>
+      <Type>String</Type>
+    </SetValueAction>
     <DragDropAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.DataTools.BaseConvert">
       <ParameterName />
       <ModifierKeys>None</ModifierKeys>
@@ -2396,6 +2411,11 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
+    <SetValueAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox">
+      <ParameterName />
+      <Value Encoded="false">Calculate</Value>
+      <Type>String</Type>
+    </SetValueAction>
     <DragDropAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.UtilityTools.Calculate">
       <ParameterName />
       <ModifierKeys>None</ModifierKeys>
@@ -2430,6 +2450,11 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
+    <SetValueAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox">
+      <ParameterName />
+      <Value Encoded="false">Case Convert</Value>
+      <Type>String</Type>
+    </SetValueAction>
     <DragDropAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.DataTools.CaseConvert">
       <ParameterName />
       <ModifierKeys>None</ModifierKeys>
@@ -2464,6 +2489,11 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
+    <SetValueAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox">
+      <ParameterName />
+      <Value Encoded="false">CMD Script</Value>
+      <Type>String</Type>
+    </SetValueAction>
     <DragDropAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.ScriptingTools.CMDScript">
       <ParameterName />
       <ModifierKeys>None</ModifierKeys>
@@ -2498,6 +2528,11 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
+    <SetValueAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox">
+      <ParameterName />
+      <Value Encoded="false">Comment</Value>
+      <Type>String</Type>
+    </SetValueAction>
     <DragDropAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.UtilityTools.Comment">
       <ParameterName />
       <ModifierKeys>None</ModifierKeys>
@@ -2532,6 +2567,11 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
+    <SetValueAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox">
+      <ParameterName />
+      <Value Encoded="false">Copy</Value>
+      <Type>String</Type>
+    </SetValueAction>
     <DragDropAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.FileAndFTP.Copy">
       <ParameterName />
       <ModifierKeys>None</ModifierKeys>
@@ -2566,6 +2606,11 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
+    <SetValueAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox">
+      <ParameterName />
+      <Value Encoded="false">Count</Value>
+      <Type>String</Type>
+    </SetValueAction>
     <DragDropAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.RecordsetTools.Count">
       <ParameterName />
       <ModifierKeys>None</ModifierKeys>
@@ -2592,6 +2637,11 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
+    <SetValueAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox">
+      <ParameterName />
+      <Value Encoded="false">Create</Value>
+      <Type>String</Type>
+    </SetValueAction>
     <DragDropAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.FileAndFTP.Create">
       <ParameterName />
       <ModifierKeys>None</ModifierKeys>
@@ -2626,6 +2676,11 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
+    <SetValueAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox">
+      <ParameterName />
+      <Value Encoded="false">Data Merge</Value>
+      <Type>String</Type>
+    </SetValueAction>
     <DragDropAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.DataTools.DataMerge">
       <ParameterName />
       <ModifierKeys>None</ModifierKeys>
@@ -2660,6 +2715,11 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
+    <SetValueAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox">
+      <ParameterName />
+      <Value Encoded="false">Data Split</Value>
+      <Type>String</Type>
+    </SetValueAction>
     <DragDropAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.DataTools.DataSplit">
       <ParameterName />
       <ModifierKeys>None</ModifierKeys>
@@ -2694,6 +2754,11 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
+    <SetValueAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox">
+      <ParameterName />
+      <Value Encoded="false">Date Time</Value>
+      <Type>String</Type>
+    </SetValueAction>
     <DragDropAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.UtilityTools.DateTime">
       <ParameterName />
       <ModifierKeys>None</ModifierKeys>
@@ -2728,6 +2793,11 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
+    <SetValueAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox">
+      <ParameterName />
+      <Value Encoded="false">Date Time Diff</Value>
+      <Type>String</Type>
+    </SetValueAction>
     <DragDropAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.UtilityTools.DateTimeDifference">
       <ParameterName />
       <ModifierKeys>None</ModifierKeys>
@@ -2762,6 +2832,11 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
+    <SetValueAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox">
+      <ParameterName />
+      <Value Encoded="false">Decision</Value>
+      <Type>String</Type>
+    </SetValueAction>
     <DragDropAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.FlowTools.Decision">
       <ParameterName />
       <ModifierKeys>None</ModifierKeys>
@@ -2788,6 +2863,11 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
+    <SetValueAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox">
+      <ParameterName />
+      <Value Encoded="false">Delete</Value>
+      <Type>String</Type>
+    </SetValueAction>
     <DragDropAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.FileAndFTP.Delete">
       <ParameterName />
       <ModifierKeys>None</ModifierKeys>
@@ -2822,6 +2902,11 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
+    <SetValueAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox">
+      <ParameterName />
+      <Value Encoded="false">Delete</Value>
+      <Type>String</Type>
+    </SetValueAction>
     <DragDropAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.RecordsetTools.Delete">
       <ParameterName />
       <ModifierKeys>None</ModifierKeys>
@@ -2848,6 +2933,11 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
+    <SetValueAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox">
+      <ParameterName />
+      <Value Encoded="false">Download</Value>
+      <Type>String</Type>
+    </SetValueAction>
     <DragDropAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.StorageDropbox.Download">
       <ParameterName />
       <ModifierKeys>None</ModifierKeys>
@@ -2874,6 +2964,11 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
+    <SetValueAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox">
+      <ParameterName />
+      <Value Encoded="false">Upload</Value>
+      <Type>String</Type>
+    </SetValueAction>
     <DragDropAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.StorageDropbox.Upload">
       <ParameterName />
       <ModifierKeys>None</ModifierKeys>
@@ -2900,6 +2995,11 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
+    <SetValueAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox">
+      <ParameterName />
+      <Value Encoded="false">Exchange Email</Value>
+      <Type>String</Type>
+    </SetValueAction>
     <DragDropAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.Email.ExchangeSend">
       <ParameterName />
       <ModifierKeys>None</ModifierKeys>
@@ -2926,6 +3026,11 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
+    <SetValueAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox">
+      <ParameterName />
+      <Value Encoded="false">Find Index</Value>
+      <Type>String</Type>
+    </SetValueAction>
     <DragDropAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.DataTools.FindIndex">
       <ParameterName />
       <ModifierKeys>None</ModifierKeys>
@@ -2960,6 +3065,11 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
+    <SetValueAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox">
+      <ParameterName />
+      <Value Encoded="false">Find Records</Value>
+      <Type>String</Type>
+    </SetValueAction>
     <DragDropAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.RecordsetTools.FindRecords">
       <ParameterName />
       <ModifierKeys>None</ModifierKeys>
@@ -2986,6 +3096,11 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
+    <SetValueAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox">
+      <ParameterName />
+      <Value Encoded="false">For Each</Value>
+      <Type>String</Type>
+    </SetValueAction>
     <DragDropAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.LoopTools.ForEach">
       <ParameterName />
       <ModifierKeys>None</ModifierKeys>
@@ -3020,6 +3135,11 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
+    <SetValueAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox">
+      <ParameterName />
+      <Value Encoded="false">Format Number</Value>
+      <Type>String</Type>
+    </SetValueAction>
     <DragDropAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.UtilityTools.FormatNumber">
       <ParameterName />
       <ModifierKeys>None</ModifierKeys>
@@ -3054,6 +3174,11 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
+    <SetValueAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox">
+      <ParameterName />
+      <Value Encoded="false">Create JSON</Value>
+      <Type>String</Type>
+    </SetValueAction>
     <DragDropAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.UtilityTools.CreateJSON">
       <ParameterName />
       <ModifierKeys>None</ModifierKeys>
@@ -3088,6 +3213,11 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
+    <SetValueAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox">
+      <ParameterName />
+      <Value Encoded="false">Length</Value>
+      <Type>String</Type>
+    </SetValueAction>
     <DragDropAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.RecordsetTools.Length">
       <ParameterName />
       <ModifierKeys>None</ModifierKeys>
@@ -3122,6 +3252,11 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
+    <SetValueAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox">
+      <ParameterName />
+      <Value Encoded="false">Move</Value>
+      <Type>String</Type>
+    </SetValueAction>
     <DragDropAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.FileAndFTP.Move">
       <ParameterName />
       <ModifierKeys>None</ModifierKeys>
@@ -3164,6 +3299,11 @@
       <Type>String</Type>
       <PropertyCondition>AreEqual</PropertyCondition>
     </AssertAction>
+    <SetValueAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox">
+      <ParameterName />
+      <Value Encoded="false">Assign</Value>
+      <Type>String</Type>
+    </SetValueAction>
     <DragDropAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.DataTools.MultiAssign">
       <ParameterName />
       <ModifierKeys>None</ModifierKeys>
@@ -3198,6 +3338,11 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
+    <SetValueAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox">
+      <ParameterName />
+      <Value Encoded="false">MySQL</Value>
+      <Type>String</Type>
+    </SetValueAction>
     <DragDropAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.Database.MySQL">
       <ParameterName />
       <ModifierKeys>None</ModifierKeys>
@@ -3224,6 +3369,11 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
+    <SetValueAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox">
+      <ParameterName />
+      <Value Encoded="false">Random</Value>
+      <Type>String</Type>
+    </SetValueAction>
     <DragDropAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.UtilityTools.Random">
       <ParameterName />
       <ModifierKeys>None</ModifierKeys>
@@ -3258,6 +3408,11 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
+    <SetValueAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox">
+      <ParameterName />
+      <Value Encoded="false">Read File</Value>
+      <Type>String</Type>
+    </SetValueAction>
     <DragDropAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.FileAndFTP.ReadFile">
       <ParameterName />
       <ModifierKeys>None</ModifierKeys>
@@ -3292,6 +3447,11 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
+    <SetValueAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox">
+      <ParameterName />
+      <Value Encoded="false">Read Folder</Value>
+      <Type>String</Type>
+    </SetValueAction>
     <DragDropAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.FileAndFTP.ReadFolder">
       <ParameterName />
       <ModifierKeys>None</ModifierKeys>
@@ -3326,6 +3486,11 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
+    <SetValueAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox">
+      <ParameterName />
+      <Value Encoded="false">Rename</Value>
+      <Type>String</Type>
+    </SetValueAction>
     <DragDropAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.FileAndFTP.Rename">
       <ParameterName />
       <ModifierKeys>None</ModifierKeys>
@@ -3360,6 +3525,11 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
+    <SetValueAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox">
+      <ParameterName />
+      <Value Encoded="false">Replace</Value>
+      <Type>String</Type>
+    </SetValueAction>
     <DragDropAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.DataTools.Replace">
       <ParameterName />
       <ModifierKeys>None</ModifierKeys>
@@ -3394,6 +3564,11 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
+    <SetValueAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox">
+      <ParameterName />
+      <Value Encoded="false">Script</Value>
+      <Type>String</Type>
+    </SetValueAction>
     <DragDropAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.ScriptingTools.Script">
       <ParameterName />
       <ModifierKeys>None</ModifierKeys>
@@ -3428,6 +3603,11 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
+    <SetValueAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox">
+      <ParameterName />
+      <Value Encoded="false">Sequence</Value>
+      <Type>String</Type>
+    </SetValueAction>
     <DragDropAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.FlowTools.Sequence">
       <ParameterName />
       <ModifierKeys>None</ModifierKeys>
@@ -3462,6 +3642,11 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
+    <SetValueAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox">
+      <ParameterName />
+      <Value Encoded="false">Service</Value>
+      <Type>String</Type>
+    </SetValueAction>
     <DragDropAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.ResourceTools.Service">
       <ParameterName />
       <ModifierKeys>None</ModifierKeys>
@@ -3488,6 +3673,11 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
+    <SetValueAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox">
+      <ParameterName />
+      <Value Encoded="false">Create List Item</Value>
+      <Type>String</Type>
+    </SetValueAction>
     <DragDropAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.SharepointTools.CreateListItems">
       <ParameterName />
       <ModifierKeys>None</ModifierKeys>
@@ -3514,6 +3704,11 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
+    <SetValueAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox">
+      <ParameterName />
+      <Value Encoded="false">Delete List Item</Value>
+      <Type>String</Type>
+    </SetValueAction>
     <DragDropAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.SharepointTools.DeleteListItems">
       <ParameterName />
       <ModifierKeys>None</ModifierKeys>
@@ -3540,6 +3735,11 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
+    <SetValueAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox">
+      <ParameterName />
+      <Value Encoded="false">Read List Item</Value>
+      <Type>String</Type>
+    </SetValueAction>
     <DragDropAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.SharepointTools.ReadListItems">
       <ParameterName />
       <ModifierKeys>None</ModifierKeys>
@@ -3566,6 +3766,11 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
+    <SetValueAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox">
+      <ParameterName />
+      <Value Encoded="false">Update List Item</Value>
+      <Type>String</Type>
+    </SetValueAction>
     <DragDropAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.SharepointTools.UpdateListItems">
       <ParameterName />
       <ModifierKeys>None</ModifierKeys>
@@ -3592,6 +3797,11 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
+    <SetValueAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox">
+      <ParameterName />
+      <Value Encoded="false">SMTP Send</Value>
+      <Type>String</Type>
+    </SetValueAction>
     <DragDropAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.Email.SMTPSend">
       <ParameterName />
       <ModifierKeys>None</ModifierKeys>
@@ -3626,6 +3836,11 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
+    <SetValueAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox">
+      <ParameterName />
+      <Value Encoded="false">Sort</Value>
+      <Type>String</Type>
+    </SetValueAction>
     <DragDropAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.RecordsetTools.Sort">
       <ParameterName />
       <ModifierKeys>None</ModifierKeys>
@@ -3652,6 +3867,11 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
+    <SetValueAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox">
+      <ParameterName />
+      <Value Encoded="false">SQL Bulk Insert</Value>
+      <Type>String</Type>
+    </SetValueAction>
     <DragDropAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.Database.SQLBulkInsert">
       <ParameterName />
       <ModifierKeys>None</ModifierKeys>
@@ -3686,6 +3906,11 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
+    <SetValueAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox">
+      <ParameterName />
+      <Value Encoded="false">SQL Server</Value>
+      <Type>String</Type>
+    </SetValueAction>
     <DragDropAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.Database.SQLServer">
       <ParameterName />
       <ModifierKeys>None</ModifierKeys>
@@ -3712,6 +3937,11 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
+    <SetValueAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox">
+      <ParameterName />
+      <Value Encoded="false">Switch</Value>
+      <Type>String</Type>
+    </SetValueAction>
     <DragDropAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.FlowTools.Switch">
       <ParameterName />
       <ModifierKeys>None</ModifierKeys>
@@ -3738,6 +3968,11 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
+    <SetValueAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox">
+      <ParameterName />
+      <Value Encoded="false">Sys Info</Value>
+      <Type>String</Type>
+    </SetValueAction>
     <DragDropAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.UtilityTools.SysInfo">
       <ParameterName />
       <ModifierKeys>None</ModifierKeys>
@@ -3772,6 +4007,11 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
+    <SetValueAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox">
+      <ParameterName />
+      <Value Encoded="false">Unique</Value>
+      <Type>String</Type>
+    </SetValueAction>
     <DragDropAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.RecordsetTools.UniqueRecords">
       <ParameterName />
       <ModifierKeys>None</ModifierKeys>
@@ -3798,6 +4038,11 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
+    <SetValueAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox">
+      <ParameterName />
+      <Value Encoded="false">Unzip</Value>
+      <Type>String</Type>
+    </SetValueAction>
     <DragDropAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.FileAndFTP.UnZip">
       <ParameterName />
       <ModifierKeys>None</ModifierKeys>
@@ -3832,6 +4077,11 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
+    <SetValueAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox">
+      <ParameterName />
+      <Value Encoded="false">Web Request</Value>
+      <Type>String</Type>
+    </SetValueAction>
     <DragDropAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.UtilityTools.WebRequest">
       <ParameterName />
       <ModifierKeys>None</ModifierKeys>
@@ -3866,6 +4116,11 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
+    <SetValueAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox">
+      <ParameterName />
+      <Value Encoded="false">Write File</Value>
+      <Type>String</Type>
+    </SetValueAction>
     <DragDropAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.FileAndFTP.WriteFile">
       <ParameterName />
       <ModifierKeys>None</ModifierKeys>
@@ -3900,6 +4155,11 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
+    <SetValueAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox">
+      <ParameterName />
+      <Value Encoded="false">XPath</Value>
+      <Type>String</Type>
+    </SetValueAction>
     <DragDropAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.UtilityTools.XPath">
       <ParameterName />
       <ModifierKeys>None</ModifierKeys>
@@ -3934,6 +4194,11 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
+    <SetValueAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox">
+      <ParameterName />
+      <Value Encoded="false">Zip</Value>
+      <Type>String</Type>
+    </SetValueAction>
     <DragDropAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.FileAndFTP.Zip">
       <ParameterName />
       <ModifierKeys>None</ModifierKeys>
@@ -4101,7 +4366,7 @@
       <Value Encoded="false">TSTCIREMOTE</Value>
       <Type>String</Type>
     </SetValueAction>
-    <AssertAction UIObjectName="UIMap.SaveDialogWindow.SaveButton">
+    <AssertAction UIObjectName="UIMap.SaveDialogWindow.SaveButton" ThinkTime="2000">
       <ParameterName />
       <PropertyName>Enabled</PropertyName>
       <ExpectedValue>True</ExpectedValue>
@@ -8384,7 +8649,34 @@
                             <PropertyCondition Name="AutomationId">SearchTextBox</PropertyCondition>
                           </AndCondition>
                           <SupportLevel>0</SupportLevel>
-                          <Descendants />
+                          <Descendants>
+                            <UIObject ControlType="Button" Id="ClearFilterButton" FriendlyName="ClearSearchButton" SpecialControlType="None">
+                              <TechnologyName>UIA</TechnologyName>
+                              <WindowTitles>
+                                <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
+                              </WindowTitles>
+                              <AndCondition>
+                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                <PropertyCondition Name="ControlType">Button</PropertyCondition>
+                                <PropertyCondition Name="AutomationId">ClearSearchButton</PropertyCondition>
+                              </AndCondition>
+                              <SupportLevel>0</SupportLevel>
+                              <Descendants />
+                            </UIObject>
+                            <UIObject ControlType="Text" Id="FloatingText" FriendlyName="Filter" SpecialControlType="None">
+                              <TechnologyName>UIA</TechnologyName>
+                              <WindowTitles>
+                                <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
+                              </WindowTitles>
+                              <AndCondition>
+                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                <PropertyCondition Name="ControlType">Text</PropertyCondition>
+                                <PropertyCondition Name="AutomationId">LabelText</PropertyCondition>
+                              </AndCondition>
+                              <SupportLevel>0</SupportLevel>
+                              <Descendants />
+                            </UIObject>
+                          </Descendants>
                         </UIObject>
                         <UIObject ControlType="Button" Id="RefreshButton" FriendlyName="" SpecialControlType="None">
                           <TechnologyName>UIA</TechnologyName>
@@ -19939,19 +20231,6 @@
           </AndCondition>
           <SupportLevel>0</SupportLevel>
           <Descendants>
-            <UIObject ControlType="Text" Id="WorkspaceName" FriendlyName="Unsaved 1" SpecialControlType="None">
-              <TechnologyName>UIA</TechnologyName>
-              <WindowTitles>
-                <WindowTitle>SaveDialogView</WindowTitle>
-              </WindowTitles>
-              <AndCondition>
-                <PropertyCondition Name="ControlType">Text</PropertyCondition>
-                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                <PropertyCondition Name="Name" Operator="Contains">Unsaved</PropertyCondition>
-              </AndCondition>
-              <SupportLevel>0</SupportLevel>
-              <Descendants />
-            </UIObject>
             <UIObject ControlType="Custom" Id="ExplorerView" FriendlyName="ExplorerView" SpecialControlType="None">
               <TechnologyName>UIA</TechnologyName>
               <WindowTitles>
