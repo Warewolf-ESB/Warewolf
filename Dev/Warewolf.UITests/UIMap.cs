@@ -32,7 +32,7 @@ namespace Warewolf.UITests
             {
                 Playback.PlaybackSettings.ThinkTimeMultiplier = 2;
             }
-            Playback.PlaybackSettings.MatchExactHierarchy = true;
+            Playback.PlaybackSettings.MatchExactHierarchy = false;
             Playback.PlaybackSettings.SkipSetPropertyVerification = true;
             Playback.PlaybackSettings.SmartMatchOptions = SmartMatchOptions.None;
             Playback.PlaybackError -= Playback_PlaybackError;
