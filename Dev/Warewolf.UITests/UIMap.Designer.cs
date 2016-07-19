@@ -32,6 +32,19 @@ namespace Warewolf.UITests
     {
         
         /// <summary>
+        /// AssertMethod1 - Use 'AssertMethod1ExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void AssertMethod1()
+        {
+            #region Variable Declarations
+            WpfText text = this.MainStudioWindow.SideMenuBar.NewWorkflowButton.Text;
+            #endregion
+
+            // Verify that the 'Exists' property of label equals 'True'
+            Assert.AreEqual(this.AssertMethod1ExpectedValues.TextExists, text.Exists, "New workflow ribbon button does not exist.");
+        }
+        
+        /// <summary>
         /// Click_Assign_Tool_Large_View_Done_Button - Use 'Click_Assign_Tool_Large_View_Done_ButtonParams' to pass parameters into this method.
         /// </summary>
         public void Click_Assign_Tool_Large_View_Done_Button()
@@ -610,38 +623,12 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
-        /// Click_New_DB_Connector_Ribbon_Button
-        /// </summary>
-        public void Click_New_DB_Connector_Ribbon_Button()
-        {
-            #region Variable Declarations
-            WpfButton databaseConnectorButton = this.MainStudioWindow.SideMenuBar.DatabaseConnectorButton;
-            #endregion
-
-            // Click 'Create a new database connector' button
-            Mouse.Click(databaseConnectorButton, new Point(8, 22));
-        }
-        
-        /// <summary>
-        /// Click_New_Plugin_Connector_Ribbon_Button
-        /// </summary>
-        public void Click_New_Plugin_Connector_Ribbon_Button()
-        {
-            #region Variable Declarations
-            WpfButton pluginConnectorButton = this.MainStudioWindow.SideMenuBar.PluginConnectorButton;
-            #endregion
-
-            // Click 'Create a new plugin connector' button
-            Mouse.Click(pluginConnectorButton, new Point(35, 12));
-        }
-        
-        /// <summary>
         /// Click_New_Workflow_Ribbon_Button - Use 'Click_New_Workflow_Ribbon_ButtonParams' to pass parameters into this method.
         /// </summary>
         public void Click_New_Workflow_Ribbon_Button()
         {
             #region Variable Declarations
-            WpfText newWorkflowIcon = this.MainStudioWindow.SideMenuBar.CollapsedSideMenu.NewWorkflowIcon;
+            WpfButton newWorkflowButton = this.MainStudioWindow.SideMenuBar.NewWorkflowButton;
             WpfCustom startNode = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.StartNode;
             WpfEdit searchTextBox = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox;
             WpfButton refreshButton = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.RefreshButton;
@@ -652,11 +639,11 @@ namespace Warewolf.UITests
             WpfCustom variablesControl = this.MainStudioWindow.DockManager.SplitPaneRight.Variables.VariablesControl;
             #endregion
 
-            // Verify that the 'Exists' property of '' label equals 'True'
-            Assert.AreEqual(this.Click_New_Workflow_Ribbon_ButtonParams.NewWorkflowIconExists, newWorkflowIcon.Exists, "New Workflow Ribbon Button Does Not Exist!");
+            // Verify that the 'Exists' property of 'Create a new service' button equals 'True'
+            Assert.AreEqual(this.Click_New_Workflow_Ribbon_ButtonParams.NewWorkflowButtonExists, newWorkflowButton.Exists, "New Workflow Ribbon Button Does Not Exist!");
 
-            // Click '' label
-            Mouse.Click(newWorkflowIcon, new Point(3, 8));
+            // Click 'Create a new service' button
+            Mouse.Click(newWorkflowButton, new Point(3, 8));
 
             // Wait for 1 seconds for user delay between actions; Verify that the 'Exists' property of 'StartNode' custom control equals 'True'
             Playback.Wait(1000);
@@ -690,11 +677,11 @@ namespace Warewolf.UITests
         public void Click_NewDatabaseSource_Ribbon_Button()
         {
             #region Variable Declarations
-            WpfButton createanewdatabasesoButton = this.MainStudioWindow.SideMenuBar.CollapsedSideMenu.CreateanewdatabasesoButton;
+            WpfButton databaseSourceButton = this.MainStudioWindow.SideMenuBar.DatabaseSourceButton;
             #endregion
 
             // Click 'Create a new database source' button
-            Mouse.Click(createanewdatabasesoButton, new Point(16, 15));
+            Mouse.Click(databaseSourceButton, new Point(16, 15));
         }
         
         /// <summary>
@@ -703,11 +690,11 @@ namespace Warewolf.UITests
         public void Click_NewPluginSource_Ribbon_Button()
         {
             #region Variable Declarations
-            WpfButton createanewpluginsourButton = this.MainStudioWindow.SideMenuBar.CollapsedSideMenu.CreateanewpluginsourButton;
+            WpfButton pluginSourceButton = this.MainStudioWindow.SideMenuBar.PluginSourceButton;
             #endregion
 
             // Click 'Create a new plugin source' button
-            Mouse.Click(createanewpluginsourButton, new Point(22, 13));
+            Mouse.Click(pluginSourceButton, new Point(22, 13));
         }
         
         /// <summary>
@@ -716,11 +703,11 @@ namespace Warewolf.UITests
         public void Click_NewWebSource_Ribbon_Button()
         {
             #region Variable Declarations
-            WpfButton createanewwebsourceButton = this.MainStudioWindow.SideMenuBar.CollapsedSideMenu.CreateanewwebsourceButton;
+            WpfButton webSourceButton = this.MainStudioWindow.SideMenuBar.WebSourceButton;
             #endregion
 
             // Click 'Create a new web source' button
-            Mouse.Click(createanewwebsourceButton, new Point(13, 18));
+            Mouse.Click(webSourceButton, new Point(13, 18));
         }
         
         /// <summary>
@@ -1022,11 +1009,11 @@ namespace Warewolf.UITests
         public void Click_Scheduler_Ribbon_Button()
         {
             #region Variable Declarations
-            WpfText newScheduledTaskIcon = this.MainStudioWindow.SideMenuBar.CollapsedSideMenu.NewScheduledTaskIcon;
+            WpfButton schedulerButton = this.MainStudioWindow.SideMenuBar.SchedulerButton;
             #endregion
 
-            // Click '' label
-            Mouse.Click(newScheduledTaskIcon, new Point(4, 12));
+            // Click 'Schedule a service to run' button
+            Mouse.Click(schedulerButton, new Point(4, 12));
         }
         
         /// <summary>
@@ -1147,7 +1134,7 @@ namespace Warewolf.UITests
         public void Click_Settings_Ribbon_Button()
         {
             #region Variable Declarations
-            WpfText settingsIcon = this.MainStudioWindow.SideMenuBar.CollapsedSideMenu.SettingsIcon;
+            WpfButton configureSettingsButton = this.MainStudioWindow.SideMenuBar.ConfigureSettingsButton;
             WpfTabPage loggingTab = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.LoggingTab;
             WpfTabPage securityTab = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab;
             WpfTable resourcePermissions = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions;
@@ -1156,11 +1143,11 @@ namespace Warewolf.UITests
             WpfPane row1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1;
             #endregion
 
-            // Verify that the 'Exists' property of '' label equals 'True'
-            Assert.AreEqual(this.Click_Settings_Ribbon_ButtonParams.SettingsIconExists, settingsIcon.Exists, "Settings ribbon does not exist.");
+            // Verify that the 'Exists' property of 'Configure settings' button equals 'True'
+            Assert.AreEqual(this.Click_Settings_Ribbon_ButtonParams.ConfigureSettingsButtonExists, configureSettingsButton.Exists, "Settings ribbon does not exist.");
 
-            // Click '' label
-            Mouse.Click(settingsIcon, new Point(7, 2));
+            // Click 'Configure settings' button
+            Mouse.Click(configureSettingsButton, new Point(7, 2));
 
             // Verify that the 'Exists' property of 'System.Windows.Controls.TabItem Header: Content:' tab equals 'True'
             Assert.AreEqual(this.Click_Settings_Ribbon_ButtonParams.LoggingTabExists, loggingTab.Exists, "Logging tab does not exist in the settings window");
@@ -5097,6 +5084,18 @@ namespace Warewolf.UITests
         }
         
         #region Properties
+        public virtual AssertMethod1ExpectedValues AssertMethod1ExpectedValues
+        {
+            get
+            {
+                if ((this.mAssertMethod1ExpectedValues == null))
+                {
+                    this.mAssertMethod1ExpectedValues = new AssertMethod1ExpectedValues();
+                }
+                return this.mAssertMethod1ExpectedValues;
+            }
+        }
+        
         public virtual Click_Assign_Tool_Large_View_Done_ButtonParams Click_Assign_Tool_Large_View_Done_ButtonParams
         {
             get
@@ -6923,6 +6922,8 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
+        private AssertMethod1ExpectedValues mAssertMethod1ExpectedValues;
+        
         private Click_Assign_Tool_Large_View_Done_ButtonParams mClick_Assign_Tool_Large_View_Done_ButtonParams;
         
         private Click_Base_Convert_Large_View_Done_ButtonParams mClick_Base_Convert_Large_View_Done_ButtonParams;
@@ -7226,6 +7227,21 @@ namespace Warewolf.UITests
         private SelectWindowsGroupDialog mSelectWindowsGroupDialog;
         
         private ServicePickerDialog mServicePickerDialog;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'AssertMethod1'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class AssertMethod1ExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of label equals 'True'
+        /// </summary>
+        public bool TextExists = true;
         #endregion
     }
     
@@ -7638,9 +7654,9 @@ namespace Warewolf.UITests
         
         #region Fields
         /// <summary>
-        /// Verify that the 'Exists' property of '' label equals 'True'
+        /// Verify that the 'Exists' property of 'Create a new service' button equals 'True'
         /// </summary>
-        public bool NewWorkflowIconExists = true;
+        public bool NewWorkflowButtonExists = true;
         
         /// <summary>
         /// Wait for 1 seconds for user delay between actions; Verify that the 'Exists' property of 'StartNode' custom control equals 'True'
@@ -7938,9 +7954,9 @@ namespace Warewolf.UITests
         
         #region Fields
         /// <summary>
-        /// Verify that the 'Exists' property of '' label equals 'True'
+        /// Verify that the 'Exists' property of 'Configure settings' button equals 'True'
         /// </summary>
-        public bool SettingsIconExists = true;
+        public bool ConfigureSettingsButtonExists = true;
         
         /// <summary>
         /// Verify that the 'Exists' property of 'System.Windows.Controls.TabItem Header: Content:' tab equals 'True'
@@ -11272,38 +11288,6 @@ namespace Warewolf.UITests
             }
         }
         
-        public WpfButton DatabaseConnectorButton
-        {
-            get
-            {
-                if ((this.mDatabaseConnectorButton == null))
-                {
-                    this.mDatabaseConnectorButton = new WpfButton(this);
-                    #region Search Criteria
-                    this.mDatabaseConnectorButton.SearchProperties.Add(new PropertyExpression(WpfButton.PropertyNames.HelpText, "Create a new database connector", PropertyExpressionOperator.Contains));
-                    this.mDatabaseConnectorButton.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mDatabaseConnectorButton;
-            }
-        }
-        
-        public WpfButton PluginConnectorButton
-        {
-            get
-            {
-                if ((this.mPluginConnectorButton == null))
-                {
-                    this.mPluginConnectorButton = new WpfButton(this);
-                    #region Search Criteria
-                    this.mPluginConnectorButton.SearchProperties.Add(new PropertyExpression(WpfButton.PropertyNames.HelpText, "Create a new plugin connector", PropertyExpressionOperator.Contains));
-                    this.mPluginConnectorButton.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mPluginConnectorButton;
-            }
-        }
-        
         public WpfButton WebSourceButton
         {
             get
@@ -11417,29 +11401,13 @@ namespace Warewolf.UITests
             }
         }
         
-        public CollapsedSideMenu CollapsedSideMenu
-        {
-            get
-            {
-                if ((this.mCollapsedSideMenu == null))
-                {
-                    this.mCollapsedSideMenu = new CollapsedSideMenu(this);
-                }
-                return this.mCollapsedSideMenu;
-            }
-        }
-        
-        public WpfButton NewWorkflowButton
+        public NewWorkflowButton NewWorkflowButton
         {
             get
             {
                 if ((this.mNewWorkflowButton == null))
                 {
-                    this.mNewWorkflowButton = new WpfButton(this);
-                    #region Search Criteria
-                    this.mNewWorkflowButton.SearchProperties.Add(new PropertyExpression(WpfButton.PropertyNames.HelpText, "Create a new service", PropertyExpressionOperator.Contains));
-                    this.mNewWorkflowButton.WindowTitles.Add("Warewolf");
-                    #endregion
+                    this.mNewWorkflowButton = new NewWorkflowButton(this);
                 }
                 return this.mNewWorkflowButton;
             }
@@ -11499,10 +11467,6 @@ namespace Warewolf.UITests
         
         private WpfButton mPluginSourceButton;
         
-        private WpfButton mDatabaseConnectorButton;
-        
-        private WpfButton mPluginConnectorButton;
-        
         private WpfButton mWebSourceButton;
         
         private WpfButton mNewVersionButton;
@@ -11517,9 +11481,7 @@ namespace Warewolf.UITests
         
         private WpfButton mSaveButton;
         
-        private CollapsedSideMenu mCollapsedSideMenu;
-        
-        private WpfButton mNewWorkflowButton;
+        private NewWorkflowButton mNewWorkflowButton;
         
         private WpfButton mNewWebServiceButton;
         
@@ -11530,218 +11492,38 @@ namespace Warewolf.UITests
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class CollapsedSideMenu : WpfText
+    public class NewWorkflowButton : WpfButton
     {
         
-        public CollapsedSideMenu(UITestControl searchLimitContainer) : 
+        public NewWorkflowButton(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
-            this.SearchProperties[WpfText.PropertyNames.Name] = " ";
+            this.SearchProperties.Add(new PropertyExpression(WpfButton.PropertyNames.HelpText, "Create a new service", PropertyExpressionOperator.Contains));
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
         
         #region Properties
-        public WpfButton CreateanewdatabasesoButton
+        public WpfText Text
         {
             get
             {
-                if ((this.mCreateanewdatabasesoButton == null))
+                if ((this.mText == null))
                 {
-                    this.mCreateanewdatabasesoButton = new WpfButton(this);
+                    this.mText = new WpfText(this);
                     #region Search Criteria
-                    this.mCreateanewdatabasesoButton.SearchProperties[WpfButton.PropertyNames.HelpText] = "Create a new database source";
-                    this.mCreateanewdatabasesoButton.WindowTitles.Add("Warewolf");
+                    this.mText.SearchProperties[WpfText.PropertyNames.Name] = " ";
+                    this.mText.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
                     #endregion
                 }
-                return this.mCreateanewdatabasesoButton;
-            }
-        }
-        
-        public WpfButton CreateanewpluginsourButton
-        {
-            get
-            {
-                if ((this.mCreateanewpluginsourButton == null))
-                {
-                    this.mCreateanewpluginsourButton = new WpfButton(this);
-                    #region Search Criteria
-                    this.mCreateanewpluginsourButton.SearchProperties[WpfButton.PropertyNames.HelpText] = "Create a new plugin source";
-                    this.mCreateanewpluginsourButton.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mCreateanewpluginsourButton;
-            }
-        }
-        
-        public WpfButton CreateanewwebsourceButton
-        {
-            get
-            {
-                if ((this.mCreateanewwebsourceButton == null))
-                {
-                    this.mCreateanewwebsourceButton = new WpfButton(this);
-                    #region Search Criteria
-                    this.mCreateanewwebsourceButton.SearchProperties[WpfButton.PropertyNames.HelpText] = "Create a new web source";
-                    this.mCreateanewwebsourceButton.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mCreateanewwebsourceButton;
-            }
-        }
-        
-        public WpfText NewWorkflowIcon
-        {
-            get
-            {
-                if ((this.mNewWorkflowIcon == null))
-                {
-                    this.mNewWorkflowIcon = new WpfText(this);
-                    #region Search Criteria
-                    this.mNewWorkflowIcon.SearchProperties[WpfText.PropertyNames.Name] = "";
-                    this.mNewWorkflowIcon.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mNewWorkflowIcon;
-            }
-        }
-        
-        public WpfText DeployIcon
-        {
-            get
-            {
-                if ((this.mDeployIcon == null))
-                {
-                    this.mDeployIcon = new WpfText(this);
-                    #region Search Criteria
-                    this.mDeployIcon.SearchProperties[WpfText.PropertyNames.Name] = "";
-                    this.mDeployIcon.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mDeployIcon;
-            }
-        }
-        
-        public WpfText NewDatabseConnIcon
-        {
-            get
-            {
-                if ((this.mNewDatabseConnIcon == null))
-                {
-                    this.mNewDatabseConnIcon = new WpfText(this);
-                    #region Search Criteria
-                    this.mNewDatabseConnIcon.SearchProperties[WpfText.PropertyNames.Name] = "";
-                    this.mNewDatabseConnIcon.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mNewDatabseConnIcon;
-            }
-        }
-        
-        public WpfText NewPluginConnIcon
-        {
-            get
-            {
-                if ((this.mNewPluginConnIcon == null))
-                {
-                    this.mNewPluginConnIcon = new WpfText(this);
-                    #region Search Criteria
-                    this.mNewPluginConnIcon.SearchProperties[WpfText.PropertyNames.Name] = "";
-                    this.mNewPluginConnIcon.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mNewPluginConnIcon;
-            }
-        }
-        
-        public WpfText NewWebConnIcon
-        {
-            get
-            {
-                if ((this.mNewWebConnIcon == null))
-                {
-                    this.mNewWebConnIcon = new WpfText(this);
-                    #region Search Criteria
-                    this.mNewWebConnIcon.SearchProperties[WpfText.PropertyNames.Name] = "";
-                    this.mNewWebConnIcon.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mNewWebConnIcon;
-            }
-        }
-        
-        public WpfText NewScheduledTaskIcon
-        {
-            get
-            {
-                if ((this.mNewScheduledTaskIcon == null))
-                {
-                    this.mNewScheduledTaskIcon = new WpfText(this);
-                    #region Search Criteria
-                    this.mNewScheduledTaskIcon.SearchProperties[WpfText.PropertyNames.Name] = "";
-                    this.mNewScheduledTaskIcon.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mNewScheduledTaskIcon;
-            }
-        }
-        
-        public WpfText SettingsIcon
-        {
-            get
-            {
-                if ((this.mSettingsIcon == null))
-                {
-                    this.mSettingsIcon = new WpfText(this);
-                    #region Search Criteria
-                    this.mSettingsIcon.SearchProperties[WpfText.PropertyNames.Name] = "";
-                    this.mSettingsIcon.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mSettingsIcon;
-            }
-        }
-        
-        public WpfText HelpIcon
-        {
-            get
-            {
-                if ((this.mHelpIcon == null))
-                {
-                    this.mHelpIcon = new WpfText(this);
-                    #region Search Criteria
-                    this.mHelpIcon.SearchProperties[WpfText.PropertyNames.Name] = "";
-                    this.mHelpIcon.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mHelpIcon;
+                return this.mText;
             }
         }
         #endregion
         
         #region Fields
-        private WpfButton mCreateanewdatabasesoButton;
-        
-        private WpfButton mCreateanewpluginsourButton;
-        
-        private WpfButton mCreateanewwebsourceButton;
-        
-        private WpfText mNewWorkflowIcon;
-        
-        private WpfText mDeployIcon;
-        
-        private WpfText mNewDatabseConnIcon;
-        
-        private WpfText mNewPluginConnIcon;
-        
-        private WpfText mNewWebConnIcon;
-        
-        private WpfText mNewScheduledTaskIcon;
-        
-        private WpfText mSettingsIcon;
-        
-        private WpfText mHelpIcon;
+        private WpfText mText;
         #endregion
     }
     
