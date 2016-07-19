@@ -9,9 +9,9 @@ namespace Warewolf.Studio.Core
     {
         public static void AddBlackOutEffect(Grid blackoutGrid)
         {
-            var effect = new BlurEffect { Radius = 10, KernelType = KernelType.Gaussian, RenderingBias = RenderingBias.Quality };
+            var effect = new BlurEffect { Radius = 3, KernelType = KernelType.Gaussian, RenderingBias = RenderingBias.Quality };
             blackoutGrid.Background = new SolidColorBrush(Colors.DarkGray);
-            blackoutGrid.Opacity = 0.5;
+            blackoutGrid.Opacity = 0.2;
             var content = Application.Current.MainWindow.Content as Grid;
             content?.Children.Add(blackoutGrid);
             Application.Current.MainWindow.Effect = effect;

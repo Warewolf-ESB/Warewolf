@@ -644,8 +644,8 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        private string[] Protocols { get; }
-        private ObservableCollection<string> Ports { get; }
+        public string[] Protocols { get; set; }
+        public ObservableCollection<string> Ports { get; set; }
         public string SelectedPort
         {
             get
