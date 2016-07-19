@@ -148,7 +148,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         /// <summary>
         /// Boolean that contains the option for remembering the inputs for that workflow
         /// </summary>
-        private bool RememberInputs
+        public bool RememberInputs
         {
             get
             {
