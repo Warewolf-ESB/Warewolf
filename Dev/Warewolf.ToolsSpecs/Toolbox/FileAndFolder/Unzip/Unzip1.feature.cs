@@ -872,11 +872,11 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "\"Success\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "%WINDIR%\\Temp\\key.opk")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "%WINDIR%\\Temp\\key.opk")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "C:\\Temp\\key.opk")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "C:\\Temp\\key.opk")]
         public virtual void UnzipFileAtLocation_26()
         {
-            this.UnzipFileAtLocation("26", "SFTP to SFTP PK", "[[path]]", "sftp://rsaklfsvrsbspdc/test51.zip", "dev2", "Q/ulw&]", "[[path1]]", "sftp://rsaklfsvrsbspdc/ZIP61", "dev2", "Q/ulw&]", "True", "\"\"", "[[result]]", "\"Success\"", "NO", "%WINDIR%\\Temp\\key.opk", "%WINDIR%\\Temp\\key.opk", ((string[])(null)));
+            this.UnzipFileAtLocation("26", "SFTP to SFTP PK", "[[path]]", "sftp://rsaklfsvrsbspdc/test51.zip", "dev2", "Q/ulw&]", "[[path1]]", "sftp://rsaklfsvrsbspdc/ZIP61", "dev2", "Q/ulw&]", "True", "\"\"", "[[result]]", "\"Success\"", "NO", "C:\\Temp\\key.opk", "C:\\Temp\\key.opk", ((string[])(null)));
 #line hidden
         }
         
@@ -1822,7 +1822,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "28")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:File or Folder", "[[sourcePath]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val1", "C:")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val2", "\\ZIP37")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val2", "\\Temp\\ZIP37")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "C:\\Temp\\test37.zip")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "\"\"")]
@@ -1840,7 +1840,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "\"\"")]
         public virtual void UnzipFileValidation_28()
         {
-            this.UnzipFileValidation("28", "[[sourcePath]]", "C:", "\\ZIP37", "C:\\Temp\\test37.zip", "\"\"", "\"\"", "[[a]][[b]]", "C:\\Temp\\ZIP37", "integrationtester", "I73573r0", "True", "[[result]]", "\"\"", "\"Success\"", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
+            this.UnzipFileValidation("28", "[[sourcePath]]", "C:", "\\Temp\\ZIP37", "C:\\Temp\\test37.zip", "\"\"", "\"\"", "[[a]][[b]]", "C:\\Temp\\ZIP37", "integrationtester", "I73573r0", "True", "[[result]]", "\"\"", "\"Success\"", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
 #line hidden
         }
         
@@ -1851,7 +1851,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "29")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "29")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:File or Folder", "[[sourcePath]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val1", "C:")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val1", "C:\\Temp")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val2", "ZIP38")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "C:\\Temp\\test38.zip")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "\"\"")]
@@ -1870,7 +1870,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "\"\"")]
         public virtual void UnzipFileValidation_29()
         {
-            this.UnzipFileValidation("29", "[[sourcePath]]", "C:", "ZIP38", "C:\\Temp\\test38.zip", "\"\"", "\"\"", "[[a]]\\[[b]]", "C:\\Temp\\ZIP38", "integrationtester", "I73573r0", "True", "[[result]]", "\"\"", "\"Success\"", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
+            this.UnzipFileValidation("29", "[[sourcePath]]", "C:\\Temp", "ZIP38", "C:\\Temp\\test38.zip", "\"\"", "\"\"", "[[a]]\\[[b]]", "C:\\Temp\\ZIP38", "integrationtester", "I73573r0", "True", "[[result]]", "\"\"", "\"Success\"", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
 #line hidden
         }
         
@@ -1882,7 +1882,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "30")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:File or Folder", "[[sourcePath]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val1", "C:\\")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val2", "ZIP")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val2", "Temp\\ZIP")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "C:\\Temp\\test39.zip")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "\"\"")]
@@ -1900,7 +1900,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "\"\"")]
         public virtual void UnzipFileValidation_30()
         {
-            this.UnzipFileValidation("30", "[[sourcePath]]", "C:\\", "ZIP", "C:\\Temp\\test39.zip", "\"\"", "\"\"", "[[a]][[b]]39", "C:\\Temp\\ZIP39", "integrationtester", "I73573r0", "True", "[[result]]", "\"\"", "\"Success\"", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
+            this.UnzipFileValidation("30", "[[sourcePath]]", "C:\\", "Temp\\ZIP", "C:\\Temp\\test39.zip", "\"\"", "\"\"", "[[a]][[b]]39", "C:\\Temp\\ZIP39", "integrationtester", "I73573r0", "True", "[[result]]", "\"\"", "\"Success\"", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
 #line hidden
         }
         
@@ -1912,7 +1912,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "31")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:File or Folder", "[[sourcePath]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val1", "C")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val2", "ZIP40")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val2", "Temp\\ZIP40")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "C:\\Temp\\test40.zip")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "\"\"")]
@@ -1930,7 +1930,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "\"\"")]
         public virtual void UnzipFileValidation_31()
         {
-            this.UnzipFileValidation("31", "[[sourcePath]]", "C", "ZIP40", "C:\\Temp\\test40.zip", "\"\"", "\"\"", "[[a]]:\\[[b]]", "C:\\Temp\\ZIP40", "integrationtester", "I73573r0", "True", "[[result]]", "\"\"", "\"Success\"", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
+            this.UnzipFileValidation("31", "[[sourcePath]]", "C", "Temp\\ZIP40", "C:\\Temp\\test40.zip", "\"\"", "\"\"", "[[a]]:\\[[b]]", "C:\\Temp\\ZIP40", "integrationtester", "I73573r0", "True", "[[result]]", "\"\"", "\"Success\"", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
 #line hidden
         }
         
@@ -1941,7 +1941,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "32")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "32")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:File or Folder", "[[sourcePath]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val1", "\\ZIP")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val1", "\\Temp\\ZIP")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val2", "41")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "C:\\Temp\\test41.zip")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "\"\"")]
@@ -1960,7 +1960,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "\"\"")]
         public virtual void UnzipFileValidation_32()
         {
-            this.UnzipFileValidation("32", "[[sourcePath]]", "\\ZIP", "41", "C:\\Temp\\test41.zip", "\"\"", "\"\"", "C:[[a]][[b]]", "C:\\Temp\\ZIP41", "integrationtester", "I73573r0", "True", "[[result]]", "\"\"", "\"Success\"", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
+            this.UnzipFileValidation("32", "[[sourcePath]]", "\\Temp\\ZIP", "41", "C:\\Temp\\test41.zip", "\"\"", "\"\"", "C:[[a]][[b]]", "C:\\Temp\\ZIP41", "integrationtester", "I73573r0", "True", "[[result]]", "\"\"", "\"Success\"", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
 #line hidden
         }
         
@@ -1971,7 +1971,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "33")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "33")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:File or Folder", "[[sourcePath]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val1", "C:\\")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val1", "C:\\Temp\\")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val2", "ZIP42")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "C:\\Temp\\test42.zip")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "\"\"")]
@@ -1990,7 +1990,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "\"\"")]
         public virtual void UnzipFileValidation_33()
         {
-            this.UnzipFileValidation("33", "[[sourcePath]]", "C:\\", "ZIP42", "C:\\Temp\\test42.zip", "\"\"", "\"\"", "[[rec(1).a]][[rec(2).a]]", "C:\\Temp\\ZIP42", "integrationtester", "I73573r0", "True", "[[result]]", "\"\"", "\"Success\"", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
+            this.UnzipFileValidation("33", "[[sourcePath]]", "C:\\Temp\\", "ZIP42", "C:\\Temp\\test42.zip", "\"\"", "\"\"", "[[rec(1).a]][[rec(2).a]]", "C:\\Temp\\ZIP42", "integrationtester", "I73573r0", "True", "[[result]]", "\"\"", "\"Success\"", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
 #line hidden
         }
         
@@ -2001,7 +2001,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "34")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "34")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:File or Folder", "[[sourcePath]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val1", "C:")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val1", "C:\\Temp\\")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val2", "ZIP43")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "C:\\Temp\\test43.zip")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "\"\"")]
@@ -2020,7 +2020,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "\"\"")]
         public virtual void UnzipFileValidation_34()
         {
-            this.UnzipFileValidation("34", "[[sourcePath]]", "C:", "ZIP43", "C:\\Temp\\test43.zip", "\"\"", "\"\"", "[[rec(1).a]]\\[[rec(2).a]]", "C:\\Temp\\ZIP43", "integrationtester", "I73573r0", "True", "[[result]]", "\"\"", "\"Success\"", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
+            this.UnzipFileValidation("34", "[[sourcePath]]", "C:\\Temp\\", "ZIP43", "C:\\Temp\\test43.zip", "\"\"", "\"\"", "[[rec(1).a]]\\[[rec(2).a]]", "C:\\Temp\\ZIP43", "integrationtester", "I73573r0", "True", "[[result]]", "\"\"", "\"Success\"", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
 #line hidden
         }
         
@@ -2031,7 +2031,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "35")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "35")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:File or Folder", "[[sourcePath]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val1", "C:\\")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val1", "C:\\Temp\\")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val2", "ZIP44")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "C:\\Temp\\test44.zip")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "\"\"")]
@@ -2050,7 +2050,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "\"\"")]
         public virtual void UnzipFileValidation_35()
         {
-            this.UnzipFileValidation("35", "[[sourcePath]]", "C:\\", "ZIP44", "C:\\Temp\\test44.zip", "\"\"", "\"\"", "[[rec(1).a]][[rec(2).a]]", "C:\\Temp\\ZIP44", "integrationtester", "I73573r0", "True", "[[result]]", "\"\"", "\"Success\"", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
+            this.UnzipFileValidation("35", "[[sourcePath]]", "C:\\Temp\\", "ZIP44", "C:\\Temp\\test44.zip", "\"\"", "\"\"", "[[rec(1).a]][[rec(2).a]]", "C:\\Temp\\ZIP44", "integrationtester", "I73573r0", "True", "[[result]]", "\"\"", "\"Success\"", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
 #line hidden
         }
         
@@ -2062,7 +2062,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "36")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:File or Folder", "[[sourcePath]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val1", "C")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val2", "\\ZIP45")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val2", "\\Temp\\ZIP45")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "C:\\Temp\\test45.zip")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "\"\"")]
@@ -2080,7 +2080,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "\"\"")]
         public virtual void UnzipFileValidation_36()
         {
-            this.UnzipFileValidation("36", "[[sourcePath]]", "C", "\\ZIP45", "C:\\Temp\\test45.zip", "\"\"", "\"\"", "[[rec(1).a]]:[[rec(2).a]]", "C:\\Temp\\ZIP45", "integrationtester", "I73573r0", "True", "[[result]]", "\"\"", "\"Success\"", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
+            this.UnzipFileValidation("36", "[[sourcePath]]", "C", "\\Temp\\ZIP45", "C:\\Temp\\test45.zip", "\"\"", "\"\"", "[[rec(1).a]]:[[rec(2).a]]", "C:\\Temp\\ZIP45", "integrationtester", "I73573r0", "True", "[[result]]", "\"\"", "\"Success\"", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
 #line hidden
         }
         
@@ -2092,7 +2092,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "37")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:File or Folder", "[[sourcePath]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val1", "\\")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val2", "ZIP")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val2", "Temp\\ZIP")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "C:\\Temp\\test46.zip")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "\"\"")]
@@ -2110,7 +2110,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "\"\"")]
         public virtual void UnzipFileValidation_37()
         {
-            this.UnzipFileValidation("37", "[[sourcePath]]", "\\", "ZIP", "C:\\Temp\\test46.zip", "\"\"", "\"\"", "C:[[rec(1).a]][[rec(2).a]]46", "C:\\Temp\\ZIP46", "integrationtester", "I73573r0", "True", "[[result]]", "\"\"", "\"Success\"", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
+            this.UnzipFileValidation("37", "[[sourcePath]]", "\\", "Temp\\ZIP", "C:\\Temp\\test46.zip", "\"\"", "\"\"", "C:[[rec(1).a]][[rec(2).a]]46", "C:\\Temp\\ZIP46", "integrationtester", "I73573r0", "True", "[[result]]", "\"\"", "\"Success\"", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
 #line hidden
         }
         
@@ -2151,7 +2151,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "39")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "39")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:File or Folder", "[[sourcePath]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val1", "C:\\ZIP48")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val1", "C:\\Temp\\ZIP48")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val2", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "C:\\Temp\\test48.zip")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "\"\"")]
@@ -2170,7 +2170,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "\"\"")]
         public virtual void UnzipFileValidation_39()
         {
-            this.UnzipFileValidation("39", "[[sourcePath]]", "C:\\ZIP48", "\"\"", "C:\\Temp\\test48.zip", "\"\"", "\"\"", "[[rec(1).a]]", "C:\\Temp\\ZIP48", "integrationtester", "I73573r0", "True", "[[result]]", "\"\"", "\"Success\"", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
+            this.UnzipFileValidation("39", "[[sourcePath]]", "C:\\Temp\\ZIP48", "\"\"", "C:\\Temp\\test48.zip", "\"\"", "\"\"", "[[rec(1).a]]", "C:\\Temp\\ZIP48", "integrationtester", "I73573r0", "True", "[[result]]", "\"\"", "\"Success\"", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
 #line hidden
         }
         
