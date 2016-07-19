@@ -28,6 +28,7 @@
             <Setter Property="Content" Value="..." />
             <Setter Property="Margin" Value="1" />
             <Setter Property="Command" Value="{Binding DataContext.PickWindowsGroupCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+            <Setter Property="Visibility" Value="{Binding DataContext.Visibility, RelativeSource={RelativeSource AncestorType=UserControl}}" />
             <Setter Property="CommandParameter" Value="{Binding}" />
             <Setter Property="AutomationProperties.AutomationId">
                 <Setter.Value>
