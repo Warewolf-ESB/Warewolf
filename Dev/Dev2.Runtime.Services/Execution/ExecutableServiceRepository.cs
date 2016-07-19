@@ -11,7 +11,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Dev2.Common;
 
 namespace Dev2.Runtime.Execution
 {
@@ -37,11 +36,6 @@ namespace Dev2.Runtime.Execution
         #endregion
 
         public int Count => _activeExecutions.Count;
-
-        public bool DoesQueueHaveSpace()
-        {
-            return Count <= GlobalConstants.MaxWorkflowsToExecute;
-        }
 
         public void Add(IExecutableService service)
         {
