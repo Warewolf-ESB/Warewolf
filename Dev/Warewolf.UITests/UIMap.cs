@@ -82,6 +82,7 @@ namespace Warewolf.UITests
         {
             try
             {
+                Click_Clear_Toolbox_Filter_Button();
                 Click_Close_Tab_Button();
                 Click_MessageBox_No();
             }
