@@ -28,6 +28,13 @@ namespace Warewolf.UITests
             Playback.PlaybackSettings.MaximumRetryCount = 5;
             Playback.PlaybackSettings.ShouldSearchFailFast = false;
             Playback.PlaybackSettings.SearchTimeout = 5000;
+            if (Environment.ProcessorCount <= 4)
+            {
+                Playback.PlaybackSettings.ThinkTimeMultiplier = 2;
+            }
+            Playback.PlaybackSettings.MatchExactHierarchy = true;
+            Playback.PlaybackSettings.SkipSetPropertyVerification = true;
+            Playback.PlaybackSettings.SmartMatchOptions = SmartMatchOptions.None;
             Playback.PlaybackError -= Playback_PlaybackError;
             Playback.PlaybackError += Playback_PlaybackError;
         }
@@ -35,15 +42,8 @@ namespace Warewolf.UITests
         /// <summary> PlaybackError event handler. </summary>
         private void Playback_PlaybackError(object sender, PlaybackErrorEventArgs e)
         {
-            Console.WriteLine("Error from " + sender.GetType() + "\n" + e.Error.Message);
-            if (sender is UITestControl)
-            {
-                (sender as UITestControl).DrawHighlight();
-            }
-            else
-            {
-                Playback.Wait(1000);
-            }
+            Console.WriteLine(e.Error.Message);
+            Playback.Wait(1000);
             e.Result = PlaybackErrorOptions.Retry;
         }
 
