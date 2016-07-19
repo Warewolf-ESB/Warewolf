@@ -9,6 +9,7 @@
 */
 
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Net;
 using System.Reflection;
@@ -76,7 +77,7 @@ namespace Dev2.Studio.Core.Helpers
             }
         }
 
-        //Used for Testing
+        [SuppressMessage("ReSharper", "UnusedMember.Global")]
         public static string CreateATemporaryFile(StringBuilder fileContent, string uniqueOutputPath)
         {
             CreateTextFile(fileContent, uniqueOutputPath);

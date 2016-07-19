@@ -2,7 +2,6 @@
 using Dev2.Studio.Core.Interfaces.DataList;
 using System;
 using System.Collections.ObjectModel;
-using System.Linq;
 using Dev2.Data.Parsers;
 using Dev2.Data.Util;
 
@@ -94,36 +93,6 @@ namespace Dev2.Studio.Core.Models.DataList
                     }
                 }
             }
-        }
-
-
-        public void Filter(string searchText)
-        {
-            Children.Clear();
-            if (_backupChildren != null)
-            {
-                foreach (IRecordSetFieldItemModel recordSetFieldItemModel in _backupChildren)
-                {
-                    Children.Add(recordSetFieldItemModel);
-                }
-            }
-
-            if (string.IsNullOrEmpty(searchText))
-            {
-                return;
-            }
-
-            if (!String.IsNullOrEmpty(searchText))
-            {
-                _backupChildren = _backupChildren ?? new ObservableCollection<IRecordSetFieldItemModel>();
-                foreach (var dataListItemModel in Children)
-                {
-                    _backupChildren.Add(dataListItemModel);
-                }
-            }
-
-            _backupChildren = Children;
-            Children = new ObservableCollection<IRecordSetFieldItemModel>(Children.Where(a => a.DisplayName.ToUpper().Contains(searchText.ToUpper())));
         }
 
         #region Overrides of DataListItemModel
