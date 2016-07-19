@@ -476,7 +476,7 @@ namespace Dev2.Settings.Security
             return duplicates.Any();
         }
 
-        #region Implementation of IUpdatesHelp
+       #region Implementation of IUpdatesHelp
 
         public void UpdateHelpDescriptor(string helpText)
         {
@@ -484,12 +484,7 @@ namespace Dev2.Settings.Security
         }
 
         #endregion
-
-        #region Implementation of IBelongToDomain
-
-        public Visibility Visibility => string.IsNullOrEmpty(Environment.UserDomainName) ? Visibility.Hidden : Visibility.Visible;
-
-        #endregion
+     
     }
 
   
