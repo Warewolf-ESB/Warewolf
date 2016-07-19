@@ -1475,7 +1475,7 @@ namespace Warewolf.UITests
 
             // Move 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item to 'Flowchart' custom control
             flowchart.EnsureClickable(new Point(307, 128));
-            Mouse.StartDragging(firstItem, new Point(16, 5));
+            Mouse.StartDragging(firstItem, new Point(32, 5));
             Mouse.StopDragging(flowchart, new Point(307, 128));
 
             // Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
@@ -12388,7 +12388,7 @@ namespace Warewolf.UITests
                     this.mFirstItem = new WpfTreeItem(this);
                     #region Search Criteria
                     this.mFirstItem.SearchProperties[WpfTreeItem.PropertyNames.Name] = "Infragistics.Controls.Menus.XamDataTreeNodeDataContext";
-                    this.mFirstItem.SearchProperties[WpfTreeItem.PropertyNames.Instance] = "2";
+                    this.mFirstItem.SearchProperties[WpfTreeItem.PropertyNames.Instance] = "1";
                     this.mFirstItem.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
                     this.mFirstItem.SearchConfigurations.Add(SearchConfiguration.DisambiguateChild);
                     this.mFirstItem.SearchConfigurations.Add(SearchConfiguration.AlwaysSearch);
@@ -12469,7 +12469,7 @@ namespace Warewolf.UITests
                     this.mFirstItem = new WpfTreeItem(this);
                     #region Search Criteria
                     this.mFirstItem.SearchProperties[WpfTreeItem.PropertyNames.Name] = "Infragistics.Controls.Menus.XamDataTreeNodeDataContext";
-                    this.mFirstItem.SearchProperties[WpfTreeItem.PropertyNames.Instance] = "2";
+                    this.mFirstItem.SearchProperties[WpfTreeItem.PropertyNames.Instance] = "1";
                     this.mFirstItem.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
                     this.mFirstItem.SearchConfigurations.Add(SearchConfiguration.DisambiguateChild);
                     this.mFirstItem.WindowTitles.Add("Warewolf");
