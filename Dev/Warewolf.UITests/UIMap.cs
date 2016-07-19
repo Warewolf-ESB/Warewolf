@@ -29,6 +29,10 @@ namespace Warewolf.UITests
             Playback.PlaybackSettings.ShouldSearchFailFast = false;
             Playback.PlaybackSettings.SearchTimeout = 5000;
             Playback.PlaybackSettings.DelayBetweenActions = 100;
+            if (Environment.ProcessorCount <= 4)
+            {
+                Playback.PlaybackSettings.ThinkTimeMultiplier = 2;
+            }
             Playback.PlaybackSettings.MatchExactHierarchy = true;
             Playback.PlaybackSettings.SkipSetPropertyVerification = true;
             Playback.PlaybackError -= Playback_PlaybackError;
