@@ -35,6 +35,7 @@ namespace Warewolf.UITests
             }
             Playback.PlaybackSettings.MatchExactHierarchy = true;
             Playback.PlaybackSettings.SkipSetPropertyVerification = true;
+            Playback.PlaybackSettings.SmartMatchOptions = SmartMatchOptions.None;
             Playback.PlaybackError -= Playback_PlaybackError;
             Playback.PlaybackError += Playback_PlaybackError;
         }
