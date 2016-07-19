@@ -292,45 +292,6 @@ namespace Dev2.Activities.Designers2.Core
             ViewModel.UpdateHelpDescriptor(helpText);
         }
 
-        /// <summary>
-        /// Child classes can override this method to perform 
-        /// clean-up logic, such as removing event handlers.
-        /// </summary>
-        protected virtual void OnDispose()
-        {
-            if(_designerManagementService != null)
-            {
-                _designerManagementService.CollapseAllRequested -= OnDesignerManagementServiceCollapseAllRequested;
-                _designerManagementService.ExpandAllRequested -= OnDesignerManagementServiceExpandAllRequested;
-                _designerManagementService.RestoreAllRequested -= OnDesignerManagementServiceRestoreAllRequested;
-            }
-            if(_showCollapseLargeView != null)
-            {
-                _showCollapseLargeView.Click -= ShowCollapseFromContextMenu;
-            }
-            if (Context != null)
-            {
-                Context.Items.Unsubscribe<Selection>(OnSelectionChanged);
-                Context.Services.Unsubscribe<IDesignerManagementService>(OnDesignerManagementServiceChanged);
-            }
-
-            if(_zIndexProperty != null)
-            {
-                _zIndexProperty.RemoveValueChanged(_dataContext, OnZIndexPositionChanged);
-            }
-            if(ViewModel != null)
-            {
-                ViewModel.Dispose();
-            }
-
-            Loaded -= OnRoutedEventHandler;
-
-            Unloaded -= ActivityDesignerUnloaded;
-            CEventHelper.RemoveAllEventHandlers(this);
-            CEventHelper.RemoveAllEventHandlers(this);
-           GC.SuppressFinalize(this);
-        }
-
         void OnRoutedEventHandler(object sender, RoutedEventArgs args)
         {
             OnLoaded();

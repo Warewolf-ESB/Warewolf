@@ -277,11 +277,6 @@ namespace Dev2.Common.ExtMethods
             return Accellerator + input;
         }
 
-        public static string ToCleanString(this string value)
-        {
-            var cleanString = new StringBuilder(value).Replace(Environment.NewLine, "\n").Replace("\r", "\n");
-            return cleanString.ToString();
-        }
         public static string RemoveWhiteSpace(this string value)
         {
             var cleanString = new StringBuilder(value.Trim()).Replace(" ", "");
