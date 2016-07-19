@@ -390,7 +390,7 @@ namespace Dev2.Studio.ViewModels
 
             IContextualResourceModel tempResource = ResourceModelFactory.CreateResourceModel(activeEnvironment, @"WorkflowService",
                 newWorflowName);
-            tempResource.Category = string.IsNullOrEmpty(resourcePath) ? @"Unassigned\\" + newWorflowName : resourcePath + @"\\" + newWorflowName;
+            tempResource.Category = string.IsNullOrEmpty(resourcePath) ? @"Unassigned\" + newWorflowName : resourcePath + @"\" + newWorflowName;
             tempResource.ResourceName = newWorflowName;
             tempResource.DisplayName = newWorflowName;
             tempResource.IsNewWorkflow = true;

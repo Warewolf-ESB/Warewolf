@@ -1081,8 +1081,12 @@ namespace Warewolf.UITests
         public void Click_Server_Source_Wizard_Test_Connection_Button()
         {
             #region Variable Declarations
+            WpfButton testConnectionButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.ServerSourceWizardTab.WorkSurfaceContext.NewServerSourceWizard.TestConnectionButton;
             WpfButton saveButton = this.MainStudioWindow.SideMenuBar.SaveButton;
             #endregion
+
+            // Click 'Test Connection' button
+            Mouse.Click(testConnectionButton, new Point(51, 8));
 
             // Verify that the 'Enabled' property of 'Save this tab' button equals 'True'
             Assert.AreEqual(this.Click_Server_Source_Wizard_Test_Connection_ButtonParams.SaveButtonEnabled, saveButton.Enabled, "Save ribbon button is not enabled");
