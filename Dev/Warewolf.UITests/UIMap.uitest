@@ -2234,7 +2234,7 @@
       <IsGlobalHotkey>false</IsGlobalHotkey>
       <TargetElementName>UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart</TargetElementName>
       <MouseButton>Left</MouseButton>
-      <StartLocation X="16" Y="5" />
+      <StartLocation X="32" Y="5" />
       <StopLocation X="307" Y="128" />
     </DragDropAction>
     <AssertAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1">
@@ -8534,7 +8534,7 @@
                                     <PropertyCondition Name="ControlType">TreeItem</PropertyCondition>
                                     <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                     <PropertyCondition Name="Name">Infragistics.Controls.Menus.XamDataTreeNodeDataContext</PropertyCondition>
-                                    <PropertyCondition Name="Instance">2</PropertyCondition>
+                                    <PropertyCondition Name="Instance">1</PropertyCondition>
                                   </AndCondition>
                                   <SupportLevel>0</SupportLevel>
                                   <Descendants />
@@ -8570,7 +8570,7 @@
                                     <PropertyCondition Name="ControlType">TreeItem</PropertyCondition>
                                     <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                     <PropertyCondition Name="Name">Infragistics.Controls.Menus.XamDataTreeNodeDataContext</PropertyCondition>
-                                    <PropertyCondition Name="Instance">2</PropertyCondition>
+                                    <PropertyCondition Name="Instance">1</PropertyCondition>
                                   </AndCondition>
                                   <SupportLevel>0</SupportLevel>
                                   <Descendants />
