@@ -859,8 +859,8 @@ namespace Dev2.Tests.Runtime.Hosting
             var catalogue = new Mock<IResourceCatalog>();
             var factory = new Mock<IExplorerItemFactory>();
             var dir = new Mock<IDirectory>();
-            var res = new Mock<IResource>();
             var guid = Guid.NewGuid();
+            var res = new Mock<IResource>();
             res.Setup(a => a.ResourceName).Returns("mona");
             res.Setup(a => a.ResourcePath).Returns("bob");
             res.Setup(a => a.ResourceID).Returns(guid);
@@ -877,6 +877,51 @@ namespace Dev2.Tests.Runtime.Hosting
             Assert.AreEqual(result.Message, "");
             Assert.AreEqual(result.Status, ExecStatus.Success);
             catalogue.Verify(a => a.DeleteResource(It.IsAny<Guid>(), "mona", "EmailSource", true));
+            dir.Verify(a => a.Delete(It.IsAny<string>(), true));
+
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("ServerExplorerRepository_DeleteFolder")]
+        public void ServerExplorerRepository_DeleteFolder_NestedItemsRecursive_MultipleItemsToDelete_ExpectDeletion()
+        {
+            //------------Setup for test--------------------------
+            var catalogue = new Mock<IResourceCatalog>();
+            var factory = new Mock<IExplorerItemFactory>();
+            var dir = new Mock<IDirectory>();
+            var guid = Guid.NewGuid();
+            var res = new Mock<IResource>();
+            res.Setup(a => a.ResourceName).Returns("mona");
+            res.Setup(a => a.ResourcePath).Returns("bob");
+            res.Setup(a => a.ResourceID).Returns(guid);
+            res.Setup(a => a.ResourceType).Returns("EmailSource");
+            res.Setup(a => a.ResourcePath).Returns("bob\\");
+
+            var guid2 = Guid.NewGuid();
+            var res2 = new Mock<IResource>();
+            res2.Setup(a => a.ResourceName).Returns("mona1");
+            res2.Setup(a => a.ResourcePath).Returns("bob");
+            res2.Setup(a => a.ResourceID).Returns(guid2);
+            res2.Setup(a => a.ResourceType).Returns("DbSource");
+            res2.Setup(a => a.ResourcePath).Returns("bob\\");
+
+            dir.Setup(a => a.Exists(It.IsAny<string>())).Returns(true);
+            var sync = new Mock<IExplorerRepositorySync>();
+            var serverExplorerRepository = new ServerExplorerRepository(catalogue.Object, factory.Object, dir.Object, sync.Object, new Mock<IServerVersionRepository>().Object, new FileWrapper());
+            var resources = new List<IResource> {res.Object, res2.Object};            
+            catalogue.SetupSequence(catalog => catalog.GetResourceList(It.IsAny<Guid>()))
+                .Returns(resources)
+                .Returns(resources);
+            catalogue.Setup(a => a.DeleteResource(It.IsAny<Guid>(), "mona", "EmailSource", true)).Returns(new ResourceCatalogResult { Status = ExecStatus.Success, Message = "" }).Callback(()=>resources.RemoveAt(0)).Verifiable();
+            catalogue.Setup(a => a.DeleteResource(It.IsAny<Guid>(), "mona1", "DbSource", true)).Returns(new ResourceCatalogResult { Status = ExecStatus.Success, Message = "" }).Verifiable();
+            //------------Execute Test---------------------------
+            var result = serverExplorerRepository.DeleteFolder("bob", true, Guid.NewGuid());
+            //------------Assert Results-------------------------
+            Assert.AreEqual("", result.Message);
+            Assert.AreEqual(ExecStatus.Success, result.Status);
+            catalogue.Verify(a => a.DeleteResource(It.IsAny<Guid>(), "mona", "EmailSource", true));
+            catalogue.Verify(a => a.DeleteResource(It.IsAny<Guid>(), "mona1", "DbSource", true));
             dir.Verify(a => a.Delete(It.IsAny<string>(), true));
 
         }

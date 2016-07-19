@@ -55,6 +55,8 @@ namespace Dev2.Studio.ViewModels.Workflow
         bool _canViewInBrowser;
         bool _canDebug;
         readonly IPopupController _popupController;
+        private RelayCommand _cancelCommand;
+
         #endregion Fields
 
         public event Action DebugExecutionStart;
@@ -146,7 +148,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         /// <summary>
         /// Boolean that contains the option for remembering the inputs for that workflow
         /// </summary>
-        private bool RememberInputs
+        public bool RememberInputs
         {
             get
             {
@@ -226,7 +228,17 @@ namespace Dev2.Studio.ViewModels.Workflow
                 return _viewInBrowserCommmand ?? (_viewInBrowserCommmand = new RelayCommand(param => ViewInBrowser(), param => CanViewInBrowser));
             }
         }
-   
+
+
+        public RelayCommand CancelCommand
+        {
+            get
+            {
+                return _cancelCommand ?? (_cancelCommand = new RelayCommand(param => Cancel()));
+            }
+        }
+
+
         public bool IsInError { private get; set; }
 
         /// <summary>
@@ -466,7 +478,7 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         private int UpdateIndexToSelect(IDataListItem itemToRemove, IDataListItem item)
         {
-            if(itemToRemove.Index == item.Index)
+            if (itemToRemove.Index == item.Index)
             {
                 IDataListItem item1 = item;
                 return WorkflowInputs.IndexOf(WorkflowInputs.Last(c => c.Recordset == item1.Recordset));

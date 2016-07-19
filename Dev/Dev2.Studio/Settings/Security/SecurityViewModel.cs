@@ -22,6 +22,8 @@ using Dev2.Activities.Designers2.Core.Help;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Infrastructure;
+using Dev2.Common.Interfaces.Wrappers;
+using Dev2.Common.Wrappers;
 using Dev2.Dialogs;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Services.Security;
@@ -37,23 +39,25 @@ namespace Dev2.Settings.Security
 {
     public class SecurityViewModel : SettingsItemViewModel, IHelpSource, IUpdatesHelp
     {
-         IResourcePickerDialog _resourcePicker;
+        IResourcePickerDialog _resourcePicker;
         readonly DirectoryObjectPickerDialog _directoryObjectPicker;
         readonly IWin32Window _parentWindow;
         readonly IEnvironmentModel _environment;
         bool _isUpdatingHelpText;
+        private static IDomain _domain;
+        
 
         internal SecurityViewModel(SecuritySettingsTO securitySettings, IWin32Window parentWindow, IEnvironmentModel environment)
-            : this(securitySettings,new DirectoryObjectPickerDialog(), parentWindow, environment)
+            : this(securitySettings, new DirectoryObjectPickerDialog(), parentWindow, environment)
         {
         }
 
         public IResourcePickerDialog CreateResourcePickerDialog()
         {
             var env = GetEnvironment();
-             var res =  new ResourcePickerDialog(enDsfActivityType.All, env);
-             ResourcePickerDialog.CreateAsync(enDsfActivityType.Workflow, env).ContinueWith(a=> _resourcePicker=a.Result);
-             return res;
+            var res = new ResourcePickerDialog(enDsfActivityType.All, env);
+            ResourcePickerDialog.CreateAsync(enDsfActivityType.Workflow, env).ContinueWith(a => _resourcePicker = a.Result);
+            return res;
         }
 
         static IEnvironmentViewModel GetEnvironment()
@@ -78,8 +82,8 @@ namespace Dev2.Settings.Security
             VerifyArgument.IsNotNull(@"parentWindow", parentWindow);
             VerifyArgument.IsNotNull(@"environment", environment);
 
-            _resourcePicker =(createfunc?? CreateResourcePickerDialog)();
-            _directoryObjectPicker = directoryObjectPicker;            
+            _resourcePicker = (createfunc ?? CreateResourcePickerDialog)();
+            _directoryObjectPicker = directoryObjectPicker;
             _parentWindow = parentWindow;
             _environment = environment;
             _directoryObjectPicker.AllowedObjectTypes = ObjectTypes.BuiltInGroups | ObjectTypes.Groups;
@@ -95,7 +99,8 @@ namespace Dev2.Settings.Security
 
             InitializeHelp();
 
-            InitializePermissions(securitySettings == null ? null : securitySettings.WindowsGroupPermissions);
+            InitializePermissions(securitySettings?.WindowsGroupPermissions);
+            _domain = new DomainWrapper();
         }
 
         public ObservableCollection<WindowsGroupPermission> ServerPermissions { get; private set; }
@@ -147,17 +152,17 @@ namespace Dev2.Settings.Security
 
         void Copy(IList<WindowsGroupPermission> source, IList<WindowsGroupPermission> target)
         {
-            for(var i = source.Count - 1; i >= 0; i--)
+            for (var i = source.Count - 1; i >= 0; i--)
             {
                 var permission = source[i];
-                if(permission.IsValid && !permission.IsDeleted)
+                if (permission.IsValid && !permission.IsDeleted)
                 {
                     target.Insert(0, permission);
                 }
                 else
                 {
                     source.RemoveAt(i);
-                    if(permission.IsNew)
+                    if (permission.IsNew)
                     {
                         // re-add new permission
                         permission = CreateNewPermission(permission.IsServer);
@@ -178,12 +183,12 @@ namespace Dev2.Settings.Security
             ServerPermissions = new ObservableCollection<WindowsGroupPermission>();
             ResourcePermissions = new ObservableCollection<WindowsGroupPermission>();
 
-            if(permissions != null)
+            if (permissions != null)
             {
-                foreach(var permission in permissions)
+                foreach (var permission in permissions)
                 {
                     RegisterPropertyChanged(permission);
-                    if(permission.IsServer)
+                    if (permission.IsServer)
                     {
                         ServerPermissions.Add(permission);
                     }
@@ -200,13 +205,13 @@ namespace Dev2.Settings.Security
         void PickResource(object obj)
         {
             var permission = obj as WindowsGroupPermission;
-            if(permission == null)
+            if (permission == null)
             {
                 return;
             }
 
             var resourceModel = PickResource(permission);
-            if(resourceModel == null)
+            if (resourceModel == null)
             {
                 return;
             }
@@ -217,36 +222,36 @@ namespace Dev2.Settings.Security
 
         IExplorerTreeItem PickResource(WindowsGroupPermission permission)
         {
-            if(permission != null && permission.ResourceID != Guid.Empty)
+            if (permission != null && permission.ResourceID != Guid.Empty)
             {
-                if(_environment.ResourceRepository != null)
+                if (_environment.ResourceRepository != null)
                 {
                     var foundResourceModel = _environment.ResourceRepository.FindSingle(model => model.ID == permission.ResourceID);
-                    if(foundResourceModel != null)
+                    if (foundResourceModel != null)
                     {
-                        _resourcePicker.SelectResource( foundResourceModel.ID);
+                        _resourcePicker.SelectResource(foundResourceModel.ID);
                     }
                 }
             }
             var hasResult = _resourcePicker.ShowDialog(_environment);
 
-            if(_environment.ResourceRepository != null)
+            if (_environment.ResourceRepository != null)
             {
                 return hasResult ? _resourcePicker.SelectedResource : null;
             }
-            throw  new Exception(@"Server does not exist");
+            throw new Exception(@"Server does not exist");
         }
 
         void PickWindowsGroup(object obj)
         {
             var permission = obj as WindowsGroupPermission;
-            if(permission == null)
+            if (permission == null)
             {
                 return;
             }
 
             var directoryObj = PickWindowsGroup();
-            if(directoryObj == null)
+            if (directoryObj == null)
             {
                 return;
             }
@@ -256,13 +261,14 @@ namespace Dev2.Settings.Security
 
         DirectoryObject PickWindowsGroup()
         {
+
             var dialogResult = ShowDirectoryObjectPickerDialog(_parentWindow);
-            if(dialogResult != DialogResult.OK)
+            if (dialogResult != DialogResult.OK)
             {
                 return null;
             }
             var results = GetSelectedObjectsFromDirectoryObjectPickerDialog();
-            if(results == null || results.Length == 0)
+            if (results == null || results.Length == 0)
             {
                 return null;
             }
@@ -275,7 +281,7 @@ namespace Dev2.Settings.Security
             {
                 return _directoryObjectPicker.ShowDialog(parentWindow);
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 var popupController = CustomContainer.Get<Common.Interfaces.Studio.Controller.IPopupController>();
                 if (popupController != null)
@@ -291,7 +297,7 @@ namespace Dev2.Settings.Security
                     };
                     popupController.Show(popupMessage);
                 }
-                Dev2Logger.Error(@"Error opening group picker: ",e);
+                Dev2Logger.Error(@"Error opening group picker: ", e);
             }
             return DialogResult.Cancel;
         }
@@ -310,18 +316,18 @@ namespace Dev2.Settings.Security
         {
             IsDirty = true;
             UpdateOverridingPermission(sender as WindowsGroupPermission, args.PropertyName);
-            if(args.PropertyName == @"WindowsGroup" || args.PropertyName == @"ResourceName")
+            if (args.PropertyName == @"WindowsGroup" || args.PropertyName == @"ResourceName")
             {
                 var permission = (WindowsGroupPermission)sender;
 
-                if(permission.IsNew)
+                if (permission.IsNew)
                 {
-                    if(permission.IsValid)
+                    if (permission.IsValid)
                     {
                         permission.IsNew = false;
                         var newPermission = CreateNewPermission(permission.IsServer);
 
-                        if(permission.IsServer)
+                        if (permission.IsServer)
                         {
                             ServerPermissions.Add(newPermission);
                         }
@@ -334,9 +340,9 @@ namespace Dev2.Settings.Security
                 else
                 {
                     var isEmpty = string.IsNullOrEmpty(permission.WindowsGroup);
-                    if(isEmpty)
+                    if (isEmpty)
                     {
-                        if(permission.IsServer)
+                        if (permission.IsServer)
                         {
                             ServerPermissions.Remove(permission);
                         }
@@ -351,18 +357,18 @@ namespace Dev2.Settings.Security
 
         void UpdateOverridingPermission(WindowsGroupPermission windowsGroupPermission, string propertyName)
         {
-            if(windowsGroupPermission == null)
+            if (windowsGroupPermission == null)
             {
                 return;
             }
 
             SwitchAdminPermissionsOff(windowsGroupPermission, propertyName);
             SwitchContributePermissionsOff(windowsGroupPermission, propertyName);
-            if(windowsGroupPermission.Administrator && propertyName == @"Administrator")
+            if (windowsGroupPermission.Administrator && propertyName == @"Administrator")
             {
                 UpdateForAdministratorPermissions(windowsGroupPermission);
             }
-            if(windowsGroupPermission.Contribute && propertyName == @"Contribute")
+            if (windowsGroupPermission.Contribute && propertyName == @"Contribute")
             {
                 UpdateForContributePermissions(windowsGroupPermission);
             }
@@ -370,7 +376,7 @@ namespace Dev2.Settings.Security
 
         static void SwitchContributePermissionsOff(WindowsGroupPermission windowsGroupPermission, string propertyName)
         {
-            if(!windowsGroupPermission.View && propertyName == @"View"
+            if (!windowsGroupPermission.View && propertyName == @"View"
                || !windowsGroupPermission.Execute && propertyName == @"Execute")
             {
                 windowsGroupPermission.Contribute = false;
@@ -379,7 +385,7 @@ namespace Dev2.Settings.Security
 
         static void SwitchAdminPermissionsOff(WindowsGroupPermission windowsGroupPermission, string propertyName)
         {
-            if(!windowsGroupPermission.DeployTo && propertyName == @"DeployTo"
+            if (!windowsGroupPermission.DeployTo && propertyName == @"DeployTo"
                || !windowsGroupPermission.DeployFrom && propertyName == @"DeployFrom"
                || !windowsGroupPermission.Contribute && propertyName == @"Contribute")
             {
@@ -423,14 +429,14 @@ namespace Dev2.Settings.Security
 
         void UpdateHelpText(HelpType helpType)
         {
-            if(_isUpdatingHelpText)
+            if (_isUpdatingHelpText)
             {
                 return;
             }
             _isUpdatingHelpText = true;
             try
             {
-                switch(helpType)
+                switch (helpType)
                 {
                     case HelpType.Server:
                         IsResourceHelpVisible = false;
@@ -483,6 +489,27 @@ namespace Dev2.Settings.Security
         }
 
         #endregion
+
+        public Visibility Visibility => IsInDomain();
+
+        private static Visibility IsInDomain()
+        {
+            try
+            {
+                // ReSharper disable once UnusedVariable
+                var computerDomain = _domain.GetComputerDomain();
+                return Visibility.Visible;
+            }
+            catch (Exception)
+            {
+                return Visibility.Collapsed;
+            }
+
+
+        }
     }
+
+
+
 
 }

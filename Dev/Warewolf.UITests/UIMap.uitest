@@ -1666,6 +1666,15 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
+    <MouseAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.ServerSourceWizardTab.WorkSurfaceContext.NewServerSourceWizard.TestConnectionButton">
+      <ParameterName />
+      <ModifierKeys>None</ModifierKeys>
+      <IsGlobalHotkey>false</IsGlobalHotkey>
+      <Location X="51" Y="8" />
+      <WheelDirection>0</WheelDirection>
+      <ActionType>Click</ActionType>
+      <MouseButton>Left</MouseButton>
+    </MouseAction>
     <AssertAction UIObjectName="UIMap.MainStudioWindow.SideMenuBar.SaveButton">
       <ParameterName />
       <PropertyName>Enabled</PropertyName>

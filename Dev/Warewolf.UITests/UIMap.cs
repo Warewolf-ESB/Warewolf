@@ -33,7 +33,7 @@ namespace Warewolf.UITests
         }
 
         /// <summary> PlaybackError event handler. </summary>
-        private static void Playback_PlaybackError(object sender, PlaybackErrorEventArgs e)
+        private void Playback_PlaybackError(object sender, PlaybackErrorEventArgs e)
         {
             Console.WriteLine("Error from " + sender.GetType() + "\n" + e.Error.Message);
             if (sender is UITestControl)
