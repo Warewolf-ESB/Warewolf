@@ -270,9 +270,8 @@ namespace Dev2.Runtime.Hosting
             try
             {
                 path = path + "\\";
-                List<ResourceCatalogResult> deletedResources = ResourceCatalogue.GetResourceList(workSpaceId)
-                                                                                .Where(a => a.ResourcePath.StartsWith(path))
-                                                                                .Select(a => ResourceCatalogue.DeleteResource(workSpaceId, a.ResourceName, a.ResourceType.ToString())).ToList();
+                var resources = ResourceCatalogue.GetResourceList(workSpaceId).Where(a => a.ResourcePath.StartsWith(path)).ToList();
+                List<ResourceCatalogResult> deletedResources = resources.Select(a => ResourceCatalogue.DeleteResource(workSpaceId, a.ResourceName, a.ResourceType.ToString())).ToList();
                 if (deletedResources.Any(a => a.Status != ExecStatus.Success))
                 {
                     return new ExplorerRepositoryResult(ExecStatus.Fail, ErrorResource.FailedToDeleteChildItems);
