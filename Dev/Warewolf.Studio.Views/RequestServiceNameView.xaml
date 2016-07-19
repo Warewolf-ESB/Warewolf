@@ -13,6 +13,7 @@
         FocusManager.IsFocusScope="True"
         WindowStartupLocation="CenterScreen"
         ShowInTaskbar="False" Topmost="True"
+        MouseDown="RequestServiceNameView_OnMouseDown"
         Title="SaveDialogView"
         mc:Ignorable="d">
     

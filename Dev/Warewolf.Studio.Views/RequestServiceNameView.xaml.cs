@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+using System.Windows.Input;
 using System.Windows.Threading;
 using Dev2.Common.Interfaces;
 using Warewolf.Studio.Core;
@@ -135,6 +136,12 @@ namespace Warewolf.Studio.Views
             {
                 ExplorerView.ExplorerTree.EditingSettings.IsF2EditingEnabled = false;
             }
+        }
+
+        private void RequestServiceNameView_OnMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.ChangedButton == MouseButton.Left)
+                DragMove();
         }
     }
 }
