@@ -118,7 +118,6 @@ namespace Warewolf.UITests
                 Uimap.RightClick_Explorer_Localhost_First_Item();
                 Uimap.Select_Delete_FromExplorerContextMenu();
                 Uimap.Click_MessageBox_Yes();
-                Uimap.Click_Explorer_Filter_Clear_ButtonParams.FirstItemExists = false;
                 Uimap.Click_Explorer_Filter_Clear_Button();
                 Uimap.Click_Connect_Control_InExplorerParams.ComboboxListItemAsTSTCIREMOTEExists = false;
                 Uimap.Click_Connect_Control_InExplorer();
