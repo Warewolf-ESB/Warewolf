@@ -25,25 +25,47 @@ namespace Warewolf.UITests
         public void SetGlobalPlaybackSettings()
         {
             Playback.PlaybackSettings.WaitForReadyLevel = WaitForReadyLevel.Disabled;
-            Playback.PlaybackSettings.MaximumRetryCount = 5;
             Playback.PlaybackSettings.ShouldSearchFailFast = false;
-            Playback.PlaybackSettings.SearchTimeout = 5000;
             if (Environment.ProcessorCount <= 4)
             {
                 Playback.PlaybackSettings.ThinkTimeMultiplier = 2;
             }
+            else
+            {
+                Playback.PlaybackSettings.ThinkTimeMultiplier = 1;
+            }
+            Playback.PlaybackSettings.MaximumRetryCount = 5 * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
+            Playback.PlaybackSettings.SearchTimeout = 5000 * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
             Playback.PlaybackSettings.MatchExactHierarchy = true;
             Playback.PlaybackSettings.SkipSetPropertyVerification = true;
             Playback.PlaybackSettings.SmartMatchOptions = SmartMatchOptions.None;
-            Playback.PlaybackError -= Playback_PlaybackError;
-            Playback.PlaybackError += Playback_PlaybackError;
+            Playback.PlaybackError -= new EventHandler<PlaybackErrorEventArgs>(PlaybackErrorHandler);
+            Playback.PlaybackError += new EventHandler<PlaybackErrorEventArgs>(PlaybackErrorHandler);
         }
-
-        /// <summary> PlaybackError event handler. </summary>
-        private void Playback_PlaybackError(object sender, PlaybackErrorEventArgs e)
+        
+        void PlaybackErrorHandler(object sender, PlaybackErrorEventArgs e)
         {
             Console.WriteLine(e.Error.Message);
-            Playback.Wait(1000);
+            if (e.Error is UITestControlNotFoundException)
+            {
+                UITestControlNotFoundException asControlNotFoundException = e.Error as UITestControlNotFoundException;
+                var exceptionSource = asControlNotFoundException.ExceptionSource;
+                if (exceptionSource is UITestControl)
+                {
+                    UITestControl parent = (exceptionSource as UITestControl).Container;
+                    while (parent != null && !parent.Exists)
+                    {
+                        parent = parent.Container;
+                    }
+                    if (parent != null && parent.Exists)
+                    {
+                        parent.DrawHighlight();
+                        e.Result = PlaybackErrorOptions.Retry;
+                        return;
+                    }
+                }
+            }
+            Playback.Wait(1000 * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString()));
             e.Result = PlaybackErrorOptions.Retry;
         }
 
@@ -82,7 +104,10 @@ namespace Warewolf.UITests
         {
             try
             {
-                Click_Clear_Toolbox_Filter_Button();
+                if (MainStudioWindow.DockManager.SplitPaneLeft.Explorer.SearchTextBox.Text != string.Empty)
+                {
+                    Click_Clear_Toolbox_Filter_Button();
+                }
                 Click_Close_Tab_Button();
                 Click_MessageBox_No();
             }
