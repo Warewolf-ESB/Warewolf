@@ -60,7 +60,6 @@ namespace Warewolf.Studio.ViewModels
         private bool _canSelectWindows;
         private bool _canSelectServer;
         private bool _canSelectUser;
-        public IComputerNameProvider Provider { get; set; }
 
         public bool CanSelectWindows
         {
@@ -126,7 +125,6 @@ namespace Warewolf.Studio.ViewModels
             _testFailed = false;
             DatabaseNames = new List<string>();
             ComputerNames = new List<ComputerName>();
-            Provider = new ComputerNameProvider(new ComputerName[0]);
         }
 
         private void GetLoadComputerNamesTask(Action additionalUiAction)
@@ -134,7 +132,6 @@ namespace Warewolf.Studio.ViewModels
             AsyncWorker.Start(() => _updateManager.GetComputerNames().Select(name => new ComputerName { Name = name }).ToList(), names =>
             {
                 ComputerNames = names;
-                Provider.SetNames(ComputerNames);
                 if (additionalUiAction != null)
                 {
                     additionalUiAction();
@@ -819,25 +816,5 @@ namespace Warewolf.Studio.ViewModels
                 _isDisposed = true;
             }
         }
-    }
-
-    public class ComputerNameProvider : WpfControls.Editors.ISuggestionProvider, IComputerNameProvider
-    {
-        private IList<ComputerName> _names;
-
-        public ComputerNameProvider(IList<ComputerName> names)
-        {
-            _names = names;
-        }
-
-        public System.Collections.IEnumerable GetSuggestions(string filter)
-        {
-            return _names.Where(a => a.Name.ToUpper().Contains(filter.ToUpper()));
-        }
-
-        public void SetNames(IList<ComputerName> computerNames)
-        {
-            _names = computerNames;
-        }
-    }
+    }   
 }
