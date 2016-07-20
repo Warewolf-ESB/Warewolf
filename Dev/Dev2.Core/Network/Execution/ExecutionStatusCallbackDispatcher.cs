@@ -10,7 +10,6 @@
 
 using System;
 using System.Collections.Concurrent;
-using Warewolf.Resource.Errors;
 
 namespace Dev2.Network.Execution
 {
@@ -74,47 +73,6 @@ namespace Dev2.Network.Execution
         #endregion
 
         #region Methods
-
-        /// <summary>
-        ///     Posts the specified message (Asynchronously).
-        /// </summary>
-        /// <param name="message">The message.</param>
-        /// <exception cref="System.ArgumentNullException">message</exception>
-        /// <exception cref="System.InvalidOperationException">Channel is disposing.</exception>
-        public void Post(ExecutionStatusCallbackMessage message)
-        {
-            if (message == null)
-            {
-                throw new ArgumentNullException("message");
-            }
-
-            lock (_disposeGuard)
-            {
-                if (_isDisposed)
-                {
-                    throw new InvalidOperationException(ErrorResource.ChannelDisposing);
-                }
-            }
-
-            Action<ExecutionStatusCallbackMessage> callback;
-            if (_callbacks.TryGetValue(message.CallbackID, out callback))
-            {
-                callback.BeginInvoke(message, null, null);
-            }
-        }
-
-        /// <summary>
-        ///     A wrapper for the Post method which will only post a message if the callbackID isn't empty.
-        /// </summary>
-        /// <param name="callbackID">The callback ID.</param>
-        /// <param name="messageType">Type of the message.</param>
-        public void Post(Guid callbackID, ExecutionStatusCallbackMessageType messageType)
-        {
-            if (callbackID != Guid.Empty)
-            {
-                Post(new ExecutionStatusCallbackMessage(callbackID, messageType));
-            }
-        }
 
         #endregion Methods
 

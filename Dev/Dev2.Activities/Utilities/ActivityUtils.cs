@@ -23,6 +23,7 @@ namespace Dev2.Utilities
 {
     public static class ActivityUtils
     {
+        [SuppressMessage("ReSharper", "UnusedMember.Global")]
         public static DsfSqlServerDatabaseActivity GetDsfSqlServerDatabaseActivity(DsfDatabaseActivity dbActivity, DbService service, DbSource source)
         {
             DsfSqlServerDatabaseActivity dsfSqlServerDatabaseActivity = null;
@@ -60,6 +61,7 @@ namespace Dev2.Utilities
             return dsfSqlServerDatabaseActivity;
         }
 
+        [SuppressMessage("ReSharper", "UnusedMember.Global")]
         public static DsfMySqlDatabaseActivity GetDsfMySqlDatabaseActivity(DsfDatabaseActivity dbActivity, DbSource source, DbService service)
         {
             var dsfMySqlDatabaseActivity = new DsfMySqlDatabaseActivity
@@ -159,6 +161,7 @@ namespace Dev2.Utilities
             return dsfOdbcDatabaseActivity;
         }
 
+        [SuppressMessage("ReSharper", "UnusedMember.Global")]
         public static DsfPostgreSqlActivity GetDsfPostgreSqlActivity(DsfDatabaseActivity dbActivity, DbService service, DbSource source)
         {
             DsfPostgreSqlActivity dsfSqlServerDatabaseActivity = null;

@@ -44,6 +44,9 @@ namespace Dev2.Activities
         [Inputs("ScriptType")]
         public enScriptType ScriptType { get; set; }
 
+        [Inputs("EscapeScript")]
+        public bool EscapeScript { get; set; }
+
         [FindMissing]
         [Inputs("Script")]
         public string Script { get; set; }
@@ -61,6 +64,7 @@ namespace Dev2.Activities
         {
             Script = string.Empty;
             Result = string.Empty;
+            EscapeScript = true;
         }
 
         #endregion Ctor
@@ -134,6 +138,8 @@ namespace Dev2.Activities
                         //2013.06.03: Ashley Lewis for bug 9498 - handle multiple regions in result
                         foreach (var region in DataListCleaningUtils.SplitIntoRegions(Result))
                         {
+                            if (EscapeScript)
+                                value = System.Text.RegularExpressions.Regex.Escape(value);
                             env.Assign(region, value, update);
                             if (dataObject.IsDebugMode() && !allErrors.HasErrors())
                             {

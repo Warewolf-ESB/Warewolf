@@ -25,25 +25,47 @@ namespace Warewolf.UITests
         public void SetGlobalPlaybackSettings()
         {
             Playback.PlaybackSettings.WaitForReadyLevel = WaitForReadyLevel.Disabled;
-            Playback.PlaybackSettings.MaximumRetryCount = 5;
             Playback.PlaybackSettings.ShouldSearchFailFast = false;
-            Playback.PlaybackSettings.SearchTimeout = 5000;
-            Playback.PlaybackError -= Playback_PlaybackError;
-            Playback.PlaybackError += Playback_PlaybackError;
-        }
-
-        /// <summary> PlaybackError event handler. </summary>
-        private void Playback_PlaybackError(object sender, PlaybackErrorEventArgs e)
-        {
-            Console.WriteLine("Error from " + sender.GetType() + "\n" + e.Error.Message);
-            if (sender is UITestControl)
+            if (Environment.ProcessorCount <= 4)
             {
-                (sender as UITestControl).DrawHighlight();
+                Playback.PlaybackSettings.ThinkTimeMultiplier = 2;
             }
             else
             {
-                Playback.Wait(1000);
+                Playback.PlaybackSettings.ThinkTimeMultiplier = 1;
             }
+            Playback.PlaybackSettings.MaximumRetryCount = 5 * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
+            Playback.PlaybackSettings.SearchTimeout = 5000 * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
+            Playback.PlaybackSettings.MatchExactHierarchy = true;
+            Playback.PlaybackSettings.SkipSetPropertyVerification = true;
+            Playback.PlaybackSettings.SmartMatchOptions = SmartMatchOptions.None;
+            Playback.PlaybackError -= new EventHandler<PlaybackErrorEventArgs>(PlaybackErrorHandler);
+            Playback.PlaybackError += new EventHandler<PlaybackErrorEventArgs>(PlaybackErrorHandler);
+        }
+        
+        void PlaybackErrorHandler(object sender, PlaybackErrorEventArgs e)
+        {
+            Console.WriteLine(e.Error.Message);
+            if (e.Error is UITestControlNotFoundException)
+            {
+                UITestControlNotFoundException asControlNotFoundException = e.Error as UITestControlNotFoundException;
+                var exceptionSource = asControlNotFoundException.ExceptionSource;
+                if (exceptionSource is UITestControl)
+                {
+                    UITestControl parent = (exceptionSource as UITestControl).Container;
+                    while (parent != null && !parent.Exists)
+                    {
+                        parent = parent.Container;
+                    }
+                    if (parent != null && parent.Exists)
+                    {
+                        parent.DrawHighlight();
+                        e.Result = PlaybackErrorOptions.Retry;
+                        return;
+                    }
+                }
+            }
+            Playback.Wait(1000 * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString()));
             e.Result = PlaybackErrorOptions.Retry;
         }
 
@@ -82,10 +104,14 @@ namespace Warewolf.UITests
         {
             try
             {
+                if (MainStudioWindow.DockManager.SplitPaneLeft.Explorer.SearchTextBox.Text != string.Empty)
+                {
+                    Click_Clear_Toolbox_Filter_Button();
+                }
                 Click_Close_Tab_Button();
                 Click_MessageBox_No();
             }
-            catch (UITestControlNotFoundException e)
+            catch (Exception e)
             {
                 Console.WriteLine("Error during test cleanup: " + e.Message);
             }
@@ -93,13 +119,13 @@ namespace Warewolf.UITests
 
         public void Click_Settings_Resource_Permissions_Row1_Add_Resource_Button()
         {
-            Mouse.Click(this.FindAddResourceButton(this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1));
+            Mouse.Click(this.FindAddResourceButton(this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1));
             Assert.AreEqual(true, this.ServicePickerDialog.Exists, "Service picker dialog does not exist.");
         }
 
         public void Click_Settings_Resource_Permissions_Row1_Windows_Group_Button()
         {
-            Mouse.Click(this.FindAddWindowsGroupButton(this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1));
+            Mouse.Click(this.FindAddWindowsGroupButton(this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1));
             Assert.AreEqual(true, this.SelectWindowsGroupDialog.Exists, "Select windows group dialog does not exist.");
             Assert.AreEqual(true, this.SelectWindowsGroupDialog.ItemPanel.ObjectNameTextbox.Exists, "Select windows group object name textbox does not exist.");
         }

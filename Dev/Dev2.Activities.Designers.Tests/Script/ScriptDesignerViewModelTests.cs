@@ -20,7 +20,6 @@ namespace Dev2.Activities.Designers.Tests.Script
     [TestClass]
     public class ScriptDesignerViewModelTests
     {
-
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("ScriptDesignerViewModel_Constructor")]
@@ -28,6 +27,7 @@ namespace Dev2.Activities.Designers.Tests.Script
         {
             var modelItem = CreateModelItem();
             var viewModel = new TestScriptDesignerViewModel(modelItem);
+            Assert.IsTrue(viewModel.EscapeScript);
             var expected = Dev2EnumConverter.ConvertEnumsTypeToStringList<enScriptType>();
             CollectionAssert.AreEqual(expected.ToList(), viewModel.ScriptTypes.ToList());
             Assert.IsTrue(viewModel.HasLargeView);
@@ -43,6 +43,7 @@ namespace Dev2.Activities.Designers.Tests.Script
             var viewModel = new TestScriptDesignerViewModel(modelItem);
             Assert.AreEqual(enScriptType.JavaScript, viewModel.ScriptType);
             Assert.AreEqual("JavaScript", viewModel.SelectedScriptType);
+            Assert.IsTrue(viewModel.EscapeScript);
             Assert.AreEqual("JavaScript Syntax", viewModel.ScriptTypeDefaultText);
         }
 
@@ -56,6 +57,7 @@ namespace Dev2.Activities.Designers.Tests.Script
             const string ExpectedValue = "Python";
             viewModel.SelectedScriptType = ExpectedValue;
             Assert.AreEqual(enScriptType.Python, viewModel.ScriptType);
+            Assert.IsTrue(viewModel.EscapeScript);
             Assert.AreEqual("Python Syntax", viewModel.ScriptTypeDefaultText);
         }
 
@@ -69,6 +71,7 @@ namespace Dev2.Activities.Designers.Tests.Script
             const string ExpectedValue = "Ruby";
             viewModel.SelectedScriptType = ExpectedValue;
             Assert.AreEqual(enScriptType.Ruby, viewModel.ScriptType);
+            Assert.IsTrue(viewModel.EscapeScript);
             Assert.AreEqual("Ruby Syntax", viewModel.ScriptTypeDefaultText);
         }
 

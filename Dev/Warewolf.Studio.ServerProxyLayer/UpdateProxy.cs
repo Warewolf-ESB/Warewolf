@@ -222,6 +222,19 @@ namespace Warewolf.Studio.ServerProxyLayer
             if (output.HasError)
                 throw new WarewolfSaveException(output.Message.ToString(), null);
         }
+       
+
+        public void SaveComPluginSource(IComPluginSource source, Guid serverWorkspaceID)
+        {
+            throw new NotImplementedException();
+            /*var con = Connection;
+            var comsController = CommunicationControllerFactory.CreateController("SaveComPluginSource");
+            Dev2JsonSerializer serialiser = new Dev2JsonSerializer();
+            comsController.AddPayloadArgument("ComPluginSource", serialiser.SerializeToBuilder(source));
+            var output = comsController.ExecuteCommand<IExecuteMessage>(con, GlobalConstants.ServerWorkspaceID);
+            if (output.HasError)
+                throw new WarewolfSaveException(output.Message.ToString(), null);*/
+        }
 
         public void SaveOAuthSource(IOAuthSource source, Guid serverWorkspaceID)
         {
@@ -248,6 +261,21 @@ namespace Warewolf.Studio.ServerProxyLayer
             return output.Message.ToString();
         }
 
+        public string TestComPluginService(IComPluginService plugin)
+        {
+            throw new NotImplementedException();
+            /*var con = Connection;
+            var comsController = CommunicationControllerFactory.CreateController("TestPluginService");
+            Dev2JsonSerializer serialiser = new Dev2JsonSerializer();
+            comsController.AddPayloadArgument("PluginService", serialiser.SerializeToBuilder(plugin));
+            var output = comsController.ExecuteCommand<IExecuteMessage>(con, GlobalConstants.ServerWorkspaceID);
+            if (output == null)
+                throw new WarewolfTestException(ErrorResource.UnableToContactServer, null);
+            if (output.HasError)
+                throw new WarewolfTestException(output.Message.ToString(), null);
+            return output.Message.ToString();*/
+        }
+
         public void SavePluginService(IPluginService service)
         {
             var con = Connection;
@@ -257,6 +285,18 @@ namespace Warewolf.Studio.ServerProxyLayer
             var output = comsController.ExecuteCommand<IExecuteMessage>(con, GlobalConstants.ServerWorkspaceID);
             if (output.HasError)
                 throw new WarewolfSaveException(output.Message.ToString(), null);
+        }
+
+        public void SaveComPluginService(IComPluginService service)
+        {
+            throw new NotImplementedException();
+            /*var con = Connection;
+            var comsController = CommunicationControllerFactory.CreateController("SavePluginService");
+            Dev2JsonSerializer serialiser = new Dev2JsonSerializer();
+            comsController.AddPayloadArgument("PluginService", serialiser.SerializeToBuilder(service));
+            var output = comsController.ExecuteCommand<IExecuteMessage>(con, GlobalConstants.ServerWorkspaceID);
+            if (output.HasError)
+                throw new WarewolfSaveException(output.Message.ToString(), null);*/
         }
 
         public string TestEmailServiceSource(IEmailServiceSource emailServiceSource)
@@ -309,24 +349,24 @@ namespace Warewolf.Studio.ServerProxyLayer
                 throw new WarewolfSaveException(output.Message.ToString(), null);
         }
 
-        public void SaveRabbitMQServiceSource(IRabbitMQServiceSourceDefinition model, Guid serverWorkspaceID)
+        public void SaveRabbitMQServiceSource(IRabbitMQServiceSourceDefinition rabbitMqServiceSource, Guid serverWorkspaceID)
         {
             var con = Connection;
             var comsController = CommunicationControllerFactory.CreateController("SaveRabbitMQServiceSource");
             Dev2JsonSerializer serialiser = new Dev2JsonSerializer();
-            comsController.AddPayloadArgument("RabbitMQServiceSource", serialiser.SerializeToBuilder(model));
+            comsController.AddPayloadArgument("RabbitMQServiceSource", serialiser.SerializeToBuilder(rabbitMqServiceSource));
             var output = comsController.ExecuteCommand<IExecuteMessage>(con, GlobalConstants.ServerWorkspaceID);
             if (output.HasError)
                 throw new WarewolfSaveException(output.Message.ToString(), null);
         }
 
         // ReSharper disable once InconsistentNaming
-        public string TestRabbitMQServiceSource(IRabbitMQServiceSourceDefinition rabbitMQServiceSource)
+        public string TestRabbitMQServiceSource(IRabbitMQServiceSourceDefinition rabbitMqServiceSource)
         {
             var con = Connection;
             var comsController = CommunicationControllerFactory.CreateController("TestRabbitMQServiceSource");
             Dev2JsonSerializer serialiser = new Dev2JsonSerializer();
-            comsController.AddPayloadArgument("RabbitMQServiceSource", serialiser.SerializeToBuilder(rabbitMQServiceSource));
+            comsController.AddPayloadArgument("RabbitMQServiceSource", serialiser.SerializeToBuilder(rabbitMqServiceSource));
             var output = comsController.ExecuteCommand<IExecuteMessage>(con, GlobalConstants.ServerWorkspaceID);
             if (output == null)
                 throw new WarewolfTestException(ErrorResource.UnableToContactServer, null);

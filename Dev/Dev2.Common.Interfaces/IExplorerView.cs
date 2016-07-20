@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Microsoft.Practices.Prism.Mvvm;
+// ReSharper disable UnusedMember.Global
 
 namespace Dev2.Common.Interfaces
 {
@@ -18,10 +19,6 @@ namespace Dev2.Common.Interfaces
         void AddNewResource(string path, string itemType);
         void AddResources(int resourceNumber, string path, string type, string name);
         int GetResourcesVisible (string path);
-
-        void VerifyItemDoesNotExist(string path);
-
-        void Refresh();
 
         IExplorerTreeItem OpenItem(string resourceName, string folderName);
 

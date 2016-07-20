@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Monitoring;
@@ -49,6 +50,7 @@ namespace Dev2.PerformanceCounters.Management
             }
             
         }
+        [SuppressMessage("ReSharper", "UnusedMember.Global")]
         public void RemoverCounter(Guid resourceId, WarewolfPerfCounterType type, string name)
         {
             var toRemove = _resourceCounters.FirstOrDefault(a =>

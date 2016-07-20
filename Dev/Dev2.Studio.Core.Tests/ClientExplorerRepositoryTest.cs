@@ -153,52 +153,6 @@ namespace Dev2.Core.Tests
 
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
-        [TestCategory("ClientExplorerRepository_MoveItem")]
-        public void ClientExplorerRepository_GetServerVersion_ExpectCorrectServiceCalled()
-        {
-            //------------Setup for test--------------------------
-            var env = new Mock<IEnvironmentConnection>();
-            var comFactory = new Mock<ICommunicationControllerFactory>();
-            var rep = new ServerExplorerClientProxy(env.Object, comFactory.Object);
-            var com = new Mock<ICommunicationController>();
-           comFactory.Setup(a => a.CreateController("GetServerVersion")).Returns(com.Object).Verifiable();
-            com.Setup(a => a.ExecuteCommand<string>(env.Object, Guid.Empty)).Returns("1,2,3,4").Verifiable();
-
-            //------------Execute Test---------------------------
-            Assert.AreEqual("1,2,3,4",rep.GetServerVersion());
-            //------------Assert Results-------------------------
-
-            comFactory.Verify(a => a.CreateController("GetServerVersion"));
-            com.Verify(a => a.ExecuteCommand<string>(env.Object, Guid.Empty));
-            com.Verify(a => a.ExecuteCommand<string>(env.Object, Guid.Empty));
-
-        }
-
-        [TestMethod]
-        [Owner("Leon Rajindrapersadh")]
-        [TestCategory("ClientExplorerRepository_MoveItem")]
-        public void ClientExplorerRepository_GetServerVersion_ExpectCorrectServiceCalled_defaultIfEmpty()
-        {
-            //------------Setup for test--------------------------
-            var env = new Mock<IEnvironmentConnection>();
-            var comFactory = new Mock<ICommunicationControllerFactory>();
-            var rep = new ServerExplorerClientProxy(env.Object, comFactory.Object);
-            var com = new Mock<ICommunicationController>();
-            comFactory.Setup(a => a.CreateController("GetServerVersion")).Returns(com.Object).Verifiable();
-            com.Setup(a => a.ExecuteCommand<string>(env.Object, Guid.Empty)).Returns("").Verifiable();
-
-            //------------Execute Test---------------------------
-            Assert.AreEqual("less than 0.4.19.1", rep.GetServerVersion());
-            //------------Assert Results-------------------------
-
-            comFactory.Verify(a => a.CreateController("GetServerVersion"));
-            com.Verify(a => a.ExecuteCommand<string>(env.Object, Guid.Empty));
-            com.Verify(a => a.ExecuteCommand<string>(env.Object, Guid.Empty));
-
-        }
-
-        [TestMethod]
-        [Owner("Leon Rajindrapersadh")]
         [TestCategory("ClientExplorerRepository_DeleteItemItem")]
         public void ClientExplorerRepository_DeleteItemItem_ExpectDeleteServiceCalled()
         {
