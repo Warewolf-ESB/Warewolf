@@ -10,7 +10,6 @@
 
 using System;
 using System.Collections.Generic;
-using Dev2.Interfaces;
 
 namespace Dev2.Runtime.Execution
 {
@@ -21,9 +20,6 @@ namespace Dev2.Runtime.Execution
         IList<IExecutableService> AssociatedServices { get; }
         Guid ParentID { get; set; }
 
-        void Run();
         void Terminate();
-        void Resume(IDSFDataObject dataObject);
-
     }
 }

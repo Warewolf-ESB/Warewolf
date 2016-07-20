@@ -12,6 +12,7 @@ using System;
 using System.Activities;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -887,6 +888,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region Get Debug State
 
+        [SuppressMessage("ReSharper", "UnusedMember.Global")]
         public IDebugState GetDebugState()
         {
             return _debugState;
@@ -895,12 +897,14 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         #endregion
 
         #region workSurfaceMappingId
+        [SuppressMessage("ReSharper", "UnusedMember.Global")]
         public Guid GetWorkSurfaceMappingId()
         {
             return WorkSurfaceMappingId;
         }
         #endregion
 
+        [SuppressMessage("ReSharper", "UnusedMember.Global")]
         public virtual IList<IActionableErrorInfo> PerformValidation()
         {
             return new List<IActionableErrorInfo>();

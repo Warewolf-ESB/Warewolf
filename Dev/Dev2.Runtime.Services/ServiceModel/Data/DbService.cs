@@ -9,6 +9,7 @@
 */
 
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Xml.Linq;
 using Dev2.Common.Common;
@@ -72,6 +73,7 @@ namespace Dev2.Runtime.ServiceModel.Data
 
         #region Create
 
+        [SuppressMessage("ReSharper", "UnusedMember.Global")]
         public static DbService Create()
         {
             var result = new DbService

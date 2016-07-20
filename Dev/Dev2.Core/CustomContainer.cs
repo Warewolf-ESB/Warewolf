@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Dev2
 {
@@ -22,6 +23,7 @@ namespace Dev2
 
         public static int EntiresCount => RegisterdTypes.Count;
 
+        [SuppressMessage("ReSharper", "UnusedMember.Global")]
         public static void Clear()
         {
             RegisterdTypes.Clear();
