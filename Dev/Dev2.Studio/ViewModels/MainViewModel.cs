@@ -674,6 +674,11 @@ namespace Dev2.Studio.ViewModels
             _worksurfaceContextManager.EditResource(selectedSource, workSurfaceKey);
         }
 
+        public void EditResource(IComPluginSource selectedSource, IWorkSurfaceKey workSurfaceKey = null)
+        {
+            _worksurfaceContextManager.EditResource(selectedSource, workSurfaceKey);
+        }
+
         public void NewService(string resourcePath)
         {
             _worksurfaceContextManager.NewService(resourcePath);
@@ -707,6 +712,11 @@ namespace Dev2.Studio.ViewModels
         public void NewWcfSource(string resourcePath)
         {
             _worksurfaceContextManager.NewWcfSource(resourcePath);
+        }
+
+        public void NewComPluginSource(string resourcePath)
+        {
+            _worksurfaceContextManager.NewComPluginSource(resourcePath);
         }
 
         public void NewDropboxSource(string resourcePath)

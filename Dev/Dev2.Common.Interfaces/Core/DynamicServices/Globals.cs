@@ -159,7 +159,8 @@ namespace Dev2.Common.Interfaces.Core.DynamicServices
         SharepointServerSource,
         RabbitMQSource,
         ExchangeSource,
-        WcfSource
+        WcfSource,
+        ComPluginSource
     }
 
     /// <summary>

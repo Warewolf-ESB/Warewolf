@@ -210,6 +210,7 @@
     <Compile Include="Plugins\DllExtractor.cs" />
     <Compile Include="ResourceUpgraders\BaseUpgradeConvertorTests.cs" />
     <Compile Include="ResourceUpgraders\EncryptionResourceUpgraderTests.cs" />
+    <Compile Include="ServiceModel\Data\ComPluginSourceTests.cs" />
     <Compile Include="ServiceModel\Data\DropBoxSourceTests.cs" />
     <Compile Include="ServiceModel\Data\ExchangeSourceTests.cs" />
     <Compile Include="ServiceModel\Data\ScalarTests.cs" />
