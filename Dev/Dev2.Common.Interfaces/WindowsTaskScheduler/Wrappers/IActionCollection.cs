@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.Win32.TaskScheduler;
 
 namespace Dev2.Common.Interfaces.WindowsTaskScheduler.Wrappers
@@ -40,6 +41,7 @@ namespace Dev2.Common.Interfaces.WindowsTaskScheduler.Wrappers
         /// <returns>
         ///     <c>true</c> if the specified action type is contained in this collection; otherwise, <c>false</c>.
         /// </returns>
+        [SuppressMessage("ReSharper", "UnusedMember.Global")]
         bool ContainsType(Type actionType);
 
     }

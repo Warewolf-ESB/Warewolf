@@ -115,17 +115,5 @@ namespace Dev2.Activities.Designers2.Core
                 theGrid.Items.Refresh();
             }
         }
-        protected override void OnDispose()
-        {
-//            base.OnDispose();
-//           CEventHelper.RemoveAllEventHandlers(TheGrid);
-//           CEventHelper.RemoveAllEventHandlers(this);
-//           CEventHelper.RemoveAllEventHandlers(ModelItem);
-//            if(_dataContext.ModelItemCollection != null)
-//            {
-//                _dataContext.ModelItemCollection.CollectionChanged -= ModelItemCollectionCollectionChanged;
-//            }
-        }
-      
     }
 }

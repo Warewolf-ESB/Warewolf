@@ -8,7 +8,7 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
+using System.Diagnostics.CodeAnalysis;
 
 namespace Dev2.PathOperations
 {
@@ -20,6 +20,7 @@ namespace Dev2.PathOperations
     /// </summary>
     public class Dev2PutOperationTOFactory
     {
+        [SuppressMessage("ReSharper", "UnusedMember.Global")]
         public IFileWrite CreateDev2PutOperationTO(bool append, string content, bool overwrite)
         {
             return new Dev2PutOperationTO(append, content, overwrite);

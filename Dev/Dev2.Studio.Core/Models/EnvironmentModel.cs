@@ -11,7 +11,6 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Network;
-using System.Threading.Tasks;
 using Dev2.Common;
 using Dev2.Security;
 using Dev2.Services.Security;
@@ -187,17 +186,6 @@ namespace Dev2.Studio.Core.Models
                 ResourceRepository.ForceLoad();
                 HasLoadedResources = true;
             }
-        }
-
-        public async Task<bool> ForceLoadResourcesAsync()
-        {
-            if(Connection.IsConnected && CanStudioExecute)
-            {
-                await ResourceRepository.ForceLoadAsync();
-                HasLoadedResources = true;
-                return true;
-            }
-            return false;
         }
 
         public void FireWorkflowSaved()

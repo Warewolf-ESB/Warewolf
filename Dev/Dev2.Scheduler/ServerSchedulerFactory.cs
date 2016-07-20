@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Scheduler.Interfaces;
 using Dev2.Common.Interfaces.WindowsTaskScheduler.Wrappers;
@@ -102,6 +103,7 @@ namespace Dev2.Scheduler
             }
         }
 
+        [SuppressMessage("ReSharper", "UnusedMember.Global")]
         public IScheduledResource CreateResource(string name, SchedulerStatus status, Trigger trigger,
                                                  string workflowName,string resourceId)
         {

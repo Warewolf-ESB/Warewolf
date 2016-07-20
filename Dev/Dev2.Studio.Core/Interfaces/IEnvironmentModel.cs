@@ -9,7 +9,6 @@
 */
 
 using System;
-using System.Threading.Tasks;
 using Dev2.Services.Security;
 
 // ReSharper disable CheckNamespace
@@ -46,8 +45,6 @@ namespace Dev2.Studio.Core.Interfaces
         string DisplayName { get;  }
 
         event EventHandler AuthorizationServiceSet;
-
-        Task<bool> ForceLoadResourcesAsync();
 
         void FireWorkflowSaved();
 
