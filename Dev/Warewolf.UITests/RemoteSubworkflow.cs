@@ -74,7 +74,7 @@ namespace Warewolf.UITests
             Console.WriteLine("Test \"" + TestContext.TestName + "\" starting on " + System.Environment.MachineName);
         }
         
-        //[TestCleanup]
+        [TestCleanup]
         public void MyTestCleanup()
         {
             try
