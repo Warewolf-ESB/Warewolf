@@ -44,13 +44,10 @@ namespace Warewolf.UITests
             Uimap.Enter_Servicename_As_RemoteServerUITestWorkflow();
             Uimap.Click_SaveDialog_YesButton();
             Uimap.Enter_RemoteServerUITestWorkflow_Into_Explorer_Filter();
-            /**TODO: Re-introduce these actions before WOLF-1923 can be moved to done
             Uimap.Click_Debug_Ribbon_Button();
-            Uimap.Click_DebugInput_DebugButtonParams.Workflow1Exists = true;
-            Uimap.Click_DebugInput_DebugButton();
-	        Uimap.Click_Cell_Highlights_Workflow_OnDesignSurface();
-	        Uimap.Click_Debug_Output_Workflow_Name();
-            **/
+            //Uimap.Click_DebugInput_Debug_Button_to_Debug_RemoteServerUITestWorkflow();
+	        //Uimap.Click_Workflow1_Cell_Highlights_Workflow1_OnDesignSurface();
+	        //Uimap.Click_Debug_Output_Workflow1_Name();
             Uimap.RightClick_Explorer_Localhost_First_Item();
             Uimap.Click_Show_Dependencies_In_Explorer_Context_Menu();
             Uimap.Click_Settings_Ribbon_Button();
@@ -77,7 +74,7 @@ namespace Warewolf.UITests
             Console.WriteLine("Test \"" + TestContext.TestName + "\" starting on " + System.Environment.MachineName);
         }
         
-        [TestCleanup]
+        //[TestCleanup]
         public void MyTestCleanup()
         {
             try

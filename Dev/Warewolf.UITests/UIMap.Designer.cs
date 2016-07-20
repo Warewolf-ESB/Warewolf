@@ -118,20 +118,16 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
-        /// Click_Close_Server_Source_Wizard_Tab_Button - Use 'Click_Close_Server_Source_Wizard_Tab_ButtonParams' to pass parameters into this method.
+        /// Click_Close_Server_Source_Wizard_Tab_Button
         /// </summary>
         public void Click_Close_Server_Source_Wizard_Tab_Button()
         {
             #region Variable Declarations
             WpfButton tabCloseButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.ServerSourceWizardTab.TabCloseButton;
-            WpfWindow messageBoxWindow = this.MessageBoxWindow;
             #endregion
 
             // Click '' button
             Mouse.Click(tabCloseButton, new Point(5, 5));
-
-            // Verify that the 'Exists' property of 'WarewolfMessageBox' window equals 'False'
-            Assert.AreEqual(this.Click_Close_Server_Source_Wizard_Tab_ButtonParams.MessageBoxWindowExists, messageBoxWindow.Exists, "Message box does exist");
         }
         
         /// <summary>
@@ -215,7 +211,6 @@ namespace Warewolf.UITests
             WpfCheckBox rememberDebugInputCheckBox = this.MainStudioWindow.DebugInputDialog.RememberDebugInputCheckBox;
             WpfButton viewInBrowserF7Button = this.MainStudioWindow.DebugInputDialog.ViewInBrowserF7Button;
             WpfTable dataListInputsTable = this.MainStudioWindow.DebugInputDialog.UITabItemsTabList.InputDataTab.DataListInputsTable;
-            WpfText uIRec1setText = this.MainStudioWindow.DebugInputDialog.UITabItemsTabList.InputDataTab.DataListInputsTable.UIDescriptionCell.UIRec1setText;
             WpfTabPage xMLTab = this.MainStudioWindow.DebugInputDialog.UITabItemsTabList.XMLTab;
             WpfCustom xMLWindow = this.MainStudioWindow.DebugInputDialog.UITabItemsTabList.XMLTab.XMLWindow;
             WpfTabPage jSONTab = this.MainStudioWindow.DebugInputDialog.UITabItemsTabList.JSONTab;
@@ -245,9 +240,6 @@ namespace Warewolf.UITests
 
             // Verify that the 'Exists' property of 'DataListInputs' table equals 'True'
             Assert.AreEqual(this.Click_Debug_Ribbon_ButtonParams.DataListInputsTableExists, dataListInputsTable.Exists, "Input Data Window does not exist in Debug Input window");
-
-            // Verify that the 'Exists' property of 'rec(1).set' label equals 'True'
-            Assert.AreEqual(this.Click_Debug_Ribbon_ButtonParams.UIRec1setTextExists, uIRec1setText.Exists, "First Field name does not exist in the Input Data window");
 
             // Verify that the 'Exists' property of 'XML' tab equals 'True'
             Assert.AreEqual(this.Click_Debug_Ribbon_ButtonParams.XMLTabExists, xMLTab.Exists, "Xml tab does not Exist in the Debug Input window");
@@ -5116,18 +5108,6 @@ namespace Warewolf.UITests
             }
         }
         
-        public virtual Click_Close_Server_Source_Wizard_Tab_ButtonParams Click_Close_Server_Source_Wizard_Tab_ButtonParams
-        {
-            get
-            {
-                if ((this.mClick_Close_Server_Source_Wizard_Tab_ButtonParams == null))
-                {
-                    this.mClick_Close_Server_Source_Wizard_Tab_ButtonParams = new Click_Close_Server_Source_Wizard_Tab_ButtonParams();
-                }
-                return this.mClick_Close_Server_Source_Wizard_Tab_ButtonParams;
-            }
-        }
-        
         public virtual Click_Close_Tab_ButtonParams Click_Close_Tab_ButtonParams
         {
             get
@@ -6888,8 +6868,6 @@ namespace Warewolf.UITests
         
         private Click_Calculate_Large_View_Done_ButtonParams mClick_Calculate_Large_View_Done_ButtonParams;
         
-        private Click_Close_Server_Source_Wizard_Tab_ButtonParams mClick_Close_Server_Source_Wizard_Tab_ButtonParams;
-        
         private Click_Close_Tab_ButtonParams mClick_Close_Tab_ButtonParams;
         
         private Click_Debug_Ribbon_ButtonParams mClick_Debug_Ribbon_ButtonParams;
@@ -7240,21 +7218,6 @@ namespace Warewolf.UITests
     }
     
     /// <summary>
-    /// Parameters to be passed into 'Click_Close_Server_Source_Wizard_Tab_Button'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Click_Close_Server_Source_Wizard_Tab_ButtonParams
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Verify that the 'Exists' property of 'WarewolfMessageBox' window equals 'False'
-        /// </summary>
-        public bool MessageBoxWindowExists = false;
-        #endregion
-    }
-    
-    /// <summary>
     /// Parameters to be passed into 'Click_Close_Tab_Button'
     /// </summary>
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
@@ -7311,11 +7274,6 @@ namespace Warewolf.UITests
         /// Verify that the 'Exists' property of 'DataListInputs' table equals 'True'
         /// </summary>
         public bool DataListInputsTableExists = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'rec(1).set' label equals 'True'
-        /// </summary>
-        public bool UIRec1setTextExists = true;
         
         /// <summary>
         /// Verify that the 'Exists' property of 'XML' tab equals 'True'
