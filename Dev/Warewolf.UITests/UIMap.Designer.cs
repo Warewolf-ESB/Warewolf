@@ -212,7 +212,6 @@ namespace Warewolf.UITests
             WpfButton viewInBrowserF7Button = this.MainStudioWindow.DebugInputDialog.ViewInBrowserF7Button;
             WpfTable dataListInputsTable = this.MainStudioWindow.DebugInputDialog.UITabItemsTabList.InputDataTab.DataListInputsTable;
             WpfTabPage xMLTab = this.MainStudioWindow.DebugInputDialog.UITabItemsTabList.XMLTab;
-            WpfCustom xMLWindow = this.MainStudioWindow.DebugInputDialog.UITabItemsTabList.XMLTab.XMLWindow;
             WpfTabPage jSONTab = this.MainStudioWindow.DebugInputDialog.UITabItemsTabList.JSONTab;
             WpfCustom jSONWindow = this.MainStudioWindow.DebugInputDialog.UITabItemsTabList.JSONTab.JSONWindow;
             #endregion
@@ -243,9 +242,6 @@ namespace Warewolf.UITests
 
             // Verify that the 'Exists' property of 'XML' tab equals 'True'
             Assert.AreEqual(this.Click_Debug_Ribbon_ButtonParams.XMLTabExists, xMLTab.Exists, "Xml tab does not Exist in the Debug Input window");
-
-            // Verify that the 'Exists' property of 'UI_XMLEditor_AutoID' custom control equals 'True'
-            Assert.AreEqual(this.Click_Debug_Ribbon_ButtonParams.XMLWindowExists, xMLWindow.Exists, "Debug Input Xml window does not exist ");
 
             // Verify that the 'Exists' property of 'JSON' tab equals 'True'
             Assert.AreEqual(this.Click_Debug_Ribbon_ButtonParams.JSONTabExists, jSONTab.Exists, "Assert Json tab does not exist in the debug input window");
@@ -1434,9 +1430,15 @@ namespace Warewolf.UITests
             WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
             #endregion
 
+            // Verify that the 'Exists' property of 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item equals 'True'
+            Assert.AreEqual(this.Drag_Explorer_Localhost_First_Item_Onto_Workflow_Design_SurfaceParams.FirstItemExists, firstItem.Exists, "No items to drag found in the explorer tree.");
+
+            // Click 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item
+            Mouse.Click(firstItem, new Point(64, 5));
+
             // Move 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item to 'Flowchart' custom control
             flowchart.EnsureClickable(new Point(307, 128));
-            Mouse.StartDragging(firstItem, new Point(16, 5));
+            Mouse.StartDragging(firstItem, new Point(64, 5));
             Mouse.StopDragging(flowchart, new Point(307, 128));
 
             // Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
@@ -1489,6 +1491,46 @@ namespace Warewolf.UITests
 
             // Verify that the 'Exists' property of 'DsfWebPostActivity' custom control equals 'True'
             Assert.AreEqual(this.Drag_PostWeb_RequestTool_Onto_DesignSurfaceParams.WebPostExists, webPost.Exists, "Web Post Request small view does not exist on the design surface");
+        }
+        
+        /// <summary>
+        /// Drag_Explorer_Remote_workflow1_Onto_Workflow_Design_Surface - Use 'Drag_Explorer_Remote_workflow1_Onto_Workflow_Design_SurfaceParams' to pass parameters into this method.
+        /// </summary>
+        public void Drag_Explorer_Remote_workflow1_Onto_Workflow_Design_Surface()
+        {
+            #region Variable Declarations
+            WpfEdit searchTextBox = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.SearchTextBox;
+            WpfButton explorerRefreshButton = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerRefreshButton;
+            WpfTreeItem firstItem = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.FirstItem;
+            WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
+            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
+            WpfCustom subWorkflow = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SubWorkflow;
+            #endregion
+
+            // Type 'workflow1' in 'SearchTextBox' text box
+            searchTextBox.Text = this.Drag_Explorer_Remote_workflow1_Onto_Workflow_Design_SurfaceParams.SearchTextBoxText;
+
+            // Wait for 2 seconds for user delay between actions; Click '' button
+            Playback.Wait(2000);
+            Mouse.Click(explorerRefreshButton, new Point(10, 10));
+
+            // Wait for 2 seconds for user delay between actions; Verify that the 'Exists' property of 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item equals 'True'
+            Playback.Wait(2000);
+            Assert.AreEqual(this.Drag_Explorer_Remote_workflow1_Onto_Workflow_Design_SurfaceParams.FirstItemExists, firstItem.Exists, "Explorer first remote server does not contain any items.");
+
+            // Click 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item
+            Mouse.Click(firstItem, new Point(64, 5));
+
+            // Move 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item to 'Flowchart' custom control
+            flowchart.EnsureClickable(new Point(307, 128));
+            Mouse.StartDragging(firstItem, new Point(64, 5));
+            Mouse.StopDragging(flowchart, new Point(307, 128));
+
+            // Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
+            Assert.AreEqual(this.Drag_Explorer_Remote_workflow1_Onto_Workflow_Design_SurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
+
+            // Verify that the 'Exists' property of 'DsfActivity' custom control equals 'True'
+            Assert.AreEqual(this.Drag_Explorer_Remote_workflow1_Onto_Workflow_Design_SurfaceParams.SubWorkflowExists, subWorkflow.Exists, "Workflow on the design surface does not exist");
         }
         
         /// <summary>
@@ -3054,43 +3096,6 @@ namespace Warewolf.UITests
 
             // Verify that the 'Exists' property of 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item equals 'True'
             Assert.AreEqual(this.Enter_TSTCIREMOTE_Into_Explorer_FilterParams.FirstItemExists, firstItem.Exists, "Explorer localhost does not contain any items.");
-        }
-        
-        /// <summary>
-        /// Drag_Remote_workflow1_Onto_Workflow_Design_Surface - Use 'Drag_Remote_workflow1_Onto_Workflow_Design_SurfaceParams' to pass parameters into this method.
-        /// </summary>
-        public void Drag_Remote_workflow1_Onto_Workflow_Design_Surface()
-        {
-            #region Variable Declarations
-            WpfEdit searchTextBox = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.SearchTextBox;
-            WpfButton explorerRefreshButton = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerRefreshButton;
-            WpfTreeItem firstItem = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.FirstItem;
-            WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
-            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
-            WpfCustom subWorkflow = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SubWorkflow;
-            #endregion
-
-            // Type 'workflow1' in 'SearchTextBox' text box
-            searchTextBox.Text = this.Drag_Remote_workflow1_Onto_Workflow_Design_SurfaceParams.SearchTextBoxText;
-
-            // Wait for 2 seconds for user delay between actions; Click '' button
-            Playback.Wait(2000);
-            Mouse.Click(explorerRefreshButton, new Point(10, 10));
-
-            // Wait for 2 seconds for user delay between actions; Verify that the 'Exists' property of 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item equals 'True'
-            Playback.Wait(2000);
-            Assert.AreEqual(this.Drag_Remote_workflow1_Onto_Workflow_Design_SurfaceParams.FirstItemExists, firstItem.Exists, "Explorer first remote server does not contain any items.");
-
-            // Move 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item to 'Flowchart' custom control
-            flowchart.EnsureClickable(new Point(307, 128));
-            Mouse.StartDragging(firstItem, new Point(64, 5));
-            Mouse.StopDragging(flowchart, new Point(307, 128));
-
-            // Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
-            Assert.AreEqual(this.Drag_Remote_workflow1_Onto_Workflow_Design_SurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
-
-            // Verify that the 'Exists' property of 'DsfActivity' custom control equals 'True'
-            Assert.AreEqual(this.Drag_Remote_workflow1_Onto_Workflow_Design_SurfaceParams.SubWorkflowExists, subWorkflow.Exists, "Workflow on the design surface does not exist");
         }
         
         /// <summary>
@@ -5516,6 +5521,18 @@ namespace Warewolf.UITests
             }
         }
         
+        public virtual Drag_Explorer_Remote_workflow1_Onto_Workflow_Design_SurfaceParams Drag_Explorer_Remote_workflow1_Onto_Workflow_Design_SurfaceParams
+        {
+            get
+            {
+                if ((this.mDrag_Explorer_Remote_workflow1_Onto_Workflow_Design_SurfaceParams == null))
+                {
+                    this.mDrag_Explorer_Remote_workflow1_Onto_Workflow_Design_SurfaceParams = new Drag_Explorer_Remote_workflow1_Onto_Workflow_Design_SurfaceParams();
+                }
+                return this.mDrag_Explorer_Remote_workflow1_Onto_Workflow_Design_SurfaceParams;
+            }
+        }
+        
         public virtual Drag_Toolbox_Base_Conversion_Onto_DesignSurfaceParams Drag_Toolbox_Base_Conversion_Onto_DesignSurfaceParams
         {
             get
@@ -6260,18 +6277,6 @@ namespace Warewolf.UITests
             }
         }
         
-        public virtual Drag_Remote_workflow1_Onto_Workflow_Design_SurfaceParams Drag_Remote_workflow1_Onto_Workflow_Design_SurfaceParams
-        {
-            get
-            {
-                if ((this.mDrag_Remote_workflow1_Onto_Workflow_Design_SurfaceParams == null))
-                {
-                    this.mDrag_Remote_workflow1_Onto_Workflow_Design_SurfaceParams = new Drag_Remote_workflow1_Onto_Workflow_Design_SurfaceParams();
-                }
-                return this.mDrag_Remote_workflow1_Onto_Workflow_Design_SurfaceParams;
-            }
-        }
-        
         public virtual Open_Assign_Tool_Large_ViewParams Open_Assign_Tool_Large_ViewParams
         {
             get
@@ -6936,6 +6941,8 @@ namespace Warewolf.UITests
         
         private Drag_PostWeb_RequestTool_Onto_DesignSurfaceParams mDrag_PostWeb_RequestTool_Onto_DesignSurfaceParams;
         
+        private Drag_Explorer_Remote_workflow1_Onto_Workflow_Design_SurfaceParams mDrag_Explorer_Remote_workflow1_Onto_Workflow_Design_SurfaceParams;
+        
         private Drag_Toolbox_Base_Conversion_Onto_DesignSurfaceParams mDrag_Toolbox_Base_Conversion_Onto_DesignSurfaceParams;
         
         private Drag_Toolbox_Calculate_Onto_DesignSurfaceParams mDrag_Toolbox_Calculate_Onto_DesignSurfaceParams;
@@ -7059,8 +7066,6 @@ namespace Warewolf.UITests
         private Enter_Text_Into_Assign_Large_View_Row1_Variable_Textbox_As_SomeVariableParams mEnter_Text_Into_Assign_Large_View_Row1_Variable_Textbox_As_SomeVariableParams;
         
         private Enter_TSTCIREMOTE_Into_Explorer_FilterParams mEnter_TSTCIREMOTE_Into_Explorer_FilterParams;
-        
-        private Drag_Remote_workflow1_Onto_Workflow_Design_SurfaceParams mDrag_Remote_workflow1_Onto_Workflow_Design_SurfaceParams;
         
         private Open_Assign_Tool_Large_ViewParams mOpen_Assign_Tool_Large_ViewParams;
         
@@ -7279,11 +7284,6 @@ namespace Warewolf.UITests
         /// Verify that the 'Exists' property of 'XML' tab equals 'True'
         /// </summary>
         public bool XMLTabExists = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'UI_XMLEditor_AutoID' custom control equals 'True'
-        /// </summary>
-        public bool XMLWindowExists = true;
         
         /// <summary>
         /// Verify that the 'Exists' property of 'JSON' tab equals 'True'
@@ -8071,6 +8071,11 @@ namespace Warewolf.UITests
         
         #region Fields
         /// <summary>
+        /// Verify that the 'Exists' property of 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item equals 'True'
+        /// </summary>
+        public bool FirstItemExists = true;
+        
+        /// <summary>
         /// Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
         /// </summary>
         public bool Connector1Exists = true;
@@ -8114,6 +8119,36 @@ namespace Warewolf.UITests
         /// Verify that the 'Exists' property of 'DsfWebPostActivity' custom control equals 'True'
         /// </summary>
         public bool WebPostExists = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Drag_Explorer_Remote_workflow1_Onto_Workflow_Design_Surface'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Drag_Explorer_Remote_workflow1_Onto_Workflow_Design_SurfaceParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Type 'workflow1' in 'SearchTextBox' text box
+        /// </summary>
+        public string SearchTextBoxText = "workflow1";
+        
+        /// <summary>
+        /// Wait for 2 seconds for user delay between actions; Verify that the 'Exists' property of 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item equals 'True'
+        /// </summary>
+        public bool FirstItemExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
+        /// </summary>
+        public bool Connector1Exists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'DsfActivity' custom control equals 'True'
+        /// </summary>
+        public bool SubWorkflowExists = true;
         #endregion
     }
     
@@ -9524,36 +9559,6 @@ namespace Warewolf.UITests
         /// Verify that the 'Exists' property of 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item equals 'True'
         /// </summary>
         public bool FirstItemExists = true;
-        #endregion
-    }
-    
-    /// <summary>
-    /// Parameters to be passed into 'Drag_Remote_workflow1_Onto_Workflow_Design_Surface'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Drag_Remote_workflow1_Onto_Workflow_Design_SurfaceParams
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Type 'workflow1' in 'SearchTextBox' text box
-        /// </summary>
-        public string SearchTextBoxText = "workflow1";
-        
-        /// <summary>
-        /// Wait for 2 seconds for user delay between actions; Verify that the 'Exists' property of 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item equals 'True'
-        /// </summary>
-        public bool FirstItemExists = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
-        /// </summary>
-        public bool Connector1Exists = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'DsfActivity' custom control equals 'True'
-        /// </summary>
-        public bool SubWorkflowExists = true;
         #endregion
     }
     
