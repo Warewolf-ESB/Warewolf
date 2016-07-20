@@ -194,10 +194,6 @@
     <Compile Include="VersionViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\AutoComplete\WpfControls.CS\WpfControls.CS.csproj">
-      <Project>{bb2abb74-ba58-4812-83aa-ec8171f42df4}</Project>
-      <Name>WpfControls.CS</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Dev2.Activities\Dev2.Activities.csproj">
       <Project>{0A369A8B-0906-47EB-8EEE-CA20E9D4F151}</Project>
       <Name>Dev2.Activities</Name>

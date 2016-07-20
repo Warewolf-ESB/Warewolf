@@ -110,7 +110,6 @@ namespace Dev2.Common.Interfaces
         bool UserAuthenticationSelected { get; }
 
         IList<ComputerName> ComputerNames { get; set; }
-        IComputerNameProvider Provider { get; set; }
         bool CanSelectWindows { get; set; }
         bool CanSelectServer { get; set; }
     }

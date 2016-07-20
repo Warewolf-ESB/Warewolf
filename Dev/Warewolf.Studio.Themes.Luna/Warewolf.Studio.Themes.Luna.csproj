@@ -894,10 +894,6 @@
     <Resource Include="Images\newmoon.jpg" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\AutoComplete\WpfControls.CS\WpfControls.CS.csproj">
-      <Project>{BB2ABB74-BA58-4812-83AA-EC8171F42DF4}</Project>
-      <Name>WpfControls.CS</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Dev2.Common.Interfaces\Dev2.Common.Interfaces.csproj">
       <Project>{13C0C6E9-7DC3-4DC3-8535-031C263CEE0B}</Project>
       <Name>Dev2.Common.Interfaces</Name>

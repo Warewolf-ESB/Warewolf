@@ -212,7 +212,6 @@
     <Compile Include="IAssignValue.cs" />
     <Compile Include="ICheckControlEnabledView.cs" />
     <Compile Include="IComputerName.cs" />
-    <Compile Include="IComputerNameProvider.cs" />
     <Compile Include="IConnectControlViewModel.cs" />
     <Compile Include="IDeletedFileMetadata.cs" />
     <Compile Include="IDllListing.cs" />

@@ -129,10 +129,6 @@ namespace Dev2.Studio.Core.Interfaces
         public bool IsInCalculateMode { get; set; }
         public IntellisenseDesiredResultSet DesiredResultSet { get; set; }
     }
-    //public  static  class IntellisenseProviderContextExyensions
-    //{
-    //    public  static  
-    //}
 
     public enum IntellisenseDesiredResultSet
     {

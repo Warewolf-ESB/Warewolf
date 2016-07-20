@@ -333,6 +333,34 @@ namespace System.Windows.Controls
         }
         #endregion public int MinimumPopulateDelay
 
+        public static readonly DependencyProperty DefaultTextTemplateProperty = DependencyProperty.Register("DefaultTextTemplate", typeof(DataTemplate), typeof(AutoCompleteBox), new UIPropertyMetadata(null));
+
+        public DataTemplate DefaultTextTemplate
+        {
+            get
+            {
+                return (DataTemplate)GetValue(DefaultTextTemplateProperty);
+            }
+            set
+            {
+                SetValue(DefaultTextTemplateProperty, value);
+            }
+        }
+
+        public static readonly DependencyProperty DefaultTextProperty = DependencyProperty.Register("DefaultText", typeof(object), typeof(AutoCompleteBox), new UIPropertyMetadata(null));
+
+        public object DefaultText
+        {
+            get
+            {
+                return GetValue(DefaultTextProperty);
+            }
+            set
+            {
+                SetValue(DefaultTextProperty, value);
+            }
+        }
+
         #region public bool IsTextCompletionEnabled
         /// <summary>
         /// Gets or sets a value indicating whether the first possible match
@@ -748,6 +776,11 @@ SelectionChangedEvent,
         /// <param name="newItem">The new item.</param>
         private void OnSelectedItemChanged(object newItem)
         {
+            if (CustomSelection)
+            {
+                return;
+            }
+
             var text = newItem == null ? SearchText : FormatValue(newItem, true);
 
             // Update the Text property and the TextBox values
@@ -759,6 +792,8 @@ SelectionChangedEvent,
                 TextBox.SelectionStart = Text.Length;
             }
         }
+
+        public bool CustomSelection { get; set; }
 
         #endregion public object SelectedItem
 
@@ -1139,7 +1174,7 @@ SelectionChangedEvent,
                 _adapter = value;
 
                 if(_adapter != null)
-                {
+                {                    
                     _adapter.SelectionChanged += OnAdapterSelectionChanged;
                     _adapter.Commit += OnAdapterSelectionComplete;
                     _adapter.Cancel += OnAdapterSelectionCanceled;
