@@ -13,10 +13,6 @@ namespace Warewolf.UITests.Tools.Data
         [TestMethod]
         public void AssignToolUITest()
         {
-            if (!Uimap.MainStudioWindow.SideMenuBar.CollapsedSideMenu.NewWorkflowIcon.Exists)
-            {
-                Uimap.MainStudioWindow.DrawHighlight();
-            }
             Uimap.Click_New_Workflow_Ribbon_Button();
             Uimap.Drag_Toolbox_MultiAssign_Onto_DesignSurface();
             Uimap.Open_Assign_Tool_Large_View();
