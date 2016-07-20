@@ -9,6 +9,7 @@
 */
 
 using System;
+using System.Diagnostics.CodeAnalysis;
 using Dev2.DataList.Contract;
 using Dev2.Interfaces;
 using Dev2.Runtime.ESB.Execution;
@@ -37,6 +38,7 @@ namespace Dev2.DynamicServices
         /// <param name="isLocal">if set to <c>true</c> [is local].</param>
         /// <param name="masterDataListId">The master data list unique identifier.</param>
         /// <returns></returns>
+        [SuppressMessage("ReSharper", "UnusedMember.Global")]
         IEsbExecutionContainer GenerateInvokeContainer(IDSFDataObject dataObject, Guid serviceId, bool isLocal, Guid masterDataListId);
 
         /// <summary>

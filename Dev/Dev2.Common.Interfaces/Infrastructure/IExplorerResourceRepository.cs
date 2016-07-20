@@ -9,6 +9,7 @@
 */
 
 using System;
+using System.Diagnostics.CodeAnalysis;
 using Dev2.Common.Interfaces.Explorer;
 using Dev2.Common.Interfaces.Hosting;
 
@@ -17,16 +18,13 @@ namespace Dev2.Common.Interfaces.Infrastructure
     public interface IExplorerResourceRepository
     {
         IExplorerItem Load(Guid workSpaceId);
+        [SuppressMessage("ReSharper", "UnusedMember.Global")]
         IExplorerItem Load(string type, Guid workSpaceId);
         IExplorerRepositoryResult RenameItem(IExplorerItem itemToRename, string newName, Guid workSpaceId);
         IExplorerRepositoryResult RenameFolder(string path, string newName, Guid workSpaceId);
         IExplorerRepositoryResult DeleteItem(IExplorerItem itemToRename, Guid workSpaceId);
         IExplorerRepositoryResult AddItem(IExplorerItem itemToRename, Guid workSpaceId);
         IExplorerRepositoryResult MoveItem(IExplorerItem itemToMove, string newPath, Guid empty);
-    }
-    public interface IClientExplorerResourceRepository:IExplorerResourceRepository
-    {
-        string GetServerVersion();
     }
 
     public interface IExplorerRepositoryResult

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Microsoft.Practices.Prism.Mvvm;
+// ReSharper disable UnusedMember.Global
 
 namespace Dev2.Common.Interfaces
 {

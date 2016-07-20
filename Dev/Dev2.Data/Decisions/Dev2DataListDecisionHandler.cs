@@ -12,6 +12,7 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Data;
+using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using Dev2.Common;
 using Dev2.Common.Common;
@@ -53,6 +54,7 @@ namespace Dev2.Data.Decision
         /// <param name="update"></param>
         /// <returns></returns>
         /// <exception cref="System.Data.InvalidExpressionException">Could not evaluate decision data - No decision function found for [  + typeOf + ]</exception>
+        [SuppressMessage("ReSharper", "UnusedMember.Global")]
         public bool ExecuteDecisionStack(string decisionDataPayload, IList<string> oldAmbientData,int update)
         {
 

@@ -10,7 +10,6 @@
 
 using System;
 using System.Collections.Concurrent;
-using Warewolf.Resource.Errors;
 
 namespace Dev2.Network.Execution
 {
@@ -74,34 +73,6 @@ namespace Dev2.Network.Execution
         #endregion
 
         #region Methods
-
-        /// <summary>
-        ///     Posts the specified message (Asynchronously).
-        /// </summary>
-        /// <param name="message">The message.</param>
-        /// <exception cref="System.ArgumentNullException">message</exception>
-        /// <exception cref="System.InvalidOperationException">Channel is disposing.</exception>
-        public void Post(ExecutionStatusCallbackMessage message)
-        {
-            if (message == null)
-            {
-                throw new ArgumentNullException("message");
-            }
-
-            lock (_disposeGuard)
-            {
-                if (_isDisposed)
-                {
-                    throw new InvalidOperationException(ErrorResource.ChannelDisposing);
-                }
-            }
-
-            Action<ExecutionStatusCallbackMessage> callback;
-            if (_callbacks.TryGetValue(message.CallbackID, out callback))
-            {
-                callback.BeginInvoke(message, null, null);
-            }
-        }
 
         #endregion Methods
 

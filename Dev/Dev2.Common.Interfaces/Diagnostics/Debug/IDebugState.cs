@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Xml.Serialization;
 
 namespace Dev2.Common.Interfaces.Diagnostics.Debug
@@ -156,6 +157,7 @@ namespace Dev2.Common.Interfaces.Diagnostics.Debug
         ///     Writes this instance to the specified writer.
         /// </summary>
         /// <param name="writer">The writer to which this instance is written.</param>
+        [SuppressMessage("ReSharper", "UnusedMember.Global")]
         void Write(IByteWriterBase writer);
 
         bool IsFinalStep();

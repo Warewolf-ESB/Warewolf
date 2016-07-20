@@ -2,7 +2,6 @@
 {
     public interface IDialogViewModelFactory
     {
-        IDialogueViewModel CreateAboutDialog();
     } 
 }
 
