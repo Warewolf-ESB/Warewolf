@@ -27,7 +27,7 @@ namespace Warewolf.UITests
             Playback.PlaybackSettings.WaitForReadyLevel = WaitForReadyLevel.Disabled;
             Playback.PlaybackSettings.MaximumRetryCount = 5;
             Playback.PlaybackSettings.ShouldSearchFailFast = false;
-            Playback.PlaybackSettings.SearchTimeout = 1000;
+            Playback.PlaybackSettings.SearchTimeout = 5000;
             if (Environment.ProcessorCount <= 4)
             {
                 Playback.PlaybackSettings.ThinkTimeMultiplier = 2;
