@@ -39,8 +39,7 @@ namespace Warewolf.UITests
             Uimap.Enter_TSTCIREMOTE_Into_Explorer_Filter();
             Uimap.Select_TSTCIREMOTE_From_Explorer_Remote_Server_Dropdown_List();
             Uimap.Click_Explorer_RemoteServer_Connect_Button();
-            Uimap.Enter_workflow1_Into_Explorer_Filter();
-            Uimap.Drag_Explorer_First_Remote_Server_First_Item_Onto_Workflow_Design_Surface();
+            Uimap.Drag_Remote_workflow1_Onto_Workflow_Design_Surface();
             Uimap.Click_Save_Ribbon_Button();
             Uimap.Enter_Servicename_As_RemoteServerUITestWorkflow();
             Uimap.Click_SaveDialog_YesButton();
