@@ -1432,30 +1432,6 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
-        /// Drag_Explorer_First_Remote_Server_First_Item_Onto_Workflow_Design_Surface - Use 'Drag_Explorer_First_Remote_Server_First_Item_Onto_Workflow_Design_SurfaceParams' to pass parameters into this method.
-        /// </summary>
-        public void Drag_Explorer_First_Remote_Server_First_Item_Onto_Workflow_Design_Surface()
-        {
-            #region Variable Declarations
-            WpfTreeItem firstItem = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.FirstItem;
-            WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
-            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
-            WpfCustom subWorkflow = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SubWorkflow;
-            #endregion
-
-            // Move 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item to 'Flowchart' custom control
-            flowchart.EnsureClickable(new Point(307, 128));
-            Mouse.StartDragging(firstItem, new Point(64, 5));
-            Mouse.StopDragging(flowchart, new Point(307, 128));
-
-            // Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
-            Assert.AreEqual(this.Drag_Explorer_First_Remote_Server_First_Item_Onto_Workflow_Design_SurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
-
-            // Verify that the 'Exists' property of 'DsfActivity' custom control equals 'True'
-            Assert.AreEqual(this.Drag_Explorer_First_Remote_Server_First_Item_Onto_Workflow_Design_SurfaceParams.SubWorkflowExists, subWorkflow.Exists, "Workflow on the design surface does not exist");
-        }
-        
-        /// <summary>
         /// Drag_Explorer_Localhost_First_Item_Onto_Workflow_Design_Surface - Use 'Drag_Explorer_Localhost_First_Item_Onto_Workflow_Design_SurfaceParams' to pass parameters into this method.
         /// </summary>
         public void Drag_Explorer_Localhost_First_Item_Onto_Workflow_Design_Surface()
@@ -3089,18 +3065,21 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
-        /// Enter_workflow1_Into_Explorer_Filter - Use 'Enter_workflow1_Into_Explorer_FilterParams' to pass parameters into this method.
+        /// Drag_Remote_workflow1_Onto_Workflow_Design_Surface - Use 'Drag_Remote_workflow1_Onto_Workflow_Design_SurfaceParams' to pass parameters into this method.
         /// </summary>
-        public void Enter_workflow1_Into_Explorer_Filter()
+        public void Drag_Remote_workflow1_Onto_Workflow_Design_Surface()
         {
             #region Variable Declarations
             WpfEdit searchTextBox = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.SearchTextBox;
             WpfButton explorerRefreshButton = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerRefreshButton;
             WpfTreeItem firstItem = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.FirstItem;
+            WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
+            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
+            WpfCustom subWorkflow = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SubWorkflow;
             #endregion
 
             // Type 'workflow1' in 'SearchTextBox' text box
-            searchTextBox.Text = this.Enter_workflow1_Into_Explorer_FilterParams.SearchTextBoxText;
+            searchTextBox.Text = this.Drag_Remote_workflow1_Onto_Workflow_Design_SurfaceParams.SearchTextBoxText;
 
             // Wait for 2 seconds for user delay between actions; Click '' button
             Playback.Wait(2000);
@@ -3108,7 +3087,18 @@ namespace Warewolf.UITests
 
             // Wait for 2 seconds for user delay between actions; Verify that the 'Exists' property of 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item equals 'True'
             Playback.Wait(2000);
-            Assert.AreEqual(this.Enter_workflow1_Into_Explorer_FilterParams.FirstItemExists, firstItem.Exists, "Explorer first remote server does not contain any items.");
+            Assert.AreEqual(this.Drag_Remote_workflow1_Onto_Workflow_Design_SurfaceParams.FirstItemExists, firstItem.Exists, "Explorer first remote server does not contain any items.");
+
+            // Move 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item to 'Flowchart' custom control
+            flowchart.EnsureClickable(new Point(307, 128));
+            Mouse.StartDragging(firstItem, new Point(64, 5));
+            Mouse.StopDragging(flowchart, new Point(307, 128));
+
+            // Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
+            Assert.AreEqual(this.Drag_Remote_workflow1_Onto_Workflow_Design_SurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
+
+            // Verify that the 'Exists' property of 'DsfActivity' custom control equals 'True'
+            Assert.AreEqual(this.Drag_Remote_workflow1_Onto_Workflow_Design_SurfaceParams.SubWorkflowExists, subWorkflow.Exists, "Workflow on the design surface does not exist");
         }
         
         /// <summary>
@@ -5510,18 +5500,6 @@ namespace Warewolf.UITests
             }
         }
         
-        public virtual Drag_Explorer_First_Remote_Server_First_Item_Onto_Workflow_Design_SurfaceParams Drag_Explorer_First_Remote_Server_First_Item_Onto_Workflow_Design_SurfaceParams
-        {
-            get
-            {
-                if ((this.mDrag_Explorer_First_Remote_Server_First_Item_Onto_Workflow_Design_SurfaceParams == null))
-                {
-                    this.mDrag_Explorer_First_Remote_Server_First_Item_Onto_Workflow_Design_SurfaceParams = new Drag_Explorer_First_Remote_Server_First_Item_Onto_Workflow_Design_SurfaceParams();
-                }
-                return this.mDrag_Explorer_First_Remote_Server_First_Item_Onto_Workflow_Design_SurfaceParams;
-            }
-        }
-        
         public virtual Drag_Explorer_Localhost_First_Item_Onto_Workflow_Design_SurfaceParams Drag_Explorer_Localhost_First_Item_Onto_Workflow_Design_SurfaceParams
         {
             get
@@ -6302,15 +6280,15 @@ namespace Warewolf.UITests
             }
         }
         
-        public virtual Enter_workflow1_Into_Explorer_FilterParams Enter_workflow1_Into_Explorer_FilterParams
+        public virtual Drag_Remote_workflow1_Onto_Workflow_Design_SurfaceParams Drag_Remote_workflow1_Onto_Workflow_Design_SurfaceParams
         {
             get
             {
-                if ((this.mEnter_workflow1_Into_Explorer_FilterParams == null))
+                if ((this.mDrag_Remote_workflow1_Onto_Workflow_Design_SurfaceParams == null))
                 {
-                    this.mEnter_workflow1_Into_Explorer_FilterParams = new Enter_workflow1_Into_Explorer_FilterParams();
+                    this.mDrag_Remote_workflow1_Onto_Workflow_Design_SurfaceParams = new Drag_Remote_workflow1_Onto_Workflow_Design_SurfaceParams();
                 }
-                return this.mEnter_workflow1_Into_Explorer_FilterParams;
+                return this.mDrag_Remote_workflow1_Onto_Workflow_Design_SurfaceParams;
             }
         }
         
@@ -6974,8 +6952,6 @@ namespace Warewolf.UITests
         
         private Drag_DotNet_DLL_Connector_Onto_DesignSurfaceParams mDrag_DotNet_DLL_Connector_Onto_DesignSurfaceParams;
         
-        private Drag_Explorer_First_Remote_Server_First_Item_Onto_Workflow_Design_SurfaceParams mDrag_Explorer_First_Remote_Server_First_Item_Onto_Workflow_Design_SurfaceParams;
-        
         private Drag_Explorer_Localhost_First_Item_Onto_Workflow_Design_SurfaceParams mDrag_Explorer_Localhost_First_Item_Onto_Workflow_Design_SurfaceParams;
         
         private Drag_GetWeb_RequestTool_Onto_DesignSurfaceParams mDrag_GetWeb_RequestTool_Onto_DesignSurfaceParams;
@@ -7106,7 +7082,7 @@ namespace Warewolf.UITests
         
         private Enter_TSTCIREMOTE_Into_Explorer_FilterParams mEnter_TSTCIREMOTE_Into_Explorer_FilterParams;
         
-        private Enter_workflow1_Into_Explorer_FilterParams mEnter_workflow1_Into_Explorer_FilterParams;
+        private Drag_Remote_workflow1_Onto_Workflow_Design_SurfaceParams mDrag_Remote_workflow1_Onto_Workflow_Design_SurfaceParams;
         
         private Open_Assign_Tool_Large_ViewParams mOpen_Assign_Tool_Large_ViewParams;
         
@@ -8125,26 +8101,6 @@ namespace Warewolf.UITests
         /// Verify that the 'Exists' property of 'DsfDotNetDllActivity' custom control equals 'True'
         /// </summary>
         public bool DotNetDllExists = true;
-        #endregion
-    }
-    
-    /// <summary>
-    /// Parameters to be passed into 'Drag_Explorer_First_Remote_Server_First_Item_Onto_Workflow_Design_Surface'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Drag_Explorer_First_Remote_Server_First_Item_Onto_Workflow_Design_SurfaceParams
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
-        /// </summary>
-        public bool Connector1Exists = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'DsfActivity' custom control equals 'True'
-        /// </summary>
-        public bool SubWorkflowExists = true;
         #endregion
     }
     
@@ -9614,10 +9570,10 @@ namespace Warewolf.UITests
     }
     
     /// <summary>
-    /// Parameters to be passed into 'Enter_workflow1_Into_Explorer_Filter'
+    /// Parameters to be passed into 'Drag_Remote_workflow1_Onto_Workflow_Design_Surface'
     /// </summary>
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Enter_workflow1_Into_Explorer_FilterParams
+    public class Drag_Remote_workflow1_Onto_Workflow_Design_SurfaceParams
     {
         
         #region Fields
@@ -9630,6 +9586,16 @@ namespace Warewolf.UITests
         /// Wait for 2 seconds for user delay between actions; Verify that the 'Exists' property of 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item equals 'True'
         /// </summary>
         public bool FirstItemExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
+        /// </summary>
+        public bool Connector1Exists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'DsfActivity' custom control equals 'True'
+        /// </summary>
+        public bool SubWorkflowExists = true;
         #endregion
     }
     
