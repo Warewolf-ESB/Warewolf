@@ -43,6 +43,7 @@ namespace Dev2.Studio.Core.AppResources.Enums
         OAuthSource,
         WebSource,
         PluginSource,
+        ComPluginSource,
         SharepointServerSource,
         Exchange,
         // ReSharper disable once InconsistentNaming

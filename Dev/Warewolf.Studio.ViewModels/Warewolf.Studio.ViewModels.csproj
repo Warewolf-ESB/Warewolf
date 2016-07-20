@@ -143,6 +143,7 @@
     <Compile Include="DeployViewModel.cs" />
     <Compile Include="ExplorerItemViewModelCommandController.cs" />
     <Compile Include="ManageComPluginSourceModel.cs" />
+    <Compile Include="ManageComPluginSourceViewModel.cs" />
     <Compile Include="ManageDbServiceModel.cs" />
     <Compile Include="ManageOAuthSourceModel.cs" />
     <Compile Include="ManageOAuthSourceViewModel.cs" />
