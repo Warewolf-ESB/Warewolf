@@ -2,15 +2,14 @@
 
 namespace Dev2.Common.Interfaces.Core
 {
-    public class PluginSourceDefinition : IPluginSource
+    public class ComPluginSourceDefinition : IComPluginSource
     {
         #region Equality members
 
-        public bool Equals(IPluginSource other)
+        public bool Equals(IComPluginSource other)
         {
-            return string.Equals(Name, other.Name) && Id.Equals(other.Id) && Equals(SelectedDll, other.SelectedDll) && string.Equals(Path, other.Path);
+            return string.Equals(Name, other.Name) && Id.Equals(other.Id) && Equals(ClsId, other.ClsId) && string.Equals(ProgId, other.ProgId);
         }
-
 
         /// <summary>
         /// Determines whether the specified <see cref="T:System.Object"/> is equal to the current <see cref="T:System.Object"/>.
@@ -46,32 +45,32 @@ namespace Dev2.Common.Interfaces.Core
         {
             unchecked
             {
-                var hashCode = Name != null ? Name.GetHashCode() : 0;
+                var hashCode = Name?.GetHashCode() ?? 0;
                 hashCode = (hashCode * 397) ^ Id.GetHashCode();
-                hashCode = (hashCode * 397) ^ (SelectedDll != null ? SelectedDll.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ (Path != null ? Path.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (ProgId?.GetHashCode() ?? 0);
+                hashCode = (hashCode * 397) ^ (ClsId.GetHashCode());
                 return hashCode;
             }
         }
 
-        public static bool operator ==(PluginSourceDefinition left, PluginSourceDefinition right)
+        public static bool operator ==(ComPluginSourceDefinition left, ComPluginSourceDefinition right)
         {
             return Equals(left, right);
         }
 
-        public static bool operator !=(PluginSourceDefinition left, PluginSourceDefinition right)
+        public static bool operator !=(ComPluginSourceDefinition left, ComPluginSourceDefinition right)
         {
             return !Equals(left, right);
         }
 
         #endregion
 
-        #region Implementation of IPluginSource
+        #region Implementation of IComPluginSource
 
         public string Name { get; set; }
         public Guid Id { get; set; }
-        public IFileListing SelectedDll { get; set; }
-        public string Path { get; set; }
+        public string ProgId { get; set; }
+        public Guid ClsId { get; set; }
 
         #endregion
     }
