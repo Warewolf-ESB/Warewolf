@@ -1083,7 +1083,7 @@ SelectionChangedEvent,
         /// <summary>
         /// Gets or sets the Text template part.
         /// </summary>
-        internal TextBox TextBox
+        protected internal TextBox TextBox
         {
             get { return _text; }
             set
@@ -2658,7 +2658,7 @@ SelectionChangedEvent,
         /// </summary>
         /// <param name="oldValue">The old value.</param>
         /// <param name="newValue">The new value.</param>
-        private void CloseDropDown(bool oldValue, bool newValue)
+        protected void CloseDropDown(bool oldValue, bool newValue)
         {
             if(_popupHasOpened)
             {
