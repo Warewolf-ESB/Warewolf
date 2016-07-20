@@ -66,15 +66,6 @@ namespace Dev2.Runtime.Hosting
 
         #endregion
 
-        #region IterateAll
-
-        public void IterateAll(Guid workspaceID, Func<ResourceIteratorResult, bool> action, params ResourceDelimiter[] delimiters)
-        {
-            Iterate("Resources", workspaceID, action, delimiters);
-        }
-
-        #endregion
-
         #region Iterate
 
         public void Iterate(string resourcePath, Guid workspaceID, Func<ResourceIteratorResult, bool> action, params ResourceDelimiter[] delimiters)

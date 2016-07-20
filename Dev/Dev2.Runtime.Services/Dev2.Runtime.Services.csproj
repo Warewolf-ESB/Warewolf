@@ -203,6 +203,7 @@
     <Compile Include="ESB\Management\Services\FetchWcfAction.cs" />
     <Compile Include="ESB\Management\Services\FetchWcfSources.cs" />
     <Compile Include="ESB\Management\Services\FetchWebSources.cs" />
+    <Compile Include="ESB\Management\Services\GetComDllListings.cs" />
     <Compile Include="ESB\Management\Services\GetComputeNames.cs" />
     <Compile Include="ESB\Management\Services\GetDirectoriesRelativeToServer.cs" />
     <Compile Include="ESB\Management\Services\FetchExplorerItems.cs" />
@@ -409,7 +410,6 @@
     <Compile Include="Hosting\ResourceIterator.cs" />
     <Compile Include="ServiceModel\Data\ServiceMethodList.cs" />
     <Compile Include="ServiceModel\Esb\IExecutableEsbEnpoint.cs" />
-    <Compile Include="ServiceModel\Help.cs" />
     <Compile Include="ServiceModel\Data\HelpDictionary.cs" />
     <Compile Include="ServiceModel\Services.cs" />
     <Compile Include="Configuration\SettingsProvider.cs" />

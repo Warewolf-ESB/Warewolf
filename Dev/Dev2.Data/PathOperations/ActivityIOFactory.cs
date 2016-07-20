@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using Dev2.Common.Interfaces.Wrappers;
@@ -79,6 +80,7 @@ namespace Dev2.PathOperations
         /// <param name="isNotCertVerifiable"></param>
         /// <param name="privateKeyFile">If private key file is required. This is the path</param>
         /// <returns></returns>
+        [SuppressMessage("ReSharper", "UnusedMember.Global")]
         public static IActivityIOPath CreatePathFromString(string path, bool isNotCertVerifiable, string privateKeyFile = "")
         {
             return CreatePathFromString(path, string.Empty, string.Empty, isNotCertVerifiable, privateKeyFile);
@@ -146,6 +148,7 @@ namespace Dev2.PathOperations
         /// Create an operations broker object
         /// </summary>
         /// <returns></returns>
+        [SuppressMessage("ReSharper", "UnusedMember.Global")]
         public static IActivityOperationsBroker CreateOperationsBroker(IFile file, ICommon common)
         {
             return new Dev2ActivityIOBroker(file, common);

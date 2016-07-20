@@ -369,7 +369,16 @@ namespace Dev2.Studio.ViewModels.Workflow
                                        StringResources.VariablesInput_Information_Title,
                                        MessageBoxButton.OK, MessageBoxImage.Information, "", false, false, true, false);
                         }
-                        _executor.OpenInBrowser(new Uri(_workflowLink));
+                        try
+                        {
+                            _executor.OpenInBrowser(new Uri(_workflowLink));
+                        }
+                        catch(Exception e)
+                        {
+                            //
+                            Dev2Logger.Error("OpenWorkflowLinkCommand", e);
+                        }
+
                     }
                 }));
             }

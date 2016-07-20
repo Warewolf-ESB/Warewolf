@@ -196,6 +196,30 @@ namespace Warewolf.Studio.ServerProxyLayer.Test
             var res = ser.SerializeToBuilder(new List<IRabbitMQServiceSourceDefinition>());
             RunTestStringArgs("GetDllListingsService", new ExecuteMessage() { HasError = true, Message = res }, new List<Tuple<string, object>> { new Tuple<string, object>("currentDllListing", new FileListing()) }, a => Assert.AreEqual(a.Count, 0), a => a.GetDllListings(new FileListing()));
         }
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        [TestCategory("QueryManagerProxy_Fetch_GetComDllListings")]
+        public void QueryManagerProxy_Fetch_GetCOMDllListings()
+        {
+            var message = new ExecuteMessage();
+            Dev2JsonSerializer ser = new Dev2JsonSerializer();
+            var res = ser.SerializeToBuilder(new List<IRabbitMQServiceSourceDefinition>());
+            RunTestStringArgs("GetComDllListingsService", new ExecuteMessage() { HasError = false, Message = res }, new List<Tuple<string, object>> { new Tuple<string, object>("currentDllListing", new FileListing()) }
+            , a => Assert.AreEqual(a.Count, 0), a => a.GetComDllListings(new FileListing()));
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        [TestCategory("QueryManagerProxy_Fetch_GetComDllListings")]
+        [ExpectedException(typeof(WarewolfSupportServiceException))]
+        public void QueryManagerProxy_Fetch_GetComDllListings_Error()
+        {
+            var message = new ExecuteMessage();
+            Dev2JsonSerializer ser = new Dev2JsonSerializer();
+            var res = ser.SerializeToBuilder(new List<IRabbitMQServiceSourceDefinition>());
+            RunTestStringArgs("GetComDllListingsService", new ExecuteMessage() { HasError = true, Message = res }, new List<Tuple<string, object>> { new Tuple<string, object>("currentDllListing", new FileListing()) }
+            , a => Assert.AreEqual(a.Count, 0), a => a.GetComDllListings(new FileListing()));
+        }
 
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]

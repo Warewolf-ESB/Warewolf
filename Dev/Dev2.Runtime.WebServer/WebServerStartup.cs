@@ -9,6 +9,7 @@
 */
 
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Net;
 using System.Web.Http;
 using Dev2.Common;
@@ -53,6 +54,7 @@ namespace Dev2.Runtime.WebServer
             return WebApp.Start<WebServerStartup>(startOptions);
         }
 
+        [SuppressMessage("ReSharper", "UnusedMember.Global")]
         public void Configuration(IAppBuilder app)
         {
             var listener = (HttpListener)app.Properties[typeof(HttpListener).FullName];

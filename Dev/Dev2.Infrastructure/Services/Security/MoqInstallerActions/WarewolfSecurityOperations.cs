@@ -8,7 +8,7 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
+using System.Diagnostics.CodeAnalysis;
 
 namespace Dev2.Services.Security.MoqInstallerActions
 {
@@ -18,16 +18,20 @@ namespace Dev2.Services.Security.MoqInstallerActions
 
         bool DoesWarewolfGroupExist();
 
+        [SuppressMessage("ReSharper", "UnusedMember.Global")]
         bool IsUserInGroup(string username);
 
+        [SuppressMessage("ReSharper", "UnusedMember.Global")]
         void AddUserToWarewolf(string currentUser);
 
         void DeleteWarewolfGroup();
 
+        [SuppressMessage("ReSharper", "UnusedMember.Global")]
         string FormatUserForInsert(string currentUser, string machineName);
 
         void AddAdministratorsGroupToWarewolf();
 
+        [SuppressMessage("ReSharper", "UnusedMember.Global")]
         bool IsAdminMemberOfWarewolf();
     }
 }

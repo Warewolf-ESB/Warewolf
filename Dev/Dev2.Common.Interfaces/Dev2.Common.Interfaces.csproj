@@ -127,9 +127,11 @@
     <Compile Include="AuthenticationType.cs" />
     <Compile Include="Communication\IMemo.cs" />
     <Compile Include="Communication\ISerializer.cs" />
+    <Compile Include="ComPluginServiceDefinition.cs" />
     <Compile Include="ComponentModel\IWorkflowDescriptor.cs" />
     <Compile Include="ComputerName.cs" />
     <Compile Include="Core\Collections\IObservableReadOnlyList.cs" />
+    <Compile Include="Core\ComPluginSourceDefinition.cs" />
     <Compile Include="Core\Convertors\Base\IBaseConversionBroker.cs" />
     <Compile Include="Core\Convertors\Base\IBaseConverter.cs" />
     <Compile Include="Core\Convertors\Case\ICaseConvertTO.cs" />
@@ -211,6 +213,8 @@
     <Compile Include="IAdminManager.cs" />
     <Compile Include="IAssignValue.cs" />
     <Compile Include="ICheckControlEnabledView.cs" />
+    <Compile Include="IComPluginService.cs" />
+    <Compile Include="IComPluginSource.cs" />
     <Compile Include="IComputerName.cs" />
     <Compile Include="IConnectControlViewModel.cs" />
     <Compile Include="IDeletedFileMetadata.cs" />
@@ -240,6 +244,7 @@
     <Compile Include="IIntellisenseStringResultBuilder.cs" />
     <Compile Include="IJsonObjectsView.cs" />
     <Compile Include="ILocalPathManager.cs" />
+    <Compile Include="IManageComPluginSourceModel.cs" />
     <Compile Include="IManageDatabaseSourceView.cs" />
     <Compile Include="IManageDatabaseSourceViewModel.cs" />
     <Compile Include="IManageRabbitMQSourceViewModel.cs" />

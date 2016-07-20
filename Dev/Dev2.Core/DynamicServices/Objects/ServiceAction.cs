@@ -12,6 +12,7 @@ using System;
 using System.Activities;
 using System.Activities.XamlIntegration;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -224,26 +225,6 @@ namespace Dev2.DynamicServices.Objects
             return result;
         }
 
-        /// <summary>
-        ///     Pushes a previously released activity back into the activity pool.
-        /// </summary>
-        /// <param name="activity"></param>
-        public void PushActivity(PooledServiceActivity activity)
-        {
-            if (activity != null)
-            {
-                lock (_poolGuard)
-                {
-                    if (activity.Generation == _generation)
-                    {
-                        if (_workflowPool.Count < 10)
-                            if (_xamlStream != null)
-                                _workflowPool.Enqueue(activity);
-                    }
-                }
-            }
-        }
-
         public override bool Compile()
         {
             base.Compile();
@@ -292,6 +273,7 @@ namespace Dev2.DynamicServices.Objects
             return IsCompiled;
         }
 
+        [SuppressMessage("ReSharper", "UnusedMember.Global")]
         public void SetActivity(Activity activity)
         {
             _workflowActivity = activity;

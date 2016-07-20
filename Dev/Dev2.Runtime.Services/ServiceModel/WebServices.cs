@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -58,11 +59,13 @@ namespace Dev2.Runtime.ServiceModel
 
         #region DeserializeService
 
+        [SuppressMessage("ReSharper", "UnusedMember.Global")]
         protected virtual Service DeserializeService(string args)
         {
             return JsonConvert.DeserializeObject<WebService>(args);
         }
 
+        [SuppressMessage("ReSharper", "UnusedMember.Global")]
         protected virtual Service DeserializeService(XElement xml, string resourceType)
         {
             return xml == null ? new WebService() : new WebService(xml);
@@ -72,6 +75,7 @@ namespace Dev2.Runtime.ServiceModel
 
         #region Test
 
+        [SuppressMessage("ReSharper", "UnusedMember.Global")]
         public WebService Test(string args, Guid workspaceId, Guid dataListId)
         {
             var service = new WebService();
@@ -137,6 +141,7 @@ namespace Dev2.Runtime.ServiceModel
             return service;
         }
 
+        [SuppressMessage("ReSharper", "UnusedMember.Global")]
         public WebService ApplyPath(string args, Guid workspaceId, Guid dataListId)
         {
             var service = new WebService();

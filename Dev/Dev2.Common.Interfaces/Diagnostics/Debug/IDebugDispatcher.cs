@@ -1,7 +1,7 @@
 /*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Dev2.Common.Interfaces.Diagnostics.Debug
 {
@@ -26,16 +27,10 @@ namespace Dev2.Common.Interfaces.Diagnostics.Debug
         bool IsQueueEmpty { get; }
 
         /// <summary>
-        ///     Adds the specified writer to the dispatcher.
-        /// </summary>
-        /// <param name="workspaceId">The ID of the workspace to which the writer belongs.</param>
-        /// <param name="writer">The writer to be added.</param>
-        void Add(Guid workspaceId, IDebugWriter writer);
-
-        /// <summary>
         ///     Removes the specified workspace from the dispatcher.
         /// </summary>
         /// <param name="workspaceId">The ID of workspace to be removed.</param>
+        [SuppressMessage("ReSharper", "UnusedMember.Global")]
         void Remove(Guid workspaceId);
 
         /// <summary>

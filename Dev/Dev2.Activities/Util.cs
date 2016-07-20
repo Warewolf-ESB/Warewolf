@@ -9,6 +9,7 @@
 */
 
 using System;
+using System.Diagnostics.CodeAnalysis;
 
 // ReSharper disable CheckNamespace
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
@@ -31,6 +32,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             return DateTime.TryParse(value, out date);
         }
 
+        [SuppressMessage("ReSharper", "UnusedMember.Global")]
         public static bool Eq(string value, object comparisonValue)
         {
             if(string.IsNullOrEmpty(value))
@@ -65,6 +67,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             return string.Equals(value, comparisonValue.ToString(), StringComparison.CurrentCultureIgnoreCase);
         }
 
+        [SuppressMessage("ReSharper", "UnusedMember.Global")]
         public static bool NtEq(string value, object comparisonValue)
         {
             if(string.IsNullOrEmpty(value))
@@ -98,6 +101,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             return value != comparisonValue.ToString();
         }
 
+        [SuppressMessage("ReSharper", "UnusedMember.Global")]
         public static bool LsTh(string value, object comparisonValue)
         {
 
@@ -130,6 +134,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             return false;
         }
 
+        [SuppressMessage("ReSharper", "UnusedMember.Global")]
         public static bool LsThEq(string value, object comparisonValue)
         {
             if(string.IsNullOrEmpty(value))
@@ -161,6 +166,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             return false;
         }
 
+        [SuppressMessage("ReSharper", "UnusedMember.Global")]
         public static bool GrTh(string value, object comparisonValue)
         {
 
@@ -195,6 +201,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         }
 
 
+        [SuppressMessage("ReSharper", "UnusedMember.Global")]
         public static bool GrThEq(string value, object comparisonValue)
         {
             if(string.IsNullOrEmpty(value))
@@ -226,6 +233,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             return false;
         }
 
+        [SuppressMessage("ReSharper", "UnusedMember.Global")]
         public static bool Btw(string value, object comparisonValueStart, object comparisonValueEnd)
         {
             if(string.IsNullOrEmpty(value))
