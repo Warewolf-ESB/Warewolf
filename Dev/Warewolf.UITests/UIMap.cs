@@ -27,7 +27,7 @@ namespace Warewolf.UITests
             Playback.PlaybackSettings.WaitForReadyLevel = WaitForReadyLevel.Disabled;
             Playback.PlaybackSettings.MaximumRetryCount = 5;
             Playback.PlaybackSettings.ShouldSearchFailFast = false;
-            Playback.PlaybackSettings.SearchTimeout = 5000;
+            Playback.PlaybackSettings.SearchTimeout = 1000;
             if (Environment.ProcessorCount <= 4)
             {
                 Playback.PlaybackSettings.ThinkTimeMultiplier = 2;
@@ -86,7 +86,7 @@ namespace Warewolf.UITests
                 Click_Close_Tab_Button();
                 Click_MessageBox_No();
             }
-            catch (UITestControlNotFoundException e)
+            catch (Exception e)
             {
                 Console.WriteLine("Error during test cleanup: " + e.Message);
             }
@@ -94,13 +94,13 @@ namespace Warewolf.UITests
 
         public void Click_Settings_Resource_Permissions_Row1_Add_Resource_Button()
         {
-            Mouse.Click(this.FindAddResourceButton(this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1));
+            Mouse.Click(this.FindAddResourceButton(this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1));
             Assert.AreEqual(true, this.ServicePickerDialog.Exists, "Service picker dialog does not exist.");
         }
 
         public void Click_Settings_Resource_Permissions_Row1_Windows_Group_Button()
         {
-            Mouse.Click(this.FindAddWindowsGroupButton(this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1));
+            Mouse.Click(this.FindAddWindowsGroupButton(this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1));
             Assert.AreEqual(true, this.SelectWindowsGroupDialog.Exists, "Select windows group dialog does not exist.");
             Assert.AreEqual(true, this.SelectWindowsGroupDialog.ItemPanel.ObjectNameTextbox.Exists, "Select windows group object name textbox does not exist.");
         }

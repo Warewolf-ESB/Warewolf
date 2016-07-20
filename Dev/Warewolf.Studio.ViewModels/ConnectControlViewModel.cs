@@ -41,21 +41,18 @@ namespace Warewolf.Studio.ViewModels
         {
             if (server == null)
             {
-                throw new ArgumentNullException("server");
+                throw new ArgumentNullException(nameof(server));
             }
             if (aggregator == null)
             {
-                throw new ArgumentNullException("aggregator");
+                throw new ArgumentNullException(nameof(aggregator));
             }
             Server = server;
             LoadServers();
 
             SelectedConnection = server;
             var evt = aggregator.GetEvent<ServerAddedEvent>();
-            if (evt != null)
-            {
-                evt.Subscribe(ServerAdded);
-            }
+            evt?.Subscribe(ServerAdded);
             EditConnectionCommand = new DelegateCommand(AllowConnectionEdit,CanExecuteMethod);
             ToggleConnectionStateCommand = new DelegateCommand(CheckVersionConflict);
             if (Server.UpdateRepository != null)
@@ -122,10 +119,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 if (args.State == ConnectionNetworkState.Connected)
                 {
-                    if(ServerReConnected != null)
-                    {
-                        ServerReConnected(this, server1);
-                    }
+                    ServerReConnected?.Invoke(this, server1);
                 }
             }
         }
@@ -283,15 +277,9 @@ namespace Warewolf.Studio.ViewModels
                         }
                     }
                     OnPropertyChanged(() => SelectedConnection);
-                    if (SelectedEnvironmentChanged != null)
-                    {
-                        SelectedEnvironmentChanged(this, value.EnvironmentID);
-                    }
+                    SelectedEnvironmentChanged?.Invoke(this, value.EnvironmentID);
                     var delegateCommand = EditConnectionCommand as DelegateCommand;
-                    if(delegateCommand != null)
-                    {
-                        delegateCommand.RaiseCanExecuteChanged();
-                    }
+                    delegateCommand?.RaiseCanExecuteChanged();
                 }
             }
         }
@@ -356,21 +344,15 @@ namespace Warewolf.Studio.ViewModels
                     if (connected)
                     {
                         var mainViewModel = CustomContainer.Get<IShellViewModel>();
-                        if(mainViewModel != null)
-                        {
-                            mainViewModel.SetActiveEnvironment(connection.EnvironmentID);
-                        }
+                        mainViewModel?.SetActiveEnvironment(connection.EnvironmentID);
                     }
                     else
                     {
                         var popupController = CustomContainer.Get<IPopupController>();
-                        if(popupController != null)
+                        var result = popupController?.ShowConnectionTimeoutConfirmation(connection.DisplayName);
+                        if (result == MessageBoxResult.Yes)
                         {
-                            var result = popupController.ShowConnectionTimeoutConfirmation(connection.DisplayName);
-                            if (result == MessageBoxResult.Yes)
-                            {
-                                await Connect(connection);
-                            }
+                            await Connect(connection);
                         }
                     }
                     OnPropertyChanged(() => connection.IsConnected);
@@ -394,10 +376,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 connection.Disconnect();
                 OnPropertyChanged(() => connection.IsConnected);
-                if (ServerDisconnected != null)
-                {
-                    ServerDisconnected(this, connection);
-                }
+                ServerDisconnected?.Invoke(this, connection);
             }
         }
         
@@ -438,12 +417,7 @@ namespace Warewolf.Studio.ViewModels
         public void UpdateHelpDescriptor(string helpText)
         {
             var mainViewModel = CustomContainer.Get<IMainViewModel>();
-            if (mainViewModel != null)
-            {
-                mainViewModel.HelpViewModel.UpdateHelpText(helpText);
-            }
+            mainViewModel?.HelpViewModel.UpdateHelpText(helpText);
         }
     }
-
-
 }
