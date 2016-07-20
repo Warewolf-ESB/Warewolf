@@ -209,6 +209,20 @@ namespace Dev2.Studio.ViewModels
             AddAndActivateWorkSurface(workSurfaceContextViewModel);
         }
 
+        public void EditResource(IComPluginSource selectedSource, IWorkSurfaceKey workSurfaceKey = null)
+        {
+            throw new NotImplementedException();
+           /* var wcfSourceViewModel = new ManageWcfSourceViewModel(new ManageWcfSourceModel(ActiveServer.UpdateRepository, ""), new Microsoft.Practices.Prism.PubSubEvents.EventAggregator(), selectedSource, _mainViewModel.AsyncWorker, ActiveEnvironment);
+            var vm = new SourceViewModel<IWcfServerSource>(_mainViewModel.EventPublisher, wcfSourceViewModel, _mainViewModel.PopupProvider, new ManageWcfSourceControl());
+
+            workSurfaceKey = TryGetOrCreateWorkSurfaceKey(workSurfaceKey, WorkSurfaceContext.WcfSource, selectedSource.ResourceID);
+            
+            var key = workSurfaceKey as WorkSurfaceKey;
+            var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(key, vm);
+            OpeningWorkflowsHelper.AddWorkflow(key);
+            AddAndActivateWorkSurface(workSurfaceContextViewModel);*/
+        }
+
         IEnvironmentModel ActiveEnvironment => _mainViewModel.ActiveEnvironment;
 
         public void NewService(string resourcePath)
@@ -244,6 +258,17 @@ namespace Dev2.Studio.ViewModels
             // ReSharper disable once PossibleInvalidOperationException
             var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(key, new SourceViewModel<IPluginSource>(_mainViewModel.EventPublisher, new ManagePluginSourceViewModel(new ManagePluginSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, ActiveEnvironment.Name), saveViewModel, new Microsoft.Practices.Prism.PubSubEvents.EventAggregator(), _mainViewModel.AsyncWorker) { SelectedGuid = key.ResourceID.Value }, _mainViewModel.PopupProvider, new ManagePluginSourceControl()));
             AddAndActivateWorkSurface(workSurfaceContextViewModel);
+        }
+
+        public void NewComPluginSource(string resourcePath)
+        {
+            throw new NotImplementedException();
+            /*Task<IRequestServiceNameViewModel> saveViewModel = GetSaveViewModel(resourcePath, Warewolf.Studio.Resources.Languages.Core.PluginSourceNewHeaderLabel);
+            var key = (WorkSurfaceKey)WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.PluginSource);
+            key.ServerID = ActiveServer.ServerID;
+            // ReSharper disable once PossibleInvalidOperationException
+            var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(key, new SourceViewModel<IPluginSource>(_mainViewModel.EventPublisher, new ManagePluginSourceViewModel(new ManagePluginSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, ActiveEnvironment.Name), saveViewModel, new Microsoft.Practices.Prism.PubSubEvents.EventAggregator(), _mainViewModel.AsyncWorker) { SelectedGuid = key.ResourceID.Value }, _mainViewModel.PopupProvider, new ManagePluginSourceControl()));
+            AddAndActivateWorkSurface(workSurfaceContextViewModel);*/
         }
 
         public void NewWcfSource(string resourcePath)
