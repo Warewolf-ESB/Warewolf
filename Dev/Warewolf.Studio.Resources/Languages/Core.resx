@@ -340,7 +340,8 @@
     <value>Steps to follow</value>
   </data>
   <data name="ExceptionViewStepsWatermark" xml:space="preserve">
-    <value>Please provide us with the necessary steps to follow in order to reproduce this issue. 	The more information you can provide us with, the faster we can track the issue and resolve it.</value>
+    <value>Please provide us with the necessary steps to follow in order to reproduce this issue.
+The more information you can provide us with, the faster we can track the issue and resolve it.</value>
   </data>
   <data name="DebugOutputClearSearchTooltip" xml:space="preserve">
     <value>Clear the filter box</value>

@@ -26,8 +26,6 @@ namespace Warewolf.UITests
         public void BigRemoteSubworkflowUITest()
         {
             Uimap.Click_New_Workflow_Ribbon_Button();
-            Uimap.Click_Connect_Control_InExplorerParams.ComboboxListItemAsTSTCIREMOTEExists = false;
-            Uimap.Click_Connect_Control_InExplorer();
             Uimap.Select_NewRemoteServer_From_Explorer_Server_Dropdownlist();
             Uimap.Click_Server_Source_Wizard_Address_Protocol_Dropdown();
             Uimap.Select_http_From_Server_Source_Wizard_Address_Protocol_Dropdown();
@@ -37,24 +35,19 @@ namespace Warewolf.UITests
             Uimap.Click_Save_Ribbon_Button();
             Uimap.Enter_Servicename_As_TSTCIREMOTE();
             Uimap.Click_SaveDialog_YesButton();
+            Uimap.Click_Close_Server_Source_Wizard_Tab_Button();
             Uimap.Enter_TSTCIREMOTE_Into_Explorer_Filter();
-            Uimap.Click_Connect_Control_InExplorerParams.ComboboxListItemAsTSTCIREMOTEExists = true;
-            Uimap.Click_Connect_Control_InExplorer();
             Uimap.Select_TSTCIREMOTE_From_Explorer_Remote_Server_Dropdown_List();
             Uimap.Click_Explorer_RemoteServer_Connect_Button();
-            Uimap.Enter_workflow1_Into_Explorer_Filter();
-            Uimap.Drag_Explorer_First_Remote_Server_First_Item_Onto_Workflow_Design_Surface();
+            Uimap.Drag_Remote_workflow1_Onto_Workflow_Design_Surface();
             Uimap.Click_Save_Ribbon_Button();
             Uimap.Enter_Servicename_As_RemoteServerUITestWorkflow();
             Uimap.Click_SaveDialog_YesButton();
             Uimap.Enter_RemoteServerUITestWorkflow_Into_Explorer_Filter();
-            /**TODO: Re-introduce these actions before WOLF-1923 can be moved to done
             Uimap.Click_Debug_Ribbon_Button();
-            Uimap.Click_DebugInput_DebugButtonParams.Workflow1Exists = true;
-            Uimap.Click_DebugInput_DebugButton();
-	        Uimap.Click_Cell_Highlights_Workflow_OnDesignSurface();
-	        Uimap.Click_Debug_Output_Workflow_Name();
-            **/
+            //Uimap.Click_DebugInput_Debug_RemoteServerUITestWorkflow_Button();
+            //Uimap.Click_Debug_Output_Workflow1_Cell();
+            //Uimap.Click_Debug_Output_Workflow1_Name();
             Uimap.RightClick_Explorer_Localhost_First_Item();
             Uimap.Click_Show_Dependencies_In_Explorer_Context_Menu();
             Uimap.Click_Settings_Ribbon_Button();
@@ -99,14 +92,20 @@ namespace Warewolf.UITests
 
             try
             {
-                if (Uimap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.SelectedItemAsTSTCIREMOTEConnected.Exists)
+                Playback.PlaybackSettings.SearchTimeout = 1000;
+                var selectedItemAsTstciremoteConnected = Uimap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.SelectedItemAsTSTCIREMOTEConnected;
+                Playback.PlaybackSettings.SearchTimeout = 5000;
+                if (selectedItemAsTstciremoteConnected.Exists)
                 {
                     Uimap.Click_Explorer_RemoteServer_Connect_Button();
                 }
                 else
                 {
                     Uimap.Click_Connect_Control_InExplorer();
-                    if (Uimap.MainStudioWindow.ComboboxListItemAsTSTCIREMOTEConnected.Exists)
+                    Playback.PlaybackSettings.SearchTimeout = 1000;
+                    var comboboxListItemAsTstciremoteConnected = Uimap.MainStudioWindow.ComboboxListItemAsTSTCIREMOTEConnected;
+                    Playback.PlaybackSettings.SearchTimeout = 5000;
+                    if (comboboxListItemAsTstciremoteConnected.Exists)
                     {
                         Uimap.Select_TSTCIREMOTEConnected_From_Explorer_Remote_Server_Dropdown_List();
                         Uimap.Click_Explorer_RemoteServer_Connect_Button();
@@ -114,13 +113,16 @@ namespace Warewolf.UITests
                 }
                 Uimap.Select_LocalhostConnected_From_Explorer_Remote_Server_Dropdown_List();
                 Uimap.Enter_TSTCIREMOTE_Into_Explorer_Filter();
-                Uimap.RightClick_Explorer_Localhost_First_Item();
-                Uimap.Select_Delete_FromExplorerContextMenu();
-                Uimap.Click_MessageBox_Yes();
-                Uimap.Click_Explorer_Filter_Clear_ButtonParams.FirstItemExists = false;
+                Playback.PlaybackSettings.SearchTimeout = 1000;
+                var wpfTreeItem = Uimap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem;
+                Playback.PlaybackSettings.SearchTimeout = 5000;
+                if (wpfTreeItem.Exists)
+                {
+                    Uimap.RightClick_Explorer_Localhost_First_Item();
+                    Uimap.Select_Delete_FromExplorerContextMenu();
+                    Uimap.Click_MessageBox_Yes();
+                }
                 Uimap.Click_Explorer_Filter_Clear_Button();
-                Uimap.Click_Connect_Control_InExplorerParams.ComboboxListItemAsTSTCIREMOTEExists = false;
-                Uimap.Click_Connect_Control_InExplorer();
             }
             catch (Exception e)
             {

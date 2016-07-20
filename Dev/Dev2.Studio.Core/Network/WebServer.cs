@@ -109,7 +109,7 @@ namespace Dev2.Studio.Core.Network
 
         public static Uri GetWorkflowUri(IContextualResourceModel resourceModel, string xmlData, UrlType urlType)
         {
-            if (resourceModel == null || resourceModel.Environment == null || resourceModel.Environment.Connection == null || !resourceModel.Environment.IsConnected)
+            if (resourceModel?.Environment?.Connection == null || !resourceModel.Environment.IsConnected)
             {
                 return null;
             }
