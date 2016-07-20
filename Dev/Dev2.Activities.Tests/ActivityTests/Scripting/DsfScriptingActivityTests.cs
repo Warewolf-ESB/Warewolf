@@ -33,7 +33,55 @@ namespace Dev2.Tests.Activities.ActivityTests.Scripting
         #region JavaScript
 
         #region Should execute valid javascript
+                
+        [TestMethod]
+        public void GivenAnEscapeCharInString_ExecuteWithEscapeCharecters_Javascript_ShouldReturnGivenString()
+        {
+            SetupArguments("<DataList><Result>\"C:\test\"</Result></DataList>", "<DataList><Result/></DataList>", "[[Result]]",
+                            "return \"C:\\test\\name\"", enScriptType.JavaScript, true);
 
+            IDSFDataObject result = ExecuteProcess();
+
+            string error;
+            string actual;
+            GetScalarValueFromEnvironment(result.Environment, "Result", out actual, out error);
+
+            // remove test datalist ;)
+
+            if (string.IsNullOrEmpty(error))
+            {
+                Assert.AreEqual(@"C:\test\name", actual, "Valid Javascript executed incorrectly");
+            }
+            else
+            {
+                Assert.Fail("The following errors occurred while retrieving datalist items\r\nerrors:{0}", error);
+            }
+        }
+
+        [TestMethod]
+        public void GivenEscapeIsFalse_ExecuteWithEscapeCharecters_Javascript_ShouldReturnGivenString()
+        {
+            SetupArguments("<DataList><Result>\"C:\test\"</Result></DataList>", "<DataList><Result/></DataList>", "[[Result]]",
+                            "return \"C:\\test\"", enScriptType.JavaScript);
+
+            IDSFDataObject result = ExecuteProcess();
+
+            string error;
+            string actual;
+            GetScalarValueFromEnvironment(result.Environment, "Result", out actual, out error);
+
+            // remove test datalist ;)
+
+            if (string.IsNullOrEmpty(error))
+            {
+                Assert.AreEqual("C:\test", actual, "Valid Javascript executed incorrectly");
+            }
+            else
+            {
+                Assert.Fail("The following errors occurred while retrieving datalist items\r\nerrors:{0}", error);
+            }
+        }
+        
         [TestMethod]
         public void ExecuteWithValidJavascriptExpectedCorrectResultReturned()
         {
@@ -183,6 +231,55 @@ namespace Dev2.Tests.Activities.ActivityTests.Scripting
         #region Ruby
 
         #region Should execute valid ruby script
+
+
+        [TestMethod]
+        public void ExecuteWithEscapeCharecters_RubyExpectedCorrectResultReturned()
+        {
+            SetupArguments("<DataList><Result>\"C:\test\"</Result></DataList>", "<DataList><Result/></DataList>", "[[Result]]",
+                            "return \"C:\\test\"", enScriptType.Ruby, true);
+
+            IDSFDataObject result = ExecuteProcess();
+
+            string error;
+            string actual;
+            GetScalarValueFromEnvironment(result.Environment, "Result", out actual, out error);
+
+            // remove test datalist ;)
+
+            if (string.IsNullOrEmpty(error))
+            {
+                Assert.AreEqual(@"C:\test", actual, "Valid Ruby executed incorrectly");
+            }
+            else
+            {
+                Assert.Fail("The following errors occurred while retrieving datalist items\r\nerrors:{0}", error);
+            }
+        }
+
+        [TestMethod]
+        public void ExecuteWithoutEscapeCharecters_RubyExpectedCorrectResultReturned()
+        {
+            SetupArguments("<DataList><Result>C:\test</Result></DataList>", "<DataList><Result/></DataList>", "[[Result]]",
+                            "return \"C:\\test\"", enScriptType.Ruby);
+
+            IDSFDataObject result = ExecuteProcess();
+
+            string error;
+            string actual;
+            GetScalarValueFromEnvironment(result.Environment, "Result", out actual, out error);
+
+            // remove test datalist ;)
+
+            if (string.IsNullOrEmpty(error))
+            {
+                Assert.AreEqual("C:\test", actual, "Valid Ruby executed incorrectly");
+            }
+            else
+            {
+                Assert.Fail("The following errors occurred while retrieving datalist items\r\nerrors:{0}", error);
+            }
+        }
 
         [TestMethod]
         public void ExecuteWithValidRubyExpectedCorrectResultReturned()
@@ -364,11 +461,11 @@ namespace Dev2.Tests.Activities.ActivityTests.Scripting
 
         #region Private Test Methods
 
-        private void SetupArguments(string currentDl, string testData, string result, string script, enScriptType type)
+        private void SetupArguments(string currentDl, string testData, string result, string script, enScriptType type, bool escape = false)
         {
             TestStartNode = new FlowStep
             {
-                Action = new DsfScriptingActivity { Result = result, Script = script, ScriptType = type }
+                Action = new DsfScriptingActivity { Result = result, Script = script, ScriptType = type, EscapeScript = escape}
             };
 
             CurrentDl = testData;
