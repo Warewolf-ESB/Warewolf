@@ -26,8 +26,6 @@ namespace Warewolf.UITests
         public void BigRemoteSubworkflowUITest()
         {
             Uimap.Click_New_Workflow_Ribbon_Button();
-            Uimap.Click_Connect_Control_InExplorerParams.ComboboxListItemAsTSTCIREMOTEExists = false;
-            Uimap.Click_Connect_Control_InExplorer();
             Uimap.Select_NewRemoteServer_From_Explorer_Server_Dropdownlist();
             Uimap.Click_Server_Source_Wizard_Address_Protocol_Dropdown();
             Uimap.Select_http_From_Server_Source_Wizard_Address_Protocol_Dropdown();
@@ -39,8 +37,6 @@ namespace Warewolf.UITests
             Uimap.Click_SaveDialog_YesButton();
             Uimap.Click_Close_Server_Source_Wizard_Tab_Button();
             Uimap.Enter_TSTCIREMOTE_Into_Explorer_Filter();
-            Uimap.Click_Connect_Control_InExplorerParams.ComboboxListItemAsTSTCIREMOTEExists = true;
-            Uimap.Click_Connect_Control_InExplorer();
             Uimap.Select_TSTCIREMOTE_From_Explorer_Remote_Server_Dropdown_List();
             Uimap.Click_Explorer_RemoteServer_Connect_Button();
             Uimap.Enter_workflow1_Into_Explorer_Filter();
@@ -85,6 +81,7 @@ namespace Warewolf.UITests
         [TestCleanup]
         public void MyTestCleanup()
         {
+            Playback.PlaybackSettings.SearchTimeout = 1000;
             try
             {
                 Uimap.Enter_RemoteServerUITestWorkflow_Into_Explorer_Filter();
@@ -115,12 +112,13 @@ namespace Warewolf.UITests
                 }
                 Uimap.Select_LocalhostConnected_From_Explorer_Remote_Server_Dropdown_List();
                 Uimap.Enter_TSTCIREMOTE_Into_Explorer_Filter();
-                Uimap.RightClick_Explorer_Localhost_First_Item();
-                Uimap.Select_Delete_FromExplorerContextMenu();
-                Uimap.Click_MessageBox_Yes();
+                if (Uimap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.Exists)
+                {
+                    Uimap.RightClick_Explorer_Localhost_First_Item();
+                    Uimap.Select_Delete_FromExplorerContextMenu();
+                    Uimap.Click_MessageBox_Yes();
+                }
                 Uimap.Click_Explorer_Filter_Clear_Button();
-                Uimap.Click_Connect_Control_InExplorerParams.ComboboxListItemAsTSTCIREMOTEExists = false;
-                Uimap.Click_Connect_Control_InExplorer();
             }
             catch (Exception e)
             {

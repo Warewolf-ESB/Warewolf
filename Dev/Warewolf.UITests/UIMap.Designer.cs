@@ -190,24 +190,16 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
-        /// Click_Connect_Control_InExplorer - Use 'Click_Connect_Control_InExplorerParams' to pass parameters into this method.
+        /// Click_Connect_Control_InExplorer
         /// </summary>
         public void Click_Connect_Control_InExplorer()
         {
             #region Variable Declarations
             WpfButton serverListComboBox = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.ServerListComboBox;
-            WpfCustom newRemoteServerListItem = this.MainStudioWindow.NewRemoteServerListItem;
-            WpfText comboboxListItemAsTSTCIREMOTE = this.MainStudioWindow.ComboboxListItemAsTSTCIREMOTE;
             #endregion
 
             // Click 'ToggleButton' button
             Mouse.Click(serverListComboBox, new Point(217, 8));
-
-            // Verify that the 'Exists' property of 'New Remote Server...' custom control equals 'True'
-            Assert.AreEqual(this.Click_Connect_Control_InExplorerParams.NewRemoteServerListItemExists, newRemoteServerListItem.Exists, "New Remote Server... does not exist in explorer remote server drop down list");
-
-            // Verify that the 'Exists' property of 'TSTCIREMOTE' label equals 'True'
-            Assert.AreEqual(this.Click_Connect_Control_InExplorerParams.ComboboxListItemAsTSTCIREMOTEExists, comboboxListItemAsTSTCIREMOTE.Exists, "TSTCIREMOTE does not exist in explorer remote server drop down list");
         }
         
         /// <summary>
@@ -634,7 +626,10 @@ namespace Warewolf.UITests
 
             // Wait for 1 seconds for user delay between actions; Verify that the 'Exists' property of 'StartNode' custom control equals 'True'
             Playback.Wait(1000);
-            Assert.AreEqual(this.Click_New_Workflow_Ribbon_ButtonParams.StartNodeExists, startNode.Exists, "Start Node Does Not Exist.");
+            Assert.AreEqual(this.Click_New_Workflow_Ribbon_ButtonParams.StartNodeExists, startNode.Exists, "StartNode Does Not Exist.");
+
+            // Verify that the 'Exists' property of 'StartNode' custom control equals 'True'
+            Assert.AreEqual(this.Click_New_Workflow_Ribbon_ButtonParams.StartNodeExists1, startNode.Exists, "Start Node Does Not Exist.");
 
             // Verify that the 'Exists' property of 'SearchTextBox' text box equals 'True'
             Assert.AreEqual(this.Click_New_Workflow_Ribbon_ButtonParams.SearchTextBoxExists, searchTextBox.Exists, "Toolbox filter textbox does not exist");
@@ -1063,8 +1058,8 @@ namespace Warewolf.UITests
             // Click 'Test Connection' button
             Mouse.Click(testConnectionButton, new Point(51, 8));
 
-            // Wait for 2 seconds for user delay between actions; Verify that the 'Enabled' property of 'Save this tab' button equals 'True'
-            Playback.Wait(2000);
+            // Wait for 3 seconds for user delay between actions; Verify that the 'Enabled' property of 'Save this tab' button equals 'True'
+            Playback.Wait(3000);
             Assert.AreEqual(this.Click_Server_Source_Wizard_Test_Connection_ButtonParams.SaveButtonEnabled, saveButton.Enabled, "Save ribbon button is not enabled");
         }
         
@@ -1235,7 +1230,7 @@ namespace Warewolf.UITests
         {
             #region Variable Declarations
             WpfMenuItem showDependencies = this.MainStudioWindow.ExplorerContextMenu.ShowDependencies;
-            WpfRadioButton showwhatasdfdependsonRadioButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DependencyGraphTab.WorksurfaceContext.DependencyView.ScrollViewer.ShowwhatasdfdependsonRadioButton;
+            WpfRadioButton showwhatdependsonthisRadioButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DependencyGraphTab.WorksurfaceContext.DependencyView.ScrollViewer.ShowwhatdependsonthisRadioButton;
             WpfEdit textbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DependencyGraphTab.WorksurfaceContext.DependencyView.ScrollViewer.NestingLevelsText.Textbox;
             WpfButton refreshButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DependencyGraphTab.WorksurfaceContext.DependencyView.ScrollViewer.RefreshButton;
             WpfText text = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DependencyGraphTab.WorksurfaceContext.DependencyView.ScrollViewer.Node1.Text;
@@ -1244,8 +1239,8 @@ namespace Warewolf.UITests
             // Click 'Show Dependencies' menu item
             Mouse.Click(showDependencies, new Point(50, 15));
 
-            // Verify that the 'Selected' property of 'Show what this depends on' radio button equals 'True'
-            Assert.AreEqual(this.Click_Show_Dependencies_In_Explorer_Context_MenuParams.ShowwhatasdfdependsonRadioButtonSelected, showwhatasdfdependsonRadioButton.Selected, "Dependency graph show dependencies radio button is not selected.");
+            // Verify that the 'Selected' property of 'Show what depends on this' radio button equals 'True'
+            Assert.AreEqual(this.Click_Show_Dependencies_In_Explorer_Context_MenuParams.ShowwhatdependsonthisRadioButtonSelected, showwhatdependsonthisRadioButton.Selected, "Dependency graph show dependencies radio button is not selected.");
 
             // Verify that the 'Exists' property of first text box next to 'Nesting Levels' label equals 'True'
             Assert.AreEqual(this.Click_Show_Dependencies_In_Explorer_Context_MenuParams.TextboxExists, textbox.Exists, "Dependency graph nesting levels textbox does not exist.");
@@ -1450,7 +1445,7 @@ namespace Warewolf.UITests
 
             // Move 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item to 'Flowchart' custom control
             flowchart.EnsureClickable(new Point(307, 128));
-            Mouse.StartDragging(firstItem, new Point(32, 5));
+            Mouse.StartDragging(firstItem, new Point(64, 5));
             Mouse.StopDragging(flowchart, new Point(307, 128));
 
             // Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
@@ -3107,10 +3102,12 @@ namespace Warewolf.UITests
             // Type 'workflow1' in 'SearchTextBox' text box
             searchTextBox.Text = this.Enter_workflow1_Into_Explorer_FilterParams.SearchTextBoxText;
 
-            // Click '' button
+            // Wait for 2 seconds for user delay between actions; Click '' button
+            Playback.Wait(2000);
             Mouse.Click(explorerRefreshButton, new Point(10, 10));
 
-            // Verify that the 'Exists' property of 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item equals 'True'
+            // Wait for 2 seconds for user delay between actions; Verify that the 'Exists' property of 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item equals 'True'
+            Playback.Wait(2000);
             Assert.AreEqual(this.Enter_workflow1_Into_Explorer_FilterParams.FirstItemExists, firstItem.Exists, "Explorer first remote server does not contain any items.");
         }
         
@@ -4740,9 +4737,16 @@ namespace Warewolf.UITests
         public void Select_LocalhostConnected_From_Explorer_Remote_Server_Dropdown_List()
         {
             #region Variable Declarations
+            WpfButton serverListComboBox = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.ServerListComboBox;
             WpfText comboboxListItemAsLocalhostConnected = this.MainStudioWindow.ComboboxListItemAsLocalhostConnected;
             WpfText selectedItemAsLocalhost = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.SelectedItemAsLocalhost;
             #endregion
+
+            // Click 'ToggleButton' button
+            Mouse.Click(serverListComboBox, new Point(217, 8));
+
+            // Verify that the 'Exists' property of 'localhost (Connected)' label equals 'True'
+            Assert.AreEqual(this.Select_LocalhostConnected_From_Explorer_Remote_Server_Dropdown_ListParams.ComboboxListItemAsLocalhostConnectedExists, comboboxListItemAsLocalhostConnected.Exists, "localhost (connected) does not exist in explorer remote server drop down list");
 
             // Click 'localhost (Connected)' label
             Mouse.Click(comboboxListItemAsLocalhostConnected, new Point(94, 10));
@@ -4822,9 +4826,17 @@ namespace Warewolf.UITests
         public void Select_NewRemoteServer_From_Explorer_Server_Dropdownlist()
         {
             #region Variable Declarations
+            WpfButton serverListComboBox = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.ServerListComboBox;
+            WpfCustom newRemoteServerListItem = this.MainStudioWindow.NewRemoteServerListItem;
             WpfText newRemoteServerItemText = this.MainStudioWindow.NewRemoteServerListItem.NewRemoteServerItemText;
             WpfButton toggleDropdown = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.ServerSourceWizardTab.WorkSurfaceContext.NewServerSourceWizard.ProtocolCombobox.ToggleDropdown;
             #endregion
+
+            // Click 'ToggleButton' button
+            Mouse.Click(serverListComboBox, new Point(217, 8));
+
+            // Verify that the 'Exists' property of 'New Remote Server...' custom control equals 'True'
+            Assert.AreEqual(this.Select_NewRemoteServer_From_Explorer_Server_DropdownlistParams.NewRemoteServerListItemExists, newRemoteServerListItem.Exists, "New Remote Server... does not exist in explorer remote server drop down list");
 
             // Click 'New Remote Server...' label
             Mouse.Click(newRemoteServerItemText, new Point(114, 10));
@@ -4995,9 +5007,16 @@ namespace Warewolf.UITests
         public void Select_TSTCIREMOTE_From_Explorer_Remote_Server_Dropdown_List()
         {
             #region Variable Declarations
+            WpfButton serverListComboBox = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.ServerListComboBox;
             WpfText comboboxListItemAsTSTCIREMOTE = this.MainStudioWindow.ComboboxListItemAsTSTCIREMOTE;
             WpfText selectedItemAsTSTCIREMOTE = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.SelectedItemAsTSTCIREMOTE;
             #endregion
+
+            // Click 'ToggleButton' button
+            Mouse.Click(serverListComboBox, new Point(217, 8));
+
+            // Verify that the 'Exists' property of 'TSTCIREMOTE' label equals 'True'
+            Assert.AreEqual(this.Select_TSTCIREMOTE_From_Explorer_Remote_Server_Dropdown_ListParams.ComboboxListItemAsTSTCIREMOTEExists, comboboxListItemAsTSTCIREMOTE.Exists, "TSTCIREMOTE does not exist in explorer remote server drop down list");
 
             // Click 'TSTCIREMOTE' label
             Mouse.Click(comboboxListItemAsTSTCIREMOTE, new Point(79, 8));
@@ -5128,18 +5147,6 @@ namespace Warewolf.UITests
                     this.mClick_Close_Tab_ButtonParams = new Click_Close_Tab_ButtonParams();
                 }
                 return this.mClick_Close_Tab_ButtonParams;
-            }
-        }
-        
-        public virtual Click_Connect_Control_InExplorerParams Click_Connect_Control_InExplorerParams
-        {
-            get
-            {
-                if ((this.mClick_Connect_Control_InExplorerParams == null))
-                {
-                    this.mClick_Connect_Control_InExplorerParams = new Click_Connect_Control_InExplorerParams();
-                }
-                return this.mClick_Connect_Control_InExplorerParams;
             }
         }
         
@@ -6907,8 +6914,6 @@ namespace Warewolf.UITests
         
         private Click_Close_Tab_ButtonParams mClick_Close_Tab_ButtonParams;
         
-        private Click_Connect_Control_InExplorerParams mClick_Connect_Control_InExplorerParams;
-        
         private Click_Debug_Ribbon_ButtonParams mClick_Debug_Ribbon_ButtonParams;
         
         private Click_DebugInput_DebugButtonParams mClick_DebugInput_DebugButtonParams;
@@ -7289,26 +7294,6 @@ namespace Warewolf.UITests
     }
     
     /// <summary>
-    /// Parameters to be passed into 'Click_Connect_Control_InExplorer'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Click_Connect_Control_InExplorerParams
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Verify that the 'Exists' property of 'New Remote Server...' custom control equals 'True'
-        /// </summary>
-        public bool NewRemoteServerListItemExists = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'TSTCIREMOTE' label equals 'True'
-        /// </summary>
-        public bool ComboboxListItemAsTSTCIREMOTEExists = true;
-        #endregion
-    }
-    
-    /// <summary>
     /// Parameters to be passed into 'Click_Debug_Ribbon_Button'
     /// </summary>
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
@@ -7622,6 +7607,11 @@ namespace Warewolf.UITests
         public bool StartNodeExists = true;
         
         /// <summary>
+        /// Verify that the 'Exists' property of 'StartNode' custom control equals 'True'
+        /// </summary>
+        public bool StartNodeExists1 = true;
+        
+        /// <summary>
         /// Verify that the 'Exists' property of 'SearchTextBox' text box equals 'True'
         /// </summary>
         public bool SearchTextBoxExists = true;
@@ -7867,7 +7857,7 @@ namespace Warewolf.UITests
         
         #region Fields
         /// <summary>
-        /// Wait for 2 seconds for user delay between actions; Verify that the 'Enabled' property of 'Save this tab' button equals 'True'
+        /// Wait for 3 seconds for user delay between actions; Verify that the 'Enabled' property of 'Save this tab' button equals 'True'
         /// </summary>
         public bool SaveButtonEnabled = true;
         #endregion
@@ -8032,9 +8022,9 @@ namespace Warewolf.UITests
         
         #region Fields
         /// <summary>
-        /// Verify that the 'Selected' property of 'Show what this depends on' radio button equals 'True'
+        /// Verify that the 'Selected' property of 'Show what depends on this' radio button equals 'True'
         /// </summary>
-        public bool ShowwhatasdfdependsonRadioButtonSelected = true;
+        public bool ShowwhatdependsonthisRadioButtonSelected = true;
         
         /// <summary>
         /// Verify that the 'Exists' property of first text box next to 'Nesting Levels' label equals 'True'
@@ -9637,7 +9627,7 @@ namespace Warewolf.UITests
         public string SearchTextBoxText = "workflow1";
         
         /// <summary>
-        /// Verify that the 'Exists' property of 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item equals 'True'
+        /// Wait for 2 seconds for user delay between actions; Verify that the 'Exists' property of 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item equals 'True'
         /// </summary>
         public bool FirstItemExists = true;
         #endregion
@@ -10257,6 +10247,11 @@ namespace Warewolf.UITests
         
         #region Fields
         /// <summary>
+        /// Verify that the 'Exists' property of 'localhost (Connected)' label equals 'True'
+        /// </summary>
+        public bool ComboboxListItemAsLocalhostConnectedExists = true;
+        
+        /// <summary>
         /// Verify that the 'DisplayText' property of 'localhost' label equals 'TSTCIREMOTE'
         /// </summary>
         public string SelectedItemAsLocalhostDisplayText = "TSTCIREMOTE";
@@ -10272,6 +10267,11 @@ namespace Warewolf.UITests
         
         #region Fields
         /// <summary>
+        /// Verify that the 'Exists' property of 'New Remote Server...' custom control equals 'True'
+        /// </summary>
+        public bool NewRemoteServerListItemExists = true;
+        
+        /// <summary>
         /// Verify that the 'Exists' property of 'ToggleButton' button equals 'True'
         /// </summary>
         public bool ToggleDropdownExists = true;
@@ -10286,6 +10286,11 @@ namespace Warewolf.UITests
     {
         
         #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'TSTCIREMOTE' label equals 'True'
+        /// </summary>
+        public bool ComboboxListItemAsTSTCIREMOTEExists = true;
+        
         /// <summary>
         /// Verify that the 'DisplayText' property of 'TSTCIREMOTE' label equals 'TSTCIREMOTE'
         /// </summary>
@@ -26137,19 +26142,19 @@ namespace Warewolf.UITests
             }
         }
         
-        public WpfRadioButton ShowwhatasdfdependsonRadioButton
+        public WpfRadioButton ShowwhatthisdependsonRadioButton
         {
             get
             {
-                if ((this.mShowwhatasdfdependsonRadioButton == null))
+                if ((this.mShowwhatthisdependsonRadioButton == null))
                 {
-                    this.mShowwhatasdfdependsonRadioButton = new WpfRadioButton(this);
+                    this.mShowwhatthisdependsonRadioButton = new WpfRadioButton(this);
                     #region Search Criteria
-                    this.mShowwhatasdfdependsonRadioButton.SearchProperties[WpfRadioButton.PropertyNames.AutomationId] = "DependsOnWf";
-                    this.mShowwhatasdfdependsonRadioButton.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    this.mShowwhatthisdependsonRadioButton.SearchProperties[WpfRadioButton.PropertyNames.AutomationId] = "DependsOnWf";
+                    this.mShowwhatthisdependsonRadioButton.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
                     #endregion
                 }
-                return this.mShowwhatasdfdependsonRadioButton;
+                return this.mShowwhatthisdependsonRadioButton;
             }
         }
         
@@ -26231,7 +26236,7 @@ namespace Warewolf.UITests
         
         private WpfRadioButton mShowwhatdependsonthisRadioButton;
         
-        private WpfRadioButton mShowwhatasdfdependsonRadioButton;
+        private WpfRadioButton mShowwhatthisdependsonRadioButton;
         
         private NestingLevelsText mNestingLevelsText;
         
