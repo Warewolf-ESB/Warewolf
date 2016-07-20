@@ -80,7 +80,6 @@ namespace Warewolf.UITests
         [TestCleanup]
         public void MyTestCleanup()
         {
-            Playback.PlaybackSettings.SearchTimeout = 1000;
             try
             {
                 Uimap.Enter_RemoteServerUITestWorkflow_Into_Explorer_Filter();
@@ -96,14 +95,20 @@ namespace Warewolf.UITests
 
             try
             {
-                if (Uimap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.SelectedItemAsTSTCIREMOTEConnected.Exists)
+                Playback.PlaybackSettings.SearchTimeout = 1000;
+                var selectedItemAsTstciremoteConnected = Uimap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.SelectedItemAsTSTCIREMOTEConnected;
+                Playback.PlaybackSettings.SearchTimeout = 5000;
+                if (selectedItemAsTstciremoteConnected.Exists)
                 {
                     Uimap.Click_Explorer_RemoteServer_Connect_Button();
                 }
                 else
                 {
                     Uimap.Click_Connect_Control_InExplorer();
-                    if (Uimap.MainStudioWindow.ComboboxListItemAsTSTCIREMOTEConnected.Exists)
+                    Playback.PlaybackSettings.SearchTimeout = 1000;
+                    var comboboxListItemAsTstciremoteConnected = Uimap.MainStudioWindow.ComboboxListItemAsTSTCIREMOTEConnected;
+                    Playback.PlaybackSettings.SearchTimeout = 5000;
+                    if (comboboxListItemAsTstciremoteConnected.Exists)
                     {
                         Uimap.Select_TSTCIREMOTEConnected_From_Explorer_Remote_Server_Dropdown_List();
                         Uimap.Click_Explorer_RemoteServer_Connect_Button();
@@ -111,7 +116,10 @@ namespace Warewolf.UITests
                 }
                 Uimap.Select_LocalhostConnected_From_Explorer_Remote_Server_Dropdown_List();
                 Uimap.Enter_TSTCIREMOTE_Into_Explorer_Filter();
-                if (Uimap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.Exists)
+                Playback.PlaybackSettings.SearchTimeout = 1000;
+                var wpfTreeItem = Uimap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem;
+                Playback.PlaybackSettings.SearchTimeout = 5000;
+                if (wpfTreeItem.Exists)
                 {
                     Uimap.RightClick_Explorer_Localhost_First_Item();
                     Uimap.Select_Delete_FromExplorerContextMenu();
