@@ -37,6 +37,7 @@ namespace Warewolf.UITests
             Uimap.Click_Save_Ribbon_Button();
             Uimap.Enter_Servicename_As_TSTCIREMOTE();
             Uimap.Click_SaveDialog_YesButton();
+            Uimap.Click_Close_Server_Source_Wizard_Tab_Button();
             Uimap.Enter_TSTCIREMOTE_Into_Explorer_Filter();
             Uimap.Click_Connect_Control_InExplorerParams.ComboboxListItemAsTSTCIREMOTEExists = true;
             Uimap.Click_Connect_Control_InExplorer();
@@ -117,7 +118,6 @@ namespace Warewolf.UITests
                 Uimap.RightClick_Explorer_Localhost_First_Item();
                 Uimap.Select_Delete_FromExplorerContextMenu();
                 Uimap.Click_MessageBox_Yes();
-                Uimap.Click_Explorer_Filter_Clear_ButtonParams.FirstItemExists = false;
                 Uimap.Click_Explorer_Filter_Clear_Button();
                 Uimap.Click_Connect_Control_InExplorerParams.ComboboxListItemAsTSTCIREMOTEExists = false;
                 Uimap.Click_Connect_Control_InExplorer();
@@ -128,13 +128,7 @@ namespace Warewolf.UITests
                 Uimap.Click_Explorer_Filter_Clear_Button();
             }
         }
-
-        #endregion
-
-        /// <summary>
-        ///Gets or sets the test context which provides
-        ///information about and functionality for the current test run.
-        ///</summary>
+        
         public TestContext TestContext
         {
             get
@@ -163,5 +157,7 @@ namespace Warewolf.UITests
         }
 
         private UIMap _uiMap;
+
+        #endregion
     }
 }
