@@ -2383,7 +2383,8 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Please provide us with the necessary steps to follow in order to reproduce this issue. 	The more information you can provide us with, the faster we can track the issue and resolve it..
+        ///   Looks up a localized string similar to Please provide us with the necessary steps to follow in order to reproduce this issue.
+        ///The more information you can provide us with, the faster we can track the issue and resolve it..
         /// </summary>
         public static string ExceptionViewStepsWatermark {
             get {
