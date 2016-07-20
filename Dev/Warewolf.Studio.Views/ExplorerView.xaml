@@ -212,6 +212,15 @@
                                                         <ig:XamMenuItem.Icon>
                                                             <Image Style="{StaticResource NewPluginSourceIcon}"/>
                                                         </ig:XamMenuItem.Icon>
+                                                    </ig:XamMenuItem> 
+                                                    <ig:XamMenuItem Name="NewComPluginSource"
+                                                                    Command="{Binding Path=Data.NewComPluginSourceCommand}"
+                                                                    Header="New COMPlugin Source"
+                                                                    Visibility="{Binding Path=Data.CanCreateSource,
+                                                                                         Converter={StaticResource BoolToVisibilityConverter}}">
+                                                        <ig:XamMenuItem.Icon>
+                                                            <Image Style="{StaticResource NewPluginSourceIcon}"/>
+                                                        </ig:XamMenuItem.Icon>
                                                     </ig:XamMenuItem>
                                                     <ig:XamMenuItem Name="NewEmailSource"
                                                                     Command="{Binding Path=Data.NewEmailSourceSourceCommand}"
@@ -506,6 +515,16 @@
                                                     <ig:XamMenuItem Name="NewPluginSource"
                                                                     Command="{Binding Path=Data.NewPluginSourceCommand}"
                                                                     Header="New Plugin Source"
+                                                                    Visibility="{Binding Path=Data.CanCreateSource,
+                                                                                         Converter={StaticResource BoolToVisibilityConverter}}">
+                                                        <ig:XamMenuItem.Icon>
+                                                            <Image Style="{StaticResource NewPluginSourceIcon}"/>
+                                                        </ig:XamMenuItem.Icon>
+                                                    </ig:XamMenuItem>
+                                                    
+                                                    <ig:XamMenuItem Name="NewComPluginSource"
+                                                                    Command="{Binding Path=Data.NewComPluginSourceCommand}"
+                                                                    Header="New COMPlugin Source"
                                                                     Visibility="{Binding Path=Data.CanCreateSource,
                                                                                          Converter={StaticResource BoolToVisibilityConverter}}">
                                                         <ig:XamMenuItem.Icon>

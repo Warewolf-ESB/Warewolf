@@ -45,9 +45,9 @@ namespace Warewolf.UITests
             Uimap.Click_SaveDialog_YesButton();
             Uimap.Enter_RemoteServerUITestWorkflow_Into_Explorer_Filter();
             Uimap.Click_Debug_Ribbon_Button();
-            //Uimap.Click_DebugInput_Debug_Button_to_Debug_RemoteServerUITestWorkflow();
-	        //Uimap.Click_Workflow1_Cell_Highlights_Workflow1_OnDesignSurface();
-	        //Uimap.Click_Debug_Output_Workflow1_Name();
+            //Uimap.Click_DebugInput_Debug_RemoteServerUITestWorkflow_Button();
+            //Uimap.Click_Debug_Output_Workflow1_Cell();
+            //Uimap.Click_Debug_Output_Workflow1_Name();
             Uimap.RightClick_Explorer_Localhost_First_Item();
             Uimap.Click_Show_Dependencies_In_Explorer_Context_Menu();
             Uimap.Click_Settings_Ribbon_Button();
