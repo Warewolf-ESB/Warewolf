@@ -93,7 +93,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             {
                 _selectedResource = value;
                 NotifyOfPropertyChange("SelectedResourceModel");
-                CommandManager.InvalidateRequerySuggested();
+                OkCommand.RaiseCanExecuteChanged();
             }
         }
 
@@ -119,33 +119,7 @@ namespace Dev2.Studio.ViewModels.Workflow
 
             if(explorerItemModel != null)
             {
-                switch(ActivityType)
-                {
-                    case enDsfActivityType.Workflow:
-                        //isMatched = resourceType == ResourceType.WorkflowService;
-                        isMatched = explorerItemModel.IsService;
-                        break;
-                    case enDsfActivityType.Service:
-                        //isMatched = resourceType == ResourceType.DbService ||
-                        //            resourceType == ResourceType.PluginService ||
-                        //            resourceType == ResourceType.WebService;
-                        isMatched = explorerItemModel.IsService;
-                        break;
-                    case enDsfActivityType.All:
-                        //isMatched = resourceType != ResourceType.Folder &&
-                        //            resourceType != ResourceType.Server &&
-                        //            resourceType != ResourceType.ServerSource;
-                        isMatched = explorerItemModel.IsService && explorerItemModel.IsSource && explorerItemModel.IsFolder;
-                        break;
-                    default:
-                        //isMatched = resourceType != ResourceType.Folder &&
-                        //            resourceType != ResourceType.WorkflowService &&
-                        //            resourceType != ResourceType.DbService &&
-                        //            resourceType != ResourceType.PluginService &&
-                        //            resourceType != ResourceType.WebService;
-                        isMatched = explorerItemModel.IsService && explorerItemModel.IsSource && explorerItemModel.IsFolder;
-                        break;
-                }
+                isMatched = explorerItemModel.IsService;
             }
 
             return explorerItemModel != null && isMatched;

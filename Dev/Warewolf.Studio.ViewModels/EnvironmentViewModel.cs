@@ -76,6 +76,11 @@ namespace Warewolf.Studio.ViewModels
                 UpdateActiveEnvironment(shellViewModel);
                 shellViewModel.NewPluginSource(ResourcePath);
             });
+            NewComPluginSourceCommand = new DelegateCommand(() =>
+            {
+                UpdateActiveEnvironment(shellViewModel);
+                shellViewModel.NewComPluginSource(ResourcePath);
+            });
 
             NewWebSourceSourceCommand = new DelegateCommand(() =>
             {
@@ -568,6 +573,7 @@ namespace Warewolf.Studio.ViewModels
         public ICommand NewServerCommand { get; set; }
         public ICommand NewDatabaseSourceCommand { get; set; }
         public ICommand NewPluginSourceCommand { get; set; }
+        public ICommand NewComPluginSourceCommand { get; set; }
         public ICommand NewWebSourceSourceCommand { get; set; }
         public ICommand NewEmailSourceSourceCommand { get; set; }
         public ICommand NewExchangeSourceSourceCommand { get; set; }
