@@ -45,6 +45,26 @@ namespace Warewolf.Studio.Core
                 ExpandingCommand = new DelegateCommand(Expanding);
             }
         }
+        public DllListingModel(IManageComPluginSourceModel updateManager, IFileListing dllListing)
+        {
+         /*   _updateManager = updateManager;
+            if (dllListing != null)
+            {
+                Name = dllListing.Name;
+                FullName = dllListing.FullName;
+                if (dllListing.Children != null && dllListing.Children.Count > 0)
+                {
+                    Children =
+                        new AsyncObservableCollection<IDllListingModel>(
+                            dllListing.Children.Select(input => new DllListingModel(_updateManager, input)));
+                }
+                IsDirectory = dllListing.IsDirectory;
+                IsExpanderVisible = IsDirectory;
+                IsVisible = true;
+                _dllListing = dllListing;
+                ExpandingCommand = new DelegateCommand(Expanding);
+            }*/
+        }
 
         private void Expanding()
         {
@@ -65,10 +85,7 @@ namespace Warewolf.Studio.Core
                             {
                                 var items = gacChildren.Skip(ChildrenCount).Take(25);
                                 var col = _children as AsyncObservableCollection<IDllListingModel>;
-                                if (col != null)
-                                {
-                                    col.AddRange(items.ToList());
-                                }
+                                col?.AddRange(items.ToList());
                                 Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.ContextIdle, new Action(() =>
                                 {
                                     CurrentProgress = (int)Math.Round((double)(100 * ChildrenCount) / TotalChildrenCount);
@@ -91,7 +108,7 @@ namespace Warewolf.Studio.Core
             {
                 if (_children != null)
                 {
-                    return String.IsNullOrEmpty(_filter)
+                    return string.IsNullOrEmpty(_filter)
                         ? _children
                         : new AsyncObservableCollection<IDllListingModel>(_children.Where(a =>
                         {
@@ -219,7 +236,7 @@ namespace Warewolf.Studio.Core
                     dllListingModel.Filter(searchTerm);
                 }
             }
-            if (String.IsNullOrEmpty(searchTerm) || Name == "FileSystem" || Name == "GAC" ||
+            if (string.IsNullOrEmpty(searchTerm) || Name == "FileSystem" || Name == "GAC" ||
                 (_children != null && _children.Count > 0 &&
                  _children.Any(model => model.IsVisible)))
             {
@@ -285,8 +302,8 @@ namespace Warewolf.Studio.Core
         {
             unchecked
             {
-                var hashCode = Name != null ? Name.GetHashCode() : 0;
-                hashCode = (hashCode * 397) ^ (FullName != null ? FullName.GetHashCode() : 0);
+                var hashCode = Name?.GetHashCode() ?? 0;
+                hashCode = (hashCode * 397) ^ (FullName?.GetHashCode() ?? 0);
                 hashCode = (hashCode * 397) ^ IsDirectory.GetHashCode();
                 return hashCode;
             }
