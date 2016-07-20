@@ -57,7 +57,7 @@ namespace Warewolf.UITests
                     {
                         parent = parent.Container;
                     }
-                    if (parent != null && parent.Exists)
+                    if (parent != null && parent.Exists && parent != MainStudioWindow)
                     {
                         parent.DrawHighlight();
                         e.Result = PlaybackErrorOptions.Retry;
@@ -158,6 +158,99 @@ namespace Warewolf.UITests
         {
             var firstOrDefaultCell = row.GetChildren().Where(child => child.ControlType == ControlType.Cell).ElementAtOrDefault(4);
             return firstOrDefaultCell?.GetChildren().FirstOrDefault(child => child.ControlType == ControlType.CheckBox);
+        }
+
+        public void TryCloseHangingSaveDialog()
+        {
+            try
+            {
+                Playback.PlaybackSettings.MaximumRetryCount = 1 * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
+                Playback.PlaybackSettings.SearchTimeout = 1000 * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
+                var cancelButton = SaveDialogWindow.CancelButton;
+                Playback.PlaybackSettings.MaximumRetryCount = 5 * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
+                Playback.PlaybackSettings.SearchTimeout = 5000 * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
+                if (cancelButton.Exists)
+                {
+                    Click_SaveDialog_CancelButton();
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Cleanup threw an unhandled exception trying to remove hanging save dialog. Test may have crashed without leaving a hanging dialog.\n" + e.Message);
+            }
+        }
+
+        public void TryRemoveRemoteServerUITestWorkflowFromExplorer()
+        {
+            try
+            {
+                Enter_RemoteServerUITestWorkflow_Into_Explorer_Filter();
+                Playback.PlaybackSettings.MaximumRetryCount = 1 * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
+                Playback.PlaybackSettings.SearchTimeout = 1000 * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
+                var wpfTreeItem = MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem;
+                Playback.PlaybackSettings.MaximumRetryCount = 5 * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
+                Playback.PlaybackSettings.SearchTimeout = 5000 * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
+                if (wpfTreeItem.Exists)
+                {
+                    RightClick_Explorer_Localhost_First_Item();
+                    Select_Delete_FromExplorerContextMenu();
+                    Click_MessageBox_Yes();
+                }
+                Click_Explorer_Filter_Clear_Button();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Cleanup failed to remove RemoteServerUITestWorkflow. Test may have crashed before RemoteServerUITestWorkflow was created.\n" + e.Message);
+            }
+        }
+
+        public void TryDisconnectFromCIREMOTEAndRemoveSourceFromExplorer()
+        {
+            try
+            {
+                Playback.PlaybackSettings.MaximumRetryCount = 1 * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
+                Playback.PlaybackSettings.SearchTimeout = 1000 * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
+                var selectedItemAsTstciremoteConnected = MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.SelectedItemAsTSTCIREMOTEConnected;
+                Playback.PlaybackSettings.MaximumRetryCount = 5 * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
+                Playback.PlaybackSettings.SearchTimeout = 5000 * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
+                if (selectedItemAsTstciremoteConnected.Exists)
+                {
+                    Click_Explorer_RemoteServer_Connect_Button();
+                }
+                else
+                {
+                    Click_Connect_Control_InExplorer();
+                    Playback.PlaybackSettings.MaximumRetryCount = 1 * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
+                    Playback.PlaybackSettings.SearchTimeout = 1000 * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
+                    var comboboxListItemAsTstciremoteConnected = MainStudioWindow.ComboboxListItemAsTSTCIREMOTEConnected;
+                    Playback.PlaybackSettings.MaximumRetryCount = 5 * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
+                    Playback.PlaybackSettings.SearchTimeout = 5000 * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
+                    if (comboboxListItemAsTstciremoteConnected.Exists)
+                    {
+                        Select_TSTCIREMOTEConnected_From_Explorer_Remote_Server_Dropdown_List();
+                        Click_Explorer_RemoteServer_Connect_Button();
+                    }
+                }
+                Select_LocalhostConnected_From_Explorer_Remote_Server_Dropdown_List();
+                Enter_TSTCIREMOTE_Into_Explorer_Filter();
+                Playback.PlaybackSettings.MaximumRetryCount = 1 * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
+                Playback.PlaybackSettings.SearchTimeout = 1000 * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
+                var wpfTreeItem = MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem;
+                Playback.PlaybackSettings.MaximumRetryCount = 5 * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
+                Playback.PlaybackSettings.SearchTimeout = 5000 * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
+                if (wpfTreeItem.Exists)
+                {
+                    RightClick_Explorer_Localhost_First_Item();
+                    Select_Delete_FromExplorerContextMenu();
+                    Click_MessageBox_Yes();
+                }
+                Click_Explorer_Filter_Clear_Button();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Cleanup failed to remove remote server TST-CI-REMOTE. Test may have crashed before remote server TST-CI-REMOTE was connected.\n" + e.Message);
+                Click_Explorer_Filter_Clear_Button();
+            }
         }
     }
 }
