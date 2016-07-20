@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Dev2.Runtime.ServiceModel.Data
 {
@@ -58,6 +59,7 @@ namespace Dev2.Runtime.ServiceModel.Data
 
         #region Methods
 
+        [SuppressMessage("ReSharper", "UnusedMember.Global")]
         public void AddRange(IEnumerable<RecordsetCell> items)
         {
             _cells.AddRange(items);
@@ -72,6 +74,7 @@ namespace Dev2.Runtime.ServiceModel.Data
             _cells.Add(item);
         }
 
+        [SuppressMessage("ReSharper", "UnusedMember.Global")]
         public void Clear()
         {
             _cells.Clear();

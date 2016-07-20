@@ -309,22 +309,6 @@ namespace Dev2.Studio.Controller
             return Show();
         }
 
-        public MessageBoxResult ShowNoInputsSelectedWhenClickLink()
-        {
-            Header = "Did you know?";
-            var description = "You can pass variables into your workflow" + Environment.NewLine
-                              + "by selecting the Input checkbox" + Environment.NewLine +
-                              "in the Variables window.";
-            Description = description;
-            Buttons = MessageBoxButton.OK;
-            ImageType = MessageBoxImage.Information;
-            DontShowAgainKey = GlobalConstants.Dev2MessageBoxNoInputsWhenHyperlinkClickedDialog;
-            IsDependenciesButtonVisible = false;
-            IsInfo = true;
-            IsError = false;
-            IsQuestion = false;
-            return Show();
-        }
 
         public MessageBoxResult ShowSaveErrorDialog(string errorMessage)
         {

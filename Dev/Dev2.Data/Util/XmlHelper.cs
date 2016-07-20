@@ -11,71 +11,12 @@
 using System;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Xml;
-using System.Xml.Linq;
-using Dev2.Common;
 
 namespace Dev2.Data.Util
 {
     public static class XmlHelper
     {
-        public static string MakeErrorsUserReadable(string tag)
-        {
-            var result = new StringBuilder();
-            var readerSettings = new XmlReaderSettings { ConformanceLevel = ConformanceLevel.Fragment };
-
-            using (TextReader txtreader = new StringReader(tag))
-            {
-                try
-                {
-                    using (var reader = XmlReader.Create(txtreader, readerSettings))
-                    {
-                        var count = 0;
-
-                        while (reader.Read())
-                        {
-                            using (var fragmentReader = reader.ReadSubtree())
-                            {
-                                if (fragmentReader.Read())
-                                {
-                                    try
-                                    {
-                                    var fragment = XNode.ReadFrom(fragmentReader) as XElement;
-
-                                    if (fragment != null &&
-                                        fragment.Name.LocalName ==
-                                        GlobalConstants.InnerErrorTag.TrimStart('<').TrimEnd('>'))
-                                    {
-                                        count++;
-                                        result.AppendFormat(" {0} ", count);
-                                        result.AppendLine(fragment.Value);
-                                    }
-                                }
-                                    catch (Exception)
-                                    {
-                                        // There was an issue parsing, must be text node now ;(
-
-                                        count++;
-                                        result.AppendFormat(" {0} ", count);
-                                        result.AppendLine(fragmentReader.Value);
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-                catch (InvalidOperationException ioex)
-                {
-                    Dev2Logger.Error("XmlHelper", ioex);
-                    result.Clear();
-                    result.Append(tag);
-                }
-            }
-
-            return result.ToString();
-        }
-
         private static readonly XmlReaderSettings IsXmlReaderSettings = new XmlReaderSettings { ConformanceLevel = ConformanceLevel.Auto, DtdProcessing = DtdProcessing.Ignore };
         private static readonly string[] StripTags = { "<XmlData>", "</XmlData>", "<Dev2ServiceInput>", "</Dev2ServiceInput>", "<sr>", "</sr>", "<ADL />" };
         private static readonly string[] NaughtyTags = { "<Dev2ResumeData>", "</Dev2ResumeData>",

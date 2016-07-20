@@ -12,6 +12,7 @@ using System;
 using System.Activities;
 using System.Activities.XamlIntegration;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -272,6 +273,7 @@ namespace Dev2.DynamicServices.Objects
             return IsCompiled;
         }
 
+        [SuppressMessage("ReSharper", "UnusedMember.Global")]
         public void SetActivity(Activity activity)
         {
             _workflowActivity = activity;

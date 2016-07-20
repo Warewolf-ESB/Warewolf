@@ -9,6 +9,7 @@
 */
 
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
 using System.Text;
@@ -277,6 +278,7 @@ namespace Dev2.Common.ExtMethods
             return Accellerator + input;
         }
 
+        [SuppressMessage("ReSharper", "UnusedMember.Global")]
         public static string RemoveWhiteSpace(this string value)
         {
             var cleanString = new StringBuilder(value.Trim()).Replace(" ", "");

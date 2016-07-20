@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 
 namespace Dev2.Runtime.Execution
@@ -37,6 +38,7 @@ namespace Dev2.Runtime.Execution
 
         public int Count => _activeExecutions.Count;
 
+        [SuppressMessage("ReSharper", "UnusedMember.Global")]
         public void Add(IExecutableService service)
         {
             ClearNullExecutions();
@@ -65,6 +67,7 @@ namespace Dev2.Runtime.Execution
             }
         }
 
+        [SuppressMessage("ReSharper", "UnusedMember.Global")]
         public bool Remove(IExecutableService service)
         {
             var exists = _activeExecutions.Remove(service);
@@ -93,6 +96,7 @@ namespace Dev2.Runtime.Execution
             return service;
         }
 
+        [SuppressMessage("ReSharper", "UnusedMember.Global")]
         public void Clear()
         {
             _activeExecutions.Clear();
