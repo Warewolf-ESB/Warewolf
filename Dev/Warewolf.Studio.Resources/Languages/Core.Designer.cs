@@ -6128,6 +6128,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Your script might contain values like &apos;\t&apos; or &apos;\n&apos; etc which are Escape Sequences. Tick this Box if you want to ignore this or leave it unticked if you want to use them as Escape Sequences..
+        /// </summary>
+        public static string ScriptingHelpEscapeScript {
+            get {
+                return ResourceManager.GetString("ScriptingHelpEscapeScript", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to What type of scripting language do you want to use?	Allowed:	na.
         /// </summary>
         public static string ScriptingHelpLanguageType {
@@ -6151,6 +6160,15 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string ScriptingHelpScript {
             get {
                 return ResourceManager.GetString("ScriptingHelpScript", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Check this box if you want to ignore Escape Sequences (&apos;\t&apos;, &apos;\n&apos; etc)..
+        /// </summary>
+        public static string ScriptingToolTipEscapeScript {
+            get {
+                return ResourceManager.GetString("ScriptingToolTipEscapeScript", resourceCulture);
             }
         }
         

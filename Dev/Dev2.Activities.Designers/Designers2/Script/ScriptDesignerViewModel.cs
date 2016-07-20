@@ -23,10 +23,13 @@ namespace Dev2.Activities.Designers2.Script
         public ScriptDesignerViewModel(ModelItem modelItem)
             : base(modelItem)
         {
+            EscapeScript = true;
             ScriptTypes = Dev2EnumConverter.ConvertEnumsTypeToStringList<enScriptType>();
             SelectedScriptType = Dev2EnumConverter.ConvertEnumValueToString(ScriptType);
             AddTitleBarLargeToggle();
         }
+
+        public bool EscapeScript { get; private set; }
 
         public IList<string> ScriptTypes { get; private set; }
 
