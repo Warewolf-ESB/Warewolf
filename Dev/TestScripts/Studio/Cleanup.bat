@@ -19,6 +19,10 @@ REM * set TestDeploymentDir=C:\Users\INTEGR~1\AppData\Local\VSEQT\QTAgent\54371B
 REM * set AgentName=RSAKLFTST7X64-3
 REM ********************************************************************************************************************
 
+set /a LoopCounter=0
+:RetryClean
+IF NOT EXIST "%PROGRAMDATA%\Warewolf\Resources" IF NOT EXIST "%PROGRAMDATA%\Warewolf\Workspaces" IF NOT EXIST "%PROGRAMDATA%\Warewolf\Server Settings" EXIT 0
+
 REM ** Kill The Warewolf ;) **
 IF EXIST %windir%\nircmd.exe (nircmd elevate taskkill /im "Warewolf Studio.exe" /T /F) else (taskkill /im "Warewolf Studio.exe" /T /F)
 IF EXIST %windir%\nircmd.exe (nircmd elevate taskkill /im "Warewolf Server.exe" /T /F) else (taskkill /im "Warewolf Server.exe" /T /F)
@@ -39,5 +43,12 @@ IF EXIST "%PROGRAMDATA%\Warewolf\Server Settings" echo ERROR CANNOT DELETE %PROG
 REM ** Clean temp directories
 IF EXIST "%windir%\Temp\*.*" del /s /q "%windir%\Temp\*.*"
 IF EXIST "%temp%\*.*" del /s /q "%temp%\*.*"
+
+set /a LoopCounter=LoopCounter+1
+IF %LoopCounter% EQU 30 exit 1
+rem wait for 5 seconds before trying again
+@echo %AgentName% is attempting number %LoopCounter% out of 30: Waiting 5 more seconds for "%PROGRAMDATA%\Warewolf" folder cleanup...
+ping -n 5 -w 1000 192.0.2.2 > nul
+goto RetryClean
 
 exit 0

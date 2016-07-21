@@ -1,27 +1,32 @@
 ﻿using System.Linq;
+using Microsoft.VisualStudio.TestTools.UITesting.HtmlControls;
+using Microsoft.VisualStudio.TestTools.UITesting.WinControls;
+using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
+using System;
+using System.Collections.Generic;
+using System.CodeDom.Compiler;
+using Microsoft.VisualStudio.TestTools.UITest.Extension;
+using Microsoft.VisualStudio.TestTools.UITesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Keyboard = Microsoft.VisualStudio.TestTools.UITesting.Keyboard;
+using Mouse = Microsoft.VisualStudio.TestTools.UITesting.Mouse;
+using MouseButtons = System.Windows.Forms.MouseButtons;
+using System.Drawing;
+using System.Windows.Input;
+using System.Text.RegularExpressions;
+using System.Reflection;
+using System.Threading;
 
 namespace Warewolf.UITests
 {
-    using Microsoft.VisualStudio.TestTools.UITesting.HtmlControls;
-    using Microsoft.VisualStudio.TestTools.UITesting.WinControls;
-    using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
-    using System;
-    using System.Collections.Generic;
-    using System.CodeDom.Compiler;
-    using Microsoft.VisualStudio.TestTools.UITest.Extension;
-    using Microsoft.VisualStudio.TestTools.UITesting;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using Keyboard = Microsoft.VisualStudio.TestTools.UITesting.Keyboard;
-    using Mouse = Microsoft.VisualStudio.TestTools.UITesting.Mouse;
-    using MouseButtons = System.Windows.Forms.MouseButtons;
-    using System.Drawing;
-    using System.Windows.Input;
-    using System.Text.RegularExpressions;
-    using System.Reflection;
-    using System.Threading;
 
     public partial class UIMap
     {
+        private int _lenientSearchTimeout = 5000;
+        private int _lenientMaximumRetryCount = 5;
+        private int _strictSearchTimeout = 1000;
+        private int _strictMaximumRetryCount = 1;
+
         public void SetGlobalPlaybackSettings()
         {
             Playback.PlaybackSettings.WaitForReadyLevel = WaitForReadyLevel.Disabled;
@@ -34,15 +39,15 @@ namespace Warewolf.UITests
             {
                 Playback.PlaybackSettings.ThinkTimeMultiplier = 1;
             }
-            Playback.PlaybackSettings.MaximumRetryCount = 5 * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
-            Playback.PlaybackSettings.SearchTimeout = 5000 * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
+            Playback.PlaybackSettings.MaximumRetryCount = _lenientMaximumRetryCount * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
+            Playback.PlaybackSettings.SearchTimeout = _lenientSearchTimeout * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
             Playback.PlaybackSettings.MatchExactHierarchy = true;
             Playback.PlaybackSettings.SkipSetPropertyVerification = true;
             Playback.PlaybackSettings.SmartMatchOptions = SmartMatchOptions.None;
             Playback.PlaybackError -= new EventHandler<PlaybackErrorEventArgs>(PlaybackErrorHandler);
             Playback.PlaybackError += new EventHandler<PlaybackErrorEventArgs>(PlaybackErrorHandler);
         }
-        
+
         void PlaybackErrorHandler(object sender, PlaybackErrorEventArgs e)
         {
             Console.WriteLine(e.Error.Message);
@@ -65,7 +70,29 @@ namespace Warewolf.UITests
                     }
                 }
             }
-            Playback.Wait(1000 * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString()));
+            if (e.Error is UITestControlNotAvailableException)
+            {
+                UITestControlNotAvailableException asControlNotAvailableException = e.Error as UITestControlNotAvailableException;
+                var exceptionSource = asControlNotAvailableException.ExceptionSource;
+                if (exceptionSource is UITestControl)
+                {
+                    (exceptionSource as UITestControl).DrawHighlight();
+                    e.Result = PlaybackErrorOptions.Retry;
+                    return;
+                }
+            }
+            if (e.Error is FailedToPerformActionOnBlockedControlException)
+            {
+                FailedToPerformActionOnBlockedControlException asFailedToPerformActionOnBlockedControlException = e.Error as FailedToPerformActionOnBlockedControlException;
+                var exceptionSource = asFailedToPerformActionOnBlockedControlException.ExceptionSource;
+                if (exceptionSource is UITestControl)
+                {
+                    (exceptionSource as UITestControl).DrawHighlight();
+                    e.Result = PlaybackErrorOptions.Retry;
+                    return;
+                }
+            }
+            Playback.Wait(_strictSearchTimeout * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString()));
             e.Result = PlaybackErrorOptions.Retry;
         }
 
@@ -74,14 +101,14 @@ namespace Warewolf.UITests
             var sleepTimer = 60;
             try
             {
-                if (!this.MainStudioWindow.Exists)
+                if (!MainStudioWindow.Exists)
                 {
-                    WaitForStudioStart(sleepTimer * 1000);
+                    WaitForStudioStart(sleepTimer * _strictSearchTimeout);
                 }
             }
             catch (UITestControlNotFoundException)
             {
-                WaitForStudioStart(sleepTimer * 1000);
+                WaitForStudioStart(sleepTimer * _strictSearchTimeout);
             }
         }
 
@@ -89,7 +116,7 @@ namespace Warewolf.UITests
         {
             Console.WriteLine("Waiting for studio to start.");
             Playback.Wait(timeout);
-            if (!this.MainStudioWindow.Exists)
+            if (!MainStudioWindow.Exists)
             {
                 throw new InvalidOperationException("Warewolf studio is not running. You are expected to run \"Dev\\TestScripts\\Studio\\Startup.bat\" as an administrator and wait for it to complete before running any coded UI tests");
             }
@@ -119,15 +146,15 @@ namespace Warewolf.UITests
 
         public void Click_Settings_Resource_Permissions_Row1_Add_Resource_Button()
         {
-            Mouse.Click(this.FindAddResourceButton(this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1));
-            Assert.AreEqual(true, this.ServicePickerDialog.Exists, "Service picker dialog does not exist.");
+            Mouse.Click(FindAddResourceButton(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1));
+            Assert.AreEqual(true, ServicePickerDialog.Exists, "Service picker dialog does not exist.");
         }
 
         public void Click_Settings_Resource_Permissions_Row1_Windows_Group_Button()
         {
-            Mouse.Click(this.FindAddWindowsGroupButton(this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1));
-            Assert.AreEqual(true, this.SelectWindowsGroupDialog.Exists, "Select windows group dialog does not exist.");
-            Assert.AreEqual(true, this.SelectWindowsGroupDialog.ItemPanel.ObjectNameTextbox.Exists, "Select windows group object name textbox does not exist.");
+            Mouse.Click(FindAddWindowsGroupButton(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1));
+            Assert.AreEqual(true, SelectWindowsGroupDialog.Exists, "Select windows group dialog does not exist.");
+            Assert.AreEqual(true, SelectWindowsGroupDialog.ItemPanel.ObjectNameTextbox.Exists, "Select windows group object name textbox does not exist.");
         }
 
         public UITestControl FindAddResourceButton(UITestControl row)
@@ -142,33 +169,33 @@ namespace Warewolf.UITests
             return firstOrDefaultCell?.GetChildren().FirstOrDefault(child => child.ControlType == ControlType.Button);
         }
 
-        public UITestControl FindViewPermissionsCheckbox(UITestControl row)
+        public WpfCheckBox FindViewPermissionsCheckbox(UITestControl row)
         {
             var firstOrDefaultCell = row.GetChildren().Where(child => child.ControlType == ControlType.Cell).ElementAtOrDefault(2);
-            return firstOrDefaultCell?.GetChildren().FirstOrDefault(child => child.ControlType == ControlType.CheckBox);
+            return firstOrDefaultCell?.GetChildren().FirstOrDefault(child => child.ControlType == ControlType.CheckBox) as WpfCheckBox;
         }
 
-        public UITestControl FindExecutePermissionsCheckbox(UITestControl row)
+        public WpfCheckBox FindExecutePermissionsCheckbox(UITestControl row)
         {
             var firstOrDefaultCell = row.GetChildren().Where(child => child.ControlType == ControlType.Cell).ElementAtOrDefault(3);
-            return firstOrDefaultCell?.GetChildren().FirstOrDefault(child => child.ControlType == ControlType.CheckBox);
+            return firstOrDefaultCell?.GetChildren().FirstOrDefault(child => child.ControlType == ControlType.CheckBox) as WpfCheckBox;
         }
 
-        public UITestControl FindContributePermissionsCheckbox(UITestControl row)
+        public WpfCheckBox FindContributePermissionsCheckbox(UITestControl row)
         {
             var firstOrDefaultCell = row.GetChildren().Where(child => child.ControlType == ControlType.Cell).ElementAtOrDefault(4);
-            return firstOrDefaultCell?.GetChildren().FirstOrDefault(child => child.ControlType == ControlType.CheckBox);
+            return firstOrDefaultCell?.GetChildren().FirstOrDefault(child => child.ControlType == ControlType.CheckBox) as WpfCheckBox;
         }
 
         public void TryCloseHangingSaveDialog()
         {
             try
             {
-                Playback.PlaybackSettings.MaximumRetryCount = 1 * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
-                Playback.PlaybackSettings.SearchTimeout = 1000 * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
+                Playback.PlaybackSettings.MaximumRetryCount = _strictMaximumRetryCount * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
+                Playback.PlaybackSettings.SearchTimeout = _strictSearchTimeout * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
                 var cancelButton = SaveDialogWindow.CancelButton;
-                Playback.PlaybackSettings.MaximumRetryCount = 5 * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
-                Playback.PlaybackSettings.SearchTimeout = 5000 * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
+                Playback.PlaybackSettings.MaximumRetryCount = _lenientMaximumRetryCount * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
+                Playback.PlaybackSettings.SearchTimeout = _lenientSearchTimeout * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
                 if (cancelButton.Exists)
                 {
                     Click_SaveDialog_CancelButton();
@@ -185,11 +212,11 @@ namespace Warewolf.UITests
             try
             {
                 Enter_RemoteServerUITestWorkflow_Into_Explorer_Filter();
-                Playback.PlaybackSettings.MaximumRetryCount = 1 * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
-                Playback.PlaybackSettings.SearchTimeout = 1000 * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
+                Playback.PlaybackSettings.MaximumRetryCount = _strictMaximumRetryCount * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
+                Playback.PlaybackSettings.SearchTimeout = _strictSearchTimeout * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
                 var wpfTreeItem = MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem;
-                Playback.PlaybackSettings.MaximumRetryCount = 5 * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
-                Playback.PlaybackSettings.SearchTimeout = 5000 * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
+                Playback.PlaybackSettings.MaximumRetryCount = _lenientMaximumRetryCount * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
+                Playback.PlaybackSettings.SearchTimeout = _lenientSearchTimeout * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
                 if (wpfTreeItem.Exists)
                 {
                     RightClick_Explorer_Localhost_First_Item();
@@ -208,11 +235,11 @@ namespace Warewolf.UITests
         {
             try
             {
-                Playback.PlaybackSettings.MaximumRetryCount = 1 * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
-                Playback.PlaybackSettings.SearchTimeout = 1000 * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
+                Playback.PlaybackSettings.MaximumRetryCount = _strictMaximumRetryCount * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
+                Playback.PlaybackSettings.SearchTimeout = _strictSearchTimeout * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
                 var selectedItemAsTstciremoteConnected = MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.SelectedItemAsTSTCIREMOTEConnected;
-                Playback.PlaybackSettings.MaximumRetryCount = 5 * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
-                Playback.PlaybackSettings.SearchTimeout = 5000 * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
+                Playback.PlaybackSettings.MaximumRetryCount = _lenientMaximumRetryCount * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
+                Playback.PlaybackSettings.SearchTimeout = _lenientSearchTimeout * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
                 if (selectedItemAsTstciremoteConnected.Exists)
                 {
                     Click_Explorer_RemoteServer_Connect_Button();
@@ -220,11 +247,11 @@ namespace Warewolf.UITests
                 else
                 {
                     Click_Connect_Control_InExplorer();
-                    Playback.PlaybackSettings.MaximumRetryCount = 1 * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
-                    Playback.PlaybackSettings.SearchTimeout = 1000 * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
+                    Playback.PlaybackSettings.MaximumRetryCount = _strictMaximumRetryCount * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
+                    Playback.PlaybackSettings.SearchTimeout = _strictSearchTimeout * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
                     var comboboxListItemAsTstciremoteConnected = MainStudioWindow.ComboboxListItemAsTSTCIREMOTEConnected;
-                    Playback.PlaybackSettings.MaximumRetryCount = 5 * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
-                    Playback.PlaybackSettings.SearchTimeout = 5000 * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
+                    Playback.PlaybackSettings.MaximumRetryCount = _lenientMaximumRetryCount * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
+                    Playback.PlaybackSettings.SearchTimeout = _lenientSearchTimeout * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
                     if (comboboxListItemAsTstciremoteConnected.Exists)
                     {
                         Select_TSTCIREMOTEConnected_From_Explorer_Remote_Server_Dropdown_List();
@@ -233,11 +260,11 @@ namespace Warewolf.UITests
                 }
                 Select_LocalhostConnected_From_Explorer_Remote_Server_Dropdown_List();
                 Enter_TSTCIREMOTE_Into_Explorer_Filter();
-                Playback.PlaybackSettings.MaximumRetryCount = 1 * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
-                Playback.PlaybackSettings.SearchTimeout = 1000 * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
+                Playback.PlaybackSettings.MaximumRetryCount = _strictMaximumRetryCount * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
+                Playback.PlaybackSettings.SearchTimeout = _strictSearchTimeout * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
                 var wpfTreeItem = MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem;
-                Playback.PlaybackSettings.MaximumRetryCount = 5 * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
-                Playback.PlaybackSettings.SearchTimeout = 5000 * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
+                Playback.PlaybackSettings.MaximumRetryCount = _lenientMaximumRetryCount * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
+                Playback.PlaybackSettings.SearchTimeout = _lenientSearchTimeout * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
                 if (wpfTreeItem.Exists)
                 {
                     RightClick_Explorer_Localhost_First_Item();
@@ -251,6 +278,89 @@ namespace Warewolf.UITests
                 Console.WriteLine("Cleanup failed to remove remote server TST-CI-REMOTE. Test may have crashed before remote server TST-CI-REMOTE was connected.\n" + e.Message);
                 Click_Explorer_Filter_Clear_Button();
             }
+        }
+
+        public void TryCloseHangingWindowsGroupDialog()
+        {
+            try
+            {
+                Playback.PlaybackSettings.MaximumRetryCount = _strictMaximumRetryCount * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
+                Playback.PlaybackSettings.SearchTimeout = _strictSearchTimeout * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
+                var selectWindowsGroupDialog = SelectWindowsGroupDialog;
+                Playback.PlaybackSettings.MaximumRetryCount = _lenientMaximumRetryCount * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
+                Playback.PlaybackSettings.SearchTimeout = _lenientSearchTimeout * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
+                if (selectWindowsGroupDialog.Exists)
+                {
+                    Click_Select_Windows_Group_Cancel_Button();
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Cleanup failed to remove hanging select windows group dialog. Test might not have left a hanging dialog.\n" + e.Message);
+            }
+        }
+
+        /// <summary>
+        /// Click_Settings_Security_Tab_ResourcePermissions_Execute_Checkbox - Use 'Click_Settings_Security_Tab_ResourcePermissions_Execute_CheckboxParams' to pass parameters into this method.
+        /// </summary>
+        public void Click_Settings_Security_Tab_ResourcePermissions_Row1_Execute_Checkbox()
+        {
+            #region Variable Declarations
+            Row1 row1 = MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1;
+            WpfCheckBox executeCheckBox = FindExecutePermissionsCheckbox(row1);
+            WpfButton saveButton = this.MainStudioWindow.SideMenuBar.SaveButton;
+            #endregion
+
+            // Select 'UI__ExecutePermissionCheckBox_AutoID' check box
+            executeCheckBox.Checked = true;
+
+            // Verify that the 'Checked' property of 'UI__ExecutePermissionCheckBox_AutoID' check box equals 'True'
+            Assert.AreEqual(true, executeCheckBox.Checked, "Settings security tab resource permissions row 1 execute checkbox is not checked.");
+
+            // Verify that the 'Enabled' property of 'Save this tab' button equals 'True'
+            Assert.AreEqual(true, saveButton.Enabled, "Save ribbon button is not enabled");
+        }
+
+        /// <summary>
+        /// Click_Settings_Security_Tab_Resource_Permissions_View_Checkbox - Use 'Click_Settings_Security_Tab_Resource_Permissions_View_CheckboxParams' to pass parameters into this method.
+        /// </summary>
+        public void Click_Settings_Security_Tab_Resource_Permissions_Row1_View_Checkbox()
+        {
+            #region Variable Declarations
+            Row1 row1 = MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1;
+            WpfCheckBox viewCheckBox = FindViewPermissionsCheckbox(row1);
+            WpfButton saveButton = this.MainStudioWindow.SideMenuBar.SaveButton;
+            #endregion
+
+            // Select 'UI__ViewPermissionCheckBox_AutoID' check box
+            viewCheckBox.Checked = true;
+
+            // Verify that the 'Checked' property of 'UI__ViewPermissionCheckBox_AutoID' check box equals 'True'
+            Assert.AreEqual(true, viewCheckBox.Checked, "Settings resource permissions row1 view checkbox is not checked.");
+
+            // Verify that the 'Enabled' property of 'Save this tab' button equals 'True'
+            Assert.AreEqual(true, saveButton.Enabled, "Save ribbon button is not enabled");
+        }
+
+        /// <summary>
+        /// Click_Settings_Security_Tab_Resource_Permissions_Contribute_Checkbox - Use 'Click_Settings_Security_Tab_Resource_Permissions_Contribute_CheckboxParams' to pass parameters into this method.
+        /// </summary>
+        public void Click_Settings_Security_Tab_Resource_Permissions_Row1_Contribute_Checkbox()
+        {
+            #region Variable Declarations
+            Row1 row1 = MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1;
+            WpfCheckBox contributeCheckBox = FindContributePermissionsCheckbox(row1);
+            WpfButton saveButton = this.MainStudioWindow.SideMenuBar.SaveButton;
+            #endregion
+
+            // Select 'UI__ContributePermissionCheckBox_AutoID' check box
+            contributeCheckBox.Checked = true;
+
+            // Verify that the 'Checked' property of 'UI__ViewPermissionCheckBox_AutoID' check box equals 'True'
+            Assert.AreEqual(true, contributeCheckBox.Checked, "Settings resource permissions row1 view checkbox is not checked.");
+
+            // Verify that the 'Enabled' property of 'Save this tab' button equals 'True'
+            Assert.AreEqual(true, saveButton.Enabled, "Save ribbon button is not enabled");
         }
     }
 }
