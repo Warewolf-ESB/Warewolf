@@ -85,6 +85,7 @@ namespace Dev2.Intellisense.Provider
             var results = new List<IntellisenseProviderResult>();
             if(context.DesiredResultSet == IntellisenseDesiredResultSet.EntireSet)
             {
+                IntellisenseResults.Clear();
                 FileSystemQuery.QueryList("");
                 FileSystemQuery.QueryCollection.ForEach(s => IntellisenseResults.Add(new IntellisenseProviderResult(this, s, string.Empty, string.Empty, false)));
                 results.AddRange(IntellisenseResults);
