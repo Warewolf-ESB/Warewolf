@@ -23,6 +23,8 @@ namespace Dev2.Common.Interfaces
         bool ProgressVisibility { get; set; }
         int ChildrenCount { get; }
         int CurrentProgress { get; set; }
+        string ClsId { get; set; }
+        string ProgId { get; set; }
     }
 
     public interface IFileListingModel : IFileListing

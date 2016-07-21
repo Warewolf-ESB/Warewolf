@@ -32,7 +32,8 @@ namespace Dev2.Runtime.ESB.Management.Services
                 try
                 {
                     msg.HasError = false;
-                    msg.Message = serializer.SerializeToBuilder(GetDllListing(src));
+                    var fileListings = GetDllListing(src);
+                    msg.Message = serializer.SerializeToBuilder(fileListings);
                 }
                 catch (Exception ex)
                 {
