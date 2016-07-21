@@ -574,7 +574,9 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Any variable and/or data goes in here.	To copy a file or folder, put the full path and file or folder name here.	You can use File System, URI, SFTP, FTP or FTPS format..
+        ///   Looks up a localized string similar to Any variable and/or data goes in here.	
+        ///To copy a file or folder, put the full path and file or folder name here.	
+        ///You can use File System, URI, SFTP, FTP or FTPS format..
         /// </summary>
         public static string CopyToolTipFileFolder {
             get {
