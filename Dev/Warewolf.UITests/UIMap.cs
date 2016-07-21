@@ -22,6 +22,11 @@ namespace Warewolf.UITests
 
     public partial class UIMap
     {
+        private int _lenientSearchTimeout = 5000;
+        private int _lenientMaximumRetryCount = 5;
+        private int _strictSearchTimeout = 1000;
+        private int _strictMaximumRetryCount = 1;
+
         public void SetGlobalPlaybackSettings()
         {
             Playback.PlaybackSettings.WaitForReadyLevel = WaitForReadyLevel.Disabled;
@@ -34,8 +39,8 @@ namespace Warewolf.UITests
             {
                 Playback.PlaybackSettings.ThinkTimeMultiplier = 1;
             }
-            Playback.PlaybackSettings.MaximumRetryCount = 5 * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
-            Playback.PlaybackSettings.SearchTimeout = 5000 * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
+            Playback.PlaybackSettings.MaximumRetryCount = _lenientMaximumRetryCount * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
+            Playback.PlaybackSettings.SearchTimeout = _lenientSearchTimeout * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
             Playback.PlaybackSettings.MatchExactHierarchy = true;
             Playback.PlaybackSettings.SkipSetPropertyVerification = true;
             Playback.PlaybackSettings.SmartMatchOptions = SmartMatchOptions.None;
@@ -65,7 +70,7 @@ namespace Warewolf.UITests
                     }
                 }
             }
-            Playback.Wait(1000 * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString()));
+            Playback.Wait(_strictSearchTimeout * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString()));
             e.Result = PlaybackErrorOptions.Retry;
         }
 
@@ -76,12 +81,12 @@ namespace Warewolf.UITests
             {
                 if (!this.MainStudioWindow.Exists)
                 {
-                    WaitForStudioStart(sleepTimer * 1000);
+                    WaitForStudioStart(sleepTimer * _strictSearchTimeout);
                 }
             }
             catch (UITestControlNotFoundException)
             {
-                WaitForStudioStart(sleepTimer * 1000);
+                WaitForStudioStart(sleepTimer * _strictSearchTimeout);
             }
         }
 
@@ -164,11 +169,11 @@ namespace Warewolf.UITests
         {
             try
             {
-                Playback.PlaybackSettings.MaximumRetryCount = 1 * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
-                Playback.PlaybackSettings.SearchTimeout = 1000 * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
+                Playback.PlaybackSettings.MaximumRetryCount = _strictMaximumRetryCount * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
+                Playback.PlaybackSettings.SearchTimeout = _strictSearchTimeout * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
                 var cancelButton = SaveDialogWindow.CancelButton;
-                Playback.PlaybackSettings.MaximumRetryCount = 5 * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
-                Playback.PlaybackSettings.SearchTimeout = 5000 * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
+                Playback.PlaybackSettings.MaximumRetryCount = _lenientMaximumRetryCount * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
+                Playback.PlaybackSettings.SearchTimeout = _lenientSearchTimeout * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
                 if (cancelButton.Exists)
                 {
                     Click_SaveDialog_CancelButton();
@@ -185,11 +190,11 @@ namespace Warewolf.UITests
             try
             {
                 Enter_RemoteServerUITestWorkflow_Into_Explorer_Filter();
-                Playback.PlaybackSettings.MaximumRetryCount = 1 * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
-                Playback.PlaybackSettings.SearchTimeout = 1000 * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
+                Playback.PlaybackSettings.MaximumRetryCount = _strictMaximumRetryCount * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
+                Playback.PlaybackSettings.SearchTimeout = _strictSearchTimeout * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
                 var wpfTreeItem = MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem;
-                Playback.PlaybackSettings.MaximumRetryCount = 5 * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
-                Playback.PlaybackSettings.SearchTimeout = 5000 * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
+                Playback.PlaybackSettings.MaximumRetryCount = _lenientMaximumRetryCount * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
+                Playback.PlaybackSettings.SearchTimeout = _lenientSearchTimeout * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
                 if (wpfTreeItem.Exists)
                 {
                     RightClick_Explorer_Localhost_First_Item();
@@ -208,11 +213,11 @@ namespace Warewolf.UITests
         {
             try
             {
-                Playback.PlaybackSettings.MaximumRetryCount = 1 * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
-                Playback.PlaybackSettings.SearchTimeout = 1000 * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
+                Playback.PlaybackSettings.MaximumRetryCount = _strictMaximumRetryCount * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
+                Playback.PlaybackSettings.SearchTimeout = _strictSearchTimeout * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
                 var selectedItemAsTstciremoteConnected = MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.SelectedItemAsTSTCIREMOTEConnected;
-                Playback.PlaybackSettings.MaximumRetryCount = 5 * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
-                Playback.PlaybackSettings.SearchTimeout = 5000 * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
+                Playback.PlaybackSettings.MaximumRetryCount = _lenientMaximumRetryCount * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
+                Playback.PlaybackSettings.SearchTimeout = _lenientSearchTimeout * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
                 if (selectedItemAsTstciremoteConnected.Exists)
                 {
                     Click_Explorer_RemoteServer_Connect_Button();
@@ -220,11 +225,11 @@ namespace Warewolf.UITests
                 else
                 {
                     Click_Connect_Control_InExplorer();
-                    Playback.PlaybackSettings.MaximumRetryCount = 1 * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
-                    Playback.PlaybackSettings.SearchTimeout = 1000 * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
+                    Playback.PlaybackSettings.MaximumRetryCount = _strictMaximumRetryCount * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
+                    Playback.PlaybackSettings.SearchTimeout = _strictSearchTimeout * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
                     var comboboxListItemAsTstciremoteConnected = MainStudioWindow.ComboboxListItemAsTSTCIREMOTEConnected;
-                    Playback.PlaybackSettings.MaximumRetryCount = 5 * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
-                    Playback.PlaybackSettings.SearchTimeout = 5000 * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
+                    Playback.PlaybackSettings.MaximumRetryCount = _lenientMaximumRetryCount * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
+                    Playback.PlaybackSettings.SearchTimeout = _lenientSearchTimeout * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
                     if (comboboxListItemAsTstciremoteConnected.Exists)
                     {
                         Select_TSTCIREMOTEConnected_From_Explorer_Remote_Server_Dropdown_List();
@@ -233,11 +238,11 @@ namespace Warewolf.UITests
                 }
                 Select_LocalhostConnected_From_Explorer_Remote_Server_Dropdown_List();
                 Enter_TSTCIREMOTE_Into_Explorer_Filter();
-                Playback.PlaybackSettings.MaximumRetryCount = 1 * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
-                Playback.PlaybackSettings.SearchTimeout = 1000 * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
+                Playback.PlaybackSettings.MaximumRetryCount = _strictMaximumRetryCount * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
+                Playback.PlaybackSettings.SearchTimeout = _strictSearchTimeout * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
                 var wpfTreeItem = MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem;
-                Playback.PlaybackSettings.MaximumRetryCount = 5 * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
-                Playback.PlaybackSettings.SearchTimeout = 5000 * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
+                Playback.PlaybackSettings.MaximumRetryCount = _lenientMaximumRetryCount * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
+                Playback.PlaybackSettings.SearchTimeout = _lenientSearchTimeout * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
                 if (wpfTreeItem.Exists)
                 {
                     RightClick_Explorer_Localhost_First_Item();
