@@ -28,7 +28,7 @@ namespace Warewolf.Studio.Core
         {
             if (null == items)
             {
-                throw new ArgumentNullException("items");
+                throw new ArgumentNullException(nameof(items));
             }
 
 

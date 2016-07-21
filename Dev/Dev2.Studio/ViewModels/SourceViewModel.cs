@@ -74,12 +74,9 @@ namespace Dev2.ViewModels
         {
             get
             {
-                if (ViewModel != null)
+                if(ViewModel?.Image != null)
                 {
-                    if(ViewModel.Image != null)
-                    {
-                        return ViewModel.Image;
-                    }
+                    return ViewModel.Image;
                 }
                 return "Unknown";
             }
