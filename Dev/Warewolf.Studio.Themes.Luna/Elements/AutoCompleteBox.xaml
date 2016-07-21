@@ -104,11 +104,11 @@
 
     <Style x:Key="AutoCompleteBoxStyle" TargetType="controls:AutoCompleteBox">
         <Setter Property="IsTabStop" Value="False" />
-        <Setter Property="Padding" Value="0" />
         <Setter Property="BorderThickness" Value="1" />
         <Setter Property="TextBoxStyle" Value="{StaticResource TextBoxStyle}"></Setter>
         <Setter Property="BorderBrush" Value="{StaticResource TextBoxBorderBrush}" />
         <Setter Property="MinWidth" Value="45" />
+        <Setter Property="Padding" Value="3,2,3,2" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="controls:AutoCompleteBox">
@@ -326,10 +326,10 @@
                             <Setter TargetName="Border" Property="BorderBrush" Value="{StaticResource BrushDisabledForeground}" />
                             <Setter TargetName="Border" Property="Background" Value="{StaticResource DisabledVisualElement}" />
                             <Setter Property="Foreground" Value="{StaticResource BrushDisabledForeground}" />
-                        </Trigger>
+                        </Trigger>-->
                         <Trigger Property="HasError" Value="true">
                             <Setter Property="Foreground" Value="{StaticResource ValidationErrorElement}" />
-                        </Trigger>-->
+                        </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
