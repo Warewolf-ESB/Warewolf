@@ -456,7 +456,6 @@
     <Compile Include="AppResources\Converters\InverseBooleanConverter.cs" />
     <Compile Include="Activities\TO\ActivityViewModelTO.cs" />
     <Compile Include="Activities\Interfaces\IServiceXmlTranslator.cs" />
-    <Compile Include="Activities\Translators\ServiceXmlTranslator.cs" />
     <Compile Include="Utils\HelperUtils.cs" />
     <Compile Include="Utils\NewWorkflowNames.cs" />
     <Compile Include="Utils\ServerUtil.cs" />
@@ -579,6 +578,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Activities\Translators\" />
     <Folder Include="AppResources\Exceptions\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

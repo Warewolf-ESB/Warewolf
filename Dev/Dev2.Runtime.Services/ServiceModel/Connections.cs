@@ -23,11 +23,8 @@ using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Communication;
 using Dev2.Runtime.Diagnostics;
-using Dev2.Runtime.Hosting;
 using Dev2.Runtime.ServiceModel.Data;
 using Microsoft.AspNet.SignalR.Client;
-using Newtonsoft.Json;
-using Warewolf.Resource.Errors;
 
 // ReSharper disable InconsistentNaming
 namespace Dev2.Runtime.ServiceModel
@@ -59,83 +56,9 @@ namespace Dev2.Runtime.ServiceModel
 
         #endregion
 
-        #region Get
-
-        // POST: Service/Connections/Get
-        public Dev2.Data.ServiceModel.Connection Get(string resourceID, Guid workspaceID, Guid dataListID)
-        {
-            var result = new Dev2.Data.ServiceModel.Connection { ResourceID = Guid.Empty, ResourceType = "Server", WebServerPort = Dev2.Data.ServiceModel.Connection.DefaultWebServerPort };
-            try
-            {
-
-                var contents = ResourceCatalog.Instance.GetResourceContents(workspaceID, Guid.Parse(resourceID));
-                if(contents != null && contents.Length > 0)
-                {
-                    var xml = contents.ToXElement();
-                    result = new Dev2.Data.ServiceModel.Connection(xml);
-                }
-            }
-            catch(Exception ex)
-            {
-                RaiseError(ex);
-            }
-            return result;
-        }
-
-        #endregion
-
-        #region Save
-
-        // POST: Service/Connections/Save
-        public string Save(string args, Guid workspaceID, Guid dataListID)
-        {
-            try
-            {
-                var connection = JsonConvert.DeserializeObject<Dev2.Data.ServiceModel.Connection>(args);
-
-                Uri actualUri;
-
-                if(Uri.TryCreate(connection.Address, UriKind.RelativeOrAbsolute, out actualUri))
-                {
-                    var port = actualUri.Port;
-                    connection.WebServerPort = port;
-                }
-
-                // convert public user and pass to proper ntlm user and pass ;)
-                if(connection.AuthenticationType == AuthenticationType.Public)
-                {
-                    connection.UserName = GlobalConstants.PublicUsername;
-                    connection.Password = string.Empty;
-                }
-
-                ResourceCatalog.Instance.SaveResource(workspaceID, connection);
-                return connection.ToString();
-            }
-            catch(Exception ex)
-            {
-                RaiseError(ex);
-                return new ValidationResult { IsValid = false, ErrorMessage = ex.Message }.ToString();
-            }
-        }
-
-        #endregion
-
         #region Search
 
         // POST: Service/Connections/Search
-        public string Search(string term, Guid workspaceID, Guid dataListID)
-        {
-            if(term == null)
-            {
-                term = "";
-            }
-            // This search is case-sensitive!
-            term = term.ToLower();
-
-            var tmp = _fetchComputers.Invoke();
-            var results = tmp.FindAll(s => s.ToLower().Contains(term));
-            return JsonConvert.SerializeObject(results);
-        }
 
         public List<string> GetNames()
         {
@@ -146,31 +69,6 @@ namespace Dev2.Runtime.ServiceModel
         #region Test
 
         // POST: Service/Connections/Test
-        public ValidationResult Test(string args, Guid workspaceID, Guid dataListID)
-        {
-            var result = new ValidationResult
-            {
-                IsValid = false,
-                ErrorMessage = ErrorResource.UnknownConnectionType
-            };
-
-            try
-            {
-                var connection = JsonConvert.DeserializeObject<Dev2.Data.ServiceModel.Connection>(args);
-                switch(connection.ResourceType)
-                {
-                    case "Server":
-                        result = CanConnectToServer(connection);
-                        break;
-                }
-            }
-            catch(Exception ex)
-            {
-                RaiseError(ex);
-                result.ErrorMessage = ex.Message;
-            }
-            return result;
-        }
 
         #endregion
 
