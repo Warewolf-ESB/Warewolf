@@ -49,6 +49,7 @@ namespace Dev2.Common.Interfaces.Core
                 hashCode = (hashCode * 397) ^ Id.GetHashCode();
                 hashCode = (hashCode * 397) ^ (ProgId?.GetHashCode() ?? 0);
                 hashCode = (hashCode * 397) ^ (ClsId.GetHashCode());
+                hashCode = (hashCode * 397) ^ (Path.GetHashCode());
                 return hashCode;
             }
         }
@@ -72,6 +73,7 @@ namespace Dev2.Common.Interfaces.Core
         public string ProgId { get; set; }
         public string ClsId { get; set; }
         public IFileListing SelectedDll { get; set; }
+        public string Path { get; set; }
 
         #endregion
     }
