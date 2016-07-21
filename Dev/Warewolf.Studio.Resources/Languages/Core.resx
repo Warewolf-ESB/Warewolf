@@ -2075,7 +2075,9 @@ The more information you can provide us with, the faster we can track the issue 
     <value>Any variable and/or data goes in here.	Put the full path of the destination you are copying to here.	You can use File System, URI, SFTP, FTP or FTPS format.</value>
   </data>
   <data name="CopyToolTipFileFolder" xml:space="preserve">
-    <value>Any variable and/or data goes in here.	To copy a file or folder, put the full path and file or folder name here.	You can use File System, URI, SFTP, FTP or FTPS format.</value>
+    <value>Any variable and/or data goes in here.	
+To copy a file or folder, put the full path and file or folder name here.	
+You can use File System, URI, SFTP, FTP or FTPS format.</value>
   </data>
   <data name="CopyToolTipForceoverwrite" xml:space="preserve">
     <value>If the file or folder already exists, you can force a new one to overwrite the old one.</value>
