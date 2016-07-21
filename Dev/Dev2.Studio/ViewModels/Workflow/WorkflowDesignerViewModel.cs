@@ -1767,7 +1767,6 @@ namespace Dev2.Studio.ViewModels.Workflow
                 {
                     Thread.Sleep(2000);
                     BuildWorkflowFields();
-                    EventPublisher.Publish(new UpdateAllIntellisenseMessage());
                 }).Start();
             }
         }

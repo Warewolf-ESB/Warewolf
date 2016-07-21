@@ -35,7 +35,10 @@ namespace Dev2.Providers.Validation.Rules
                     var a = b();
                     if (a == null)
                     {
-                        return orRule.Check();
+                        orRule.DoError = DoError;
+                        _baseRule.DoError = DoError;
+                        var actionableErrorInfo = orRule.Check();
+                        return actionableErrorInfo;
                     }
                     return a;
 

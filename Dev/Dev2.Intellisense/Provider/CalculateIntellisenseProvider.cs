@@ -135,28 +135,13 @@ namespace Dev2.Studio.InterfaceImplementors
                 }
 
                 Token[] tokens;
-                //if(intellisenseDesiredResultSet == IntellisenseDesiredResultSet.ClosestMatch )
-                {
-                    var searchText = context.FindTextToSearch();
-                    _syntaxTreeBuilderHelper.Build(searchText, true, out tokens);
-                    string sub = string.IsNullOrEmpty(searchText) ? inputText : searchText;
+                var searchText = context.FindTextToSearch();
+                _syntaxTreeBuilderHelper.Build(searchText, true, out tokens);
+                string sub = string.IsNullOrEmpty(searchText) ? inputText : searchText;
 
-                    List<IntellisenseProviderResult> subResults = IntellisenseResult.Where(t => t.Name.StartsWith(sub)).ToList();
+                List<IntellisenseProviderResult> subResults = IntellisenseResult.Where(t => t.Name.StartsWith(sub)).ToList();
 
-//                    if(_syntaxTreeBuilderHelper.EventLog != null && _syntaxTreeBuilderHelper.HasEventLogs)
-//                    {
-//                        return EvaluateEventLogs(subResults, inputText);
-//                    }
-
-                    return subResults;
-                }
-
-//                _syntaxTreeBuilderHelper.Build(inputText, false, out tokens);
-//
-//                if(_syntaxTreeBuilderHelper.HasEventLogs)
-//                {
-//                    return EvaluateEventLogs(inputText);
-//                }
+                return subResults;
             }
 
             return EmptyResults;
@@ -164,15 +149,6 @@ namespace Dev2.Studio.InterfaceImplementors
 
         private IList<IntellisenseProviderResult> EvaluateEventLogs(IList<IntellisenseProviderResult> errors, string expression)
         {
-            var parseEventLog = _syntaxTreeBuilderHelper.EventLog;
-            parseEventLog.Clear();
-            errors.Add(new IntellisenseProviderResult(this, "Syntax Error", null, string.Format(ErrorResource.MalformedExpression, expression), true, 0, expression.Length));
-            return errors;
-        }
-
-        private IList<IntellisenseProviderResult> EvaluateEventLogs(string expression)
-        {
-            IList<IntellisenseProviderResult> errors = new List<IntellisenseProviderResult>();
             var parseEventLog = _syntaxTreeBuilderHelper.EventLog;
             parseEventLog.Clear();
             errors.Add(new IntellisenseProviderResult(this, "Syntax Error", null, string.Format(ErrorResource.MalformedExpression, expression), true, 0, expression.Length));

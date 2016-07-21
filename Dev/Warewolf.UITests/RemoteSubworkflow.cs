@@ -32,7 +32,7 @@ namespace Warewolf.UITests
             Uimap.Type_tstci_into_Server_Source_Wizard_Address_Textbox();
             Uimap.Select_TSTCIREMOTE_From_Server_Source_Wizard_Dropdownlist();
             Uimap.Click_Server_Source_Wizard_Test_Connection_Button();
-            Uimap.Click_Save_Ribbon_Button();
+            Uimap.Click_Save_Ribbon_Button_to_Open_Save_Dialog();
             Uimap.Enter_Servicename_As_TSTCIREMOTE();
             Uimap.Click_SaveDialog_YesButton();
             Uimap.Click_Close_Server_Source_Wizard_Tab_Button();
@@ -40,7 +40,7 @@ namespace Warewolf.UITests
             Uimap.Select_TSTCIREMOTE_From_Explorer_Remote_Server_Dropdown_List();
             Uimap.Click_Explorer_RemoteServer_Connect_Button();
             Uimap.Drag_Explorer_Remote_workflow1_Onto_Workflow_Design_Surface();
-            Uimap.Click_Save_Ribbon_Button();
+            Uimap.Click_Save_Ribbon_Button_to_Open_Save_Dialog();
             Uimap.Enter_Servicename_As_RemoteServerUITestWorkflow();
             Uimap.Click_SaveDialog_YesButton();
             //Uimap.Click_Debug_Ribbon_Button();
@@ -57,10 +57,9 @@ namespace Warewolf.UITests
             Uimap.Click_Settings_Resource_Permissions_Row1_Windows_Group_Button();
             Uimap.Enter_DomainUsers_Into_Windows_Group_Dialog();
             Uimap.Click_Select_Windows_Group_OK_Button();
-            Uimap.Click_Settings_Security_Tab_Resource_Permissions_View_Checkbox();
-            Uimap.Click_Settings_Security_Tab_ResourcePermissions_Execute_Checkbox();
+            Uimap.Click_Settings_Security_Tab_Resource_Permissions_Row1_View_Checkbox();
+            Uimap.Click_Settings_Security_Tab_ResourcePermissions_Row1_Execute_Checkbox();
             Uimap.Click_Save_Ribbon_Button();
-            Uimap.Enter_RemoteServerUITestWorkflow_Into_Explorer_Filter();
             Uimap.Click_Deploy_Ribbon_Button();
         }
 
@@ -78,8 +77,10 @@ namespace Warewolf.UITests
         public void MyTestCleanup()
         {
             Uimap.TryCloseHangingSaveDialog();
+            Uimap.TryCloseHangingWindowsGroupDialog();
             Uimap.TryRemoveRemoteServerUITestWorkflowFromExplorer();
             Uimap.TryDisconnectFromCIREMOTEAndRemoveSourceFromExplorer();
+            Uimap.TryCloseAllTabs();
         }
 
         public TestContext TestContext

@@ -11,6 +11,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -20,11 +21,11 @@ using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Input;
-using Caliburn.Micro;
+using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces;
+using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Data.Interfaces;
 using Dev2.Studio.Core.Interfaces;
-using Dev2.Studio.Core.Messages;
 using Dev2.Studio.InterfaceImplementors;
 // ReSharper disable ForCanBeConvertedToForeach
 
@@ -36,8 +37,10 @@ using Dev2.Studio.InterfaceImplementors;
 
 namespace Dev2.UI
 {
-    public class IntellisenseTextBox : AutoCompleteBox, INotifyPropertyChanged, IHandle<UpdateAllIntellisenseMessage>
-    {        
+    public class IntellisenseTextBox : AutoCompleteBox, INotifyPropertyChanged
+    {
+        readonly List<Key> _wrapInBracketKey = new List<Key> { Key.F6, Key.F7 };
+
         public IntellisenseTextBox()
         {
             FilterMode = AutoCompleteFilterMode.Custom;
@@ -46,7 +49,27 @@ namespace Dev2.UI
             _toolTip = new ToolTip();
             ItemsSource = IntellisenseResults;
             _desiredResultSet = IntellisenseDesiredResultSet.EntireSet;
+            DataObject.AddPastingHandler(this, OnPaste);
         }
+
+        void OnPaste(object sender, DataObjectPastingEventArgs dataObjectPastingEventArgs)
+        {
+            bool isText = dataObjectPastingEventArgs.SourceDataObject.GetDataPresent(DataFormats.Text, true);
+            if (!isText)
+            {
+                return;
+            }
+
+            var text = dataObjectPastingEventArgs.SourceDataObject.GetData(DataFormats.Text) as string;
+
+            if (text != null && text.Contains("\t"))
+            {
+                var args = new RoutedEventArgs(TabInsertedEvent, this);
+                RaiseEvent(args);
+            }
+        }
+
+        public static readonly RoutedEvent TabInsertedEvent = EventManager.RegisterRoutedEvent("TabInserted", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(IntellisenseTextBox));
 
         protected override void OnPreviewKeyDown(KeyEventArgs e)
         {
@@ -266,6 +289,26 @@ namespace Dev2.UI
             EnsureErrorStatus();
         }
 
+        protected override void OnKeyDown(KeyEventArgs e)
+        {
+            HandleWrapInBrackets(e.Key);
+
+            base.OnKeyDown(e);
+
+            if (e.Key == Key.Escape)
+            {
+                CloseDropDown(true, false);
+            }
+        }
+
+        public void HandleWrapInBrackets(Key e)
+        {
+            if (_wrapInBracketKey.Contains(e))
+            {
+                ExecWrapBrackets();
+            }
+        }
+
         void EnsureErrorStatus()
         {
             var currentText = Text;
@@ -293,10 +336,21 @@ namespace Dev2.UI
 
         public int LineCount { get; set; }
 
-        public void Handle(UpdateAllIntellisenseMessage message)
+
+
+        public bool CheckHasUnicodeInText(string inputText)
         {
-            //ClearIntellisenseErrors();           
-                  
+            bool hasUnicode = inputText.ContainsUnicodeCharacter();
+            if (hasUnicode)
+            {
+                string previousInput = inputText;
+                Text = "";
+                CustomContainer.Get<IPopupController>()
+                    .ShowInvalidCharacterMessage(previousInput);
+
+                return true;
+            }
+            return false;
         }
 
         /// <summary>
@@ -308,9 +362,22 @@ namespace Dev2.UI
         /// that contains the event data.</param>
         protected override void OnTextChanged(RoutedEventArgs e)
         {
+            if (CheckHasUnicodeInText(Text))
+            {
+                return;
+            }
+            
             ItemsSource = IntellisenseResults;
             base.OnTextChanged(e);
             ValidateText(Text);
+            if (string.IsNullOrEmpty(Text))
+            {
+                _desiredResultSet = IntellisenseDesiredResultSet.EntireSet;
+            }
+            else
+            {
+                _desiredResultSet = IntellisenseDesiredResultSet.ClosestMatch;
+            }
         }
 
 
@@ -495,7 +562,20 @@ namespace Dev2.UI
             }
         }
 
-        private int CaretIndex => TextBox?.CaretIndex ?? 0;
+        public int CaretIndex
+        {
+            get
+            {
+                return TextBox?.CaretIndex ?? 0;
+            }
+            set
+            {
+                if (TextBox != null)
+                {
+                    TextBox.CaretIndex = value;
+                }
+            }
+        }
 
         public static readonly DependencyProperty AllowMultilinePasteProperty = DependencyProperty.Register("AllowMultilinePaste", typeof(bool), typeof(IntellisenseTextBox), new PropertyMetadata(true, OnAllowMultilinePasteChanged));
 
@@ -773,8 +853,8 @@ namespace Dev2.UI
         private readonly ToolTip _toolTip;
         private List<IntellisenseProviderResult> _intellisenseResults;
         private IntellisenseDesiredResultSet _desiredResultSet;
-       
 
+        [ExcludeFromCodeCoverage]
         protected override void OnGotKeyboardFocus(KeyboardFocusChangedEventArgs e)
         {
             base.OnGotKeyboardFocus(e);
@@ -786,19 +866,17 @@ namespace Dev2.UI
             }
         }
 
+        [ExcludeFromCodeCoverage]
         protected override void OnLostKeyboardFocus(KeyboardFocusChangedEventArgs e)
         {
             base.OnLostKeyboardFocus(e);
-
             LostFocusImpl();
         }
 
         void LostFocusImpl()
         {
             ExecWrapBrackets();
-
             CloseDropDown(true, false);
-
             BindingExpression be = BindingOperations.GetBindingExpression(this, TextProperty);
             be?.UpdateSource();
         }
@@ -843,6 +921,11 @@ namespace Dev2.UI
         protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        public void Paste()
+        {
+            TextBox?.Paste();
         }
     }
 }

@@ -10,6 +10,7 @@
 
 using System;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 
 namespace Dev2.Activities.AttachedProperties
@@ -42,6 +43,20 @@ namespace Dev2.Activities.AttachedProperties
         static void IsFocusedChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var fe = (FrameworkElement)d;
+            var isFocused = e.NewValue is Boolean && (bool)e.NewValue;
+            var autoCompleteBox = fe as AutoCompleteBox;
+            if (autoCompleteBox != null)
+            {
+                if (isFocused)
+                {
+                    if (autoCompleteBox.TextBox != null)
+                    {
+                        autoCompleteBox.TextBox.Focus();
+                        Keyboard.Focus(autoCompleteBox.TextBox);
+                    }
+                }
+                return;
+            }
 
             if(e.OldValue == null)
             {
@@ -56,7 +71,7 @@ namespace Dev2.Activities.AttachedProperties
                 fe.IsVisibleChanged += FeIsVisibleChanged;
             }
 
-            var isFocused = e.NewValue is Boolean && (bool)e.NewValue;
+            
             if(isFocused)
             {
                 fe.Focus();

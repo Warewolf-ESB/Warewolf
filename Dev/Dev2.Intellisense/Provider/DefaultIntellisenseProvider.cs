@@ -12,12 +12,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
-using Caliburn.Micro;
 using Dev2.Intellisense;
 using Dev2.Services.Events;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Interfaces;
-using Dev2.Studio.Core.Messages;
 
 
 // ReSharper disable CheckNamespace
@@ -25,7 +23,7 @@ namespace Dev2.Studio.InterfaceImplementors
 // ReSharper restore CheckNamespace
 {
 
-    public class DefaultIntellisenseProvider : DependencyObject, IIntellisenseProvider, IHandle<UpdateIntellisenseMessage>
+    public class DefaultIntellisenseProvider : DependencyObject, IIntellisenseProvider
     {
         #region Implementation of IDisposable
 
@@ -87,13 +85,5 @@ namespace Dev2.Studio.InterfaceImplementors
 
         #endregion
 
-        #region Implementation of IHandle<UpdateIntellisenseMessage>
-
-        public void Handle(UpdateIntellisenseMessage message)
-        {
-
-        }
-
-        #endregion
     }
 }
