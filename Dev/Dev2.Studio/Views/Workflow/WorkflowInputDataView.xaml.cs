@@ -87,9 +87,9 @@ namespace Dev2.Studio.Views.Workflow
             XmlOutput.Content = _editor;
         }
 
-        private void TextBoxTextChanged(object sender, TextChangedEventArgs e)
+        private void TextBoxTextChanged(object sender, RoutedEventArgs routedEventArgs)
         {
-            var tb = e.OriginalSource as TextBox;
+            var tb = routedEventArgs.OriginalSource as TextBox;
             if (tb != null)
             {
                 var dli = tb.DataContext as IDataListItem;

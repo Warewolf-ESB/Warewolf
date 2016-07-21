@@ -55,5 +55,7 @@ namespace Dev2.Common.Interfaces.Studio.Controller
         MessageBoxResult ShowServerNotConnected(string server);
         IPopupMessage GetDeleteConfirmation(string nameOfItemBeingDeleted);
         IPopupMessage GetDuplicateMessage(string name);
+
+        MessageBoxResult ShowNoInputsSelectedWhenClickLink();
     }
 }

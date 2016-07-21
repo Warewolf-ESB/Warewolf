@@ -13,7 +13,9 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
+using Dev2.Common;
 using Dev2.Common.Interfaces.Communication;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
@@ -25,9 +27,15 @@ using Dev2.Data.ServiceModel.Messages;
 using Dev2.Diagnostics.Debug;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Security;
+using Dev2.Runtime.WebServer.Handlers;
 using Dev2.Runtime.WebServer.Security;
 using Dev2.Services.Security;
 using Microsoft.AspNet.SignalR.Hubs;
+using Warewolf.Resource.Errors;
+// ReSharper disable UnusedMember.Global
+
+
+// Interface between the Studio and Server. Commands sent from the Studio come here to get processed, this is why methods are unused or only used in tests.
 
 namespace Dev2.Runtime.WebServer.Hubs
 {
@@ -233,6 +241,124 @@ namespace Dev2.Runtime.WebServer.Hubs
         protected virtual void WriteEventProviderClientMessage(IMemo memo)
         {
             SendMemo(memo as Memo);
+        }
+
+        public async Task AddDebugWriter(Guid workspaceId)
+        {
+            var task = new Task(() => DebugDispatcher.Instance.Add(workspaceId, this));
+            task.Start();
+            await task;
+        }
+
+        /// <summary>
+        ///     Fetches the execute payload fragment.
+        /// </summary>
+        /// <param name="receipt">The receipt.</param>
+        /// <returns></returns>
+        public async Task<string> FetchExecutePayloadFragment(FutureReceipt receipt)
+        {
+            // Set Requesting User as per what is authorized ;)
+            // Sneaky people may try to forge packets to get payload ;)
+            if (Context.User.Identity.Name != null)
+            {
+                receipt.User = Context.User.Identity.Name;
+            }
+
+            try
+            {
+                var value = ResultsCache.Instance.FetchResult(receipt);
+                var task = new Task<string>(() => value);
+
+                task.Start();
+                return await task;
+            }
+            catch (Exception e)
+            {
+                // ReSharper disable InvokeAsExtensionMethod
+                Dev2Logger.Error(this, e);
+                // ReSharper restore InvokeAsExtensionMethod
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        ///     Executes the command.
+        /// </summary>
+        /// <param name="envelope">The envelope.</param>
+        /// <param name="endOfStream">if set to <c>true</c> [end of stream].</param>
+        /// <param name="workspaceId">The workspace unique identifier.</param>
+        /// <param name="dataListId">The data list unique identifier.</param>
+        /// <param name="messageId">The message unique identifier.</param>
+        /// <returns></returns>
+        public async Task<Receipt> ExecuteCommand(Envelope envelope, bool endOfStream, Guid workspaceId, Guid dataListId, Guid messageId)
+        {
+            var internalServiceRequestHandler = new InternalServiceRequestHandler { ExecutingUser = Context.User };
+            try
+            {
+                var task = new Task<Receipt>(() =>
+                {
+                    try
+                    {
+                        StringBuilder sb;
+                        if (!MessageCache.TryGetValue(messageId, out sb))
+                        {
+                            sb = new StringBuilder();
+                            MessageCache.TryAdd(messageId, sb);
+                        }
+                        sb.Append(envelope.Content);
+
+                        MessageCache.TryRemove(messageId, out sb);
+                        var request = _serializer.Deserialize<EsbExecuteRequest>(sb);
+
+                        var user = string.Empty;
+                        // ReSharper disable ConditionIsAlwaysTrueOrFalse
+                        var userPrinciple = Context.User;
+                        if (Context.User.Identity != null)
+                        // ReSharper restore ConditionIsAlwaysTrueOrFalse
+                        {
+                            user = Context.User.Identity.Name;
+                            // set correct principle ;)
+                            userPrinciple = Context.User;
+                            Thread.CurrentPrincipal = userPrinciple;
+                            Dev2Logger.Debug("Execute Command Invoked For [ " + user + " ] For Service [ " + request.ServiceName + " ]");
+                        }
+                        StringBuilder processRequest = null;
+                        Common.Utilities.PerformActionInsideImpersonatedContext(userPrinciple, () => { processRequest = internalServiceRequestHandler.ProcessRequest(request, workspaceId, dataListId, Context.ConnectionId); });
+                        // always place requesting user in here ;)
+                        var future = new FutureReceipt
+                        {
+                            PartID = 0,
+                            RequestID = messageId,
+                            User = user
+                        };
+
+                        var value = processRequest.ToString();
+                        if (!string.IsNullOrEmpty(value))
+                        {
+                            if (!ResultsCache.Instance.AddResult(future, value))
+                            {
+                                Dev2Logger.Error(new Exception(string.Format(ErrorResource.FailedToBuildFutureReceipt, Context.ConnectionId, value)));
+                            }
+                        }
+                        return new Receipt { PartID = envelope.PartID, ResultParts = 1 };
+
+                    }
+                    catch (Exception e)
+                    {
+                        Dev2Logger.Error(e);
+                    }
+                    return null;
+                });
+                task.Start();
+                return await task;
+            }
+            catch (Exception e)
+            {
+                Dev2Logger.Error(e);
+                Dev2Logger.Info("Is End of Stream:" + endOfStream);
+            }
+            return null;
         }
 
         #region Overrides of Hub

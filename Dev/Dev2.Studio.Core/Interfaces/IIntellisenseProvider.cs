@@ -123,19 +123,12 @@ namespace Dev2.Studio.Core.Interfaces
     public sealed class IntellisenseProviderContext
     {
         public string InputText { get; set; }
-        public string TextOnPopup { get; set; }
         public int CaretPosition { get; set; }
         public int CaretPositionOnPopup { get; set; }
         public enIntellisensePartType FilterType { get; set; }
-        public IntellisenseDesiredResultSet DesiredResultSet { get; set; }
-        public object State { get; set; }
         public bool IsInCalculateMode { get; set; }
-        public object TextBox { get; set; }
+        public IntellisenseDesiredResultSet DesiredResultSet { get; set; }
     }
-    //public  static  class IntellisenseProviderContextExyensions
-    //{
-    //    public  static  
-    //}
 
     public enum IntellisenseDesiredResultSet
     {

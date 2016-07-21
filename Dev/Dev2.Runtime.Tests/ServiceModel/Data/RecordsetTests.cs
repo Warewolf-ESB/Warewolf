@@ -8,7 +8,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using System.Collections.Generic;
 using Dev2.Data;
 using Dev2.Runtime.ServiceModel.Data;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -98,29 +97,6 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
         }
 
         #endregion
-
-        [TestMethod]
-        public void AddColumn_ToANewIndex_Should_CreateANewColumnEntery()
-        {
-            var recordSet = new RecordSet {Name = "MyRec"};
-            recordSet.Columns = new Dictionary<int, List<IScalar>>();
-            Assert.IsNotNull(recordSet);
-            recordSet.AddColumn("Column1", "", 0);
-            Assert.AreEqual(1, recordSet.Columns.Count);
-            recordSet.AddColumn("Column10", "", 0);
-            Assert.AreEqual(1, recordSet.Columns.Count);
-        }
-
-        [TestMethod]
-        public void AddColumn_ToAnExistingIndex_Should_CreateKeepSameCount()
-        {
-            var recordSet = new RecordSet {Name = "MyRec"};
-            recordSet.Columns = new Dictionary<int, List<IScalar>>();
-            Assert.IsNotNull(recordSet);
-            recordSet.AddColumn("Column1", "", 0);
-            Assert.AreEqual(1, recordSet.Columns.Count);
-            recordSet.AddColumn("Column10", "", 0);
-            Assert.AreEqual(1, recordSet.Columns.Count);
-        }
+       
     }
 }

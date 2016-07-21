@@ -1,13 +1,3 @@
-﻿/*
-*  Warewolf - Once bitten, there's no going back
-*  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
-*  Some rights reserved.
-*  Visit our website for more information <http://warewolf.io/>
-*  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
-*  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
-*/
-
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -24,16 +14,14 @@ using Dev2.Interfaces;
 using Microsoft.Practices.Prism.Commands;
 using Microsoft.Practices.Prism.PubSubEvents;
 using Warewolf.Studio.Core;
-// ReSharper disable MemberCanBePrivate.Global
-// ReSharper disable UnusedAutoPropertyAccessor.Global
 
 namespace Warewolf.Studio.ViewModels
 {
-    public class ManagePluginSourceViewModel : SourceBaseImpl<IPluginSource>, IManagePluginSourceViewModel
+    public class ManageComPluginSourceViewModel : SourceBaseImpl<IComPluginSource>, IManageComPluginSourceViewModel
     {
         IDllListingModel _selectedDll;
-        readonly IManagePluginSourceModel _updateManager;
-        IPluginSource _pluginSource;
+        readonly IManageComPluginSourceModel _updateManager;
+        IComPluginSource _pluginSource;
         string _resourceName;
         readonly string _warewolfserverName;
         string _headerText;
@@ -46,8 +34,8 @@ namespace Warewolf.Studio.ViewModels
         Task<IRequestServiceNameViewModel> _requestServiceNameViewModel;
 
         /// <exception cref="Exception">A delegate callback throws an exception.</exception>
-        public ManagePluginSourceViewModel(IManagePluginSourceModel updateManager, IEventAggregator aggregator,IAsyncWorker asyncWorker)
-            : base("PluginSource")
+        public ManageComPluginSourceViewModel(IManageComPluginSourceModel updateManager, IEventAggregator aggregator,IAsyncWorker asyncWorker)
+            : base("ComPluginSource")
         {
             VerifyArgument.IsNotNull("asyncWorker", asyncWorker);
             VerifyArgument.IsNotNull("updateManager", updateManager);
@@ -93,7 +81,7 @@ namespace Warewolf.Studio.ViewModels
             AsyncWorker.Start(() =>
             {
                 IsLoading = true;
-                var names = _updateManager.GetDllListings(null).Select(input => new DllListingModel(_updateManager, input)).ToList();
+                var names = _updateManager.GetComDllListings(null).Select(input => new DllListingModel(_updateManager, input)).ToList();
 
                 DispatcherAction.Invoke(() =>
                 {
@@ -178,7 +166,7 @@ namespace Warewolf.Studio.ViewModels
         }
 
         /// <exception cref="Exception">A delegate callback throws an exception.</exception>
-        public ManagePluginSourceViewModel(IManagePluginSourceModel updateManager, Task<IRequestServiceNameViewModel> requestServiceNameViewModel, IEventAggregator aggregator,IAsyncWorker asyncWorker)
+        public ManageComPluginSourceViewModel(IManageComPluginSourceModel updateManager, Task<IRequestServiceNameViewModel> requestServiceNameViewModel, IEventAggregator aggregator,IAsyncWorker asyncWorker)
             : this(updateManager, aggregator, asyncWorker)
         {
             VerifyArgument.IsNotNull("requestServiceNameViewModel", requestServiceNameViewModel);
@@ -187,7 +175,7 @@ namespace Warewolf.Studio.ViewModels
             Item = ToModel();
         }
 
-        public ManagePluginSourceViewModel(IManagePluginSourceModel updateManager, Task<IRequestServiceNameViewModel> requestServiceNameViewModel, IEventAggregator aggregator, IAsyncWorker asyncWorker, Action<Action> dispatcherAction)
+        public ManageComPluginSourceViewModel(IManageComPluginSourceModel updateManager, Task<IRequestServiceNameViewModel> requestServiceNameViewModel, IEventAggregator aggregator, IAsyncWorker asyncWorker, Action<Action> dispatcherAction)
             : this(updateManager, aggregator, asyncWorker)
         {
             DispatcherAction = dispatcherAction;
@@ -198,10 +186,10 @@ namespace Warewolf.Studio.ViewModels
         }
 
         /// <exception cref="Exception">A delegate callback throws an exception.</exception>
-        public ManagePluginSourceViewModel(IManagePluginSourceModel updateManager, IEventAggregator aggregator, IPluginSource pluginSource,IAsyncWorker asyncWorker)
+        public ManageComPluginSourceViewModel(IManageComPluginSourceModel updateManager, IEventAggregator aggregator, IComPluginSource pluginSource,IAsyncWorker asyncWorker)
             : this(updateManager, aggregator,asyncWorker)
         {
-            VerifyArgument.IsNotNull("pluginSource", pluginSource);
+            VerifyArgument.IsNotNull("compluginSource", pluginSource);
             _pluginSource = pluginSource;
             SetupHeaderTextFromExisting();
             PerformLoadAll(() => FromModel(_pluginSource));
@@ -209,11 +197,11 @@ namespace Warewolf.Studio.ViewModels
             ToItem();
         }
 
-        public ManagePluginSourceViewModel(IManagePluginSourceModel updateManager, IEventAggregator aggregator, IPluginSource pluginSource, IAsyncWorker asyncWorker, Action<Action> dispatcherAction)
+        public ManageComPluginSourceViewModel(IManageComPluginSourceModel updateManager, IEventAggregator aggregator, IComPluginSource pluginSource, IAsyncWorker asyncWorker, Action<Action> dispatcherAction)
             : this(updateManager, aggregator, asyncWorker)
         {
             DispatcherAction = dispatcherAction;
-            VerifyArgument.IsNotNull("pluginSource", pluginSource);
+            VerifyArgument.IsNotNull("comPluginSource", pluginSource);
             _pluginSource = pluginSource;
             SetupHeaderTextFromExisting();
             PerformLoadAll(() => FromModel(_pluginSource));
@@ -221,14 +209,14 @@ namespace Warewolf.Studio.ViewModels
             ToItem();
         }
 
-        public ManagePluginSourceViewModel() : base("PluginSource")
+        public ManageComPluginSourceViewModel() : base("ComPluginSource")
         {
           
         }
 
-        public override void FromModel(IPluginSource pluginSource)
+        public override void FromModel(IComPluginSource pluginSource)
         {
-            var fromDll = pluginSource.SelectedDll;
+           /* var fromDll = pluginSource.SelectedDll;
             var selectedDll = fromDll;
             if (selectedDll != null)
             {
@@ -267,8 +255,8 @@ namespace Warewolf.Studio.ViewModels
                     
                 }
             }
-                Name = _pluginSource.Name;
-                Path = _pluginSource.Path; 
+            Name = _pluginSource.Name;
+            Path = _pluginSource.Path; */
         }
 
         public override string Name
@@ -349,7 +337,8 @@ namespace Warewolf.Studio.ViewModels
 
         public override bool CanSave()
         {
-            return _selectedDll != null && !string.IsNullOrEmpty(AssemblyName) && HasChanged &&(AssemblyName.EndsWith(".dll") || AssemblyName.StartsWith("GAC:"));
+            //return _selectedDll != null && !string.IsNullOrEmpty(AssemblyName) && HasChanged &&(AssemblyName.EndsWith(".dll") || AssemblyName.StartsWith("GAC:"));
+            return false;
         }
 
         public override void UpdateHelpDescriptor(string helpText)
@@ -383,13 +372,13 @@ namespace Warewolf.Studio.ViewModels
 
                 if (res == MessageBoxResult.OK)
                 {
-                    ResourceName = RequestServiceNameViewModel.ResourceName.Name;
+                /*    ResourceName = RequestServiceNameViewModel.ResourceName.Name;
                     var src = ToModel();
                     src.Id = SelectedGuid;
-                    src.Path = RequestServiceNameViewModel.ResourceName.Path ?? RequestServiceNameViewModel.ResourceName.Name;
+                    src.ClsId = RequestServiceNameViewModel.ResourceName.Path ?? RequestServiceNameViewModel.ResourceName.Name;
                     Save(src);
                     Path = src.Path;
-                    _pluginSource = src;
+                    _pluginSource = src;*/
                     ToItem();
                     SetupHeaderTextFromExisting();
                 }
@@ -408,34 +397,34 @@ namespace Warewolf.Studio.ViewModels
 
         void ToItem()
         {
-            Item = new PluginSourceDefinition
+            Item = new ComPluginSourceDefinition
             {
                 Id = _pluginSource.Id, 
                 Name = _pluginSource.Name, 
-                Path = _pluginSource.Path, 
-                SelectedDll = SelectedDll
+                ProgId = _pluginSource.ProgId, 
+                ClsId = _pluginSource.ClsId
             };
-            AssemblyName = _pluginSource.SelectedDll.FullName;
+            AssemblyName = "_pluginSource.SelectedDll.FullName";
         }
 
-        void Save(IPluginSource source)
+        void Save(IComPluginSource source)
         {
-            source.SelectedDll = new DllListing(_selectedDll);
+           // source.SelectedDll = new DllListing(_selectedDll);
             _updateManager.Save(source);
         }
 
-        public sealed override IPluginSource ToModel()
+        public sealed override IComPluginSource ToModel()
         {
             if(_pluginSource == null)
             {
-                return new PluginSourceDefinition
+                return new ComPluginSourceDefinition
                 {
-                    Name = ResourceName,
-                    SelectedDll = _selectedDll,
-                    Path = Path
+                  /*  Name = ResourceName,
+                    ClsId = _clsId,
+                    ProgId = _progID*/
                 };
             }
-            _pluginSource.SelectedDll = _selectedDll;
+            //_pluginSource.SelectedDll = _selectedDll;
             return _pluginSource;
         }
 
