@@ -42,27 +42,6 @@ namespace Dev2.Studio.Core.Helpers
             return path;
         }
 
-        /// <summary>
-        /// Creates the file.
-        /// </summary>
-        /// <param name="outputTxt">The text to output to the path</param>
-        /// <param name="outputPath">The output path.</param>
-        /// <author>jurie.smit</author>
-        /// <date>2013/01/15</date>
-        public static void CreateTextFile(string outputTxt, string outputPath)
-        {
-            Dev2Logger.Info("");
-            EnsurePathIsvalid(outputPath, ".txt");
-            var fs = File.Open(outputPath,
-                                      FileMode.OpenOrCreate,
-                                      FileAccess.Write);
-            using(var writer = new StreamWriter(fs, Encoding.UTF8))
-            {
-                Dev2Logger.Info("Writing a text file");
-                writer.Write(outputTxt);
-            }
-        }
-
         public static void CreateTextFile(StringBuilder outputTxt, string outputPath)
         {
             Dev2Logger.Info("");
@@ -74,6 +53,20 @@ namespace Dev2.Studio.Core.Helpers
             {
                 Dev2Logger.Info("Writing a text file");
                 writer.Write(outputTxt);
+            }
+        }
+
+        public static string GetDebugItemTempFilePath(string uri)
+        {
+            Dev2Logger.Info("");
+
+            using (var client = new WebClient { Credentials = CredentialCache.DefaultCredentials })
+            {
+                string serverLogData = client.UploadString(uri, "");
+                string value = serverLogData.Replace("<DataList><Dev2System.ManagmentServicePayload>", "").Replace("</Dev2System.ManagmentServicePayload></DataList>", "");
+                string uniqueOutputPath = GetUniqueOutputPath(".txt");
+                CreateTextFile(new StringBuilder(value), uniqueOutputPath);
+                return uniqueOutputPath;
             }
         }
 
@@ -141,21 +134,6 @@ namespace Dev2.Studio.Core.Helpers
             if(directory == null) return null;
             var path = Path.Combine(directory, uri);
             return path;
-        }
-
-
-        public static string GetDebugItemTempFilePath(string uri)
-        {
-            Dev2Logger.Info("");
-
-            using(var client = new WebClient { Credentials = CredentialCache.DefaultCredentials })
-            {
-                string serverLogData = client.UploadString(uri, "");
-                string value = serverLogData.Replace("<DataList><Dev2System.ManagmentServicePayload>", "").Replace("</Dev2System.ManagmentServicePayload></DataList>", "");
-                string uniqueOutputPath = GetUniqueOutputPath(".txt");
-                CreateTextFile(value, uniqueOutputPath);
-                return uniqueOutputPath;
-            }
         }
 
         public static void MigrateTempData(string rootPath)

@@ -486,7 +486,6 @@
     <Compile Include="Diagnostics\DebugOutputFilterStrategy.cs" />
     <Compile Include="Factory\ExceptionFactory.cs" />
     <Compile Include="InterfaceImplementors\BlankIntellisenseProvider.cs" />
-    <Compile Include="InterfaceImplementors\UserMessageProviderImpl.cs" />
     <Compile Include="InterfaceImplementors\WizardResourceKeys\ResourceKeys.cs" />
     <Compile Include="Model\ExceptionUIModel.cs" />
     <Compile Include="ViewModels\Diagnostics\ExceptionViewModel.cs" />

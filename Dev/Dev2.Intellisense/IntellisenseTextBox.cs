@@ -366,10 +366,18 @@ namespace Dev2.UI
             {
                 return;
             }
-
+            
             ItemsSource = IntellisenseResults;
             base.OnTextChanged(e);
             ValidateText(Text);
+            if (string.IsNullOrEmpty(Text))
+            {
+                _desiredResultSet = IntellisenseDesiredResultSet.EntireSet;
+            }
+            else
+            {
+                _desiredResultSet = IntellisenseDesiredResultSet.ClosestMatch;
+            }
         }
 
 

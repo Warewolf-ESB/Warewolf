@@ -24,6 +24,7 @@ namespace Dev2.Common.Interfaces
         void Save(IWcfServerSource wcfSource);
         void Save(IPluginService toDbSource);
         void Save(IWcfService toSource);
+        
         void Save(IOAuthSource sharePointServiceSource);
     }
 
