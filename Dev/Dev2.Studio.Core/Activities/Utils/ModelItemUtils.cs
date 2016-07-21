@@ -58,6 +58,7 @@ namespace Dev2.Studio.Core.Activities.Utils
         {
             return CreateModelItem(new object());
         }
+
         public static ModelItem CreateModelItem(object objectToMakeModelItem)
         {
             EditingContext ec = new EditingContext();

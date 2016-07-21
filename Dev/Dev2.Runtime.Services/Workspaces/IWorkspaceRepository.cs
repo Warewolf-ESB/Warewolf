@@ -11,6 +11,7 @@
 using System;
 using System.Collections.Generic;
 using System.Security.Principal;
+// ReSharper disable UnusedMemberInSuper.Global
 
 namespace Dev2.Workspaces
 {
