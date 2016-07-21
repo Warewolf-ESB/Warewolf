@@ -155,15 +155,6 @@ namespace Dev2.Studio.InterfaceImplementors
             return errors;
         }
 
-        private IList<IntellisenseProviderResult> EvaluateEventLogs(string expression)
-        {
-            IList<IntellisenseProviderResult> errors = new List<IntellisenseProviderResult>();
-            var parseEventLog = _syntaxTreeBuilderHelper.EventLog;
-            parseEventLog.Clear();
-            errors.Add(new IntellisenseProviderResult(this, "Syntax Error", null, string.Format(ErrorResource.MalformedExpression, expression), true, 0, expression.Length));
-            return errors;
-        }
-
         public void Dispose()
         {
             IntellisenseResult = null;
