@@ -78,6 +78,7 @@ namespace Warewolf.UITests
         public void MyTestCleanup()
         {
             Uimap.TryCloseHangingSaveDialog();
+            Uimap.TryCloseHangingWindowsGroupDialog();
             Uimap.TryRemoveRemoteServerUITestWorkflowFromExplorer();
             Uimap.TryDisconnectFromCIREMOTEAndRemoveSourceFromExplorer();
         }
