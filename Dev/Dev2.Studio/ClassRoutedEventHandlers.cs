@@ -12,7 +12,6 @@ using System;
 using System.Windows;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Studio.Controller;
-using Dev2.UI;
 
 // ReSharper disable CheckNamespace
 namespace Dev2.Studio
