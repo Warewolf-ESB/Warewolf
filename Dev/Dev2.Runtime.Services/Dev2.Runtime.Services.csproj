@@ -324,7 +324,6 @@
     <Compile Include="ESB\Management\Services\FindSourcesByType.cs" />
     <Compile Include="ESB\Management\Services\GetLatest.cs" />
     <Compile Include="ESB\Management\Services\Ping.cs" />
-    <Compile Include="ESB\Management\Services\RegisteredAssembly.cs" />
     <Compile Include="ESB\Management\Services\ReloadResource.cs" />
     <Compile Include="ESB\Management\Services\TerminateExecution.cs" />
     <Compile Include="ESB\Management\Services\UpdateWorkspaceItem.cs" />

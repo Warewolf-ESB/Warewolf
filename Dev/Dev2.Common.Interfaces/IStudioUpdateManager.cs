@@ -24,6 +24,7 @@ namespace Dev2.Common.Interfaces
         void Save(IWcfServerSource wcfSource);
         void Save(IPluginService toDbSource);
         void Save(IWcfService toSource);
+        
         void Save(IOAuthSource sharePointServiceSource);
     }
 
@@ -39,7 +40,7 @@ namespace Dev2.Common.Interfaces
         DataTable TestDbService(IDatabaseService inputValues);
         string TestWebService(IWebService inputValues);
         string TestPluginService(IPluginService inputValues);
-
+        string TestPluginService(IComPluginService inputValues);
         string TestWcfService(IWcfService inputValues);
     }
 
