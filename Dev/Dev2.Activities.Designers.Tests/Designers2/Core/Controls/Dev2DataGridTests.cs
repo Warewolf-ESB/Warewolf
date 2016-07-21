@@ -107,32 +107,6 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core.Controls
             Assert.IsTrue(dataGrid.EnableRowVirtualization);
         }
 
-
-        static void VerifyItem(dynamic item, int oldIndexNumber, int newIndexNumber, bool isBlank = false)
-        {
-            var dto = (ActivityDTO)item.GetCurrentValue();
-            Assert.AreEqual(newIndexNumber, dto.IndexNumber);
-            if(isBlank)
-            {
-                Assert.AreEqual(string.Empty, dto.FieldName);
-                Assert.AreEqual(string.Empty, dto.FieldValue);
-            }
-            else
-            {
-                Assert.AreEqual("field" + oldIndexNumber, dto.FieldName);
-                Assert.AreEqual("value" + oldIndexNumber, dto.FieldValue);
-            }
-        }
-
-        static Dev2DataGrid CreateDataGrid(int itemCount, params bool[] blankFieldAndValues)
-        {
-            var modelItemCollection = CreateModelItemCollection(itemCount, blankFieldAndValues);
-
-            var dg = new Dev2DataGrid { ItemsSource = modelItemCollection };
-
-            return dg;
-        }
-
         static ModelItemCollection CreateModelItemCollection(int itemCount, params bool[] blankFieldAndValues)
         {
             var modelItem = ModelItemUtils.CreateModelItem(new DsfMultiAssignActivity());

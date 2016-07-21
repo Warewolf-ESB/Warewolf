@@ -19,7 +19,6 @@ using System.Windows.Media.Animation;
 using System.Xml;
 using Dev2.Common;
 using Dev2.Studio.ViewModels;
-using Dev2.Studio.ViewModels.Workflow;
 using Dev2.Views;
 using FontAwesome.WPF;
 using Infragistics.Windows.DockManager;
@@ -111,7 +110,9 @@ namespace Dev2.Studio.Views
         {
             var handle = new WinInterop.WindowInteropHelper(this).Handle;
             var handleSource = WinInterop.HwndSource.FromHwnd(handle);
-            handleSource?.AddHook(WindowProc);
+            if (handleSource == null)
+                return;
+            handleSource.AddHook(WindowProc);
         }
 
         private static IntPtr WindowProc(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
@@ -312,52 +313,6 @@ namespace Dev2.Studio.Views
             }
         }
 
-        public void DockManager_OnPaneDragEnded_(object sender, PaneDragEndedEventArgs e)
-        {
-            var contentPane = e.Panes[0];
-            _contentPane = contentPane;
-            UpdatePane(contentPane);
-            var windows = System.Windows.Application.Current.Windows;
-            foreach (var window in windows)
-            {
-                var actuallWindow = window as Window;
-                if (actuallWindow != null)
-                {
-                    var windowType = actuallWindow.GetType();
-                    if (windowType.FullName == "Infragistics.Windows.Controls.ToolWindowHostWindow")
-                    {
-                        actuallWindow.Activated -= ActuallWindowOnActivated;
-                        actuallWindow.Activated += ActuallWindowOnActivated;
-                    }
-                }
-            }
-        }
-
-        public void UpdatePane(ContentPane contentPane)
-        {
-            if (contentPane == null)
-                throw new ArgumentNullException(nameof(contentPane));
-
-            WorkflowDesignerViewModel workflowDesignerViewModel = contentPane.TabHeader as WorkflowDesignerViewModel;
-            if (workflowDesignerViewModel != null && contentPane.ContentVisibility == Visibility.Visible)
-            {
-                contentPane.CloseButtonVisibility = Visibility.Visible;
-            }
-        }
-
-        void ActuallWindowOnActivated(object sender, EventArgs eventArgs)
-        {
-            MainViewModel mainViewModel = DataContext as MainViewModel;
-            if (mainViewModel != null && _contentPane != null)
-            {
-                WorkflowDesignerViewModel workflowDesignerViewModel = _contentPane.TabHeader as WorkflowDesignerViewModel;
-                if (workflowDesignerViewModel != null && _contentPane.ContentVisibility == Visibility.Visible)
-                {
-                    mainViewModel.AddWorkSurfaceContext(workflowDesignerViewModel.ResourceModel);
-                }
-            }
-        }
-
         private void SlidingMenuPane_OnSizeChanged(object sender, SizeChangedEventArgs e)
         {
             var vm = DataContext as MainViewModel;
@@ -412,7 +367,10 @@ namespace Dev2.Studio.Views
         private void DoCloseExitFullScreenPanelAnimation()
         {
             var storyboard = Resources["AnimateExitFullScreenPanelClose"] as Storyboard;
-            storyboard?.Begin();
+            if (storyboard != null)
+            {
+                storyboard.Begin();
+            }
         }
 
         private void ShowFullScreenPanel_OnMouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
@@ -420,7 +378,10 @@ namespace Dev2.Studio.Views
             if (_isSuperMaximising)
             {
                 var storyboard = Resources["AnimateExitFullScreenPanelOpen"] as Storyboard;
-                storyboard?.Begin();
+                if (storyboard != null)
+                {
+                    storyboard.Begin();
+                }
             }
             if (!_isLocked)
             {

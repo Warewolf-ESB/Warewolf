@@ -41,7 +41,6 @@ NOTE: CoInitialize(Ex) must be called before you use any of the functions and in
 */
 
 using System;
-using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Text;
 
@@ -344,118 +343,6 @@ namespace Dev2.Common.Reflection
         #region GAC Resolution Handling
 
         private static GACAssemblyName[] _gacNameCache = new GACAssemblyName[0];
-
-        /// <summary>
-        ///     Tries the resolve GAC assembly.
-        /// </summary>
-        /// <param name="name">The name.</param>
-        /// <param name="culture">The culture.</param>
-        /// <param name="version">The version.</param>
-        /// <param name="publicKeyToken">The public key token.</param>
-        /// <returns></returns>
-        public static string TryResolveGACAssembly(string name, string culture, string version, string publicKeyToken)
-        {
-            if (string.IsNullOrEmpty(name)) return null;
-            GACAssemblyName[] matchingName = GetGACAssemblies(name);
-            if (matchingName.Length == 0) return null;
-
-            if (!string.IsNullOrEmpty(publicKeyToken))
-                for (int i = 0; i < matchingName.Length; i++)
-                    if (
-                        !string.Equals(matchingName[i].PublicKeyToken, publicKeyToken,
-                            StringComparison.OrdinalIgnoreCase))
-                        matchingName[i] = null;
-
-            if (!string.IsNullOrEmpty(culture))
-                for (int i = 0; i < matchingName.Length; i++)
-                    if (matchingName[i] != null &&
-                        !string.Equals(matchingName[i].Culture, culture, StringComparison.OrdinalIgnoreCase))
-                        matchingName[i] = null;
-
-            GACAssemblyName winner = null;
-
-            if (!string.IsNullOrEmpty(version))
-            {
-                for (int i = 0; i < matchingName.Length; i++)
-                    if (matchingName[i] != null)
-                    {
-                        if (!string.Equals(matchingName[i].Version, version, StringComparison.OrdinalIgnoreCase))
-                            matchingName[i] = null;
-                        else winner = matchingName[i];
-                    }
-            }
-            else
-            {
-                Version latest = null;
-
-                foreach (GACAssemblyName t in matchingName)
-                    if (t != null)
-                    {
-                        if (latest == null)
-                        {
-                            winner = t;
-                            latest = new Version(winner.Version);
-                        }
-                        else
-                        {
-                            var compare = new Version(t.Version);
-
-                            if (latest < compare)
-                            {
-                                winner = t;
-                                latest = compare;
-                            }
-                        }
-                    }
-            }
-
-            return winner?.ToString();
-        }
-
-        /// <summary>
-        ///     Gets the GAC assemblies.
-        /// </summary>
-        /// <param name="name">The name.</param>
-        /// <returns></returns>
-        private static GACAssemblyName[] GetGACAssemblies(string name)
-        {
-            if (name.EndsWith(".dll", StringComparison.OrdinalIgnoreCase)) name = name.Remove(name.Length - 4);
-
-            List<GACAssemblyName> result = null;
-
-            foreach (GACAssemblyName current in _gacNameCache)
-                if (string.Equals(current.Name, name, StringComparison.OrdinalIgnoreCase))
-                    (result ?? (result = new List<GACAssemblyName>())).Add(current);
-
-            return result?.ToArray() ?? GACAssemblyName.EmptyNames;
-        }
-
-        /// <summary>
-        ///     Rebuilds the GAC assembly cache.
-        /// </summary>
-        /// <param name="forceRebuild">if set to <c>true</c> [force rebuild].</param>
-        /// <returns></returns>
-        public static bool RebuildGACAssemblyCache(bool forceRebuild)
-        {
-            if (_gacNameCache.Length != 0 && !forceRebuild) return true;
-
-            IAssemblyEnum iterator = CreateGACEnum();
-
-            if (iterator == null) return false;
-            IAssemblyName currentName;
-            var gacNames = new List<GACAssemblyName>();
-
-            while (GetNextAssembly(iterator, out currentName) == 0)
-            {
-                if (currentName == null) continue;
-                string displayName = GetDisplayName(currentName,
-                    ASM_DISPLAY_FLAGS.PUBLIC_KEY_TOKEN | ASM_DISPLAY_FLAGS.VERSION | ASM_DISPLAY_FLAGS.CULTURE);
-                gacNames.Add(new GACAssemblyName(displayName));
-            }
-
-            _gacNameCache = gacNames.ToArray();
-            return true;
-        }
 
         #endregion GAC Resolution Handling
     }

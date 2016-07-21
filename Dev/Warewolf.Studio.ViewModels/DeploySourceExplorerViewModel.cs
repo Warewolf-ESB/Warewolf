@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -205,10 +204,6 @@ namespace Warewolf.Studio.ViewModels
             {
                 item.IsSelected = true;
             }
-        }
-
-        public void SelectItemsForDeploy(IEnumerable selectedItems)
-        {
         }
 
         public virtual Version ServerVersion => Version.Parse( SelectedServer.GetServerVersion());

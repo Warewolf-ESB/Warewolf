@@ -20,12 +20,6 @@ namespace Dev2.Data.Tests.ServiceModel
     [TestClass]
     public class ServiceUtilsTests
     {
-       
-        static IDev2Definition CreateValueMapping(string value)
-        {
-            return new Dev2Definition { Value = value };
-        }
-
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("ServiceUtils_MappingNamesChanged")]

@@ -262,65 +262,6 @@ namespace Dev2.Studio.ViewModels.Diagnostics
 
         #endregion ctor
 
-        #region public methods
-
-        /// <summary>
-        /// Deletes the specified file path by sending a message to web client.
-        /// </summary>
-        /// <param name="filePath">The file path.</param>
-        /// <author>Jurie.smit</author>
-        /// <date>2013/05/24</date>
-        public void Delete(FilePath filePath)
-        {
-            var address = String.Format(SelectedServer.Connection.WebServerUri + "{0}/{1}?Directory={2}&FilePath={3}",
-                "Services", "DeleteLogService", LogDirectory.PathToSerialize, filePath.Title);
-            var response = WebClient.UploadString(address, string.Empty);
-
-            if(response.Contains("Success"))
-            {
-                LogFiles.Remove(filePath);
-                DebugOutput.Clear();
-            }
-            else
-            {
-                ShowError(response);
-            }
-        }
-
-        /// <summary>
-        /// Deletes all the logs from the selected server directory.
-        /// </summary>
-        /// <author>Jurie.smit</author>
-        /// <date>2013/05/24</date>
-        public void DeleteAll()
-        {
-            var address = String.Format(SelectedServer.Connection.WebServerUri + "{0}/{1}?Directory={2}", "Services", "ClearLogService", LogDirectory.PathToSerialize);
-            var response = WebClient.UploadString(address, string.Empty);
-
-            if(response.Contains("Success"))
-            {
-                LogFiles.Clear();
-            }
-            else
-            {
-                ShowError(response);
-            }
-        }
-
-        /// <summary>
-        /// Refreshes the content of the directory.
-        /// </summary>
-        /// <author>Jurie.smit</author>
-        /// <date>2013/05/24</date>
-        public void RefreshDirectory()
-        {
-            IsRefreshing = true;
-            GetLogFiles(SelectedServer, LogDirectory);
-            IsRefreshing = false;
-        }
-
-        #endregion
-
         #region private methods
         /// <summary>
         /// Gets the log details through the webclient.
@@ -396,18 +337,6 @@ namespace Dev2.Studio.ViewModels.Diagnostics
                 return filePaths;
             }
             return new List<FilePath>();
-        }
-
-        /// <summary>
-        /// Friendly helper to shows an error.
-        /// </summary>
-        /// <param name="response">The response.</param>
-        /// <author>Jurie.smit</author>
-        /// <date>2013/05/24</date>
-        private void ShowError(string response)
-        {
-            var error = response.GetManagementPayload();
-            ShowErrorPopup(error);
         }
 
         /// <summary>

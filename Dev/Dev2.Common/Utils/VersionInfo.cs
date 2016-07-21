@@ -18,16 +18,6 @@ namespace Dev2.Studio.Utils
 {
     public static class VersionInfo
     {
-        public static string FetchVersionInfo()
-        {
-            Assembly asm = Assembly.GetExecutingAssembly();
-            var versionResource = new VersionResource();
-            string fileName = asm.Location;
-            versionResource.LoadFrom(fileName);
-
-            return versionResource.FileVersion;
-        }
-
         public static Version FetchVersionInfoAsVersion()
         {
             Assembly asm = Assembly.GetExecutingAssembly();
