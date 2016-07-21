@@ -28,6 +28,13 @@ using System.Windows.Input;
 using System.Windows.Markup;
 using System.Windows.Media;
 using System.Windows.Threading;
+// ReSharper disable NonLocalizedString
+// ReSharper disable MemberCanBePrivate.Global
+// ReSharper disable UnusedMember.Global
+// ReSharper disable MemberCanBeProtected.Global
+// ReSharper disable EventNeverSubscribedTo.Global
+// ReSharper disable VirtualMemberNeverOverriden.Global
+// ReSharper disable AutoPropertyCanBeMadeGetOnly.Global
 
 // ReSharper disable CheckNamespace
 namespace System.Windows.Controls
@@ -253,6 +260,7 @@ namespace System.Windows.Controls
         /// <see cref="T:System.Windows.Controls.AutoCompleteBox" /> populates
         /// the list of possible matches in the drop-down. The default is 0.</value>
         /// <exception cref="T:System.ArgumentException">The set value is less than 0.</exception>
+        [ExcludeFromCodeCoverage]
         public int MinimumPopulateDelay
         {
             get { return (int)GetValue(MinimumPopulateDelayProperty); }
@@ -267,6 +275,7 @@ namespace System.Windows.Controls
         /// <value>The identifier for the
         /// <see cref="P:System.Windows.Controls.AutoCompleteBox.MinimumPopulateDelay" />
         /// dependency property.</value>
+        
         public static readonly DependencyProperty MinimumPopulateDelayProperty =
             DependencyProperty.Register(
                 "MinimumPopulateDelay",
@@ -283,6 +292,7 @@ namespace System.Windows.Controls
         /// MinimumPopulateDelay.</param>
         /// <param name="e">Event arguments.</param>
         [SuppressMessage("Microsoft.Usage", "CA2208:InstantiateArgumentExceptionsCorrectly", Justification = "The exception is most likely to be called through the CLR property setter.")]
+        [ExcludeFromCodeCoverage]
         private static void OnMinimumPopulateDelayPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             AutoCompleteBox source = d as AutoCompleteBox;
@@ -308,7 +318,7 @@ namespace System.Windows.Controls
             }
 
             // Stop any existing timer
-            if(source != null && source._delayTimer != null)
+            if(source?._delayTimer != null)
             {
                 source._delayTimer.Stop();
 
@@ -334,7 +344,7 @@ namespace System.Windows.Controls
         #endregion public int MinimumPopulateDelay
 
         public static readonly DependencyProperty DefaultTextTemplateProperty = DependencyProperty.Register("DefaultTextTemplate", typeof(DataTemplate), typeof(AutoCompleteBox), new UIPropertyMetadata(null));
-
+        [ExcludeFromCodeCoverage]
         public DataTemplate DefaultTextTemplate
         {
             get
@@ -410,6 +420,7 @@ namespace System.Windows.Controls
         /// DataTemplate, the resulting UI of each item is a string 
         /// representation of each object in the underlying collection. 
         /// </remarks>
+        [ExcludeFromCodeCoverage]
         public DataTemplate ItemTemplate
         {
             get { return GetValue(ItemTemplateProperty) as DataTemplate; }
@@ -448,6 +459,7 @@ namespace System.Windows.Controls
         /// The default selection adapter contained in the drop-down is a 
         /// ListBox control. 
         /// </remarks>
+        [ExcludeFromCodeCoverage]
         public Style ItemContainerStyle
         {
             get { return GetValue(ItemContainerStyleProperty) as Style; }
@@ -481,6 +493,7 @@ namespace System.Windows.Controls
         /// box portion of the
         /// <see cref="T:System.Windows.Controls.AutoCompleteBox" /> control.
         /// The default is null.</value>
+        [ExcludeFromCodeCoverage]
         public Style TextBoxStyle
         {
             get { return GetValue(TextBoxStyleProperty) as Style; }
@@ -513,6 +526,7 @@ namespace System.Windows.Controls
         /// <see cref="T:System.Windows.Controls.AutoCompleteBox" /> control.
         /// The default is <see cref="F:System.Double.PositiveInfinity" />.</value>
         /// <exception cref="T:System.ArgumentException">The specified value is less than 0.</exception>
+        [ExcludeFromCodeCoverage]
         public double MaxDropDownHeight
         {
             get { return (double)GetValue(MaxDropDownHeightProperty); }
@@ -564,10 +578,7 @@ namespace System.Windows.Controls
                 throw new ArgumentException(string.Format(CultureInfo.InvariantCulture, Dev2.Runtime.Configuration.Properties.Resources.AutoComplete_OnMaxDropDownHeightPropertyChanged_InvalidValue, e.NewValue), "value");
             }
 
-            if(source != null)
-            {
-                source.OnMaxDropDownHeightChanged(newValue);
-            }
+            source?.OnMaxDropDownHeightChanged(newValue);
         }
         #endregion public double MaxDropDownHeight
 
@@ -675,10 +686,7 @@ namespace System.Windows.Controls
         private static void OnItemsSourcePropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             AutoCompleteBox autoComplete = d as AutoCompleteBox;
-            if(autoComplete != null)
-            {
-                autoComplete.OnItemsSourceChanged((IEnumerable)e.OldValue, (IEnumerable)e.NewValue);
-            }
+            autoComplete?.OnItemsSourceChanged((IEnumerable)e.OldValue, (IEnumerable)e.NewValue);
         }
 
         #endregion public IEnumerable ItemsSource
@@ -758,15 +766,12 @@ namespace System.Windows.Controls
                 added.Add(e.NewValue);
             }
 
-            if(source != null)
-            {
-                source.OnSelectionChanged(new SelectionChangedEventArgs(
+            source?.OnSelectionChanged(new SelectionChangedEventArgs(
 #if !SILVERLIGHT
-SelectionChangedEvent,
+                SelectionChangedEvent,
 #endif
- removed,
-                    added));
-            }
+                removed,
+                added));
         }
 
         /// <summary>
@@ -833,10 +838,7 @@ SelectionChangedEvent,
         private static void OnTextPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             AutoCompleteBox source = d as AutoCompleteBox;
-            if(source != null)
-            {
-                source.TextUpdated((string)e.NewValue, false);
-            }
+            source?.TextUpdated((string)e.NewValue, false);
         }
 
         #endregion public string Text
@@ -958,6 +960,8 @@ SelectionChangedEvent,
         /// <param name="d">AutoCompleteBox that changed its FilterMode.</param>
         /// <param name="e">Event arguments.</param>
         [SuppressMessage("Microsoft.Usage", "CA2208:InstantiateArgumentExceptionsCorrectly", Justification = "The exception will be thrown when the CLR setter is used in most situations.")]
+        [ExcludeFromCodeCoverage]
+        // ReSharper disable once CyclomaticComplexity
         private static void OnFilterModePropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             AutoCompleteBox source = d as AutoCompleteBox;
@@ -978,10 +982,7 @@ SelectionChangedEvent,
                 mode != AutoCompleteFilterMode.StartsWithOrdinal &&
                 mode != AutoCompleteFilterMode.StartsWithOrdinalCaseSensitive)
             {
-                if(source != null)
-                {
-                    source.SetValue(e.Property, e.OldValue);
-                }
+                source?.SetValue(e.Property, e.OldValue);
 
                 // ReSharper disable once NotResolvedInText
                 throw new ArgumentException(Dev2.Runtime.Configuration.Properties.Resources.AutoComplete_OnFilterModePropertyChanged_InvalidValue, "value");
@@ -1394,7 +1395,7 @@ SelectionChangedEvent,
         {
             get
             {
-                return _valueBindingEvaluator != null ? _valueBindingEvaluator.ValueBinding : null;
+                return _valueBindingEvaluator?.ValueBinding;
             }
             set
             {
@@ -1414,13 +1415,19 @@ SelectionChangedEvent,
         {
             get
             {
-                return ValueMemberBinding != null ? ValueMemberBinding.Path.Path : null;
+                return ValueMemberBinding?.Path.Path;
             }
             set
             {
                 ValueMemberBinding = value == null ? null : new Binding(value);
             }
         }
+        /// <summary>
+        /// Gets or sets the observable collection that contains references to 
+        /// all of the items in the generated view of data that is provided to 
+        /// the selection-style control adapter.
+        /// </summary>
+        public ObservableCollection<object> View => _view;
 
 #if !SILVERLIGHT
         /// <summary>
@@ -1463,10 +1470,7 @@ SelectionChangedEvent,
         protected override Size ArrangeOverride(Size finalSize)
         {
             Size r = base.ArrangeOverride(finalSize);
-            if(DropDownPopup != null)
-            {
-                DropDownPopup.Arrange();
-            }
+            DropDownPopup?.Arrange();
             return r;
         }
 
@@ -1626,10 +1630,7 @@ SelectionChangedEvent,
         private void RaiseExpandCollapseAutomationEvent(bool oldValue, bool newValue)
         {
             AutoCompleteBoxAutomationPeer peer = UIElementAutomationPeer.FromElement(this) as AutoCompleteBoxAutomationPeer;
-            if(peer != null)
-            {
-                peer.RaiseExpandCollapseAutomationEvent(oldValue, newValue);
-            }
+            peer?.RaiseExpandCollapseAutomationEvent(oldValue, newValue);
         }
 
 #if !SILVERLIGHT
@@ -1708,10 +1709,7 @@ SelectionChangedEvent,
             {
                 IsDropDownOpen = false;
                 _userCalledPopulate = false;
-                if(TextBox != null)
-                {
-                    TextBox.Select(TextBox.Text.Length, 0);
-                }
+                TextBox?.Select(TextBox.Text.Length, 0);
             }
         }
 
@@ -1823,6 +1821,8 @@ SelectionChangedEvent,
         /// if possible. Otherwise, null.
         /// </returns>
         [SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate", Justification = "Following the GetTemplateChild pattern for the method.")]
+        // ReSharper disable once VirtualMemberNeverOverriden.Global
+        [ExcludeFromCodeCoverage]
         protected virtual ISelectionAdapter GetSelectionAdapterPart()
         {
             ISelectionAdapter adapter = null;
@@ -1842,12 +1842,10 @@ SelectionChangedEvent,
         /// </summary>
         /// <param name="sender">The source object.</param>
         /// <param name="e">The event arguments.</param>
+        [ExcludeFromCodeCoverage]
         private void PopulateDropDown(object sender, EventArgs e)
         {
-            if(_delayTimer != null)
-            {
-                _delayTimer.Stop();
-            }
+            _delayTimer?.Stop();
 
             // Update the prefix/search text.
             SearchText = Text;
@@ -1877,6 +1875,7 @@ SelectionChangedEvent,
         /// <param name="e">A
         /// <see cref="T:System.Windows.Controls.PopulatingEventArgs" /> that
         /// contains the event data.</param>
+        // ReSharper disable once VirtualMemberNeverOverriden.Global
         protected virtual void OnPopulating(PopulatingEventArgs e)
         {
 #if SILVERLIGHT
@@ -1898,6 +1897,7 @@ SelectionChangedEvent,
         /// <param name="e">A
         /// <see cref="T:System.Windows.Controls.PopulatedEventArgs" />
         /// that contains the event data.</param>
+        [ExcludeFromCodeCoverage]
         protected virtual void OnPopulated(PopulatedEventArgs e)
         {
 #if SILVERLIGHT
@@ -1919,6 +1919,7 @@ SelectionChangedEvent,
         /// <param name="e">A
         /// <see cref="T:System.Windows.Controls.SelectionChangedEventArgs" />
         /// that contains the event data.</param>
+        [ExcludeFromCodeCoverage]
         protected virtual void OnSelectionChanged(SelectionChangedEventArgs e)
         {
 #if SILVERLIGHT
@@ -1940,6 +1941,7 @@ SelectionChangedEvent,
         /// <param name="e">A
         /// <see cref="T:System.Windows.Controls.RoutedPropertyChangingEventArgs`1" />
         /// that contains the event data.</param>
+        [ExcludeFromCodeCoverage]
         protected virtual void OnDropDownOpening(RoutedPropertyChangingEventArgs<bool> e)
         {
 #if SILVERLIGHT
@@ -1961,6 +1963,7 @@ SelectionChangedEvent,
         /// <param name="e">A
         /// <see cref="T:System.Windows.RoutedPropertyChangedEventArgs`1" />
         /// that contains the event data.</param>
+        [ExcludeFromCodeCoverage]
         protected virtual void OnDropDownOpened(RoutedPropertyChangedEventArgs<bool> e)
         {
 #if SILVERLIGHT
@@ -1982,6 +1985,7 @@ SelectionChangedEvent,
         /// <param name="e">A
         /// <see cref="T:System.Windows.Controls.RoutedPropertyChangingEventArgs`1" />
         /// that contains the event data.</param>
+        [ExcludeFromCodeCoverage]
         protected virtual void OnDropDownClosing(RoutedPropertyChangingEventArgs<bool> e)
         {
 #if SILVERLIGHT
@@ -2027,9 +2031,9 @@ SelectionChangedEvent,
         private string FormatValue(object value, bool clearDataContext)
         {
             string str = FormatValue(value);
-            if(clearDataContext && _valueBindingEvaluator != null)
+            if(clearDataContext)
             {
-                _valueBindingEvaluator.ClearDataContext();
+                _valueBindingEvaluator?.ClearDataContext();
             }
             return str;
         }
@@ -2054,7 +2058,7 @@ SelectionChangedEvent,
                 return _valueBindingEvaluator.GetDynamicValue(value) ?? string.Empty;
             }
 
-            return value == null ? string.Empty : value.ToString();
+            return value?.ToString() ?? string.Empty;
         }
 
         /// <summary>
@@ -2143,6 +2147,12 @@ SelectionChangedEvent,
 #else
                 OnTextChanged(new RoutedEventArgs(TextChangedEvent));
 #endif
+            }
+
+            if (TextBox == null)
+            {
+                Text = value;
+                OnTextChanged(new RoutedEventArgs(TextChangedEvent));
             }
 
             // Update the TextBox's Text dependency property
@@ -2277,10 +2287,7 @@ SelectionChangedEvent,
             if(IsDropDownOpen)
             {
                 OpeningDropDown(false);
-                if(DropDownPopup != null)
-                {
-                    DropDownPopup.Arrange();
-                }
+                DropDownPopup?.Arrange();
             }
             else
             {
@@ -2416,6 +2423,7 @@ SelectionChangedEvent,
         /// Walks through the items enumeration. Performance is not going to be 
         /// perfect with the current implementation.
         /// </summary>
+        // ReSharper disable once CyclomaticComplexity
         private void RefreshView()
         {
             if(_items == null)
@@ -2484,10 +2492,7 @@ SelectionChangedEvent,
             }
 
             // Clear the evaluator to discard a reference to the last item
-            if(_valueBindingEvaluator != null)
-            {
-                _valueBindingEvaluator.ClearDataContext();
-            }
+            _valueBindingEvaluator?.ClearDataContext();
         }
 
         /// <summary>
@@ -2498,6 +2503,7 @@ SelectionChangedEvent,
         /// <param name="oldValue">The old enumerable reference.</param>
         /// <param name="newValue">The new enumerable reference.</param>
         [SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "oldValue", Justification = "This makes it easy to add validation or other changes in the future.")]
+        [ExcludeFromCodeCoverage]
         private void OnItemsSourceChanged(IEnumerable oldValue, IEnumerable newValue)
         {
             // Remove handler for oldValue.CollectionChanged (if present)
@@ -2536,6 +2542,8 @@ SelectionChangedEvent,
         /// Method that handles the ObservableCollection.CollectionChanged event for the ItemsSource property.
         /// </summary>
         /// <param name="e">The event data.</param>
+        // ReSharper disable once CyclomaticComplexity
+        [ExcludeFromCodeCoverage]
         private void ItemsSourceCollectionChanged(NotifyCollectionChangedEventArgs e)
         {
             // Update the cache
@@ -2594,6 +2602,7 @@ SelectionChangedEvent,
         /// </summary>
         /// <param name="sender">The source object.</param>
         /// <param name="e">The selection changed event data.</param>
+        [ExcludeFromCodeCoverage]
         private void OnAdapterSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             SelectedItem = _adapter.SelectedItem;
@@ -2604,6 +2613,7 @@ SelectionChangedEvent,
         /// </summary>
         /// <param name="sender">The source object.</param>
         /// <param name="e">The event data.</param>
+        [ExcludeFromCodeCoverage]
         private void OnAdapterSelectionComplete(object sender, RoutedEventArgs e)
         {
             IsDropDownOpen = false;
@@ -2612,10 +2622,7 @@ SelectionChangedEvent,
             UpdateTextCompletion(false);
 
             // Text should not be selected
-            if(TextBox != null)
-            {
-                TextBox.Select(TextBox.Text.Length, 0);
-            }
+            TextBox?.Select(TextBox.Text.Length, 0);
 
 #if SILVERLIGHT
             Focus();
@@ -2639,6 +2646,7 @@ SelectionChangedEvent,
         /// </summary>
         /// <param name="sender">The source object.</param>
         /// <param name="e">The event data.</param>
+        [ExcludeFromCodeCoverage]
         private void OnAdapterSelectionCanceled(object sender, RoutedEventArgs e)
         {
             UpdateTextValue(SearchText);
@@ -2657,6 +2665,7 @@ SelectionChangedEvent,
         /// </summary>
         /// <param name="newValue">The new value.</param>
         [SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "newValue", Justification = "This makes it easy to add validation or other changes in the future.")]
+        [ExcludeFromCodeCoverage]
         private void OnMaxDropDownHeightChanged(double newValue)
         {
             if(DropDownPopup != null)
@@ -2725,6 +2734,7 @@ SelectionChangedEvent,
         {
             if(e == null)
             {
+                // ReSharper disable once UseNameofExpression
                 throw new ArgumentNullException("e");
             }
 

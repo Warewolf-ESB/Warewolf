@@ -397,7 +397,6 @@
     <Compile Include="Messages\ShowReverseDependencyVisualizer.cs" />
     <Compile Include="Messages\UpdateActiveEnvironmentMessage.cs" />
     <Compile Include="Messages\UpdateExplorerMessage.cs" />
-    <Compile Include="Messages\UpdateIntellisenseMessage.cs" />
     <Compile Include="Messages\UpdateResourceMessage.cs" />
     <Compile Include="Models\ServerExplorerClientProxy.cs" />
     <Compile Include="Models\DataMapping\DataMappingDefinition.cs">
