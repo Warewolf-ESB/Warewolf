@@ -1119,7 +1119,7 @@ namespace System.Windows.Controls
         /// <summary>
         /// Gets or sets the Text template part.
         /// </summary>
-        protected internal TextBox TextBox
+        public TextBox TextBox
         {
             get { return _text; }
             set
@@ -1457,6 +1457,7 @@ namespace System.Windows.Controls
 
             // Creating the view here ensures that View is always != null
             ClearView();
+            Style = Application.Current.TryFindResource("AutoCompleteBoxStyle") as Style;
         }
 
         /// <summary>
@@ -1931,6 +1932,12 @@ namespace System.Windows.Controls
 #else
             RaiseEvent(e);
 #endif
+
+            AutoCompleteBox box = (AutoCompleteBox)e.Source;
+            ListBox innerListBox = (ListBox)box.Template.FindName("Selector", box);
+            innerListBox.ScrollIntoView(innerListBox.SelectedItem);
+
+            RaiseEvent(e);
         }
 
         /// <summary>

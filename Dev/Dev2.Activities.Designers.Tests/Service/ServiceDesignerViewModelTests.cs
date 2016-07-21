@@ -99,17 +99,6 @@ namespace Dev2.Activities.Designers.Tests.Service
             // No exception it passed ;)
         }
 
-        void Verify_Constructor_ImageSource_InitializedCorrectlyForType(string type, string expectedImageSource, string serviceUri = null)
-        {
-
-            //------------Setup for test--------------------------
-            //------------Execute Test---------------------------
-            var vm = GenerateServiceDesignerViewModel(ExpectedName, null, type, serviceUri);
-
-            //------------Assert Results-------------------------
-            Assert.AreEqual(expectedImageSource, vm.ImageSource);
-        }
-
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("ServiceDesignerViewModel_Constructor")]
