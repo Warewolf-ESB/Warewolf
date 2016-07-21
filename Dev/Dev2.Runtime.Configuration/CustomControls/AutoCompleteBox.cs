@@ -1187,6 +1187,20 @@ namespace System.Windows.Controls
 
         #endregion
 
+        public static readonly DependencyProperty HasErrorProperty = DependencyProperty.Register("HasError", typeof(bool), typeof(AutoCompleteBox), new PropertyMetadata(false));
+
+        public bool HasError
+        {
+            get
+            {
+                return (bool)GetValue(HasErrorProperty);
+            }
+            set
+            {
+                SetValue(HasErrorProperty, value);
+            }
+        }
+
         /// <summary>
         /// Occurs when the text in the text box portion of the
         /// <see cref="T:System.Windows.Controls.AutoCompleteBox" /> changes.
