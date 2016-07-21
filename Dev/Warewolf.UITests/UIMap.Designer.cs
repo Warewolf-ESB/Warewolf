@@ -829,7 +829,6 @@ namespace Warewolf.UITests
             WpfButton cancelButton = this.SaveDialogWindow.CancelButton;
             WpfText errorLabel = this.SaveDialogWindow.ErrorLabel;
             WpfTree explorerTree = this.SaveDialogWindow.ExplorerView.ExplorerTree;
-            WpfTreeItem explorerTreeItem = this.SaveDialogWindow.ExplorerView.ExplorerTree.ExplorerTreeItem;
             WpfCustom explorerView = this.SaveDialogWindow.ExplorerView;
             WpfEdit searchTextBox = this.SaveDialogWindow.ExplorerView.SearchTextBox;
             WpfText nameLabel = this.SaveDialogWindow.NameLabel;
@@ -854,9 +853,6 @@ namespace Warewolf.UITests
 
             // Verify that the 'Exists' property of 'ExplorerTree' tree equals 'True'
             Assert.AreEqual(this.Click_Save_Ribbon_Button_to_Open_Save_DialogParams.ExplorerTreeExists, explorerTree.Exists, "Save dialog explorer tree does not exist");
-
-            // Verify that the 'Exists' property of 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item equals 'True'
-            Assert.AreEqual(this.Click_Save_Ribbon_Button_to_Open_Save_DialogParams.ExplorerTreeItemExists, explorerTreeItem.Exists, "Save dialog explorer tree item does not exist");
 
             // Verify that the 'Exists' property of 'ExplorerView' custom control equals 'True'
             Assert.AreEqual(this.Click_Save_Ribbon_Button_to_Open_Save_DialogParams.ExplorerViewExists, explorerView.Exists, "Save dialog explorer view does not exist");
@@ -1040,14 +1036,14 @@ namespace Warewolf.UITests
         public void Click_Select_Windows_Group_Cancel_Button()
         {
             #region Variable Declarations
-            WinButton uICancelButton = this.UISelectGroupWindow.UICancelWindow.UICancelButton;
+            WinButton cancel = this.SelectWindowsGroupDialog.CancelPanel.Cancel;
             #endregion
 
             // Verify that the 'Exists' property of 'Cancel' button equals 'True'
-            Assert.AreEqual(this.Click_Select_Windows_Group_Cancel_ButtonParams.UICancelButtonExists, uICancelButton.Exists, "Select Windows group dialog cancel buttton does not exist.");
+            Assert.AreEqual(this.Click_Select_Windows_Group_Cancel_ButtonParams.CancelExists, cancel.Exists, "Select Windows group dialog cancel buttton does not exist.");
 
             // Click 'Cancel' button
-            Mouse.Click(uICancelButton, new Point(28, 9));
+            Mouse.Click(cancel, new Point(28, 9));
         }
         
         /// <summary>
@@ -3003,8 +2999,7 @@ namespace Warewolf.UITests
             // Type 'TSTCIREMOTE' in 'ServiceNameTextBox' text box
             serviceNameTextBox.Text = this.Enter_Servicename_As_TSTCIREMOTEParams.ServiceNameTextBoxText;
 
-            // Wait for 40 seconds for user delay between actions; Verify that the 'Enabled' property of 'Save' button equals 'True'
-            Playback.Wait(40000);
+            // Verify that the 'Enabled' property of 'Save' button equals 'True'
             Assert.AreEqual(this.Enter_Servicename_As_TSTCIREMOTEParams.SaveButtonEnabled, saveButton.Enabled, "Save dialog save button is not enabled. Check workflow name is valid and that ano" +
                     "ther workflow by that name does not already exist.");
         }
@@ -6850,18 +6845,6 @@ namespace Warewolf.UITests
                 return this.mServicePickerDialog;
             }
         }
-        
-        public UISelectGroupWindow UISelectGroupWindow
-        {
-            get
-            {
-                if ((this.mUISelectGroupWindow == null))
-                {
-                    this.mUISelectGroupWindow = new UISelectGroupWindow();
-                }
-                return this.mUISelectGroupWindow;
-            }
-        }
         #endregion
         
         #region Fields
@@ -7160,8 +7143,6 @@ namespace Warewolf.UITests
         private SelectWindowsGroupDialog mSelectWindowsGroupDialog;
         
         private ServicePickerDialog mServicePickerDialog;
-        
-        private UISelectGroupWindow mUISelectGroupWindow;
         #endregion
     }
     
@@ -7674,11 +7655,6 @@ namespace Warewolf.UITests
         public bool ExplorerTreeExists = true;
         
         /// <summary>
-        /// Verify that the 'Exists' property of 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item equals 'True'
-        /// </summary>
-        public bool ExplorerTreeItemExists = true;
-        
-        /// <summary>
         /// Verify that the 'Exists' property of 'ExplorerView' custom control equals 'True'
         /// </summary>
         public bool ExplorerViewExists = true;
@@ -7796,7 +7772,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Verify that the 'Exists' property of 'Cancel' button equals 'True'
         /// </summary>
-        public bool UICancelButtonExists = true;
+        public bool CancelExists = true;
         #endregion
     }
     
@@ -9429,7 +9405,7 @@ namespace Warewolf.UITests
         public string ServiceNameTextBoxText = "TSTCIREMOTE";
         
         /// <summary>
-        /// Wait for 40 seconds for user delay between actions; Verify that the 'Enabled' property of 'Save' button equals 'True'
+        /// Verify that the 'Enabled' property of 'Save' button equals 'True'
         /// </summary>
         public bool SaveButtonEnabled = true;
         #endregion
@@ -12081,10 +12057,30 @@ namespace Warewolf.UITests
                 return this.mIconButton;
             }
         }
+        
+        public WpfCustom Spinner
+        {
+            get
+            {
+                if ((this.mSpinner == null))
+                {
+                    this.mSpinner = new WpfCustom(this);
+                    #region Search Criteria
+                    this.mSpinner.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.CircularProgressBar";
+                    this.mSpinner.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mSpinner.SearchConfigurations.Add(SearchConfiguration.NextSibling);
+                    this.mSpinner.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mSpinner;
+            }
+        }
         #endregion
         
         #region Fields
         private WpfButton mIconButton;
+        
+        private WpfCustom mSpinner;
         #endregion
     }
     
@@ -32523,25 +32519,134 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public WpfTreeItem ExplorerTreeItem
+        public localhost1 localhost
         {
             get
             {
-                if ((this.mExplorerTreeItem == null))
+                if ((this.mlocalhost == null))
                 {
-                    this.mExplorerTreeItem = new WpfTreeItem(this);
-                    #region Search Criteria
-                    this.mExplorerTreeItem.SearchProperties[WpfTreeItem.PropertyNames.Name] = "Infragistics.Controls.Menus.XamDataTreeNodeDataContext";
-                    this.mExplorerTreeItem.WindowTitles.Add("SaveDialogView");
-                    #endregion
+                    this.mlocalhost = new localhost1(this);
                 }
-                return this.mExplorerTreeItem;
+                return this.mlocalhost;
             }
         }
         #endregion
         
         #region Fields
-        private WpfTreeItem mExplorerTreeItem;
+        private localhost1 mlocalhost;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class localhost1 : WpfTreeItem
+    {
+        
+        public localhost1(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfTreeItem.PropertyNames.Name] = "Infragistics.Controls.Menus.XamDataTreeNodeDataContext";
+            this.SearchProperties[WpfTreeItem.PropertyNames.Instance] = "1";
+            this.WindowTitles.Add("Warewolf");
+            #endregion
+        }
+        
+        #region Properties
+        public Checkbox1 Checkbox
+        {
+            get
+            {
+                if ((this.mCheckbox == null))
+                {
+                    this.mCheckbox = new Checkbox1(this);
+                }
+                return this.mCheckbox;
+            }
+        }
+        
+        public WpfTreeItem FirstItem
+        {
+            get
+            {
+                if ((this.mFirstItem == null))
+                {
+                    this.mFirstItem = new WpfTreeItem(this);
+                    #region Search Criteria
+                    this.mFirstItem.SearchProperties[WpfTreeItem.PropertyNames.Name] = "Infragistics.Controls.Menus.XamDataTreeNodeDataContext";
+                    this.mFirstItem.SearchProperties[WpfTreeItem.PropertyNames.Instance] = "1";
+                    this.mFirstItem.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mFirstItem.SearchConfigurations.Add(SearchConfiguration.DisambiguateChild);
+                    this.mFirstItem.SearchConfigurations.Add(SearchConfiguration.AlwaysSearch);
+                    this.mFirstItem.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mFirstItem;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private Checkbox1 mCheckbox;
+        
+        private WpfTreeItem mFirstItem;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Checkbox1 : WpfCheckBox
+    {
+        
+        public Checkbox1(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "Checkbox";
+            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfButton IconButton
+        {
+            get
+            {
+                if ((this.mIconButton == null))
+                {
+                    this.mIconButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mIconButton.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mIconButton.SearchConfigurations.Add(SearchConfiguration.NextSibling);
+                    this.mIconButton.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mIconButton;
+            }
+        }
+        
+        public WpfCustom Spinner
+        {
+            get
+            {
+                if ((this.mSpinner == null))
+                {
+                    this.mSpinner = new WpfCustom(this);
+                    #region Search Criteria
+                    this.mSpinner.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.CircularProgressBar";
+                    this.mSpinner.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mSpinner.SearchConfigurations.Add(SearchConfiguration.NextSibling);
+                    this.mSpinner.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mSpinner;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfButton mIconButton;
+        
+        private WpfCustom mSpinner;
         #endregion
     }
     
@@ -32629,12 +32734,26 @@ namespace Warewolf.UITests
                 return this.mOKPanel;
             }
         }
+        
+        public CancelPanel CancelPanel
+        {
+            get
+            {
+                if ((this.mCancelPanel == null))
+                {
+                    this.mCancelPanel = new CancelPanel(this);
+                }
+                return this.mCancelPanel;
+            }
+        }
         #endregion
         
         #region Fields
         private ItemPanel mItemPanel;
         
         private OKPanel mOKPanel;
+        
+        private CancelPanel mCancelPanel;
         #endregion
     }
     
@@ -32707,6 +32826,42 @@ namespace Warewolf.UITests
         
         #region Fields
         private WinButton mOK;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class CancelPanel : WinWindow
+    {
+        
+        public CancelPanel(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WinWindow.PropertyNames.ControlId] = "2";
+            this.WindowTitles.Add("Select Group");
+            #endregion
+        }
+        
+        #region Properties
+        public WinButton Cancel
+        {
+            get
+            {
+                if ((this.mCancel == null))
+                {
+                    this.mCancel = new WinButton(this);
+                    #region Search Criteria
+                    this.mCancel.SearchProperties[WinButton.PropertyNames.Name] = "Cancel";
+                    this.mCancel.WindowTitles.Add("Select Group");
+                    #endregion
+                }
+                return this.mCancel;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WinButton mCancel;
         #endregion
     }
     
@@ -32915,74 +33070,6 @@ namespace Warewolf.UITests
         
         #region Fields
         private WpfTreeItem mSubTreeItem1;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class UISelectGroupWindow : WinWindow
-    {
-        
-        public UISelectGroupWindow()
-        {
-            #region Search Criteria
-            this.SearchProperties[WinWindow.PropertyNames.Name] = "Select Group";
-            this.SearchProperties[WinWindow.PropertyNames.ClassName] = "#32770";
-            this.WindowTitles.Add("Select Group");
-            #endregion
-        }
-        
-        #region Properties
-        public UICancelWindow UICancelWindow
-        {
-            get
-            {
-                if ((this.mUICancelWindow == null))
-                {
-                    this.mUICancelWindow = new UICancelWindow(this);
-                }
-                return this.mUICancelWindow;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private UICancelWindow mUICancelWindow;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class UICancelWindow : WinWindow
-    {
-        
-        public UICancelWindow(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WinWindow.PropertyNames.ControlId] = "2";
-            this.WindowTitles.Add("Select Group");
-            #endregion
-        }
-        
-        #region Properties
-        public WinButton UICancelButton
-        {
-            get
-            {
-                if ((this.mUICancelButton == null))
-                {
-                    this.mUICancelButton = new WinButton(this);
-                    #region Search Criteria
-                    this.mUICancelButton.SearchProperties[WinButton.PropertyNames.Name] = "Cancel";
-                    this.mUICancelButton.WindowTitles.Add("Select Group");
-                    #endregion
-                }
-                return this.mUICancelButton;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WinButton mUICancelButton;
         #endregion
     }
 }

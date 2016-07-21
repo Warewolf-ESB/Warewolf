@@ -64,7 +64,6 @@
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
     <Compile Include="ComponentModel\Extensions.cs" />
-    <Compile Include="ComponentModel\SqlUtilities.cs" />
     <Compile Include="Sql\ISqlCtx.cs" />
     <Compile Include="Sql\SqlCtx.cs" />
     <Compile Include="Sql\Workflows.cs" />
@@ -95,6 +94,5 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
-  
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

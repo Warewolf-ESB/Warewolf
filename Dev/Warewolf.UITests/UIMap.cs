@@ -211,7 +211,11 @@ namespace Warewolf.UITests
         {
             try
             {
-                Enter_RemoteServerUITestWorkflow_Into_Explorer_Filter();
+                if (MainStudioWindow.DockManager.SplitPaneLeft.Explorer.SearchTextBox.Text == string.Empty)
+                {
+                    Enter_RemoteServerUITestWorkflow_Into_Explorer_Filter();
+                    WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);
+                }
                 Playback.PlaybackSettings.MaximumRetryCount = _strictMaximumRetryCount * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
                 Playback.PlaybackSettings.SearchTimeout = _strictSearchTimeout * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
                 var wpfTreeItem = MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem;
@@ -260,6 +264,33 @@ namespace Warewolf.UITests
                 }
                 Select_LocalhostConnected_From_Explorer_Remote_Server_Dropdown_List();
                 Enter_TSTCIREMOTE_Into_Explorer_Filter();
+                WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);
+                Playback.PlaybackSettings.MaximumRetryCount = _strictMaximumRetryCount * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
+                Playback.PlaybackSettings.SearchTimeout = _strictSearchTimeout * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
+                var wpfTreeItem = MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem;
+                Playback.PlaybackSettings.MaximumRetryCount = _lenientMaximumRetryCount * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
+                Playback.PlaybackSettings.SearchTimeout = _lenientSearchTimeout * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
+                if (wpfTreeItem.Exists)
+                {
+                    RightClick_Explorer_Localhost_First_Item();
+                    Select_Delete_FromExplorerContextMenu();
+                    Click_MessageBox_Yes();
+                }
+                Click_Explorer_Filter_Clear_Button();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Cleanup failed to remove remote server TST-CI-REMOTE. Test may have crashed before remote server TST-CI-REMOTE was connected.\n" + e.Message);
+                Click_Explorer_Filter_Clear_Button();
+            }
+        }
+
+        public void TryRemoveSomeWorkflowFromExplorer()
+        {
+            try
+            {
+                Enter_SomeWorkflow_Into_Explorer_Filter();
+                WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);
                 Playback.PlaybackSettings.MaximumRetryCount = _strictMaximumRetryCount * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
                 Playback.PlaybackSettings.SearchTimeout = _strictSearchTimeout * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
                 var wpfTreeItem = MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem;
@@ -455,6 +486,15 @@ namespace Warewolf.UITests
             {
                 Console.WriteLine("TryClose method failed to close Server Source tab.\n" + e.Message);
             }
+        }
+
+        public void WaitForSpinner(UITestControl spinner)
+        {
+            spinner.WaitForControlCondition((control) =>
+            {
+                var point = new Point();
+                return !control.TryGetClickablePoint(out point);
+            }, Playback.PlaybackSettings.SearchTimeout);
         }
     }
 }
