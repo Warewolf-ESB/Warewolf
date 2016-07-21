@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
@@ -451,6 +452,16 @@ namespace Warewolf.Studio.ViewModels
                 OnPropertyChanged(() => HeaderText);
                 OnPropertyChanged(() => Header);
             }
+        }
+
+        IDllListingModel ExpandChild(string dir, ObservableCollection<IDllListingModel> children)
+        {
+            var dllListingModel = children.FirstOrDefault(model => model.Name.StartsWith(dir));
+            if (dllListingModel != null)
+            {
+                dllListingModel.IsExpanded = true;
+            }
+            return dllListingModel;
         }
 
         protected override void OnDispose()

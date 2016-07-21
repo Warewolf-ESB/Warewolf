@@ -11,6 +11,7 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
+using System.Net;
 using System.Reflection;
 using System.Text;
 using Dev2.Common;
@@ -73,6 +74,20 @@ namespace Dev2.Studio.Core.Helpers
             {
                 Dev2Logger.Info("Writing a text file");
                 writer.Write(outputTxt);
+            }
+        }
+
+        public static string GetDebugItemTempFilePath(string uri)
+        {
+            Dev2Logger.Info("");
+
+            using (var client = new WebClient { Credentials = CredentialCache.DefaultCredentials })
+            {
+                string serverLogData = client.UploadString(uri, "");
+                string value = serverLogData.Replace("<DataList><Dev2System.ManagmentServicePayload>", "").Replace("</Dev2System.ManagmentServicePayload></DataList>", "");
+                string uniqueOutputPath = GetUniqueOutputPath(".txt");
+                CreateTextFile(value, uniqueOutputPath);
+                return uniqueOutputPath;
             }
         }
 
