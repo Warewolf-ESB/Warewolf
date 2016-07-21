@@ -428,15 +428,6 @@ namespace Warewolf.Studio.Views
 
         }
 
-        public void Reset()
-        {
-            var item = _explorerView.DataContext as IExplorerViewModel;
-            if (item != null)
-            {
-                item.RefreshCommand.Execute(null);
-            }
-        }
-
         public void PerformSearch(string filter)
         {
             _explorerView.SearchTextBox.Text = filter;
@@ -444,22 +435,6 @@ namespace Warewolf.Studio.Views
             if (be != null)
             {
                 be.UpdateSource();
-            }
-        }
-
-        public void VerifyItemDoesNotExist(string path)
-        {
-            try
-            {
-                var node = VerifyItemExists(path);
-                if (node != null)
-                {
-                    throw new Exception("Item found when should not exist");
-                }
-            }
-            catch (Exception)
-            {
-                //Item not found might throw and exception
             }
         }
 

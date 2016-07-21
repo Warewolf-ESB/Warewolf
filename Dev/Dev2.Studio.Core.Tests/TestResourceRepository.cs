@@ -26,12 +26,6 @@ namespace Dev2.Studio.Core.AppResources.Repositories
         {
         }
 
-
-        public void AddMockResource(IResourceModel mockRes)
-        {
-            ResourceModels.Add(mockRes);
-        }
-
         public int LoadResourcesHitCount { get; private set; }
 
         protected override void LoadResources()

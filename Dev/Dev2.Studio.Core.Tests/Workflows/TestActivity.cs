@@ -11,7 +11,6 @@
 using System;
 using System.Activities;
 using System.Collections.Generic;
-using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.Interfaces;
 
 namespace Dev2.Core.Tests.Workflows
@@ -19,11 +18,6 @@ namespace Dev2.Core.Tests.Workflows
     public class TestActivity : Activity, IDev2Activity
     {
         public string UniqueID { get; set; }
-
-        public IList<IActionableErrorInfo> PerformValidation()
-        {
-            return null;
-        }
 
         public enFindMissingType GetFindMissingType()
         {
@@ -42,11 +36,6 @@ namespace Dev2.Core.Tests.Workflows
     public class TestDecisionActivity : Activity<bool>, IDev2Activity
     {
         public string UniqueID { get; set; }
-
-        public IList<IActionableErrorInfo> PerformValidation()
-        {
-            return null;
-        }
 
         public enFindMissingType GetFindMissingType()
         {

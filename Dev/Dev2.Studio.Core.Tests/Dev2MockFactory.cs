@@ -87,12 +87,6 @@ namespace Dev2.Core.Tests
             }
         }
 
-        static public Mock<IEnvironmentConnection> SetupIEnvironmentConnection()
-        {
-            Mock<IEnvironmentConnection> mockIEnvironmentConnection = new Mock<IEnvironmentConnection>();
-            return mockIEnvironmentConnection;
-        }
-
         static public Mock<IEnvironmentModel> SetupEnvironmentModel()
         {
             var mockEnvironmentModel = new Mock<IEnvironmentModel>();
@@ -121,19 +115,6 @@ namespace Dev2.Core.Tests
             mockEnvironmentModel.Setup(e => e.IsLocalHostCheck()).Returns(true);
             mockEnvironmentModel.Setup(e => e.IsLocalHost).Returns(true);
       
-            return mockEnvironmentModel;
-        }
-
-        static public Mock<IEnvironmentModel> SetupEnvironmentModel(Mock<IContextualResourceModel> returnResource, List<IResourceModel> returnResources, List<IResourceModel> resourceRepositoryFakeBacker)
-        {
-            var mockEnvironmentModel = new Mock<IEnvironmentModel>();
-            mockEnvironmentModel.Setup(environmentModel => environmentModel.Connect()).Verifiable();
-            mockEnvironmentModel.Setup(environmentModel => environmentModel.LoadResources()).Verifiable();
-            mockEnvironmentModel.Setup(environmentModel => environmentModel.ResourceRepository).Returns(SetupFrameworkRepositoryResourceModelMock(returnResource, returnResources, resourceRepositoryFakeBacker).Object);
-            mockEnvironmentModel.Setup(environmentModel => environmentModel.Connection.WebServerUri).Returns(new Uri(AppSettings.LocalHost));
-            mockEnvironmentModel.Setup(environmentModel => environmentModel.Connection.ServerEvents).Returns(new EventPublisher());
-            var authService = new Mock<IAuthorizationService>();
-            mockEnvironmentModel.Setup(a => a.AuthorizationService).Returns(authService.Object);
             return mockEnvironmentModel;
         }
 
@@ -183,23 +164,6 @@ namespace Dev2.Core.Tests
             mockResourceModel.Setup(resModel => resModel.ResourceType).Returns(ResourceType.WorkflowService);
             mockResourceModel.Setup(resModel => resModel.DataTags).Returns("WFI1,WFI2,WFI3");
             mockResourceModel.Setup(resModel => resModel.Environment).Returns(SetupEnvironmentModel(mockResourceModel, new List<IResourceModel>()).Object);
-
-            return mockResourceModel;
-        }
-
-        static public Mock<IContextualResourceModel> SetupResourceModelMock(ResourceType resourceType, Guid resourceID = new Guid())
-        {
-            var mockResourceModel = new Mock<IContextualResourceModel>();
-            mockResourceModel.Setup(res => res.DataList).Returns(StringResourcesTest.xmlDataList);
-            mockResourceModel.Setup(res => res.WorkflowXaml).Returns(new StringBuilder(StringResources.xmlServiceDefinition));
-            mockResourceModel.Setup(resModel => resModel.ResourceName).Returns("Test");
-            mockResourceModel.Setup(resModel => resModel.DisplayName).Returns("TestResource");
-            mockResourceModel.Setup(resModel => resModel.Category).Returns("Testing");
-            mockResourceModel.Setup(resModel => resModel.ResourceType).Returns(resourceType);
-            mockResourceModel.Setup(resModel => resModel.DataTags).Returns("WFI1,WFI2,WFI3");
-            mockResourceModel.Setup(resModel => resModel.Environment).Returns(SetupEnvironmentModel(mockResourceModel, new List<IResourceModel>()).Object);
-            mockResourceModel.Setup(resModel => resModel.ID).Returns(resourceID);
-
 
             return mockResourceModel;
         }

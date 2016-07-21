@@ -206,9 +206,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>TestResource.resx</DependentUpon>
     </Compile>
-    <Compile Include="Test utils\DataListValueInjector.cs" />
-    <Compile Include="Test utils\StopWatch.cs" />
-    <Compile Include="Test utils\WebTester\AssemblyReference.cs" />
     <Compile Include="Interfaces\ILogger.cs" />
     <Compile Include="Test utils\WebTester\Utils\AsynchronousRequest.cs" />
     <Compile Include="Test utils\WebTester\Utils\RequestState.cs" />

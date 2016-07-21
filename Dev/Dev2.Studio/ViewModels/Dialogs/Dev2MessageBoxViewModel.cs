@@ -16,7 +16,6 @@ using System.Windows;
 using System.Xml.Linq;
 using Caliburn.Micro;
 using Dev2.Studio.Core.Interfaces;
-using Dev2.ViewModels.Dialogs;
 using FontAwesome.WPF;
 using Warewolf.Studio.ViewModels;
 using Warewolf.Studio.Views;
@@ -151,47 +150,6 @@ namespace Dev2.Studio.ViewModels.Dialogs
         public string DontShowAgainKey => _dontShowAgainKey;
 
         #endregion Properties
-
-        #region Methods
-
-        public void Ok()
-        {
-            _isButtonClickedForClosed = true;
-            Result = MessageBoxResult.OK;
-            TryClose();
-        }
-
-        public void Yes()
-        {
-            _isButtonClickedForClosed = true;
-            Result = MessageBoxResult.Yes;
-            TryClose();
-        }
-
-        public void No()
-        {
-            _isButtonClickedForClosed = true;
-            Result = MessageBoxResult.No;
-            TryClose();
-        }
-
-        public void Cancel()
-        {
-            _isButtonClickedForClosed = true;
-            Result = MessageBoxResult.Cancel;
-            TryClose();
-        }
-
-        public void Closed()
-        {
-            if(!_isButtonClickedForClosed)
-            {
-                Result = MessageBoxResult.None;
-                TryClose();
-            }
-        }
-
-        #endregion
 
         #region Static Methods
 
@@ -373,26 +331,6 @@ namespace Dev2.Studio.ViewModels.Dialogs
             return Show(messageBoxText, caption, button, icon, defaultResult, dontShowAgainKey, isDependenciesButtonVisible, isError, isInfo, isQuestion);
         }
 
-        public static MessageBoxResult Show(string messageBoxText, string caption, MessageBoxButton button, MessageBoxImage icon, bool isDependenciesButtonVisible,
-            bool isError, bool isInfo, bool isQuestion)
-        {
-            // Claculate the appropriate default result
-            var defaultResult = MessageBoxResult.OK;
-            switch(button)
-            {
-                case MessageBoxButton.OK:
-                case MessageBoxButton.OKCancel:
-                    defaultResult = MessageBoxResult.OK;
-                    break;
-                case MessageBoxButton.YesNo:
-                case MessageBoxButton.YesNoCancel:
-                    defaultResult = MessageBoxResult.Yes;
-                    break;
-            }
-
-            return Show(messageBoxText, caption, button, icon, defaultResult, null, isDependenciesButtonVisible, isError, isInfo, isQuestion);
-        }
-
         public static MessageBoxResult Show(string messageBoxText, string caption, MessageBoxButton button, MessageBoxImage icon,
                                             MessageBoxResult defaultResult, string dontShowAgainKey, bool isDependenciesButtonVisible,
             bool isError, bool isInfo, bool isQuestion)
@@ -418,59 +356,6 @@ namespace Dev2.Studio.ViewModels.Dialogs
             msgBoxView.ShowDialog();
 
             return msgBoxViewModel.Result;
-        }
-
-        ///<summary>
-        ///Creates a YesNoCancel if 3 strings are passed, YesNo if 2 are passed and an Ok dialog if one is passed.
-        ///</summary>
-        public static MessageBoxResult ShowWithCustomButtons(string messageBoxText, string caption, List<string> buttons, MessageBoxImage icon,
-                                            MessageBoxResult defaultResult, string dontShowAgainKey)
-        {
-            // Check for don't show again option
-            Tuple<bool, MessageBoxResult> dontShowAgainOption = GetDontShowAgainOption(dontShowAgainKey);
-            if(dontShowAgainOption.Item1)
-            {
-                // Return the remembered option
-                return dontShowAgainOption.Item2;
-            }
-
-            // Show the message box
-            Dev2MessageBoxWithCustomButtons msg = null;
-            switch(buttons.Count)
-            {
-                case 0:
-                    msg = new Dev2MessageBoxWithCustomButtons(messageBoxText, caption, icon);
-                    break;
-                case 1:
-                    msg = new Dev2MessageBoxWithCustomButtons(messageBoxText, caption, MessageBoxButton.OK, icon)
-                    {
-                        OkButtonText = buttons[0]
-                    };
-                    break;
-                case 2:
-                    msg = new Dev2MessageBoxWithCustomButtons(messageBoxText, caption, MessageBoxButton.YesNo, icon)
-                    {
-                        YesButtonText = buttons[0],
-                        NoButtonText = buttons[1]
-                    };
-                    break;
-                case 3:
-                    msg = new Dev2MessageBoxWithCustomButtons(messageBoxText, caption, MessageBoxButton.YesNoCancel, icon)
-                    {
-                        YesButtonText = buttons[0],
-                        NoButtonText = buttons[1],
-                        CancelButtonText = buttons[2]
-                    };
-                    break;
-            }
-
-            if(msg != null)
-            {
-                msg.ShowDialog();
-
-                return msg.Result;
-            }
-            throw new ArgumentException();
         }
 
         #endregion Static Methods

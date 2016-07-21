@@ -20,6 +20,7 @@ using Dev2.Activities.Designers2.Core;
 using Dev2.Activities.Designers2.Core.Extensions;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
+using Dev2.Common.Interfaces.Core;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Validation;
@@ -192,7 +193,19 @@ namespace Dev2.Activities.Designers2.Email
 
         public void EditEmailSource()
         {
-            CustomContainer.Get<IShellViewModel>().OpenResource(SelectedEmailSource.ResourceID, CustomContainer.Get<IShellViewModel>().ActiveServer);
+            var def = new EmailServiceSourceDefinition
+            {
+                Id = SelectedEmailSource.ResourceID,
+                HostName = SelectedEmailSource.Host,
+                Password = SelectedEmailSource.Password,
+                UserName = SelectedEmailSource.UserName,
+                Port = SelectedEmailSource.Port,
+                Timeout = SelectedEmailSource.Timeout,
+                ResourceName = SelectedEmailSource.ResourceName,
+                EnableSsl = SelectedEmailSource.EnableSsl
+            };
+
+            CustomContainer.Get<IShellViewModel>().EditResource(def);
 
         }
 

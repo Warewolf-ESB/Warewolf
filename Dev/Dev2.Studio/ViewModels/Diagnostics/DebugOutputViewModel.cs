@@ -11,6 +11,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Windows;
@@ -33,6 +34,7 @@ using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.Diagnostics;
 using Dev2.ViewModels.Diagnostics;
 using Dev2.Studio.Core;
+using Dev2.Studio.Core.Helpers;
 using DelegateCommand = Dev2.Runtime.Configuration.ViewModels.Base.DelegateCommand;
 // ReSharper disable InconsistentNaming
 // ReSharper disable NonLocalizedString
@@ -56,7 +58,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         readonly IEnvironmentRepository _environmentRepository;
         readonly object _syncContext = new object();
         ObservableCollection<IDebugTreeViewItemViewModel> _rootItems;
-
+        readonly IPopupController _popup;
         private readonly IDebugOutputViewModelUtil _outputViewModelUtil;
 
         IDebugState _lastStep;
@@ -103,7 +105,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
             });
 
             SessionID = Guid.NewGuid();
-            CustomContainer.Get<IPopupController>();
+            _popup=CustomContainer.Get<IPopupController>();
             ClearSearchTextCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(() => SearchText = "");
             _outputViewModelUtil = new DebugOutputViewModelUtil(SessionID);
         }
@@ -434,6 +436,43 @@ namespace Dev2.Studio.ViewModels.Diagnostics
                 content.StateType == StateType.Message) return;
             if (content.StateType != StateType.End)
                 _lastStep = content;
+        }
+
+        //This is used in the debug view to open the more link file. This is called Dynamically so shows as unused.
+        // ReSharper disable once UnusedMember.Global
+        public void OpenMoreLink(IDebugLineItem item)
+        {
+            if (_outputViewModelUtil.IsValidLineItem(item)) return;
+
+            if (_outputViewModelUtil.IsItemMoreLinkValid(item))
+                CreatProcessController(item);
+        }
+
+        private void CreatProcessController(IDebugLineItem item)
+        {
+            try
+            {
+                var debugItemTempFilePath = FileHelper.GetDebugItemTempFilePath(item.MoreLink);
+                Dev2Logger.Debug($"Debug file path is [{debugItemTempFilePath}]");
+                Process.Start(new ProcessStartInfo(debugItemTempFilePath));
+            }
+            catch (Exception ex)
+            {
+                Dev2Logger.Error(ex);
+                ProcessControllerHasError(ex);
+            }
+        }
+
+        private void ProcessControllerHasError(Exception ex)
+        {
+            if (ex.Message.Contains("The remote name could not be resolved"))
+                _popup.Show(
+                    "Warewolf was unable to download the debug output values from the remote server. Please ensure that the remote server is accessible.",
+                    "Failed to retrieve remote debug items", MessageBoxButton.OK, MessageBoxImage.Error, "",
+                    false,
+                    true, false, false);
+            else
+                throw ex;
         }
 
         public bool CanOpenMoreLink(IDebugLineItem item)
