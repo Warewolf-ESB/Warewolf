@@ -78,7 +78,7 @@ namespace Dev2.Core.Tests.IntellisenseProvider
             CalculateIntellisenseProvider calculateIntellisenseProvider = GetCalculateProvider(false);
             IList<IntellisenseProviderResult> results = calculateIntellisenseProvider.GetIntellisenseResults(context);
 
-            Assert.AreEqual(175, results.Count);
+            Assert.AreEqual(4, results.Count);
         }
 
         [TestMethod]
@@ -124,7 +124,7 @@ namespace Dev2.Core.Tests.IntellisenseProvider
 
             CalculateIntellisenseProvider calculateIntellisenseProvider = GetCalculateProvider(false);
             IList<IntellisenseProviderResult> results = calculateIntellisenseProvider.GetIntellisenseResults(context);
-            Assert.AreEqual(0, results.Count);
+            Assert.AreEqual(175, results.Count);
         }
 
         [TestMethod]
@@ -142,7 +142,7 @@ namespace Dev2.Core.Tests.IntellisenseProvider
 
             CalculateIntellisenseProvider calculateIntellisenseProvider = GetCalculateProvider(false);
             IList<IntellisenseProviderResult> results = calculateIntellisenseProvider.GetIntellisenseResults(context);
-            Assert.AreEqual(0, results.Count);
+            Assert.AreEqual(175, results.Count);
         }
 
         [TestMethod]
@@ -160,7 +160,7 @@ namespace Dev2.Core.Tests.IntellisenseProvider
 
             CalculateIntellisenseProvider calculateIntellisenseProvider = GetCalculateProvider(false);
             IList<IntellisenseProviderResult> results = calculateIntellisenseProvider.GetIntellisenseResults(context);
-            Assert.AreEqual(0, results.Count);
+            Assert.AreEqual(4, results.Count);
         }
 
         [TestMethod]
@@ -179,10 +179,8 @@ namespace Dev2.Core.Tests.IntellisenseProvider
             CalculateIntellisenseProvider calculateIntellisenseProvider = GetCalculateProvider(true);
 
             IList<IntellisenseProviderResult> results = calculateIntellisenseProvider.GetIntellisenseResults(context);
-            Assert.AreEqual(176, results.Count);
-            IntellisenseProviderResult intellisenseProviderResult = results.Last();
-            Assert.AreEqual("Syntax Error", intellisenseProviderResult.Name);
-            Assert.AreEqual(string.Format(Warewolf.Resource.Errors.ErrorResource.CalculateIntellisenseProviderParsingMalformedErrorTest, "XXXXX"), intellisenseProviderResult.Description);
+            Assert.AreEqual(0, results.Count);
+           
         }
 
         [TestMethod]
@@ -201,9 +199,7 @@ namespace Dev2.Core.Tests.IntellisenseProvider
             CalculateIntellisenseProvider calculateIntellisenseProvider = GetCalculateProvider(true);
 
             IList<IntellisenseProviderResult> results = calculateIntellisenseProvider.GetIntellisenseResults(context);
-            Assert.AreEqual(1, results.Count);
-            Assert.AreEqual("Syntax Error", results[0].Name);
-            Assert.AreEqual(string.Format(Warewolf.Resource.Errors.ErrorResource.CalculateIntellisenseProviderParsingMalformedErrorTest, "cantbefound"), results[0].Description);
+            Assert.AreEqual(0, results.Count);
         }
 
         [TestMethod]
@@ -222,11 +218,9 @@ namespace Dev2.Core.Tests.IntellisenseProvider
             CalculateIntellisenseProvider calculateIntellisenseProvider = GetCalculateProvider(true);
 
             IList<IntellisenseProviderResult> results = calculateIntellisenseProvider.GetIntellisenseResults(context);
-            Assert.AreEqual(2, results.Count);
+            Assert.AreEqual(1, results.Count);
             Assert.AreEqual("sum", results[0].Name);
             Assert.AreEqual("Sums all the numbers given as arguments and returns the sum.", results[0].Description);
-            Assert.AreEqual("Syntax Error", results[1].Name);
-            Assert.AreEqual(string.Format(Warewolf.Resource.Errors.ErrorResource.CalculateIntellisenseProviderParsingMalformedErrorTest, "sum"), results[1].Description);
         }
 
         [TestMethod]
@@ -246,8 +240,7 @@ namespace Dev2.Core.Tests.IntellisenseProvider
 
             IList<IntellisenseProviderResult> results = calculateIntellisenseProvider.GetIntellisenseResults(context);
             Assert.AreEqual(1, results.Count);
-            Assert.AreEqual("Syntax Error", results[0].Name);
-            Assert.AreEqual(string.Format(Warewolf.Resource.Errors.ErrorResource.CalculateIntellisenseProviderParsingMalformedErrorTest, "sum"), results[0].Description);
+            Assert.AreEqual("sum", results[0].Name);
         }
 
         [TestMethod]
