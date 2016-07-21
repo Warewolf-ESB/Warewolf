@@ -19,7 +19,6 @@ using System.Windows.Media.Animation;
 using System.Xml;
 using Dev2.Common;
 using Dev2.Studio.ViewModels;
-using Dev2.Studio.ViewModels.Workflow;
 using Dev2.Views;
 using FontAwesome.WPF;
 using Infragistics.Windows.DockManager;
@@ -311,52 +310,6 @@ namespace Dev2.Studio.Views
             using (FileStream fs = new FileStream(FilePath, FileMode.Create, FileAccess.Write))
             {
                 document.Save(fs);
-            }
-        }
-
-        public void DockManager_OnPaneDragEnded_(object sender, PaneDragEndedEventArgs e)
-        {
-            var contentPane = e.Panes[0];
-            _contentPane = contentPane;
-            UpdatePane(contentPane);
-            var windows = System.Windows.Application.Current.Windows;
-            foreach (var window in windows)
-            {
-                var actuallWindow = window as Window;
-                if (actuallWindow != null)
-                {
-                    var windowType = actuallWindow.GetType();
-                    if (windowType.FullName == "Infragistics.Windows.Controls.ToolWindowHostWindow")
-                    {
-                        actuallWindow.Activated -= ActuallWindowOnActivated;
-                        actuallWindow.Activated += ActuallWindowOnActivated;
-                    }
-                }
-            }
-        }
-
-        public void UpdatePane(ContentPane contentPane)
-        {
-            if (contentPane == null)
-                throw new ArgumentNullException("contentPane");
-
-            WorkflowDesignerViewModel workflowDesignerViewModel = contentPane.TabHeader as WorkflowDesignerViewModel;
-            if (workflowDesignerViewModel != null && contentPane.ContentVisibility == Visibility.Visible)
-            {
-                contentPane.CloseButtonVisibility = Visibility.Visible;
-            }
-        }
-
-        void ActuallWindowOnActivated(object sender, EventArgs eventArgs)
-        {
-            MainViewModel mainViewModel = DataContext as MainViewModel;
-            if (mainViewModel != null && _contentPane != null)
-            {
-                WorkflowDesignerViewModel workflowDesignerViewModel = _contentPane.TabHeader as WorkflowDesignerViewModel;
-                if (workflowDesignerViewModel != null && _contentPane.ContentVisibility == Visibility.Visible)
-                {
-                    mainViewModel.AddWorkSurfaceContext(workflowDesignerViewModel.ResourceModel);
-                }
             }
         }
 
