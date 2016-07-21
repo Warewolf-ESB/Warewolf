@@ -402,12 +402,6 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             Load();
         }
 
-        public async Task<bool> ForceLoadAsync()
-        {
-            IsLoaded = false;
-            return await LoadAsync();
-        }
-
         void HandleDeleteResourceError(ExecuteMessage data, IResourceModel model)
         {
             if (data.HasError)
