@@ -136,16 +136,6 @@ namespace Dev2.Core.Tests.ProperMoqs
         {
         }
 
-        public MessageBoxResult ShowItemCloseCloseConfirmation(string nameOfItem)
-        {
-            return MessageBoxResult.None;
-        }
-
-        public MessageBoxResult ShowItemSourceCloseConfirmation(string nameOfItem)
-        {
-            return MessageBoxResult.None;
-        }
-
         public MessageBoxResult ShowDeployNameConflict(string message)
         {
             return MessageBoxResult.None;
@@ -157,11 +147,6 @@ namespace Dev2.Core.Tests.ProperMoqs
         }
 
         public MessageBoxResult ShowDeleteVersionMessage(string displayName)
-        {
-            return MessageBoxResult.None;
-        }
-
-        public MessageBoxResult ShowRollbackVersionMessage(string displayName)
         {
             return MessageBoxResult.None;
         }

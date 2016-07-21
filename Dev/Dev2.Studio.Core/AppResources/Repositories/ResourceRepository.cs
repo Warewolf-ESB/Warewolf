@@ -96,22 +96,6 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             }
         }
 
-        async Task<bool> LoadAsync()
-        {
-            try
-            {
-                ResourceModels.Clear();
-                await LoadResourcesAsync();
-                IsLoaded = true;
-            }
-            catch
-            {
-                IsLoaded = false;
-                return false;
-            }
-            return true;
-        }
-
         public void UpdateWorkspace()
         {
             IsLoaded = false;
@@ -400,12 +384,6 @@ namespace Dev2.Studio.Core.AppResources.Repositories
         {
             IsLoaded = false;
             Load();
-        }
-
-        public async Task<bool> ForceLoadAsync()
-        {
-            IsLoaded = false;
-            return await LoadAsync();
         }
 
         void HandleDeleteResourceError(ExecuteMessage data, IResourceModel model)

@@ -41,7 +41,6 @@ NOTE: CoInitialize(Ex) must be called before you use any of the functions and in
 */
 
 using System;
-using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Text;
 
@@ -344,24 +343,6 @@ namespace Dev2.Common.Reflection
         #region GAC Resolution Handling
 
         private static GACAssemblyName[] _gacNameCache = new GACAssemblyName[0];
-
-        /// <summary>
-        ///     Gets the GAC assemblies.
-        /// </summary>
-        /// <param name="name">The name.</param>
-        /// <returns></returns>
-        private static GACAssemblyName[] GetGACAssemblies(string name)
-        {
-            if (name.EndsWith(".dll", StringComparison.OrdinalIgnoreCase)) name = name.Remove(name.Length - 4);
-
-            List<GACAssemblyName> result = null;
-
-            foreach (GACAssemblyName current in _gacNameCache)
-                if (string.Equals(current.Name, name, StringComparison.OrdinalIgnoreCase))
-                    (result ?? (result = new List<GACAssemblyName>())).Add(current);
-
-            return result?.ToArray() ?? GACAssemblyName.EmptyNames;
-        }
 
         #endregion GAC Resolution Handling
     }

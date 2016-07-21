@@ -271,15 +271,6 @@ namespace Warewolf.Studio.ViewModels
             }
         }
         // ReSharper disable once ParameterTypeCanBeEnumerable.Local
-        IDllListingModel ExpandChild(string dir, ObservableCollection<IDllListingModel> children)
-        {
-            var dllListingModel = children.FirstOrDefault(model => model.Name.StartsWith(dir));
-            if(dllListingModel != null)
-            {
-                dllListingModel.IsExpanded = true;
-            }
-            return dllListingModel;
-        }
 
         public IDllListingModel SelectedDll
         {
@@ -461,6 +452,16 @@ namespace Warewolf.Studio.ViewModels
                 OnPropertyChanged(() => HeaderText);
                 OnPropertyChanged(() => Header);
             }
+        }
+
+        IDllListingModel ExpandChild(string dir, ObservableCollection<IDllListingModel> children)
+        {
+            var dllListingModel = children.FirstOrDefault(model => model.Name.StartsWith(dir));
+            if (dllListingModel != null)
+            {
+                dllListingModel.IsExpanded = true;
+            }
+            return dllListingModel;
         }
 
         protected override void OnDispose()

@@ -33,7 +33,7 @@ namespace Dev2.Studio.Core.Interfaces
         ExecuteMessage DeleteResource(IResourceModel resource);
         void Add(IResourceModel resource);
         void ForceLoad();
-        Task<bool> ForceLoadAsync();
+
         bool IsLoaded { get; }
         bool DoesResourceExistInRepo(IResourceModel resource);
         ExecuteMessage SaveToServer(IResourceModel instanceObj);

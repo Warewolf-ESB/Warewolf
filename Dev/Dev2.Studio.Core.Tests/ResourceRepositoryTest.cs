@@ -2008,38 +2008,6 @@ namespace BusinessDesignStudio.Unit.Tests
         }
 
         /// <summary>
-        /// Builds the collection resource object.
-        /// </summary>
-        /// <param name="names">The names.</param>
-        /// <param name="typeOf">The type of.</param>
-        /// <returns></returns>
-        private string BuildResourceObjectFromNames(string[] names, string typeOf)
-        {
-            List<SerializableResource> theResources = new List<SerializableResource>();
-
-            int cnt = names.Length;
-            for (int i = 0; i < cnt; i++)
-            {
-                SerializableResource sr = new SerializableResource
-                {
-                    ResourceCategory = "Test Category",
-                    DataList = "",
-                    Errors = new List<ErrorInfo>(),
-                    IsValid = true,
-                    ResourceID = Guid.NewGuid(),
-                    ResourceName = names[i],
-                    ResourceType = typeOf
-                };
-
-                theResources.Add(sr);
-            }
-
-            var serviceObj = JsonConvert.SerializeObject(theResources);
-
-            return serviceObj;
-        }
-
-        /// <summary>
         /// Builds the resource object.
         /// </summary>
         /// <param name="ids">The ids.</param>
@@ -2308,13 +2276,6 @@ namespace BusinessDesignStudio.Unit.Tests
             var connection = new Mock<IEnvironmentConnection>();
             connection.Setup(e => e.ServerEvents).Returns(new EventPublisher());
             return connection;
-        }
-
-        static ExecuteMessage MakeMsg(string msg)
-        {
-            var result = new ExecuteMessage { HasError = false };
-            result.SetMessage(msg);
-            return result;
         }
 
         static CompressedExecuteMessage MakeCompressedMsg(string msg)

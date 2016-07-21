@@ -20,9 +20,11 @@ namespace Warewolf.UITests.Tools.Data
             Uimap.Click_Assign_Tool_Large_View_Done_Button();
             Uimap.Open_Assign_Tool_Qvi_Large_View();
             Uimap.Click_Save_Ribbon_Button_to_Open_Save_Dialog();
+            Uimap.WaitForSpinner(Uimap.SaveDialogWindow.ExplorerView.ExplorerTree.localhost.Checkbox.Spinner);
             Uimap.Enter_Servicename_As_SomeWorkflow();
             Uimap.Click_SaveDialog_YesButton();
             Uimap.Enter_SomeWorkflow_Into_Explorer_Filter();
+            Uimap.WaitForSpinner(Uimap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);
 
             /**TODO: Re-introduce these units before WOLF-1923 can be moved to done.
             Uimap.Click_Debug_Ribbon_Button();
@@ -48,16 +50,8 @@ namespace Warewolf.UITests.Tools.Data
         [TestCleanup]
         public void MyTestCleanup()
         {
-            //Action Unit: Try close any hanging save dialogs
-            if (Uimap.SaveDialogWindow.CancelButton.Exists)
-            {
-                Uimap.Click_SaveDialog_CancelButton();
-            }
-            Uimap.RightClick_Explorer_Localhost_First_Item();
-            Uimap.Select_Delete_FromExplorerContextMenu();
-            Uimap.Click_MessageBox_Yes();
-            Uimap.Enter_SomeWorkflow_Into_Explorer_FilterParams.FirstItemExists = false;
-            Uimap.Enter_SomeWorkflow_Into_Explorer_Filter();
+            Uimap.TryCloseHangingSaveDialog();
+            Uimap.TryRemoveSomeWorkflowFromExplorer();
         }
         
         public TestContext TestContext

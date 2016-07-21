@@ -18,8 +18,6 @@ using Dev2.DynamicServices.Objects;
 using Dev2.Interfaces;
 using Dev2.Runtime.ESB.Execution;
 using Dev2.Runtime.Hosting;
-using Dev2.Runtime.ServiceModel.Data;
-using Dev2.Services.Execution;
 using Dev2.Tests.Runtime.XML;
 using Dev2.Workspaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -203,30 +201,6 @@ namespace Dev2.Tests.Runtime.ESB
             errors.AddError("Error 3");
             errors.AddError("Faulty Things Happened");
             return DataObject.DataListID;
-        }
-
-        #endregion
-    }
-
-    internal class WebServiceContainerMockWithError : WebServiceContainer
-    {
-        public WebServiceContainerMockWithError(ServiceAction sa, IDSFDataObject dsfDataObject, IWorkspace workspace, IEsbChannel esbChannel)
-            : base(sa, dsfDataObject, workspace, esbChannel)
-        {
-        }
-
-        public WebServiceContainerMockWithError(IServiceExecution serviceExecution)
-            : base(serviceExecution)
-        {
-        }
-
-        public string WebRequestRespsonse { get; set; }
-
-        #region Overrides of WebServiceContainerMock
-
-        protected void ExecuteWebRequest(WebService service, out ErrorResultTO errors)
-        {
-            throw new Exception("Cannot Execute Web Request");
         }
 
         #endregion
