@@ -33,7 +33,6 @@ using Dev2.Studio.Core.DataList;
 using Dev2.Studio.Core.Factories;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Interfaces.DataList;
-using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.Models.DataList;
 using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.Core.Views;
@@ -330,7 +329,6 @@ namespace Dev2.Studio.ViewModels.DataList
                     _partIsUsed.SetComplexObjectSetPartIsUsed(part, isUsed);
                 }
             }
-            EventPublisher.Publish(new UpdateIntellisenseMessage());
         }
 
         public void RemoveUnusedDataListItems()
@@ -340,7 +338,6 @@ namespace Dev2.Studio.ViewModels.DataList
             _complexObjectHandler.RemoveUnusedComplexObjects();
 
             WriteToResourceModel();
-            EventPublisher.Publish(new UpdateIntellisenseMessage());
             FindUnusedAndMissingCommand.RaiseCanExecuteChanged();
             ViewComplexObjectsCommand.RaiseCanExecuteChanged();
             DeleteCommand.RaiseCanExecuteChanged();
@@ -397,7 +394,6 @@ namespace Dev2.Studio.ViewModels.DataList
             Provider.VariableList = new ObservableCollection<string>(items);
 
             WriteToResourceModel();
-            EventPublisher.Publish(new UpdateIntellisenseMessage());
         }
 
         #endregion Add/Remove Missing Methods

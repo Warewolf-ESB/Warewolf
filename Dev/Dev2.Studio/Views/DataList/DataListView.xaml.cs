@@ -16,7 +16,6 @@ using Caliburn.Micro;
 using Dev2.Common.Interfaces;
 using Dev2.Services.Events;
 using Dev2.Studio.Core.Interfaces.DataList;
-using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.Models.DataList;
 using Dev2.Studio.ViewModels.WorkSurface;
 using Infragistics.Windows.DataPresenter;
@@ -134,7 +133,6 @@ namespace Dev2.Studio.Views.DataList
             if(vm != null)
             {
                 vm.WriteToResourceModel();
-                _eventPublisher.Publish(new UpdateIntellisenseMessage());
             }
         }
 
