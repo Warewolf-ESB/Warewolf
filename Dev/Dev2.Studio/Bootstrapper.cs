@@ -17,7 +17,6 @@ using System.Reflection;
 using System.Windows;
 using Caliburn.Micro;
 using Dev2.Common.Interfaces;
-using Dev2.Common.Interfaces.Studio;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Diagnostics;
 using Dev2.Interfaces;
@@ -28,7 +27,6 @@ using Dev2.Studio.Controller;
 using Dev2.Studio.Core.Helpers;
 using Dev2.Studio.Core.Services;
 using Dev2.Studio.Core.Services.System;
-using Dev2.Studio.Factory;
 using Dev2.Studio.ViewModels;
 using Dev2.Threading;
 
@@ -74,7 +72,6 @@ namespace Dev2
             CustomContainer.Register<IMainViewModel>(mainViewModel);
             CustomContainer.Register<IShellViewModel>(mainViewModel);
             CustomContainer.Register<IWindowsServiceManager>(new WindowsServiceManager());
-            CustomContainer.Register<IDialogViewModelFactory>(new DialogViewModelFactory());
             var conn = new ServerProxy("http://localHost:3142",CredentialCache.DefaultNetworkCredentials, new AsyncWorker());
             conn.Connect(Guid.NewGuid());
             CustomContainer.Register<Microsoft.Practices.Prism.PubSubEvents.IEventAggregator>(new Microsoft.Practices.Prism.PubSubEvents.EventAggregator());

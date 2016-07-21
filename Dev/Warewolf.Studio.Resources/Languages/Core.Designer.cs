@@ -2960,15 +2960,6 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to You can pass variables into your workflow{0}by selecting the Input checkbox{0}in the Variables window..
-        /// </summary>
-        public static string InputVariablesTip {
-            get {
-                return ResourceManager.GetString("InputVariablesTip", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to &quot;Invalid text&quot;.
         /// </summary>
         public static string InvalidPermissionHeader {
@@ -6128,6 +6119,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Your script might contain values like &apos;\t&apos; or &apos;\n&apos; etc which are Escape Sequences. Tick this Box if you want to ignore this or leave it unticked if you want to use them as Escape Sequences..
+        /// </summary>
+        public static string ScriptingHelpEscapeScript {
+            get {
+                return ResourceManager.GetString("ScriptingHelpEscapeScript", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to What type of scripting language do you want to use?	Allowed:	na.
         /// </summary>
         public static string ScriptingHelpLanguageType {
@@ -6151,6 +6151,15 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string ScriptingHelpScript {
             get {
                 return ResourceManager.GetString("ScriptingHelpScript", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Check this box if you want to ignore Escape Sequences (&apos;\t&apos;, &apos;\n&apos; etc)..
+        /// </summary>
+        public static string ScriptingToolTipEscapeScript {
+            get {
+                return ResourceManager.GetString("ScriptingToolTipEscapeScript", resourceCulture);
             }
         }
         
@@ -7879,6 +7888,24 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string UserNameToolTip {
             get {
                 return ResourceManager.GetString("UserNameToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You can pass variables into your workflow{0}by selecting the Input checkbox{0}in the Variables window..
+        /// </summary>
+        public static string VariablesInput_Information {
+            get {
+                return ResourceManager.GetString("VariablesInput_Information", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Did you know?.
+        /// </summary>
+        public static string VariablesInput_Information_Title {
+            get {
+                return ResourceManager.GetString("VariablesInput_Information_Title", resourceCulture);
             }
         }
         

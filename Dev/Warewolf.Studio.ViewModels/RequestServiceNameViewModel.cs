@@ -46,7 +46,7 @@ namespace Warewolf.Studio.ViewModels
             _selectedPath = selectedPath;
             _header = header;
           
-            OkCommand = new DelegateCommand(SetServiceName, () => String.IsNullOrEmpty(ErrorMessage) && HasLoaded);
+            OkCommand = new DelegateCommand(SetServiceName, () => string.IsNullOrEmpty(ErrorMessage) && HasLoaded);
             CancelCommand = new DelegateCommand(CloseView);
             Name = "";
             environmentViewModel.CanShowServerVersion = false;
@@ -80,7 +80,7 @@ namespace Warewolf.Studio.ViewModels
         {
             if (environmentViewModel == null)
         {
-                throw new ArgumentNullException("environmentViewModel");
+                throw new ArgumentNullException(nameof(environmentViewModel));
             }
             var ret = new RequestServiceNameViewModel();
             return ret.InitializeAsync(environmentViewModel, selectedPath, header);
@@ -142,10 +142,7 @@ namespace Warewolf.Studio.ViewModels
         private void RaiseCanExecuteChanged()
         {
             var command = OkCommand as DelegateCommand;
-            if (command != null)
-            {
-                command.RaiseCanExecuteChanged();
-            }
+            command?.RaiseCanExecuteChanged();
         }
 
         public MessageBoxResult ShowSaveDialog()
@@ -197,7 +194,7 @@ namespace Warewolf.Studio.ViewModels
 
         void ValidateName()
         {
-            if (String.IsNullOrEmpty(Name))
+            if (string.IsNullOrEmpty(Name))
             {
                 ErrorMessage = string.Format(ErrorResource.CannotBeNull, "'Name'");
             }
@@ -262,14 +259,8 @@ namespace Warewolf.Studio.ViewModels
 
         public void Dispose()
         {
-            if(SingleEnvironmentExplorerViewModel != null)
-            {
-                SingleEnvironmentExplorerViewModel.Dispose();
-            }
-            if(_environmentViewModel != null)
-            {
-                _environmentViewModel.Dispose();
-            }
+            SingleEnvironmentExplorerViewModel?.Dispose();
+            _environmentViewModel?.Dispose();
         }
     }
 }

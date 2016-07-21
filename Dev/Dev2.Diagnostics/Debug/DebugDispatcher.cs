@@ -69,7 +69,6 @@ namespace Dev2.Diagnostics.Debug
         #endregion
 
         #region Add
-
         /// <summary>
         /// Adds the specified writer to the dispatcher.
         /// </summary>
@@ -77,7 +76,7 @@ namespace Dev2.Diagnostics.Debug
         /// <param name="writer">The writer to be added.</param>
         public void Add(Guid workspaceId, IDebugWriter writer)
         {
-            if(writer == null || _shutdownRequested)
+            if (writer == null || _shutdownRequested)
             {
                 return;
             }

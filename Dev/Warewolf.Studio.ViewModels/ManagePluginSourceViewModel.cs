@@ -103,10 +103,7 @@ namespace Warewolf.Studio.ViewModels
                     {
                         GacItem = DllListings[1];
                     }
-                    if (actionToPerform != null)
-                    {
-                        actionToPerform();
-                    }
+                    actionToPerform?.Invoke();
                 });
             }, () =>
             {
@@ -358,10 +355,7 @@ namespace Warewolf.Studio.ViewModels
         public override void UpdateHelpDescriptor(string helpText)
         {
             var mainViewModel = CustomContainer.Get<IMainViewModel>();
-            if (mainViewModel != null)
-            {
-                mainViewModel.HelpViewModel.UpdateHelpText(helpText);
-            }
+            mainViewModel?.HelpViewModel.UpdateHelpText(helpText);
         }
 
         public string ResourceName
@@ -482,8 +476,7 @@ namespace Warewolf.Studio.ViewModels
 
         protected override void OnDispose()
         {
-            if (RequestServiceNameViewModel != null) 
-                RequestServiceNameViewModel.Dispose();
+            RequestServiceNameViewModel?.Dispose();
             Dispose(true);
         }
 

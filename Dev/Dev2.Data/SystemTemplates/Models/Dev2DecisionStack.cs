@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using Dev2.Common;
@@ -56,6 +57,7 @@ namespace Dev2.Data.SystemTemplates.Models
             return result;
         }
 
+        [SuppressMessage("ReSharper", "UnusedMember.Global")]
         public void AddModelItem(Dev2Decision item)
         {
             TheStack.Add(item);

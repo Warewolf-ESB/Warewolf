@@ -41,11 +41,10 @@ namespace Dev2.Common.Interfaces.Studio.Controller
         MessageBoxResult ShowDeployResourceNameConflict(string conflictResourceName);
         MessageBoxResult ShowSettingsCloseConfirmation();
         MessageBoxResult ShowSchedulerCloseConfirmation();
-        MessageBoxResult ShowNoInputsSelectedWhenClickLink();
+
         MessageBoxResult ShowSaveErrorDialog(string errorMessage);
         MessageBoxResult ShowConnectionTimeoutConfirmation(string serverName);
         MessageBoxResult ShowDeleteVersionMessage(string displayName);
-        MessageBoxResult ShowRollbackVersionMessage(string displayName);
 
         void ShowInvalidCharacterMessage(string invalidText);
 
@@ -56,5 +55,7 @@ namespace Dev2.Common.Interfaces.Studio.Controller
         MessageBoxResult ShowServerNotConnected(string server);
         IPopupMessage GetDeleteConfirmation(string nameOfItemBeingDeleted);
         IPopupMessage GetDuplicateMessage(string name);
+
+        MessageBoxResult ShowNoInputsSelectedWhenClickLink();
     }
 }

@@ -76,6 +76,21 @@ namespace Dev2.Studio.Controller
             return Show();
         }
 
+        public MessageBoxResult ShowNoInputsSelectedWhenClickLink()
+        {         
+            Header = Warewolf.Studio.Resources.Languages.Core.VariablesInput_Information_Title;
+            var description = string.Format(Warewolf.Studio.Resources.Languages.Core.VariablesInput_Information, Environment.NewLine);
+            Description = description;
+            Buttons = MessageBoxButton.OK;
+            ImageType = MessageBoxImage.Information;
+            DontShowAgainKey = GlobalConstants.Dev2MessageBoxNoInputsWhenHyperlinkClickedDialog;
+            IsDependenciesButtonVisible = false;
+            IsInfo = true;
+            IsError = false;
+            IsQuestion = false;
+            return Show();
+        }
+
         public MessageBoxResult ShowServerNotConnected(string server)
         {
             Buttons = MessageBoxButton.OK;
@@ -309,22 +324,6 @@ namespace Dev2.Studio.Controller
             return Show();
         }
 
-        public MessageBoxResult ShowNoInputsSelectedWhenClickLink()
-        {
-            Header = "Did you know?";
-            var description = "You can pass variables into your workflow" + Environment.NewLine
-                              + "by selecting the Input checkbox" + Environment.NewLine +
-                              "in the Variables window.";
-            Description = description;
-            Buttons = MessageBoxButton.OK;
-            ImageType = MessageBoxImage.Information;
-            DontShowAgainKey = GlobalConstants.Dev2MessageBoxNoInputsWhenHyperlinkClickedDialog;
-            IsDependenciesButtonVisible = false;
-            IsInfo = true;
-            IsError = false;
-            IsQuestion = false;
-            return Show();
-        }
 
         public MessageBoxResult ShowSaveErrorDialog(string errorMessage)
         {

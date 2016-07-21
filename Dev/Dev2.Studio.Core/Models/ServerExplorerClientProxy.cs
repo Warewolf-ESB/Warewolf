@@ -18,7 +18,7 @@ using Dev2.Studio.Core.Interfaces;
 
 namespace Dev2.Models
 {
-    public class ServerExplorerClientProxy : IClientExplorerResourceRepository
+    public class ServerExplorerClientProxy : IExplorerResourceRepository
     {
         public ICommunicationControllerFactory CommunicationControllerFactory { get; private set; }
         private readonly IEnvironmentConnection _connection;

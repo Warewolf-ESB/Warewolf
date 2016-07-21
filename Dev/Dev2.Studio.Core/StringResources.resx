@@ -169,12 +169,6 @@ Software development by: www.dev2.co.za
   <data name="NewWorkflowBaseName" xml:space="preserve">
     <value>Unsaved</value>
   </data>
-  <data name="VariablesInput_Information_Title" xml:space="preserve">
-    <value>Did you know?</value>
-  </data>
-  <data name="VariablesInput_Information" xml:space="preserve">
-    <value>You can pass variables into your workflow by selecting the Input checkbox in the Variables window.</value>
-  </data>
   <data name="DataInput_Error_Title" xml:space="preserve">
     <value>Did you know?</value>
   </data>

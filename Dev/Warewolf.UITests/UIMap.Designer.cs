@@ -118,20 +118,16 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
-        /// Click_Close_Server_Source_Wizard_Tab_Button - Use 'Click_Close_Server_Source_Wizard_Tab_ButtonParams' to pass parameters into this method.
+        /// Click_Close_Server_Source_Wizard_Tab_Button
         /// </summary>
         public void Click_Close_Server_Source_Wizard_Tab_Button()
         {
             #region Variable Declarations
             WpfButton tabCloseButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.ServerSourceWizardTab.TabCloseButton;
-            WpfWindow messageBoxWindow = this.MessageBoxWindow;
             #endregion
 
             // Click '' button
             Mouse.Click(tabCloseButton, new Point(5, 5));
-
-            // Verify that the 'Exists' property of 'WarewolfMessageBox' window equals 'False'
-            Assert.AreEqual(this.Click_Close_Server_Source_Wizard_Tab_ButtonParams.MessageBoxWindowExists, messageBoxWindow.Exists, "Message box does exist");
         }
         
         /// <summary>
@@ -190,24 +186,16 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
-        /// Click_Connect_Control_InExplorer - Use 'Click_Connect_Control_InExplorerParams' to pass parameters into this method.
+        /// Click_Connect_Control_InExplorer
         /// </summary>
         public void Click_Connect_Control_InExplorer()
         {
             #region Variable Declarations
             WpfButton serverListComboBox = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.ServerListComboBox;
-            WpfCustom newRemoteServerListItem = this.MainStudioWindow.NewRemoteServerListItem;
-            WpfText comboboxListItemAsTSTCIREMOTE = this.MainStudioWindow.ComboboxListItemAsTSTCIREMOTE;
             #endregion
 
             // Click 'ToggleButton' button
             Mouse.Click(serverListComboBox, new Point(217, 8));
-
-            // Verify that the 'Exists' property of 'New Remote Server...' custom control equals 'True'
-            Assert.AreEqual(this.Click_Connect_Control_InExplorerParams.NewRemoteServerListItemExists, newRemoteServerListItem.Exists, "New Remote Server... does not exist in explorer remote server drop down list");
-
-            // Verify that the 'Exists' property of 'TSTCIREMOTE' label equals 'True'
-            Assert.AreEqual(this.Click_Connect_Control_InExplorerParams.ComboboxListItemAsTSTCIREMOTEExists, comboboxListItemAsTSTCIREMOTE.Exists, "TSTCIREMOTE does not exist in explorer remote server drop down list");
         }
         
         /// <summary>
@@ -223,9 +211,7 @@ namespace Warewolf.UITests
             WpfCheckBox rememberDebugInputCheckBox = this.MainStudioWindow.DebugInputDialog.RememberDebugInputCheckBox;
             WpfButton viewInBrowserF7Button = this.MainStudioWindow.DebugInputDialog.ViewInBrowserF7Button;
             WpfTable dataListInputsTable = this.MainStudioWindow.DebugInputDialog.UITabItemsTabList.InputDataTab.DataListInputsTable;
-            WpfText uIRec1setText = this.MainStudioWindow.DebugInputDialog.UITabItemsTabList.InputDataTab.DataListInputsTable.UIDescriptionCell.UIRec1setText;
             WpfTabPage xMLTab = this.MainStudioWindow.DebugInputDialog.UITabItemsTabList.XMLTab;
-            WpfCustom xMLWindow = this.MainStudioWindow.DebugInputDialog.UITabItemsTabList.XMLTab.XMLWindow;
             WpfTabPage jSONTab = this.MainStudioWindow.DebugInputDialog.UITabItemsTabList.JSONTab;
             WpfCustom jSONWindow = this.MainStudioWindow.DebugInputDialog.UITabItemsTabList.JSONTab.JSONWindow;
             #endregion
@@ -254,14 +240,8 @@ namespace Warewolf.UITests
             // Verify that the 'Exists' property of 'DataListInputs' table equals 'True'
             Assert.AreEqual(this.Click_Debug_Ribbon_ButtonParams.DataListInputsTableExists, dataListInputsTable.Exists, "Input Data Window does not exist in Debug Input window");
 
-            // Verify that the 'Exists' property of 'rec(1).set' label equals 'True'
-            Assert.AreEqual(this.Click_Debug_Ribbon_ButtonParams.UIRec1setTextExists, uIRec1setText.Exists, "First Field name does not exist in the Input Data window");
-
             // Verify that the 'Exists' property of 'XML' tab equals 'True'
             Assert.AreEqual(this.Click_Debug_Ribbon_ButtonParams.XMLTabExists, xMLTab.Exists, "Xml tab does not Exist in the Debug Input window");
-
-            // Verify that the 'Exists' property of 'UI_XMLEditor_AutoID' custom control equals 'True'
-            Assert.AreEqual(this.Click_Debug_Ribbon_ButtonParams.XMLWindowExists, xMLWindow.Exists, "Debug Input Xml window does not exist ");
 
             // Verify that the 'Exists' property of 'JSON' tab equals 'True'
             Assert.AreEqual(this.Click_Debug_Ribbon_ButtonParams.JSONTabExists, jSONTab.Exists, "Assert Json tab does not exist in the debug input window");
@@ -634,7 +614,10 @@ namespace Warewolf.UITests
 
             // Wait for 1 seconds for user delay between actions; Verify that the 'Exists' property of 'StartNode' custom control equals 'True'
             Playback.Wait(1000);
-            Assert.AreEqual(this.Click_New_Workflow_Ribbon_ButtonParams.StartNodeExists, startNode.Exists, "Start Node Does Not Exist.");
+            Assert.AreEqual(this.Click_New_Workflow_Ribbon_ButtonParams.StartNodeExists, startNode.Exists, "StartNode Does Not Exist.");
+
+            // Verify that the 'Exists' property of 'StartNode' custom control equals 'True'
+            Assert.AreEqual(this.Click_New_Workflow_Ribbon_ButtonParams.StartNodeExists1, startNode.Exists, "Start Node Does Not Exist.");
 
             // Verify that the 'Exists' property of 'SearchTextBox' text box equals 'True'
             Assert.AreEqual(this.Click_New_Workflow_Ribbon_ButtonParams.SearchTextBoxExists, searchTextBox.Exists, "Toolbox filter textbox does not exist");
@@ -1063,8 +1046,8 @@ namespace Warewolf.UITests
             // Click 'Test Connection' button
             Mouse.Click(testConnectionButton, new Point(51, 8));
 
-            // Wait for 2 seconds for user delay between actions; Verify that the 'Enabled' property of 'Save this tab' button equals 'True'
-            Playback.Wait(2000);
+            // Wait for 3 seconds for user delay between actions; Verify that the 'Enabled' property of 'Save this tab' button equals 'True'
+            Playback.Wait(3000);
             Assert.AreEqual(this.Click_Server_Source_Wizard_Test_Connection_ButtonParams.SaveButtonEnabled, saveButton.Enabled, "Save ribbon button is not enabled");
         }
         
@@ -1235,7 +1218,7 @@ namespace Warewolf.UITests
         {
             #region Variable Declarations
             WpfMenuItem showDependencies = this.MainStudioWindow.ExplorerContextMenu.ShowDependencies;
-            WpfRadioButton showwhatasdfdependsonRadioButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DependencyGraphTab.WorksurfaceContext.DependencyView.ScrollViewer.ShowwhatasdfdependsonRadioButton;
+            WpfRadioButton showwhatdependsonthisRadioButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DependencyGraphTab.WorksurfaceContext.DependencyView.ScrollViewer.ShowwhatdependsonthisRadioButton;
             WpfEdit textbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DependencyGraphTab.WorksurfaceContext.DependencyView.ScrollViewer.NestingLevelsText.Textbox;
             WpfButton refreshButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DependencyGraphTab.WorksurfaceContext.DependencyView.ScrollViewer.RefreshButton;
             WpfText text = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DependencyGraphTab.WorksurfaceContext.DependencyView.ScrollViewer.Node1.Text;
@@ -1244,8 +1227,8 @@ namespace Warewolf.UITests
             // Click 'Show Dependencies' menu item
             Mouse.Click(showDependencies, new Point(50, 15));
 
-            // Verify that the 'Selected' property of 'Show what this depends on' radio button equals 'True'
-            Assert.AreEqual(this.Click_Show_Dependencies_In_Explorer_Context_MenuParams.ShowwhatasdfdependsonRadioButtonSelected, showwhatasdfdependsonRadioButton.Selected, "Dependency graph show dependencies radio button is not selected.");
+            // Verify that the 'Selected' property of 'Show what depends on this' radio button equals 'True'
+            Assert.AreEqual(this.Click_Show_Dependencies_In_Explorer_Context_MenuParams.ShowwhatdependsonthisRadioButtonSelected, showwhatdependsonthisRadioButton.Selected, "Dependency graph show dependencies radio button is not selected.");
 
             // Verify that the 'Exists' property of first text box next to 'Nesting Levels' label equals 'True'
             Assert.AreEqual(this.Click_Show_Dependencies_In_Explorer_Context_MenuParams.TextboxExists, textbox.Exists, "Dependency graph nesting levels textbox does not exist.");
@@ -1437,30 +1420,6 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
-        /// Drag_Explorer_First_Remote_Server_First_Item_Onto_Workflow_Design_Surface - Use 'Drag_Explorer_First_Remote_Server_First_Item_Onto_Workflow_Design_SurfaceParams' to pass parameters into this method.
-        /// </summary>
-        public void Drag_Explorer_First_Remote_Server_First_Item_Onto_Workflow_Design_Surface()
-        {
-            #region Variable Declarations
-            WpfTreeItem firstItem = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.FirstItem;
-            WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
-            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
-            WpfCustom subWorkflow = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SubWorkflow;
-            #endregion
-
-            // Move 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item to 'Flowchart' custom control
-            flowchart.EnsureClickable(new Point(307, 128));
-            Mouse.StartDragging(firstItem, new Point(32, 5));
-            Mouse.StopDragging(flowchart, new Point(307, 128));
-
-            // Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
-            Assert.AreEqual(this.Drag_Explorer_First_Remote_Server_First_Item_Onto_Workflow_Design_SurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
-
-            // Verify that the 'Exists' property of 'DsfActivity' custom control equals 'True'
-            Assert.AreEqual(this.Drag_Explorer_First_Remote_Server_First_Item_Onto_Workflow_Design_SurfaceParams.SubWorkflowExists, subWorkflow.Exists, "Workflow on the design surface does not exist");
-        }
-        
-        /// <summary>
         /// Drag_Explorer_Localhost_First_Item_Onto_Workflow_Design_Surface - Use 'Drag_Explorer_Localhost_First_Item_Onto_Workflow_Design_SurfaceParams' to pass parameters into this method.
         /// </summary>
         public void Drag_Explorer_Localhost_First_Item_Onto_Workflow_Design_Surface()
@@ -1471,9 +1430,15 @@ namespace Warewolf.UITests
             WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
             #endregion
 
+            // Verify that the 'Exists' property of 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item equals 'True'
+            Assert.AreEqual(this.Drag_Explorer_Localhost_First_Item_Onto_Workflow_Design_SurfaceParams.FirstItemExists, firstItem.Exists, "No items to drag found in the explorer tree.");
+
+            // Click 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item
+            Mouse.Click(firstItem, new Point(64, 5));
+
             // Move 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item to 'Flowchart' custom control
             flowchart.EnsureClickable(new Point(307, 128));
-            Mouse.StartDragging(firstItem, new Point(16, 5));
+            Mouse.StartDragging(firstItem, new Point(64, 5));
             Mouse.StopDragging(flowchart, new Point(307, 128));
 
             // Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
@@ -1526,6 +1491,46 @@ namespace Warewolf.UITests
 
             // Verify that the 'Exists' property of 'DsfWebPostActivity' custom control equals 'True'
             Assert.AreEqual(this.Drag_PostWeb_RequestTool_Onto_DesignSurfaceParams.WebPostExists, webPost.Exists, "Web Post Request small view does not exist on the design surface");
+        }
+        
+        /// <summary>
+        /// Drag_Explorer_Remote_workflow1_Onto_Workflow_Design_Surface - Use 'Drag_Explorer_Remote_workflow1_Onto_Workflow_Design_SurfaceParams' to pass parameters into this method.
+        /// </summary>
+        public void Drag_Explorer_Remote_workflow1_Onto_Workflow_Design_Surface()
+        {
+            #region Variable Declarations
+            WpfEdit searchTextBox = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.SearchTextBox;
+            WpfButton explorerRefreshButton = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerRefreshButton;
+            WpfTreeItem firstItem = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.FirstItem;
+            WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
+            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
+            WpfCustom subWorkflow = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SubWorkflow;
+            #endregion
+
+            // Type 'workflow1' in 'SearchTextBox' text box
+            searchTextBox.Text = this.Drag_Explorer_Remote_workflow1_Onto_Workflow_Design_SurfaceParams.SearchTextBoxText;
+
+            // Wait for 2 seconds for user delay between actions; Click '' button
+            Playback.Wait(2000);
+            Mouse.Click(explorerRefreshButton, new Point(10, 10));
+
+            // Wait for 2 seconds for user delay between actions; Verify that the 'Exists' property of 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item equals 'True'
+            Playback.Wait(2000);
+            Assert.AreEqual(this.Drag_Explorer_Remote_workflow1_Onto_Workflow_Design_SurfaceParams.FirstItemExists, firstItem.Exists, "Explorer first remote server does not contain any items.");
+
+            // Click 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item
+            Mouse.Click(firstItem, new Point(64, 5));
+
+            // Move 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item to 'Flowchart' custom control
+            flowchart.EnsureClickable(new Point(307, 128));
+            Mouse.StartDragging(firstItem, new Point(64, 5));
+            Mouse.StopDragging(flowchart, new Point(307, 128));
+
+            // Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
+            Assert.AreEqual(this.Drag_Explorer_Remote_workflow1_Onto_Workflow_Design_SurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
+
+            // Verify that the 'Exists' property of 'DsfActivity' custom control equals 'True'
+            Assert.AreEqual(this.Drag_Explorer_Remote_workflow1_Onto_Workflow_Design_SurfaceParams.SubWorkflowExists, subWorkflow.Exists, "Workflow on the design surface does not exist");
         }
         
         /// <summary>
@@ -3091,27 +3096,6 @@ namespace Warewolf.UITests
 
             // Verify that the 'Exists' property of 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item equals 'True'
             Assert.AreEqual(this.Enter_TSTCIREMOTE_Into_Explorer_FilterParams.FirstItemExists, firstItem.Exists, "Explorer localhost does not contain any items.");
-        }
-        
-        /// <summary>
-        /// Enter_workflow1_Into_Explorer_Filter - Use 'Enter_workflow1_Into_Explorer_FilterParams' to pass parameters into this method.
-        /// </summary>
-        public void Enter_workflow1_Into_Explorer_Filter()
-        {
-            #region Variable Declarations
-            WpfEdit searchTextBox = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.SearchTextBox;
-            WpfButton explorerRefreshButton = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerRefreshButton;
-            WpfTreeItem firstItem = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.FirstItem;
-            #endregion
-
-            // Type 'workflow1' in 'SearchTextBox' text box
-            searchTextBox.Text = this.Enter_workflow1_Into_Explorer_FilterParams.SearchTextBoxText;
-
-            // Click '' button
-            Mouse.Click(explorerRefreshButton, new Point(10, 10));
-
-            // Verify that the 'Exists' property of 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item equals 'True'
-            Assert.AreEqual(this.Enter_workflow1_Into_Explorer_FilterParams.FirstItemExists, firstItem.Exists, "Explorer first remote server does not contain any items.");
         }
         
         /// <summary>
@@ -4740,9 +4724,16 @@ namespace Warewolf.UITests
         public void Select_LocalhostConnected_From_Explorer_Remote_Server_Dropdown_List()
         {
             #region Variable Declarations
+            WpfButton serverListComboBox = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.ServerListComboBox;
             WpfText comboboxListItemAsLocalhostConnected = this.MainStudioWindow.ComboboxListItemAsLocalhostConnected;
             WpfText selectedItemAsLocalhost = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.SelectedItemAsLocalhost;
             #endregion
+
+            // Click 'ToggleButton' button
+            Mouse.Click(serverListComboBox, new Point(217, 8));
+
+            // Verify that the 'Exists' property of 'localhost (Connected)' label equals 'True'
+            Assert.AreEqual(this.Select_LocalhostConnected_From_Explorer_Remote_Server_Dropdown_ListParams.ComboboxListItemAsLocalhostConnectedExists, comboboxListItemAsLocalhostConnected.Exists, "localhost (connected) does not exist in explorer remote server drop down list");
 
             // Click 'localhost (Connected)' label
             Mouse.Click(comboboxListItemAsLocalhostConnected, new Point(94, 10));
@@ -4822,9 +4813,17 @@ namespace Warewolf.UITests
         public void Select_NewRemoteServer_From_Explorer_Server_Dropdownlist()
         {
             #region Variable Declarations
+            WpfButton serverListComboBox = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.ServerListComboBox;
+            WpfCustom newRemoteServerListItem = this.MainStudioWindow.NewRemoteServerListItem;
             WpfText newRemoteServerItemText = this.MainStudioWindow.NewRemoteServerListItem.NewRemoteServerItemText;
             WpfButton toggleDropdown = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.ServerSourceWizardTab.WorkSurfaceContext.NewServerSourceWizard.ProtocolCombobox.ToggleDropdown;
             #endregion
+
+            // Click 'ToggleButton' button
+            Mouse.Click(serverListComboBox, new Point(217, 8));
+
+            // Verify that the 'Exists' property of 'New Remote Server...' custom control equals 'True'
+            Assert.AreEqual(this.Select_NewRemoteServer_From_Explorer_Server_DropdownlistParams.NewRemoteServerListItemExists, newRemoteServerListItem.Exists, "New Remote Server... does not exist in explorer remote server drop down list");
 
             // Click 'New Remote Server...' label
             Mouse.Click(newRemoteServerItemText, new Point(114, 10));
@@ -4995,9 +4994,16 @@ namespace Warewolf.UITests
         public void Select_TSTCIREMOTE_From_Explorer_Remote_Server_Dropdown_List()
         {
             #region Variable Declarations
+            WpfButton serverListComboBox = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.ServerListComboBox;
             WpfText comboboxListItemAsTSTCIREMOTE = this.MainStudioWindow.ComboboxListItemAsTSTCIREMOTE;
             WpfText selectedItemAsTSTCIREMOTE = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.SelectedItemAsTSTCIREMOTE;
             #endregion
+
+            // Click 'ToggleButton' button
+            Mouse.Click(serverListComboBox, new Point(217, 8));
+
+            // Verify that the 'Exists' property of 'TSTCIREMOTE' label equals 'True'
+            Assert.AreEqual(this.Select_TSTCIREMOTE_From_Explorer_Remote_Server_Dropdown_ListParams.ComboboxListItemAsTSTCIREMOTEExists, comboboxListItemAsTSTCIREMOTE.Exists, "TSTCIREMOTE does not exist in explorer remote server drop down list");
 
             // Click 'TSTCIREMOTE' label
             Mouse.Click(comboboxListItemAsTSTCIREMOTE, new Point(79, 8));
@@ -5107,18 +5113,6 @@ namespace Warewolf.UITests
             }
         }
         
-        public virtual Click_Close_Server_Source_Wizard_Tab_ButtonParams Click_Close_Server_Source_Wizard_Tab_ButtonParams
-        {
-            get
-            {
-                if ((this.mClick_Close_Server_Source_Wizard_Tab_ButtonParams == null))
-                {
-                    this.mClick_Close_Server_Source_Wizard_Tab_ButtonParams = new Click_Close_Server_Source_Wizard_Tab_ButtonParams();
-                }
-                return this.mClick_Close_Server_Source_Wizard_Tab_ButtonParams;
-            }
-        }
-        
         public virtual Click_Close_Tab_ButtonParams Click_Close_Tab_ButtonParams
         {
             get
@@ -5128,18 +5122,6 @@ namespace Warewolf.UITests
                     this.mClick_Close_Tab_ButtonParams = new Click_Close_Tab_ButtonParams();
                 }
                 return this.mClick_Close_Tab_ButtonParams;
-            }
-        }
-        
-        public virtual Click_Connect_Control_InExplorerParams Click_Connect_Control_InExplorerParams
-        {
-            get
-            {
-                if ((this.mClick_Connect_Control_InExplorerParams == null))
-                {
-                    this.mClick_Connect_Control_InExplorerParams = new Click_Connect_Control_InExplorerParams();
-                }
-                return this.mClick_Connect_Control_InExplorerParams;
             }
         }
         
@@ -5503,18 +5485,6 @@ namespace Warewolf.UITests
             }
         }
         
-        public virtual Drag_Explorer_First_Remote_Server_First_Item_Onto_Workflow_Design_SurfaceParams Drag_Explorer_First_Remote_Server_First_Item_Onto_Workflow_Design_SurfaceParams
-        {
-            get
-            {
-                if ((this.mDrag_Explorer_First_Remote_Server_First_Item_Onto_Workflow_Design_SurfaceParams == null))
-                {
-                    this.mDrag_Explorer_First_Remote_Server_First_Item_Onto_Workflow_Design_SurfaceParams = new Drag_Explorer_First_Remote_Server_First_Item_Onto_Workflow_Design_SurfaceParams();
-                }
-                return this.mDrag_Explorer_First_Remote_Server_First_Item_Onto_Workflow_Design_SurfaceParams;
-            }
-        }
-        
         public virtual Drag_Explorer_Localhost_First_Item_Onto_Workflow_Design_SurfaceParams Drag_Explorer_Localhost_First_Item_Onto_Workflow_Design_SurfaceParams
         {
             get
@@ -5548,6 +5518,18 @@ namespace Warewolf.UITests
                     this.mDrag_PostWeb_RequestTool_Onto_DesignSurfaceParams = new Drag_PostWeb_RequestTool_Onto_DesignSurfaceParams();
                 }
                 return this.mDrag_PostWeb_RequestTool_Onto_DesignSurfaceParams;
+            }
+        }
+        
+        public virtual Drag_Explorer_Remote_workflow1_Onto_Workflow_Design_SurfaceParams Drag_Explorer_Remote_workflow1_Onto_Workflow_Design_SurfaceParams
+        {
+            get
+            {
+                if ((this.mDrag_Explorer_Remote_workflow1_Onto_Workflow_Design_SurfaceParams == null))
+                {
+                    this.mDrag_Explorer_Remote_workflow1_Onto_Workflow_Design_SurfaceParams = new Drag_Explorer_Remote_workflow1_Onto_Workflow_Design_SurfaceParams();
+                }
+                return this.mDrag_Explorer_Remote_workflow1_Onto_Workflow_Design_SurfaceParams;
             }
         }
         
@@ -6295,18 +6277,6 @@ namespace Warewolf.UITests
             }
         }
         
-        public virtual Enter_workflow1_Into_Explorer_FilterParams Enter_workflow1_Into_Explorer_FilterParams
-        {
-            get
-            {
-                if ((this.mEnter_workflow1_Into_Explorer_FilterParams == null))
-                {
-                    this.mEnter_workflow1_Into_Explorer_FilterParams = new Enter_workflow1_Into_Explorer_FilterParams();
-                }
-                return this.mEnter_workflow1_Into_Explorer_FilterParams;
-            }
-        }
-        
         public virtual Open_Assign_Tool_Large_ViewParams Open_Assign_Tool_Large_ViewParams
         {
             get
@@ -6903,11 +6873,7 @@ namespace Warewolf.UITests
         
         private Click_Calculate_Large_View_Done_ButtonParams mClick_Calculate_Large_View_Done_ButtonParams;
         
-        private Click_Close_Server_Source_Wizard_Tab_ButtonParams mClick_Close_Server_Source_Wizard_Tab_ButtonParams;
-        
         private Click_Close_Tab_ButtonParams mClick_Close_Tab_ButtonParams;
-        
-        private Click_Connect_Control_InExplorerParams mClick_Connect_Control_InExplorerParams;
         
         private Click_Debug_Ribbon_ButtonParams mClick_Debug_Ribbon_ButtonParams;
         
@@ -6969,13 +6935,13 @@ namespace Warewolf.UITests
         
         private Drag_DotNet_DLL_Connector_Onto_DesignSurfaceParams mDrag_DotNet_DLL_Connector_Onto_DesignSurfaceParams;
         
-        private Drag_Explorer_First_Remote_Server_First_Item_Onto_Workflow_Design_SurfaceParams mDrag_Explorer_First_Remote_Server_First_Item_Onto_Workflow_Design_SurfaceParams;
-        
         private Drag_Explorer_Localhost_First_Item_Onto_Workflow_Design_SurfaceParams mDrag_Explorer_Localhost_First_Item_Onto_Workflow_Design_SurfaceParams;
         
         private Drag_GetWeb_RequestTool_Onto_DesignSurfaceParams mDrag_GetWeb_RequestTool_Onto_DesignSurfaceParams;
         
         private Drag_PostWeb_RequestTool_Onto_DesignSurfaceParams mDrag_PostWeb_RequestTool_Onto_DesignSurfaceParams;
+        
+        private Drag_Explorer_Remote_workflow1_Onto_Workflow_Design_SurfaceParams mDrag_Explorer_Remote_workflow1_Onto_Workflow_Design_SurfaceParams;
         
         private Drag_Toolbox_Base_Conversion_Onto_DesignSurfaceParams mDrag_Toolbox_Base_Conversion_Onto_DesignSurfaceParams;
         
@@ -7100,8 +7066,6 @@ namespace Warewolf.UITests
         private Enter_Text_Into_Assign_Large_View_Row1_Variable_Textbox_As_SomeVariableParams mEnter_Text_Into_Assign_Large_View_Row1_Variable_Textbox_As_SomeVariableParams;
         
         private Enter_TSTCIREMOTE_Into_Explorer_FilterParams mEnter_TSTCIREMOTE_Into_Explorer_FilterParams;
-        
-        private Enter_workflow1_Into_Explorer_FilterParams mEnter_workflow1_Into_Explorer_FilterParams;
         
         private Open_Assign_Tool_Large_ViewParams mOpen_Assign_Tool_Large_ViewParams;
         
@@ -7259,21 +7223,6 @@ namespace Warewolf.UITests
     }
     
     /// <summary>
-    /// Parameters to be passed into 'Click_Close_Server_Source_Wizard_Tab_Button'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Click_Close_Server_Source_Wizard_Tab_ButtonParams
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Verify that the 'Exists' property of 'WarewolfMessageBox' window equals 'False'
-        /// </summary>
-        public bool MessageBoxWindowExists = false;
-        #endregion
-    }
-    
-    /// <summary>
     /// Parameters to be passed into 'Click_Close_Tab_Button'
     /// </summary>
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
@@ -7285,26 +7234,6 @@ namespace Warewolf.UITests
         /// Verify that the 'Exists' property of 'closeBtn' custom control equals 'True'
         /// </summary>
         public bool CloseButtonExists = true;
-        #endregion
-    }
-    
-    /// <summary>
-    /// Parameters to be passed into 'Click_Connect_Control_InExplorer'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Click_Connect_Control_InExplorerParams
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Verify that the 'Exists' property of 'New Remote Server...' custom control equals 'True'
-        /// </summary>
-        public bool NewRemoteServerListItemExists = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'TSTCIREMOTE' label equals 'True'
-        /// </summary>
-        public bool ComboboxListItemAsTSTCIREMOTEExists = true;
         #endregion
     }
     
@@ -7352,19 +7281,9 @@ namespace Warewolf.UITests
         public bool DataListInputsTableExists = true;
         
         /// <summary>
-        /// Verify that the 'Exists' property of 'rec(1).set' label equals 'True'
-        /// </summary>
-        public bool UIRec1setTextExists = true;
-        
-        /// <summary>
         /// Verify that the 'Exists' property of 'XML' tab equals 'True'
         /// </summary>
         public bool XMLTabExists = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'UI_XMLEditor_AutoID' custom control equals 'True'
-        /// </summary>
-        public bool XMLWindowExists = true;
         
         /// <summary>
         /// Verify that the 'Exists' property of 'JSON' tab equals 'True'
@@ -7622,6 +7541,11 @@ namespace Warewolf.UITests
         public bool StartNodeExists = true;
         
         /// <summary>
+        /// Verify that the 'Exists' property of 'StartNode' custom control equals 'True'
+        /// </summary>
+        public bool StartNodeExists1 = true;
+        
+        /// <summary>
         /// Verify that the 'Exists' property of 'SearchTextBox' text box equals 'True'
         /// </summary>
         public bool SearchTextBoxExists = true;
@@ -7867,7 +7791,7 @@ namespace Warewolf.UITests
         
         #region Fields
         /// <summary>
-        /// Wait for 2 seconds for user delay between actions; Verify that the 'Enabled' property of 'Save this tab' button equals 'True'
+        /// Wait for 3 seconds for user delay between actions; Verify that the 'Enabled' property of 'Save this tab' button equals 'True'
         /// </summary>
         public bool SaveButtonEnabled = true;
         #endregion
@@ -8032,9 +7956,9 @@ namespace Warewolf.UITests
         
         #region Fields
         /// <summary>
-        /// Verify that the 'Selected' property of 'Show what this depends on' radio button equals 'True'
+        /// Verify that the 'Selected' property of 'Show what depends on this' radio button equals 'True'
         /// </summary>
-        public bool ShowwhatasdfdependsonRadioButtonSelected = true;
+        public bool ShowwhatdependsonthisRadioButtonSelected = true;
         
         /// <summary>
         /// Verify that the 'Exists' property of first text box next to 'Nesting Levels' label equals 'True'
@@ -8139,26 +8063,6 @@ namespace Warewolf.UITests
     }
     
     /// <summary>
-    /// Parameters to be passed into 'Drag_Explorer_First_Remote_Server_First_Item_Onto_Workflow_Design_Surface'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Drag_Explorer_First_Remote_Server_First_Item_Onto_Workflow_Design_SurfaceParams
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
-        /// </summary>
-        public bool Connector1Exists = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'DsfActivity' custom control equals 'True'
-        /// </summary>
-        public bool SubWorkflowExists = true;
-        #endregion
-    }
-    
-    /// <summary>
     /// Parameters to be passed into 'Drag_Explorer_Localhost_First_Item_Onto_Workflow_Design_Surface'
     /// </summary>
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
@@ -8166,6 +8070,11 @@ namespace Warewolf.UITests
     {
         
         #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item equals 'True'
+        /// </summary>
+        public bool FirstItemExists = true;
+        
         /// <summary>
         /// Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
         /// </summary>
@@ -8210,6 +8119,36 @@ namespace Warewolf.UITests
         /// Verify that the 'Exists' property of 'DsfWebPostActivity' custom control equals 'True'
         /// </summary>
         public bool WebPostExists = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Drag_Explorer_Remote_workflow1_Onto_Workflow_Design_Surface'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Drag_Explorer_Remote_workflow1_Onto_Workflow_Design_SurfaceParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Type 'workflow1' in 'SearchTextBox' text box
+        /// </summary>
+        public string SearchTextBoxText = "workflow1";
+        
+        /// <summary>
+        /// Wait for 2 seconds for user delay between actions; Verify that the 'Exists' property of 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item equals 'True'
+        /// </summary>
+        public bool FirstItemExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
+        /// </summary>
+        public bool Connector1Exists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'DsfActivity' custom control equals 'True'
+        /// </summary>
+        public bool SubWorkflowExists = true;
         #endregion
     }
     
@@ -9624,26 +9563,6 @@ namespace Warewolf.UITests
     }
     
     /// <summary>
-    /// Parameters to be passed into 'Enter_workflow1_Into_Explorer_Filter'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Enter_workflow1_Into_Explorer_FilterParams
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Type 'workflow1' in 'SearchTextBox' text box
-        /// </summary>
-        public string SearchTextBoxText = "workflow1";
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item equals 'True'
-        /// </summary>
-        public bool FirstItemExists = true;
-        #endregion
-    }
-    
-    /// <summary>
     /// Parameters to be passed into 'Open_Assign_Tool_Large_View'
     /// </summary>
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
@@ -10257,6 +10176,11 @@ namespace Warewolf.UITests
         
         #region Fields
         /// <summary>
+        /// Verify that the 'Exists' property of 'localhost (Connected)' label equals 'True'
+        /// </summary>
+        public bool ComboboxListItemAsLocalhostConnectedExists = true;
+        
+        /// <summary>
         /// Verify that the 'DisplayText' property of 'localhost' label equals 'TSTCIREMOTE'
         /// </summary>
         public string SelectedItemAsLocalhostDisplayText = "TSTCIREMOTE";
@@ -10272,6 +10196,11 @@ namespace Warewolf.UITests
         
         #region Fields
         /// <summary>
+        /// Verify that the 'Exists' property of 'New Remote Server...' custom control equals 'True'
+        /// </summary>
+        public bool NewRemoteServerListItemExists = true;
+        
+        /// <summary>
         /// Verify that the 'Exists' property of 'ToggleButton' button equals 'True'
         /// </summary>
         public bool ToggleDropdownExists = true;
@@ -10286,6 +10215,11 @@ namespace Warewolf.UITests
     {
         
         #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'TSTCIREMOTE' label equals 'True'
+        /// </summary>
+        public bool ComboboxListItemAsTSTCIREMOTEExists = true;
+        
         /// <summary>
         /// Verify that the 'DisplayText' property of 'TSTCIREMOTE' label equals 'TSTCIREMOTE'
         /// </summary>
@@ -26137,19 +26071,19 @@ namespace Warewolf.UITests
             }
         }
         
-        public WpfRadioButton ShowwhatasdfdependsonRadioButton
+        public WpfRadioButton ShowwhatthisdependsonRadioButton
         {
             get
             {
-                if ((this.mShowwhatasdfdependsonRadioButton == null))
+                if ((this.mShowwhatthisdependsonRadioButton == null))
                 {
-                    this.mShowwhatasdfdependsonRadioButton = new WpfRadioButton(this);
+                    this.mShowwhatthisdependsonRadioButton = new WpfRadioButton(this);
                     #region Search Criteria
-                    this.mShowwhatasdfdependsonRadioButton.SearchProperties[WpfRadioButton.PropertyNames.AutomationId] = "DependsOnWf";
-                    this.mShowwhatasdfdependsonRadioButton.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    this.mShowwhatthisdependsonRadioButton.SearchProperties[WpfRadioButton.PropertyNames.AutomationId] = "DependsOnWf";
+                    this.mShowwhatthisdependsonRadioButton.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
                     #endregion
                 }
-                return this.mShowwhatasdfdependsonRadioButton;
+                return this.mShowwhatthisdependsonRadioButton;
             }
         }
         
@@ -26231,7 +26165,7 @@ namespace Warewolf.UITests
         
         private WpfRadioButton mShowwhatdependsonthisRadioButton;
         
-        private WpfRadioButton mShowwhatasdfdependsonRadioButton;
+        private WpfRadioButton mShowwhatthisdependsonRadioButton;
         
         private NestingLevelsText mNestingLevelsText;
         

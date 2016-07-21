@@ -26,8 +26,6 @@ namespace Warewolf.UITests
         public void BigRemoteSubworkflowUITest()
         {
             Uimap.Click_New_Workflow_Ribbon_Button();
-            Uimap.Click_Connect_Control_InExplorerParams.ComboboxListItemAsTSTCIREMOTEExists = false;
-            Uimap.Click_Connect_Control_InExplorer();
             Uimap.Select_NewRemoteServer_From_Explorer_Server_Dropdownlist();
             Uimap.Click_Server_Source_Wizard_Address_Protocol_Dropdown();
             Uimap.Select_http_From_Server_Source_Wizard_Address_Protocol_Dropdown();
@@ -39,23 +37,17 @@ namespace Warewolf.UITests
             Uimap.Click_SaveDialog_YesButton();
             Uimap.Click_Close_Server_Source_Wizard_Tab_Button();
             Uimap.Enter_TSTCIREMOTE_Into_Explorer_Filter();
-            Uimap.Click_Connect_Control_InExplorerParams.ComboboxListItemAsTSTCIREMOTEExists = true;
-            Uimap.Click_Connect_Control_InExplorer();
             Uimap.Select_TSTCIREMOTE_From_Explorer_Remote_Server_Dropdown_List();
             Uimap.Click_Explorer_RemoteServer_Connect_Button();
-            Uimap.Enter_workflow1_Into_Explorer_Filter();
-            Uimap.Drag_Explorer_First_Remote_Server_First_Item_Onto_Workflow_Design_Surface();
+            Uimap.Drag_Explorer_Remote_workflow1_Onto_Workflow_Design_Surface();
             Uimap.Click_Save_Ribbon_Button();
             Uimap.Enter_Servicename_As_RemoteServerUITestWorkflow();
             Uimap.Click_SaveDialog_YesButton();
+            //Uimap.Click_Debug_Ribbon_Button();
+            //Uimap.Click_DebugInput_Debug_RemoteServerUITestWorkflow_Button();
+            //Uimap.Click_Debug_Output_Workflow1_Cell();
+            //Uimap.Click_Debug_Output_Workflow1_Name();
             Uimap.Enter_RemoteServerUITestWorkflow_Into_Explorer_Filter();
-            /**TODO: Re-introduce these actions before WOLF-1923 can be moved to done
-            Uimap.Click_Debug_Ribbon_Button();
-            Uimap.Click_DebugInput_DebugButtonParams.Workflow1Exists = true;
-            Uimap.Click_DebugInput_DebugButton();
-	        Uimap.Click_Cell_Highlights_Workflow_OnDesignSurface();
-	        Uimap.Click_Debug_Output_Workflow_Name();
-            **/
             Uimap.RightClick_Explorer_Localhost_First_Item();
             Uimap.Click_Show_Dependencies_In_Explorer_Context_Menu();
             Uimap.Click_Settings_Ribbon_Button();
@@ -85,50 +77,11 @@ namespace Warewolf.UITests
         [TestCleanup]
         public void MyTestCleanup()
         {
-            try
-            {
-                Uimap.Enter_RemoteServerUITestWorkflow_Into_Explorer_Filter();
-                Uimap.RightClick_Explorer_Localhost_First_Item();
-                Uimap.Select_Delete_FromExplorerContextMenu();
-                Uimap.Click_MessageBox_Yes();
-                Uimap.Click_Explorer_Filter_Clear_Button();
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("Cleanup failed to remove RemoteServerUITestWorkflow. Test may have crashed before RemoteServerUITestWorkflow was created.\n" + e.Message);
-            }
-
-            try
-            {
-                if (Uimap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.SelectedItemAsTSTCIREMOTEConnected.Exists)
-                {
-                    Uimap.Click_Explorer_RemoteServer_Connect_Button();
-                }
-                else
-                {
-                    Uimap.Click_Connect_Control_InExplorer();
-                    if (Uimap.MainStudioWindow.ComboboxListItemAsTSTCIREMOTEConnected.Exists)
-                    {
-                        Uimap.Select_TSTCIREMOTEConnected_From_Explorer_Remote_Server_Dropdown_List();
-                        Uimap.Click_Explorer_RemoteServer_Connect_Button();
-                    }
-                }
-                Uimap.Select_LocalhostConnected_From_Explorer_Remote_Server_Dropdown_List();
-                Uimap.Enter_TSTCIREMOTE_Into_Explorer_Filter();
-                Uimap.RightClick_Explorer_Localhost_First_Item();
-                Uimap.Select_Delete_FromExplorerContextMenu();
-                Uimap.Click_MessageBox_Yes();
-                Uimap.Click_Explorer_Filter_Clear_Button();
-                Uimap.Click_Connect_Control_InExplorerParams.ComboboxListItemAsTSTCIREMOTEExists = false;
-                Uimap.Click_Connect_Control_InExplorer();
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("Cleanup failed to remove remote server TST-CI-REMOTE. Test may have crashed before remote server TST-CI-REMOTE was connected.\n" + e.Message);
-                Uimap.Click_Explorer_Filter_Clear_Button();
-            }
+            Uimap.TryCloseHangingSaveDialog();
+            Uimap.TryRemoveRemoteServerUITestWorkflowFromExplorer();
+            Uimap.TryDisconnectFromCIREMOTEAndRemoveSourceFromExplorer();
         }
-        
+
         public TestContext TestContext
         {
             get

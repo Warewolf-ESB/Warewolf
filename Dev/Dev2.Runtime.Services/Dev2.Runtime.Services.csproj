@@ -203,6 +203,7 @@
     <Compile Include="ESB\Management\Services\FetchWcfAction.cs" />
     <Compile Include="ESB\Management\Services\FetchWcfSources.cs" />
     <Compile Include="ESB\Management\Services\FetchWebSources.cs" />
+    <Compile Include="ESB\Management\Services\GetComDllListings.cs" />
     <Compile Include="ESB\Management\Services\GetComputeNames.cs" />
     <Compile Include="ESB\Management\Services\GetDirectoriesRelativeToServer.cs" />
     <Compile Include="ESB\Management\Services\FetchExplorerItems.cs" />
@@ -375,7 +376,6 @@
     <Compile Include="ServiceModel\Utils\ServiceMappingHelper.cs" />
     <Compile Include="ServiceModel\WebServices.cs" />
     <Compile Include="ServiceModel\EmailSources.cs" />
-    <Compile Include="Hosting\IResourceIterator.cs" />
     <Compile Include="Hosting\ResourceCatalog.cs" />
     <Compile Include="Security\HostSecureConfig.cs" />
     <Compile Include="Security\HostSecurityProvider.cs" />
@@ -406,10 +406,8 @@
     <Compile Include="ServiceModel\Connections.cs" />
     <Compile Include="Hosting\ResourceDelimiter.cs" />
     <Compile Include="Hosting\ResourceIteratorResult.cs" />
-    <Compile Include="Hosting\ResourceIterator.cs" />
     <Compile Include="ServiceModel\Data\ServiceMethodList.cs" />
     <Compile Include="ServiceModel\Esb\IExecutableEsbEnpoint.cs" />
-    <Compile Include="ServiceModel\Help.cs" />
     <Compile Include="ServiceModel\Data\HelpDictionary.cs" />
     <Compile Include="ServiceModel\Services.cs" />
     <Compile Include="Configuration\SettingsProvider.cs" />

@@ -25,25 +25,47 @@ namespace Warewolf.UITests
         public void SetGlobalPlaybackSettings()
         {
             Playback.PlaybackSettings.WaitForReadyLevel = WaitForReadyLevel.Disabled;
-            Playback.PlaybackSettings.MaximumRetryCount = 5;
             Playback.PlaybackSettings.ShouldSearchFailFast = false;
-            Playback.PlaybackSettings.SearchTimeout = 1000;
             if (Environment.ProcessorCount <= 4)
             {
                 Playback.PlaybackSettings.ThinkTimeMultiplier = 2;
             }
-            Playback.PlaybackSettings.MatchExactHierarchy = false;
+            else
+            {
+                Playback.PlaybackSettings.ThinkTimeMultiplier = 1;
+            }
+            Playback.PlaybackSettings.MaximumRetryCount = 5 * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
+            Playback.PlaybackSettings.SearchTimeout = 5000 * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
+            Playback.PlaybackSettings.MatchExactHierarchy = true;
             Playback.PlaybackSettings.SkipSetPropertyVerification = true;
             Playback.PlaybackSettings.SmartMatchOptions = SmartMatchOptions.None;
-            Playback.PlaybackError -= Playback_PlaybackError;
-            Playback.PlaybackError += Playback_PlaybackError;
+            Playback.PlaybackError -= new EventHandler<PlaybackErrorEventArgs>(PlaybackErrorHandler);
+            Playback.PlaybackError += new EventHandler<PlaybackErrorEventArgs>(PlaybackErrorHandler);
         }
-
-        /// <summary> PlaybackError event handler. </summary>
-        private void Playback_PlaybackError(object sender, PlaybackErrorEventArgs e)
+        
+        void PlaybackErrorHandler(object sender, PlaybackErrorEventArgs e)
         {
             Console.WriteLine(e.Error.Message);
-            Playback.Wait(1000);
+            if (e.Error is UITestControlNotFoundException)
+            {
+                UITestControlNotFoundException asControlNotFoundException = e.Error as UITestControlNotFoundException;
+                var exceptionSource = asControlNotFoundException.ExceptionSource;
+                if (exceptionSource is UITestControl)
+                {
+                    UITestControl parent = (exceptionSource as UITestControl).Container;
+                    while (parent != null && !parent.Exists)
+                    {
+                        parent = parent.Container;
+                    }
+                    if (parent != null && parent.Exists && parent != MainStudioWindow)
+                    {
+                        parent.DrawHighlight();
+                        e.Result = PlaybackErrorOptions.Retry;
+                        return;
+                    }
+                }
+            }
+            Playback.Wait(1000 * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString()));
             e.Result = PlaybackErrorOptions.Retry;
         }
 
@@ -67,7 +89,7 @@ namespace Warewolf.UITests
         {
             Console.WriteLine("Waiting for studio to start.");
             Playback.Wait(timeout);
-            if (!this.MainStudioWindow.Exists)
+            if (!MainStudioWindow.Exists)
             {
                 throw new InvalidOperationException("Warewolf studio is not running. You are expected to run \"Dev\\TestScripts\\Studio\\Startup.bat\" as an administrator and wait for it to complete before running any coded UI tests");
             }
@@ -82,7 +104,10 @@ namespace Warewolf.UITests
         {
             try
             {
-                Click_Clear_Toolbox_Filter_Button();
+                if (MainStudioWindow.DockManager.SplitPaneLeft.Explorer.SearchTextBox.Text != string.Empty)
+                {
+                    Click_Clear_Toolbox_Filter_Button();
+                }
                 Click_Close_Tab_Button();
                 Click_MessageBox_No();
             }
@@ -94,13 +119,13 @@ namespace Warewolf.UITests
 
         public void Click_Settings_Resource_Permissions_Row1_Add_Resource_Button()
         {
-            Mouse.Click(this.FindAddResourceButton(this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1));
+            Mouse.Click(this.FindAddResourceButton(this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1));
             Assert.AreEqual(true, this.ServicePickerDialog.Exists, "Service picker dialog does not exist.");
         }
 
         public void Click_Settings_Resource_Permissions_Row1_Windows_Group_Button()
         {
-            Mouse.Click(this.FindAddWindowsGroupButton(this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1));
+            Mouse.Click(this.FindAddWindowsGroupButton(this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1));
             Assert.AreEqual(true, this.SelectWindowsGroupDialog.Exists, "Select windows group dialog does not exist.");
             Assert.AreEqual(true, this.SelectWindowsGroupDialog.ItemPanel.ObjectNameTextbox.Exists, "Select windows group object name textbox does not exist.");
         }
@@ -133,6 +158,99 @@ namespace Warewolf.UITests
         {
             var firstOrDefaultCell = row.GetChildren().Where(child => child.ControlType == ControlType.Cell).ElementAtOrDefault(4);
             return firstOrDefaultCell?.GetChildren().FirstOrDefault(child => child.ControlType == ControlType.CheckBox);
+        }
+
+        public void TryCloseHangingSaveDialog()
+        {
+            try
+            {
+                Playback.PlaybackSettings.MaximumRetryCount = 1 * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
+                Playback.PlaybackSettings.SearchTimeout = 1000 * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
+                var cancelButton = SaveDialogWindow.CancelButton;
+                Playback.PlaybackSettings.MaximumRetryCount = 5 * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
+                Playback.PlaybackSettings.SearchTimeout = 5000 * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
+                if (cancelButton.Exists)
+                {
+                    Click_SaveDialog_CancelButton();
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Cleanup threw an unhandled exception trying to remove hanging save dialog. Test may have crashed without leaving a hanging dialog.\n" + e.Message);
+            }
+        }
+
+        public void TryRemoveRemoteServerUITestWorkflowFromExplorer()
+        {
+            try
+            {
+                Enter_RemoteServerUITestWorkflow_Into_Explorer_Filter();
+                Playback.PlaybackSettings.MaximumRetryCount = 1 * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
+                Playback.PlaybackSettings.SearchTimeout = 1000 * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
+                var wpfTreeItem = MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem;
+                Playback.PlaybackSettings.MaximumRetryCount = 5 * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
+                Playback.PlaybackSettings.SearchTimeout = 5000 * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
+                if (wpfTreeItem.Exists)
+                {
+                    RightClick_Explorer_Localhost_First_Item();
+                    Select_Delete_FromExplorerContextMenu();
+                    Click_MessageBox_Yes();
+                }
+                Click_Explorer_Filter_Clear_Button();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Cleanup failed to remove RemoteServerUITestWorkflow. Test may have crashed before RemoteServerUITestWorkflow was created.\n" + e.Message);
+            }
+        }
+
+        public void TryDisconnectFromCIREMOTEAndRemoveSourceFromExplorer()
+        {
+            try
+            {
+                Playback.PlaybackSettings.MaximumRetryCount = 1 * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
+                Playback.PlaybackSettings.SearchTimeout = 1000 * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
+                var selectedItemAsTstciremoteConnected = MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.SelectedItemAsTSTCIREMOTEConnected;
+                Playback.PlaybackSettings.MaximumRetryCount = 5 * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
+                Playback.PlaybackSettings.SearchTimeout = 5000 * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
+                if (selectedItemAsTstciremoteConnected.Exists)
+                {
+                    Click_Explorer_RemoteServer_Connect_Button();
+                }
+                else
+                {
+                    Click_Connect_Control_InExplorer();
+                    Playback.PlaybackSettings.MaximumRetryCount = 1 * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
+                    Playback.PlaybackSettings.SearchTimeout = 1000 * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
+                    var comboboxListItemAsTstciremoteConnected = MainStudioWindow.ComboboxListItemAsTSTCIREMOTEConnected;
+                    Playback.PlaybackSettings.MaximumRetryCount = 5 * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
+                    Playback.PlaybackSettings.SearchTimeout = 5000 * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
+                    if (comboboxListItemAsTstciremoteConnected.Exists)
+                    {
+                        Select_TSTCIREMOTEConnected_From_Explorer_Remote_Server_Dropdown_List();
+                        Click_Explorer_RemoteServer_Connect_Button();
+                    }
+                }
+                Select_LocalhostConnected_From_Explorer_Remote_Server_Dropdown_List();
+                Enter_TSTCIREMOTE_Into_Explorer_Filter();
+                Playback.PlaybackSettings.MaximumRetryCount = 1 * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
+                Playback.PlaybackSettings.SearchTimeout = 1000 * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
+                var wpfTreeItem = MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem;
+                Playback.PlaybackSettings.MaximumRetryCount = 5 * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
+                Playback.PlaybackSettings.SearchTimeout = 5000 * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
+                if (wpfTreeItem.Exists)
+                {
+                    RightClick_Explorer_Localhost_First_Item();
+                    Select_Delete_FromExplorerContextMenu();
+                    Click_MessageBox_Yes();
+                }
+                Click_Explorer_Filter_Clear_Button();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Cleanup failed to remove remote server TST-CI-REMOTE. Test may have crashed before remote server TST-CI-REMOTE was connected.\n" + e.Message);
+                Click_Explorer_Filter_Clear_Button();
+            }
         }
     }
 }

@@ -386,13 +386,6 @@ namespace Warewolf.Studio.ViewModels.Tests
                 it => it.Calculate(It.Is<IList<IExplorerTreeItem>>(match => !match.Any())));
         }
 
-        [TestMethod]
-        public void TestSelectItemsForDeploy()
-        {
-            //act
-            _target.SelectItemsForDeploy(null);
-        }
-
         #endregion Test methods
     }
 }

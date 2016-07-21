@@ -23,10 +23,7 @@ namespace Warewolf.Studio.Views
         public string GetHeaderText()
         {
             BindingExpression be = HeaderTextBlock.GetBindingExpression(TextBlock.TextProperty);
-            if (be != null)
-            {
-                be.UpdateTarget();
-            }
+            be?.UpdateTarget();
             return HeaderTextBlock.Text;
         }
 
@@ -49,7 +46,7 @@ namespace Warewolf.Studio.Views
                 xamDataTreeNode.IsSelected = true;
                 ExplorerTree.ActiveNode = xamDataTreeNode;
             }
-            return xamDataTreeNode == null ? null : xamDataTreeNode.Data as IDllListingModel;
+            return xamDataTreeNode?.Data as IDllListingModel;
         }
 
         public bool IsItemVisible(string itemName)
@@ -78,10 +75,7 @@ namespace Warewolf.Studio.Views
         public string GetAssemblyName()
         {
             BindingExpression be = AssemblyNameTextBox.GetBindingExpression(TextBox.TextProperty);
-            if (be != null)
-            {
-                be.UpdateTarget();
-            }
+            be?.UpdateTarget();
             return AssemblyNameTextBox.Text;
         }
 
@@ -93,20 +87,14 @@ namespace Warewolf.Studio.Views
         public void PerformSave()
         {
             var viewModel = DataContext as ManagePluginSourceViewModel;
-            if (viewModel != null)
-            {
-                viewModel.OkCommand.Execute(null);
-            }
+            viewModel?.OkCommand.Execute(null);
         }
 
         public void SetAssemblyName(string assemblyName)
         {
             AssemblyNameTextBox.Text = assemblyName;
             BindingExpression be = AssemblyNameTextBox.GetBindingExpression(TextBlock.TextProperty);
-            if (be != null)
-            {
-                be.UpdateSource();
-            }
+            be?.UpdateSource();
         }
 
         public IDllListingModel OpenItem(string itemNameToOpen)
@@ -116,7 +104,7 @@ namespace Warewolf.Studio.Views
             {
                 xamDataTreeNode.IsExpanded = true;
             }
-            return xamDataTreeNode == null ? null : xamDataTreeNode.Data as IDllListingModel;
+            return xamDataTreeNode?.Data as IDllListingModel;
         }
 
         public bool GetControlEnabled(string controlName)

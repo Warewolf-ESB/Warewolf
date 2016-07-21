@@ -468,36 +468,6 @@ namespace Warewolf.Studio.Views
             DropNotAllowedStyle(e.DropTarget);
         }
 
-        private void ClearException(DragDropMoveEventArgs e)
-        {
-            e.OperationType = OperationType.Move;
-            _exceptionThrown = false;
-            _errorMessage = "";
-        }
-        private void SetException(DragDropMoveEventArgs e)
-        {
-            e.OperationType = OperationType.DropNotAllowed;
-            _exceptionThrown = true;
-            _errorMessage = "The destination folder has a resource with the same name";
-        }
-
-        private bool ValidateDragDrop(IExplorerItemViewModel source, IEnvironmentViewModel vmDestination)
-        {
-            CancelDrag = false;
-            IEnvironmentViewModel vmSource = GetEnv(source);
-            
-            if (!Equals(vmSource.ResourceName, vmDestination.ResourceName))
-            {
-                CancelDrag = true;
-            }
-            if ((source.ResourceType == "ServerSource" || source.IsServer) &&
-                string.IsNullOrWhiteSpace(source.ResourcePath))
-            {
-                CancelDrag = true;
-            }
-            return CancelDrag;
-        }
-
         private void UIElement_OnMouseLeave(object sender, MouseEventArgs e)
         {
             ResetDragEvents();
@@ -529,20 +499,6 @@ namespace Warewolf.Studio.Views
                     rect.Opacity = 0.0;
                 }
                 element.AllowDrop = false;
-            }
-        }
-
-        private static void DropAllowedStyle(UIElement element)
-        {
-            if (element != null)
-            {
-                Rectangle rect = (Rectangle)Utilities.GetDescendantFromName((XamDataTreeNodeControl)element, "DropOntoElem");
-                if (rect != null)
-                {
-                    rect.Stroke = Application.Current.TryFindResource("WareWolfButtonBrush") as SolidColorBrush;
-                    rect.Opacity = 0.5;
-                }
-                element.AllowDrop = true;
             }
         }
 

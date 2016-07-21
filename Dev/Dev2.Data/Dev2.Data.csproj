@@ -144,6 +144,7 @@
     <Compile Include="RecordSet.cs" />
     <Compile Include="ReverseIndexIterator.cs" />
     <Compile Include="Scalar.cs" />
+    <Compile Include="ServiceModel\ComPluginSource.cs" />
     <Compile Include="ServiceModel\Connection.cs" />
     <Compile Include="ServiceModel\RabbitMQSource.cs" />
     <Compile Include="ServiceModel\OauthSource.cs" />
@@ -376,8 +377,6 @@
     <Folder Include="Audit\" />
     <Folder Include="Compilers\" />
     <Folder Include="DataListCache\" />
-    <Folder Include="Storage\Binary Objects\" />
-    <Folder Include="Storage\ProtocolBuffers\" />
     <Folder Include="Value Objects\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
