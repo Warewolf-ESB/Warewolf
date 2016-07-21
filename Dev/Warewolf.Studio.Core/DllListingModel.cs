@@ -12,7 +12,7 @@ using Microsoft.Practices.Prism.Mvvm;
 
 namespace Warewolf.Studio.Core
 {
-    public class DllListingModel : BindableBase, IDllListingModel,IEquatable<DllListingModel>
+    public class DllListingModel : BindableBase, IDllListingModel, IEquatable<DllListingModel>
     {
         private readonly IManagePluginSourceModel _updateManager;
         private readonly IManageComPluginSourceModel _comUpdateManager;
@@ -50,23 +50,25 @@ namespace Warewolf.Studio.Core
         }
         public DllListingModel(IManageComPluginSourceModel updateManager, IFileListing dllListing)
         {
-               _comUpdateManager = updateManager;
-               if (dllListing != null)
-               {
-                   Name = dllListing.Name;
-                   FullName = dllListing.FullName;
-                   if (dllListing.Children != null && dllListing.Children.Count > 0)
-                   {
-                       Children =
-                           new AsyncObservableCollection<IDllListingModel>(
-                               dllListing.Children.Select(input => new DllListingModel(_comUpdateManager, input)));
-                   }
-                   IsDirectory = dllListing.IsDirectory;
-                   IsExpanderVisible = IsDirectory;
-                   IsVisible = true;
-                   _dllListing = dllListing;
-                   ExpandingCommand = new DelegateCommand(Expanding);
-               }
+            _comUpdateManager = updateManager;
+            if (dllListing != null)
+            {
+                Name = dllListing.Name;
+                FullName = dllListing.FullName;
+                ProgId = (dllListing as DllListing)?.ProgId;
+                ClsId = (dllListing as DllListing)?.ClsId;
+                if (dllListing.Children != null && dllListing.Children.Count > 0)
+                {
+                    Children =
+                        new AsyncObservableCollection<IDllListingModel>(
+                            dllListing.Children.Select(input => new DllListingModel(_comUpdateManager, input)));
+                }
+                IsDirectory = dllListing.IsDirectory;
+                IsExpanderVisible = IsDirectory;
+                IsVisible = true;
+                _dllListing = dllListing;
+                ExpandingCommand = new DelegateCommand(Expanding);
+            }
             _isCom = true;
         }
 
@@ -201,6 +203,8 @@ namespace Warewolf.Studio.Core
                 }
             }
         }
+        public string ClsId { get; set; }
+        public string ProgId { get; set; }
 
         public ICommand ExpandingCommand { get; set; }
 
@@ -222,7 +226,7 @@ namespace Warewolf.Studio.Core
                     IsExpanded = true;
                     Expanding();
                 }
-                
+
                 OnPropertyChanged(() => IsSelected);
             }
         }

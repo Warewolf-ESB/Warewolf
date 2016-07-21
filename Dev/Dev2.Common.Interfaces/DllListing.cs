@@ -81,6 +81,5 @@ namespace Dev2.Common.Interfaces
         public bool IsDirectory { get; set; }
         public string ProgId { get; set; }
         public string ClsId { get; set; }
-
     }
 }

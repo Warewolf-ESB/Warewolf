@@ -103,7 +103,7 @@ namespace Dev2.ViewModels
                 if (ViewModel.HasChanged)
                 {
                     var result = _popupController.Show(string.Format(StringResources.ItemSource_NotSaved),
-                                          string.Format("Save {0}?", ViewModel.Header.Replace("*", "")),
+                        $"Save {ViewModel.Header.Replace("*", "")}?",
                                           MessageBoxButton.YesNoCancel,
                                           MessageBoxImage.Information, "", false, false, true, false);
 

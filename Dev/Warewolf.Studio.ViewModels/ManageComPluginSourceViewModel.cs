@@ -220,13 +220,13 @@ namespace Warewolf.Studio.ViewModels
         {
             //var fromDll = pluginSource.SelectedDll;
             var selectedDll = pluginSource;
-            /*if (selectedDll != null)
+            if (selectedDll != null)
             {
-                if (selectedDll.Name.StartsWith("GAC:"))
+                if (selectedDll.Name.StartsWith("Registry"))
                 {
-                    var dllListingModel = DllListings.Find(model => model.Name == "GAC");
+                    var dllListingModel = DllListings.Find(model => model.Name == "Registry Items");
                     dllListingModel.IsExpanded = true;
-                    var itemToSelect = dllListingModel.Children.FirstOrDefault(model => model.FullName == selectedDll.FullName);
+                    var itemToSelect = dllListingModel.Children.FirstOrDefault(model => model.FullName == selectedDll.Name);
                     if (itemToSelect != null)
                     {
                         SelectedDll = itemToSelect;
@@ -235,9 +235,9 @@ namespace Warewolf.Studio.ViewModels
                 }
                 else
                 {
-                    var dllListingModel = DllListings.Find(model => model.Name == "File System");
+                    var dllListingModel = DllListings.Find(model => model.Name == "Registry Items");
                     dllListingModel.IsExpanded = true;
-                    var fileSystem = selectedDll.FullName.Split('\\');
+                    var fileSystem = selectedDll.Name.Split('\\');
                     var dllListingModels = dllListingModel.Children;
                     IDllListingModel itemToSelect = null;
                     foreach(var dir in fileSystem)
@@ -256,7 +256,7 @@ namespace Warewolf.Studio.ViewModels
                     }
 
                 }
-            }*/
+            }
 
 
             Name = _pluginSource.Name;
@@ -299,6 +299,8 @@ namespace Warewolf.Studio.ViewModels
                 if (SelectedDll != null)
                 {
                     AssemblyName = SelectedDll.FullName;
+                    ClsId = SelectedDll.ClsId;
+                    ProgId = SelectedDll.ProgId;
                     SelectedDll.IsExpanded = true;
                 }
                 ViewModelUtils.RaiseCanExecuteChanged(OkCommand);
@@ -327,7 +329,7 @@ namespace Warewolf.Studio.ViewModels
         void SetupHeaderTextFromExisting()
         {
             var serverName = _warewolfserverName;
-            if (serverName.Equals("localhost", StringComparison.OrdinalIgnoreCase))
+           /* if (serverName.Equals("localhost", StringComparison.OrdinalIgnoreCase))
             {
                 HeaderText = (_pluginSource == null ? ResourceName : _pluginSource.Name).Trim();
                 Header = (_pluginSource == null ? ResourceName : _pluginSource.Name).Trim();
@@ -336,7 +338,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 HeaderText = (_pluginSource == null ? ResourceName : _pluginSource.Name).Trim();
                 Header = (_pluginSource == null ? ResourceName : _pluginSource.Name).Trim();
-            }
+            }*/
         }
 
         public override bool CanSave()
@@ -457,9 +459,9 @@ namespace Warewolf.Studio.ViewModels
             {
                 return new ComPluginSourceDefinition
                 {
-                      Name = ResourceName,
-                      ClsId = _clsId,
-                      ProgId = _progID
+                    Name = ResourceName,
+                    ClsId = _clsId,
+                    ProgId = _progID
                 };
             }
             return _pluginSource;

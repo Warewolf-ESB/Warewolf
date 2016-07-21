@@ -67,8 +67,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                                 }
                             }
                         }
-                        var dllListings = new List<DllListing> { new DllListing() { Name = "Registry Items", IsDirectory = true } };
-                        dllListings.AddRange(TypesKeyValuePairs.Select(p => new DllListing
+                        var dllListings = TypesKeyValuePairs.Select(p => new DllListing()
                         {
                             Name = p.Value.Name,
                             FullName = p.Value.FullName,
@@ -76,9 +75,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                             IsDirectory = false,
                             ClsId = p.Value.GUID.ToString(),
                             ProgId = p.Key.ToString()
-                        }).OrderBy(listing => listing.Name)
-                                                                                            .ToList());
-
+                        }).OrderBy(listing => listing.Name).ToList();
 
                         msg.HasError = false;
                         msg.Message = serializer.SerializeToBuilder(dllListings);
