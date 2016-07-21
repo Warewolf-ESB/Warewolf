@@ -25,45 +25,7 @@ namespace Dev2.Data.Tests
         ///information about and functionality for the current test run.
         ///</summary>
         public TestContext TestContext { get; set; }
-
-        [TestMethod]
-        [Owner("Travis Frisinger")]
-        [TestCategory("XmlHelper_MakeErrorsUserReadable")]
-        // ReSharper disable once InconsistentNaming
-        public void XmlHelper_MakeErrorsUserReadable_Scenerio_Result()
-        {
-            //------------Setup for test--------------------------
-
-            const string Expected = @"Message: Login failed for user 'testuser2'.";
-
-            const string Expected2 =
-                @"2 ExecuteReader requires an open and available Connection. The connection's current state is closed.";
-
-            const string XmlFragment = @"<InnerError>Index #0
-Message: Login failed for user 'testuser2'.
-LineNumber: 65536
-Source: .Net SqlClient Data Provider
-Procedure: 
-</InnerError><InnerError>ExecuteReader requires an open and available Connection. The connection's current state is closed.
-   at System.Data.SqlClient.SqlCommand.ValidateCommand(String method, Boolean async)
-   at System.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, String method, TaskCompletionSource`1 completion, Int32 timeout, Task& task, Boolean asyncWrite)
-   at System.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, String method)
-   at System.Data.SqlClient.SqlCommand.ExecuteReader(CommandBehavior behavior, String method)
-   at System.Data.SqlClient.SqlCommand.ExecuteReader(CommandBehavior behavior)
-   at Dev2.Services.Sql.SqlServer.ExecuteReader[T](SqlCommand command, CommandBehavior commandBehavior, Func`2 handler) in c:\Development\Dev\Dev2.Services.Sql\SqlServer.cs:line 121
-   at Dev2.Services.Sql.SqlServer.FetchDataTable(SqlParameter[] parameters) in c:\Development\Dev\Dev2.Services.Sql\SqlServer.cs:line 61
-   at Dev2.Services.Execution.DatabaseServiceExecution.SqlExecution(ErrorResultTO errors, Object& executeService) in c:\Development\Dev\Dev2.Services.Execution\DatabaseServiceExecution.cs:line 118</InnerError>";
-
-            //------------Execute Test---------------------------
-
-            var result = XmlHelper.MakeErrorsUserReadable(XmlFragment);
-
-            //------------Assert Results-------------------------
-
-            StringAssert.Contains(result, Expected);
-            StringAssert.Contains(result, Expected2);
-        }
-
+       
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void IsXml_GivenValidXml_ShouldReturnTrue()

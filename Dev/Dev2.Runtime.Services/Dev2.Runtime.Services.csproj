@@ -376,7 +376,6 @@
     <Compile Include="ServiceModel\Utils\ServiceMappingHelper.cs" />
     <Compile Include="ServiceModel\WebServices.cs" />
     <Compile Include="ServiceModel\EmailSources.cs" />
-    <Compile Include="Hosting\IResourceIterator.cs" />
     <Compile Include="Hosting\ResourceCatalog.cs" />
     <Compile Include="Security\HostSecureConfig.cs" />
     <Compile Include="Security\HostSecurityProvider.cs" />
@@ -407,7 +406,6 @@
     <Compile Include="ServiceModel\Connections.cs" />
     <Compile Include="Hosting\ResourceDelimiter.cs" />
     <Compile Include="Hosting\ResourceIteratorResult.cs" />
-    <Compile Include="Hosting\ResourceIterator.cs" />
     <Compile Include="ServiceModel\Data\ServiceMethodList.cs" />
     <Compile Include="ServiceModel\Esb\IExecutableEsbEnpoint.cs" />
     <Compile Include="ServiceModel\Data\HelpDictionary.cs" />

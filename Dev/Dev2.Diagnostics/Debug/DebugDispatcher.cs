@@ -69,6 +69,19 @@ namespace Dev2.Diagnostics.Debug
         #endregion
 
         #region Add
+        /// <summary>
+        /// Adds the specified writer to the dispatcher.
+        /// </summary>
+        /// <param name="workspaceId">The ID of the workspace to which the writer belongs.</param>
+        /// <param name="writer">The writer to be added.</param>
+        public void Add(Guid workspaceId, IDebugWriter writer)
+        {
+            if (writer == null || _shutdownRequested)
+            {
+                return;
+            }
+            _writers.TryAdd(workspaceId, writer);
+        }
 
         #endregion
 

@@ -363,7 +363,6 @@
     <Compile Include="Dock\UIElementHelper.cs" />
     <Compile Include="Enums\enDsfActivityType.cs" />
     <Compile Include="Factory\DebugStateFactory.cs" />
-    <Compile Include="Factory\DialogViewModelFactory.cs" />
     <Compile Include="Factory\WorkSurfaceContextFactory.cs" />
     <Compile Include="Factory\WorkSurfaceKeyFactory.cs" />
     <Compile Include="IApp.cs" />
