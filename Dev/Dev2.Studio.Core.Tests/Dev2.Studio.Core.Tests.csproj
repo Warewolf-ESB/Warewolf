@@ -302,11 +302,9 @@
     <Compile Include="MainViewModelPersistenceMock.cs" />
     <Compile Include="MainViewModelTest.cs" />
     <Compile Include="Dev2MockFactory.cs" />
-    <Compile Include="MockUtils\MoqExtensions.cs" />
     <Compile Include="ModelTests\DataListItemModelTest.cs" />
     <Compile Include="Services\UserConfigurationServiceTests.cs" />
     <Compile Include="TestResourceRepository.cs" />
-    <Compile Include="ThreadExecuter.cs" />
     <Compile Include="ProperMoqs\MockBehaviourBase.cs" />
     <Compile Include="ProperMoqs\MoqPopup.cs" />
     <Compile Include="ProperMoqs\TestResourceModel.cs" />
@@ -328,7 +326,6 @@
     <Compile Include="Utils\AsyncWorkerTests.cs" />
     <Compile Include="ViewModelTests\ConnectControlViewModelTests.cs" />
     <Compile Include="ViewModelTests\QuickVariableInputModelTests.cs" />
-    <Compile Include="ViewModelTests\TestUtils.cs" />
     <Compile Include="ViewModelTests\BaseWorkSurfaceViewModelTests.cs" />
     <Compile Include="ViewModelTests\HelpViewModelTests.cs" />
     <Compile Include="ViewModelTests\WorkSurfaceContextViewModelTests.cs" />
@@ -339,7 +336,6 @@
     </Compile>
     <Compile Include="DebugStateTreeViewItemViewModelTests.cs" />
     <Compile Include="UtilsTests\NewWorkflowNamesTests.cs" />
-    <Compile Include="Utils\DataListViewModelTestHelper.cs" />
     <Compile Include="Utils\InputOutputViewModelTestObject.cs" />
     <Compile Include="Utils\TestModelItemFactory.cs" />
     <Compile Include="Utils\UIElementExtensionMethods.cs" />
@@ -493,6 +489,7 @@
     <Folder Include="AppResources\Behaviors\" />
     <Folder Include="Diagnostics\Debug\" />
     <Folder Include="Dock\" />
+    <Folder Include="MockUtils\" />
     <Folder Include="Repositories\" />
     <Folder Include="ViewModelTests\Configuration\" />
     <Folder Include="ViewModelTests\ViewModelMocks\" />
