@@ -131,6 +131,22 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
+        /// Click_Close_Settings_Tab_Button - Use 'Click_Close_Settings_Tab_ButtonParams' to pass parameters into this method.
+        /// </summary>
+        public void Click_Close_Settings_Tab_Button()
+        {
+            #region Variable Declarations
+            WpfButton closeButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.CloseButton;
+            #endregion
+
+            // Verify that the 'Exists' property of '' button equals 'True'
+            Assert.AreEqual(this.Click_Close_Settings_Tab_ButtonParams.CloseButtonExists, closeButton.Exists, "Settings close tab button does not exist.");
+
+            // Click '' button
+            Mouse.Click(closeButton, new Point(16, 6));
+        }
+        
+        /// <summary>
         /// Click_Close_Studio_TopRibbon_Button
         /// </summary>
         public void Click_Close_Studio_TopRibbon_Button()
@@ -144,22 +160,6 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
-        /// Click_Close_Tab_Button - Use 'Click_Close_Tab_ButtonParams' to pass parameters into this method.
-        /// </summary>
-        public void Click_Close_Tab_Button()
-        {
-            #region Variable Declarations
-            WpfButton closeButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.CloseButton;
-            #endregion
-
-            // Verify that the 'Exists' property of 'closeBtn' custom control equals 'True'
-            Assert.AreEqual(this.Click_Close_Tab_ButtonParams.CloseButtonExists, closeButton.Exists, "Close tab button does not exist");
-
-            // Click 'closeBtn' custom control
-            Mouse.Click(closeButton, new Point(5, 5));
-        }
-        
-        /// <summary>
         /// Click_Close_Tab_Context_Menu_Button
         /// </summary>
         public void Click_Close_Tab_Context_Menu_Button()
@@ -170,6 +170,22 @@ namespace Warewolf.UITests
 
             // Click 'Close' menu item
             Mouse.Click(close, new Point(27, 13));
+        }
+        
+        /// <summary>
+        /// Click_Close_Workflow_Tab_Button - Use 'Click_Close_Workflow_Tab_ButtonParams' to pass parameters into this method.
+        /// </summary>
+        public void Click_Close_Workflow_Tab_Button()
+        {
+            #region Variable Declarations
+            WpfButton closeButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.CloseButton;
+            #endregion
+
+            // Verify that the 'Exists' property of 'closeBtn' custom control equals 'True'
+            Assert.AreEqual(this.Click_Close_Workflow_Tab_ButtonParams.CloseButtonExists, closeButton.Exists, "Close tab button does not exist");
+
+            // Click 'closeBtn' custom control
+            Mouse.Click(closeButton, new Point(5, 5));
         }
         
         /// <summary>
@@ -2987,8 +3003,8 @@ namespace Warewolf.UITests
             // Type 'TSTCIREMOTE' in 'ServiceNameTextBox' text box
             serviceNameTextBox.Text = this.Enter_Servicename_As_TSTCIREMOTEParams.ServiceNameTextBoxText;
 
-            // Wait for 30 seconds for user delay between actions; Verify that the 'Enabled' property of 'Save' button equals 'True'
-            Playback.Wait(30000);
+            // Wait for 40 seconds for user delay between actions; Verify that the 'Enabled' property of 'Save' button equals 'True'
+            Playback.Wait(40000);
             Assert.AreEqual(this.Enter_Servicename_As_TSTCIREMOTEParams.SaveButtonEnabled, saveButton.Enabled, "Save dialog save button is not enabled. Check workflow name is valid and that ano" +
                     "ther workflow by that name does not already exist.");
         }
@@ -5095,15 +5111,27 @@ namespace Warewolf.UITests
             }
         }
         
-        public virtual Click_Close_Tab_ButtonParams Click_Close_Tab_ButtonParams
+        public virtual Click_Close_Settings_Tab_ButtonParams Click_Close_Settings_Tab_ButtonParams
         {
             get
             {
-                if ((this.mClick_Close_Tab_ButtonParams == null))
+                if ((this.mClick_Close_Settings_Tab_ButtonParams == null))
                 {
-                    this.mClick_Close_Tab_ButtonParams = new Click_Close_Tab_ButtonParams();
+                    this.mClick_Close_Settings_Tab_ButtonParams = new Click_Close_Settings_Tab_ButtonParams();
                 }
-                return this.mClick_Close_Tab_ButtonParams;
+                return this.mClick_Close_Settings_Tab_ButtonParams;
+            }
+        }
+        
+        public virtual Click_Close_Workflow_Tab_ButtonParams Click_Close_Workflow_Tab_ButtonParams
+        {
+            get
+            {
+                if ((this.mClick_Close_Workflow_Tab_ButtonParams == null))
+                {
+                    this.mClick_Close_Workflow_Tab_ButtonParams = new Click_Close_Workflow_Tab_ButtonParams();
+                }
+                return this.mClick_Close_Workflow_Tab_ButtonParams;
             }
         }
         
@@ -6843,7 +6871,9 @@ namespace Warewolf.UITests
         
         private Click_Calculate_Large_View_Done_ButtonParams mClick_Calculate_Large_View_Done_ButtonParams;
         
-        private Click_Close_Tab_ButtonParams mClick_Close_Tab_ButtonParams;
+        private Click_Close_Settings_Tab_ButtonParams mClick_Close_Settings_Tab_ButtonParams;
+        
+        private Click_Close_Workflow_Tab_ButtonParams mClick_Close_Workflow_Tab_ButtonParams;
         
         private Click_Debug_Ribbon_ButtonParams mClick_Debug_Ribbon_ButtonParams;
         
@@ -7191,10 +7221,25 @@ namespace Warewolf.UITests
     }
     
     /// <summary>
-    /// Parameters to be passed into 'Click_Close_Tab_Button'
+    /// Parameters to be passed into 'Click_Close_Settings_Tab_Button'
     /// </summary>
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Click_Close_Tab_ButtonParams
+    public class Click_Close_Settings_Tab_ButtonParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of '' button equals 'True'
+        /// </summary>
+        public bool CloseButtonExists = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Click_Close_Workflow_Tab_Button'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Click_Close_Workflow_Tab_ButtonParams
     {
         
         #region Fields
@@ -9384,7 +9429,7 @@ namespace Warewolf.UITests
         public string ServiceNameTextBoxText = "TSTCIREMOTE";
         
         /// <summary>
-        /// Wait for 30 seconds for user delay between actions; Verify that the 'Enabled' property of 'Save' button equals 'True'
+        /// Wait for 40 seconds for user delay between actions; Verify that the 'Enabled' property of 'Save' button equals 'True'
         /// </summary>
         public bool SaveButtonEnabled = true;
         #endregion
@@ -17856,10 +17901,28 @@ namespace Warewolf.UITests
                 return this.mWorksurfaceContext;
             }
         }
+        
+        public WpfButton CloseButton
+        {
+            get
+            {
+                if ((this.mCloseButton == null))
+                {
+                    this.mCloseButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mCloseButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "closeBtn";
+                    this.mCloseButton.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mCloseButton;
+            }
+        }
         #endregion
         
         #region Fields
         private WorksurfaceContext3 mWorksurfaceContext;
+        
+        private WpfButton mCloseButton;
         #endregion
     }
     
