@@ -216,7 +216,6 @@
     <Compile Include="IComPluginService.cs" />
     <Compile Include="IComPluginSource.cs" />
     <Compile Include="IComputerName.cs" />
-    <Compile Include="IComputerNameProvider.cs" />
     <Compile Include="IConnectControlViewModel.cs" />
     <Compile Include="IDeletedFileMetadata.cs" />
     <Compile Include="IDllListing.cs" />
@@ -246,6 +245,7 @@
     <Compile Include="IJsonObjectsView.cs" />
     <Compile Include="ILocalPathManager.cs" />
     <Compile Include="IManageComPluginSourceModel.cs" />
+    <Compile Include="IManageComPluginSourceViewModel.cs" />
     <Compile Include="IManageDatabaseSourceView.cs" />
     <Compile Include="IManageDatabaseSourceViewModel.cs" />
     <Compile Include="IManageRabbitMQSourceViewModel.cs" />

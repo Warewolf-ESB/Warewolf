@@ -118,17 +118,11 @@ namespace Dev2.Studio.InterfaceImplementors
             var parseEventLog = _syntaxTreeBuilderHelper.EventLog;
             var intellisenseDesiredResultSet = context.DesiredResultSet;
 
-            if((caretPosition == 0 || string.IsNullOrEmpty(inputText))
-                && intellisenseDesiredResultSet != IntellisenseDesiredResultSet.EntireSet)
-            {
-                return EmptyResults;
-            }
-
             if(context.IsInCalculateMode)
             {
-                if(intellisenseDesiredResultSet == IntellisenseDesiredResultSet.EntireSet)
+                if(intellisenseDesiredResultSet == IntellisenseDesiredResultSet.EntireSet && (caretPosition == 0 || string.IsNullOrEmpty(inputText)))
                 {
-                    if(parseEventLog != null) parseEventLog.Clear();
+                    parseEventLog?.Clear();
 
                     if(_syntaxTreeBuilderHelper.EventLog != null && _syntaxTreeBuilderHelper.HasEventLogs)
                     {
@@ -141,7 +135,7 @@ namespace Dev2.Studio.InterfaceImplementors
                 }
 
                 Token[] tokens;
-                if(intellisenseDesiredResultSet == IntellisenseDesiredResultSet.ClosestMatch)
+                //if(intellisenseDesiredResultSet == IntellisenseDesiredResultSet.ClosestMatch )
                 {
                     var searchText = context.FindTextToSearch();
                     _syntaxTreeBuilderHelper.Build(searchText, true, out tokens);
@@ -149,20 +143,20 @@ namespace Dev2.Studio.InterfaceImplementors
 
                     List<IntellisenseProviderResult> subResults = IntellisenseResult.Where(t => t.Name.StartsWith(sub)).ToList();
 
-                    if(_syntaxTreeBuilderHelper.EventLog != null && _syntaxTreeBuilderHelper.HasEventLogs)
-                    {
-                        return EvaluateEventLogs(subResults, inputText);
-                    }
+//                    if(_syntaxTreeBuilderHelper.EventLog != null && _syntaxTreeBuilderHelper.HasEventLogs)
+//                    {
+//                        return EvaluateEventLogs(subResults, inputText);
+//                    }
 
                     return subResults;
                 }
 
-                _syntaxTreeBuilderHelper.Build(inputText, false, out tokens);
-
-                if(_syntaxTreeBuilderHelper.HasEventLogs)
-                {
-                    return EvaluateEventLogs(inputText);
-                }
+//                _syntaxTreeBuilderHelper.Build(inputText, false, out tokens);
+//
+//                if(_syntaxTreeBuilderHelper.HasEventLogs)
+//                {
+//                    return EvaluateEventLogs(inputText);
+//                }
             }
 
             return EmptyResults;

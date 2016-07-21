@@ -13,10 +13,11 @@ namespace Dev2.Common.Interfaces
         void EditResource(IDbSource selectedSource, IWorkSurfaceKey key = null);
         void EditResource(IPluginSource selectedSource, IWorkSurfaceKey key = null);
         void EditResource(IWebServiceSource selectedSource, IWorkSurfaceKey key = null);
-
+        void EditResource(IEmailServiceSource selectedSource, IWorkSurfaceKey key = null);
         void EditResource(IExchangeSource selectedSource, IWorkSurfaceKey key = null);
         void EditResource(IRabbitMQServiceSourceDefinition selectedSource, IWorkSurfaceKey key = null);
         void EditResource(IWcfServerSource selectedSource, IWorkSurfaceKey key = null);
+        void EditResource(IComPluginSource selectedSource, IWorkSurfaceKey key = null);
     }
 
     public interface IShellViewModelNew
@@ -32,6 +33,7 @@ namespace Dev2.Common.Interfaces
         void NewSharepointSource(string resourcePath);
         void NewDropboxSource(string resourcePath);
         void NewWcfSource(string resourcePath);
+        void NewComPluginSource(string resourcePath);
     }
 
     public interface IShellViewModelOpen

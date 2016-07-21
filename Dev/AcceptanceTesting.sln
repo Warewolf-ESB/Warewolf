@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.25123.0
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Server", "Dev2.Server\Dev2.Server.csproj", "{87AEFD04-29F3-45B6-A7C6-4161F9190876}"
 EndProject
@@ -254,11 +254,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.Storage.Tests", "W
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gma.DataStructures.StringSearch", "Trie\Gma.DataStructures.StringSearch\Gma.DataStructures.StringSearch.csproj", "{17125877-2CF0-42B2-89D3-418E40BDE5D0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfControls.CS", "AutoComplete\WpfControls.CS\WpfControls.CS.csproj", "{BB2ABB74-BA58-4812-83AA-EC8171F42DF4}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.AcceptanceTesting.ExchangeSource", "Warewolf.AcceptanceTesting.ExchangeSource\Warewolf.AcceptanceTesting.ExchangeSource.csproj", "{1F5ED20F-4EEF-4592-B463-7B2911BFB9E0}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfControls.CS.Tests", "AutoComplete\WpfControls.CS.Tests\WpfControls.CS.Tests.csproj", "{96E3D271-6627-4BAE-8DBC-5C7DF0C41DDD}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.Resource", "Warewolf.Resource\Warewolf.Resource.csproj", "{DFF93ECB-FDD1-405E-AE02-9F4BC7571C1B}"
 EndProject
@@ -577,16 +573,9 @@ Global
 		{17125877-2CF0-42B2-89D3-418E40BDE5D0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{17125877-2CF0-42B2-89D3-418E40BDE5D0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{17125877-2CF0-42B2-89D3-418E40BDE5D0}.Release|Any CPU.Build.0 = Release|Any CPU
-		{BB2ABB74-BA58-4812-83AA-EC8171F42DF4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{BB2ABB74-BA58-4812-83AA-EC8171F42DF4}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{BB2ABB74-BA58-4812-83AA-EC8171F42DF4}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{BB2ABB74-BA58-4812-83AA-EC8171F42DF4}.Release|Any CPU.Build.0 = Release|Any CPU
 		{1F5ED20F-4EEF-4592-B463-7B2911BFB9E0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{1F5ED20F-4EEF-4592-B463-7B2911BFB9E0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1F5ED20F-4EEF-4592-B463-7B2911BFB9E0}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{96E3D271-6627-4BAE-8DBC-5C7DF0C41DDD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{96E3D271-6627-4BAE-8DBC-5C7DF0C41DDD}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{96E3D271-6627-4BAE-8DBC-5C7DF0C41DDD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DFF93ECB-FDD1-405E-AE02-9F4BC7571C1B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{DFF93ECB-FDD1-405E-AE02-9F4BC7571C1B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DFF93ECB-FDD1-405E-AE02-9F4BC7571C1B}.Release|Any CPU.ActiveCfg = Release|Any CPU

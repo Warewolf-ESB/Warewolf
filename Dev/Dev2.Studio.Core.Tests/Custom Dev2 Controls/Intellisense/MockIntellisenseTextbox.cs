@@ -22,9 +22,9 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense
             TextChangedCounter = 0;           
         }
 
-        protected override void TheTextHasChanged()
-        {            
-            TextChangedCounter++;            
-        }
+//        protected override void TheTextHasChanged()
+//        {            
+//            TextChangedCounter++;            
+//        }
     }
 }

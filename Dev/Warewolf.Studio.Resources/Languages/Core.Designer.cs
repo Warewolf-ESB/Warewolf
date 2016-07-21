@@ -2960,15 +2960,6 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to You can pass variables into your workflow{0}by selecting the Input checkbox{0}in the Variables window..
-        /// </summary>
-        public static string InputVariablesTip {
-            get {
-                return ResourceManager.GetString("InputVariablesTip", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to &quot;Invalid text&quot;.
         /// </summary>
         public static string InvalidPermissionHeader {
@@ -7897,6 +7888,24 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string UserNameToolTip {
             get {
                 return ResourceManager.GetString("UserNameToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You can pass variables into your workflow{0}by selecting the Input checkbox{0}in the Variables window..
+        /// </summary>
+        public static string VariablesInput_Information {
+            get {
+                return ResourceManager.GetString("VariablesInput_Information", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Did you know?.
+        /// </summary>
+        public static string VariablesInput_Information_Title {
+            get {
+                return ResourceManager.GetString("VariablesInput_Information_Title", resourceCulture);
             }
         }
         

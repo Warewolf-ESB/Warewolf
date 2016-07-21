@@ -164,8 +164,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Service", "Service", "{A86E
 		TestScripts\Server\Service\Startup.bat = TestScripts\Server\Service\Startup.bat
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfControls.CS", "AutoComplete\WpfControls.CS\WpfControls.CS.csproj", "{BB2ABB74-BA58-4812-83AA-EC8171F42DF4}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.ToolsSpecs", "Warewolf.ToolsSpecs\Warewolf.ToolsSpecs.csproj", "{CAD4D820-C619-4099-AA9C-DCACD23ADB89}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gma.DataStructures.StringSearch", "Trie\Gma.DataStructures.StringSearch\Gma.DataStructures.StringSearch.csproj", "{17125877-2CF0-42B2-89D3-418E40BDE5D0}"
@@ -383,10 +381,6 @@ Global
 		{BF41B889-B0EE-436C-9511-5943C77582E1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BF41B889-B0EE-436C-9511-5943C77582E1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BF41B889-B0EE-436C-9511-5943C77582E1}.Release|Any CPU.Build.0 = Release|Any CPU
-		{BB2ABB74-BA58-4812-83AA-EC8171F42DF4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{BB2ABB74-BA58-4812-83AA-EC8171F42DF4}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{BB2ABB74-BA58-4812-83AA-EC8171F42DF4}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{BB2ABB74-BA58-4812-83AA-EC8171F42DF4}.Release|Any CPU.Build.0 = Release|Any CPU
 		{CAD4D820-C619-4099-AA9C-DCACD23ADB89}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{CAD4D820-C619-4099-AA9C-DCACD23ADB89}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CAD4D820-C619-4099-AA9C-DCACD23ADB89}.Release|Any CPU.ActiveCfg = Release|Any CPU

@@ -147,8 +147,11 @@
   <data name="GenericConfirmation" xml:space="preserve">
     <value>Are you sure?</value>
   </data>
-  <data name="InputVariablesTip" xml:space="preserve">
+  <data name="VariablesInput_Information" xml:space="preserve">
     <value>You can pass variables into your workflow{0}by selecting the Input checkbox{0}in the Variables window.</value>
+  </data>
+  <data name="VariablesInput_Information_Title" xml:space="preserve">
+    <value>Did you know?</value>
   </data>
   <data name="InvalidTextHeader" xml:space="preserve">
     <value>"Invalid text"</value>

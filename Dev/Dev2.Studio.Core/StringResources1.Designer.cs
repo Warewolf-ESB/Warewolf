@@ -610,24 +610,6 @@ namespace Dev2.Studio.Core {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to You can pass variables into your workflow by selecting the Input checkbox in the Variables window..
-        /// </summary>
-        public static string VariablesInput_Information {
-            get {
-                return ResourceManager.GetString("VariablesInput_Information", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Did you know?.
-        /// </summary>
-        public static string VariablesInput_Information_Title {
-            get {
-                return ResourceManager.GetString("VariablesInput_Information_Title", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to http://warewolf.io/start.html.
         /// </summary>
         public static string Warewolf_Homepage_Start {
