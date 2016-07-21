@@ -328,7 +328,6 @@
     <Compile Include="ESB\Management\Services\ReloadResource.cs" />
     <Compile Include="ESB\Management\Services\TerminateExecution.cs" />
     <Compile Include="ESB\Management\Services\UpdateWorkspaceItem.cs" />
-    <Compile Include="ESB\Management\Sources\ManagementServiceSource.cs" />
     <Compile Include="Execution\ExecutableServiceRepository.cs" />
     <Compile Include="Execution\IExecutableService.cs" />
     <Compile Include="Execution\ExecutableServiceKey.cs" />
@@ -404,7 +403,6 @@
     <Compile Include="ServiceModel\Data\Service.cs" />
     <Compile Include="ServiceModel\Data\ServiceMethod.cs" />
     <Compile Include="ServiceModel\Connections.cs" />
-    <Compile Include="Hosting\ResourceDelimiter.cs" />
     <Compile Include="Hosting\ResourceIteratorResult.cs" />
     <Compile Include="ServiceModel\Data\ServiceMethodList.cs" />
     <Compile Include="ServiceModel\Esb\IExecutableEsbEnpoint.cs" />
