@@ -160,6 +160,21 @@
                                 <Path Fill="#ffffff" Margin="1,3,0,0" Data="M 0,0 L2,0 L 8,6 L8,8" />
                             </Grid>
                         </Border>
+                        <ContentPresenter x:Name="PART_DefaultTextHost"
+                                          AllowDrop="{TemplateBinding AllowDrop}"
+                                          Height="{TemplateBinding Height}"
+                                          TextBlock.FontFamily="{StaticResource DefaultFontFamily}"
+                                          TextBlock.FontStyle="Italic"
+                                          TextBlock.Foreground="{StaticResource WarewolfHeaderWatermarkGreyBrush}"
+                                          MinWidth="{TemplateBinding MinWidth}"
+                                          MaxWidth="{TemplateBinding MaxWidth}"
+                                          Content="{TemplateBinding DefaultText}"
+                                          ContentTemplate="{TemplateBinding DefaultTextTemplate}"
+                                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                          HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                          IsHitTestVisible="False"
+                                          Margin="{TemplateBinding Padding}"
+                                          Visibility="Collapsed" />
                         <Popup x:Name="Popup">
                             <Grid Opacity="{TemplateBinding Opacity}">
                                 <Border x:Name="PopupBorder" HorizontalAlignment="Stretch" Opacity="0" BorderThickness="0">
@@ -281,6 +296,41 @@
                             </VisualStateGroup>
                         </VisualStateManager.VisualStateGroups>
                     </Grid>
+                    <ControlTemplate.Triggers>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsFocused" Value="False" />
+                                <Condition Property="Text" Value="" />
+                            </MultiTrigger.Conditions>
+                            <MultiTrigger.Setters>
+                                <Setter Property="Visibility" TargetName="PART_DefaultTextHost" Value="Visible" />
+                            </MultiTrigger.Setters>
+                        </MultiTrigger>
+                        <!--<MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="AllowUserCalculateMode" Value="True" />
+                                <Condition Property="IsInCalculateMode" Value="True" />
+                            </MultiTrigger.Conditions>
+                            <MultiTrigger.Setters>
+                                <Setter Property="Visibility" TargetName="PART_CalculateModePrefix" Value="Visible" />
+                                <Setter Property="Margin" TargetName="PART_ContentHost" Value="10,0,0,0" />
+                            </MultiTrigger.Setters>
+                        </MultiTrigger>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="MouseOverVisual" Property="Opacity" Value="1" />
+                        </Trigger>
+                        <Trigger Property="IsFocused" Value="True">
+                            <Setter TargetName="FocusVisual" Property="Opacity" Value="1" />
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="false">
+                            <Setter TargetName="Border" Property="BorderBrush" Value="{StaticResource BrushDisabledForeground}" />
+                            <Setter TargetName="Border" Property="Background" Value="{StaticResource DisabledVisualElement}" />
+                            <Setter Property="Foreground" Value="{StaticResource BrushDisabledForeground}" />
+                        </Trigger>
+                        <Trigger Property="HasError" Value="true">
+                            <Setter Property="Foreground" Value="{StaticResource ValidationErrorElement}" />
+                        </Trigger>-->
+                    </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
