@@ -131,6 +131,22 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
+        /// Click_Close_Settings_Tab_Button - Use 'Click_Close_Settings_Tab_ButtonParams' to pass parameters into this method.
+        /// </summary>
+        public void Click_Close_Settings_Tab_Button()
+        {
+            #region Variable Declarations
+            WpfButton closeButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.CloseButton;
+            #endregion
+
+            // Verify that the 'Exists' property of '' button equals 'True'
+            Assert.AreEqual(this.Click_Close_Settings_Tab_ButtonParams.CloseButtonExists, closeButton.Exists, "Settings close tab button does not exist.");
+
+            // Click '' button
+            Mouse.Click(closeButton, new Point(16, 6));
+        }
+        
+        /// <summary>
         /// Click_Close_Studio_TopRibbon_Button
         /// </summary>
         public void Click_Close_Studio_TopRibbon_Button()
@@ -144,22 +160,6 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
-        /// Click_Close_Tab_Button - Use 'Click_Close_Tab_ButtonParams' to pass parameters into this method.
-        /// </summary>
-        public void Click_Close_Tab_Button()
-        {
-            #region Variable Declarations
-            WpfButton closeButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.CloseButton;
-            #endregion
-
-            // Verify that the 'Exists' property of 'closeBtn' custom control equals 'True'
-            Assert.AreEqual(this.Click_Close_Tab_ButtonParams.CloseButtonExists, closeButton.Exists, "Close tab button does not exist");
-
-            // Click 'closeBtn' custom control
-            Mouse.Click(closeButton, new Point(5, 5));
-        }
-        
-        /// <summary>
         /// Click_Close_Tab_Context_Menu_Button
         /// </summary>
         public void Click_Close_Tab_Context_Menu_Button()
@@ -170,6 +170,22 @@ namespace Warewolf.UITests
 
             // Click 'Close' menu item
             Mouse.Click(close, new Point(27, 13));
+        }
+        
+        /// <summary>
+        /// Click_Close_Workflow_Tab_Button - Use 'Click_Close_Workflow_Tab_ButtonParams' to pass parameters into this method.
+        /// </summary>
+        public void Click_Close_Workflow_Tab_Button()
+        {
+            #region Variable Declarations
+            WpfButton closeButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.CloseButton;
+            #endregion
+
+            // Verify that the 'Exists' property of 'closeBtn' custom control equals 'True'
+            Assert.AreEqual(this.Click_Close_Workflow_Tab_ButtonParams.CloseButtonExists, closeButton.Exists, "Close tab button does not exist");
+
+            // Click 'closeBtn' custom control
+            Mouse.Click(closeButton, new Point(5, 5));
         }
         
         /// <summary>
@@ -791,6 +807,25 @@ namespace Warewolf.UITests
         {
             #region Variable Declarations
             WpfButton saveButton = this.MainStudioWindow.SideMenuBar.SaveButton;
+            #endregion
+
+            // Verify that the 'Exists' property of 'Save this tab' button equals 'True'
+            Assert.AreEqual(this.Click_Save_Ribbon_ButtonParams.SaveButtonExists, saveButton.Exists, "Save ribbon button does not exist");
+
+            // Click 'Save this tab' button
+            Mouse.Click(saveButton, new Point(10, 5));
+
+            // Verify that the 'Enabled' property of 'Save this tab' button equals 'False'
+            Assert.AreEqual(this.Click_Save_Ribbon_ButtonParams.SaveButtonEnabled, saveButton.Enabled, "Save ribbon button is still enabled after clicking it.");
+        }
+        
+        /// <summary>
+        /// Click_Save_Ribbon_Button_to_Open_Save_Dialog - Use 'Click_Save_Ribbon_Button_to_Open_Save_DialogParams' to pass parameters into this method.
+        /// </summary>
+        public void Click_Save_Ribbon_Button_to_Open_Save_Dialog()
+        {
+            #region Variable Declarations
+            WpfButton saveButton = this.MainStudioWindow.SideMenuBar.SaveButton;
             WpfButton cancelButton = this.SaveDialogWindow.CancelButton;
             WpfText errorLabel = this.SaveDialogWindow.ErrorLabel;
             WpfTree explorerTree = this.SaveDialogWindow.ExplorerView.ExplorerTree;
@@ -805,50 +840,50 @@ namespace Warewolf.UITests
             #endregion
 
             // Verify that the 'Exists' property of 'Save this tab' button equals 'True'
-            Assert.AreEqual(this.Click_Save_Ribbon_ButtonParams.SaveButtonExists, saveButton.Exists, "Save ribbon button does not exist");
+            Assert.AreEqual(this.Click_Save_Ribbon_Button_to_Open_Save_DialogParams.SaveButtonExists, saveButton.Exists, "Save ribbon button does not exist");
 
             // Click 'Save this tab' button
             Mouse.Click(saveButton, new Point(10, 5));
 
             // Wait for 2 seconds for user delay between actions; Verify that the 'Exists' property of 'Cancel' button equals 'True'
             Playback.Wait(2000);
-            Assert.AreEqual(this.Click_Save_Ribbon_ButtonParams.CancelButtonExists, cancelButton.Exists, "Save dialog cancel button does not exist");
+            Assert.AreEqual(this.Click_Save_Ribbon_Button_to_Open_Save_DialogParams.CancelButtonExists, cancelButton.Exists, "Save dialog cancel button does not exist");
 
             // Verify that the 'Exists' property of ''Name' cannot be empty.' label equals 'True'
-            Assert.AreEqual(this.Click_Save_Ribbon_ButtonParams.ErrorLabelExists, errorLabel.Exists, "Save dialog error label does not exist");
+            Assert.AreEqual(this.Click_Save_Ribbon_Button_to_Open_Save_DialogParams.ErrorLabelExists, errorLabel.Exists, "Save dialog error label does not exist");
 
             // Verify that the 'Exists' property of 'ExplorerTree' tree equals 'True'
-            Assert.AreEqual(this.Click_Save_Ribbon_ButtonParams.ExplorerTreeExists, explorerTree.Exists, "Save dialog explorer tree does not exist");
+            Assert.AreEqual(this.Click_Save_Ribbon_Button_to_Open_Save_DialogParams.ExplorerTreeExists, explorerTree.Exists, "Save dialog explorer tree does not exist");
 
             // Verify that the 'Exists' property of 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item equals 'True'
-            Assert.AreEqual(this.Click_Save_Ribbon_ButtonParams.ExplorerTreeItemExists, explorerTreeItem.Exists, "Save dialog explorer tree item does not exist");
+            Assert.AreEqual(this.Click_Save_Ribbon_Button_to_Open_Save_DialogParams.ExplorerTreeItemExists, explorerTreeItem.Exists, "Save dialog explorer tree item does not exist");
 
             // Verify that the 'Exists' property of 'ExplorerView' custom control equals 'True'
-            Assert.AreEqual(this.Click_Save_Ribbon_ButtonParams.ExplorerViewExists, explorerView.Exists, "Save dialog explorer view does not exist");
+            Assert.AreEqual(this.Click_Save_Ribbon_Button_to_Open_Save_DialogParams.ExplorerViewExists, explorerView.Exists, "Save dialog explorer view does not exist");
 
             // Verify that the 'Exists' property of 'SearchTextBox' text box equals 'True'
-            Assert.AreEqual(this.Click_Save_Ribbon_ButtonParams.SearchTextBoxExists, searchTextBox.Exists, "Save dialog filter textbox does not exist");
+            Assert.AreEqual(this.Click_Save_Ribbon_Button_to_Open_Save_DialogParams.SearchTextBoxExists, searchTextBox.Exists, "Save dialog filter textbox does not exist");
 
             // Verify that the 'Exists' property of 'Name:' label equals 'True'
-            Assert.AreEqual(this.Click_Save_Ribbon_ButtonParams.NameLabelExists, nameLabel.Exists, "Save dialog name label does not exist");
+            Assert.AreEqual(this.Click_Save_Ribbon_Button_to_Open_Save_DialogParams.NameLabelExists, nameLabel.Exists, "Save dialog name label does not exist");
 
             // Verify that the 'Exists' property of '' button equals 'True'
-            Assert.AreEqual(this.Click_Save_Ribbon_ButtonParams.RefreshButtonExists, refreshButton.Exists, "Save dialog refresh button does not exist");
+            Assert.AreEqual(this.Click_Save_Ribbon_Button_to_Open_Save_DialogParams.RefreshButtonExists, refreshButton.Exists, "Save dialog refresh button does not exist");
 
             // Verify that the 'Exists' property of 'Save' button equals 'True'
-            Assert.AreEqual(this.Click_Save_Ribbon_ButtonParams.SaveButtonExists1, saveButton1.Exists, "Save dialog save button does not exist");
+            Assert.AreEqual(this.Click_Save_Ribbon_Button_to_Open_Save_DialogParams.SaveButtonExists1, saveButton1.Exists, "Save dialog save button does not exist");
 
             // Verify that the 'Exists' property of 'SaveDialogView' window equals 'True'
-            Assert.AreEqual(this.Click_Save_Ribbon_ButtonParams.SaveDialogWindowExists, saveDialogWindow.Exists, "Save dialog window does not exist");
+            Assert.AreEqual(this.Click_Save_Ribbon_Button_to_Open_Save_DialogParams.SaveDialogWindowExists, saveDialogWindow.Exists, "Save dialog window does not exist");
 
             // Verify that the 'Exists' property of 'ServiceNameTextBox' text box equals 'True'
-            Assert.AreEqual(this.Click_Save_Ribbon_ButtonParams.ServiceNameTextBoxExists, serviceNameTextBox.Exists, "Save dialog service name textbox does not exist");
+            Assert.AreEqual(this.Click_Save_Ribbon_Button_to_Open_Save_DialogParams.ServiceNameTextBoxExists, serviceNameTextBox.Exists, "Save dialog service name textbox does not exist");
 
             // Verify that the 'Exists' property of 'SaveDialogView' window equals 'True'
-            Assert.AreEqual(this.Click_Save_Ribbon_ButtonParams.SaveDialogWindowExists1, saveDialogWindow.Exists, "Save dialog window does not exist");
+            Assert.AreEqual(this.Click_Save_Ribbon_Button_to_Open_Save_DialogParams.SaveDialogWindowExists1, saveDialogWindow.Exists, "Save dialog window does not exist");
 
             // Verify that the 'Exists' property of 'ServiceNameTextBox' text box equals 'True'
-            Assert.AreEqual(this.Click_Save_Ribbon_ButtonParams.ServiceNameTextBoxExists1, serviceNameTextBox.Exists, "Save dialog service name textbox does not exist");
+            Assert.AreEqual(this.Click_Save_Ribbon_Button_to_Open_Save_DialogParams.ServiceNameTextBoxExists1, serviceNameTextBox.Exists, "Save dialog service name textbox does not exist");
         }
         
         /// <summary>
@@ -1000,20 +1035,32 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
-        /// Click_Select_Windows_Group_OK_Button - Use 'Click_Select_Windows_Group_OK_ButtonParams' to pass parameters into this method.
+        /// Click_Select_Windows_Group_Cancel_Button - Use 'Click_Select_Windows_Group_Cancel_ButtonParams' to pass parameters into this method.
+        /// </summary>
+        public void Click_Select_Windows_Group_Cancel_Button()
+        {
+            #region Variable Declarations
+            WinButton uICancelButton = this.UISelectGroupWindow.UICancelWindow.UICancelButton;
+            #endregion
+
+            // Verify that the 'Exists' property of 'Cancel' button equals 'True'
+            Assert.AreEqual(this.Click_Select_Windows_Group_Cancel_ButtonParams.UICancelButtonExists, uICancelButton.Exists, "Select Windows group dialog cancel buttton does not exist.");
+
+            // Click 'Cancel' button
+            Mouse.Click(uICancelButton, new Point(28, 9));
+        }
+        
+        /// <summary>
+        /// Click_Select_Windows_Group_OK_Button
         /// </summary>
         public void Click_Select_Windows_Group_OK_Button()
         {
             #region Variable Declarations
             WinButton ok = this.SelectWindowsGroupDialog.OKPanel.OK;
-            WinWindow selectWindowsGroupDialog = this.SelectWindowsGroupDialog;
             #endregion
 
             // Click 'OK' button
             Mouse.Click(ok, new Point(37, 9));
-
-            // Verify that the 'Exists' property of 'Select Group' window equals 'False'
-            Assert.AreEqual(this.Click_Select_Windows_Group_OK_ButtonParams.SelectWindowsGroupDialogExists, selectWindowsGroupDialog.Exists, "Select windows group dialog is still open.");
         }
         
         /// <summary>
@@ -1155,60 +1202,6 @@ namespace Warewolf.UITests
 
             // Click '...' button
             Mouse.Click(addResourceButton, new Point(6, 15));
-        }
-        
-        /// <summary>
-        /// Click_Settings_Security_Tab_Resource_Permissions_Contribute_Checkbox - Use 'Click_Settings_Security_Tab_Resource_Permissions_Contribute_CheckboxParams' to pass parameters into this method.
-        /// </summary>
-        public void Click_Settings_Security_Tab_Resource_Permissions_Contribute_Checkbox()
-        {
-            #region Variable Declarations
-            WpfCheckBox contributeCheckBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1.PermissionsCell.ContributeCheckBox;
-            #endregion
-
-            // Select 'UI__ContributePermissionCheckBox_AutoID' check box
-            contributeCheckBox.Checked = this.Click_Settings_Security_Tab_Resource_Permissions_Contribute_CheckboxParams.ContributeCheckBoxChecked;
-        }
-        
-        /// <summary>
-        /// Click_Settings_Security_Tab_Resource_Permissions_View_Checkbox - Use 'Click_Settings_Security_Tab_Resource_Permissions_View_CheckboxParams' to pass parameters into this method.
-        /// </summary>
-        public void Click_Settings_Security_Tab_Resource_Permissions_View_Checkbox()
-        {
-            #region Variable Declarations
-            WpfCheckBox viewCheckBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1.PermissionsCell.ViewCheckBox;
-            WpfButton saveButton = this.MainStudioWindow.SideMenuBar.SaveButton;
-            #endregion
-
-            // Select 'UI__ViewPermissionCheckBox_AutoID' check box
-            viewCheckBox.Checked = this.Click_Settings_Security_Tab_Resource_Permissions_View_CheckboxParams.ViewCheckBoxChecked;
-
-            // Verify that the 'Checked' property of 'UI__ViewPermissionCheckBox_AutoID' check box equals 'True'
-            Assert.AreEqual(this.Click_Settings_Security_Tab_Resource_Permissions_View_CheckboxParams.ViewCheckBoxChecked1, viewCheckBox.Checked, "Settings resource permissions row1 view checkbox is not checked.");
-
-            // Verify that the 'Enabled' property of 'Save this tab' button equals 'True'
-            Assert.AreEqual(this.Click_Settings_Security_Tab_Resource_Permissions_View_CheckboxParams.SaveButtonEnabled, saveButton.Enabled, "Save ribbon button is not enabled");
-        }
-        
-        /// <summary>
-        /// Click_Settings_Security_Tab_ResourcePermissions_Execute_Checkbox - Use 'Click_Settings_Security_Tab_ResourcePermissions_Execute_CheckboxParams' to pass parameters into this method.
-        /// </summary>
-        public void Click_Settings_Security_Tab_ResourcePermissions_Execute_Checkbox()
-        {
-            #region Variable Declarations
-            WpfCheckBox executeCheckBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1.PermissionsCell.ExecuteCheckBox;
-            WpfButton saveButton = this.MainStudioWindow.SideMenuBar.SaveButton;
-            #endregion
-
-            // Select 'UI__ExecutePermissionCheckBox_AutoID' check box
-            executeCheckBox.Checked = this.Click_Settings_Security_Tab_ResourcePermissions_Execute_CheckboxParams.ExecuteCheckBoxChecked;
-
-            // Verify that the 'Checked' property of 'UI__ExecutePermissionCheckBox_AutoID' check box equals 'True'
-            Assert.AreEqual(this.Click_Settings_Security_Tab_ResourcePermissions_Execute_CheckboxParams.ExecuteCheckBoxChecked1, executeCheckBox.Checked, "Settings security tab resource permissions row 1 execute checkbox is not checked." +
-                    "");
-
-            // Verify that the 'Enabled' property of 'Save this tab' button equals 'True'
-            Assert.AreEqual(this.Click_Settings_Security_Tab_ResourcePermissions_Execute_CheckboxParams.SaveButtonEnabled, saveButton.Enabled, "Save ribbon button is not enabled");
         }
         
         /// <summary>
@@ -1446,6 +1439,50 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
+        /// Drag_Explorer_Remote_workflow1_Onto_Workflow_Design_Surface - Use 'Drag_Explorer_Remote_workflow1_Onto_Workflow_Design_SurfaceParams' to pass parameters into this method.
+        /// </summary>
+        public void Drag_Explorer_Remote_workflow1_Onto_Workflow_Design_Surface()
+        {
+            #region Variable Declarations
+            WpfEdit searchTextBox = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.SearchTextBox;
+            WpfButton explorerRefreshButton = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerRefreshButton;
+            WpfTreeItem firstItem = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.FirstItem;
+            WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
+            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
+            WpfCustom subWorkflow = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SubWorkflow;
+            #endregion
+
+            // Type 'workflow1' in 'SearchTextBox' text box
+            searchTextBox.Text = this.Drag_Explorer_Remote_workflow1_Onto_Workflow_Design_SurfaceParams.SearchTextBoxText;
+
+            // Wait for 2 seconds for user delay between actions; Click '' button
+            Playback.Wait(2000);
+            Mouse.Click(explorerRefreshButton, new Point(10, 10));
+
+            // Wait for 2 seconds for user delay between actions; Click '' button
+            Playback.Wait(2000);
+            Mouse.Click(explorerRefreshButton, new Point(10, 10));
+
+            // Wait for 2 seconds for user delay between actions; Verify that the 'Exists' property of 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item equals 'True'
+            Playback.Wait(2000);
+            Assert.AreEqual(this.Drag_Explorer_Remote_workflow1_Onto_Workflow_Design_SurfaceParams.FirstItemExists, firstItem.Exists, "Explorer first remote server does not contain any items.");
+
+            // Click 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item
+            Mouse.Click(firstItem, new Point(64, 5));
+
+            // Move 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item to 'Flowchart' custom control
+            flowchart.EnsureClickable(new Point(307, 128));
+            Mouse.StartDragging(firstItem, new Point(64, 5));
+            Mouse.StopDragging(flowchart, new Point(307, 128));
+
+            // Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
+            Assert.AreEqual(this.Drag_Explorer_Remote_workflow1_Onto_Workflow_Design_SurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
+
+            // Verify that the 'Exists' property of 'DsfActivity' custom control equals 'True'
+            Assert.AreEqual(this.Drag_Explorer_Remote_workflow1_Onto_Workflow_Design_SurfaceParams.SubWorkflowExists, subWorkflow.Exists, "Workflow on the design surface does not exist");
+        }
+        
+        /// <summary>
         /// Drag_GetWeb_RequestTool_Onto_DesignSurface - Use 'Drag_GetWeb_RequestTool_Onto_DesignSurfaceParams' to pass parameters into this method.
         /// </summary>
         public void Drag_GetWeb_RequestTool_Onto_DesignSurface()
@@ -1491,46 +1528,6 @@ namespace Warewolf.UITests
 
             // Verify that the 'Exists' property of 'DsfWebPostActivity' custom control equals 'True'
             Assert.AreEqual(this.Drag_PostWeb_RequestTool_Onto_DesignSurfaceParams.WebPostExists, webPost.Exists, "Web Post Request small view does not exist on the design surface");
-        }
-        
-        /// <summary>
-        /// Drag_Explorer_Remote_workflow1_Onto_Workflow_Design_Surface - Use 'Drag_Explorer_Remote_workflow1_Onto_Workflow_Design_SurfaceParams' to pass parameters into this method.
-        /// </summary>
-        public void Drag_Explorer_Remote_workflow1_Onto_Workflow_Design_Surface()
-        {
-            #region Variable Declarations
-            WpfEdit searchTextBox = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.SearchTextBox;
-            WpfButton explorerRefreshButton = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerRefreshButton;
-            WpfTreeItem firstItem = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.FirstItem;
-            WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
-            WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
-            WpfCustom subWorkflow = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SubWorkflow;
-            #endregion
-
-            // Type 'workflow1' in 'SearchTextBox' text box
-            searchTextBox.Text = this.Drag_Explorer_Remote_workflow1_Onto_Workflow_Design_SurfaceParams.SearchTextBoxText;
-
-            // Wait for 2 seconds for user delay between actions; Click '' button
-            Playback.Wait(2000);
-            Mouse.Click(explorerRefreshButton, new Point(10, 10));
-
-            // Wait for 2 seconds for user delay between actions; Verify that the 'Exists' property of 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item equals 'True'
-            Playback.Wait(2000);
-            Assert.AreEqual(this.Drag_Explorer_Remote_workflow1_Onto_Workflow_Design_SurfaceParams.FirstItemExists, firstItem.Exists, "Explorer first remote server does not contain any items.");
-
-            // Click 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item
-            Mouse.Click(firstItem, new Point(64, 5));
-
-            // Move 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item to 'Flowchart' custom control
-            flowchart.EnsureClickable(new Point(307, 128));
-            Mouse.StartDragging(firstItem, new Point(64, 5));
-            Mouse.StopDragging(flowchart, new Point(307, 128));
-
-            // Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
-            Assert.AreEqual(this.Drag_Explorer_Remote_workflow1_Onto_Workflow_Design_SurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
-
-            // Verify that the 'Exists' property of 'DsfActivity' custom control equals 'True'
-            Assert.AreEqual(this.Drag_Explorer_Remote_workflow1_Onto_Workflow_Design_SurfaceParams.SubWorkflowExists, subWorkflow.Exists, "Workflow on the design surface does not exist");
         }
         
         /// <summary>
@@ -2930,7 +2927,8 @@ namespace Warewolf.UITests
             // Click '' button
             Mouse.Click(explorerRefreshButton, new Point(10, 10));
 
-            // Verify that the 'Exists' property of 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item equals 'True'
+            // Wait for 2 seconds for user delay between actions; Verify that the 'Exists' property of 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item equals 'True'
+            Playback.Wait(2000);
             Assert.AreEqual(this.Enter_RemoteServerUITestWorkflow_Into_Explorer_FilterParams.FirstItemExists, firstItem.Exists, "Explorer localhost does not contain any items.");
         }
         
@@ -3005,8 +3003,8 @@ namespace Warewolf.UITests
             // Type 'TSTCIREMOTE' in 'ServiceNameTextBox' text box
             serviceNameTextBox.Text = this.Enter_Servicename_As_TSTCIREMOTEParams.ServiceNameTextBoxText;
 
-            // Wait for 2 seconds for user delay between actions; Verify that the 'Enabled' property of 'Save' button equals 'True'
-            Playback.Wait(2000);
+            // Wait for 40 seconds for user delay between actions; Verify that the 'Enabled' property of 'Save' button equals 'True'
+            Playback.Wait(40000);
             Assert.AreEqual(this.Enter_Servicename_As_TSTCIREMOTEParams.SaveButtonEnabled, saveButton.Enabled, "Save dialog save button is not enabled. Check workflow name is valid and that ano" +
                     "ther workflow by that name does not already exist.");
         }
@@ -5113,15 +5111,27 @@ namespace Warewolf.UITests
             }
         }
         
-        public virtual Click_Close_Tab_ButtonParams Click_Close_Tab_ButtonParams
+        public virtual Click_Close_Settings_Tab_ButtonParams Click_Close_Settings_Tab_ButtonParams
         {
             get
             {
-                if ((this.mClick_Close_Tab_ButtonParams == null))
+                if ((this.mClick_Close_Settings_Tab_ButtonParams == null))
                 {
-                    this.mClick_Close_Tab_ButtonParams = new Click_Close_Tab_ButtonParams();
+                    this.mClick_Close_Settings_Tab_ButtonParams = new Click_Close_Settings_Tab_ButtonParams();
                 }
-                return this.mClick_Close_Tab_ButtonParams;
+                return this.mClick_Close_Settings_Tab_ButtonParams;
+            }
+        }
+        
+        public virtual Click_Close_Workflow_Tab_ButtonParams Click_Close_Workflow_Tab_ButtonParams
+        {
+            get
+            {
+                if ((this.mClick_Close_Workflow_Tab_ButtonParams == null))
+                {
+                    this.mClick_Close_Workflow_Tab_ButtonParams = new Click_Close_Workflow_Tab_ButtonParams();
+                }
+                return this.mClick_Close_Workflow_Tab_ButtonParams;
             }
         }
         
@@ -5257,6 +5267,18 @@ namespace Warewolf.UITests
             }
         }
         
+        public virtual Click_Save_Ribbon_Button_to_Open_Save_DialogParams Click_Save_Ribbon_Button_to_Open_Save_DialogParams
+        {
+            get
+            {
+                if ((this.mClick_Save_Ribbon_Button_to_Open_Save_DialogParams == null))
+                {
+                    this.mClick_Save_Ribbon_Button_to_Open_Save_DialogParams = new Click_Save_Ribbon_Button_to_Open_Save_DialogParams();
+                }
+                return this.mClick_Save_Ribbon_Button_to_Open_Save_DialogParams;
+            }
+        }
+        
         public virtual Click_SaveDialog_YesButtonParams Click_SaveDialog_YesButtonParams
         {
             get
@@ -5305,15 +5327,15 @@ namespace Warewolf.UITests
             }
         }
         
-        public virtual Click_Select_Windows_Group_OK_ButtonParams Click_Select_Windows_Group_OK_ButtonParams
+        public virtual Click_Select_Windows_Group_Cancel_ButtonParams Click_Select_Windows_Group_Cancel_ButtonParams
         {
             get
             {
-                if ((this.mClick_Select_Windows_Group_OK_ButtonParams == null))
+                if ((this.mClick_Select_Windows_Group_Cancel_ButtonParams == null))
                 {
-                    this.mClick_Select_Windows_Group_OK_ButtonParams = new Click_Select_Windows_Group_OK_ButtonParams();
+                    this.mClick_Select_Windows_Group_Cancel_ButtonParams = new Click_Select_Windows_Group_Cancel_ButtonParams();
                 }
-                return this.mClick_Select_Windows_Group_OK_ButtonParams;
+                return this.mClick_Select_Windows_Group_Cancel_ButtonParams;
             }
         }
         
@@ -5374,42 +5396,6 @@ namespace Warewolf.UITests
                     this.mClick_Settings_Ribbon_ButtonParams = new Click_Settings_Ribbon_ButtonParams();
                 }
                 return this.mClick_Settings_Ribbon_ButtonParams;
-            }
-        }
-        
-        public virtual Click_Settings_Security_Tab_Resource_Permissions_Contribute_CheckboxParams Click_Settings_Security_Tab_Resource_Permissions_Contribute_CheckboxParams
-        {
-            get
-            {
-                if ((this.mClick_Settings_Security_Tab_Resource_Permissions_Contribute_CheckboxParams == null))
-                {
-                    this.mClick_Settings_Security_Tab_Resource_Permissions_Contribute_CheckboxParams = new Click_Settings_Security_Tab_Resource_Permissions_Contribute_CheckboxParams();
-                }
-                return this.mClick_Settings_Security_Tab_Resource_Permissions_Contribute_CheckboxParams;
-            }
-        }
-        
-        public virtual Click_Settings_Security_Tab_Resource_Permissions_View_CheckboxParams Click_Settings_Security_Tab_Resource_Permissions_View_CheckboxParams
-        {
-            get
-            {
-                if ((this.mClick_Settings_Security_Tab_Resource_Permissions_View_CheckboxParams == null))
-                {
-                    this.mClick_Settings_Security_Tab_Resource_Permissions_View_CheckboxParams = new Click_Settings_Security_Tab_Resource_Permissions_View_CheckboxParams();
-                }
-                return this.mClick_Settings_Security_Tab_Resource_Permissions_View_CheckboxParams;
-            }
-        }
-        
-        public virtual Click_Settings_Security_Tab_ResourcePermissions_Execute_CheckboxParams Click_Settings_Security_Tab_ResourcePermissions_Execute_CheckboxParams
-        {
-            get
-            {
-                if ((this.mClick_Settings_Security_Tab_ResourcePermissions_Execute_CheckboxParams == null))
-                {
-                    this.mClick_Settings_Security_Tab_ResourcePermissions_Execute_CheckboxParams = new Click_Settings_Security_Tab_ResourcePermissions_Execute_CheckboxParams();
-                }
-                return this.mClick_Settings_Security_Tab_ResourcePermissions_Execute_CheckboxParams;
             }
         }
         
@@ -5497,6 +5483,18 @@ namespace Warewolf.UITests
             }
         }
         
+        public virtual Drag_Explorer_Remote_workflow1_Onto_Workflow_Design_SurfaceParams Drag_Explorer_Remote_workflow1_Onto_Workflow_Design_SurfaceParams
+        {
+            get
+            {
+                if ((this.mDrag_Explorer_Remote_workflow1_Onto_Workflow_Design_SurfaceParams == null))
+                {
+                    this.mDrag_Explorer_Remote_workflow1_Onto_Workflow_Design_SurfaceParams = new Drag_Explorer_Remote_workflow1_Onto_Workflow_Design_SurfaceParams();
+                }
+                return this.mDrag_Explorer_Remote_workflow1_Onto_Workflow_Design_SurfaceParams;
+            }
+        }
+        
         public virtual Drag_GetWeb_RequestTool_Onto_DesignSurfaceParams Drag_GetWeb_RequestTool_Onto_DesignSurfaceParams
         {
             get
@@ -5518,18 +5516,6 @@ namespace Warewolf.UITests
                     this.mDrag_PostWeb_RequestTool_Onto_DesignSurfaceParams = new Drag_PostWeb_RequestTool_Onto_DesignSurfaceParams();
                 }
                 return this.mDrag_PostWeb_RequestTool_Onto_DesignSurfaceParams;
-            }
-        }
-        
-        public virtual Drag_Explorer_Remote_workflow1_Onto_Workflow_Design_SurfaceParams Drag_Explorer_Remote_workflow1_Onto_Workflow_Design_SurfaceParams
-        {
-            get
-            {
-                if ((this.mDrag_Explorer_Remote_workflow1_Onto_Workflow_Design_SurfaceParams == null))
-                {
-                    this.mDrag_Explorer_Remote_workflow1_Onto_Workflow_Design_SurfaceParams = new Drag_Explorer_Remote_workflow1_Onto_Workflow_Design_SurfaceParams();
-                }
-                return this.mDrag_Explorer_Remote_workflow1_Onto_Workflow_Design_SurfaceParams;
             }
         }
         
@@ -6864,6 +6850,18 @@ namespace Warewolf.UITests
                 return this.mServicePickerDialog;
             }
         }
+        
+        public UISelectGroupWindow UISelectGroupWindow
+        {
+            get
+            {
+                if ((this.mUISelectGroupWindow == null))
+                {
+                    this.mUISelectGroupWindow = new UISelectGroupWindow();
+                }
+                return this.mUISelectGroupWindow;
+            }
+        }
         #endregion
         
         #region Fields
@@ -6873,7 +6871,9 @@ namespace Warewolf.UITests
         
         private Click_Calculate_Large_View_Done_ButtonParams mClick_Calculate_Large_View_Done_ButtonParams;
         
-        private Click_Close_Tab_ButtonParams mClick_Close_Tab_ButtonParams;
+        private Click_Close_Settings_Tab_ButtonParams mClick_Close_Settings_Tab_ButtonParams;
+        
+        private Click_Close_Workflow_Tab_ButtonParams mClick_Close_Workflow_Tab_ButtonParams;
         
         private Click_Debug_Ribbon_ButtonParams mClick_Debug_Ribbon_ButtonParams;
         
@@ -6897,6 +6897,8 @@ namespace Warewolf.UITests
         
         private Click_Save_Ribbon_ButtonParams mClick_Save_Ribbon_ButtonParams;
         
+        private Click_Save_Ribbon_Button_to_Open_Save_DialogParams mClick_Save_Ribbon_Button_to_Open_Save_DialogParams;
+        
         private Click_SaveDialog_YesButtonParams mClick_SaveDialog_YesButtonParams;
         
         private Click_Scheduler_Disable_Task_Radio_ButtonParams mClick_Scheduler_Disable_Task_Radio_ButtonParams;
@@ -6905,7 +6907,7 @@ namespace Warewolf.UITests
         
         private Click_Scheduler_RunTaskParams mClick_Scheduler_RunTaskParams;
         
-        private Click_Select_Windows_Group_OK_ButtonParams mClick_Select_Windows_Group_OK_ButtonParams;
+        private Click_Select_Windows_Group_Cancel_ButtonParams mClick_Select_Windows_Group_Cancel_ButtonParams;
         
         private Click_Server_Source_Wizard_Address_Protocol_DropdownParams mClick_Server_Source_Wizard_Address_Protocol_DropdownParams;
         
@@ -6916,12 +6918,6 @@ namespace Warewolf.UITests
         private Click_Service_Picker_Dialog_OKParams mClick_Service_Picker_Dialog_OKParams;
         
         private Click_Settings_Ribbon_ButtonParams mClick_Settings_Ribbon_ButtonParams;
-        
-        private Click_Settings_Security_Tab_Resource_Permissions_Contribute_CheckboxParams mClick_Settings_Security_Tab_Resource_Permissions_Contribute_CheckboxParams;
-        
-        private Click_Settings_Security_Tab_Resource_Permissions_View_CheckboxParams mClick_Settings_Security_Tab_Resource_Permissions_View_CheckboxParams;
-        
-        private Click_Settings_Security_Tab_ResourcePermissions_Execute_CheckboxParams mClick_Settings_Security_Tab_ResourcePermissions_Execute_CheckboxParams;
         
         private Click_Show_Dependencies_In_Explorer_Context_MenuParams mClick_Show_Dependencies_In_Explorer_Context_MenuParams;
         
@@ -6937,11 +6933,11 @@ namespace Warewolf.UITests
         
         private Drag_Explorer_Localhost_First_Item_Onto_Workflow_Design_SurfaceParams mDrag_Explorer_Localhost_First_Item_Onto_Workflow_Design_SurfaceParams;
         
+        private Drag_Explorer_Remote_workflow1_Onto_Workflow_Design_SurfaceParams mDrag_Explorer_Remote_workflow1_Onto_Workflow_Design_SurfaceParams;
+        
         private Drag_GetWeb_RequestTool_Onto_DesignSurfaceParams mDrag_GetWeb_RequestTool_Onto_DesignSurfaceParams;
         
         private Drag_PostWeb_RequestTool_Onto_DesignSurfaceParams mDrag_PostWeb_RequestTool_Onto_DesignSurfaceParams;
-        
-        private Drag_Explorer_Remote_workflow1_Onto_Workflow_Design_SurfaceParams mDrag_Explorer_Remote_workflow1_Onto_Workflow_Design_SurfaceParams;
         
         private Drag_Toolbox_Base_Conversion_Onto_DesignSurfaceParams mDrag_Toolbox_Base_Conversion_Onto_DesignSurfaceParams;
         
@@ -7164,6 +7160,8 @@ namespace Warewolf.UITests
         private SelectWindowsGroupDialog mSelectWindowsGroupDialog;
         
         private ServicePickerDialog mServicePickerDialog;
+        
+        private UISelectGroupWindow mUISelectGroupWindow;
         #endregion
     }
     
@@ -7223,10 +7221,25 @@ namespace Warewolf.UITests
     }
     
     /// <summary>
-    /// Parameters to be passed into 'Click_Close_Tab_Button'
+    /// Parameters to be passed into 'Click_Close_Settings_Tab_Button'
     /// </summary>
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Click_Close_Tab_ButtonParams
+    public class Click_Close_Settings_Tab_ButtonParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of '' button equals 'True'
+        /// </summary>
+        public bool CloseButtonExists = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Click_Close_Workflow_Tab_Button'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Click_Close_Workflow_Tab_ButtonParams
     {
         
         #region Fields
@@ -7626,6 +7639,26 @@ namespace Warewolf.UITests
         public bool SaveButtonExists = true;
         
         /// <summary>
+        /// Verify that the 'Enabled' property of 'Save this tab' button equals 'False'
+        /// </summary>
+        public bool SaveButtonEnabled = false;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Click_Save_Ribbon_Button_to_Open_Save_Dialog'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Click_Save_Ribbon_Button_to_Open_Save_DialogParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Save this tab' button equals 'True'
+        /// </summary>
+        public bool SaveButtonExists = true;
+        
+        /// <summary>
         /// Wait for 2 seconds for user delay between actions; Verify that the 'Exists' property of 'Cancel' button equals 'True'
         /// </summary>
         public bool CancelButtonExists = true;
@@ -7753,17 +7786,17 @@ namespace Warewolf.UITests
     }
     
     /// <summary>
-    /// Parameters to be passed into 'Click_Select_Windows_Group_OK_Button'
+    /// Parameters to be passed into 'Click_Select_Windows_Group_Cancel_Button'
     /// </summary>
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Click_Select_Windows_Group_OK_ButtonParams
+    public class Click_Select_Windows_Group_Cancel_ButtonParams
     {
         
         #region Fields
         /// <summary>
-        /// Verify that the 'Exists' property of 'Select Group' window equals 'False'
+        /// Verify that the 'Exists' property of 'Cancel' button equals 'True'
         /// </summary>
-        public bool SelectWindowsGroupDialogExists = false;
+        public bool UICancelButtonExists = true;
         #endregion
     }
     
@@ -7879,71 +7912,6 @@ namespace Warewolf.UITests
         /// Verify that the 'Exists' property of 'Row1' pane equals 'True'
         /// </summary>
         public bool Row1Exists = true;
-        #endregion
-    }
-    
-    /// <summary>
-    /// Parameters to be passed into 'Click_Settings_Security_Tab_Resource_Permissions_Contribute_Checkbox'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Click_Settings_Security_Tab_Resource_Permissions_Contribute_CheckboxParams
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Select 'UI__ContributePermissionCheckBox_AutoID' check box
-        /// </summary>
-        public bool ContributeCheckBoxChecked = true;
-        #endregion
-    }
-    
-    /// <summary>
-    /// Parameters to be passed into 'Click_Settings_Security_Tab_Resource_Permissions_View_Checkbox'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Click_Settings_Security_Tab_Resource_Permissions_View_CheckboxParams
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Select 'UI__ViewPermissionCheckBox_AutoID' check box
-        /// </summary>
-        public bool ViewCheckBoxChecked = true;
-        
-        /// <summary>
-        /// Verify that the 'Checked' property of 'UI__ViewPermissionCheckBox_AutoID' check box equals 'True'
-        /// </summary>
-        public bool ViewCheckBoxChecked1 = true;
-        
-        /// <summary>
-        /// Verify that the 'Enabled' property of 'Save this tab' button equals 'True'
-        /// </summary>
-        public bool SaveButtonEnabled = true;
-        #endregion
-    }
-    
-    /// <summary>
-    /// Parameters to be passed into 'Click_Settings_Security_Tab_ResourcePermissions_Execute_Checkbox'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Click_Settings_Security_Tab_ResourcePermissions_Execute_CheckboxParams
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Select 'UI__ExecutePermissionCheckBox_AutoID' check box
-        /// </summary>
-        public bool ExecuteCheckBoxChecked = true;
-        
-        /// <summary>
-        /// Verify that the 'Checked' property of 'UI__ExecutePermissionCheckBox_AutoID' check box equals 'True'
-        /// </summary>
-        public bool ExecuteCheckBoxChecked1 = true;
-        
-        /// <summary>
-        /// Verify that the 'Enabled' property of 'Save this tab' button equals 'True'
-        /// </summary>
-        public bool SaveButtonEnabled = true;
         #endregion
     }
     
@@ -8083,6 +8051,36 @@ namespace Warewolf.UITests
     }
     
     /// <summary>
+    /// Parameters to be passed into 'Drag_Explorer_Remote_workflow1_Onto_Workflow_Design_Surface'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Drag_Explorer_Remote_workflow1_Onto_Workflow_Design_SurfaceParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Type 'workflow1' in 'SearchTextBox' text box
+        /// </summary>
+        public string SearchTextBoxText = "workflow1";
+        
+        /// <summary>
+        /// Wait for 2 seconds for user delay between actions; Verify that the 'Exists' property of 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item equals 'True'
+        /// </summary>
+        public bool FirstItemExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
+        /// </summary>
+        public bool Connector1Exists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'DsfActivity' custom control equals 'True'
+        /// </summary>
+        public bool SubWorkflowExists = true;
+        #endregion
+    }
+    
+    /// <summary>
     /// Parameters to be passed into 'Drag_GetWeb_RequestTool_Onto_DesignSurface'
     /// </summary>
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
@@ -8119,36 +8117,6 @@ namespace Warewolf.UITests
         /// Verify that the 'Exists' property of 'DsfWebPostActivity' custom control equals 'True'
         /// </summary>
         public bool WebPostExists = true;
-        #endregion
-    }
-    
-    /// <summary>
-    /// Parameters to be passed into 'Drag_Explorer_Remote_workflow1_Onto_Workflow_Design_Surface'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Drag_Explorer_Remote_workflow1_Onto_Workflow_Design_SurfaceParams
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Type 'workflow1' in 'SearchTextBox' text box
-        /// </summary>
-        public string SearchTextBoxText = "workflow1";
-        
-        /// <summary>
-        /// Wait for 2 seconds for user delay between actions; Verify that the 'Exists' property of 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item equals 'True'
-        /// </summary>
-        public bool FirstItemExists = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
-        /// </summary>
-        public bool Connector1Exists = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'DsfActivity' custom control equals 'True'
-        /// </summary>
-        public bool SubWorkflowExists = true;
         #endregion
     }
     
@@ -9381,7 +9349,7 @@ namespace Warewolf.UITests
         public string SearchTextBoxText = "RemoteServerUITestWorkflow";
         
         /// <summary>
-        /// Verify that the 'Exists' property of 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item equals 'True'
+        /// Wait for 2 seconds for user delay between actions; Verify that the 'Exists' property of 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item equals 'True'
         /// </summary>
         public bool FirstItemExists = true;
         #endregion
@@ -9461,7 +9429,7 @@ namespace Warewolf.UITests
         public string ServiceNameTextBoxText = "TSTCIREMOTE";
         
         /// <summary>
-        /// Wait for 2 seconds for user delay between actions; Verify that the 'Enabled' property of 'Save' button equals 'True'
+        /// Wait for 40 seconds for user delay between actions; Verify that the 'Enabled' property of 'Save' button equals 'True'
         /// </summary>
         public bool SaveButtonEnabled = true;
         #endregion
@@ -17933,10 +17901,28 @@ namespace Warewolf.UITests
                 return this.mWorksurfaceContext;
             }
         }
+        
+        public WpfButton CloseButton
+        {
+            get
+            {
+                if ((this.mCloseButton == null))
+                {
+                    this.mCloseButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mCloseButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "closeBtn";
+                    this.mCloseButton.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mCloseButton;
+            }
+        }
         #endregion
         
         #region Fields
         private WorksurfaceContext3 mWorksurfaceContext;
+        
+        private WpfButton mCloseButton;
         #endregion
     }
     
@@ -32929,6 +32915,74 @@ namespace Warewolf.UITests
         
         #region Fields
         private WpfTreeItem mSubTreeItem1;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UISelectGroupWindow : WinWindow
+    {
+        
+        public UISelectGroupWindow()
+        {
+            #region Search Criteria
+            this.SearchProperties[WinWindow.PropertyNames.Name] = "Select Group";
+            this.SearchProperties[WinWindow.PropertyNames.ClassName] = "#32770";
+            this.WindowTitles.Add("Select Group");
+            #endregion
+        }
+        
+        #region Properties
+        public UICancelWindow UICancelWindow
+        {
+            get
+            {
+                if ((this.mUICancelWindow == null))
+                {
+                    this.mUICancelWindow = new UICancelWindow(this);
+                }
+                return this.mUICancelWindow;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UICancelWindow mUICancelWindow;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UICancelWindow : WinWindow
+    {
+        
+        public UICancelWindow(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WinWindow.PropertyNames.ControlId] = "2";
+            this.WindowTitles.Add("Select Group");
+            #endregion
+        }
+        
+        #region Properties
+        public WinButton UICancelButton
+        {
+            get
+            {
+                if ((this.mUICancelButton == null))
+                {
+                    this.mUICancelButton = new WinButton(this);
+                    #region Search Criteria
+                    this.mUICancelButton.SearchProperties[WinButton.PropertyNames.Name] = "Cancel";
+                    this.mUICancelButton.WindowTitles.Add("Select Group");
+                    #endregion
+                }
+                return this.mUICancelButton;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WinButton mUICancelButton;
         #endregion
     }
 }

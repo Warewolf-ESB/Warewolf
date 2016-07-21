@@ -19,7 +19,7 @@ namespace Warewolf.UITests.Tools.Data
             Uimap.Enter_Text_Into_Assign_Large_View_Row1_Variable_Textbox_As_SomeVariable();
             Uimap.Click_Assign_Tool_Large_View_Done_Button();
             Uimap.Open_Assign_Tool_Qvi_Large_View();
-            Uimap.Click_Save_Ribbon_Button();
+            Uimap.Click_Save_Ribbon_Button_to_Open_Save_Dialog();
             Uimap.Enter_Servicename_As_SomeWorkflow();
             Uimap.Click_SaveDialog_YesButton();
             Uimap.Enter_SomeWorkflow_Into_Explorer_Filter();
