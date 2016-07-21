@@ -253,7 +253,7 @@ namespace Dev2.Activities.Designers.Tests.Email
 
             var eventPublisher = new Mock<IEventAggregator>();
             var mockShellViewModel = new Mock<IShellViewModel>();
-            mockShellViewModel.Setup(model => model.OpenResource(selectedEmailSource.ResourceID,null)).Verifiable();
+            mockShellViewModel.Setup(model => model.EditResource(It.IsAny<IEmailServiceSource>(),null)).Verifiable();
             CustomContainer.Register(mockShellViewModel.Object);
             var resourceModel = new Mock<IResourceModel>();
 
@@ -264,7 +264,7 @@ namespace Dev2.Activities.Designers.Tests.Email
 
 
             //------------Assert Results-------------------------
-            mockShellViewModel.Verify(model => model.OpenResource(It.IsAny<Guid>(), null));
+            mockShellViewModel.Verify(model => model.EditResource(It.IsAny<IEmailServiceSource>(), null));
             CustomContainer.DeRegister<IShellViewModel>();
         }
 
