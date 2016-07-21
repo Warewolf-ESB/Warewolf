@@ -120,24 +120,5 @@ namespace Dev2.Factory
                 ServerID = debugState.ServerID,
             };
         }
-
-        /// <summary>
-        /// Creates a key used for worksurfaces unique to a specific server
-        /// </summary>
-        /// <param name="context">The context.</param>
-        /// <param name="resource">The resource.</param>
-        /// <returns></returns>
-        /// <author>Jurie.smit</author>
-        /// <date>2/28/2013</date>
-        public static WorkSurfaceKey CreateKey(WorkSurfaceContext context, IContextualResourceModel resource)
-        {
-            return new WorkSurfaceKey
-            {
-                WorkSurfaceContext = context,
-                ResourceID = resource.ID,
-                ServerID = resource.ServerID
-            };
-        }
-
     }
 }

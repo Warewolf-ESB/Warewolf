@@ -8,6 +8,8 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using System.Diagnostics.CodeAnalysis;
+
 namespace Dev2.Data.Binary_Objects
 {
     public interface IIndexIterator
@@ -21,6 +23,7 @@ namespace Dev2.Data.Binary_Objects
 
         int FetchNextIndex();
 
+        [SuppressMessage("ReSharper", "UnusedMember.Global")]
         int MaxIndex();
     }
 }

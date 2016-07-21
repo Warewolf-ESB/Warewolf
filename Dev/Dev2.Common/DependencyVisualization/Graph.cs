@@ -9,6 +9,7 @@
 */
 
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 
@@ -48,6 +49,7 @@ namespace Dev2.Common.DependencyVisualization
 
         #region Methods
 
+        [SuppressMessage("ReSharper", "UnusedMember.Global")]
         public new string ToString()
         {
             StringBuilder result = new StringBuilder(string.Format("<graph title=\"{0}\">", Title));

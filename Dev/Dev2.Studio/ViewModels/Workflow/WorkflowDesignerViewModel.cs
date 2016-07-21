@@ -365,9 +365,8 @@ namespace Dev2.Studio.ViewModels.Workflow
                     {
                         if (_workflowInputDataViewModel.WorkflowInputCount == 0)
                         {
-                            PopUp.Show(string.Format(StringResources.VariablesInput_Information),
-                                       StringResources.VariablesInput_Information_Title,
-                                       MessageBoxButton.OK, MessageBoxImage.Information, "", false, false, true, false);
+                            PopUp.ShowNoInputsSelectedWhenClickLink();
+                            
                         }
                         try
                         {

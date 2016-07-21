@@ -8,6 +8,7 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using System.Diagnostics.CodeAnalysis;
 using Dev2.Common.Interfaces.Scheduler.Interfaces;
 using Dev2.Common.Interfaces.WindowsTaskScheduler.Wrappers;
 using Dev2.TaskScheduler.Wrappers;
@@ -37,6 +38,7 @@ namespace Dev2.Scheduler
             return new ScheduleTrigger(state, trigger, _service, _serviceConvertorFactory);
         }
 
+        [SuppressMessage("ReSharper", "UnusedMember.Global")]
         public IScheduleTrigger CreateTrigger(Trigger trigger)
         {
             switch (trigger.TriggerType)

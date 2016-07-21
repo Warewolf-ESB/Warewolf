@@ -972,7 +972,6 @@ namespace Dev2.Core.Tests.IntellisenseProvider
                 CaretPosition = 3,
                 InputText = "[[Cit",
                 DesiredResultSet = IntellisenseDesiredResultSet.Default,
-                State = true,
                 FilterType = enIntellisensePartType.RecordsetsOnly
             };
 
@@ -992,7 +991,6 @@ namespace Dev2.Core.Tests.IntellisenseProvider
                 CaretPosition = 3,
                 InputText = "[[C",
                 DesiredResultSet = IntellisenseDesiredResultSet.Default,
-                State = true,
                 FilterType = enIntellisensePartType.RecordsetsOnly
             };
 
@@ -1323,7 +1321,6 @@ namespace Dev2.Core.Tests.IntellisenseProvider
                 CaretPosition = 4,
                 InputText = "scal",
                 DesiredResultSet = IntellisenseDesiredResultSet.Default,
-                State = true
             };
 
             Assert.AreEqual("[[scalar]]", new DefaultIntellisenseProvider().PerformResultInsertion("[[scalar]]", context));
@@ -1372,7 +1369,6 @@ namespace Dev2.Core.Tests.IntellisenseProvider
                 CaretPosition = 5,
                 InputText = "[[rec",
                 DesiredResultSet = IntellisenseDesiredResultSet.Default,
-                State = true
             };
 
             Assert.AreEqual("[[recset(*)]]", new DefaultIntellisenseProvider().PerformResultInsertion("[[recset(*)]]", context));
@@ -1388,7 +1384,6 @@ namespace Dev2.Core.Tests.IntellisenseProvider
                 CaretPosition = 14,
                 InputText = "[[recset([[sca",
                 DesiredResultSet = 0,
-                State = true
             };
 
             Assert.AreEqual("[[recset([[scalar]]", new DefaultIntellisenseProvider().PerformResultInsertion("[[scalar]]", context));
@@ -1405,7 +1400,6 @@ namespace Dev2.Core.Tests.IntellisenseProvider
                 CaretPosition = 14,
                 InputText = "[[recset([[sca).field]]",
                 DesiredResultSet = 0,
-                State = true
             };
 
             Assert.AreEqual("[[recset([[scalar]]).field]]", new DefaultIntellisenseProvider().PerformResultInsertion("[[scalar]]", context));
@@ -1421,7 +1415,6 @@ namespace Dev2.Core.Tests.IntellisenseProvider
                 CaretPosition = 14,
                 InputText = "[[recset([[ano).field]]",
                 DesiredResultSet = 0,
-                State = true
             };
 
             var actual = new DefaultIntellisenseProvider().PerformResultInsertion("[[anotherRecset().newfield]]", context);
@@ -1438,7 +1431,6 @@ namespace Dev2.Core.Tests.IntellisenseProvider
                 CaretPosition = 23,
                 InputText = "[[recset([[recset([[sca).field]]).field]]",
                 DesiredResultSet = 0,
-                State = true
             };
 
             var performResultInsertion = new DefaultIntellisenseProvider().PerformResultInsertion("[[scalar]]", context);
@@ -1675,7 +1667,6 @@ namespace Dev2.Core.Tests.IntellisenseProvider
                 CaretPosition = 4,
                 InputText = "City",
                 DesiredResultSet = IntellisenseDesiredResultSet.Default,
-                State = true
             };
 
             const string exprected = "[[City()]]";
@@ -1695,7 +1686,6 @@ namespace Dev2.Core.Tests.IntellisenseProvider
                 CaretPosition = currentText.Length,
                 InputText = currentText,
                 DesiredResultSet = IntellisenseDesiredResultSet.Default,
-                State = true
             };
 
             const string exprected = "[[index1]][[rec().field]]";
@@ -1712,7 +1702,6 @@ namespace Dev2.Core.Tests.IntellisenseProvider
                 CaretPosition = currentText.Length,
                 InputText = currentText,
                 DesiredResultSet = IntellisenseDesiredResultSet.Default,
-                State = true
             };
 
             const string exprected = "[[index1]][[rec().field]]";

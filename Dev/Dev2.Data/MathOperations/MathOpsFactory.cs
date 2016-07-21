@@ -9,6 +9,7 @@
 */
 
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using Dev2.Common.Interfaces;
 using Dev2.MathOperations;
 
@@ -33,6 +34,7 @@ namespace Dev2.Data.MathOperations {
         public static IFrameworkRepository<IFunction> FunctionRepository() {
             return new FunctionRepository();
         }
+        [SuppressMessage("ReSharper", "UnusedMember.Global")]
         public static IEvaluationFunction CreateEvaluationFunctionTO(string functionName) {
             return new EvaluationFunctionTO(functionName);
         }

@@ -210,6 +210,25 @@ namespace Warewolf.Studio.ServerProxyLayer
             return dllListings;
         }
 
+        public List<IFileListing> GetComDllListings(IFileListing listing)
+        {
+            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+            var comsController = CommunicationControllerFactory.CreateController("GetComDllListingsService");
+            comsController.AddPayloadArgument("currentDllListing", serializer.Serialize(listing));
+            var workspaceId = Connection.WorkspaceID;
+            var result = comsController.ExecuteCommand<ExecuteMessage>(Connection, workspaceId);
+            if (result == null || result.HasError)
+            {
+                if (result != null)
+                {
+                    throw new WarewolfSupportServiceException(result.Message.ToString(), null);
+                }
+                throw new WarewolfSupportServiceException(ErrorResource.ServiceDoesNotExist, null);
+            }
+            var dllListings = serializer.Deserialize<List<IFileListing>>(result.Message.ToString());
+            return dllListings;
+        }
+
         public ICollection<INamespaceItem> FetchNamespaces(IPluginSource source)
         {
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();

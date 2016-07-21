@@ -13,10 +13,10 @@
                                xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna;assembly=Warewolf.Studio.Themes.Luna"
                                Width="320"
                                MinWidth="320"
-                               MinHeight="230"
-                               Height="230"
+                               MinHeight="260"
+                               Height="260"
                                MaxWidth="Infinity"
-                               MaxHeight="230"
+                               MaxHeight="260"
                                mc:Ignorable="d"
                                d:DesignWidth="230"
                                d:DataContext="{d:DesignInstance local:ScriptDesignerViewModel}">
@@ -46,6 +46,7 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
         <TextBlock Grid.Column="0" Grid.Row="0" Text="Langauge" />
@@ -65,10 +66,25 @@
                                      Target="{Binding}" />
             </i:Interaction.Behaviors>
         </ComboBox>
-
+        
+        <CheckBox Grid.Column="1"
+                  Grid.Row="1"
+                  Margin="-6,-2,0,0"
+                  Content="Escape"
+                  IsChecked="{Binding Path=ModelItem.EscapeScript, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                  ToolTip="{x:Static languages:Core.ScriptingToolTipEscapeScript}">
+            <i:Interaction.Behaviors>
+                <core1:HelpSetter Text="{x:Static languages:Core.ScriptingHelpEscapeScript}" DataContext="{Binding}" />
+                <errors:ErrorsSetter Source="{Binding}"
+                                     SourcePropertyName="ModelItem.EscapeScript"
+                                     SourcePropertyValue="{Binding  ModelItem.EscapeScript, UpdateSourceTrigger=PropertyChanged}"
+                                     Target="{Binding}" />
+            </i:Interaction.Behaviors>
+        </CheckBox>
+        
         <ui:IntellisenseTextBox  Grid.ColumnSpan="2"
                                  Grid.Column="0"
-                                 Grid.Row="1" 
+                                 Grid.Row="2" 
                                  DefaultText="{Binding ScriptTypeDefaultText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                  AllowMultilinePaste="True"
                                  AcceptsReturn="True"
@@ -78,10 +94,10 @@
                                  Height="53"
                                  MinHeight="53"
                                  FilterType="All"
+                                 Margin="0,-2,0,0"
                                  ToolTip="{x:Static languages:Core.ScriptingToolTipScript}"
                                  AllowUserCalculateMode="False"
                                  IsInCalculateMode="True"
-                                 Margin="{StaticResource ControlBorderTop}"
                                  VerticalContentAlignment="Top"
                                  Text="{Binding Path=ModelItem.Script, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                  AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_txtScript_AutoID}">
@@ -94,13 +110,13 @@
             </i:Interaction.Behaviors>
         </ui:IntellisenseTextBox>
 
-        <TextBlock Grid.Column="0" Grid.Row="2" Margin="{StaticResource ControlBorderTop}" Text="Result" />
+        <TextBlock Grid.Column="0" Grid.Row="3" Margin="{StaticResource ControlBorderTop}" Text="Result" />
         <ui:IntellisenseTextBox Grid.Column="1"
-                                Grid.Row="2"
+                                Grid.Row="3"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 WrapInBrackets="True"
                                 DefaultText="[[Result]]"
-                                Margin="{StaticResource ControlBorderTop}"
+                                Margin="0,1,0,0"
                                 FilterType="All"
                                 ToolTip="{x:Static languages:Core.ScriptingToolTipResult}"
                                 Text="{Binding Path=ModelItem.Result, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -113,8 +129,9 @@
                                      Target="{Binding}" />
             </i:Interaction.Behaviors>
         </ui:IntellisenseTextBox>
+
         <errors:OnError Grid.Column="0"
-                        Grid.Row="3"
+                        Grid.Row="4"
                         Grid.ColumnSpan="2" />
     </Grid>
 </core:ActivityDesignerTemplate>

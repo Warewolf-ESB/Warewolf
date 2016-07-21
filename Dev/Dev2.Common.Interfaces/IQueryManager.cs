@@ -76,6 +76,13 @@ namespace Dev2.Common.Interfaces
         /// <param name="listing"></param>
         /// <returns></returns>
         List<IFileListing> GetDllListings(IFileListing listing);
+        
+        /// <summary>
+        /// Get the list of dlls for plugin source
+        /// </summary>
+        /// <param name="listing"></param>
+        /// <returns></returns>
+        List<IFileListing> GetComDllListings(IFileListing listing);
 
         /// <summary>
         /// Fetch namespaces for a plugin source

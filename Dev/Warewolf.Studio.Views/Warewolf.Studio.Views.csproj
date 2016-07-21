@@ -186,6 +186,9 @@
     <Compile Include="ManageOAuthSourceControl.xaml.cs">
       <DependentUpon>ManageOAuthSourceControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ManageComPluginSourceControl.xaml.cs">
+      <DependentUpon>ManageComPluginSourceControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ManagePluginSourceControl.xaml.cs">
       <DependentUpon>ManagePluginSourceControl.xaml</DependentUpon>
     </Compile>
@@ -273,6 +276,10 @@
     <Page Include="ManageOAuthSourceControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ManageComPluginSourceControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="ManagePluginSourceControl.xaml">
       <SubType>Designer</SubType>

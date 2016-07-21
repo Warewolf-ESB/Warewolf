@@ -206,9 +206,6 @@
     <Compile Include="Interfaces\IEsbChannel.cs" />
     <Compile Include="Interfaces\IEsbWorkspaceChannel.cs" />
     <Compile Include="Isolated.cs" />
-    <Compile Include="Network\Execution\ExecutionStatusCallbackDispatcher.cs" />
-    <Compile Include="Network\Execution\ExecutionStatusCallbackMessage.cs" />
-    <Compile Include="Network\Execution\IExecutionStatusCallbackDispatcher.cs" />
     <Compile Include="PathOperations\FileRepository.cs" />
     <Compile Include="Reflection\NullableHelper.cs" />
     <Compile Include="Session\Debug\DebugTO.cs" />

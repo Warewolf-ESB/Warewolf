@@ -9,6 +9,7 @@
 */
 
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.ConstrainedExecution;
 using System.Runtime.InteropServices;
 using System.Security;
@@ -152,6 +153,7 @@ namespace Dev2
 
         #endregion
 
+        [SuppressMessage("ReSharper", "UnusedMember.Global")]
         public static bool RunAs(string userName, string domain, string password, Action action)
         {
             var result = false;
