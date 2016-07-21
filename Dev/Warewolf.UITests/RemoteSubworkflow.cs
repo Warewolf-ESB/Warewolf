@@ -43,11 +43,11 @@ namespace Warewolf.UITests
             Uimap.Click_Save_Ribbon_Button();
             Uimap.Enter_Servicename_As_RemoteServerUITestWorkflow();
             Uimap.Click_SaveDialog_YesButton();
-            Uimap.Enter_RemoteServerUITestWorkflow_Into_Explorer_Filter();
             //Uimap.Click_Debug_Ribbon_Button();
             //Uimap.Click_DebugInput_Debug_RemoteServerUITestWorkflow_Button();
             //Uimap.Click_Debug_Output_Workflow1_Cell();
             //Uimap.Click_Debug_Output_Workflow1_Name();
+            Uimap.Enter_RemoteServerUITestWorkflow_Into_Explorer_Filter();
             Uimap.RightClick_Explorer_Localhost_First_Item();
             Uimap.Click_Show_Dependencies_In_Explorer_Context_Menu();
             Uimap.Click_Settings_Ribbon_Button();
@@ -77,60 +77,11 @@ namespace Warewolf.UITests
         [TestCleanup]
         public void MyTestCleanup()
         {
-            try
-            {
-                Uimap.Enter_RemoteServerUITestWorkflow_Into_Explorer_Filter();
-                Uimap.RightClick_Explorer_Localhost_First_Item();
-                Uimap.Select_Delete_FromExplorerContextMenu();
-                Uimap.Click_MessageBox_Yes();
-                Uimap.Click_Explorer_Filter_Clear_Button();
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("Cleanup failed to remove RemoteServerUITestWorkflow. Test may have crashed before RemoteServerUITestWorkflow was created.\n" + e.Message);
-            }
-
-            try
-            {
-                Playback.PlaybackSettings.SearchTimeout = 1000;
-                var selectedItemAsTstciremoteConnected = Uimap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.SelectedItemAsTSTCIREMOTEConnected;
-                Playback.PlaybackSettings.SearchTimeout = 5000;
-                if (selectedItemAsTstciremoteConnected.Exists)
-                {
-                    Uimap.Click_Explorer_RemoteServer_Connect_Button();
-                }
-                else
-                {
-                    Uimap.Click_Connect_Control_InExplorer();
-                    Playback.PlaybackSettings.SearchTimeout = 1000;
-                    var comboboxListItemAsTstciremoteConnected = Uimap.MainStudioWindow.ComboboxListItemAsTSTCIREMOTEConnected;
-                    Playback.PlaybackSettings.SearchTimeout = 5000;
-                    if (comboboxListItemAsTstciremoteConnected.Exists)
-                    {
-                        Uimap.Select_TSTCIREMOTEConnected_From_Explorer_Remote_Server_Dropdown_List();
-                        Uimap.Click_Explorer_RemoteServer_Connect_Button();
-                    }
-                }
-                Uimap.Select_LocalhostConnected_From_Explorer_Remote_Server_Dropdown_List();
-                Uimap.Enter_TSTCIREMOTE_Into_Explorer_Filter();
-                Playback.PlaybackSettings.SearchTimeout = 1000;
-                var wpfTreeItem = Uimap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem;
-                Playback.PlaybackSettings.SearchTimeout = 5000;
-                if (wpfTreeItem.Exists)
-                {
-                    Uimap.RightClick_Explorer_Localhost_First_Item();
-                    Uimap.Select_Delete_FromExplorerContextMenu();
-                    Uimap.Click_MessageBox_Yes();
-                }
-                Uimap.Click_Explorer_Filter_Clear_Button();
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("Cleanup failed to remove remote server TST-CI-REMOTE. Test may have crashed before remote server TST-CI-REMOTE was connected.\n" + e.Message);
-                Uimap.Click_Explorer_Filter_Clear_Button();
-            }
+            Uimap.TryCloseHangingSaveDialog();
+            Uimap.TryRemoveRemoteServerUITestWorkflowFromExplorer();
+            Uimap.TryDisconnectFromCIREMOTEAndRemoveSourceFromExplorer();
         }
-        
+
         public TestContext TestContext
         {
             get
