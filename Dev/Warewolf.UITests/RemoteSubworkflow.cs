@@ -80,6 +80,7 @@ namespace Warewolf.UITests
             Uimap.TryCloseHangingWindowsGroupDialog();
             Uimap.TryRemoveRemoteServerUITestWorkflowFromExplorer();
             Uimap.TryDisconnectFromCIREMOTEAndRemoveSourceFromExplorer();
+            Uimap.TryCloseAllTabs();
         }
 
         public TestContext TestContext

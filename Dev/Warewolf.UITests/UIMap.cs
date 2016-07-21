@@ -83,8 +83,8 @@ namespace Warewolf.UITests
             }
             if (e.Error is FailedToPerformActionOnBlockedControlException)
             {
-                FailedToPerformActionOnBlockedControlException asFailedToPerformActionOnBlockedControlException = e.Error as FailedToPerformActionOnBlockedControlException;
-                var exceptionSource = asFailedToPerformActionOnBlockedControlException.ExceptionSource;
+                FailedToPerformActionOnBlockedControlException asBlockedControlException = e.Error as FailedToPerformActionOnBlockedControlException;
+                var exceptionSource = asBlockedControlException.ExceptionSource;
                 if (exceptionSource is UITestControl)
                 {
                     (exceptionSource as UITestControl).DrawHighlight();
@@ -135,7 +135,7 @@ namespace Warewolf.UITests
                 {
                     Click_Clear_Toolbox_Filter_Button();
                 }
-                Click_Close_Tab_Button();
+                Click_Close_Workflow_Tab_Button();
                 Click_MessageBox_No();
             }
             catch (Exception e)
@@ -361,6 +361,44 @@ namespace Warewolf.UITests
 
             // Verify that the 'Enabled' property of 'Save this tab' button equals 'True'
             Assert.AreEqual(true, saveButton.Enabled, "Save ribbon button is not enabled");
+        }
+
+        public void TryCloseAllTabs()
+        {
+            try
+            {
+                Playback.PlaybackSettings.MaximumRetryCount = _strictMaximumRetryCount * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
+                Playback.PlaybackSettings.SearchTimeout = _strictSearchTimeout * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
+                var workflowTabCloseButton = MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.CloseButton;
+                Playback.PlaybackSettings.MaximumRetryCount = _lenientMaximumRetryCount * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
+                Playback.PlaybackSettings.SearchTimeout = _lenientSearchTimeout * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
+                if (workflowTabCloseButton.Exists)
+                {
+                    Click_Close_Workflow_Tab_Button();
+                }
+                Playback.PlaybackSettings.MaximumRetryCount = _strictMaximumRetryCount * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
+                Playback.PlaybackSettings.SearchTimeout = _strictSearchTimeout * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
+                var settingsTabCloseButton = MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab;
+                Playback.PlaybackSettings.MaximumRetryCount = _lenientMaximumRetryCount * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
+                Playback.PlaybackSettings.SearchTimeout = _lenientSearchTimeout * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
+                if (settingsTabCloseButton.Exists)
+                {
+                    Click_Close_Settings_Tab_Button();
+                }
+                Playback.PlaybackSettings.MaximumRetryCount = _strictMaximumRetryCount * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
+                Playback.PlaybackSettings.SearchTimeout = _strictSearchTimeout * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
+                var serverSourceWizardTabCloseButton = MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.ServerSourceWizardTab.TabCloseButton;
+                Playback.PlaybackSettings.MaximumRetryCount = _lenientMaximumRetryCount * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
+                Playback.PlaybackSettings.SearchTimeout = _lenientSearchTimeout * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
+                if (serverSourceWizardTabCloseButton.Exists)
+                {
+                    Click_Close_Server_Source_Wizard_Tab_Button();
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Cleanup failed to remove hanging select windows group dialog. Test might not have left a hanging dialog.\n" + e.Message);
+            }
         }
     }
 }
