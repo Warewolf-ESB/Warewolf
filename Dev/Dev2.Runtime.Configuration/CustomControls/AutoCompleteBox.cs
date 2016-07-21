@@ -1119,7 +1119,7 @@ namespace System.Windows.Controls
         /// <summary>
         /// Gets or sets the Text template part.
         /// </summary>
-        protected internal TextBox TextBox
+        public TextBox TextBox
         {
             get { return _text; }
             set
