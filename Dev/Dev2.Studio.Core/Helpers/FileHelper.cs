@@ -11,7 +11,6 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
-using System.Net;
 using System.Reflection;
 using System.Text;
 using Dev2.Common;
@@ -141,21 +140,6 @@ namespace Dev2.Studio.Core.Helpers
             if(directory == null) return null;
             var path = Path.Combine(directory, uri);
             return path;
-        }
-
-
-        public static string GetDebugItemTempFilePath(string uri)
-        {
-            Dev2Logger.Info("");
-
-            using(var client = new WebClient { Credentials = CredentialCache.DefaultCredentials })
-            {
-                string serverLogData = client.UploadString(uri, "");
-                string value = serverLogData.Replace("<DataList><Dev2System.ManagmentServicePayload>", "").Replace("</Dev2System.ManagmentServicePayload></DataList>", "");
-                string uniqueOutputPath = GetUniqueOutputPath(".txt");
-                CreateTextFile(value, uniqueOutputPath);
-                return uniqueOutputPath;
-            }
         }
 
         public static void MigrateTempData(string rootPath)

@@ -116,15 +116,6 @@ namespace Warewolf.Studio.Views
             return ExplorerViewTestClass.GetFoldersResourcesVisible(path);
         }
 
-        public void VerifyItemDoesNotExist(string path)
-        {
-            ExplorerViewTestClass.VerifyItemDoesNotExist(path);
-        }
-
-        public void Refresh()
-        {
-            ExplorerViewTestClass.Reset();
-        }
         #endregion
 
         void ExplorerTree_OnInitializeNode(object sender, InitializeNodeEventArgs e)
