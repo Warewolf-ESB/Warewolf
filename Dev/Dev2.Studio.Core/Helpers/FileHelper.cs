@@ -42,27 +42,6 @@ namespace Dev2.Studio.Core.Helpers
             return path;
         }
 
-        /// <summary>
-        /// Creates the file.
-        /// </summary>
-        /// <param name="outputTxt">The text to output to the path</param>
-        /// <param name="outputPath">The output path.</param>
-        /// <author>jurie.smit</author>
-        /// <date>2013/01/15</date>
-        public static void CreateTextFile(string outputTxt, string outputPath)
-        {
-            Dev2Logger.Info("");
-            EnsurePathIsvalid(outputPath, ".txt");
-            var fs = File.Open(outputPath,
-                                      FileMode.OpenOrCreate,
-                                      FileAccess.Write);
-            using(var writer = new StreamWriter(fs, Encoding.UTF8))
-            {
-                Dev2Logger.Info("Writing a text file");
-                writer.Write(outputTxt);
-            }
-        }
-
         public static void CreateTextFile(StringBuilder outputTxt, string outputPath)
         {
             Dev2Logger.Info("");
