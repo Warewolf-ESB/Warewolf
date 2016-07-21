@@ -39,7 +39,7 @@ namespace Dev2.Common.Interfaces
         DataTable TestDbService(IDatabaseService inputValues);
         string TestWebService(IWebService inputValues);
         string TestPluginService(IPluginService inputValues);
-        string TestPluginService(IComPluginService inputValues);
+
         string TestWcfService(IWcfService inputValues);
     }
 

@@ -19,7 +19,7 @@ namespace Dev2.Common.Interfaces.ServerProxyLayer
         void SaveComPluginSource(IComPluginSource source, Guid serverWorkspaceID);
         void SaveOAuthSource(IOAuthSource source, Guid serverWorkspaceID);
         void SavePluginService(IPluginService toDbSource);
-        void SaveComPluginService(IComPluginService toDbSource);
+
         void SaveEmailServiceSource(IEmailServiceSource emailServiceSource, Guid serverWorkspaceID);
         void SaveExchangeSource(IExchangeSource exchangeSource, Guid serverWorkspaceID);
         // ReSharper disable once InconsistentNaming
