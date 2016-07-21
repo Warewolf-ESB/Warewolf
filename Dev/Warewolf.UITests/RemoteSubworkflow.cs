@@ -59,7 +59,7 @@ namespace Warewolf.UITests
             Uimap.Click_Select_Windows_Group_OK_Button();
             Uimap.Click_Settings_Security_Tab_Resource_Permissions_Row1_View_Checkbox();
             Uimap.Click_Settings_Security_Tab_ResourcePermissions_Row1_Execute_Checkbox();
-            Uimap.Click_Save_Ribbon_Button_to_Open_Save_Dialog();
+            Uimap.Click_Save_Ribbon_Button();
             Uimap.Click_Deploy_Ribbon_Button();
         }
 
