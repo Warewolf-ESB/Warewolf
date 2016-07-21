@@ -10,6 +10,7 @@
 
 using System;
 using System.Activities;
+using System.Diagnostics.CodeAnalysis;
 using System.Threading;
 using Dev2.Activities;
 using Dev2.Common;
@@ -135,6 +136,7 @@ namespace Dev2.Runtime.ESB.Execution
             return result;
         }
 
+        [SuppressMessage("ReSharper", "UnusedMember.Global")]
         public void Eval(DynamicActivity flowchartProcess, IDSFDataObject dsfDataObject, int update)
         {
             IDev2Activity resource = new ActivityParser().Parse(flowchartProcess);

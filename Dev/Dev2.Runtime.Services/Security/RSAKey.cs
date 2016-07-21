@@ -84,16 +84,5 @@ namespace Dev2.Runtime.Security
         /// The private key in base64.
         /// </summary>
         public string Private { get; set; }
-
-        /// <summary>
-        /// Creates an XML representation of this instance.
-        /// </summary>
-        /// <returns>An XML representation of this instance.</returns>
-        public XElement ToXml()
-        {
-            return new XElement("RSAKey",
-                                new XElement("Public", Public),
-                                new XElement("Private", Private));
-        }
     }
 }

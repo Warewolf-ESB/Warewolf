@@ -9,6 +9,7 @@
 */
 
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Text;
 
 namespace Dev2.Runtime
@@ -17,6 +18,7 @@ namespace Dev2.Runtime
     {
         #region GenerateString
 
+        [SuppressMessage("ReSharper", "UnusedMember.Global")]
         public static string GenerateString(this Random random, int length, string prefix = "", bool includeSpaces = false)
         {
             var modulo = length / 3;

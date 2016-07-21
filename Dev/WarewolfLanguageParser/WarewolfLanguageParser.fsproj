@@ -130,11 +130,6 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Numerics" />
     <Reference Include="System.Runtime.Caching" />
-    <ProjectReference Include="..\Dev2.Common.Interfaces\Dev2.Common.Interfaces.csproj">
-      <Name>Dev2.Common.Interfaces</Name>
-      <Project>{13c0c6e9-7dc3-4dc3-8535-031c263cee0b}</Project>
-      <Private>True</Private>
-    </ProjectReference>
     <ProjectReference Include="..\Dev2.Common\Dev2.Common.csproj">
       <Name>Dev2.Common</Name>
       <Project>{84405fdf-0ff8-49a2-8925-8a4aeba8104a}</Project>

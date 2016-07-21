@@ -318,14 +318,5 @@ namespace Dev2.Utilities
 
         #endregion
 
-        #region ToNamespaceType
-
-        public string ToNamespaceTypeString(Type activityType)
-        {
-            // Name must be in the form Namespace.Type (and does not have to be related to the actual activity!)
-            return string.Format("{0}.{1}", activityType.Namespace, activityType.Name.Replace("`", ""));
-        }
-
-        #endregion
     }
 }

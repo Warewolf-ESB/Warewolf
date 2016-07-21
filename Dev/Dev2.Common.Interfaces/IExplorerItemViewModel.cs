@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
@@ -34,6 +35,7 @@ namespace Dev2.Common.Interfaces
 
         Task<bool> Move(IExplorerTreeItem destination);
 
+        [SuppressMessage("ReSharper", "UnusedMember.Global")]
         void AddSibling(IExplorerItemViewModel sibling);
         void CreateNewFolder();
         void Apply(Action<IExplorerItemViewModel> action);

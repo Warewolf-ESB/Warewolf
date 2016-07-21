@@ -9,6 +9,7 @@
 */
 
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Xml.Linq;
 using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.ServiceModel.Data;
@@ -44,11 +45,13 @@ namespace Dev2.Runtime.ServiceModel
 
         #region DeserializeService
 
+        [SuppressMessage("ReSharper", "UnusedMember.Global")]
         protected virtual Service DeserializeService(string args)
         {
             return JsonConvert.DeserializeObject<PluginService>(args);
         }
 
+        [SuppressMessage("ReSharper", "UnusedMember.Global")]
         protected virtual Service DeserializeService(XElement xml, string resourceType)
         {
             return xml == null ? new PluginService() : new PluginService(xml);
