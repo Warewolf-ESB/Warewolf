@@ -1,24 +1,24 @@
 ﻿using System.Linq;
+using Microsoft.VisualStudio.TestTools.UITesting.HtmlControls;
+using Microsoft.VisualStudio.TestTools.UITesting.WinControls;
+using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
+using System;
+using System.Collections.Generic;
+using System.CodeDom.Compiler;
+using Microsoft.VisualStudio.TestTools.UITest.Extension;
+using Microsoft.VisualStudio.TestTools.UITesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Keyboard = Microsoft.VisualStudio.TestTools.UITesting.Keyboard;
+using Mouse = Microsoft.VisualStudio.TestTools.UITesting.Mouse;
+using MouseButtons = System.Windows.Forms.MouseButtons;
+using System.Drawing;
+using System.Windows.Input;
+using System.Text.RegularExpressions;
+using System.Reflection;
+using System.Threading;
 
 namespace Warewolf.UITests
 {
-    using Microsoft.VisualStudio.TestTools.UITesting.HtmlControls;
-    using Microsoft.VisualStudio.TestTools.UITesting.WinControls;
-    using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
-    using System;
-    using System.Collections.Generic;
-    using System.CodeDom.Compiler;
-    using Microsoft.VisualStudio.TestTools.UITest.Extension;
-    using Microsoft.VisualStudio.TestTools.UITesting;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using Keyboard = Microsoft.VisualStudio.TestTools.UITesting.Keyboard;
-    using Mouse = Microsoft.VisualStudio.TestTools.UITesting.Mouse;
-    using MouseButtons = System.Windows.Forms.MouseButtons;
-    using System.Drawing;
-    using System.Windows.Input;
-    using System.Text.RegularExpressions;
-    using System.Reflection;
-    using System.Threading;
 
     public partial class UIMap
     {
@@ -47,7 +47,7 @@ namespace Warewolf.UITests
             Playback.PlaybackError -= new EventHandler<PlaybackErrorEventArgs>(PlaybackErrorHandler);
             Playback.PlaybackError += new EventHandler<PlaybackErrorEventArgs>(PlaybackErrorHandler);
         }
-        
+
         void PlaybackErrorHandler(object sender, PlaybackErrorEventArgs e)
         {
             Console.WriteLine(e.Error.Message);
@@ -70,8 +70,19 @@ namespace Warewolf.UITests
                     }
                 }
             }
-            Playback.Wait(_strictSearchTimeout * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString()));
-            e.Result = PlaybackErrorOptions.Retry;
+            if (e.Error is UITestControlNotAvailableException)
+            {
+                UITestControlNotAvailableException asControlNotAvailableException = e.Error as UITestControlNotAvailableException;
+                var exceptionSource = asControlNotAvailableException.ExceptionSource;
+                if (exceptionSource is UITestControl)
+                {
+                    (exceptionSource as UITestControl).DrawHighlight();
+                    e.Result = PlaybackErrorOptions.Retry;
+                    return;
+                }
+                Playback.Wait(_strictSearchTimeout * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString()));
+                e.Result = PlaybackErrorOptions.Retry;
+            }
         }
 
         public void WaitIfStudioDoesNotExist()
@@ -147,22 +158,22 @@ namespace Warewolf.UITests
             return firstOrDefaultCell?.GetChildren().FirstOrDefault(child => child.ControlType == ControlType.Button);
         }
 
-        public UITestControl FindViewPermissionsCheckbox(UITestControl row)
+        public WpfCheckBox FindViewPermissionsCheckbox(UITestControl row)
         {
             var firstOrDefaultCell = row.GetChildren().Where(child => child.ControlType == ControlType.Cell).ElementAtOrDefault(2);
-            return firstOrDefaultCell?.GetChildren().FirstOrDefault(child => child.ControlType == ControlType.CheckBox);
+            return firstOrDefaultCell?.GetChildren().FirstOrDefault(child => child.ControlType == ControlType.CheckBox) as WpfCheckBox;
         }
 
-        public UITestControl FindExecutePermissionsCheckbox(UITestControl row)
+        public WpfCheckBox FindExecutePermissionsCheckbox(UITestControl row)
         {
             var firstOrDefaultCell = row.GetChildren().Where(child => child.ControlType == ControlType.Cell).ElementAtOrDefault(3);
-            return firstOrDefaultCell?.GetChildren().FirstOrDefault(child => child.ControlType == ControlType.CheckBox);
+            return firstOrDefaultCell?.GetChildren().FirstOrDefault(child => child.ControlType == ControlType.CheckBox) as WpfCheckBox;
         }
 
-        public UITestControl FindContributePermissionsCheckbox(UITestControl row)
+        public WpfCheckBox FindContributePermissionsCheckbox(UITestControl row)
         {
             var firstOrDefaultCell = row.GetChildren().Where(child => child.ControlType == ControlType.Cell).ElementAtOrDefault(4);
-            return firstOrDefaultCell?.GetChildren().FirstOrDefault(child => child.ControlType == ControlType.CheckBox);
+            return firstOrDefaultCell?.GetChildren().FirstOrDefault(child => child.ControlType == ControlType.CheckBox) as WpfCheckBox;
         }
 
         public void TryCloseHangingSaveDialog()
@@ -276,6 +287,69 @@ namespace Warewolf.UITests
             {
                 Console.WriteLine("Cleanup failed to remove hanging select windows group dialog. Test might not have left a hanging dialog.\n" + e.Message);
             }
+        }
+
+        /// <summary>
+        /// Click_Settings_Security_Tab_ResourcePermissions_Execute_Checkbox - Use 'Click_Settings_Security_Tab_ResourcePermissions_Execute_CheckboxParams' to pass parameters into this method.
+        /// </summary>
+        public void Click_Settings_Security_Tab_ResourcePermissions_Row1_Execute_Checkbox()
+        {
+            #region Variable Declarations
+            Row1 row1 = MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1;
+            WpfCheckBox executeCheckBox = FindExecutePermissionsCheckbox(row1);
+            WpfButton saveButton = this.MainStudioWindow.SideMenuBar.SaveButton;
+            #endregion
+
+            // Select 'UI__ExecutePermissionCheckBox_AutoID' check box
+            executeCheckBox.Checked = true;
+
+            // Verify that the 'Checked' property of 'UI__ExecutePermissionCheckBox_AutoID' check box equals 'True'
+            Assert.AreEqual(true, executeCheckBox.Checked, "Settings security tab resource permissions row 1 execute checkbox is not checked.");
+
+            // Verify that the 'Enabled' property of 'Save this tab' button equals 'True'
+            Assert.AreEqual(true, saveButton.Enabled, "Save ribbon button is not enabled");
+        }
+
+        /// <summary>
+        /// Click_Settings_Security_Tab_Resource_Permissions_View_Checkbox - Use 'Click_Settings_Security_Tab_Resource_Permissions_View_CheckboxParams' to pass parameters into this method.
+        /// </summary>
+        public void Click_Settings_Security_Tab_Resource_Permissions_Row1_View_Checkbox()
+        {
+            #region Variable Declarations
+            Row1 row1 = MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1;
+            WpfCheckBox viewCheckBox = FindViewPermissionsCheckbox(row1);
+            WpfButton saveButton = this.MainStudioWindow.SideMenuBar.SaveButton;
+            #endregion
+
+            // Select 'UI__ViewPermissionCheckBox_AutoID' check box
+            viewCheckBox.Checked = true;
+
+            // Verify that the 'Checked' property of 'UI__ViewPermissionCheckBox_AutoID' check box equals 'True'
+            Assert.AreEqual(true, viewCheckBox.Checked, "Settings resource permissions row1 view checkbox is not checked.");
+
+            // Verify that the 'Enabled' property of 'Save this tab' button equals 'True'
+            Assert.AreEqual(true, saveButton.Enabled, "Save ribbon button is not enabled");
+        }
+
+        /// <summary>
+        /// Click_Settings_Security_Tab_Resource_Permissions_Contribute_Checkbox - Use 'Click_Settings_Security_Tab_Resource_Permissions_Contribute_CheckboxParams' to pass parameters into this method.
+        /// </summary>
+        public void Click_Settings_Security_Tab_Resource_Permissions_Row1_Contribute_Checkbox()
+        {
+            #region Variable Declarations
+            Row1 row1 = MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1;
+            WpfCheckBox contributeCheckBox = FindContributePermissionsCheckbox(row1);
+            WpfButton saveButton = this.MainStudioWindow.SideMenuBar.SaveButton;
+            #endregion
+
+            // Select 'UI__ContributePermissionCheckBox_AutoID' check box
+            contributeCheckBox.Checked = true;
+
+            // Verify that the 'Checked' property of 'UI__ViewPermissionCheckBox_AutoID' check box equals 'True'
+            Assert.AreEqual(true, contributeCheckBox.Checked, "Settings resource permissions row1 view checkbox is not checked.");
+
+            // Verify that the 'Enabled' property of 'Save this tab' button equals 'True'
+            Assert.AreEqual(true, saveButton.Enabled, "Save ribbon button is not enabled");
         }
     }
 }
