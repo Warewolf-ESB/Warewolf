@@ -224,7 +224,6 @@
     <Compile Include="ConverterTests\MathFunctionToDoubleConverterTests.cs" />
     <Compile Include="ConverterTests\IntEnsureMinConverterTests.cs" />
     <Compile Include="ConverterTests\IntInRangeToVisibilityConverterTests.cs" />
-    <Compile Include="Custom Dev2 Controls\Intellisense\MockIntellisenseTextbox.cs" />
     <Compile Include="DataList\ActivityDataMappingBuilderTest.cs" />
     <Compile Include="DataList\InputOutputViewModelEqualityComparerTest.cs" />
     <Compile Include="IntellisenseProvider\FileSystemIntellisenseProviderTest.cs" />
