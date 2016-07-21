@@ -12,9 +12,9 @@ namespace Warewolf.Studio.Views
     /// <summary>
     /// Interaction logic for ManagePluginSourceControl.xaml
     /// </summary>
-    public partial class ManagePluginSourceControl : IView, ICheckControlEnabledView
+    public partial class ManageComPluginSourceControl : IView, ICheckControlEnabledView
     {
-        public ManagePluginSourceControl()
+        public ManageComPluginSourceControl()
         {
             InitializeComponent();
 
