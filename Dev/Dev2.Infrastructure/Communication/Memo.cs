@@ -30,17 +30,6 @@ namespace Dev2.Communication
 
         public string DateString => Date.ToString("yyyy-MM-dd.HH.mm.ss.ffff");
 
-        public string ToString(ISerializer serializer)
-        {
-            var serialize = serializer.Serialize(this);
-            var envelope = new Envelope
-            {
-                Type = GetType(),
-                Content = serialize
-            };
-            return serializer.Serialize(envelope);
-        }
-
         #region IEquatable
 
         public bool Equals(IMemo other)

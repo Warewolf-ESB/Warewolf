@@ -110,30 +110,7 @@ namespace Dev2.Infrastructure.Tests.Communication
             var actual = memo.GetHashCode();
             Assert.AreEqual(expected, actual);
         }
-
-        [TestMethod]
-        [Description("ToString must serialize a Memo inside an Envelope.")]
-        [TestCategory("UnitTest")]
-        [Owner("Trevor Williams-Ros")]
-// ReSharper disable InconsistentNaming
-        public void MemoToString_UnitTest_Serialization_EnvelopeWithMemoAsContent()
-// ReSharper restore InconsistentNaming
-        {
-            var memo = new Memo { InstanceID = Guid.NewGuid() };
-
-            var serializer = new Dev2JsonSerializer();
-
-            var actual = memo.ToString(serializer);
-            Assert.IsNotNull(actual);
-
-            var actualEnvelope = serializer.Deserialize<Envelope>(actual);
-            Assert.IsNotNull(actualEnvelope);
-
-            var actualMemo = serializer.Deserialize<Memo>(actualEnvelope.Content);
-            Assert.IsNotNull(actualMemo);
-            Assert.AreEqual(memo.InstanceID, actualMemo.InstanceID);
-            Assert.AreEqual(memo.Date, actualMemo.Date);
-        }
+        
         
     }
 }

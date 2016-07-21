@@ -27,7 +27,7 @@
     <Style x:Key="ActivityIntellisenseTextBoxStyle" TargetType="{x:Type ui:IntellisenseTextBox}" >
         <Setter Property="AllowUserInsertLine" Value="False"/>
         <Setter Property="AllowMultilinePaste" Value="False"/>
-        <Setter Property="Padding" Value="2" />
+        
         <Setter Property="VerticalContentAlignment" Value="Center"/>
         <Setter Property="Height" Value="25" />
     </Style>
