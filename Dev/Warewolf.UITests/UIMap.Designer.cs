@@ -2987,8 +2987,8 @@ namespace Warewolf.UITests
             // Type 'TSTCIREMOTE' in 'ServiceNameTextBox' text box
             serviceNameTextBox.Text = this.Enter_Servicename_As_TSTCIREMOTEParams.ServiceNameTextBoxText;
 
-            // Wait for 2 seconds for user delay between actions; Verify that the 'Enabled' property of 'Save' button equals 'True'
-            Playback.Wait(2000);
+            // Wait for 30 seconds for user delay between actions; Verify that the 'Enabled' property of 'Save' button equals 'True'
+            Playback.Wait(30000);
             Assert.AreEqual(this.Enter_Servicename_As_TSTCIREMOTEParams.SaveButtonEnabled, saveButton.Enabled, "Save dialog save button is not enabled. Check workflow name is valid and that ano" +
                     "ther workflow by that name does not already exist.");
         }
@@ -9384,7 +9384,7 @@ namespace Warewolf.UITests
         public string ServiceNameTextBoxText = "TSTCIREMOTE";
         
         /// <summary>
-        /// Wait for 2 seconds for user delay between actions; Verify that the 'Enabled' property of 'Save' button equals 'True'
+        /// Wait for 30 seconds for user delay between actions; Verify that the 'Enabled' property of 'Save' button equals 'True'
         /// </summary>
         public bool SaveButtonEnabled = true;
         #endregion

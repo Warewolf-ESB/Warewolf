@@ -4320,7 +4320,7 @@
       <Value Encoded="false">TSTCIREMOTE</Value>
       <Type>String</Type>
     </SetValueAction>
-    <AssertAction UIObjectName="UIMap.SaveDialogWindow.SaveButton" ThinkTime="2000">
+    <AssertAction UIObjectName="UIMap.SaveDialogWindow.SaveButton" ThinkTime="30000">
       <ParameterName />
       <PropertyName>Enabled</PropertyName>
       <ExpectedValue>True</ExpectedValue>
