@@ -395,7 +395,7 @@ namespace Warewolf.UITests
             }
             catch (Exception e)
             {
-                Console.WriteLine("Cleanup failed to remove hanging select windows group dialog. Test might not have left a hanging dialog.\n" + e.Message);
+                Console.WriteLine("TryClose method failed to close Workflow tab.\n" + e.Message);
             }
         }
 
@@ -424,7 +424,7 @@ namespace Warewolf.UITests
             }
             catch (Exception e)
             {
-                Console.WriteLine("Cleanup failed to remove hanging select windows group dialog. Test might not have left a hanging dialog.\n" + e.Message);
+                Console.WriteLine("TryClose method failed to close Settings tab.\n" + e.Message);
             }
         }
 
@@ -453,7 +453,7 @@ namespace Warewolf.UITests
             }
             catch (Exception e)
             {
-                Console.WriteLine("Cleanup failed to remove hanging select windows group dialog. Test might not have left a hanging dialog.\n" + e.Message);
+                Console.WriteLine("TryClose method failed to close Server Source tab.\n" + e.Message);
             }
         }
     }
