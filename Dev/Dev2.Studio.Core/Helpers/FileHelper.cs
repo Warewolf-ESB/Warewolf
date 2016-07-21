@@ -65,7 +65,7 @@ namespace Dev2.Studio.Core.Helpers
                 string serverLogData = client.UploadString(uri, "");
                 string value = serverLogData.Replace("<DataList><Dev2System.ManagmentServicePayload>", "").Replace("</Dev2System.ManagmentServicePayload></DataList>", "");
                 string uniqueOutputPath = GetUniqueOutputPath(".txt");
-                CreateTextFile(value, uniqueOutputPath);
+                CreateTextFile(new StringBuilder(value), uniqueOutputPath);
                 return uniqueOutputPath;
             }
         }
