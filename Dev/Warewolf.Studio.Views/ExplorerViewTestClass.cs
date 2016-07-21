@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -513,6 +514,7 @@ namespace Warewolf.Studio.Views
             }
         }
 
+        [SuppressMessage("ReSharper", "UnusedMember.Global")]
         public void Close(string nodeName)
         {
         }

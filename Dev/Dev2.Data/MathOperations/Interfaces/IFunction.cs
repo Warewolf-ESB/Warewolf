@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using Infragistics.Calculations.CalcManager;
 
 namespace Dev2.MathOperations {
@@ -19,6 +20,7 @@ namespace Dev2.MathOperations {
         IList<string> ArgumentDescriptions { get; }
         string Description { get; }
 
+        [SuppressMessage("ReSharper", "UnusedMember.Global")]
         void CreateCustomFunction(string functionName, List<string> arguments, List<string> argumentDescriptions, string description,
            Func<double[], double> function, IDev2CalculationManager calcManager);
     }

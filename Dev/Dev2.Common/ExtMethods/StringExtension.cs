@@ -9,6 +9,7 @@
 */
 
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
 using System.Text;
@@ -277,11 +278,7 @@ namespace Dev2.Common.ExtMethods
             return Accellerator + input;
         }
 
-        public static string ToCleanString(this string value)
-        {
-            var cleanString = new StringBuilder(value).Replace(Environment.NewLine, "\n").Replace("\r", "\n");
-            return cleanString.ToString();
-        }
+        [SuppressMessage("ReSharper", "UnusedMember.Global")]
         public static string RemoveWhiteSpace(this string value)
         {
             var cleanString = new StringBuilder(value.Trim()).Replace(" ", "");

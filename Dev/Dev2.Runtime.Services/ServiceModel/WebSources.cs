@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Net;
 using System.Text;
 using System.Xml.Linq;
@@ -54,6 +55,7 @@ namespace Dev2.Runtime.ServiceModel
         #region Get
 
         // POST: Service/WebSources/Get
+        [SuppressMessage("ReSharper", "UnusedMember.Global")]
         public WebSource Get(string resourceId, Guid workspaceId, Guid dataListId)
         {
             var result = new WebSource();
@@ -78,6 +80,7 @@ namespace Dev2.Runtime.ServiceModel
         #region Test
 
         // POST: Service/WebSources/Test
+        [SuppressMessage("ReSharper", "UnusedMember.Global")]
         public ValidationResult Test(string args, Guid workspaceId, Guid dataListId)
         {
             try
@@ -169,6 +172,7 @@ namespace Dev2.Runtime.ServiceModel
             return $"{source.Address}{relativeUri}";
         }
 
+        [SuppressMessage("ReSharper", "UnusedMember.Global")]
         public static byte[] Execute(WebSource source, WebRequestMethod method, string relativeUri, byte[] data, bool throwError, out ErrorResultTO errors, string[] headers = null)
         {
             EnsureWebClient(source, headers);
