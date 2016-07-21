@@ -111,9 +111,7 @@ namespace Dev2.Studio.Views
         {
             var handle = new WinInterop.WindowInteropHelper(this).Handle;
             var handleSource = WinInterop.HwndSource.FromHwnd(handle);
-            if (handleSource == null)
-                return;
-            handleSource.AddHook(WindowProc);
+            handleSource?.AddHook(WindowProc);
         }
 
         private static IntPtr WindowProc(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
@@ -338,7 +336,7 @@ namespace Dev2.Studio.Views
         public void UpdatePane(ContentPane contentPane)
         {
             if (contentPane == null)
-                throw new ArgumentNullException("contentPane");
+                throw new ArgumentNullException(nameof(contentPane));
 
             WorkflowDesignerViewModel workflowDesignerViewModel = contentPane.TabHeader as WorkflowDesignerViewModel;
             if (workflowDesignerViewModel != null && contentPane.ContentVisibility == Visibility.Visible)
@@ -414,10 +412,7 @@ namespace Dev2.Studio.Views
         private void DoCloseExitFullScreenPanelAnimation()
         {
             var storyboard = Resources["AnimateExitFullScreenPanelClose"] as Storyboard;
-            if (storyboard != null)
-            {
-                storyboard.Begin();
-            }
+            storyboard?.Begin();
         }
 
         private void ShowFullScreenPanel_OnMouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
@@ -425,10 +420,7 @@ namespace Dev2.Studio.Views
             if (_isSuperMaximising)
             {
                 var storyboard = Resources["AnimateExitFullScreenPanelOpen"] as Storyboard;
-                if (storyboard != null)
-                {
-                    storyboard.Begin();
-                }
+                storyboard?.Begin();
             }
             if (!_isLocked)
             {

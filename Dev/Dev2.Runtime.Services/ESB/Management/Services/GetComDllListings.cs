@@ -14,6 +14,7 @@ using Microsoft.Win32;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
+    // ReSharper disable once UnusedMember.Global
     public class GetComDllListings : IEsbManagementEndpoint
     {
         private List<KeyValuePair<Guid, Type>> TypesKeyValuePairs { get; set; }
@@ -39,33 +40,9 @@ namespace Dev2.Runtime.ESB.Management.Services
             var msg = new ExecuteMessage();
             var serializer = new Dev2JsonSerializer();
             Dev2Logger.Info("Get COMDll Listings");
-
-            #region Old Code
-
-            /* StringBuilder dllListing;
-
-            //values.TryGetValue("currentDllListing", out dllListing);
-            //if (dllListing != null)
-            //{
-            //    var src = serializer.Deserialize(dllListing.ToString(), typeof(IFileListing)) as IFileListing;
-            //    try
-            //    {
-            //        //msg.HasError = false;
-            //        //msg.Message = serializer.SerializeToBuilder(GetDllListing(src));
-            //    }
-            //    catch (Exception)
-            //    {
-            //      /*  Dev2Logger.Error(ex);
-            //        msg.HasError = true;
-            //        msg.SetMessage(ex.Message);*/
-            //    }
-            //}*/
-
-            #endregion
-            
-
             TypesKeyValuePairs = new List<KeyValuePair<Guid, Type>>();
-            using (var openSubKey = Registry.LocalMachine.OpenSubKey(@"Software\Classes\CLSID"))
+            var registryKey = Registry.LocalMachine.OpenSubKey(@"Software\Classes\CLSID");
+            using (var openSubKey = registryKey)
             {
                 if (openSubKey != null)
                 {
@@ -90,7 +67,19 @@ namespace Dev2.Runtime.ESB.Management.Services
                                 }
                             }
                         }
-                        var dllListings = TypesKeyValuePairs.Select(p => new DllListing() { Name = p.Value.Name, FullName = p.Value.FullName }).ToList();
+                        var dllListings = new List<DllListing> { new DllListing() { Name = "Registry Items", IsDirectory = true } };
+                        dllListings.AddRange(TypesKeyValuePairs.Select(p => new DllListing
+                        {
+                            Name = p.Value.Name,
+                            FullName = p.Value.FullName,
+                            Children = new List<IFileListing>(),
+                            IsDirectory = false,
+                            ClsId = p.Value.GUID.ToString(),
+                            ProgId = p.Key.ToString()
+                        }).OrderBy(listing => listing.Name)
+                                                                                            .ToList());
+
+
                         msg.HasError = false;
                         msg.Message = serializer.SerializeToBuilder(dllListings);
 

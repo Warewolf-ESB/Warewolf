@@ -126,7 +126,7 @@
                                         ActiveDataItem="{Binding SelectedDll, Mode=TwoWay}"
                                         ItemsSource="{Binding DllListings}"
                                         IsSelectedMemberPath="IsSelected"
-                                        DisplayMemberPath="Name"
+                                        DisplayMemberPath="FullName"
                                         IsExpandedMemberPath="IsExpanded"
                                         EnsureNodeExpansion="True"
                                         Loaded="ExplorerTree_OnLoaded"
@@ -142,7 +142,7 @@
                             </ig:XamDataTree.EditingSettings>
                             <ig:XamDataTree.GlobalNodeLayouts>
                                 <ig:NodeLayout Key="Children"
-                                               DisplayMemberPath="Name"
+                                               DisplayMemberPath="FullName"
                                                IsExpandedMemberPath="IsExpanded"
                                                IsSelectedMemberPath="IsSelected"
                                                Visibility="{Binding Path=Data.IsVisible, Converter={StaticResource BoolToVisibilityConverter}}">

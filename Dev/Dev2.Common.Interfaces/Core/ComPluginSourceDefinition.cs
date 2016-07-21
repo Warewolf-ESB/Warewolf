@@ -70,7 +70,8 @@ namespace Dev2.Common.Interfaces.Core
         public string Name { get; set; }
         public Guid Id { get; set; }
         public string ProgId { get; set; }
-        public Guid ClsId { get; set; }
+        public string ClsId { get; set; }
+        public IFileListing SelectedDll { get; set; }
 
         #endregion
     }

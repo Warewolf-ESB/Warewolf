@@ -144,7 +144,7 @@ namespace Dev2.Studio.ViewModels
         {
             var wcfSourceViewModel = new ManageComPluginSourceViewModel(new ManageComPluginSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, ""), new Microsoft.Practices.Prism.PubSubEvents.EventAggregator(), selectedSource, _mainViewModel.AsyncWorker);
             var vm = new SourceViewModel<IComPluginSource>(_mainViewModel.EventPublisher, wcfSourceViewModel, _mainViewModel.PopupProvider, new ManageWcfSourceControl());
-            workSurfaceKey = TryGetOrCreateWorkSurfaceKey(workSurfaceKey, WorkSurfaceContext.WcfSource, selectedSource.Id);
+            workSurfaceKey = TryGetOrCreateWorkSurfaceKey(workSurfaceKey, WorkSurfaceContext.ComPluginSource, selectedSource.Id);
             var key = workSurfaceKey as WorkSurfaceKey;
             var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(key, vm);
             OpeningWorkflowsHelper.AddWorkflow(key);
@@ -500,6 +500,9 @@ namespace Dev2.Studio.ViewModels
                 case "PluginSource":
                     EditPluginSource(resourceModel);
                     break;
+                case "ComPluginSource":
+                    EditComPluginSource(resourceModel);
+                    break;
                 case "WcfSource":
                     EditWcfSource(resourceModel);
                     break;
@@ -562,6 +565,25 @@ namespace Dev2.Studio.ViewModels
                 Path = db.ResourcePath
             };
             var workSurfaceKey = WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.PluginSource);
+            workSurfaceKey.EnvironmentID = resourceModel.Environment.ID;
+            workSurfaceKey.ResourceID = resourceModel.ID;
+            workSurfaceKey.ServerID = resourceModel.ServerID;
+            EditResource(def, workSurfaceKey);
+        }
+
+        private void EditComPluginSource(IContextualResourceModel resourceModel)
+        {
+            var db = new ComPluginSource(resourceModel.WorkflowXaml.ToXElement());
+            var def = new ComPluginSourceDefinition
+            {
+                SelectedDll = new DllListing { ClsId = db.ClsId, ProgId = db.ProgId, Children = new Collection<IFileListing>(), IsDirectory = false },
+                Id = db.ResourceID,
+                ClsId = db.ClsId,
+                ProgId = db.ProgId,
+                Name = db.ResourceName
+
+            };
+            var workSurfaceKey = WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.ComPluginSource);
             workSurfaceKey.EnvironmentID = resourceModel.Environment.ID;
             workSurfaceKey.ResourceID = resourceModel.ID;
             workSurfaceKey.ServerID = resourceModel.ServerID;
