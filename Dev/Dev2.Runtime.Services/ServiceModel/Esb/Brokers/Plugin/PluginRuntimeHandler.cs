@@ -226,51 +226,6 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
             return serviceMethodList;
         }
 
-        public string ValidatePlugin(string toLoad)
-        {
-            string result = string.Empty;
-
-            if (toLoad.StartsWith(GlobalConstants.GACPrefix))
-            {
-                try
-                {
-                    var readlLoad = toLoad.Remove(0, GlobalConstants.GACPrefix.Length);
-                    Assembly.Load(readlLoad);
-                }
-                catch (Exception e)
-                {
-                    Dev2Logger.Error(e);
-                    result = e.Message;
-                }
-            }
-            else if (toLoad.EndsWith(".dll"))
-            {
-                try
-                {
-                    Assembly.LoadFile(toLoad);
-                }
-                catch
-                {
-                    try
-                    {
-                        Assembly.UnsafeLoadFrom(toLoad);
-                    }
-                    catch (Exception e)
-                    {
-                        Dev2Logger.Error(e);
-                        result = e.Message;
-                    }
-                }
-            }
-            else
-            {
-                //does not start with gac prefix or end with .dll
-                result = "Not a DLL file";
-            }
-
-            return result;
-        }
-
         /// <summary>
         /// Fetches the name space list object.
         /// </summary>

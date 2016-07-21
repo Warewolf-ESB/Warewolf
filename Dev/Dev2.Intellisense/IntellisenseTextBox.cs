@@ -406,21 +406,6 @@ namespace Dev2.UI
             }
         }
 
-            public static readonly DependencyProperty HasErrorProperty = DependencyProperty.Register("HasError", typeof(bool), typeof(IntellisenseTextBox), new PropertyMetadata(false));
-
-            public bool HasError
-            {
-                get
-                {
-                    return (bool)GetValue(HasErrorProperty);
-                }
-                set
-                {
-                    SetValue(HasErrorProperty, value);
-                }
-            }
-
-
         public static readonly DependencyProperty SelectAllOnGotFocusProperty = DependencyProperty.Register("SelectAllOnGotFocus", typeof(bool), typeof(IntellisenseTextBox), new PropertyMetadata(false));
 
             public bool SelectAllOnGotFocus
