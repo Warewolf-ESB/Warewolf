@@ -9,5 +9,6 @@ namespace Dev2.Common.Interfaces
         string ProgId { get; set; }
         string ClsId { get; set; }
         IFileListing SelectedDll { get; set; }
+        string Path { get; set; }
     }
 }

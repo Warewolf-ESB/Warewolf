@@ -224,6 +224,7 @@
     <Compile Include="ESB\Management\Services\RenameItemService.cs" />
     <Compile Include="ESB\Management\Services\ResetPerformanceCounters.cs" />
     <Compile Include="ESB\Management\Services\RollbackTo.cs" />
+    <Compile Include="ESB\Management\Services\SaveComPluginSource.cs" />
     <Compile Include="ESB\Management\Services\SaveEmailServiceSource.cs" />
     <Compile Include="ESB\Management\Services\SaveDbService.cs" />
     <Compile Include="ESB\Management\Services\SaveDbSourceSource.cs" />

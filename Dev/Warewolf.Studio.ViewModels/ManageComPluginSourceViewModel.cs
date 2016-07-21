@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
@@ -211,53 +210,22 @@ namespace Warewolf.Studio.ViewModels
             ToItem();
         }
 
-        public ManageComPluginSourceViewModel() : base("ComPluginSource")
+        public ManageComPluginSourceViewModel()
+             : base("ComPluginSource")
         {
 
         }
 
         public override void FromModel(IComPluginSource pluginSource)
         {
-            //var fromDll = pluginSource.SelectedDll;
             var selectedDll = pluginSource;
             if (selectedDll != null)
             {
-                if (selectedDll.Name.StartsWith("Registry"))
-                {
-                    var dllListingModel = DllListings.Find(model => model.Name == "Registry Items");
-                    dllListingModel.IsExpanded = true;
-                    var itemToSelect = dllListingModel.Children.FirstOrDefault(model => model.FullName == selectedDll.Name);
-                    if (itemToSelect != null)
-                    {
-                        SelectedDll = itemToSelect;
-                        itemToSelect.IsSelected = true;
-                    }
-                }
-                else
-                {
-                    var dllListingModel = DllListings.Find(model => model.Name == "Registry Items");
-                    dllListingModel.IsExpanded = true;
-                    var fileSystem = selectedDll.Name.Split('\\');
-                    var dllListingModels = dllListingModel.Children;
-                    IDllListingModel itemToSelect = null;
-                    foreach(var dir in fileSystem)
-                    {
-                        var foundChild = ExpandChild(dir, dllListingModels);
-                        if(foundChild != null)
-                        {
-                            dllListingModels = foundChild.Children;
-                            itemToSelect = foundChild;
-                        }
-                    }
-                    if(itemToSelect != null)
-                    {
-                        SelectedDll = itemToSelect;
-                        SelectedDll.IsSelected = true;
-                    }
-
-                }
+                var dllListingModel = DllListings.Find(model => model.ClsId == pluginSource.ClsId || model.ProgId == pluginSource.ProgId);
+                dllListingModel.IsExpanded = true;
+                SelectedDll = dllListingModel;
+                dllListingModel.IsSelected = true;
             }
-
 
             Name = _pluginSource.Name;
             Path = _pluginSource.ProgId;
@@ -273,16 +241,6 @@ namespace Warewolf.Studio.ViewModels
             {
                 ResourceName = value;
             }
-        }
-        // ReSharper disable once ParameterTypeCanBeEnumerable.Local
-        IDllListingModel ExpandChild(string dir, ObservableCollection<IDllListingModel> children)
-        {
-            var dllListingModel = children.FirstOrDefault(model => model.Name.StartsWith(dir));
-            if (dllListingModel != null)
-            {
-                dllListingModel.IsExpanded = true;
-            }
-            return dllListingModel;
         }
 
         public IDllListingModel SelectedDll
@@ -415,9 +373,9 @@ namespace Warewolf.Studio.ViewModels
                     ResourceName = RequestServiceNameViewModel.ResourceName.Name;
                     var src = ToModel();
                     src.Id = SelectedGuid;
-                    //src.ClsId = SelectedDll.ClsId;
+                    src.ClsId = SelectedDll.ClsId;
                     Save(src);
-                    //src.ProgId = SelectedDll.ProgId;
+                    src.ProgId = SelectedDll.ProgId;
                     _pluginSource = src;
                     ToItem();
                     SetupHeaderTextFromExisting();
@@ -449,7 +407,7 @@ namespace Warewolf.Studio.ViewModels
 
         void Save(IComPluginSource source)
         {
-            //source.SelectedDll = new DllListing(_selectedDll);
+            source.SelectedDll = new DllListing(_selectedDll);
             _updateManager.Save(source);
         }
 
