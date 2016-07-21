@@ -89,7 +89,7 @@ namespace Warewolf.UITests
         {
             Console.WriteLine("Waiting for studio to start.");
             Playback.Wait(timeout);
-            if (!this.MainStudioWindow.Exists)
+            if (!MainStudioWindow.Exists)
             {
                 throw new InvalidOperationException("Warewolf studio is not running. You are expected to run \"Dev\\TestScripts\\Studio\\Startup.bat\" as an administrator and wait for it to complete before running any coded UI tests");
             }
