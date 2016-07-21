@@ -80,9 +80,20 @@ namespace Warewolf.UITests
                     e.Result = PlaybackErrorOptions.Retry;
                     return;
                 }
-                Playback.Wait(_strictSearchTimeout * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString()));
-                e.Result = PlaybackErrorOptions.Retry;
             }
+            if (e.Error is FailedToPerformActionOnBlockedControlException)
+            {
+                FailedToPerformActionOnBlockedControlException asFailedToPerformActionOnBlockedControlException = e.Error as FailedToPerformActionOnBlockedControlException;
+                var exceptionSource = asFailedToPerformActionOnBlockedControlException.ExceptionSource;
+                if (exceptionSource is UITestControl)
+                {
+                    (exceptionSource as UITestControl).DrawHighlight();
+                    e.Result = PlaybackErrorOptions.Retry;
+                    return;
+                }
+            }
+            Playback.Wait(_strictSearchTimeout * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString()));
+            e.Result = PlaybackErrorOptions.Retry;
         }
 
         public void WaitIfStudioDoesNotExist()
