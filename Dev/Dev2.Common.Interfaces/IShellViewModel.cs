@@ -17,6 +17,7 @@ namespace Dev2.Common.Interfaces
         void EditResource(IExchangeSource selectedSource, IWorkSurfaceKey key = null);
         void EditResource(IRabbitMQServiceSourceDefinition selectedSource, IWorkSurfaceKey key = null);
         void EditResource(IWcfServerSource selectedSource, IWorkSurfaceKey key = null);
+        void EditResource(IComPluginSource selectedSource, IWorkSurfaceKey key = null);
     }
 
     public interface IShellViewModelNew
