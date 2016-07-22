@@ -71,7 +71,11 @@ namespace Dev2.Common.Interfaces.Core.DynamicServices
         /// <summary>
         ///     Represents a custom assembly that will be used for extensibility
         /// </summary>
-        Plugin,
+        Plugin, 
+        /// <summary>
+        ///     Represents a custom assembly that will be used for extensibility
+        /// </summary>
+        ComPlugin,
 
         /// <summary>
         ///     Allows definition of a conditional Service Action that executes different steps based on a value

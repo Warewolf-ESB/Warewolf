@@ -287,7 +287,7 @@ namespace Warewolf.Studio.ViewModels
         void SetupHeaderTextFromExisting()
         {
             var serverName = _warewolfserverName;
-           /* if (serverName.Equals("localhost", StringComparison.OrdinalIgnoreCase))
+            if (serverName.Equals("localhost", StringComparison.OrdinalIgnoreCase))
             {
                 HeaderText = (_pluginSource == null ? ResourceName : _pluginSource.Name).Trim();
                 Header = (_pluginSource == null ? ResourceName : _pluginSource.Name).Trim();
@@ -296,7 +296,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 HeaderText = (_pluginSource == null ? ResourceName : _pluginSource.Name).Trim();
                 Header = (_pluginSource == null ? ResourceName : _pluginSource.Name).Trim();
-            }*/
+            }
         }
 
         public override bool CanSave()
@@ -422,6 +422,7 @@ namespace Warewolf.Studio.ViewModels
                     ProgId = _progID
                 };
             }
+            _pluginSource.SelectedDll = _selectedDll;
             return _pluginSource;
         }
 
