@@ -24,14 +24,6 @@
         <Setter Property="BorderBrush" Value="{StaticResource TextBoxBorderBrush}" />
     </Style>
 
-    <Style x:Key="ActivityIntellisenseTextBoxStyle" TargetType="{x:Type ui:IntellisenseTextBox}" >
-        <Setter Property="AllowUserInsertLine" Value="False"/>
-        <Setter Property="AllowMultilinePaste" Value="False"/>
-        
-        <Setter Property="VerticalContentAlignment" Value="Center"/>
-        <Setter Property="Height" Value="25" />
-    </Style>
-
     <Style x:Key="ActivityGridRowStyle" TargetType="{x:Type DataGridRow}">
         <Setter Property="AutomationProperties.AutomationId">
             <Setter.Value>
