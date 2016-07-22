@@ -157,6 +157,16 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="AttachedProperties\PasswordBoxAssistant.cs" />
+    <Compile Include="Designers2\ComDLL\ComDllDesigner.xaml.cs">
+      <DependentUpon>ComDllDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\ComDLL\ComDllViewModel.cs" />
+    <Compile Include="Designers2\ComDLL\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\ComDLL\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Designers2\.Net DLL\DotNetDllViewModel.cs" />
     <Compile Include="Designers2\.Net DLL\DotNetDllDesigner.xaml.cs">
       <DependentUpon>DotNetDllDesigner.xaml</DependentUpon>
@@ -1153,6 +1163,18 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Designers2\ComDLL\ComDllDesigner.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\ComDLL\Large.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\ComDLL\Small.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Designers2\.Net DLL\DotNetDllDesigner.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
