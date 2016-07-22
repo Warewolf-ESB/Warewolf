@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using Dev2.Common;
@@ -24,7 +25,7 @@ using ServiceStack.Common.Extensions;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
-    // ReSharper disable once UnusedMember.Global
+    [SuppressMessage("ReSharper", "UnusedMember.Global")]
     public class GetDependanciesOnList : IEsbManagementEndpoint
     {
         #region Implementation of ISpookyLoadable<string>

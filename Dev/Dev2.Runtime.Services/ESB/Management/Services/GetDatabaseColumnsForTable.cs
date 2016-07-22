@@ -22,7 +22,6 @@ using Dev2.DynamicServices.Objects;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Workspaces;
-using MySql.Data.MySqlClient;
 using Oracle.ManagedDataAccess.Client;
 using System.Data.Odbc;
 using Warewolf.Resource.Errors;
