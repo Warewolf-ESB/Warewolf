@@ -190,6 +190,8 @@
     </CodeAnalysisDependentAssemblyPaths>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ESB\ComPlugin\ComPluginRuntimeHandlerTest.cs" />
+    <Compile Include="ESB\ComPlugin\ComPluginServiceExecutionFactoryTest.cs" />
     <Compile Include="ESB\Control\EnvironmentOutputMappingManagerTests.cs" />
     <Compile Include="ESB\Control\EsbServiceInvokerTests.cs" />
     <Compile Include="ESB\Control\EsbServicesEndpointTests.cs" />

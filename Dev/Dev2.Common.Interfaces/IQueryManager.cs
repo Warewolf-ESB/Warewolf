@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using System.Threading.Tasks;
 using Dev2.Common.Interfaces.DB;
@@ -22,6 +23,7 @@ namespace Dev2.Common.Interfaces
         /// </summary>
         /// <param name="resourceId">the resource</param>
         /// <returns>a list of tree dependencies</returns>
+        [SuppressMessage("ReSharper", "UnusedMember.Global")]
         IExecuteMessage FetchDependencies(Guid resourceId);
         /// <summary>
         /// Get the list of items that use this resource a nested resource
@@ -35,6 +37,7 @@ namespace Dev2.Common.Interfaces
         /// </summary>
         /// <param name="resourceId"></param>
         /// <returns></returns>
+        [SuppressMessage("ReSharper", "UnusedMember.Global")]
         StringBuilder FetchResourceXaml(Guid resourceId);
 
 

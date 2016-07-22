@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
 using Dev2.Activities;
@@ -172,7 +173,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             set;
         }
 
-        // ReSharper disable once UnusedMember.Global
+        [SuppressMessage("ReSharper", "UnusedMember.Global")]
         /// <summary>
         /// Gets or sets the files and folders option.
         /// </summary>

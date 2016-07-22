@@ -171,10 +171,7 @@ namespace Warewolf.Studio.ViewModels
 
         public void UpdateHelpDescriptor(string helpText)
         {
-            if (_viewModel != null)
-            {
-                _viewModel.HelpViewModel.UpdateHelpText(helpText);
-            }
+            _viewModel?.HelpViewModel.UpdateHelpText(helpText);
         }
 
         public void Lock()
@@ -271,7 +268,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 if (ButtonWidth == 125)
                     return Resources.Languages.Core.MenuDialogNewLabel;
-                return String.Empty;
+                return string.Empty;
             }
         }
         public string SaveLabel
@@ -280,7 +277,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 if (ButtonWidth == 125)
                     return Resources.Languages.Core.MenuDialogSaveLabel;
-                return String.Empty;
+                return string.Empty;
             }
         }
         public string DeployLabel
@@ -289,7 +286,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 if (ButtonWidth == 125)
                     return Resources.Languages.Core.MenuDialogDeployLabel;
-                return String.Empty;
+                return string.Empty;
             }
         }
         public string DatabaseLabel
@@ -298,7 +295,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 if (ButtonWidth == 125)
                     return Resources.Languages.Core.MenuDialogDatabaseLabel;
-                return String.Empty;
+                return string.Empty;
             }
         }
         public string DLLLabel
@@ -307,7 +304,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 if (ButtonWidth == 125)
                     return Resources.Languages.Core.MenuDialogDLLLabel;
-                return String.Empty;
+                return string.Empty;
             }
         }
         public string WebLabel
@@ -316,7 +313,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 if (ButtonWidth == 125)
                     return Resources.Languages.Core.MenuDialogWebLabel;
-                return String.Empty;
+                return string.Empty;
             }
         }
         public string TaskLabel
@@ -325,7 +322,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 if (ButtonWidth == 125)
                     return Resources.Languages.Core.MenuDialogTaskLabel;
-                return String.Empty;
+                return string.Empty;
             }
         }
         public bool IsProcessing
@@ -344,7 +341,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 if (ButtonWidth == 125)
                     return IsProcessing ? Resources.Languages.Core.MenuDialogStopDebugLabel : Resources.Languages.Core.MenuDialogDebugLabel;
-                return String.Empty;
+                return string.Empty;
             }
         }
         public string SettingsLabel
@@ -353,7 +350,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 if (ButtonWidth == 125)
                     return Resources.Languages.Core.MenuDialogSettingsLabel;
-                return String.Empty;
+                return string.Empty;
             }
         }
         public string SupportLabel
@@ -362,7 +359,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 if (ButtonWidth == 125)
                     return Resources.Languages.Core.MenuDialogSupportLabel;
-                return String.Empty;
+                return string.Empty;
             }
         }
         public string ForumsLabel
@@ -371,7 +368,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 if (ButtonWidth == 125)
                     return Resources.Languages.Core.MenuDialogForumsLabel;
-                return String.Empty;
+                return string.Empty;
             }
         }
         public string ToursLabel
@@ -380,7 +377,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 if (ButtonWidth == 125)
                     return Resources.Languages.Core.MenuDialogToursLabel;
-                return String.Empty;
+                return string.Empty;
             }
         }
         public string NewVersionLabel
@@ -389,7 +386,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 if (ButtonWidth == 125)
                     return Resources.Languages.Core.MenuDialogNewVersionLabel;
-                return String.Empty;
+                return string.Empty;
             }
         }
         public string LockLabel

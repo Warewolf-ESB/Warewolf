@@ -86,7 +86,7 @@ namespace Warewolf.Studio.Views
 
         public void PerformSave()
         {
-            var viewModel = DataContext as ManagePluginSourceViewModel;
+            var viewModel = DataContext as ManageComPluginSourceViewModel;
             viewModel?.OkCommand.Execute(null);
         }
 
@@ -112,7 +112,7 @@ namespace Warewolf.Studio.Views
             switch(controlName)
             {
                 case "Save":
-                    var viewModel = DataContext as ManagePluginSourceViewModel;
+                    var viewModel = DataContext as ManageComPluginSourceViewModel;
                     return viewModel != null && viewModel.OkCommand.CanExecute(null);
                 case "Filter":
                     return SearchTextBox.IsEnabled;
