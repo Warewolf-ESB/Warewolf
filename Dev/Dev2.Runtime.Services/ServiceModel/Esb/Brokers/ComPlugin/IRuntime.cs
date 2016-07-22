@@ -8,18 +8,17 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using System.Xml.Linq;
-using Warewolf.Sql;
+using Dev2.Common.Interfaces.Core.Graph;
 
-namespace Dev2.Sql.Tests
+namespace Dev2.Runtime.ServiceModel.Esb.Brokers.ComPlugin
 {
-    public class WorkflowsMock : Workflows
+    /// <summary>
+    /// Interface for Plugin Invoke
+    /// </summary>
+    public interface IRuntime
     {
-        public string ReturnXml { get; set; }
+        object Run(ComPluginInvokeArgs setupInfo);
 
-        public override XElement RunWorkflow(string requestUri)
-        {
-            return string.IsNullOrEmpty(ReturnXml) ? null : XElement.Parse(ReturnXml);
-        }
+        IOutputDescription Test(ComPluginInvokeArgs setupInfo,out string serializedResult);
     }
 }

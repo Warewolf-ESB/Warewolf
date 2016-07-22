@@ -12,6 +12,7 @@ using System;
 using System.Activities;
 using System.Activities.Presentation;
 using System.Activities.Presentation.Model;
+using System.Diagnostics.CodeAnalysis;
 
 // ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Core.Activities.Utils
@@ -46,6 +47,7 @@ namespace Dev2.Studio.Core.Activities.Utils
             }
         }
 
+        [SuppressMessage("ReSharper", "UnusedMember.Global")]
         public static ModelItem CreateModelItem(object parent, object objectToMakeModelItem)
         {
             EditingContext ec = new EditingContext();
@@ -54,10 +56,12 @@ namespace Dev2.Studio.Core.Activities.Utils
             return mtm.CreateModelItem(CreateModelItem(parent), objectToMakeModelItem);
         }
 
+        [SuppressMessage("ReSharper", "UnusedMember.Global")]
         public static ModelItem CreateModelItem()
         {
             return CreateModelItem(new object());
         }
+
         public static ModelItem CreateModelItem(object objectToMakeModelItem)
         {
             EditingContext ec = new EditingContext();

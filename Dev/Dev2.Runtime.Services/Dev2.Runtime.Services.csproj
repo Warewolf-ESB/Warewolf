@@ -224,6 +224,7 @@
     <Compile Include="ESB\Management\Services\RenameItemService.cs" />
     <Compile Include="ESB\Management\Services\ResetPerformanceCounters.cs" />
     <Compile Include="ESB\Management\Services\RollbackTo.cs" />
+    <Compile Include="ESB\Management\Services\SaveComPluginSource.cs" />
     <Compile Include="ESB\Management\Services\SaveEmailServiceSource.cs" />
     <Compile Include="ESB\Management\Services\SaveDbService.cs" />
     <Compile Include="ESB\Management\Services\SaveDbSourceSource.cs" />
@@ -351,6 +352,7 @@
     <Compile Include="Security\ProcessHost.cs" />
     <Compile Include="Security\ServerSecurityService.cs" />
     <Compile Include="Security\SSLCertificateBuilder.cs" />
+    <Compile Include="ServiceModel\Data\ComPluginService.cs" />
     <Compile Include="ServiceModel\Data\ExchangeSource.cs" />
     <Compile Include="ServiceModel\Data\RecordsetList.cs" />
     <Compile Include="ServiceModel\Data\RecordsetListHelper.cs" />
@@ -359,6 +361,10 @@
     <Compile Include="ServiceModel\Data\WcfSource.cs" />
     <Compile Include="ServiceModel\Data\WebPermission.cs" />
     <Compile Include="ServiceModel\Data\WebService.cs" />
+    <Compile Include="ServiceModel\Esb\Brokers\ComPlugin\IRuntime.cs" />
+    <Compile Include="ServiceModel\Esb\Brokers\ComPlugin\ComPluginInvokeArgs.cs" />
+    <Compile Include="ServiceModel\Esb\Brokers\ComPlugin\ComPluginRuntimeHandler.cs" />
+    <Compile Include="ServiceModel\Esb\Brokers\ComPlugin\ComPluginServiceExecutionFactory.cs" />
     <Compile Include="ServiceModel\Esb\Brokers\MySqlDatabaseBroker.cs" />
     <Compile Include="ServiceModel\Esb\Brokers\ODBCDatabaseBroker.cs" />
     <Compile Include="ServiceModel\Esb\Brokers\OracleDatabaseBroker.cs" />

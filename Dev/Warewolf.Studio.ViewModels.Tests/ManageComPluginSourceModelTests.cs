@@ -41,7 +41,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //arrange
             var listingMock = new Mock<IFileListing>();
             var expectedResult = new List<IFileListing>();
-            _queryProxyMock.Setup(it => it.GetDllListings(listingMock.Object)).Returns(expectedResult);
+            _queryProxyMock.Setup(it => it.GetComDllListings(listingMock.Object)).Returns(expectedResult);
 
             //act
             var result = _target.GetComDllListings(listingMock.Object);

@@ -33,7 +33,7 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
         ///Gets or sets the test context which provides
         ///information about and functionality for the current test run.
         ///</summary>
-        // ReSharper disable once UnusedMember.Global
+        [SuppressMessage("ReSharper", "UnusedMember.Global")]
         public TestContext TestContext { get; set; }
 
         #region FetchNamespaceListObject
@@ -167,35 +167,7 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
         //    //------------Assert Results-------------------------
         //    StringAssert.Contains(result, string.Empty);
         //}
-
-        [TestMethod]
-        [Owner("Travis Frisinger")]
-        [TestCategory("PluginRuntimeHandler_ValidatePlugin")]
-        public void PluginRuntimeHandler_ValidatePlugin_WhenInvalidGacDll_ExpectErrorMessage()
-        {
-            //------------Setup for test--------------------------
-            //------------Execute Test---------------------------
-            using (Isolated<PluginRuntimeHandler> isolated = new Isolated<PluginRuntimeHandler>())
-            {
-                var result = isolated.Value.ValidatePlugin("GAC:mscorlib_foo, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089");
-                StringAssert.Contains(result, "Could not load file or assembly 'mscorlib_foo");
-            }
-
-        }
-
-        [TestMethod]
-        [Owner("Travis Frisinger")]
-        [TestCategory("PluginRuntimeHandler_ValidatePlugin")]
-        [ExpectedException(typeof(NullReferenceException))]
-        public void PluginRuntimeHandler_ValidatePlugin_WhenNullDll_ExpectErrorMessage()
-        {
-            //------------Setup for test--------------------------
-            //------------Execute Test---------------------------
-            using (Isolated<PluginRuntimeHandler> isolated = new Isolated<PluginRuntimeHandler>())
-            {
-                isolated.Value.ValidatePlugin(null);
-            }
-        }
+        
 
         #endregion
 

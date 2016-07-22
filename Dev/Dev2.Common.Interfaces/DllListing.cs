@@ -12,7 +12,7 @@ namespace Dev2.Common.Interfaces
         }
 
         public DllListing()
-        {            
+        {
         }
         #region Equality members
 
@@ -30,15 +30,15 @@ namespace Dev2.Common.Interfaces
         /// <param name="obj">The object to compare with the current object. </param>
         public override bool Equals(object obj)
         {
-            if(ReferenceEquals(null, obj))
+            if (ReferenceEquals(null, obj))
             {
                 return false;
             }
-            if(ReferenceEquals(this, obj))
+            if (ReferenceEquals(this, obj))
             {
                 return true;
             }
-            if(obj.GetType() != GetType())
+            if (obj.GetType() != GetType())
             {
                 return false;
             }
@@ -79,5 +79,7 @@ namespace Dev2.Common.Interfaces
         public ICollection<IFileListing> Children { get; set; }
         public string FullName { get; set; }
         public bool IsDirectory { get; set; }
+        public string ProgId { get; set; }
+        public string ClsId { get; set; }
     }
 }

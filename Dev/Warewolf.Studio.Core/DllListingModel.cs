@@ -12,9 +12,10 @@ using Microsoft.Practices.Prism.Mvvm;
 
 namespace Warewolf.Studio.Core
 {
-    public class DllListingModel : BindableBase, IDllListingModel,IEquatable<DllListingModel>
+    public class DllListingModel : BindableBase, IDllListingModel, IEquatable<DllListingModel>
     {
         private readonly IManagePluginSourceModel _updateManager;
+        private readonly IManageComPluginSourceModel _comUpdateManager;
         private bool _isExpanded;
         private bool _isVisible;
         private readonly IFileListing _dllListing;
@@ -24,6 +25,7 @@ namespace Warewolf.Studio.Core
         private int _currentProgress;
         bool _isSelected;
         bool _isExpanderVisible;
+        bool _isCom;
 
         public DllListingModel(IManagePluginSourceModel updateManager, IFileListing dllListing)
         {
@@ -44,55 +46,93 @@ namespace Warewolf.Studio.Core
                 _dllListing = dllListing;
                 ExpandingCommand = new DelegateCommand(Expanding);
             }
+            _isCom = false;
         }
         public DllListingModel(IManageComPluginSourceModel updateManager, IFileListing dllListing)
         {
-         /*   _updateManager = updateManager;
+            _comUpdateManager = updateManager;
             if (dllListing != null)
             {
                 Name = dllListing.Name;
                 FullName = dllListing.FullName;
+                ProgId = (dllListing as DllListing)?.ProgId;
+                ClsId = (dllListing as DllListing)?.ClsId;
                 if (dllListing.Children != null && dllListing.Children.Count > 0)
                 {
                     Children =
                         new AsyncObservableCollection<IDllListingModel>(
-                            dllListing.Children.Select(input => new DllListingModel(_updateManager, input)));
+                            dllListing.Children.Select(input => new DllListingModel(_comUpdateManager, input)));
                 }
                 IsDirectory = dllListing.IsDirectory;
                 IsExpanderVisible = IsDirectory;
                 IsVisible = true;
                 _dllListing = dllListing;
                 ExpandingCommand = new DelegateCommand(Expanding);
-            }*/
+            }
+            _isCom = true;
         }
 
         private void Expanding()
         {
-            if (Name == "GAC" && IsExpanded)
+            if (!_isCom)
             {
-                if (Children != null)
+                if (Name == "GAC" && IsExpanded)
                 {
-                    var gacChildren = _children.ToList();
-                    if (gacChildren.Count>5)
+                    if (Children != null)
                     {
-                        ProgressVisibility = true;
-                        _children = new AsyncObservableCollection<IDllListingModel>(gacChildren.Take(5));
-                        var allChildrenCount = gacChildren.Count;
-                        TotalChildrenCount = allChildrenCount;
-                        Task.Factory.StartNew(() =>
+                        var gacChildren = _children.ToList();
+                        if (gacChildren.Count > 5)
                         {
-                            while (_children.Count < allChildrenCount)
+                            ProgressVisibility = true;
+                            _children = new AsyncObservableCollection<IDllListingModel>(gacChildren.Take(5));
+                            var allChildrenCount = gacChildren.Count;
+                            TotalChildrenCount = allChildrenCount;
+                            Task.Factory.StartNew(() =>
                             {
-                                var items = gacChildren.Skip(ChildrenCount).Take(25);
-                                var col = _children as AsyncObservableCollection<IDllListingModel>;
-                                col?.AddRange(items.ToList());
-                                Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.ContextIdle, new Action(() =>
+                                while (_children.Count < allChildrenCount)
                                 {
-                                    CurrentProgress = (int)Math.Round((double)(100 * ChildrenCount) / TotalChildrenCount);
-                                    OnPropertyChanged(() => ChildrenCount);
-                                }));
-                            }
-                        });
+                                    var items = gacChildren.Skip(ChildrenCount).Take(25);
+                                    var col = _children as AsyncObservableCollection<IDllListingModel>;
+                                    col?.AddRange(items.ToList());
+                                    Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.ContextIdle, new Action(() =>
+                                    {
+                                        CurrentProgress = (int)Math.Round((double)(100 * ChildrenCount) / TotalChildrenCount);
+                                        OnPropertyChanged(() => ChildrenCount);
+                                    }));
+                                }
+                            });
+                        }
+                    }
+                }
+            }
+            else
+            {
+                if (IsExpanded)
+                {
+                    if (Children != null)
+                    {
+                        var comChildren = _children.ToList();
+                        if (comChildren.Count > 5)
+                        {
+                            ProgressVisibility = true;
+                            _children = new AsyncObservableCollection<IDllListingModel>(comChildren.Take(5));
+                            var allChildrenCount = comChildren.Count;
+                            TotalChildrenCount = allChildrenCount;
+                            Task.Factory.StartNew(() =>
+                            {
+                                while (_children.Count < allChildrenCount)
+                                {
+                                    var items = comChildren.Skip(ChildrenCount).Take(25);
+                                    var col = _children as AsyncObservableCollection<IDllListingModel>;
+                                    col?.AddRange(items.ToList());
+                                    Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.ContextIdle, new Action(() =>
+                                    {
+                                        CurrentProgress = (int)Math.Round((double)(100 * ChildrenCount) / TotalChildrenCount);
+                                        OnPropertyChanged(() => ChildrenCount);
+                                    }));
+                                }
+                            });
+                        }
                     }
                 }
             }
@@ -163,6 +203,8 @@ namespace Warewolf.Studio.Core
                 }
             }
         }
+        public string ClsId { get; set; }
+        public string ProgId { get; set; }
 
         public ICommand ExpandingCommand { get; set; }
 
@@ -184,7 +226,7 @@ namespace Warewolf.Studio.Core
                     IsExpanded = true;
                     Expanding();
                 }
-                
+
                 OnPropertyChanged(() => IsSelected);
             }
         }
@@ -194,22 +236,45 @@ namespace Warewolf.Studio.Core
             get { return _isExpanded; }
             set
             {
-                _isExpanded = value;
-
-                if (_isExpanded && _updateManager != null && (_children == null || _children.Count == 0))
+                if (_isCom)
                 {
-                    var dllListings = _updateManager.GetDllListings(_dllListing);
-                    if(dllListings != null)
+                    _isExpanded = value;
+
+                    if (_isExpanded && _updateManager != null && (_children == null || _children.Count == 0))
                     {
-                        _children =
-                            new AsyncObservableCollection<IDllListingModel>(
-                                dllListings.Select(input => new DllListingModel(_updateManager, input))
-                                    .ToList());
+                        var dllListings = _updateManager.GetDllListings(_dllListing);
+                        if (dllListings != null)
+                        {
+                            _children =
+                                new AsyncObservableCollection<IDllListingModel>(
+                                    dllListings.Select(input => new DllListingModel(_updateManager, input))
+                                        .ToList());
+                        }
+                        IsExpanderVisible = _children != null && _children.Count > 0;
                     }
-                    IsExpanderVisible = _children != null && _children.Count > 0;
+                    OnPropertyChanged(() => IsExpanded);
+                    OnPropertyChanged(() => Children);
                 }
-                OnPropertyChanged(() => IsExpanded);
-                OnPropertyChanged(() => Children);
+                else
+                {
+                    _isExpanded = value;
+
+                    if (_isExpanded && _comUpdateManager != null && (_children == null || _children.Count == 0))
+                    {
+                        var dllListings = _comUpdateManager.GetComDllListings(_dllListing);
+                        if (dllListings != null)
+                        {
+                            _children =
+                                new AsyncObservableCollection<IDllListingModel>(
+                                    dllListings.Select(input => new DllListingModel(_comUpdateManager, input))
+                                        .ToList());
+                        }
+                        IsExpanderVisible = _children != null && _children.Count > 0;
+                    }
+                    OnPropertyChanged(() => IsExpanded);
+                    OnPropertyChanged(() => Children);
+
+                }
             }
         }
 

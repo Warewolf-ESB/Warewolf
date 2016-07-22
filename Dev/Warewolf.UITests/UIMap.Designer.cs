@@ -1440,27 +1440,13 @@ namespace Warewolf.UITests
         public void Drag_Explorer_Remote_workflow1_Onto_Workflow_Design_Surface()
         {
             #region Variable Declarations
-            WpfEdit searchTextBox = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.SearchTextBox;
-            WpfButton explorerRefreshButton = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerRefreshButton;
             WpfTreeItem firstItem = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.FirstItem;
             WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
             WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
             WpfCustom subWorkflow = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SubWorkflow;
             #endregion
 
-            // Type 'workflow1' in 'SearchTextBox' text box
-            searchTextBox.Text = this.Drag_Explorer_Remote_workflow1_Onto_Workflow_Design_SurfaceParams.SearchTextBoxText;
-
-            // Wait for 2 seconds for user delay between actions; Click '' button
-            Playback.Wait(2000);
-            Mouse.Click(explorerRefreshButton, new Point(10, 10));
-
-            // Wait for 2 seconds for user delay between actions; Click '' button
-            Playback.Wait(2000);
-            Mouse.Click(explorerRefreshButton, new Point(10, 10));
-
-            // Wait for 2 seconds for user delay between actions; Verify that the 'Exists' property of 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item equals 'True'
-            Playback.Wait(2000);
+            // Verify that the 'Exists' property of 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item equals 'True'
             Assert.AreEqual(this.Drag_Explorer_Remote_workflow1_Onto_Workflow_Design_SurfaceParams.FirstItemExists, firstItem.Exists, "Explorer first remote server does not contain any items.");
 
             // Click 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item
@@ -1476,6 +1462,28 @@ namespace Warewolf.UITests
 
             // Verify that the 'Exists' property of 'DsfActivity' custom control equals 'True'
             Assert.AreEqual(this.Drag_Explorer_Remote_workflow1_Onto_Workflow_Design_SurfaceParams.SubWorkflowExists, subWorkflow.Exists, "Workflow on the design surface does not exist");
+        }
+        
+        /// <summary>
+        /// Enter_Workflow1_Into_Explorer_Filter_Textbox - Use 'Enter_Workflow1_Into_Explorer_Filter_TextboxParams' to pass parameters into this method.
+        /// </summary>
+        public void Enter_Workflow1_Into_Explorer_Filter_Textbox()
+        {
+            #region Variable Declarations
+            WpfEdit searchTextBox = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.SearchTextBox;
+            WpfButton explorerRefreshButton = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerRefreshButton;
+            #endregion
+
+            // Type 'workflow1' in 'SearchTextBox' text box
+            searchTextBox.Text = this.Enter_Workflow1_Into_Explorer_Filter_TextboxParams.SearchTextBoxText;
+
+            // Wait for 2 seconds for user delay between actions; Click '' button
+            Playback.Wait(2000);
+            Mouse.Click(explorerRefreshButton, new Point(10, 10));
+
+            // Wait for 2 seconds for user delay between actions; Click '' button
+            Playback.Wait(2000);
+            Mouse.Click(explorerRefreshButton, new Point(10, 10));
         }
         
         /// <summary>
@@ -5490,6 +5498,18 @@ namespace Warewolf.UITests
             }
         }
         
+        public virtual Enter_Workflow1_Into_Explorer_Filter_TextboxParams Enter_Workflow1_Into_Explorer_Filter_TextboxParams
+        {
+            get
+            {
+                if ((this.mEnter_Workflow1_Into_Explorer_Filter_TextboxParams == null))
+                {
+                    this.mEnter_Workflow1_Into_Explorer_Filter_TextboxParams = new Enter_Workflow1_Into_Explorer_Filter_TextboxParams();
+                }
+                return this.mEnter_Workflow1_Into_Explorer_Filter_TextboxParams;
+            }
+        }
+        
         public virtual Drag_GetWeb_RequestTool_Onto_DesignSurfaceParams Drag_GetWeb_RequestTool_Onto_DesignSurfaceParams
         {
             get
@@ -6918,6 +6938,8 @@ namespace Warewolf.UITests
         
         private Drag_Explorer_Remote_workflow1_Onto_Workflow_Design_SurfaceParams mDrag_Explorer_Remote_workflow1_Onto_Workflow_Design_SurfaceParams;
         
+        private Enter_Workflow1_Into_Explorer_Filter_TextboxParams mEnter_Workflow1_Into_Explorer_Filter_TextboxParams;
+        
         private Drag_GetWeb_RequestTool_Onto_DesignSurfaceParams mDrag_GetWeb_RequestTool_Onto_DesignSurfaceParams;
         
         private Drag_PostWeb_RequestTool_Onto_DesignSurfaceParams mDrag_PostWeb_RequestTool_Onto_DesignSurfaceParams;
@@ -8035,12 +8057,7 @@ namespace Warewolf.UITests
         
         #region Fields
         /// <summary>
-        /// Type 'workflow1' in 'SearchTextBox' text box
-        /// </summary>
-        public string SearchTextBoxText = "workflow1";
-        
-        /// <summary>
-        /// Wait for 2 seconds for user delay between actions; Verify that the 'Exists' property of 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item equals 'True'
+        /// Verify that the 'Exists' property of 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item equals 'True'
         /// </summary>
         public bool FirstItemExists = true;
         
@@ -8053,6 +8070,21 @@ namespace Warewolf.UITests
         /// Verify that the 'Exists' property of 'DsfActivity' custom control equals 'True'
         /// </summary>
         public bool SubWorkflowExists = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Enter_Workflow1_Into_Explorer_Filter_Textbox'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Enter_Workflow1_Into_Explorer_Filter_TextboxParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Type 'workflow1' in 'SearchTextBox' text box
+        /// </summary>
+        public string SearchTextBoxText = "workflow1";
         #endregion
     }
     
@@ -12099,6 +12131,18 @@ namespace Warewolf.UITests
         }
         
         #region Properties
+        public Checkbox1 Checkbox
+        {
+            get
+            {
+                if ((this.mCheckbox == null))
+                {
+                    this.mCheckbox = new Checkbox1(this);
+                }
+                return this.mCheckbox;
+            }
+        }
+        
         public WpfTreeItem FirstItem
         {
             get
@@ -12120,7 +12164,67 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
+        private Checkbox1 mCheckbox;
+        
         private WpfTreeItem mFirstItem;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Checkbox1 : WpfCheckBox
+    {
+        
+        public Checkbox1(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "Checkbox";
+            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfButton IconButton
+        {
+            get
+            {
+                if ((this.mIconButton == null))
+                {
+                    this.mIconButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mIconButton.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mIconButton.SearchConfigurations.Add(SearchConfiguration.NextSibling);
+                    this.mIconButton.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mIconButton;
+            }
+        }
+        
+        public WpfCustom Spinner
+        {
+            get
+            {
+                if ((this.mSpinner == null))
+                {
+                    this.mSpinner = new WpfCustom(this);
+                    #region Search Criteria
+                    this.mSpinner.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.CircularProgressBar";
+                    this.mSpinner.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mSpinner.SearchConfigurations.Add(SearchConfiguration.NextSibling);
+                    this.mSpinner.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mSpinner;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfButton mIconButton;
+        
+        private WpfCustom mSpinner;
         #endregion
     }
     
@@ -32552,13 +32656,13 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public Checkbox1 Checkbox
+        public Checkbox2 Checkbox
         {
             get
             {
                 if ((this.mCheckbox == null))
                 {
-                    this.mCheckbox = new Checkbox1(this);
+                    this.mCheckbox = new Checkbox2(this);
                 }
                 return this.mCheckbox;
             }
@@ -32586,17 +32690,17 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private Checkbox1 mCheckbox;
+        private Checkbox2 mCheckbox;
         
         private WpfTreeItem mFirstItem;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Checkbox1 : WpfCheckBox
+    public class Checkbox2 : WpfCheckBox
     {
         
-        public Checkbox1(UITestControl searchLimitContainer) : 
+        public Checkbox2(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria

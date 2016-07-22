@@ -204,7 +204,8 @@ namespace Warewolf.Studio.ServerProxyLayer
         public void SaveWebservice(IWebService model, Guid serverWorkspaceID)
         {
             var con = Connection;
-            var comsController = CommunicationControllerFactory.CreateController("SaveWebService");
+            var comsController = CommunicationControllerFactory.CreateController("Save" +
+                                                                                 "WebService");
             Dev2JsonSerializer serialiser = new Dev2JsonSerializer();
             comsController.AddPayloadArgument("Webservice", serialiser.SerializeToBuilder(model));
             var output = comsController.ExecuteCommand<IExecuteMessage>(con, GlobalConstants.ServerWorkspaceID);
@@ -226,14 +227,13 @@ namespace Warewolf.Studio.ServerProxyLayer
 
         public void SaveComPluginSource(IComPluginSource source, Guid serverWorkspaceID)
         {
-            throw new NotImplementedException();
-            /*var con = Connection;
+            var con = Connection;
             var comsController = CommunicationControllerFactory.CreateController("SaveComPluginSource");
             Dev2JsonSerializer serialiser = new Dev2JsonSerializer();
             comsController.AddPayloadArgument("ComPluginSource", serialiser.SerializeToBuilder(source));
             var output = comsController.ExecuteCommand<IExecuteMessage>(con, GlobalConstants.ServerWorkspaceID);
             if (output.HasError)
-                throw new WarewolfSaveException(output.Message.ToString(), null);*/
+                throw new WarewolfSaveException(output.Message.ToString(), null);
         }
 
         public void SaveOAuthSource(IOAuthSource source, Guid serverWorkspaceID)
