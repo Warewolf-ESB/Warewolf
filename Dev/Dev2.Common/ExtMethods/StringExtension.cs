@@ -36,9 +36,12 @@ namespace Dev2.Common.ExtMethods
 
         public static bool ContainsUnicodeCharacter(this string input)
         {
-            const int MaxAnsiCode = 255;
-
-            return input.Any(c => c > MaxAnsiCode);
+            if (string.IsNullOrEmpty(input))
+            {
+                return false;
+            }
+            const int maxAnsiCode = 255;
+            return input.Any(c => c > maxAnsiCode);
         }
 
         /// <summary>

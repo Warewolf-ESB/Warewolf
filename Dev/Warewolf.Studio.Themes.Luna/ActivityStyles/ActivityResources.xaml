@@ -4,11 +4,8 @@
                     xmlns:converters1="clr-namespace:Dev2.AppResources.Converters;assembly=Dev2.Studio.Core"
                     xmlns:converters2="clr-namespace:Dev2.Studio.Core.AppResources.Converters;assembly=Dev2.Studio.Core"
                     xmlns:interfaceImplementors="clr-namespace:Dev2.Studio.InterfaceImplementors;assembly=Dev2.Intellisense"
-                    xmlns:ui="clr-namespace:Dev2.UI;assembly=Dev2.Intellisense"
                     xmlns:converters3="clr-namespace:Dev2.CustomControls.Converters;assembly=Dev2.Studio.Core"
-                    xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna"
-                    xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
-                    xmlns:system="clr-namespace:System;assembly=mscorlib">
+                    xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna">
 
     <ResourceDictionary.MergedDictionaries>
         <luna:SharedResourceDictionary Source="ActivityStyles.xaml" />
@@ -16,6 +13,7 @@
         <luna:SharedResourceDictionary Source="../Common/Brushes.xaml" />
         <luna:SharedResourceDictionary Source="../Elements/DataGrid.xaml"/>
         <luna:SharedResourceDictionary Source="../Elements/TextBox.xaml"/>
+        <luna:SharedResourceDictionary Source="../Elements/AutoCompleteBox.xaml"/>
     </ResourceDictionary.MergedDictionaries>
 
     <converters:EmptyStringToBoolConverter x:Key="EmptyStringToBoolConverter" />
@@ -47,22 +45,6 @@
     <interfaceImplementors:CompositeIntellisenseProvider x:Key="DefaultCompositeIntellisenseProvider">
         <interfaceImplementors:DefaultIntellisenseProvider />
     </interfaceImplementors:CompositeIntellisenseProvider>
-    
-    <Style x:Key="DatagridIntellisenseTextBoxStyle" TargetType="{x:Type ui:IntellisenseTextBox}" BasedOn="{StaticResource ActivityIntellisenseTextBoxStyle}">
-        <Setter Property="HorizontalAlignment" Value="Stretch" />
-        
-        <Setter Property="MaxHeight" Value="25" />
-        <Style.Triggers>
-            <DataTrigger Binding="{Binding Path=HasError}" Value="True">
-                <Setter Property="Foreground" Value="{StaticResource ValidationErrorElement}" />
-                <Setter Property="BorderBrush" Value="{StaticResource ValidationErrorElement}" />
-            </DataTrigger>
-            <Trigger Property="Validation.HasError" Value="True">
-                <Setter Property="Foreground" Value="{StaticResource ValidationErrorElement}" />
-                <Setter Property="BorderBrush" Value="{StaticResource ValidationErrorElement}" />
-            </Trigger>
-        </Style.Triggers>
-    </Style>
 
     <Style x:Key="SpacedActivityDataGridStyle" BasedOn="{StaticResource ActivityDataGridStyle}" TargetType="{x:Type DataGrid}">
         <Setter Property="VerticalAlignment" Value="Stretch"/>
@@ -120,17 +102,4 @@
         <Setter Property="FontWeight" Value="SemiBold" />
         <Setter Property="Height" Value="Auto" />
     </Style>
-
-    <Style x:Key="ActivityMapppingDataGridIntellisenseTextBoxStyle" TargetType="{x:Type ui:IntellisenseTextBox}" BasedOn="{StaticResource DatagridIntellisenseTextBoxStyle}">
-        <Setter Property="BorderThickness" Value="0"/>
-        <Setter Property="WrapInBrackets" Value="True"/>
-        <Setter Property="VerticalAlignment" Value="Center"/>
-    </Style>
-
-    <Style x:Key="ActivityMapppingIntellisenseTextBoxStyle" TargetType="{x:Type ui:IntellisenseTextBox}">
-        <Setter Property="WrapInBrackets" Value="False"/>
-        <Setter Property="VerticalAlignment" Value="Center"/>
-        <Setter Property="Height" Value="25"/>
-    </Style>
-
 </ResourceDictionary>
