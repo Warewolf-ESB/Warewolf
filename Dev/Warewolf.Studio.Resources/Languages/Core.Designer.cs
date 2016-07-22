@@ -6121,7 +6121,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Your script might contain values like &apos;\t&apos; or &apos;\n&apos; etc which are Escape Sequences. Tick this Box if you want to ignore this or leave it unticked if you want to use them as Escape Sequences..
+        ///   Looks up a localized string similar to Your variables might contain values like &apos;\t&apos; or &apos;\n&apos; etc which are Escape Sequences. Tick this Box if you want to ignore this or leave it unticked if you want to use them as Escape Sequences..
         /// </summary>
         public static string ScriptingHelpEscapeScript {
             get {
