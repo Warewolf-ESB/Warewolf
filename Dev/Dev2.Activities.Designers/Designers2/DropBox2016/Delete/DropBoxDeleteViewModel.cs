@@ -45,7 +45,6 @@ namespace Dev2.Activities.Designers2.DropBox2016.Delete
             EditDropboxSourceCommand = new RelayCommand(o => EditDropBoxSource(), p => IsDropboxSourceSelected);
             NewSourceCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(CreateOAuthSource);
             // ReSharper disable once VirtualMemberCallInContructor
-            // ReSharper disable once VirtualMemberCallInContructor
             Sources = LoadOAuthSources();
             AddTitleBarLargeToggle();
             EditDropboxSourceCommand.RaiseCanExecuteChanged();
@@ -136,7 +135,12 @@ namespace Dev2.Activities.Designers2.DropBox2016.Delete
 
         public void CreateOAuthSource()
         {
-            CustomContainer.Get<IShellViewModel>().NewDropboxSource(string.Empty);
+            var shellViewModel = CustomContainer.Get<IShellViewModel>();
+            if (shellViewModel == null)
+            {
+                return;
+            }
+            shellViewModel.NewDropboxSource(string.Empty);
             Sources = LoadOAuthSources();
             OnPropertyChanged(@"Sources");
         }
