@@ -420,21 +420,6 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             return comsController;
         }
 
-        private async Task<bool> LoadResourcesAsync()
-        {
-            var comsController = GetCommunicationControllerForLoadResources();
-            var con = _environmentModel.Connection;
-            var resourceList = await comsController.ExecuteCommandAsync<List<SerializableResource>>(con, GlobalConstants.ServerWorkspaceID);
-
-            if (resourceList == null)
-            {
-                throw new Exception(ErrorResource.FailedToFetchResoureListAsJSONModel);
-            }
-
-            HydrateResourceModels(resourceList, _environmentModel.Connection.ServerID);
-            return true;
-        }
-
         public bool IsInCache(Guid id)
         {
             return _cachedServices.Contains(id);
