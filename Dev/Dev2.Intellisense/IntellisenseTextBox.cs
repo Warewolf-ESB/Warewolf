@@ -362,22 +362,16 @@ namespace Dev2.UI
         /// that contains the event data.</param>
         protected override void OnTextChanged(RoutedEventArgs e)
         {
-            if (CheckHasUnicodeInText(Text))
+            var text = Text ?? string.Empty;
+            if (CheckHasUnicodeInText(text))
             {
                 return;
             }
             
             ItemsSource = IntellisenseResults;
             base.OnTextChanged(e);
-            ValidateText(Text);
-            if (string.IsNullOrEmpty(Text))
-            {
-                _desiredResultSet = IntellisenseDesiredResultSet.EntireSet;
-            }
-            else
-            {
-                _desiredResultSet = IntellisenseDesiredResultSet.ClosestMatch;
-            }
+            ValidateText(text);
+            _desiredResultSet = string.IsNullOrEmpty(text) ? IntellisenseDesiredResultSet.EntireSet : IntellisenseDesiredResultSet.ClosestMatch;
         }
 
 
@@ -432,6 +426,10 @@ namespace Dev2.UI
 
         public void EnsureIntellisenseResults(string text, bool forceUpdate, IntellisenseDesiredResultSet desiredResultSet)
         {
+            if (text == null)
+            {
+                text = string.Empty;
+            }
             if (!DesignerProperties.GetIsInDesignMode(this))
             {
                 bool calculateMode = false;
@@ -827,7 +825,7 @@ namespace Dev2.UI
         {
             get
             {
-                return (IIntellisenseProvider)GetValue(IntellisenseProviderProperty);
+                return (IIntellisenseProvider)GetValue(IntellisenseProviderProperty) ?? new DefaultIntellisenseProvider();
             }
             set
             {
