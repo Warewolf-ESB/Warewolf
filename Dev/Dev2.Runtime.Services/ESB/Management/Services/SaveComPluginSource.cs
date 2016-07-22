@@ -31,7 +31,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 values.TryGetValue("ComPluginSource", out resourceDefinition);
 
                 var src = serializer.Deserialize<ComPluginSourceDefinition>(resourceDefinition);
-                if (src.Path == null)
+                if(src.Path == null) 
                     src.Path = string.Empty;
                 if (src.Path.EndsWith("\\"))
                     src.Path = src.Path.Substring(0, src.Path.LastIndexOf("\\", StringComparison.Ordinal));
@@ -53,7 +53,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 msg.HasError = true;
                 msg.Message = new StringBuilder(err.Message);
                 Dev2Logger.Error(err);
-
+                  
             }
 
             return serializer.SerializeToBuilder(msg);

@@ -8,7 +8,9 @@ namespace Dev2.Common.Interfaces.Core
 
         public bool Equals(IComPluginSource other)
         {
-            return string.Equals(Name, other.Name) && Id.Equals(other.Id) && Equals(ClsId, other.ClsId) && string.Equals(ProgId, other.ProgId);
+            var @equals = SelectedDll?.Equals(other?.SelectedDll);
+            var selectedEquals = @equals != null && @equals.Value;
+            return string.Equals(Name, other?.Name) && Id.Equals(other?.Id) && Equals(ClsId, other?.ClsId) && string.Equals(ProgId, other?.ProgId) && selectedEquals;
         }
 
         /// <summary>
@@ -20,19 +22,19 @@ namespace Dev2.Common.Interfaces.Core
         /// <param name="obj">The object to compare with the current object. </param>
         public override bool Equals(object obj)
         {
-            if(ReferenceEquals(null, obj))
+            if (ReferenceEquals(null, obj))
             {
                 return false;
             }
-            if(ReferenceEquals(this, obj))
+            if (ReferenceEquals(this, obj))
             {
                 return true;
             }
-            if(obj.GetType() != GetType())
+            if (obj.GetType() != GetType())
             {
                 return false;
             }
-            return Equals((PluginSourceDefinition)obj);
+            return Equals((ComPluginSourceDefinition)obj);
         }
 
         /// <summary>
