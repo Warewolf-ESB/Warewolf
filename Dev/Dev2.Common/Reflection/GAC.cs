@@ -41,6 +41,7 @@ NOTE: CoInitialize(Ex) must be called before you use any of the functions and in
 */
 
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
 using System.Text;
 
@@ -435,7 +436,7 @@ namespace Dev2.Common.Reflection
         ///     in the GAC.
         /// </remarks>
         [PreserveSig]
-        // ReSharper disable once UnusedMember.Global
+        [SuppressMessage("ReSharper", "UnusedMember.Global")]
         int UninstallAssembly(
             uint dwFlags,
             [MarshalAs(UnmanagedType.LPWStr)] string pszAssemblyName,
@@ -456,7 +457,7 @@ namespace Dev2.Common.Reflection
         /// <param name="pAsmInfo"></param>
         /// <returns></returns>
         [PreserveSig]
-        // ReSharper disable once UnusedMember.Global
+        [SuppressMessage("ReSharper", "UnusedMember.Global")]
         int QueryAssemblyInfo(
             uint dwFlags,
             [MarshalAs(UnmanagedType.LPWStr)] string pszAssemblyName,
@@ -471,7 +472,7 @@ namespace Dev2.Common.Reflection
         /// <param name="pszAssemblyName"></param>
         /// <returns></returns>
         [PreserveSig]
-        // ReSharper disable once UnusedMember.Global
+        [SuppressMessage("ReSharper", "UnusedMember.Global")]
         int CreateAssemblyCacheItem(
             uint dwFlags,
             IntPtr pvReserved,
@@ -501,7 +502,7 @@ namespace Dev2.Common.Reflection
         /// </param>
         /// <returns></returns>
         [PreserveSig]
-        // ReSharper disable once UnusedMember.Global
+        [SuppressMessage("ReSharper", "UnusedMember.Global")]
         int InstallAssembly(
             uint dwFlags,
             [MarshalAs(UnmanagedType.LPWStr)] string pszManifestFilePath,

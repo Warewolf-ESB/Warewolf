@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using Caliburn.Micro;
 using Dev2.Activities.Designers2.Core.Help;
 using Dev2.Common.Interfaces;
@@ -80,7 +81,7 @@ namespace Dev2.ViewModels
             }
         }
 
-        // ReSharper disable once UnusedMember.Global
+        [SuppressMessage("ReSharper", "UnusedMember.Global")]
         public string ResourceType => "DeployViewer";
 
         #region Implementation of IHelpSource

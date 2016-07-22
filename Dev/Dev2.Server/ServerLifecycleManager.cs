@@ -40,7 +40,6 @@ using Dev2.PerformanceCounters.Management;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Security;
 using Dev2.Runtime.WebServer;
-using Dev2.Services.Security.MoqInstallerActions;
 using Dev2.Workspaces;
 using log4net.Config;
 // ReSharper disable AssignNullToNotNullAttribute

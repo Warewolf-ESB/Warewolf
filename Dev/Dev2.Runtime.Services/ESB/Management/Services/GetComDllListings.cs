@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -14,7 +15,7 @@ using Microsoft.Win32;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
-    // ReSharper disable once UnusedMember.Global
+    [SuppressMessage("ReSharper", "UnusedMember.Global")]
     public class GetComDllListings : IEsbManagementEndpoint
     {
         private List<KeyValuePair<Guid, Type>> TypesKeyValuePairs { get; set; }
