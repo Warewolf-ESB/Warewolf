@@ -33,27 +33,27 @@ using Warewolf.Resource.Errors;
 
 namespace Dev2.Activities.Designers2.Core
 {
-    public class ManagePluginServiceInputViewModel : IManagePluginServiceInputViewModel
+    public class ManageComPluginServiceInputViewModel : IManageComPluginServiceInputViewModel
     {
         IGenerateOutputArea _generateOutputArea;
         IGenerateInputArea _generateInputArea;
         bool _isEnabled;
         bool _pasteResponseAvailable;
-        IDotNetViewModel _viewmodel;
-        IPluginServiceModel _serverModel;
+        IComViewModel _viewmodel;
+        IComPluginServiceModel _serverModel;
         bool _isGenerateInputsEmptyRows;
         private bool _okSelected;
         private string _testResults;
         private bool _testResultsAvailable;
         private bool _isTestResultsEmptyRows;
         private bool _isTesting;
-        private IPluginService _model;
+        private IComPluginService _model;
         private bool _pasteResponseVisible;
         private RecordsetList _recordsetList;
         private bool _outputCountExpandAllowed;
         private bool _inputCountExpandAllowed;
 
-        public ManagePluginServiceInputViewModel(IDotNetViewModel model, IPluginServiceModel serviceModel)
+        public ManageComPluginServiceInputViewModel(IComViewModel model, IComPluginServiceModel serviceModel)
         {
             PasteResponseAvailable = false;
             PasteResponseVisible = false;
@@ -307,11 +307,11 @@ namespace Dev2.Activities.Designers2.Core
         public ICommand OkCommand { get; private set; }
         public Action OkAction { get; set; }
         public Action CloseAction { get; set; }
-        public IPluginService Model
+        public IComPluginService Model
         {
             get
             {
-                return _model ?? new PluginServiceDefinition();
+                return _model ?? new ComPluginServiceDefinition();
             }
             set
             {

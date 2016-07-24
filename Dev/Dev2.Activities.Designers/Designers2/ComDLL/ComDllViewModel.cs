@@ -37,11 +37,11 @@ using Warewolf.Resource.Errors;
 
 namespace Dev2.Activities.Designers2.ComDLL
 {
-    public class ComDllViewModel : CustomToolWithRegionBase, IDotNetViewModel
+    public class ComDllViewModel : CustomToolWithRegionBase, IComViewModel
     {
         private IOutputsToolRegion _outputsRegion;
         private IDotNetInputRegion _inputArea;
-        private ISourceToolRegion<IPluginSource> _sourceRegion;
+        private ISourceToolRegion<IComPluginSource> _sourceRegion;
         private INamespaceToolRegion<INamespaceItem> _namespaceRegion;
         private IActionToolRegion<IPluginAction> _actionRegion;
 
@@ -65,7 +65,7 @@ namespace Dev2.Activities.Designers2.ComDLL
         {
             var shellViewModel = CustomContainer.Get<IShellViewModel>();
             var server = shellViewModel.ActiveServer;
-            var model = CustomContainer.CreateInstance<IPluginServiceModel>(server.UpdateRepository, server.QueryProxy, shellViewModel, server);
+            var model = CustomContainer.CreateInstance<IComPluginServiceModel>(server.UpdateRepository, server.QueryProxy, shellViewModel, server);
             Model = model;
 
             SetupCommonProperties();
@@ -77,7 +77,7 @@ namespace Dev2.Activities.Designers2.ComDLL
         private void SetupCommonProperties()
         {
             AddTitleBarMappingToggle();
-            InitialiseViewModel(new ManagePluginServiceInputViewModel(this, Model));
+            InitialiseViewModel(new ManageComPluginServiceInputViewModel(this, Model));
             NoError = new ErrorInfo
             {
                 ErrorType = ErrorType.None,
@@ -90,7 +90,7 @@ namespace Dev2.Activities.Designers2.ComDLL
             UpdateWorstError();
         }
 
-        private void InitialiseViewModel(IManagePluginServiceInputViewModel manageServiceInputViewModel)
+        private void InitialiseViewModel(IManageComPluginServiceInputViewModel manageServiceInputViewModel)
         {
             ManageServiceInputViewModel = manageServiceInputViewModel;
 
@@ -170,7 +170,7 @@ namespace Dev2.Activities.Designers2.ComDLL
             UpdateWorstError();
         }
 
-        public ComDllViewModel(ModelItem modelItem, IPluginServiceModel model)
+        public ComDllViewModel(ModelItem modelItem, IComPluginServiceModel model)
             : base(modelItem)
         {
             Model = model;
@@ -238,7 +238,7 @@ namespace Dev2.Activities.Designers2.ComDLL
                 {
                     _worstDesignError = value;
                     IsWorstErrorReadOnly = value == null || value.ErrorType == ErrorType.None || value.FixType == FixType.None || value.FixType == FixType.Delete;
-                    WorstError = value == null ? ErrorType.None : value.ErrorType;
+                    WorstError = value?.ErrorType ?? ErrorType.None;
                 }
             }
         }
@@ -262,7 +262,7 @@ namespace Dev2.Activities.Designers2.ComDLL
             }
         }
 
-        public IManagePluginServiceInputViewModel ManageServiceInputViewModel { get; set; }
+        public IManageComPluginServiceInputViewModel ManageServiceInputViewModel { get; set; }
 
         public void TestProcedure()
         {
@@ -329,10 +329,7 @@ namespace Dev2.Activities.Designers2.ComDLL
         public override void UpdateHelpDescriptor(string helpText)
         {
             var mainViewModel = CustomContainer.Get<IMainViewModel>();
-            if (mainViewModel != null)
-            {
-                mainViewModel.HelpViewModel.UpdateHelpText(helpText);
-            }
+            mainViewModel?.HelpViewModel.UpdateHelpText(helpText);
         }
 
         #endregion
@@ -344,7 +341,7 @@ namespace Dev2.Activities.Designers2.ComDLL
             IList<IToolRegion> regions = new List<IToolRegion>();
             if (SourceRegion == null)
             {
-                SourceRegion = new DotNetSourceRegion(Model, ModelItem)
+                SourceRegion = new ComSourceRegion(Model, ModelItem)
                 {
                     SourceChangedAction = () =>
                         {
@@ -353,16 +350,13 @@ namespace Dev2.Activities.Designers2.ComDLL
                             {
                                 foreach (var toolRegion in Regions)
                                 {
-                                    if (toolRegion.Errors != null)
-                                    {
-                                        toolRegion.Errors.Clear();
-                                    }
+                                    toolRegion.Errors?.Clear();
                                 }
                             }
                         }
                 };
                 regions.Add(SourceRegion);
-                NamespaceRegion = new DotNetNamespaceRegion(Model, ModelItem, SourceRegion)
+                NamespaceRegion = new ComNamespaceRegion(Model, ModelItem, SourceRegion)
                 {
                     SourceChangedNamespace = () =>
                         {
@@ -371,10 +365,7 @@ namespace Dev2.Activities.Designers2.ComDLL
                             {
                                 foreach (var toolRegion in Regions)
                                 {
-                                    if (toolRegion.Errors != null)
-                                    {
-                                        toolRegion.Errors.Clear();
-                                    }
+                                    toolRegion.Errors?.Clear();
                                 }
                             }
                         }
@@ -387,7 +378,7 @@ namespace Dev2.Activities.Designers2.ComDLL
                                 .ToList();
                 };
                 regions.Add(NamespaceRegion);
-                ActionRegion = new DotNetActionRegion(Model, ModelItem, SourceRegion, NamespaceRegion)
+                ActionRegion = new ComActionRegion(Model, ModelItem, SourceRegion, NamespaceRegion)
                 {
                     SourceChangedAction = () =>
                         {
@@ -396,10 +387,7 @@ namespace Dev2.Activities.Designers2.ComDLL
                             {
                                 foreach (var toolRegion in Regions)
                                 {
-                                    if (toolRegion.Errors != null)
-                                    {
-                                        toolRegion.Errors.Clear();
-                                    }
+                                    toolRegion.Errors?.Clear();
                                 }
                             }
                         }
@@ -450,7 +438,7 @@ namespace Dev2.Activities.Designers2.ComDLL
                 OnPropertyChanged();
             }
         }
-        public ISourceToolRegion<IPluginSource> SourceRegion
+        public ISourceToolRegion<IComPluginSource> SourceRegion
         {
             get
             {
@@ -525,9 +513,9 @@ namespace Dev2.Activities.Designers2.ComDLL
             }
         }
 
-        public IPluginService ToModel()
+        public IComPluginService ToModel()
         {
-            var pluginServiceDefinition = new PluginServiceDefinition
+            var pluginServiceDefinition = new ComPluginServiceDefinition
             {
                 Source = SourceRegion.SelectedSource,
                 Action = ActionRegion.SelectedAction,
@@ -550,7 +538,7 @@ namespace Dev2.Activities.Designers2.ComDLL
         {
             Errors = new List<IActionableErrorInfo>();
             if (hasError)
-                Errors = new List<IActionableErrorInfo> { new ActionableErrorInfo(new ErrorInfo() { ErrorType = ErrorType.Critical, FixData = "", FixType = FixType.None, Message = exception.Message, StackTrace = exception.StackTrace }, () => { }) };
+                Errors = new List<IActionableErrorInfo> { new ActionableErrorInfo(new ErrorInfo { ErrorType = ErrorType.Critical, FixData = "", FixType = FixType.None, Message = exception.Message, StackTrace = exception.StackTrace }, () => { }) };
         }
 
         public void SetDisplayName(string outputFieldName)
@@ -574,7 +562,7 @@ namespace Dev2.Activities.Designers2.ComDLL
             }
         }
 
-        private IPluginServiceModel Model { get; set; }
+        private IComPluginServiceModel Model { get; set; }
 
         void SetRegionVisibility(bool value)
         {
