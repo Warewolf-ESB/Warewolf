@@ -10,39 +10,36 @@ using Dev2.Common.Interfaces.ToolBase;
 using Dev2.Common.Interfaces.ToolBase.DotNet;
 using Dev2.Studio.Core.Activities.Utils;
 
-// ReSharper disable FieldCanBeMadeReadOnly.Local
-// ReSharper disable ExplicitCallerInfoArgument
-
 namespace Dev2.Activities.Designers2.Core.NamespaceRegion
 {
-    public class DotNetNamespaceRegion : INamespaceToolRegion<INamespaceItem>
+    public class ComNamespaceRegion : INamespaceToolRegion<INamespaceItem>
     {
         private readonly ModelItem _modelItem;
-        private readonly ISourceToolRegion<IPluginSource> _source;
+        private readonly ISourceToolRegion<IComPluginSource> _source;
         private bool _isEnabled;
 
         private Action _sourceChangedNamespace;
         private INamespaceItem _selectedNamespace;
-        private IPluginServiceModel _model;
+        private readonly IComPluginServiceModel _model;
         private ICollection<INamespaceItem> _namespaces;
         private bool _isRefreshing;
         private double _labelWidth;
         private bool _isNamespaceEnabled;
         private IList<string> _errors;
 
-        public DotNetNamespaceRegion()
+        public ComNamespaceRegion()
         {
-            ToolRegionName = "DotNetNamespaceRegion";
+            ToolRegionName = "ComNamespaceRegion";
         }
 
-        public DotNetNamespaceRegion(IPluginServiceModel model, ModelItem modelItem, ISourceToolRegion<IPluginSource> source)
+        public ComNamespaceRegion(IComPluginServiceModel model, ModelItem modelItem, ISourceToolRegion<IComPluginSource> source)
         {
             try
             {
                 Errors = new List<string>();
 
                 LabelWidth = 70;
-                ToolRegionName = "DotNetNamespaceRegion";
+                ToolRegionName = "ComNamespaceRegion";
                 _modelItem = modelItem;
                 _model = model;
                 _source = source;
@@ -70,6 +67,7 @@ namespace Dev2.Activities.Designers2.Core.NamespaceRegion
             catch (Exception e)
             {
                 Errors.Add(e.Message);
+
             }
         }
         INamespaceItem Namespace
@@ -123,7 +121,7 @@ namespace Dev2.Activities.Designers2.Core.NamespaceRegion
 
         private void UpdateBasedOnSource()
         {
-            if (_source != null && _source.SelectedSource != null)
+            if (_source?.SelectedSource != null)
             {
                 Namespaces = _model.GetNameSpaces(_source.SelectedSource);
 
@@ -152,10 +150,7 @@ namespace Dev2.Activities.Designers2.Core.NamespaceRegion
                 OnSomethingChanged(this);
 
                 var delegateCommand = RefreshNamespaceCommand as Microsoft.Practices.Prism.Commands.DelegateCommand;
-                if (delegateCommand != null)
-                {
-                    delegateCommand.RaiseCanExecuteChanged();
-                }
+                delegateCommand?.RaiseCanExecuteChanged();
 
                 _selectedNamespace = value;
                 OnPropertyChanged();
@@ -232,7 +227,7 @@ namespace Dev2.Activities.Designers2.Core.NamespaceRegion
 
         public IToolRegion CloneRegion()
         {
-            return new DotNetNamespaceRegion
+            return new ComNamespaceRegion
             {
                 IsEnabled = IsEnabled,
                 SelectedNamespace = SelectedNamespace
@@ -241,7 +236,7 @@ namespace Dev2.Activities.Designers2.Core.NamespaceRegion
 
         public void RestoreRegion(IToolRegion toRestore)
         {
-            var region = toRestore as DotNetNamespaceRegion;
+            var region = toRestore as ComNamespaceRegion;
             if (region != null)
             {
                 SelectedNamespace = region.SelectedNamespace;
@@ -301,13 +296,13 @@ namespace Dev2.Activities.Designers2.Core.NamespaceRegion
 
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            var handler = PropertyChanged;
+            handler?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
         protected virtual void OnSomethingChanged(IToolRegion args)
         {
-            var handler = SomethingChanged;
-            handler?.Invoke(this, args);
+            SomethingChanged?.Invoke(this, args);
         }
     }
 }

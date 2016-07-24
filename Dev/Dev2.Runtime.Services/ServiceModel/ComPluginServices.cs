@@ -1,42 +1,32 @@
-/*
-*  Warewolf - Once bitten, there's no going back
-*  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
-*  Some rights reserved.
-*  Visit our website for more information <http://warewolf.io/>
-*  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
-*  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
-*/
-
 using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Xml.Linq;
 using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Runtime.ServiceModel.Esb.Brokers;
+using Dev2.Runtime.ServiceModel.Esb.Brokers.ComPlugin;
 using Dev2.Services.Security;
 using Newtonsoft.Json;
 
 namespace Dev2.Runtime.ServiceModel
 {
-    public interface IPluginServices
+    public interface IComPluginServices
     {
         RecordsetList Test(string args, out string serializedResult);
 
-        NamespaceList Namespaces(PluginSource args, Guid workspaceId, Guid dataListId);
+        NamespaceList Namespaces(ComPluginSource args, Guid workspaceId, Guid dataListId);
 
-        ServiceMethodList Methods(PluginService args, Guid workspaceId, Guid dataListId);
+        ServiceMethodList Methods(ComPluginService args, Guid workspaceId, Guid dataListId);
     }
-
-    public class PluginServices : Services, IPluginServices
+    public class ComPluginServices : Services, IComPluginServices
     {
         #region CTOR
 
-        public PluginServices()
+        public ComPluginServices()
         {
         }
 
-        public PluginServices(IResourceCatalog resourceCatalog, IAuthorizationService authorizationService)
+        public ComPluginServices(IResourceCatalog resourceCatalog, IAuthorizationService authorizationService)
             : base(resourceCatalog, authorizationService)
         {
         }
@@ -48,13 +38,13 @@ namespace Dev2.Runtime.ServiceModel
         [SuppressMessage("ReSharper", "UnusedMember.Global")]
         protected virtual Service DeserializeService(string args)
         {
-            return JsonConvert.DeserializeObject<PluginService>(args);
+            return JsonConvert.DeserializeObject<ComPluginService>(args);
         }
 
         [SuppressMessage("ReSharper", "UnusedMember.Global")]
         protected virtual Service DeserializeService(XElement xml, string resourceType)
         {
-            return xml == null ? new PluginService() : new PluginService(xml);
+            return xml == null ? new ComPluginService() : new ComPluginService(xml);
         }
 
         #endregion
@@ -66,17 +56,17 @@ namespace Dev2.Runtime.ServiceModel
         {
             try
             {
-           
-                
-                var service = JsonConvert.DeserializeObject<PluginService>(args,new JsonSerializerSettings
-            {
-                TypeNameHandling = TypeNameHandling.Objects
-            });
+
+
+                var service = JsonConvert.DeserializeObject<ComPluginService>(args, new JsonSerializerSettings
+                {
+                    TypeNameHandling = TypeNameHandling.Objects
+                });
                 var fetchRecordset = FetchRecordset(service, true);
                 serializedResult = service.SerializedResult;
                 return fetchRecordset;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 RaiseError(ex);
                 serializedResult = null;
@@ -89,7 +79,7 @@ namespace Dev2.Runtime.ServiceModel
         #region Namespaces
 
         // POST: Service/PluginServices/Namespaces
-        public virtual NamespaceList Namespaces(PluginSource pluginSource, Guid workspaceId, Guid dataListId)
+        public virtual NamespaceList Namespaces(ComPluginSource pluginSource, Guid workspaceId, Guid dataListId)
         {
             var result = new NamespaceList();
             try
@@ -97,7 +87,7 @@ namespace Dev2.Runtime.ServiceModel
 
                 if (pluginSource != null)
                 {
-                    var broker = new PluginBroker();
+                    var broker = new ComPluginBroker();
                     return broker.GetNamespaces(pluginSource);
                 }
             }
@@ -106,7 +96,7 @@ namespace Dev2.Runtime.ServiceModel
                 RaiseError(e);
                 throw;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 RaiseError(ex);
             }
@@ -118,18 +108,18 @@ namespace Dev2.Runtime.ServiceModel
         #region Methods
 
         // POST: Service/PluginServices/Methods
-        public ServiceMethodList Methods(PluginService service, Guid workspaceId, Guid dataListId)
+        public ServiceMethodList Methods(ComPluginService service, Guid workspaceId, Guid dataListId)
         {
             var result = new ServiceMethodList();
             try
             {
                 // BUG 9500 - 2013.05.31 - TWR : changed to use PluginService as args 
-              
-                var broker = new PluginBroker();
-                result = broker.GetMethods(((PluginSource)service.Source).AssemblyLocation, ((PluginSource)service.Source).AssemblyName, service.Namespace);
+
+                var broker = new ComPluginBroker();
+                result = broker.GetMethods(((ComPluginSource)service.Source).ClsId,string.Empty, string.Empty);
                 return result;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 RaiseError(ex);
             }
@@ -138,5 +128,4 @@ namespace Dev2.Runtime.ServiceModel
 
         #endregion
     }
-   
 }
