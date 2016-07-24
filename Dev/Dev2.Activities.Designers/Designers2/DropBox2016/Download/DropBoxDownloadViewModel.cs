@@ -161,7 +161,12 @@ namespace Dev2.Activities.Designers2.DropBox2016.Download
 
         public void CreateOAuthSource()
         {
-            CustomContainer.Get<IShellViewModel>().NewDropboxSource(string.Empty);
+            var shellViewModel = CustomContainer.Get<IShellViewModel>();
+            if (shellViewModel == null)
+            {
+                return;
+            }
+            shellViewModel.NewDropboxSource(string.Empty);
             Sources = LoadOAuthSources();
             OnPropertyChanged(@"Sources");
         }
