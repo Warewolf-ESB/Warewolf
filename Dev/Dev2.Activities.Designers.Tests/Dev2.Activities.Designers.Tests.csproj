@@ -135,6 +135,7 @@
     <Compile Include="Core\WebPostInputRegionTest.cs" />
     <Compile Include="Core\WebSourceRegionTest.cs" />
     <Compile Include="Decision\DecisionTests.cs" />
+    <Compile Include="ComDll\ComDllViewModelTests.cs" />
     <Compile Include="DotNetDll\DotNetDllViewModelTests.cs" />
     <Compile Include="DropBox2016\Delete\DropBoxDeleteViewModelTest.cs" />
     <Compile Include="DropBox2016\Download\DropBoxDownloadViewModelTest.cs" />

@@ -3,12 +3,8 @@ using Dev2.Common.Interfaces.Hosting;
 
 namespace Dev2.Runtime.Hosting
 {
-    public class ResourceCatalogResultBuilder
+    internal static class ResourceCatalogResultBuilder
     {
-        private ResourceCatalogResultBuilder()
-        {
-            
-        }
         public static ResourceCatalogResult CreateSuccessResult(string msg)
         {
             return new ResourceCatalogResult()

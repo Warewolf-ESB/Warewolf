@@ -11,7 +11,7 @@ namespace Warewolf.UITests.Tools.Resources
         public void DotNetDLLToolUITest()
         {
             Uimap.Drag_DotNet_DLL_Connector_Onto_DesignSurface();
-            Uimap.Open_DotNet_DLL_Connector_Tool_Small_View();
+            Uimap.Open_DotNet_DLL_Connector_Tool_Large_View();
         }
 
         #region Additional test attributes
