@@ -126,7 +126,7 @@
                                         ActiveDataItem="{Binding SelectedDll, Mode=TwoWay}"
                                         ItemsSource="{Binding DllListings}"
                                         IsSelectedMemberPath="IsSelected"
-                                        DisplayMemberPath="FullName"
+                                        DisplayMemberPath="Name"
                                         IsExpandedMemberPath="IsExpanded"
                                         EnsureNodeExpansion="True"
                                         Loaded="ExplorerTree_OnLoaded"
