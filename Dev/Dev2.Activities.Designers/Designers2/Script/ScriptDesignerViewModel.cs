@@ -11,22 +11,38 @@
 using System.Activities.Presentation.Model;
 using System.Collections.Generic;
 using System.Windows;
+using System.Windows.Input;
+using Caliburn.Micro;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Common.Interfaces.Enums;
 using Dev2.Common.Interfaces.Enums.Enums;
 using Dev2.Interfaces;
+using Dev2.Runtime.Configuration.ViewModels.Base;
+using Dev2.Services.Events;
+using Dev2.Studio.Core.Messages;
 
 namespace Dev2.Activities.Designers2.Script
 {
     public class ScriptDesignerViewModel : ActivityDesignerViewModel
     {
+        readonly IEventAggregator _eventPublisher;
         public ScriptDesignerViewModel(ModelItem modelItem)
             : base(modelItem)
         {
+            _eventPublisher = EventPublishers.Aggregator;
+            _eventPublisher.Subscribe(this);
+
             EscapeScript = true;
             ScriptTypes = Dev2EnumConverter.ConvertEnumsTypeToStringList<enScriptType>();
             SelectedScriptType = Dev2EnumConverter.ConvertEnumValueToString(ScriptType);
+            ChooseScriptSourceCommand = new DelegateCommand(o => ChooseScriptSources());
             AddTitleBarLargeToggle();
+        }
+
+        public string IncludeFile
+        {
+            get { return GetProperty<string>(); }
+            set { SetProperty(value); }
         }
 
         public bool EscapeScript { get; private set; }
@@ -38,7 +54,7 @@ namespace Dev2.Activities.Designers2.Script
             get { return (string)GetValue(SelectedScriptTypeProperty); }
             set { SetValue(SelectedScriptTypeProperty, value); }
         }
-
+        
         public static readonly DependencyProperty SelectedScriptTypeProperty =
             DependencyProperty.Register("SelectedScriptType", typeof(string), typeof(ScriptDesignerViewModel), new PropertyMetadata(null, OnSelectedScriptTypeChanged));
 
@@ -47,9 +63,9 @@ namespace Dev2.Activities.Designers2.Script
             var viewModel = (ScriptDesignerViewModel)d;
             var value = e.NewValue as string;
 
-            if(!string.IsNullOrWhiteSpace(value))
+            if (!string.IsNullOrWhiteSpace(value))
             {
-                switch(value)
+                switch (value)
                 {
                     case "Ruby":
                         viewModel.ScriptTypeDefaultText = "Ruby Syntax";
@@ -65,6 +81,7 @@ namespace Dev2.Activities.Designers2.Script
             }
         }
 
+        public ICommand ChooseScriptSourceCommand { get; private set; }
 
         public string ScriptTypeDefaultText
         {
@@ -90,5 +107,33 @@ namespace Dev2.Activities.Designers2.Script
                 mainViewModel.HelpViewModel.UpdateHelpText(helpText);
             }
         }
+
+
+        void ChooseScriptSources()
+        {
+
+            const string Separator = @";";
+            var chooserMessage = new FileChooserMessage();
+            chooserMessage.SelectedFiles = IncludeFile.Split(Separator.ToCharArray());
+            chooserMessage.PropertyChanged += (sender, args) =>
+            {
+                if (args.PropertyName == @"SelectedFiles")
+                {
+                    if (chooserMessage.SelectedFiles != null)
+                    {
+                        if (string.IsNullOrEmpty(IncludeFile))
+                        {
+                            IncludeFile = string.Join(Separator, chooserMessage.SelectedFiles);
+                        }
+                        else
+                        {
+                            IncludeFile += Separator + string.Join(Separator, chooserMessage.SelectedFiles);
+                        }
+                    }
+                }
+            };
+            _eventPublisher.Publish(chooserMessage);
+        }
+
     }
 }
