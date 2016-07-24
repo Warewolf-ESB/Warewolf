@@ -115,8 +115,8 @@ namespace Dev2.Runtime.ServiceModel
             {
                 // BUG 9500 - 2013.05.31 - TWR : changed to use PluginService as args 
 
-                var broker = new PluginBroker();
-                //result = broker.GetMethods(((ComPluginSource)service.Source).ClsId, ((ComPluginSource)service.Source).AssemblyName, service.Namespace);
+                var broker = new ComPluginBroker();
+                result = broker.GetMethods(((ComPluginSource)service.Source).ClsId,string.Empty, string.Empty);
                 return result;
             }
             catch (Exception ex)

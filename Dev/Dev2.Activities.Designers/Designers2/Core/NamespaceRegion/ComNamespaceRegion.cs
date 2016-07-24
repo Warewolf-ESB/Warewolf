@@ -20,7 +20,7 @@ namespace Dev2.Activities.Designers2.Core.NamespaceRegion
 
         private Action _sourceChangedNamespace;
         private INamespaceItem _selectedNamespace;
-        private IComPluginServiceModel _model;
+        private readonly IComPluginServiceModel _model;
         private ICollection<INamespaceItem> _namespaces;
         private bool _isRefreshing;
         private double _labelWidth;

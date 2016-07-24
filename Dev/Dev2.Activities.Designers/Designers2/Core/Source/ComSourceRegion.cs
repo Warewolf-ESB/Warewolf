@@ -36,7 +36,7 @@ namespace Dev2.Activities.Designers2.Core.Source
         public ComSourceRegion(IComPluginServiceModel model, ModelItem modelItem)
         {
             LabelWidth = 70;
-            ToolRegionName = "DotNetSourceRegion";
+            ToolRegionName = "ComSourceRegion";
             SetInitialValues();
             Dependants = new List<IToolRegion>();
             NewSourceCommand = new DelegateCommand(model.CreateNewSource);
