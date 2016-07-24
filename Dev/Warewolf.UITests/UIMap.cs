@@ -22,8 +22,8 @@ namespace Warewolf.UITests
 
     public partial class UIMap
     {
-        private int _lenientSearchTimeout = 5000;
-        private int _lenientMaximumRetryCount = 5;
+        private int _lenientSearchTimeout = 3000;
+        private int _lenientMaximumRetryCount = 3;
         private int _strictSearchTimeout = 1000;
         private int _strictMaximumRetryCount = 1;
 
@@ -64,6 +64,8 @@ namespace Warewolf.UITests
                     }
                     if (parent != null && parent.Exists && parent != MainStudioWindow)
                     {
+                        Console.WriteLine("Search actually failed at: " + parent.FriendlyName);
+                        parent.SearchProperties.ToList().ForEach(prop => { Console.WriteLine(prop.PropertyName + ": \"" + prop.PropertyValue + "\""); });
                         parent.DrawHighlight();
                         e.Result = PlaybackErrorOptions.Retry;
                         return;
