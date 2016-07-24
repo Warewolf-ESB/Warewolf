@@ -172,11 +172,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             get;
             set;
         }
-
-        [SuppressMessage("ReSharper", "UnusedMember.Global")]
         /// <summary>
         /// Gets or sets the files and folders option.
         /// </summary>
+        [SuppressMessage("ReSharper", "UnusedMember.Global")]
         [Inputs("Files & Folders")]
         [FindMissing]
         public bool IsFilesAndFoldersSelected
@@ -228,13 +227,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates)
         {
-            if(updates != null)
+            var itemUpdate = updates?.FirstOrDefault(tuple => tuple.Item1 == Result);
+            if(itemUpdate != null)
             {
-                var itemUpdate = updates.FirstOrDefault(tuple => tuple.Item1 == Result);
-                if(itemUpdate != null)
-                {
-                    Result = itemUpdate.Item2;
-                }
+                Result = itemUpdate.Item2;
             }
         }
 

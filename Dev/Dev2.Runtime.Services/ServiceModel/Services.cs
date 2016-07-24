@@ -18,6 +18,7 @@ using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.Security;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Runtime.ServiceModel.Esb.Brokers;
+using Dev2.Runtime.ServiceModel.Esb.Brokers.ComPlugin;
 using Dev2.Runtime.ServiceModel.Utils;
 using Dev2.Services.Security;
 using Warewolf.Resource.Errors;
@@ -91,7 +92,7 @@ namespace Dev2.Runtime.ServiceModel
 
             if (dbService == null)
             {
-                throw new ArgumentNullException("dbService");
+                throw new ArgumentNullException(nameof(dbService));
             }
             var source = dbService.Source as DbSource;
             if (source != null)
@@ -103,7 +104,7 @@ namespace Dev2.Runtime.ServiceModel
                             var broker = CreateDatabaseBroker();
                             var outputDescription = broker.TestService(dbService);
 
-                            if (outputDescription == null || outputDescription.DataSourceShapes == null || outputDescription.DataSourceShapes.Count == 0)
+                            if (outputDescription?.DataSourceShapes == null || outputDescription.DataSourceShapes.Count == 0)
                             {
                                 throw new Exception(ErrorResource.ErrorRetrievingShapeFromServiceOutput);
                             }
@@ -136,7 +137,7 @@ namespace Dev2.Runtime.ServiceModel
                             var broker = new MySqlDatabaseBroker();
                             var outputDescription = broker.TestService(dbService);
 
-                            if (outputDescription == null || outputDescription.DataSourceShapes == null || outputDescription.DataSourceShapes.Count == 0)
+                            if (outputDescription?.DataSourceShapes == null || outputDescription.DataSourceShapes.Count == 0)
                             {
                                 throw new Exception(ErrorResource.ErrorRetrievingShapeFromServiceOutput);
                             }
@@ -155,7 +156,7 @@ namespace Dev2.Runtime.ServiceModel
                             var broker = new PostgreSqlDataBaseBroker();
                             var outputDescription = broker.TestService(dbService);
 
-                            if (outputDescription == null || outputDescription.DataSourceShapes == null || outputDescription.DataSourceShapes.Count == 0)
+                            if (outputDescription?.DataSourceShapes == null || outputDescription.DataSourceShapes.Count == 0)
                             {
                                 throw new Exception(ErrorResource.ErrorRetrievingShapeFromServiceOutput);
                             }
@@ -173,7 +174,7 @@ namespace Dev2.Runtime.ServiceModel
                             var broker = new OracleDatabaseBroker();
                             var outputDescription = broker.TestService(dbService);
 
-                            if (outputDescription == null || outputDescription.DataSourceShapes == null || outputDescription.DataSourceShapes.Count == 0)
+                            if (outputDescription?.DataSourceShapes == null || outputDescription.DataSourceShapes.Count == 0)
                             {
                                 throw new Exception(ErrorResource.ErrorRetrievingShapeFromServiceOutput);
                             }
@@ -191,7 +192,7 @@ namespace Dev2.Runtime.ServiceModel
                             var broker = new ODBCDatabaseBroker();
                             var outputDescription = broker.TestService(dbService);
 
-                            if (outputDescription == null || outputDescription.DataSourceShapes == null || outputDescription.DataSourceShapes.Count == 0)
+                            if (outputDescription?.DataSourceShapes == null || outputDescription.DataSourceShapes.Count == 0)
                             {
                                 throw new Exception(ErrorResource.ErrorRetrievingShapeFromServiceOutput);
                             }
@@ -224,7 +225,7 @@ namespace Dev2.Runtime.ServiceModel
         {
             if (pluginService == null)
             {
-                throw new ArgumentNullException("pluginService");
+                throw new ArgumentNullException(nameof(pluginService));
             }
             var broker = new PluginBroker();
             var outputDescription = broker.TestPlugin(pluginService);
@@ -236,7 +237,7 @@ namespace Dev2.Runtime.ServiceModel
                 {
                     foreach (var field in recordset.Fields)
                     {
-                        if (String.IsNullOrEmpty(field.Name))
+                        if (string.IsNullOrEmpty(field.Name))
                         {
                             continue;
                         }
@@ -247,8 +248,8 @@ namespace Dev2.Runtime.ServiceModel
                         if (!string.IsNullOrEmpty(field.Alias))
                         {
                             value = string.IsNullOrEmpty(rsAlias)
-                                        ? string.Format("[[{0}]]", field.Alias)
-                                        : string.Format("[[{0}().{1}]]", rsAlias, field.Alias);
+                                        ? $"[[{field.Alias}]]"
+                                : $"[[{rsAlias}().{field.Alias}]]";
                         }
 
                         if (path != null)
@@ -271,11 +272,62 @@ namespace Dev2.Runtime.ServiceModel
             return recSet;
         }
 
+        protected virtual RecordsetList FetchRecordset(ComPluginService pluginService, bool addFields)
+        {
+            if (pluginService == null)
+            {
+                throw new ArgumentNullException(nameof(pluginService));
+            }
+            var broker = new ComPluginBroker();
+            var outputDescription = broker.TestPlugin(pluginService);
+            var dataSourceShape = outputDescription.DataSourceShapes[0];
+            var recSet = outputDescription.ToRecordsetList(pluginService.Recordsets, GlobalConstants.PrimitiveReturnValueTag);
+            if (recSet != null)
+            {
+                foreach (var recordset in recSet)
+                {
+                    foreach (var field in recordset.Fields)
+                    {
+                        if (string.IsNullOrEmpty(field.Name))
+                        {
+                            continue;
+                        }
+                        var path = field.Path;
+                        var rsAlias = string.IsNullOrEmpty(field.RecordsetAlias) ? "" : field.RecordsetAlias.Replace("()", "");
+
+                        var value = string.Empty;
+                        if (!string.IsNullOrEmpty(field.Alias))
+                        {
+                            value = string.IsNullOrEmpty(rsAlias)
+                                        ? $"[[{field.Alias}]]"
+                                : $"[[{rsAlias}().{field.Alias}]]";
+                        }
+
+                        if (path != null)
+                        {
+                            path.OutputExpression = value;
+                            var foundPath = dataSourceShape.Paths.FirstOrDefault(path1 => path1.OutputExpression == path.OutputExpression);
+                            if (foundPath == null)
+                            {
+                                dataSourceShape.Paths.Add(path);
+                            }
+                            else
+                            {
+                                foundPath.OutputExpression = path.OutputExpression;
+                            }
+
+                        }
+                    }
+                }
+            }
+            return recSet;
+        }
+
         public virtual RecordsetList FetchRecordset(WebService webService, bool addFields)
         {
             if (webService == null)
             {
-                throw new ArgumentNullException("webService");
+                throw new ArgumentNullException(nameof(webService));
             }
 
             var outputDescription = webService.GetOutputDescription();
@@ -286,7 +338,7 @@ namespace Dev2.Runtime.ServiceModel
         {
             if (wcfService == null)
             {
-                throw new ArgumentNullException("wcfService");
+                throw new ArgumentNullException(nameof(wcfService));
             }
             var broker = new WcfSource();
             var outputDescription = broker.ExecuteMethod(wcfService);
@@ -298,7 +350,7 @@ namespace Dev2.Runtime.ServiceModel
                 {
                     foreach (var field in recordset.Fields)
                     {
-                        if (String.IsNullOrEmpty(field.Name))
+                        if (string.IsNullOrEmpty(field.Name))
                         {
                             continue;
                         }
@@ -309,8 +361,8 @@ namespace Dev2.Runtime.ServiceModel
                         if (!string.IsNullOrEmpty(field.Alias))
                         {
                             value = string.IsNullOrEmpty(rsAlias)
-                                        ? string.Format("[[{0}]]", field.Alias)
-                                        : string.Format("[[{0}().{1}]]", rsAlias, field.Alias);
+                                        ? $"[[{field.Alias}]]"
+                                : $"[[{rsAlias}().{field.Alias}]]";
                         }
 
                         if (path != null)

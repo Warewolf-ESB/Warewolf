@@ -259,12 +259,15 @@
     <Compile Include="Designers2\Core\InputRegion\DotNetInputRegion.cs" />
     <Compile Include="Designers2\Core\InputRegion\WcfInputRegion.cs" />
     <Compile Include="Designers2\Core\ManageDatabaseServiceInputViewModel.cs" />
+    <Compile Include="Designers2\Core\ManageComPluginServiceInputViewModel.cs" />
     <Compile Include="Designers2\Core\ManagePluginServiceInputViewModel.cs" />
     <Compile Include="Designers2\Core\ManageWcfServiceInputViewModel.cs" />
     <Compile Include="Designers2\Core\ManageWebServiceInputViewModel.cs" />
+    <Compile Include="Designers2\Core\NamespaceRegion\ComNamespaceRegion.cs" />
     <Compile Include="Designers2\Core\NamespaceRegion\DotNetNamespaceRegion.cs" />
     <Compile Include="Designers2\Core\OutputsRegion.cs" />
     <Compile Include="Designers2\Core\Source\DatabaseSourceRegion.cs" />
+    <Compile Include="Designers2\Core\Source\ComSourceRegion.cs" />
     <Compile Include="Designers2\Core\Source\DotNetSourceRegion.cs" />
     <Compile Include="Designers2\Core\Source\ExchangeSourceRegion.cs" />
     <Compile Include="Designers2\Core\Source\WcfSourceRegion.cs" />
