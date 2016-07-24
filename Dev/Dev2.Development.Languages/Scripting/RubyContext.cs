@@ -10,6 +10,7 @@
 
 using System;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -28,17 +29,22 @@ namespace Dev2.Development.Languages.Scripting
             public static readonly bool IsWin8 = true;
         #else
             public static readonly bool IsWin8 = false;
-        #endif
+#endif
 
+        ScriptEngine _rubyEngine;
+        public RubyContext()
+        {
+            _rubyEngine = CreateRubyEngine();
+            AddScriptSourcesToContext();
+        }    
 
         public string Execute(string scriptValue)
-        {
-            var rubyEngine = CreateRubyEngine();
+        {            
             string rubyFunc = @"def __result__();" + scriptValue + "end; public :__result__";
-            ScriptSource source = rubyEngine.CreateScriptSourceFromString(rubyFunc, SourceCodeKind.Statements);
+            ScriptSource source = _rubyEngine.CreateScriptSourceFromString(rubyFunc, SourceCodeKind.Statements);
 
             //create a scope to act as the context for the code
-            ScriptScope scope = rubyEngine.CreateScope();
+            ScriptScope scope = _rubyEngine.CreateScope();
 
             //execute the source
             source.Execute(scope);
@@ -47,6 +53,15 @@ namespace Dev2.Development.Languages.Scripting
             var result = scope.GetVariable<Func<dynamic>>("__result__");
 
             return result.Invoke().ToString();
+        }
+
+        public void AddScriptSourcesToContext()
+        {
+            var paths = _rubyEngine.GetSearchPaths().ToList();
+            paths.Add(@"C:\Users\Sanele.Mthembu\Desktop\ruby");
+            _rubyEngine.SetSearchPaths(paths);
+            _rubyEngine.ExecuteFile("rubySource.rb");
+            //_rubyEngine.ExecuteFile("ruby/foo.rb");
         }
 
         public ScriptEngine CreateRubyEngine()

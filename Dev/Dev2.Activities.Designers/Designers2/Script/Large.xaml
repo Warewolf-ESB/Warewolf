@@ -11,12 +11,13 @@
                                xmlns:core1="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
                                xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
                                xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna;assembly=Warewolf.Studio.Themes.Luna"
+                               xmlns:attachedProperties="clr-namespace:Dev2.Activities.AttachedProperties"
                                Width="320"
                                MinWidth="320"
-                               MinHeight="260"
-                               Height="260"
+                               MinHeight="280"
+                               Height="280"
                                MaxWidth="Infinity"
-                               MaxHeight="260"
+                               MaxHeight="280"
                                mc:Ignorable="d"
                                d:DesignWidth="230"
                                d:DataContext="{d:DesignInstance local:ScriptDesignerViewModel}">
@@ -42,6 +43,7 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
@@ -81,10 +83,42 @@
                                      Target="{Binding}" />
             </i:Interaction.Behaviors>
         </CheckBox>
+
+        <TextBlock Grid.Column="0" Grid.Row="2" Text="Include File" Margin="{StaticResource ControlBorderTop}"/>
+        <Grid Grid.Column="1" Grid.Row="2" Margin="0,0,0,1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <ui:IntellisenseTextBox Grid.Column="0"
+                                    DefaultText="Script Sources"
+                                    Text="{Binding ModelItem.IncludeFile,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                    Margin="{StaticResource ControlBorderRight}"
+                                    Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
+                                    AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_AttachmentsTxt_AutoID}"
+                                    ToolTip="{x:Static languages:Core.ScriptingToolTipIncludeFile}">
+                <i:Interaction.Behaviors>
+                    <core1:HelpSetter Text="{x:Static languages:Core.ScriptingHelpIncludeFile}" DataContext="{Binding}" />
+                    <errors:ErrorsSetter Source="{Binding}"
+                                         SourcePropertyName="ModelItem.IncludeFile"
+                                         SourcePropertyValue="{Binding ModelItem.ScriptSource, UpdateSourceTrigger=PropertyChanged}"
+                                         Target="{Binding}" />
+                </i:Interaction.Behaviors>
+            </ui:IntellisenseTextBox>
+            <Button Grid.Column="1"
+                    Content="..."
+                    Command="{Binding ChooseScriptSourceCommand}"
+                    ToolTip="Choose Script Source File"
+                    AutomationProperties.AutomationId="{Binding ModelItem.AutomationID}">
+                <i:Interaction.Behaviors>
+                    <core1:HelpSetter Text="{x:Static languages:Core.ScriptingHelpIncludeFile}" DataContext="{Binding}" />
+                </i:Interaction.Behaviors>
+            </Button>
+        </Grid>
         
         <ui:IntellisenseTextBox  Grid.ColumnSpan="2"
                                  Grid.Column="0"
-                                 Grid.Row="2" 
+                                 Grid.Row="3" 
                                  DefaultText="{Binding ScriptTypeDefaultText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                  AllowMultilinePaste="True"
                                  AcceptsReturn="True"
@@ -94,7 +128,7 @@
                                  Height="53"
                                  MinHeight="53"
                                  FilterType="All"
-                                 Margin="0,-2,0,0"
+                                 Margin="0,-1,0,0"
                                  ToolTip="{x:Static languages:Core.ScriptingToolTipScript}"
                                  AllowUserCalculateMode="False"
                                  IsInCalculateMode="True"
@@ -110,13 +144,13 @@
             </i:Interaction.Behaviors>
         </ui:IntellisenseTextBox>
 
-        <TextBlock Grid.Column="0" Grid.Row="3" Margin="{StaticResource ControlBorderTop}" Text="Result" />
+        <TextBlock Grid.Column="0" Grid.Row="4" Margin="{StaticResource ControlBorderTop}" Text="Result" />
         <ui:IntellisenseTextBox Grid.Column="1"
-                                Grid.Row="3"
+                                Grid.Row="4"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 WrapInBrackets="True"
                                 DefaultText="[[Result]]"
-                                Margin="0,1,0,0"
+                                Margin="0,2,0,0"
                                 FilterType="All"
                                 ToolTip="{x:Static languages:Core.ScriptingToolTipResult}"
                                 Text="{Binding Path=ModelItem.Result, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -131,7 +165,7 @@
         </ui:IntellisenseTextBox>
 
         <errors:OnError Grid.Column="0"
-                        Grid.Row="4"
+                        Grid.Row="5"
                         Grid.ColumnSpan="2" />
     </Grid>
 </core:ActivityDesignerTemplate>
