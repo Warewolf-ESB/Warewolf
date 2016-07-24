@@ -676,7 +676,7 @@ namespace Dev2.Network
         {
             if (payload == null || payload.Length == 0)
             {
-                throw new ArgumentNullException("payload");
+                throw new ArgumentNullException(nameof(payload));
             }
 
             Dev2Logger.Debug("Execute Command Payload [ " + payload + " ]");
