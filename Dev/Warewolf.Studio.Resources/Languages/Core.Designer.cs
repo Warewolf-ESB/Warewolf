@@ -6130,6 +6130,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to If you want to Point to an external file with code you want to run several times. Instead of writing the same script over and over again, create it and save it with a relevent extension (.js for JavaScript)..
+        /// </summary>
+        public static string ScriptingHelpIncludeFile {
+            get {
+                return ResourceManager.GetString("ScriptingHelpIncludeFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to What type of scripting language do you want to use?	Allowed:	na.
         /// </summary>
         public static string ScriptingHelpLanguageType {
@@ -6162,6 +6171,15 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string ScriptingToolTipEscapeScript {
             get {
                 return ResourceManager.GetString("ScriptingToolTipEscapeScript", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This allows you to include .js files as external script sources..
+        /// </summary>
+        public static string ScriptingToolTipIncludeFile {
+            get {
+                return ResourceManager.GetString("ScriptingToolTipIncludeFile", resourceCulture);
             }
         }
         
