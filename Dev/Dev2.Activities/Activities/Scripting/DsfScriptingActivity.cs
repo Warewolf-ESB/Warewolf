@@ -24,7 +24,6 @@ using System.Activities;
 using System.Collections.Generic;
 using System.Linq;
 using Dev2.Interfaces;
-using Jurassic;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 using Warewolf.Core;
@@ -62,6 +61,7 @@ namespace Dev2.Activities
 
         #endregion Properties
 
+        IStringScriptSources _sources;
         #region Ctor
 
         public DsfScriptingActivity()
@@ -70,6 +70,7 @@ namespace Dev2.Activities
             Script = string.Empty;
             Result = string.Empty;
             EscapeScript = true;
+            _sources = new StringScriptSources();
         }
 
         #endregion Ctor
@@ -112,16 +113,16 @@ namespace Dev2.Activities
                         return;
                     }
 
-                    var scriptItr = new WarewolfIterator(dataObject.Environment.Eval(Script, update));
+                    var scriptItr = new WarewolfIterator(dataObject.Environment.Eval(Script, update,false, EscapeScript));
                     while (scriptItr.HasMoreData())
                     {
-                        var engine = new ScriptingEngineRepo().CreateEngine(ScriptType);
+                        var engine = new ScriptingEngineRepo().CreateEngine(ScriptType,_sources);
                         var value = engine.Execute(scriptItr.GetNextValue());
 
-                        //2013.06.03: Ashley Lewis for bug 9498 - handle multiple regions in result
                         foreach (var region in DataListCleaningUtils.SplitIntoRegions(Result))
                         {
-                            value = AssignOutPutValue(update, value, env, region);
+                            
+                            env.Assign(region, value, update);
                             if (dataObject.IsDebugMode() && !allErrors.HasErrors())
                             {
                                 if (!string.IsNullOrEmpty(region))
@@ -167,18 +168,11 @@ namespace Dev2.Activities
         }
 
         private void AddScriptSourcePathsToList()
-        {
-            StringScriptSources.FileScriptSources = new List<FileScriptSource>();
+        {            
             if (!string.IsNullOrEmpty(IncludeFile))
-                StringScriptSources.AddPaths(IncludeFile);
+                _sources.AddPaths(IncludeFile);
         }
-
-        private string AssignOutPutValue(int update, string value, IExecutionEnvironment env, string region)
-        {
-            env.Assign(region, value, update);
-            return value;
-        }
-
+        
         public override void UpdateForEachInputs(IList<Tuple<string, string>> updates)
         {
             foreach (Tuple<string, string> t in updates)
