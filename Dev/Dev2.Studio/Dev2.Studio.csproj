@@ -325,8 +325,6 @@
     <Compile Include="CustomControls\Connections\ConnectControl.xaml.cs">
       <DependentUpon>ConnectControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="CustomControls\Connections\ConnectControlViewModel.cs" />
-    <Compile Include="CustomControls\Connections\IConnectControlViewModel.cs" />
     <Compile Include="CustomControls\Dev2StatusBar.cs" />
     <Compile Include="CustomControls\Progress\Dev2WebClient.cs" />
     <Compile Include="CustomControls\Progress\IDev2WebClient.cs" />
