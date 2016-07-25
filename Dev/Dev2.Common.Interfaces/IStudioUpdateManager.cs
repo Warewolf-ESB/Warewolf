@@ -23,6 +23,7 @@ namespace Dev2.Common.Interfaces
         void Save(IRabbitMQServiceSourceDefinition rabbitMqServiceSource);
         void Save(IWcfServerSource wcfSource);
         void Save(IPluginService toDbSource);
+        void Save(IComPluginService toDbSource);
         void Save(IWcfService toSource);
         
         void Save(IOAuthSource sharePointServiceSource);

@@ -53,7 +53,7 @@ namespace Dev2.Common.ExtMethods
         /// </returns>
         public static bool IsAlpha(this string payload)
         {
-            if (String.IsNullOrEmpty(payload))
+            if (string.IsNullOrEmpty(payload))
             {
                 return false;
             }
@@ -86,7 +86,7 @@ namespace Dev2.Common.ExtMethods
         /// </returns>
         public static bool IsWholeNumber(this string payload, out int value)
         {
-            if (Int32.TryParse(payload, out value))
+            if (int.TryParse(payload, out value))
             {
                 if (value >= 0)
                 {
@@ -106,7 +106,7 @@ namespace Dev2.Common.ExtMethods
         /// </returns>
         public static bool IsRealNumber(this string payload, out int value)
         {
-            return Int32.TryParse(payload, out value);
+            return int.TryParse(payload, out value);
         }
 
         /// <summary>
@@ -136,7 +136,7 @@ namespace Dev2.Common.ExtMethods
         /// </returns>
         public static bool IsNumeric(this string payload, out decimal value)
         {
-            if (String.IsNullOrEmpty(payload))
+            if (string.IsNullOrEmpty(payload))
             {
                 value = 0;
                 return false;
@@ -150,14 +150,14 @@ namespace Dev2.Common.ExtMethods
             }
 
             NumberFormatInfo current = CultureInfo.CurrentCulture.NumberFormat;
-            if (evalString.Any(c => !Char.IsDigit(c)
+            if (evalString.Any(c => !char.IsDigit(c)
                                     && c != current.NumberDecimalSeparator[0]))
             {
                 value = 0;
                 return false;
             }
 
-            return Decimal.TryParse(payload, out value);
+            return decimal.TryParse(payload, out value);
         }
 
         /// <summary>
@@ -169,7 +169,7 @@ namespace Dev2.Common.ExtMethods
         /// </returns>
         public static bool IsAlphaNumeric(this string payload)
         {
-            return !String.IsNullOrEmpty(payload) &&
+            return !string.IsNullOrEmpty(payload) &&
                    (IsAlpha(payload) || IsNumeric(payload) || IsAlphaNumericRegex.IsMatch(payload));
         }
 
@@ -182,7 +182,7 @@ namespace Dev2.Common.ExtMethods
         /// </returns>
         public static bool IsEmail(this string payload)
         {
-            if (String.IsNullOrEmpty(payload))
+            if (string.IsNullOrEmpty(payload))
             {
                 return false;
             }

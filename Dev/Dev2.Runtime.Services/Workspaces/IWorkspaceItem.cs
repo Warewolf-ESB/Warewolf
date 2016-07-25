@@ -11,6 +11,7 @@
 using System;
 using System.Runtime.Serialization;
 using System.Xml.Linq;
+using Dev2.Common.Interfaces.Core.DynamicServices;
 
 namespace Dev2.Workspaces
 {
