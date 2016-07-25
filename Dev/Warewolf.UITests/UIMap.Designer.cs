@@ -3102,12 +3102,7 @@ namespace Warewolf.UITests
             // Type 'workflow1' in 'SearchTextBox' text box
             searchTextBox.Text = this.Enter_Workflow1_Into_Explorer_Filter_TextboxParams.SearchTextBoxText;
 
-            // Wait for 2 seconds for user delay between actions; Click '' button
-            Playback.Wait(2000);
-            Mouse.Click(explorerRefreshButton, new Point(10, 10));
-
-            // Wait for 2 seconds for user delay between actions; Click '' button
-            Playback.Wait(2000);
+            // Click '' button
             Mouse.Click(explorerRefreshButton, new Point(10, 10));
         }
         
