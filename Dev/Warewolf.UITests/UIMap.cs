@@ -129,7 +129,7 @@ namespace Warewolf.UITests
             Click_New_Workflow_Ribbon_Button();
         }
 
-        public void CleanupWorkflow()
+        public void CleanupABlankWorkflow()
         {
             try
             {
