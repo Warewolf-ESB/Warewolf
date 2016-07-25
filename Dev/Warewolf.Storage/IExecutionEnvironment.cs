@@ -7,7 +7,7 @@ namespace Warewolf.Storage
 {
     public interface IExecutionEnvironment
     {
-        CommonFunctions.WarewolfEvalResult Eval(string exp, int update, bool throwsifnotexists = false);
+        CommonFunctions.WarewolfEvalResult Eval(string exp, int update, bool throwsifnotexists = false,bool shouldEscape= false);
 
         CommonFunctions.WarewolfEvalResult EvalStrict(string exp, int update);
 
@@ -62,7 +62,7 @@ namespace Warewolf.Storage
 
         void AssignUnique(IEnumerable<string> distinctList, IEnumerable<string> valueList, IEnumerable<string> resList, int update);
 
-        CommonFunctions.WarewolfEvalResult EvalForJson(string exp);
+        CommonFunctions.WarewolfEvalResult EvalForJson(string exp, bool shouldEscape = false);
 
         void AddToJsonObjects(string exp, JContainer jContainer);
 
