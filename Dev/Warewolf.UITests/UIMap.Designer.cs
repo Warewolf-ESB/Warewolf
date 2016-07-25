@@ -92,9 +92,9 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
-        /// Click_Clear_Toolbox_Filter_Button
+        /// Click_Clear_Toolbox_Filter_Clear_Button
         /// </summary>
-        public void Click_Clear_Toolbox_Filter_Button()
+        public void Click_Clear_Toolbox_Filter_Clear_Button()
         {
             #region Variable Declarations
             WpfButton clearFilterButton = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox.ClearFilterButton;

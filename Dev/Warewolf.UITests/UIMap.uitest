@@ -144,7 +144,7 @@
       <ActionType>Click</ActionType>
       <MouseButton>Left</MouseButton>
     </MouseAction>
-    <TestStepMarkerAction Comment="" MarkerInformation="Click_Clear_Toolbox_Filter_Button">
+    <TestStepMarkerAction Comment="" MarkerInformation="Click_Clear_Toolbox_Filter_Clear_Button">
       <ParameterName />
       <StepId>-1</StepId>
       <Direction>Start</Direction>

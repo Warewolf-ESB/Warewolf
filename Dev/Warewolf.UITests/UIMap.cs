@@ -133,9 +133,13 @@ namespace Warewolf.UITests
         {
             try
             {
+                if (MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox.Text != string.Empty)
+                {
+                    Click_Clear_Toolbox_Filter_Clear_Button();
+                }
                 if (MainStudioWindow.DockManager.SplitPaneLeft.Explorer.SearchTextBox.Text != string.Empty)
                 {
-                    Click_Clear_Toolbox_Filter_Button();
+                    Click_Explorer_Filter_Clear_Button();
                 }
                 Click_Close_Workflow_Tab_Button();
                 Click_MessageBox_No();
