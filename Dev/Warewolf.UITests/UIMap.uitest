@@ -109,14 +109,6 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
-    <AssertAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Calculate.SmallView.FunctionTextbox">
-      <ParameterName />
-      <PropertyName>Text</PropertyName>
-      <ExpectedValue>[[SomeVariable]]</ExpectedValue>
-      <MessageOnValidationFailure>Calculate small view function textbox text does not equal SomeVariable.</MessageOnValidationFailure>
-      <Type>String</Type>
-      <PropertyCondition>AreEqual</PropertyCondition>
-    </AssertAction>
     <MouseAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Calculate.DoneButton">
       <ParameterName />
       <ModifierKeys>None</ModifierKeys>
@@ -126,6 +118,14 @@
       <ActionType>Click</ActionType>
       <MouseButton>Left</MouseButton>
     </MouseAction>
+    <AssertAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Calculate.SmallView.Listbox.FunctionTextbox">
+      <ParameterName />
+      <PropertyName>Text</PropertyName>
+      <ExpectedValue>[[SomeVariable]]</ExpectedValue>
+      <MessageOnValidationFailure>Calculate small view function textbox text does not equal SomeVariable.</MessageOnValidationFailure>
+      <Type>String</Type>
+      <PropertyCondition>AreEqual</PropertyCondition>
+    </AssertAction>
     <TestStepMarkerAction Comment="" MarkerInformation="Click_Calculate_Large_View_Done_Button">
       <ParameterName />
       <StepId>-1</StepId>
@@ -4361,12 +4361,12 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
-    <SetValueAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Calculate.LargeView.FunctionTextbox">
+    <SetValueAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Calculate.LargeView.Listbox.FunctionTextbox">
       <ParameterName />
       <Value Encoded="false">[[SomeVariable]]</Value>
       <Type>String</Type>
     </SetValueAction>
-    <AssertAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Calculate.LargeView.FunctionTextbox">
+    <AssertAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Calculate.LargeView.Listbox.FunctionTextbox">
       <ParameterName />
       <PropertyName>Text</PropertyName>
       <ExpectedValue>[[SomeVariable]]</ExpectedValue>
@@ -4609,7 +4609,15 @@
       <Type>String</Type>
       <PropertyCondition>AreEqual</PropertyCondition>
     </AssertAction>
-    <AssertAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Calculate.LargeView.FunctionTextbox">
+    <AssertAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Calculate.LargeView.Listbox">
+      <ParameterName />
+      <PropertyName>Exists</PropertyName>
+      <ExpectedValue>True</ExpectedValue>
+      <MessageOnValidationFailure>Autocomplete listbox does not exisst on Calculate tool large view.</MessageOnValidationFailure>
+      <Type>String</Type>
+      <PropertyCondition>AreEqual</PropertyCondition>
+    </AssertAction>
+    <AssertAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Calculate.LargeView.Listbox.FunctionTextbox">
       <ParameterName />
       <PropertyName>Exists</PropertyName>
       <ExpectedValue>True</ExpectedValue>
@@ -13355,7 +13363,7 @@
                                                                           </AndCondition>
                                                                           <SupportLevel>0</SupportLevel>
                                                                           <Descendants>
-                                                                            <UIObject ControlType="Edit" Id="Listbox" FriendlyName="Listbox" SpecialControlType="None">
+                                                                            <UIObject ControlType="Combobox" Id="Listbox" FriendlyName="Listbox" SpecialControlType="None">
                                                                               <TechnologyName>UIA</TechnologyName>
                                                                               <WindowTitles>
                                                                                 <WindowTitle>Warewolf</WindowTitle>
@@ -13457,7 +13465,7 @@
                                                                           </AndCondition>
                                                                           <SupportLevel>0</SupportLevel>
                                                                           <Descendants>
-                                                                            <UIObject ControlType="Edit" Id="Listbox" FriendlyName="Listbox" SpecialControlType="None">
+                                                                            <UIObject ControlType="Combobox" Id="Listbox" FriendlyName="Listbox" SpecialControlType="None">
                                                                               <TechnologyName>UIA</TechnologyName>
                                                                               <WindowTitles>
                                                                                 <WindowTitle>Warewolf</WindowTitle>
@@ -13842,18 +13850,32 @@
                                                               </AndCondition>
                                                               <SupportLevel>0</SupportLevel>
                                                               <Descendants>
-                                                                <UIObject ControlType="Edit" Id="FunctionTextbox" FriendlyName="UI__fxtxt_AutoID" SpecialControlType="None">
+                                                                <UIObject ControlType="Combobox" Id="Listbox" FriendlyName="Listbox" SpecialControlType="None">
                                                                   <TechnologyName>UIA</TechnologyName>
                                                                   <WindowTitles>
                                                                     <WindowTitle>Warewolf</WindowTitle>
                                                                   </WindowTitles>
                                                                   <AndCondition>
+                                                                    <PropertyCondition Name="ControlType">Combobox</PropertyCondition>
                                                                     <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                                                    <PropertyCondition Name="ControlType">Edit</PropertyCondition>
                                                                     <PropertyCondition Name="AutomationId">UI__fxtxt_AutoID</PropertyCondition>
                                                                   </AndCondition>
                                                                   <SupportLevel>0</SupportLevel>
-                                                                  <Descendants />
+                                                                  <Descendants>
+                                                                    <UIObject ControlType="Edit" Id="FunctionTextbox" FriendlyName="FunctionTextbox" SpecialControlType="None">
+                                                                      <TechnologyName>UIA</TechnologyName>
+                                                                      <WindowTitles>
+                                                                        <WindowTitle>Warewolf</WindowTitle>
+                                                                      </WindowTitles>
+                                                                      <AndCondition>
+                                                                        <PropertyCondition Name="ControlType">Edit</PropertyCondition>
+                                                                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                                        <PropertyCondition Name="AutomationId">Text</PropertyCondition>
+                                                                      </AndCondition>
+                                                                      <SupportLevel>0</SupportLevel>
+                                                                      <Descendants />
+                                                                    </UIObject>
+                                                                  </Descendants>
                                                                 </UIObject>
                                                               </Descendants>
                                                             </UIObject>
@@ -13883,18 +13905,32 @@
                                                               </AndCondition>
                                                               <SupportLevel>0</SupportLevel>
                                                               <Descendants>
-                                                                <UIObject ControlType="Edit" Id="FunctionTextbox" FriendlyName="UI__fxtxt_AutoID" SpecialControlType="None">
+                                                                <UIObject ControlType="Combobox" Id="Listbox" FriendlyName="Listbox" SpecialControlType="None">
                                                                   <TechnologyName>UIA</TechnologyName>
                                                                   <WindowTitles>
                                                                     <WindowTitle>Warewolf</WindowTitle>
                                                                   </WindowTitles>
                                                                   <AndCondition>
                                                                     <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                                                    <PropertyCondition Name="ControlType">Edit</PropertyCondition>
+                                                                    <PropertyCondition Name="ControlType">Combobox</PropertyCondition>
                                                                     <PropertyCondition Name="AutomationId">UI__fxtxt_AutoID</PropertyCondition>
                                                                   </AndCondition>
                                                                   <SupportLevel>0</SupportLevel>
-                                                                  <Descendants />
+                                                                  <Descendants>
+                                                                    <UIObject ControlType="Edit" Id="FunctionTextbox" FriendlyName="FunctionTextbox" SpecialControlType="None">
+                                                                      <TechnologyName>UIA</TechnologyName>
+                                                                      <WindowTitles>
+                                                                        <WindowTitle>Warewolf</WindowTitle>
+                                                                      </WindowTitles>
+                                                                      <AndCondition>
+                                                                        <PropertyCondition Name="ControlType">Edit</PropertyCondition>
+                                                                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                                        <PropertyCondition Name="AutomationId">Text</PropertyCondition>
+                                                                      </AndCondition>
+                                                                      <SupportLevel>0</SupportLevel>
+                                                                      <Descendants />
+                                                                    </UIObject>
+                                                                  </Descendants>
                                                                 </UIObject>
                                                               </Descendants>
                                                             </UIObject>
