@@ -157,6 +157,16 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="AttachedProperties\PasswordBoxAssistant.cs" />
+    <Compile Include="Designers2\ComDLL\ComDllDesigner.xaml.cs">
+      <DependentUpon>ComDllDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\ComDLL\ComDllViewModel.cs" />
+    <Compile Include="Designers2\ComDLL\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\ComDLL\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Designers2\.Net DLL\DotNetDllViewModel.cs" />
     <Compile Include="Designers2\.Net DLL\DotNetDllDesigner.xaml.cs">
       <DependentUpon>DotNetDllDesigner.xaml</DependentUpon>
@@ -224,6 +234,7 @@
     <Compile Include="Designers2\Comment\Large.xaml.cs">
       <DependentUpon>Large.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Designers2\Core\ActionRegion\ComActionRegion.cs" />
     <Compile Include="Designers2\Core\ActionRegion\DbActionRegion.cs" />
     <Compile Include="Designers2\Core\ActionRegion\DbActionRegionODBC.cs" />
     <Compile Include="Designers2\Core\ActionRegion\DotNetActionRegion.cs" />
@@ -249,12 +260,15 @@
     <Compile Include="Designers2\Core\InputRegion\DotNetInputRegion.cs" />
     <Compile Include="Designers2\Core\InputRegion\WcfInputRegion.cs" />
     <Compile Include="Designers2\Core\ManageDatabaseServiceInputViewModel.cs" />
+    <Compile Include="Designers2\Core\ManageComPluginServiceInputViewModel.cs" />
     <Compile Include="Designers2\Core\ManagePluginServiceInputViewModel.cs" />
     <Compile Include="Designers2\Core\ManageWcfServiceInputViewModel.cs" />
     <Compile Include="Designers2\Core\ManageWebServiceInputViewModel.cs" />
+    <Compile Include="Designers2\Core\NamespaceRegion\ComNamespaceRegion.cs" />
     <Compile Include="Designers2\Core\NamespaceRegion\DotNetNamespaceRegion.cs" />
     <Compile Include="Designers2\Core\OutputsRegion.cs" />
     <Compile Include="Designers2\Core\Source\DatabaseSourceRegion.cs" />
+    <Compile Include="Designers2\Core\Source\ComSourceRegion.cs" />
     <Compile Include="Designers2\Core\Source\DotNetSourceRegion.cs" />
     <Compile Include="Designers2\Core\Source\ExchangeSourceRegion.cs" />
     <Compile Include="Designers2\Core\Source\WcfSourceRegion.cs" />
@@ -1153,6 +1167,18 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Designers2\ComDLL\ComDllDesigner.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\ComDLL\Large.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\ComDLL\Small.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Designers2\.Net DLL\DotNetDllDesigner.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
