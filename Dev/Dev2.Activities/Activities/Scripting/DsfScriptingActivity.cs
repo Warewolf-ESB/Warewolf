@@ -24,7 +24,6 @@ using System.Activities;
 using System.Collections.Generic;
 using System.Linq;
 using Dev2.Interfaces;
-using Jurassic;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 using Warewolf.Core;
@@ -62,6 +61,7 @@ namespace Dev2.Activities
 
         #endregion Properties
 
+        IStringScriptSources _sources;
         #region Ctor
 
         public DsfScriptingActivity()
@@ -70,6 +70,7 @@ namespace Dev2.Activities
             Script = string.Empty;
             Result = string.Empty;
             EscapeScript = true;
+            _sources = new StringScriptSources();
         }
 
         #endregion Ctor
@@ -115,7 +116,7 @@ namespace Dev2.Activities
                     var scriptItr = new WarewolfIterator(dataObject.Environment.Eval(Script, update,false, EscapeScript));
                     while (scriptItr.HasMoreData())
                     {
-                        var engine = new ScriptingEngineRepo().CreateEngine(ScriptType);
+                        var engine = new ScriptingEngineRepo().CreateEngine(ScriptType,_sources);
                         var value = engine.Execute(scriptItr.GetNextValue());
 
                         foreach (var region in DataListCleaningUtils.SplitIntoRegions(Result))
@@ -167,10 +168,9 @@ namespace Dev2.Activities
         }
 
         private void AddScriptSourcePathsToList()
-        {
-            StringScriptSources.FileScriptSources = new List<FileScriptSource>();
+        {            
             if (!string.IsNullOrEmpty(IncludeFile))
-                StringScriptSources.AddPaths(IncludeFile);
+                _sources.AddPaths(IncludeFile);
         }
         
         public override void UpdateForEachInputs(IList<Tuple<string, string>> updates)

@@ -17,23 +17,25 @@ namespace Dev2.Development.Languages.Scripting
 {
     public class JavaScriptContext : IScriptingContext
     {
-        private ScriptEngine jsContext;
+        readonly IStringScriptSources _scriptSources;
+        private readonly ScriptEngine _jsContext;
 
-        public JavaScriptContext()
+        public JavaScriptContext(IStringScriptSources sources)
         {
-            jsContext = new ScriptEngine();
+            _jsContext = new ScriptEngine();
+            _scriptSources = sources;
             AddScriptSourcesToContext();
         }
 
         public string Execute(string scriptValue)
         {
-            jsContext.Evaluate("function __result__() {" + scriptValue + "}");
-            return jsContext.CallGlobalFunction("__result__").ToString();
+            _jsContext.Evaluate("function __result__() {" + scriptValue + "}");
+            return _jsContext.CallGlobalFunction("__result__").ToString();
         }
 
         public IList<FileScriptSource> ScriptSources()
         {
-            return StringScriptSources.GetFileScriptSources();
+            return _scriptSources.GetFileScriptSources();
         }
         public enScriptType HandlesType()
         {
@@ -42,9 +44,9 @@ namespace Dev2.Development.Languages.Scripting
 
         public void AddScriptSourcesToContext()
         {
-            if (jsContext == null) return;
+            if (_jsContext == null) return;
             foreach (var scriptSource in ScriptSources())
-                jsContext.Evaluate(scriptSource);
+                _jsContext.Evaluate(scriptSource);
         }
     }
 }
