@@ -1950,7 +1950,7 @@ namespace System.Windows.Controls
 
             AutoCompleteBox box = (AutoCompleteBox)e.Source;
             ListBox innerListBox = (ListBox)box.Template.FindName("Selector", box);
-            innerListBox.ScrollIntoView(innerListBox.SelectedItem);
+            innerListBox?.ScrollIntoView(innerListBox.SelectedItem);
 
             RaiseEvent(e);
         }
@@ -2787,6 +2787,20 @@ namespace System.Windows.Controls
                     OnAdapterSelectionCanceled(this, new RoutedEventArgs());
                     e.Handled = true;
                 }
+
+                // Standard drop down navigation
+                switch (e.Key)
+                {
+                    case Key.F4:
+                        IsDropDownOpen = !IsDropDownOpen;
+                        e.Handled = true;
+                        break;
+
+                    case Key.Enter:
+                        OnAdapterSelectionComplete(this, new RoutedEventArgs());
+                        e.Handled = true;
+                        break;
+                }
             }
             else
             {
@@ -2796,21 +2810,7 @@ namespace System.Windows.Controls
                     IsDropDownOpen = true;
                     e.Handled = true;
                 }
-            }
-
-            // Standard drop down navigation
-            switch(e.Key)
-            {
-                case Key.F4:
-                    IsDropDownOpen = !IsDropDownOpen;
-                    e.Handled = true;
-                    break;
-
-                case Key.Enter:
-                    OnAdapterSelectionComplete(this, new RoutedEventArgs());
-                    e.Handled = true;
-                    break;
-            }
+            }           
         }
 
         /// <summary>
