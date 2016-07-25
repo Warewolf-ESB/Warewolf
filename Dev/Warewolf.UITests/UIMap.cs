@@ -153,14 +153,14 @@ namespace Warewolf.UITests
         public void Click_Settings_Resource_Permissions_Row1_Add_Resource_Button()
         {
             Mouse.Click(FindAddResourceButton(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1));
-            Assert.AreEqual(true, ServicePickerDialog.Exists, "Service picker dialog does not exist.");
+            Assert.IsTrue(ServicePickerDialog.Exists, "Service picker dialog does not exist.");
         }
 
         public void Click_Settings_Resource_Permissions_Row1_Windows_Group_Button()
         {
             Mouse.Click(FindAddWindowsGroupButton(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1));
-            Assert.AreEqual(true, SelectWindowsGroupDialog.Exists, "Select windows group dialog does not exist.");
-            Assert.AreEqual(true, SelectWindowsGroupDialog.ItemPanel.ObjectNameTextbox.Exists, "Select windows group object name textbox does not exist.");
+            Assert.IsTrue(SelectWindowsGroupDialog.Exists, "Select windows group dialog does not exist.");
+            Assert.IsTrue(SelectWindowsGroupDialog.ItemPanel.ObjectNameTextbox.Exists, "Select windows group object name textbox does not exist.");
         }
 
         public UITestControl FindAddResourceButton(UITestControl row)
@@ -324,10 +324,10 @@ namespace Warewolf.UITests
             executeCheckBox.Checked = true;
 
             // Verify that the 'Checked' property of 'UI__ExecutePermissionCheckBox_AutoID' check box equals 'True'
-            Assert.AreEqual(true, executeCheckBox.Checked, "Settings security tab resource permissions row 1 execute checkbox is not checked.");
+            Assert.IsTrue(executeCheckBox.Checked, "Settings security tab resource permissions row 1 execute checkbox is not checked.");
 
             // Verify that the 'Enabled' property of 'Save this tab' button equals 'True'
-            Assert.AreEqual(true, saveButton.Enabled, "Save ribbon button is not enabled");
+            Assert.IsTrue(saveButton.Enabled, "Save ribbon button is not enabled");
         }
 
         /// <summary>
@@ -345,10 +345,10 @@ namespace Warewolf.UITests
             viewCheckBox.Checked = true;
 
             // Verify that the 'Checked' property of 'UI__ViewPermissionCheckBox_AutoID' check box equals 'True'
-            Assert.AreEqual(true, viewCheckBox.Checked, "Settings resource permissions row1 view checkbox is not checked.");
+            Assert.IsTrue(viewCheckBox.Checked, "Settings resource permissions row1 view checkbox is not checked.");
 
             // Verify that the 'Enabled' property of 'Save this tab' button equals 'True'
-            Assert.AreEqual(true, saveButton.Enabled, "Save ribbon button is not enabled");
+            Assert.IsTrue(saveButton.Enabled, "Save ribbon button is not enabled");
         }
 
         /// <summary>
@@ -366,10 +366,10 @@ namespace Warewolf.UITests
             contributeCheckBox.Checked = true;
 
             // Verify that the 'Checked' property of 'UI__ViewPermissionCheckBox_AutoID' check box equals 'True'
-            Assert.AreEqual(true, contributeCheckBox.Checked, "Settings resource permissions row1 view checkbox is not checked.");
+            Assert.IsTrue(contributeCheckBox.Checked, "Settings resource permissions row1 view checkbox is not checked.");
 
             // Verify that the 'Enabled' property of 'Save this tab' button equals 'True'
-            Assert.AreEqual(true, saveButton.Enabled, "Save ribbon button is not enabled");
+            Assert.IsTrue(saveButton.Enabled, "Save ribbon button is not enabled");
         }
 
         public void TryCloseAllTabs()
@@ -493,7 +493,7 @@ namespace Warewolf.UITests
             #endregion
 
             serviceNameTextBox.Text = ServiceName;
-            Assert.AreEqual(true, saveButton.Enabled, "Save dialog save button is not enabled. Check workflow name is valid and that another workflow by that name does not already exist.");
+            Assert.IsTrue(saveButton.Enabled, "Save dialog save button is not enabled. Check workflow name is valid and that another workflow by that name does not already exist.");
         }
 
         public void Enter_Text_Into_Explorer_Filter(string FilterText)
@@ -515,7 +515,7 @@ namespace Warewolf.UITests
             #endregion
             
             objectNameTextbox.Text = GroupName;
-            Assert.AreEqual(true, ok.Enabled, "Windows group dialog OK button is not enabled.");
+            Assert.IsTrue(ok.Enabled, "Windows group dialog OK button is not enabled.");
         }
 
         /// <summary>
@@ -531,7 +531,7 @@ namespace Warewolf.UITests
             
             filterTextbox.Text = ServiceName;
             Mouse.Click(subTreeItem1, new Point(91, 9));
-            Assert.AreEqual(true, ok.Enabled, "Service picker dialog OK button is not enabled.");
+            Assert.IsTrue(ok.Enabled, "Service picker dialog OK button is not enabled.");
         }
     }
 }
