@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Activities.Presentation.Model;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -13,41 +13,38 @@ using Dev2.Common.Interfaces.ToolBase.DotNet;
 using Dev2.Studio.Core.Activities.Utils;
 using Warewolf.Core;
 
-// ReSharper disable ExplicitCallerInfoArgument
-// ReSharper disable FieldCanBeMadeReadOnly.Local
-
 namespace Dev2.Activities.Designers2.Core.ActionRegion
 {
-    public class DotNetActionRegion : IActionToolRegion<IPluginAction>
+    public class ComActionRegion : IActionToolRegion<IPluginAction>
     {
         private readonly ModelItem _modelItem;
-        private readonly ISourceToolRegion<IPluginSource> _source;
+        private readonly ISourceToolRegion<IComPluginSource> _source;
         private readonly INamespaceToolRegion<INamespaceItem> _namespace;
-        private bool _isEnabled;
 
         readonly Dictionary<string, IList<IToolRegion>> _previousRegions = new Dictionary<string, IList<IToolRegion>>();
         private Action _sourceChangedAction;
         private IPluginAction _selectedAction;
-        private IPluginServiceModel _model;
+        private IComPluginServiceModel _model;
         private ICollection<IPluginAction> _actions;
         private bool _isActionEnabled;
         private bool _isRefreshing;
         private double _labelWidth;
         private IList<string> _errors;
+        private bool _isEnabled;
 
-        public DotNetActionRegion()
+        public ComActionRegion()
         {
-            ToolRegionName = "DotNetActionRegion";
+            ToolRegionName = "ComActionRegion";
         }
 
-        public DotNetActionRegion(IPluginServiceModel model, ModelItem modelItem, ISourceToolRegion<IPluginSource> source, INamespaceToolRegion<INamespaceItem> namespaceItem)
+        public ComActionRegion(IComPluginServiceModel model, ModelItem modelItem, ISourceToolRegion<IComPluginSource> source, INamespaceToolRegion<INamespaceItem> namespaceItem)
         {
             try
             {
                 Errors = new List<string>();
 
                 LabelWidth = 70;
-                ToolRegionName = "DotNetActionRegion";
+                ToolRegionName = "ComActionRegion";
                 _modelItem = modelItem;
                 _model = model;
                 _source = source;
@@ -55,13 +52,15 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
                 _namespace.SomethingChanged += SourceOnSomethingChanged;
                 Dependants = new List<IToolRegion>();
                 IsRefreshing = false;
-                if (_source.SelectedSource != null && _namespace.SelectedNamespace != null)
+                //
+            /*    if (_source.SelectedSource != null && _namespace.SelectedNamespace != null)
                 {
                     Actions = model.GetActions(_source.SelectedSource, _namespace.SelectedNamespace);
-                }
+                }*/
+                Actions = model.GetActions(_source.SelectedSource, _namespace.SelectedNamespace);
+                IsActionEnabled = true;
                 if (Method != null && Actions != null)
                 {
-                    IsActionEnabled = true;
                     SelectedAction = Actions.FirstOrDefault(action => action.Method == Method.Method);
                 }
                 RefreshActionsCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(() =>
@@ -91,7 +90,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
             }
             set
             {
-                _modelItem.SetProperty("Method",value);
+                _modelItem.SetProperty("Method", value);
             }
         }
 
@@ -120,7 +119,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
                 // ReSharper disable once ExplicitCallerInfoArgument
                 OnPropertyChanged(@"IsEnabled");
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 IsRefreshing = false;
                 Errors.Add(e.Message);
@@ -139,7 +138,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
 
         private void UpdateBasedOnNamespace()
         {
-            if(_source?.SelectedSource != null && _namespace?.SelectedNamespace != null)
+            if (_source?.SelectedSource != null)
             {
                 Actions = _model.GetActions(_source.SelectedSource, _namespace.SelectedNamespace);
                 SelectedAction = null;
@@ -150,8 +149,8 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
 
         public bool CanRefresh()
         {
-            IsActionEnabled = _source.SelectedSource != null && _namespace.SelectedNamespace != null;
-            return _source.SelectedSource != null && _namespace.SelectedNamespace != null;
+            IsActionEnabled = _source.SelectedSource != null ;
+            return _source.SelectedSource != null ;
         }
 
         public IPluginAction SelectedAction
@@ -167,7 +166,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
                     if (!string.IsNullOrEmpty(_selectedAction.Method))
                         StorePreviousValues(_selectedAction.GetIdentifier());
                 }
-                if(Dependants != null)
+                if (Dependants != null)
                 {
                     var outputs = Dependants.FirstOrDefault(a => a is IOutputsToolRegion);
                     var region = outputs as OutputsRegion;
@@ -274,12 +273,12 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
 
         public IToolRegion CloneRegion()
         {
-            return new DotNetActionRegion
+            return new ComActionRegion()
             {
                 IsEnabled = IsEnabled,
                 SelectedAction = SelectedAction == null ? null : new PluginAction
                 {
-                    Inputs = SelectedAction?.Inputs.Select(a => new ServiceInput(a.Name, a.Value) as IServiceInput).ToList(), 
+                    Inputs = SelectedAction?.Inputs.Select(a => new ServiceInput(a.Name, a.Value) as IServiceInput).ToList(),
                     FullName = SelectedAction.FullName,
                     Method = SelectedAction.Method
                 }
@@ -288,7 +287,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
 
         public void RestoreRegion(IToolRegion toRestore)
         {
-            var region = toRestore as DotNetActionRegion;
+            var region = toRestore as ComActionRegion;
             if (region != null)
             {
                 SelectedAction = region.SelectedAction;
@@ -319,7 +318,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
 
             OnPropertyChanged("SelectedAction");
         }
-      
+
 
         private void StorePreviousValues(string actionName)
         {
