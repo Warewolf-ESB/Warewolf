@@ -15,7 +15,6 @@ namespace Dev2.Common.Interfaces.Utils
 {
     public interface ICryptoProvider
     {
-        byte[] ComputeHash(Stream inputStream);
     }
 
     public class CryptoProvider : ICryptoProvider
