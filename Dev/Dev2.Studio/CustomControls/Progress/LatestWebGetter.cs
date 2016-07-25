@@ -9,9 +9,7 @@
 */
 
 using System;
-using System.IO;
 using System.Net;
-using Dev2.Common;
 using Dev2.Helpers;
 
 // ReSharper disable CheckNamespace
@@ -40,34 +38,6 @@ namespace Dev2.Studio.Core.Helpers
         #region Implementation of IGetLatest
 
         public event EventHandler Invoked;
-
-        public void GetLatest(string uri, string filePath)
-        {
-            using(var client = _webClient)
-            {
-                try
-                {
-
-                    // ensure dir structure is present ;)
-                    var rootPath = Path.GetDirectoryName(filePath);
-
-                    if(rootPath != null && !Directory.Exists(rootPath))
-                    {
-                        Directory.CreateDirectory(rootPath);
-                    }
-
-                    // DO NOT use DownloadFile as this will nuke the file even if there is an error
-                    var source = client.DownloadString(uri);
-                    File.WriteAllText(filePath, source);
-
-                }
-                catch(Exception ex)
-                {
-                    Dev2Logger.Info(string.Format("Get lastest version of '{0}' failed: {1}", uri, ex.Message));
-                }
-            }
-            RaiseInvoked();
-        }
 
         #endregion
 

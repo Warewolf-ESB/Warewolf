@@ -70,6 +70,7 @@ namespace Dev2.Activities
             Script = string.Empty;
             Result = string.Empty;
             EscapeScript = true;
+            IncludeFile = "";
             _sources = new StringScriptSources();
         }
 

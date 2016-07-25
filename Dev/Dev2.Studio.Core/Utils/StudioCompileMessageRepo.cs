@@ -8,6 +8,7 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using System.Diagnostics.CodeAnalysis;
 using Dev2.Common;
 using Dev2.Controller;
 using Dev2.Data.ServiceModel.Messages;
@@ -18,10 +19,12 @@ namespace Dev2.Studio.Core.Utils
 {
     public interface IStudioCompileMessageRepo
     {
+        [SuppressMessage("ReSharper", "UnusedMember.Global")]
         CompileMessageList GetCompileMessagesFromServer(IContextualResourceModel resourceModel);
     }
     public interface IStudioCompileMessageRepoFactory
     {
+        [SuppressMessage("ReSharper", "UnusedMember.Global")]
         IStudioCompileMessageRepo Create();
     }
 

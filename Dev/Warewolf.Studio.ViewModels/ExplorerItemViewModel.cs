@@ -175,7 +175,11 @@ namespace Warewolf.Studio.ViewModels
         {
             RollbackCommand = new DelegateCommand(() =>
                     {
-                        _explorerItemViewModelCommandController.RollbackCommand(_explorerRepository, Parent, ResourceId,VersionNumber);
+                        var result = _popupController.ShowRollbackVersionMessage(VersionNumber);
+                        if (result == MessageBoxResult.Yes)
+                        {
+                            _explorerItemViewModelCommandController.RollbackCommand(_explorerRepository, Parent, ResourceId, VersionNumber);
+                        }
                     });
             DeployCommand = new DelegateCommand<IExplorerItemViewModel>(a => ShellViewModel.AddDeploySurface(AsList().Union(new[] {this})));
             LostFocus = new DelegateCommand(LostFocusCommand);

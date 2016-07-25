@@ -57,5 +57,7 @@ namespace Dev2.Common.Interfaces.Studio.Controller
         IPopupMessage GetDuplicateMessage(string name);
 
         MessageBoxResult ShowNoInputsSelectedWhenClickLink();
+
+        MessageBoxResult ShowRollbackVersionMessage(string displayName);
     }
 }

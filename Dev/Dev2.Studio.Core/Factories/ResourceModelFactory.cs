@@ -29,11 +29,6 @@ namespace Dev2.Studio.Core.Factories
             };
         }
 
-        public static IContextualResourceModel CreateResourceModel(IEnvironmentModel environment, string resourceType)
-        {
-            return CreateResourceModel(environment, resourceType, resourceType);
-        }
-
         public static IContextualResourceModel CreateResourceModel(IEnvironmentModel environment, string resourceType, string displayName)
         {
             return CreateResourceModel(environment, resourceType, "", displayName);
