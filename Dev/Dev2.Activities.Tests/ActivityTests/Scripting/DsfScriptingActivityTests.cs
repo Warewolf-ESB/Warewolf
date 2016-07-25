@@ -111,8 +111,8 @@ namespace Dev2.Tests.Activities.ActivityTests.Scripting
         [TestMethod]
         public void GivenAnEscapeCharInString_ExecuteWithEscapeCharecters_Javascript_ShouldReturnGivenString()
         {
-            SetupArguments("<DataList><Result>\"C:\test\"</Result></DataList>", "<DataList><Result/></DataList>", "[[Result]]",
-                            "return \"C:\\test\\name\"", enScriptType.JavaScript, true);
+            SetupArguments("<DataList><testScript>\"C:\test\"</testScript><Result></Result></DataList>", "<DataList><testScript/><Result/></DataList>", "[[Result]]",
+                            "return [[testScript]]", enScriptType.JavaScript, true);
 
             IDSFDataObject result = ExecuteProcess();
 
@@ -120,11 +120,9 @@ namespace Dev2.Tests.Activities.ActivityTests.Scripting
             string actual;
             GetScalarValueFromEnvironment(result.Environment, "Result", out actual, out error);
 
-            // remove test datalist ;)
-
             if (string.IsNullOrEmpty(error))
             {
-                Assert.AreEqual(@"C:\test\name", actual, "Valid Javascript executed incorrectly");
+                Assert.AreEqual("C:\test", actual, "Valid Javascript executed incorrectly");
             }
             else
             {
@@ -133,18 +131,16 @@ namespace Dev2.Tests.Activities.ActivityTests.Scripting
         }
 
         [TestMethod]
-        public void GivenEscapeIsFalse_ExecuteWithEscapeCharecters_Javascript_ShouldReturnGivenString()
+        public void GivenAnEscapeCharInString_ExecuteWithEscapeCharectersInVariable_Javascript_EscapeFalse_ShouldReturnGivenString()
         {
-            SetupArguments("<DataList><Result>\"C:\test\"</Result></DataList>", "<DataList><Result/></DataList>", "[[Result]]",
-                            "return \"C:\\test\"", enScriptType.JavaScript);
+            SetupArguments("<DataList><testScript>\"C:\test\"</testScript><Result></Result></DataList>", "<DataList><testScript/><Result/></DataList>", "[[Result]]",
+                            "return [[testScript]]", enScriptType.JavaScript, false);
 
             IDSFDataObject result = ExecuteProcess();
 
             string error;
             string actual;
             GetScalarValueFromEnvironment(result.Environment, "Result", out actual, out error);
-
-            // remove test datalist ;)
 
             if (string.IsNullOrEmpty(error))
             {
@@ -311,7 +307,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Scripting
         public void ExecuteWithEscapeCharecters_RubyExpectedCorrectResultReturned()
         {
             SetupArguments("<DataList><Result>\"C:\test\"</Result></DataList>", "<DataList><Result/></DataList>", "[[Result]]",
-                            "return \"C:\\test\"", enScriptType.Ruby, true);
+                            "return [[Result]]", enScriptType.Ruby, true);
 
             IDSFDataObject result = ExecuteProcess();
 
@@ -323,7 +319,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Scripting
 
             if (string.IsNullOrEmpty(error))
             {
-                Assert.AreEqual(@"C:\test", actual, "Valid Ruby executed incorrectly");
+                Assert.AreEqual("C:\test", actual, "Valid Ruby executed incorrectly");
             }
             else
             {

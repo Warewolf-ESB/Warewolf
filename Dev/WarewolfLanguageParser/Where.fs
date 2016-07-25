@@ -32,7 +32,7 @@ and evalRecordsSetExpressionWhere (recset : RecordSetColumnIdentifier) (env : Wa
         let positions = env.RecordSets.[recset.Name].Data.[PositionColumn]
         match recset.Index with
         | IndexExpression a -> 
-            let data = EvaluationFunctions.eval env update (languageExpressionToString a) |> evalResultToString
+            let data = EvaluationFunctions.eval env update false (languageExpressionToString a) |> evalResultToString
             evalWhere env (sprintf "[[%s(%s).%s]]" recset.Name data recset.Column) update func
         | Star -> 
             let pos = env.RecordSets.[recset.Name].Data.[recset.Column].Where(System.Func<WarewolfAtom, bool>(func))

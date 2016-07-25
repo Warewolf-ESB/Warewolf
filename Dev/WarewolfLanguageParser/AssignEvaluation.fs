@@ -181,7 +181,7 @@ and languageExpressionToJsonIdentifier (a : LanguageExpression) : JsonIdentifier
 and evalJsonAssign (value : IAssignValue) (update : int) (env : WarewolfEnvironment) = 
     let left = parseLanguageExpression value.Name update
     let jsonId = languageExpressionToJsonIdentifier left
-    let right = evalJson env update (parseLanguageExpression value.Value update)
+    let right = evalJson env update false (parseLanguageExpression value.Value update)
     assignGivenAValue env right jsonId
 
 and evalAssign (exp : string) (value : string) (update : int) (env : WarewolfEnvironment) = 
@@ -205,7 +205,7 @@ and evalMultiAssignOp (env : WarewolfEnvironment) (update : int) (value : IAssig
         else EvaluationFunctions.parseLanguageExpression value.Value update    
     let right = 
         if value.Value = null then WarewolfAtomResult Nothing
-        else eval env update value.Value    
+        else eval env update false value.Value    
     let shouldUseLast = 
         match rightParse with
         | RecordSetExpression a -> 

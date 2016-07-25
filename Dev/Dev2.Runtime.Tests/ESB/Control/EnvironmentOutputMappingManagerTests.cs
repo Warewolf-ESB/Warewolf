@@ -88,7 +88,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
             //---------------Set up test pack-------------------
             //EvalAssignRecordSets(IExecutionEnvironment innerEnvironment, IExecutionEnvironment environment, int update, IRecordSetCollection outputRecSets, IList<IDev2Definition> outputs)
             var innerEnvironment = new Mock<IExecutionEnvironment>();
-            innerEnvironment.Setup(executionEnvironment => executionEnvironment.Eval(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<bool>()))
+            innerEnvironment.Setup(executionEnvironment => executionEnvironment.Eval(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<bool>(),false))
                 .Returns(CommonFunctions.WarewolfEvalResult.NewWarewolfAtomListresult(new WarewolfAtomList<DataStorage.WarewolfAtom>(DataStorage.WarewolfAtom.NewDataString("Value"))))
                 .Verifiable();
             var environment = new Mock<IExecutionEnvironment>();
@@ -130,7 +130,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
             //---------------Set up test pack-------------------
             //EvalAssignScalars(IExecutionEnvironment innerEnvironment, IExecutionEnvironment environment, int update, IEnumerable<IDev2Definition> outputScalarList)
             var innerEnvironment = new Mock<IExecutionEnvironment>();
-            innerEnvironment.Setup(executionEnvironment => executionEnvironment.Eval(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<bool>()))
+            innerEnvironment.Setup(executionEnvironment => executionEnvironment.Eval(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<bool>(), false))
                 .Returns(CommonFunctions.WarewolfEvalResult.NewWarewolfAtomResult(DataStorage.WarewolfAtom.NewDataString("")))
                 .Verifiable();
             var environment = new Mock<IExecutionEnvironment>();
@@ -152,7 +152,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
                 //---------------Test Result -----------------------
                 methodInfo.Invoke(null, new object[] { innerEnvironment.Object, environment.Object, 1, scalars });
                 environment.Verify(executionEnvironment => executionEnvironment.Assign(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>()), Times.Exactly(3));
-                innerEnvironment.Verify(executionEnvironment => executionEnvironment.Eval(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<bool>()));
+                innerEnvironment.Verify(executionEnvironment => executionEnvironment.Eval(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<bool>(), false));
             }
             catch (Exception ex)
             {

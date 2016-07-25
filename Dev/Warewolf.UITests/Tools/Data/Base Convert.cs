@@ -37,7 +37,7 @@ namespace Warewolf.UITests.Tools.Data
         {
             try
             {
-                Uimap.CleanupWorkflow();
+                Uimap.CleanupABlankWorkflow();
             }
             catch(Exception e)
             {

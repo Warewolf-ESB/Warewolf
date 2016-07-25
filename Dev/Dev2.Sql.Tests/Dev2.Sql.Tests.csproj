@@ -80,7 +80,6 @@
     </Compile>
     <Compile Include="ExtensiosnTests.cs" />
     <Compile Include="SqlServerTests.cs" />
-    <Compile Include="Resources.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Dev2.Common.Interfaces\Dev2.Common.Interfaces.csproj">

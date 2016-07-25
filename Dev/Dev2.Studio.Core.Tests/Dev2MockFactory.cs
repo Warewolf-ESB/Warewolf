@@ -142,17 +142,6 @@ namespace Dev2.Core.Tests
             return mockResourceModel;
         }
 
-        static public Mock<IResourceRepository> SetupFrameworkRepositoryResourceModelMock(Mock<IContextualResourceModel> returnResource, List<IResourceModel> returnResources, List<IResourceModel> resourceRepositoryFakeBacker)
-        {
-            var mockResourceModel = new Mock<IResourceRepository>();
-            mockResourceModel.Setup(r => r.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false, false)).Returns(returnResource.Object);
-            mockResourceModel.Setup(r => r.Save(It.IsAny<IResourceModel>())).Callback<IResourceModel>(resourceRepositoryFakeBacker.Add);
-            mockResourceModel.Setup(r => r.ReloadResource(It.IsAny<Guid>(), It.IsAny<ResourceType>(), It.IsAny<IEqualityComparer<IResourceModel>>(), true)).Returns(new List<IResourceModel> { returnResource.Object });
-            mockResourceModel.Setup(r => r.All()).Returns(returnResources);
-
-            return mockResourceModel;
-        }
-
         static public Mock<IContextualResourceModel> SetupResourceModelMock()
         {
             var mockResourceModel = new Mock<IContextualResourceModel>();

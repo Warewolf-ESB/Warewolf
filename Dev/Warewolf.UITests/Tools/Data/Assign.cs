@@ -10,6 +10,8 @@ namespace Warewolf.UITests.Tools.Data
     [CodedUITest]
     public class Assign
     {
+        const string WorkflowName = "SomeWorkflow";
+
         [TestMethod]
         public void AssignToolUITest()
         {
@@ -21,9 +23,9 @@ namespace Warewolf.UITests.Tools.Data
             Uimap.Open_Assign_Tool_Qvi_Large_View();
             Uimap.Click_Save_Ribbon_Button_to_Open_Save_Dialog();
             Uimap.WaitForSpinner(Uimap.SaveDialogWindow.ExplorerView.ExplorerTree.localhost.Checkbox.Spinner);
-            Uimap.Enter_Servicename_As_SomeWorkflow();
+            Uimap.Enter_Service_Name_Into_Save_Dialog(WorkflowName);
             Uimap.Click_SaveDialog_YesButton();
-            Uimap.Enter_SomeWorkflow_Into_Explorer_Filter();
+            Uimap.Enter_Text_Into_Explorer_Filter(WorkflowName);
             Uimap.WaitForSpinner(Uimap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);
 
             /**TODO: Re-introduce these units before WOLF-1923 can be moved to done.
@@ -34,10 +36,7 @@ namespace Warewolf.UITests.Tools.Data
         }
 
         #region Additional test attributes
-
-        // You can use the following additional attributes as you write your tests:
-
-        //Use TestInitialize to run code before running each test 
+        
         [TestInitialize]
         public void MyTestInitialize()
         {
@@ -45,13 +44,12 @@ namespace Warewolf.UITests.Tools.Data
             Uimap.WaitIfStudioDoesNotExist();
             Console.WriteLine("Test \"" + TestContext.TestName + "\" starting on " + System.Environment.MachineName);
         }
-
-        //Use TestCleanup to run code after each test has run
+        
         [TestCleanup]
         public void MyTestCleanup()
         {
             Uimap.TryCloseHangingSaveDialog();
-            Uimap.TryRemoveSomeWorkflowFromExplorer();
+            Uimap.TryRemoveFromExplorer(WorkflowName);
         }
         
         public TestContext TestContext
