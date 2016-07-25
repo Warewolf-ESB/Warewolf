@@ -119,7 +119,7 @@ namespace WarewolfParsingTest
 
             var env = CreateTestEnvWithData();
 
-            var ast = PublicFunctions.EvalEnvExpression("[[rec(1).a]]", 0, env);
+            var ast = PublicFunctions.EvalEnvExpression("[[rec(1).a]]", 0, false, env);
             Assert.IsTrue(ast.IsWarewolfAtomListresult);
             var x = ast as CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult;
             // ReSharper disable PossibleNullReferenceException
@@ -139,7 +139,7 @@ namespace WarewolfParsingTest
 
             var env = CreateTestEnvWithData();
 
-            var ast = PublicFunctions.EvalEnvExpression("[[rec().a]]", 0, env);
+            var ast = PublicFunctions.EvalEnvExpression("[[rec().a]]", 0, false, env);
             Assert.IsTrue(ast.IsWarewolfAtomListresult);
             var x = ast as CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult;
             // ReSharper disable PossibleNullReferenceException
@@ -179,7 +179,7 @@ namespace WarewolfParsingTest
 
             var env = WarewolfTestData.CreateTestEnvWithData;
 
-            var ast = PublicFunctions.EvalEnvExpression("[[a]]", 0, env);
+            var ast = PublicFunctions.EvalEnvExpression("[[a]]", 0, false, env);
             Assert.IsTrue(ast.IsWarewolfAtomResult);
             var x = ast as CommonFunctions.WarewolfEvalResult.WarewolfAtomResult;
             // ReSharper disable PossibleNullReferenceException
@@ -198,7 +198,7 @@ namespace WarewolfParsingTest
 
             var env = CreateTestEnvWithData();
 
-            var ast = PublicFunctions.EvalEnvExpression("[[b]]", 0, env);
+            var ast = PublicFunctions.EvalEnvExpression("[[b]]", 0, false, env);
             Assert.IsTrue(ast.IsWarewolfAtomResult);
             var x = ast as CommonFunctions.WarewolfEvalResult.WarewolfAtomResult;
             Assert.IsTrue(x != null && x.Item.IsInt);
@@ -217,7 +217,7 @@ namespace WarewolfParsingTest
 
             var env = CreateTestEnvWithData();
 
-            var ast = PublicFunctions.EvalEnvExpression("[[[[c]]]]", 0, env);
+            var ast = PublicFunctions.EvalEnvExpression("[[[[c]]]]", 0, false, env);
             Assert.IsTrue(ast.IsWarewolfAtomListresult);
             var x = ast as CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult;
             // ReSharper disable PossibleNullReferenceException
@@ -237,7 +237,7 @@ namespace WarewolfParsingTest
 
             var env = CreateTestEnvWithData();
 
-            var ast = PublicFunctions.EvalEnvExpression("[[rec([[d]]).a]]", 0, env);
+            var ast = PublicFunctions.EvalEnvExpression("[[rec([[d]]).a]]", 0, false, env);
             Assert.IsTrue(ast.IsWarewolfAtomListresult);
             var x = (ast as CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult).Item.First();
 
@@ -258,7 +258,7 @@ namespace WarewolfParsingTest
 
             var env = CreateTestEnvWithData();
 
-            PublicFunctions.EvalEnvExpression("[[xyz]]", 0, env);
+            PublicFunctions.EvalEnvExpression("[[xyz]]", 0, false, env);
 
 
         }
@@ -272,7 +272,7 @@ namespace WarewolfParsingTest
 
             var env = WarewolfTestData.CreateTestEnvWithData;
 
-            PublicFunctions.EvalEnvExpression("[[rec(4).a]]", 0, env);
+            PublicFunctions.EvalEnvExpression("[[rec(4).a]]", 0, false, env);
 
 
 
@@ -943,7 +943,7 @@ namespace WarewolfParsingTest
              };
             var testEnv = WarewolfTestData.CreateTestEnvEmpty("");
             var testEnv3 = PublicFunctions.EvalMultiAssign(assigns, 0, testEnv);
-            PublicFunctions.EvalEnvExpression("[[rec()]]", 0, testEnv3);
+            PublicFunctions.EvalEnvExpression("[[rec()]]", 0, false, testEnv3);
 
         }
 
@@ -962,7 +962,7 @@ namespace WarewolfParsingTest
              };
             var testEnv = WarewolfTestData.CreateTestEnvEmpty("");
             var testEnv3 = PublicFunctions.EvalMultiAssign(assigns, 0, testEnv);
-            var res = PublicFunctions.EvalEnvExpression("[[rec()]]", 0, testEnv3);
+            var res = PublicFunctions.EvalEnvExpression("[[rec()]]", 0, false, testEnv3);
             Assert.IsTrue(res.IsWarewolfRecordSetResult);
             var x = (res as CommonFunctions.WarewolfEvalResult.WarewolfRecordSetResult).Item;
             Assert.AreEqual("29", x.Data[DataStorage.PositionColumn][0].ToString());
@@ -984,7 +984,7 @@ namespace WarewolfParsingTest
              };
             var testEnv = WarewolfTestData.CreateTestEnvEmpty("");
             var testEnv3 = PublicFunctions.EvalMultiAssign(assigns, 0, testEnv);
-            var res = PublicFunctions.EvalEnvExpression("[[rec(27)]]", 0, testEnv3);
+            var res = PublicFunctions.EvalEnvExpression("[[rec(27)]]", 0, false, testEnv3);
             Assert.IsTrue(res.IsWarewolfRecordSetResult);
             var x = (res as CommonFunctions.WarewolfEvalResult.WarewolfRecordSetResult).Item;
             Assert.AreEqual("27", x.Data[DataStorage.PositionColumn][0].ToString());
@@ -1676,7 +1676,7 @@ namespace WarewolfParsingTest
             var testEnv2 = PublicFunctions.EvalMultiAssign(assigns, 0, testEnv);
 
 
-            var items = PublicFunctions.EvalEnvExpression("[[rec(*).a]]", 0, testEnv2);
+            var items = PublicFunctions.EvalEnvExpression("[[rec(*).a]]", 0, false, testEnv2);
             if (items.IsWarewolfAtomListresult)
             {
                 var lst = (items as CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult).Item;
@@ -1710,7 +1710,7 @@ namespace WarewolfParsingTest
             var testEnv2 = PublicFunctions.EvalMultiAssign(assigns, 0, testEnv);
 
             var env3 = PublicFunctions.EvalDelete("[[rec(1)]]", 0, testEnv2);
-            var items = PublicFunctions.EvalEnvExpression("[[rec(*).a]]", 0, env3);
+            var items = PublicFunctions.EvalEnvExpression("[[rec(*).a]]", 0, false, env3);
             if (items.IsWarewolfAtomListresult)
             {
                 var lst = (items as CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult).Item;
@@ -1838,7 +1838,7 @@ namespace WarewolfParsingTest
             var env3 = PublicFunctions.EvalAssignFromList("[[a]]", new List<DataStorage.WarewolfAtom>() { DataStorage.WarewolfAtom.NewDataString("a"), DataStorage.WarewolfAtom.NewDataString("b") }, testEnv, 0, true);
 
        
-            var items = PublicFunctions.EvalEnvExpression("[[a]]", 0, env3);
+            var items = PublicFunctions.EvalEnvExpression("[[a]]", 0, false, env3);
             if (items.IsWarewolfAtomListresult)
             {
                 var lst = (items as CommonFunctions.WarewolfEvalResult.WarewolfAtomResult).Item;

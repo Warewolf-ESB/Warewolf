@@ -10,75 +10,54 @@
 
 using System;
 using Dev2.Common.Interfaces.Core.Graph;
+using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin;
 
 namespace Dev2.Runtime.ServiceModel.Esb.Brokers
 {
-    public interface IPluginBroker
-    {
-        NamespaceList GetNamespaces(PluginSource pluginSource);
-        ServiceMethodList GetMethods(string assemblyLocation, string assemblyName, string fullName);
-        IOutputDescription TestPlugin(PluginService pluginService);
-    }
-
     /// <summary>
     /// Handle interaction with plugins ;)
     /// </summary>
-    public class PluginBroker : IPluginBroker
+    public class PluginBroker : IPluginBroker<PluginSource, PluginService>
     {
-        /// <summary>
-        /// Gets the namespaces.
-        /// </summary>
-        /// <param name="pluginSource">The plugin source.</param>
-        /// <returns></returns>
+        #region Implementation of IPluginBroker<in PluginSource>
+
         public NamespaceList GetNamespaces(PluginSource pluginSource)
         {
             try
             {
                 return PluginServiceExecutionFactory.GetNamespaces(pluginSource);
             }
-                // ReSharper disable once RedundantCatchClause
+            // ReSharper disable once RedundantCatchClause
             catch (BadImageFormatException)
             {
                 throw;
             }
         }
 
-        /// <summary>
-        /// Gets the methods.
-        /// </summary>
-        /// <param name="assemblyLocation">The assembly location.</param>
-        /// <param name="assemblyName">Name of the assembly.</param>
-        /// <param name="fullName">The full name.</param>
-        /// <returns></returns>
         public ServiceMethodList GetMethods(string assemblyLocation, string assemblyName, string fullName)
         {
             return PluginServiceExecutionFactory.GetMethods(assemblyLocation, assemblyName, fullName);
         }
 
-
-
-        /// <summary>
-        /// Tests the plugin.
-        /// </summary>
-        /// <param name="pluginService">The plugin service.</param>
-        /// <returns></returns>
         public IOutputDescription TestPlugin(PluginService pluginService)
         {
             PluginInvokeArgs args = new PluginInvokeArgs
-                                    {
-                                        AssemblyLocation = ((PluginSource)pluginService.Source).AssemblyLocation,
-                                        AssemblyName = ((PluginSource)pluginService.Source).AssemblyName,
-                                        Method = pluginService.Method.Name,
-                                        Fullname = pluginService.Namespace,
-                                        Parameters = pluginService.Method.Parameters
-                                    };
+            {
+                AssemblyLocation = ((PluginSource)pluginService.Source).AssemblyLocation,
+                AssemblyName = ((PluginSource)pluginService.Source).AssemblyName,
+                Method = pluginService.Method.Name,
+                Fullname = pluginService.Namespace,
+                Parameters = pluginService.Method.Parameters
+            };
 
             string serializedResult;
-            var pluginResult = PluginServiceExecutionFactory.TestPlugin(args,out serializedResult);
+            var pluginResult = PluginServiceExecutionFactory.TestPlugin(args, out serializedResult);
             pluginService.SerializedResult = serializedResult;
             return pluginResult;
         }
+
+        #endregion
     }
 }

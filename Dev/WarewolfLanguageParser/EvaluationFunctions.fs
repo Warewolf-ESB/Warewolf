@@ -73,7 +73,7 @@ and evalIndex (env : WarewolfEnvironment) (update : int) (exp : string) =
         | 1 -> a.[0] |> atomToInt
         | _ -> failwith "must be single value only"
     
-    let evalled = eval env update exp
+    let evalled = eval env update false exp
     match evalled with
     | WarewolfAtomResult a -> getIntFromAtom a
     | WarewolfAtomListresult a -> getIntFromAtomList a
@@ -288,15 +288,15 @@ and evalDataSetExpression (env : WarewolfEnvironment) (update : int) (name : Rec
         | IntIndex a -> WarewolfRecordSetResult(evalARow (getRecordSetIndexAsInt recset a) recset)
         | Last -> WarewolfRecordSetResult(evalARow (getRecordSetIndexAsInt recset recset.LastIndex) recset)
         | IndexExpression b -> 
-            let res = eval env update (languageExpressionToString b) |> evalResultToString
+            let res = eval env update false (languageExpressionToString b) |> evalResultToString
             match b with
-            | _ -> eval env update (sprintf "[[%s(%s)]]" name.Name res)
+            | _ -> eval env update false (sprintf "[[%s(%s)]]" name.Name res)
     else raise (new Dev2.Common.Common.NullValueInVariableException("Recordset not found", name.Name))
 
 ///overiding eval functions
 /// take a string then pasre it and call one of the child functions
 
-and eval (env : WarewolfEnvironment) (update : int) (lang : string) : WarewolfEvalResult = 
+and eval (env : WarewolfEnvironment) (update : int) (shouldEscape:bool) (lang : string) : WarewolfEvalResult = 
     if lang.StartsWith(Dev2.Common.GlobalConstants.CalculateTextConvertPrefix) then
         evalForCalculate env update lang
     elif lang.StartsWith(Dev2.Common.GlobalConstants.AggregateCalculateTextConvertPrefix) then
@@ -311,7 +311,7 @@ and eval (env : WarewolfEnvironment) (update : int) (lang : string) : WarewolfEv
                     | _ ->failwith "you should not get here"
             else    
                 let start = List.map languageExpressionToString  exp |> (List.fold (+) "")
-                let evaled = (List.map (languageExpressionToString >> (eval  env update)>>evalResultToStringAsList)  exp )  
+                let evaled = (List.map (languageExpressionToString >> (eval  env update shouldEscape)>>evalResultToStringAsList)  exp )  
                 let apply (fList: ('a->'b) list) (xList: 'a list)  = 
                     [ for f in fList do
                         for x in xList do
@@ -331,7 +331,7 @@ and eval (env : WarewolfEnvironment) (update : int) (lang : string) : WarewolfEv
                 else
                     let checkVal (str:string) =
                         if(str.Contains("[[") && (not (str=start))) then
-                            eval env update str
+                            eval env update shouldEscape str
                         else
                             WarewolfAtomResult (DataString str)                    
                     let atoms = List.map checkVal vals
@@ -341,12 +341,23 @@ and eval (env : WarewolfEnvironment) (update : int) (lang : string) : WarewolfEv
         
         let buffer = parseLanguageExpression lang update
         match buffer with
-        | RecordSetExpression a when env.RecordSets.ContainsKey a.Name -> WarewolfAtomListresult((evalRecordsSet a env))
-        | ScalarExpression a when env.Scalar.ContainsKey a -> WarewolfAtomResult(evalScalar a env)
+        | RecordSetExpression a when env.RecordSets.ContainsKey a.Name -> let b = evalRecordsSet a env
+                                                                          match shouldEscape with
+                                                                            |true -> let d =  Seq.map (warewolfAtomRecordtoString >> System.Text.RegularExpressions.Regex.Escape >> DataString) b |> fun a -> a                                                                                      
+                                                                                     WarewolfAtomListresult( WarewolfAtomList<WarewolfAtomRecord>(DataString "",d))
+                                                                            |false-> WarewolfAtomListresult(b)
+                                                                          
+        | ScalarExpression a when env.Scalar.ContainsKey a ->
+                                                             let b =  evalScalar a env
+                                                             match shouldEscape with 
+                                                                | true -> let c = System.Text.RegularExpressions.Regex.Escape(atomtoString b)
+                                                                          WarewolfAtomResult(DataString c)
+                                                                | false -> WarewolfAtomResult(b)
+                                                             
         | WarewolfAtomExpression a -> WarewolfAtomResult a
         | ComplexExpression a -> EvalComplex(List.filter (fun b -> "" <> (languageExpressionToString b)) a)
         | RecordSetNameExpression a when env.RecordSets.ContainsKey a.Name -> evalDataSetExpression env update a
-        | JsonIdentifierExpression a -> evalJson env update buffer
+        | JsonIdentifierExpression a -> evalJson env update shouldEscape buffer
         | _ -> raise (new Dev2.Common.Common.NullValueInVariableException("variable not found",languageExpressionToString buffer))
 ///convert a warewolf language expressiom to JsonPath
 and languageExpressionToJPath (lang : LanguageExpression) = 
@@ -408,7 +419,7 @@ and jsonIdentifierToName (a : JsonIdentifierExpression) =
     | IndexNestedNameExpression x -> x.ObjectName
     | Terminal -> ""
 ///evaluate Json. Convert warewolf expression to jsonpath and evaluate it
-and evalJson (env : WarewolfEnvironment) (update : int) (lang : LanguageExpression) =     
+and evalJson (env : WarewolfEnvironment) (update : int) (shouldEscape:bool) (lang : LanguageExpression) =     
     match lang with
     | ScalarExpression a -> 
         if env.JsonObjects.ContainsKey a then WarewolfAtomResult(DataString(env.JsonObjects.[a].ToString()))
@@ -444,7 +455,7 @@ and evalJson (env : WarewolfEnvironment) (update : int) (lang : LanguageExpressi
                 else
                     WarewolfAtomListresult (new WarewolfParserInterop.WarewolfAtomList<WarewolfAtomRecord>(WarewolfAtomRecord.Nothing, data))
         else failwith "non existent object"
-    | ComplexExpression a -> eval env update (languageExpressionToString lang)
+    | ComplexExpression a -> eval env update shouldEscape (languageExpressionToString lang)
     | WarewolfAtomExpression a -> WarewolfAtomResult(a)
 //specialise eval for calculate. Its just eval with the addition of some quotes. can be merged into eval function at the expense of complexity for c# developers
 and  evalForCalculate  (env: WarewolfEnvironment)  (update:int) (langs:string) : WarewolfEvalResult=
@@ -479,7 +490,7 @@ and  evalForCalculate  (env: WarewolfEnvironment)  (update:int) (langs:string) :
                 else
                     let checkVal (str:string) =
                         if(str.Contains("[[") && (not (str=start))) then
-                            eval env update str
+                            eval env update false str
                         else
                             WarewolfAtomResult (DataString str)                    
                     let atoms = List.map checkVal vals
@@ -495,7 +506,7 @@ and  evalForCalculate  (env: WarewolfEnvironment)  (update:int) (langs:string) :
         | WarewolfAtomExpression a -> WarewolfAtomResult a
         | RecordSetNameExpression x ->evalDataSetExpression env update x
         | ComplexExpression  a ->  EvalComplex ( List.filter (fun b -> "" <> (languageExpressionToString b)) a) 
-        | JsonIdentifierExpression a -> let res = evalJson env update buffer
+        | JsonIdentifierExpression a -> let res = evalJson env update false buffer
                                         match res with
                                             | WarewolfAtomListresult x -> WarewolfAtomListresult (x|> Seq.map enQuote |> (fun x-> new WarewolfAtomList<WarewolfAtom>(Nothing,x) ))
                                             | WarewolfAtomResult x -> WarewolfAtomResult(x|>enQuote)
@@ -516,7 +527,7 @@ and  evalForCalculateAggregate  (env: WarewolfEnvironment)  (update:int) (langs:
             let evaled = (List.map (languageExpressionToString >> (evalForCalculateAggregate   env update)>>evalResultToString)  exp )|> (List.fold (+) "")
             if( evaled = start || (not (evaled.Contains("[[")))) then
                 DataString evaled
-            else DataString (eval env update evaled |>  evalResultToString)
+            else DataString (eval env update false evaled |>  evalResultToString)
     
     let buffer =  parseLanguageExpression lang update
                         
@@ -526,7 +537,7 @@ and  evalForCalculateAggregate  (env: WarewolfEnvironment)  (update:int) (langs:
         | WarewolfAtomExpression a -> WarewolfAtomResult a
         | RecordSetNameExpression x ->evalDataSetExpression env update x
         | ComplexExpression  a ->  WarewolfAtomResult (EvalComplex ( List.filter (fun b -> "" <> (languageExpressionToString b)) a)) 
-        | JsonIdentifierExpression a -> let res = evalJson env update buffer
+        | JsonIdentifierExpression a -> let res = evalJson env update false buffer
                                         match res with
                                             | WarewolfAtomListresult x -> WarewolfAtomListresult (x|> Seq.map enQuote |> (fun x-> new WarewolfAtomList<WarewolfAtom>(Nothing,x) ))
                                             | WarewolfAtomResult x -> WarewolfAtomResult(x|>enQuote)
@@ -546,7 +557,7 @@ and reduceForCalculate (env : WarewolfEnvironment) (update : int) (langs : strin
     | ComplexExpression a -> 
         if (List.exists (isNotAtomAndNotcomplex a) a) then 
             List.map languageExpressionToString a
-            |> List.map (eval env update)
+            |> List.map (eval env update false)
             |> List.map evalResultToString
             |> fun a -> System.String.Join("", a) |> (fun a -> reduceForCalculate env update a)
         else lang
@@ -556,7 +567,7 @@ and reduceForCalculate (env : WarewolfEnvironment) (update : int) (langs : strin
             match exp with
             | WarewolfAtomExpression _ -> lang
             | _ -> 
-                sprintf "[[%s(%s).%s]]" a.Name (eval env update (languageExpressionToString exp) |> evalResultToString) 
+                sprintf "[[%s(%s).%s]]" a.Name (eval env update false (languageExpressionToString exp) |> evalResultToString) 
                     a.Column
         | _ -> lang
     | JsonIdentifierExpression a -> lang
@@ -582,7 +593,7 @@ and evalToExpression (env : WarewolfEnvironment) (update : int) (langs : string)
         if (List.exists isNotAtom a) then 
             let ev = 
                 List.map languageExpressionToString a
-                |> List.map (eval env update)
+                |> List.map (eval env update false)
                 |> List.map evalResultToString
                 |> fun a -> System.String.Join("", a) |> (fun a -> evalToExpression env update a)
             if ev.Contains("[[") then ev
@@ -594,7 +605,7 @@ and evalToExpression (env : WarewolfEnvironment) (update : int) (langs : string)
             match exp with
             | WarewolfAtomExpression _ -> lang
             | _ -> 
-                sprintf "[[%s(%s).%s]]" a.Name (eval env update (languageExpressionToString exp) |> evalResultToString) 
+                sprintf "[[%s(%s).%s]]" a.Name (eval env update false (languageExpressionToString exp) |> evalResultToString) 
                     a.Column
         | _ -> buffer |> languageExpressionToString
     | _ -> lang
@@ -607,11 +618,11 @@ and evalWithPositions (env : WarewolfEnvironment) (update : int) (lang : string)
             
             let evaled = 
                 (List.map (languageExpressionToString
-                           >> (eval env update)
+                           >> (eval env update false)
                            >> evalResultToString) exp)
                 |> (List.fold (+) "")
             if (evaled = start) then DataString evaled
-            else DataString(eval env update evaled |> evalResultToString)
+            else DataString(eval env update false evaled |> evalResultToString)
     
     let exp = ParseCache.TryFind lang
     

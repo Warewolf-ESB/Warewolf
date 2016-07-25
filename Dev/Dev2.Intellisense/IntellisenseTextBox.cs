@@ -374,23 +374,23 @@ namespace Dev2.UI
             var error = IntellisenseStringProvider.parseLanguageExpressionAndValidate(text);
             if (FilterType == enIntellisensePartType.RecordsetsOnly && !error.Item1.IsRecordSetNameExpression)
             {
-                ToolTip = error.Item2 != String.Empty ? error.Item2 : "Invalid recordset";
+                ToolTip = error.Item2 != string.Empty ? error.Item2 : "Invalid recordset";
                 HasError = true;
             }
             else if (FilterType == enIntellisensePartType.ScalarsOnly && !error.Item1.IsScalarExpression)
             {
-                ToolTip = error.Item2 != String.Empty ? error.Item2 : "Invalid scalar";
+                ToolTip = error.Item2 != string.Empty ? error.Item2 : "Invalid scalar";
                 HasError = true;
             }
             else if (FilterType == enIntellisensePartType.RecordsetFields && !error.Item1.IsRecordSetExpression)
             {
-                ToolTip = error.Item2 != String.Empty ? error.Item2 : "Invalid recordset name";
+                ToolTip = error.Item2 != string.Empty ? error.Item2 : "Invalid recordset name";
                 HasError = true;
             }
             else
             {
-                ToolTip = error.Item2 != String.Empty ? error.Item2 : ToolTip ?? String.Empty;
-                HasError = error.Item2 != String.Empty;
+                ToolTip = error.Item2 != string.Empty ? error.Item2 : ToolTip ?? string.Empty;
+                HasError = error.Item2 != string.Empty;
             }
         }
 
@@ -801,7 +801,7 @@ namespace Dev2.UI
         static void ErrorTextChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs dependencyPropertyChangedEventArgs)
         {
             var errorText = dependencyPropertyChangedEventArgs.NewValue as string;
-            if (String.IsNullOrEmpty(errorText))
+            if (string.IsNullOrEmpty(errorText))
             {
                 return;
             }

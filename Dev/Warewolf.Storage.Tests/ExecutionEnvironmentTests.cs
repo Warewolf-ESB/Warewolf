@@ -58,7 +58,7 @@ namespace Warewolf.Storage.Tests
         {
             Assert.IsNotNull(_environment);
             var evalMultiAssign = EvalMultiAssign();
-            var items = PublicFunctions.EvalEnvExpression("[[rec(*).a]]", 0, evalMultiAssign);
+            var items = PublicFunctions.EvalEnvExpression("[[rec(*).a]]", 0, false, evalMultiAssign);
             var warewolfAtomListresult = items as CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult;
             _environment.EvalAssignFromNestedLast("[[rec(*).a]]", warewolfAtomListresult, 0);
         }
@@ -70,7 +70,7 @@ namespace Warewolf.Storage.Tests
             Assert.IsNotNull(_environment);
             _environment.Assign("[[rec().a]]", "sanele", 0);
             var evalMultiAssign = EvalMultiAssign();
-            var items = PublicFunctions.EvalEnvExpression("[[rec(*).a]]", 0, evalMultiAssign);
+            var items = PublicFunctions.EvalEnvExpression("[[rec(*).a]]", 0, false, evalMultiAssign);
             var warewolfAtomListresult = items as CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult;
             _environment.EvalAssignFromNestedLast("[[recs().a]]", warewolfAtomListresult, 0);
         }
@@ -82,7 +82,7 @@ namespace Warewolf.Storage.Tests
             Assert.IsNotNull(_environment);
             _environment.Assign("[[rec().a]]", "sanele", 0);
             var evalMultiAssign = EvalMultiAssign();
-            var items = PublicFunctions.EvalEnvExpression("[[rec(*).a]]", 0, evalMultiAssign);
+            var items = PublicFunctions.EvalEnvExpression("[[rec(*).a]]", 0, false, evalMultiAssign);
             var warewolfAtomListresult = items as CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult;
             _environment.EvalAssignFromNestedStar("[[rec().a]]", warewolfAtomListresult, 0);
         }
@@ -94,7 +94,7 @@ namespace Warewolf.Storage.Tests
             Assert.IsNotNull(_environment);
             _environment.Assign("[[rec().a]]", "sanele", 0);
             var evalMultiAssign = EvalMultiAssign();
-            PublicFunctions.EvalEnvExpression("[[rec(*).a]]", 0, evalMultiAssign);
+            PublicFunctions.EvalEnvExpression("[[rec(*).a]]", 0, false, evalMultiAssign);
             _environment.SortRecordSet("[[rec().a]]", true, 0);
         }
 
@@ -202,7 +202,7 @@ namespace Warewolf.Storage.Tests
             Assert.IsNotNull(_environment);
             _environment.Assign("[[rec().a]]", "sanele", 0);
             var evalMultiAssign = EvalMultiAssign();
-            var items = PublicFunctions.EvalEnvExpression("[[rec(*).a]]", 0, evalMultiAssign);
+            var items = PublicFunctions.EvalEnvExpression("[[rec(*).a]]", 0,false, evalMultiAssign);
             var warewolfAtomListresult = items as CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult;
             _environment.EvalAssignFromNestedNumeric("[[rec().a]]", warewolfAtomListresult, 0);
         }

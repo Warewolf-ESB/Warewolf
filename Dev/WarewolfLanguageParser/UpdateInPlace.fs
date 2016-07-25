@@ -33,7 +33,7 @@ let rec evalUpdate (env : WarewolfEnvironment) (lang : string) (update : int) (f
     | ComplexExpression a -> 
         let bob = 
             List.map languageExpressionToString a
-            |> List.map (eval env update)
+            |> List.map (eval env update false)
             |> List.map evalResultToString
             |> fun a -> System.String.Join("", a)
         if bob = lang then failwith "invalid convert"
@@ -54,7 +54,7 @@ and evalRecordsSetExpressionUpdate (recset : RecordSetColumnIdentifier) (env : W
         match recset.Index with
         | IntIndex _ -> 
             let data = 
-                EvaluationFunctions.eval env update (languageExpressionToString (RecordSetExpression recset))
+                EvaluationFunctions.eval env update false (languageExpressionToString (RecordSetExpression recset))
                 |> evalResultToString
                 |> DataString
                 |> func
@@ -66,20 +66,20 @@ and evalRecordsSetExpressionUpdate (recset : RecordSetColumnIdentifier) (env : W
             env
         | Last -> 
             let data = 
-                EvaluationFunctions.eval env update (languageExpressionToString (RecordSetExpression recset))
+                EvaluationFunctions.eval env update false (languageExpressionToString (RecordSetExpression recset))
                 |> evalResultToString
                 |> DataString
                 |> func
             AssignEvaluation.evalAssign (languageExpressionToString (RecordSetExpression recset)) (data.ToString()) 
                 update env
         | IndexExpression b -> 
-            let res = eval env update (languageExpressionToString b) |> evalResultToString
+            let res = eval env update false (languageExpressionToString b) |> evalResultToString
             match b with
             | WarewolfAtomExpression atom -> 
                 match atom with
                 | Int _ -> 
                     let data = 
-                        EvaluationFunctions.eval env update 
+                        EvaluationFunctions.eval env update false
                             (languageExpressionToString (RecordSetExpression recset))
                         |> evalResultToString
                         |> DataString
