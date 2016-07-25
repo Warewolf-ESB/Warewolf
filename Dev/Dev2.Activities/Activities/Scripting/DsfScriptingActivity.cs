@@ -118,7 +118,6 @@ namespace Dev2.Activities
                         var engine = new ScriptingEngineRepo().CreateEngine(ScriptType);
                         var value = engine.Execute(scriptItr.GetNextValue());
 
-                        //2013.06.03: Ashley Lewis for bug 9498 - handle multiple regions in result
                         foreach (var region in DataListCleaningUtils.SplitIntoRegions(Result))
                         {
                             
@@ -173,13 +172,7 @@ namespace Dev2.Activities
             if (!string.IsNullOrEmpty(IncludeFile))
                 StringScriptSources.AddPaths(IncludeFile);
         }
-
-        private string AssignOutPutValue(int update, string value, IExecutionEnvironment env, string region)
-        {
-            env.Assign(region, value, update);
-            return value;
-        }
-
+        
         public override void UpdateForEachInputs(IList<Tuple<string, string>> updates)
         {
             foreach (Tuple<string, string> t in updates)
