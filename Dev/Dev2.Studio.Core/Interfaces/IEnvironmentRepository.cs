@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 
@@ -39,6 +40,7 @@ namespace Dev2.Studio.Core.Interfaces
         /// <exception cref="System.ArgumentNullException">defaultEnvironment</exception>
         IList<IEnvironmentModel> LookupEnvironments(IEnvironmentModel defaultEnvironment, IList<string> environmentGuids = null);
 
+        [SuppressMessage("ReSharper", "UnusedMember.Global")]
         void Clear();
     }
 }

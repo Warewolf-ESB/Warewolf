@@ -263,17 +263,17 @@ namespace Warewolf.Studio.ServerProxyLayer
 
         public string TestComPluginService(IComPluginService plugin)
         {
-            throw new NotImplementedException();
-            /*var con = Connection;
-            var comsController = CommunicationControllerFactory.CreateController("TestPluginService");
+            
+            var con = Connection;
+            var comsController = CommunicationControllerFactory.CreateController("TestComPluginService");
             Dev2JsonSerializer serialiser = new Dev2JsonSerializer();
-            comsController.AddPayloadArgument("PluginService", serialiser.SerializeToBuilder(plugin));
+            comsController.AddPayloadArgument("ComPluginService", serialiser.SerializeToBuilder(plugin));
             var output = comsController.ExecuteCommand<IExecuteMessage>(con, GlobalConstants.ServerWorkspaceID);
             if (output == null)
                 throw new WarewolfTestException(ErrorResource.UnableToContactServer, null);
             if (output.HasError)
                 throw new WarewolfTestException(output.Message.ToString(), null);
-            return output.Message.ToString();*/
+            return output.Message.ToString();
         }
 
         public void SavePluginService(IPluginService service)

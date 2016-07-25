@@ -106,16 +106,14 @@
     <Style x:Key="AutoCompleteBoxStyle" TargetType="controls:AutoCompleteBox">
         <Setter Property="IsTabStop" Value="False" />
         <Setter Property="BorderThickness" Value="1" />
-        <Setter Property="TextBoxStyle" Value="{StaticResource TextBoxStyle}"></Setter>
         <Setter Property="BorderBrush" Value="{StaticResource TextBoxBorderBrush}" />
         <Setter Property="MinWidth" Value="45" />
-        <Setter Property="Height" Value="25"/>
-        <Setter Property="Padding" Value="3,2,3,2" />
+        <Setter Property="Height" Value="Auto"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="controls:AutoCompleteBox">
                     <Grid Opacity="{TemplateBinding Opacity}">
-                        <Border x:Name="TextBorder" BorderThickness="1" BorderBrush="{StaticResource TextBoxBorderBrush}">
+                        <Border x:Name="TextBorder" BorderThickness="1" Height="Auto" BorderBrush="{StaticResource TextBoxBorderBrush}">
                             <Grid>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="Auto"/>
@@ -134,7 +132,12 @@
                                          IsTabStop="True" 
                                          Grid.Column="1"
                                          x:Name="Text" 
-                                         Style="{TemplateBinding TextBoxStyle}" 
+                                         MaxLines="5"
+                                         AcceptsReturn="True"
+                                         Height="Auto"
+                                         ScrollViewer.HorizontalScrollBarVisibility="Auto" 
+                                          ScrollViewer.VerticalScrollBarVisibility="Auto" 
+                                          ScrollViewer.CanContentScroll="True"
                                          BorderThickness="0" 
                                          BorderBrush="Transparent" 
                                          Foreground="{TemplateBinding Foreground}" 
@@ -190,6 +193,7 @@
                                           MinWidth="{TemplateBinding MinWidth}"
                                           MaxWidth="{TemplateBinding MaxWidth}"
                                           Content="{TemplateBinding DefaultText}"
+                                          MaxHeight="{TemplateBinding MaxHeight}"
                                           ContentTemplate="{TemplateBinding DefaultTextTemplate}"
                                           VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
                                           HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
@@ -336,6 +340,22 @@
                                 <Setter Property="Visibility" TargetName="PART_CalculateModePrefix" Value="Visible" />
                             </MultiTrigger.Setters>
                         </MultiTrigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="ui:IntellisenseTextBox.AllowUserInsertLine" Value="False" />
+                            </MultiTrigger.Conditions>
+                            <MultiTrigger.Setters>
+                                <Setter Property="Style" TargetName="Text" Value="{StaticResource NoAcceptReturnTextBoxStyle}" />
+                            </MultiTrigger.Setters>
+                        </MultiTrigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="ui:IntellisenseTextBox.AllowUserInsertLine" Value="True" />
+                            </MultiTrigger.Conditions>
+                            <MultiTrigger.Setters>
+                                <Setter Property="Style" TargetName="Text" Value="{StaticResource AcceptReturnTextBoxStyle}" />
+                            </MultiTrigger.Setters>
+                        </MultiTrigger>
                         <Trigger SourceName="Text" Property="IsMouseOver" Value="True">
                             <Setter TargetName="TextBorder" Property="BorderBrush" Value="{StaticResource TextBoxHoverBorderBrush}" />
                         </Trigger>
@@ -348,15 +368,12 @@
         </Setter>
     </Style>
 
-    <Style x:Key="ActivityIntellisenseTextBoxStyle" TargetType="{x:Type controls:AutoCompleteBox}" BasedOn="{StaticResource AutoCompleteBoxStyle}" >
-        <Setter Property="ui:IntellisenseTextBox.AllowUserInsertLine" Value="False"/>
-        <Setter Property="ui:IntellisenseTextBox.AllowMultilinePaste" Value="False"/>
-
+    <Style x:Key="TestNewStyle" TargetType="{x:Type ui:IntellisenseTextBox}">
+        <Setter Property="AllowUserInsertLine" Value="False"/>
+        <Setter Property="AcceptsReturn" Value="False"/>
+        <Setter Property="Height" Value="25"/>
         <Setter Property="VerticalContentAlignment" Value="Center"/>
-    </Style>
-    <Style x:Key="DatagridIntellisenseTextBoxStyle" TargetType="{x:Type controls:AutoCompleteBox}" BasedOn="{StaticResource ActivityIntellisenseTextBoxStyle}">
         <Setter Property="HorizontalAlignment" Value="Stretch" />
-
         <Setter Property="MaxHeight" Value="25" />
         <Style.Triggers>
             <DataTrigger Binding="{Binding Path=HasError}" Value="True">
@@ -369,13 +386,35 @@
             </Trigger>
         </Style.Triggers>
     </Style>
-    <Style x:Key="ActivityMapppingIntellisenseTextBoxStyle" TargetType="{x:Type controls:AutoCompleteBox}" BasedOn="{StaticResource ActivityIntellisenseTextBoxStyle}">
-        <Setter Property="ui:IntellisenseTextBox.WrapInBrackets" Value="False"/>
+    
+    <Style x:Key="ActivityIntellisenseTextBoxStyle" TargetType="{x:Type ui:IntellisenseTextBox}" BasedOn="{StaticResource AutoCompleteBoxStyle}" >
+        <Setter Property="AllowUserInsertLine" Value="False"/>
+        <Setter Property="AllowMultilinePaste" Value="False"/>
+        <Setter Property="AcceptsReturn" Value="False"/>
+        <Setter Property="Height" Value="25"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+    </Style>
+    <Style x:Key="DatagridIntellisenseTextBoxStyle" TargetType="{x:Type ui:IntellisenseTextBox}" BasedOn="{StaticResource ActivityIntellisenseTextBoxStyle}">
+        <Setter Property="HorizontalAlignment" Value="Stretch" />
+        <Setter Property="MaxHeight" Value="25" />
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding Path=HasError}" Value="True">
+                <Setter Property="Foreground" Value="{StaticResource ValidationErrorElement}" />
+                <Setter Property="BorderBrush" Value="{StaticResource ValidationErrorElement}" />
+            </DataTrigger>
+            <Trigger Property="Validation.HasError" Value="True">
+                <Setter Property="Foreground" Value="{StaticResource ValidationErrorElement}" />
+                <Setter Property="BorderBrush" Value="{StaticResource ValidationErrorElement}" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+    <Style x:Key="ActivityMapppingIntellisenseTextBoxStyle" TargetType="{x:Type ui:IntellisenseTextBox}" BasedOn="{StaticResource ActivityIntellisenseTextBoxStyle}">
+        <Setter Property="WrapInBrackets" Value="False"/>
         <Setter Property="VerticalAlignment" Value="Center"/>
     </Style>
-    <Style x:Key="ActivityMapppingDataGridIntellisenseTextBoxStyle" TargetType="{x:Type controls:AutoCompleteBox}" BasedOn="{StaticResource DatagridIntellisenseTextBoxStyle}">
+    <Style x:Key="ActivityMapppingDataGridIntellisenseTextBoxStyle" TargetType="{x:Type ui:IntellisenseTextBox}" BasedOn="{StaticResource DatagridIntellisenseTextBoxStyle}">
         <Setter Property="BorderThickness" Value="0"/>
-        <Setter Property="ui:IntellisenseTextBox.WrapInBrackets" Value="True"/>
+        <Setter Property="WrapInBrackets" Value="True"/>
         <Setter Property="VerticalAlignment" Value="Center"/>
     </Style>
 </ResourceDictionary>
