@@ -64,8 +64,6 @@
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
     <Compile Include="ComponentModel\Extensions.cs" />
-    <Compile Include="Sql\ISqlCtx.cs" />
-    <Compile Include="Sql\SqlCtx.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Deploy\SqlResources\Readme.txt">

@@ -1466,7 +1466,7 @@ The more information you can provide us with, the faster we can track the issue 
     <value>If you want to Point to an external file with code you want to run several times. Instead of writing the same script over and over again, create it and save it with a relevent extension (.js for JavaScript).</value>
   </data>
   <data name="ScriptingHelpEscapeScript" xml:space="preserve">
-    <value>Your script might contain values like '\t' or '\n' etc which are Escape Sequences. Tick this Box if you want to ignore this or leave it unticked if you want to use them as Escape Sequences.</value>
+    <value>Your variables might contain values like '\t' or '\n' etc which are Escape Sequences. Tick this Box if you want to ignore this or leave it unticked if you want to use them as Escape Sequences.</value>
   </data>
   <data name="SequenceHelpSequence" xml:space="preserve">
     <value>To execute a set of Activities in sequence put them in the order you want them executed.	To execute more than one item in a loop construct etc. put the activities in a sequence first and then put the sequence into the loop construct.	Error handling operates as a catch all for all items in the sequence.</value>

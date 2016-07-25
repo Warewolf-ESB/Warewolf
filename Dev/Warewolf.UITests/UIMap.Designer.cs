@@ -80,21 +80,21 @@ namespace Warewolf.UITests
         public void Click_Calculate_Large_View_Done_Button()
         {
             #region Variable Declarations
-            WpfEdit functionTextbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Calculate.SmallView.FunctionTextbox;
             WpfButton doneButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Calculate.DoneButton;
+            WpfEdit functionTextbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Calculate.SmallView.Listbox.FunctionTextbox;
             #endregion
-
-            // Verify that the 'Text' property of 'UI__fxtxt_AutoID' text box equals '[[SomeVariable]]'
-            Assert.AreEqual(this.Click_Calculate_Large_View_Done_ButtonParams.FunctionTextboxText, functionTextbox.Text, "Calculate small view function textbox text does not equal SomeVariable.");
 
             // Click 'Done' button
             Mouse.Click(doneButton, new Point(45, 8));
+
+            // Verify that the 'Text' property of 'FunctionTextbox' text box equals '[[SomeVariable]]'
+            Assert.AreEqual(this.Click_Calculate_Large_View_Done_ButtonParams.FunctionTextboxText, functionTextbox.Text, "Calculate small view function textbox text does not equal SomeVariable.");
         }
         
         /// <summary>
-        /// Click_Clear_Toolbox_Filter_Button
+        /// Click_Clear_Toolbox_Filter_Clear_Button
         /// </summary>
-        public void Click_Clear_Toolbox_Filter_Button()
+        public void Click_Clear_Toolbox_Filter_Clear_Button()
         {
             #region Variable Declarations
             WpfButton clearFilterButton = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox.ClearFilterButton;
@@ -815,7 +815,8 @@ namespace Warewolf.UITests
             // Click 'Save this tab' button
             Mouse.Click(saveButton, new Point(10, 5));
 
-            // Verify that the 'Enabled' property of 'Save this tab' button equals 'False'
+            // Wait for 2 seconds for user delay between actions; Verify that the 'Enabled' property of 'Save this tab' button equals 'False'
+            Playback.Wait(2000);
             Assert.AreEqual(this.Click_Save_Ribbon_ButtonParams.SaveButtonEnabled, saveButton.Enabled, "Save ribbon button is still enabled after clicking it.");
         }
         
@@ -2202,18 +2203,18 @@ namespace Warewolf.UITests
         public void Drag_Toolbox_MultiAssign_Onto_DesignSurface()
         {
             #region Variable Declarations
-            WpfListItem multiAssign = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.DataTools.MultiAssign;
             WpfEdit searchTextBox = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox;
+            WpfListItem multiAssign = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.DataTools.MultiAssign;
             WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
             WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
             WpfEdit textbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView.DataGrid.Row1.VariableCell.Listbox.Textbox;
             #endregion
 
-            // Verify that the 'Exists' property of 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item equals 'True'
-            Assert.AreEqual(this.Drag_Toolbox_MultiAssign_Onto_DesignSurfaceParams.MultiAssignExists, multiAssign.Exists, "Toolbox Multiassign does not exist");
-
             // Type 'Assign' in 'SearchTextBox' text box
             searchTextBox.Text = this.Drag_Toolbox_MultiAssign_Onto_DesignSurfaceParams.SearchTextBoxText;
+
+            // Verify that the 'Exists' property of 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item equals 'True'
+            Assert.AreEqual(this.Drag_Toolbox_MultiAssign_Onto_DesignSurfaceParams.MultiAssignExists, multiAssign.Exists, "Toolbox Multiassign does not exist");
 
             // Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
             flowchart.EnsureClickable(new Point(307, 128));
@@ -3021,13 +3022,13 @@ namespace Warewolf.UITests
         public void Enter_SomeVariable_Into_Calculate_Large_View_Function_Textbox()
         {
             #region Variable Declarations
-            WpfEdit functionTextbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Calculate.LargeView.FunctionTextbox;
+            WpfEdit functionTextbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Calculate.LargeView.Listbox.FunctionTextbox;
             #endregion
 
-            // Type '[[SomeVariable]]' in 'UI__fxtxt_AutoID' text box
+            // Type '[[SomeVariable]]' in 'FunctionTextbox' text box
             functionTextbox.Text = this.Enter_SomeVariable_Into_Calculate_Large_View_Function_TextboxParams.FunctionTextboxText;
 
-            // Verify that the 'Text' property of 'UI__fxtxt_AutoID' text box equals '[[SomeVariable]]'
+            // Verify that the 'Text' property of 'FunctionTextbox' text box equals '[[SomeVariable]]'
             Assert.AreEqual(this.Enter_SomeVariable_Into_Calculate_Large_View_Function_TextboxParams.FunctionTextboxText1, functionTextbox.Text, "Calculate large view function textbox text does not equal \"[[SomeVariable]]\"");
         }
         
@@ -3102,12 +3103,7 @@ namespace Warewolf.UITests
             // Type 'workflow1' in 'SearchTextBox' text box
             searchTextBox.Text = this.Enter_Workflow1_Into_Explorer_Filter_TextboxParams.SearchTextBoxText;
 
-            // Wait for 2 seconds for user delay between actions; Click '' button
-            Playback.Wait(2000);
-            Mouse.Click(explorerRefreshButton, new Point(10, 10));
-
-            // Wait for 2 seconds for user delay between actions; Click '' button
-            Playback.Wait(2000);
+            // Click '' button
             Mouse.Click(explorerRefreshButton, new Point(10, 10));
         }
         
@@ -3190,7 +3186,8 @@ namespace Warewolf.UITests
             #region Variable Declarations
             WpfCustom calculate = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Calculate;
             WpfCustom largeView = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Calculate.LargeView;
-            WpfEdit functionTextbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Calculate.LargeView.FunctionTextbox;
+            WpfControl listbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Calculate.LargeView.Listbox;
+            WpfEdit functionTextbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Calculate.LargeView.Listbox.FunctionTextbox;
             #endregion
 
             // Double-Click 'DsfCalculateActivity' custom control
@@ -3199,7 +3196,10 @@ namespace Warewolf.UITests
             // Verify that the 'Exists' property of 'LargeViewContent' custom control equals 'True'
             Assert.AreEqual(this.Open_Calculate_Tool_Large_ViewParams.LargeViewExists, largeView.Exists, "Calculate tool large view does not exist on design surface.");
 
-            // Verify that the 'Exists' property of 'UI__fxtxt_AutoID' text box equals 'True'
+            // Verify that the 'Exists' property of 'Listbox' combo box equals 'True'
+            Assert.AreEqual(this.Open_Calculate_Tool_Large_ViewParams.ListboxExists, listbox.Exists, "Autocomplete listbox does not exisst on Calculate tool large view.");
+
+            // Verify that the 'Exists' property of 'FunctionTextbox' text box equals 'True'
             Assert.AreEqual(this.Open_Calculate_Tool_Large_ViewParams.FunctionTextboxExists, functionTextbox.Exists, "Function textbox does not exist on calculate tool large view.");
         }
         
@@ -7230,7 +7230,7 @@ namespace Warewolf.UITests
         
         #region Fields
         /// <summary>
-        /// Verify that the 'Text' property of 'UI__fxtxt_AutoID' text box equals '[[SomeVariable]]'
+        /// Verify that the 'Text' property of 'FunctionTextbox' text box equals '[[SomeVariable]]'
         /// </summary>
         public string FunctionTextboxText = "[[SomeVariable]]";
         #endregion
@@ -7655,7 +7655,7 @@ namespace Warewolf.UITests
         public bool SaveButtonExists = true;
         
         /// <summary>
-        /// Verify that the 'Enabled' property of 'Save this tab' button equals 'False'
+        /// Wait for 2 seconds for user delay between actions; Verify that the 'Enabled' property of 'Save this tab' button equals 'False'
         /// </summary>
         public bool SaveButtonEnabled = false;
         #endregion
@@ -8740,14 +8740,14 @@ namespace Warewolf.UITests
         
         #region Fields
         /// <summary>
-        /// Verify that the 'Exists' property of 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item equals 'True'
-        /// </summary>
-        public bool MultiAssignExists = true;
-        
-        /// <summary>
         /// Type 'Assign' in 'SearchTextBox' text box
         /// </summary>
         public string SearchTextBoxText = "Assign";
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item equals 'True'
+        /// </summary>
+        public bool MultiAssignExists = true;
         
         /// <summary>
         /// Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
@@ -9480,12 +9480,12 @@ namespace Warewolf.UITests
         
         #region Fields
         /// <summary>
-        /// Type '[[SomeVariable]]' in 'UI__fxtxt_AutoID' text box
+        /// Type '[[SomeVariable]]' in 'FunctionTextbox' text box
         /// </summary>
         public string FunctionTextboxText = "[[SomeVariable]]";
         
         /// <summary>
-        /// Verify that the 'Text' property of 'UI__fxtxt_AutoID' text box equals '[[SomeVariable]]'
+        /// Verify that the 'Text' property of 'FunctionTextbox' text box equals '[[SomeVariable]]'
         /// </summary>
         public string FunctionTextboxText1 = "[[SomeVariable]]";
         #endregion
@@ -9655,7 +9655,12 @@ namespace Warewolf.UITests
         public bool LargeViewExists = true;
         
         /// <summary>
-        /// Verify that the 'Exists' property of 'UI__fxtxt_AutoID' text box equals 'True'
+        /// Verify that the 'Exists' property of 'Listbox' combo box equals 'True'
+        /// </summary>
+        public bool ListboxExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'FunctionTextbox' text box equals 'True'
         /// </summary>
         public bool FunctionTextboxExists = true;
         #endregion
@@ -22358,6 +22363,39 @@ namespace Warewolf.UITests
         }
         
         #region Properties
+        public Listbox2 Listbox
+        {
+            get
+            {
+                if ((this.mListbox == null))
+                {
+                    this.mListbox = new Listbox2(this);
+                }
+                return this.mListbox;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private Listbox2 mListbox;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Listbox2 : WpfControl
+    {
+        
+        public Listbox2(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ControlType] = "Combobox";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "UI__fxtxt_AutoID";
+            this.WindowTitles.Add("Warewolf");
+            #endregion
+        }
+        
+        #region Properties
         public WpfEdit FunctionTextbox
         {
             get
@@ -22366,7 +22404,7 @@ namespace Warewolf.UITests
                 {
                     this.mFunctionTextbox = new WpfEdit(this);
                     #region Search Criteria
-                    this.mFunctionTextbox.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "UI__fxtxt_AutoID";
+                    this.mFunctionTextbox.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "Text";
                     this.mFunctionTextbox.WindowTitles.Add("Warewolf");
                     #endregion
                 }
@@ -22395,6 +22433,39 @@ namespace Warewolf.UITests
         }
         
         #region Properties
+        public Listbox3 Listbox
+        {
+            get
+            {
+                if ((this.mListbox == null))
+                {
+                    this.mListbox = new Listbox3(this);
+                }
+                return this.mListbox;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private Listbox3 mListbox;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Listbox3 : WpfControl
+    {
+        
+        public Listbox3(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ControlType] = "Combobox";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "UI__fxtxt_AutoID";
+            this.WindowTitles.Add("Warewolf");
+            #endregion
+        }
+        
+        #region Properties
         public WpfEdit FunctionTextbox
         {
             get
@@ -22403,7 +22474,7 @@ namespace Warewolf.UITests
                 {
                     this.mFunctionTextbox = new WpfEdit(this);
                     #region Search Criteria
-                    this.mFunctionTextbox.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "UI__fxtxt_AutoID";
+                    this.mFunctionTextbox.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "Text";
                     this.mFunctionTextbox.WindowTitles.Add("Warewolf");
                     #endregion
                 }
@@ -22783,13 +22854,13 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public Listbox2 Listbox
+        public Listbox4 Listbox
         {
             get
             {
                 if ((this.mListbox == null))
                 {
-                    this.mListbox = new Listbox2(this);
+                    this.mListbox = new Listbox4(this);
                 }
                 return this.mListbox;
             }
@@ -22797,15 +22868,15 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private Listbox2 mListbox;
+        private Listbox4 mListbox;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Listbox2 : WpfComboBox
+    public class Listbox4 : WpfComboBox
     {
         
-        public Listbox2(UITestControl searchLimitContainer) : 
+        public Listbox4(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -22982,13 +23053,13 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public Listbox3 Listbox
+        public Listbox5 Listbox
         {
             get
             {
                 if ((this.mListbox == null))
                 {
-                    this.mListbox = new Listbox3(this);
+                    this.mListbox = new Listbox5(this);
                 }
                 return this.mListbox;
             }
@@ -22996,15 +23067,15 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private Listbox3 mListbox;
+        private Listbox5 mListbox;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Listbox3 : WpfComboBox
+    public class Listbox5 : WpfComboBox
     {
         
-        public Listbox3(UITestControl searchLimitContainer) : 
+        public Listbox5(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria

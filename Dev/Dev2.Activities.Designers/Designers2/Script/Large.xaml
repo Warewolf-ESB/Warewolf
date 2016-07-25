@@ -72,7 +72,7 @@
         <CheckBox Grid.Column="1"
                   Grid.Row="1"
                   Margin="-6,-2,0,0"
-                  Content="Escape"
+                  Content="Escape sequences in variables"
                   IsChecked="{Binding Path=ModelItem.EscapeScript, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                   ToolTip="{x:Static languages:Core.ScriptingToolTipEscapeScript}">
             <i:Interaction.Behaviors>
