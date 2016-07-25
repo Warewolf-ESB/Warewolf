@@ -2,6 +2,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Warewolf.Storage;
 using WarewolfParserInterop;
+// ReSharper disable InconsistentNaming
 
 namespace WarewolfParsingTest
 {
@@ -19,7 +20,7 @@ namespace WarewolfParsingTest
             //------------Execute Test---------------------------
            var updated=  PublicFunctions.EvalUpdate("[[Rec(*).a]]", env, 0, a => DataStorage.WarewolfAtom.NewDataString("1x"));
             //------------Assert Results-------------------------
-          var res = CommonFunctions.evalResultToString(  EvaluationFunctions.eval(updated, 0, "[[Rec(*).a]]"));
+          var res = CommonFunctions.evalResultToString(  EvaluationFunctions.eval(updated, 0, false, "[[Rec(*).a]]"));
             Assert.AreEqual(res,"1x,1x,1x,1x");
         }
 
@@ -34,7 +35,7 @@ namespace WarewolfParsingTest
             //------------Execute Test---------------------------
             var updated = PublicFunctions.EvalUpdate("[[Rec().a]]", env, 0, a => DataStorage.WarewolfAtom.NewDataString("1x"));
             //------------Assert Results-------------------------
-            var res = CommonFunctions.evalResultToString(EvaluationFunctions.eval(updated, 0, "[[Rec(*).a]]"));
+            var res = CommonFunctions.evalResultToString(EvaluationFunctions.eval(updated, 0, false, "[[Rec(*).a]]"));
             Assert.AreEqual(res, "1,2,3,2,1x");
         }
 
@@ -50,7 +51,7 @@ namespace WarewolfParsingTest
             //------------Execute Test---------------------------
             var updated = PublicFunctions.EvalUpdate("[[Rec(1).a]]", env, 0, a => DataStorage.WarewolfAtom.NewDataString("1x"));
             //------------Assert Results-------------------------
-            var res = CommonFunctions.evalResultToString(EvaluationFunctions.eval(updated, 0, "[[Rec(*).a]]"));
+            var res = CommonFunctions.evalResultToString(EvaluationFunctions.eval(updated, 0, false, "[[Rec(*).a]]"));
             Assert.AreEqual(res, "1x,2,3,2");
         }
 
@@ -65,7 +66,7 @@ namespace WarewolfParsingTest
             //------------Execute Test---------------------------
             var updated = PublicFunctions.EvalUpdate("[[x]]", env, 0, a => DataStorage.WarewolfAtom.NewDataString("1x"));
             //------------Assert Results-------------------------
-            var res = CommonFunctions.evalResultToString(EvaluationFunctions.eval(updated, 0, "[[x]]"));
+            var res = CommonFunctions.evalResultToString(EvaluationFunctions.eval(updated, 0, false, "[[x]]"));
             Assert.AreEqual(res, "1x");
         }
 
@@ -81,7 +82,7 @@ namespace WarewolfParsingTest
             //------------Execute Test---------------------------
             var updated = PublicFunctions.EvalUpdate("[[Rec(*)]]", env, 0, a => DataStorage.WarewolfAtom.NewDataString("1x"));
             //------------Assert Results-------------------------
-            var res = CommonFunctions.evalResultToString(EvaluationFunctions.eval(updated, 0, "[[Rec(*)]]"));
+            var res = CommonFunctions.evalResultToString(EvaluationFunctions.eval(updated, 0, false, "[[Rec(*)]]"));
             Assert.AreEqual(res, "1x,1x,1x,1x,1x,1x,1x,1x");
         }
 
@@ -98,7 +99,7 @@ namespace WarewolfParsingTest
             //------------Execute Test---------------------------
             var updated = PublicFunctions.EvalUpdate("12", env, 0, a => DataStorage.WarewolfAtom.NewDataString("1x"));
             //------------Assert Results-------------------------
-            var res = CommonFunctions.evalResultToString(EvaluationFunctions.eval(updated, 0, "[[x]]"));
+            var res = CommonFunctions.evalResultToString(EvaluationFunctions.eval(updated, 0, false, "[[x]]"));
             Assert.AreEqual(res, "1x");
         }
 
@@ -114,7 +115,7 @@ namespace WarewolfParsingTest
             //------------Execute Test---------------------------
             var updated = PublicFunctions.EvalUpdate("[[ressss().a]]", env, 0, a => DataStorage.WarewolfAtom.NewDataString("1x"));
             //------------Assert Results-------------------------
-            var res = CommonFunctions.evalResultToString(EvaluationFunctions.eval(updated, 0, "[[x]]"));
+            var res = CommonFunctions.evalResultToString(EvaluationFunctions.eval(updated, 0, false, "[[x]]"));
             Assert.AreEqual(res, "1x");
         }
 
@@ -129,7 +130,7 @@ namespace WarewolfParsingTest
             //------------Execute Test---------------------------
             var updated = PublicFunctions.EvalUpdate("[[Rec([[x]]).a]]", env, 0, a => DataStorage.WarewolfAtom.NewDataString("1x"));
             //------------Assert Results-------------------------
-            var res = CommonFunctions.evalResultToString(EvaluationFunctions.eval(updated, 0, "[[Rec(*).a]]"));
+            var res = CommonFunctions.evalResultToString(EvaluationFunctions.eval(updated, 0, false, "[[Rec(*).a]]"));
             Assert.AreEqual(res, "1x,2,3,2");
         }
 
@@ -144,7 +145,7 @@ namespace WarewolfParsingTest
             //------------Execute Test---------------------------
             var updated = PublicFunctions.EvalUpdate("[[[[r]]]]", env, 0, a => DataStorage.WarewolfAtom.NewDataString("1x"));
             //------------Assert Results-------------------------
-            var res = CommonFunctions.evalResultToString(EvaluationFunctions.eval(updated, 0, "[[s]]"));
+            var res = CommonFunctions.evalResultToString(EvaluationFunctions.eval(updated, 0, false, "[[s]]"));
             Assert.AreEqual(res, "1x");
         }
 
@@ -162,7 +163,7 @@ namespace WarewolfParsingTest
             var updated = PublicFunctions.EvalUpdate("[[s]]", env, 0, a => DataStorage.WarewolfAtom.NewDataString("[[s]]"));
             updated = PublicFunctions.EvalUpdate("[[[[s]]]]", updated, 0, a => DataStorage.WarewolfAtom.NewDataString("e"));
             //------------Assert Results-------------------------
-            var res = CommonFunctions.evalResultToString(EvaluationFunctions.eval(updated, 0, "[[s]]"));
+            var res = CommonFunctions.evalResultToString(EvaluationFunctions.eval(updated, 0, false, "[[s]]"));
             Assert.AreEqual(res, "e");
         }
         public static DataStorage.WarewolfEnvironment CreateEnvironmentWithData()

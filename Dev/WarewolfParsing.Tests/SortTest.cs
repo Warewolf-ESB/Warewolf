@@ -20,7 +20,7 @@ namespace WarewolfParsingTest
            var env2 = Sort.sortRecset("[[Rec(*).a]]", false, 0, env);
             //------------Assert Results-------------------------
 
-           var res = CommonFunctions.evalResultToString(EvaluationFunctions.eval(env2, 0, "[[Rec(*).a]]"));
+           var res = CommonFunctions.evalResultToString(EvaluationFunctions.eval(env2, 0, false, "[[Rec(*).a]]"));
 
             Assert.AreEqual("1,2,2,3",res);
         }
@@ -36,7 +36,7 @@ namespace WarewolfParsingTest
             var env2 = Sort.sortRecset("[[Rec(*).a]]", true, 0, env);
             //------------Assert Results-------------------------
 
-            var res = CommonFunctions.evalResultToString( EvaluationFunctions.eval(env2, 0, "[[Rec(*).a]]"));
+            var res = CommonFunctions.evalResultToString( EvaluationFunctions.eval(env2, 0, false, "[[Rec(*).a]]"));
 
             Assert.AreEqual("3,2,2,1", res);
         }
