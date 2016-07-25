@@ -9,10 +9,13 @@
 */
 
 using System;
+using System.Linq;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Runtime.ServiceModel.Esb.Brokers.ComPlugin;
 using DummyNamespaceForTest;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+// ReSharper disable InconsistentNaming
 
 namespace Dev2.Tests.Runtime.ESB.ComPlugin
 {
@@ -72,35 +75,30 @@ namespace Dev2.Tests.Runtime.ESB.ComPlugin
                 Assert.IsTrue(result.Count > 0);
             }            
         }
+       
+
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        [TestCategory("PluginServiceExecutionFactory_InvokePlugin")]
-        public void PluginRuntimeHandler_InvokePlugin_WhenValidDll_ExpectValidResults()
+        public void ListMethods_GivenAdodbConnection_ShouldContainOpen()
         {
-           /* //------------Setup for test--------------------------
-            var source = CreatePluginSource();
-            var svc = CreatePluginService();
-                     
+            //---------------Set up test pack-------------------
+            const string adodbConGuid = "00000514-0000-0010-8000-00AA006D2EA4";
+            //---------------Assert Precondition----------------
+            //---------------Execute Test ----------------------
+            var ns = ComPluginServiceExecutionFactory.GetNamespaces(new ComPluginSource { ClsId = adodbConGuid });
+            Assert.IsNotNull(ns);
             
-
-            //------------Execute Test---------------------------
-            using (Isolated<PluginRuntimeHandler> isolated = new Isolated<PluginRuntimeHandler>())
-            {
-                ComPluginInvokeArgs args = new ComPluginInvokeArgs { ClsId = source.ClsId, AssemblyName = "Foo", Fullname = svc.Namespace, Method = svc.Method.Name, Parameters = svc.Method.Parameters };
-                var result = ComPluginServiceExecutionFactory.InvokeComPlugin(args);
-                var castResult = JsonConvert.DeserializeObject(result.ToString()) as dynamic;
-                //------------Assert Results-------------------------
-                if (castResult != null)
-                {
-                    StringAssert.Contains(castResult.Name.ToString(), "test data");
-                }
-                else
-                {
-                    Assert.Fail("Failed Conversion for Assert");
-                }
-            }  */
-            
+            var result = ComPluginServiceExecutionFactory.GetMethods(adodbConGuid);
+            //            using (Isolated<ComPluginRuntimeHandler> isolated = new Isolated<ComPluginRuntimeHandler>())
+            //            {
+            //                result.AddRange(isolated.Value.ListMethods(adodbConGuid));
+            //               
+            //            }
+            //------------Assert Results-------------------------
+            var openMethod = result.First(method => method.Name.ToUpper() == "open".ToUpper());
+            //---------------Test Result -----------------------
+            Assert.IsNotNull(openMethod);
         }
 
         #region Helper Methods

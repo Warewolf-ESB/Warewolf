@@ -22,7 +22,6 @@ namespace Dev2.CustomControls.Progress
 
     public interface IProgressNotifier
     {
-        void StartCancel();
         void Show();
         void Close();
         void StatusChanged(string fileName, int progressPercent, long totalBytes);
