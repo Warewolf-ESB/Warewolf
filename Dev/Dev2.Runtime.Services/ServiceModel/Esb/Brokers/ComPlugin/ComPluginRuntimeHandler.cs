@@ -232,18 +232,18 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.ComPlugin
         /// <summary>
         /// Reads the namespaces.
         /// </summary>
-        /// <param name="assemblyLocation">The assembly location.</param>
+        /// <param name="clsId">The assembly location.</param>
         /// <returns></returns>
-        private IEnumerable<NamespaceItem> ReadNamespaces(string assemblyLocation)
+        private IEnumerable<NamespaceItem> ReadNamespaces(string clsId)
         {
             try
             {
                 var result = new List<NamespaceItem>();
-                var list = ListNamespaces(assemblyLocation);
+                var list = ListNamespaces(clsId);
                 list.ForEach(fullName =>
                     result.Add(new NamespaceItem
                     {
-                        AssemblyLocation = assemblyLocation,
+                        AssemblyLocation = clsId,
                         FullName = fullName,
                         AssemblyName = fullName
                     }));

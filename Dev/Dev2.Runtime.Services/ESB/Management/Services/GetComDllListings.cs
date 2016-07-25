@@ -12,7 +12,7 @@ using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
 using Dev2.Workspaces;
 using Microsoft.Win32;
-
+//http://procbits.com/2010/11/08/get-all-progid-on-system-for-com-automation
 namespace Dev2.Runtime.ESB.Management.Services
 {
     [SuppressMessage("ReSharper", "UnusedMember.Global")]
@@ -40,39 +40,61 @@ namespace Dev2.Runtime.ESB.Management.Services
             var msg = new ExecuteMessage();
             var serializer = new Dev2JsonSerializer();
             Dev2Logger.Info("Get COMDll Listings");
-            var regClis = Registry.ClassesRoot.OpenSubKey("CLSID");
             List<DllListing> dllListings = new List<DllListing>();
             try
             {
+                var regClis = Registry.ClassesRoot.OpenSubKey("CLSID");
+
                 if (regClis != null)
                 {
                     foreach (var clsid in regClis.GetSubKeyNames())
                     {
                         var regClsidKey = regClis.OpenSubKey(clsid);
-                        var progID = regClsidKey?.OpenSubKey("ProgID");
-                        Guid g;
-                        var tryParse = Guid.TryParse(clsid, out g);
-                        if (tryParse)
+                        if (regClsidKey != null)
                         {
-                            if (dllListings.Exists(listing => listing.ClsId == clsid)) continue;
-                            var typeFromClsid = Type.GetTypeFromCLSID(g);
-                            if (!typeFromClsid.IsVisible) continue;
-                            var progId = progID?.GetValue("").ToString();
-                            dllListings.Add(new DllListing
+                            var progID = regClsidKey.OpenSubKey("ProgID");
+                            var regPath = regClsidKey.OpenSubKey("InprocServer32") ?? regClsidKey.OpenSubKey("LocalServer32");
+
+                            if (regPath != null && progID != null)
                             {
-                                Name = typeFromClsid.Name,
-                                FullName = typeFromClsid.FullName,
-                                Children = new List<IFileListing>(),
-                                IsDirectory = false,
-                                ClsId = clsid,
-                                ProgId = progId
-                            });
+                                var pid = progID.GetValue("");
+                                regPath.Close();
+
+                                try
+                                {
+                                    if (pid != null)
+                                    {
+                                        var typeFromProgID = Type.GetTypeFromProgID(pid.ToString());
+                                        if (typeFromProgID == null) continue;
+                                        dllListings.Add(new DllListing
+                                        {
+                                            ClsId = clsid,
+                                            ProgId = pid.ToString(),
+                                            Name = typeFromProgID.Name,
+                                            IsDirectory = false,
+                                            FullName = typeFromProgID.FullName,
+                                            Children = new IFileListing[0]
+                                        });
+                                    }
+                                }
+                                catch (Exception e)
+                                {
+                                    //Assert.Fail(e.Message);
+                                    Dev2Logger.Error("GetComDllListingsService-Execute", e);
+                                }
+                            }
+
                         }
 
-                        msg.HasError = false;
-                        msg.Message = serializer.SerializeToBuilder(dllListings.OrderBy(listing => listing.Name));
+
+                        regClsidKey?.Close();
                     }
+
+                    regClis.Close();
                 }
+
+                dllListings = dllListings.OrderBy(listing => listing.ProgId).ToList();
+                msg.Message = serializer.SerializeToBuilder(dllListings);
             }
 
             catch (COMException ex)

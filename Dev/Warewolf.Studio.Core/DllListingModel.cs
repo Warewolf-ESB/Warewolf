@@ -292,27 +292,58 @@ namespace Warewolf.Studio.Core
 
         public void Filter(string searchTerm)
         {
-            _filter = searchTerm;
-            if (_children != null)
+            if (!_isCom)
             {
-                foreach (var dllListing in _children)
+                _filter = searchTerm;
+
+                if (_children != null)
                 {
-                    var dllListingModel = dllListing;
-                    dllListingModel.Filter(searchTerm);
+                    foreach (var dllListing in _children)
+                    {
+                        var dllListingModel = dllListing;
+                        dllListingModel.Filter(searchTerm);
+                    }
                 }
-            }
-            if (string.IsNullOrEmpty(searchTerm) || Name == "FileSystem" || Name == "GAC" ||
-                (_children != null && _children.Count > 0 &&
-                 _children.Any(model => model.IsVisible)))
-            {
-                IsVisible = true;
+                if (string.IsNullOrEmpty(searchTerm) || Name == "FileSystem" || Name == "GAC" ||
+                    (_children != null && _children.Count > 0 &&
+                     _children.Any(model => model.IsVisible)))
+                {
+                    IsVisible = true;
+                }
+                else
+                {
+                    IsVisible = Name.ToLowerInvariant().Contains(searchTerm.ToLowerInvariant());
+                }
+
+                OnPropertyChanged(() => Children);
             }
             else
-            {
-                IsVisible = Name.ToLowerInvariant().Contains(searchTerm.ToLowerInvariant());
-            }
 
-            OnPropertyChanged(() => Children);
+            {
+                _filter = searchTerm;
+                if (_children != null)
+                {
+                    foreach (var dllListing in _children)
+                    {
+                        var dllListingModel = dllListing;
+                        dllListingModel.Filter(searchTerm);
+                    }
+                }
+                if (string.IsNullOrEmpty(searchTerm) || Name == "FileSystem" || Name == "GAC" ||
+                    (_children != null && _children.Count > 0 &&
+                     _children.Any(model => model.IsVisible)))
+                {
+                    IsVisible = true;
+                }
+                else
+                {
+                    IsVisible = Name.ToLowerInvariant().Contains(searchTerm.ToLowerInvariant());
+                }
+
+                OnPropertyChanged(() => Children);
+            }
+                
+            
         }
 
         public bool IsVisible
