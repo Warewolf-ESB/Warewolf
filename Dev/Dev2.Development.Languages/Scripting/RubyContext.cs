@@ -38,10 +38,10 @@ namespace Dev2.Development.Languages.Scripting
         }    
 
         public string Execute(string scriptValue)
-        {            
+        {
             string rubyFunc = @"def __result__();" + scriptValue + "end; public :__result__";
             ScriptSource source = _rubyEngine.CreateScriptSourceFromString(rubyFunc, SourceCodeKind.Statements);
-
+            
             //create a scope to act as the context for the code
             ScriptScope scope = _rubyEngine.CreateScope();
 

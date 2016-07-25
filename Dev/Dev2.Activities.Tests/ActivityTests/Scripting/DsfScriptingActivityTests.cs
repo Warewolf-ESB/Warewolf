@@ -8,13 +8,18 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using System;
 using ActivityUnitTests;
 using Dev2.Activities;
 using Dev2.Common.Interfaces.Enums;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Activities.Statements;
 using System.Collections.Generic;
+using System.IO;
+using System.Reflection;
+using System.Text;
 using Dev2.Interfaces;
+using Moq;
 
 namespace Dev2.Tests.Activities.ActivityTests.Scripting
 {
@@ -24,18 +29,87 @@ namespace Dev2.Tests.Activities.ActivityTests.Scripting
     [TestClass]
     public class DsfScriptingActivityTests : BaseActivityUnitTest
     {
+        private static string GetTepFile()
+        {
+            var codeBase = Assembly.GetExecutingAssembly().Location;
+            var directoryName = Path.GetDirectoryName(codeBase);
+            return directoryName + "\\a.js";
+       }
+        
         /// <summary>
         ///Gets or sets the test context which provides
         ///information about and functionality for the current test run.
         ///</summary>
         public TestContext TestContext { get; set; }
+        [ClassInitialize]
+        public static void Init(TestContext context)
+        {
+            try
+            {
+
+                File.WriteAllBytes(GetTepFile(), Encoding.ASCII.GetBytes(@"if (!String.prototype.endsWith) {
+  String.prototype.endsWith = function(searchString, position) {
+                    var subjectString = this.toString();
+                    if (typeof position !== 'number' || !isFinite(position) || Math.floor(position) !== position || position > subjectString.length)
+                    {
+                        position = subjectString.length;
+                    }
+                    position -= searchString.length;
+                    var lastIndex = subjectString.indexOf(searchString, position);
+                    return lastIndex !== -1 && lastIndex === position;
+                };
+            }
+
+
+"));
+            }
+            catch (Exception ex)
+            {
+                //supress exceptio
+                Assert.Fail(ex.Message);
+            }
+        }
+        [ClassCleanup]
+        public static void Cleaner()
+        {
+            try
+            {
+                File.Delete(GetTepFile());
+            }
+            catch (Exception)
+            {
+                //supress exceptio
+            }
+        }
 
         #region JavaScript
 
         #region Should execute valid javascript
 
         [TestMethod]
-        public void GivenAnEscapeCharInString_ExecuteWithEscapeCharectersInVariable_Javascript_ShouldReturnGivenString()
+        public void GivenExternalFile_Execute_Javascript_ShouldExecuteExternalFunction()
+        {
+            var activity = new DsfScriptingActivity();
+            Assert.IsNotNull(activity);
+            activity.IncludeFile = GetTepFile();
+            activity.Script = "return \"someValue\".endsWith(\"e\")";
+            var dev2Activity = activity.Execute(DataObject, 0);            
+            Assert.AreEqual(0, DataObject.Environment.Errors.Count);
+        }
+        
+
+        [TestMethod]
+        public void GivenFunctionNotInExternalFile_Execute_Javascript_ShouldNotExecuteFunction()
+        {
+            var activity = new DsfScriptingActivity();
+            Assert.IsNotNull(activity);
+            activity.Script = "return \"someValue\".endsWith(\"e\")";
+            activity.Execute(DataObject, 0);
+            Assert.AreEqual(1, DataObject.Environment.Errors.Count);
+        }
+
+        [TestMethod]
+        public void GivenAnEscapeCharInString_ExecuteWithEscapeCharecters_Javascript_ShouldReturnGivenString()
         {
             SetupArguments("<DataList><testScript>\"C:\test\"</testScript><Result></Result></DataList>", "<DataList><testScript/><Result/></DataList>", "[[Result]]",
                             "return [[testScript]]", enScriptType.JavaScript, true);
@@ -77,7 +151,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Scripting
                 Assert.Fail("The following errors occurred while retrieving datalist items\r\nerrors:{0}", error);
             }
         }
-        
+
         [TestMethod]
         public void ExecuteWithValidJavascriptExpectedCorrectResultReturned()
         {
@@ -461,7 +535,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Scripting
         {
             TestStartNode = new FlowStep
             {
-                Action = new DsfScriptingActivity { Result = result, Script = script, ScriptType = type, EscapeScript = escape}
+                Action = new DsfScriptingActivity { Result = result, Script = script, ScriptType = type, EscapeScript = escape }
             };
 
             CurrentDl = testData;
