@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Dev2.Common.Interfaces;
@@ -31,6 +32,7 @@ namespace Dev2.Studio.Core.Interfaces
         void UpdateWorkspace();
         void DeployResource(IResourceModel resource);
         ExecuteMessage DeleteResource(IResourceModel resource);
+        [SuppressMessage("ReSharper", "UnusedMember.Global")]
         void Add(IResourceModel resource);
         void ForceLoad();
 
@@ -52,6 +54,7 @@ namespace Dev2.Studio.Core.Interfaces
         bool HasDependencies(IContextualResourceModel resourceModel);
         ExecuteMessage StopExecution(IContextualResourceModel resourceModel);
         ICollection<IResourceModel> All();
+        [SuppressMessage("ReSharper", "UnusedMember.Global")]
         ICollection<IResourceModel> Find(Expression<Func<IResourceModel, bool>> expression);
         IResourceModel FindSingle(Expression<Func<IResourceModel, bool>> expression, bool fetchDefinition = false, bool prepairForDeployment = false);
         ExecuteMessage Save(IResourceModel instanceObj);
