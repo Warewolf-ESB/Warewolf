@@ -22,8 +22,8 @@ namespace Warewolf.UITests
 
     public partial class UIMap
     {
-        private int _lenientSearchTimeout = 5000;
-        private int _lenientMaximumRetryCount = 5;
+        private int _lenientSearchTimeout = 3000;
+        private int _lenientMaximumRetryCount = 3;
         private int _strictSearchTimeout = 1000;
         private int _strictMaximumRetryCount = 1;
 
@@ -64,6 +64,8 @@ namespace Warewolf.UITests
                     }
                     if (parent != null && parent.Exists && parent != MainStudioWindow)
                     {
+                        Console.WriteLine("Search actually failed at: " + parent.FriendlyName);
+                        parent.SearchProperties.ToList().ForEach(prop => { Console.WriteLine(prop.PropertyName + ": \"" + prop.PropertyValue + "\""); });
                         parent.DrawHighlight();
                         e.Result = PlaybackErrorOptions.Retry;
                         return;
@@ -127,13 +129,17 @@ namespace Warewolf.UITests
             Click_New_Workflow_Ribbon_Button();
         }
 
-        public void CleanupWorkflow()
+        public void CleanupABlankWorkflow()
         {
             try
             {
+                if (MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox.Text != string.Empty)
+                {
+                    Click_Clear_Toolbox_Filter_Clear_Button();
+                }
                 if (MainStudioWindow.DockManager.SplitPaneLeft.Explorer.SearchTextBox.Text != string.Empty)
                 {
-                    Click_Clear_Toolbox_Filter_Button();
+                    Click_Explorer_Filter_Clear_Button();
                 }
                 Click_Close_Workflow_Tab_Button();
                 Click_MessageBox_No();
@@ -193,10 +199,10 @@ namespace Warewolf.UITests
             {
                 Playback.PlaybackSettings.MaximumRetryCount = _strictMaximumRetryCount * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
                 Playback.PlaybackSettings.SearchTimeout = _strictSearchTimeout * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
-                var cancelButton = SaveDialogWindow.CancelButton;
+                var cancelButton = SaveDialogWindow.CancelButton.Exists;
                 Playback.PlaybackSettings.MaximumRetryCount = _lenientMaximumRetryCount * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
                 Playback.PlaybackSettings.SearchTimeout = _lenientSearchTimeout * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
-                if (cancelButton.Exists)
+                if (cancelButton)
                 {
                     Click_SaveDialog_CancelButton();
                 }
@@ -218,10 +224,10 @@ namespace Warewolf.UITests
                 }
                 Playback.PlaybackSettings.MaximumRetryCount = _strictMaximumRetryCount * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
                 Playback.PlaybackSettings.SearchTimeout = _strictSearchTimeout * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
-                var wpfTreeItem = MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem;
+                var wpfTreeItem = MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.Exists;
                 Playback.PlaybackSettings.MaximumRetryCount = _lenientMaximumRetryCount * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
                 Playback.PlaybackSettings.SearchTimeout = _lenientSearchTimeout * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
-                if (wpfTreeItem.Exists)
+                if (wpfTreeItem)
                 {
                     RightClick_Explorer_Localhost_First_Item();
                     Select_Delete_FromExplorerContextMenu();
@@ -241,10 +247,10 @@ namespace Warewolf.UITests
             {
                 Playback.PlaybackSettings.MaximumRetryCount = _strictMaximumRetryCount * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
                 Playback.PlaybackSettings.SearchTimeout = _strictSearchTimeout * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
-                var selectedItemAsTstciremoteConnected = MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.SelectedItemAsTSTCIREMOTEConnected;
+                var selectedItemAsTstciremoteConnected = MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.SelectedItemAsTSTCIREMOTEConnected.Exists;
                 Playback.PlaybackSettings.MaximumRetryCount = _lenientMaximumRetryCount * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
                 Playback.PlaybackSettings.SearchTimeout = _lenientSearchTimeout * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
-                if (selectedItemAsTstciremoteConnected.Exists)
+                if (selectedItemAsTstciremoteConnected)
                 {
                     Click_Explorer_RemoteServer_Connect_Button();
                 }
@@ -253,10 +259,10 @@ namespace Warewolf.UITests
                     Click_Connect_Control_InExplorer();
                     Playback.PlaybackSettings.MaximumRetryCount = _strictMaximumRetryCount * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
                     Playback.PlaybackSettings.SearchTimeout = _strictSearchTimeout * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
-                    var comboboxListItemAsTstciremoteConnected = MainStudioWindow.ComboboxListItemAsTSTCIREMOTEConnected;
+                    var comboboxListItemAsTstciremoteConnected = MainStudioWindow.ComboboxListItemAsTSTCIREMOTEConnected.Exists;
                     Playback.PlaybackSettings.MaximumRetryCount = _lenientMaximumRetryCount * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
                     Playback.PlaybackSettings.SearchTimeout = _lenientSearchTimeout * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
-                    if (comboboxListItemAsTstciremoteConnected.Exists)
+                    if (comboboxListItemAsTstciremoteConnected)
                     {
                         Select_TSTCIREMOTEConnected_From_Explorer_Remote_Server_Dropdown_List();
                         Click_Explorer_RemoteServer_Connect_Button();
@@ -267,10 +273,10 @@ namespace Warewolf.UITests
                 WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);
                 Playback.PlaybackSettings.MaximumRetryCount = _strictMaximumRetryCount * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
                 Playback.PlaybackSettings.SearchTimeout = _strictSearchTimeout * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
-                var wpfTreeItem = MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem;
+                var wpfTreeItem = MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.Exists;
                 Playback.PlaybackSettings.MaximumRetryCount = _lenientMaximumRetryCount * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
                 Playback.PlaybackSettings.SearchTimeout = _lenientSearchTimeout * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
-                if (wpfTreeItem.Exists)
+                if (wpfTreeItem)
                 {
                     RightClick_Explorer_Localhost_First_Item();
                     Select_Delete_FromExplorerContextMenu();
@@ -293,10 +299,10 @@ namespace Warewolf.UITests
                 WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);
                 Playback.PlaybackSettings.MaximumRetryCount = _strictMaximumRetryCount * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
                 Playback.PlaybackSettings.SearchTimeout = _strictSearchTimeout * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
-                var wpfTreeItem = MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem;
+                var wpfTreeItem = MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.Exists;
                 Playback.PlaybackSettings.MaximumRetryCount = _lenientMaximumRetryCount * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
                 Playback.PlaybackSettings.SearchTimeout = _lenientSearchTimeout * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
-                if (wpfTreeItem.Exists)
+                if (wpfTreeItem)
                 {
                     RightClick_Explorer_Localhost_First_Item();
                     Select_Delete_FromExplorerContextMenu();
@@ -317,10 +323,10 @@ namespace Warewolf.UITests
             {
                 Playback.PlaybackSettings.MaximumRetryCount = _strictMaximumRetryCount * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
                 Playback.PlaybackSettings.SearchTimeout = _strictSearchTimeout * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
-                var selectWindowsGroupDialog = SelectWindowsGroupDialog;
+                var selectWindowsGroupDialog = SelectWindowsGroupDialog.Exists;
                 Playback.PlaybackSettings.MaximumRetryCount = _lenientMaximumRetryCount * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
                 Playback.PlaybackSettings.SearchTimeout = _lenientSearchTimeout * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
-                if (selectWindowsGroupDialog.Exists)
+                if (selectWindowsGroupDialog)
                 {
                     Click_Select_Windows_Group_Cancel_Button();
                 }
@@ -396,9 +402,19 @@ namespace Warewolf.UITests
 
         public void TryCloseAllTabs()
         {
+            Playback.PlaybackSettings.MaximumRetryCount = _strictMaximumRetryCount * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
+            Playback.PlaybackSettings.SearchTimeout = _strictSearchTimeout * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
+            var workflowTabCloseButtonExists = MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.CloseButton.Exists;
+            var settingsTabCloseButtonExists = MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.CloseButton.Exists;
+            var serverSourceWizardTabCloseButtonExists = MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.ServerSourceWizardTab.TabCloseButton.Exists;
+            Playback.PlaybackSettings.MaximumRetryCount = _lenientMaximumRetryCount * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
+            Playback.PlaybackSettings.SearchTimeout = _lenientSearchTimeout * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
+            while (workflowTabCloseButtonExists || settingsTabCloseButtonExists || serverSourceWizardTabCloseButtonExists)
+            {
                 TryCloseWorkflowTab();
                 TryCloseSettingsTab();
                 TryCloseServerSourceWizardTab();
+            }
         }
 
         private void TryCloseWorkflowTab()
@@ -407,19 +423,19 @@ namespace Warewolf.UITests
             {
                 Playback.PlaybackSettings.MaximumRetryCount = _strictMaximumRetryCount * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
                 Playback.PlaybackSettings.SearchTimeout = _strictSearchTimeout * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
-                var workflowTabCloseButton = MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.CloseButton;
+                var workflowTabCloseButton = MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.CloseButton.Exists;
                 Playback.PlaybackSettings.MaximumRetryCount = _lenientMaximumRetryCount * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
                 Playback.PlaybackSettings.SearchTimeout = _lenientSearchTimeout * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
-                if(workflowTabCloseButton.Exists)
+                if(workflowTabCloseButton)
                 {
                     Click_Close_Workflow_Tab_Button();
                 }
                 Playback.PlaybackSettings.MaximumRetryCount = _strictMaximumRetryCount * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
                 Playback.PlaybackSettings.SearchTimeout = _strictSearchTimeout * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
-                var messageBoxNoButton = MessageBoxWindow.NoButton;
+                var messageBoxNoButton = MessageBoxWindow.NoButton.Exists;
                 Playback.PlaybackSettings.MaximumRetryCount = _lenientMaximumRetryCount * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
                 Playback.PlaybackSettings.SearchTimeout = _lenientSearchTimeout * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
-                if(messageBoxNoButton.Exists)
+                if(messageBoxNoButton)
                 {
                     Click_MessageBox_No();
                 }
@@ -436,19 +452,19 @@ namespace Warewolf.UITests
             {
                 Playback.PlaybackSettings.MaximumRetryCount = _strictMaximumRetryCount * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
                 Playback.PlaybackSettings.SearchTimeout = _strictSearchTimeout * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
-                var settingsTabCloseButton = MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab;
+                var settingsTabCloseButton = MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.Exists;
                 Playback.PlaybackSettings.MaximumRetryCount = _lenientMaximumRetryCount * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
                 Playback.PlaybackSettings.SearchTimeout = _lenientSearchTimeout * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
-                if(settingsTabCloseButton.Exists)
+                if(settingsTabCloseButton)
                 {
                     Click_Close_Settings_Tab_Button();
                 }
                 Playback.PlaybackSettings.MaximumRetryCount = _strictMaximumRetryCount * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
                 Playback.PlaybackSettings.SearchTimeout = _strictSearchTimeout * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
-                var messageBoxNoButton = MessageBoxWindow.NoButton;
+                var messageBoxNoButton = MessageBoxWindow.NoButton.Exists;
                 Playback.PlaybackSettings.MaximumRetryCount = _lenientMaximumRetryCount * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
                 Playback.PlaybackSettings.SearchTimeout = _lenientSearchTimeout * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
-                if(messageBoxNoButton.Exists)
+                if(messageBoxNoButton)
                 {
                     Click_MessageBox_No();
                 }
@@ -465,19 +481,19 @@ namespace Warewolf.UITests
             {
                 Playback.PlaybackSettings.MaximumRetryCount = _strictMaximumRetryCount * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
                 Playback.PlaybackSettings.SearchTimeout = _strictSearchTimeout * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
-                var serverSourceWizardTabCloseButton = MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.ServerSourceWizardTab.TabCloseButton;
+                var serverSourceWizardTabCloseButton = MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.ServerSourceWizardTab.TabCloseButton.Exists;
                 Playback.PlaybackSettings.MaximumRetryCount = _lenientMaximumRetryCount * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
                 Playback.PlaybackSettings.SearchTimeout = _lenientSearchTimeout * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
-                if(serverSourceWizardTabCloseButton.Exists)
+                if(serverSourceWizardTabCloseButton)
                 {
                     Click_Close_Server_Source_Wizard_Tab_Button();
                 }
                 Playback.PlaybackSettings.MaximumRetryCount = _strictMaximumRetryCount * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
                 Playback.PlaybackSettings.SearchTimeout = _strictSearchTimeout * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
-                var messageBoxNoButton = MessageBoxWindow.NoButton;
+                var messageBoxNoButton = MessageBoxWindow.NoButton.Exists;
                 Playback.PlaybackSettings.MaximumRetryCount = _lenientMaximumRetryCount * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
                 Playback.PlaybackSettings.SearchTimeout = _lenientSearchTimeout * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
-                if(messageBoxNoButton.Exists)
+                if(messageBoxNoButton)
                 {
                     Click_MessageBox_No();
                 }
@@ -494,7 +510,7 @@ namespace Warewolf.UITests
             {
                 var point = new Point();
                 return !control.TryGetClickablePoint(out point);
-            }, Playback.PlaybackSettings.SearchTimeout);
+            }, 60000 * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString()));
         }
     }
 }

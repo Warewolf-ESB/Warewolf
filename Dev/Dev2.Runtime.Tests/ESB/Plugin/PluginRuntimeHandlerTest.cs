@@ -33,7 +33,7 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
         ///Gets or sets the test context which provides
         ///information about and functionality for the current test run.
         ///</summary>
-        // ReSharper disable once UnusedMember.Global
+        [SuppressMessage("ReSharper", "UnusedMember.Global")]
         public TestContext TestContext { get; set; }
 
         #region FetchNamespaceListObject

@@ -3,6 +3,7 @@ using System.Activities.Presentation.Model;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
@@ -432,7 +433,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
 
         #endregion
 
-        // ReSharper disable once UnusedMember.Global
+        [SuppressMessage("ReSharper", "UnusedMember.Global")]
         protected virtual void OnSomethingChanged(IToolRegion args)
         {
             var handler = SomethingChanged;
@@ -442,7 +443,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
             }
         }
 
-        // ReSharper disable once UnusedMember.Global
+        [SuppressMessage("ReSharper", "UnusedMember.Global")]
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             var handler = PropertyChanged;

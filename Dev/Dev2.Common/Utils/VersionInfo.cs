@@ -9,6 +9,7 @@
 */
 
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using Vestris.ResourceLib;
 
@@ -18,16 +19,26 @@ namespace Dev2.Studio.Utils
 {
     public static class VersionInfo
     {
+        [SuppressMessage("ReSharper", "UnusedMember.Global")]
+        public static string FetchVersionInfo()
+        {
+            var versionResource = GetVersionResource();
+            return versionResource.FileVersion;
+        }
+
         public static Version FetchVersionInfoAsVersion()
+        {
+            var versionResource = GetVersionResource();
+            return new Version(versionResource.FileVersion);
+        }
+
+        private static VersionResource GetVersionResource()
         {
             Assembly asm = Assembly.GetExecutingAssembly();
             var versionResource = new VersionResource();
             string fileName = asm.Location;
             versionResource.LoadFrom(fileName);
-
-            var v = new Version(versionResource.FileVersion);
-
-            return v;
+            return versionResource;
         }
     }
 }

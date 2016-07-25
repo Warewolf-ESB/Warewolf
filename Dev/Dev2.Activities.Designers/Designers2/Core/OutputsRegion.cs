@@ -3,6 +3,7 @@ using System.Activities.Presentation.Model;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using Dev2.Common.Interfaces;
@@ -54,7 +55,7 @@ namespace Dev2.Activities.Designers2.Core
             
         }
 
-        // ReSharper disable once UnusedMember.Global
+        [SuppressMessage("ReSharper", "UnusedMember.Global")]
         //Needed for Deserialization
         public OutputsRegion()
         {

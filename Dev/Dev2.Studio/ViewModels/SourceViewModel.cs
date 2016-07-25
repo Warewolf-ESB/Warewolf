@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Windows;
 using Caliburn.Micro;
 using Dev2.Activities.Designers2.Core.Help;
@@ -69,17 +70,14 @@ namespace Dev2.ViewModels
 
 
 
-// ReSharper disable once UnusedMember.Global
+        [SuppressMessage("ReSharper", "UnusedMember.Global")]
         public string ResourceType
         {
             get
             {
-                if (ViewModel != null)
+                if(ViewModel?.Image != null)
                 {
-                    if(ViewModel.Image != null)
-                    {
-                        return ViewModel.Image;
-                    }
+                    return ViewModel.Image;
                 }
                 return "Unknown";
             }
@@ -106,7 +104,7 @@ namespace Dev2.ViewModels
                 if (ViewModel.HasChanged)
                 {
                     var result = _popupController.Show(string.Format(StringResources.ItemSource_NotSaved),
-                                          string.Format("Save {0}?", ViewModel.Header.Replace("*", "")),
+                        $"Save {ViewModel.Header.Replace("*", "")}?",
                                           MessageBoxButton.YesNoCancel,
                                           MessageBoxImage.Information, "", false, false, true, false);
 

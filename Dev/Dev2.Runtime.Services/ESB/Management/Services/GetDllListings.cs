@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -15,6 +16,7 @@ using Warewolf.Resource.Errors;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
+    [SuppressMessage("ReSharper", "UnusedMember.Global")]
     public class GetDllListings : IEsbManagementEndpoint
     {
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
@@ -31,7 +33,8 @@ namespace Dev2.Runtime.ESB.Management.Services
                 try
                 {
                     msg.HasError = false;
-                    msg.Message = serializer.SerializeToBuilder(GetDllListing(src));
+                    var fileListings = GetDllListing(src);
+                    msg.Message = serializer.SerializeToBuilder(fileListings);
                 }
                 catch (Exception ex)
                 {

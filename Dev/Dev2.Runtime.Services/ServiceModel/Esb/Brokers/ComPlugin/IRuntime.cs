@@ -8,17 +8,17 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using System.Data;
-using Microsoft.SqlServer.Server;
+using Dev2.Common.Interfaces.Core.Graph;
 
-namespace Warewolf.Sql
+namespace Dev2.Runtime.ServiceModel.Esb.Brokers.ComPlugin
 {
-    public interface ISqlCtx
+    /// <summary>
+    /// Interface for Plugin Invoke
+    /// </summary>
+    public interface IRuntime
     {
-        SqlDataRecord SendStart(DataTable dt);
+        object Run(ComPluginInvokeArgs setupInfo);
 
-        void SendRow(SqlDataRecord dataRecord, object[] items);
-
-        void SendEnd();
+        IOutputDescription Test(ComPluginInvokeArgs setupInfo,out string serializedResult);
     }
 }

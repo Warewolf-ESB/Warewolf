@@ -6121,11 +6121,20 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Your script might contain values like &apos;\t&apos; or &apos;\n&apos; etc which are Escape Sequences. Tick this Box if you want to ignore this or leave it unticked if you want to use them as Escape Sequences..
+        ///   Looks up a localized string similar to Your variables might contain values like &apos;\t&apos; or &apos;\n&apos; etc which are Escape Sequences. Tick this Box if you want to ignore this or leave it unticked if you want to use them as Escape Sequences..
         /// </summary>
         public static string ScriptingHelpEscapeScript {
             get {
                 return ResourceManager.GetString("ScriptingHelpEscapeScript", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to If you want to Point to an external file with code you want to run several times. Instead of writing the same script over and over again, create it and save it with a relevent extension (.js for JavaScript)..
+        /// </summary>
+        public static string ScriptingHelpIncludeFile {
+            get {
+                return ResourceManager.GetString("ScriptingHelpIncludeFile", resourceCulture);
             }
         }
         
@@ -6162,6 +6171,15 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string ScriptingToolTipEscapeScript {
             get {
                 return ResourceManager.GetString("ScriptingToolTipEscapeScript", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This allows you to include .js files as external script sources..
+        /// </summary>
+        public static string ScriptingToolTipIncludeFile {
+            get {
+                return ResourceManager.GetString("ScriptingToolTipIncludeFile", resourceCulture);
             }
         }
         

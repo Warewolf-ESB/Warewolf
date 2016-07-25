@@ -33,7 +33,8 @@ namespace Warewolf.Studio.ViewModels
                 {
                     ToModel();
                 }
-                return Item != null && !Item.Equals(ToModel());
+                var hasChanged = Item != null && !Item.Equals(ToModel());
+                return hasChanged;
             }
         }
 

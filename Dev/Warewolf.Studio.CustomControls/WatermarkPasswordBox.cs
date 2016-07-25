@@ -1,10 +1,11 @@
-﻿using System.Windows;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Windows;
 using System.Windows.Controls;
 // ReSharper disable UnusedMember.Global
 
 namespace Warewolf.Studio.CustomControls
 {
-    // ReSharper disable once UnusedMember.Global
+    [SuppressMessage("ReSharper", "UnusedMember.Global")]
     public class PasswordBoxHelper
     {
         static bool _isInistialised = false;

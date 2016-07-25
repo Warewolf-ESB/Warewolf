@@ -2,6 +2,7 @@
 using System.Activities.Presentation.Model;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Input;
@@ -30,7 +31,7 @@ namespace Dev2.Activities.Designers2.DropBox2016.Delete
         private string _deletePath;
         private string _result;
 
-        // ReSharper disable once UnusedMember.Global
+        [SuppressMessage("ReSharper", "UnusedMember.Global")]
         public DropBoxDeleteViewModel(ModelItem modelItem)
            : this(modelItem, new DropboxSourceManager())
         {
@@ -43,7 +44,6 @@ namespace Dev2.Activities.Designers2.DropBox2016.Delete
             ThumbVisibility = Visibility.Visible;
             EditDropboxSourceCommand = new RelayCommand(o => EditDropBoxSource(), p => IsDropboxSourceSelected);
             NewSourceCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(CreateOAuthSource);
-            // ReSharper disable once VirtualMemberCallInContructor
             // ReSharper disable once VirtualMemberCallInContructor
             Sources = LoadOAuthSources();
             AddTitleBarLargeToggle();
@@ -135,7 +135,12 @@ namespace Dev2.Activities.Designers2.DropBox2016.Delete
 
         public void CreateOAuthSource()
         {
-            CustomContainer.Get<IShellViewModel>().NewDropboxSource(string.Empty);
+            var shellViewModel = CustomContainer.Get<IShellViewModel>();
+            if (shellViewModel == null)
+            {
+                return;
+            }
+            shellViewModel.NewDropboxSource(string.Empty);
             Sources = LoadOAuthSources();
             OnPropertyChanged(@"Sources");
         }

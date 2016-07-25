@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Linq.Expressions;
 using Dev2.Common;
@@ -181,7 +182,7 @@ namespace Dev2.MathOperations
 
         public event EventHandler ItemAdded;
 
-        // ReSharper disable once UnusedMember.Global
+        [SuppressMessage("ReSharper", "UnusedMember.Global")]
         protected void OnItemAdded()
         {
             if (ItemAdded != null)
