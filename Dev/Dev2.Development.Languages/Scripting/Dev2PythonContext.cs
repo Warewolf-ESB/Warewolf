@@ -19,17 +19,31 @@ namespace Dev2.Development.Languages.Scripting
 {
     public class Dev2PythonContext:IScriptingContext
     {
+        private readonly IStringScriptSources _sources;
+
+        /// <summary>Initializes a new instance of the <see cref="T:System.Object" /> class.</summary>
+        public Dev2PythonContext(IStringScriptSources sources)
+        {
+            _sources = sources;
+        }
+
         public string Execute(string scriptValue)
         {
             var pyEng = Python.CreateEngine();
             
-            string pyFunc =  @"def __result__(): " + scriptValue;     
-
+            string pyFunc =  @"def __result__(): " + scriptValue;
+            ScriptScope scope = pyEng.CreateScope();
+            if (_sources != null && _sources.GetFileScriptSources() != null)
+            {
+                foreach (var fileScriptSource in _sources.GetFileScriptSources())
+                {
+                    pyEng.Execute(fileScriptSource.GetReader().ReadToEnd(), scope);
+                }
+            }
             ScriptSource source = pyEng.CreateScriptSourceFromString(pyFunc, SourceCodeKind.Statements);
 
             //create a scope to act as the context for the code
-            ScriptScope scope = pyEng.CreateScope();
-
+          
             //execute the source
             source.Execute(scope);
 
@@ -46,11 +60,7 @@ namespace Dev2.Development.Languages.Scripting
             return string.Empty;
         }
 
-        public void AddScriptSourcesToContext()
-        {
-            throw new NotImplementedException();
-        }
-
+        
         public enScriptType HandlesType()
         {
             return enScriptType.Python;

@@ -19,32 +19,46 @@ using IronRuby;
 using IronRuby.Builtins;
 using Microsoft.Scripting;
 using Microsoft.Scripting.Hosting;
+// ReSharper disable NonLocalizedString
+// ReSharper disable ConvertToConstant.Global
+// ReSharper disable UnusedMember.Global
+// ReSharper disable UnusedAutoPropertyAccessor.Global
+// ReSharper disable MemberCanBePrivate.Global
+// ReSharper disable NotAccessedField.Local
+// ReSharper disable ConvertToAutoProperty
+// ReSharper disable InconsistentNaming
 
 namespace Dev2.Development.Languages.Scripting
 {
     class RubyContext:IScriptingContext
     {
-        #if WIN8
+        private readonly IStringScriptSources _sources;
+#if WIN8
             public static readonly bool IsWin8 = true;
         #else
             public static readonly bool IsWin8 = false;
 #endif
 
-        ScriptEngine _rubyEngine;
-        public RubyContext()
+        public RubyContext(IStringScriptSources sources)
         {
-            _rubyEngine = CreateRubyEngine();
-            AddScriptSourcesToContext();
-        }    
+            _sources = sources;
+            
+        }
 
         public string Execute(string scriptValue)
         {
+            var rubyEngine = CreateRubyEngine();
             string rubyFunc = @"def __result__();" + scriptValue + "end; public :__result__";
-            ScriptSource source = _rubyEngine.CreateScriptSourceFromString(rubyFunc, SourceCodeKind.Statements);
+            ScriptScope scope = rubyEngine.CreateScope();
+            if (_sources?.GetFileScriptSources() != null)
+            {
+                foreach(var fileScriptSource in _sources.GetFileScriptSources())
+                {
+                    rubyEngine.Execute(fileScriptSource.GetReader().ReadToEnd(), scope);
+                }
+            }
+            ScriptSource source = rubyEngine.CreateScriptSourceFromString(rubyFunc, SourceCodeKind.Statements);
             
-            //create a scope to act as the context for the code
-            ScriptScope scope = _rubyEngine.CreateScope();
-
             //execute the source
             source.Execute(scope);
 
@@ -54,12 +68,7 @@ namespace Dev2.Development.Languages.Scripting
             return result.Invoke().ToString();
         }
 
-        public void AddScriptSourcesToContext()
-        {
-            //throw new NotImplementedException();
-        }
-
-        public ScriptEngine CreateRubyEngine()
+        private ScriptEngine CreateRubyEngine()
         {
             var runtimeSetup = ScriptRuntimeSetup.ReadConfiguration();
             var languageSetup = runtimeSetup.AddRubySetup();
@@ -67,7 +76,6 @@ namespace Dev2.Development.Languages.Scripting
             runtimeSetup.PrivateBinding = true;
             runtimeSetup.HostType = typeof(TmpHost);
             runtimeSetup.HostArguments = new object[] { new OptionsAttribute() };
-
             languageSetup.Options["Verbosity"] = 2;
 
             var runtime = Ruby.CreateRuntime(runtimeSetup);
