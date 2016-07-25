@@ -56,7 +56,7 @@ namespace Dev2.Development.Languages.Scripting
 
         public void AddScriptSourcesToContext()
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
         public ScriptEngine CreateRubyEngine()
