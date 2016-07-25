@@ -1949,8 +1949,8 @@ namespace System.Windows.Controls
 #endif
 
             AutoCompleteBox box = (AutoCompleteBox)e.Source;
-            ListBox innerListBox = (ListBox)box.Template.FindName("Selector", box);
-            innerListBox.ScrollIntoView(innerListBox.SelectedItem);
+            ListBox innerListBox = (ListBox)box?.Template?.FindName("Selector", box);
+            innerListBox?.ScrollIntoView(innerListBox.SelectedItem);
 
             RaiseEvent(e);
         }

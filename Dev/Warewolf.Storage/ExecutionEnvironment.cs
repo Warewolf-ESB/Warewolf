@@ -34,11 +34,11 @@ namespace Warewolf.Storage
             AllErrors = new HashSet<string>();
         }
 
-        public CommonFunctions.WarewolfEvalResult Eval(string exp, int update, bool throwsifnotexists = false)
+        public CommonFunctions.WarewolfEvalResult Eval(string exp, int update, bool throwsifnotexists = false,bool shouldEscape=false)
         {
             try
             {
-                return PublicFunctions.EvalEnvExpression(exp, update, _env);
+                return PublicFunctions.EvalEnvExpression(exp, update, shouldEscape, _env);
             }
             catch (IndexOutOfRangeException)
             {
@@ -51,7 +51,7 @@ namespace Warewolf.Storage
             }
         }
 
-        public CommonFunctions.WarewolfEvalResult EvalForJson(string exp)
+        public CommonFunctions.WarewolfEvalResult EvalForJson(string exp,bool shouldEscape=false)
         {
             if (string.IsNullOrEmpty(exp))
             {
@@ -59,7 +59,7 @@ namespace Warewolf.Storage
             }
             try
             {
-                return PublicFunctions.EvalEnvExpression(exp, 0, _env);
+                return PublicFunctions.EvalEnvExpression(exp, 0, shouldEscape, _env);
             }
             catch (IndexOutOfRangeException)
             {

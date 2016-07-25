@@ -22,9 +22,9 @@ namespace Warewolf.Storage
 
         #region Implementation of IExecutionEnvironment
 
-        public CommonFunctions.WarewolfEvalResult Eval(string exp, int update, bool throwsifnotexists = false)
+        public CommonFunctions.WarewolfEvalResult Eval(string exp, int update, bool throwsifnotexists = false,bool shouldEscape=false)
         {
-            return _inner.Eval(UpdateDataSourceWithIterativeValue(_datasource, update, exp), update, throwsifnotexists);
+            return _inner.Eval(UpdateDataSourceWithIterativeValue(_datasource, update, exp), update, throwsifnotexists,shouldEscape);
         }
 
         public CommonFunctions.WarewolfEvalResult EvalStrict(string exp, int update)
@@ -204,9 +204,9 @@ namespace Warewolf.Storage
             _inner.AssignUnique(distinctList, valueList, resList, update);
         }
 
-        public CommonFunctions.WarewolfEvalResult EvalForJson(string exp)
+        public CommonFunctions.WarewolfEvalResult EvalForJson(string exp,bool shouldEscape=false)
         {
-            return _inner.EvalForJson(exp.Replace(_alias, _datasource));
+            return _inner.EvalForJson(exp.Replace(_alias, _datasource), shouldEscape);
         }
 
         public void AddToJsonObjects(string exp, JContainer jContainer)
