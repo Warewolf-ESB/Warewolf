@@ -53,7 +53,8 @@ namespace Dev2.Runtime.ESB.Management.Services
                         if (regClsidKey != null)
                         {
                             var progID = regClsidKey.OpenSubKey("ProgID");
-                            var regPath = regClsidKey.OpenSubKey("InprocServer32") ?? regClsidKey.OpenSubKey("LocalServer32");
+                            var regPath = regClsidKey.OpenSubKey("InprocServer" +
+                                                                 "") ?? regClsidKey.OpenSubKey("LocalServer32");
 
                             if (regPath != null && progID != null)
                             {

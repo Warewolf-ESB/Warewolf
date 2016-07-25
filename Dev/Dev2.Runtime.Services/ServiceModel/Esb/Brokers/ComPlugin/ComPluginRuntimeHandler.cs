@@ -164,13 +164,21 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.ComPlugin
         {
             Guid clasID;
             Guid.TryParse(classId, out clasID);
-            var type = Type.GetTypeFromCLSID(clasID);
+            var is64BitProcess = Environment.Is64BitProcess;
+            if (is64BitProcess)
+            {
+                
+            }
+            var type = Type.GetTypeFromCLSID(clasID, true) ;
             return string.IsNullOrEmpty(classId) ? null : type;
         }
         public ServiceMethodList ListMethods(string classId)
         {
             var serviceMethodList = new ServiceMethodList();
+            classId = classId.Replace("{", "").Replace("}","");
             var type = GetType(classId);
+            var instance = Activator.CreateInstance(type) as System.Runtime.InteropServices.ComTypes.IPersistFile;
+            var methods = instance?.GetType().GetMethods();
             if (type == null) return new ServiceMethodList();
             var methodInfos = type.GetMethods();
 
