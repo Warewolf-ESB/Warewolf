@@ -3255,6 +3255,11 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
+    <SetValueAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox">
+      <ParameterName />
+      <Value Encoded="false">Assign</Value>
+      <Type>String</Type>
+    </SetValueAction>
     <AssertAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.DataTools.MultiAssign">
       <ParameterName />
       <PropertyName>Exists</PropertyName>
@@ -3263,11 +3268,6 @@
       <Type>String</Type>
       <PropertyCondition>AreEqual</PropertyCondition>
     </AssertAction>
-    <SetValueAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox">
-      <ParameterName />
-      <Value Encoded="false">Assign</Value>
-      <Type>String</Type>
-    </SetValueAction>
     <DragDropAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.DataTools.MultiAssign">
       <ParameterName />
       <ModifierKeys>None</ModifierKeys>

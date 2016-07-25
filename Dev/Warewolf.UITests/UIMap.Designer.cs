@@ -2202,18 +2202,18 @@ namespace Warewolf.UITests
         public void Drag_Toolbox_MultiAssign_Onto_DesignSurface()
         {
             #region Variable Declarations
-            WpfListItem multiAssign = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.DataTools.MultiAssign;
             WpfEdit searchTextBox = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox;
+            WpfListItem multiAssign = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.DataTools.MultiAssign;
             WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
             WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
             WpfEdit textbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView.DataGrid.Row1.VariableCell.Listbox.Textbox;
             #endregion
 
-            // Verify that the 'Exists' property of 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item equals 'True'
-            Assert.AreEqual(this.Drag_Toolbox_MultiAssign_Onto_DesignSurfaceParams.MultiAssignExists, multiAssign.Exists, "Toolbox Multiassign does not exist");
-
             // Type 'Assign' in 'SearchTextBox' text box
             searchTextBox.Text = this.Drag_Toolbox_MultiAssign_Onto_DesignSurfaceParams.SearchTextBoxText;
+
+            // Verify that the 'Exists' property of 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item equals 'True'
+            Assert.AreEqual(this.Drag_Toolbox_MultiAssign_Onto_DesignSurfaceParams.MultiAssignExists, multiAssign.Exists, "Toolbox Multiassign does not exist");
 
             // Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
             flowchart.EnsureClickable(new Point(307, 128));
@@ -8735,14 +8735,14 @@ namespace Warewolf.UITests
         
         #region Fields
         /// <summary>
-        /// Verify that the 'Exists' property of 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item equals 'True'
-        /// </summary>
-        public bool MultiAssignExists = true;
-        
-        /// <summary>
         /// Type 'Assign' in 'SearchTextBox' text box
         /// </summary>
         public string SearchTextBoxText = "Assign";
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item equals 'True'
+        /// </summary>
+        public bool MultiAssignExists = true;
         
         /// <summary>
         /// Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
