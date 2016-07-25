@@ -1,11 +1,15 @@
 using System.Collections.Generic;
 using Jurassic;
 
-public class StringScriptSources
-{
-    public static IList<FileScriptSource> FileScriptSources = new List<FileScriptSource>();
+public class StringScriptSources: IStringScriptSources
+{    
+    public IList<FileScriptSource> FileScriptSources { get; }
 
-    public static void AddPaths(string paths)
+    public StringScriptSources()
+    {
+        FileScriptSources = new List<FileScriptSource>();
+    }
+    public void AddPaths(string paths)
     {
         var parts = paths.Split(';');
         foreach (var path in parts)
@@ -14,8 +18,16 @@ public class StringScriptSources
             FileScriptSources.Add(fileScriptSource);
         }
     }
-    public static IList<FileScriptSource> GetFileScriptSources()
+    public IList<FileScriptSource> GetFileScriptSources()
     {
         return FileScriptSources;
     }
+}
+
+public interface IStringScriptSources
+{
+    void AddPaths(string paths);
+    IList<FileScriptSource> GetFileScriptSources();
+
+    IList<FileScriptSource> FileScriptSources { get; }
 }

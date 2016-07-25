@@ -54,6 +54,10 @@
       <Private>True</Private>
       <HintPath>..\packages\FSharp.Core.3.0.0.2\lib\net40\FSharp.Core.dll</HintPath>
     </Reference>
+    <Reference Include="Jurassic, Version=2.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Binaries\Jurassic.dll</HintPath>
+    </Reference>
     <Reference Include="log4net, Version=1.2.15.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
       <HintPath>..\packages\log4net.2.0.5\lib\net45-full\log4net.dll</HintPath>
       <Private>True</Private>
@@ -326,6 +330,10 @@
     <ProjectReference Include="..\Dev2.Data\Dev2.Data.csproj">
       <Project>{4bd0c970-ecd6-470b-b9ee-17ecfe53e5fb}</Project>
       <Name>Dev2.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Development.Languages\Dev2.Development.Languages.csproj">
+      <Project>{33896C15-E182-4C09-BA33-99FF9A8BB44A}</Project>
+      <Name>Dev2.Development.Languages</Name>
     </ProjectReference>
     <ProjectReference Include="..\Dev2.Diagnostics\Dev2.Diagnostics.csproj">
       <Project>{A7D9DA27-F023-4588-AA64-AC2DE44C0B82}</Project>

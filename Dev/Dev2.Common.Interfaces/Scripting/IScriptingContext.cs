@@ -16,7 +16,5 @@ namespace Dev2.Common.Interfaces.Scripting
     public interface IScriptingContext : ISpookyLoadable<enScriptType>
     {
         string Execute(string scriptValue);
-
-        void AddScriptSourcesToContext();
     }
 }
