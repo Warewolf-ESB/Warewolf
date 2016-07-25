@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading;
 using System.Windows;
@@ -439,7 +440,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         }
 
         //This is used in the debug view to open the more link file. This is called Dynamically so shows as unused.
-        // ReSharper disable once UnusedMember.Global
+        [SuppressMessage("ReSharper", "UnusedMember.Global")]
         public void OpenMoreLink(IDebugLineItem item)
         {
             if (_outputViewModelUtil.IsValidLineItem(item)) return;

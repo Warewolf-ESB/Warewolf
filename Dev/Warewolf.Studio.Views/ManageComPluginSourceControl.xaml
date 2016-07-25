@@ -142,7 +142,7 @@
                             </ig:XamDataTree.EditingSettings>
                             <ig:XamDataTree.GlobalNodeLayouts>
                                 <ig:NodeLayout Key="Children"
-                                               DisplayMemberPath="Name"
+                                               DisplayMemberPath="ProgId"
                                                IsExpandedMemberPath="IsExpanded"
                                                IsSelectedMemberPath="IsSelected"
                                                Visibility="{Binding Path=Data.IsVisible, Converter={StaticResource BoolToVisibilityConverter}}">

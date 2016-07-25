@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -14,9 +15,9 @@ using Microsoft.Win32;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
+    [SuppressMessage("ReSharper", "UnusedMember.Global")]
     public class GetComDllListings : IEsbManagementEndpoint
     {
-        private List<KeyValuePair<Guid, Type>> TypesKeyValuePairs { get; set; }
         #region Implementation of ISpookyLoadable<out string>
 
         public string HandlesType()
@@ -39,77 +40,52 @@ namespace Dev2.Runtime.ESB.Management.Services
             var msg = new ExecuteMessage();
             var serializer = new Dev2JsonSerializer();
             Dev2Logger.Info("Get COMDll Listings");
-
-            #region Old Code
-
-            /* StringBuilder dllListing;
-
-            //values.TryGetValue("currentDllListing", out dllListing);
-            //if (dllListing != null)
-            //{
-            //    var src = serializer.Deserialize(dllListing.ToString(), typeof(IFileListing)) as IFileListing;
-            //    try
-            //    {
-            //        //msg.HasError = false;
-            //        //msg.Message = serializer.SerializeToBuilder(GetDllListing(src));
-            //    }
-            //    catch (Exception)
-            //    {
-            //      /*  Dev2Logger.Error(ex);
-            //        msg.HasError = true;
-            //        msg.SetMessage(ex.Message);*/
-            //    }
-            //}*/
-
-            #endregion
-            
-
-            TypesKeyValuePairs = new List<KeyValuePair<Guid, Type>>();
-            using (var openSubKey = Registry.LocalMachine.OpenSubKey(@"Software\Classes\CLSID"))
+            var regClis = Registry.ClassesRoot.OpenSubKey("CLSID");
+            List<DllListing> dllListings = new List<DllListing>();
+            try
             {
-                if (openSubKey != null)
+                if (regClis != null)
                 {
-                    try
+                    foreach (var clsid in regClis.GetSubKeyNames())
                     {
-                        var subKeyNames = openSubKey
-                         .GetSubKeyNames()
-                         .Where(s => !s.StartsWith("."))
-                         .Distinct()
-                         .ToArray();
-                        foreach (var subKeyName in subKeyNames)
+                        var regClsidKey = regClis.OpenSubKey(clsid);
+                        var progID = regClsidKey?.OpenSubKey("ProgID");
+                        Guid g;
+                        var tryParse = Guid.TryParse(clsid, out g);
+                        if (tryParse)
                         {
-                            Guid g;
-                            var tryParse = Guid.TryParse(subKeyName, out g);
-                            if (tryParse)
+                            if (dllListings.Exists(listing => listing.ClsId == clsid)) continue;
+                            var typeFromClsid = Type.GetTypeFromCLSID(g);
+                            if (!typeFromClsid.IsVisible) continue;
+                            var progId = progID?.GetValue("").ToString();
+                            dllListings.Add(new DllListing
                             {
-                                if (TypesKeyValuePairs.Exists(pair => pair.Key == g)) continue;
-                                var typeFromClsid = Type.GetTypeFromCLSID(g);
-                                if (typeFromClsid.IsVisible)
-                                {
-                                    TypesKeyValuePairs.Add(new KeyValuePair<Guid, Type>(g, typeFromClsid));
-                                }
-                            }
+                                Name = typeFromClsid.Name,
+                                FullName = typeFromClsid.FullName,
+                                Children = new List<IFileListing>(),
+                                IsDirectory = false,
+                                ClsId = clsid,
+                                ProgId = progId
+                            });
                         }
-                        var dllListings = TypesKeyValuePairs.Select(p => new DllListing() { Name = p.Value.Name, FullName = p.Value.FullName }).ToList();
+
                         msg.HasError = false;
-                        msg.Message = serializer.SerializeToBuilder(dllListings);
-
+                        msg.Message = serializer.SerializeToBuilder(dllListings.OrderBy(listing => listing.Name));
                     }
-                    catch (COMException ex)
-                    {
-                        Dev2Logger.Error(ex);
-                        msg.HasError = true;
-                        msg.SetMessage(ex.Message);
-                    }
-                    catch (Exception ex)
-                    {
-                        Dev2Logger.Error(ex);
-                        msg.HasError = true;
-                        msg.SetMessage(ex.Message);
-                    }
-
                 }
+            }
 
+            catch (COMException ex)
+            {
+                Dev2Logger.Error(ex);
+                msg.HasError = true;
+                msg.SetMessage(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                Dev2Logger.Error(ex);
+                msg.HasError = true;
+                msg.SetMessage(ex.Message);
             }
 
             return serializer.SerializeToBuilder(msg);

@@ -24,6 +24,7 @@ using System.Activities;
 using System.Collections.Generic;
 using System.Linq;
 using Dev2.Interfaces;
+using Jurassic;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 using Warewolf.Core;
@@ -46,6 +47,10 @@ namespace Dev2.Activities
 
         [Inputs("EscapeScript")]
         public bool EscapeScript { get; set; }
+
+        [FindMissing]
+        [Inputs("IncludeFile")]
+        public string IncludeFile { get; set; }
 
         [FindMissing]
         [Inputs("Script")]
@@ -78,12 +83,12 @@ namespace Dev2.Activities
         protected override void OnExecute(NativeActivityContext context)
         {
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
-
             ExecuteTool(dataObject, 0);
         }
 
         protected override void ExecuteTool(IDSFDataObject dataObject, int update)
         {
+            AddScriptSourcePathsToList();
             ErrorResultTO allErrors = new ErrorResultTO();
             ErrorResultTO errors = new ErrorResultTO();
             allErrors.MergeErrors(errors);
@@ -108,7 +113,6 @@ namespace Dev2.Activities
                     }
 
                     var scriptItr = new WarewolfIterator(dataObject.Environment.Eval(Script, update,false, EscapeScript));
-
                     while (scriptItr.HasMoreData())
                     {
                         var engine = new ScriptingEngineRepo().CreateEngine(ScriptType);
@@ -117,6 +121,7 @@ namespace Dev2.Activities
                         //2013.06.03: Ashley Lewis for bug 9498 - handle multiple regions in result
                         foreach (var region in DataListCleaningUtils.SplitIntoRegions(Result))
                         {
+                            
                             env.Assign(region, value, update);
                             if (dataObject.IsDebugMode() && !allErrors.HasErrors())
                             {
@@ -129,7 +134,7 @@ namespace Dev2.Activities
                     }
                 }
             }
-            catch (Exception e)
+            catch (Exception e) when (e is NullReferenceException || e is RuntimeBinderException)
             {
                 if (e.GetType() == typeof(NullReferenceException) || e.GetType() == typeof(RuntimeBinderException))
                 {
@@ -160,6 +165,19 @@ namespace Dev2.Activities
                     DispatchDebugState(dataObject, StateType.After, update);
                 }
             }
+        }
+
+        private void AddScriptSourcePathsToList()
+        {
+            StringScriptSources.FileScriptSources = new List<FileScriptSource>();
+            if (!string.IsNullOrEmpty(IncludeFile))
+                StringScriptSources.AddPaths(IncludeFile);
+        }
+
+        private string AssignOutPutValue(int update, string value, IExecutionEnvironment env, string region)
+        {
+            env.Assign(region, value, update);
+            return value;
         }
 
         public override void UpdateForEachInputs(IList<Tuple<string, string>> updates)

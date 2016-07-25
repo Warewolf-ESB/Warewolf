@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Activities;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
@@ -53,10 +54,10 @@ namespace Dev2.Activities.Sharepoint
             set;
         }
 
-        // ReSharper disable once UnusedMember.Global
         /// <summary>
         /// Gets or sets the files and folders option.
         /// </summary>
+        [SuppressMessage("ReSharper", "UnusedMember.Global")]
         [Inputs("Files & Folders")]
         [FindMissing]
         public bool IsFilesAndFoldersSelected

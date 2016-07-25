@@ -46,6 +46,11 @@ namespace Dev2.Development.Languages.Scripting
             return string.Empty;
         }
 
+        public void AddScriptSourcesToContext()
+        {
+            throw new NotImplementedException();
+        }
+
         public enScriptType HandlesType()
         {
             return enScriptType.Python;

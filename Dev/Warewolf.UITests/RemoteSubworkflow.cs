@@ -41,6 +41,9 @@ namespace Warewolf.UITests
             Uimap.WaitForSpinner(Uimap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);
             Uimap.Select_TSTCIREMOTE_From_Explorer_Remote_Server_Dropdown_List();
             Uimap.Click_Explorer_RemoteServer_Connect_Button();
+            Uimap.WaitForSpinner(Uimap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.Checkbox.Spinner);
+            Uimap.Enter_Workflow1_Into_Explorer_Filter_Textbox();
+            Uimap.WaitForSpinner(Uimap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.Checkbox.Spinner);
             Uimap.Drag_Explorer_Remote_workflow1_Onto_Workflow_Design_Surface();
             Uimap.Click_Save_Ribbon_Button_to_Open_Save_Dialog();
             Uimap.WaitForSpinner(Uimap.SaveDialogWindow.ExplorerView.ExplorerTree.localhost.Checkbox.Spinner);
@@ -84,7 +87,7 @@ namespace Warewolf.UITests
             Uimap.TryCloseHangingWindowsGroupDialog();
             Uimap.TryRemoveRemoteServerUITestWorkflowFromExplorer();
             Uimap.TryDisconnectFromCIREMOTEAndRemoveSourceFromExplorer();
-            Uimap.TryCloseAllTabs();
+            //TODO: Cleanup and re-impliment this: Uimap.TryCloseAllTabs();
         }
 
         public TestContext TestContext

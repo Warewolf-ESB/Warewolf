@@ -9,6 +9,7 @@
 */
 
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Windows.Input;
 
 namespace Dev2.Runtime.Configuration.ViewModels.Base
@@ -64,7 +65,7 @@ namespace Dev2.Runtime.Configuration.ViewModels.Base
 
         public event EventHandler CanExecuteChanged;
 
-        // ReSharper disable once UnusedMember.Global
+        [SuppressMessage("ReSharper", "UnusedMember.Global")]
         protected virtual void OnCanExecuteChanged()
         {
             var handler = CanExecuteChanged;

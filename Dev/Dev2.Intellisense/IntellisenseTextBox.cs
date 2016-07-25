@@ -362,22 +362,16 @@ namespace Dev2.UI
         /// that contains the event data.</param>
         protected override void OnTextChanged(RoutedEventArgs e)
         {
-            if (CheckHasUnicodeInText(Text))
+            var text = Text ?? string.Empty;
+            if (CheckHasUnicodeInText(text))
             {
                 return;
             }
             
             ItemsSource = IntellisenseResults;
             base.OnTextChanged(e);
-            ValidateText(Text);
-            if (string.IsNullOrEmpty(Text))
-            {
-                _desiredResultSet = IntellisenseDesiredResultSet.EntireSet;
-            }
-            else
-            {
-                _desiredResultSet = IntellisenseDesiredResultSet.ClosestMatch;
-            }
+            ValidateText(text);
+            _desiredResultSet = string.IsNullOrEmpty(text) ? IntellisenseDesiredResultSet.EntireSet : IntellisenseDesiredResultSet.ClosestMatch;
         }
 
 
@@ -386,23 +380,23 @@ namespace Dev2.UI
             var error = IntellisenseStringProvider.parseLanguageExpressionAndValidate(text);
             if (FilterType == enIntellisensePartType.RecordsetsOnly && !error.Item1.IsRecordSetNameExpression)
             {
-                ToolTip = error.Item2 != String.Empty ? error.Item2 : "Invalid recordset";
+                ToolTip = error.Item2 != string.Empty ? error.Item2 : "Invalid recordset";
                 HasError = true;
             }
             else if (FilterType == enIntellisensePartType.ScalarsOnly && !error.Item1.IsScalarExpression)
             {
-                ToolTip = error.Item2 != String.Empty ? error.Item2 : "Invalid scalar";
+                ToolTip = error.Item2 != string.Empty ? error.Item2 : "Invalid scalar";
                 HasError = true;
             }
             else if (FilterType == enIntellisensePartType.RecordsetFields && !error.Item1.IsRecordSetExpression)
             {
-                ToolTip = error.Item2 != String.Empty ? error.Item2 : "Invalid recordset name";
+                ToolTip = error.Item2 != string.Empty ? error.Item2 : "Invalid recordset name";
                 HasError = true;
             }
             else
             {
-                ToolTip = error.Item2 != String.Empty ? error.Item2 : ToolTip ?? String.Empty;
-                HasError = error.Item2 != String.Empty;
+                ToolTip = error.Item2 != string.Empty ? error.Item2 : ToolTip ?? string.Empty;
+                HasError = error.Item2 != string.Empty;
             }
         }
 
@@ -432,6 +426,10 @@ namespace Dev2.UI
 
         public void EnsureIntellisenseResults(string text, bool forceUpdate, IntellisenseDesiredResultSet desiredResultSet)
         {
+            if (text == null)
+            {
+                text = string.Empty;
+            }
             if (!DesignerProperties.GetIsInDesignMode(this))
             {
                 bool calculateMode = false;
@@ -808,7 +806,7 @@ namespace Dev2.UI
         static void ErrorTextChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs dependencyPropertyChangedEventArgs)
         {
             var errorText = dependencyPropertyChangedEventArgs.NewValue as string;
-            if (String.IsNullOrEmpty(errorText))
+            if (string.IsNullOrEmpty(errorText))
             {
                 return;
             }
@@ -827,7 +825,7 @@ namespace Dev2.UI
         {
             get
             {
-                return (IIntellisenseProvider)GetValue(IntellisenseProviderProperty);
+                return (IIntellisenseProvider)GetValue(IntellisenseProviderProperty) ?? new DefaultIntellisenseProvider();
             }
             set
             {

@@ -28,6 +28,7 @@ namespace Dev2.Activities.Designers2.DropBox2016.Upload
         private bool _overWriteMode;
         private bool _addMode;
         private readonly IDropboxSourceManager _sourceManager;
+
         public DropBoxUploadViewModel(ModelItem modelItem)
             : this(modelItem, new DropboxSourceManager())
         {
@@ -46,7 +47,9 @@ namespace Dev2.Activities.Designers2.DropBox2016.Upload
             AddTitleBarLargeToggle();
             EditDropboxSourceCommand.RaiseCanExecuteChanged();
         }
+
         public ICommand NewSourceCommand { get; set; }
+
         public DropBoxSource SelectedSource
         {
             get
@@ -64,6 +67,7 @@ namespace Dev2.Activities.Designers2.DropBox2016.Upload
                 OnPropertyChanged("SelectedSource");
             }
         }
+
         public virtual ObservableCollection<DropBoxSource> Sources
         {
             get
@@ -80,6 +84,7 @@ namespace Dev2.Activities.Designers2.DropBox2016.Upload
         }
         
         public RelayCommand EditDropboxSourceCommand { get; private set; }
+
         public bool IsDropboxSourceSelected
         {
             get
@@ -158,21 +163,23 @@ namespace Dev2.Activities.Designers2.DropBox2016.Upload
                 OnPropertyChanged();
             }
         }
-      
 
         private void EditDropBoxSource()
         {
             CustomContainer.Get<IShellViewModel>().OpenResource(SelectedSource.ResourceID, CustomContainer.Get<IShellViewModel>().ActiveServer);
-
         }
 
         public void CreateOAuthSource()
         {
-            CustomContainer.Get<IShellViewModel>().NewDropboxSource(string.Empty);
+            var shellViewModel = CustomContainer.Get<IShellViewModel>();
+            if(shellViewModel == null)
+            {
+                return;
+            }
+            shellViewModel.NewDropboxSource(string.Empty);
             Sources = LoadOAuthSources();
             OnPropertyChanged(@"Sources");
         }
-        //Used by specs
 
         public ObservableCollection<DropBoxSource> LoadOAuthSources()
         {
@@ -194,20 +201,11 @@ namespace Dev2.Activities.Designers2.DropBox2016.Upload
         }
 
         #endregion
-
-
+        
         public event PropertyChangedEventHandler PropertyChanged;
         protected void OnPropertyChanged(string propertyName = null)
         {
-            var handler = PropertyChanged;
-            if (handler != null)
-            {
-                handler(this, new PropertyChangedEventArgs(propertyName));
-            }
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
-
-
     }
-
-
 }

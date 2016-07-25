@@ -84,7 +84,6 @@
     <Compile Include="Tools\Scripting\CMD Script.cs" />
     <Compile Include="Tools\Scripting\Script.cs" />
     <Compile Include="Tools\Utility\Calculate.cs" />
-    <Compile Include="Tools\HTTP Web Methods\GET.cs" />
     <Compile Include="Tools\Utility\Web Request.cs" />
     <Compile Include="Tools\Utility\Xpath.cs" />
     <Compile Include="Tools\Utility\Sys Info.cs" />

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -109,7 +110,7 @@ namespace Dev2.Runtime.ServiceModel.Data
             SetIsNew(xml);
         }
 
-        // ReSharper disable once UnusedMember.Global
+        [SuppressMessage("ReSharper", "UnusedMember.Global")]
         public Version Version { get; set; }
         [JsonIgnore]
         public bool IsUpgraded { get; set; }

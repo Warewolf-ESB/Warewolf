@@ -93,6 +93,7 @@ using Dev2.Activities.WcfEndPoint;
 using Dev2.Studio.ViewModels.Workflow;
 using System;
 using System.Collections.Generic;
+using Dev2.Activities.Designers2.ComDLL;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Dev2.Activities.Designers2.MultiAssignObject;
 
@@ -152,6 +153,7 @@ namespace Dev2.Studio.ActivityDesigners
                   { typeof(DsfPostgreSqlActivity), typeof(PostgreSqlDatabaseDesigner) },
                 {typeof(DsfExchangeEmailActivity),typeof(ExchangeEmailDesigner) },
                 { typeof(DsfDotNetDllActivity), typeof(DotNetDllDesigner) },
+                { typeof(DsfComDllActivity), typeof(ComDllDesigner) },
                 { typeof(DsfWebGetActivity), typeof(WebServiceGetDesigner) },
                 { typeof(DsfWebPostActivity), typeof(WebServicePostDesigner) },
                 { typeof(DsfWebDeleteActivity), typeof(WebServiceDeleteDesigner) },

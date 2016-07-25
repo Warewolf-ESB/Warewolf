@@ -9,6 +9,7 @@
 */
 
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Windows.Input;
 
 namespace Dev2.Runtime.Configuration.ViewModels.Base
@@ -106,7 +107,7 @@ namespace Dev2.Runtime.Configuration.ViewModels.Base
             _execute((T)parameter);
         }
 
-        // ReSharper disable once UnusedMember.Global
+        [SuppressMessage("ReSharper", "UnusedMember.Global")]
         public void RaiseCanExecuteChanged()
         {
             if (CanExecuteChanged != null)

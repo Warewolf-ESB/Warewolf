@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Xml;
 using Dev2.Common;
@@ -21,7 +22,7 @@ namespace Dev2
 {
     public static class StringExtension
     {
-        // ReSharper disable once UnusedMember.Global
+        [SuppressMessage("ReSharper", "UnusedMember.Global")]
         public static bool IsDate(this string payload)
         {
             bool result = false;
