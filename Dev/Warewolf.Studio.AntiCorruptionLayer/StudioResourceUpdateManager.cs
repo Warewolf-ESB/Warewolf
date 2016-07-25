@@ -229,6 +229,12 @@ namespace Warewolf.Studio.AntiCorruptionLayer
             ItemSaved?.Invoke();
         }
 
+        public void Save(IComPluginService toDbSource)
+        {
+            UpdateManagerProxy.SaveComPluginService(toDbSource);
+            ItemSaved?.Invoke();
+        }
+
         public void Save(IWcfService toSource)
         {
             throw new NotImplementedException();

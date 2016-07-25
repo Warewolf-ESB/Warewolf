@@ -42,7 +42,7 @@ namespace Warewolf.UITests.Tools
         [TestCleanup]
         public void MyTestCleanup()
         {
-            Uimap.CleanupWorkflow();
+            Uimap.CleanupABlankWorkflow();
         }
         
         public TestContext TestContext

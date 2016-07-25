@@ -4,6 +4,7 @@ using Dev2.Common.Common;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Warewolf.Storage;
 using WarewolfParserInterop;
+// ReSharper disable InconsistentNaming
 
 namespace WarewolfParsingTest
 {
@@ -22,7 +23,7 @@ namespace WarewolfParsingTest
             var modified = Distinct.evalDistinct(env, new List<string>() { "[[Rec(*).a]]" }, new List<string> { "[[Rec(*).a]]" }, 0, new List<string> { "[[Bec(*).a]]" });
             
             //------------Assert Results-------------------------
-           var res = CommonFunctions.evalResultToString( EvaluationFunctions.eval(modified, 0, "[[Bec(*).a]]"));
+           var res = CommonFunctions.evalResultToString( EvaluationFunctions.eval(modified, 0, false, "[[Bec(*).a]]"));
             Assert.AreEqual(res,"1,2,3");
         }
 
@@ -39,7 +40,7 @@ namespace WarewolfParsingTest
             var modified = Distinct.evalDistinct(env, new List<string>() { "[[Rec(*).a]][[bec().a]]" }, new List<string> { "[[Rec(*).a]]" }, 0, new List<string> { "[[Bec(*).a]]" });
 
             //------------Assert Results-------------------------
-            var res = CommonFunctions.evalResultToString(EvaluationFunctions.eval(modified, 0, "[[Bec(*).a]]"));
+            var res = CommonFunctions.evalResultToString(EvaluationFunctions.eval(modified, 0, false, "[[Bec(*).a]]"));
             Assert.AreEqual(res, "1,2,3");
         }
 
@@ -56,7 +57,7 @@ namespace WarewolfParsingTest
             var modified = Distinct.evalDistinct(env, new List<string>() { "[[Rec([[z]]).a]]" }, new List<string> { "[[Rec(*).a]]" }, 0, new List<string> { "[[Bec(*).a]]" });
 
             //------------Assert Results-------------------------
-            var res = CommonFunctions.evalResultToString(EvaluationFunctions.eval(modified, 0, "[[Bec(*).a]]"));
+            var res = CommonFunctions.evalResultToString(EvaluationFunctions.eval(modified, 0, false, "[[Bec(*).a]]"));
             Assert.AreEqual(res, "1,2,3");
         }
 
@@ -72,7 +73,7 @@ namespace WarewolfParsingTest
             var modified = Distinct.evalDistinct(env, new List<string>() { "[[Rec(*).a]]" }, new List<string> { "[[Rec(*).a]]" }, 0, new List<string> { "[[Bec().a]]" });
 
             //------------Assert Results-------------------------
-            var res = CommonFunctions.evalResultToString(EvaluationFunctions.eval(modified, 0, "[[Bec(*).a]]"));
+            var res = CommonFunctions.evalResultToString(EvaluationFunctions.eval(modified, 0, false, "[[Bec(*).a]]"));
             Assert.AreEqual(res, "1,2,3");
         }
 
@@ -89,7 +90,7 @@ namespace WarewolfParsingTest
             var modified = Distinct.evalDistinct(env, new List<string>() { "[[Rec(*).a]]" }, new List<string> { "[[Rec(*).a]]" }, 0, new List<string> { "[[Bec([[x]]).a]]" });
 
             //------------Assert Results-------------------------
-            var res = CommonFunctions.evalResultToString(EvaluationFunctions.eval(modified, 0, "[[Bec(*).a]]"));
+            var res = CommonFunctions.evalResultToString(EvaluationFunctions.eval(modified, 0, false, "[[Bec(*).a]]"));
             Assert.AreEqual(res, "3");
         }
         [TestMethod]
@@ -104,7 +105,7 @@ namespace WarewolfParsingTest
             var modified = Distinct.evalDistinct(env, new List<string>() { "[[Rec(*).a]]" }, new List<string> { "[[Rec(*).a]]" }, 0, new List<string> { "[[ax]]" });
 
             //------------Assert Results-------------------------
-            var res = CommonFunctions.evalResultToString(EvaluationFunctions.eval(modified, 0, "[[ax]]"));
+            var res = CommonFunctions.evalResultToString(EvaluationFunctions.eval(modified, 0, false, "[[ax]]"));
             Assert.AreEqual(res, "1,2,3");
         }
         [TestMethod]
@@ -120,11 +121,11 @@ namespace WarewolfParsingTest
             var modified = Distinct.evalDistinct(env, new List<string>() { "[[Rec(*).a]]" }, new List<string> { "[[Rec(*).a]]" }, 0, new List<string> { "[[ax]] [[bx]]" });
 
             //------------Assert Results-------------------------
-            var res = CommonFunctions.evalResultToString(EvaluationFunctions.eval(modified, 0, "[[ax]]"));
+            var res = CommonFunctions.evalResultToString(EvaluationFunctions.eval(modified, 0, false, "[[ax]]"));
             Assert.AreEqual(res, "1,2,3");
         }
 
-        public static DataStorage.WarewolfEnvironment CreateEnvironmentWithData()
+        private static DataStorage.WarewolfEnvironment CreateEnvironmentWithData()
         {
 
             ExecutionEnvironment env = new ExecutionEnvironment();

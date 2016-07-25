@@ -1,4 +1,4 @@
-/*
+﻿/*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
@@ -8,17 +8,25 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using System.Data;
-using Microsoft.SqlServer.Server;
+using System.Windows;
 
-namespace Warewolf.Sql
+namespace Dev2.Activities.Designers2.ComDLL
 {
-    public interface ISqlCtx
+    // Interaction logic for Small.xaml
+    public partial class Small
     {
-        SqlDataRecord SendStart(DataTable dt);
+        public Small()
+        {
+            InitializeComponent();
+        }
 
-        void SendRow(SqlDataRecord dataRecord, object[] items);
+        #region Overrides of ActivityDesignerTemplate
 
-        void SendEnd();
+        protected override IInputElement GetInitialFocusElement()
+        {
+            return null;
+        }
+
+        #endregion
     }
 }

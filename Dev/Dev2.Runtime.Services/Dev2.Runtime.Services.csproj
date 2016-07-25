@@ -190,6 +190,9 @@
     <Compile Include="ESB\Management\Services\AddFolderService.cs" />
     <Compile Include="ESB\Management\Services\DeleteItemService.cs" />
     <Compile Include="ESB\Management\Services\DeleteVersion.cs" />
+    <Compile Include="ESB\Management\Services\FetchComPluginActions.cs" />
+    <Compile Include="ESB\Management\Services\FetchComPluginNameSpaces.cs" />
+    <Compile Include="ESB\Management\Services\FetchComPluginSources.cs" />
     <Compile Include="ESB\Management\Services\FetchDbActions.cs" />
     <Compile Include="ESB\Management\Services\FetchDbSources.cs" />
     <Compile Include="ESB\Management\Services\FetchExchangeSources.cs" />
@@ -298,6 +301,7 @@
     <Compile Include="Hosting\VersionStrategy.cs" />
     <Compile Include="Hosting\ServerExplorerRepository.cs" />
     <Compile Include="Interfaces\IEsbManagementServiceLocator.cs" />
+    <Compile Include="Interfaces\IPluginBroker.cs" />
     <Compile Include="Interfaces\IResourceCatalog.cs" />
     <Compile Include="Interfaces\IResourceCopyProvider.cs" />
     <Compile Include="Interfaces\IResourceDeleteProvider.cs" />
@@ -352,6 +356,7 @@
     <Compile Include="Security\ProcessHost.cs" />
     <Compile Include="Security\ServerSecurityService.cs" />
     <Compile Include="Security\SSLCertificateBuilder.cs" />
+    <Compile Include="ServiceModel\ComPluginServices.cs" />
     <Compile Include="ServiceModel\Data\ComPluginService.cs" />
     <Compile Include="ServiceModel\Data\ExchangeSource.cs" />
     <Compile Include="ServiceModel\Data\RecordsetList.cs" />
@@ -361,6 +366,7 @@
     <Compile Include="ServiceModel\Data\WcfSource.cs" />
     <Compile Include="ServiceModel\Data\WebPermission.cs" />
     <Compile Include="ServiceModel\Data\WebService.cs" />
+    <Compile Include="ServiceModel\Esb\Brokers\ComPlugin\ComPluginBroker.cs" />
     <Compile Include="ServiceModel\Esb\Brokers\ComPlugin\IRuntime.cs" />
     <Compile Include="ServiceModel\Esb\Brokers\ComPlugin\ComPluginInvokeArgs.cs" />
     <Compile Include="ServiceModel\Esb\Brokers\ComPlugin\ComPluginRuntimeHandler.cs" />

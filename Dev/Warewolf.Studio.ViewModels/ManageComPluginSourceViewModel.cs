@@ -336,10 +336,6 @@ namespace Warewolf.Studio.ViewModels
             set
             {
                 _progID = value;
-                if (!string.IsNullOrEmpty(value))
-                {
-                    SetupHeaderTextFromExisting();
-                }
                 OnPropertyChanged(_progID);
             }
         }
@@ -353,10 +349,6 @@ namespace Warewolf.Studio.ViewModels
             set
             {
                 _clsId = value;
-                if (!string.IsNullOrEmpty(value))
-                {
-                    SetupHeaderTextFromExisting();
-                }
                 OnPropertyChanged(_clsId);
             }
         }

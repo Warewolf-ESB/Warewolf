@@ -92,7 +92,7 @@ namespace WarewolfParsingTest
         public void CommonFunctions_EvalResultToJsonCompatable()
         {
             var env = CreateEnvironmentWithData();
-            var a = CommonFunctions.evalResultToString( EvaluationFunctions.eval(env, 0, "[[x]]"));
+            var a = CommonFunctions.evalResultToString( EvaluationFunctions.eval(env, 0, false, "[[x]]"));
             Assert.AreEqual(a,"1");       
         }
 
@@ -102,7 +102,7 @@ namespace WarewolfParsingTest
         public void CommonFunctions_EvalResultToJsonCompatableRecset()
         {
             var env = CreateEnvironmentWithData();
-            var a = CommonFunctions.evalResultToJsonCompatibleObject( EvaluationFunctions.eval(env, 0, "[[Rec(*).a]]"));
+            var a = CommonFunctions.evalResultToJsonCompatibleObject( EvaluationFunctions.eval(env, 0, false, "[[Rec(*).a]]"));
 
         }
 
@@ -165,7 +165,7 @@ namespace WarewolfParsingTest
         public void CommonFunctions_EvalResultToJsonCompatableJson()
         {
             var env = CreateEnvironmentWithData();
-            var a = CommonFunctions.evalResultToJsonCompatibleObject(EvaluationFunctions.eval(env, 0, "[[Rec(*)]]"));
+            var a = CommonFunctions.evalResultToJsonCompatibleObject(EvaluationFunctions.eval(env, 0, false, "[[Rec(*)]]"));
 
         }
 

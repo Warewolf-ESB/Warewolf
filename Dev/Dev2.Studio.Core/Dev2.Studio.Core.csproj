@@ -186,7 +186,6 @@
     <Compile Include="Activities\Services\DesignerManagementService.cs" />
     <Compile Include="Activities\Services\IDesignerManagementService.cs" />
     <Compile Include="Activities\Utils\ModelItemUtils.cs" />
-    <Compile Include="AppResources\Attributes\ResourceHelper.cs" />
     <Compile Include="AppResources\Behaviors\PreventHorizontalScrollWhenFocusedTreeViewItemBehavior.cs" />
     <Compile Include="AppResources\Browsers\BrowserPopupControllerAbstract.cs" />
     <Compile Include="AppResources\Browsers\ExternalBrowserPopupController.cs" />
@@ -247,10 +246,6 @@
     <Compile Include="AppResources\Enums\WorkSurfaceContext.cs" />
     <Compile Include="AppResources\EventArgs\DomainControllerUncontactableEventArgs.cs" />
     <Compile Include="AppResources\ExtensionMethods\DependencyObjectExtensions.cs" />
-    <Compile Include="AppResources\ExtensionMethods\EnumerableExtensionMethods.cs" />
-    <Compile Include="AppResources\ExtensionMethods\ModelPropertyCollection.cs" />
-    <Compile Include="AppResources\ExtensionMethods\PaneLocationExtensions.cs" />
-    <Compile Include="AppResources\ExtensionMethods\TypeExtensionMethods.cs" />
     <Compile Include="AppResources\Globals.cs" />
     <Compile Include="AppResources\Repositories\DataListRepository.cs" />
     <Compile Include="AppResources\TriggerActions\SetCaretIndexAction.cs">

@@ -31,7 +31,7 @@ namespace WarewolfParsingTest
             //------------Assert Results-------------------------
             Assert.IsTrue(added.JsonObjects.ContainsKey("bob"));
             Assert.AreEqual((added.JsonObjects["bob"] as JObject).GetValue("Name").ToString(), "n");
-            var evalled = EvaluationFunctions.eval(added, 0, "[[@bob]]");
+            var evalled = EvaluationFunctions.eval(added, 0, false, "[[@bob]]");
             Assert.IsTrue(evalled.IsWarewolfAtomResult);
             var res = (evalled as CommonFunctions.WarewolfEvalResult.WarewolfAtomResult).Item;
             var str = (res as DataStorage.WarewolfAtom.DataString).ToString();
@@ -52,7 +52,7 @@ namespace WarewolfParsingTest
             //------------Assert Results-------------------------
             Assert.IsTrue(added.JsonObjects.ContainsKey("bob"));
             Assert.AreEqual((added.JsonObjects["bob"] as JObject).GetValue("Name").ToString(), "n");
-            var evalled = CommonFunctions.evalResultToString( EvaluationFunctions.eval(added, 0, "[[@bob.Name]]"));
+            var evalled = CommonFunctions.evalResultToString( EvaluationFunctions.eval(added, 0, false, "[[@bob.Name]]"));
 
             Assert.AreEqual(evalled, "n");
         }
@@ -71,7 +71,7 @@ namespace WarewolfParsingTest
             //------------Assert Results-------------------------
             Assert.IsTrue(added.JsonObjects.ContainsKey("bob"));
             Assert.AreEqual((added.JsonObjects["bob"] as JObject).GetValue("Name").ToString(), "n");
-            var evalled = CommonFunctions.evalResultToString(EvaluationFunctions.eval(added, 0, "[[@bob.Spouse.Name]]"));
+            var evalled = CommonFunctions.evalResultToString(EvaluationFunctions.eval(added, 0, false, "[[@bob.Spouse.Name]]"));
 
             Assert.AreEqual(evalled, "o");
         }
@@ -90,7 +90,7 @@ namespace WarewolfParsingTest
             //------------Assert Results-------------------------
             Assert.IsTrue(added.JsonObjects.ContainsKey("bob"));
 
-            var evalled = CommonFunctions.evalResultToString(EvaluationFunctions.eval(added, 0, "[[@bob.Children(1).Name]]"));
+            var evalled = CommonFunctions.evalResultToString(EvaluationFunctions.eval(added, 0, false, "[[@bob.Children(1).Name]]"));
 
             Assert.AreEqual(evalled, "p");
         }
@@ -111,7 +111,7 @@ namespace WarewolfParsingTest
             //------------Assert Results-------------------------
             Assert.IsTrue(added.JsonObjects.ContainsKey("bob"));
 
-            var evalled = CommonFunctions.evalResultToString(EvaluationFunctions.eval(added, 0, "[[@bob.Children(*).Name]]"));
+            var evalled = CommonFunctions.evalResultToString(EvaluationFunctions.eval(added, 0, false, "[[@bob.Children(*).Name]]"));
 
             Assert.AreEqual(evalled, "p,q");
         }
@@ -129,7 +129,7 @@ namespace WarewolfParsingTest
             //------------Assert Results-------------------------
             Assert.IsTrue(added.JsonObjects.ContainsKey("bob"));
 
-            var evalled = CommonFunctions.evalResultToString(EvaluationFunctions.eval(added, 0, "[[@bob.Children(*)]]"));
+            var evalled = CommonFunctions.evalResultToString(EvaluationFunctions.eval(added, 0, false, "[[@bob.Children(*)]]"));
             Assert.IsTrue(evalled.Contains(@"""Name"": ""p"""));
             Assert.IsTrue(evalled.Contains(@"""Name"": ""q"""));
 
@@ -149,7 +149,7 @@ namespace WarewolfParsingTest
             //------------Assert Results-------------------------
             Assert.IsTrue(added.JsonObjects.ContainsKey("bob"));
 
-            var evalled = CommonFunctions.evalResultToString(EvaluationFunctions.eval(added, 0, "[[@bob.Children().Name]]"));
+            var evalled = CommonFunctions.evalResultToString(EvaluationFunctions.eval(added, 0, false, "[[@bob.Children().Name]]"));
 
             Assert.AreEqual(evalled, "q");
         }

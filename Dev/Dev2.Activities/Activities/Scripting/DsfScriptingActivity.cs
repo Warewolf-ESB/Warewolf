@@ -48,6 +48,10 @@ namespace Dev2.Activities
         public bool EscapeScript { get; set; }
 
         [FindMissing]
+        [Inputs("IncludeFile")]
+        public string IncludeFile { get; set; }
+
+        [FindMissing]
         [Inputs("Script")]
         public string Script { get; set; }
 
@@ -57,6 +61,7 @@ namespace Dev2.Activities
 
         #endregion Properties
 
+        IStringScriptSources _sources;
         #region Ctor
 
         public DsfScriptingActivity()
@@ -65,6 +70,7 @@ namespace Dev2.Activities
             Script = string.Empty;
             Result = string.Empty;
             EscapeScript = true;
+            _sources = new StringScriptSources();
         }
 
         #endregion Ctor
@@ -78,12 +84,12 @@ namespace Dev2.Activities
         protected override void OnExecute(NativeActivityContext context)
         {
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
-
             ExecuteTool(dataObject, 0);
         }
 
         protected override void ExecuteTool(IDSFDataObject dataObject, int update)
         {
+            AddScriptSourcePathsToList();
             ErrorResultTO allErrors = new ErrorResultTO();
             ErrorResultTO errors = new ErrorResultTO();
             allErrors.MergeErrors(errors);
@@ -100,27 +106,6 @@ namespace Dev2.Activities
                         AddDebugInputItem(new DebugEvalResult(Script, "Script", env, update));
                     }
 
-                    var listOfEvalResultsForInput = dataObject.Environment.EvalForDataMerge(Script, update);
-                    var innerIterator = new WarewolfListIterator();
-                    var innerListOfIters = new List<WarewolfIterator>();
-
-                    foreach (var listOfIterator in listOfEvalResultsForInput)
-                    {
-                        var inIterator = new WarewolfIterator(listOfIterator);
-                        innerIterator.AddVariableToIterateOn(inIterator);
-                        innerListOfIters.Add(inIterator);
-                    }
-                    var atomList = new List<DataStorage.WarewolfAtom>();
-                    while (innerIterator.HasMoreData())
-                    {
-                        var stringToUse = "";
-                        foreach (var warewolfIterator in innerListOfIters)
-                        {
-                            stringToUse += warewolfIterator.GetNextValue();
-                        }
-                        atomList.Add(DataStorage.WarewolfAtom.NewDataString(stringToUse));
-                    }
-
                     allErrors.MergeErrors(errors);
 
                     if (allErrors.HasErrors())
@@ -128,18 +113,15 @@ namespace Dev2.Activities
                         return;
                     }
 
-                    var scriptItr = new WarewolfIterator(dataObject.Environment.Eval(Script, update));
-
+                    var scriptItr = new WarewolfIterator(dataObject.Environment.Eval(Script, update,false, EscapeScript));
                     while (scriptItr.HasMoreData())
                     {
-                        var engine = new ScriptingEngineRepo().CreateEngine(ScriptType);
+                        var engine = new ScriptingEngineRepo().CreateEngine(ScriptType,_sources);
                         var value = engine.Execute(scriptItr.GetNextValue());
 
-                        //2013.06.03: Ashley Lewis for bug 9498 - handle multiple regions in result
                         foreach (var region in DataListCleaningUtils.SplitIntoRegions(Result))
                         {
-                            if (EscapeScript)
-                                value = System.Text.RegularExpressions.Regex.Escape(value);
+                            
                             env.Assign(region, value, update);
                             if (dataObject.IsDebugMode() && !allErrors.HasErrors())
                             {
@@ -152,7 +134,7 @@ namespace Dev2.Activities
                     }
                 }
             }
-            catch (Exception e)
+            catch (Exception e) when (e is NullReferenceException || e is RuntimeBinderException)
             {
                 if (e.GetType() == typeof(NullReferenceException) || e.GetType() == typeof(RuntimeBinderException))
                 {
@@ -185,6 +167,12 @@ namespace Dev2.Activities
             }
         }
 
+        private void AddScriptSourcePathsToList()
+        {            
+            if (!string.IsNullOrEmpty(IncludeFile))
+                _sources.AddPaths(IncludeFile);
+        }
+        
         public override void UpdateForEachInputs(IList<Tuple<string, string>> updates)
         {
             foreach (Tuple<string, string> t in updates)
