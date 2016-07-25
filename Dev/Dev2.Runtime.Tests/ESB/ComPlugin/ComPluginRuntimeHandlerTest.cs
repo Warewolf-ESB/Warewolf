@@ -248,6 +248,8 @@ namespace Dev2.Tests.Runtime.ESB.ComPlugin
 
         #endregion
 
+
+
         #region Helper Methods
 
         static ComPluginSource CreateComPluginSource(bool invalidResourceID = false)
