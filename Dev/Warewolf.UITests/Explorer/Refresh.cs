@@ -1,42 +1,35 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Text.RegularExpressions;
+using System.Windows.Input;
+using System.Windows.Forms;
+using System.Drawing;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UITest.Extension;
+using Keyboard = Microsoft.VisualStudio.TestTools.UITesting.Keyboard;
 
-namespace Warewolf.UITests.Tools.Data
+
+namespace Warewolf.UITests
 {
     /// <summary>
-    /// Summary description for WorkflowDesignSurface
+    /// Summary description for RemoteServer
     /// </summary>
     [CodedUITest]
-    public class Assign
+    public class Refresh
     {
-        const string WorkflowName = "SomeWorkflow";
+        const string WorkflowName = "SavedBlank";
 
         [TestMethod]
-        public void AssignToolUITest()
+        public void RefreshExplorerUITest()
         {
             Uimap.Click_New_Workflow_Ribbon_Button();
-            Uimap.Drag_Toolbox_MultiAssign_Onto_DesignSurface();
-            Uimap.Open_Assign_Tool_Large_View();
-            Uimap.Enter_Text_Into_Assign_Large_View_Row1_Variable_Textbox_As_SomeVariable();
-            Uimap.Click_Assign_Tool_Large_View_Done_Button();
-            Uimap.Open_Assign_Tool_Qvi_Large_View();
-            Uimap.Click_Save_Ribbon_Button_to_Open_Save_Dialog();
-            Uimap.WaitForSpinner(Uimap.SaveDialogWindow.ExplorerView.ExplorerTree.localhost.Checkbox.Spinner);
+            Uimap.Click_Save_Ribbon_Button();
             Uimap.Enter_Service_Name_Into_Save_Dialog(WorkflowName);
-            Uimap.Click_SaveDialog_YesButton();
-            Uimap.Enter_Text_Into_Explorer_Filter(WorkflowName);
-            Uimap.WaitForSpinner(Uimap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);
-
-            /**TODO: Re-introduce these units before WOLF-1923 can be moved to done.
-            Uimap.Click_Debug_Ribbon_Button();
-            Uimap.Click_Debug_Input_Dialog_Debug_ButtonParams.AssignToolDebugOutputExists = true;
-            Uimap.Click_DebugInput_DebugButton();
-            **/
         }
 
         #region Additional test attributes
-        
+
         [TestInitialize]
         public void MyTestInitialize()
         {
@@ -44,14 +37,14 @@ namespace Warewolf.UITests.Tools.Data
             Uimap.WaitIfStudioDoesNotExist();
             Console.WriteLine("Test \"" + TestContext.TestName + "\" starting on " + System.Environment.MachineName);
         }
-        
+
         [TestCleanup]
         public void MyTestCleanup()
         {
             Uimap.TryCloseHangingSaveDialog();
             Uimap.TryRemoveFromExplorer(WorkflowName);
         }
-        
+
         public TestContext TestContext
         {
             get

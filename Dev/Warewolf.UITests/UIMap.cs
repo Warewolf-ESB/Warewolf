@@ -213,35 +213,7 @@ namespace Warewolf.UITests
             }
         }
 
-        public void TryRemoveRemoteServerUITestWorkflowFromExplorer()
-        {
-            try
-            {
-                if (MainStudioWindow.DockManager.SplitPaneLeft.Explorer.SearchTextBox.Text == string.Empty)
-                {
-                    Enter_RemoteServerUITestWorkflow_Into_Explorer_Filter();
-                    WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);
-                }
-                Playback.PlaybackSettings.MaximumRetryCount = _strictMaximumRetryCount * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
-                Playback.PlaybackSettings.SearchTimeout = _strictSearchTimeout * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
-                var wpfTreeItem = MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.Exists;
-                Playback.PlaybackSettings.MaximumRetryCount = _lenientMaximumRetryCount * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
-                Playback.PlaybackSettings.SearchTimeout = _lenientSearchTimeout * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
-                if (wpfTreeItem)
-                {
-                    RightClick_Explorer_Localhost_First_Item();
-                    Select_Delete_FromExplorerContextMenu();
-                    Click_MessageBox_Yes();
-                }
-                Click_Explorer_Filter_Clear_Button();
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("Cleanup failed to remove RemoteServerUITestWorkflow. Test may have crashed before RemoteServerUITestWorkflow was created.\n" + e.Message);
-            }
-        }
-
-        public void TryDisconnectFromCIREMOTEAndRemoveSourceFromExplorer()
+        public void TryDisconnectFromRemoteServerAndRemoveSourceFromExplorer(string SourceName)
         {
             try
             {
@@ -269,7 +241,7 @@ namespace Warewolf.UITests
                     }
                 }
                 Select_LocalhostConnected_From_Explorer_Remote_Server_Dropdown_List();
-                Enter_TSTCIREMOTE_Into_Explorer_Filter();
+                Enter_Text_Into_Explorer_Filter(SourceName);
                 WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);
                 Playback.PlaybackSettings.MaximumRetryCount = _strictMaximumRetryCount * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
                 Playback.PlaybackSettings.SearchTimeout = _strictSearchTimeout * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
@@ -286,16 +258,16 @@ namespace Warewolf.UITests
             }
             catch (Exception e)
             {
-                Console.WriteLine("Cleanup failed to remove remote server TST-CI-REMOTE. Test may have crashed before remote server TST-CI-REMOTE was connected.\n" + e.Message);
+                Console.WriteLine("Cleanup failed to remove remote server " + SourceName + ". Test may have crashed before remote server " + SourceName + " was connected.\n" + e.Message);
                 Click_Explorer_Filter_Clear_Button();
             }
         }
 
-        public void TryRemoveSomeWorkflowFromExplorer()
+        public void TryRemoveFromExplorer(string ResourceName)
         {
             try
             {
-                Enter_SomeWorkflow_Into_Explorer_Filter();
+                Enter_Text_Into_Explorer_Filter(ResourceName);
                 WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);
                 Playback.PlaybackSettings.MaximumRetryCount = _strictMaximumRetryCount * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
                 Playback.PlaybackSettings.SearchTimeout = _strictSearchTimeout * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
@@ -312,7 +284,7 @@ namespace Warewolf.UITests
             }
             catch (Exception e)
             {
-                Console.WriteLine("Cleanup failed to remove remote server TST-CI-REMOTE. Test may have crashed before remote server TST-CI-REMOTE was connected.\n" + e.Message);
+                Console.WriteLine("Cleanup failed to remove resource " + ResourceName + ". Test may have crashed before " + ResourceName + " was created.\n" + e.Message);
                 Click_Explorer_Filter_Clear_Button();
             }
         }
@@ -426,7 +398,7 @@ namespace Warewolf.UITests
                 var workflowTabCloseButton = MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.CloseButton.Exists;
                 Playback.PlaybackSettings.MaximumRetryCount = _lenientMaximumRetryCount * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
                 Playback.PlaybackSettings.SearchTimeout = _lenientSearchTimeout * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
-                if(workflowTabCloseButton)
+                if (workflowTabCloseButton)
                 {
                     Click_Close_Workflow_Tab_Button();
                 }
@@ -435,7 +407,7 @@ namespace Warewolf.UITests
                 var messageBoxNoButton = MessageBoxWindow.NoButton.Exists;
                 Playback.PlaybackSettings.MaximumRetryCount = _lenientMaximumRetryCount * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
                 Playback.PlaybackSettings.SearchTimeout = _lenientSearchTimeout * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
-                if(messageBoxNoButton)
+                if (messageBoxNoButton)
                 {
                     Click_MessageBox_No();
                 }
@@ -455,7 +427,7 @@ namespace Warewolf.UITests
                 var settingsTabCloseButton = MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.Exists;
                 Playback.PlaybackSettings.MaximumRetryCount = _lenientMaximumRetryCount * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
                 Playback.PlaybackSettings.SearchTimeout = _lenientSearchTimeout * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
-                if(settingsTabCloseButton)
+                if (settingsTabCloseButton)
                 {
                     Click_Close_Settings_Tab_Button();
                 }
@@ -464,7 +436,7 @@ namespace Warewolf.UITests
                 var messageBoxNoButton = MessageBoxWindow.NoButton.Exists;
                 Playback.PlaybackSettings.MaximumRetryCount = _lenientMaximumRetryCount * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
                 Playback.PlaybackSettings.SearchTimeout = _lenientSearchTimeout * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
-                if(messageBoxNoButton)
+                if (messageBoxNoButton)
                 {
                     Click_MessageBox_No();
                 }
@@ -484,7 +456,7 @@ namespace Warewolf.UITests
                 var serverSourceWizardTabCloseButton = MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.ServerSourceWizardTab.TabCloseButton.Exists;
                 Playback.PlaybackSettings.MaximumRetryCount = _lenientMaximumRetryCount * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
                 Playback.PlaybackSettings.SearchTimeout = _lenientSearchTimeout * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
-                if(serverSourceWizardTabCloseButton)
+                if (serverSourceWizardTabCloseButton)
                 {
                     Click_Close_Server_Source_Wizard_Tab_Button();
                 }
@@ -493,7 +465,7 @@ namespace Warewolf.UITests
                 var messageBoxNoButton = MessageBoxWindow.NoButton.Exists;
                 Playback.PlaybackSettings.MaximumRetryCount = _lenientMaximumRetryCount * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
                 Playback.PlaybackSettings.SearchTimeout = _lenientSearchTimeout * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
-                if(messageBoxNoButton)
+                if (messageBoxNoButton)
                 {
                     Click_MessageBox_No();
                 }
@@ -511,6 +483,55 @@ namespace Warewolf.UITests
                 var point = new Point();
                 return !control.TryGetClickablePoint(out point);
             }, 60000 * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString()));
+        }
+
+        public void Enter_Service_Name_Into_Save_Dialog(string ServiceName)
+        {
+            #region Variable Declarations
+            WpfEdit serviceNameTextBox = this.SaveDialogWindow.ServiceNameTextBox;
+            WpfButton saveButton = this.SaveDialogWindow.SaveButton;
+            #endregion
+
+            serviceNameTextBox.Text = ServiceName;
+            Assert.AreEqual(true, saveButton.Enabled, "Save dialog save button is not enabled. Check workflow name is valid and that another workflow by that name does not already exist.");
+        }
+
+        public void Enter_Text_Into_Explorer_Filter(string FilterText)
+        {
+            #region Variable Declarations
+            WpfEdit searchTextBox = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.SearchTextBox;
+            WpfButton explorerRefreshButton = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerRefreshButton;
+            #endregion
+            
+            searchTextBox.Text = FilterText;
+            Mouse.Click(explorerRefreshButton, new Point(10, 10));
+        }
+
+        public void Enter_GroupName_Into_Windows_Group_Dialog(string GroupName)
+        {
+            #region Variable Declarations
+            WinEdit objectNameTextbox = this.SelectWindowsGroupDialog.ItemPanel.ObjectNameTextbox;
+            WinButton ok = this.SelectWindowsGroupDialog.OKPanel.OK;
+            #endregion
+            
+            objectNameTextbox.Text = GroupName;
+            Assert.AreEqual(true, ok.Enabled, "Windows group dialog OK button is not enabled.");
+        }
+
+        /// <summary>
+        /// Enter_RemoteServerUITestWorkflow_Into_Service_Picker_Dialog - Use 'Enter_RemoteServerUITestWorkflow_Into_Service_Picker_DialogParams' to pass parameters into this method.
+        /// </summary>
+        public void Enter_ServiceName_Into_Service_Picker_Dialog(string ServiceName)
+        {
+            #region Variable Declarations
+            WpfEdit filterTextbox = this.ServicePickerDialog.Explorer.FilterTextbox;
+            WpfTreeItem subTreeItem1 = this.ServicePickerDialog.Explorer.ExplorerTree.TreeItem1.SubTreeItem1;
+            WpfButton ok = this.ServicePickerDialog.OK;
+            #endregion
+            
+            filterTextbox.Text = ServiceName;
+            Mouse.Click(subTreeItem1, new Point(91, 9));
+            Assert.AreEqual(true, ok.Enabled, "Service picker dialog OK button is not enabled.");
         }
     }
 }
