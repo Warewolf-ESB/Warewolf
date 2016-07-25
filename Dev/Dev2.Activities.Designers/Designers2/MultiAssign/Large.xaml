@@ -94,11 +94,13 @@
                             <ui:IntellisenseTextBox VerticalAlignment="Center"
                                                     DefaultText="{Binding WatermarkTextVariable}"
                                                     WrapInBrackets="True"
+                                                    AcceptsReturn="False"
+                                                    AllowUserInsertLine="False"
                                                     Margin="0,0,0,1"
                                                     attachedProperties:FocusSetter.IsFocused="{Binding IsFieldNameFocused, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                                                     Text="{Binding FieldName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, NotifyOnValidationError=True}"
                                                     IntellisenseProvider="{StaticResource CalculateCompositeIntellisenseProvider}"
-                                                    Style="{StaticResource DatagridIntellisenseTextBoxStyle}"
+                                                    Style="{StaticResource TestNewStyle}"
                                                     ToolTip="{x:Static languages:Core.AssignToolTipVariable}">
                                 <i:Interaction.Behaviors>
                                     <core1:HelpSetter Text="{x:Static languages:Core.AssignHelpVariable}" DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
@@ -139,6 +141,7 @@
                                                     Margin="0,0,1,1"
                                                     AcceptsReturn="True"
                                                     MaxHeight="80"
+                                                    Height="Auto"
                                                     Text="{Binding FieldValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, 
                                                     Converter={StaticResource ModelTextConverter}, ConverterParameter=True, ValidatesOnDataErrors=True, NotifyOnValidationError=True}"
                                                     attachedProperties:FocusSetter.IsFocused="{Binding IsFieldValueFocused, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
