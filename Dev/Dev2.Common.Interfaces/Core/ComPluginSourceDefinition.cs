@@ -50,7 +50,7 @@ namespace Dev2.Common.Interfaces.Core
                 var hashCode = Name?.GetHashCode() ?? 0;
                 hashCode = (hashCode * 397) ^ Id.GetHashCode();
                 hashCode = (hashCode * 397) ^ (ProgId?.GetHashCode() ?? 0);
-                hashCode = (hashCode * 397) ^ (ClsId.GetHashCode());
+                hashCode = (hashCode * 397) ^ (ClsId?.GetHashCode() ?? 0);
                 hashCode = (hashCode * 397) ^ (Path.GetHashCode());
                 return hashCode;
             }

@@ -246,6 +246,23 @@ namespace Warewolf.Studio.ServerProxyLayer
             }
             return serializer.Deserialize<List<INamespaceItem>>(payload.Message);
         }
+        public ICollection<INamespaceItem> FetchNamespaces(IComPluginSource source)
+        {
+            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+            var comsController = CommunicationControllerFactory.CreateController("FetchComPluginNameSpaces");
+            comsController.AddPayloadArgument("source", serializer.SerializeToBuilder(source));
+            var workspaceId = Connection.WorkspaceID;
+            var payload = comsController.ExecuteCommand<ExecuteMessage>(Connection, workspaceId);
+            if (payload == null || payload.HasError)
+            {
+                if (payload != null)
+                {
+                    throw new WarewolfSupportServiceException(payload.Message.ToString(), null);
+                }
+                throw new WarewolfSupportServiceException(ErrorResource.ServiceDoesNotExist, null);
+            }
+            return serializer.Deserialize<List<INamespaceItem>>(payload.Message);
+        }
 
         public IList<IFileListing> FetchFiles()
         {
@@ -338,10 +355,50 @@ namespace Warewolf.Studio.ServerProxyLayer
             return serializer.Deserialize<List<IPluginSource>>(result.Message.ToString());
         }
 
+        public IList<IComPluginSource> FetchComPluginSources()
+        {
+            var comsController = CommunicationControllerFactory.CreateController("FetchComPluginSources");
+
+            var workspaceId = Connection.WorkspaceID;
+            var result = comsController.ExecuteCommand<ExecuteMessage>(Connection, workspaceId);
+            if (result == null || result.HasError)
+            {
+                if (result != null)
+                {
+                    throw new WarewolfSupportServiceException(result.Message.ToString(), null);
+                }
+                throw new WarewolfSupportServiceException(ErrorResource.ServiceDoesNotExist, null);
+            }
+            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+            return serializer.Deserialize<List<IComPluginSource>>(result.Message.ToString());
+        }
+
         public IList<IPluginAction> PluginActions(IPluginSource source, INamespaceItem ns)
         {
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
             var comsController = CommunicationControllerFactory.CreateController("FetchPluginActions");
+
+            comsController.AddPayloadArgument("source", serializer.SerializeToBuilder(source));
+            comsController.AddPayloadArgument("namespace", serializer.SerializeToBuilder(ns));
+            var workspaceId = Connection.WorkspaceID;
+            var result = comsController.ExecuteCommand<ExecuteMessage>(Connection, workspaceId);
+            if (result == null || result.HasError)
+            {
+                if (result != null)
+                {
+                    throw new WarewolfSupportServiceException(result.Message.ToString(), null);
+                }
+                throw new WarewolfSupportServiceException(ErrorResource.ServiceDoesNotExist, null);
+            }
+
+
+            return serializer.Deserialize<List<IPluginAction>>(result.Message.ToString());
+        }
+
+        public IList<IPluginAction> PluginActions(IComPluginSource source, INamespaceItem ns)
+        {
+            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+            var comsController = CommunicationControllerFactory.CreateController("FetchComPluginActions");
 
             comsController.AddPayloadArgument("source", serializer.SerializeToBuilder(source));
             comsController.AddPayloadArgument("namespace", serializer.SerializeToBuilder(ns));
