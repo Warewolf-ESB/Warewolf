@@ -12,14 +12,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using Dev2.Common.Interfaces;
 using Dev2.Studio.Core.Interfaces.DataList;
 using Warewolf.Resource.Errors;
 
 // ReSharper disable CheckNamespace
 namespace Dev2.Studio.Core.AppResources.Repositories
 {
-    public class DataListRepository : IFrameworkRepository<IDataListViewModel>
+    public class DataListRepository 
     {
         private readonly List<IDataListViewModel> _dataListViewModels;
         private bool _isDisposed;
@@ -43,16 +42,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
         {
             throw new NotImplementedException();
         }
-
-        public event EventHandler ItemAdded;
-
-        protected void OnItemAdded()
-        {
-            if(ItemAdded != null)
-            {
-                ItemAdded(this, new System.EventArgs());
-            }
-        }
+        
 
         public void Load()
         {

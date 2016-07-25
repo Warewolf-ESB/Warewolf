@@ -10,7 +10,6 @@
 
 using System;
 using System.IO;
-using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -57,11 +56,7 @@ namespace Dev2.Development.Languages.Scripting
 
         public void AddScriptSourcesToContext()
         {
-            var paths = _rubyEngine.GetSearchPaths().ToList();
-            paths.Add(@"C:\Users\Sanele.Mthembu\Desktop\ruby");
-            _rubyEngine.SetSearchPaths(paths);
-            _rubyEngine.ExecuteFile("rubySource.rb");
-            //_rubyEngine.ExecuteFile("ruby/foo.rb");
+            throw new NotImplementedException();
         }
 
         public ScriptEngine CreateRubyEngine()
