@@ -815,7 +815,8 @@ namespace Warewolf.UITests
             // Click 'Save this tab' button
             Mouse.Click(saveButton, new Point(10, 5));
 
-            // Verify that the 'Enabled' property of 'Save this tab' button equals 'False'
+            // Wait for 2 seconds for user delay between actions; Verify that the 'Enabled' property of 'Save this tab' button equals 'False'
+            Playback.Wait(2000);
             Assert.AreEqual(this.Click_Save_Ribbon_ButtonParams.SaveButtonEnabled, saveButton.Enabled, "Save ribbon button is still enabled after clicking it.");
         }
         
@@ -7654,7 +7655,7 @@ namespace Warewolf.UITests
         public bool SaveButtonExists = true;
         
         /// <summary>
-        /// Verify that the 'Enabled' property of 'Save this tab' button equals 'False'
+        /// Wait for 2 seconds for user delay between actions; Verify that the 'Enabled' property of 'Save this tab' button equals 'False'
         /// </summary>
         public bool SaveButtonEnabled = false;
         #endregion
