@@ -897,21 +897,16 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
-        /// Click_SaveDialog_YesButton - Use 'Click_SaveDialog_YesButtonParams' to pass parameters into this method.
+        /// Click_SaveDialog_Save_Button
         /// </summary>
-        public void Click_SaveDialog_YesButton()
+        public void Click_SaveDialog_Save_Button()
         {
             #region Variable Declarations
             WpfButton saveButton = this.SaveDialogWindow.SaveButton;
-            WpfWindow saveDialogWindow = this.SaveDialogWindow;
             #endregion
 
             // Click 'Save' button
             Mouse.Click(saveButton, new Point(25, 4));
-
-            // Wait for 2 seconds for user delay between actions; Verify that the 'Exists' property of 'SaveDialogView' window equals 'False'
-            Playback.Wait(2000);
-            Assert.AreEqual(this.Click_SaveDialog_YesButtonParams.SaveDialogWindowExists, saveDialogWindow.Exists, "Save dialog window does not exist");
         }
         
         /// <summary>
@@ -5121,18 +5116,6 @@ namespace Warewolf.UITests
             }
         }
         
-        public virtual Click_SaveDialog_YesButtonParams Click_SaveDialog_YesButtonParams
-        {
-            get
-            {
-                if ((this.mClick_SaveDialog_YesButtonParams == null))
-                {
-                    this.mClick_SaveDialog_YesButtonParams = new Click_SaveDialog_YesButtonParams();
-                }
-                return this.mClick_SaveDialog_YesButtonParams;
-            }
-        }
-        
         public virtual Click_Scheduler_Disable_Task_Radio_ButtonParams Click_Scheduler_Disable_Task_Radio_ButtonParams
         {
             get
@@ -6633,8 +6616,6 @@ namespace Warewolf.UITests
         
         private Click_Save_Ribbon_Button_to_Open_Save_DialogParams mClick_Save_Ribbon_Button_to_Open_Save_DialogParams;
         
-        private Click_SaveDialog_YesButtonParams mClick_SaveDialog_YesButtonParams;
-        
         private Click_Scheduler_Disable_Task_Radio_ButtonParams mClick_Scheduler_Disable_Task_Radio_ButtonParams;
         
         private Click_Scheduler_Enable_Task_Radio_ButtonParams mClick_Scheduler_Enable_Task_Radio_ButtonParams;
@@ -7433,21 +7414,6 @@ namespace Warewolf.UITests
         /// Verify that the 'Exists' property of 'ServiceNameTextBox' text box equals 'True'
         /// </summary>
         public bool ServiceNameTextBoxExists1 = true;
-        #endregion
-    }
-    
-    /// <summary>
-    /// Parameters to be passed into 'Click_SaveDialog_YesButton'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Click_SaveDialog_YesButtonParams
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Wait for 2 seconds for user delay between actions; Verify that the 'Exists' property of 'SaveDialogView' window equals 'False'
-        /// </summary>
-        public bool SaveDialogWindowExists = false;
         #endregion
     }
     
