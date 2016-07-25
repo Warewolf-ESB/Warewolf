@@ -128,7 +128,7 @@
                                  Height="53"
                                  MinHeight="53"
                                  FilterType="All"
-                                 Margin="0,-1,0,0"
+                                 Margin="0,1,0,0"
                                  ToolTip="{x:Static languages:Core.ScriptingToolTipScript}"
                                  AllowUserCalculateMode="False"
                                  IsInCalculateMode="True"
