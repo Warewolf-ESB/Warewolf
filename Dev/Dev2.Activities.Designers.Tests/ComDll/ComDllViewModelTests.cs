@@ -30,9 +30,9 @@ namespace Dev2.Activities.Designers.Tests.ComDll
     {
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        [TestCategory("DotNetDllViewModel_Constructor")]
+        [TestCategory("ComDllViewModel_Constructor")]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void DotNetDllViewModel_Constructor_NullModelItem_Exception()
+        public void ComDllViewModel_Constructor_NullModelItem_Exception()
         {
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
@@ -42,8 +42,8 @@ namespace Dev2.Activities.Designers.Tests.ComDll
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        [TestCategory("DotNetDllViewModel_Constructor")]
-        public void DotNetDllViewModel_Constructor_Valid_ShouldSetupViewModel()
+        [TestCategory("ComDllViewModel_Constructor")]
+        public void ComDllViewModel_Constructor_Valid_ShouldSetupViewModel()
         {
             //------------Setup for test--------------------------
             var mockShellViewModel = new Mock<IShellViewModel>();
@@ -81,8 +81,8 @@ namespace Dev2.Activities.Designers.Tests.ComDll
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        [TestCategory("DotNetDllViewModel_Validate")]
-        public void DotNetDllViewModel_Validate_HasErrorsIfNoSource()
+        [TestCategory("ComDllViewModel_Validate")]
+        public void ComDllViewModel_Validate_HasErrorsIfNoSource()
         {
             //------------Setup for test--------------------------
             var mockShellViewModel = new Mock<IShellViewModel>();
@@ -100,8 +100,8 @@ namespace Dev2.Activities.Designers.Tests.ComDll
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        [TestCategory("DotNetDllViewModel_GenerateOutputsVisible")]
-        public void DotNetDllViewModel_GenerateOutputsVisible_Set_SetsOtherProperties()
+        [TestCategory("ComDllViewModel_GenerateOutputsVisible")]
+        public void ComDllViewModel_GenerateOutputsVisible_Set_SetsOtherProperties()
         {
             //------------Setup for test--------------------------
             var mockShellViewModel = new Mock<IShellViewModel>();
@@ -130,8 +130,8 @@ namespace Dev2.Activities.Designers.Tests.ComDll
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        [TestCategory("DotNetDllViewModel_ToModel")]
-        public void DotNetDllViewModel_ToModel()
+        [TestCategory("ComDllViewModel_ToModel")]
+        public void ComDllViewModel_ToModel()
         {
             //------------Setup for test--------------------------
             var mockShellViewModel = new Mock<IShellViewModel>();
@@ -151,8 +151,8 @@ namespace Dev2.Activities.Designers.Tests.ComDll
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        [TestCategory("DotNetDllViewModel_ToModel")]
-        public void DotNetDllViewModel_ClearValidationMessage()
+        [TestCategory("ComDllViewModel_ToModel")]
+        public void ComDllViewModel_ClearValidationMessage()
         {
             //------------Setup for test--------------------------
             var mockShellViewModel = new Mock<IShellViewModel>();
@@ -171,8 +171,8 @@ namespace Dev2.Activities.Designers.Tests.ComDll
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        [TestCategory("DotNetDllViewModel_SetDisplayName")]
-        public void DotNetDllViewModel_SetDisplayName()
+        [TestCategory("ComDllViewModel_SetDisplayName")]
+        public void ComDllViewModel_SetDisplayName()
         {
             //------------Setup for test--------------------------
             var mockShellViewModel = new Mock<IShellViewModel>();
@@ -191,8 +191,8 @@ namespace Dev2.Activities.Designers.Tests.ComDll
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        [TestCategory("DotNetDllViewModel_Handle")]
-        public void DotNetDllViewModel_UpdateHelp_ShouldCallToHelpViewMode()
+        [TestCategory("ComDllViewModel_Handle")]
+        public void ComDllViewModel_UpdateHelp_ShouldCallToHelpViewMode()
         {
             //------------Setup for test--------------------------      
             var mockMainViewModel = new Mock<IMainViewModel>();
@@ -212,8 +212,8 @@ namespace Dev2.Activities.Designers.Tests.ComDll
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        [TestCategory("DotNetDllViewModel_SetDisplayName")]
-        public void DotNetDllViewModel_ErrorMessage()
+        [TestCategory("ComDllViewModel_SetDisplayName")]
+        public void ComDllViewModel_ErrorMessage()
         {
             //------------Setup for test--------------------------
             var mockShellViewModel = new Mock<IShellViewModel>();
@@ -233,8 +233,8 @@ namespace Dev2.Activities.Designers.Tests.ComDll
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        [TestCategory("DotNetDllViewModel_SetDisplayName")]
-        public void DotNetDllViewModel_FixErrors()
+        [TestCategory("ComDllViewModel_SetDisplayName")]
+        public void ComDllViewModel_FixErrors()
         {
             //------------Setup for test--------------------------
             var mockShellViewModel = new Mock<IShellViewModel>();
@@ -252,8 +252,8 @@ namespace Dev2.Activities.Designers.Tests.ComDll
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        [TestCategory("DotNetDllViewModel_SetDisplayName")]
-        public void DotNetDllViewModel_UpdateWorstDesignError()
+        [TestCategory("ComDllViewModel_SetDisplayName")]
+        public void ComDllViewModel_UpdateWorstDesignError()
         {
             //------------Setup for test--------------------------
             var mockShellViewModel = new Mock<IShellViewModel>();
@@ -276,8 +276,8 @@ namespace Dev2.Activities.Designers.Tests.ComDll
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        [TestCategory("DotNetDllViewModel_SetDisplayName")]
-        public void DotNetDllViewModel_Test()
+        [TestCategory("ComDllViewModel_SetDisplayName")]
+        public void ComDllViewModel_Test()
         {
             //------------Setup for test--------------------------
             var mockShellViewModel = new Mock<IShellViewModel>();
