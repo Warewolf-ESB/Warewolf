@@ -78,7 +78,7 @@ namespace Dev2.UI
 
             if (e.Key == Key.Enter || e.Key == Key.Return || e.Key == Key.Tab)
             {
-                const bool IsInsert = false;
+                const bool isInsert = false;
                 bool expand = false;
 
                 object appendText = HandleMultiLine(e, isOpen, ref expand);
@@ -92,15 +92,9 @@ namespace Dev2.UI
                 {
                     e.Handled = true;
                 }
-                InsertItem(appendText, IsInsert);
+                InsertItem(appendText, isInsert);
 
                 HandleSpecialKeys(e);
-
-                if (expand)
-                {
-                    double lineHeight = FontSize * FontFamily.LineSpacing;
-                    Height += lineHeight;
-                }
             }
             else if (e.Key == Key.Space && e.KeyboardDevice.Modifiers == ModifierKeys.Control)
             {
@@ -586,11 +580,12 @@ namespace Dev2.UI
         {
             get
             {
-                return (bool)GetValue(TextBoxBase.AcceptsReturnProperty);
+                return (bool)GetValue(AcceptsReturnProperty);
             }
             set
             {
-                SetValue(TextBoxBase.AcceptsReturnProperty, value);
+                SetValue(AcceptsReturnProperty, value);
+                TextBox.AcceptsReturn = value;
             }
         }
 

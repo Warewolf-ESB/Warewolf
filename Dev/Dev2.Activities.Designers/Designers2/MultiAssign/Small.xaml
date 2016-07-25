@@ -74,11 +74,10 @@
                         <DataTemplate>
                             <ui:IntellisenseTextBox DefaultText="{Binding WatermarkTextVariable}"
                                                     WrapInBrackets="True"
-                                                    Padding="3"
                                                     Margin="0,0,0,1"
                                                     Text="{Binding FieldName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                     IntellisenseProvider="{StaticResource CalculateCompositeIntellisenseProvider}"
-                                                    Style="{StaticResource DatagridIntellisenseTextBoxStyle}"
+                                                    Style="{StaticResource TestNewStyle}"
                                                     AutomationProperties.AutomationId="UI_TextBox_AutoID"
                                                     ToolTip="{x:Static languages:Core.AssignToolTipVariable}">
                                 <i:Interaction.Behaviors>
@@ -113,7 +112,7 @@
                                                     VerticalScrollBarVisibility="Auto"
                                                     TextWrapping="Wrap"
                                                     MaxHeight="52"
-                                                    Padding="3"
+                                                    Height="Auto"
                                                     Margin="0,0,0,1"
                                                     Text="{Binding FieldValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource ModelTextConverter}, ConverterParameter=True}"
                                                     IntellisenseProvider="{StaticResource CalculateCompositeIntellisenseProvider}"
