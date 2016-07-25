@@ -36,7 +36,7 @@ namespace Dev2.Data.Tests
              };
             var testEnv = WarewolfTestData.CreateTestEnvEmpty("");
             var testEnv3 = PublicFunctions.EvalMultiAssign(assigns, 0, testEnv);
-            var res = PublicFunctions.EvalEnvExpression("[[rec(27)]]", 0, testEnv3);
+            var res = PublicFunctions.EvalEnvExpression("[[rec(27)]]", 0, false, testEnv3);
             Assert.IsTrue(res.IsWarewolfRecordSetResult);
             object[] arg = { res };
             privateObj.Invoke("SetupForWarewolfRecordSetResult", arg);

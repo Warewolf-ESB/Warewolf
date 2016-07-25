@@ -10,15 +10,22 @@ using Microsoft.VisualStudio.TestTools.UITest.Extension;
 using Keyboard = Microsoft.VisualStudio.TestTools.UITesting.Keyboard;
 
 
-namespace Warewolf.UITests.Tools
+namespace Warewolf.UITests
 {
+    /// <summary>
+    /// Summary description for RemoteServer
+    /// </summary>
     [CodedUITest]
-    public class Format_Number
+    public class Refresh
     {
+        const string WorkflowName = "SavedBlank";
+
         [TestMethod]
-        public void FormatNumberToolUITest()
+        public void RefreshExplorerUITest()
         {
-            Uimap.Drag_Toolbox_Format_Number_Onto_DesignSurface();
+            Uimap.Click_New_Workflow_Ribbon_Button();
+            Uimap.Click_Save_Ribbon_Button();
+            Uimap.Enter_Service_Name_Into_Save_Dialog(WorkflowName);
         }
 
         #region Additional test attributes
@@ -29,19 +36,15 @@ namespace Warewolf.UITests.Tools
             Uimap.SetGlobalPlaybackSettings();
             Uimap.WaitIfStudioDoesNotExist();
             Console.WriteLine("Test \"" + TestContext.TestName + "\" starting on " + System.Environment.MachineName);
-            Uimap.InitializeABlankWorkflow();
         }
 
         [TestCleanup]
         public void MyTestCleanup()
         {
-            Uimap.CleanupABlankWorkflow();
+            Uimap.TryCloseHangingSaveDialog();
+            Uimap.TryRemoveFromExplorer(WorkflowName);
         }
 
-        /// <summary>
-        ///Gets or sets the test context which provides
-        ///information about and functionality for the current test run.
-        ///</summary>
         public TestContext TestContext
         {
             get
@@ -60,7 +63,7 @@ namespace Warewolf.UITests.Tools
         {
             get
             {
-                if ((_uiMap == null))
+                if (_uiMap == null)
                 {
                     _uiMap = new UIMap();
                 }
