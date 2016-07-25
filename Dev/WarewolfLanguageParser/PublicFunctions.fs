@@ -28,8 +28,8 @@ let AddRecsetToEnv (name : string) (env : WarewolfEnvironment) =
         let a = { env with RecordSets = (Map.add name b env.RecordSets) }
         a
 ///Evalutae an expression
-let EvalEnvExpression (exp : string) (update : int) (env : WarewolfEnvironment) = 
-    EvaluationFunctions.eval env update exp
+let EvalEnvExpression (exp : string) (update : int) (shouldEscape:bool) (env : WarewolfEnvironment) = 
+    EvaluationFunctions.eval env update shouldEscape exp
 ///eval and return positions
 let EvalWithPositions (exp : string) (update : int) (env : WarewolfEnvironment) = 
     EvaluationFunctions.evalWithPositions env update exp
@@ -51,7 +51,7 @@ let RecordsetToSearchTo(recordset : WarewolfRecordset) =
     |> Seq.map (fun (a, b) -> innerConvert a b)
 
 let EvalRecordSetIndexes (exp : string) (update : int) (env : WarewolfEnvironment) = 
-    EvaluationFunctions.eval env update exp
+    EvaluationFunctions.eval env update false exp
 
 let EvalAssign (exp : string) (value : string) (update : int) (env : WarewolfEnvironment) = 
     AssignEvaluation.evalAssign exp value update env

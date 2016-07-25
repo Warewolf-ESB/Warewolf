@@ -28,7 +28,7 @@ let deleteIndex  (exp:string) (index:int)   (env:WarewolfEnvironment) =
 
 /// delete a row with an expression index. eg delete [[Rec([[a]]).x]]
 let rec deleteExpressionIndex (b:RecordSetName) (ind: LanguageExpression) (update:int)  (env:WarewolfEnvironment)  =
-    let data = languageExpressionToString ind |> (eval env update) |> evalResultToString
+    let data = languageExpressionToString ind |> (eval env update false) |> evalResultToString
     match ind with 
     | WarewolfAtomExpression atom ->
                 match atom with
