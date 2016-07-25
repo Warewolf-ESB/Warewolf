@@ -80,7 +80,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             return serializer.SerializeToBuilder(msg);
         }
 
-        static List<IPluginAction> GetMethods(Dev2JsonSerializer serializer, Guid srcId, string ns)
+        static IEnumerable<IPluginAction> GetMethods(Dev2JsonSerializer serializer, Guid srcId, string ns)
         {
             PluginServices services = new PluginServices();
             var src = ResourceCatalog.Instance.GetResource<PluginSource>(GlobalConstants.ServerWorkspaceID, srcId);
