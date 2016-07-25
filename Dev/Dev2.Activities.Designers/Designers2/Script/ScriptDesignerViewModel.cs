@@ -114,8 +114,7 @@ namespace Dev2.Activities.Designers2.Script
             {
                 IncludeFile = "";
             }
-            chooserMessage.SelectedFiles = IncludeFile.Split(separator.ToCharArray());
-            chooserMessage.SelectedFiles = IncludeFile?.Split(Separator.ToCharArray());
+            chooserMessage.SelectedFiles = IncludeFile?.Split(separator.ToCharArray());
             chooserMessage.PropertyChanged += (sender, args) =>
             {
                 if (args.PropertyName == @"SelectedFiles")
