@@ -18,16 +18,16 @@ namespace Dev2.Development.Languages.Scripting
 {
     public class ScriptingEngineRepo : SpookyAction<IScriptingContext,enScriptType>
     {
-        public IScriptingContext CreateEngine(enScriptType ScriptType, IStringScriptSources sources)
+        public IScriptingContext CreateEngine(enScriptType scriptType, IStringScriptSources sources)
         {
-            switch(ScriptType)
+            switch(scriptType)
             {
                 case enScriptType.JavaScript :
                     return  new JavaScriptContext(sources);
                 case enScriptType.Python:
-                    return new Dev2PythonContext();
+                    return new Dev2PythonContext(sources);
                 case enScriptType.Ruby:
-                    return new RubyContext();
+                    return new RubyContext(sources);
                 default : throw new Exception(ErrorResource.InvalidScriptingContext);
 
 
