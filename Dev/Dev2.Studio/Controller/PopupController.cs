@@ -384,20 +384,6 @@ namespace Dev2.Studio.Controller
             return Show();
         }
 
-        public MessageBoxResult ShowRollbackVersionMessage(string displayName)
-        {
-            Header = "Make current version";
-            var description = $"{displayName} will become the current version.{Environment.NewLine}Do you want to proceed ?";
-            Description = description;
-            Buttons = MessageBoxButton.YesNo;
-            ImageType = MessageBoxImage.Warning;
-            IsDependenciesButtonVisible = false;
-            IsInfo = true;
-            IsError = false;
-            IsQuestion = false;
-            return Show();
-        }
-
         #region Implementation of IPopupMessages
 
         public IPopupMessage GetDeleteConfirmation(string nameOfItemBeingDeleted)

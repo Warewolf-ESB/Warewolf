@@ -155,16 +155,6 @@ namespace Dev2.CustomControls.Connections
             }
         }
 
-        public void SetTargetEnvironment()
-        {
-            var otherConnectedServers = Servers.Where(s => s.IsConnected && !s.EnvironmentModel.IsLocalHost);
-            IEnumerable<IConnectControlEnvironment> connectControlEnvironments = otherConnectedServers as IConnectControlEnvironment[] ?? otherConnectedServers.ToArray();
-            if(connectControlEnvironments.Count() == 1)
-            {
-                SelectedServerIndex = Servers.IndexOf(connectControlEnvironments.First());
-            }
-        }
-
         void SetSelectedEnvironment()
         {
             if(_bindToActiveEnvironment)
@@ -306,22 +296,6 @@ namespace Dev2.CustomControls.Connections
             }
         }
 
-        public bool AddNewServer(out int newServerIndex, Action<int> openDialog)
-        {
-            newServerIndex = -1;
-            IEnvironmentModel newEnvironment;
-            if(ActionForNewRemoteServer(out newEnvironment, openDialog))
-            {
-                var selectedServerIndex = Servers.ToList().FindIndex(c => c.EnvironmentModel.ID == newEnvironment.ID);
-                if(selectedServerIndex >= 0)
-                {
-                    newServerIndex = selectedServerIndex;
-                    return true;
-                }
-            }
-            return false;
-        }
-
         bool ActionForNewRemoteServer(out IEnvironmentModel newServer, Action<int> openDialog)
         {
             openDialog(-1);
@@ -415,26 +389,6 @@ namespace Dev2.CustomControls.Connections
         }
 
         #endregion INotifyPropertyChanged
-
-        public void UpdateActiveEnvironment(IEnvironmentModel environmentModel, bool isSetFromConnectControl)
-        {
-            if(isSetFromConnectControl)
-            {
-                return;
-            }
-
-            if(environmentModel != null)
-            {
-                var index = Servers.ToList().FindIndex(c => c.EnvironmentModel.ID == environmentModel.ID);
-                if(index >= 0)
-                {
-                    _activeAction(index);
-                   
-                   
-           
-                }
-            }
-        }
 
         void ActiveAction(int index)
         {
