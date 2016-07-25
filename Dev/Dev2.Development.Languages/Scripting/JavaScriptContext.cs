@@ -8,24 +8,43 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using System.Collections.Generic;
 using Dev2.Common.Interfaces.Enums;
 using Dev2.Common.Interfaces.Scripting;
 using Jurassic;
 
 namespace Dev2.Development.Languages.Scripting
 {
-    public class JavaScriptContext: IScriptingContext
+    public class JavaScriptContext : IScriptingContext
     {
+        private ScriptEngine jsContext;
+
+        public JavaScriptContext()
+        {
+            jsContext = new ScriptEngine();
+            AddScriptSourcesToContext();
+        }
+
         public string Execute(string scriptValue)
         {
-            var jsContext = new ScriptEngine();
             jsContext.Evaluate("function __result__() {" + scriptValue + "}");
             return jsContext.CallGlobalFunction("__result__").ToString();
         }
 
+        public IList<FileScriptSource> ScriptSources()
+        {
+            return StringScriptSources.GetFileScriptSources();
+        }
         public enScriptType HandlesType()
         {
             return enScriptType.JavaScript;
+        }
+
+        public void AddScriptSourcesToContext()
+        {
+            if (jsContext == null) return;
+            foreach (var scriptSource in ScriptSources())
+                jsContext.Evaluate(scriptSource);
         }
     }
 }

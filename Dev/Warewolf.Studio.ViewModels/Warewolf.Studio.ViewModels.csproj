@@ -142,6 +142,7 @@
     <Compile Include="DeployStatsViewerViewModel.cs" />
     <Compile Include="DeployViewModel.cs" />
     <Compile Include="ExplorerItemViewModelCommandController.cs" />
+    <Compile Include="ManageComPluginServiceModel.cs" />
     <Compile Include="ManageComPluginSourceModel.cs" />
     <Compile Include="ManageComPluginSourceViewModel.cs" />
     <Compile Include="ManageDbServiceModel.cs" />
