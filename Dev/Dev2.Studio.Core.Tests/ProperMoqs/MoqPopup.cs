@@ -122,6 +122,11 @@ namespace Dev2.Core.Tests.ProperMoqs
             return _result;
         }
 
+        public MessageBoxResult ShowRollbackVersionMessage(string displayName)
+        {
+            return _result;
+        }
+
         public MessageBoxResult ShowSaveErrorDialog(string errorMessage)
         {
             return _result;
