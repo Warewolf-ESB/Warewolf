@@ -10,11 +10,8 @@
 
 using System;
 using System.IO;
-using Dev2.Common.Interfaces.Wrappers;
-using Dev2.Data.Util;
 using Dev2.PathOperations;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
 
 namespace Dev2.Data.Tests.Operations
 {
@@ -45,37 +42,34 @@ namespace Dev2.Data.Tests.Operations
         [TestMethod]
         public void CopyFileWithPathsExpectedRecursiveCopy()
         {
-            var file = new Mock<IFile>();
-            file.Setup(file1 => file1.Delete(It.IsAny<string>()));
-
             var innerDir = Guid.NewGuid().ToString();
             var tempPath = Path.GetTempPath();
             var tempFileName = Path.GetFileName(Path.GetTempFileName());
             const string TempData = "some string data";
-            var tempFile = Path.Combine(tempPath, innerDir, innerDir, tempFileName);
-            string directoryName = Path.GetDirectoryName(tempFile);
-            if(directoryName != null)
+            if (tempFileName != null)
             {
-                Directory.CreateDirectory(directoryName);
+                var tempFile = Path.Combine(tempPath, innerDir, innerDir, tempFileName);
+                string directoryName = Path.GetDirectoryName(tempFile);
+                if (directoryName != null)
+                {
+                    Directory.CreateDirectory(directoryName);
+                }
+                var upperLevelDir = Path.Combine(tempPath, innerDir);
+                File.WriteAllText(tempFile, TempData);
+                var dst = Path.Combine(tempPath, Guid.NewGuid().ToString());
+                var scrEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(ActivityIOFactory.CreatePathFromString(upperLevelDir, string.Empty, null, true));
+                var dstEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(ActivityIOFactory.CreatePathFromString(dst, string.Empty, null, true));
+
+                var moveTO = new Dev2CRUDOperationTO(true);
+                ActivityIOFactory.CreateOperationsBroker().Copy(scrEndPoint, dstEndPoint, moveTO);
+                var newFilePath = Path.Combine(dst, tempFileName);
+                Assert.IsTrue(File.Exists(newFilePath));
+                Assert.IsTrue(File.Exists(tempFile));
+
+                File.Delete(tempFile);
+                File.Delete(newFilePath);
             }
-            var upperLevelDir = Path.Combine(tempPath, innerDir);
-            File.WriteAllText(tempFile, TempData);
-            var dst = Path.Combine(tempPath, Guid.NewGuid().ToString());
-            var srcPath = ActivityIOFactory.CreatePathFromString(upperLevelDir, string.Empty, null, true);
-            var scrEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(srcPath);
-            var dstPath = ActivityIOFactory.CreatePathFromString(dst, string.Empty, null, true);
-            var dstEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(dstPath);
-
-            var moveTO = new Dev2CRUDOperationTO(true);
-            var activityOperationsBroker = ActivityIOFactory.CreateOperationsBroker(file.Object, new CommonDataUtils());
-            activityOperationsBroker.Copy(scrEndPoint, dstEndPoint, moveTO);
-            var newFilePath = Path.Combine(dst, innerDir, tempFileName);
-            Assert.IsTrue(File.Exists(newFilePath));
-            Assert.IsTrue(File.Exists(tempFile));
-
-            File.Delete(tempFileName);
         }
-
         [TestMethod]
         public void PutRaw_Should()
         {
