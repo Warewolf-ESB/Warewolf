@@ -51,13 +51,14 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.ComPlugin
            
         }
 
-        
+
         public static ServiceMethodList GetMethods(string classId)
         {
             using (var runtime = CreateInvokeAppDomain())
             {
                 return runtime.Value.ListMethods(classId);
             }           
+         
         }
 
         public static NamespaceList GetNamespaces(ComPluginSource pluginSource)
