@@ -66,6 +66,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             _explorerRepositoryMock.Setup(it => it.Rollback(_target.ResourceId, _target.VersionNumber)).Returns(rollbackResultMock.Object);
             rollbackResultMock.SetupGet(it => it.DisplayName).Returns(outputDisplayName);
 
+            _popupControllerMock.Setup(it => it.ShowRollbackVersionMessage(It.IsAny<string>())).Returns(MessageBoxResult.Yes);
+
             //act
             _target.RollbackCommand.Execute(null);
             Assert.IsTrue(_target.RollbackCommand.CanExecute(null));
@@ -1367,7 +1369,6 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Ignore] //Ignore until Explorer move functionality brought back
         public async System.Threading.Tasks.Task TestMoveToFolderExists()
         {
             //arrange
@@ -1394,12 +1395,11 @@ namespace Warewolf.Studio.ViewModels.Tests
             //act
             var result = await _target.Move(destinationMock.Object);
             //assert
-            Assert.IsTrue(result);
+            Assert.IsFalse(result);
             _explorerRepositoryMock.Verify(it => it.Move(_target, destinationMock.Object));
         }
 
         [TestMethod]
-        [Ignore] //Ignore until Explorer move functionality brought back
         public async System.Threading.Tasks.Task TestMoveToFolderNotExists()
         {
             //arrange
@@ -1431,7 +1431,6 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Ignore] //Ignore until Explorer move functionality brought back
         public async System.Threading.Tasks.Task TestMoveToLtFolder()
         {
             //arrange
@@ -1460,7 +1459,6 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Ignore] //Ignore until Explorer move functionality brought back
         public async System.Threading.Tasks.Task TestMoveParentNull()
         {
             //arrange

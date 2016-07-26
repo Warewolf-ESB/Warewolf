@@ -116,7 +116,7 @@ namespace Warewolf.UITests
         private void WaitForStudioStart(int timeout)
         {
             Console.WriteLine("Waiting for studio to start.");
-            Playback.Wait(timeout);
+            MainStudioWindow.WaitForControlExist(timeout);
             if (!MainStudioWindow.Exists)
             {
                 throw new InvalidOperationException("Warewolf studio is not running. You are expected to run \"Dev\\TestScripts\\Studio\\Startup.bat\" as an administrator and wait for it to complete before running any coded UI tests");
