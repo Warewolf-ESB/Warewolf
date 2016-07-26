@@ -92,23 +92,7 @@ namespace Dev2.Core.Tests.Dialogs
             //------------Assert Results-------------------------
             Assert.IsTrue(showActionCalled);
         }
-        
-        [TestMethod]
-        [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("ProgressDialogViewModel_StartCancel")]
-        public void ProgressDialogViewModel_StartCancel_Exected_SetsSubLabelAndCancelButtonEnabled()
-        {
-            //------------Setup for test--------------------------
-            var vm = new ProgressDialogViewModel(() => { }, () => { }, () => { });
-            vm.SubLabel = "Downloading ...";
-            vm.IsCancelButtonEnabled = true;
-            //------------Execute Test---------------------------
-            vm.StartCancel();
-            //------------Assert Results-------------------------
-            Assert.AreEqual("Please wait while the process is being cancelled...", vm.SubLabel);
-            Assert.IsFalse(vm.IsCancelButtonEnabled);
-        }
-
+           
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("ProgressDialogViewModel_StatusChanged")]

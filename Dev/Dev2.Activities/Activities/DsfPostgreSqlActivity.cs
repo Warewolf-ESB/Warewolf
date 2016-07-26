@@ -9,7 +9,7 @@ using Warewolf.Resource.Errors;
 
 namespace Dev2.Activities
 {
-    [ToolDescriptorInfo("Postgre", "PostgreSql", ToolType.Native, "8999E59B-38A3-43BB-A92F-6090C5C3EA80", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Database", "/Warewolf.Studio.Themes.Luna;component/Images.xaml")]
+    [ToolDescriptorInfo("Postgre", "PostgreSQL", ToolType.Native, "8999E59B-38A3-43BB-A92F-6090C5C3EA80", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Database", "/Warewolf.Studio.Themes.Luna;component/Images.xaml")]
     public class DsfPostgreSqlActivity : DsfActivity
     {
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
@@ -18,8 +18,8 @@ namespace Dev2.Activities
    
         public DsfPostgreSqlActivity()
         {
-            Type = "PostgreSql Database Connector";
-            DisplayName = "PostgreSql Database";
+            Type = "PostgreSQL Database Connector";
+            DisplayName = "PostgreSQL Database";
         }
 
         protected override void ExecutionImpl(IEsbChannel esbChannel, IDSFDataObject dataObject, string inputs, string outputs, out ErrorResultTO errors, int update)

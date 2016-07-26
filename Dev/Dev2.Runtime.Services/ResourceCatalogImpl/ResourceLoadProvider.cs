@@ -171,7 +171,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
         {
             var workspaceResources = GetResources(workspaceID);
             var resources = workspaceResources.FindAll(r => r.ResourceType == sourceType.ToString());
-            if (sourceType == enSourceType.MySqlDatabase || sourceType == enSourceType.Oracle || sourceType == enSourceType.PostgreSql || sourceType == enSourceType.SqlDatabase)
+            if (sourceType == enSourceType.MySqlDatabase || sourceType == enSourceType.Oracle || sourceType == enSourceType.PostgreSQL || sourceType == enSourceType.SqlDatabase)
             {
                 resources = workspaceResources.FindAll(r => r.ResourceType.ToUpper() == "DbSource".ToUpper());
             }
@@ -181,7 +181,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
                 { enSourceType.EmailSource, ()=>BuildSourceList<EmailSource>(resources) },
                 { enSourceType.SqlDatabase, ()=>BuildSourceList<DbSource>(resources) },
                 { enSourceType.MySqlDatabase, ()=>BuildSourceList<DbSource>(resources) },
-                { enSourceType.PostgreSql, ()=>BuildSourceList<DbSource>(resources) },
+                { enSourceType.PostgreSQL, ()=>BuildSourceList<DbSource>(resources) },
                 { enSourceType.Oracle, ()=>BuildSourceList<DbSource>(resources) },
                 { enSourceType.PluginSource, ()=>BuildSourceList<PluginSource>(resources) },
                 { enSourceType.WebSource, ()=>BuildSourceList<WebSource>(resources) },

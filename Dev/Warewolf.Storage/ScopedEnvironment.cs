@@ -44,11 +44,6 @@ namespace Warewolf.Storage
             return exp.Replace(_alias, datasource);
         }
 
-        public static string ReplaceStarWithFixedIndex(string exp, int idx)
-        {
-            return idx > 0 ? exp.Replace("(*)", "(" + idx + ")") : exp;
-        }
-
         private string UpdateDataSourceWithIterativeValue(string datasource, int update, string exp)
         {
             var magic = _doReplace(datasource, update, exp);
