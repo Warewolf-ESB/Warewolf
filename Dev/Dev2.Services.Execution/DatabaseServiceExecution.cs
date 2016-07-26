@@ -168,7 +168,7 @@ namespace Dev2.Services.Execution
                         ErrorResult.MergeErrors(invokeErrors);
                         return result;
                     }
-                case enSourceType.PostgreSql:
+                case enSourceType.PostgreSQL:
                     {
                         object result = PostgreSqlExecution(invokeErrors, update);
                         ErrorResult.MergeErrors(invokeErrors);
