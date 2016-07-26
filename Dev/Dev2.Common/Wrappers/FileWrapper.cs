@@ -25,11 +25,6 @@ namespace Dev2.Common.Wrappers
             File.Move(source, destination);
         }
 
-        public Stream Open(string fileName, FileMode fileMode)
-        {
-            return File.Open(fileName, fileMode);
-        }
-
         public bool Exists(string path)
         {
             return File.Exists(path);

@@ -717,12 +717,6 @@ namespace Dev2.Studio.ViewModels.Workflow
             base.OnViewAttached(view, context);
         }
 
-        public void ViewClosed()
-        {
-            if (!CloseRequested)
-                SendFinishedMessage();
-        }
-
         public static WorkflowInputDataViewModel Create(IContextualResourceModel resourceModel)
         {
             return Create(resourceModel, Guid.Empty, DebugMode.Run);
