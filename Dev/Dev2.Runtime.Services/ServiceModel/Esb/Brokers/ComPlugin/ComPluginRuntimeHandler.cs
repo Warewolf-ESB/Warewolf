@@ -164,14 +164,23 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.ComPlugin
         {
             Guid clasID;
             Guid.TryParse(classId, out clasID);
-            var type = Type.GetTypeFromCLSID(clasID);
+            var is64BitProcess = Environment.Is64BitProcess;
+            if (is64BitProcess)
+            {
+                
+            }
+            var type = Type.GetTypeFromCLSID(clasID, true) ;
             return string.IsNullOrEmpty(classId) ? null : type;
         }
         public ServiceMethodList ListMethods(string classId)
         {
             var serviceMethodList = new ServiceMethodList();
+            classId = classId.Replace("{", "").Replace("}","");
             var type = GetType(classId);
             if (type == null) return new ServiceMethodList();
+            var instance = Activator.CreateInstance(type) as System.Runtime.InteropServices.ComTypes.IPersistFile;
+            var methods = instance?.GetType().GetMethods();
+            
             var methodInfos = type.GetMethods();
 
             methodInfos.ToList().ForEach(info =>
@@ -232,18 +241,18 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.ComPlugin
         /// <summary>
         /// Reads the namespaces.
         /// </summary>
-        /// <param name="assemblyLocation">The assembly location.</param>
+        /// <param name="clsId">The assembly location.</param>
         /// <returns></returns>
-        private IEnumerable<NamespaceItem> ReadNamespaces(string assemblyLocation)
+        private IEnumerable<NamespaceItem> ReadNamespaces(string clsId)
         {
             try
             {
                 var result = new List<NamespaceItem>();
-                var list = ListNamespaces(assemblyLocation);
+                var list = ListNamespaces(clsId);
                 list.ForEach(fullName =>
                     result.Add(new NamespaceItem
                     {
-                        AssemblyLocation = assemblyLocation,
+                        AssemblyLocation = clsId,
                         FullName = fullName,
                         AssemblyName = fullName
                     }));

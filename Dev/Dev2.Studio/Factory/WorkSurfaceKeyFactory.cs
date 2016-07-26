@@ -9,6 +9,7 @@
 */
 
 using System;
+using System.Diagnostics.CodeAnalysis;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Studio.AppResources.Comparers;
@@ -68,6 +69,7 @@ namespace Dev2.Factory
         /// <returns></returns>
         /// <author>Jurie.smit</author>
         /// <date>2/28/2013</date>
+        [SuppressMessage("ReSharper", "UnusedMember.Global")]
         public static WorkSurfaceKey CreateKey(WorkSurfaceContext context, Guid resourceID, Guid serverID, Guid? environmentID = null)
         {
             return new WorkSurfaceKey
@@ -98,6 +100,7 @@ namespace Dev2.Factory
             };
         }
 
+        [SuppressMessage("ReSharper", "UnusedMember.Global")]
         public static WorkSurfaceKey CreateKey(IDebugState debugState)
         {
             var origin = debugState.WorkspaceID;

@@ -139,25 +139,6 @@ namespace Dev2.ConnectionHelpers
             ConnectedStatusChanged?.Invoke(this, new ConnectionStatusChangedEventArg(connectedState, environmentId, false));
         }
 
-        public void ResourcesLoadedHandler(Guid environmentId)
-        {
-            if(ConnectedStatusChanged == null)
-            {
-                return;
-            }
-
-            var server = _serverProvider.Load().FirstOrDefault(s => s.ID == environmentId);
-
-            if(server != null && server.IsConnected)
-            {
-                ConnectedStatusChanged(this, new ConnectionStatusChangedEventArg(ConnectionEnumerations.ConnectedState.Connected, environmentId, true));
-            }
-            else
-            {
-                ConnectedStatusChanged(this, new ConnectionStatusChangedEventArg(ConnectionEnumerations.ConnectedState.Disconnected, environmentId, true));
-            }
-        }
-
         private void Disconnect(IEnvironmentModel environment)
         {
             ConnectedStatusChanged?.Invoke(this, new ConnectionStatusChangedEventArg(ConnectionEnumerations.ConnectedState.Busy, environment.ID, false));

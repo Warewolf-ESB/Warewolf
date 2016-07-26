@@ -76,6 +76,21 @@ namespace Dev2.Studio.Controller
             return Show();
         }
 
+        public MessageBoxResult ShowRollbackVersionMessage(string displayName)
+        {
+            Header = Warewolf.Studio.Resources.Languages.Core.RollbackHeader;
+            var description = String.Format(Warewolf.Studio.Resources.Languages.Core.RollbackMessage,displayName,Environment.NewLine);
+            Description = description;
+            Buttons = MessageBoxButton.YesNo;
+            ImageType = MessageBoxImage.Warning;
+            IsDependenciesButtonVisible = false;
+            IsInfo = true;
+            IsError = false;
+            IsQuestion = false;
+            return Show();
+        }
+
+
         public MessageBoxResult ShowNoInputsSelectedWhenClickLink()
         {         
             Header = Warewolf.Studio.Resources.Languages.Core.VariablesInput_Information_Title;
@@ -374,20 +389,6 @@ namespace Dev2.Studio.Controller
         {
             Header = "Delete version";
             var description = $"Are you sure you want to delete {displayName}?";
-            Description = description;
-            Buttons = MessageBoxButton.YesNo;
-            ImageType = MessageBoxImage.Warning;
-            IsDependenciesButtonVisible = false;
-            IsInfo = true;
-            IsError = false;
-            IsQuestion = false;
-            return Show();
-        }
-
-        public MessageBoxResult ShowRollbackVersionMessage(string displayName)
-        {
-            Header = "Make current version";
-            var description = $"{displayName} will become the current version.{Environment.NewLine}Do you want to proceed ?";
             Description = description;
             Buttons = MessageBoxButton.YesNo;
             ImageType = MessageBoxImage.Warning;

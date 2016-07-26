@@ -293,7 +293,6 @@
     <Compile Include="Environments\TestLoadEnvironmentRespository.cs" />
     <Compile Include="Environments\TestServerProvider.cs" />
     <Compile Include="Factories\DsfActivityFactoryTests.cs" />
-    <Compile Include="Helpers\LatestWebGetterTests.cs" />
     <Compile Include="Helpers\TestProgressFileDownloader.cs" />
     <Compile Include="Helpers\VersionCheckerTestClass.cs" />
     <Compile Include="Helpers\VersionCheckerTests.cs" />
@@ -324,7 +323,6 @@
     <Compile Include="Controller\FlowControllerTests.cs" />
     <Compile Include="UtilsTests\FrameWorkElementExtensionsTests.cs" />
     <Compile Include="Utils\AsyncWorkerTests.cs" />
-    <Compile Include="ViewModelTests\ConnectControlViewModelTests.cs" />
     <Compile Include="ViewModelTests\QuickVariableInputModelTests.cs" />
     <Compile Include="ViewModelTests\BaseWorkSurfaceViewModelTests.cs" />
     <Compile Include="ViewModelTests\HelpViewModelTests.cs" />
@@ -340,7 +338,6 @@
     <Compile Include="Utils\TestModelItemFactory.cs" />
     <Compile Include="Utils\UIElementExtensionMethods.cs" />
     <Compile Include="Utils\WorkflowDesignerUtilsTest.cs" />
-    <Compile Include="ViewModelTests\Dialogs\Dev2MessageBoxViewModelTests.cs" />
     <Compile Include="ViewModelTests\ExceptionViewModelTest.cs" />
     <Compile Include="WindowNavigationBehavior.cs" />
     <Compile Include="Workflows\DesignerDataListUtilsTest.cs" />
@@ -492,6 +489,7 @@
     <Folder Include="MockUtils\" />
     <Folder Include="Repositories\" />
     <Folder Include="ViewModelTests\Configuration\" />
+    <Folder Include="ViewModelTests\Dialogs\" />
     <Folder Include="ViewModelTests\ViewModelMocks\" />
     <Folder Include="Views\Global\" />
   </ItemGroup>
