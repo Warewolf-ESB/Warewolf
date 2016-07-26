@@ -119,7 +119,7 @@
                             DisplayMemberPath="DisplayName"
                             InitializeNode="ExplorerTree_OnInitializeNode"
                             IsDraggable="True"
-                            IsDropTarget="False"
+                            IsDropTarget="True"
                             AllowDragDropCopy="False"                             
                             NodeDraggingStart="ExplorerTree_OnNodeDraggingStart"
                             IsSelectedMemberPath="IsSelected"

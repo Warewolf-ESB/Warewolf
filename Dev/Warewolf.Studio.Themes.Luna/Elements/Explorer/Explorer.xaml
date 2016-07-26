@@ -389,6 +389,20 @@
                                         <DoubleAnimationUsingKeyFrames Storyboard.TargetName="DropOntoElem" Storyboard.TargetProperty="Opacity">
                                             <EasingDoubleKeyFrame KeyTime="00:00:00.15" Value="1" />
                                         </DoubleAnimationUsingKeyFrames>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="DropBeforeElem" Storyboard.TargetProperty="Visibility">
+                                            <DiscreteObjectKeyFrame KeyTime="0">
+                                                <DiscreteObjectKeyFrame.Value>
+                                                    <Visibility>Collapsed</Visibility>
+                                                </DiscreteObjectKeyFrame.Value>
+                                            </DiscreteObjectKeyFrame>
+                                        </ObjectAnimationUsingKeyFrames>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="DropAfterElem" Storyboard.TargetProperty="Visibility">
+                                            <DiscreteObjectKeyFrame KeyTime="0">
+                                                <DiscreteObjectKeyFrame.Value>
+                                                    <Visibility>Collapsed</Visibility>
+                                                </DiscreteObjectKeyFrame.Value>
+                                            </DiscreteObjectKeyFrame>
+                                        </ObjectAnimationUsingKeyFrames>
                                     </Storyboard>
                                 </VisualState>
                                 <VisualState x:Name="DropBefore">
@@ -503,7 +517,7 @@
                         <Grid x:Name="DropBeforeElem"
                               VerticalAlignment="Top"
                               RenderTransformOrigin="0.5,0.5"
-                              Visibility="Collapsed">
+                              Visibility="Visible">
                             <Grid.RenderTransform>
                                 <TransformGroup>
                                     <ScaleTransform />
@@ -534,7 +548,7 @@
                         <Grid x:Name="DropAfterElem"
                               VerticalAlignment="Bottom"
                               RenderTransformOrigin="0.5,0.5"
-                              Visibility="Collapsed">
+                              Visibility="Visible">
                             <Grid.RenderTransform>
                                 <TransformGroup>
                                     <ScaleTransform />
