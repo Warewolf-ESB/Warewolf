@@ -19,7 +19,6 @@ using System.Threading;
 
 namespace Warewolf.UITests
 {
-
     public partial class UIMap
     {
         private int _lenientSearchTimeout = 3000;
@@ -309,9 +308,6 @@ namespace Warewolf.UITests
             }
         }
 
-        /// <summary>
-        /// Click_Settings_Security_Tab_ResourcePermissions_Execute_Checkbox - Use 'Click_Settings_Security_Tab_ResourcePermissions_Execute_CheckboxParams' to pass parameters into this method.
-        /// </summary>
         public void Click_Settings_Security_Tab_ResourcePermissions_Row1_Execute_Checkbox()
         {
             #region Variable Declarations
@@ -320,19 +316,11 @@ namespace Warewolf.UITests
             WpfButton saveButton = this.MainStudioWindow.SideMenuBar.SaveButton;
             #endregion
 
-            // Select 'UI__ExecutePermissionCheckBox_AutoID' check box
             executeCheckBox.Checked = true;
-
-            // Verify that the 'Checked' property of 'UI__ExecutePermissionCheckBox_AutoID' check box equals 'True'
             Assert.IsTrue(executeCheckBox.Checked, "Settings security tab resource permissions row 1 execute checkbox is not checked.");
-
-            // Verify that the 'Enabled' property of 'Save this tab' button equals 'True'
             Assert.IsTrue(saveButton.Enabled, "Save ribbon button is not enabled");
         }
 
-        /// <summary>
-        /// Click_Settings_Security_Tab_Resource_Permissions_View_Checkbox - Use 'Click_Settings_Security_Tab_Resource_Permissions_View_CheckboxParams' to pass parameters into this method.
-        /// </summary>
         public void Click_Settings_Security_Tab_Resource_Permissions_Row1_View_Checkbox()
         {
             #region Variable Declarations
@@ -341,19 +329,11 @@ namespace Warewolf.UITests
             WpfButton saveButton = this.MainStudioWindow.SideMenuBar.SaveButton;
             #endregion
 
-            // Select 'UI__ViewPermissionCheckBox_AutoID' check box
             viewCheckBox.Checked = true;
-
-            // Verify that the 'Checked' property of 'UI__ViewPermissionCheckBox_AutoID' check box equals 'True'
             Assert.IsTrue(viewCheckBox.Checked, "Settings resource permissions row1 view checkbox is not checked.");
-
-            // Verify that the 'Enabled' property of 'Save this tab' button equals 'True'
             Assert.IsTrue(saveButton.Enabled, "Save ribbon button is not enabled");
         }
 
-        /// <summary>
-        /// Click_Settings_Security_Tab_Resource_Permissions_Contribute_Checkbox - Use 'Click_Settings_Security_Tab_Resource_Permissions_Contribute_CheckboxParams' to pass parameters into this method.
-        /// </summary>
         public void Click_Settings_Security_Tab_Resource_Permissions_Row1_Contribute_Checkbox()
         {
             #region Variable Declarations
@@ -362,30 +342,47 @@ namespace Warewolf.UITests
             WpfButton saveButton = this.MainStudioWindow.SideMenuBar.SaveButton;
             #endregion
 
-            // Select 'UI__ContributePermissionCheckBox_AutoID' check box
             contributeCheckBox.Checked = true;
-
-            // Verify that the 'Checked' property of 'UI__ViewPermissionCheckBox_AutoID' check box equals 'True'
             Assert.IsTrue(contributeCheckBox.Checked, "Settings resource permissions row1 view checkbox is not checked.");
-
-            // Verify that the 'Enabled' property of 'Save this tab' button equals 'True'
             Assert.IsTrue(saveButton.Enabled, "Save ribbon button is not enabled");
         }
 
         public void TryCloseAllTabs()
         {
-            Playback.PlaybackSettings.MaximumRetryCount = _strictMaximumRetryCount * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
-            Playback.PlaybackSettings.SearchTimeout = _strictSearchTimeout * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
-            var workflowTabCloseButtonExists = MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.CloseButton.Exists;
-            var settingsTabCloseButtonExists = MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.CloseButton.Exists;
-            var serverSourceWizardTabCloseButtonExists = MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.ServerSourceWizardTab.TabCloseButton.Exists;
-            Playback.PlaybackSettings.MaximumRetryCount = _lenientMaximumRetryCount * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
-            Playback.PlaybackSettings.SearchTimeout = _lenientSearchTimeout * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
+            var workflowTabCloseButtonExists = true;
+            var settingsTabCloseButtonExists = true;
+            var serverSourceWizardTabCloseButtonExists = true;
             while (workflowTabCloseButtonExists || settingsTabCloseButtonExists || serverSourceWizardTabCloseButtonExists)
             {
-                TryCloseWorkflowTab();
-                TryCloseSettingsTab();
-                TryCloseServerSourceWizardTab();
+                Playback.PlaybackSettings.MaximumRetryCount = _strictMaximumRetryCount * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
+                Playback.PlaybackSettings.SearchTimeout = _strictSearchTimeout * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
+                workflowTabCloseButtonExists = MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.CloseButton.Exists;
+                Playback.PlaybackSettings.MaximumRetryCount = _lenientMaximumRetryCount * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
+                Playback.PlaybackSettings.SearchTimeout = _lenientSearchTimeout * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
+                if (workflowTabCloseButtonExists)
+                {
+                    TryCloseWorkflowTab();
+                }
+
+                Playback.PlaybackSettings.MaximumRetryCount = _strictMaximumRetryCount * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
+                Playback.PlaybackSettings.SearchTimeout = _strictSearchTimeout * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
+                settingsTabCloseButtonExists = MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.CloseButton.Exists;
+                Playback.PlaybackSettings.MaximumRetryCount = _lenientMaximumRetryCount * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
+                Playback.PlaybackSettings.SearchTimeout = _lenientSearchTimeout * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
+                if (settingsTabCloseButtonExists)
+                {
+                    TryCloseSettingsTab();
+                }
+
+                Playback.PlaybackSettings.MaximumRetryCount = _strictMaximumRetryCount * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
+                Playback.PlaybackSettings.SearchTimeout = _strictSearchTimeout * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
+                serverSourceWizardTabCloseButtonExists = MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.ServerSourceWizardTab.TabCloseButton.Exists;
+                Playback.PlaybackSettings.MaximumRetryCount = _lenientMaximumRetryCount * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
+                Playback.PlaybackSettings.SearchTimeout = _lenientSearchTimeout * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
+                if (serverSourceWizardTabCloseButtonExists)
+                {
+                    TryCloseServerSourceWizardTab();
+                }
             }
         }
 
@@ -502,7 +499,7 @@ namespace Warewolf.UITests
             WpfEdit searchTextBox = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.SearchTextBox;
             WpfButton explorerRefreshButton = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerRefreshButton;
             #endregion
-            
+
             searchTextBox.Text = FilterText;
             Mouse.Click(explorerRefreshButton, new Point(10, 10));
         }
@@ -513,7 +510,7 @@ namespace Warewolf.UITests
             WinEdit objectNameTextbox = this.SelectWindowsGroupDialog.ItemPanel.ObjectNameTextbox;
             WinButton ok = this.SelectWindowsGroupDialog.OKPanel.OK;
             #endregion
-            
+
             objectNameTextbox.Text = GroupName;
             Assert.IsTrue(ok.Enabled, "Windows group dialog OK button is not enabled.");
         }
@@ -528,7 +525,7 @@ namespace Warewolf.UITests
             WpfTreeItem subTreeItem1 = this.ServicePickerDialog.Explorer.ExplorerTree.TreeItem1.SubTreeItem1;
             WpfButton ok = this.ServicePickerDialog.OK;
             #endregion
-            
+
             filterTextbox.Text = ServiceName;
             Mouse.Click(subTreeItem1, new Point(91, 9));
             Assert.IsTrue(ok.Enabled, "Service picker dialog OK button is not enabled.");

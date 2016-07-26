@@ -92,7 +92,7 @@ namespace Warewolf.UITests
             Uimap.TryCloseHangingWindowsGroupDialog();
             Uimap.TryRemoveFromExplorer(LocalWorkflowName);
             Uimap.TryDisconnectFromRemoteServerAndRemoveSourceFromExplorer(ServerSourceName);
-            //TODO: Cleanup and re-impliment this: Uimap.TryCloseAllTabs();
+            Uimap.TryCloseAllTabs();
         }
 
         public TestContext TestContext
