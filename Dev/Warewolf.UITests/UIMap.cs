@@ -132,20 +132,30 @@ namespace Warewolf.UITests
         {
             try
             {
-                if (MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox.Text != string.Empty)
-                {
-                    Click_Clear_Toolbox_Filter_Clear_Button();
-                }
-                if (MainStudioWindow.DockManager.SplitPaneLeft.Explorer.SearchTextBox.Text != string.Empty)
-                {
-                    Click_Explorer_Filter_Clear_Button();
-                }
+                TryClearToolboxFilter();
+                TryClearExplorerFilter();
                 Click_Close_Workflow_Tab_Button();
                 Click_MessageBox_No();
             }
             catch (Exception e)
             {
                 Console.WriteLine("Error during test cleanup: " + e.Message);
+            }
+        }
+
+        public void TryClearExplorerFilter()
+        {
+            if(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.SearchTextBox.Text != string.Empty)
+            {
+                Click_Explorer_Filter_Clear_Button();
+            }
+        }
+
+        public void TryClearToolboxFilter()
+        {
+            if(MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox.Text != string.Empty)
+            {
+                Click_Clear_Toolbox_Filter_Clear_Button();
             }
         }
 
@@ -386,6 +396,23 @@ namespace Warewolf.UITests
             }
         }
 
+        public void TryCloseWorkflowTabs()
+        {
+            var workflowTabCloseButtonExists = true;
+            while (workflowTabCloseButtonExists)
+            {
+                Playback.PlaybackSettings.MaximumRetryCount = _strictMaximumRetryCount * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
+                Playback.PlaybackSettings.SearchTimeout = _strictSearchTimeout * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
+                workflowTabCloseButtonExists = MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.CloseButton.Exists;
+                Playback.PlaybackSettings.MaximumRetryCount = _lenientMaximumRetryCount * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
+                Playback.PlaybackSettings.SearchTimeout = _lenientSearchTimeout * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
+                if (workflowTabCloseButtonExists)
+                {
+                    TryCloseWorkflowTab();
+                }
+            }
+        }
+
         private void TryCloseWorkflowTab()
         {
             try
@@ -484,51 +511,27 @@ namespace Warewolf.UITests
 
         public void Enter_Service_Name_Into_Save_Dialog(string ServiceName)
         {
-            #region Variable Declarations
-            WpfEdit serviceNameTextBox = this.SaveDialogWindow.ServiceNameTextBox;
-            WpfButton saveButton = this.SaveDialogWindow.SaveButton;
-            #endregion
-
-            serviceNameTextBox.Text = ServiceName;
-            Assert.IsTrue(saveButton.Enabled, "Save dialog save button is not enabled. Check workflow name is valid and that another workflow by that name does not already exist.");
+            SaveDialogWindow.ServiceNameTextBox.Text = ServiceName;
+            Assert.IsTrue(SaveDialogWindow.SaveButton.Enabled, "Save dialog save button is not enabled. Check workflow name is valid and that another workflow by that name does not already exist.");
         }
 
         public void Enter_Text_Into_Explorer_Filter(string FilterText)
         {
-            #region Variable Declarations
-            WpfEdit searchTextBox = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.SearchTextBox;
-            WpfButton explorerRefreshButton = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerRefreshButton;
-            #endregion
-
-            searchTextBox.Text = FilterText;
-            Mouse.Click(explorerRefreshButton, new Point(10, 10));
+            MainStudioWindow.DockManager.SplitPaneLeft.Explorer.SearchTextBox.Text = FilterText;
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerRefreshButton, new Point(10, 10));
         }
 
         public void Enter_GroupName_Into_Windows_Group_Dialog(string GroupName)
         {
-            #region Variable Declarations
-            WinEdit objectNameTextbox = this.SelectWindowsGroupDialog.ItemPanel.ObjectNameTextbox;
-            WinButton ok = this.SelectWindowsGroupDialog.OKPanel.OK;
-            #endregion
-
-            objectNameTextbox.Text = GroupName;
-            Assert.IsTrue(ok.Enabled, "Windows group dialog OK button is not enabled.");
+            SelectWindowsGroupDialog.ItemPanel.ObjectNameTextbox.Text = GroupName;
+            Assert.IsTrue(SelectWindowsGroupDialog.OKPanel.OK.Enabled, "Windows group dialog OK button is not enabled.");
         }
-
-        /// <summary>
-        /// Enter_RemoteServerUITestWorkflow_Into_Service_Picker_Dialog - Use 'Enter_RemoteServerUITestWorkflow_Into_Service_Picker_DialogParams' to pass parameters into this method.
-        /// </summary>
+        
         public void Enter_ServiceName_Into_Service_Picker_Dialog(string ServiceName)
         {
-            #region Variable Declarations
-            WpfEdit filterTextbox = this.ServicePickerDialog.Explorer.FilterTextbox;
-            WpfTreeItem subTreeItem1 = this.ServicePickerDialog.Explorer.ExplorerTree.TreeItem1.SubTreeItem1;
-            WpfButton ok = this.ServicePickerDialog.OK;
-            #endregion
-
-            filterTextbox.Text = ServiceName;
-            Mouse.Click(subTreeItem1, new Point(91, 9));
-            Assert.IsTrue(ok.Enabled, "Service picker dialog OK button is not enabled.");
+            ServicePickerDialog.Explorer.FilterTextbox.Text = ServiceName;
+            Mouse.Click(ServicePickerDialog.Explorer.ExplorerTree.TreeItem1.SubTreeItem1, new Point(91, 9));
+            Assert.IsTrue(ServicePickerDialog.OK.Enabled, "Service picker dialog OK button is not enabled.");
         }
     }
 }
