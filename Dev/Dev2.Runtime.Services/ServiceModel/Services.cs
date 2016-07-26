@@ -151,7 +151,7 @@ namespace Dev2.Runtime.ServiceModel
                             return dbService.Recordset;
 
                         }
-                    case enSourceType.PostgreSql:
+                    case enSourceType.PostgreSQL:
                         {
                             var broker = new PostgreSqlDataBaseBroker();
                             var outputDescription = broker.TestService(dbService);
@@ -389,7 +389,7 @@ namespace Dev2.Runtime.ServiceModel
                         var broker = new MySqlDatabaseBroker();
                         return broker.GetServiceMethods(dbSource);
                     }
-                case enSourceType.PostgreSql:
+                case enSourceType.PostgreSQL:
                     {
                         var broker = new PostgreSqlDataBaseBroker();
                         return broker.GetServiceMethods(dbSource);
