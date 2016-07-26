@@ -327,7 +327,8 @@ namespace Dev2.Activities.Designers2.Core
                 {
                     if (Outputs != null && Outputs.Count > 0 && !IsObject)
                     {
-                        errors = Outputs.Where(a => FsInteropFunctions.ParseLanguageExpressionWithoutUpdate(a.MappedTo).IsComplexExpression || FsInteropFunctions.ParseLanguageExpressionWithoutUpdate(a.MappedTo).IsWarewolfAtomExpression).Select(a => "Invalid Output Mapping" + a.ToString()).ToList();
+                        var serviceOutputMappings = Outputs.Where(a => !string.IsNullOrEmpty(a.MappedTo) && (FsInteropFunctions.ParseLanguageExpressionWithoutUpdate(a.MappedTo).IsComplexExpression || FsInteropFunctions.ParseLanguageExpressionWithoutUpdate(a.MappedTo).IsWarewolfAtomExpression));
+                        errors = serviceOutputMappings.Select(a => "Invalid Output Mapping" + a.MappedTo).ToList();
                     }
                 }
                 catch(Exception e)
