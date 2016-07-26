@@ -489,7 +489,7 @@ namespace Dev2.Studio.ViewModels
                 case "SqlDatabase":
                 case "ODBC":
                 case "Oracle":
-                case "PostgreSql":
+                case "PostgreSQL":
                 case "MySqlDatabase":
                 case "DbSource":
                     EditDbSource(resourceModel);

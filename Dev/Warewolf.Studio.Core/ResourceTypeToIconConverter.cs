@@ -60,7 +60,7 @@ namespace Warewolf.Studio.Core
                     case "Oracle":
                     case "MySqlDatabase":
                         return _dict[CustomMenuIcons.DbSource] as DrawingImage;
-                    case "PostgreSql":
+                    case "PostgreSQL":
                         return _dict["PostgreSource"] as DrawingImage;
                     case "ODBC":
                         return _dict["OdbcSource"] as DrawingImage;

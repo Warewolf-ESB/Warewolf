@@ -349,7 +349,7 @@ namespace Dev2.Activities.Designers2.PostgreSql
             IList<IToolRegion> regions = new List<IToolRegion>();
             if (SourceRegion == null)
             {
-                SourceRegion = new DatabaseSourceRegion(Model, ModelItem, enSourceType.PostgreSql)
+                SourceRegion = new DatabaseSourceRegion(Model, ModelItem, enSourceType.PostgreSQL)
                 {
                     SourceChangedAction = () =>
                         {
