@@ -157,6 +157,17 @@ namespace Dev2.Settings.Scheduler
             }
         }
 
+        public void SetConnectionError()
+        {
+            ConnectionError = Core.SchedulerConnectionError;
+            HasConnectionError = true;
+        }
+
+        public void CreateNewTask()
+        {
+            SchedulerTaskManager.CreateNewTask();
+        }
+
         public string ConnectionError
         {
             get
@@ -595,7 +606,7 @@ namespace Dev2.Settings.Scheduler
             get
             {
                 return _newCommand ??
-                       (_newCommand = new DelegateCommand(param => SchedulerTaskManager.CreateNewTask()));
+                       (_newCommand = new DelegateCommand(param => CreateNewTask()));
             }
         }
 
@@ -658,7 +669,7 @@ namespace Dev2.Settings.Scheduler
                 }
                 SchedulerTaskManager.Source = new EnvironmentViewModel(server, CustomContainer.Get<IShellViewModel>(), true);
 
-                ScheduledResourceModel = new ClientScheduledResourceModel(CurrentEnvironment, SchedulerTaskManager.CreateNewTask);
+                ScheduledResourceModel = new ClientScheduledResourceModel(CurrentEnvironment, CreateNewTask);
                 IsLoading = true;
 
                 _asyncWorker.Start(() =>

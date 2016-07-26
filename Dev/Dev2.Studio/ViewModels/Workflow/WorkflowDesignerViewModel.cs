@@ -41,7 +41,9 @@ using Dev2.Activities.Designers2.Core;
 using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
+using Dev2.Common.Interfaces.Core.Collections;
 using Dev2.Common.Interfaces.Infrastructure;
+using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.Common.Interfaces.Security;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Common.Interfaces.Threading;
@@ -65,6 +67,7 @@ using Dev2.Studio.Controller;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Activities.Services;
 using Dev2.Studio.Core.Activities.Utils;
+using Dev2.Studio.Core.AppResources.DependencyInjection.EqualityComparers;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Factories;
 using Dev2.Studio.Core.Interfaces;
@@ -94,6 +97,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                                              IHandle<AddStringListToDataListMessage>,
                                              IHandle<EditActivityMessage>,
                                              IHandle<SaveUnsavedWorkflowMessage>,
+                                             IHandle<UpdateResourceMessage>,
                                              IWorkflowDesignerViewModel
     {
         static readonly Type[] DecisionSwitchTypes = { typeof(FlowSwitch<string>), typeof(FlowDecision) };
@@ -1805,6 +1809,31 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         #endregion
 
+
+        /// <summary>
+        /// Handles the specified message.
+        /// </summary>
+        /// <param name="message">The message.</param>
+        public void Handle(UpdateResourceMessage message)
+        {
+            Dev2Logger.Debug(message.GetType().Name);
+            if (ContexttualResourceModelEqualityComparer.Current.Equals(message.ResourceModel, _resourceModel))
+            {
+                IObservableReadOnlyList<IErrorInfo> currentErrors = null;
+                if (message.ResourceModel.Errors != null && message.ResourceModel.Errors.Count > 0)
+                {
+                    currentErrors = message.ResourceModel.Errors;
+                }
+                _resourceModel.Update(message.ResourceModel);
+                if (currentErrors != null && currentErrors.Count > 0)
+                {
+                    foreach (var currentError in currentErrors)
+                    {
+                        _resourceModel.AddError(currentError);
+                    }
+                }
+            }
+        }
         /// <summary>
         /// Gets the work surface context.
         /// </summary>
