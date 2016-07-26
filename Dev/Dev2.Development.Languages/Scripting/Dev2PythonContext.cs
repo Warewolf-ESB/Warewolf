@@ -9,11 +9,13 @@
 */
 
 using System;
+using System.Linq;
 using Dev2.Common.Interfaces.Enums;
 using Dev2.Common.Interfaces.Scripting;
 using IronPython.Hosting;
 using Microsoft.Scripting;
 using Microsoft.Scripting.Hosting;
+// ReSharper disable NonLocalizedString
 
 namespace Dev2.Development.Languages.Scripting
 {
@@ -30,8 +32,10 @@ namespace Dev2.Development.Languages.Scripting
         public string Execute(string scriptValue)
         {
             var pyEng = Python.CreateEngine();
-            
-            string pyFunc =  @"def __result__(): " + scriptValue;
+            var scriptStatements = scriptValue.Split(new[] { '\r','\n' }, StringSplitOptions.RemoveEmptyEntries);
+            var fixedScriptStatements = scriptStatements.Select(scriptStatement => "    " + scriptStatement).ToList();
+            var fixedScript = String.Join(Environment.NewLine, fixedScriptStatements);
+            string pyFunc =  @"def __result__(): "+Environment.NewLine + fixedScript;
             ScriptScope scope = pyEng.CreateScope();
             if (_sources != null && _sources.GetFileScriptSources() != null)
             {

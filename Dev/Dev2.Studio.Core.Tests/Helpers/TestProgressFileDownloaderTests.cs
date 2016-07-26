@@ -68,27 +68,7 @@ namespace Dev2.Core.Tests.Helpers
             //assert
             mockProgressDialog.Verify(c => c.StatusChanged(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<long>()), Times.Once());
         }
-
-        [TestMethod]
-        [TestCategory("ProgressFileDownloaderUnitTest")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.Description("ProgressFileDownloader's OnDownloadFileCompleted event is expected to close the progress dialog")]
-        [Owner("Ashley Lewis")]
-        public void ProgressFileDownloader_UnitTest_OnDownloadFileCompleted_DialogClosed()
-        {
-            //init
-            var mockWebClient = new Mock<IDev2WebClient>();
-            var mockProgressDialog = new Mock<IProgressDialog>();
-            mockProgressDialog.Setup(c => c.Close()).Verifiable();
-            ProgressFileDownloader.GetProgressDialogViewModel = (x, y) => mockProgressDialog.Object;
-            var testProgressFileDownloader = new TestProgressFileDownloader(mockWebClient.Object, new Mock<IFile>().Object,new Mock<ICryptoProvider>().Object);
-            //exe
-            testProgressFileDownloader.TestStartUpdate("test file", true);
-
-            //assert
-            mockProgressDialog.Verify(c => c.Close());
-            Assert.IsFalse(testProgressFileDownloader.IsBusyDownloading);
-        }
-
+        
 
         [TestMethod, ExpectedException(typeof(ArgumentNullException))]
         [Owner("Leon Rajindrapersadh")]

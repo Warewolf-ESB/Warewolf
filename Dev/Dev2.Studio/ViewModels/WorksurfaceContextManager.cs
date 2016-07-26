@@ -489,7 +489,7 @@ namespace Dev2.Studio.ViewModels
                 case "SqlDatabase":
                 case "ODBC":
                 case "Oracle":
-                case "PostgreSql":
+                case "PostgreSQL":
                 case "MySqlDatabase":
                 case "DbSource":
                     EditDbSource(resourceModel);
@@ -954,16 +954,6 @@ namespace Dev2.Studio.ViewModels
         public void AddWorkSurface(IWorkSurfaceObject obj)
         {
             TypeSwitch.Do(obj, TypeSwitch.Case<IContextualResourceModel>(AddWorkSurfaceContext));
-        }
-
-        public void TryRemoveContext(IContextualResourceModel model)
-        {
-            WorkSurfaceContextViewModel context = FindWorkSurfaceContextViewModel(model);
-            if (context != null)
-            {
-                context.DeleteRequested = true;
-                _mainViewModel.DeactivateItem(context, true);
-            }
         }
 
         public bool CloseWorkSurfaceContext(WorkSurfaceContextViewModel context, PaneClosingEventArgs e, bool dontPrompt = false)

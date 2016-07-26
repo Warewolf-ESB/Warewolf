@@ -48,7 +48,7 @@ namespace Dev2.Development.Languages.Scripting
         public string Execute(string scriptValue)
         {
             var rubyEngine = CreateRubyEngine();
-            string rubyFunc = @"def __result__();" + scriptValue + "end; public :__result__";
+            string rubyFunc = @"class System::Object"+Environment.NewLine+"def initialize"+Environment.NewLine+"end"+Environment.NewLine+"end"+Environment.NewLine+"def __result__();" + Environment.NewLine +scriptValue+Environment.NewLine + "end;"+Environment.NewLine+" public :__result__";
             ScriptScope scope = rubyEngine.CreateScope();
             if (_sources?.GetFileScriptSources() != null)
             {
