@@ -9,13 +9,11 @@
 */
 
 using System;
-using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Security.Cryptography;
-using System.Text;
 using System.Windows;
 using Dev2.Common.Interfaces.Utils;
 using Dev2.Common.Interfaces.Wrappers;
@@ -96,71 +94,6 @@ namespace Dev2.CustomControls.Progress
 
         #endregion
 
-        #region Download
-
-        /// <summary>
-        /// Downloads the resource at the URI specified by in the address parameter. 
-        /// When the download completes successfully, the downloaded file is named fileName on the local computer.
-        /// </summary>
-        /// <param name="address"></param>
-        /// <param name="tmpFileName"></param>
-        /// <param name="dontStartUpdate"></param>
-        /// <param name="fileName"></param>
-        /// <param name="checkSum"></param>
-        public void Download(Uri address, string tmpFileName, bool dontStartUpdate, string fileName, string checkSum)
-        {
-
- 
-            _tmpFileName = tmpFileName;
-            if(_file.Exists(_tmpFileName))
-            {
-                _file.Delete(_tmpFileName);
-            }
-
-            _dontStartUpdate = dontStartUpdate;
-            _webClient.DownloadFileAsync(address, tmpFileName, tmpFileName);
-            _webClient.DownloadFileCompleted += (o, args) =>
-                {
-
-                    if(!args.Cancelled && null == args.Error && PerformCheckSum(tmpFileName, checkSum))
-                    {
-
-                        _file.Move(tmpFileName, fileName);
-                        OnDownloadFileCompleted(args, fileName);
-                    }
-                    else
-                    {
-                        _file.Delete(tmpFileName);
-                        ProgressDialog.Close();
-
-                    }
-
-
-
-                };
-
-            ProgressDialog.Show();
-            IsBusyDownloading = true;
-        }
-
-
-
-        public bool PerformCheckSum(string tmpFileName, string checkSum)
-        {
-            StringBuilder sb = new StringBuilder();
-            using(var stream = _file.Open(tmpFileName, FileMode.Open))
-            {
-                var hash = _cryptoProvider.ComputeHash(stream);
-                foreach(var b in hash)
-                {
-                    sb.Append(b);
-                }
-                return checkSum == sb.ToString();
-
-            }
-        }
-
-        #endregion
 
         #region Cancel
 
@@ -193,21 +126,6 @@ namespace Dev2.CustomControls.Progress
 
         #region OnDownloadFileCompleted
 
-        void OnDownloadFileCompleted(AsyncCompletedEventArgs args, string fileName)
-        {
-            StartUpdate(fileName, args.Cancelled);
-        }
-
-        public void StartUpdate(string fileName, bool cancelled)
-        {
-            ProgressDialog.Close();
-            IsBusyDownloading = false;
-            if(!cancelled && !_dontStartUpdate)
-            {
-                ShutDownAction(fileName);
-            }
-        }
-
         public Action<string> ShutDownAction { get; set; }
 
         static void ShutdownAndInstall(string fileName)
@@ -218,10 +136,5 @@ namespace Dev2.CustomControls.Progress
 
         #endregion
 
-        #region Implementation of IDisposable
-
-
-
-        #endregion
-    }
+   }
 }

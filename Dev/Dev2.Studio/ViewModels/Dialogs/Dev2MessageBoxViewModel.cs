@@ -11,7 +11,6 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Windows;
 using System.Xml.Linq;
 using Caliburn.Micro;
@@ -192,33 +191,6 @@ namespace Dev2.Studio.ViewModels.Dialogs
             }
         }
 
-        private static void SaveDontShowAgainOptions()
-        {
-            try
-            {
-                XElement root;
-                if(_dontShowAgainOptions != null)
-                {
-                    root = new XElement("root",
-                                                _dontShowAgainOptions.Select(k => new XElement("Option", new XAttribute("Key", k.Key), new XAttribute("Value", k.Value))));
-                }
-                else
-                {
-                    root = new XElement("root");
-                }
-
-                IFilePersistenceProvider filePersistenceProviderInst = CustomContainer.Get<IFilePersistenceProvider>();
-                filePersistenceProviderInst.Write(GetDontShowAgainPersistencePath(), root.ToString());
-            }
-            // ReSharper disable EmptyGeneralCatchClause
-            catch(Exception)
-            // ReSharper restore EmptyGeneralCatchClause
-            {
-                // If persisting the data fails then do nothing
-                // TODO when loggin support is added to the studio write to the log here
-            }
-        }
-
         public static Tuple<bool, MessageBoxResult> GetDontShowAgainOption(string dontShowAgainKey)
         {
             // If no key then return false result
@@ -246,69 +218,6 @@ namespace Dev2.Studio.ViewModels.Dialogs
             }
 
             return result;
-        }
-
-        public static void SetDontShowAgainOption(string dontShowAgainKey, MessageBoxResult result)
-        {
-            // If no key do nothing
-            if(string.IsNullOrEmpty(dontShowAgainKey))
-            {
-                return;
-            }
-
-            // Load if null
-            if(_dontShowAgainOptions == null)
-            {
-                LoadDontShowAgainOptions();
-            }
-
-            // AddMode/UpdateMode option
-            if(_dontShowAgainOptions != null)
-            {
-                _dontShowAgainOptions[dontShowAgainKey] = result;
-            }
-
-            // Save
-            SaveDontShowAgainOptions();
-        }
-
-        public static void ResetDontShowAgainOption(string dontShowAgainKey)
-        {
-            // If no key do nothing
-            if(string.IsNullOrEmpty(dontShowAgainKey))
-            {
-                return;
-            }
-
-            // Load if null
-            if(_dontShowAgainOptions == null)
-            {
-                LoadDontShowAgainOptions();
-            }
-
-            // Remove option
-            if(_dontShowAgainOptions != null)
-            {
-                _dontShowAgainOptions.Remove(dontShowAgainKey);
-            }
-
-            // Save
-            SaveDontShowAgainOptions();
-        }
-
-        public static void ResetAllDontShowAgainOptions()
-        {
-            // Clear all options
-            if(_dontShowAgainOptions != null)
-            {
-                _dontShowAgainOptions.Clear();
-            }
-
-            // Save
-            SaveDontShowAgainOptions();
-
-            // Reset dictionary
-            _dontShowAgainOptions = null;
         }
 
         public static MessageBoxResult Show(string messageBoxText, string caption, MessageBoxButton button, MessageBoxImage icon, string dontShowAgainKey, bool isDependenciesButtonVisible,
