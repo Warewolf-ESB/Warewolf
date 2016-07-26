@@ -17173,11 +17173,13 @@
                                                                   <WindowTitles>
                                                                     <WindowTitle>Warewolf</WindowTitle>
                                                                   </WindowTitles>
+                                                                  <SearchConfigurations>
+                                                                    <SearchConfiguration>AlwaysSearch</SearchConfiguration>
+                                                                  </SearchConfigurations>
                                                                   <AndCondition>
                                                                     <PropertyCondition Name="ControlType">Edit</PropertyCondition>
                                                                     <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                                                     <PropertyCondition Name="AutomationId">UI_NameTextBox_AutoID</PropertyCondition>
-                                                                    <PropertyCondition Name="Instance">1</PropertyCondition>
                                                                   </AndCondition>
                                                                   <SupportLevel>0</SupportLevel>
                                                                   <Descendants>
@@ -17327,7 +17329,6 @@
                                                                     <PropertyCondition Name="ControlType">Edit</PropertyCondition>
                                                                     <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                                                     <PropertyCondition Name="AutomationId">UI_NameTextBox_AutoID</PropertyCondition>
-                                                                    <PropertyCondition Name="Instance">2</PropertyCondition>
                                                                   </AndCondition>
                                                                   <SupportLevel>0</SupportLevel>
                                                                   <Descendants>

@@ -27332,7 +27332,7 @@ namespace Warewolf.UITests
         {
             #region Search Criteria
             this.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "UI_NameTextBox_AutoID";
-            this.SearchProperties[WpfEdit.PropertyNames.Instance] = "1";
+            this.SearchConfigurations.Add(SearchConfiguration.AlwaysSearch);
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
@@ -27602,7 +27602,6 @@ namespace Warewolf.UITests
         {
             #region Search Criteria
             this.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "UI_NameTextBox_AutoID";
-            this.SearchProperties[WpfEdit.PropertyNames.Instance] = "2";
             this.WindowTitles.Add("Warewolf");
             #endregion
         }

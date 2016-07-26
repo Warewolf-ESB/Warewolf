@@ -53,6 +53,8 @@ namespace Warewolf.UITests.Tools.Data
         {
             Uimap.TryCloseHangingSaveDialog();
             Uimap.TryRemoveFromExplorer(WorkflowName);
+            Uimap.TryClearToolboxFilter();
+            Uimap.TryCloseWorkflowTabs();
         }
         
         public TestContext TestContext
