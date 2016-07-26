@@ -343,7 +343,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             WebServer.OpenInBrowser(_resourceModel, payload);
         }
 
-        private void SendFinishedMessage()
+        internal void SendFinishedMessage()
         {
             OnDebugExecutionFinished();
         }

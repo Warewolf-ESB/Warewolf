@@ -443,10 +443,13 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         [SuppressMessage("ReSharper", "UnusedMember.Global")]
         public void OpenMoreLink(IDebugLineItem item)
         {
-            if (_outputViewModelUtil.IsValidLineItem(item)) return;
-
-            if (_outputViewModelUtil.IsItemMoreLinkValid(item))
+            if (_outputViewModelUtil.IsItemMoreLinkValid(item) && CanOpenMoreLink(item))
                 CreatProcessController(item);
+        }
+
+        public bool CanOpenMoreLink(IDebugLineItem item)
+        {
+            return !string.IsNullOrEmpty(item?.MoreLink);
         }
 
         private void CreatProcessController(IDebugLineItem item)
