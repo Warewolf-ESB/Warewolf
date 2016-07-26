@@ -9,7 +9,6 @@
 */
 
 using System;
-using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -127,21 +126,6 @@ namespace Dev2.CustomControls.Progress
 
         #region OnDownloadFileCompleted
 
-        void OnDownloadFileCompleted(AsyncCompletedEventArgs args, string fileName)
-        {
-            StartUpdate(fileName, args.Cancelled);
-        }
-
-        public void StartUpdate(string fileName, bool cancelled)
-        {
-            ProgressDialog.Close();
-            IsBusyDownloading = false;
-            if(!cancelled && !_dontStartUpdate)
-            {
-                ShutDownAction(fileName);
-            }
-        }
-
         public Action<string> ShutDownAction { get; set; }
 
         static void ShutdownAndInstall(string fileName)
@@ -152,10 +136,5 @@ namespace Dev2.CustomControls.Progress
 
         #endregion
 
-        #region Implementation of IDisposable
-
-
-
-        #endregion
-    }
+   }
 }

@@ -705,12 +705,6 @@ namespace Dev2.Settings.Scheduler
             }
         }
 
-        public void SetConnectionError()
-        {
-            ConnectionError = Core.SchedulerConnectionError;
-            HasConnectionError = true;
-        }
-
         public void ClearConnectionError()
         {
             ConnectionError = string.Empty;
@@ -829,11 +823,6 @@ namespace Dev2.Settings.Scheduler
             {
                 return _popupController;
             }
-        }
-
-        public void CreateNewTask()
-        {
-            SchedulerTaskManager.CreateNewTask();
         }
     }
 
