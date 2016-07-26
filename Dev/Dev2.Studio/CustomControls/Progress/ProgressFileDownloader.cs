@@ -126,16 +126,6 @@ namespace Dev2.CustomControls.Progress
 
         #region OnDownloadFileCompleted
 
-        public void StartUpdate(string fileName, bool cancelled)
-        {
-            ProgressDialog.Close();
-            IsBusyDownloading = false;
-            if(!cancelled && !_dontStartUpdate)
-            {
-                ShutDownAction(fileName);
-            }
-        }
-
         public Action<string> ShutDownAction { get; set; }
 
         static void ShutdownAndInstall(string fileName)
@@ -146,10 +136,5 @@ namespace Dev2.CustomControls.Progress
 
         #endregion
 
-        #region Implementation of IDisposable
-
-
-
-        #endregion
-    }
+   }
 }

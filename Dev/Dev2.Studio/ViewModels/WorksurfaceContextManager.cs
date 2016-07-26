@@ -956,16 +956,6 @@ namespace Dev2.Studio.ViewModels
             TypeSwitch.Do(obj, TypeSwitch.Case<IContextualResourceModel>(AddWorkSurfaceContext));
         }
 
-        public void TryRemoveContext(IContextualResourceModel model)
-        {
-            WorkSurfaceContextViewModel context = FindWorkSurfaceContextViewModel(model);
-            if (context != null)
-            {
-                context.DeleteRequested = true;
-                _mainViewModel.DeactivateItem(context, true);
-            }
-        }
-
         public bool CloseWorkSurfaceContext(WorkSurfaceContextViewModel context, PaneClosingEventArgs e, bool dontPrompt = false)
         {
             bool remove = true;
