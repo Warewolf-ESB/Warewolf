@@ -42,7 +42,7 @@ namespace Dev2.Runtime.ServiceModel
                     var odbcbroker = CreateODBCDatabaseBroker();
                     result.DatabaseList = odbcbroker.GetDatabases(dbSourceDetails);
                     break;
-                case enSourceType.PostgreSql:
+                case enSourceType.PostgreSQL:
                     var postgreBroker = CreatePostgreDatabaseBroker();
                     result.DatabaseList = postgreBroker.GetDatabases(dbSourceDetails);
                     break;
