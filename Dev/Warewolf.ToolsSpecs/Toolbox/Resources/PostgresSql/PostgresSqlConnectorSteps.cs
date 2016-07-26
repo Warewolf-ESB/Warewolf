@@ -56,7 +56,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             _postgresSqlSource = new DbSourceDefinition
             {
                 Name = "DemoPostgres",
-                Type = enSourceType.PostgreSql,
+                Type = enSourceType.PostgreSQL,
                 ServerName = "Localhost",
                 UserName = "postgres",
                 Password = "sa",
@@ -212,7 +212,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             _postgresSqlSource = new DbSourceDefinition
             {
                 Name = "postgressql",
-                Type = enSourceType.PostgreSql,
+                Type = enSourceType.PostgreSQL,
                 ServerName = "Localhost",
                 UserName = "postgres",
                 Password = "sa",
@@ -222,7 +222,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             _testingDbSource = new DbSourceDefinition
             {
                 Name = "testingDBSrc",
-                Type = enSourceType.PostgreSql,
+                Type = enSourceType.PostgreSQL,
                 Id = sourceId
             };
 
