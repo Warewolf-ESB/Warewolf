@@ -524,6 +524,20 @@ namespace Dev2.Core.Tests
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory("DataListViewModel_GenerateComplexObject")]
+        public void DataListViewModel_GenerateComplexObject_FromXML_ShouldCreateComplexObjectVariables()
+        {
+            Setup();
+            Assert.AreEqual(0, _dataListViewModel.ComplexObjectCollection.Count);
+
+            const string xmlString = "<Person><Name></Name><Age></Age><School><Name></Name><Location></Location></School><Gender></Gender></Person>";
+            _dataListViewModel.GenerateComplexObjectFromJson("@Person", xmlString);
+
+            Assert.AreEqual(1, _dataListViewModel.ComplexObjectCollection.Count);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("DataListViewModel_GenerateComplexObject")]
         public void DataListViewModel_GenerateComplexObject_ParentContainsDotFromJson()
         {
             Setup();
