@@ -476,11 +476,6 @@ namespace Dev2.Studio.ViewModels.Diagnostics
                 throw ex;
         }
 
-        public bool CanOpenMoreLink(IDebugLineItem item)
-        {
-            return !string.IsNullOrEmpty(item?.MoreLink);
-        }
-        
         public ICommand OpenItemCommand => _openItemCommand ?? (_openItemCommand = new DelegateCommand(OpenItem));
 
         public ICommand ExpandAllCommand => _expandAllCommand ?? (_expandAllCommand = new DelegateCommand(ExpandAll));

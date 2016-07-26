@@ -102,19 +102,19 @@ namespace Dev2.Activities.Designers2.Script
         public override void UpdateHelpDescriptor(string helpText)
         {
             var mainViewModel = CustomContainer.Get<IMainViewModel>();
-            if (mainViewModel != null)
-            {
-                mainViewModel.HelpViewModel.UpdateHelpText(helpText);
-            }
+            mainViewModel?.HelpViewModel.UpdateHelpText(helpText);
         }
-
 
         void ChooseScriptSources()
         {
 
-            const string Separator = @";";
+            const string separator = @";";
             var chooserMessage = new FileChooserMessage();
-            chooserMessage.SelectedFiles = IncludeFile?.Split(Separator.ToCharArray());
+            if (IncludeFile == null)
+            {
+                IncludeFile = "";
+            }
+            chooserMessage.SelectedFiles = IncludeFile?.Split(separator.ToCharArray());
             chooserMessage.PropertyChanged += (sender, args) =>
             {
                 if (args.PropertyName == @"SelectedFiles")
@@ -123,11 +123,11 @@ namespace Dev2.Activities.Designers2.Script
                     {
                         if (string.IsNullOrEmpty(IncludeFile))
                         {
-                            IncludeFile = string.Join(Separator, chooserMessage.SelectedFiles);
+                            IncludeFile = string.Join(separator, chooserMessage.SelectedFiles);
                         }
                         else
                         {
-                            IncludeFile += Separator + string.Join(Separator, chooserMessage.SelectedFiles);
+                            IncludeFile += separator + string.Join(separator, chooserMessage.SelectedFiles);
                         }
                     }
                 }

@@ -41,14 +41,6 @@ namespace Dev2.Studio.Core.Helpers
 
         #endregion
 
-        void RaiseInvoked()
-        {
-            if(Invoked != null)
-            {
-                Invoked(this, EventArgs.Empty);
-            }
-        }
-
         #region Implementation of IDisposable
 
         /// <summary>

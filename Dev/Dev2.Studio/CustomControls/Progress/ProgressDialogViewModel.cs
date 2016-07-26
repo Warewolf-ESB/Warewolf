@@ -43,12 +43,7 @@ namespace Dev2.CustomControls.Progress
         #endregion
 
         #region Properties / Events
-        public void StartCancel()
-        {
-            SubLabel = "Please wait while the process is being cancelled...";
-            IsCancelButtonEnabled = false;
-        }
-        
+
         public void Close()
         {
             _closeDialog();
