@@ -19,6 +19,7 @@ using Dev2.Data.Util;
 using Dev2.Runtime.ServiceModel.Data;
 using Newtonsoft.Json;
 using Unlimited.Framework.Converters.Graph;
+using WarewolfCOMIPC.Client;
 
 namespace Dev2.Runtime.ServiceModel.Esb.Brokers.ComPlugin
 {
@@ -114,7 +115,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.ComPlugin
 
                 if (methodToRun != null)
                 {
-                    if (methodToRun.ReturnType == typeof(void))
+                    if (methodToRun.ReturnType == typeof (void))
                     {
                         methodToRun.Invoke(instance, BindingFlags.InvokeMethod | BindingFlags.IgnoreCase | BindingFlags.Public, null, valuedTypeList.ToArray(), CultureInfo.InvariantCulture);
                     }
@@ -123,8 +124,8 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.ComPlugin
                         pluginResult = methodToRun.Invoke(instance, BindingFlags.InvokeMethod | BindingFlags.IgnoreCase | BindingFlags.Public, null, valuedTypeList.ToArray(), CultureInfo.InvariantCulture);
                         return methodToRun;
                     }
-
-
+                  
+                    
                 }
             }
             pluginResult = null;
@@ -165,19 +166,30 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.ComPlugin
             Guid clasID;
             Guid.TryParse(classId, out clasID);
             var is64BitProcess = Environment.Is64BitProcess;
+            Type type;
             if (is64BitProcess)
             {
-
+                using (Client client = new Client())
+                {
+                    var execute = client.Invoke(clasID, "", "GetType", new object[] { });
+                    type = execute as Type;
+                }
             }
-            var type = Type.GetTypeFromCLSID(clasID, Environment.MachineName);
+            else
+            {
+                type = Type.GetTypeFromCLSID(clasID, true);
+            }
             return string.IsNullOrEmpty(classId) ? null : type;
         }
         public ServiceMethodList ListMethods(string classId)
         {
             var serviceMethodList = new ServiceMethodList();
-            classId = classId.Replace("{", "").Replace("}", "");
+            classId = classId.Replace("{", "").Replace("}","");
             var type = GetType(classId);
             if (type == null) return new ServiceMethodList();
+            var instance = Activator.CreateInstance(type) as System.Runtime.InteropServices.ComTypes.IPersistFile;
+            var methods = instance?.GetType().GetMethods();
+            
             var methodInfos = type.GetMethods();
 
             methodInfos.ToList().ForEach(info =>

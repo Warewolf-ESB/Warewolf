@@ -31736,6 +31736,18 @@ namespace Warewolf.UITests
                 return this.mDebugOutputTree;
             }
         }
+        
+        public StatusBar StatusBar
+        {
+            get
+            {
+                if ((this.mStatusBar == null))
+                {
+                    this.mStatusBar = new StatusBar(this);
+                }
+                return this.mStatusBar;
+            }
+        }
         #endregion
         
         #region Fields
@@ -31748,6 +31760,8 @@ namespace Warewolf.UITests
         private WpfButton mExpandCollapseButton;
         
         private DebugOutputTree mDebugOutputTree;
+        
+        private StatusBar mStatusBar;
         #endregion
     }
     
@@ -31902,6 +31916,42 @@ namespace Warewolf.UITests
         
         #region Fields
         private WpfButton mUIHelloWorldButton;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class StatusBar : WpfEdit
+    {
+        
+        public StatusBar(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "Dev2StatusBarAutomationID";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfCustom Spinner
+        {
+            get
+            {
+                if ((this.mSpinner == null))
+                {
+                    this.mSpinner = new WpfCustom(this);
+                    #region Search Criteria
+                    this.mSpinner.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.CircularProgressBar";
+                    this.mSpinner.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mSpinner;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfCustom mSpinner;
         #endregion
     }
     
