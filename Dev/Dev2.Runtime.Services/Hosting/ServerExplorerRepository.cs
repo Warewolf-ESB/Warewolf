@@ -345,28 +345,27 @@ namespace Dev2.Runtime.Hosting
                 {
                     newPath = itemToMove.DisplayName;
                 }
-                foreach(var explorerItem in itemToMove.Children)
+                if (itemToMove.Children == null || itemToMove.Children.Count == 0)
                 {
-                    if(explorerItem.ResourceType=="Folder")
+                    var oldPath = itemToMove.ResourcePath;
+                    itemToMove.ResourcePath = newPath;
+                    AddItem(itemToMove, workSpaceId);
+                    DeleteFolder(oldPath, true, workSpaceId);
+                }
+                else
+                {
+                    foreach (var explorerItem in itemToMove.Children)
                     {
                         MoveItem(explorerItem, newPath, workSpaceId);
                     }
-                    else
-                    {
-                        MoveItem(explorerItem, newPath, workSpaceId); 
-                    }
- 
                 }
-               // 
                 return new ExplorerRepositoryResult(ExecStatus.Success, "");
             }
             // ReSharper disable once RedundantIfElseBlock
             else
             {
                 IEnumerable<IResource> item = ResourceCatalogue.GetResourceList(workSpaceId)
-        .Where(
-            a =>
-                a.ResourcePath == newPath);
+                    .Where(a =>a.ResourcePath == newPath);
                 if (item.Any())
                 {
                     return new ExplorerRepositoryResult(ExecStatus.Fail, ErrorResource.ItemAlreadyExistInPath);

@@ -91,6 +91,7 @@
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
             <ui:IntellisenseTextBox Grid.Column="0"
+                                    AllowUserInsertLine="False"
                                     DefaultText="Script Sources"
                                     Text="{Binding ModelItem.IncludeFile,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                     Margin="{StaticResource ControlBorderRight}"
@@ -119,7 +120,6 @@
         <ui:IntellisenseTextBox  Grid.ColumnSpan="2"
                                  Grid.Column="0"
                                  Grid.Row="3" 
-                                 DefaultText="{Binding ScriptTypeDefaultText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                  AllowMultilinePaste="True"
                                  AcceptsReturn="True"
                                  AllowUserInsertLine="True"
@@ -135,6 +135,9 @@
                                  VerticalContentAlignment="Top"
                                  Text="{Binding Path=ModelItem.Script, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                  AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_txtScript_AutoID}">
+            <ui:IntellisenseTextBox.DefaultText>
+                <TextBlock Text="{Binding ScriptTypeDefaultText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Margin="0,-3,0,0"></TextBlock>
+            </ui:IntellisenseTextBox.DefaultText>
             <i:Interaction.Behaviors>
                 <core1:HelpSetter Text="{x:Static languages:Core.ScriptingHelpScript}" DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"

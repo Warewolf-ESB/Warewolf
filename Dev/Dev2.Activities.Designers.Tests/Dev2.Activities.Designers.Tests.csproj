@@ -123,6 +123,9 @@
     <Compile Include="Core\Database\DatabaseActionRegionTest.cs" />
     <Compile Include="Core\Database\DatabaseInputRegionTest.cs" />
     <Compile Include="Core\Database\ManageDatabaseServiceInputViewModelTests.cs" />
+    <Compile Include="Core\ComDll\ComDllActionRegionTest.cs" />
+    <Compile Include="Core\ComDll\ComNamespaceRegionTest.cs" />
+    <Compile Include="Core\ComDll\ComDllSourceRegionTest.cs" />
     <Compile Include="Core\DotNet\DotNetSourceRegionTest.cs" />
     <Compile Include="Core\DotNet\DotNetActionRegionTest.cs" />
     <Compile Include="Core\DotNet\DotNetNamespaceRegionTest.cs" />

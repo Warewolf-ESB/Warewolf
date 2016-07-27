@@ -44,6 +44,8 @@ namespace Dev2.Runtime.ESB.Management.Services
             try
             {
                 var regClis = Registry.ClassesRoot.OpenSubKey("CLSID");
+                
+                
 
                 if (regClis != null)
                 {

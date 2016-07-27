@@ -29,8 +29,6 @@ namespace Dev2.Development.Languages.Scripting
                 case enScriptType.Ruby:
                     return new RubyContext(sources);
                 default : throw new Exception(ErrorResource.InvalidScriptingContext);
-
-
             }
         }
     }
