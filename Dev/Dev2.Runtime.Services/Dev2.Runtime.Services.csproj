@@ -104,7 +104,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Prism.Mvvm.1.1.1\lib\net45\Microsoft.Practices.Prism.SharedInterfaces.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="Moq, Version=4.2.1510.2205, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL">
       <HintPath>..\packages\Moq.4.2.1510.2205\lib\net40\Moq.dll</HintPath>
       <Private>True</Private>
@@ -494,6 +493,10 @@
     <ProjectReference Include="..\Warewolf.Resource\Warewolf.Resource.csproj">
       <Project>{dff93ecb-fdd1-405e-ae02-9f4bc7571c1b}</Project>
       <Name>Warewolf.Resource</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WarewolfCOMIPC.Client\WarewolfCOMIPC.Client.csproj">
+      <Project>{bca6f2b3-c102-45b5-8f64-f0cce2533f1f}</Project>
+      <Name>WarewolfCOMIPC.Client</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
