@@ -15,10 +15,8 @@ namespace Warewolf.UITests.Tools.Data
             Uimap.Enter_SomeVariable_Into_Base_Convert_Large_View_Row1_Value_Textbox();
             Uimap.Click_Base_Convert_Large_View_Done_Button();
             Uimap.Open_Base_Conversion_Tool_Qvi_Large_View();
-            //TODO: Re-introduce these units before WOLF-1923 can be moved to done.
-            //Uimap.Click_Debug_Ribbon_Button();
-            //Uimap.Click_Debug_Input_Dialog_Debug_ButtonParams.BaseConversionToolDebugOutputExists = true;
-            //Uimap.Click_Debug_Input_Dialog_Debug_Button();
+            Uimap.Click_Debug_Ribbon_Button();
+            Uimap.Click_DebugInput_DebugButton();
         }
 
         #region Additional test attributes

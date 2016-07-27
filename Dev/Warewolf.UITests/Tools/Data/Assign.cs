@@ -31,12 +31,8 @@ namespace Warewolf.UITests.Tools.Data
             Uimap.Click_SaveDialog_Save_Button();
             Uimap.Enter_Text_Into_Explorer_Filter(WorkflowName);
             Uimap.WaitForSpinner(Uimap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);
-
-            /**TODO: Re-introduce these units before WOLF-1923 can be moved to done.
             Uimap.Click_Debug_Ribbon_Button();
-            Uimap.Click_Debug_Input_Dialog_Debug_ButtonParams.AssignToolDebugOutputExists = true;
             Uimap.Click_DebugInput_DebugButton();
-            **/
         }
 
         #region Additional test attributes
