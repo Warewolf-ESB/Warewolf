@@ -114,7 +114,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.ComPlugin
 
                 if (methodToRun != null)
                 {
-                    if (methodToRun.ReturnType == typeof (void))
+                    if (methodToRun.ReturnType == typeof(void))
                     {
                         methodToRun.Invoke(instance, BindingFlags.InvokeMethod | BindingFlags.IgnoreCase | BindingFlags.Public, null, valuedTypeList.ToArray(), CultureInfo.InvariantCulture);
                     }
@@ -123,8 +123,8 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.ComPlugin
                         pluginResult = methodToRun.Invoke(instance, BindingFlags.InvokeMethod | BindingFlags.IgnoreCase | BindingFlags.Public, null, valuedTypeList.ToArray(), CultureInfo.InvariantCulture);
                         return methodToRun;
                     }
-                  
-                    
+
+
                 }
             }
             pluginResult = null;
@@ -167,18 +167,16 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.ComPlugin
             var is64BitProcess = Environment.Is64BitProcess;
             if (is64BitProcess)
             {
-                
+
             }
-            var type = Type.GetTypeFromCLSID(clasID, true) ;
+            var type = Type.GetTypeFromCLSID(clasID, Environment.MachineName);
             return string.IsNullOrEmpty(classId) ? null : type;
         }
         public ServiceMethodList ListMethods(string classId)
         {
             var serviceMethodList = new ServiceMethodList();
-            classId = classId.Replace("{", "").Replace("}","");
+            classId = classId.Replace("{", "").Replace("}", "");
             var type = GetType(classId);
-            var instance = Activator.CreateInstance(type) as System.Runtime.InteropServices.ComTypes.IPersistFile;
-            var methods = instance?.GetType().GetMethods();
             if (type == null) return new ServiceMethodList();
             var methodInfos = type.GetMethods();
 
