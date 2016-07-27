@@ -108,7 +108,6 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense
             IntellisenseTextBox textBox = new IntellisenseTextBox();
             textBox.CreateVisualTree();
             textBox.InsertItem(intellisenseProviderResult, true);
-
             // When exepctions are thrown, no results are to be displayed
             Assert.AreEqual(0, textBox.View.Count, "Expected [ 0 ] But got [ " + textBox.View.Count + " ]");
             //The desired result is that an exception isn't thrown
@@ -121,10 +120,10 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense
             IntellisenseTextBox sender = null;
             EventManager.RegisterClassHandler(typeof(IntellisenseTextBox), IntellisenseTextBox.TabInsertedEvent,
                                               new RoutedEventHandler((s, e) =>
-                                                  {
-                                                      eventRaised = true;
-                                                      sender = s as IntellisenseTextBox;
-                                                  }));
+                                              {
+                                                  eventRaised = true;
+                                                  sender = s as IntellisenseTextBox;
+                                              }));
 
             Clipboard.SetText("Cake\t");
 
@@ -149,9 +148,9 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense
                 bool eventRaised = false;
                 EventManager.RegisterClassHandler(typeof(IntellisenseTextBox), IntellisenseTextBox.TabInsertedEvent,
                                                   new RoutedEventHandler((s, e) =>
-                                                      {
-                                                          eventRaised = true;
-                                                      }));
+                                                  {
+                                                      eventRaised = true;
+                                                  }));
 
                 Clipboard.SetText("Cake");
 
@@ -216,17 +215,17 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense
             Assert.IsTrue(textBox.HasError);
         }
 
-//        [TestMethod]
-//        [Owner("Leon Rajindrapersadh")]
-//        [TestCategory("IntellisenseTextBoxTests_Handle")]
-//        public void IntellisenseTextBoxTests_HandlePasteMessageCallsEnsureIntellisenseResults()
-//        {
-//            var textBox = new IntellisenseTextBox { FilterType = enIntellisensePartType.RecordsetFields };
-//            Assert.IsFalse(textBox.HasError);
-//            textBox.Text = "[[var]]";
-//            textBox.Handle(new UpdateAllIntellisenseMessage());
-//            Assert.IsTrue(textBox.HasError);
-//        }
+        //        [TestMethod]
+        //        [Owner("Leon Rajindrapersadh")]
+        //        [TestCategory("IntellisenseTextBoxTests_Handle")]
+        //        public void IntellisenseTextBoxTests_HandlePasteMessageCallsEnsureIntellisenseResults()
+        //        {
+        //            var textBox = new IntellisenseTextBox { FilterType = enIntellisensePartType.RecordsetFields };
+        //            Assert.IsFalse(textBox.HasError);
+        //            textBox.Text = "[[var]]";
+        //            textBox.Handle(new UpdateAllIntellisenseMessage());
+        //            Assert.IsTrue(textBox.HasError);
+        //        }
 
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
@@ -250,6 +249,64 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense
             //------------Assert Results-------------------------
             Assert.AreEqual("var()", textBox.Text);
         }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("IntellisenseTextBox_OnPreviewKeyDown")]
+        public void GivenAnExpression_IntellisenseTextBox_AddBracketsToExpression_ShouldAddBrackets()
+        {
+            //------------Setup for test--------------------------
+            var textBox = new IntellisenseTextBox
+            {
+                FilterType = enIntellisensePartType.ScalarsOnly
+                ,
+                WrapInBrackets = true
+            };
+            //------------Execute Test---------------------------
+            var bracketsToExpression = textBox.AddBracketsToExpression("Person");
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(bracketsToExpression);
+            Assert.AreEqual("[[Person]]", bracketsToExpression);
+        }
+
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("IntellisenseTextBox_OnPreviewKeyDown")]
+        public void GivenAnExpression_IntellisenseTextBox_SetAppendTextBasedOnSelection()
+        {
+            //------------Setup for test--------------------------
+            var textBox = new IntellisenseTextBox
+            {
+                FilterType = enIntellisensePartType.ScalarsOnly
+                ,
+                WrapInBrackets = true
+            };
+            //------------Execute Test---------------------------
+
+            //------------Assert Results-------------------------
+        }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("IntellisenseTextBox_OnPreviewKeyDown")]
+        public void GivenJsonExpression_IntellisenseTextBox_AddBracketsToExpression_ShouldAddBrackets()
+        {
+            //------------Setup for test--------------------------
+            var textBox = new IntellisenseTextBox
+            {
+                FilterType = enIntellisensePartType.JsonObject
+                ,
+                WrapInBrackets = true
+            };
+            //------------Execute Test---------------------------
+            var bracketsToExpression = textBox.AddBracketsToExpression("Person");
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(bracketsToExpression);
+            Assert.AreEqual("[[@Person]]", bracketsToExpression);
+        }
+
+
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("IntellisenseTextBox_KeyDown")]
@@ -372,7 +429,7 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense
             Assert.IsTrue(textBox.HasError);
 
         }
-        
+
         [TestMethod]
         [Owner("Massimo Guerrera")]
         [TestCategory("IntellisenseTextBox_InsertItem")]
@@ -486,6 +543,6 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense
             //------------Assert Results-------------------------
             Assert.AreEqual("DW YY mm", textBox.Text);
         }
-        
-    }    
+
+    }
 }
