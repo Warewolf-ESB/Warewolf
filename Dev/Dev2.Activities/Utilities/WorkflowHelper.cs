@@ -69,8 +69,7 @@ namespace Dev2.Utilities
                     var sb = new StringBuilder();
                     using(var sw = new StringWriter(sb))
                     {
-                        var xamlXmlWriterSettings = new XamlXmlWriterSettings();
-                        xamlXmlWriterSettings.AssumeValidInput = true;
+                        var xamlXmlWriterSettings = new XamlXmlWriterSettings { AssumeValidInput = true };
                         var xw = ActivityXamlServices.CreateBuilderWriter(new XamlXmlWriter(sw, new XamlSchemaContext(),xamlXmlWriterSettings));                    
                         XamlServices.Save(xw, builder);
                         text = sb.Replace("<?xml version=\"1.0\" encoding=\"utf-16\"?>", "");
@@ -93,7 +92,7 @@ namespace Dev2.Utilities
         {
             if(string.IsNullOrEmpty(displayName))
             {
-                throw new ArgumentNullException("displayName");
+                throw new ArgumentNullException(nameof(displayName));
             }
 
             var chart = new Flowchart
@@ -118,7 +117,7 @@ namespace Dev2.Utilities
 
         public ActivityBuilder EnsureImplementation(ModelService modelService)
         {
-            if(modelService == null || modelService.Root == null)
+            if(modelService?.Root == null)
             {
                 return null;
             }
@@ -126,13 +125,10 @@ namespace Dev2.Utilities
             var root = modelService.Root.GetCurrentValue();
 
             var builder = root as ActivityBuilder;
-            if(builder != null)
+            var chart = builder?.Implementation as Flowchart;
+            if(chart != null)
             {
-                var chart = builder.Implementation as Flowchart;
-                if(chart != null)
-                {
-                    EnsureImplementation(builder, chart);
-                }
+                EnsureImplementation(builder, chart);
             }
             return builder;
         }
@@ -161,7 +157,7 @@ namespace Dev2.Utilities
         {
             if(properties == null)
             {
-                throw new ArgumentNullException("properties");
+                throw new ArgumentNullException(nameof(properties));
             }
 
             properties.Clear();
@@ -179,7 +175,7 @@ namespace Dev2.Utilities
         {
             if(variables == null)
             {
-                throw new ArgumentNullException("variables");
+                throw new ArgumentNullException(nameof(variables));
             }
 
             variables.Clear();
@@ -270,12 +266,9 @@ namespace Dev2.Utilities
 
         void TryFixExpression<TResult>(DsfFlowNodeActivity<TResult> activity, string oldExpr, string newExpr)
         {
-            if(activity != null)
+            if(!string.IsNullOrEmpty(activity?.ExpressionText))
             {
-                if(!string.IsNullOrEmpty(activity.ExpressionText))
-                {
-                    activity.ExpressionText = activity.ExpressionText.Replace(oldExpr, newExpr);
-                }
+                activity.ExpressionText = activity.ExpressionText.Replace(oldExpr, newExpr);
             }
         }
 
