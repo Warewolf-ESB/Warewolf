@@ -105,9 +105,8 @@ namespace Dev2.Activities.Designers2.Script
             mainViewModel?.HelpViewModel.UpdateHelpText(helpText);
         }
 
-        void ChooseScriptSources()
+        public void ChooseScriptSources()
         {
-
             const string separator = @";";
             var chooserMessage = new FileChooserMessage();
             if (IncludeFile == null)
