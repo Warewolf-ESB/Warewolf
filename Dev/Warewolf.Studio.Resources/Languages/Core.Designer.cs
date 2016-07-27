@@ -5824,7 +5824,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &quot;{0} will become the current version.{1}Do you want to proceed ?&quot;.
+        ///   Looks up a localized string similar to {0} will become the current version.{1}Do you want to proceed ?.
         /// </summary>
         public static string RollbackMessage {
             get {

@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Text;
 using System.Xml;
+using System.Xml.Linq;
 using Dev2.Common;
 using Dev2.Data.Binary_Objects;
 using Dev2.Data.Interfaces;
@@ -114,6 +115,14 @@ namespace Dev2.Studio.Core.DataList
                 parentObj = new ComplexObjectItemModel(parentObjectName);
                 _vm.ComplexObjectCollection.Add(parentObj);
             }
+
+            if (json.IsXml())
+            {
+                var xDocument = XDocument.Parse(json);
+                json = JsonConvert.SerializeXNode(xDocument, Newtonsoft.Json.Formatting.Indented, true);
+                
+            }
+
             var objToProcess = JsonConvert.DeserializeObject(json) as JObject;
             if (objToProcess != null)
                 ProcessObjectForComplexObjectCollection(parentObj, objToProcess);
