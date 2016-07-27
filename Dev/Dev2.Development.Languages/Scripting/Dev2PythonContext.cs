@@ -9,27 +9,45 @@
 */
 
 using System;
+using System.Linq;
 using Dev2.Common.Interfaces.Enums;
 using Dev2.Common.Interfaces.Scripting;
 using IronPython.Hosting;
 using Microsoft.Scripting;
 using Microsoft.Scripting.Hosting;
+// ReSharper disable NonLocalizedString
 
 namespace Dev2.Development.Languages.Scripting
 {
     public class Dev2PythonContext:IScriptingContext
     {
+        private readonly IStringScriptSources _sources;
+
+        /// <summary>Initializes a new instance of the <see cref="T:System.Object" /> class.</summary>
+        public Dev2PythonContext(IStringScriptSources sources)
+        {
+            _sources = sources;
+        }
+
         public string Execute(string scriptValue)
         {
             var pyEng = Python.CreateEngine();
-            
-            string pyFunc =  @"def __result__(): " + scriptValue;     
-
+            var scriptStatements = scriptValue.Split(new[] { '\r','\n' }, StringSplitOptions.RemoveEmptyEntries);
+            var fixedScriptStatements = scriptStatements.Select(scriptStatement => "    " + scriptStatement).ToList();
+            var fixedScript = String.Join(Environment.NewLine, fixedScriptStatements);
+            string pyFunc =  @"def __result__(): "+Environment.NewLine + fixedScript;
+            ScriptScope scope = pyEng.CreateScope();
+            if (_sources != null && _sources.GetFileScriptSources() != null)
+            {
+                foreach (var fileScriptSource in _sources.GetFileScriptSources())
+                {
+                    pyEng.Execute(fileScriptSource.GetReader().ReadToEnd(), scope);
+                }
+            }
             ScriptSource source = pyEng.CreateScriptSourceFromString(pyFunc, SourceCodeKind.Statements);
 
             //create a scope to act as the context for the code
-            ScriptScope scope = pyEng.CreateScope();
-
+          
             //execute the source
             source.Execute(scope);
 
@@ -46,11 +64,7 @@ namespace Dev2.Development.Languages.Scripting
             return string.Empty;
         }
 
-        public void AddScriptSourcesToContext()
-        {
-            throw new NotImplementedException();
-        }
-
+        
         public enScriptType HandlesType()
         {
             return enScriptType.Python;

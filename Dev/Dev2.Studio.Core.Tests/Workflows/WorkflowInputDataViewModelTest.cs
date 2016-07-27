@@ -576,7 +576,7 @@ namespace Dev2.Core.Tests.Workflows
             var debugVM = CreateDebugOutputViewModel();
             var mockResouce = GetMockResource();
             var serviceDebugInfo = GetMockServiceDebugInfo(mockResouce);
-            var workflowInputDataviewModel = new WorkflowInputDataViewModel(serviceDebugInfo.Object, debugVM.SessionID);
+            var workflowInputDataviewModel = new WorkflowInputDataViewModelMock(serviceDebugInfo.Object, debugVM);
             workflowInputDataviewModel.DebugExecutionFinished += () => debugVM.DebugStatus = DebugStatus.Finished;
             workflowInputDataviewModel.ViewClosed();
             Assert.AreEqual(DebugStatus.Finished, debugVM.DebugStatus);
@@ -859,12 +859,18 @@ namespace Dev2.Core.Tests.Workflows
         }
 
     }
-
+        
     public class WorkflowInputDataViewModelMock : WorkflowInputDataViewModel
     {
         public WorkflowInputDataViewModelMock(IServiceDebugInfoModel serviceDebugInfoModel, DebugOutputViewModel debugOutputViewModel)
             : base(serviceDebugInfoModel, debugOutputViewModel.SessionID)
         {
+        }
+
+        public void ViewClosed()
+        {
+            if (!CloseRequested)
+                SendFinishedMessage();
         }
 
         public int SendExecuteRequestHitCount { get; private set; }

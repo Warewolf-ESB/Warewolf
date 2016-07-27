@@ -343,7 +343,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             WebServer.OpenInBrowser(_resourceModel, payload);
         }
 
-        private void SendFinishedMessage()
+        internal void SendFinishedMessage()
         {
             OnDebugExecutionFinished();
         }
@@ -715,12 +715,6 @@ namespace Dev2.Studio.ViewModels.Workflow
         {
             LoadWorkflowInputs();
             base.OnViewAttached(view, context);
-        }
-
-        public void ViewClosed()
-        {
-            if (!CloseRequested)
-                SendFinishedMessage();
         }
 
         public static WorkflowInputDataViewModel Create(IContextualResourceModel resourceModel)

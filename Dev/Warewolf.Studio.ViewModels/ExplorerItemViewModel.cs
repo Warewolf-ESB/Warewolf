@@ -175,7 +175,11 @@ namespace Warewolf.Studio.ViewModels
         {
             RollbackCommand = new DelegateCommand(() =>
                     {
-                        _explorerItemViewModelCommandController.RollbackCommand(_explorerRepository, Parent, ResourceId,VersionNumber);
+                        var result = _popupController.ShowRollbackVersionMessage(VersionNumber);
+                        if (result == MessageBoxResult.Yes)
+                        {
+                            _explorerItemViewModelCommandController.RollbackCommand(_explorerRepository, Parent, ResourceId, VersionNumber);
+                        }
                     });
             DeployCommand = new DelegateCommand<IExplorerItemViewModel>(a => ShellViewModel.AddDeploySurface(AsList().Union(new[] {this})));
             LostFocus = new DelegateCommand(LostFocusCommand);
@@ -1036,43 +1040,6 @@ namespace Warewolf.Studio.ViewModels
                     Server.UpdateRepository.FireItemSaved();
                     return false;
                 }
-                if (destination.IsFolder)
-                {
-                    if (destination.Children.Any(a => a.ResourceName == ResourceName && a.IsFolder))
-                    {
-                        var destfolder = destination.Children.FirstOrDefault(a => a.ResourceName == ResourceName && a.IsFolder);
-                        foreach (var explorerItemViewModel in Children)
-                        {
-                            if (destfolder != null)
-                            {
-                                explorerItemViewModel.ResourcePath = destfolder.ResourcePath + "\\" + explorerItemViewModel.ResourceName;
-                                destfolder.Children.Add(explorerItemViewModel);
-                            }
-                        }
-                    }
-                    else
-                    {
-                        destination.AddChild(this);
-                        RemoveChildFromParent();
-                        Parent = destination;
-                        foreach (var explorerItemViewModel in Children)
-                        {
-                            explorerItemViewModel.ResourcePath = destination.ResourcePath + "\\" + explorerItemViewModel.ResourceName;
-                        }
-                    }
-                }
-                else if (!destination.IsFolder)
-                {
-                    destination.AddChild(this);
-                    ResourcePath = destination.ResourcePath + (destination.ResourcePath == String.Empty ? "" : "\\") + ResourceName;
-
-                    RemoveChildFromParent();
-                }
-                else if (destination.Parent == null)
-                {
-                    destination.AddChild(this);
-                    RemoveChildFromParent();
-                }
                 destination.UpdateChildrenCount();
             }
             catch (Exception ex)
@@ -1082,10 +1049,6 @@ namespace Warewolf.Studio.ViewModels
                 return false;
             }
             return true;
-        }
-        private void RemoveChildFromParent()
-        {
-            Parent?.RemoveChild(this);
         }
 
         public void ShowErrorMessage(string errorMessage, string header)

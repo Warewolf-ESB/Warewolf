@@ -233,7 +233,7 @@ namespace Dev2.Activities.Designers.Tests.PostgresSqlTests
             new DbSourceDefinition()
             {
                 Name = "DemoPostgres",
-                Type = enSourceType.PostgreSql,
+                Type = enSourceType.PostgreSQL,
                 ServerName = "Localhost",
                 UserName = "postgres",
                 Password = "sa",

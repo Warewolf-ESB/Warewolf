@@ -97,6 +97,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                                              IHandle<AddStringListToDataListMessage>,
                                              IHandle<EditActivityMessage>,
                                              IHandle<SaveUnsavedWorkflowMessage>,
+                                             IHandle<UpdateResourceMessage>,
                                              IWorkflowDesignerViewModel
     {
         static readonly Type[] DecisionSwitchTypes = { typeof(FlowSwitch<string>), typeof(FlowDecision) };
@@ -792,31 +793,6 @@ namespace Dev2.Studio.ViewModels.Workflow
                 IList<IDataListVerifyPart> partsToAdd = _uniqueWorkflowParts.Keys.ToList();
                 List<IDataListVerifyPart> uniqueDataListPartsToAdd = dlvm.MissingDataListParts(partsToAdd);
                 dlvm.AddMissingDataListItems(uniqueDataListPartsToAdd);
-            }
-        }
-
-        /// <summary>
-        /// Handles the specified message.
-        /// </summary>
-        /// <param name="message">The message.</param>
-        public void Handle(UpdateResourceMessage message)
-        {
-            Dev2Logger.Debug(message.GetType().Name);
-            if (ContexttualResourceModelEqualityComparer.Current.Equals(message.ResourceModel, _resourceModel))
-            {
-                IObservableReadOnlyList<IErrorInfo> currentErrors = null;
-                if (message.ResourceModel.Errors != null && message.ResourceModel.Errors.Count > 0)
-                {
-                    currentErrors = message.ResourceModel.Errors;
-                }
-                _resourceModel.Update(message.ResourceModel);
-                if (currentErrors != null && currentErrors.Count > 0)
-                {
-                    foreach (var currentError in currentErrors)
-                    {
-                        _resourceModel.AddError(currentError);
-                    }
-                }
             }
         }
 
@@ -1833,6 +1809,31 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         #endregion
 
+
+        /// <summary>
+        /// Handles the specified message.
+        /// </summary>
+        /// <param name="message">The message.</param>
+        public void Handle(UpdateResourceMessage message)
+        {
+            Dev2Logger.Debug(message.GetType().Name);
+            if (ContexttualResourceModelEqualityComparer.Current.Equals(message.ResourceModel, _resourceModel))
+            {
+                IObservableReadOnlyList<IErrorInfo> currentErrors = null;
+                if (message.ResourceModel.Errors != null && message.ResourceModel.Errors.Count > 0)
+                {
+                    currentErrors = message.ResourceModel.Errors;
+                }
+                _resourceModel.Update(message.ResourceModel);
+                if (currentErrors != null && currentErrors.Count > 0)
+                {
+                    foreach (var currentError in currentErrors)
+                    {
+                        _resourceModel.AddError(currentError);
+                    }
+                }
+            }
+        }
         /// <summary>
         /// Gets the work surface context.
         /// </summary>
