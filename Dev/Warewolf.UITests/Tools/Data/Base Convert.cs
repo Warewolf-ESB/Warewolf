@@ -17,6 +17,7 @@ namespace Warewolf.UITests.Tools.Data
             Uimap.Open_Base_Conversion_Tool_Qvi_Large_View();
             Uimap.Click_Debug_Ribbon_Button();
             Uimap.Click_DebugInput_DebugButton();
+            Uimap.WaitForSpinner(Uimap.MainStudioWindow.DockManager.SplitPaneRight.DebugOutput.StatusBar.Spinner);
         }
 
         #region Additional test attributes

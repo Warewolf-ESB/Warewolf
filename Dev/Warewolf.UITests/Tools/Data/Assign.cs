@@ -33,6 +33,7 @@ namespace Warewolf.UITests.Tools.Data
             Uimap.WaitForSpinner(Uimap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);
             Uimap.Click_Debug_Ribbon_Button();
             Uimap.Click_DebugInput_DebugButton();
+            Uimap.WaitForSpinner(Uimap.MainStudioWindow.DockManager.SplitPaneRight.DebugOutput.StatusBar.Spinner);
         }
 
         #region Additional test attributes

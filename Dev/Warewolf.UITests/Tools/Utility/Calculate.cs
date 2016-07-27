@@ -16,6 +16,7 @@ namespace Warewolf.UITests.Tools.Utility
             Uimap.Click_Calculate_Large_View_Done_Button();
             Uimap.Click_Debug_Ribbon_Button();
             Uimap.Click_DebugInput_DebugButton();
+            Uimap.WaitForSpinner(Uimap.MainStudioWindow.DockManager.SplitPaneRight.DebugOutput.StatusBar.Spinner);
         }
 
         #region Additional test attributes
