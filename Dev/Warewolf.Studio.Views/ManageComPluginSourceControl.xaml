@@ -181,7 +181,7 @@
                     <TextBox x:Name="AssemblyNameTextBox" 
                              Grid.Column="1" 
                              ToolTip="{x:Static languages:Core.ManagePluginSourceAssemblyNameTooltip}"
-                             Text="{Binding AssemblyName, UpdateSourceTrigger=PropertyChanged}">
+                             Text="{Binding FullName, UpdateSourceTrigger=PropertyChanged}">
                         <i:Interaction.Behaviors>
                             <core:HelpSetter Text="{x:Static languages:Core.PluginSourceDllFullNameHelp}" DataContext="{Binding}" />
                         </i:Interaction.Behaviors>
