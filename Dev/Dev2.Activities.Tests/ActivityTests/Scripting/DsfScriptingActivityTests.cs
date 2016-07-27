@@ -15,9 +15,11 @@ using Dev2.Common.Interfaces.Enums;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Activities.Statements;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Reflection;
 using System.Text;
+using Dev2.Development.Languages.Scripting;
 using Dev2.Interfaces;
 
 namespace Dev2.Tests.Activities.ActivityTests.Scripting
@@ -25,14 +27,27 @@ namespace Dev2.Tests.Activities.ActivityTests.Scripting
     /// <summary>
     /// Summary description for CalculateActivityTest
     /// </summary>
+    [ExcludeFromCodeCoverage]
     [TestClass]
     public class DsfScriptingActivityTests : BaseActivityUnitTest
     {
-        private static string GetTepFile()
+        private static string GetJsTmpFile()
         {
             var codeBase = Assembly.GetExecutingAssembly().Location;
             var directoryName = Path.GetDirectoryName(codeBase);
-            return directoryName + "\\a.js";
+            return directoryName + "\\jsonFile.js";
+       }
+        private static string GetRbTmpFile()
+        {
+            var codeBase = Assembly.GetExecutingAssembly().Location;
+            var directoryName = Path.GetDirectoryName(codeBase);
+            return directoryName + "\\rubyFile.rb";
+       }
+        private static string GetPyTmpFile()
+        {
+            var codeBase = Assembly.GetExecutingAssembly().Location;
+            var directoryName = Path.GetDirectoryName(codeBase);
+            return directoryName + "\\pythonFile.py";
        }
         
         /// <summary>
@@ -45,22 +60,22 @@ namespace Dev2.Tests.Activities.ActivityTests.Scripting
         {
             try
             {
-
-                File.WriteAllBytes(GetTepFile(), Encoding.ASCII.GetBytes(@"if (!String.prototype.endsWith) {
-  String.prototype.endsWith = function(searchString, position) {
-                    var subjectString = this.toString();
-                    if (typeof position !== 'number' || !isFinite(position) || Math.floor(position) !== position || position > subjectString.length)
-                    {
-                        position = subjectString.length;
-                    }
-                    position -= searchString.length;
-                    var lastIndex = subjectString.indexOf(searchString, position);
-                    return lastIndex !== -1 && lastIndex === position;
-                };
-            }
-
-
-"));
+                File.WriteAllBytes(GetJsTmpFile(), Encoding.ASCII.GetBytes(@"if (!String.prototype.endsWith) 
+                        {
+                            String.prototype.endsWith = function(searchString, position) 
+                            {
+                                var subjectString = this.toString();
+                                if (typeof position !== 'number' || !isFinite(position) || Math.floor(position) !== position || position > subjectString.length)
+                                {
+                                    position = subjectString.length;
+                                }
+                                position -= searchString.length;
+                                var lastIndex = subjectString.indexOf(searchString, position);
+                                return lastIndex !== -1 && lastIndex === position;
+                            };
+                       }"));
+                File.WriteAllBytes(GetRbTmpFile(), Encoding.ASCII.GetBytes(@"def greaterBalanceThanFive(other) return 5 < other end"));
+                File.WriteAllBytes(GetPyTmpFile(), Encoding.ASCII.GetBytes(@"def GreaterThanFive(value):return 5<value;"));
             }
             catch (Exception ex)
             {
@@ -73,12 +88,113 @@ namespace Dev2.Tests.Activities.ActivityTests.Scripting
         {
             try
             {
-                File.Delete(GetTepFile());
+                File.Delete(GetJsTmpFile());
             }
             catch (Exception)
             {
                 //supress exceptio
             }
+        }
+
+        [TestMethod]
+        public void DsfScriptingActivity_ShouldReturnInputs()
+        {
+            var activity = new DsfScriptingActivity();
+            Assert.IsNotNull(activity);
+            activity.IncludeFile = GetJsTmpFile();
+            activity.Script = "return \"someValue\".endsWith(\"e\")";
+            activity.ScriptType = enScriptType.JavaScript;
+            activity.Execute(DataObject, 0);
+            Assert.AreEqual(0, DataObject.Environment.Errors.Count);
+            var debugOutputs = activity.GetForEachInputs();
+            Assert.IsNotNull(debugOutputs);
+        }
+
+        [TestMethod]
+        public void DsfScriptingActivity_ShouldReturnResults()
+        {
+            var activity = new DsfScriptingActivity();
+            Assert.IsNotNull(activity);
+            activity.IncludeFile = GetJsTmpFile();
+            activity.Script = "return \"someValue\".endsWith(\"e\")";
+            activity.ScriptType = enScriptType.JavaScript;
+            activity.Execute(DataObject, 0);
+            Assert.AreEqual(0, DataObject.Environment.Errors.Count);
+            var debugOutputs = activity.GetForEachOutputs();
+            Assert.IsNotNull(debugOutputs);
+        }
+
+        [TestMethod]
+        public void DsfScriptingActivity_ShouldReturnDebugOutPuts()
+        {
+            var activity = new DsfScriptingActivity();
+            Assert.IsNotNull(activity);
+            activity.IncludeFile = GetJsTmpFile();
+            activity.Script = "return \"someValue\".endsWith(\"e\")";
+            activity.ScriptType = enScriptType.JavaScript;
+            activity.Execute(DataObject, 0);
+            Assert.AreEqual(0, DataObject.Environment.Errors.Count);
+            var debugOutputs = activity.GetDebugOutputs(DataObject.Environment, 0);
+            Assert.IsNotNull(debugOutputs);
+        }
+
+        [TestMethod]
+        public void DsfScriptingActivity_ShouldReturn_DebugInputs()
+        {
+            var activity = new DsfScriptingActivity();
+            Assert.IsNotNull(activity);
+            activity.IncludeFile = GetJsTmpFile();
+            activity.Script = "return \"someValue\".endsWith(\"e\")";
+            activity.ScriptType = enScriptType.JavaScript;
+            activity.Execute(DataObject, 0);
+            Assert.AreEqual(0, DataObject.Environment.Errors.Count);
+            var debugInputs = activity.GetDebugInputs(DataObject.Environment, 0);
+            Assert.IsNotNull(debugInputs);
+        }
+
+
+        [TestMethod]
+        public void DsfScriptingActivity_GivenInvalidScript_SholdReturnException()
+        {
+            var activity = new DsfScriptingActivity();
+            Assert.IsNotNull(activity);
+            activity.IncludeFile = GetJsTmpFile();
+            activity.Script = "return \"someValue\".endsWith(\"e\")";
+            activity.ScriptType = enScriptType.JavaScript;
+            activity.Execute(DataObject, 0);
+            Assert.AreEqual(0, DataObject.Environment.Errors.Count);
+            var debugInputs = activity.GetDebugInputs(DataObject.Environment, 0);
+            Assert.IsNotNull(debugInputs);
+        }
+        [TestMethod]
+        public void DsfScriptingActivity_GivenInvalidScript_SholdUpdateForEachOutputs()
+        {
+            var activity = new DsfScriptingActivity();
+            Assert.IsNotNull(activity);
+            activity.IncludeFile = GetJsTmpFile();
+            activity.Script = "return \"someValue\".endsWith(\"e\")";
+            activity.ScriptType = enScriptType.JavaScript;
+            activity.Result = "Test1";
+            activity.Execute(DataObject, 0);
+            var tuple1 = new Tuple<string, string>("Test1", "Test");
+            var tuple2 = new Tuple<string, string>("Test2", "Test");
+            activity.UpdateForEachOutputs(new List<Tuple<string, string>> { tuple1, tuple2 });            
+            Assert.AreEqual(enScriptType.JavaScript, activity.ScriptType);
+        }
+
+        [TestMethod]
+        public void DsfScriptingActivity_GivenInvalidScript_SholdUpdateForEachInputs()
+        {
+            var activity = new DsfScriptingActivity();
+            Assert.IsNotNull(activity);
+            activity.IncludeFile = GetJsTmpFile();
+            const string script = "return \"someValue\".endsWith(\"e\")";
+            activity.Script = script;
+            activity.ScriptType = enScriptType.JavaScript;
+            activity.Execute(DataObject, 0);
+            var tuple1 = new Tuple<string, string>(script, "Test");
+            activity.UpdateForEachInputs(new List<Tuple<string, string>> { tuple1 });
+            Assert.AreEqual(enScriptType.JavaScript, activity.ScriptType);
         }
 
         #region JavaScript
@@ -90,9 +206,74 @@ namespace Dev2.Tests.Activities.ActivityTests.Scripting
         {
             var activity = new DsfScriptingActivity();
             Assert.IsNotNull(activity);
-            activity.IncludeFile = GetTepFile();
+            activity.IncludeFile = GetJsTmpFile();
             activity.Script = "return \"someValue\".endsWith(\"e\")";
-            var dev2Activity = activity.Execute(DataObject, 0);            
+            activity.ScriptType = enScriptType.JavaScript;
+            activity.Execute(DataObject, 0);            
+            Assert.AreEqual(0, DataObject.Environment.Errors.Count);
+        }
+        
+        [TestMethod]
+        public void GivenExternalFile_Execute_Rubyscript_ShouldExecuteExternalFunction()
+        {
+            var activity = new DsfScriptingActivity();
+            Assert.IsNotNull(activity);
+            activity.IncludeFile = GetRbTmpFile();
+            activity.Script = "return greaterBalanceThanFive(10)";
+            activity.ScriptType = enScriptType.Ruby;
+            activity.Execute(DataObject, 0);            
+            Assert.AreEqual(0, DataObject.Environment.Errors.Count);
+        }
+
+        [TestMethod]
+        public void ScriptingContext_GivenJavaScript_ShouldReturnJavaScriptHandleType()
+        {
+            var context = new ScriptingEngineRepo();
+            var scriptingContext = context.CreateEngine(enScriptType.Python, new StringScriptSources()) as Dev2PythonContext;
+            if(scriptingContext != null)
+                Assert.AreEqual(enScriptType.Python, scriptingContext.HandlesType());
+        }
+        [TestMethod]
+        public void ScriptingContext_GivenRubyScript_ShouldReturnRubyScriptHandleType()
+        {
+            var context = new ScriptingEngineRepo();
+            var scriptingContext = context.CreateEngine(enScriptType.Ruby, new StringScriptSources()) as RubyContext;
+            if (scriptingContext != null)
+                Assert.AreEqual(enScriptType.Ruby, scriptingContext.HandlesType());
+        }
+
+        [TestMethod]
+        public void ScriptingContext_GivenRubyScript_ShouldSetNestedClassValues()
+        {
+            var context = new ScriptingEngineRepo();
+            var scriptingContext = context.CreateEngine(enScriptType.Ruby, new StringScriptSources()) as RubyContext;
+            Assert.IsNotNull(scriptingContext);
+            var prObject = new PrivateObject(scriptingContext);
+            Assert.IsNotNull(prObject);
+            Assert.IsNull(scriptingContext.RuntimeSetup);
+            prObject.Invoke("CreateRubyEngine");
+            Assert.IsNotNull(scriptingContext.RuntimeSetup);
+        }
+
+        [TestMethod]
+        public void ScriptingContext_GivenPythonScript_ShouldReturnPythonScriptHandleType()
+        {
+            var context = new ScriptingEngineRepo();
+            var scriptingContext = context.CreateEngine(enScriptType.JavaScript, new StringScriptSources()) as JavaScriptContext;
+            if (scriptingContext != null)
+                Assert.AreEqual(enScriptType.JavaScript, scriptingContext.HandlesType());
+        }
+        
+
+        [TestMethod]
+        public void GivenExternalFile_Execute_Pythonscript_ShouldExecuteExternalFunction()
+        {
+            var activity = new DsfScriptingActivity();
+            Assert.IsNotNull(activity);
+            activity.IncludeFile = GetPyTmpFile();
+            activity.Script = "return GreaterThanFive(10)";
+            activity.ScriptType = enScriptType.Python;
+            activity.Execute(DataObject, 0);            
             Assert.AreEqual(0, DataObject.Environment.Errors.Count);
         }
         
@@ -103,9 +284,33 @@ namespace Dev2.Tests.Activities.ActivityTests.Scripting
             var activity = new DsfScriptingActivity();
             Assert.IsNotNull(activity);
             activity.Script = "return \"someValue\".endsWith(\"e\")";
+            activity.ScriptType = enScriptType.JavaScript;
             activity.Execute(DataObject, 0);
             Assert.AreEqual(1, DataObject.Environment.Errors.Count);
         }
+
+        [TestMethod]
+        public void GivenFunctionNotInExternalFile_Execute_Rubyscript_ShouldNotExecuteFunction()
+        {
+            var activity = new DsfScriptingActivity();
+            Assert.IsNotNull(activity);
+            activity.Script = "return \"someValue\".endsWith(\"e\")";
+            activity.ScriptType = enScriptType.Ruby;
+            activity.Execute(DataObject, 0);
+            Assert.AreEqual(1, DataObject.Environment.Errors.Count);
+        }
+
+        [TestMethod]
+        public void GivenFunctionNotInExternalFile_Execute_Pythonscript_ShouldNotExecuteFunction()
+        {
+            var activity = new DsfScriptingActivity();
+            Assert.IsNotNull(activity);
+            activity.Script = "return \"someValue\".endsWith(\"e\")";
+            activity.ScriptType = enScriptType.Python;
+            activity.Execute(DataObject, 0);
+            Assert.AreEqual(1, DataObject.Environment.Errors.Count);
+        }
+        
 
         [TestMethod]
         public void GivenAnEscapeCharInString_ExecuteWithEscapeCharecters_Javascript_ShouldReturnGivenString()
@@ -133,7 +338,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Scripting
         public void GivenAnEscapeCharInString_ExecuteWithEscapeCharectersInVariable_Javascript_EscapeFalse_ShouldReturnGivenString()
         {
             SetupArguments("<DataList><testScript>\"C:\test\"</testScript><Result></Result></DataList>", "<DataList><testScript/><Result/></DataList>", "[[Result]]",
-                            "return [[testScript]]", enScriptType.JavaScript, false);
+                            "return [[testScript]]", enScriptType.JavaScript, true);
 
             IDSFDataObject result = ExecuteProcess();
 
@@ -300,7 +505,24 @@ namespace Dev2.Tests.Activities.ActivityTests.Scripting
         #region Ruby
 
         #region Should execute valid ruby script
-
+        
+        [TestMethod]
+        public void RubytmpHost_ShouldSetDefaultValues()
+        {
+            var win8Pal = new RubyContext.TmpHost.Win8PAL();
+            Assert.IsNotNull(win8Pal);
+            Assert.IsFalse(win8Pal.FileExists(win8Pal.CurrentDirectory));
+            Assert.IsFalse(win8Pal.DirectoryExists(win8Pal.CurrentDirectory));
+        }
+        [TestMethod]
+        public void RubyOptionsAttribute_ShouldSetDefaultValues()
+        {
+            var optionsAttribute = new RubyContext.OptionsAttribute();
+            Assert.IsNotNull(optionsAttribute);
+            Assert.IsFalse(optionsAttribute.NoRuntime);
+            Assert.IsFalse(optionsAttribute.PrivateBinding);
+            Assert.IsNull(optionsAttribute.Pal);
+        }
 
         [TestMethod]
         public void ExecuteWithEscapeCharecters_RubyExpectedCorrectResultReturned()

@@ -30,7 +30,7 @@ using Microsoft.Scripting.Hosting;
 
 namespace Dev2.Development.Languages.Scripting
 {
-    class RubyContext:IScriptingContext
+    public class RubyContext:IScriptingContext
     {
         private readonly IStringScriptSources _sources;
 #if WIN8
@@ -42,7 +42,6 @@ namespace Dev2.Development.Languages.Scripting
         public RubyContext(IStringScriptSources sources)
         {
             _sources = sources;
-            
         }
 
         public string Execute(string scriptValue)
@@ -70,17 +69,19 @@ namespace Dev2.Development.Languages.Scripting
 
         private ScriptEngine CreateRubyEngine()
         {
-            var runtimeSetup = ScriptRuntimeSetup.ReadConfiguration();
-            var languageSetup = runtimeSetup.AddRubySetup();
+            RuntimeSetup = ScriptRuntimeSetup.ReadConfiguration();
+            var languageSetup = RuntimeSetup.AddRubySetup();
 
-            runtimeSetup.PrivateBinding = true;
-            runtimeSetup.HostType = typeof(TmpHost);
-            runtimeSetup.HostArguments = new object[] { new OptionsAttribute() };
+            RuntimeSetup.PrivateBinding = true;
+            RuntimeSetup.HostType = typeof(TmpHost);
+            RuntimeSetup.HostArguments = new object[] { new OptionsAttribute() };
             languageSetup.Options["Verbosity"] = 2;
 
-            var runtime = Ruby.CreateRuntime(runtimeSetup);
+            var runtime = Ruby.CreateRuntime(RuntimeSetup);
             return Ruby.GetEngine(runtime);
         }
+
+        public ScriptRuntimeSetup RuntimeSetup { get; set; }
 
         public enScriptType HandlesType()
         {
