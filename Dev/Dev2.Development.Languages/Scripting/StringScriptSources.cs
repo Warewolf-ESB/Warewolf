@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using Jurassic;
 
-public class StringScriptSources: IStringScriptSources
+public class StringScriptSources : IStringScriptSources
 {
     readonly IList<FileScriptSource> _fileScriptSources;
 
@@ -18,6 +18,7 @@ public class StringScriptSources: IStringScriptSources
             _fileScriptSources.Add(fileScriptSource);
         }
     }
+    
     public IList<FileScriptSource> GetFileScriptSources()
     {
         return _fileScriptSources;

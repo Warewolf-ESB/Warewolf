@@ -37,13 +37,7 @@ namespace Dev2.Development.Languages.Scripting
             var fixedScript = String.Join(Environment.NewLine, fixedScriptStatements);
             string pyFunc =  @"def __result__(): "+Environment.NewLine + fixedScript;
             ScriptScope scope = pyEng.CreateScope();
-            if (_sources != null && _sources.GetFileScriptSources() != null)
-            {
-                foreach (var fileScriptSource in _sources.GetFileScriptSources())
-                {
-                    pyEng.Execute(fileScriptSource.GetReader().ReadToEnd(), scope);
-                }
-            }
+            AddScriptToContext(pyEng, scope);
             ScriptSource source = pyEng.CreateScriptSourceFromString(pyFunc, SourceCodeKind.Statements);
 
             //create a scope to act as the context for the code
@@ -64,7 +58,13 @@ namespace Dev2.Development.Languages.Scripting
             return string.Empty;
         }
 
-        
+        private void AddScriptToContext(ScriptEngine pyEng, ScriptScope scope)
+        {
+            if(_sources != null && _sources.GetFileScriptSources() != null)
+                foreach(var fileScriptSource in _sources.GetFileScriptSources())
+                    pyEng.Execute(fileScriptSource.GetReader().ReadToEnd(), scope);
+        }
+
         public enScriptType HandlesType()
         {
             return enScriptType.Python;

@@ -73,11 +73,12 @@
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <ui:IntellisenseTextBox DefaultText="{Binding WatermarkTextVariable}"
+                                                    AllowUserInsertLine="False"
                                                     WrapInBrackets="True"
                                                     Margin="0,0,0,1"
                                                     Text="{Binding FieldName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                     IntellisenseProvider="{StaticResource CalculateCompositeIntellisenseProvider}"
-                                                    Style="{StaticResource TestNewStyle}"
+                                                    Style="{StaticResource DatagridIntellisenseTextBoxStyle}"
                                                     AutomationProperties.AutomationId="UI_TextBox_AutoID"
                                                     ToolTip="{x:Static languages:Core.AssignToolTipVariable}">
                                 <i:Interaction.Behaviors>
