@@ -143,7 +143,7 @@ namespace Dev2.Activities.Designers2.Core
                 for (int i = 0; i < testResults.Columns.Count; i++)
                 {
                     var column = testResults.Columns[i];
-                    var dbOutputMapping = new ServiceOutputMapping(column.ToString(), column.ToString(), recordsetName);
+                    var dbOutputMapping = new ServiceOutputMapping(column.ToString(), column.ToString().Replace(" ", ""), recordsetName);
                     mappings.Add(dbOutputMapping);
                 }
                 return mappings;
