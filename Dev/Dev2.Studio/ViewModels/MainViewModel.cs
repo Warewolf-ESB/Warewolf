@@ -1320,7 +1320,8 @@ namespace Dev2.Studio.ViewModels
         {
             var emailAttachmentView = new ManageEmailAttachmentView();
 
-            emailAttachmentView.ShowView(message.SelectedFiles.ToList());
+            var selectedFiles = message.SelectedFiles ?? new List<string>();
+            emailAttachmentView.ShowView(selectedFiles.ToList());
             var emailAttachmentVm = emailAttachmentView.DataContext as EmailAttachmentVm;
             if (emailAttachmentVm != null && emailAttachmentVm.Result == MessageBoxResult.OK)
             {

@@ -2787,30 +2787,32 @@ namespace System.Windows.Controls
                     OnAdapterSelectionCanceled(this, new RoutedEventArgs());
                     e.Handled = true;
                 }
+
+                switch (e.Key)
+                {
+                    case Key.F4:
+                        IsDropDownOpen = !IsDropDownOpen;
+                        e.Handled = true;
+                        break;
+
+                    case Key.Enter:
+                        OnAdapterSelectionComplete(this, new RoutedEventArgs());
+                        e.Handled = true;
+                        break;
+                }
             }
             else
             {
                 // The drop down is not open, the Down key will toggle it open.
-                if(e.Key == Key.Down)
-                {
-                    IsDropDownOpen = true;
-                    e.Handled = true;
-                }
+//                if(e.Key == Key.Down)
+//                {
+//                    IsDropDownOpen = true;
+//                    e.Handled = true;
+//                }
             }
 
             // Standard drop down navigation
-            switch(e.Key)
-            {
-                case Key.F4:
-                    IsDropDownOpen = !IsDropDownOpen;
-                    e.Handled = true;
-                    break;
-
-                case Key.Enter:
-                    OnAdapterSelectionComplete(this, new RoutedEventArgs());
-                    e.Handled = true;
-                    break;
-            }
+            
         }
 
         /// <summary>

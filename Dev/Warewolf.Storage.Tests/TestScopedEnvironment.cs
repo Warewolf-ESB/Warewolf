@@ -51,18 +51,7 @@ namespace Warewolf.Storage.Tests
             //------------Assert Results-------------------------
             _mockEnv.Verify(a => a.Eval("[[Person(*)]]", 0, false, false));
         }
-
-        [TestMethod]
-        [Owner("Pieter Terblanche")]
-        [TestCategory("ScopedEnvironment_Eval")]
-        public void GivenValueWithStars_ScopedEnvironment_ReplaceStarWithFixedIndex_ShouldReplaceStarsWithIndex()
-        {
-            //------------Setup for test--------------------------            
-            //------------Execute Test---------------------------
-            var replaceStarWithFixedIndex = ScopedEnvironment.ReplaceStarWithFixedIndex("[[Person(*)]]", 3);
-            //------------Assert Results-------------------------
-            Assert.AreEqual("[[Person(3)]]", replaceStarWithFixedIndex);
-        }
+       
 
         [TestMethod]
         [Owner("Pieter Terblanche")]

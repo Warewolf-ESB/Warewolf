@@ -8,14 +8,12 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using System.IO;
 using System.Security.Cryptography;
 
 namespace Dev2.Common.Interfaces.Utils
 {
     public interface ICryptoProvider
     {
-        byte[] ComputeHash(Stream inputStream);
     }
 
     public class CryptoProvider : ICryptoProvider
@@ -25,11 +23,6 @@ namespace Dev2.Common.Interfaces.Utils
         public CryptoProvider(SHA256CryptoServiceProvider cryptoService)
         {
             _cryptoService = cryptoService;
-        }
-
-        public byte[] ComputeHash(Stream inputStream)
-        {
-            return _cryptoService.ComputeHash(inputStream);
         }
     }
 }

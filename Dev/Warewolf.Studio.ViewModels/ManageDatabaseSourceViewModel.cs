@@ -116,7 +116,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 new NameValue { Name = "Microsoft SQL Server", Value = enSourceType.SqlDatabase.ToString() },
                 new NameValue { Name = "MySql Database", Value = enSourceType.MySqlDatabase.ToString() },
-                new NameValue { Name = "PostgreSql Database", Value = enSourceType.PostgreSql.ToString() },
+                new NameValue { Name = "PostgreSQL Database", Value = enSourceType.PostgreSQL.ToString() },
                 new NameValue { Name = "Oracle Database", Value = enSourceType.Oracle.ToString() },
                 new NameValue { Name = "ODBC Database", Value = enSourceType.ODBC.ToString() }
             };
@@ -214,8 +214,8 @@ namespace Warewolf.Studio.ViewModels
                     Image = "MySqlDatabase";
                     break;
 
-                case enSourceType.PostgreSql:
-                    Image = "PostgreSql";
+                case enSourceType.PostgreSQL:
+                    Image = "PostgreSQL";
                     break;
 
                 case enSourceType.Oracle:
@@ -555,7 +555,7 @@ namespace Warewolf.Studio.ViewModels
                     AuthenticationType = AuthenticationType.Windows;
                 }
                 else if (ServerType.Value == enSourceType.Oracle.ToString() ||
-                    ServerType.Value == enSourceType.PostgreSql.ToString())
+                    ServerType.Value == enSourceType.PostgreSQL.ToString())
                 {
                     CanSelectWindows = false;
                     CanSelectUser = true;

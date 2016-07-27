@@ -175,7 +175,7 @@
     <value>Make current version</value>
   </data>
   <data name="RollbackMessage" xml:space="preserve">
-    <value>"{0} will become the current version.{1}Do you want to proceed ?"</value>
+    <value>{0} will become the current version.{1}Do you want to proceed ?</value>
   </data>
   <data name="SaveErrorHeader" xml:space="preserve">
     <value>Saving Error</value>

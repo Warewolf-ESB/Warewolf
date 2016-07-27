@@ -2,12 +2,12 @@ using System.Collections.Generic;
 using Jurassic;
 
 public class StringScriptSources: IStringScriptSources
-{    
-    public IList<FileScriptSource> FileScriptSources { get; }
+{
+    readonly IList<FileScriptSource> _fileScriptSources;
 
     public StringScriptSources()
     {
-        FileScriptSources = new List<FileScriptSource>();
+        _fileScriptSources = new List<FileScriptSource>();
     }
     public void AddPaths(string paths)
     {
@@ -15,12 +15,12 @@ public class StringScriptSources: IStringScriptSources
         foreach (var path in parts)
         {
             var fileScriptSource = new FileScriptSource(path);
-            FileScriptSources.Add(fileScriptSource);
+            _fileScriptSources.Add(fileScriptSource);
         }
     }
     public IList<FileScriptSource> GetFileScriptSources()
     {
-        return FileScriptSources;
+        return _fileScriptSources;
     }
 }
 
@@ -29,5 +29,4 @@ public interface IStringScriptSources
     void AddPaths(string paths);
     IList<FileScriptSource> GetFileScriptSources();
 
-    IList<FileScriptSource> FileScriptSources { get; }
 }

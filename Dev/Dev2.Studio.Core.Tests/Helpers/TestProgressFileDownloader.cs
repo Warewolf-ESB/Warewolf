@@ -30,11 +30,7 @@ namespace Dev2.CustomControls.Progress
         {
             RehydrateDialog(fileName, progressPercent, totalBytes);
         }
-
-        public void TestStartUpdate(string fileName, bool cancelled)
-        {
-            StartUpdate(fileName, cancelled);
-        }
+        
 
         public IProgressNotifier GetProgressDialog()
         {

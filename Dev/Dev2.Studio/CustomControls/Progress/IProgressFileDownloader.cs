@@ -12,6 +12,5 @@ namespace Dev2.CustomControls.Progress
 {
     public interface IProgressFileDownloader
     {
-        void StartUpdate(string fileName, bool onlyCloseDialog);
     }
 }
