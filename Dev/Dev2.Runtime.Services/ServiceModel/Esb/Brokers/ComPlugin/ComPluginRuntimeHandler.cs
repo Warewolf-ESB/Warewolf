@@ -19,6 +19,7 @@ using Dev2.Data.Util;
 using Dev2.Runtime.ServiceModel.Data;
 using Newtonsoft.Json;
 using Unlimited.Framework.Converters.Graph;
+using WarewolfCOMIPC.Client;
 
 namespace Dev2.Runtime.ServiceModel.Esb.Brokers.ComPlugin
 {
@@ -165,11 +166,19 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.ComPlugin
             Guid clasID;
             Guid.TryParse(classId, out clasID);
             var is64BitProcess = Environment.Is64BitProcess;
+            Type type;
             if (is64BitProcess)
             {
-                
+                using (Client client = new Client())
+                {
+                    var execute = client.Invoke(clasID, "", "GetType", new object[] { });
+                    type = execute as Type;
+                }
             }
-            var type = Type.GetTypeFromCLSID(clasID, true) ;
+            else
+            {
+                type = Type.GetTypeFromCLSID(clasID, true);
+            }
             return string.IsNullOrEmpty(classId) ? null : type;
         }
         public ServiceMethodList ListMethods(string classId)
