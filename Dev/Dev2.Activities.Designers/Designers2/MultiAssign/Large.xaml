@@ -92,15 +92,14 @@
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <ui:IntellisenseTextBox VerticalAlignment="Center"
+                                                    AllowUserInsertLine="False"
                                                     DefaultText="{Binding WatermarkTextVariable}"
                                                     WrapInBrackets="True"
-                                                    AcceptsReturn="False"
-                                                    AllowUserInsertLine="False"
                                                     Margin="0,0,0,1"
                                                     attachedProperties:FocusSetter.IsFocused="{Binding IsFieldNameFocused, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                                                     Text="{Binding FieldName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, NotifyOnValidationError=True}"
                                                     IntellisenseProvider="{StaticResource CalculateCompositeIntellisenseProvider}"
-                                                    Style="{StaticResource TestNewStyle}"
+                                                    Style="{StaticResource DatagridIntellisenseTextBoxStyle}"
                                                     ToolTip="{x:Static languages:Core.AssignToolTipVariable}">
                                 <i:Interaction.Behaviors>
                                     <core1:HelpSetter Text="{x:Static languages:Core.AssignHelpVariable}" DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />

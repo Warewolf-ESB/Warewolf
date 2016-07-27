@@ -211,15 +211,13 @@ namespace Warewolf.Studio.Views
                     if (ValidateBeforeAndAfterState(e))
                         return;
 
-                    var dropNodeData = dropTarget.Node.Data;
-                    var sourceNodeData = dragSource.Node.Data;
-                    if (dropNodeData.GetType() == typeof(ExplorerItemViewModel))
+                    if (dropTarget.Node.Data.GetType() == typeof(ExplorerItemViewModel))
                     {
-                        ValidateExplorerItemNode(e, dropNodeData, sourceNodeData);
+                        ValidateExplorerItemNode(e, dragSource, dropTarget);
                     }
-                    else if (dropNodeData.GetType() == typeof(EnvironmentViewModel))
+                    else if (dropTarget.Node.Data.GetType() == typeof(EnvironmentViewModel))
                     {
-                        ValidateEnvironmentNode(e, dropNodeData, sourceNodeData);
+                        ValidateEnvironmentNode(e, dragSource, dropTarget);
                     }
                 }
                 else
@@ -284,10 +282,10 @@ namespace Warewolf.Studio.Views
             }
         }
 
-        private void ValidateEnvironmentNode(DragDropMoveEventArgs e, object dropNodeData, object sourceNodeData)
+        private void ValidateEnvironmentNode(DragDropMoveEventArgs e, XamDataTreeNodeControl sourceNodeData, XamDataTreeNodeControl dropTarget)
         {
-            var destination = dropNodeData as IEnvironmentViewModel;
-            var source = sourceNodeData as IExplorerItemViewModel;
+            var destination = dropTarget.Node.Data as IEnvironmentViewModel;
+            var source = sourceNodeData.Node.Data as IExplorerItemViewModel;
 
             if (destination != null && source != null)
             {
@@ -295,7 +293,7 @@ namespace Warewolf.Studio.Views
                 {
                     SetDropAllowedStyle(e);
                     ClearException(e);
-                    var checkExists = destination.Children.FirstOrDefault(o => o.ResourceName == source.ResourceName);
+                    var checkExists = dropTarget.Node.Nodes.FirstOrDefault(o => Equals(o.Data, source));
                     if (checkExists != null)
                     {
                         SetException(e);
@@ -308,10 +306,10 @@ namespace Warewolf.Studio.Views
             }
         }
 
-        private void ValidateExplorerItemNode(DragDropMoveEventArgs e, object dropNodeData, object sourceNodeData)
+        private void ValidateExplorerItemNode(DragDropMoveEventArgs e, XamDataTreeNodeControl sourceNodeData, XamDataTreeNodeControl dropTarget)
         {
-            var destination = dropNodeData as IExplorerItemViewModel;
-            var source = sourceNodeData as IExplorerItemViewModel;
+            var destination = dropTarget.Node.Data as IExplorerItemViewModel;
+            var source = sourceNodeData.Node.Data as IExplorerItemViewModel;
 
             if (destination != null && source != null)
             {
@@ -321,7 +319,7 @@ namespace Warewolf.Studio.Views
                 {
                     SetDropAllowedStyle(e);
                     ClearException(e);
-                    var checkExists = destination.Children.FirstOrDefault(o => o.ResourceName == source.ResourceName);
+                    var checkExists = dropTarget.Node.Nodes.FirstOrDefault(o => Equals(o.Data, source));
                     if (checkExists != null)
                     {
                         SetException(e);
@@ -475,18 +473,34 @@ namespace Warewolf.Studio.Views
             {
                 var dropNodeData = dropTarget.Node.Data;
                 var sourceNodeData = dragSource.Node.Data;
-                if (dropNodeData != null && dropNodeData.GetType() == typeof(ExplorerItemViewModel))
+                if (dropNodeData != null)
                 {
-                    var source = sourceNodeData as IExplorerItemViewModel;
-                    if (source != null && _exceptionThrown)
+                    if (dropNodeData.GetType() == typeof (ExplorerItemViewModel))
                     {
-                        e.OperationType = OperationType.DropNotAllowed;
-                        source.ShowErrorMessage(_errorMessage, "Move not allowed");
-                        _exceptionThrown = false;
-                        _errorMessage = "";
-                        ResetDragDropTemplate(e);
+                        var source = sourceNodeData as IExplorerItemViewModel;
+                        if (source != null && _exceptionThrown)
+                        {
+                            e.OperationType = OperationType.DropNotAllowed;
+                            source.ShowErrorMessage(_errorMessage, "Move not allowed");
+                            _exceptionThrown = false;
+                            _errorMessage = "";
+                            ResetDragDropTemplate(e);
+                        }
+                        ExplorerTree.ScrollNodeIntoView(dragSource.Node);
                     }
-                    ExplorerTree.ScrollNodeIntoView(dragSource.Node);
+                    else if (dropNodeData.GetType() == typeof(EnvironmentViewModel))
+                    {
+                        var source = sourceNodeData as IExplorerItemViewModel;
+                        if (source != null && _exceptionThrown)
+                        {
+                            e.OperationType = OperationType.DropNotAllowed;
+                            source.ShowErrorMessage(_errorMessage, "Move not allowed");
+                            _exceptionThrown = false;
+                            _errorMessage = "";
+                            ResetDragDropTemplate(e);
+                        }
+                        ExplorerTree.ScrollNodeIntoView(dragSource.Node);
+                    }
                 }
             }
         }
