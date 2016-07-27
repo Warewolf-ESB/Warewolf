@@ -390,6 +390,7 @@
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>xcopy /Y /E /F /D "$(SolutionDir)Resources - Release" "$(TargetDir)"
+xcopy /Y "$(SolutionDir)WarewolfCOMIPC\bin\Debug\WarewolfCOMIPC.exe" "$(TargetDir)"
 if "$(ConfigurationName)"=="Debug" xcopy /Y /E /F /D "$(SolutionDir)Resources - Debug" "$(TargetDir)"</PostBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
