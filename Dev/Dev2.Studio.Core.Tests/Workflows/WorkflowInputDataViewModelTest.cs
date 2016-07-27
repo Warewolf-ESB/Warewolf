@@ -867,12 +867,7 @@ namespace Dev2.Core.Tests.Workflows
         {
         }
 
-        public void ViewClosed()
-        {
-            if (!CloseRequested)
-                SendFinishedMessage();
-        }
-
+        
         public int SendExecuteRequestHitCount { get; private set; }
         public int SendViewInBrowserRequestHitCount { get; private set; }
         public XElement SendExecuteRequestPayload { get; private set; }
