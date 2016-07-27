@@ -167,7 +167,7 @@ namespace Dev2.Activities.Designers2.Core
                 if (Model.Source.Type == enSourceType.ODBC)
                 {
                     var dbSource = ResourceCatalog.Instance.GetResource<DbSource>(GlobalConstants.ServerWorkspaceID, Model.Source.Id);
-                    TestResults.TableName = dbSource.DatabaseName;
+                    TestResults.TableName = dbSource.DatabaseName.Replace(" ","");
                 }
                 if (TestResults != null)
                 {
