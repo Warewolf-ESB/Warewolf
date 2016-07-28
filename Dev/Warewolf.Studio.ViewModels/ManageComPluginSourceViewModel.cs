@@ -82,7 +82,8 @@ namespace Warewolf.Studio.ViewModels
             AsyncWorker.Start(() =>
             {
                 IsLoading = true;
-                var names = _updateManager.GetComDllListings(null).Select(input => new DllListingModel(_updateManager, input)).ToList();
+                var comDllListings = _updateManager.GetComDllListings(null);
+                var names = comDllListings.Select(input => new DllListingModel(_updateManager, input, comDllListings)).ToList();
 
                 DispatcherAction.Invoke(() =>
                 {
