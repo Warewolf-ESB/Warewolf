@@ -448,7 +448,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             dllListingMock.SetupGet(it => it.Children)
                 .Returns(new ObservableCollection<IDllListingModel>() { dllListingChildreMock.Object });
             dllListingChildreMock.SetupGet(it => it.FullName).Returns(selectedDllFullName);
-            _targetPluginSource.DllListings = new List<IDllListingModel>() {dllListingMock.Object};
+            _targetPluginSource.DllListings = new ObservableCollection<IDllListingModel> {dllListingMock.Object};
 
             //act
             _targetPluginSource.FromModel(pluginSourceMock.Object);
@@ -479,7 +479,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             dllListingMock.SetupGet(it => it.Children)
                 .Returns(new ObservableCollection<IDllListingModel>() { dllListingChildrenMock.Object });
             dllListingChildrenMock.SetupGet(it => it.Name).Returns(selectedDllFullName);
-            _targetPluginSource.DllListings = new List<IDllListingModel>() { dllListingMock.Object };
+            _targetPluginSource.DllListings = new ObservableCollection<IDllListingModel>() { dllListingMock.Object };
 
             //act
             _targetPluginSource.FromModel(pluginSourceMock.Object);
@@ -891,7 +891,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void TestDllListings()
         {
             //arrange
-            var expectedValue = new List<IDllListingModel>();
+            var expectedValue = new ObservableCollection<IDllListingModel>();
             _changedProperties.Clear();
 
             //act
@@ -941,7 +941,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //arrange
             var expectedValue = "SearchTerm";
             var listingMock = new Mock<IDllListingModel>();
-            _target.DllListings = new List<IDllListingModel> { listingMock.Object };
+            _target.DllListings = new ObservableCollection<IDllListingModel> { listingMock.Object };
             _changedProperties.Clear();
 
             //act
