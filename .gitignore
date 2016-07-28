@@ -25,6 +25,7 @@
 *.testsettings
 *.iml
 *.playlist
+*.sln.DotSettings
 
 ####################################################################################
 # Compile outputs
