@@ -46,6 +46,7 @@ namespace Dev2.UI
             FilterMode = AutoCompleteFilterMode.Custom;
             TextFilter = (search, item) => true;
             _toolTip = new ToolTip();
+            CustomSelection = true;
             ItemsSource = IntellisenseResults;
             _desiredResultSet = IntellisenseDesiredResultSet.EntireSet;
             DataObject.AddPastingHandler(this, OnPaste);
@@ -70,37 +71,13 @@ namespace Dev2.UI
 
         public static readonly RoutedEvent TabInsertedEvent = EventManager.RegisterRoutedEvent("TabInserted", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(IntellisenseTextBox));
 
-        protected override void OnMouseLeftButtonUp(MouseButtonEventArgs e)
-        {
-            base.OnMouseLeftButtonUp(e);
-            CustomSelection = false;
-            var originalSource = e.OriginalSource as TextBlock;
-            if (originalSource != null)
-            {
-                var source = e.Source as ListBox;
-                if (source != null)
-                {
-                    source.SelectedItem = originalSource.Text;
-                }
-                SelectedItem = originalSource.Text;
-            }
-
-            e.Handled = true;
-        }
-
         protected override void OnPreviewMouseLeftButtonDown(MouseButtonEventArgs e)
         {
             base.OnPreviewMouseLeftButtonDown(e);
-            CustomSelection = false;
             var originalSource = e.OriginalSource as TextBlock;
             if (originalSource != null)
             {
-                SelectedItem = originalSource.Text;
-                var source = e.Source as ListBox;
-                if (source != null)
-                {
-                    source.SelectedItem = originalSource.Text;
-                }
+                InsertItem(originalSource.Text, true);
             }
         }
 
@@ -108,7 +85,6 @@ namespace Dev2.UI
         {
             base.OnPreviewKeyDown(e);
             bool isOpen = IsDropDownOpen;
-            CustomSelection = true;
 
             if (e.Key == Key.Enter || e.Key == Key.Return || e.Key == Key.Tab)
             {
