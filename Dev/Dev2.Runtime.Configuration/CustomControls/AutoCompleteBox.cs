@@ -781,11 +781,6 @@ namespace System.Windows.Controls
         /// <param name="newItem">The new item.</param>
         private void OnSelectedItemChanged(object newItem)
         {
-            if (CustomSelection)
-            {
-                return;
-            }
-
             var text = newItem == null ? SearchText : FormatValue(newItem, true);
 
             // Update the Text property and the TextBox values
@@ -797,8 +792,6 @@ namespace System.Windows.Controls
                 TextBox.SelectionStart = Text.Length;
             }
         }
-
-        public bool CustomSelection { get; set; }
 
         #endregion public object SelectedItem
 
