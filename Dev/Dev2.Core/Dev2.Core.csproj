@@ -232,11 +232,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="FrameworkResources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>FrameworkResources.resx</DependentUpon>
-    </Compile>
     <Compile Include="DynamicServices\Objects\ServiceAction.cs" />
     <Compile Include="DynamicServices\Objects\ServiceActionInput.cs" />
     <Compile Include="DynamicServices\Objects\Source.cs" />
@@ -247,10 +242,6 @@
     <EmbeddedResource Include="DynamicServices\Resources.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources1.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="FrameworkResources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>FrameworkResources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

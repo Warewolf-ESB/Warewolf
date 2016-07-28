@@ -251,11 +251,6 @@
     <Compile Include="Designers2\Core\Extensions\ActivityDesignerViewModelExtensions.cs" />
     <Compile Include="Designers2\Core\GenerateInputsRegion.cs" />
     <Compile Include="Designers2\Core\GenerateOutputsRegion.cs" />
-    <Compile Include="Designers2\Core\Help\HelpTextResources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>HelpTextResources.resx</DependentUpon>
-    </Compile>
     <Compile Include="Designers2\Core\InputRegion\DatabaseInputRegion.cs" />
     <Compile Include="Designers2\Core\InputRegion\DotNetInputRegion.cs" />
     <Compile Include="Designers2\Core\InputRegion\WcfInputRegion.cs" />
@@ -1063,11 +1058,6 @@
     <Compile Include="Utils\ActivityDesignerLanuageNotationConverter.cs" />
     <Compile Include="Utils\ActivityTypeToActionTypeConverter.cs" />
     <Compile Include="Utils\DropEnabledActivityDesignerUtils.cs" />
-    <EmbeddedResource Include="Designers2\Core\Help\HelpTextResources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <SubType>Designer</SubType>
-      <LastGenOutput>HelpTextResources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
     <EmbeddedResource Include="Properties\ActivityResources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>ActivityResources.Designer.cs</LastGenOutput>
