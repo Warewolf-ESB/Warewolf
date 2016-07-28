@@ -141,24 +141,8 @@
   <data name="User_Interface_Layouts_Directory" xml:space="preserve">
     <value>UserInterfaceLayouts</value>
   </data>
-  <data name="About_Content" xml:space="preserve">
-    <value>Studio: Version {0}
-Server: Version {1}
-
-Software development by: www.dev2.co.za
-</value>
-  </data>
-  <data name="About_Header_Text" xml:space="preserve">
-    <value>About</value>
-  </data>
   <data name="App_Data_Directory" xml:space="preserve">
     <value>Warewolf</value>
-  </data>
-  <data name="About_Description_Header" xml:space="preserve">
-    <value>About Server and Studio</value>
-  </data>
-  <data name="Warewolf_Logo" xml:space="preserve">
-    <value>pack://application:,,,/Warewolf.Studio.Themes.Luna;component/Images/newmoon.jpg</value>
   </data>
   <data name="ErrorMessageEmptyRecordSet" xml:space="preserve">
     <value>Recordset must contain one or more field(s).</value>
@@ -309,15 +293,6 @@ Version History will also be deleted.</value>
   &lt;/panes&gt;
 &lt;/xamDockManager&gt;</value>
   </data>
-  <data name="EULA_Link" xml:space="preserve">
-    <value>http://warewolf.io/eula.php</value>
-  </data>
-  <data name="EULA_Text" xml:space="preserve">
-    <value>Warewolf EULA</value>
-  </data>
-  <data name="IntellisenseErrorMisMacthingBrackets" xml:space="preserve">
-    <value>Invalid expression: Opening and closing brackets don't match.</value>
-  </data>
   <data name="CriticalExceptionMessage" xml:space="preserve">
     <value>Critical : Warewolf Must Restart. All open tabs will be saved. Please take the time to report this error to the community.</value>
   </data>
@@ -365,21 +340,11 @@ Version History will also be deleted.</value>
   &lt;DisplayName&gt;Service&lt;/DisplayName&gt;
 &lt;/Service&gt;</value>
   </data>
-  <data name="Uri_Studio_Language_Reference_Document" xml:space="preserve">
-    <value>Help\Warewolf Language.htm</value>
-  </data>
-  <data name="ExampleWorkflowNotFound" xml:space="preserve">
-    <value>The {0} example cannot be found. 
- Please re-install or upgrade to the latest version to resolve this issue</value>
-  </data>
   <data name="DialogBody_FolderContentsHaveDependencies" xml:space="preserve">
     <value>This folder cannot be deleted because it contains resources with dependents.</value>
   </data>
   <data name="DialogTitle_FolderHasDependencies" xml:space="preserve">
     <value>Folder has dependents</value>
-  </data>
-  <data name="Resource_ID_must_be_a_Guid" xml:space="preserve">
-    <value>Resource ID must be a GUID</value>
   </data>
   <data name="Uri_Studio_PageNotAvailable" xml:space="preserve">
     <value>Help\PageNotAvailable.htm</value>
