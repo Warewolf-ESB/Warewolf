@@ -14,10 +14,10 @@ namespace Warewolf.UITests.Tools.Utility
             Uimap.Open_Calculate_Tool_Large_View();
             Uimap.Enter_SomeVariable_Into_Calculate_Large_View_Function_Textbox();
             Uimap.Click_Calculate_Large_View_Done_Button();
-            //TODO: Re-introduce these units before WOLF-1923 can be moved to done.
-            //Uimap.Click_Debug_Ribbon_Button();
-            //Uimap.Click_Debug_Input_Dialog_Debug_ButtonParams.CalculateToolDebugOutputExists = true;
-            //Uimap.Click_Debug_Input_Dialog_Debug_Button();
+            Uimap.Click_Debug_Ribbon_Button();
+            Uimap.Click_DebugInput_Debug_Button();
+            Uimap.WaitForSpinner(Uimap.MainStudioWindow.DockManager.SplitPaneRight.DebugOutput.StatusBar.Spinner);
+            Uimap.Click_Debug_Output_Calculate_Cell();
         }
 
         #region Additional test attributes
@@ -35,6 +35,7 @@ namespace Warewolf.UITests.Tools.Utility
         public void MyTestCleanup()
         {
             Uimap.CleanupABlankWorkflow();
+            Uimap.TryCloseHangingDebugInputDialog();
         }
 
         public TestContext TestContext

@@ -1040,6 +1040,7 @@ namespace Warewolf.Studio.ViewModels
                     Server.UpdateRepository.FireItemSaved();
                     return false;
                 }
+                UpdateResourcePaths(destination);                
                 destination.UpdateChildrenCount();
             }
             catch (Exception ex)
@@ -1049,6 +1050,37 @@ namespace Warewolf.Studio.ViewModels
                 return false;
             }
             return true;
+        }
+
+        private void UpdateResourcePaths(IExplorerTreeItem destination)
+        {
+            if(destination.IsFolder)
+            {
+                if(destination.Children.Any(a => a.ResourceName == ResourceName && a.IsFolder))
+                {
+                    var destfolder = destination.Children.FirstOrDefault(a => a.ResourceName == ResourceName && a.IsFolder);
+                    if(destfolder != null)
+                    {
+                        destfolder.ResourcePath = destination.ResourcePath + "\\" + destfolder.ResourceName;
+                        var resourcePath = destfolder.ResourcePath;
+                        foreach(var explorerItemViewModel in Children)
+                        {
+                            explorerItemViewModel.ResourcePath = resourcePath + "\\" + explorerItemViewModel.ResourceName;
+                        }
+                    }
+                }
+                else
+                {
+                    foreach(var explorerItemViewModel in Children)
+                    {
+                        explorerItemViewModel.ResourcePath = destination.ResourcePath + "\\" + explorerItemViewModel.ResourceName;
+                    }
+                }
+            }
+            else if(!destination.IsFolder)
+            {
+                ResourcePath = destination.ResourcePath + (destination.ResourcePath == String.Empty ? "" : "\\") + ResourceName;
+            }
         }
 
         public void ShowErrorMessage(string errorMessage, string header)
