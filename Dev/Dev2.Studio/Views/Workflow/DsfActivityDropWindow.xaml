@@ -14,6 +14,7 @@
         WindowStartupLocation="CenterOwner"
         Style="{StaticResource WindowBorderlessStyle}"
         Closing="DsfActivityDropWindow_OnClosing"
+        MouseDown="DsfActivityDropWindow_OnMouseDown"
         mc:Ignorable="d"
         ShowInTaskbar="False"
         d:DataContext="{d:DesignInstance workflow:DsfActivityDropViewModel}"
@@ -28,17 +29,28 @@
     </i:Interaction.Behaviors>
     <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
             <RowDefinition />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
+        <StackPanel Grid.Row="0" 
+                    Grid.Column="0" 
+                    Background="{StaticResource WareWolfMenuBrush}" 
+                    HorizontalAlignment="Stretch" 
+                    Orientation="Horizontal">
+            <TextBlock Margin="5" 
+                       Text="Service" 
+                       Style="{StaticResource SourceHeader}"></TextBlock>
+        </StackPanel>
+        
         <views:ExplorerView HorizontalAlignment="Stretch"
                                 VerticalAlignment="Stretch"
                                 HorizontalContentAlignment="Stretch"
-                                Grid.Row="0"
+                                Grid.Row="1"
                                 VerticalContentAlignment="Stretch"
                                 x:Name="ExplorerView"
                                 DataContext="{Binding SingleEnvironmentExplorerViewModel}" />
-        <StackPanel Grid.Row="1"
+        <StackPanel Grid.Row="2"
                     Orientation="Horizontal"
                     Margin="{StaticResource ElementBorder}"
                     HorizontalAlignment="Left">
@@ -51,7 +63,7 @@
         <StackPanel Orientation="Horizontal"
                     HorizontalAlignment="Right"
                     Margin="{StaticResource ElementBorder}"
-                    Grid.Row="1">
+                    Grid.Row="2">
             <Button Content="OK"
                     Command="{Binding OkCommand}"
                     Width="110"
