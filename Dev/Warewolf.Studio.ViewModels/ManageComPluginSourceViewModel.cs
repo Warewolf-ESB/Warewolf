@@ -369,7 +369,7 @@ namespace Warewolf.Studio.ViewModels
                     src.ClsId = SelectedDll.ClsId;
                     Save(src);
                     src.ProgId = SelectedDll.ProgId;
-                    
+                    Path = src.Path;
                     _pluginSource = src;
                     ToItem();
                     SetupHeaderTextFromExisting();
@@ -394,7 +394,8 @@ namespace Warewolf.Studio.ViewModels
                 Id = _pluginSource.Id,
                 Name = _pluginSource.Name,
                 ProgId = _pluginSource.ProgId,
-                ClsId = _pluginSource.ClsId
+                ClsId = _pluginSource.ClsId,
+                SelectedDll = SelectedDll
             };
             Name = _pluginSource.Name;
         }
@@ -413,7 +414,8 @@ namespace Warewolf.Studio.ViewModels
                 {
                     Name = ResourceName,
                     ClsId = _clsId,
-                    ProgId = _progID
+                    ProgId = _progID,
+                    SelectedDll = _selectedDll
                 };
             }
             _pluginSource.SelectedDll = _selectedDll;

@@ -455,8 +455,8 @@ namespace Warewolf.Studio.ViewModels.Tests
 
             //assert
             dllListingMock.VerifySet(it=>it.IsExpanded = true);
-            dllListingChildreMock.VerifySet(it => it.IsSelected = true);
-            Assert.AreSame(dllListingChildreMock.Object, _targetPluginSource.SelectedDll);
+            dllListingMock.VerifySet(it => it.IsSelected = true);
+            Assert.AreSame(dllListingMock.Object, _targetPluginSource.SelectedDll);
             Assert.AreEqual(expectedName, _targetPluginSource.Name);
         }
 
@@ -486,9 +486,9 @@ namespace Warewolf.Studio.ViewModels.Tests
 
             //assert
             dllListingMock.VerifySet(it => it.IsExpanded = true);
-            dllListingChildrenMock.VerifySet(it => it.IsExpanded = true);
-            dllListingChildrenMock.VerifySet(it => it.IsSelected = true);
-            Assert.AreSame(dllListingChildrenMock.Object, _targetPluginSource.SelectedDll);
+            dllListingMock.VerifySet(it => it.IsExpanded = true);
+            dllListingMock.VerifySet(it => it.IsSelected = true);
+            Assert.AreSame(dllListingMock.Object, _targetPluginSource.SelectedDll);
             Assert.AreEqual(expectedName, _targetPluginSource.Name);
         }
 
