@@ -15,7 +15,7 @@ namespace Warewolf.UITests.Tools.Utility
             Uimap.Enter_SomeVariable_Into_Calculate_Large_View_Function_Textbox();
             Uimap.Click_Calculate_Large_View_Done_Button();
             Uimap.Click_Debug_Ribbon_Button();
-            Uimap.Click_DebugInput_DebugButton();
+            Uimap.Click_DebugInput_Debug_Button();
             Uimap.WaitForSpinner(Uimap.MainStudioWindow.DockManager.SplitPaneRight.DebugOutput.StatusBar.Spinner);
             Uimap.Click_Debug_Output_Calculate_Cell();
         }
