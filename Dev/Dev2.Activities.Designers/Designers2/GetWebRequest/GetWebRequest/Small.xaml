@@ -40,6 +40,7 @@
         <ui:IntellisenseTextBox Grid.Column="1"
                                 Grid.Row="0"
                                 Name="InitialFocusElement"
+                                AllowUserInsertLine="False"
                                 DefaultText="http://mywebpage.com"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 Text="{Binding Path=ModelItem.Url, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource ModelTextConverter}, ConverterParameter=True}"                                

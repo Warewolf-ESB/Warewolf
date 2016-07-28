@@ -53,6 +53,7 @@
                                     MinWidth="200" MaxWidth="200"
                                     WrapInBrackets="True"
                                     HorizontalAlignment="Left"
+                                    AllowUserInsertLine="False"
                                     x:Name="VariabletoSwitchon"
                                     Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                     Text="{Binding SwitchVariable,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"

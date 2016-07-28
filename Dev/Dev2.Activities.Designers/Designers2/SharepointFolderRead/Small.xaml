@@ -113,6 +113,7 @@
         <ui:IntellisenseTextBox Grid.Column="1"
                                 Grid.Row="3"
                                 Grid.ColumnSpan="2"
+                                AllowUserInsertLine="False"
                                 DefaultText="[[Recordset().Field]]"
                                 FilterType="All"
                                 Margin="0,-3,0,0"
