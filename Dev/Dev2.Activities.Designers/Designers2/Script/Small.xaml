@@ -90,6 +90,7 @@
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 WrapInBrackets="True"
                                 DefaultText="[[Result]]"
+                                AllowUserInsertLine="False"
                                 Margin="{StaticResource ControlBorderTop}"
                                 FilterType="All"
                                 ToolTip="{x:Static languages:Core.ScriptingToolTipResult}"

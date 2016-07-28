@@ -40,6 +40,7 @@
                                 Grid.Column="1"
                                 Grid.Row="0"
                                 DefaultText="[[Recordset().Field]]"
+                                AllowUserInsertLine="False"
                                 FilterType="RecordsetFields"
                                 WrapInBrackets="True"
                                 ToolTip="{x:Static languages:Core.SortToolTipSortField}"

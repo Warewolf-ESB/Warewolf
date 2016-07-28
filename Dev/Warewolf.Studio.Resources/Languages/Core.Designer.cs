@@ -61,24 +61,6 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Studio: Version {0}	Server: Version {1}	Software development by: www.dev2.co.za.
-        /// </summary>
-        public static string About_Content {
-            get {
-                return ResourceManager.GetString("About_Content", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to About Server and Studio.
-        /// </summary>
-        public static string About_Description_Header {
-            get {
-                return ResourceManager.GetString("About_Description_Header", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Connect using anonymous security credentials.
         /// </summary>
         public static string AnonymousAuthenticationToolTip {
@@ -403,6 +385,69 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Edits the selected COM plugin source connection.
+        /// </summary>
+        public static string ComManagePluginServiceEditSourceTooltip {
+            get {
+                return ResourceManager.GetString("ComManagePluginServiceEditSourceTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Create a new connection to a COM DLL.
+        /// </summary>
+        public static string ComManagePluginServiceNewSourceTooltip {
+            get {
+                return ResourceManager.GetString("ComManagePluginServiceNewSourceTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select the COM plugin you want to use.
+        /// </summary>
+        public static string ComManagePluginServiceSourcesTooltip {
+            get {
+                return ResourceManager.GetString("ComManagePluginServiceSourcesTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The PROGrammatic IDentifier you want to use.
+        /// </summary>
+        public static string ComManagePluginSourceAssemblyNameTooltip {
+            get {
+                return ResourceManager.GetString("ComManagePluginSourceAssemblyNameTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Clear the filter criteria.
+        /// </summary>
+        public static string ComManagePluginSourceClearSearchTooltip {
+            get {
+                return ResourceManager.GetString("ComManagePluginSourceClearSearchTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Filter for the COM DLL you want .
+        /// </summary>
+        public static string ComManagePluginSourceFilterTooltip {
+            get {
+                return ResourceManager.GetString("ComManagePluginSourceFilterTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Refresh the available COM DLL.
+        /// </summary>
+        public static string ComManagePluginSourceRefreshTooltip {
+            get {
+                return ResourceManager.GetString("ComManagePluginSourceRefreshTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Comments do not execute and are place holders for future services or tools or simply to leave commentary inside the workflow.	You can connect comments into the process flow and they will simply be skipped during execution. However, they will appear in the debug output.	Allowed:	Notes and comments will not be executed at run time but will show up in the debug output..
         /// </summary>
         public static string CommentHelpComment {
@@ -435,6 +480,78 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string CompareCurrentServerVersion {
             get {
                 return ResourceManager.GetString("CompareCurrentServerVersion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ComPluginServiceEditSourceHelp.
+        /// </summary>
+        public static string ComPluginServiceEditSourceHelp {
+            get {
+                return ResourceManager.GetString("ComPluginServiceEditSourceHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ComPluginServiceMethodNotSelected.
+        /// </summary>
+        public static string ComPluginServiceMethodNotSelected {
+            get {
+                return ResourceManager.GetString("ComPluginServiceMethodNotSelected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to To create a reference to a new COM object, click New..
+        /// </summary>
+        public static string ComPluginServiceNewSourceHelp {
+            get {
+                return ResourceManager.GetString("ComPluginServiceNewSourceHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select the COM DLL you want to use from previously setup sources..
+        /// </summary>
+        public static string ComPluginServiceSourcesHelp {
+            get {
+                return ResourceManager.GetString("ComPluginServiceSourcesHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Clears the Search Filter.
+        /// </summary>
+        public static string ComPluginSourceClearSearchHelp {
+            get {
+                return ResourceManager.GetString("ComPluginSourceClearSearchHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to PROGrammatic IDentifier of the COM DLL.
+        /// </summary>
+        public static string ComPluginSourceDllFullNameHelp {
+            get {
+                return ResourceManager.GetString("ComPluginSourceDllFullNameHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to New COMPlugin Source.
+        /// </summary>
+        public static string ComPluginSourceNewHeaderLabel {
+            get {
+                return ResourceManager.GetString("ComPluginSourceNewHeaderLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Refresh the view based on the filter.&lt;br/&gt;	&lt;br/&gt;	Newly added resources should show after a refresh..
+        /// </summary>
+        public static string ComPluginSourceRefreshCommandHelp {
+            get {
+                return ResourceManager.GetString("ComPluginSourceRefreshCommandHelp", resourceCulture);
             }
         }
         
@@ -851,15 +968,6 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string DatabaseServiceNewSourceHelp {
             get {
                 return ResourceManager.GetString("DatabaseServiceNewSourceHelp", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Procedure not selected. This service will not execute..
-        /// </summary>
-        public static string DatabaseServiceProcedureNotSelected {
-            get {
-                return ResourceManager.GetString("DatabaseServiceProcedureNotSelected", resourceCulture);
             }
         }
         
@@ -1719,24 +1827,6 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &quot;Are you sure you want to delete {0}?&quot;.
-        /// </summary>
-        public static string DeleteVersionMessage {
-            get {
-                return ResourceManager.GetString("DeleteVersionMessage", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Delete Version.
-        /// </summary>
-        public static string DeleteVersionMessageHeader {
-            get {
-                return ResourceManager.GetString("DeleteVersionMessageHeader", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Deploy the selected Source files to the Destination Server..
         /// </summary>
         public static string DeployCommandHelp {
@@ -1796,15 +1886,6 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string DevUrl {
             get {
                 return ResourceManager.GetString("DevUrl", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Did you know?.
-        /// </summary>
-        public static string DidYouKnow {
-            get {
-                return ResourceManager.GetString("DidYouKnow", resourceCulture);
             }
         }
         
@@ -2967,33 +3048,6 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string InvalidPermissionHeader {
             get {
                 return ResourceManager.GetString("InvalidPermissionHeader", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to &quot;{0} is invalid. Warewolf only supports Latin characters&quot;.
-        /// </summary>
-        public static string InvalidPermissionMessage {
-            get {
-                return ResourceManager.GetString("InvalidPermissionMessage", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to &quot;Invalid text&quot;.
-        /// </summary>
-        public static string InvalidTextHeader {
-            get {
-                return ResourceManager.GetString("InvalidTextHeader", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to &quot;{0} is invalid. Warewolf only supports Latin characters&quot;.
-        /// </summary>
-        public static string InvalidTextMessage {
-            get {
-                return ResourceManager.GetString("InvalidTextMessage", resourceCulture);
             }
         }
         
@@ -5617,24 +5671,6 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The following task has been renamed {0} -&gt; {1}. You will lose the history for the old task.{2} Would you like to save the new name?{2}-------------------------------------------------------------------&quot; + &quot;Yes - Save with the new name.{2}No - Save with the old name.{2}Cancel - Returns you to Scheduler..
-        /// </summary>
-        public static string RenameConflictDescription {
-            get {
-                return ResourceManager.GetString("RenameConflictDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Rename conflict.
-        /// </summary>
-        public static string RenameConflictHeader {
-            get {
-                return ResourceManager.GetString("RenameConflictHeader", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Any variable and/or data goes in here.	To rename a file or folder, put the full path and file or folder name in here.	You can use File System, URI, SFTP, FTP or FTPS format.	&lt;br /&gt;&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;.
         /// </summary>
         public static string RenameHelpFileFolder {
@@ -5833,15 +5869,6 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Saving Error.
-        /// </summary>
-        public static string SaveErrorHeader {
-            get {
-                return ResourceManager.GetString("SaveErrorHeader", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to The name can not be blank.
         /// </summary>
         public static string SchedulerBlankNameErrorMessage {
@@ -5856,15 +5883,6 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string SchedulerBlankWorkflowNameErrorMessage {
             get {
                 return ResourceManager.GetString("SchedulerBlankWorkflowNameErrorMessage", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Scheduler Task has changes.
-        /// </summary>
-        public static string SchedulerChangesHeader {
-            get {
-                return ResourceManager.GetString("SchedulerChangesHeader", resourceCulture);
             }
         }
         
@@ -6400,42 +6418,6 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Server is not connected.
-        /// </summary>
-        public static string ServerSourceNotConnected {
-            get {
-                return ResourceManager.GetString("ServerSourceNotConnected", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to You cannot change the settings for a server that is offline..
-        /// </summary>
-        public static string ServerSourceNotConnectedSettingsDescription {
-            get {
-                return ResourceManager.GetString("ServerSourceNotConnectedSettingsDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Server is unreachable.
-        /// </summary>
-        public static string ServerSourceUnreachableErrorHeader {
-            get {
-                return ResourceManager.GetString("ServerSourceUnreachableErrorHeader", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Unable to reach {0}: Connection timed out.{1} Make sure the remote computer is powered on.{1}{1} Would you like to re-try? {1}.
-        /// </summary>
-        public static string ServerSourceUnreachableHeaderMessage {
-            get {
-                return ResourceManager.GetString("ServerSourceUnreachableHeaderMessage", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Test the connection to the remote Warewolf Server.	Make sure the relevant ports (3142, 3143 by default) are open on any firewalls between this server and the remote server..
         /// </summary>
         public static string ServerTestConnectionHelp {
@@ -6531,24 +6513,6 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string ServiceTestHelp {
             get {
                 return ResourceManager.GetString("ServiceTestHelp", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to &quot;Settings have not been saved.{0}Would you like to save the settings? {0}-------------------------------------------------------------------Yes - Save the settings.{0}No - Discard your changes.{0}Cancel - Returns you to settings..
-        /// </summary>
-        public static string SettingsChangedDescription {
-            get {
-                return ResourceManager.GetString("SettingsChangedDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Settings have changed.
-        /// </summary>
-        public static string SettingsChangedHeader {
-            get {
-                return ResourceManager.GetString("SettingsChangedHeader", resourceCulture);
             }
         }
         

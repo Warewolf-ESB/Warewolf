@@ -39,6 +39,7 @@
         <ui:IntellisenseTextBox x:Name="InitialFocusElement"
                                 Grid.Column="1"
                                 Grid.Row="0"
+                                AllowUserInsertLine="False"
                                 DefaultText="[[Recordset()]]"
                                 FilterType="RecordsetsOnly"
                                 ToolTip="{x:Static languages:Core.LengthToolTipRecordset}"
@@ -59,6 +60,7 @@
         <TextBlock Grid.Column="0" Grid.Row="1" Text="Result" Margin="{StaticResource ControlBorderTop}"/>
         <ui:IntellisenseTextBox Grid.Row="1"
                                 Grid.Column="1"
+                                AllowUserInsertLine="False"
                                 Margin="{StaticResource ControlBorderTop}"
                                 DefaultText="[[Length]]"
                                 ToolTip="{x:Static languages:Core.LengthToolTipResult}"

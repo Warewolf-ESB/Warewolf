@@ -61,37 +61,6 @@ namespace Dev2.Studio.Core {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Studio: Version {0}
-        ///Server: Version {1}
-        ///
-        ///Software development by: www.dev2.co.za
-        ///.
-        /// </summary>
-        public static string About_Content {
-            get {
-                return ResourceManager.GetString("About_Content", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to About Server and Studio.
-        /// </summary>
-        public static string About_Description_Header {
-            get {
-                return ResourceManager.GetString("About_Description_Header", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to About.
-        /// </summary>
-        public static string About_Header_Text {
-            get {
-                return ResourceManager.GetString("About_Header_Text", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Warewolf.
         /// </summary>
         public static string App_Data_Directory {
@@ -392,43 +361,6 @@ namespace Dev2.Studio.Core {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to http://warewolf.io/eula.php.
-        /// </summary>
-        public static string EULA_Link {
-            get {
-                return ResourceManager.GetString("EULA_Link", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Warewolf EULA.
-        /// </summary>
-        public static string EULA_Text {
-            get {
-                return ResourceManager.GetString("EULA_Text", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The {0} example cannot be found. 
-        /// Please re-install or upgrade to the latest version to resolve this issue.
-        /// </summary>
-        public static string ExampleWorkflowNotFound {
-            get {
-                return ResourceManager.GetString("ExampleWorkflowNotFound", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Invalid expression: Opening and closing brackets don&apos;t match..
-        /// </summary>
-        public static string IntellisenseErrorMisMacthingBrackets {
-            get {
-                return ResourceManager.GetString("IntellisenseErrorMisMacthingBrackets", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Your changes have not been saved.
         ///Would you like to save? 
         ///-----------------------------------------------------------------
@@ -466,15 +398,6 @@ namespace Dev2.Studio.Core {
         public static string Pack_Uri_Stop_Image {
             get {
                 return ResourceManager.GetString("Pack_Uri_Stop_Image", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Resource ID must be a GUID.
-        /// </summary>
-        public static string Resource_ID_must_be_a_Guid {
-            get {
-                return ResourceManager.GetString("Resource_ID_must_be_a_Guid", resourceCulture);
             }
         }
         
@@ -583,15 +506,6 @@ namespace Dev2.Studio.Core {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Help\Warewolf Language.htm.
-        /// </summary>
-        public static string Uri_Studio_Language_Reference_Document {
-            get {
-                return ResourceManager.GetString("Uri_Studio_Language_Reference_Document", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Help\PageNotAvailable.htm.
         /// </summary>
         public static string Uri_Studio_PageNotAvailable {
@@ -615,15 +529,6 @@ namespace Dev2.Studio.Core {
         public static string Warewolf_Homepage_Start {
             get {
                 return ResourceManager.GetString("Warewolf_Homepage_Start", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to pack://application:,,,/Warewolf.Studio.Themes.Luna;component/Images/newmoon.jpg.
-        /// </summary>
-        public static string Warewolf_Logo {
-            get {
-                return ResourceManager.GetString("Warewolf_Logo", resourceCulture);
             }
         }
         

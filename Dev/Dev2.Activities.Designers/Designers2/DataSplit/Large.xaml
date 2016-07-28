@@ -173,6 +173,7 @@
                         <DataTemplate>
                             <ui:IntellisenseTextBox DefaultText="{Binding WatermarkTextVariable}"
                                                     Margin="0,0,1,1"
+                                                    AllowUserInsertLine="False"
                                                     Text="{Binding OutputVariable, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                     ToolTip="{x:Static languages:Core.DataSplitToolTipResults}"
                                                     attachedProperties:FocusSetter.IsFocused="{Binding IsOutputVariableFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -242,6 +243,7 @@
                         <DataTemplate>
                             <ui:IntellisenseTextBox WrapInBrackets="False"
                                                     Margin="0,0,1,1"
+                                                    AllowUserInsertLine="False"
                                                     IsEnabled="{Binding EnableAt,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                                                     Text="{Binding At, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                     ToolTip="{x:Static languages:Core.DataSplitToolTipUsing}"
@@ -300,6 +302,7 @@
                         <DataTemplate>
                             <ui:IntellisenseTextBox WrapInBrackets="False"
                                                     Margin="0,0,1,1"
+                                                    AllowUserInsertLine="False"
                                                     IsEnabled="{Binding IsEscapeCharEnabled, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                     Text="{Binding EscapeChar, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                     ToolTip="{x:Static languages:Core.DataSplitToolTipEscape}"

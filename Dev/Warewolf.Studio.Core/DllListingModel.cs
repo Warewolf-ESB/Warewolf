@@ -292,8 +292,6 @@ namespace Warewolf.Studio.Core
 
         public void Filter(string searchTerm)
         {
-            if (!_isCom)
-            {
                 _filter = searchTerm;
 
                 if (_children != null)
@@ -316,35 +314,11 @@ namespace Warewolf.Studio.Core
                 }
 
                 OnPropertyChanged(() => Children);
-            }
-            else
-
-            {
-                _filter = searchTerm;
-                if (_children != null)
-                {
-                    foreach (var dllListing in _children)
-                    {
-                        var dllListingModel = dllListing;
-                        dllListingModel.Filter(searchTerm);
-                    }
-                }
-                if (string.IsNullOrEmpty(searchTerm) || Name == "FileSystem" || Name == "GAC" ||
-                    (_children != null && _children.Count > 0 &&
-                     _children.Any(model => model.IsVisible)))
-                {
-                    IsVisible = true;
-                }
-                else
-                {
-                    IsVisible = Name.ToLowerInvariant().Contains(searchTerm.ToLowerInvariant());
-                }
-
-                OnPropertyChanged(() => Children);
-            }
                 
+
             
         }
+       
 
         public bool IsVisible
         {
@@ -360,7 +334,7 @@ namespace Warewolf.Studio.Core
 
         public bool Equals(DllListingModel other)
         {
-            return string.Equals(Name, other.Name) && string.Equals(FullName, other.FullName) && IsDirectory == other.IsDirectory;
+            return string.Equals(Name, other.Name) && string.Equals(FullName, other.FullName) && IsDirectory == other.IsDirectory && string.Equals(ClsId,other.ClsId) && string.Equals(ProgId, other.ProgId);
         }
 
 

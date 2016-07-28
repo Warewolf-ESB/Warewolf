@@ -48,6 +48,7 @@
                                 Grid.Row="2"
                                 ScrollViewer.VerticalScrollBarVisibility="Auto"
                                 IsInCalculateMode="False"
+                                AllowUserInsertLine="False"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 DefaultText="[[Dropbox location]]"
                                 FilterType="All"
