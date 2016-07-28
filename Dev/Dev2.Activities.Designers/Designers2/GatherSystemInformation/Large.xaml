@@ -79,6 +79,7 @@
                         <DataTemplate>
                             <ui:IntellisenseTextBox MaxHeight="52"
                                                     Padding="3"
+                                                    AllowUserInsertLine="False"
                                                     DefaultText="{Binding WatermarkTextVariable}"
                                                     WrapInBrackets="True"
                                                     Margin="0,0,1,1"

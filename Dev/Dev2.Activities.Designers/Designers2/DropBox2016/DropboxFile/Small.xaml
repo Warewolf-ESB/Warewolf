@@ -48,6 +48,7 @@
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 DefaultText="[[Dropbox location]]"
                                 FilterType="All"
+                                AllowUserInsertLine="False"
                                 ToolTip="{x:Static languages:Core.DropBoxFileListFileNameToolTip}"
                                 Text="{Binding ToPath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_fxtxt_AutoID}"
@@ -76,6 +77,7 @@
                                     DefaultText="[[Result]]"
                                     FilterType="All"
                                     IsInCalculateMode="False"
+                                    AllowUserInsertLine="False"
                                     ScrollViewer.VerticalScrollBarVisibility="Auto"
                                     Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                     Text="{Binding Result,

@@ -89,6 +89,7 @@
                                                                     Focusable="True" 
                                                                     IsTabStop="True"
                                                                     AcceptsReturn="True"
+                                                                    AllowUserInsertLine="True"
                                                                     SelectAllOnGotFocus="True"
                                                                     PreviewKeyDown="IntellisenseTextBoxPreviewKeyDown" 
                                                                     TextChanged="TextBoxTextChanged">

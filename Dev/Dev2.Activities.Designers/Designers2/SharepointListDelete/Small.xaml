@@ -110,6 +110,7 @@
         <ui:IntellisenseTextBox Grid.Row="2"
                                 Grid.Column="1"
                                 Grid.ColumnSpan="2"
+                                AllowUserInsertLine="False"
                                 DefaultText="[[DeleteCount]]"
                                 WrapInBrackets="True"
                                 Margin="{StaticResource ControlBorderTop}"
