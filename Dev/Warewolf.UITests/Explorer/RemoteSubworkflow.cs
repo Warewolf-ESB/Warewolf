@@ -54,10 +54,9 @@ namespace Warewolf.UITests
             Uimap.WaitForSpinner(Uimap.SaveDialogWindow.ExplorerView.ExplorerTree.localhost.Checkbox.Spinner);
             Uimap.Enter_Service_Name_Into_Save_Dialog(LocalWorkflowName);
             Uimap.Click_SaveDialog_Save_Button();
-            //Uimap.Click_Debug_Ribbon_Button();
-            //Uimap.Click_DebugInput_Debug_RemoteServerUITestWorkflow_Button();
-            //Uimap.Click_Debug_Output_Workflow1_Cell();
-            //Uimap.Click_Debug_Output_Workflow1_Name();
+            Uimap.Click_Debug_Ribbon_Button();
+            Uimap.Click_DebugInput_DebugButton();
+            Uimap.Click_Debug_Output_Workflow1_Name();
             Uimap.Enter_Text_Into_Explorer_Filter(LocalWorkflowName);
             Uimap.WaitForSpinner(Uimap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);
             Uimap.RightClick_Explorer_Localhost_First_Item();
@@ -90,6 +89,7 @@ namespace Warewolf.UITests
         {
             Uimap.TryCloseHangingSaveDialog();
             Uimap.TryCloseHangingWindowsGroupDialog();
+            Uimap.TryCloseHangingDebugInputDialog();
             Uimap.TryRemoveFromExplorer(LocalWorkflowName);
             Uimap.TryDisconnectFromRemoteServerAndRemoveSourceFromExplorer(ServerSourceName);
             Uimap.TryCloseAllTabs();
