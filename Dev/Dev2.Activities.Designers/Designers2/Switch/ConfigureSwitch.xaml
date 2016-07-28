@@ -51,7 +51,7 @@
                                     Margin="{StaticResource ControlBorderTop}"
                                     DefaultText="[[Case Variable]]"
                                     MinWidth="200" MaxWidth="200"
-                                    WrapInBrackets="True"
+                                    WrapInBrackets="True"                                    
                                     HorizontalAlignment="Left"
                                     AllowUserInsertLine="False"
                                     x:Name="VariabletoSwitchon"
