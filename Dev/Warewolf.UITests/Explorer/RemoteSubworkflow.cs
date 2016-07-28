@@ -55,7 +55,7 @@ namespace Warewolf.UITests
             Uimap.Enter_Service_Name_Into_Save_Dialog(LocalWorkflowName);
             Uimap.Click_SaveDialog_Save_Button();
             Uimap.Click_Debug_Ribbon_Button();
-            Uimap.Click_DebugInput_DebugButton();
+            Uimap.Click_DebugInput_Debug_Button();
             Uimap.Click_Debug_Output_Workflow1_Name();
             Uimap.Enter_Text_Into_Explorer_Filter(LocalWorkflowName);
             Uimap.WaitForSpinner(Uimap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);

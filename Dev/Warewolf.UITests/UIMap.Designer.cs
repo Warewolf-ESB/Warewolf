@@ -236,6 +236,74 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
+        /// Click_Debug_Output_Assign_Cell - Use 'Click_Debug_Output_Assign_CellParams' to pass parameters into this method.
+        /// </summary>
+        public void Click_Debug_Output_Assign_Cell()
+        {
+            #region Variable Declarations
+            WpfButton uIAssign1Button = this.MainStudioWindow.DockManager.SplitPaneRight.DebugOutput.DebugOutputTree.Step1.UIAssign1Button;
+            WpfCustom multiAssign = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign;
+            #endregion
+
+            // Click 'Assign (1)' button
+            Mouse.Click(uIAssign1Button, new Point(21, 9));
+
+            // Verify that the 'HasFocus' property of 'DsfMultiAssignActivity' custom control equals 'True'
+            Assert.AreEqual(this.Click_Debug_Output_Assign_CellParams.MultiAssignHasFocus, multiAssign.HasFocus, "Multiassign small view does not have focus.");
+        }
+        
+        /// <summary>
+        /// Click_Debug_Output_BaseConvert_Cell - Use 'Click_Debug_Output_BaseConvert_CellParams' to pass parameters into this method.
+        /// </summary>
+        public void Click_Debug_Output_BaseConvert_Cell()
+        {
+            #region Variable Declarations
+            WpfButton uIBaseConversion1Button = this.MainStudioWindow.DockManager.SplitPaneRight.DebugOutput.DebugOutputTree.Step1.UIBaseConversion1Button;
+            WpfCustom caseConvert = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.CaseConvert;
+            #endregion
+
+            // Click 'Base Conversion (1)' button
+            Mouse.Click(uIBaseConversion1Button, new Point(33, 7));
+
+            // Verify that the 'HasFocus' property of 'DsfCaseConvertActivity' custom control equals 'False'
+            Assert.AreEqual(this.Click_Debug_Output_BaseConvert_CellParams.CaseConvertHasFocus, caseConvert.HasFocus, "Base conversion small view does not have focus.");
+        }
+        
+        /// <summary>
+        /// Click_Debug_Output_Calculate_Cell - Use 'Click_Debug_Output_Calculate_CellParams' to pass parameters into this method.
+        /// </summary>
+        public void Click_Debug_Output_Calculate_Cell()
+        {
+            #region Variable Declarations
+            WpfButton uICalculateButton = this.MainStudioWindow.DockManager.SplitPaneRight.DebugOutput.DebugOutputTree.Step1.UICalculateButton;
+            WpfCustom calculate = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Calculate;
+            #endregion
+
+            // Click 'Calculate' button
+            Mouse.Click(uICalculateButton, new Point(24, 10));
+
+            // Verify that the 'HasFocus' property of 'DsfCalculateActivity' custom control equals 'True'
+            Assert.AreEqual(this.Click_Debug_Output_Calculate_CellParams.CalculateHasFocus, calculate.HasFocus, "Calculate tool small view does not have focus");
+        }
+        
+        /// <summary>
+        /// Click_Debug_Output_Workflow1_Name - Use 'Click_Debug_Output_Workflow1_NameParams' to pass parameters into this method.
+        /// </summary>
+        public void Click_Debug_Output_Workflow1_Name()
+        {
+            #region Variable Declarations
+            WpfButton workflow1Button = this.MainStudioWindow.DockManager.SplitPaneRight.DebugOutput.DebugOutputTree.ServiceTreeItem.Workflow1Button;
+            WpfText workflow1ciremoteText = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.Workflow1ciremoteText;
+            #endregion
+
+            // Click 'workflow1' button
+            Mouse.Click(workflow1Button, new Point(24, 8));
+
+            // Verify that the 'DisplayText' property of 'workflow1 - ci-remote' label equals 'workflow1 - ci-remote'
+            Assert.AreEqual(this.Click_Debug_Output_Workflow1_NameParams.Workflow1ciremoteTextDisplayText, workflow1ciremoteText.DisplayText, "Workflow1 remote workflow tab is not open.");
+        }
+        
+        /// <summary>
         /// Click_Debug_Ribbon_Button - Use 'Click_Debug_Ribbon_ButtonParams' to pass parameters into this method.
         /// </summary>
         public void Click_Debug_Ribbon_Button()
@@ -250,7 +318,6 @@ namespace Warewolf.UITests
             WpfTable dataListInputsTable = this.MainStudioWindow.DebugInputDialog.UITabItemsTabList.InputDataTab.DataListInputsTable;
             WpfTabPage xMLTab = this.MainStudioWindow.DebugInputDialog.UITabItemsTabList.XMLTab;
             WpfTabPage jSONTab = this.MainStudioWindow.DebugInputDialog.UITabItemsTabList.JSONTab;
-            WpfCustom jSONWindow = this.MainStudioWindow.DebugInputDialog.UITabItemsTabList.JSONTab.JSONWindow;
             #endregion
 
             // Click 'Run and debug your workflow service' button
@@ -282,15 +349,25 @@ namespace Warewolf.UITests
 
             // Verify that the 'Exists' property of 'JSON' tab equals 'True'
             Assert.AreEqual(this.Click_Debug_Ribbon_ButtonParams.JSONTabExists, jSONTab.Exists, "Assert Json tab does not exist in the debug input window");
-
-            // Verify that the 'Exists' property of 'UI_JsonEditor_AutoID' custom control equals 'True'
-            Assert.AreEqual(this.Click_Debug_Ribbon_ButtonParams.JSONWindowExists, jSONWindow.Exists, "Debug Input Json window does not exist");
         }
         
         /// <summary>
-        /// Click_DebugInput_DebugButton - Use 'Click_DebugInput_DebugButtonParams' to pass parameters into this method.
+        /// Click_DebugInput_Cancel_Button
         /// </summary>
-        public void Click_DebugInput_DebugButton()
+        public void Click_DebugInput_Cancel_Button()
+        {
+            #region Variable Declarations
+            WpfButton cancelButton = this.MainStudioWindow.DebugInputDialog.CancelButton;
+            #endregion
+
+            // Click 'Cancel' button
+            Mouse.Click(cancelButton, new Point(34, 10));
+        }
+        
+        /// <summary>
+        /// Click_DebugInput_Debug_Button - Use 'Click_DebugInput_Debug_ButtonParams' to pass parameters into this method.
+        /// </summary>
+        public void Click_DebugInput_Debug_Button()
         {
             #region Variable Declarations
             WpfButton debugF6Button = this.MainStudioWindow.DebugInputDialog.DebugF6Button;
@@ -306,25 +383,25 @@ namespace Warewolf.UITests
             Mouse.Click(debugF6Button, new Point(34, 10));
 
             // Verify that the 'Exists' property of 'OUTPUT' custom control equals 'True'
-            Assert.AreEqual(this.Click_DebugInput_DebugButtonParams.DebugOutputExists, debugOutput.Exists, "Debug output does not exist");
+            Assert.AreEqual(this.Click_DebugInput_Debug_ButtonParams.DebugOutputExists, debugOutput.Exists, "Debug output does not exist");
 
             // Verify that the 'Exists' property of '' button equals 'True'
-            Assert.AreEqual(this.Click_DebugInput_DebugButtonParams.SettingsButtonExists, settingsButton.Exists, "Debug output settings button does not exist");
+            Assert.AreEqual(this.Click_DebugInput_Debug_ButtonParams.SettingsButtonExists, settingsButton.Exists, "Debug output settings button does not exist");
 
             // Verify that the 'DisplayText' property of '[[SomeVariable]]' label equals '[[SomeVariable]]'
-            Assert.AreEqual(this.Click_DebugInput_DebugButtonParams.VariableTextboxDisplayText, variableTextbox.DisplayText, "Wrong variable name in debug output");
+            Assert.AreEqual(this.Click_DebugInput_Debug_ButtonParams.VariableTextboxDisplayText, variableTextbox.DisplayText, "Wrong variable name in debug output");
 
             // Verify that the 'Exists' property of '+' button equals 'True'
-            Assert.AreEqual(this.Click_DebugInput_DebugButtonParams.ExpandCollapseButtonExists, expandCollapseButton.Exists, "Debug output expand collapse button does not exist");
+            Assert.AreEqual(this.Click_DebugInput_Debug_ButtonParams.ExpandCollapseButtonExists, expandCollapseButton.Exists, "Debug output expand collapse button does not exist");
 
             // Verify that the 'Exists' property of 'SearchTextBox' text box equals 'True'
-            Assert.AreEqual(this.Click_DebugInput_DebugButtonParams.SearchTextBoxExists, searchTextBox.Exists, "Debug output filter textbox does not exist");
+            Assert.AreEqual(this.Click_DebugInput_Debug_ButtonParams.SearchTextBoxExists, searchTextBox.Exists, "Debug output filter textbox does not exist");
 
             // Verify that the 'Exists' property of 'DebugOutputTree' tree equals 'True'
-            Assert.AreEqual(this.Click_DebugInput_DebugButtonParams.DebugOutputTreeExists, debugOutputTree.Exists, "Debug output results tree does not exist");
+            Assert.AreEqual(this.Click_DebugInput_Debug_ButtonParams.DebugOutputTreeExists, debugOutputTree.Exists, "Debug output results tree does not exist");
 
             // Verify that the 'Exists' property of '' button equals 'True'
-            Assert.AreEqual(this.Click_DebugInput_DebugButtonParams.SettingsButtonExists1, settingsButton.Exists, "Debug output settings button does not exist");
+            Assert.AreEqual(this.Click_DebugInput_Debug_ButtonParams.SettingsButtonExists1, settingsButton.Exists, "Debug output settings button does not exist");
         }
         
         /// <summary>
@@ -5060,6 +5137,54 @@ namespace Warewolf.UITests
             }
         }
         
+        public virtual Click_Debug_Output_Assign_CellParams Click_Debug_Output_Assign_CellParams
+        {
+            get
+            {
+                if ((this.mClick_Debug_Output_Assign_CellParams == null))
+                {
+                    this.mClick_Debug_Output_Assign_CellParams = new Click_Debug_Output_Assign_CellParams();
+                }
+                return this.mClick_Debug_Output_Assign_CellParams;
+            }
+        }
+        
+        public virtual Click_Debug_Output_BaseConvert_CellParams Click_Debug_Output_BaseConvert_CellParams
+        {
+            get
+            {
+                if ((this.mClick_Debug_Output_BaseConvert_CellParams == null))
+                {
+                    this.mClick_Debug_Output_BaseConvert_CellParams = new Click_Debug_Output_BaseConvert_CellParams();
+                }
+                return this.mClick_Debug_Output_BaseConvert_CellParams;
+            }
+        }
+        
+        public virtual Click_Debug_Output_Calculate_CellParams Click_Debug_Output_Calculate_CellParams
+        {
+            get
+            {
+                if ((this.mClick_Debug_Output_Calculate_CellParams == null))
+                {
+                    this.mClick_Debug_Output_Calculate_CellParams = new Click_Debug_Output_Calculate_CellParams();
+                }
+                return this.mClick_Debug_Output_Calculate_CellParams;
+            }
+        }
+        
+        public virtual Click_Debug_Output_Workflow1_NameParams Click_Debug_Output_Workflow1_NameParams
+        {
+            get
+            {
+                if ((this.mClick_Debug_Output_Workflow1_NameParams == null))
+                {
+                    this.mClick_Debug_Output_Workflow1_NameParams = new Click_Debug_Output_Workflow1_NameParams();
+                }
+                return this.mClick_Debug_Output_Workflow1_NameParams;
+            }
+        }
+        
         public virtual Click_Debug_Ribbon_ButtonParams Click_Debug_Ribbon_ButtonParams
         {
             get
@@ -5072,15 +5197,15 @@ namespace Warewolf.UITests
             }
         }
         
-        public virtual Click_DebugInput_DebugButtonParams Click_DebugInput_DebugButtonParams
+        public virtual Click_DebugInput_Debug_ButtonParams Click_DebugInput_Debug_ButtonParams
         {
             get
             {
-                if ((this.mClick_DebugInput_DebugButtonParams == null))
+                if ((this.mClick_DebugInput_Debug_ButtonParams == null))
                 {
-                    this.mClick_DebugInput_DebugButtonParams = new Click_DebugInput_DebugButtonParams();
+                    this.mClick_DebugInput_Debug_ButtonParams = new Click_DebugInput_Debug_ButtonParams();
                 }
-                return this.mClick_DebugInput_DebugButtonParams;
+                return this.mClick_DebugInput_Debug_ButtonParams;
             }
         }
         
@@ -6718,9 +6843,17 @@ namespace Warewolf.UITests
         
         private Click_Close_Workflow_Tab_ButtonParams mClick_Close_Workflow_Tab_ButtonParams;
         
+        private Click_Debug_Output_Assign_CellParams mClick_Debug_Output_Assign_CellParams;
+        
+        private Click_Debug_Output_BaseConvert_CellParams mClick_Debug_Output_BaseConvert_CellParams;
+        
+        private Click_Debug_Output_Calculate_CellParams mClick_Debug_Output_Calculate_CellParams;
+        
+        private Click_Debug_Output_Workflow1_NameParams mClick_Debug_Output_Workflow1_NameParams;
+        
         private Click_Debug_Ribbon_ButtonParams mClick_Debug_Ribbon_ButtonParams;
         
-        private Click_DebugInput_DebugButtonParams mClick_DebugInput_DebugButtonParams;
+        private Click_DebugInput_Debug_ButtonParams mClick_DebugInput_Debug_ButtonParams;
         
         private Click_Decision_Dialog_Done_ButtonParams mClick_Decision_Dialog_Done_ButtonParams;
         
@@ -6992,22 +7125,6 @@ namespace Warewolf.UITests
         
         private ServicePickerDialog mServicePickerDialog;
         #endregion
-
-        public void Click_Debug_Output_BaseConvert_Cell()
-        {
-        }
-
-        public void Click_Debug_Output_Calculate_Cell()
-        {
-        }
-
-        public void Click_Debug_Output_Workflow1_Name()
-        {
-        }
-
-        public void Click_Debug_Output_Assign_Cell()
-        {
-        }
     }
     
     /// <summary>
@@ -7116,6 +7233,66 @@ namespace Warewolf.UITests
     }
     
     /// <summary>
+    /// Parameters to be passed into 'Click_Debug_Output_Assign_Cell'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Click_Debug_Output_Assign_CellParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'HasFocus' property of 'DsfMultiAssignActivity' custom control equals 'True'
+        /// </summary>
+        public bool MultiAssignHasFocus = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Click_Debug_Output_BaseConvert_Cell'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Click_Debug_Output_BaseConvert_CellParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'HasFocus' property of 'DsfCaseConvertActivity' custom control equals 'False'
+        /// </summary>
+        public bool CaseConvertHasFocus = false;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Click_Debug_Output_Calculate_Cell'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Click_Debug_Output_Calculate_CellParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'HasFocus' property of 'DsfCalculateActivity' custom control equals 'True'
+        /// </summary>
+        public bool CalculateHasFocus = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Click_Debug_Output_Workflow1_Name'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Click_Debug_Output_Workflow1_NameParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'DisplayText' property of 'workflow1 - ci-remote' label equals 'workflow1 - ci-remote'
+        /// </summary>
+        public string Workflow1ciremoteTextDisplayText = "workflow1 - ci-remote";
+        #endregion
+    }
+    
+    /// <summary>
     /// Parameters to be passed into 'Click_Debug_Ribbon_Button'
     /// </summary>
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
@@ -7167,19 +7344,14 @@ namespace Warewolf.UITests
         /// Verify that the 'Exists' property of 'JSON' tab equals 'True'
         /// </summary>
         public bool JSONTabExists = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'UI_JsonEditor_AutoID' custom control equals 'True'
-        /// </summary>
-        public bool JSONWindowExists = true;
         #endregion
     }
     
     /// <summary>
-    /// Parameters to be passed into 'Click_DebugInput_DebugButton'
+    /// Parameters to be passed into 'Click_DebugInput_Debug_Button'
     /// </summary>
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Click_DebugInput_DebugButtonParams
+    public class Click_DebugInput_Debug_ButtonParams
     {
         
         #region Fields
@@ -18257,12 +18429,30 @@ namespace Warewolf.UITests
                 return this.mWorkSurfaceContext;
             }
         }
+        
+        public WpfText Workflow1ciremoteText
+        {
+            get
+            {
+                if ((this.mWorkflow1ciremoteText == null))
+                {
+                    this.mWorkflow1ciremoteText = new WpfText(this);
+                    #region Search Criteria
+                    this.mWorkflow1ciremoteText.SearchProperties[WpfText.PropertyNames.Name] = "workflow1 - ci-remote";
+                    this.mWorkflow1ciremoteText.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mWorkflow1ciremoteText;
+            }
+        }
         #endregion
         
         #region Fields
         private WpfButton mCloseButton;
         
         private WorkSurfaceContext4 mWorkSurfaceContext;
+        
+        private WpfText mWorkflow1ciremoteText;
         #endregion
     }
     
@@ -31818,12 +32008,26 @@ namespace Warewolf.UITests
                 return this.mSubWorkflow;
             }
         }
+        
+        public ServiceTreeItem ServiceTreeItem
+        {
+            get
+            {
+                if ((this.mServiceTreeItem == null))
+                {
+                    this.mServiceTreeItem = new ServiceTreeItem(this);
+                }
+                return this.mServiceTreeItem;
+            }
+        }
         #endregion
         
         #region Fields
         private Step1 mStep1;
         
         private SubWorkflow mSubWorkflow;
+        
+        private ServiceTreeItem mServiceTreeItem;
         #endregion
     }
     
@@ -31858,10 +32062,67 @@ namespace Warewolf.UITests
                 return this.mVariableTextbox;
             }
         }
+        
+        public WpfButton UIAssign1Button
+        {
+            get
+            {
+                if ((this.mUIAssign1Button == null))
+                {
+                    this.mUIAssign1Button = new WpfButton(this);
+                    #region Search Criteria
+                    this.mUIAssign1Button.SearchProperties[WpfButton.PropertyNames.Name] = "Assign (1)";
+                    this.mUIAssign1Button.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mUIAssign1Button.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mUIAssign1Button;
+            }
+        }
+        
+        public WpfButton UIBaseConversion1Button
+        {
+            get
+            {
+                if ((this.mUIBaseConversion1Button == null))
+                {
+                    this.mUIBaseConversion1Button = new WpfButton(this);
+                    #region Search Criteria
+                    this.mUIBaseConversion1Button.SearchProperties[WpfButton.PropertyNames.Name] = "Base Conversion (1)";
+                    this.mUIBaseConversion1Button.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mUIBaseConversion1Button.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mUIBaseConversion1Button;
+            }
+        }
+        
+        public WpfButton UICalculateButton
+        {
+            get
+            {
+                if ((this.mUICalculateButton == null))
+                {
+                    this.mUICalculateButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mUICalculateButton.SearchProperties[WpfButton.PropertyNames.Name] = "Calculate";
+                    this.mUICalculateButton.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mUICalculateButton.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mUICalculateButton;
+            }
+        }
         #endregion
         
         #region Fields
         private WpfText mVariableTextbox;
+        
+        private WpfButton mUIAssign1Button;
+        
+        private WpfButton mUIBaseConversion1Button;
+        
+        private WpfButton mUICalculateButton;
         #endregion
     }
     
@@ -31932,6 +32193,43 @@ namespace Warewolf.UITests
         
         #region Fields
         private WpfButton mUIHelloWorldButton;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class ServiceTreeItem : WpfTreeItem
+    {
+        
+        public ServiceTreeItem(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfTreeItem.PropertyNames.AutomationId] = "Service";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfButton Workflow1Button
+        {
+            get
+            {
+                if ((this.mWorkflow1Button == null))
+                {
+                    this.mWorkflow1Button = new WpfButton(this);
+                    #region Search Criteria
+                    this.mWorkflow1Button.SearchProperties[WpfButton.PropertyNames.Name] = "workflow1";
+                    this.mWorkflow1Button.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mWorkflow1Button.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mWorkflow1Button;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfButton mWorkflow1Button;
         #endregion
     }
     
