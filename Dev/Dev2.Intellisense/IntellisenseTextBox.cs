@@ -73,7 +73,7 @@ namespace Dev2.UI
         protected override void OnMouseLeftButtonUp(MouseButtonEventArgs e)
         {
             base.OnMouseLeftButtonUp(e);
-
+            CustomSelection = false;
             var originalSource = e.OriginalSource as TextBlock;
             if (originalSource != null)
             {
@@ -91,7 +91,7 @@ namespace Dev2.UI
         protected override void OnPreviewMouseLeftButtonDown(MouseButtonEventArgs e)
         {
             base.OnPreviewMouseLeftButtonDown(e);
-
+            CustomSelection = false;
             var originalSource = e.OriginalSource as TextBlock;
             if (originalSource != null)
             {
@@ -108,6 +108,7 @@ namespace Dev2.UI
         {
             base.OnPreviewKeyDown(e);
             bool isOpen = IsDropDownOpen;
+            CustomSelection = true;
 
             if (e.Key == Key.Enter || e.Key == Key.Return || e.Key == Key.Tab)
             {
