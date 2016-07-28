@@ -6,12 +6,15 @@ using System.Data;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using System.Windows.Media;
+using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Core.Graph;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.ToolBase;
 using Dev2.Common.Interfaces.ToolBase.Database;
+using Dev2.Runtime.Hosting;
+using Dev2.Runtime.ServiceModel.Data;
 using Microsoft.Practices.Prism.Commands;
 using Warewolf.Core;
 using Warewolf.Resource.Errors;
@@ -163,7 +166,8 @@ namespace Dev2.Activities.Designers2.Core
                 TestResults = _serverModel.TestService(Model);
                 if (Model.Source.Type == enSourceType.ODBC)
                 {
-                    TestResults.TableName = @"Unnamed";
+                    var dbSource = ResourceCatalog.Instance.GetResource<DbSource>(GlobalConstants.ServerWorkspaceID, Model.Source.Id);
+                    TestResults.TableName = dbSource.DatabaseName.Replace(" ","");
                 }
                 if (TestResults != null)
                 {
