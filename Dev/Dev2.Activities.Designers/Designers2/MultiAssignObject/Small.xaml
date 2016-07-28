@@ -76,6 +76,7 @@
                                                     WrapInBrackets="True"
                                                     Padding="3"
                                                     Margin="0,0,0,1"
+                                                    AllowUserInsertLine="False"
                                                     FilterType="JsonObject"
                                                     Text="{Binding FieldName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                     IntellisenseProvider="{StaticResource CalculateCompositeIntellisenseProvider}"

@@ -247,6 +247,7 @@
             <ui:IntellisenseTextBox Grid.Column="1"
                                     DefaultText="[[CreateSuccess]]"
                                     WrapInBrackets="True"
+                                    AllowUserInsertLine="False"
                                     Text="{Binding ModelItem.Result, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                     Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                     ToolTip="{x:Static languages:Core.SharepointInsertToolTipResult}"

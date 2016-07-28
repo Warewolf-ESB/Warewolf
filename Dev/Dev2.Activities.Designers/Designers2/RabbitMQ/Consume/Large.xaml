@@ -107,6 +107,7 @@
                                 ToolTip="{x:Static languages:Core.RabbitMQToolTipQueueName}"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 Margin="{StaticResource ControlBorderTop}"
+                                AllowUserInsertLine="False"
                                 IsEnabled="{Binding IsRabbitMQSourceSelected, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                 attachedProperties:FocusSetter.IsFocused="{Binding IsQueueNameFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_tostxt_AutoID}">
@@ -122,6 +123,7 @@
         <TextBlock Grid.Column="0" Grid.Row="2" Text="Response" Margin="{StaticResource ControlBorderTop}" />
         <ui:IntellisenseTextBox Grid.Column="1" Grid.Row="2"
                                 DefaultText="Response "
+                                AllowUserInsertLine="False"
                                 WrapInBrackets="True"
                                 Text="{Binding Response, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 ToolTip="{x:Static languages:Core.RabbitMQToolTipResponse}"
@@ -142,6 +144,7 @@
         <TextBlock Grid.Column="0" Grid.Row="3" Text="Prefetch" Margin="{StaticResource ControlBorderTop}" />
         <ui:IntellisenseTextBox Grid.Column="1" Grid.Row="3"
                                 DefaultText="Prefetch Count"
+                                AllowUserInsertLine="False"
                                 Text="{Binding Prefetch, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 ToolTip="{x:Static languages:Core.RabbitMQToolTipPrefetch}"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
@@ -160,6 +163,7 @@
         <TextBlock Grid.Column="0" Grid.Row="4" Text="TimeOut" Margin="{StaticResource ControlBorderTop}" />
         <ui:IntellisenseTextBox Grid.Column="1" Grid.Row="4"
                                 DefaultText="TimeOut in seconds"
+                                AllowUserInsertLine="False"
                                 Text="{Binding TimeOut, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 ToolTip="{x:Static languages:Core.RabbitMQToolTipTimeOut}"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
@@ -211,6 +215,7 @@
         <ui:IntellisenseTextBox Grid.Column="1" Grid.Row="7"
                                 DefaultText="[[Result]]"
                                 WrapInBrackets="True"
+                                AllowUserInsertLine="False"
                                 Margin="0,-1,0,0"
                                 Text="{Binding Result, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 ToolTip="{x:Static languages:Core.RabbitMQToolTipResult}"

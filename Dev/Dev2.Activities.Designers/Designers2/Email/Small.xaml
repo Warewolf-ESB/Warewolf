@@ -79,6 +79,7 @@
                                 Margin="{StaticResource ControlBorderTop}"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 DefaultText="Account or email address"
+                                AllowUserInsertLine="False"
                                 ToolTip="{x:Static languages:Core.EmailToolTipTo}"
                                 Text="{Binding ModelItem.To,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_tostxt_AutoID}">
@@ -95,6 +96,7 @@
         <ui:IntellisenseTextBox Grid.Column="1"
                                 Grid.Row="2"
                                 DefaultText="Message Subject"
+                                AllowUserInsertLine="False"
                                 Margin="{StaticResource ControlBorderTop}"
                                 Text="{Binding ModelItem.Subject,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
@@ -143,6 +145,7 @@
         <ui:IntellisenseTextBox Grid.Column="1"
                                 Grid.Row="4"                               
                                 DefaultText="[[EmailSuccess]]"
+                                AllowUserInsertLine="False"
                                 Margin="{StaticResource ControlBorderTop}"
                                 ToolTip="{x:Static languages:Core.EmailToolTipResult}"
                                 Text="{Binding ModelItem.Result,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"

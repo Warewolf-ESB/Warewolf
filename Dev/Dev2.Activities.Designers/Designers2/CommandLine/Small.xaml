@@ -78,7 +78,8 @@
         <TextBlock Grid.Column="0" Grid.Row="1" Text="Result" Margin="{StaticResource ControlBorderTop}" />
         <ui:IntellisenseTextBox Grid.Column="1"
                                 Grid.Row="1"
-                                DefaultText="[[Result]]" 
+                                DefaultText="[[Result]]"
+                                AllowUserInsertLine="False"
                                 WrapInBrackets="True" 
                                 Margin="{StaticResource ControlBorderTop}"
                                 Text="{Binding Path=ModelItem.CommandResult, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
