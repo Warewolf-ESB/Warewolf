@@ -117,12 +117,6 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="PathOperations_Correct_Password" xml:space="preserve">
-    <value>I73573r0</value>
-  </data>
-  <data name="PathOperations_Correct_Username" xml:space="preserve">
-    <value>IntegrationTester</value>
-  </data>
   <data name="PathOperations_FileSystem_Path" xml:space="preserve">
     <value>C:\Users\Massimo.Guerrera\Desktop\File_Tools_ActivityNames.txt</value>
   </data>
@@ -131,11 +125,5 @@
   </data>
   <data name="PathOperations_FTP_Path" xml:space="preserve">
     <value>ftp://rsaklfsvrsbspdc:1001/GET_DATA/file1.txt</value>
-  </data>
-  <data name="PathOperations_FTP_NoAuth" xml:space="preserve">
-    <value>ftp://rsaklfsvrsbspdc:1001/</value>
-  </data>
-  <data name="PathOperations_FTP_Auth" xml:space="preserve">
-    <value>ftp://rsaklfsvrsbspdc:1002/</value>
   </data>
 </root>

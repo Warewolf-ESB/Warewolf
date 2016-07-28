@@ -39,12 +39,12 @@
                                         <ColumnDefinition />
                                         <ColumnDefinition Width="15" />
                                     </Grid.ColumnDefinitions>
-                                    <ui:IntellisenseTextBox MinWidth="100" x:Name="InputTxt" Text="{Binding Value, Mode=TwoWay}" KeyUp="InputTxtKeyUp" LostFocus="TextBoxLostFocus" Grid.Column="0" GotFocus="InputTxtGotFocus">
+                                    <ui:IntellisenseTextBox MinWidth="100" x:Name="InputTxt" Text="{Binding Value, Mode=TwoWay}" KeyUp="InputTxtKeyUp" LostFocus="TextBoxLostFocus" Grid.Column="0" GotFocus="InputTxtGotFocus" AllowUserInsertLine="False">
                                         <AutomationProperties.AutomationId>
                                             <MultiBinding StringFormat="UI_Input_{0}_AutoID">
                                                 <Binding Path="DisplayName"/>
                                             </MultiBinding>
-                                        </AutomationProperties.AutomationId>                                        
+                                        </AutomationProperties.AutomationId>
                                     </ui:IntellisenseTextBox>
                                         <Label Content="*" Foreground="Red" Grid.Column="1">
                                         <Label.Style>
@@ -113,7 +113,7 @@
                     <DataGridTemplateColumn Width="1*" IsReadOnly="True" Header="To Data List">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <ui:IntellisenseTextBox MinWidth="100" x:Name="OutputTxt" Text="{Binding Value, Mode=TwoWay}" KeyUp="OutputTxtKeyUp" LostFocus="TextBoxLostFocus1" GotFocus="OutputTxtGotFocus">
+                                <ui:IntellisenseTextBox MinWidth="100" AllowUserInsertLine="False" x:Name="OutputTxt" Text="{Binding Value, Mode=TwoWay}" KeyUp="OutputTxtKeyUp" LostFocus="TextBoxLostFocus1" GotFocus="OutputTxtGotFocus">
                                     <ui:IntellisenseTextBox.Style>
                                         <Style>
                                             <Setter Property="AutomationProperties.AutomationId">
