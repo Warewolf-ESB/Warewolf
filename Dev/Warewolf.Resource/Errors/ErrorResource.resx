@@ -123,119 +123,14 @@
   <data name="DirectoryNotFound" xml:space="preserve">
     <value>Directory not found {0}</value>
   </data>
-  <data name="DirectoryOpeningClosingBracketMismatch" xml:space="preserve">
-    <value>Directory - Invalid expression: opening and closing brackets don't match</value>
-  </data>
-  <data name="PasswordEmpty" xml:space="preserve">
-    <value>Password cannot be empty or only white space</value>
-  </data>
-  <data name="FileNameNotInVariableList" xml:space="preserve">
-    <value>File Name -  {0} does not exist in your variable list</value>
-  </data>
-  <data name="FilenameOpeningClosingBracketMismatch" xml:space="preserve">
-    <value>File Name - Invalid expression: opening and closing brackets don't match</value>
-  </data>
   <data name="FileNotFound" xml:space="preserve">
     <value>File {0} not found </value>
-  </data>
-  <data name="InvalidFileOrFolder" xml:space="preserve">
-    <value>Please supply a valid File/Folder</value>
-  </data>
-  <data name="NoValueAssigned" xml:space="preserve">
-    <value>No Value assigned for {0}</value>
-  </data>
-  <data name="ResultRecordsetIndexInvalidCharecters" xml:space="preserve">
-    <value>Result - Recordset index {0} contains invalid character(s)</value>
-  </data>
-  <data name="FileNameRecordsetnameInvalidCharecters" xml:space="preserve">
-    <value>File Name - Recordset name  {0} contains invalid character(s)</value>
   </data>
   <data name="ResultOpeningClosingBracketMismatch" xml:space="preserve">
     <value>Result - Invalid expression: opening and closing brackets don't match</value>
   </data>
   <data name="SingleResultAllowed" xml:space="preserve">
     <value>The result field only allows a single result</value>
-  </data>
-  <data name="ResultVariableContainsInvalidCharecters" xml:space="preserve">
-    <value>Result - Variable name  {0} contains invalid character(s)</value>
-  </data>
-  <data name="ResultInvalidRegion" xml:space="preserve">
-    <value>Result - Invalid Region  {0}</value>
-  </data>
-  <data name="DirectoryRecordsetIndexInvalidCharecters" xml:space="preserve">
-    <value>Directory - Recordset index {0} contains invalid character(s)</value>
-  </data>
-  <data name="DirectoryVariablenameInvalidCharecters" xml:space="preserve">
-    <value>Directory - Variable name  {0} contains invalid character(s)</value>
-  </data>
-  <data name="ContentOpeningClosingBracketMismatch" xml:space="preserve">
-    <value>Contents - Invalid expression: Opening and closing brackets don't match</value>
-  </data>
-  <data name="ContentRecordsetIndexContainsInvalidCharecters" xml:space="preserve">
-    <value>Contents - Recordset index {0} contains invalid character(s)</value>
-  </data>
-  <data name="ContentRecordsetnameInvalidCharecters" xml:space="preserve">
-    <value>Contents - Recordset name  {0} contains invalid character(s)</value>
-  </data>
-  <data name="ContentVariablenameInvalidCharecters" xml:space="preserve">
-    <value>Contents - Variable name  {0}  contains invalid character(s)</value>
-  </data>
-  <data name="UsernameOpeningClosingBracketMismatch" xml:space="preserve">
-    <value>Username - Invalid expression: opening and closing brackets don't match</value>
-  </data>
-  <data name="UsernameVariablenameInvalidCharecters" xml:space="preserve">
-    <value>Username - Variable name  {0} contains invalid character(s)</value>
-  </data>
-  <data name="ContentsNoValueAssigned" xml:space="preserve">
-    <value>Contents - No Value assigned for : {0}</value>
-  </data>
-  <data name="DestinationEmpty" xml:space="preserve">
-    <value>Destination cannot be empty or only white space</value>
-  </data>
-  <data name="DestinationOpeningClosingBracketMismatch" xml:space="preserve">
-    <value>Destination - Invalid expression: opening and closing brackets don't match</value>
-  </data>
-  <data name="DestinationRecordsetIndexInvalidCharecters" xml:space="preserve">
-    <value>Destination - Recordset index {0} contains invalid character(s)</value>
-  </data>
-  <data name="DestinationRecordsetInvalidCharecters" xml:space="preserve">
-    <value>Destination - Recordset name [[rec(a]] contains invalid character(s)</value>
-  </data>
-  <data name="DestinationUsernameRecordsetIndexInvalidCharecters" xml:space="preserve">
-    <value>Destination Username - Recordset index {0} contains invalid character(s)</value>
-  </data>
-  <data name="DestinationUsernameVariableInvalidCharecters" xml:space="preserve">
-    <value>Destination Username - Variable name {0} contains invalid character(s)</value>
-  </data>
-  <data name="DestinationVariablenameInvalidCharecters" xml:space="preserve">
-    <value>Destination - Variable name {0} contains invalid character(s)</value>
-  </data>
-  <data name="FileOrFolderEmpty" xml:space="preserve">
-    <value>File or Folder cannot be empty or only white space</value>
-  </data>
-  <data name="FileOrFolderOpeningClosingBracketMismatch" xml:space="preserve">
-    <value>File or Folder - Invalid expression: opening and closing brackets don't match</value>
-  </data>
-  <data name="FileOrFolderRecordsetindexInvalid" xml:space="preserve">
-    <value>File or Folder - Recordset index {0} contains invalid character(s)</value>
-  </data>
-  <data name="FileOrFolderRecordsetIndexInvalidCharecters" xml:space="preserve">
-    <value>File or Folder - Recordset index {0} contains invalid character(s)</value>
-  </data>
-  <data name="FileOrFolderRecordsetnameInvalidCharecters" xml:space="preserve">
-    <value>File or Folder - Recordset name {0} contains invalid character(s)</value>
-  </data>
-  <data name="FileOrFolderVariableInvalidCharecters" xml:space="preserve">
-    <value>File or Folder - Variable name {0} contains invalid character(s)</value>
-  </data>
-  <data name="FileOrFolderVariablenameInvalidCharecters" xml:space="preserve">
-    <value>File or Folder - Variable name [[a&amp;]] contains invalid character(s)</value>
-  </data>
-  <data name="ResultRecordsetInvalidCharecters" xml:space="preserve">
-    <value>Result - Recordset name {0} contains invalid character(s)</value>
-  </data>
-  <data name="UsernameRecordsetnameInvalidCharecters" xml:space="preserve">
-    <value>Username - Recordset name {0} contains invalid character(s)</value>
   </data>
   <data name="CanNotBeEmpty" xml:space="preserve">
     <value>{0} cannot be empty</value>
@@ -290,9 +185,6 @@
   </data>
   <data name="DataSourceEmpty" xml:space="preserve">
     <value>DataSource cannot be empty</value>
-  </data>
-  <data name="DataSourceMustBeJSonOrRecordSet" xml:space="preserve">
-    <value>DataSource must be a Recordset or JSON array variable.</value>
   </data>
   <data name="DecimalsNotValid" xml:space="preserve">
     <value>Decimals to show is not valid</value>
@@ -525,9 +417,6 @@
   <data name="CannotDeleteSystemFiles" xml:space="preserve">
     <value>Not allowed to delete system files/directories. {0}</value>
   </data>
-  <data name="ChannelDisposing" xml:space="preserve">
-    <value>Channel is disposing.</value>
-  </data>
   <data name="CharEnumeratorNotSupported" xml:space="preserve">
     <value>CharEnumerator is not supported for this operation type!</value>
   </data>
@@ -618,38 +507,11 @@
   <data name="AssemblyCreationError" xml:space="preserve">
     <value>Compilation Error Creating Assembly</value>
   </data>
-  <data name="ConvertBackNotSupported" xml:space="preserve">
-    <value>ConvertBack not supported.</value>
-  </data>
-  <data name="ConvertersCollectionContainsNull" xml:space="preserve">
-    <value>The Converters collection of the ValueConverterGroup contains a null reference at index: {0}</value>
-  </data>
-  <data name="ElementBeingDraggedIsNull" xml:space="preserve">
-    <value>ElementBeingDragged is null.</value>
-  </data>
   <data name="GridsplitterOnlyWorksInGrids" xml:space="preserve">
     <value>Gridsplitter only works in grid</value>
   </data>
   <data name="MathConverterAcceptsDoubles" xml:space="preserve">
     <value>Converter only accepts doubles</value>
-  </data>
-  <data name="RegexValidationRuleShouldHaveOneRule" xml:space="preserve">
-    <value>There should not be more than one RegexValidationRule in a Bindings ValidationRules</value>
-  </data>
-  <data name="RegexValidatorUsedWithTexyBoxs" xml:space="preserve">
-    <value>The RegexValidator can only be used with a TextBox.</value>
-  </data>
-  <data name="TargetobjectMustBeUIElement" xml:space="preserve">
-    <value>Target object must be a UIElement.</value>
-  </data>
-  <data name="TexBoxMustBeBoundForRegexValidation" xml:space="preserve">
-    <value>The TextBox's Text property must be bound for the RegexValidator to validate it.</value>
-  </data>
-  <data name="TextBoxTextBindingHasNoParent" xml:space="preserve">
-    <value>Unexpected situation: the TextBox.Text binding expression has no parent binding.</value>
-  </data>
-  <data name="ValueMustBeAnEnum" xml:space="preserve">
-    <value>VALUE must be an enum.</value>
   </data>
   <data name="WebServiceDescriptionInvalid" xml:space="preserve">
     <value>Invalid Web Service Description</value>
@@ -659,12 +521,6 @@
   </data>
   <data name="CalculationManagerIsNull" xml:space="preserve">
     <value>Calculation Manager is currently null</value>
-  </data>
-  <data name="CannotEvaluateEmptyFunction" xml:space="preserve">
-    <value>Unable to evaluate empty function</value>
-  </data>
-  <data name="CannotEvaluateEmptyValueList" xml:space="preserve">
-    <value>Cannot evaluate empty value list</value>
   </data>
   <data name="CannotRemoveNullListOfFunctions" xml:space="preserve">
     <value>Cannot remove null List of functions</value>
@@ -683,9 +539,6 @@
   </data>
   <data name="FunctionEvaluationError" xml:space="preserve">
     <value>Function evaluation Error</value>
-  </data>
-  <data name="MustBeAchildElementOfTheCanvas" xml:space="preserve">
-    <value>Must be a child element of the Canvas.</value>
   </data>
   <data name="NothingToEvaluate" xml:space="preserve">
     <value>Nothing to Evaluate</value>
@@ -762,9 +615,6 @@
   <data name="CouldNotDelete" xml:space="preserve">
     <value>Could not delete {0}. Please check the path exists.</value>
   </data>
-  <data name="CouldnotLocateDataType" xml:space="preserve">
-    <value>could not locate any data of type [ {0} ]</value>
-  </data>
   <data name="FileNotCreated" xml:space="preserve">
     <value>File was not created</value>
   </data>
@@ -786,14 +636,8 @@
   <data name="InvalidScriptingContext" xml:space="preserve">
     <value>Invalid scripting context</value>
   </data>
-  <data name="BinaryOperatorNotSupported" xml:space="preserve">
-    <value>The binary operator '{0}' is not supported</value>
-  </data>
   <data name="CannotBeNull" xml:space="preserve">
     <value>Cannot be null</value>
-  </data>
-  <data name="CannotConvertPaneLocation" xml:space="preserve">
-    <value>Cannot convert PaneLocation to InitialPaneLocation</value>
   </data>
   <data name="CannotDeleteFileWithoutFilename" xml:space="preserve">
     <value>Can't delete a file if no filename is passed.</value>
@@ -816,9 +660,6 @@
   <data name="CanOnlyExecuteWorkflowsFromWebBrowser" xml:space="preserve">
     <value>Can only execute workflows from web browser</value>
   </data>
-  <data name="ConstantNotSupported" xml:space="preserve">
-    <value>The constant for '{0}' is not supported</value>
-  </data>
   <data name="ContainsInvalidCharecters" xml:space="preserve">
     <value>{0} contains invalid characters</value>
   </data>
@@ -827,9 +668,6 @@
   </data>
   <data name="CopyToFailedArrayTooSmall" xml:space="preserve">
     <value>CopyTo() failed:  supplied array was too small</value>
-  </data>
-  <data name="CouldNotCreateWorkflowExecutionWrapper" xml:space="preserve">
-    <value>Internal System Error : Could not create workflow execution wrapper</value>
   </data>
   <data name="CouldNotLocateAssembly" xml:space="preserve">
     <value>Could not locate Assembly [{0}]</value>
@@ -891,9 +729,6 @@
   <data name="InvalidRequestID" xml:space="preserve">
     <value>Invalid RequestID</value>
   </data>
-  <data name="InvalidResourceID" xml:space="preserve">
-    <value>Invalid ResourceID</value>
-  </data>
   <data name="InvalidUrl" xml:space="preserve">
     <value>Invalid URL to execute for logging</value>
   </data>
@@ -918,12 +753,6 @@
   <data name="MalformedService" xml:space="preserve">
     <value>Malformed Service [{0}] it contains multiple actions</value>
   </data>
-  <data name="MemberNotSupported" xml:space="preserve">
-    <value>The member '{0}' is not supported</value>
-  </data>
-  <data name="MethodNotSupported" xml:space="preserve">
-    <value>The method '{0}' is not supported</value>
-  </data>
   <data name="MultipleResourcesFound" xml:space="preserve">
     <value>Multiple Resources found for Resource ID: {0}</value>
   </data>
@@ -935,9 +764,6 @@
   </data>
   <data name="MustBeWholeNumber" xml:space="preserve">
     <value>Must be a whole number</value>
-  </data>
-  <data name="NameAlreadyExists" xml:space="preserve">
-    <value>The name {0} already exists. Please choose a different name.</value>
   </data>
   <data name="NoContractFound" xml:space="preserve">
     <value>No contract found for end point</value>
@@ -978,9 +804,6 @@
   <data name="ResourceNotFound" xml:space="preserve">
     <value>Resource {0} not found</value>
   </data>
-  <data name="ResourcePassedNotWorkflowService" xml:space="preserve">
-    <value>Resource Type passed not WorkflowService</value>
-  </data>
   <data name="ServiceDoesNotExist" xml:space="preserve">
     <value>Service does not exist</value>
   </data>
@@ -996,12 +819,6 @@
   <data name="UnableToContactServer" xml:space="preserve">
     <value>Unable to contact Server</value>
   </data>
-  <data name="UnableToRetrieveDockingManager" xml:space="preserve">
-    <value>Unable to retrieve a docking manager</value>
-  </data>
-  <data name="UnaryOperatorNotSupported" xml:space="preserve">
-    <value>The unary operator '{0}' is not supported</value>
-  </data>
   <data name="UnexpectedPropertyName" xml:space="preserve">
     <value>Unexpected property name encountered</value>
   </data>
@@ -1013,9 +830,6 @@
   </data>
   <data name="VariableIsNull" xml:space="preserve">
     <value>Variable is null</value>
-  </data>
-  <data name="WorkflowNotFound" xml:space="preserve">
-    <value>Workflow not found.</value>
   </data>
   <data name="NoObjectName" xml:space="preserve">
     <value>Please enter an 'Object Name' as 'Is Object' has been selected.</value>
@@ -1131,9 +945,6 @@
   <data name="TypeConflict" xml:space="preserve">
     <value>Compilation Error: There is a {0} with the same name.</value>
   </data>
-  <data name="UnableToLoadInstance" xml:space="preserve">
-    <value>Unable to load instance for key: {0}"</value>
-  </data>
   <data name="ValueNotSupplied" xml:space="preserve">
     <value>{0} value not supplied.</value>
   </data>
@@ -1148,21 +959,6 @@
   </data>
   <data name="CannotDeleteRootPath" xml:space="preserve">
     <value>You may not delete the root path</value>
-  </data>
-  <data name="CannotImplicitlyAddDisconnectedChildren" xml:space="preserve">
-    <value>Disconnected children cannot be explicitly added to this collection while the panel is serving as an items host. However, visual children can be added by simply calling the AddVisualChild method.</value>
-  </data>
-  <data name="CannotPassNullOrEmptyUri" xml:space="preserve">
-    <value>Cannot pass null or empty URI</value>
-  </data>
-  <data name="CannotSetDragAdornerOpacityDuringADrag" xml:space="preserve">
-    <value>Cannot set the DragAdornerOpacity property during a drag operation.</value>
-  </data>
-  <data name="CannotSetListViewPropertyDuringADrag" xml:space="preserve">
-    <value>Cannot set the ListView property during a drag operation.</value>
-  </data>
-  <data name="CannotSetShowDragAdornerDuringADrag" xml:space="preserve">
-    <value>Cannot set the ShowDragAdorner property during a drag operation.</value>
   </data>
   <data name="CannotUpdateAWorkspaceItemFromAnotherWorkspace" xml:space="preserve">
     <value>Cannot update a workspace item from another workspace</value>
@@ -1206,9 +1002,6 @@
   <data name="FailedToRenameResource" xml:space="preserve">
     <value>Failed to Rename Resource</value>
   </data>
-  <data name="FileSpecifiedAlreadyExists" xml:space="preserve">
-    <value>File specified in the output path already exists.</value>
-  </data>
   <data name="InvalidModelDataSent" xml:space="preserve">
     <value>Could not evaluate decision data - Invalid model data sent!</value>
   </data>
@@ -1232,9 +1025,6 @@
   </data>
   <data name="ItemToRenameIsNull" xml:space="preserve">
     <value>Item to rename was null</value>
-  </data>
-  <data name="ListViewManagedByListViewDragManagerMustHaveItsItemsSource" xml:space="preserve">
-    <value>A ListView managed by ListViewDragManager must have its ItemsSource set to an ObservableCollection&lt;ItemType&gt;.</value>
   </data>
   <data name="MalformedExpression" xml:space="preserve">
     <value>An error occurred while parsing '{0}' It appears to be malformed</value>
@@ -1268,9 +1058,6 @@
   </data>
   <data name="OnlyUserResourcesCanBeAdded" xml:space="preserve">
     <value>Only user resources can be added from this repository</value>
-  </data>
-  <data name="OutputPathCanOnlyBeXmlOrZip" xml:space="preserve">
-    <value>The output path can only be to a 'xml' or 'zip' file.</value>
   </data>
   <data name="PermissionsPassedNotValid" xml:space="preserve">
     <value>The permissions passed is not a valid list of permissions. Error: {0}</value>
@@ -1307,9 +1094,6 @@
   </data>
   <data name="UnexpectedValueAtIndex" xml:space="preserve">
     <value>Unexpected value at index {0}.</value>
-  </data>
-  <data name="UnknownConnectionType" xml:space="preserve">
-    <value>Unknown connection type.</value>
   </data>
   <data name="UnrecognisedFormatPart" xml:space="preserve">
     <value>Unrecognised format part {0}.</value>
@@ -1469,9 +1253,6 @@
   </data>
   <data name="IsValidExpressionRuleInvalidCharactersErrorTest" xml:space="preserve">
     <value>Variable name [[res#]] contains invalid character(s)</value>
-  </data>
-  <data name="CalculateIntellisenseProviderParsingMalformedErrorTest" xml:space="preserve">
-    <value>An error occurred while parsing '{0}' It appears to be malformed</value>
   </data>
   <data name="ScheduledResourceInvalidUserPermissionErrorTest" xml:space="preserve">
     <value>This Workflow requires that you have Execute permission on the 'bob' Workflow. 

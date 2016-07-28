@@ -242,6 +242,7 @@
             <TextBlock Grid.Row="0" Grid.Column="0" Text="Batch Size" />
             <ui:IntellisenseTextBox Grid.Row="0"
                                     Grid.Column="1"
+                                    AllowUserInsertLine="False"
                                     DefaultText="[[Rows]]"
                                     Text="{Binding ModelItem.BatchSize, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                     Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
@@ -263,6 +264,7 @@
             <ui:IntellisenseTextBox Grid.Row="0"
                                     Grid.Column="4"
                                     DefaultText="[[Seconds]]"
+                                    AllowUserInsertLine="False"
                                     Text="{Binding ModelItem.Timeout, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                     Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                     ToolTip="{x:Static languages:Core.SqlBulkInsertToolTipTimeout}"
@@ -390,6 +392,7 @@
                                 Grid.ColumnSpan="2"
                                 DefaultText="[[InsertSuccess]]"
                                 WrapInBrackets="True"
+                                AllowUserInsertLine="False"
                                 Margin="{StaticResource ControlBorderTop}"
                                 Text="{Binding ModelItem.Result, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"

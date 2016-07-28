@@ -227,9 +227,6 @@
   &lt;/Recset&gt;
 &lt;/DataList&gt;</value>
   </data>
-  <data name="ResourceDependencyTestJsonReturn" xml:space="preserve">
-    <value>["Bug6619Dep","Bug6619Dep2"]</value>
-  </data>
   <data name="DebugInputWindow_NoInputs_XMLData" xml:space="preserve">
     <value>&lt;DataList&gt;&lt;scalar1 Description="" IsEditable="True" ColumnIODirection="Output" /&gt;&lt;scalar2 Description="" IsEditable="True" ColumnIODirection="Output" /&gt;&lt;Recset Description="" IsEditable="True" ColumnIODirection="None" &gt;&lt;Field1 Description="" IsEditable="True" ColumnIODirection="None" /&gt;&lt;Field2 Description="" IsEditable="True" ColumnIODirection="None" /&gt;&lt;/Recset&gt;&lt;/DataList&gt;</value>
   </data>

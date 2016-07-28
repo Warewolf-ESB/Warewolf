@@ -123,26 +123,11 @@
   <data name="CompareCurrentServerVersion" xml:space="preserve">
     <value>0.0.0.6</value>
   </data>
-  <data name="About_Content" xml:space="preserve">
-    <value>Studio: Version {0}	Server: Version {1}	Software development by: www.dev2.co.za</value>
-  </data>
   <data name="SendErrorReportUrl" xml:space="preserve">
     <value>https://warewolf.userecho.com/api/v2/forums/1/topics.json?access_token=Lc2neiss3Kwc5jBrMcX9nq9v2XfPlRyomaE4bW69</value>
   </data>
-  <data name="About_Description_Header" xml:space="preserve">
-    <value>About Server and Studio</value>
-  </data>
   <data name="DeleteConfirmation" xml:space="preserve">
     <value>Are you sure you want to delete {0}?</value>
-  </data>
-  <data name="DeleteVersionMessage" xml:space="preserve">
-    <value>"Are you sure you want to delete {0}?"</value>
-  </data>
-  <data name="DeleteVersionMessageHeader" xml:space="preserve">
-    <value>Delete Version</value>
-  </data>
-  <data name="DidYouKnow" xml:space="preserve">
-    <value>Did you know?</value>
   </data>
   <data name="GenericConfirmation" xml:space="preserve">
     <value>Are you sure?</value>
@@ -153,53 +138,14 @@
   <data name="VariablesInput_Information_Title" xml:space="preserve">
     <value>Did you know?</value>
   </data>
-  <data name="InvalidTextHeader" xml:space="preserve">
-    <value>"Invalid text"</value>
-  </data>
-  <data name="InvalidTextMessage" xml:space="preserve">
-    <value>"{0} is invalid. Warewolf only supports Latin characters"</value>
-  </data>
   <data name="InvalidPermissionHeader" xml:space="preserve">
     <value>"Invalid text"</value>
-  </data>
-  <data name="InvalidPermissionMessage" xml:space="preserve">
-    <value>"{0} is invalid. Warewolf only supports Latin characters"</value>
-  </data>
-  <data name="RenameConflictDescription" xml:space="preserve">
-    <value>The following task has been renamed {0} -&gt; {1}. You will lose the history for the old task.{2} Would you like to save the new name?{2}-------------------------------------------------------------------" + "Yes - Save with the new name.{2}No - Save with the old name.{2}Cancel - Returns you to Scheduler.</value>
-  </data>
-  <data name="RenameConflictHeader" xml:space="preserve">
-    <value>Rename conflict</value>
   </data>
   <data name="RollbackHeader" xml:space="preserve">
     <value>Make current version</value>
   </data>
   <data name="RollbackMessage" xml:space="preserve">
     <value>{0} will become the current version.{1}Do you want to proceed ?</value>
-  </data>
-  <data name="SaveErrorHeader" xml:space="preserve">
-    <value>Saving Error</value>
-  </data>
-  <data name="SchedulerChangesHeader" xml:space="preserve">
-    <value>Scheduler Task has changes</value>
-  </data>
-  <data name="ServerSourceNotConnected" xml:space="preserve">
-    <value>Server is not connected</value>
-  </data>
-  <data name="ServerSourceNotConnectedSettingsDescription" xml:space="preserve">
-    <value>You cannot change the settings for a server that is offline.</value>
-  </data>
-  <data name="ServerSourceUnreachableErrorHeader" xml:space="preserve">
-    <value>Server is unreachable</value>
-  </data>
-  <data name="ServerSourceUnreachableHeaderMessage" xml:space="preserve">
-    <value>Unable to reach {0}: Connection timed out.{1} Make sure the remote computer is powered on.{1}{1} Would you like to re-try? {1}</value>
-  </data>
-  <data name="SettingsChangedDescription" xml:space="preserve">
-    <value>"Settings have not been saved.{0}Would you like to save the settings? {0}-------------------------------------------------------------------Yes - Save the settings.{0}No - Discard your changes.{0}Cancel - Returns you to settings.</value>
-  </data>
-  <data name="SettingsChangedHeader" xml:space="preserve">
-    <value>Settings have changed</value>
   </data>
   <data name="ServerSourceDialogAddressLabel" xml:space="preserve">
     <value>Address:</value>
@@ -999,9 +945,6 @@ The more information you can provide us with, the faster we can track the issue 
   </data>
   <data name="DatabaseServiceSourceNotSelected" xml:space="preserve">
     <value>Source not selected. This service will not execute.</value>
-  </data>
-  <data name="DatabaseServiceProcedureNotSelected" xml:space="preserve">
-    <value>Procedure not selected. This service will not execute.</value>
   </data>
   <data name="DatabaseServiceExecuteOnline" xml:space="preserve">
     <value>This service will only execute when the server is online.</value>
@@ -2951,5 +2894,50 @@ You can use File System, URI, SFTP, FTP or FTPS format.</value>
   </data>
   <data name="Error_Opening_Windows_Group_Picker" xml:space="preserve">
     <value>An error occured while trying to open the Windows Group Picker dialog. Please ensure that you are part of a Domain to use this feature.</value>
+  </data>
+  <data name="ComPluginServiceEditSourceHelp" xml:space="preserve">
+    <value>ComPluginServiceEditSourceHelp</value>
+  </data>
+  <data name="ComPluginServiceMethodNotSelected" xml:space="preserve">
+    <value>ComPluginServiceMethodNotSelected</value>
+  </data>
+  <data name="ComPluginServiceNewSourceHelp" xml:space="preserve">
+    <value>To create a reference to a new COM object, click New.</value>
+  </data>
+  <data name="ComPluginServiceSourcesHelp" xml:space="preserve">
+    <value>Select the COM DLL you want to use from previously setup sources.</value>
+  </data>
+  <data name="ComPluginSourceClearSearchHelp" xml:space="preserve">
+    <value>Clears the Search Filter</value>
+  </data>
+  <data name="ComPluginSourceDllFullNameHelp" xml:space="preserve">
+    <value>PROGrammatic IDentifier of the COM DLL</value>
+  </data>
+  <data name="ComPluginSourceNewHeaderLabel" xml:space="preserve">
+    <value>New COMPlugin Source</value>
+  </data>
+  <data name="ComPluginSourceRefreshCommandHelp" xml:space="preserve">
+    <value>Refresh the view based on the filter.&lt;br/&gt;	&lt;br/&gt;	Newly added resources should show after a refresh.</value>
+  </data>
+  <data name="ComManagePluginServiceEditSourceTooltip" xml:space="preserve">
+    <value>Edits the selected COM plugin source connection</value>
+  </data>
+  <data name="ComManagePluginServiceNewSourceTooltip" xml:space="preserve">
+    <value>Create a new connection to a COM DLL</value>
+  </data>
+  <data name="ComManagePluginServiceSourcesTooltip" xml:space="preserve">
+    <value>Select the COM plugin you want to use</value>
+  </data>
+  <data name="ComManagePluginSourceAssemblyNameTooltip" xml:space="preserve">
+    <value>The PROGrammatic IDentifier you want to use</value>
+  </data>
+  <data name="ComManagePluginSourceClearSearchTooltip" xml:space="preserve">
+    <value>Clear the filter criteria</value>
+  </data>
+  <data name="ComManagePluginSourceFilterTooltip" xml:space="preserve">
+    <value>Filter for the COM DLL you want </value>
+  </data>
+  <data name="ComManagePluginSourceRefreshTooltip" xml:space="preserve">
+    <value>Refresh the available COM DLL</value>
   </data>
 </root>

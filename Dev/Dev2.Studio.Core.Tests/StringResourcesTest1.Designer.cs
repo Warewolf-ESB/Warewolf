@@ -116,15 +116,6 @@ namespace Dev2.Core.Tests {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to [&quot;Bug6619Dep&quot;,&quot;Bug6619Dep2&quot;].
-        /// </summary>
-        public static string ResourceDependencyTestJsonReturn {
-            get {
-                return ResourceManager.GetString("ResourceDependencyTestJsonReturn", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to &lt;DataList&gt;
         ///	&lt;NUD2347 ColumnIODirection=&quot;Both&quot; Description=&quot;&quot;/&gt;
         ///	&lt;number ColumnIODirection=&quot;Both&quot; Description=&quot;&quot;/&gt;

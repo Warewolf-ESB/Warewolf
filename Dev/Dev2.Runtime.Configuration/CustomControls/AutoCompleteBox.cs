@@ -785,7 +785,6 @@ namespace System.Windows.Controls
             {
                 return;
             }
-
             var text = newItem == null ? SearchText : FormatValue(newItem, true);
 
             // Update the Text property and the TextBox values
@@ -798,10 +797,9 @@ namespace System.Windows.Controls
             }
         }
 
-        public bool CustomSelection { get; set; }
-
         #endregion public object SelectedItem
-
+        
+        public bool CustomSelection { get; set; }
         #region public string Text
         /// <summary>
         /// Gets or sets the text in the text box portion of the

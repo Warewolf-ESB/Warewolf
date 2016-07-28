@@ -45,8 +45,8 @@ namespace Dev2.UI
         {
             FilterMode = AutoCompleteFilterMode.Custom;
             TextFilter = (search, item) => true;
-            CustomSelection = true;
             _toolTip = new ToolTip();
+            CustomSelection = true;
             ItemsSource = IntellisenseResults;
             _desiredResultSet = IntellisenseDesiredResultSet.EntireSet;
             DataObject.AddPastingHandler(this, OnPaste);
@@ -70,6 +70,16 @@ namespace Dev2.UI
         }
 
         public static readonly RoutedEvent TabInsertedEvent = EventManager.RegisterRoutedEvent("TabInserted", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(IntellisenseTextBox));
+
+        protected override void OnPreviewMouseLeftButtonDown(MouseButtonEventArgs e)
+        {
+            base.OnPreviewMouseLeftButtonDown(e);
+            var originalSource = e.OriginalSource as TextBlock;
+            if (originalSource != null)
+            {
+                InsertItem(originalSource.Text, true);
+            }
+        }
 
         protected override void OnPreviewKeyDown(KeyEventArgs e)
         {
@@ -734,10 +744,7 @@ namespace Dev2.UI
         {
             var box = sender as IntellisenseTextBox;
 
-            if (box != null)
-            {
-                box.OnIsInCalculateModeChanged((bool)args.OldValue, (bool)args.NewValue);
-            }
+            box?.OnIsInCalculateModeChanged((bool)args.OldValue, (bool)args.NewValue);
         }
 
         public static readonly DependencyProperty AllowMultipleVariablesProperty = DependencyProperty.Register("AllowMultipleVariables", typeof(bool), typeof(IntellisenseTextBox), new UIPropertyMetadata(false));
@@ -854,7 +861,7 @@ namespace Dev2.UI
         void LostFocusImpl()
         {
             ExecWrapBrackets();
-            CloseDropDown(true, false);
+            //CloseDropDown(true, false);
             BindingExpression be = BindingOperations.GetBindingExpression(this, TextProperty);
             be?.UpdateSource();
         }
@@ -863,7 +870,7 @@ namespace Dev2.UI
         {
             if (IsDropDownOpen && !IsKeyboardFocusWithin)
             {
-                CloseDropDown(true, false);
+               // CloseDropDown(true, false);
             }
 
             if (WrapInBrackets && !string.IsNullOrWhiteSpace(Text))
