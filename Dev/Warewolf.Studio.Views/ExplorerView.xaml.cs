@@ -289,7 +289,11 @@ namespace Warewolf.Studio.Views
 
             if (destination != null && source != null)
             {
-                if (!ValidateDragDrop(source, destination))
+                if (Equals(source.Parent, destination))
+                {
+                    SetDropNotAllowedStyle(e);
+                }
+                else if (!ValidateDragDrop(source, destination))
                 {
                     SetDropAllowedStyle(e);
                     ClearException(e);
@@ -315,7 +319,11 @@ namespace Warewolf.Studio.Views
             {
                 IEnvironmentViewModel vmDestination = GetEnv(destination);
 
-                if (!ValidateDragDrop(source, vmDestination) && destination.IsFolder)
+                if (Equals(source.Parent, destination))
+                {
+                    SetDropNotAllowedStyle(e);
+                }
+                else if (!ValidateDragDrop(source, vmDestination) && destination.IsFolder)
                 {
                     SetDropAllowedStyle(e);
                     ClearException(e);
