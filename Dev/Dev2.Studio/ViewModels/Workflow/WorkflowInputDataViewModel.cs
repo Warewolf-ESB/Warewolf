@@ -140,6 +140,12 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
         }
 
+        public void ViewClosed()
+        {
+            if (!CloseRequested)
+                SendFinishedMessage();
+        }
+
         /// <summary>
         /// Int that contains the count of variables marked as inputs
         /// </summary>
