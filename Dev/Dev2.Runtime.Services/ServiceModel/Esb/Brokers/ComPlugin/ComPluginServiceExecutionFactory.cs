@@ -52,11 +52,11 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.ComPlugin
         }
 
 
-        public static ServiceMethodList GetMethods(string classId)
+        public static ServiceMethodList GetMethods(string classId,bool is32Bit)
         {
             using (var runtime = CreateInvokeAppDomain())
             {
-                return runtime.Value.ListMethods(classId);
+                return runtime.Value.ListMethods(classId, is32Bit);
             }           
          
         }
