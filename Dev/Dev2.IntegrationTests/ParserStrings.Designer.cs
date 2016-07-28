@@ -61,47 +61,11 @@ namespace Dev2.Integration.Tests {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to I73573r0.
-        /// </summary>
-        internal static string PathOperations_Correct_Password {
-            get {
-                return ResourceManager.GetString("PathOperations_Correct_Password", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to IntegrationTester.
-        /// </summary>
-        internal static string PathOperations_Correct_Username {
-            get {
-                return ResourceManager.GetString("PathOperations_Correct_Username", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to C:\Users\Massimo.Guerrera\Desktop\File_Tools_ActivityNames.txt.
         /// </summary>
         internal static string PathOperations_FileSystem_Path {
             get {
                 return ResourceManager.GetString("PathOperations_FileSystem_Path", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to ftp://rsaklfsvrsbspdc:1002/.
-        /// </summary>
-        internal static string PathOperations_FTP_Auth {
-            get {
-                return ResourceManager.GetString("PathOperations_FTP_Auth", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to ftp://rsaklfsvrsbspdc:1001/.
-        /// </summary>
-        internal static string PathOperations_FTP_NoAuth {
-            get {
-                return ResourceManager.GetString("PathOperations_FTP_NoAuth", resourceCulture);
             }
         }
         
