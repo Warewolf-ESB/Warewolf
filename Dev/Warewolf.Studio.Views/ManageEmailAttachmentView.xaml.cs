@@ -9,8 +9,10 @@
 */
 
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Media;
 using Dev2;
 using Dev2.Common.Interfaces;
@@ -25,7 +27,6 @@ namespace Warewolf.Studio.Views
     public partial class ManageEmailAttachmentView : IEmailAttachmentView
     {
         readonly Grid _blackoutGrid = new Grid();
-        Window _window;
 
         public ManageEmailAttachmentView()
         {
@@ -34,21 +35,27 @@ namespace Warewolf.Studio.Views
 
         public void ShowView(IList<string> attachments)
         {
-            IsModal = true;
             PopupViewManageEffects.AddBlackOutEffect(_blackoutGrid);
-
-            _window = new Window { WindowStyle = WindowStyle.None, AllowsTransparency = true, Background = Brushes.Transparent, SizeToContent = SizeToContent.Manual, MinWidth = 640, MinHeight = 480, ResizeMode = ResizeMode.CanResize, WindowStartupLocation = WindowStartupLocation.CenterScreen, Content = this };
-            
             var server = CustomContainer.Get<IServer>();
             var vm = new EmailAttachmentVm(attachments, new EmailAttachmentModel(server.QueryProxy), RequestClose);
-            _window.DataContext = vm;
-            _window.ShowDialog();
+            DataContext = vm;
+            ShowDialog();
         }
 
-        void RequestClose()
+        public void RequestClose()
+        {
+            Close();
+        }
+
+        private void ManageEmailAttachmentView_OnClosing(object sender, CancelEventArgs e)
         {
             PopupViewManageEffects.RemoveBlackOutEffect(_blackoutGrid);
-            _window.Close();
+        }
+
+        private void ManageEmailAttachmentView_OnMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.ChangedButton == MouseButton.Left)
+                DragMove();
         }
     }
 }
