@@ -18,6 +18,7 @@ namespace Warewolf.UITests.Tools.Data
             Uimap.Click_Debug_Ribbon_Button();
             Uimap.Click_DebugInput_DebugButton();
             Uimap.WaitForSpinner(Uimap.MainStudioWindow.DockManager.SplitPaneRight.DebugOutput.StatusBar.Spinner);
+            Uimap.Click_Debug_Output_BaseConvert_Cell();
         }
 
         #region Additional test attributes
@@ -34,14 +35,8 @@ namespace Warewolf.UITests.Tools.Data
         [TestCleanup]
         public void MyTestCleanup()
         {
-            try
-            {
-                Uimap.CleanupABlankWorkflow();
-            }
-            catch(Exception e)
-            {
-                Console.WriteLine("Exception during test cleanup: " + e.Message);
-            }
+            Uimap.CleanupABlankWorkflow();
+            Uimap.TryCloseHangingDebugInputDialog();
         }
         
         public TestContext TestContext

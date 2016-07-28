@@ -17,6 +17,7 @@ namespace Warewolf.UITests.Tools.Utility
             Uimap.Click_Debug_Ribbon_Button();
             Uimap.Click_DebugInput_DebugButton();
             Uimap.WaitForSpinner(Uimap.MainStudioWindow.DockManager.SplitPaneRight.DebugOutput.StatusBar.Spinner);
+            Uimap.Click_Debug_Output_Calculate_Cell();
         }
 
         #region Additional test attributes
@@ -34,6 +35,7 @@ namespace Warewolf.UITests.Tools.Utility
         public void MyTestCleanup()
         {
             Uimap.CleanupABlankWorkflow();
+            Uimap.TryCloseHangingDebugInputDialog();
         }
 
         public TestContext TestContext

@@ -6992,6 +6992,22 @@ namespace Warewolf.UITests
         
         private ServicePickerDialog mServicePickerDialog;
         #endregion
+
+        public void Click_Debug_Output_BaseConvert_Cell()
+        {
+        }
+
+        public void Click_Debug_Output_Calculate_Cell()
+        {
+        }
+
+        public void Click_Debug_Output_Workflow1_Name()
+        {
+        }
+
+        public void Click_Debug_Output_Assign_Cell()
+        {
+        }
     }
     
     /// <summary>
