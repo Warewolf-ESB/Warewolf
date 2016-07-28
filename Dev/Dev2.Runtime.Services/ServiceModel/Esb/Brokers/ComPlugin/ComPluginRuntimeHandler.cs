@@ -187,8 +187,6 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.ComPlugin
             classId = classId.Replace("{", "").Replace("}","");
             var type = GetType(classId);
             if (type == null) return new ServiceMethodList();
-            var instance = Activator.CreateInstance(type) as System.Runtime.InteropServices.ComTypes.IPersistFile;
-            var methods = instance?.GetType().GetMethods();
             
             var methodInfos = type.GetMethods();
 

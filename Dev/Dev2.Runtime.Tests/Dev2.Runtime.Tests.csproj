@@ -212,6 +212,7 @@
     <Compile Include="Plugins\DllExtractor.cs" />
     <Compile Include="ResourceUpgraders\BaseUpgradeConvertorTests.cs" />
     <Compile Include="ResourceUpgraders\EncryptionResourceUpgraderTests.cs" />
+    <Compile Include="ServiceModel\ComPluginServicesTest.cs" />
     <Compile Include="ServiceModel\Data\ComPluginSourceTests.cs" />
     <Compile Include="ServiceModel\Data\DropBoxSourceTests.cs" />
     <Compile Include="ServiceModel\Data\ExchangeSourceTests.cs" />
@@ -461,6 +462,7 @@
     <EmbeddedResource Include="Json\PrimitivePluginReturningPlainString.json" />
     <EmbeddedResource Include="Json\PrimitivePluginReturningXmlString.json" />
     <EmbeddedResource Include="Json\PrimitivePluginReturningJsonString.json" />
+    <EmbeddedResource Include="Json\ComPrimitivePluginReturningJsonString.json" />
     <None Include="packages.config" />
     <EmbeddedResource Include="Security\secure.config" />
     <None Include="XML\ReadMe.txt" />
@@ -618,6 +620,7 @@
     <Content Include="XML\GenDev.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <EmbeddedResource Include="XML\ComPluginService.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
