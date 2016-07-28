@@ -138,6 +138,7 @@
                             <ui:IntellisenseTextBox MaxHeight="52"
                                                     Padding="3"
                                                     Margin="0,0,1,1"
+                                                    AllowUserInsertLine="False"
                                                     WrapInBrackets="False"
                                                     DefaultText="XPath" 
                                                     Text="{Binding XPath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"

@@ -142,6 +142,7 @@
                                 Grid.Row="4"
                                 DefaultText="[[Difference]]"
                                 Margin="{StaticResource ControlBorderTop}"
+                                AllowUserInsertLine="False"
                                 FilterType="All"
                                 WrapInBrackets="True"
                                 ToolTip="{x:Static languages:Core.DateTimeDifferenceToolTipResult}"
