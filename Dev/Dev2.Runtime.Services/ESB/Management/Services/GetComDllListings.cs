@@ -90,7 +90,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                     regClis.Close();
                 }
 
-                dllListings = dllListings.OrderBy(listing => listing.Is32Bit).ToList();
+                dllListings = dllListings.OrderBy(listing => listing.FullName).ToList();
                 msg.Message = serializer.SerializeToBuilder(dllListings);
             }
 

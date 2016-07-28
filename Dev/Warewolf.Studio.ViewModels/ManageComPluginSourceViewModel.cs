@@ -1,5 +1,5 @@
 using System;
-using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
@@ -10,6 +10,7 @@ using Dev2.Common.Interfaces.Core;
 using Dev2.Common.Interfaces.SaveDialog;
 using Dev2.Common.Interfaces.Threading;
 using Dev2.Interfaces;
+using Microsoft.Practices.ObjectBuilder2;
 using Microsoft.Practices.Prism.Commands;
 using Microsoft.Practices.Prism.PubSubEvents;
 using Warewolf.Studio.Core;
@@ -25,7 +26,7 @@ namespace Warewolf.Studio.ViewModels
         readonly string _warewolfserverName;
         string _headerText;
         private bool _isDisposed;
-        List<IDllListingModel> _dllListings;
+        ObservableCollection<IDllListingModel> _dllListings;
         bool _isLoading;
         string _searchTerm;
         private IDllListingModel _gacItem;
@@ -86,7 +87,7 @@ namespace Warewolf.Studio.ViewModels
 
                 DispatcherAction.Invoke(() =>
                 {
-                    DllListings = new List<IDllListingModel>(names);
+                    _dllListings = new AsyncObservableCollection<IDllListingModel>(names);
                     IsLoading = false;
                     if (DllListings != null && DllListings.Count > 1)
                     {
@@ -141,19 +142,32 @@ namespace Warewolf.Studio.ViewModels
 
         void PerformSearch(string searchTerm)
         {
-            if (DllListings != null)
+            if (_dllListings != null)
             {
-                foreach (var dllListingModel in DllListings)
+                if (string.IsNullOrEmpty(searchTerm))
                 {
-                    dllListingModel.Filter(searchTerm);
+                    _dllListings.ForEach(model => model.IsVisible=true);
                 }
-                OnPropertyChanged(() => DllListings);
+                else
+                {
+                    foreach(var dllListingModel in _dllListings)
+                    {
+                        if (dllListingModel.Name.ToLowerInvariant().Contains(searchTerm.ToLowerInvariant()))
+                        {
+                            dllListingModel.IsVisible = true;
+                        }else
+                        {
+                            dllListingModel.IsVisible = false;
+                        }
+                    }
+                }
+                DllListings = new AsyncObservableCollection<IDllListingModel>(_dllListings);
             }
         }
 
         public ICommand CancelCommand { get; set; }
         public Action CloseAction { get; set; }
-        public List<IDllListingModel> DllListings
+        public ObservableCollection<IDllListingModel> DllListings
         {
             get
             {
@@ -221,10 +235,13 @@ namespace Warewolf.Studio.ViewModels
             var selectedDll = pluginSource;
             if (selectedDll != null)
             {
-                var dllListingModel = DllListings.Find(model => model.ClsId == pluginSource.ClsId || model.Is32Bit == pluginSource.Is32Bit);
-                dllListingModel.IsExpanded = true;
-                SelectedDll = dllListingModel;
-                dllListingModel.IsSelected = true;
+                var dllListingModel = DllListings.FirstOrDefault(model => model.ClsId == pluginSource.ClsId || model.Is32Bit == pluginSource.Is32Bit);
+                if(dllListingModel != null)
+                {
+                    dllListingModel.IsExpanded = true;
+                    SelectedDll = dllListingModel;
+                    dllListingModel.IsSelected = true;
+                }
             }
 
             Name = _pluginSource.Name;
@@ -260,6 +277,7 @@ namespace Warewolf.Studio.ViewModels
                 {
                     ClsId = SelectedDll.ClsId;
                     Is32Bit = SelectedDll.Is32Bit;
+                    AssemblyName = SelectedDll.FullName;
                     SelectedDll.IsExpanded = true;
                 }
                 ViewModelUtils.RaiseCanExecuteChanged(OkCommand);

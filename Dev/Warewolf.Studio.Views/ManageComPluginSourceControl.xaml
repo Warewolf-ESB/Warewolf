@@ -12,6 +12,7 @@
              xmlns:ig="http://schemas.infragistics.com/xaml"
              xmlns:interfaces="clr-namespace:Dev2.Common.Interfaces;assembly=Dev2.Common.Interfaces"
              xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna;assembly=Warewolf.Studio.Themes.Luna"
+             xmlns:converters="clr-namespace:Dev2.CustomControls.Converters;assembly=Dev2.Studio.Core"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300"
              d:DataContext="{d:DesignInstance Type=interfaces:IManageComPluginSourceViewModel, IsDesignTimeCreatable=False}">
@@ -21,7 +22,7 @@
             <ResourceDictionary.MergedDictionaries>
               <luna:SharedResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Theme.xaml"/>
             </ResourceDictionary.MergedDictionaries>
-            <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+            <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverterPositive" TrueValue="Visible" FalseValue="Collapsed" />
             <views:NotConverter x:Key="NotConverter" />
         </ResourceDictionary>
     </UserControl.Resources>
@@ -126,11 +127,9 @@
                                         ActiveDataItem="{Binding SelectedDll, Mode=TwoWay}"
                                         ItemsSource="{Binding DllListings}"
                                         IsSelectedMemberPath="IsSelected"
-                                        DisplayMemberPath="FullName"
+                                        DisplayMemberPath="AssemblyName"
                                         IsExpandedMemberPath="IsExpanded"
-                                        EnsureNodeExpansion="True"
-                                        Loaded="ExplorerTree_OnLoaded"
-                             
+                                        EnsureNodeExpansion="True"                                        
                                         NodeLineVisibility="Hidden" >
                             <ig:XamDataTree.EditingSettings>
                                 <ig:TreeEditingSettings AllowDeletion="False"
@@ -141,15 +140,17 @@
                                         IsOnNodeActiveEditingEnabled="False"/>
                             </ig:XamDataTree.EditingSettings>
                             <ig:XamDataTree.GlobalNodeLayouts>
-                                <ig:NodeLayout Key="Children"
-                                               DisplayMemberPath="FullName"
+                                <ig:NodeLayout Key="DllListings"
+                                               TargetTypeName="IDllListingModel"
+                                               DisplayMemberPath="AssemblyName"
                                                IsExpandedMemberPath="IsExpanded"
                                                IsSelectedMemberPath="IsSelected"
-                                               Visibility="{Binding Path=Data.IsVisible, Converter={StaticResource BoolToVisibilityConverter}}">
+                                               Visibility="{Binding Path=Node.IsVisible, Converter={StaticResource BoolToVisibilityConverterPositive}}"
+                                               >
                                     <ig:NodeLayout.ItemTemplate>
                                         <DataTemplate>
                                             <!-- ADD NEW GRID LAYOUT TO ALIGN DATA TREE ITEMS -->
-                                            <Grid>
+                                            <Grid >
                                                 <Grid.ColumnDefinitions>
                                                     <ColumnDefinition Width="*"/>
                                                 </Grid.ColumnDefinitions>
@@ -157,12 +158,13 @@
                                                 <!-- ADD TEXT TRIMMING TO DISPLAY ECLIPSE ON VIEW WIDTH SETTING -->
                                                 <TextBlock x:Name="ResourceNameTextBlock"
                                                            MinWidth="5"
-                                                           Height="20"
+                                                           Height="20"                                                           
                                                            Focusable="True"
+                                                           Visibility="{Binding Path=Data.IsVisible, Converter={StaticResource BoolToVisibilityConverterPositive}}"
                                                            TextTrimming="CharacterEllipsis"
                                                            VerticalAlignment="Center"
                                                            HorizontalAlignment="Stretch"
-                                                           Text="{Binding Path=Data.Name}">
+                                                           Text="{Binding Path=Data.FullName}">
                                                 </TextBlock>
                                             </Grid>
                                         </DataTemplate>
@@ -182,7 +184,7 @@
                              
                              Grid.Column="1" 
                              ToolTip="{x:Static languages:Core.ComManagePluginSourceAssemblyNameTooltip}"
-                             Text="{Binding ProgId, UpdateSourceTrigger=PropertyChanged}">
+                             Text="{Binding AssemblyName, UpdateSourceTrigger=PropertyChanged}">
                         <i:Interaction.Behaviors>
                             <core:HelpSetter Text="{x:Static languages:Core.ComPluginSourceDllFullNameHelp}" DataContext="{Binding}" />
                         </i:Interaction.Behaviors>

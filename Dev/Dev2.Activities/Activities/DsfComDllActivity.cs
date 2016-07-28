@@ -13,6 +13,7 @@ using Unlimited.Framework.Converters.Graph;
 using Warewolf.Core;
 using Warewolf.Resource.Errors;
 using Warewolf.Storage;
+// ReSharper disable NonLocalizedString
 
 // ReSharper disable MemberCanBePrivate.Global
 // ReSharper disable UnusedAutoPropertyAccessor.Global
@@ -24,7 +25,6 @@ namespace Dev2.Activities
     {
         public IPluginAction Method { get; set; }
         public INamespaceItem Namespace { get; set; }
-        public IComPluginSource SelectedSource { get; set; }
         public IOutputDescription OutputDescription { get; set; }
 
         public DsfComDllActivity()
@@ -36,12 +36,7 @@ namespace Dev2.Activities
 
         protected override void ExecutionImpl(IEsbChannel esbChannel, IDSFDataObject dataObject, string inputs, string outputs, out ErrorResultTO errors, int update)
         {
-            errors = new ErrorResultTO();
-            if (SelectedSource == null)
-            {
-                errors.AddError(ErrorResource.NoNamespaceSelected);
-                return;
-            }
+            errors = new ErrorResultTO();           
             if (Method == null)
             {
                 errors.AddError(ErrorResource.NoMethodSelected);
@@ -49,66 +44,78 @@ namespace Dev2.Activities
             }
 
                 
-            ExecuteService(update, out errors, Method, Namespace, dataObject);
+            ExecuteService(update, out errors, Method, dataObject);
         }
 
-        protected void ExecuteService(int update, out ErrorResultTO errors, IPluginAction method, INamespaceItem namespaceItem, IDSFDataObject dataObject)
+        protected void ExecuteService(int update, out ErrorResultTO errors, IPluginAction method, IDSFDataObject dataObject)
         {
             errors = new ErrorResultTO();
             var itrs = new List<IWarewolfIterator>(5);
             IWarewolfListIterator itrCollection = new WarewolfListIterator();
+            var source = ResourceCatalog.GetResource<ComPluginSource>(dataObject.WorkspaceID, SourceId);
             var methodParameters = Inputs.Select(a => new MethodParameter { EmptyToNull = a.EmptyIsNull, IsRequired = a.RequiredField, Name = a.Name, Value = a.Value, TypeName = a.TypeName }).ToList();
             BuildParameterIterators(update, methodParameters.ToList(), itrCollection, itrs, dataObject);
             var args = new ComPluginInvokeArgs
             {
-                ClsId = SelectedSource.ClsId,
-                Is32Bit = SelectedSource.Is32Bit,
-                AssemblyName = Namespace.AssemblyName,
-                Fullname = namespaceItem.FullName,
+                ClsId = source.ClsId,
+                Is32Bit = source.Is32Bit,
                 Method = method.Method,
+                AssemblyName = Namespace?.AssemblyName,                
                 Parameters = methodParameters
             };
 
             try
             {
-                while (itrCollection.HasMoreData())
+                if (Inputs == null || Inputs.Count == 0)
                 {
-                    int pos = 0;
-                    foreach (var itr in itrs)
+                    PerfromExecution(update, dataObject, args);
+                }
+                else
+                {
+                    while (itrCollection.HasMoreData())
                     {
-                        string injectVal = itrCollection.FetchNextValue(itr);
-                        var param = methodParameters.ToList()[pos];
-
-
-                        param.Value = param.EmptyToNull &&
-                                      (injectVal == null ||
-                                       string.Compare(injectVal, string.Empty,
-                                           StringComparison.InvariantCultureIgnoreCase) == 0)
-                            ? null
-                            : injectVal;
-
-                        pos++;
-                    }                    
-                    if (!IsObject)
-                    {
-                        int i = 0;
-                        foreach (var serviceOutputMapping in Outputs)
+                        int pos = 0;
+                        foreach (var itr in itrs)
                         {
-                            OutputDescription.DataSourceShapes[0].Paths[i].OutputExpression = DataListUtil.AddBracketsToValueIfNotExist(serviceOutputMapping.MappedTo);
-                            i++;
+                            string injectVal = itrCollection.FetchNextValue(itr);
+                            var param = methodParameters.ToList()[pos];
+
+
+                            param.Value = param.EmptyToNull &&
+                                          (injectVal == null ||
+                                           string.Compare(injectVal, string.Empty,
+                                               StringComparison.InvariantCultureIgnoreCase) == 0)
+                                ? null
+                                : injectVal;
+
+                            pos++;
                         }
-                        var outputFormatter = OutputFormatterFactory.CreateOutputFormatter(OutputDescription);
-                        args.OutputFormatter = outputFormatter;
+                        PerfromExecution(update, dataObject, args);
                     }
-                    var result = ComPluginServiceExecutionFactory.InvokeComPlugin(args).ToString();
-                    ResponseManager = new ResponseManager { OutputDescription = OutputDescription, Outputs = Outputs, IsObject = IsObject, ObjectName = ObjectName };
-                    ResponseManager.PushResponseIntoEnvironment(result, update, dataObject,false);
                 }
             }
             catch (Exception e)
             {
                 errors.AddError(e.Message);
             }
+        }
+
+        private void PerfromExecution(int update, IDSFDataObject dataObject, ComPluginInvokeArgs args)
+        {
+            if(!IsObject)
+            {
+                int i = 0;
+                foreach(var serviceOutputMapping in Outputs)
+                {
+                    OutputDescription.DataSourceShapes[0].Paths[i].OutputExpression = DataListUtil.AddBracketsToValueIfNotExist(serviceOutputMapping.MappedTo);
+                    i++;
+                }
+                var outputFormatter = OutputFormatterFactory.CreateOutputFormatter(OutputDescription);
+                args.OutputFormatter = outputFormatter;
+            }
+            var result = ComPluginServiceExecutionFactory.InvokeComPlugin(args).ToString();
+            ResponseManager = new ResponseManager { OutputDescription = OutputDescription, Outputs = Outputs, IsObject = IsObject, ObjectName = ObjectName };
+            ResponseManager.PushResponseIntoEnvironment(result, update, dataObject, false);
         }
 
         public IResponseManager ResponseManager { get; set; }
