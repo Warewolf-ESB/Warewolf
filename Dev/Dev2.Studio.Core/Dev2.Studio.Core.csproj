@@ -292,11 +292,6 @@
     <Compile Include="Models\DataList\ScalarItemModel.cs" />
     <Compile Include="Network\ServerProxyWithoutChunking.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ResolveExampleResourceNames.Designer.cs">
-      <DependentUpon>ResolveExampleResourceNames.resx</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
     <Compile Include="CustomControls\CachingContentHost.cs" />
     <Compile Include="DataList\ActivityDataMappingBuilder.cs" />
     <Compile Include="DataList\DataListViewModel.cs" />
@@ -413,11 +408,6 @@
     <Compile Include="Network\ServiceProxy.cs" />
     <Compile Include="Network\WebServer.cs" />
     <Compile Include="OptomizedObservableCollection.cs" />
-    <Compile Include="ResolveExampleResource.Designer.cs">
-      <DependentUpon>ResolveExampleResource.resx</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
     <Compile Include="Security\ClientAuthorizationService.cs" />
     <Compile Include="Security\ClientSecurityService.cs" />
     <Compile Include="Security\AuthorizeCommand.cs" />
@@ -478,14 +468,6 @@
     <None Include="SignalR.txt" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="ResolveExampleResourceNames.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>ResolveExampleResourceNames.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ResolveExampleResource.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>ResolveExampleResource.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
     <EmbeddedResource Include="StringResources.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>StringResources1.Designer.cs</LastGenOutput>

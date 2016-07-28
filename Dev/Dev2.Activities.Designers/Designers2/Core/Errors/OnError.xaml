@@ -47,6 +47,7 @@
             <ui:IntellisenseTextBox Grid.Row="0"
                                     Grid.Column="1"
                                     x:Name="ErrorVariable"
+                                    AllowUserInsertLine="False"
                                     DefaultText="[[Errors().Message]]"
                                     WrapInBrackets="True"
                                     Text="{Binding ModelItem.OnErrorVariable, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -67,6 +68,7 @@
             <TextBlock Grid.Row="1" Grid.Column="0" Text="Call this web service" Margin="{StaticResource ControlBorderTop}" />
             <ui:IntellisenseTextBox Grid.Row="1"
                                     Grid.Column="1"
+                                    AllowUserInsertLine="False"
                                     Margin="{StaticResource ControlBorderTop}"
                                     DefaultText="http://lcl:3142/services/err"
                                     Text="{Binding ModelItem.OnErrorWorkflow, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"

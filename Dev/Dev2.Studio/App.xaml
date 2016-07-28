@@ -11,8 +11,8 @@
                 <luna:SharedResourceDictionary Source="pack://application:,,,/Warewolf Studio;component/Resources/Converters.xaml" />
                 <luna:SharedResourceDictionary Source="pack://application:,,,/Warewolf Studio;component/Themes/DataTemplates.xaml" />
                 <luna:SharedResourceDictionary Source="pack://application:,,,/Warewolf Studio;component/Resources/ResourceDictionary.xaml"/>
-                <luna:SharedResourceDictionary Source="pack://application:,,,/Warewolf.Studio.Themes.Luna;component/Theme.xaml"></luna:SharedResourceDictionary>
-                <luna:SharedResourceDictionary Source="pack://application:,,,/Warewolf.Studio.Themes.Luna;component/Images.xaml"></luna:SharedResourceDictionary>
+                <luna:SharedResourceDictionary Source="pack://application:,,,/Warewolf.Studio.Themes.Luna;component/Theme.xaml"/>
+                <luna:SharedResourceDictionary Source="pack://application:,,,/Warewolf.Studio.Themes.Luna;component/Images.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

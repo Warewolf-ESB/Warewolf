@@ -550,14 +550,6 @@ namespace Dev2.Studio.ViewModels
             splashView.Show(true);
         }
 
-        // ReSharper disable once InconsistentNaming
-
-        public string OpenPasteWindow(string current)
-        {
-            var pasteView = new ManageWebservicePasteView();
-            return pasteView.ShowView(current);
-        }
-
         public IServer LocalhostServer => CustomContainer.Get<IServer>();
 
         public void SetActiveEnvironment(Guid environmentId)
