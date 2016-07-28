@@ -11,6 +11,7 @@
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using Dev2.Dialogs;
 using Warewolf.Studio.Core;
 
@@ -33,6 +34,12 @@ namespace Dev2.Studio.Views.Workflow
         void DsfActivityDropWindow_OnClosing(object sender, CancelEventArgs e)
         {
             PopupViewManageEffects.RemoveBlackOutEffect(_blackoutGrid);
+        }
+
+        private void DsfActivityDropWindow_OnMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.ChangedButton == MouseButton.Left)
+                DragMove();
         }
     }
 }
