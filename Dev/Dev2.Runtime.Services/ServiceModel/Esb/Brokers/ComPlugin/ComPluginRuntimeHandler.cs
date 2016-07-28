@@ -88,7 +88,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.ComPlugin
             var typeList = BuildTypeList(setupInfo.Parameters);
             if (!string.IsNullOrEmpty(setupInfo.ClsId))
             {
-                var type = GetType(setupInfo.ClsId);
+                var type = GetType(setupInfo.ClsId, setupInfo.Is32Bit);
                 var valuedTypeList = new List<object>();
                 foreach (var methodParameter in setupInfo.Parameters)
                 {
@@ -136,12 +136,13 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.ComPlugin
         /// Lists the namespaces.
         /// </summary>
         /// <param name="classId">The assembly location.</param>
+        /// <param name="is32Bit"></param>
         /// <returns></returns>
-        public List<string> ListNamespaces(string classId)
+        public List<string> ListNamespaces(string classId, bool is32Bit)
         {
             try
             {
-                var type = GetType(classId);
+                var type = GetType(classId,is32Bit);
                 var loadedAssembly = type.Assembly;
                 // ensure we flush out the rubbish that GAC brings ;)
                 var namespaces = loadedAssembly.GetTypes()
@@ -161,13 +162,13 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.ComPlugin
             }
         }
 
-        private Type GetType(string classId)
+        private Type GetType(string classId, bool is32Bit)
         {
             Guid clasID;
             Guid.TryParse(classId, out clasID);
             var is64BitProcess = Environment.Is64BitProcess;
             Type type;
-            if (is64BitProcess)
+            if (is64BitProcess && is32Bit)
             {
                 using (Client client = new Client())
                 {
@@ -181,11 +182,11 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.ComPlugin
             }
             return string.IsNullOrEmpty(classId) ? null : type;
         }
-        public ServiceMethodList ListMethods(string classId)
+        public ServiceMethodList ListMethods(string classId,bool is32Bit)
         {
             var serviceMethodList = new ServiceMethodList();
             classId = classId.Replace("{", "").Replace("}","");
-            var type = GetType(classId);
+            var type = GetType(classId, is32Bit);
             if (type == null) return new ServiceMethodList();
             var instance = Activator.CreateInstance(type) as System.Runtime.InteropServices.ComTypes.IPersistFile;
             var methods = instance?.GetType().GetMethods();
@@ -220,7 +221,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.ComPlugin
         /// <returns></returns>
         public NamespaceList FetchNamespaceListObject(ComPluginSource pluginSource)
         {
-            var interrogatePlugin = ReadNamespaces(pluginSource.ClsId);
+            var interrogatePlugin = ReadNamespaces(pluginSource.ClsId,pluginSource.Is32Bit);
             var namespacelist = new NamespaceList();
             namespacelist.AddRange(interrogatePlugin);
             return namespacelist;
@@ -251,13 +252,14 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.ComPlugin
         /// Reads the namespaces.
         /// </summary>
         /// <param name="clsId">The assembly location.</param>
+        /// <param name="is32Bit"></param>
         /// <returns></returns>
-        private IEnumerable<NamespaceItem> ReadNamespaces(string clsId)
+        private IEnumerable<NamespaceItem> ReadNamespaces(string clsId, bool is32Bit)
         {
             try
             {
                 var result = new List<NamespaceItem>();
-                var list = ListNamespaces(clsId);
+                var list = ListNamespaces(clsId,is32Bit);
                 list.ForEach(fullName =>
                     result.Add(new NamespaceItem
                     {

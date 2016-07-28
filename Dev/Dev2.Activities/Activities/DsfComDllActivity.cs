@@ -62,7 +62,7 @@ namespace Dev2.Activities
             var args = new ComPluginInvokeArgs
             {
                 ClsId = SelectedSource.ClsId,
-                ProgId = SelectedSource.ProgId,
+                Is32Bit = SelectedSource.Is32Bit,
                 AssemblyName = Namespace.AssemblyName,
                 Fullname = namespaceItem.FullName,
                 Method = method.Method,

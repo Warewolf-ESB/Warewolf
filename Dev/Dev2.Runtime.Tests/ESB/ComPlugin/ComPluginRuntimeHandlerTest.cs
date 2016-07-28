@@ -101,7 +101,7 @@ namespace Dev2.Tests.Runtime.ESB.ComPlugin
             //------------Execute Test---------------------------
             using (var isolated = new Isolated<ComPluginRuntimeHandler>())
             {
-                var result = isolated.Value.ListNamespaces(source.ClsId);
+                var result = isolated.Value.ListNamespaces(source.ClsId, false);
                 Assert.IsNotNull(result);
             }
         }
@@ -116,7 +116,7 @@ namespace Dev2.Tests.Runtime.ESB.ComPlugin
             //------------Execute Test---------------------------
             using (var isolated = new Isolated<ComPluginRuntimeHandler>())
             {
-                isolated.Value.ListNamespaces(null);
+                isolated.Value.ListNamespaces(null,false);
             }
         }
 
@@ -129,7 +129,7 @@ namespace Dev2.Tests.Runtime.ESB.ComPlugin
             //------------Execute Test---------------------------
             using (var isolated = new Isolated<ComPluginRuntimeHandler>())
             {
-                var result = isolated.Value.ListMethods(string.Empty);
+                var result = isolated.Value.ListMethods(string.Empty,false);
                 Assert.AreEqual(0, result.Count);
             }
         }
@@ -143,7 +143,7 @@ namespace Dev2.Tests.Runtime.ESB.ComPlugin
             //------------Execute Test---------------------------
             using (var isolated = new Isolated<ComPluginRuntimeHandler>())
             {
-                var result = isolated.Value.ListMethods(adodbConnectionClassId);
+                var result = isolated.Value.ListMethods(adodbConnectionClassId,true);
                 Assert.AreEqual(55, result.Count);
             }
         }
