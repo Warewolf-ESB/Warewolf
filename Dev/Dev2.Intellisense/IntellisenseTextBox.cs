@@ -45,7 +45,6 @@ namespace Dev2.UI
         {
             FilterMode = AutoCompleteFilterMode.Custom;
             TextFilter = (search, item) => true;
-            CustomSelection = true;
             _toolTip = new ToolTip();
             ItemsSource = IntellisenseResults;
             _desiredResultSet = IntellisenseDesiredResultSet.EntireSet;
@@ -70,6 +69,40 @@ namespace Dev2.UI
         }
 
         public static readonly RoutedEvent TabInsertedEvent = EventManager.RegisterRoutedEvent("TabInserted", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(IntellisenseTextBox));
+
+        protected override void OnMouseLeftButtonUp(MouseButtonEventArgs e)
+        {
+            base.OnMouseLeftButtonUp(e);
+
+            var originalSource = e.OriginalSource as TextBlock;
+            if (originalSource != null)
+            {
+                var source = e.Source as ListBox;
+                if (source != null)
+                {
+                    source.SelectedItem = originalSource.Text;
+                }
+                SelectedItem = originalSource.Text;
+            }
+
+            e.Handled = true;
+        }
+
+        protected override void OnPreviewMouseLeftButtonDown(MouseButtonEventArgs e)
+        {
+            base.OnPreviewMouseLeftButtonDown(e);
+
+            var originalSource = e.OriginalSource as TextBlock;
+            if (originalSource != null)
+            {
+                SelectedItem = originalSource.Text;
+                var source = e.Source as ListBox;
+                if (source != null)
+                {
+                    source.SelectedItem = originalSource.Text;
+                }
+            }
+        }
 
         protected override void OnPreviewKeyDown(KeyEventArgs e)
         {
@@ -734,10 +767,7 @@ namespace Dev2.UI
         {
             var box = sender as IntellisenseTextBox;
 
-            if (box != null)
-            {
-                box.OnIsInCalculateModeChanged((bool)args.OldValue, (bool)args.NewValue);
-            }
+            box?.OnIsInCalculateModeChanged((bool)args.OldValue, (bool)args.NewValue);
         }
 
         public static readonly DependencyProperty AllowMultipleVariablesProperty = DependencyProperty.Register("AllowMultipleVariables", typeof(bool), typeof(IntellisenseTextBox), new UIPropertyMetadata(false));
@@ -854,7 +884,7 @@ namespace Dev2.UI
         void LostFocusImpl()
         {
             ExecWrapBrackets();
-            CloseDropDown(true, false);
+            //CloseDropDown(true, false);
             BindingExpression be = BindingOperations.GetBindingExpression(this, TextProperty);
             be?.UpdateSource();
         }
@@ -863,7 +893,7 @@ namespace Dev2.UI
         {
             if (IsDropDownOpen && !IsKeyboardFocusWithin)
             {
-                CloseDropDown(true, false);
+               // CloseDropDown(true, false);
             }
 
             if (WrapInBrackets && !string.IsNullOrWhiteSpace(Text))
