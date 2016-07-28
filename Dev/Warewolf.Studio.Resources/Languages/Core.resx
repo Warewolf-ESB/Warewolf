@@ -2952,4 +2952,64 @@ You can use File System, URI, SFTP, FTP or FTPS format.</value>
   <data name="Error_Opening_Windows_Group_Picker" xml:space="preserve">
     <value>An error occured while trying to open the Windows Group Picker dialog. Please ensure that you are part of a Domain to use this feature.</value>
   </data>
+  <data name="ComPluginServiceEditSourceHelp" xml:space="preserve">
+    <value>ComPluginServiceEditSourceHelp</value>
+  </data>
+  <data name="ComPluginServiceMethodNotSelected" xml:space="preserve">
+    <value>ComPluginServiceMethodNotSelected</value>
+  </data>
+  <data name="ComPluginServiceNewSourceHelp" xml:space="preserve">
+    <value>To create a reference to a new COM object, click New.</value>
+  </data>
+  <data name="ComPluginServiceRefreshHelp" xml:space="preserve">
+    <value>Refresh the available actions.</value>
+  </data>
+  <data name="ComPluginServiceSelectActionHelp" xml:space="preserve">
+    <value>Select the method in the COM DLL you want to execute. You can provide a namespace filter above if you want.</value>
+  </data>
+  <data name="ComPluginServiceSelectActionToolTip" xml:space="preserve">
+    <value>Select method to execute.</value>
+  </data>
+  <data name="ComPluginServiceSelectNamespaceHelp" xml:space="preserve">
+    <value>Select a namespace if it exists to filter the actions you can perform.</value>
+  </data>
+  <data name="ComPluginServiceSelectNamespaceToolTip" xml:space="preserve">
+    <value>Select a namespace to help find the correct action.</value>
+  </data>
+  <data name="ComPluginServiceSourcesHelp" xml:space="preserve">
+    <value>Select the COM DLL you want to use from previously setup sources.</value>
+  </data>
+  <data name="ComPluginSourceClearSearchHelp" xml:space="preserve">
+    <value>Clears the Search Filter</value>
+  </data>
+  <data name="ComPluginSourceDllFullNameHelp" xml:space="preserve">
+    <value>PROGrammatic IDentifier of the COM DLL</value>
+  </data>
+  <data name="ComPluginSourceNewHeaderLabel" xml:space="preserve">
+    <value>New COMPlugin Source</value>
+  </data>
+  <data name="ComPluginSourceRefreshCommandHelp" xml:space="preserve">
+    <value>Refresh the view based on the filter.&lt;br/&gt;	&lt;br/&gt;	Newly added resources should show after a refresh.</value>
+  </data>
+  <data name="ComManagePluginServiceEditSourceTooltip" xml:space="preserve">
+    <value>Edits the selected COM plugin source connection</value>
+  </data>
+  <data name="ComManagePluginServiceNewSourceTooltip" xml:space="preserve">
+    <value>Create a new connection to a COM DLL</value>
+  </data>
+  <data name="ComManagePluginServiceSourcesTooltip" xml:space="preserve">
+    <value>Select the COM plugin you want to use</value>
+  </data>
+  <data name="ComManagePluginSourceAssemblyNameTooltip" xml:space="preserve">
+    <value>The PROGrammatic IDentifier you want to use</value>
+  </data>
+  <data name="ComManagePluginSourceClearSearchTooltip" xml:space="preserve">
+    <value>Clear the filter criteria</value>
+  </data>
+  <data name="ComManagePluginSourceFilterTooltip" xml:space="preserve">
+    <value>Filter for the COM DLL you want </value>
+  </data>
+  <data name="ComManagePluginSourceRefreshTooltip" xml:space="preserve">
+    <value>Refresh the available COM DLL</value>
+  </data>
 </root>

@@ -31,12 +31,10 @@ namespace Warewolf.UITests.Tools.Data
             Uimap.Click_SaveDialog_Save_Button();
             Uimap.Enter_Text_Into_Explorer_Filter(WorkflowName);
             Uimap.WaitForSpinner(Uimap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);
-
-            /**TODO: Re-introduce these units before WOLF-1923 can be moved to done.
             Uimap.Click_Debug_Ribbon_Button();
-            Uimap.Click_Debug_Input_Dialog_Debug_ButtonParams.AssignToolDebugOutputExists = true;
-            Uimap.Click_DebugInput_DebugButton();
-            **/
+            Uimap.Click_DebugInput_Debug_Button();
+            Uimap.WaitForSpinner(Uimap.MainStudioWindow.DockManager.SplitPaneRight.DebugOutput.StatusBar.Spinner);
+            Uimap.Click_Debug_Output_Assign_Cell();
         }
 
         #region Additional test attributes
@@ -56,6 +54,7 @@ namespace Warewolf.UITests.Tools.Data
             Uimap.TryRemoveFromExplorer(WorkflowName);
             Uimap.TryClearToolboxFilter();
             Uimap.TryCloseWorkflowTabs();
+            Uimap.TryCloseHangingDebugInputDialog();
         }
         
         public TestContext TestContext
