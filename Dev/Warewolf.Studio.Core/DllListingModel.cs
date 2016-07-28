@@ -48,7 +48,7 @@ namespace Warewolf.Studio.Core
             }
             _isCom = false;
         }
-        public DllListingModel(IManageComPluginSourceModel updateManager, IFileListing dllListing)
+        public DllListingModel(IManageComPluginSourceModel updateManager, IFileListing dllListing, IList<IFileListing> comDllListings)
         {
             _comUpdateManager = updateManager;
             if (dllListing != null)
@@ -57,11 +57,11 @@ namespace Warewolf.Studio.Core
                 FullName = dllListing.FullName;
                 ProgId = (dllListing as DllListing)?.ProgId;
                 ClsId = (dllListing as DllListing)?.ClsId;
-                if (dllListing.Children != null && dllListing.Children.Count > 0)
+                if (comDllListings != null && comDllListings.Count > 0)
                 {
                     Children =
                         new AsyncObservableCollection<IDllListingModel>(
-                            dllListing.Children.Select(input => new DllListingModel(_comUpdateManager, input)));
+                            comDllListings.Select(input => new DllListingModel(_comUpdateManager, input, comDllListings)));
                 }
                 IsDirectory = dllListing.IsDirectory;
                 IsExpanderVisible = IsDirectory;
@@ -266,7 +266,7 @@ namespace Warewolf.Studio.Core
                         {
                             _children =
                                 new AsyncObservableCollection<IDllListingModel>(
-                                    dllListings.Select(input => new DllListingModel(_comUpdateManager, input))
+                                    dllListings.Select(input => new DllListingModel(_comUpdateManager, input, dllListings))
                                         .ToList());
                         }
                         IsExpanderVisible = _children != null && _children.Count > 0;
