@@ -11,4 +11,12 @@ namespace Dev2.Runtime.Interfaces
         ServiceMethodList GetMethods(string assemblyLocation, string assemblyName, string fullName);
         IOutputDescription TestPlugin(TS pluginService);
     }
+
+    public interface ICOMPluginBroker<in T, in TS> where T : IResourceSource
+       where TS : Service
+    {
+        NamespaceList GetNamespaces(T pluginSource);
+        ServiceMethodList GetMethods(string clsid,bool is32Bit);
+        IOutputDescription TestPlugin(TS pluginService);
+    }
 }

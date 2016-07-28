@@ -37,12 +37,12 @@ namespace Dev2.Runtime.ESB.Management.Services
                         Name = res.ResourceName,
                         Path = res.ResourcePath,
                         ClsId = res.ClsId,
-                        ProgId = res.ProgId,
+                        Is32Bit = res.Is32Bit,
                         SelectedDll = new DllListing
                         {
                             Name = res.ResourceName,
                             ClsId = res.ClsId,
-                            ProgId = res.ProgId,
+                            Is32Bit = res.Is32Bit,
                             Children = new IFileListing[0]
                         }
                     };

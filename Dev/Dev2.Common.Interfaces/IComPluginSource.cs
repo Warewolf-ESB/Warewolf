@@ -6,7 +6,7 @@ namespace Dev2.Common.Interfaces
     {
         string Name { get; set; }
         Guid Id { get; set; }
-        string ProgId { get; set; }
+        bool Is32Bit { get; set; }
         string ClsId { get; set; }
         IFileListing SelectedDll { get; set; }
         string Path { get; set; }
