@@ -63,8 +63,8 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.ComPlugin
 
                 if (pluginResult != null)
                 {
-                    pluginResult = AdjustPluginResult(pluginResult, methodToRun);
                     jsonResult = JsonConvert.SerializeObject(pluginResult);
+                    pluginResult = AdjustPluginResult(pluginResult, methodToRun);
                     var tmpData = dataBrowser.Map(pluginResult);
                     dataSourceShape.Paths.AddRange(tmpData);
 
