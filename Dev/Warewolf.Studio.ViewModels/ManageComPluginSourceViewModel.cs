@@ -82,7 +82,8 @@ namespace Warewolf.Studio.ViewModels
             AsyncWorker.Start(() =>
             {
                 IsLoading = true;
-                var names = _updateManager.GetComDllListings(null).Select(input => new DllListingModel(_updateManager, input)).ToList();
+                var comDllListings = _updateManager.GetComDllListings(null);
+                var names = comDllListings.Select(input => new DllListingModel(_updateManager, input, comDllListings)).ToList();
 
                 DispatcherAction.Invoke(() =>
                 {
@@ -302,7 +303,7 @@ namespace Warewolf.Studio.ViewModels
 
         public override bool CanSave()
         {
-            return _selectedDll != null && !string.IsNullOrEmpty(ProgId) && HasChanged;
+            return _selectedDll != null && !string.IsNullOrEmpty(Name) && HasChanged;
         }
 
         public override void UpdateHelpDescriptor(string helpText)
@@ -369,6 +370,7 @@ namespace Warewolf.Studio.ViewModels
                     src.ClsId = SelectedDll.ClsId;
                     Save(src);
                     src.ProgId = SelectedDll.ProgId;
+                    Path = src.Path;
                     _pluginSource = src;
                     ToItem();
                     SetupHeaderTextFromExisting();
@@ -393,7 +395,8 @@ namespace Warewolf.Studio.ViewModels
                 Id = _pluginSource.Id,
                 Name = _pluginSource.Name,
                 ProgId = _pluginSource.ProgId,
-                ClsId = _pluginSource.ClsId
+                ClsId = _pluginSource.ClsId,
+                SelectedDll = SelectedDll
             };
             Name = _pluginSource.Name;
         }
@@ -412,7 +415,8 @@ namespace Warewolf.Studio.ViewModels
                 {
                     Name = ResourceName,
                     ClsId = _clsId,
-                    ProgId = _progID
+                    ProgId = _progID,
+                    SelectedDll = _selectedDll
                 };
             }
             _pluginSource.SelectedDll = _selectedDll;

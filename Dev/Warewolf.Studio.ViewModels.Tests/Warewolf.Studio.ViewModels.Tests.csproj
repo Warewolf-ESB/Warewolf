@@ -127,6 +127,7 @@
     <Compile Include="Help\HelpModelTests.cs" />
     <Compile Include="Help\HelpWindowViewModelTests.cs" />
     <Compile Include="ManageComPluginSourceModelTests.cs" />
+    <Compile Include="ManageComPluginSourceViewModelTests.cs" />
     <Compile Include="ManageDatabaseSourceModelTests.cs" />
     <Compile Include="ManageDatabaseSourceViewModelTests.cs" />
     <Compile Include="ManageEmailSourceModelTests.cs" />

@@ -48,7 +48,7 @@ namespace Warewolf.Studio.Core
             }
             _isCom = false;
         }
-        public DllListingModel(IManageComPluginSourceModel updateManager, IFileListing dllListing)
+        public DllListingModel(IManageComPluginSourceModel updateManager, IFileListing dllListing, IList<IFileListing> comDllListings)
         {
             _comUpdateManager = updateManager;
             if (dllListing != null)
@@ -57,11 +57,11 @@ namespace Warewolf.Studio.Core
                 FullName = dllListing.FullName;
                 ProgId = (dllListing as DllListing)?.ProgId;
                 ClsId = (dllListing as DllListing)?.ClsId;
-                if (dllListing.Children != null && dllListing.Children.Count > 0)
+                if (comDllListings != null && comDllListings.Count > 0)
                 {
                     Children =
                         new AsyncObservableCollection<IDllListingModel>(
-                            dllListing.Children.Select(input => new DllListingModel(_comUpdateManager, input)));
+                            comDllListings.Select(input => new DllListingModel(_comUpdateManager, input, comDllListings)));
                 }
                 IsDirectory = dllListing.IsDirectory;
                 IsExpanderVisible = IsDirectory;
@@ -266,7 +266,7 @@ namespace Warewolf.Studio.Core
                         {
                             _children =
                                 new AsyncObservableCollection<IDllListingModel>(
-                                    dllListings.Select(input => new DllListingModel(_comUpdateManager, input))
+                                    dllListings.Select(input => new DllListingModel(_comUpdateManager, input, dllListings))
                                         .ToList());
                         }
                         IsExpanderVisible = _children != null && _children.Count > 0;
@@ -292,8 +292,6 @@ namespace Warewolf.Studio.Core
 
         public void Filter(string searchTerm)
         {
-            if (!_isCom)
-            {
                 _filter = searchTerm;
 
                 if (_children != null)
@@ -316,35 +314,11 @@ namespace Warewolf.Studio.Core
                 }
 
                 OnPropertyChanged(() => Children);
-            }
-            else
-
-            {
-                _filter = searchTerm;
-                if (_children != null)
-                {
-                    foreach (var dllListing in _children)
-                    {
-                        var dllListingModel = dllListing;
-                        dllListingModel.Filter(searchTerm);
-                    }
-                }
-                if (string.IsNullOrEmpty(searchTerm) || Name == "FileSystem" || Name == "GAC" ||
-                    (_children != null && _children.Count > 0 &&
-                     _children.Any(model => model.IsVisible)))
-                {
-                    IsVisible = true;
-                }
-                else
-                {
-                    IsVisible = Name.ToLowerInvariant().Contains(searchTerm.ToLowerInvariant());
-                }
-
-                OnPropertyChanged(() => Children);
-            }
                 
+
             
         }
+       
 
         public bool IsVisible
         {
@@ -360,7 +334,7 @@ namespace Warewolf.Studio.Core
 
         public bool Equals(DllListingModel other)
         {
-            return string.Equals(Name, other.Name) && string.Equals(FullName, other.FullName) && IsDirectory == other.IsDirectory;
+            return string.Equals(Name, other.Name) && string.Equals(FullName, other.FullName) && IsDirectory == other.IsDirectory && string.Equals(ClsId,other.ClsId) && string.Equals(ProgId, other.ProgId);
         }
 
 
