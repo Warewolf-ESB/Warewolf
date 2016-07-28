@@ -229,7 +229,7 @@ namespace Warewolf.Studio.ViewModels
 
             Name = _pluginSource.Name;
             Path = _pluginSource.Path;
-            ProgId = _pluginSource.ProgId;
+            Is32Bit = _pluginSource.Is32Bit;
             ClsId = _pluginSource.ClsId;
         }
 
@@ -302,7 +302,7 @@ namespace Warewolf.Studio.ViewModels
 
         public override bool CanSave()
         {
-            return _selectedDll != null && !string.IsNullOrEmpty(ProgId) && HasChanged;
+            return _selectedDll != null && !string.IsNullOrEmpty(ClsId) && HasChanged;
         }
 
         public override void UpdateHelpDescriptor(string helpText)
