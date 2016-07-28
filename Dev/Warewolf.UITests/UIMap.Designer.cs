@@ -241,15 +241,19 @@ namespace Warewolf.UITests
         public void Click_Debug_Output_Assign_Cell()
         {
             #region Variable Declarations
+            WpfText variableTextbox = this.MainStudioWindow.DockManager.SplitPaneRight.DebugOutput.DebugOutputTree.Step1.VariableTextbox;
             WpfButton uIAssign1Button = this.MainStudioWindow.DockManager.SplitPaneRight.DebugOutput.DebugOutputTree.Step1.UIAssign1Button;
             WpfCustom multiAssign = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign;
             #endregion
 
+            // Verify that the 'DisplayText' property of '[[SomeVariable]]' label equals '[[SomeVariable]]'
+            Assert.AreEqual(this.Click_Debug_Output_Assign_CellParams.VariableTextboxDisplayText, variableTextbox.DisplayText, "Wrong variable name in debug output");
+
             // Click 'Assign (1)' button
             Mouse.Click(uIAssign1Button, new Point(21, 9));
 
-            // Verify that the 'HasFocus' property of 'DsfMultiAssignActivity' custom control equals 'True'
-            Assert.AreEqual(this.Click_Debug_Output_Assign_CellParams.MultiAssignHasFocus, multiAssign.HasFocus, "Multiassign small view does not have focus.");
+            // Verify that the 'ItemStatus' property of 'DsfMultiAssignActivity' custom control equals 'IsPrimarySelection=True IsSelection=True IsCurrentLocation=null IsCurrentContext=null IsBreakpointEnabled=null IsBreakpointBounded=null ValidationState=Valid '
+            Assert.AreEqual(this.Click_Debug_Output_Assign_CellParams.MultiAssignItemStatus, multiAssign.ItemStatus, "Multiassign small view is not selected.");
         }
         
         /// <summary>
@@ -259,14 +263,14 @@ namespace Warewolf.UITests
         {
             #region Variable Declarations
             WpfButton uIBaseConversion1Button = this.MainStudioWindow.DockManager.SplitPaneRight.DebugOutput.DebugOutputTree.Step1.UIBaseConversion1Button;
-            WpfCustom caseConvert = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.CaseConvert;
+            WpfCustom baseConvert = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.BaseConvert;
             #endregion
 
             // Click 'Base Conversion (1)' button
             Mouse.Click(uIBaseConversion1Button, new Point(33, 7));
 
-            // Verify that the 'HasFocus' property of 'DsfCaseConvertActivity' custom control equals 'False'
-            Assert.AreEqual(this.Click_Debug_Output_BaseConvert_CellParams.CaseConvertHasFocus, caseConvert.HasFocus, "Base conversion small view does not have focus.");
+            // Verify that the 'ItemStatus' property of 'DsfBaseConvertActivity' custom control equals 'IsPrimarySelection=True IsSelection=True IsCurrentLocation=null IsCurrentContext=null IsBreakpointEnabled=null IsBreakpointBounded=null ValidationState=Valid '
+            Assert.AreEqual(this.Click_Debug_Output_BaseConvert_CellParams.BaseConvertItemStatus, baseConvert.ItemStatus, "Base conversion small view is not selected.");
         }
         
         /// <summary>
@@ -282,8 +286,8 @@ namespace Warewolf.UITests
             // Click 'Calculate' button
             Mouse.Click(uICalculateButton, new Point(24, 10));
 
-            // Verify that the 'HasFocus' property of 'DsfCalculateActivity' custom control equals 'True'
-            Assert.AreEqual(this.Click_Debug_Output_Calculate_CellParams.CalculateHasFocus, calculate.HasFocus, "Calculate tool small view does not have focus");
+            // Verify that the 'ItemStatus' property of 'DsfCalculateActivity' custom control equals 'IsPrimarySelection=True IsSelection=True IsCurrentLocation=null IsCurrentContext=null IsBreakpointEnabled=null IsBreakpointBounded=null ValidationState=Valid '
+            Assert.AreEqual(this.Click_Debug_Output_Calculate_CellParams.CalculateItemStatus, calculate.ItemStatus, "Calculate tool small view is not selected.");
         }
         
         /// <summary>
@@ -373,7 +377,6 @@ namespace Warewolf.UITests
             WpfButton debugF6Button = this.MainStudioWindow.DebugInputDialog.DebugF6Button;
             WpfCustom debugOutput = this.MainStudioWindow.DockManager.SplitPaneRight.DebugOutput;
             WpfButton settingsButton = this.MainStudioWindow.DockManager.SplitPaneRight.DebugOutput.SettingsButton;
-            WpfText variableTextbox = this.MainStudioWindow.DockManager.SplitPaneRight.DebugOutput.DebugOutputTree.Step1.VariableTextbox;
             WpfButton expandCollapseButton = this.MainStudioWindow.DockManager.SplitPaneRight.DebugOutput.ExpandCollapseButton;
             WpfEdit searchTextBox = this.MainStudioWindow.DockManager.SplitPaneRight.DebugOutput.SearchTextBox;
             WpfTree debugOutputTree = this.MainStudioWindow.DockManager.SplitPaneRight.DebugOutput.DebugOutputTree;
@@ -387,9 +390,6 @@ namespace Warewolf.UITests
 
             // Verify that the 'Exists' property of '' button equals 'True'
             Assert.AreEqual(this.Click_DebugInput_Debug_ButtonParams.SettingsButtonExists, settingsButton.Exists, "Debug output settings button does not exist");
-
-            // Verify that the 'DisplayText' property of '[[SomeVariable]]' label equals '[[SomeVariable]]'
-            Assert.AreEqual(this.Click_DebugInput_Debug_ButtonParams.VariableTextboxDisplayText, variableTextbox.DisplayText, "Wrong variable name in debug output");
 
             // Verify that the 'Exists' property of '+' button equals 'True'
             Assert.AreEqual(this.Click_DebugInput_Debug_ButtonParams.ExpandCollapseButtonExists, expandCollapseButton.Exists, "Debug output expand collapse button does not exist");
@@ -1189,20 +1189,16 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
-        /// Click_Service_Picker_Dialog_Cancel - Use 'Click_Service_Picker_Dialog_CancelParams' to pass parameters into this method.
+        /// Click_Service_Picker_Dialog_Cancel
         /// </summary>
         public void Click_Service_Picker_Dialog_Cancel()
         {
             #region Variable Declarations
             WpfButton cancel = this.ServicePickerDialog.Cancel;
-            WpfWindow servicePickerDialog = this.ServicePickerDialog;
             #endregion
 
             // Click 'Cancel' button
             Mouse.Click(cancel, new Point(57, 6));
-
-            // Verify that the 'Exists' property of 'ServicePickerDialog' window equals 'False'
-            Assert.AreEqual(this.Click_Service_Picker_Dialog_CancelParams.ServicePickerDialogExists, servicePickerDialog.Exists, "Service picker dialog does exist");
         }
         
         /// <summary>
@@ -3842,6 +3838,19 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
+        /// Press_F6 - Use 'Press_F6Params' to pass parameters into this method.
+        /// </summary>
+        public void Press_F6()
+        {
+            #region Variable Declarations
+            WpfWindow mainStudioWindow = this.MainStudioWindow;
+            #endregion
+
+            // Type '{F6}' in 'Warewolf' window
+            Keyboard.SendKeys(mainStudioWindow, this.Press_F6Params.MainStudioWindowSendKeys, ModifierKeys.None);
+        }
+        
+        /// <summary>
         /// PressF11_EnterFullScreen - Use 'PressF11_EnterFullScreenParams' to pass parameters into this method.
         /// </summary>
         public void PressF11_EnterFullScreen()
@@ -5401,18 +5410,6 @@ namespace Warewolf.UITests
             }
         }
         
-        public virtual Click_Service_Picker_Dialog_CancelParams Click_Service_Picker_Dialog_CancelParams
-        {
-            get
-            {
-                if ((this.mClick_Service_Picker_Dialog_CancelParams == null))
-                {
-                    this.mClick_Service_Picker_Dialog_CancelParams = new Click_Service_Picker_Dialog_CancelParams();
-                }
-                return this.mClick_Service_Picker_Dialog_CancelParams;
-            }
-        }
-        
         public virtual Click_Service_Picker_Dialog_OKParams Click_Service_Picker_Dialog_OKParams
         {
             get
@@ -6625,6 +6622,18 @@ namespace Warewolf.UITests
             }
         }
         
+        public virtual Press_F6Params Press_F6Params
+        {
+            get
+            {
+                if ((this.mPress_F6Params == null))
+                {
+                    this.mPress_F6Params = new Press_F6Params();
+                }
+                return this.mPress_F6Params;
+            }
+        }
+        
         public virtual PressF11_EnterFullScreenParams PressF11_EnterFullScreenParams
         {
             get
@@ -6887,8 +6896,6 @@ namespace Warewolf.UITests
         
         private Click_Server_Source_Wizard_Test_Connection_ButtonParams mClick_Server_Source_Wizard_Test_Connection_ButtonParams;
         
-        private Click_Service_Picker_Dialog_CancelParams mClick_Service_Picker_Dialog_CancelParams;
-        
         private Click_Service_Picker_Dialog_OKParams mClick_Service_Picker_Dialog_OKParams;
         
         private Click_Settings_Ribbon_ButtonParams mClick_Settings_Ribbon_ButtonParams;
@@ -7091,6 +7098,8 @@ namespace Warewolf.UITests
         
         private Open_Zip_Tool_Large_ViewParams mOpen_Zip_Tool_Large_ViewParams;
         
+        private Press_F6Params mPress_F6Params;
+        
         private PressF11_EnterFullScreenParams mPressF11_EnterFullScreenParams;
         
         private RightClick_Explorer_Localhost_First_ItemParams mRightClick_Explorer_Localhost_First_ItemParams;
@@ -7241,9 +7250,15 @@ namespace Warewolf.UITests
         
         #region Fields
         /// <summary>
-        /// Verify that the 'HasFocus' property of 'DsfMultiAssignActivity' custom control equals 'True'
+        /// Verify that the 'DisplayText' property of '[[SomeVariable]]' label equals '[[SomeVariable]]'
         /// </summary>
-        public bool MultiAssignHasFocus = true;
+        public string VariableTextboxDisplayText = "[[SomeVariable]]";
+        
+        /// <summary>
+        /// Verify that the 'ItemStatus' property of 'DsfMultiAssignActivity' custom control equals 'IsPrimarySelection=True IsSelection=True IsCurrentLocation=null IsCurrentContext=null IsBreakpointEnabled=null IsBreakpointBounded=null ValidationState=Valid '
+        /// </summary>
+        public string MultiAssignItemStatus = "IsPrimarySelection=True IsSelection=True IsCurrentLocation=null IsCurrentContext=" +
+            "null IsBreakpointEnabled=null IsBreakpointBounded=null ValidationState=Valid ";
         #endregion
     }
     
@@ -7256,9 +7271,10 @@ namespace Warewolf.UITests
         
         #region Fields
         /// <summary>
-        /// Verify that the 'HasFocus' property of 'DsfCaseConvertActivity' custom control equals 'False'
+        /// Verify that the 'ItemStatus' property of 'DsfBaseConvertActivity' custom control equals 'IsPrimarySelection=True IsSelection=True IsCurrentLocation=null IsCurrentContext=null IsBreakpointEnabled=null IsBreakpointBounded=null ValidationState=Valid '
         /// </summary>
-        public bool CaseConvertHasFocus = false;
+        public string BaseConvertItemStatus = "IsPrimarySelection=True IsSelection=True IsCurrentLocation=null IsCurrentContext=" +
+            "null IsBreakpointEnabled=null IsBreakpointBounded=null ValidationState=Valid ";
         #endregion
     }
     
@@ -7271,9 +7287,10 @@ namespace Warewolf.UITests
         
         #region Fields
         /// <summary>
-        /// Verify that the 'HasFocus' property of 'DsfCalculateActivity' custom control equals 'True'
+        /// Verify that the 'ItemStatus' property of 'DsfCalculateActivity' custom control equals 'IsPrimarySelection=True IsSelection=True IsCurrentLocation=null IsCurrentContext=null IsBreakpointEnabled=null IsBreakpointBounded=null ValidationState=Valid '
         /// </summary>
-        public bool CalculateHasFocus = true;
+        public string CalculateItemStatus = "IsPrimarySelection=True IsSelection=True IsCurrentLocation=null IsCurrentContext=" +
+            "null IsBreakpointEnabled=null IsBreakpointBounded=null ValidationState=Valid ";
         #endregion
     }
     
@@ -7364,11 +7381,6 @@ namespace Warewolf.UITests
         /// Verify that the 'Exists' property of '' button equals 'True'
         /// </summary>
         public bool SettingsButtonExists = true;
-        
-        /// <summary>
-        /// Verify that the 'DisplayText' property of '[[SomeVariable]]' label equals '[[SomeVariable]]'
-        /// </summary>
-        public string VariableTextboxDisplayText = "[[SomeVariable]]";
         
         /// <summary>
         /// Verify that the 'Exists' property of '+' button equals 'True'
@@ -7844,21 +7856,6 @@ namespace Warewolf.UITests
         /// Wait for 3 seconds for user delay between actions; Verify that the 'Enabled' property of 'Save this tab' button equals 'True'
         /// </summary>
         public bool SaveButtonEnabled = true;
-        #endregion
-    }
-    
-    /// <summary>
-    /// Parameters to be passed into 'Click_Service_Picker_Dialog_Cancel'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Click_Service_Picker_Dialog_CancelParams
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Verify that the 'Exists' property of 'ServicePickerDialog' window equals 'False'
-        /// </summary>
-        public bool ServicePickerDialogExists = false;
         #endregion
     }
     
@@ -9994,6 +9991,21 @@ namespace Warewolf.UITests
         /// Verify that the 'Exists' property of 'DsfZip' custom control equals 'True'
         /// </summary>
         public bool ZipExists = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Press_F6'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Press_F6Params
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Type '{F6}' in 'Warewolf' window
+        /// </summary>
+        public string MainStudioWindowSendKeys = "{F6}";
         #endregion
     }
     

@@ -403,6 +403,69 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Edits the selected COM plugin source connection.
+        /// </summary>
+        public static string ComManagePluginServiceEditSourceTooltip {
+            get {
+                return ResourceManager.GetString("ComManagePluginServiceEditSourceTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Create a new connection to a COM DLL.
+        /// </summary>
+        public static string ComManagePluginServiceNewSourceTooltip {
+            get {
+                return ResourceManager.GetString("ComManagePluginServiceNewSourceTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select the COM plugin you want to use.
+        /// </summary>
+        public static string ComManagePluginServiceSourcesTooltip {
+            get {
+                return ResourceManager.GetString("ComManagePluginServiceSourcesTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The PROGrammatic IDentifier you want to use.
+        /// </summary>
+        public static string ComManagePluginSourceAssemblyNameTooltip {
+            get {
+                return ResourceManager.GetString("ComManagePluginSourceAssemblyNameTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Clear the filter criteria.
+        /// </summary>
+        public static string ComManagePluginSourceClearSearchTooltip {
+            get {
+                return ResourceManager.GetString("ComManagePluginSourceClearSearchTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Filter for the COM DLL you want .
+        /// </summary>
+        public static string ComManagePluginSourceFilterTooltip {
+            get {
+                return ResourceManager.GetString("ComManagePluginSourceFilterTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Refresh the available COM DLL.
+        /// </summary>
+        public static string ComManagePluginSourceRefreshTooltip {
+            get {
+                return ResourceManager.GetString("ComManagePluginSourceRefreshTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Comments do not execute and are place holders for future services or tools or simply to leave commentary inside the workflow.	You can connect comments into the process flow and they will simply be skipped during execution. However, they will appear in the debug output.	Allowed:	Notes and comments will not be executed at run time but will show up in the debug output..
         /// </summary>
         public static string CommentHelpComment {
@@ -435,6 +498,123 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string CompareCurrentServerVersion {
             get {
                 return ResourceManager.GetString("CompareCurrentServerVersion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ComPluginServiceEditSourceHelp.
+        /// </summary>
+        public static string ComPluginServiceEditSourceHelp {
+            get {
+                return ResourceManager.GetString("ComPluginServiceEditSourceHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ComPluginServiceMethodNotSelected.
+        /// </summary>
+        public static string ComPluginServiceMethodNotSelected {
+            get {
+                return ResourceManager.GetString("ComPluginServiceMethodNotSelected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to To create a reference to a new COM object, click New..
+        /// </summary>
+        public static string ComPluginServiceNewSourceHelp {
+            get {
+                return ResourceManager.GetString("ComPluginServiceNewSourceHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Refresh the available actions..
+        /// </summary>
+        public static string ComPluginServiceRefreshHelp {
+            get {
+                return ResourceManager.GetString("ComPluginServiceRefreshHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select the method in the COM DLL you want to execute. You can provide a namespace filter above if you want..
+        /// </summary>
+        public static string ComPluginServiceSelectActionHelp {
+            get {
+                return ResourceManager.GetString("ComPluginServiceSelectActionHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select method to execute..
+        /// </summary>
+        public static string ComPluginServiceSelectActionToolTip {
+            get {
+                return ResourceManager.GetString("ComPluginServiceSelectActionToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select a namespace if it exists to filter the actions you can perform..
+        /// </summary>
+        public static string ComPluginServiceSelectNamespaceHelp {
+            get {
+                return ResourceManager.GetString("ComPluginServiceSelectNamespaceHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select a namespace to help find the correct action..
+        /// </summary>
+        public static string ComPluginServiceSelectNamespaceToolTip {
+            get {
+                return ResourceManager.GetString("ComPluginServiceSelectNamespaceToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select the COM DLL you want to use from previously setup sources..
+        /// </summary>
+        public static string ComPluginServiceSourcesHelp {
+            get {
+                return ResourceManager.GetString("ComPluginServiceSourcesHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Clears the Search Filter.
+        /// </summary>
+        public static string ComPluginSourceClearSearchHelp {
+            get {
+                return ResourceManager.GetString("ComPluginSourceClearSearchHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to PROGrammatic IDentifier of the COM DLL.
+        /// </summary>
+        public static string ComPluginSourceDllFullNameHelp {
+            get {
+                return ResourceManager.GetString("ComPluginSourceDllFullNameHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to New COMPlugin Source.
+        /// </summary>
+        public static string ComPluginSourceNewHeaderLabel {
+            get {
+                return ResourceManager.GetString("ComPluginSourceNewHeaderLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Refresh the view based on the filter.&lt;br/&gt;	&lt;br/&gt;	Newly added resources should show after a refresh..
+        /// </summary>
+        public static string ComPluginSourceRefreshCommandHelp {
+            get {
+                return ResourceManager.GetString("ComPluginSourceRefreshCommandHelp", resourceCulture);
             }
         }
         
