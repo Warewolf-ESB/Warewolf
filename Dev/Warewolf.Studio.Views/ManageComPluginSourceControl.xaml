@@ -177,12 +177,12 @@
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
-                    <TextBlock Text="Assembly"/>
+                    <TextBlock Text="PROGrammatic IDentifier"/>
                     <TextBox x:Name="AssemblyNameTextBox" 
                              
                              Grid.Column="1" 
                              ToolTip="{x:Static languages:Core.ComManagePluginSourceAssemblyNameTooltip}"
-                             Text="{Binding ProgId, UpdateSourceTrigger=PropertyChanged}">
+                             Text="{Binding SelectedDll.ProgId, UpdateSourceTrigger=PropertyChanged}">
                         <i:Interaction.Behaviors>
                             <core:HelpSetter Text="{x:Static languages:Core.ComPluginSourceDllFullNameHelp}" DataContext="{Binding}" />
                         </i:Interaction.Behaviors>

@@ -302,7 +302,7 @@ namespace Warewolf.Studio.ViewModels
 
         public override bool CanSave()
         {
-            return _selectedDll != null && !string.IsNullOrEmpty(ProgId) && HasChanged;
+            return _selectedDll != null && !string.IsNullOrEmpty(Name) && HasChanged;
         }
 
         public override void UpdateHelpDescriptor(string helpText)
@@ -369,6 +369,7 @@ namespace Warewolf.Studio.ViewModels
                     src.ClsId = SelectedDll.ClsId;
                     Save(src);
                     src.ProgId = SelectedDll.ProgId;
+                    
                     _pluginSource = src;
                     ToItem();
                     SetupHeaderTextFromExisting();
