@@ -190,6 +190,7 @@
                                 Grid.ColumnSpan="2"
                                 Margin="{StaticResource ControlBorderTop}"
                                 DefaultText="[[CreateSuccess]]"
+                                AllowUserInsertLine="False"
                                 WrapInBrackets="True"
                                 Text="{Binding ModelItem.Result, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"

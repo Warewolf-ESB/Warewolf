@@ -196,6 +196,7 @@
                                 Grid.Column="1"
                                 Grid.ColumnSpan="2"
                                 DefaultText="[[UpdateSuccess]]"
+                                AllowUserInsertLine="False"
                                 Margin="{StaticResource ControlBorderTop}"
                                 WrapInBrackets="True"
                                 Text="{Binding ModelItem.Result, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"

@@ -112,6 +112,7 @@
                                 DefaultText="[[PathToUpload]]"
                                 WrapInBrackets="False"
                                 Margin="0,1,0,0"
+                                AllowUserInsertLine="False"
                                 Text="{Binding Path=FromPath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 ToolTip="{x:Static languages:Core.ReadFileToolTipFilename}"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
@@ -178,6 +179,7 @@
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 DefaultText="Dropbox location"
                                 FilterType="All"
+                                AllowUserInsertLine="False"
                                 ToolTip="{x:Static languages:Core.DropBoxDownloadToolTipLocalDestination}"
                                 Text="{Binding ToPath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_fxtxt_AutoID}"
@@ -203,6 +205,7 @@
                                 ToolTip="{x:Static languages:Core.DropboxResultHelpText}"
                                 DefaultText="[[Result]]"
                                 WrapInBrackets="True"
+                                AllowUserInsertLine="False"
                                 Text="{Binding Result, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_fxtxt_AutoID}"
                                 attachedProperties:WizardEngineAttachedProperties.DontOpenWizard="True">

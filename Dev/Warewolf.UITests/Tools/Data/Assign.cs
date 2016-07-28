@@ -32,8 +32,9 @@ namespace Warewolf.UITests.Tools.Data
             Uimap.Enter_Text_Into_Explorer_Filter(WorkflowName);
             Uimap.WaitForSpinner(Uimap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);
             Uimap.Click_Debug_Ribbon_Button();
-            Uimap.Click_DebugInput_DebugButton();
+            Uimap.Click_DebugInput_Debug_Button();
             Uimap.WaitForSpinner(Uimap.MainStudioWindow.DockManager.SplitPaneRight.DebugOutput.StatusBar.Spinner);
+            Uimap.Click_Debug_Output_Assign_Cell();
         }
 
         #region Additional test attributes
@@ -53,6 +54,7 @@ namespace Warewolf.UITests.Tools.Data
             Uimap.TryRemoveFromExplorer(WorkflowName);
             Uimap.TryClearToolboxFilter();
             Uimap.TryCloseWorkflowTabs();
+            Uimap.TryCloseHangingDebugInputDialog();
         }
         
         public TestContext TestContext

@@ -88,6 +88,7 @@
         <TextBlock Grid.Column="0" Grid.Row="1" Text="Queue Name" Margin="{StaticResource ControlBorderTop}" />
         <ui:IntellisenseTextBox Grid.Column="1" Grid.Row="1"
                                 DefaultText="Queue Name"
+                                AllowUserInsertLine="False"
                                 Text="{Binding QueueName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 ToolTip="{x:Static languages:Core.RabbitMQToolTipQueueName}"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
@@ -107,6 +108,7 @@
         <TextBlock Grid.Column="0" Grid.Row="2" Text="Response" Margin="{StaticResource ControlBorderTop}" />
         <ui:IntellisenseTextBox Grid.Column="1" Grid.Row="2"
                                 DefaultText="Response "
+                                AllowUserInsertLine="False"
                                 Text="{Binding Response, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 ToolTip="{x:Static languages:Core.RabbitMQToolTipResponse}"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"

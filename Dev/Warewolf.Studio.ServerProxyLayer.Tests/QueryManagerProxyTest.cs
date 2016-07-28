@@ -302,6 +302,16 @@ namespace Warewolf.Studio.ServerProxyLayer.Test
             var res = ser.SerializeToBuilder(new List<IPluginSource>());
             RunTest("FetchPluginSources", new ExecuteMessage() { HasError = false, Message = res }, new List<Tuple<string, object>>(), a => Assert.AreEqual(a.Count(), 0), a => a.FetchPluginSources());
         }
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        [TestCategory("QueryManagerProxy_Ctor")]
+        public void QueryManagerProxy_Fetch_ComPlugintSources()
+        {
+            var message = new ExecuteMessage();
+            Dev2JsonSerializer ser = new Dev2JsonSerializer();
+            var res = ser.SerializeToBuilder(new List<IComPluginSource>());
+            RunTest("FetchComPluginSources", new ExecuteMessage() { HasError = false, Message = res }, new List<Tuple<string, object>>(), a => Assert.AreEqual(a.Count(), 0), a => a.FetchComPluginSources());
+        }
 
 
         [TestMethod]
@@ -317,6 +327,18 @@ namespace Warewolf.Studio.ServerProxyLayer.Test
         }
 
         [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        [TestCategory("QueryManagerProxy_FetchComPlugin")]
+        [ExpectedException(typeof(WarewolfSupportServiceException))]
+        public void QueryManagerProxy_Fetch_ComPluginSources()
+        {
+            var message = new ExecuteMessage();
+            Dev2JsonSerializer ser = new Dev2JsonSerializer();
+            var res = ser.SerializeToBuilder(new List<IComPluginSource>());
+            RunTest("FetchComPluginSources", new ExecuteMessage() { HasError = true, Message = res }, new List<Tuple<string, object>>(), a => Assert.AreEqual(a.Count(), 0), a => a.FetchComPluginSources());
+        }
+
+        [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("QueryManagerProxy_Ctor")]
         public void QueryManagerProxy_Fetch_RabbitSources()
@@ -324,7 +346,7 @@ namespace Warewolf.Studio.ServerProxyLayer.Test
             var message = new ExecuteMessage();
             Dev2JsonSerializer ser = new Dev2JsonSerializer();
             var res = ser.SerializeToBuilder(new List<IRabbitMQServiceSourceDefinition>());
-            RunTest<IEnumerable<IRabbitMQServiceSourceDefinition>>("FetchRabbitMQServiceSources", new ExecuteMessage() { HasError = false, Message = res }, new List<Tuple<string, object>>(), a => Assert.AreEqual(a.Count(), 0), a => a.FetchRabbitMQServiceSources());
+            RunTest("FetchRabbitMQServiceSources", new ExecuteMessage() { HasError = false, Message = res }, new List<Tuple<string, object>>(), a => Assert.AreEqual(a.Count(), 0), a => a.FetchRabbitMQServiceSources());
         }
 
 
