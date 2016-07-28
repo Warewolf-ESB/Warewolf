@@ -95,6 +95,7 @@
                                 Grid.Column="1"
                                 DefaultText="[[fxResult]]"
                                 FilterType="All"
+                                AllowUserInsertLine="False"
                                 ToolTip="{x:Static languages:Core.CalculateForAggregatesToolTipResult}"
                                 WrapInBrackets="True"
                                 Margin="{StaticResource ControlBorderTop}"

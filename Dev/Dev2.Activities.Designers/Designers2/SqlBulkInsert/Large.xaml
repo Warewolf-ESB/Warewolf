@@ -242,6 +242,7 @@
             <TextBlock Grid.Row="0" Grid.Column="0" Text="Batch Size" />
             <ui:IntellisenseTextBox Grid.Row="0"
                                     Grid.Column="1"
+                                    AllowUserInsertLine="False"
                                     DefaultText="[[Rows]]"
                                     Text="{Binding ModelItem.BatchSize, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                     Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
