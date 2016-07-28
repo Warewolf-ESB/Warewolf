@@ -43,8 +43,8 @@ namespace Warewolf.Studio.ViewModels
             VerifyArgument.IsNotNull("aggregator", aggregator);
             _updateManager = updateManager;
             AsyncWorker = asyncWorker;
-            HeaderText = Resources.Languages.Core.PluginSourceNewHeaderLabel;
-            Header = Resources.Languages.Core.PluginSourceNewHeaderLabel;
+            HeaderText = Resources.Languages.Core.ComPluginSourceNewHeaderLabel;
+            Header = Resources.Languages.Core.ComPluginSourceNewHeaderLabel;
             OkCommand = new DelegateCommand(Save, CanSave);
             CancelCommand = new DelegateCommand(() => CloseAction.Invoke());
             ClearSearchTextCommand = new DelegateCommand(() => SearchTerm = "");
@@ -229,6 +229,8 @@ namespace Warewolf.Studio.ViewModels
 
             Name = _pluginSource.Name;
             Path = _pluginSource.Path;
+            ProgId = _pluginSource.ProgId;
+            ClsId = _pluginSource.ClsId;
         }
 
         public override string Name
@@ -256,7 +258,6 @@ namespace Warewolf.Studio.ViewModels
                 OnPropertyChanged(() => SelectedDll);
                 if (SelectedDll != null)
                 {
-                    AssemblyName = SelectedDll.FullName;
                     ClsId = SelectedDll.ClsId;
                     Is32Bit = SelectedDll.Is32Bit;
                     SelectedDll.IsExpanded = true;
@@ -301,7 +302,7 @@ namespace Warewolf.Studio.ViewModels
 
         public override bool CanSave()
         {
-            return _selectedDll != null && !string.IsNullOrEmpty(AssemblyName) && HasChanged;
+            return _selectedDll != null && !string.IsNullOrEmpty(ProgId) && HasChanged;
         }
 
         public override void UpdateHelpDescriptor(string helpText)
@@ -394,7 +395,7 @@ namespace Warewolf.Studio.ViewModels
                 Is32Bit = _pluginSource.Is32Bit,
                 ClsId = _pluginSource.ClsId
             };
-            AssemblyName = _pluginSource.Name;
+            Name = _pluginSource.Name;
         }
 
         void Save(IComPluginSource source)

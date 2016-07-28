@@ -14,10 +14,10 @@ namespace Warewolf.UITests.Tools.Data
             Uimap.Open_Base_Conversion_Tool_Large_View();
             Uimap.Enter_SomeVariable_Into_Base_Convert_Large_View_Row1_Value_Textbox();
             Uimap.Click_Base_Convert_Large_View_Done_Button();
-            Uimap.Open_Base_Conversion_Tool_Qvi_Large_View();
-            Uimap.Click_Debug_Ribbon_Button();
-            Uimap.Click_DebugInput_DebugButton();
+            Uimap.Press_F6();
             Uimap.WaitForSpinner(Uimap.MainStudioWindow.DockManager.SplitPaneRight.DebugOutput.StatusBar.Spinner);
+            Uimap.Click_Debug_Output_BaseConvert_Cell();
+            Uimap.Open_Base_Conversion_Tool_Qvi_Large_View();
         }
 
         #region Additional test attributes
@@ -34,14 +34,8 @@ namespace Warewolf.UITests.Tools.Data
         [TestCleanup]
         public void MyTestCleanup()
         {
-            try
-            {
-                Uimap.CleanupABlankWorkflow();
-            }
-            catch(Exception e)
-            {
-                Console.WriteLine("Exception during test cleanup: " + e.Message);
-            }
+            Uimap.CleanupABlankWorkflow();
+            Uimap.TryCloseHangingDebugInputDialog();
         }
         
         public TestContext TestContext

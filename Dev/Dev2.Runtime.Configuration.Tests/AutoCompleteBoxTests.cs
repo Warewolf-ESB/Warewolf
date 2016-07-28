@@ -112,7 +112,6 @@ namespace Dev2.Runtime.Configuration.Tests
             autoCompleteBox.ItemsSource = new List<string> { "item1", "myValues", "anotherThing" };
             autoCompleteBox.FilterMode = AutoCompleteFilterMode.Contains;
             autoCompleteBox.Text = "t";
-            autoCompleteBox.CustomSelection = true;
             //------------Assert Preconditions-------------------
             var filteredList = autoCompleteBox.View;
             Assert.IsNotNull(filteredList);

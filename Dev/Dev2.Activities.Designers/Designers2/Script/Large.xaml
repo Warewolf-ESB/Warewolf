@@ -92,7 +92,7 @@
             </Grid.ColumnDefinitions>
             <ui:IntellisenseTextBox Grid.Column="0"
                                     AllowUserInsertLine="False"
-                                    DefaultText="Script Sources"
+                                    DefaultText="Script Sources"                                    
                                     Text="{Binding ModelItem.IncludeFile,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                     Margin="{StaticResource ControlBorderRight}"
                                     Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
@@ -152,6 +152,7 @@
                                 Grid.Row="4"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 WrapInBrackets="True"
+                                AllowUserInsertLine="False"
                                 DefaultText="[[Result]]"
                                 Margin="0,2,0,0"
                                 FilterType="All"

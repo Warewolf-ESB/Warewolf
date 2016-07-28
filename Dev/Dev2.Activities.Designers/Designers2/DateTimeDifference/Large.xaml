@@ -155,6 +155,7 @@
                                 DefaultText="[[Difference]]"
                                 Margin="{StaticResource ControlBorderTop}"
                                 FilterType="All"
+                                AllowUserInsertLine="False"
                                 WrapInBrackets="True"
                                 ToolTip="{x:Static languages:Core.DateTimeDifferenceToolTipResult}"
                                 Text="{Binding Path=ModelItem.Result, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
