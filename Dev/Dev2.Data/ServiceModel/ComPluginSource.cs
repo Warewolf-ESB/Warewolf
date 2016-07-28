@@ -3,6 +3,7 @@ using System.Xml.Linq;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core.DynamicServices;
+// ReSharper disable NonLocalizedString
 
 // ReSharper disable CheckNamespace
 namespace Dev2.Runtime.ServiceModel.Data
@@ -24,7 +25,9 @@ namespace Dev2.Runtime.ServiceModel.Data
             ResourceType = typeof(ComPluginSource).Name;
 
             ClsId = xml.AttributeSafe("ClsId");
-            ProgId = xml.AttributeSafe("ProgId");
+            bool is32Bit;
+            bool.TryParse(xml.AttributeSafe("Is32Bit"),out is32Bit);
+            Is32Bit = is32Bit;
         }
 
         #endregion
@@ -32,7 +35,7 @@ namespace Dev2.Runtime.ServiceModel.Data
         #region Properties
 
         public string ClsId { get; set; }
-        public string ProgId { get; set; }
+        public bool Is32Bit { get; set; }
 
         #endregion
 
@@ -43,7 +46,7 @@ namespace Dev2.Runtime.ServiceModel.Data
             var result = base.ToXml();
             result.Add(
                 new XAttribute("ClsId", ClsId ?? string.Empty),
-                new XAttribute("ProgId", ProgId ?? string.Empty),
+                new XAttribute("Is32Bit", Is32Bit),
                 new XAttribute("Type", GetType().Name),
                 new XElement("TypeOf", enSourceType.ComPluginSource)
                 );
