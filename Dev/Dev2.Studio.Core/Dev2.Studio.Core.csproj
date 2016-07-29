@@ -235,21 +235,26 @@
     <Compile Include="AppResources\Converters\StringToVisibilityConverter.cs" />
     <Compile Include="AppResources\Converters\StringToVisibilityConverterMulti.cs" />
     <Compile Include="AppResources\Converters\TimeSpanToStringConverter.cs" />
+    <Compile Include="AppResources\Converters\TypeToVisibilityConverter.cs" />
     <Compile Include="AppResources\DependencyInjection\EqualityComparers\ContextualResourceModelEqualityComparer.cs" />
     <Compile Include="AppResources\DependencyInjection\EqualityComparers\EnvironmentModelEqualityComparer.cs" />
     <Compile Include="AppResources\DependencyInjection\EqualityComparers\ResourceModelEqualityComparer.cs" />
+    <Compile Include="AppResources\DependencyInjection\EqualityComparers\ServerEqualityComparer.cs" />
     <Compile Include="AppResources\Enums\NavigationViewContextType.cs" />
     <Compile Include="AppResources\Enums\ReportType.cs" />
     <Compile Include="AppResources\Enums\ResourceType.cs" />
     <Compile Include="AppResources\Enums\WorkSurfaceContext.cs" />
+    <Compile Include="AppResources\EventArgs\DomainControllerUncontactableEventArgs.cs" />
     <Compile Include="AppResources\ExtensionMethods\DependencyObjectExtensions.cs" />
     <Compile Include="AppResources\Globals.cs" />
     <Compile Include="AppResources\TriggerActions\SetCaretIndexAction.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="AppResources\WindowManagers\IDockAwareWindowManager.cs" />
+    <Compile Include="AppResources\WindowManagers\XamDockManagerDockAwareWindowManager.cs" />
     <Compile Include="ConnectionHelpers\ConnectControlEnvironment.cs" />
     <Compile Include="ConnectionHelpers\ConnectedServerChangedEvent.cs" />
+    <Compile Include="ConnectionHelpers\ConnectEventHandlers.cs" />
     <Compile Include="ConnectionHelpers\ConnectionEnumerations.cs" />
     <Compile Include="ConnectionHelpers\ConnectionStatusChangedEventArg.cs" />
     <Compile Include="ConnectionHelpers\ConnectControlSingleton.cs" />
@@ -322,6 +327,7 @@
     <Compile Include="AppResources\Repositories\EnvironmentRepository.cs" />
     <Compile Include="AppResources\Repositories\ResourceRepository.cs" />
     <Compile Include="AppResources\Workflow\WorkflowDebugger.CustomTrackingEventArgs.cs" />
+    <Compile Include="AppResources\Workflow\WorkflowDebugger.CustomTrackingParticipant.cs" />
     <Compile Include="Factories\ResourceModelFactory.cs" />
     <Compile Include="Interfaces\IEnvironmentModel.cs" />
     <Compile Include="Interfaces\ILayoutObjectViewModel.cs" />
@@ -336,8 +342,11 @@
     <Compile Include="Interfaces\IWorkflowDesignerViewModel.cs" />
     <Compile Include="Messages\AbstractEnvironmentMessage.cs" />
     <Compile Include="Messages\AbstractResourceMessage.cs" />
+    <Compile Include="Messages\AbstractTabMessage.cs" />
+    <Compile Include="Messages\AddServerToExplorerMessage.cs" />
     <Compile Include="Messages\AddStringListToDataListMessage.cs" />
     <Compile Include="Messages\AddWorkSurfaceMessage.cs" />
+    <Compile Include="Messages\CloseWizardMessage.cs" />
     <Compile Include="Messages\ConfigureActivityMessage.cs" />
     <Compile Include="Messages\ConfigureCaseExpressionMessage.cs" />
     <Compile Include="Messages\ConfigureDecisionExpressionMessage.cs" />
@@ -345,6 +354,7 @@
     <Compile Include="Messages\DebugOutputMessage.cs" />
     <Compile Include="Messages\FileChooserMessage.cs" />
     <Compile Include="Messages\SaveUnsavedWorkflowMessage.cs" />
+    <Compile Include="Messages\UpdateSelectedServer.cs" />
     <Compile Include="Messages\UpdateWorksurfaceDisplayName.cs" />
     <Compile Include="Messages\DataListItemSelectedMessage.cs" />
     <Compile Include="Messages\DebugResourceMessage.cs" />
@@ -352,19 +362,34 @@
     <Compile Include="Messages\DeleteResourcesMessage.cs" />
     <Compile Include="Messages\EditActivityMessage.cs" />
     <Compile Include="Messages\EditCaseExpressionMessage.cs" />
+    <Compile Include="Messages\EnvironmentDeletedMessage.cs" />
     <Compile Include="Messages\ExecuteResourceMessage.cs" />
     <Compile Include="Messages\IMessage.cs" />
     <Compile Include="Messages\IResetLayoutMessage.cs" />
+    <Compile Include="Messages\RefreshExplorerMessage.cs" />
+    <Compile Include="Messages\RemoveEnvironmentMessage.cs" />
     <Compile Include="Messages\RemoveResourceAndCloseTabMessage.cs" />
+    <Compile Include="Messages\ResetLayoutMessage.cs" />
     <Compile Include="Messages\IEnvironmentMessage.cs" />
     <Compile Include="Messages\IResourceMessage.cs" />
     <Compile Include="Messages\SaveAllOpenTabsMessage.cs" />
     <Compile Include="Messages\SaveResourceMessage.cs" />
+    <Compile Include="Messages\SelectItemInDeployMessage.cs" />
+    <Compile Include="Messages\SetActivePageMessage.cs" />
     <Compile Include="Messages\SetSelectedIContextualResourceModel.cs" />
+    <Compile Include="Messages\SetSelectedItemInExplorerTree.cs" />
     <Compile Include="Messages\ShowDependenciesMessage.cs" />
     <Compile Include="Messages\ShowReverseDependencyVisualizer.cs" />
+    <Compile Include="Messages\UpdateActiveEnvironmentMessage.cs" />
+    <Compile Include="Messages\UpdateExplorerMessage.cs" />
     <Compile Include="Messages\UpdateResourceMessage.cs" />
     <Compile Include="Models\ServerExplorerClientProxy.cs" />
+    <Compile Include="Models\DataMapping\DataMappingDefinition.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Models\DataMapping\TransferObject.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Models\EnvironmentModel.cs" />
     <Compile Include="Models\IWorkSurfaceObject.cs" />
     <Compile Include="Models\OperatorType.cs" />
@@ -380,6 +405,7 @@
     <Compile Include="Security\ClientAuthorizationService.cs" />
     <Compile Include="Security\ClientSecurityService.cs" />
     <Compile Include="Security\AuthorizeCommand.cs" />
+    <Compile Include="Services\Communication\EmailCommMessage.cs" />
     <Compile Include="Services\Communication\ICommMessage.cs" />
     <Compile Include="Services\Communication\ICommService.cs" />
     <Compile Include="Services\Configuration\ConfigurationService.cs" />
@@ -392,7 +418,9 @@
     <Compile Include="Services\ServerServiceConfiguration.cs" />
     <Compile Include="Services\System\ISystemInfoService.cs" />
     <Compile Include="Services\System\SystemInfoService.cs" />
+    <Compile Include="Services\System\SystemInfoTO.cs" />
     <Compile Include="Services\WindowsServiceManager.cs" />
+    <Compile Include="SortableObservableCollection.cs" />
     <Compile Include="StringResources.Designer.cs">
       <DependentUpon>StringResources.resx</DependentUpon>
     </Compile>
@@ -402,6 +430,7 @@
       <DependentUpon>StringResources.resx</DependentUpon>
     </Compile>
     <Compile Include="AppResources\Converters\InverseBooleanConverter.cs" />
+    <Compile Include="Activities\TO\ActivityViewModelTO.cs" />
     <Compile Include="Activities\Interfaces\IServiceXmlTranslator.cs" />
     <Compile Include="Utils\HelperUtils.cs" />
     <Compile Include="Utils\NewWorkflowNames.cs" />
@@ -516,11 +545,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Activities\TO\" />
     <Folder Include="Activities\Translators\" />
-    <Folder Include="AppResources\EventArgs\" />
     <Folder Include="AppResources\Exceptions\" />
-    <Folder Include="Models\DataMapping\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
