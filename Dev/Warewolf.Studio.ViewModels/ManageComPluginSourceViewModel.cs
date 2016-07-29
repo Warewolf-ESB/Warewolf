@@ -142,26 +142,13 @@ namespace Warewolf.Studio.ViewModels
 
         void PerformSearch(string searchTerm)
         {
-            if (_dllListings != null)
+            if (DllListings != null)
             {
-                if (string.IsNullOrEmpty(searchTerm))
+                foreach (var dllListingModel in DllListings)
                 {
-                    _dllListings.ForEach(model => model.IsVisible=true);
+                    dllListingModel.Filter(searchTerm);
                 }
-                else
-                {
-                    foreach(var dllListingModel in _dllListings)
-                    {
-                        if (dllListingModel.Name.ToLowerInvariant().Contains(searchTerm.ToLowerInvariant()))
-                        {
-                            dllListingModel.IsVisible = true;
-                        }else
-                        {
-                            dllListingModel.IsVisible = false;
-                        }
-                    }
-                }
-                DllListings = new AsyncObservableCollection<IDllListingModel>(_dllListings);
+                OnPropertyChanged(() => DllListings);
             }
         }
 
