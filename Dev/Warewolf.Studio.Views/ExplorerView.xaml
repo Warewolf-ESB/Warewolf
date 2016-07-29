@@ -373,10 +373,11 @@
                         <ig:NodeLayout.EditorTemplate>
                             <DataTemplate>
                                 <Grid>
-                                    <TextBox Height="20"
-                                             MaxWidth="200"
-                                             GotKeyboardFocus="UIElement_OnGotKeyboardFocus"
-                                             Padding="0,0,0,0"
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBox GotKeyboardFocus="UIElement_OnGotKeyboardFocus"
+                                             Style="{StaticResource ExplorerEditTextBoxStyle}"
                                              Text="{Binding Data.ResourceName,
                                                             Mode=TwoWay,
                                                             UpdateSourceTrigger=LostFocus}" />
