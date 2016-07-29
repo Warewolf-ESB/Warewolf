@@ -21,7 +21,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.ComPlugin
     [Serializable]
     public class ComPluginInvokeArgs
     {
-        public string ProgId { get; set; }
+        public bool Is32Bit { get; set; }
         public string ClsId { get; set; }
         public string AssemblyName { get; set; }
         public string Fullname { get; set; }
