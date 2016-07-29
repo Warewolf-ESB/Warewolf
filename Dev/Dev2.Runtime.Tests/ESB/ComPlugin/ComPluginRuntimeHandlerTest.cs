@@ -9,7 +9,6 @@
 */
 
 using System;
-using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Runtime.ServiceModel.Esb.Brokers.ComPlugin;
@@ -152,66 +151,6 @@ namespace Dev2.Tests.Runtime.ESB.ComPlugin
 
         #region Run
 
-     /*   [TestMethod]
-        [Owner("Nkosinathi Sangweni")]
-        [TestCategory("ComPluginRuntimeHandler_Run")]
-        public void ComPluginRuntimeHandler_Run_WhenValidLocation_ExpectResult()
-        {
-            //------------Setup for test--------------------------
-            var svc = CreateValidService();
-            var source = CreateComPluginSource();
-            //------------Execute Test---------------------------
-            using (var isolated = new Isolated<ComPluginRuntimeHandler>())
-            {
-                var args = new ComPluginInvokeArgs { ClsId = source.ClsId, Fullname = svc.Namespace, Method = svc.Method.Name, Parameters = svc.Method.Parameters };
-                var result = isolated.Value.Run(args);
-                var castResult = JsonConvert.DeserializeObject<object>(result.ToString());
-                //------------Assert Results-------------------------
-                Assert.IsNotNull(castResult);
-                /* if (castResult != null)
-                 {
-                     StringAssert.Contains(castResult.Name, "test data");
-                 }
-                 else
-                 {
-                     Assert.Fail("Failed Conversion for Assert");
-                 }
-            }
-
-
-        }
-
-        [TestMethod]
-        [Owner("Nkosinathi Sangweni")]
-        [TestCategory("ComPluginRuntimeHandler_Run")]
-        [ExpectedException(typeof(NullReferenceException))]
-        public void ComPluginRuntimeHandler_Run_WhenNullLocation_ExpectException()
-        {
-            //------------Setup for test--------------------------
-            var svc = CreatePluginService();
-            using (var isolated = new Isolated<ComPluginRuntimeHandler>())
-            {
-                var args = new ComPluginInvokeArgs { ClsId = null, AssemblyName = "Foo", Fullname = svc.Namespace, Method = svc.Method.Name, Parameters = svc.Method.Parameters };
-                isolated.Value.Run(args);
-            }
-        }
-
-        [TestMethod]
-        [Owner("Nkosinathi Sangweni")]
-        [TestCategory("ComPluginRuntimeHandler_Run")]
-        [ExpectedException(typeof(NullReferenceException))]
-        public void ComPluginRuntimeHandler_Run_WhenInvalidNamespace_ExpectException()
-        {
-            //------------Setup for test--------------------------
-            var svc = CreatePluginService();
-            var source = CreateComPluginSource();
-            using (var isolated = new Isolated<ComPluginRuntimeHandler>())
-            {
-                var args = new ComPluginInvokeArgs { ClsId = source.ClsId, Fullname = "foo.bar", Method = svc.Method.Name, Parameters = svc.Method.Parameters };
-                isolated.Value.Run(args);
-            }
-        }*/
-
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("ComPluginRuntimeHandler_Run")]
@@ -219,7 +158,7 @@ namespace Dev2.Tests.Runtime.ESB.ComPlugin
         {
             //------------Setup for test--------------------------
             var svc = CreatePluginService();
-            var source = CreateComPluginSource();
+            CreateComPluginSource();
             //------------Execute Test---------------------------
             using (var isolated = new Isolated<ComPluginRuntimeHandler>())
             {
@@ -277,24 +216,6 @@ namespace Dev2.Tests.Runtime.ESB.ComPlugin
             {
                 Name = "DummyMethod"
             });
-        }
-
-        private static ComPluginService CreateValidService()
-        {
-            return new ComPluginService()
-            {
-                Method = new ServiceMethod()
-                {
-                    Name = "Open",
-                    Parameters = new List<MethodParameter>
-                    {
-                                    new MethodParameter() {Name = "ConnectionString", Value = "Providerblahblahblah", TypeName = "System.String" },
-                                    new MethodParameter() {Name = "UserId", Value = "user1", TypeName = "System.String" },
-                                    new MethodParameter() {Name = "Password", Value = "pword", TypeName = "System.String" },
-                                    new MethodParameter() {Name = "Options", Value = "1", TypeName = "System.Int32", IsRequired = false},
-                                }
-                }
-            };
         }
 
         private static ComPluginService CreatePluginService(ServiceMethod method)
