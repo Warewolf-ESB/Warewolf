@@ -311,7 +311,6 @@
     <Compile Include="Interfaces\IResourceSyncProvider.cs" />
     <Compile Include="Interfaces\IResourceWorkspaceProvider.cs" />
     <Compile Include="Interfaces\IWcfProxyService.cs" />
-    <Compile Include="Collections\CaseInsensitiveComparer.cs" />
     <Compile Include="Diagnostics\DatabaseValidationResult.cs" />
     <Compile Include="Diagnostics\ExceptionManager.cs" />
     <Compile Include="Diagnostics\ValidationResult.cs" />
@@ -334,13 +333,11 @@
     <Compile Include="ESB\Management\Services\UpdateWorkspaceItem.cs" />
     <Compile Include="Execution\ExecutableServiceRepository.cs" />
     <Compile Include="Execution\IExecutableService.cs" />
-    <Compile Include="Execution\ExecutableServiceKey.cs" />
     <Compile Include="Hosting\ServiceDefinitionLoader.cs" />
     <Compile Include="Hosting\ManagementServiceResource.cs" />
     <Compile Include="Hosting\ResourceCatalogResult.cs" />
     <Compile Include="Network\IStudioNetworkSession.cs" />
     <Compile Include="Network\StudioAccount.cs" />
-    <Compile Include="Network\StudioNetworkSession.cs" />
     <Compile Include="Compiler\ServiceModelCompiler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ResourceCatalogImpl\Common.cs" />
@@ -364,7 +361,6 @@
     <Compile Include="ServiceModel\Data\WcfProxyService.cs" />
     <Compile Include="ServiceModel\Data\WcfService.cs" />
     <Compile Include="ServiceModel\Data\WcfSource.cs" />
-    <Compile Include="ServiceModel\Data\WebPermission.cs" />
     <Compile Include="ServiceModel\Data\WebService.cs" />
     <Compile Include="ServiceModel\Esb\Brokers\ComPlugin\ComPluginBroker.cs" />
     <Compile Include="ServiceModel\Esb\Brokers\ComPlugin\IRuntime.cs" />
@@ -382,7 +378,6 @@
     <Compile Include="ServiceModel\Esb\Brokers\PostgreSqlDataBaseBroker.cs" />
     <Compile Include="ServiceModel\Esb\Brokers\SqlDatabaseBroker.cs" />
     <Compile Include="ServiceModel\PluginServices.cs" />
-    <Compile Include="ServiceModel\Data\RecordsetNode.cs" />
     <Compile Include="ServiceModel\Utils\ServiceMappingHelper.cs" />
     <Compile Include="ServiceModel\WebServices.cs" />
     <Compile Include="ServiceModel\EmailSources.cs" />
@@ -391,7 +386,6 @@
     <Compile Include="Security\HostSecurityProvider.cs" />
     <Compile Include="Security\IHostSecurityProvider.cs" />
     <Compile Include="Security\ISecureConfig.cs" />
-    <Compile Include="Security\RSAKey.cs" />
     <Compile Include="ServiceInvoker.cs" />
     <Compile Include="ServiceModel\Data\NamespaceList.cs" />
     <Compile Include="ServiceModel\Data\PluginService.cs" />
@@ -408,16 +402,12 @@
     <Compile Include="ServiceModel\Esb\IDiscoverableEsbEnpoint.cs" />
     <Compile Include="ServiceModel\Esb\IEsbEndpoint.cs" />
     <Compile Include="ServiceModel\Data\MethodOutput.cs" />
-    <Compile Include="ServiceModel\Data\MethodOutputList.cs" />
     <Compile Include="ServiceModel\Data\MethodParameter.cs" />
-    <Compile Include="ServiceModel\Data\ResourceList.cs" />
     <Compile Include="ServiceModel\Data\Service.cs" />
     <Compile Include="ServiceModel\Data\ServiceMethod.cs" />
     <Compile Include="ServiceModel\Connections.cs" />
-    <Compile Include="Hosting\ResourceIteratorResult.cs" />
     <Compile Include="ServiceModel\Data\ServiceMethodList.cs" />
     <Compile Include="ServiceModel\Esb\IExecutableEsbEnpoint.cs" />
-    <Compile Include="ServiceModel\Data\HelpDictionary.cs" />
     <Compile Include="ServiceModel\Services.cs" />
     <Compile Include="Configuration\SettingsProvider.cs" />
     <Compile Include="ServiceModel\RabbitMQSources.cs" />
@@ -506,7 +496,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Collections\" />
+  </ItemGroup>
   <ItemGroup>
     <Content Include="SSL Generation\makecert.exe">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

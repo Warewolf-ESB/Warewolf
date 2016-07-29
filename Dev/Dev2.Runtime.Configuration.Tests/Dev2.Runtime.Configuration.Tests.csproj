@@ -88,10 +88,6 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="ComponentModel\MockSettingsObjectA.cs" />
-    <Compile Include="ComponentModel\MockSettingsObjectB.cs" />
-    <Compile Include="ComponentModel\MockSettingsObjectC.cs" />
-    <Compile Include="ComponentModel\SettingsObjectTests.cs" />
     <Compile Include="ComponentModel\WorkflowDescriptorTests.cs" />
     <Compile Include="Settings\ConfigurationTests.cs" />
     <Compile Include="ExtensionMethodsTests.cs" />
