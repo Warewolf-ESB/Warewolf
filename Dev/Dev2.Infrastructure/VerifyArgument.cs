@@ -137,62 +137,11 @@ namespace Dev2
     }
 
     /// <summary>
-    /// Indicates that the value of marked element could be <c>null</c> sometimes, so the check for <c>null</c> is necessary before its usage
-    /// </summary>
-    [AttributeUsage(AttributeTargets.Method | AttributeTargets.Parameter | AttributeTargets.Property | AttributeTargets.Delegate | AttributeTargets.Field)]
-    public sealed class CanBeNullAttribute : Attribute
-    {
-    }
-
-    /// <summary>
     /// Indicates that the value of marked element could never be <c>null</c>
     /// </summary>
     [AttributeUsage(AttributeTargets.Method | AttributeTargets.Parameter | AttributeTargets.Property | AttributeTargets.Delegate | AttributeTargets.Field)]
     public sealed class NotNullAttribute : Attribute
     {
-    }
-
-    /// <summary>
-    /// Indicates that the value of marked type (or its derivatives) cannot be compared using '==' or '!=' operators.
-    /// There is only exception to compare with <c>null</c>, it is permitted
-    /// </summary>
-    [AttributeUsage(AttributeTargets.Interface | AttributeTargets.Class | AttributeTargets.Struct)]
-    public sealed class CannotApplyEqualityOperatorAttribute : Attribute
-    {
-    }
-
-    /// <summary>
-    /// When applied to target attribute, specifies a requirement for any type which is marked with 
-    /// target attribute to implement or inherit specific type or types
-    /// </summary>
-    /// <example>
-    /// <code>
-    /// [BaseTypeRequired(typeof(IComponent)] // Specify requirement
-    /// public class ComponentAttribute : Attribute 
-    /// {}
-    /// 
-    /// [Component] // ComponentAttribute requires implementing IComponent interface
-    /// public class MyComponent : IComponent
-    /// {}
-    /// </code>
-    /// </example>
-    [AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
-    [BaseTypeRequired(typeof(Attribute))]
-    public sealed class BaseTypeRequiredAttribute : Attribute
-    {
-        /// <summary>
-        /// Initializes new instance of BaseTypeRequiredAttribute
-        /// </summary>
-        /// <param name="baseType">Specifies which types are required</param>
-        public BaseTypeRequiredAttribute(Type baseType)
-        {
-            BaseTypes = new[] { baseType };
-        }
-
-        /// <summary>
-        /// Gets enumerations of specified base types
-        /// </summary>
-        public Type[] BaseTypes { get; private set; }
     }
 
     /// <summary>
@@ -374,80 +323,5 @@ namespace Dev2
         /// Entity marked with attribute and all its members considered used
         /// </summary>
         WithMembers = Itself | Members
-    }
-
-    /// <summary>
-    /// This attribute is intended to mark publicly available API which should not be removed and so is treated as used.
-    /// </summary>
-    [MeansImplicitUse]
-    public sealed class PublicAPIAttribute : Attribute
-    {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="PublicAPIAttribute"/> class.
-        /// </summary>
-        public PublicAPIAttribute()
-        {
-        }
-
-        // ReSharper disable UnusedParameter.Local
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="PublicAPIAttribute"/> class.
-        /// </summary>
-        /// <param name="comment">The comment.</param>
-        public PublicAPIAttribute(string comment)
-        {
-        }
-
-        // ReSharper restore UnusedParameter.Local
-    }
-
-    /// <summary>
-    /// Tells code analysis engine if the parameter is completely handled when the invoked method is on stack. 
-    /// If the parameter is delegate, indicates that delegate is executed while the method is executed.
-    /// If the parameter is enumerable, indicates that it is enumerated while the method is executed.
-    /// </summary>
-    [AttributeUsage(AttributeTargets.Parameter)]
-    public sealed class InstantHandleAttribute : Attribute
-    {
-    }
-
-    /// <summary>
-    /// Indicates that method doesn't contain observable side effects.
-    /// The same as <see cref="System.Diagnostics.Contracts.PureAttribute"/>
-    /// </summary>
-    [AttributeUsage(AttributeTargets.Method)]
-    public sealed class PureAttribute : Attribute
-    {
-    }
-
-    /// <summary>
-    /// 
-    /// </summary>
-    [AttributeUsage(AttributeTargets.Parameter)]
-    public class PathReferenceAttribute : Attribute
-    {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="PathReferenceAttribute"/> class.
-        /// </summary>
-        public PathReferenceAttribute()
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="PathReferenceAttribute"/> class.
-        /// </summary>
-        /// <param name="basePath">The base path.</param>
-        [UsedImplicitly]
-        public PathReferenceAttribute([PathReference] string basePath)
-        {
-            BasePath = basePath;
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        [UsedImplicitly]
-        public string BasePath { get; private set; }
     }
 }
