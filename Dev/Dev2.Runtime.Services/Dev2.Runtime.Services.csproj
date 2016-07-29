@@ -338,7 +338,6 @@
     <Compile Include="Hosting\ResourceCatalogResult.cs" />
     <Compile Include="Network\IStudioNetworkSession.cs" />
     <Compile Include="Network\StudioAccount.cs" />
-    <Compile Include="Network\StudioNetworkSession.cs" />
     <Compile Include="Compiler\ServiceModelCompiler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ResourceCatalogImpl\Common.cs" />

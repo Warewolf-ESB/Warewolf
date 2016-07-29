@@ -11985,12 +11985,34 @@ namespace Warewolf.UITests
                 return this.mFirstItem;
             }
         }
+        
+        public WpfTreeItem SecondItem
+        {
+            get
+            {
+                if ((this.mSecondItem == null))
+                {
+                    this.mSecondItem = new WpfTreeItem(this);
+                    #region Search Criteria
+                    this.mSecondItem.SearchProperties[WpfTreeItem.PropertyNames.Name] = "Infragistics.Controls.Menus.XamDataTreeNodeDataContext";
+                    this.mSecondItem.SearchProperties[WpfTreeItem.PropertyNames.Instance] = "2";
+                    this.mSecondItem.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mSecondItem.SearchConfigurations.Add(SearchConfiguration.DisambiguateChild);
+                    this.mSecondItem.SearchConfigurations.Add(SearchConfiguration.AlwaysSearch);
+                    this.mSecondItem.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mSecondItem;
+            }
+        }
         #endregion
         
         #region Fields
         private Checkbox mCheckbox;
         
         private WpfTreeItem mFirstItem;
+        
+        private WpfTreeItem mSecondItem;
         #endregion
     }
     
@@ -12097,12 +12119,33 @@ namespace Warewolf.UITests
                 return this.mFirstItem;
             }
         }
+        
+        public WpfTreeItem SecondItem
+        {
+            get
+            {
+                if ((this.mSecondItem == null))
+                {
+                    this.mSecondItem = new WpfTreeItem(this);
+                    #region Search Criteria
+                    this.mSecondItem.SearchProperties[WpfTreeItem.PropertyNames.Name] = "Infragistics.Controls.Menus.XamDataTreeNodeDataContext";
+                    this.mSecondItem.SearchProperties[WpfTreeItem.PropertyNames.Instance] = "2";
+                    this.mSecondItem.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mSecondItem.SearchConfigurations.Add(SearchConfiguration.DisambiguateChild);
+                    this.mSecondItem.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mSecondItem;
+            }
+        }
         #endregion
         
         #region Fields
         private Checkbox1 mCheckbox;
         
         private WpfTreeItem mFirstItem;
+        
+        private WpfTreeItem mSecondItem;
         #endregion
     }
     
@@ -33096,12 +33139,34 @@ namespace Warewolf.UITests
                 return this.mFirstItem;
             }
         }
+        
+        public WpfTreeItem SecondItem
+        {
+            get
+            {
+                if ((this.mSecondItem == null))
+                {
+                    this.mSecondItem = new WpfTreeItem(this);
+                    #region Search Criteria
+                    this.mSecondItem.SearchProperties[WpfTreeItem.PropertyNames.Name] = "Infragistics.Controls.Menus.XamDataTreeNodeDataContext";
+                    this.mSecondItem.SearchProperties[WpfTreeItem.PropertyNames.Instance] = "2";
+                    this.mSecondItem.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mSecondItem.SearchConfigurations.Add(SearchConfiguration.DisambiguateChild);
+                    this.mSecondItem.SearchConfigurations.Add(SearchConfiguration.AlwaysSearch);
+                    this.mSecondItem.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mSecondItem;
+            }
+        }
         #endregion
         
         #region Fields
         private Checkbox2 mCheckbox;
         
         private WpfTreeItem mFirstItem;
+        
+        private WpfTreeItem mSecondItem;
         #endregion
     }
     

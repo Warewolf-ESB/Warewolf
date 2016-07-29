@@ -47,7 +47,6 @@
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
     <Compile Include="Toolbox\ToolBoxModel.cs" />
-    <Compile Include="Toolbox\WarewolfUnsupportedToolException.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Dev2.Common.Interfaces\Dev2.Common.Interfaces.csproj">

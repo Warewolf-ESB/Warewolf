@@ -98,7 +98,6 @@
   <ItemGroup>
     <Compile Include="DatabaseService.cs" />
     <Compile Include="DbAction.cs" />
-    <Compile Include="ExchangeService.cs" />
     <Compile Include="ServiceInput.cs" />
     <Compile Include="ServiceOutputMapping.cs" />
     <Compile Include="HelpDescriptor.cs" />
