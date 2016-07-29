@@ -10,7 +10,9 @@
 
 using System;
 using System.Collections.Generic;
+using Caliburn.Micro;
 using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Core.Messages;
 using Dev2.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -137,5 +139,21 @@ namespace Dev2.Core.Tests.Utils
             Assert.AreEqual("http://rsaklf/bob", act.ServiceUri);
 
         }
+    }
+
+    internal class TestHandleMessages : IHandle<AddWorkSurfaceMessage>
+    {
+        #region Implementation of IHandle<AddWorkSurfaceMessage>
+
+        public void Handle(AddWorkSurfaceMessage message)
+        {
+            WorkSurfaceMessageCalled = true;
+        }
+
+        public bool WorkSurfaceMessageCalled { get; set; }
+
+        #endregion
+
+        
     }
 }

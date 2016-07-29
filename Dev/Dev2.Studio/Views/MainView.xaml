@@ -1,0 +1,428 @@
+﻿<Window x:Class="Dev2.Studio.Views.MainView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:igDock="http://infragistics.com/DockManager"
+        xmlns:viewModels="clr-namespace:Dev2.Studio.ViewModels"
+        xmlns:cal="http://www.caliburnproject.org"
+        xmlns:customControls="clr-namespace:Dev2.Studio.Core.CustomControls;assembly=Dev2.Studio.Core"
+        xmlns:dataList="clr-namespace:Dev2.Studio.Views.DataList"
+        xmlns:dock="clr-namespace:Dev2.Studio.Dock"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+        xmlns:behaviors="clr-namespace:Dev2.Studio.AppResources.Behaviors"
+        
+        xmlns:fa="http://schemas.fontawesome.io/icons/"
+        xmlns:views1="clr-namespace:Warewolf.Studio.Views;assembly=Warewolf.Studio.Views"
+        xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
+        Background="{StaticResource WareWolfBackGroundBrush}"
+        FontFamily="{StaticResource DefaultFontFamily}"
+        ShowInTaskbar="True"
+        WindowState="Maximized"
+        Title="{Binding DisplayName}"
+        Closing="MainView_OnClosing"
+        Icon="pack://application:,,,/Warewolf Studio;component/Warewolf.ico"
+        x:Name="MainViewWindow"
+        Style="{DynamicResource MetroWindowStyle}"
+        TextOptions.TextFormattingMode="Display"
+        mc:Ignorable="d"
+        d:DataContext="{d:DesignInstance viewModels:MainViewModel}" >
+
+    <Window.Resources>
+
+        <Storyboard x:Key="AnimateExitFullScreenPanelOpen" TargetName="ExitFullScreenPanel">
+            <ThicknessAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetProperty="Margin">
+                <SplineThicknessKeyFrame KeyTime="0:0:0.5" Value="0,0,0,0" />
+            </ThicknessAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="Opacity">
+                <SplineDoubleKeyFrame KeyTime="0:0:0.5" Value="1" />
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+        <Storyboard x:Key="AnimateExitFullScreenPanelClose" TargetName="ExitFullScreenPanel">
+            <ThicknessAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetProperty="Margin">
+                <SplineThicknessKeyFrame KeyTime="0:0:0.5" Value="0,-90,0,0" />
+            </ThicknessAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="Opacity">
+                <SplineDoubleKeyFrame KeyTime="0:0:0.5" Value="0" />
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+
+        <Storyboard x:Key="AnimateCloseTitleBorder">
+            <DoubleAnimation Duration="0:0:0.3"
+                             Storyboard.TargetProperty="Height"
+                             To="0" />
+        </Storyboard>
+        <Storyboard x:Key="AnimateOpenTitleBorder">
+            <DoubleAnimation Duration="0:0:0.3"
+                             Storyboard.TargetProperty="Height"
+                             To="25" />
+        </Storyboard>
+
+        <Style x:Key="MetroWindowStyle" TargetType="{x:Type Window}">
+            <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.WindowTextBrushKey}}" />
+            <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.WindowBrushKey}}" />
+            <Setter Property="WindowStyle" Value="None" />
+            <Setter Property="AllowsTransparency" Value="False" />
+            <Setter Property="ResizeMode" Value="CanMinimize"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Window}">
+                        <Grid>
+                            <Border x:Name="MainBorder"
+                                    Background="White"
+                                    BorderThickness="0">
+                                <DockPanel LastChildFill="True">
+                                    <Border x:Name="PART_TITLEBAR"
+                                            Height="25"
+                                            Background="Transparent"
+                                            BorderBrush="{StaticResource MenuPanelGradient}"
+                                            BorderThickness="0,0,0,1"
+                                            DockPanel.Dock="Top"
+                                            MouseLeftButtonDown="PART_TITLEBAR_MouseLeftButtonDown"
+                                            MouseLeftButtonUp="PART_TITLEBAR_OnMouseLeftButtonUp" MouseMove="PART_TITLEBAR_OnMouseMove">
+                                        <DockPanel LastChildFill="False">
+                                            <Image Source="{StaticResource System-Logo}"
+                                                   Margin="5,0,0,0"
+                                                   Height="20"/>
+                                            <TextBlock Margin="5,0,0,0"
+                                                       VerticalAlignment="Center"
+                                                       FontSize="16"
+                                                       Foreground="#FFAAAAAA"
+                                                       Text="{TemplateBinding Title}"
+                                                       TextWrapping="NoWrap" />
+                                            <Button x:Name="PART_CLOSE"
+                                                    Width="25"
+                                                    Height="25"
+                                                    VerticalAlignment="Center"
+                                                    Click="PART_CLOSE_Click"
+                                                    DockPanel.Dock="Right"
+                                                    Style="{StaticResource MetroWindowButtonStyle}">
+                                                <Button.Content>
+                                                    <fa:FontAwesome Icon="Times" FontSize="16"></fa:FontAwesome>
+                                                </Button.Content>
+                                            </Button>
+                                            <Button x:Name="PART_MAXIMIZE_RESTORE"
+                                                    Width="25"
+                                                    Height="25"
+                                                    HorizontalAlignment="Center"
+                                                    VerticalAlignment="Center"
+                                                    Click="PART_MAXIMIZE_RESTORE_Click"
+                                                    DockPanel.Dock="Right"
+                                                    Style="{StaticResource MetroWindowButtonStyle}">
+                                                <Path Width="10"
+                                                      Data="M4.3685131,23.127279L4.3685131,47.283243 47.117023,47.283243 47.117023,23.127279z M0,10.684L53.755001,10.684 53.755001,51.668001 0,51.668001z M8.5679998,0L58.668022,0 64,0 64,5.6864691 64,45.317999 58.668022,45.317999 58.668022,5.6864691 8.5679998,5.6864691z"
+                                                      Fill="Black"
+                                                      Stretch="Uniform" />
+                                            </Button>
+                                            <Button x:Name="PART_SUPER_MAXIMIZE_RESTORE"
+                                                    Width="25"
+                                                    Height="25"
+                                                    HorizontalAlignment="Center"
+                                                    VerticalAlignment="Center"
+                                                    Click="PART_SUPER_MAXIMIZE_RESTORE_Click"
+                                                    DockPanel.Dock="Right"
+                                                    Style="{StaticResource MetroWindowButtonStyle}">
+                                                <fa:FontAwesome Icon="ArrowsAlt" />
+                                            </Button>
+                                            <Button x:Name="PART_MINIMIZE"
+                                                    Width="25"
+                                                    Height="25"
+                                                    HorizontalAlignment="Center"
+                                                    VerticalAlignment="Center"
+                                                    VerticalContentAlignment="Bottom"
+                                                    Click="PART_MINIMIZE_Click"
+                                                    DockPanel.Dock="Right"
+                                                    Style="{StaticResource MetroWindowButtonStyle}">
+                                                <fa:FontAwesome VerticalAlignment="Bottom" Icon="Minus" FontSize="16" />
+                                            </Button>
+                                            <Button x:Name="PART_LOCK"
+                                                    Width="25"
+                                                    Height="25"
+                                                    VerticalAlignment="Center"
+                                                    Click="PART_LOCK_Click"
+                                                    DockPanel.Dock="Right"
+                                                    Style="{StaticResource MetroWindowButtonStyle}">
+                                                <fa:FontAwesome Icon="Lock" FontSize="15" />
+                                            </Button>
+                                        </DockPanel>
+                                    </Border>
+                                    <AdornerDecorator DockPanel.Dock="Bottom">
+                                        <ContentPresenter Content="{TemplateBinding Content}"
+                                                          ContentStringFormat="{TemplateBinding ContentStringFormat}"
+                                                          ContentTemplate="{TemplateBinding ContentTemplate}" />
+                                    </AdornerDecorator>
+                                </DockPanel>
+                            </Border>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="ResizeMode" Value="CanResizeWithGrip">
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="{x:Type Window}">
+                                <Border Background="{TemplateBinding Background}"
+                                        BorderBrush="{TemplateBinding BorderBrush}"
+                                        BorderThickness="{TemplateBinding BorderThickness}">
+                                    <Grid>
+                                        <AdornerDecorator>
+                                            <ContentPresenter Content="{TemplateBinding Content}"
+                                                              ContentStringFormat="{TemplateBinding ContentStringFormat}"
+                                                              ContentTemplate="{TemplateBinding ContentTemplate}" />
+                                        </AdornerDecorator>
+                                        <ResizeGrip x:Name="WindowResizeGrip"
+                                                    HorizontalAlignment="Right"
+                                                    VerticalAlignment="Bottom"
+                                                    IsTabStop="False"
+                                                    Visibility="Collapsed" />
+                                    </Grid>
+                                </Border>
+                                <ControlTemplate.Triggers>
+                                    <MultiTrigger>
+                                        <MultiTrigger.Conditions>
+                                            <Condition Property="ResizeMode" Value="CanResizeWithGrip" />
+                                            <Condition Property="WindowState" Value="Normal" />
+                                        </MultiTrigger.Conditions>
+                                        <Setter TargetName="WindowResizeGrip" Property="Visibility" Value="Visible" />
+                                    </MultiTrigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+    </Window.Resources>
+
+    <Window.InputBindings>
+        <KeyBinding Command="{Binding ExitCommand}" Key="F4" Modifiers="Alt" />
+        <KeyBinding Command="{Binding SettingsCommand}" Key="T" Modifiers="Alt" />
+        <KeyBinding Command="{Binding SaveCommand}" Key="S" Modifiers="Ctrl" />
+        <KeyBinding Command="{Binding SaveAllCommand}" Key="S" Modifiers="Ctrl+Shift" />
+        <KeyBinding Command="{Binding ActiveItem.RunCommand}" Key="R" Modifiers="Ctrl" />
+        <KeyBinding Command="{Binding DebugCommand}" Key="T" Modifiers="Ctrl" />
+        <KeyBinding Command="{Binding DebugCommand}" Key="F5" />
+        <KeyBinding Command="{Binding QuickDebugCommand}" Key="F6" />
+        <KeyBinding Command="{Binding QuickViewInBrowserCommand}" Key="F7" />
+        <KeyBinding Command="{Binding DeployCommand}" Key="D" Modifiers="Ctrl" />
+        <KeyBinding Command="{Binding NewResourceCommand}"  CommandParameter="DbService" Key="D" Modifiers="Ctrl+Shift" />
+        <KeyBinding Command="{Binding NewResourceCommand}"  CommandParameter="PluginService" Key="P" Modifiers="Ctrl+Shift" />
+        <KeyBinding Command="{Binding NewResourceCommand}"  CommandParameter="WebService" Key="W" Modifiers="Ctrl+Shift" />
+        <KeyBinding Command="{Binding NewResourceCommand}" CommandParameter="Workflow" Key="W" Modifiers="Ctrl" />
+        <KeyBinding Command="{Binding SchedulerCommand}" Key="S" Modifiers="Alt" />
+    </Window.InputBindings>
+
+    <!--  START OF LAYOUT  -->
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"
+                                  MinWidth="0"
+                                  MaxWidth="150" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid Grid.Column="0">
+                <ContentControl Width="60"
+                                SizeChanged="SlidingMenuPane_OnSizeChanged"
+                                
+                                >
+                    <views1:MenuView DataContext="{Binding MenuViewModel}"/>
+                    <ContentControl.Style>
+                        <Style>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding MenuExpanded}" Value="True">
+                                    <DataTrigger.EnterActions>
+                                        <BeginStoryboard>
+                                            <Storyboard>
+                                                <DoubleAnimation Duration="0:0:0.5"
+                                                                 From="60"
+                                                                 Storyboard.TargetProperty="Width"
+                                                                 To="150" />
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </DataTrigger.EnterActions>
+                                    <DataTrigger.ExitActions>
+                                        <BeginStoryboard>
+                                            <Storyboard>
+                                                <DoubleAnimation Duration="0:0:0.5"
+                                                                 From="150"
+                                                                 Storyboard.TargetProperty="Width"
+                                                                 To="60" />
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </DataTrigger.ExitActions>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </ContentControl.Style>
+                </ContentControl>
+            </Grid>
+            <Grid Grid.Column="1">
+                <igDock:XamDockManager x:Name="DockManager"
+                                            AllowMaximizeFloatingWindows="True"
+                                            AllowMinimizeFloatingWindows="True"
+                                            Background="{StaticResource WareWolfBackGroundBrush}"
+                                            FloatingWindowDoubleClickAction="ToggleDockedState"
+                                            FlyoutAnimation="Resize"
+                                            LayoutMode="FillContainer"
+                                            ToolWindowLoaded="DockManager_OnToolWindowLoaded"
+                                            UnpinnedTabHoverAction="Flyout">
+                    <igDock:XamDockManager.Panes>
+
+                        <igDock:SplitPane Width="300"
+                                               SplitterOrientation="Horizontal"
+                                               igDock:XamDockManager.InitialLocation="DockedRight">
+
+                            <igDock:ContentPane x:Name="Variables"
+                                                     AllowClose="False"
+                                                     AllowInDocumentHost="False"
+                                                     CloseButtonVisibility="Hidden"
+                                                     Header="VARIABLES"
+                                                     IsPinned="True"
+                                                     Style="{StaticResource DockmangerToolPaneStyle}"
+                                                     WindowPositionMenuVisibility="Hidden" >
+                                <dataList:DataListView DataContext="{Binding ActiveItem.DataListViewModel}" AutomationProperties.AutomationId="UI_VariablesControl_AutoID" />
+                            </igDock:ContentPane>
+
+                            <igDock:ContentPane x:Name="OutputPane"
+                                                     AllowClose="False"
+                                                     AllowInDocumentHost="False"
+                                                     CloseButtonVisibility="Hidden"
+                                                     Header="OUTPUT"
+                                                     IsPinned="True"
+                                                     Style="{StaticResource DockmangerToolPaneStyle}"
+                                                     WindowPositionMenuVisibility="Hidden" >
+                                <customControls:CachingContentHost cal:View.Model="{Binding ActiveItem.DebugOutputViewModel}" AutomationProperties.AutomationId="UI_OutputControl_AutoID" />
+                            </igDock:ContentPane>
+
+                        </igDock:SplitPane>
+
+                        <igDock:SplitPane Width="300"
+                                               SplitterOrientation="Horizontal"
+                                               igDock:XamDockManager.InitialLocation="DockedLeft">
+                            <igDock:ContentPane x:Name="Explorer"
+                                                     AllowClose="False"
+                                                     AllowInDocumentHost="False"
+                                                     CloseButtonVisibility="Hidden"
+                                                     Header="EXPLORER"
+                                                     IsPinned="True"
+                                                     Style="{StaticResource DockmangerToolPaneStyle}"
+                                                     WindowPositionMenuVisibility="Hidden" >
+                                <views1:ExplorerView DataContext="{Binding ExplorerViewModel}" AutomationProperties.AutomationId="UI_ExplorerControl_AutoID"/>
+                            </igDock:ContentPane>
+                            <igDock:ContentPane x:Name="Toolbox"
+                                                     AllowClose="False"
+                                                     AllowInDocumentHost="False"
+                                                     CloseButtonVisibility="Hidden" 
+                                                     Header="TOOL BOX"
+                                                     IsPinned="True"
+                                                     Style="{StaticResource DockmangerToolPaneStyle}"
+                                                     WindowPositionMenuVisibility="Hidden" >
+                                <views1:ToolboxView DataContext="{Binding ToolboxViewModel}" x:Name="Toolboxcontrol" AutomationProperties.AutomationId="UI_ToolboxControl_AutoID" />
+                            </igDock:ContentPane>
+                            <igDock:ContentPane x:Name="Help"
+                                                     AllowClose="False"
+                                                     AllowInDocumentHost="False"
+                                                     CloseButtonVisibility="Hidden"
+                                                     Header="WHAT DOES THIS DO?"
+                                                     IsPinned="True"
+                                                     Style="{StaticResource DockmangerToolPaneStyle}"
+                                                     WindowPositionMenuVisibility="Hidden" >
+                                <views1:HelpView DataContext="{Binding HelpViewModel}" x:Name="HelpViewControl" AutomationProperties.AutomationId="UI_HelpViewControl_AutoID"/>
+                            </igDock:ContentPane>
+                        </igDock:SplitPane>
+                    </igDock:XamDockManager.Panes>
+                    <!-- Document Content Host - For Tabbed workflow pane -->
+                    <igDock:DocumentContentHost x:Name="DocumentHost" FocusManager.FocusedElement="{Binding ElementName=DisplayContentControl, UpdateSourceTrigger=PropertyChanged}"
+                                            AutomationProperties.AutomationId="UI_DocumentHost_AutoID" Focusable="True" >
+                        <igDock:SplitPane x:Name="DockCentre" AutomationProperties.AutomationId="UI_SplitPane_AutoID">
+                            <igDock:TabGroupPane x:Name="TabManager" TabStripPlacement="Top"  AutomationProperties.AutomationId="UI_TabManager_AutoID">
+                                <i:Interaction.Behaviors>
+                                    <behaviors:TabGroupPaneBindingBehavior DocumentHost="{Binding ElementName=DocumentHost, IsAsync=True}" 
+                                                                   SelectedItem="{Binding DataContext.ActiveItem, ElementName=DocumentHost, Mode=TwoWay}" />
+                                </i:Interaction.Behaviors>
+                                <dock:ContentPaneFactory.PaneFactory>
+                                    <dock:ContentPaneFactory ItemsSource="{Binding Items}" TabHeaderPath="WorkSurfaceViewModel" ContentPath="WorkSurfaceViewModel" >
+                                        <dock:ContentPaneFactory.ContainerStyle>
+                                            <Style TargetType="{x:Type igDock:ContentPane}" BasedOn="{StaticResource {x:Type igDock:ContentPane}}">
+                                                <!-- Work Item Tab Header Template and Buttons -->
+                                                <Setter Property="TabHeaderTemplate">
+                                                    <Setter.Value>
+                                                        <DataTemplate>
+                                                            <StackPanel Orientation="Horizontal" >
+                                                                <Image Source="{Binding ResourceType, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource ResourceTypeToIconConverter}}" Height="16" Width="16"
+                                                                   AutomationProperties.AutomationId="{Binding DisplayName}" Margin="4,4,4,2" />
+                                                                <TextBlock Text="{Binding DisplayName}" VerticalAlignment="Center" Margin="0,0,2,0" />
+                                                                <!--<Image Style="{StaticResource AuthNoneIconStyle}"
+                                                                   Visibility="{Binding CanSave, Converter={StaticResource BoolToVisibilityConverterNegative}}"
+                                                                   ToolTip="{x:Static languages:Core.WorkflowDesignerSecurityToolTipNone}"
+                                                                   Margin="5,0,0,0"/>-->
+                                                                <fa:FontAwesome Icon="Ban" 
+                                                                                Foreground="DarkRed" 
+                                                                                Margin="0,3,0,0" FontStyle="Normal"
+                                                                                Visibility="{Binding CanSave, Converter={StaticResource BoolToVisibilityConverterNegative}}"
+                                                                                ToolTip="{x:Static languages:Core.WorkflowDesignerSecurityToolTipNone}"></fa:FontAwesome>
+                                                            </StackPanel>
+                                                        </DataTemplate>
+                                                    </Setter.Value>
+                                                </Setter>
+                                                <Setter Property="ContentTemplate">
+                                                    <Setter.Value>
+                                                        <DataTemplate>
+                                                            <ContentControl x:Name="DisplayContentControl" cal:View.Model="{Binding .}" MouseDown="ContentControl_MouseEnter" />
+                                                        </DataTemplate>
+                                                    </Setter.Value>
+                                                </Setter>
+                                                <Setter Property="AutomationProperties.AutomationId" Value="{Binding DisplayName}" />
+                                                <Setter Property="SaveInLayout" Value="false" />
+                                            </Style>
+                                        </dock:ContentPaneFactory.ContainerStyle>
+                                    </dock:ContentPaneFactory>
+                                </dock:ContentPaneFactory.PaneFactory>
+                            </igDock:TabGroupPane>
+                        </igDock:SplitPane>
+                    </igDock:DocumentContentHost>
+                </igDock:XamDockManager>
+            </Grid>
+        </Grid>
+        <StackPanel x:Name="ExitFullScreenPanel"
+                    Width="250"
+                    Height="60"
+                    Margin="0,-90,0,0"
+                    ZIndex="0"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Top"
+                    Background="White"
+                    Opacity="0"
+                    ScrollViewer.VerticalScrollBarVisibility="Disabled">
+            <StackPanel.Effect>
+                <DropShadowEffect BlurRadius="10"
+                                  Direction="300"
+                                  ShadowDepth="10" />
+            </StackPanel.Effect>
+            <TextBlock Margin="0,20,0,0"
+        		HorizontalAlignment="Center"
+        		VerticalAlignment="Center"
+        		Background="White"
+        		FontSize="22"><Hyperlink Click="CloseSuperMaximised"><Run Text="Exit Full Screen (F11)" /></Hyperlink></TextBlock>
+        </StackPanel>
+        <Rectangle x:Name="ShowFullScreenPanel"
+                   Height="15"
+                   Margin="0,-6,0,0"
+                   VerticalAlignment="Top"
+                   Fill="Transparent"
+                   MouseEnter="ShowFullScreenPanel_OnMouseEnter" />
+        <Rectangle x:Name="HideFullScreenPanel"
+                   Height="20"
+                   Margin="0,37,0,0"
+                   VerticalAlignment="Top"
+                   Fill="Transparent"
+                   MouseEnter="HideFullScreenPanel_OnMouseEnter" />
+    </Grid>
+</Window>
