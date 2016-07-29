@@ -153,6 +153,7 @@ namespace Dev2.Network
         {
             Dev2Logger.Debug("*********** Hub connection down");
             IsConnected = false;
+            IsConnecting = false;
             if (IsShuttingDown)
             {
                 return;
@@ -197,9 +198,10 @@ namespace Dev2.Network
                     IsConnected = false;
                     IsConnecting = true;
                     UpdateIsAuthorized(false);
-                    OnNetworkStateChanged(new NetworkStateEventArgs(NetworkState.Offline, NetworkState.Connecting));
+                    OnNetworkStateChanged(new NetworkStateEventArgs(NetworkState.Online, NetworkState.Offline));
                     break;
                 case ConnectionStateWrapped.Disconnected:
+                    OnNetworkStateChanged(new NetworkStateEventArgs(NetworkState.Online, NetworkState.Offline));
                     HasDisconnected();
                     break;
             }
