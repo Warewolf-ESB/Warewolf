@@ -169,10 +169,6 @@
     </CodeAnalysisDependentAssemblyPaths>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Activities\PathIOTestingUtils.cs">
-      <SubType>
-      </SubType>
-    </Compile>
     <Compile Include="Internal Services\GetComputerNamesTests.cs" />
     <Compile Include="Server Test\InternalServices\FindDependenciesServiceTest.cs" />
     <Compile Include="Server Test\InternalServices\FindDirectoryServiceTest.cs" />
@@ -231,6 +227,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Activities\" />
     <Folder Include="CommonTest\" />
     <Folder Include="Server Test\Build.Test\" />
     <Folder Include="Server Test\WebServerTests\" />

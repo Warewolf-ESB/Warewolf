@@ -243,7 +243,6 @@
     <Compile Include="Designers2\Core\CloneInputRegion\DatabaseInputRegionClone.cs" />
     <Compile Include="Designers2\Core\CloneInputRegion\DotNetInputRegionClone.cs" />
     <Compile Include="Designers2\Core\CloneInputRegion\WcfInputRegionClone.cs" />
-    <Compile Include="Designers2\Core\CustomToolViewModelBase.cs" />
     <Compile Include="Designers2\Core\CustomToolWithRegionBase.cs" />
     <Compile Include="Designers2\Core\CEventHelper.cs" />
     <Compile Include="Designers2\Core\DropboxSourceManager.cs" />
@@ -294,9 +293,6 @@
     </Compile>
     <Compile Include="Designers2\DateTime\Large.xaml.cs">
       <DependentUpon>Large.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Designers2\Decision\DecisionDesigner.xaml.cs">
-      <DependentUpon>DecisionDesigner.xaml</DependentUpon>
     </Compile>
     <Compile Include="Designers2\Decision\DecisionDesignerViewModel.cs" />
     <Compile Include="Designers2\Decision\Large.xaml.cs">
@@ -1276,10 +1272,6 @@
     <Page Include="Designers2\DateTime\Large.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Designers2\Decision\DecisionDesigner.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Designers2\Decision\Large.xaml">
       <SubType>Designer</SubType>

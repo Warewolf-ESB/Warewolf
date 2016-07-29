@@ -156,7 +156,6 @@
     <Compile Include="Converters\Graph\DataTable\DataTableMapper.cs" />
     <Compile Include="Converters\Graph\DataTable\DataTableNavigator.cs" />
     <Compile Include="Converters\Graph\DataTable\DataTablePath.cs" />
-    <Compile Include="Converters\Graph\DataTable\DataTablePathSegment.cs" />
     <Compile Include="Converters\Graph\IndexedPathSegmentTreeNode.cs" />
     <Compile Include="Converters\Graph\InterrogatorFactory.cs" />
     <Compile Include="Converters\Graph\NavigatorBase.cs" />
@@ -195,7 +194,6 @@
     </Compile>
     <Compile Include="ExtMethods\TaskExtensions.cs" />
     <Compile Include="Factories\DropboxFactory.cs" />
-    <Compile Include="DynamicServices\Objects\UnitTest.cs" />
     <Compile Include="Common\FileIO.cs" />
     <Compile Include="IActivityParser.cs" />
     <Compile Include="IDev2Activity.cs" />
@@ -220,7 +218,6 @@
     <Compile Include="Simulation\ISimulationResult.cs" />
     <Compile Include="Simulation\SimulationKey.cs" />
     <Compile Include="Simulation\SimulationRepository.cs" />
-    <Compile Include="Simulation\SimulationResult.cs" />
     <Compile Include="Util\Dev2ActivityIOIteration.cs" />
     <Compile Include="Util\Dev2XamlCleaner.cs" />
     <Compile Include="Util\FindMissingAttribute.cs" />
@@ -236,7 +233,6 @@
     <Compile Include="DynamicServices\Objects\ServiceActionInput.cs" />
     <Compile Include="DynamicServices\Objects\Source.cs" />
     <Compile Include="DynamicServices\Objects\Validator.cs" />
-    <Compile Include="DynamicServices\Objects\WorkflowActivityDef.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="DynamicServices\Resources.resx">

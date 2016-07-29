@@ -146,13 +146,11 @@
     <Compile Include="ConverterTests\GraphTests\StringTests\XmlTests\XmlPathTests.cs" />
     <Compile Include="DataList\BrokerTest.cs" />
     <Compile Include="DataList\DebugToTests.cs" />
-    <Compile Include="Dev2.Network\MockNetworkServer.cs" />
     <Compile Include="Dev2.Network\MockNetworkContext.cs" />
     <Compile Include="Dev2EmailSenderTests.cs" />
     <Compile Include="Dev2RandomTests.cs" />
     <Compile Include="Diagnostics\DebugDispatcherTest.cs" />
     <Compile Include="Diagnostics\DebugItemMock.cs" />
-    <Compile Include="Diagnostics\DebugStateMock.cs" />
     <Compile Include="Diagnostics\DebugStateTests.cs" />
     <Compile Include="Diagnostics\DebugItemTests.cs" />
     <Compile Include="DirectoryHelperTests.cs" />
@@ -161,7 +159,6 @@
     <Compile Include="Logging\DummyDebugProvider.cs" />
     <Compile Include="MathOperationTest\InfragisticsEvaluationTest.cs" />
     <Compile Include="StringExtensionTests.cs" />
-    <Compile Include="TestModelItemFactory.cs" />
     <Compile Include="TestModelItemUtil.cs" />
     <Compile Include="TestUtils.cs" />
     <Compile Include="DataObjectTest.cs" />
