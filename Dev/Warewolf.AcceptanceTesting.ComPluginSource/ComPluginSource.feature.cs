@@ -65,6 +65,19 @@ namespace Warewolf.AcceptanceTesting.ComPluginSource
         {
             testRunner.CollectScenarioErrors();
         }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("New COMPlugin Source File")]
+        public virtual void NewCOMPluginSourceFile()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("New COMPlugin Source File", ((string[])(null)));
+#line 15
+this.ScenarioSetup(scenarioInfo);
+#line 16
+testRunner.Given("I open New COMPlugin Source", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+            this.ScenarioCleanup();
+        }
     }
 }
 #pragma warning restore

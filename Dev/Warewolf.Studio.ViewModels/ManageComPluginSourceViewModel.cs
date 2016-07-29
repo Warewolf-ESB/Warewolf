@@ -83,7 +83,16 @@ namespace Warewolf.Studio.ViewModels
             {
                 IsLoading = true;
                 var comDllListings = _updateManager.GetComDllListings(null);
-                var names = comDllListings.Select(input => new DllListingModel(_updateManager, input, comDllListings)).ToList();
+                var names = comDllListings.Select(input => new DllListingModel(_updateManager, new DllListing()
+                {
+                    Children = new List<IFileListing>(comDllListings),
+                    ClsId = ((DllListing)input).ClsId,
+                    ProgId = ((DllListing)input).ProgId,
+                    Name = ((DllListing)input).Name,
+                    FullName = ((DllListing)input).FullName,
+                    IsDirectory = ((DllListing)input).IsDirectory,
+
+                })).ToList();
 
                 DispatcherAction.Invoke(() =>
                 {

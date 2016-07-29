@@ -37,11 +37,11 @@ namespace Dev2.Activities
         protected override void ExecutionImpl(IEsbChannel esbChannel, IDSFDataObject dataObject, string inputs, string outputs, out ErrorResultTO errors, int update)
         {
             errors = new ErrorResultTO();
-            if (SelectedSource == null)
-            {
-                errors.AddError(ErrorResource.NoNamespaceSelected);
-                return;
-            }
+            //if (SelectedSource == null) Not applicable
+            //{
+            //    errors.AddError(ErrorResource.NoNamespaceSelected);
+            //    return;
+            //}
             if (Method == null)
             {
                 errors.AddError(ErrorResource.NoMethodSelected);
