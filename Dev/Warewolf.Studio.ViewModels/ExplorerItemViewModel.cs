@@ -1094,6 +1094,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 ResourcePath = destination.ResourcePath + (destination.ResourcePath == String.Empty ? "" : "\\") + ResourceName;
                 Parent = destination;
+                Parent.AddChild(this);
             }
         }
 
