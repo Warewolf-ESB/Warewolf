@@ -62,7 +62,6 @@
     <Compile Include="..\AssemblyCommonInfo.cs">
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
-    <Compile Include="MoqUtils.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

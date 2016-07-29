@@ -8,14 +8,10 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using System.Collections.ObjectModel;
-
 // ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Core
 {
     public interface IObjectCloner<T>
     {
-
-        ObservableCollection<T> CloneObservableCollection(ObservableCollection<T> src);
     }
 }

@@ -95,37 +95,6 @@ namespace Dev2.TaskScheduler.Wrappers.Interfaces
         ///     action.
         /// </summary>
         NamedValueCollection ValueQueries { get; }
-
-        /// <summary>
-        ///     Gets basic event information.
-        /// </summary>
-        /// <param name="log">The event's log.</param>
-        /// <param name="source">
-        ///     The event's source. Can be <c>null</c>.
-        /// </param>
-        /// <param name="eventId">
-        ///     The event's id. Can be <c>null</c>.
-        /// </param>
-        /// <returns>
-        ///     <c>true</c> if subscription represents a basic event, <c>false</c> if not.
-        /// </returns>
-        bool GetBasic(out string log, out string source, out int? eventId);
-
-        /// <summary>
-        ///     Sets the subscription for a basic event. This will replace the contents of the <see cref="Subscription" /> property
-        ///     and clear all entries in the
-        ///     <see
-        ///         cref="ValueQueries" />
-        ///     property.
-        /// </summary>
-        /// <param name="log">The event's log.</param>
-        /// <param name="source">
-        ///     The event's source. Can be <c>null</c>.
-        /// </param>
-        /// <param name="eventId">
-        ///     The event's id. Can be <c>null</c>.
-        /// </param>
-        void SetBasic(string log, string source, int? eventId);
     }
 
 
