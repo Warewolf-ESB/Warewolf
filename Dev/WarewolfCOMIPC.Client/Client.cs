@@ -19,9 +19,14 @@ namespace WarewolfCOMIPC.Client
             string token = Guid.NewGuid().ToString();
 
             // Pass token to child process
+            var psi = new ProcessStartInfo("WarewolfCOMIPC.exe", token);
+            psi.UseShellExecute = false;
+            psi.ErrorDialog = false;
+            psi.RedirectStandardOutput = false;
+            psi.CreateNoWindow = true;
+            psi.Verb = "runas";
 
-            _process = Process.Start("WarewolfCOMIPC.exe", token);
-
+            _process = Process.Start(psi);
             _pipe = new NamedPipeClientStream(".", token, PipeDirection.InOut);
             _pipe.Connect();
             _pipe.ReadMode = PipeTransmissionMode.Message;
@@ -72,7 +77,7 @@ namespace WarewolfCOMIPC.Client
         /// Gracefully close connection to server
         /// </summary>
         protected virtual void Close()
-        {
+        {            
             _pipe.Close();
             _process.Kill();
         }

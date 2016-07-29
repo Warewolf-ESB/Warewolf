@@ -79,7 +79,7 @@ namespace Dev2.Common.Interfaces
         public ICollection<IFileListing> Children { get; set; }
         public string FullName { get; set; }
         public bool IsDirectory { get; set; }
-        public string ProgId { get; set; }
+        public bool Is32Bit { get; set; }
         public string ClsId { get; set; }
     }
 }
