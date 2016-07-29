@@ -289,7 +289,6 @@
     <Compile Include="SystemTemplates\Models\Dev2Decision.cs" />
     <Compile Include="SystemTemplates\Models\Dev2DecisionStack.cs" />
     <Compile Include="SystemTemplates\Models\Dev2Switch.cs" />
-    <Compile Include="SystemTemplates\Models\Dev2SwitchCase.cs" />
     <Compile Include="SystemTemplates\Models\IDev2DataModel.cs" />
     <Compile Include="SystemTemplates\Models\Dev2ModelType.cs" />
     <Compile Include="SystemTemplates\Models\IDev2FlowModel.cs" />
