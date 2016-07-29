@@ -100,7 +100,6 @@
     <Compile Include="CustomControls\AutoCompleteFilterMode.cs" />
     <Compile Include="CustomControls\AutoCompleteFilterPredicate.cs" />
     <Compile Include="CustomControls\BindingEvaluator.cs" />
-    <Compile Include="CustomControls\DirectoryCompletionBox.cs" />
     <Compile Include="CustomControls\Extensions.cs" />
     <Compile Include="CustomControls\InteractionHelper.cs" />
     <Compile Include="CustomControls\ISelectionAdapter.cs" />
@@ -133,7 +132,6 @@
     <Compile Include="Services\WebCommunicationService.cs" />
     <Compile Include="Settings\BackupSettings.cs" />
     <Compile Include="Settings\LoggingSettings.cs" />
-    <Compile Include="Settings\LogSettings.cs" />
     <Compile Include="Settings\SecuritySettings.cs" />
     <Compile Include="Settings\Configuration.cs" />
     <Compile Include="Settings\SettingsBase.cs" />
@@ -143,9 +141,6 @@
     <Compile Include="ViewModels\LoggingViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\SettingsViewModelBase.cs" />
-    <Compile Include="Views\FileBrowser.xaml.cs">
-      <DependentUpon>FileBrowser.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\LoggingView.xaml.cs">
       <DependentUpon>LoggingView.xaml</DependentUpon>
     </Compile>
@@ -174,10 +169,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Themes\generic.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\FileBrowser.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

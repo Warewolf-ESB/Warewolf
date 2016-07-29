@@ -145,7 +145,6 @@
     <Compile Include="Providers\Validation\Rules\HasAtLeastOneRule.cs" />
     <Compile Include="Providers\Validation\Rules\IsValidCollectionRule.cs" />
     <Compile Include="Providers\Validation\Rules\IsValidEmailAddressRule.cs" />
-    <Compile Include="Providers\Validation\Rules\IsNumericRule.cs" />
     <Compile Include="Providers\Validation\Rules\IsPositiveNumberRule.cs" />
     <Compile Include="Providers\Validation\Rules\IsSingleCharRule.cs" />
     <Compile Include="Providers\Validation\Rules\IsStringEmptyOrWhiteSpaceRule.cs" />
@@ -163,7 +162,6 @@
     <Compile Include="Services\IPushService.cs" />
     <Compile Include="Communication\Memo.cs" />
     <Compile Include="Services\ISubscriptionService.cs" />
-    <Compile Include="Services\PushService.cs" />
     <Compile Include="Communication\DesignValidationMemo.cs" />
     <Compile Include="DisposableObject.cs" />
     <Compile Include="Services\Security\AuthorizationContext.cs" />
@@ -238,7 +236,6 @@
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
-  
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

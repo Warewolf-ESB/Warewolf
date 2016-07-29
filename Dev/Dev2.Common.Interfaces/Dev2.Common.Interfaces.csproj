@@ -403,7 +403,6 @@
     <Compile Include="Toolbox\IToolDescriptorViewModel.cs" />
     <Compile Include="Toolbox\IToolManager.cs" />
     <Compile Include="UndoFramework\IAction.cs" />
-    <Compile Include="UndoFramework\SimpleHistoryNode.cs" />
     <Compile Include="WarewolfException.cs" />
     <Compile Include="WebRequestMethod.cs" />
     <Compile Include="WebServices\IWebService.cs" />
