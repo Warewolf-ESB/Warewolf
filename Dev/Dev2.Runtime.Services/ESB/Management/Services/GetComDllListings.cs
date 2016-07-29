@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
 using Dev2.Common;
@@ -67,11 +68,24 @@ namespace Dev2.Runtime.ESB.Management.Services
                                     if (pid != null)
                                     {
                                         var typeFromProgID = Type.GetTypeFromProgID(pid.ToString());
+                                        bool? is32Bit = null;
                                         if (typeFromProgID == null) continue;
+                                        try
+                                        {
+                                            if (typeFromProgID.AssemblyQualifiedName != null)
+                                            {
+                                                var assemblyName = AssemblyName.GetAssemblyName(typeFromProgID.AssemblyQualifiedName);
+                                                is32Bit = assemblyName.ProcessorArchitecture == ProcessorArchitecture.X86;
+                                            }
+                                        }
+                                        catch(Exception)
+                                        {
+                                            //ignore
+                                        }
                                         dllListings.Add(new DllListing
                                         {
                                             ClsId = clsid,
-                                            Is32Bit = typeFromProgID.FullName.Equals("System.__ComObject"),
+                                            Is32Bit = is32Bit ?? typeFromProgID.FullName.Equals("System.__ComObject"),
                                             Name = pid.ToString(),
                                             IsDirectory = false,
                                             FullName = pid.ToString(),
