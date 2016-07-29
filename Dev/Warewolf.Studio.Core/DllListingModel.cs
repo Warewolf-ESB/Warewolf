@@ -322,32 +322,9 @@ namespace Warewolf.Studio.Core
                 OnPropertyChanged(() => Children);
             }
             else
-
             {
-                _filter = searchTerm;
-                if (_children != null)
-                {
-                    foreach (var dllListing in _children)
-                    {
-                        var dllListingModel = dllListing;
-                        dllListingModel.Filter(searchTerm);
-                    }
-                }
-                if (string.IsNullOrEmpty(searchTerm) || Name == "FileSystem" || Name == "GAC" ||
-                    (_children != null && _children.Count > 0 &&
-                     _children.Any(model => model.IsVisible)))
-                {
-                    IsVisible = true;
-                }
-                else
-                {
-                    IsVisible = Name.ToLowerInvariant().Contains(searchTerm.ToLowerInvariant());
-                }
-
-                OnPropertyChanged(() => Children);
+                IsVisible = Name.ToLowerInvariant().Contains(searchTerm.ToLowerInvariant());
             }
-                
-            
         }
 
         public bool IsVisible
