@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using Dev2.DataList;
 using Warewolf.Resource.Errors;
@@ -17,6 +18,7 @@ using Warewolf.Storage;
 
 namespace Dev2.BussinessLogic
 {
+    [SuppressMessage("ReSharper", "UnusedMember.Global")]
     public class RsOpIsBetween : AbstractRecsetSearchValidation
     {
         #region Overrides of AbstractRecsetSearchValidation

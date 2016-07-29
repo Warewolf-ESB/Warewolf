@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.DirectoryServices.AccountManagement;
 using System.Runtime.Serialization;
 using System.Text;
@@ -25,6 +26,7 @@ namespace Dev2.Runtime.ESB.Management.Services
     /// <summary>
     /// Check a user's credentials
     /// </summary>
+    [SuppressMessage("ReSharper", "UnusedMember.Global")]
     class CheckCredentials : IEsbManagementEndpoint
     {
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
