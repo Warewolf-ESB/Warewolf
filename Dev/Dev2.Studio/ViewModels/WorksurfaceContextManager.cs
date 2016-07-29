@@ -37,7 +37,6 @@ using Dev2.Studio.Core.Utils;
 using Dev2.Studio.Core.ViewModels;
 using Dev2.Studio.Factory;
 using Dev2.Studio.ViewModels.DependencyVisualization;
-using Dev2.Studio.ViewModels.Workflow;
 using Dev2.Studio.ViewModels.WorkSurface;
 using Dev2.Studio.Views.DependencyVisualization;
 using Dev2.Utils;
@@ -377,15 +376,6 @@ namespace Dev2.Studio.ViewModels
         public bool IsWorkFlowOpened(IContextualResourceModel resource)
         {
             return FindWorkSurfaceContextViewModel(resource) != null;
-        }
-
-        public void UpdateWorkflowLink(IContextualResourceModel resource, string newPath, string oldPath)
-        {
-            var x = FindWorkSurfaceContextViewModel(resource);
-            if (x == null) return;
-            var path = oldPath.Replace('\\', '/');
-            var b = x.WorkSurfaceViewModel as WorkflowDesignerViewModel;
-            b?.UpdateWorkflowLink(b.DisplayWorkflowLink.Replace(path, newPath.Replace('\\', '/')));
         }
 
         public void AddWorkSurfaceContext(IContextualResourceModel resourceModel)

@@ -289,7 +289,6 @@
     <Compile Include="IntellisenseStringResult.cs" />
     <Compile Include="Interfaces\IDev2TOFn.cs" />
     <Compile Include="IOAuthSource.cs" />
-    <Compile Include="IPasteView.cs" />
     <Compile Include="IPerformanceCountersByMachine.cs" />
     <Compile Include="IPerformanceCountersByResource.cs" />
     <Compile Include="IPluginAction.cs" />

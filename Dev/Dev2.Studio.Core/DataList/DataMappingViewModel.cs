@@ -166,34 +166,11 @@ namespace Dev2.Studio.ViewModels.DataList
         public ObservableCollection<IInputOutputViewModel> Outputs { get; private set; }
 
         public ObservableCollection<IInputOutputViewModel> Inputs { get; private set; }
-       
 
-        public void CopyFrom(IDataMappingViewModel copyObj)
-        {
-            IObjectCloner<IInputOutputViewModel> cloner = new ObjectCloner<IInputOutputViewModel>();
-
-            Inputs = cloner.CloneObservableCollection(copyObj.Inputs);
-            Outputs = cloner.CloneObservableCollection(copyObj.Outputs);
-            XmlOutput = copyObj.XmlOutput;
-
-        }
-        
         #endregion Bindings
 
         #region Final Output
-        public void CreateXmlOutput(IList<IInputOutputViewModel> outputData, IList<IInputOutputViewModel> inputData)
-        {
-            string outputString = GetOutputString(outputData);
-            XmlOutput = outputString;
-            Activity.SavedOutputMapping = outputString;
-            Activity.LiveOutputMapping = Activity.SavedOutputMapping;
 
-
-            string inputString = GetInputString(inputData);
-            XmlOutput = XmlOutput + inputString;
-            Activity.SavedInputMapping = inputString;
-            Activity.LiveInputMapping = Activity.SavedInputMapping;
-        }
         #endregion Final Output
 
         #region Work Around Till Refactor
@@ -262,31 +239,5 @@ namespace Dev2.Studio.ViewModels.DataList
         }
         #endregion Get Current Input Item
 
-        #region Events
-        public void InputLostFocusTextBox(string text)
-        {
-            CurrentlySelectedInput.MapsTo = text;
-            CurrentlySelectedInput.Value = text;
-            CreateXmlOutput(Outputs, Inputs);
-        }
-
-        public void OutputLostFocusTextBox(string text)
-        {
-            CurrentlySelectedOutput.Value = text;
-            CreateXmlOutput(Outputs, Inputs);
-        }
-
-        public void InputTextBoxGotFocus(IInputOutputViewModel selected)
-        {
-            CurrentlySelectedInput = selected;
-            CreateXmlOutput(Outputs, Inputs);
-        }
-
-        public void OutputTextBoxGotFocus(IInputOutputViewModel selected)
-        {
-            //CurrentlySelectedOutput = Selected;
-            CreateXmlOutput(Outputs, Inputs);
-        }
-        #endregion Events
     }
 }
