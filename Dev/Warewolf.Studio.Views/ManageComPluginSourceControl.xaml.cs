@@ -130,20 +130,7 @@ namespace Warewolf.Studio.Views
             var count = ExplorerTree.Nodes.Count;
         }
 
-        void ExplorerTree_OnLoaded(object sender, RoutedEventArgs e)
-        {
-            var menuTree = sender as XamDataTree;
-            if(menuTree != null)
-            {
-                var items = menuTree.ItemsSource;
-            }
-            SelectNode(ExplorerTree.Nodes, "KEYTOSELECT");
-        }
-        void SelectNode(XamDataTreeNodesCollection nodes, string nodeKey)
-        {
-            
-        }
-
+       
         
     }
 }

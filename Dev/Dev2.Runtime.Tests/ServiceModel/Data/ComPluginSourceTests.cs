@@ -47,7 +47,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             var expected = new ComPluginSource
             {
                 ClsId = "Plugins\\someDllIMadeUpToTest.dll",
-                ProgId = "dev2.test.namespacefortesting",
+                Is32Bit = false,
             };
 
             var xml = expected.ToXml();
@@ -56,7 +56,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
 
             Assert.AreEqual(expected.ResourceType, actual.ResourceType);
             Assert.AreEqual(expected.ClsId, actual.ClsId);
-            Assert.AreEqual(expected.ProgId, actual.ProgId);
+            Assert.AreEqual(expected.Is32Bit, actual.Is32Bit);
         }
 
         [TestMethod]
@@ -65,7 +65,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             var expected = new ComPluginSource
             {
                 ClsId = null,
-                ProgId = null,
+                Is32Bit = false,
             };
 
             var xml = expected.ToXml();
@@ -74,7 +74,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
 
             Assert.AreEqual(expected.ResourceType, actual.ResourceType);
             Assert.AreEqual("", actual.ClsId);
-            Assert.AreEqual("", actual.ProgId);
+            Assert.AreEqual("false", actual.Is32Bit);
         }
 
         #endregion
