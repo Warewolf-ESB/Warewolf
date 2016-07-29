@@ -220,8 +220,9 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.ComPlugin
         public NamespaceList FetchNamespaceListObject(ComPluginSource pluginSource)
         {
             var interrogatePlugin = ReadNamespaces(pluginSource.ClsId,pluginSource.Is32Bit);
-            var namespacelist = new NamespaceList();
+            var namespacelist = new NamespaceList {  };
             namespacelist.AddRange(interrogatePlugin);
+            namespacelist.Add(new NamespaceItem());
             return namespacelist;
         }
 
