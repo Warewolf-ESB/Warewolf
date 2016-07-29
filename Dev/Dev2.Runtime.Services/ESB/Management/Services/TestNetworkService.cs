@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Communication;
@@ -12,6 +13,7 @@ namespace Dev2.Runtime.ESB.Management.Services
     /// <summary>
     /// Basic sanity test ;)
     /// </summary>
+    [SuppressMessage("ReSharper", "UnusedMember.Global")]
     public class TestNetworkService : IEsbManagementEndpoint
     {
         public TestNetworkService()

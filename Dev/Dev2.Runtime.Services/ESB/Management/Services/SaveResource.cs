@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.Serialization;
 using System.Text;
 using Dev2.Common;
@@ -29,6 +30,7 @@ namespace Dev2.Runtime.ESB.Management.Services
     /// <summary>
     /// Adds a resource
     /// </summary>
+    [SuppressMessage("ReSharper", "UnusedMember.Global")]
     public class SaveResource : IEsbManagementEndpoint
     {
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)

@@ -9,12 +9,14 @@ using Dev2.Runtime.Hosting;
 using Dev2.Workspaces;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Text;
 
 // ReSharper disable InconsistentNaming
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
+    [SuppressMessage("ReSharper", "UnusedMember.Global")]
     public class SaveRabbitMQServiceSource : IEsbManagementEndpoint
     {
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
