@@ -1723,6 +1723,42 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Warewolf was unable to download the debug output values from the server.{0}Please ensure that the server is accessible..
+        /// </summary>
+        public static string DebugCouldNotGetDebugItemsError {
+            get {
+                return ResourceManager.GetString("DebugCouldNotGetDebugItemsError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Failed to retrieve debug items.
+        /// </summary>
+        public static string DebugCouldNotGetDebugItemsErrorHeader {
+            get {
+                return ResourceManager.GetString("DebugCouldNotGetDebugItemsErrorHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Warewolf was unable to download the debug output values from the remote server.{0}Please ensure that the remote server is accessible..
+        /// </summary>
+        public static string DebugCouldNotGetRemoteDebugItemsError {
+            get {
+                return ResourceManager.GetString("DebugCouldNotGetRemoteDebugItemsError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Failed to retrieve remote debug items.
+        /// </summary>
+        public static string DebugCouldNotGetRemoteDebugItemsErrorHeader {
+            get {
+                return ResourceManager.GetString("DebugCouldNotGetRemoteDebugItemsErrorHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Clear the filter box.
         /// </summary>
         public static string DebugOutputClearSearchTooltip {

@@ -3187,4 +3187,16 @@ If you put an = as the first character, it will turn into a calculation e.g. =[[
   <data name="AnonymousAuthenticationToolTip" xml:space="preserve">
     <value>Connect using anonymous security credentials</value>
   </data>
+  <data name="DebugCouldNotGetDebugItemsError" xml:space="preserve">
+    <value>Warewolf was unable to download the debug output values from the server.{0}Please ensure that the server is accessible.</value>
+  </data>
+  <data name="DebugCouldNotGetDebugItemsErrorHeader" xml:space="preserve">
+    <value>Failed to retrieve debug items</value>
+  </data>
+  <data name="DebugCouldNotGetRemoteDebugItemsError" xml:space="preserve">
+    <value>Warewolf was unable to download the debug output values from the remote server.{0}Please ensure that the remote server is accessible.</value>
+  </data>
+  <data name="DebugCouldNotGetRemoteDebugItemsErrorHeader" xml:space="preserve">
+    <value>Failed to retrieve remote debug items</value>
+  </data>
 </root>
