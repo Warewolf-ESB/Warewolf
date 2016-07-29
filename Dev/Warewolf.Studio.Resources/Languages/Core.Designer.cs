@@ -4249,29 +4249,11 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cancel this action.
-        /// </summary>
-        public static string ManageWebPasteCancelTooltip {
-            get {
-                return ResourceManager.GetString("ManageWebPasteCancelTooltip", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Paste the full response in here.
         /// </summary>
         public static string ManageWebPasteResponseTooltip {
             get {
                 return ResourceManager.GetString("ManageWebPasteResponseTooltip", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Save this response definition.
-        /// </summary>
-        public static string ManageWebPasteSaveTooltip {
-            get {
-                return ResourceManager.GetString("ManageWebPasteSaveTooltip", resourceCulture);
             }
         }
         
@@ -8356,15 +8338,6 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cancel your changes to the response body..
-        /// </summary>
-        public static string WebServicePasteCancelCommandHelp {
-            get {
-                return ResourceManager.GetString("WebServicePasteCancelCommandHelp", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to You can manually add the response body here..
         /// </summary>
         public static string WebServicePasteHelp {
@@ -8379,15 +8352,6 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string WebServicePasteInputHelp {
             get {
                 return ResourceManager.GetString("WebServicePasteInputHelp", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Saves this as the mapping that will be used by Warewolf when executing..
-        /// </summary>
-        public static string WebServicePasteSaveCommandHelp {
-            get {
-                return ResourceManager.GetString("WebServicePasteSaveCommandHelp", resourceCulture);
             }
         }
         
