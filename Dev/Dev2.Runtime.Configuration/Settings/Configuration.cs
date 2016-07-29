@@ -14,9 +14,6 @@ using System.Collections.Concurrent;
 using System.ComponentModel;
 using System.Xml.Linq;
 using Caliburn.Micro;
-using Dev2.Runtime.Configuration.ComponentModel;
-using Dev2.Runtime.Configuration.ViewModels;
-using Dev2.Runtime.Configuration.Views;
 
 namespace Dev2.Runtime.Configuration.Settings
 {
@@ -73,7 +70,6 @@ namespace Dev2.Runtime.Configuration.Settings
                                 Security != null && Security.HasError ||
                                 Backup != null && Backup.HasError;
 
-        [SettingsObject(typeof(LoggingView), typeof(LoggingViewModel))]
         public LoggingSettings Logging
         {
             get { return _logging; }

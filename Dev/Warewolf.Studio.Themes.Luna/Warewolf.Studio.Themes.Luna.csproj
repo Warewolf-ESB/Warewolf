@@ -162,7 +162,6 @@
     </Compile>
     <Compile Include="SharedResourceDictionary.cs" />
     <Compile Include="Theme.cs" />
-    <Compile Include="XamGridEx\ContextMenuSettings.cs" />
     <Compile Include="XamGrid\ContextMenuOpeningEventArgs.cs" />
     <Compile Include="XamGrid\ContextMenuSettings.cs" />
     <Compile Include="XamGrid\XamGridEx.cs" />
@@ -196,10 +195,6 @@
     <Page Include="ActivityStyles\ActivityStyles.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="App.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
     </Page>
     <Page Include="Common\Brushes.xaml">
       <SubType>Designer</SubType>
@@ -926,6 +921,9 @@
       <Project>{cb565c94-8833-4911-b20f-0921ee3c286c}</Project>
       <Name>Warewolf.Studio.Resources</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="XamGridEx\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

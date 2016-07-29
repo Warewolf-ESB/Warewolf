@@ -239,7 +239,4 @@ namespace Dev2.Tests.Runtime.ESB.ComPlugin
 
         #endregion
     }
-    public class Main
-    {
-    }
 }

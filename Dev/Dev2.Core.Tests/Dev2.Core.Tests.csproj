@@ -156,7 +156,6 @@
     <Compile Include="DirectoryHelperTests.cs" />
     <Compile Include="ExtMethods\StringExtensionTests.cs" />
     <Compile Include="GatherSystemInformationTOTests.cs" />
-    <Compile Include="Logging\DummyDebugProvider.cs" />
     <Compile Include="MathOperationTest\InfragisticsEvaluationTest.cs" />
     <Compile Include="StringExtensionTests.cs" />
     <Compile Include="TestModelItemUtil.cs" />
@@ -250,6 +249,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="ConverterTests\Case\" />
+    <Folder Include="Logging\" />
     <Folder Include="Repository\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
