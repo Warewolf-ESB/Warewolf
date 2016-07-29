@@ -470,13 +470,21 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         private void ProcessControllerHasError(Exception ex)
         {
             if (ex.Message.Contains("The remote name could not be resolved"))
+            {
                 _popup.Show(
-                    "Warewolf was unable to download the debug output values from the remote server. Please ensure that the remote server is accessible.",
-                    "Failed to retrieve remote debug items", MessageBoxButton.OK, MessageBoxImage.Error, "",
+                    string.Format(Warewolf.Studio.Resources.Languages.Core.DebugCouldNotGetRemoteDebugItemsError, Environment.NewLine),
+                    Warewolf.Studio.Resources.Languages.Core.DebugCouldNotGetRemoteDebugItemsErrorHeader, MessageBoxButton.OK, MessageBoxImage.Error, "",
                     false,
                     true, false, false);
+            }
             else
-                throw ex;
+            {
+                _popup.Show(
+                    string.Format(Warewolf.Studio.Resources.Languages.Core.DebugCouldNotGetDebugItemsError, Environment.NewLine),
+                    Warewolf.Studio.Resources.Languages.Core.DebugCouldNotGetDebugItemsErrorHeader, MessageBoxButton.OK, MessageBoxImage.Error, "",
+                    false,
+                    true, false, false);
+            }
         }
 
         public ICommand OpenItemCommand => _openItemCommand ?? (_openItemCommand = new DelegateCommand(OpenItem));

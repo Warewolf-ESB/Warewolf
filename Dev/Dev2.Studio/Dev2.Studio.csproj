@@ -442,9 +442,6 @@
     <Compile Include="Views\Help\HelpView.xaml.cs">
       <DependentUpon>HelpView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Dialogs\Dev2MessageBoxView.xaml.cs">
-      <DependentUpon>Dev2MessageBoxView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\ImageWindow.xaml.cs">
       <DependentUpon>ImageWindow.xaml</DependentUpon>
     </Compile>
@@ -646,10 +643,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Diagnostics\ReportsViewerView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\Dialogs\Dev2MessageBoxView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
