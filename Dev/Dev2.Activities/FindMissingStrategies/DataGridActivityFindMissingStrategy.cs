@@ -29,7 +29,6 @@ namespace Dev2.FindMissingStrategies
     [SuppressMessage("ReSharper", "UnusedMember.Global")] //This is loaded based on SpookyAction implementing IFindMissingStrategy
     public class DataGridActivityFindMissingStrategy : IFindMissingStrategy
     {
-        #region Implementation of ISpookyLoadable<Enum>
 
         public Enum HandlesType()
         {
@@ -512,9 +511,6 @@ namespace Dev2.FindMissingStrategies
             return results;
         }
 
-        #endregion
-
-        #region Private Methods
 
         private IList<string> InternalFindMissing<T>(IEnumerable<T> data)
         {
@@ -532,8 +528,6 @@ namespace Dev2.FindMissingStrategies
                 }
             }
             return results;
-        }
-
-        #endregion
+        }        
     }
 }

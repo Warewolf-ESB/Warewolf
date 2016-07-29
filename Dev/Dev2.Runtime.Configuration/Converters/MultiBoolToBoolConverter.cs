@@ -8,12 +8,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using System;
-using System.Globalization;
-using System.Linq;
-using System.Windows.Data;
-using Warewolf.Resource.Errors;
-
 namespace Dev2.Runtime.Configuration.Converters
 {
     public enum LogicalOperator
@@ -21,30 +15,5 @@ namespace Dev2.Runtime.Configuration.Converters
         None,
         And,
         Or
-    }
-
-    public class MultiBoolToBoolConverter : IMultiValueConverter
-    {
-        public LogicalOperator Operator { get; set; }
-
-        public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
-        {
-            if(Operator == LogicalOperator.None)
-                throw new Exception(ErrorResource.OperatorNeedToBeSpecified);
-
-            var list = values.ToList().Cast<bool>();
-
-            if(Operator == LogicalOperator.And)
-            {
-                return list.All(l => l);
-            }
-
-            return list.Any(l => l);
-        }
-
-        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

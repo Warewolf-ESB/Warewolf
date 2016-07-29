@@ -458,51 +458,6 @@ namespace Dev2.Studio.AppResources.Behaviors
             }
         }
 
-        private class BottomVisualsAdornerWrapper : Adorner
-        {
-            private readonly VisualCollection _visualChildren;
-            private readonly ActivityDesigner _activity;
-
-            public BottomVisualsAdornerWrapper(UIElement target, FrameworkElement adornerContent, ActivityDesigner activityDesigner)
-                : base(target)
-            {
-                _activity = activityDesigner;
-                _visualChildren = new VisualCollection(this);
-                _visualChildren.Add(adornerContent);
-            }
-
-            protected override int VisualChildrenCount => _visualChildren.Count;
-            protected override Visual GetVisualChild(int index) { return _visualChildren[index]; }
-
-            protected override Size MeasureOverride(Size constraint)
-            {
-                FrameworkElement fe = _visualChildren[0] as FrameworkElement;
-
-                if (fe != null)
-                {
-                    fe.Measure(constraint);
-
-                    Size size = new Size(_activity.ActualWidth, fe.DesiredSize.Height);
-                    return size;
-                }
-
-                return new Size();
-            }
-
-            protected override Size ArrangeOverride(Size finalSize)
-            {
-                FrameworkElement ae = AdornedElement as FrameworkElement;
-                FrameworkElement fe = _visualChildren[0] as FrameworkElement;
-                if (fe != null && ae != null)
-                {
-                    fe.Arrange(new Rect(new Point(ae.ActualWidth - fe.ActualWidth, ae.ActualHeight), finalSize));
-                    return new Size(fe.ActualWidth, fe.ActualHeight);
-                }
-
-                return new Size();
-            }
-        }
-
         #endregion Private Classes
     }
 }
