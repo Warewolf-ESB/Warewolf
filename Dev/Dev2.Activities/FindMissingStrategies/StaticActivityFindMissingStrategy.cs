@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using Dev2.Interfaces;
 using Dev2.Util;
@@ -20,6 +21,7 @@ namespace Dev2.FindMissingStrategies
     /// <summary>
     /// Responsible for the find missing logic that applys to all the activities that only have a static properties on them
     /// </summary>
+    [SuppressMessage("ReSharper", "UnusedMember.Global")] //This is loaded based on SpookyAction implementing IFindMissingStrategy
     public class StaticActivityFindMissingStrategy : IFindMissingStrategy
     {
         #region Implementation of ISpookyLoadable<Enum>

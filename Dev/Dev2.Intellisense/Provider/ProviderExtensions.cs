@@ -132,10 +132,4 @@ namespace Dev2.Intellisense.Provider
             return searchString;
         }
     }
-
-    public class Region
-    {
-        public int StartIndex { get; set; }
-        public string Name { get; set; }
-    }
 }

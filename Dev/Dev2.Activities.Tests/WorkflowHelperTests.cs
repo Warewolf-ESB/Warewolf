@@ -9,7 +9,6 @@
 */
 
 using System;
-using System.Activities;
 using System.Activities.Presentation.Model;
 using System.Activities.Presentation.Services;
 using System.Activities.Statements;
@@ -164,16 +163,6 @@ namespace Dev2.Tests.Activities
         public void WorkflowHelperSetVariablesWithNullExpectedThrowsArgumentNullException()
         {
             new WorkflowHelper().SetVariables(null);
-        }
-    }
-
-    public sealed class CommentActivityForTest : CodeActivity
-    {
-
-        public string Text { get; set; }
-        protected override void Execute(CodeActivityContext context)
-        {
-
         }
     }
 }

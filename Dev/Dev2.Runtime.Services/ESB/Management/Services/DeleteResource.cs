@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Core.DynamicServices;
@@ -25,8 +26,10 @@ namespace Dev2.Runtime.ESB.Management.Services
     /// <summary>
     /// Delete a resource ;)
     /// </summary>
+    [SuppressMessage("ReSharper", "UnusedMember.Global")]
     public class DeleteResource : IEsbManagementEndpoint
-    {
+
+{
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
             string type = null;

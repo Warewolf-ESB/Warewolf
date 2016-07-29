@@ -25,12 +25,6 @@ using Warewolf.Resource.Errors;
 
 namespace Dev2.Runtime.ServiceModel
 {
-    public class WebRequestPoco
-    {
-        public string ResourceType { get; set; }
-        public string ResourceId { get; set; }
-    }
-
     public class Services : ExceptionManager
     {
         protected readonly IResourceCatalog _resourceCatalog;

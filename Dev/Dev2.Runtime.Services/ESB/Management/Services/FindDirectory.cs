@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Runtime.Serialization;
@@ -28,7 +29,8 @@ namespace Dev2.Runtime.ESB.Management.Services
     /// <summary>
     /// The find directory service
     /// </summary>
-    public class FindDirectory : IEsbManagementEndpoint
+    [SuppressMessage("ReSharper", "UnusedMember.Global")]
+    internal class FindDirectory : IEsbManagementEndpoint
     {
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {

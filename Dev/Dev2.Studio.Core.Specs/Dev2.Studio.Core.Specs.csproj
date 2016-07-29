@@ -94,7 +94,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>IntellisenseProvider.feature</DependentUpon>
     </Compile>
-    <Compile Include="IntellisenseSpecs\IntellisenseProviderSteps.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

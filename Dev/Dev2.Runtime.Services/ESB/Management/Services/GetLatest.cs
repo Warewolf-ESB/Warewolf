@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using System.Xml.Linq;
@@ -25,6 +26,7 @@ namespace Dev2.Runtime.ESB.Management.Services
     /// <summary>
     /// Get the latest services
     /// </summary>
+    [SuppressMessage("ReSharper", "UnusedMember.Global")]
     public class GetLatest : IEsbManagementEndpoint
     {
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)

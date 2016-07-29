@@ -116,7 +116,4 @@ namespace Dev2.SignalR.Wrappers.New
         /// </summary>
         public ConnectionStateWrapped NewState { get; private set; }
     }
-    public class HttpClientExceptionWrapped : HttpClientException { }
-
-
 }

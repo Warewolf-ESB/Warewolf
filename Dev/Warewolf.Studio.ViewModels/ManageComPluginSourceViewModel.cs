@@ -10,7 +10,6 @@ using Dev2.Common.Interfaces.Core;
 using Dev2.Common.Interfaces.SaveDialog;
 using Dev2.Common.Interfaces.Threading;
 using Dev2.Interfaces;
-using Microsoft.Practices.ObjectBuilder2;
 using Microsoft.Practices.Prism.Commands;
 using Microsoft.Practices.Prism.PubSubEvents;
 using Warewolf.Studio.Core;
@@ -142,26 +141,13 @@ namespace Warewolf.Studio.ViewModels
 
         void PerformSearch(string searchTerm)
         {
-            if (_dllListings != null)
+            if (DllListings != null)
             {
-                if (string.IsNullOrEmpty(searchTerm))
+                foreach (var dllListingModel in DllListings)
                 {
-                    _dllListings.ForEach(model => model.IsVisible=true);
+                    dllListingModel.Filter(searchTerm);
                 }
-                else
-                {
-                    foreach(var dllListingModel in _dllListings)
-                    {
-                        if (dllListingModel.Name.ToLowerInvariant().Contains(searchTerm.ToLowerInvariant()))
-                        {
-                            dllListingModel.IsVisible = true;
-                        }else
-                        {
-                            dllListingModel.IsVisible = false;
-                        }
-                    }
-                }
-                DllListings = new AsyncObservableCollection<IDllListingModel>(_dllListings);
+                OnPropertyChanged(() => DllListings);
             }
         }
 

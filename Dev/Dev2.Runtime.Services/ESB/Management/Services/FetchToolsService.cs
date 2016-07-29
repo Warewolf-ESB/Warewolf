@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Text;
 using Dev2.Common.Interfaces.Core.DynamicServices;
@@ -12,6 +13,7 @@ using Dev2.Workspaces;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
+    [SuppressMessage("ReSharper", "UnusedMember.Global")]
     public class FetchToolsService : IEsbManagementEndpoint
     {
         private IToolManager _serverToolManager;
