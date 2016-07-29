@@ -118,12 +118,7 @@
     <Compile Include="DateAndTime\TO\DateTimeOperationTO.cs" />
     <Compile Include="DateAndTime\TO\DateTimeResultTO.cs" />
     <Compile Include="DateAndTime\TO\TimeZoneTO.cs" />
-    <Compile Include="DB Support\DBConnectionProperties.cs" />
-    <Compile Include="DB Support\DBConnectionString.cs" />
-    <Compile Include="DB Support\DB_Helper\DBHelperFactory.cs" />
     <Compile Include="DB Support\DB_Sanity\AbstractSanitizer.cs" />
-    <Compile Include="DB Support\DB_Sanity\DataSanitizerFactory.cs" />
-    <Compile Include="DB Support\DB_Sanity\MS_SQL_Sanitizer.cs" />
     <Compile Include="DependencyGraphGenerator.cs" />
     <Compile Include="DependencyVisualization\CircularDependency.cs" />
     <Compile Include="DependencyVisualization\Graph.cs" />
@@ -194,7 +189,9 @@
     <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="DB Support\DB_Helper\" />
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

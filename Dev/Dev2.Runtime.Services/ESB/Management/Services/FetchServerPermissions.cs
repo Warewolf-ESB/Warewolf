@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using System.Threading;
 using Dev2.Common;
@@ -15,6 +16,7 @@ namespace Dev2.Runtime.ESB.Management.Services
     /// <summary>
     /// Find Server Username
     /// </summary>
+    [SuppressMessage("ReSharper", "UnusedMember.Global")]
     public class FetchServerPermissions : IEsbManagementEndpoint
     {
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)

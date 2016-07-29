@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Security.Principal;
@@ -26,6 +27,7 @@ namespace Dev2.Runtime.ESB.Management.Services
     /// <summary>
     /// The FindDrive service
     /// </summary>
+    [SuppressMessage("ReSharper", "UnusedMember.Global")]
     public class FindDrive : IEsbManagementEndpoint
     {
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)

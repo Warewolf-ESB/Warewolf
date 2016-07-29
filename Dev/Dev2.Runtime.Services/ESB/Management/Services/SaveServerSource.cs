@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
@@ -19,6 +20,7 @@ namespace Dev2.Runtime.ESB.Management.Services
     /// <summary>
     /// Adds a resource
     /// </summary>
+    [SuppressMessage("ReSharper", "UnusedMember.Global")]
     public class SaveServerSource : IEsbManagementEndpoint
     {
         IExplorerServerResourceRepository _serverExplorerRepository;
