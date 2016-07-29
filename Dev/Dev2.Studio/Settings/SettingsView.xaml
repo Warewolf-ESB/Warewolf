@@ -1,0 +1,104 @@
+﻿<UserControl x:Class="Dev2.Settings.SettingsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:settings="clr-namespace:Dev2.Settings"
+             xmlns:logging="clr-namespace:Dev2.Settings.Logging"
+             xmlns:security="clr-namespace:Dev2.Settings.Security"
+    xmlns:fa="http://schemas.fontawesome.io/icons/"
+    xmlns:perfcounters="clr-namespace:Dev2.Settings.Perfcounters"
+    Padding="10"
+             d:DesignHeight="300"
+             d:DesignWidth="300"
+             mc:Ignorable="d"
+             d:DataContext="{d:DesignInstance settings:SettingsViewModel}"
+             AutomationProperties.AutomationId="UI_SettingsView_AutoID">
+
+    <UserControl.Resources>
+        <logging:LoggingView x:Key="LogSettingsView"
+                             AutomationProperties.AutomationId="LogSettingsViewContent" DataContext="{Binding LogSettingsViewModel, Mode=OneWay}"/>
+        <security:SecurityView x:Key="SecurityView"
+                               AutomationProperties.AutomationId="SecurityViewContent" DataContext="{Binding SecurityViewModel, Mode=OneWay}" />
+        <perfcounters:PerfCounterView x:Key="PerfMonView"
+                               AutomationProperties.AutomationId="PerfmonViewContent" DataContext="{Binding PerfmonViewModel, Mode=OneWay}" />
+    </UserControl.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+
+
+
+        <Border Grid.Row="1" BorderThickness="0,0,0,0" Margin="{StaticResource ElementBorderTop}">
+            <Grid>
+                <TabControl Style="{StaticResource TabControlStyle}">
+                    <TabItem Style="{StaticResource TabItemStyle}" BorderThickness="0">
+                        <TabItem.Header>
+                            <StackPanel Orientation="Horizontal" Cursor="Hand">
+                                <fa:FontAwesome Icon="Lock" FontSize="17" Margin="{StaticResource ControlBorderTop}"></fa:FontAwesome>
+                                <TextBlock FontSize="15" Text="{Binding SecurityHeader}"/>
+                            </StackPanel>
+                        </TabItem.Header>
+                        <TabItem.Content>
+                            <StaticResource ResourceKey="SecurityView" />
+                        </TabItem.Content>
+                    </TabItem>
+                    <TabItem Style="{StaticResource TabItemStyle}">
+                        <TabItem.Header>
+                            <StackPanel Orientation="Horizontal" Cursor="Hand">
+                                <fa:FontAwesome Icon="Table" FontSize="17" Margin="{StaticResource ControlBorderTop}"></fa:FontAwesome>
+                                <TextBlock FontSize="15" Text="{Binding LogHeader}"/>
+                            </StackPanel>
+                        </TabItem.Header>
+                        <TabItem.Content>
+                            <StaticResource ResourceKey="LogSettingsView" />
+                        </TabItem.Content>
+                    </TabItem>
+                    <TabItem Style="{StaticResource TabItemStyle}">
+                        <TabItem.Header>
+                            <StackPanel Orientation="Horizontal" Cursor="Hand">
+                                <fa:FontAwesome Icon="Tachometer" FontSize="17" Margin="{StaticResource ControlBorderTop}"></fa:FontAwesome>
+                                <TextBlock FontSize="15" Text="{Binding PerfmonHeader}"/>
+                            </StackPanel>
+                        </TabItem.Header>
+                        <TabItem.Content>
+                            <StaticResource ResourceKey="PerfMonView" />
+                        </TabItem.Content>
+                    </TabItem>
+                </TabControl>
+            </Grid>
+        </Border>
+        <Grid Grid.Row="2" >
+            <StackPanel Orientation="Horizontal"
+                        VerticalAlignment="Bottom"
+                        HorizontalAlignment="Right">
+
+                <StackPanel Orientation="Horizontal"
+                            VerticalAlignment="Center"
+                            Visibility="{Binding IsSavedSuccessVisible, Converter={StaticResource BoolToVisibilityConverterPositive}}">
+                    <fa:ImageAwesome Width="14" 
+                             Height="14" 
+                             Margin="{StaticResource ControlBorderLeft}" 
+                             Foreground="{StaticResource WareWolfOrangeBrush}" 
+                             Icon="Check" 
+                             HorizontalAlignment="Right" />
+                </StackPanel>
+
+                <TextBlock Foreground="{StaticResource ValidationErrorElement}"
+                           Text="{Binding Errors}"
+                           VerticalAlignment="Center"
+                           Visibility="{Binding IsErrorsVisible, Converter={StaticResource BoolToVisibilityConverterPositive}}"
+                           AutomationProperties.AutomationId="UI_Errors_AutoID" />
+            </StackPanel>
+        </Grid>
+    </Grid>
+</UserControl>
