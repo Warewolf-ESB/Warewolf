@@ -244,7 +244,6 @@
     <Compile Include="EqualityComparers\Dev2ColumnComparer.cs" />
     <Compile Include="Exceptions\Dev2DataLanguageParseError.cs" />
     <Compile Include="Exceptions\RecordsetNotFoundException.cs" />
-    <Compile Include="Extensions\ErrorResultTOExtensionMethods.cs" />
     <Compile Include="Factories\DataListFactory.cs" />
     <Compile Include="Factories\Dev2OperationsFactory.cs" />
     <Compile Include="Factories\IntellisenseFactory.cs" />
@@ -376,6 +375,7 @@
     <Folder Include="Audit\" />
     <Folder Include="Compilers\" />
     <Folder Include="DataListCache\" />
+    <Folder Include="Extensions\" />
     <Folder Include="Value Objects\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

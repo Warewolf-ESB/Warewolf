@@ -230,7 +230,6 @@
     <Compile Include="IntellisenseProvider\DateTimeIntellisenseProviderTests.cs" />
     <Compile Include="DebugOutputViewModelTest.Append.cs" />
     <Compile Include="DependencyGraph\NodeTest.cs" />
-    <Compile Include="Dialogs\TestResourcePickerDialogOkay.cs" />
     <Compile Include="Environments\TestEnvironmentModel.cs" />
     <Compile Include="Environments\EnvironmentModelEqualityComparerTests.cs" />
     <Compile Include="FileSystemQueryTest.cs" />
@@ -280,7 +279,6 @@
     <Compile Include="Dev2DialogueTest.cs" />
     <Compile Include="Diagnostics\AppExceptionHandlerTests.cs" />
     <Compile Include="Diagnostics\ExceptionFactoryTests.cs" />
-    <Compile Include="Diagnostics\MockApp.cs" />
     <Compile Include="Diagnostics\FileHelperTests.cs" />
     <Compile Include="Diagnostics\MockExceptionHandler.cs" />
     <Compile Include="DragDropHelpersTests.cs" />
@@ -294,7 +292,6 @@
     <Compile Include="Environments\TestServerProvider.cs" />
     <Compile Include="Factories\DsfActivityFactoryTests.cs" />
     <Compile Include="Helpers\TestProgressFileDownloader.cs" />
-    <Compile Include="Helpers\VersionCheckerTestClass.cs" />
     <Compile Include="Helpers\VersionCheckerTests.cs" />
     <Compile Include="IDataListVerifyPart.cs" />
     <Compile Include="InputOutputViewModelTest.cs" />
