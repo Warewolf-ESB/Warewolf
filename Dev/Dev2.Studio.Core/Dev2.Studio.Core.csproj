@@ -373,7 +373,6 @@
     <Compile Include="Models\ServiceDebugInfoModel.cs" />
     <Compile Include="Models\UserInterfaceLayoutModel.cs" />
     <Compile Include="Network\Enums.cs" />
-    <Compile Include="Network\ServerState.cs" />
     <Compile Include="Network\ServerProxy.cs" />
     <Compile Include="Network\WebServer.cs" />
     <Compile Include="OptomizedObservableCollection.cs" />
@@ -418,7 +417,6 @@
     <Compile Include="ViewModels\Global\ResourceHelper.cs" />
     <Compile Include="Interfaces\IResourceDesignerViewModel.cs" />
     <Compile Include="ViewModels\ResourceManagement\ResourceDesignerViewModel.cs" />
-    <Compile Include="ViewModels\Wizards\DataListChangeNotificationViewModel.cs" />
     <Compile Include="ViewModelUtils.cs" />
     <Compile Include="Workspaces\IWorkspaceItemRepository.cs" />
     <Compile Include="Workspaces\WorkspaceItemRepository.cs" />
@@ -521,6 +519,7 @@
     <Folder Include="AppResources\EventArgs\" />
     <Folder Include="AppResources\Exceptions\" />
     <Folder Include="Models\DataMapping\" />
+    <Folder Include="ViewModels\Wizards\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
