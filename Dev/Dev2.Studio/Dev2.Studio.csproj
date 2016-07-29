@@ -287,22 +287,16 @@
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
     <Compile Include="ActivityDesigners\ActivityDesignerHelper.cs" />
-    <Compile Include="AppResources\AttachedProperties\AvalonEditTextProperty.cs" />
     <Compile Include="AppResources\AttachedProperties\FocusAttachedProperty.cs" />
-    <Compile Include="AppResources\AttachedProperties\TreeViewItemScrollBehaviour.cs" />
     <Compile Include="AppResources\Behaviors\ActivityDesignerAugmentationBehavior.cs" />
     <Compile Include="AppResources\Behaviors\ButtonPopupWorkaroundBehavior.cs" />
-    <Compile Include="AppResources\Behaviors\TextboxSetFocusOnCreationBehavior.cs" />
-    <Compile Include="AppResources\Behaviors\NavigationItemViewModelDeployHighlightingBehavior.cs" />
     <Compile Include="AppResources\Behaviors\PopupBuildVisualTreeOnLoad.cs" />
     <Compile Include="AppResources\Behaviors\TabGroupPaneBindingBehavior.cs" />
     <Compile Include="AppResources\Behaviors\TextboxSelectAllOnFocusBehavior.cs" />
-    <Compile Include="AppResources\Behaviors\TextChangedRegexBehavior.cs" />
     <Compile Include="AppResources\Behaviors\TreeviewScrollToEndOnNewContent.cs" />
     <Compile Include="AppResources\Behaviors\UserControlFocusNextAndPreviousBehaviour.cs" />
     <Compile Include="AppResources\Behaviors\WindowCloseBehviour.cs" />
     <Compile Include="AppResources\Behaviors\WorkflowDesignerLinkBehaviours.cs" />
-    <Compile Include="AppResources\Behaviors\XamlDockManagerLayoutPersistenceBehavior.cs" />
     <Compile Include="AppResources\Comparers\WorkSurfaceKeyEqualityComparerWithContextKey.cs" />
     <Compile Include="AppResources\Converters\ExplorerItemModelToIconConverter.cs" />
     <Compile Include="AppResources\Converters\NavigationViewModelPermissionToBooleanConverter.cs" />
@@ -310,7 +304,6 @@
     <Compile Include="AppResources\Converters\EmailSourceToDisplayTextConverter.cs" />
     <Compile Include="AppResources\Converters\MessageBoxButtonToVisibilityConverter.cs" />
     <Compile Include="AppResources\Converters\MessageBoxImageToSystemIconConverter.cs" />
-    <Compile Include="AppResources\Comparers\WorkSurfaceContextEqualityComparer.cs" />
     <Compile Include="AppResources\Comparers\WorkSurfaceKey.cs" />
     <Compile Include="AppResources\Comparers\WorkSurfaceKeyEqualityComparer.cs" />
     <Compile Include="AppResources\Converters\NavigationViewModelPersmissionVisibilityConverter.cs" />
@@ -321,10 +314,6 @@
     <Compile Include="ClassRoutedEventHandlers.cs" />
     <Compile Include="Controller\FlowController.cs" />
     <Compile Include="Controller\PopupController.cs" />
-    <Compile Include="Controller\ProcessController.cs" />
-    <Compile Include="CustomControls\Connections\ConnectControl.xaml.cs">
-      <DependentUpon>ConnectControl.xaml</DependentUpon>
-    </Compile>
     <Compile Include="CustomControls\Dev2StatusBar.cs" />
     <Compile Include="CustomControls\Progress\Dev2WebClient.cs" />
     <Compile Include="CustomControls\Progress\IDev2WebClient.cs" />
@@ -332,11 +321,8 @@
     <Compile Include="CustomControls\Progress\IProgressDialog.cs" />
     <Compile Include="CustomControls\Progress\IProgressFileDownloader.cs" />
     <Compile Include="CustomControls\Progress\IVersionChecker.cs" />
-    <Compile Include="CustomControls\Progress\LatestWebGetter.cs" />
     <Compile Include="CustomControls\Progress\ProgressDialogViewModel.cs" />
     <Compile Include="CustomControls\Progress\VersionChecker.cs" />
-    <Compile Include="CustomControls\SplitterExpansionButton.cs" />
-    <Compile Include="CustomControls\SplitterPanel.cs" />
     <Compile Include="Diagnostics\AppExceptionHandlerAbstract.cs" />
     <Compile Include="Diagnostics\AppExceptionPopupController.cs" />
     <Compile Include="Diagnostics\AppExceptionPopupControllerAbstract.cs" />
@@ -344,7 +330,6 @@
     <Compile Include="Diagnostics\DebugLineGroupRow.cs" />
     <Compile Include="Diagnostics\DebugLineItem.cs" />
     <Compile Include="Diagnostics\DebugLine.cs" />
-    <Compile Include="Diagnostics\DebugLineItemDetail.cs" />
     <Compile Include="Diagnostics\DebugStyleSelector.cs" />
     <Compile Include="Diagnostics\AppExceptionHandler.cs" />
     <Compile Include="Diagnostics\ErrorSeverity.cs" />
@@ -385,9 +370,6 @@
     <Compile Include="Settings\Scheduler\CredentialUI.cs" />
     <Compile Include="Settings\Scheduler\DummyResource.cs" />
     <Compile Include="Settings\Scheduler\SchedulerTaskManager.cs" />
-    <Compile Include="Settings\Scheduler\SchedulerView.xaml.cs">
-      <DependentUpon>SchedulerView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Settings\Scheduler\SchedulerViewModel.cs" />
     <Compile Include="Settings\Scheduler\ClientScheduledResourceModel.cs" />
     <Compile Include="Settings\Perfcounters\PerfcounterViewModel.cs" />
@@ -396,9 +378,6 @@
       <DependentUpon>SecurityView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Settings\Security\SecurityViewModel.cs" />
-    <Compile Include="Settings\SettingsView.xaml.cs">
-      <DependentUpon>SettingsView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Settings\SettingsViewModel.cs" />
     <Compile Include="Utils\OpeningWorkflowsHelper.cs" />
     <Compile Include="Utils\ResourceChangeHandler.cs" />
@@ -476,11 +455,9 @@
     <Compile Include="ViewModels\DependencyVisualization\DependencyVisualiserViewModel.cs" />
     <Compile Include="AppResources\ExtendedControls\AutoLayoutGrid.cs" />
     <Compile Include="AppResources\ExtensionMethods\FrameworkElementExtensionMethods.cs" />
-    <Compile Include="AppResources\TextEditorCompletion\TextEditorCompletionData.cs" />
     <Compile Include="Bootstrapper.cs" />
     <Compile Include="Diagnostics\DebugOutputFilterStrategy.cs" />
     <Compile Include="Factory\ExceptionFactory.cs" />
-    <Compile Include="InterfaceImplementors\BlankIntellisenseProvider.cs" />
     <Compile Include="InterfaceImplementors\WizardResourceKeys\ResourceKeys.cs" />
     <Compile Include="Model\ExceptionUIModel.cs" />
     <Compile Include="ViewModels\Diagnostics\ExceptionViewModel.cs" />
@@ -542,10 +519,6 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="CustomControls\Connections\ConnectControl.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="CustomControls\Progress\ProgressDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -574,15 +547,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Settings\Scheduler\SchedulerView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Settings\Security\SecurityView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Settings\SettingsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -952,7 +917,10 @@
       <Name>WarewolfParserInterop</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="AppResources\TextEditorCompletion\" />
+    <Folder Include="CustomControls\Connections\" />
+  </ItemGroup>
   <ItemGroup>
     <Content Include="Help\PageMissing.htm">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
