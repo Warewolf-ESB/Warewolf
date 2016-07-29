@@ -580,21 +580,32 @@ namespace Warewolf.Studio.ViewModels
 
                     if (_explorerRepository != null && IsRenaming)
                     {
-                        if (_explorerRepository.Rename(this, NewName(newName)))
+                        if (_resourceName == newName)
                         {
-                            if (!ResourcePath.Contains("\\"))
-                            {
-                                if (_resourceName != null)
-                                {
-                                    ResourcePath = ResourcePath.Replace(_resourceName, newName);
-                                }
-                            }
-                            else
-                            {
-                                ResourcePath = ResourcePath.Substring(0, ResourcePath.LastIndexOf("\\", StringComparison.OrdinalIgnoreCase) + 1) + newName;
-                            }
+                            IsRenaming = false;
 
-                            _resourceName = newName;
+                        }
+                        else
+                        {
+                            if (_explorerRepository.Rename(this, NewName(newName)))
+                            {
+                                if (!ResourcePath.Contains("\\"))
+                                {
+                                    if (_resourceName != null)
+                                    {
+                                        ResourcePath = ResourcePath.Replace(_resourceName, newName);
+                                    }
+                                }
+                                else
+                                {
+                                    ResourcePath =
+                                        ResourcePath.Substring(0,
+                                            ResourcePath.LastIndexOf("\\", StringComparison.OrdinalIgnoreCase) + 1) +
+                                        newName;
+                                }
+
+                                _resourceName = newName;
+                            }
                         }
                     }
                     if (!IsRenaming)
