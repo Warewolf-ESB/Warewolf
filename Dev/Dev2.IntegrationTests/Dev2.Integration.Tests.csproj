@@ -186,11 +186,6 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="ServerSettings.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ServerSettings.resx</DependentUpon>
-    </Compile>
     <Compile Include="Services.Sql\SqlServerTestUtils.cs" />
     <Compile Include="Services.Sql\SqlDatabaseBrokerTests.cs" />
     <Compile Include="Sql\WorkflowsTests.cs" />
@@ -212,11 +207,6 @@
     <EmbeddedResource Include="ParserStrings.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>ParserStrings.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ServerSettings.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>ServerSettings.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="TestResource.resx">
