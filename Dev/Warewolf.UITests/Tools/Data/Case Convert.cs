@@ -26,7 +26,7 @@ namespace Warewolf.UITests.Tools.Data
         public void MyTestInitialize()
         {
             Uimap.SetGlobalPlaybackSettings();
-            Uimap.WaitIfStudioDoesNotExist();
+            Uimap.WaitForStudioStart();
             Console.WriteLine("Test \"" + TestContext.TestName + "\" starting on " + System.Environment.MachineName);
             Uimap.InitializeABlankWorkflow();
         }

@@ -4703,43 +4703,6 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
-        /// Select_localhost_From_Explorer_Remote_Server_Dropdown_List
-        /// </summary>
-        public void Select_localhost_From_Explorer_Remote_Server_Dropdown_List()
-        {
-            #region Variable Declarations
-            WpfText comboboxListItemAsLocalhost = this.MainStudioWindow.ComboboxListItemAsLocalhost;
-            #endregion
-
-            // Click 'localhost (Connected)' label
-            Mouse.Click(comboboxListItemAsLocalhost, new Point(94, 10));
-        }
-        
-        /// <summary>
-        /// Select_LocalhostConnected_From_Explorer_Remote_Server_Dropdown_List - Use 'Select_LocalhostConnected_From_Explorer_Remote_Server_Dropdown_ListParams' to pass parameters into this method.
-        /// </summary>
-        public void Select_LocalhostConnected_From_Explorer_Remote_Server_Dropdown_List()
-        {
-            #region Variable Declarations
-            WpfButton serverListComboBox = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.ServerListComboBox;
-            WpfText comboboxListItemAsLocalhostConnected = this.MainStudioWindow.ComboboxListItemAsLocalhostConnected;
-            WpfText selectedItemAsLocalhost = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.SelectedItemAsLocalhost;
-            #endregion
-
-            // Click 'ToggleButton' button
-            Mouse.Click(serverListComboBox, new Point(217, 8));
-
-            // Verify that the 'Exists' property of 'localhost (Connected)' label equals 'True'
-            Assert.AreEqual(this.Select_LocalhostConnected_From_Explorer_Remote_Server_Dropdown_ListParams.ComboboxListItemAsLocalhostConnectedExists, comboboxListItemAsLocalhostConnected.Exists, "localhost (connected) does not exist in explorer remote server drop down list");
-
-            // Click 'localhost (Connected)' label
-            Mouse.Click(comboboxListItemAsLocalhostConnected, new Point(94, 10));
-
-            // Verify that the 'DisplayText' property of 'localhost' label equals 'TSTCIREMOTE'
-            Assert.AreEqual(this.Select_LocalhostConnected_From_Explorer_Remote_Server_Dropdown_ListParams.SelectedItemAsLocalhostDisplayText, selectedItemAsLocalhost.DisplayText, "Selected remote server is not localhost");
-        }
-        
-        /// <summary>
         /// Select_NewDatabaseSource_FromExplorerContextMenu
         /// </summary>
         public void Select_NewDatabaseSource_FromExplorerContextMenu()
@@ -4802,31 +4765,6 @@ namespace Warewolf.UITests
 
             // Click 'New Plugin Source' menu item
             Mouse.Click(newPluginSource, new Point(78, 11));
-        }
-        
-        /// <summary>
-        /// Select_NewRemoteServer_From_Explorer_Server_Dropdownlist - Use 'Select_NewRemoteServer_From_Explorer_Server_DropdownlistParams' to pass parameters into this method.
-        /// </summary>
-        public void Select_NewRemoteServer_From_Explorer_Server_Dropdownlist()
-        {
-            #region Variable Declarations
-            WpfButton serverListComboBox = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.ServerListComboBox;
-            WpfCustom newRemoteServerListItem = this.MainStudioWindow.NewRemoteServerListItem;
-            WpfText newRemoteServerItemText = this.MainStudioWindow.NewRemoteServerListItem.NewRemoteServerItemText;
-            WpfButton toggleDropdown = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.ServerSourceWizardTab.WorkSurfaceContext.NewServerSourceWizard.ProtocolCombobox.ToggleDropdown;
-            #endregion
-
-            // Click 'ToggleButton' button
-            Mouse.Click(serverListComboBox, new Point(217, 8));
-
-            // Verify that the 'Exists' property of 'New Remote Server...' custom control equals 'True'
-            Assert.AreEqual(this.Select_NewRemoteServer_From_Explorer_Server_DropdownlistParams.NewRemoteServerListItemExists, newRemoteServerListItem.Exists, "New Remote Server... does not exist in explorer remote server drop down list");
-
-            // Click 'New Remote Server...' label
-            Mouse.Click(newRemoteServerItemText, new Point(114, 10));
-
-            // Verify that the 'Exists' property of 'ToggleButton' button equals 'True'
-            Assert.AreEqual(this.Select_NewRemoteServer_From_Explorer_Server_DropdownlistParams.ToggleDropdownExists, toggleDropdown.Exists, "Server source wizard does not contain protocol dropdown");
         }
         
         /// <summary>
@@ -4986,30 +4924,6 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
-        /// Select_TSTCIREMOTE_From_Explorer_Remote_Server_Dropdown_List - Use 'Select_TSTCIREMOTE_From_Explorer_Remote_Server_Dropdown_ListParams' to pass parameters into this method.
-        /// </summary>
-        public void Select_TSTCIREMOTE_From_Explorer_Remote_Server_Dropdown_List()
-        {
-            #region Variable Declarations
-            WpfButton serverListComboBox = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.ServerListComboBox;
-            WpfText comboboxListItemAsTSTCIREMOTE = this.MainStudioWindow.ComboboxListItemAsTSTCIREMOTE;
-            WpfText selectedItemAsTSTCIREMOTE = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.SelectedItemAsTSTCIREMOTE;
-            #endregion
-
-            // Click 'ToggleButton' button
-            Mouse.Click(serverListComboBox, new Point(217, 8));
-
-            // Verify that the 'Exists' property of 'TSTCIREMOTE' label equals 'True'
-            Assert.AreEqual(this.Select_TSTCIREMOTE_From_Explorer_Remote_Server_Dropdown_ListParams.ComboboxListItemAsTSTCIREMOTEExists, comboboxListItemAsTSTCIREMOTE.Exists, "TSTCIREMOTE does not exist in explorer remote server drop down list");
-
-            // Click 'TSTCIREMOTE' label
-            Mouse.Click(comboboxListItemAsTSTCIREMOTE, new Point(79, 8));
-
-            // Verify that the 'DisplayText' property of 'TSTCIREMOTE' label equals 'TSTCIREMOTE'
-            Assert.AreEqual(this.Select_TSTCIREMOTE_From_Explorer_Remote_Server_Dropdown_ListParams.SelectedItemAsTSTCIREMOTEDisplayText, selectedItemAsTSTCIREMOTE.DisplayText, "Selected remote server is not TSTCIREMOTE");
-        }
-        
-        /// <summary>
         /// Select_TSTCIREMOTE_From_Server_Source_Wizard_Dropdownlist - Use 'Select_TSTCIREMOTE_From_Server_Source_Wizard_DropdownlistParams' to pass parameters into this method.
         /// </summary>
         public void Select_TSTCIREMOTE_From_Server_Source_Wizard_Dropdownlist()
@@ -5028,19 +4942,6 @@ namespace Warewolf.UITests
 
             // Verify that the 'Exists' property of 'Test Connection' button equals 'True'
             Assert.AreEqual(this.Select_TSTCIREMOTE_From_Server_Source_Wizard_DropdownlistParams.TestConnectionButtonExists, testConnectionButton.Exists, "Server source wizard does not contain a test connection button");
-        }
-        
-        /// <summary>
-        /// Select_TSTCIREMOTEConnected_From_Explorer_Remote_Server_Dropdown_List
-        /// </summary>
-        public void Select_TSTCIREMOTEConnected_From_Explorer_Remote_Server_Dropdown_List()
-        {
-            #region Variable Declarations
-            WpfText comboboxListItemAsTSTCIREMOTEConnected = this.MainStudioWindow.ComboboxListItemAsTSTCIREMOTEConnected;
-            #endregion
-
-            // Click 'TSTCIREMOTE (Connected)' label
-            Mouse.Click(comboboxListItemAsTSTCIREMOTEConnected, new Point(80, 13));
         }
         
         /// <summary>
@@ -6682,42 +6583,6 @@ namespace Warewolf.UITests
             }
         }
         
-        public virtual Select_LocalhostConnected_From_Explorer_Remote_Server_Dropdown_ListParams Select_LocalhostConnected_From_Explorer_Remote_Server_Dropdown_ListParams
-        {
-            get
-            {
-                if ((this.mSelect_LocalhostConnected_From_Explorer_Remote_Server_Dropdown_ListParams == null))
-                {
-                    this.mSelect_LocalhostConnected_From_Explorer_Remote_Server_Dropdown_ListParams = new Select_LocalhostConnected_From_Explorer_Remote_Server_Dropdown_ListParams();
-                }
-                return this.mSelect_LocalhostConnected_From_Explorer_Remote_Server_Dropdown_ListParams;
-            }
-        }
-        
-        public virtual Select_NewRemoteServer_From_Explorer_Server_DropdownlistParams Select_NewRemoteServer_From_Explorer_Server_DropdownlistParams
-        {
-            get
-            {
-                if ((this.mSelect_NewRemoteServer_From_Explorer_Server_DropdownlistParams == null))
-                {
-                    this.mSelect_NewRemoteServer_From_Explorer_Server_DropdownlistParams = new Select_NewRemoteServer_From_Explorer_Server_DropdownlistParams();
-                }
-                return this.mSelect_NewRemoteServer_From_Explorer_Server_DropdownlistParams;
-            }
-        }
-        
-        public virtual Select_TSTCIREMOTE_From_Explorer_Remote_Server_Dropdown_ListParams Select_TSTCIREMOTE_From_Explorer_Remote_Server_Dropdown_ListParams
-        {
-            get
-            {
-                if ((this.mSelect_TSTCIREMOTE_From_Explorer_Remote_Server_Dropdown_ListParams == null))
-                {
-                    this.mSelect_TSTCIREMOTE_From_Explorer_Remote_Server_Dropdown_ListParams = new Select_TSTCIREMOTE_From_Explorer_Remote_Server_Dropdown_ListParams();
-                }
-                return this.mSelect_TSTCIREMOTE_From_Explorer_Remote_Server_Dropdown_ListParams;
-            }
-        }
-        
         public virtual Select_TSTCIREMOTE_From_Server_Source_Wizard_DropdownlistParams Select_TSTCIREMOTE_From_Server_Source_Wizard_DropdownlistParams
         {
             get
@@ -7107,12 +6972,6 @@ namespace Warewolf.UITests
         private Select_Delete_FromExplorerContextMenuParams mSelect_Delete_FromExplorerContextMenuParams;
         
         private Select_http_From_Server_Source_Wizard_Address_Protocol_DropdownParams mSelect_http_From_Server_Source_Wizard_Address_Protocol_DropdownParams;
-        
-        private Select_LocalhostConnected_From_Explorer_Remote_Server_Dropdown_ListParams mSelect_LocalhostConnected_From_Explorer_Remote_Server_Dropdown_ListParams;
-        
-        private Select_NewRemoteServer_From_Explorer_Server_DropdownlistParams mSelect_NewRemoteServer_From_Explorer_Server_DropdownlistParams;
-        
-        private Select_TSTCIREMOTE_From_Explorer_Remote_Server_Dropdown_ListParams mSelect_TSTCIREMOTE_From_Explorer_Remote_Server_Dropdown_ListParams;
         
         private Select_TSTCIREMOTE_From_Server_Source_Wizard_DropdownlistParams mSelect_TSTCIREMOTE_From_Server_Source_Wizard_DropdownlistParams;
         
@@ -10076,66 +9935,6 @@ namespace Warewolf.UITests
         /// Verify that the 'Exists' property of 'Text' text box equals 'True'
         /// </summary>
         public bool AddressEditBoxExists = true;
-        #endregion
-    }
-    
-    /// <summary>
-    /// Parameters to be passed into 'Select_LocalhostConnected_From_Explorer_Remote_Server_Dropdown_List'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Select_LocalhostConnected_From_Explorer_Remote_Server_Dropdown_ListParams
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Verify that the 'Exists' property of 'localhost (Connected)' label equals 'True'
-        /// </summary>
-        public bool ComboboxListItemAsLocalhostConnectedExists = true;
-        
-        /// <summary>
-        /// Verify that the 'DisplayText' property of 'localhost' label equals 'TSTCIREMOTE'
-        /// </summary>
-        public string SelectedItemAsLocalhostDisplayText = "TSTCIREMOTE";
-        #endregion
-    }
-    
-    /// <summary>
-    /// Parameters to be passed into 'Select_NewRemoteServer_From_Explorer_Server_Dropdownlist'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Select_NewRemoteServer_From_Explorer_Server_DropdownlistParams
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Verify that the 'Exists' property of 'New Remote Server...' custom control equals 'True'
-        /// </summary>
-        public bool NewRemoteServerListItemExists = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'ToggleButton' button equals 'True'
-        /// </summary>
-        public bool ToggleDropdownExists = true;
-        #endregion
-    }
-    
-    /// <summary>
-    /// Parameters to be passed into 'Select_TSTCIREMOTE_From_Explorer_Remote_Server_Dropdown_List'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Select_TSTCIREMOTE_From_Explorer_Remote_Server_Dropdown_ListParams
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Verify that the 'Exists' property of 'TSTCIREMOTE' label equals 'True'
-        /// </summary>
-        public bool ComboboxListItemAsTSTCIREMOTEExists = true;
-        
-        /// <summary>
-        /// Verify that the 'DisplayText' property of 'TSTCIREMOTE' label equals 'TSTCIREMOTE'
-        /// </summary>
-        public string SelectedItemAsTSTCIREMOTEDisplayText = "TSTCIREMOTE";
         #endregion
     }
     
