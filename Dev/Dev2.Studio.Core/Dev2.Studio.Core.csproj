@@ -247,7 +247,6 @@
     <Compile Include="AppResources\EventArgs\DomainControllerUncontactableEventArgs.cs" />
     <Compile Include="AppResources\ExtensionMethods\DependencyObjectExtensions.cs" />
     <Compile Include="AppResources\Globals.cs" />
-    <Compile Include="AppResources\Repositories\DataListRepository.cs" />
     <Compile Include="AppResources\TriggerActions\SetCaretIndexAction.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -271,7 +270,6 @@
     <Compile Include="DataList\PartIsUsed.cs" />
     <Compile Include="DataList\RecordsetHandler.cs" />
     <Compile Include="DataList\ScalarHandler.cs" />
-    <Compile Include="InterfaceImplementors\FilePersistenceProvider.cs" />
     <Compile Include="Interfaces\DataList\IMissingDataList.cs" />
     <Compile Include="Interfaces\DataList\IComplexObjectItemModel.cs" />
     <Compile Include="Interfaces\DataList\IRecordSetFieldItemModel.cs" />
@@ -302,12 +300,9 @@
     <Compile Include="Factories\DataMappingListFactory.cs" />
     <Compile Include="Factories\DsfActivityFactory.cs" />
     <Compile Include="Helpers\FileHelper.cs" />
-    <Compile Include="Helpers\PropertyHelper.cs" />
     <Compile Include="Helpers\RetryUtility.cs" />
-    <Compile Include="Helpers\SystemHelper.cs" />
     <Compile Include="InterfaceImplementors\NetworkShareInformation.cs" />
     <Compile Include="Factories\DataListItemModelFactory.cs" />
-    <Compile Include="Factories\Dev2MessageFactory.cs" />
     <Compile Include="DataList\DataListSingleton.cs" />
     <Compile Include="InterfaceImplementors\DeployDTO.cs" />
     <Compile Include="InterfaceImplementors\DeployService.cs" />
@@ -405,18 +400,14 @@
     <Compile Include="Network\Enums.cs" />
     <Compile Include="Network\ServerState.cs" />
     <Compile Include="Network\ServerProxy.cs" />
-    <Compile Include="Network\ServiceProxy.cs" />
     <Compile Include="Network\WebServer.cs" />
     <Compile Include="OptomizedObservableCollection.cs" />
     <Compile Include="Security\ClientAuthorizationService.cs" />
     <Compile Include="Security\ClientSecurityService.cs" />
     <Compile Include="Security\AuthorizeCommand.cs" />
-    <Compile Include="Services\Communication\MailToEmailCommService.cs" />
     <Compile Include="Services\Communication\EmailCommMessage.cs" />
-    <Compile Include="Services\Communication\MapiEmailCommService.cs" />
     <Compile Include="Services\Communication\ICommMessage.cs" />
     <Compile Include="Services\Communication\ICommService.cs" />
-    <Compile Include="Services\Communication\Mapi\SendFileTo.cs" />
     <Compile Include="Services\Configuration\ConfigurationService.cs" />
     <Compile Include="Services\Configuration\HelpConfiguration.cs" />
     <Compile Include="Services\Configuration\UserConfigurationService.cs" />
@@ -443,7 +434,6 @@
     <Compile Include="Activities\Interfaces\IServiceXmlTranslator.cs" />
     <Compile Include="Utils\HelperUtils.cs" />
     <Compile Include="Utils\NewWorkflowNames.cs" />
-    <Compile Include="Utils\ServerUtil.cs" />
     <Compile Include="Utils\StudioCompileMessageRepo.cs" />
     <Compile Include="Utils\WorkflowDesignerUtils.cs" />
     <Compile Include="ViewModels\Base\BaseConductor.cs" />
