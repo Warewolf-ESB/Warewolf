@@ -70,7 +70,7 @@ namespace Dev2.Tests.Runtime.ESB.ComPlugin
             //------------Execute Test---------------------------
             using (Isolated<ComPluginRuntimeHandler> isolated = new Isolated<ComPluginRuntimeHandler>())
             {
-                var result = ComPluginServiceExecutionFactory.GetMethods(source.ClsId);
+                var result = ComPluginServiceExecutionFactory.GetMethods(source.ClsId,true);
                 //------------Assert Results-------------------------
                 Assert.IsTrue(result.Count > 0);
             }            
@@ -89,7 +89,7 @@ namespace Dev2.Tests.Runtime.ESB.ComPlugin
             var ns = ComPluginServiceExecutionFactory.GetNamespaces(new ComPluginSource { ClsId = adodbConGuid });
             Assert.IsNotNull(ns);
             
-            var result = ComPluginServiceExecutionFactory.GetMethods(adodbConGuid);
+            var result = ComPluginServiceExecutionFactory.GetMethods(adodbConGuid,true);
             //            using (Isolated<ComPluginRuntimeHandler> isolated = new Isolated<ComPluginRuntimeHandler>())
             //            {
             //                result.AddRange(isolated.Value.ListMethods(adodbConGuid));
@@ -118,7 +118,7 @@ namespace Dev2.Tests.Runtime.ESB.ComPlugin
                 ResourceName = "Dummy",
                 ResourceType = "ComPluginSource",
                 ResourcePath = "Test",
-                ProgId = Guid.NewGuid().ToString()
+                Is32Bit =false
             };
         }
 

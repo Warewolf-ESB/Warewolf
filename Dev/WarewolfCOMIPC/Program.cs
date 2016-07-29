@@ -21,23 +21,30 @@ namespace WarewolfCOMIPC
             {
                 Console.WriteLine("Waiting Server Pipe Stream");
                 pipe.WaitForConnection();
+                AcceptMessagesFromPipe(pipe);
+            }
+        }
 
-                // Receive CallData from client
-                //var formatter = new BinaryFormatter();
-                Console.WriteLine("Client Connected to Server Pipe Stream");
-                var serializer = new JsonSerializer();
-                var sr = new StreamReader(pipe);
-                var jsonTextReader = new JsonTextReader(sr);
-                var callData = serializer.Deserialize(jsonTextReader, typeof(CallData));
-                Console.WriteLine("Client Data read and Deserialized to Server Pipe Stream");
-                Console.WriteLine(callData.GetType());
-                var data = (CallData)callData;
+        private static void AcceptMessagesFromPipe(NamedPipeServerStream pipe)
+        {
+            
 
-                while(data.Status != KeepAliveStatus.Close)
-                {
-                    Console.WriteLine("Executing");
-                    LoadLibrary(data, serializer, pipe);
-                }                
+            // Receive CallData from client
+            //var formatter = new BinaryFormatter();
+            Console.WriteLine("Client Connected to Server Pipe Stream");
+            var serializer = new JsonSerializer();
+            var sr = new StreamReader(pipe);
+            var jsonTextReader = new JsonTextReader(sr);
+            var callData = serializer.Deserialize(jsonTextReader, typeof(CallData));
+            Console.WriteLine("Client Data read and Deserialized to Server Pipe Stream");
+            Console.WriteLine(callData.GetType());
+            var data = (CallData)callData;
+
+            while(data.Status != KeepAliveStatus.Close)
+            {
+                Console.WriteLine("Executing");
+                LoadLibrary(data, serializer, pipe);
+                AcceptMessagesFromPipe(pipe);
             }
         }
 

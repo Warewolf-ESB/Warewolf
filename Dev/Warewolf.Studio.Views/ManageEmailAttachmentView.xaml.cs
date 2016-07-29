@@ -10,10 +10,8 @@
 
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Media;
 using Dev2;
 using Dev2.Common.Interfaces;
 using Warewolf.Studio.Core;

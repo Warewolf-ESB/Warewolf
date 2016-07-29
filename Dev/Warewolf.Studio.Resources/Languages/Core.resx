@@ -415,12 +415,6 @@ The more information you can provide us with, the faster we can track the issue 
   <data name="WebServicePasteInputHelp" xml:space="preserve">
     <value>Paste the XML, JSON or plain text response of the web service call here.&lt;br/&gt;	&lt;br/&gt;	If you do not know the response body exactly, rather execute the Test execution.</value>
   </data>
-  <data name="WebServicePasteSaveCommandHelp" xml:space="preserve">
-    <value>Saves this as the mapping that will be used by Warewolf when executing.</value>
-  </data>
-  <data name="WebServicePasteCancelCommandHelp" xml:space="preserve">
-    <value>Cancel your changes to the response body.</value>
-  </data>
   <data name="PluginSourceClearSearchHelp" xml:space="preserve">
     <value>Clears the Search Filter</value>
   </data>
@@ -2410,14 +2404,8 @@ You can use File System, URI, SFTP, FTP or FTPS format.</value>
   <data name="ManageWebServiceEditSourceTooltip" xml:space="preserve">
     <value>Edits the selected webservice host connection</value>
   </data>
-  <data name="ManageWebPasteSaveTooltip" xml:space="preserve">
-    <value>Save this response definition</value>
-  </data>
   <data name="ManageWebPasteResponseTooltip" xml:space="preserve">
     <value>Paste the full response in here</value>
-  </data>
-  <data name="ManageWebPasteCancelTooltip" xml:space="preserve">
-    <value>Cancel this action</value>
   </data>
   <data name="ManageWcfServiceSourcesTooltip" xml:space="preserve">
     <value>Select the Source you want to use</value>

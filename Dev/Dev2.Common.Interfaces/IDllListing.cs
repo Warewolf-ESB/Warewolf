@@ -24,7 +24,7 @@ namespace Dev2.Common.Interfaces
         int ChildrenCount { get; }
         int CurrentProgress { get; set; }
         string ClsId { get; set; }
-        string ProgId { get; set; }
+        bool Is32Bit { get; set; }
     }
 
     public interface IFileListingModel : IFileListing

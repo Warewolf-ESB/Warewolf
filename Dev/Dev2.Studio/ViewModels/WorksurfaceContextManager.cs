@@ -576,10 +576,10 @@ namespace Dev2.Studio.ViewModels
             var db = new ComPluginSource(resourceModel.WorkflowXaml.ToXElement());
             var def = new ComPluginSourceDefinition
             {
-                SelectedDll = new DllListing { ClsId = db.ClsId, ProgId = db.ProgId, Children = new Collection<IFileListing>(), IsDirectory = false },
+                SelectedDll = new DllListing { ClsId = db.ClsId, Is32Bit = db.Is32Bit, Children = new Collection<IFileListing>(), IsDirectory = false },
                 Id = db.ResourceID,
                 ClsId = db.ClsId,
-                ProgId = db.ProgId,
+                Is32Bit = db.Is32Bit,
                 Name = db.ResourceName
 
             };

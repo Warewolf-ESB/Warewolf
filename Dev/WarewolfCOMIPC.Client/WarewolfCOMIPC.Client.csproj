@@ -47,7 +47,9 @@
   <ItemGroup>
     <Compile Include="CallData.cs" />
     <Compile Include="Client.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="..\AssemblyCommonInfo.cs">
+      <Link>Properties\AssemblyCommonInfo.cs</Link>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

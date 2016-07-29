@@ -8,7 +8,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.ComPlugin
     /// <summary>
     /// Handle interaction with plugins ;)
     /// </summary>
-    public class ComPluginBroker : IPluginBroker<ComPluginSource, ComPluginService>
+    public class ComPluginBroker : ICOMPluginBroker<ComPluginSource, ComPluginService>
     {
         #region Implementation of IPluginBroker<in ComPluginSource,in ComPluginService>
 
@@ -25,16 +25,16 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.ComPlugin
             }
         }
 
-        public ServiceMethodList GetMethods(string clsId, string assemblyName, string fullName)
+        public ServiceMethodList GetMethods(string clsId, bool is32Bit)
         {
-            return ComPluginServiceExecutionFactory.GetMethods(clsId);
+            return ComPluginServiceExecutionFactory.GetMethods(clsId,is32Bit);
         }
 
         public IOutputDescription TestPlugin(ComPluginService pluginService)
         {
             ComPluginInvokeArgs args = new ComPluginInvokeArgs
             {
-                ProgId = ((ComPluginSource)pluginService.Source).ProgId,
+                Is32Bit = ((ComPluginSource)pluginService.Source).Is32Bit,
                 ClsId = ((ComPluginSource)pluginService.Source).ClsId,
                 Method = pluginService.Method.Name,
                 Fullname = pluginService.Namespace,

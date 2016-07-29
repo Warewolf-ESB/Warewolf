@@ -438,6 +438,40 @@ namespace Dev2.FindMissingStrategies
                     }
                 }
             }
+            else if (activityType == typeof(DsfComDllActivity))
+            {
+                var maAct = activity as DsfComDllActivity;
+                if (maAct != null)
+                {
+                    if (maAct.Inputs != null)
+                    {
+                        results.AddRange(InternalFindMissing(maAct.Inputs));
+                    }
+                    if (!string.IsNullOrEmpty(maAct.OnErrorVariable))
+                    {
+                        results.Add(maAct.OnErrorVariable);
+                    }
+                    if (maAct.IsObject)
+                    {
+                        if (!string.IsNullOrEmpty(maAct.ObjectName))
+                        {
+                            results.Add(maAct.ObjectName);
+                        }
+                    }
+                    else
+                    {
+
+                        if (maAct.Outputs != null)
+                        {
+                            results.AddRange(InternalFindMissing(maAct.Outputs));
+                        }
+                    }
+                    if (!string.IsNullOrEmpty(maAct.OnErrorWorkflow))
+                    {
+                        results.Add(maAct.OnErrorWorkflow);
+                    }
+                }
+            }
             else if (activityType == typeof(DsfWcfEndPointActivity))
             {
                 var maAct = activity as DsfWcfEndPointActivity;
