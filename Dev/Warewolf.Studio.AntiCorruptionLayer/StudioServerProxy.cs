@@ -103,13 +103,16 @@ namespace Warewolf.Studio.AntiCorruptionLayer
                         foreach (IExplorerItemViewModel itemViewModel in explorerItemViewModels)
                         {
                             var dependants = QueryManagerProxy.FetchDependants(itemViewModel.ResourceId);
-                            if (!HasDependencies(itemViewModel, graphGenerator, dependants))
+                            if (dependants != null)
                             {
-                                return new DeletedFileMetadata
+                                if (!HasDependencies(itemViewModel, graphGenerator, dependants))
                                 {
-                                    IsDeleted = false,
-                                    ResourceId = itemViewModel.ResourceId
-                                };
+                                    return new DeletedFileMetadata
+                                    {
+                                        IsDeleted = false,
+                                        ResourceId = itemViewModel.ResourceId
+                                    };
+                                }
                             }
                         }
                         if (!string.IsNullOrWhiteSpace(explorerItemViewModel.ResourcePath))

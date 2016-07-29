@@ -332,7 +332,6 @@
     <Compile Include="Interfaces\IWebActivity.cs" />
     <Compile Include="Interfaces\IPropertyEditorWizard.cs" />
     <Compile Include="Interfaces\IWorkflowDesignerViewModel.cs" />
-    <Compile Include="Messages\AbstractEnvironmentMessage.cs" />
     <Compile Include="Messages\AbstractResourceMessage.cs" />
     <Compile Include="Messages\AddStringListToDataListMessage.cs" />
     <Compile Include="Messages\AddWorkSurfaceMessage.cs" />
@@ -371,6 +370,7 @@
     <Compile Include="Models\ServiceDebugInfoModel.cs" />
     <Compile Include="Models\UserInterfaceLayoutModel.cs" />
     <Compile Include="Network\Enums.cs" />
+    <Compile Include="Network\ServerState.cs" />
     <Compile Include="Network\ServerProxy.cs" />
     <Compile Include="Network\WebServer.cs" />
     <Compile Include="OptomizedObservableCollection.cs" />

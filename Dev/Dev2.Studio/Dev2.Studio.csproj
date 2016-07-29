@@ -386,12 +386,10 @@
     <Compile Include="ViewModels\Diagnostics\DebugOutputViewModelUtil.cs" />
     <Compile Include="ViewModels\Diagnostics\DebugStatus.cs" />
     <Compile Include="ViewModels\Diagnostics\IDebugOutputViewModelUtil.cs" />
+    <Compile Include="ViewModels\Diagnostics\ReportsViewerViewModel.cs" />
     <Compile Include="ViewModels\Help\IHelpViewWrapper.cs" />
     <Compile Include="ViewModels\Help\HelpViewWrapper.cs" />
     <Compile Include="ViewModels\SourceViewModel.cs" />
-    <Compile Include="Views\Workflow\WorkflowDesignerView.xaml.cs">
-      <DependentUpon>WorkflowDesignerView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="ViewModels\Workflow\DataListConversionUtils.cs" />
     <Compile Include="ViewModels\Workflow\WorkflowDesignerDataPartUtils.cs" />
     <Compile Include="ViewModels\WorksurfaceContextManager.cs" />
@@ -403,6 +401,9 @@
     <Compile Include="Views\Dialogs\WebLatestVersionDialog.xaml.cs">
       <DependentUpon>WebLatestVersionDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Dialog\Dev2MessageBoxWithCustomButtons.xaml.cs">
+      <DependentUpon>Dev2MessageBoxWithCustomButtons.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ViewModels\Help\HelpViewModel.cs" />
     <Compile Include="ViewModels\Workflow\WorkflowInputDataViewModel.cs" />
     <Compile Include="ViewModels\Workflow\DsfActivityDropViewModel.cs">
@@ -413,20 +414,37 @@
     <Compile Include="ViewModels\Dialogs\Dev2MessageBoxViewModel.cs" />
     <Compile Include="ViewModels\QuickVariableInput\QuickVariableInputViewModel.cs" />
     <Compile Include="ViewModels\WorkSurface\IWorkSurfaceViewModel.cs" />
+    <Compile Include="Views\Diagnostics\ReportsViewerView.xaml.cs">
+      <DependentUpon>ReportsViewerView.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Views\Help\HelpView.xaml.cs">
       <DependentUpon>HelpView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ImageWindow.xaml.cs">
       <DependentUpon>ImageWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\ResourceManagement\RenameResourceDialog.xaml.cs">
+      <DependentUpon>RenameResourceDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ResourceManagement\DeleteFolderDialog.xaml.cs">
+      <DependentUpon>DeleteFolderDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\ResourceManagement\ResourceChangedDialog.xaml.cs">
       <DependentUpon>ResourceChangedDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\UserInterfaceBuilder\DataGridQuickVariableInputView.xaml.cs">
+      <DependentUpon>DataGridQuickVariableInputView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Workflow\DragDropHelpers.cs" />
     <Compile Include="Views\Workflow\DsfActivityDropWindow.xaml.cs">
       <DependentUpon>DsfActivityDropWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Dialogs\IDialog.cs" />
+    <Compile Include="Views\Workflow\WorkflowInputDataView.xaml.cs">
+      <SubType>Code</SubType>
+      <DependentUpon>WorkflowInputDataView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Webs\Callbacks\IShowDependencyProvider.cs" />
     <Compile Include="Webs\Callbacks\NetworkHelper.cs" />
     <Compile Include="Webs\Callbacks\SaveNewWorkflowCallbackHandler.cs" />
@@ -449,8 +467,54 @@
     <Compile Include="Views\DataList\DataListView.xaml.cs">
       <DependentUpon>DataListView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Diagnostics\ExceptionView.xaml.cs">
+      <DependentUpon>ExceptionView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Help\FeedbackView.xaml.cs">
+      <DependentUpon>FeedbackView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\UIAutomation\AutomationIdCreaterView.xaml.cs">
+      <DependentUpon>AutomationIdCreaterView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Administration\DialogueView.xaml.cs">
+      <DependentUpon>DialogueView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Administration\DsfAdminWindow.xaml.cs">
+      <DependentUpon>DsfAdminWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Administration\StartPageWindow.xaml.cs">
+      <DependentUpon>StartPageWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\DataList\InvertSign.cs" />
+    <Compile Include="Views\DataMapping\DataMapping.xaml.cs">
+      <DependentUpon>DataMapping.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ViewModels\Diagnostics\DebugTreeViewItemViewModel.cs" />
+    <Compile Include="Views\Diagnostics\DebugOutputView.xaml.cs">
+      <DependentUpon>DebugOutputView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ViewModels\Diagnostics\DebugOutputViewModel.cs" />
+    <Compile Include="Views\Global\GetStringValueWindow.xaml.cs">
+      <DependentUpon>GetStringValueWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Global\SearchWindow.xaml.cs">
+      <DependentUpon>SearchWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\MainView.xaml.cs">
+      <DependentUpon>MainView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ResourceManagement\DeleteResourceDialog.xaml.cs">
+      <DependentUpon>DeleteResourceDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Wizards\DataListChangeNotificationView.xaml.cs">
+      <DependentUpon>DataListChangeNotificationView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Workflow\ConfigureDecisionWindow.xaml.cs">
+      <DependentUpon>ConfigureDecisionWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Workflow\WorkflowDesignerView.xaml.cs">
+      <DependentUpon>WorkflowDesignerView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -539,7 +603,23 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\Dialog\Dev2MessageBoxWithCustomButtons.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Diagnostics\ReportsViewerView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\ImageWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ResourceManagement\RenameResourceDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\ResourceManagement\DeleteFolderDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -547,11 +627,47 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\Workflow\WorkflowDesignerView.xaml">
+    <Page Include="Views\UserInterfaceBuilder\DataGridQuickVariableInputView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\DataList\DataListView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\DataList\DataListView.xaml">
+    <Page Include="Views\Diagnostics\ExceptionView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Help\FeedbackView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\UIAutomation\AutomationIdCreaterView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Administration\DialogueView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Administration\DsfAdminWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Administration\StartPageWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\DataMapping\DataMapping.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Diagnostics\DebugOutputView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Global\GetStringValueWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -559,11 +675,39 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Views\Global\SearchWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\MainView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Resources\ResourceDictionary.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Views\ResourceManagement\DeleteResourceDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Wizards\DataListChangeNotificationView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Workflow\ConfigureDecisionWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Views\Workflow\DsfActivityDropWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Workflow\WorkflowDesignerView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Workflow\WorkflowInputDataView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -776,14 +920,6 @@
   <ItemGroup>
     <Folder Include="AppResources\TextEditorCompletion\" />
     <Folder Include="CustomControls\Connections\" />
-    <Folder Include="Views\Administration\" />
-    <Folder Include="Views\DataMapping\" />
-    <Folder Include="Views\Diagnostics\" />
-    <Folder Include="Views\Dialog\" />
-    <Folder Include="Views\Global\" />
-    <Folder Include="Views\UIAutomation\" />
-    <Folder Include="Views\UserInterfaceBuilder\" />
-    <Folder Include="Views\Wizards\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Help\PageMissing.htm">

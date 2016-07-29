@@ -8,11 +8,19 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using System;
 
-namespace Unlimited.UnitTest.Framework.Dev2.Network
+// ReSharper disable CheckNamespace
+
+namespace Dev2.Studio.Views.Diagnostics
 {
-    public class MockNetworkContext : NetworkContext
+    /// <summary>
+    /// Interaction logic for DebugOutputWindow.xaml
+    /// </summary>
+    public partial class DebugOutputView
     {
+        public DebugOutputView()
+        {
+            InitializeComponent();
+        }
     }
 }

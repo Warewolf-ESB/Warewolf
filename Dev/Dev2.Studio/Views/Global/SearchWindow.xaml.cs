@@ -8,18 +8,19 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using Dev2.Studio.Core.Interfaces;
+
 
 // ReSharper disable once CheckNamespace
-namespace Dev2.Studio.Core.Messages
+namespace Unlimited.Applications.BusinessDesignStudio.Views
 {
-    public abstract class AbstractEnvironmentMessage : IEnvironmentMessage
+    /// <summary>
+    /// Interaction logic for SearchWindow.xaml
+    /// </summary>
+    public partial class SearchWindow
     {
-        protected AbstractEnvironmentMessage(IEnvironmentModel environmentModel)
+        public SearchWindow()
         {
-            EnvironmentModel = environmentModel;
+            InitializeComponent();
         }
-
-        public IEnvironmentModel EnvironmentModel { get; set; }
     }
 }

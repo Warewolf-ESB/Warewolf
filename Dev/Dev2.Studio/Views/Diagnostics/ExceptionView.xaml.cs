@@ -8,15 +8,19 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using System.Network;
 
-namespace Dev2.DynamicServices.Test
+
+// ReSharper disable once CheckNamespace
+namespace Dev2.Studio.Views.Diagnostics
 {
-    public abstract class MockNetworkHost : NetworkHost
+    /// <summary>
+    /// Interaction logic for ExceptionView.xaml
+    /// </summary>
+    public partial class ExceptionView
     {
-        protected MockNetworkHost()
-            : base("TestHost")
+        public ExceptionView()
         {
+            InitializeComponent();
         }
     }
 }
