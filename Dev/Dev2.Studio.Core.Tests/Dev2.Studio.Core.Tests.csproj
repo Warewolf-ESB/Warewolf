@@ -301,7 +301,6 @@
     <Compile Include="ModelTests\DataListItemModelTest.cs" />
     <Compile Include="Services\UserConfigurationServiceTests.cs" />
     <Compile Include="TestResourceRepository.cs" />
-    <Compile Include="ProperMoqs\MockBehaviourBase.cs" />
     <Compile Include="ResourceDesignerViewModelTest.cs" />
     <Compile Include="ResourceHelperTest.cs" />
     <Compile Include="ResourceModelTest.cs" />
@@ -482,6 +481,7 @@
     <Folder Include="Diagnostics\Debug\" />
     <Folder Include="Dock\" />
     <Folder Include="MockUtils\" />
+    <Folder Include="ProperMoqs\" />
     <Folder Include="Repositories\" />
     <Folder Include="ViewModelTests\Configuration\" />
     <Folder Include="ViewModelTests\Dialogs\" />
