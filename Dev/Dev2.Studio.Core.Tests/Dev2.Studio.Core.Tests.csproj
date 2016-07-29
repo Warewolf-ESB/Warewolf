@@ -302,7 +302,6 @@
     <Compile Include="Services\UserConfigurationServiceTests.cs" />
     <Compile Include="TestResourceRepository.cs" />
     <Compile Include="ProperMoqs\MockBehaviourBase.cs" />
-    <Compile Include="ProperMoqs\MoqPopup.cs" />
     <Compile Include="ResourceDesignerViewModelTest.cs" />
     <Compile Include="ResourceHelperTest.cs" />
     <Compile Include="ResourceModelTest.cs" />
