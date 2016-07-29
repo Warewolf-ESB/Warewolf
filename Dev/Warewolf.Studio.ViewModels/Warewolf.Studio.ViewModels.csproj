@@ -142,13 +142,16 @@
     <Compile Include="DeployStatsViewerViewModel.cs" />
     <Compile Include="DeployViewModel.cs" />
     <Compile Include="ExplorerItemViewModelCommandController.cs" />
+    <Compile Include="ManageComPluginServiceModel.cs" />
     <Compile Include="ManageComPluginSourceModel.cs" />
     <Compile Include="ManageComPluginSourceViewModel.cs" />
+    <Compile Include="ManageDbServiceModel.cs" />
     <Compile Include="ManageOAuthSourceModel.cs" />
     <Compile Include="ManageOAuthSourceViewModel.cs" />
     <Compile Include="EmailAttachmentModel.cs" />
     <Compile Include="EmailAttachmentVm.cs" />
     <Compile Include="EnvironmentViewModel.cs" />
+    <Compile Include="ExchangeServiceModel.cs" />
     <Compile Include="ExplorerItemNodeViewModel.cs" />
     <Compile Include="ExplorerItemViewModel.cs" />
     <Compile Include="ExplorerViewModel.cs" />
@@ -167,13 +170,17 @@
     <Compile Include="ManageExchangeSourceViewModel.cs" />
     <Compile Include="ManageNewServerSourceModel.cs" />
     <Compile Include="ManageNewServerViewModel.cs" />
+    <Compile Include="ManagePluginServiceModel.cs" />
     <Compile Include="ManagePluginSourceModel.cs" />
     <Compile Include="ManagePluginSourceViewModel.cs" />
+    <Compile Include="ManageWcfServiceModel.cs" />
     <Compile Include="ManageWcfSourceModel.cs" />
     <Compile Include="ManageWcfSourceViewModel.cs" />
+    <Compile Include="ManageWebServiceModel.cs" />
     <Compile Include="ManageWebServiceSourceModel.cs" />
     <Compile Include="ManageWebserviceSourceViewModel.cs" />
     <Compile Include="MenuViewModel.cs" />
+    <Compile Include="ManagePasteViewModel.cs" />
     <Compile Include="MessageBoxViewModel.cs" />
     <Compile Include="..\AssemblyCommonInfo.cs">
       <Link>Properties\AssemblyCommonInfo.cs</Link>
