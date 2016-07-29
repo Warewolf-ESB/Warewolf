@@ -237,7 +237,7 @@ namespace Warewolf.UITests
                     Select_Delete_FromExplorerContextMenu();
                     Click_MessageBox_Yes();
                 }
-                Click_Explorer_Filter_Clear_Button();
+                TryClearExplorerFilter();
             }
             catch (Exception e)
             {
@@ -258,12 +258,12 @@ namespace Warewolf.UITests
                     Select_Delete_FromExplorerContextMenu();
                     Click_MessageBox_Yes();
                 }
-                Click_Explorer_Filter_Clear_Button();
+                TryClearExplorerFilter();
             }
             catch (Exception e)
             {
                 Console.WriteLine("Cleanup failed to remove resource " + ResourceName + ". Test may have crashed before " + ResourceName + " was created.\n" + e.Message);
-                Click_Explorer_Filter_Clear_Button();
+                TryClearExplorerFilter();
             }
         }
 
