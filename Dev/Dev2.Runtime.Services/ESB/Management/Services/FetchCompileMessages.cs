@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.Serialization;
 using System.Text;
 using Dev2.Common.Interfaces.Core.DynamicServices;
@@ -27,6 +28,7 @@ namespace Dev2.Runtime.ESB.Management.Services
     /// <summary>
     /// Internal service to fetch compile time messages
     /// </summary>
+    [SuppressMessage("ReSharper", "UnusedMember.Global")]
     public class FetchCompileMessages : IEsbManagementEndpoint
     {
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)

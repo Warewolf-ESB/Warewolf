@@ -9,8 +9,4 @@ namespace Dev2.Common.Interfaces.Monitoring
         ServicesNotFound,
         NotAuthorisedErrors,
     }
-
-    public static class WarewolfPerfCounterTypeExtensions
-    {
-    }
 }

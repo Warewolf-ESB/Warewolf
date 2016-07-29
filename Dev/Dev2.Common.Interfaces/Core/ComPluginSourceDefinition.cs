@@ -10,7 +10,7 @@ namespace Dev2.Common.Interfaces.Core
         {
             var @equals = SelectedDll?.Equals(other?.SelectedDll);
             var selectedEquals = @equals != null && @equals.Value;
-            return string.Equals(Name, other?.Name) && Id.Equals(other?.Id) && Equals(ClsId, other?.ClsId) && string.Equals(ProgId, other?.ProgId) && selectedEquals;
+            return string.Equals(Name, other?.Name) && Id.Equals(other?.Id) && Equals(ClsId, other?.ClsId) && bool.Equals(Is32Bit, other?.Is32Bit) && selectedEquals;
         }
 
         /// <summary>
@@ -49,9 +49,9 @@ namespace Dev2.Common.Interfaces.Core
             {
                 var hashCode = Name?.GetHashCode() ?? 0;
                 hashCode = (hashCode * 397) ^ Id.GetHashCode();
-                hashCode = (hashCode * 397) ^ (ProgId?.GetHashCode() ?? 0);
+                hashCode = (hashCode * 397) ^ Is32Bit.GetHashCode();
                 hashCode = (hashCode * 397) ^ (ClsId?.GetHashCode() ?? 0);
-                hashCode = (hashCode * 397) ^ (Path.GetHashCode());
+                hashCode = (hashCode * 397) ^ Path.GetHashCode();
                 return hashCode;
             }
         }
@@ -72,7 +72,7 @@ namespace Dev2.Common.Interfaces.Core
 
         public string Name { get; set; }
         public Guid Id { get; set; }
-        public string ProgId { get; set; }
+        public bool Is32Bit { get; set; }
         public string ClsId { get; set; }
         public IFileListing SelectedDll { get; set; }
         public string Path { get; set; }

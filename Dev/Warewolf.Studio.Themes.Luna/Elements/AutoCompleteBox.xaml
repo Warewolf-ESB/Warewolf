@@ -107,6 +107,7 @@
         <Setter Property="IsTabStop" Value="False" />
         <Setter Property="BorderThickness" Value="1" />
         <Setter Property="BorderBrush" Value="{StaticResource TextBoxBorderBrush}" />
+        <Setter Property="TextBoxStyle" Value="{StaticResource NoAcceptReturnTextBoxStyle}"/>
         <Setter Property="MinWidth" Value="45" />
         <Setter Property="Height" Value="Auto"/>
         <Setter Property="Template">
@@ -132,7 +133,7 @@
                                          IsTabStop="True" 
                                          Grid.Column="1"
                                          x:Name="Text" 
-                                         Style="{StaticResource NoAcceptReturnTextBoxStyle}"
+                                         Style="{TemplateBinding TextBoxStyle}"
                                          BorderThickness="0" 
                                          BorderBrush="Transparent" 
                                          Foreground="{TemplateBinding Foreground}" 
@@ -341,6 +342,16 @@
                             </MultiTrigger.Conditions>
                             <MultiTrigger.Setters>
                                 <Setter Property="Style" TargetName="Text" Value="{StaticResource AcceptReturnTextBoxStyle}" />
+                                <Setter Property="Padding" Value="3,6,0,0"/>
+                            </MultiTrigger.Setters>
+                        </MultiTrigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="ui:IntellisenseTextBox.AllowUserInsertLine" Value="True" />
+                                <Condition Property="Text" Value="" />
+                            </MultiTrigger.Conditions>
+                            <MultiTrigger.Setters>
+                                <Setter Property="Margin" TargetName="PART_DefaultTextHost" Value="3,3,0,0"></Setter>
                             </MultiTrigger.Setters>
                         </MultiTrigger>
                         <Trigger SourceName="Text" Property="IsMouseOver" Value="True">

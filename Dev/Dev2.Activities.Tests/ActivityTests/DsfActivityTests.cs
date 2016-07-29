@@ -14,10 +14,8 @@ using System.Activities.Statements;
 using System.Collections.Generic;
 using System.Security.Principal;
 using ActivityUnitTests;
-using Dev2.DataList.Contract;
 using Dev2.Diagnostics;
 using Dev2.DynamicServices;
-using Dev2.Interfaces;
 using Dev2.Services.Security;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -190,18 +188,5 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreNotEqual(originalGuid.ToString(), act.UniqueID);
             Assert.AreEqual(act.GetWorkSurfaceMappingId(), originalGuid);
         }
-    }
-
-    public class DsfErrorActivity : DsfActivity
-    {
-        #region Overrides of DsfActivity
-
-        protected override void ExecutionImpl(IEsbChannel esbChannel, IDSFDataObject dataObject, string inputs, string outputs, out ErrorResultTO tmpErrors, int undate)
-        {
-            tmpErrors = new ErrorResultTO();
-            tmpErrors.AddError("This is an error");
-        }
-
-        #endregion
     }
 }

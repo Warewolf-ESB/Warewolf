@@ -25,7 +25,7 @@ namespace Dev2.Views.Dialogs
         {
             InitializeComponent();
             Browser.Navigated += Navigated;
-            Browser.Navigate(new Uri("http://www.warewolf.io/start_new.php"));
+            Browser.Navigate(new Uri("http://warewolf.io/start_new.php"));
         }
 
         void Navigated(object sender, NavigationEventArgs e)

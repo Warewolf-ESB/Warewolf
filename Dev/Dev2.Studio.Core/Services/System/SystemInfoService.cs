@@ -566,25 +566,5 @@ namespace Dev2.Studio.Core.Services.System
 
         #endregion REVISION
         #endregion VERSION
-
-        /// <summary>
-        /// Gets the system info.
-        /// </summary>
-        /// <returns></returns>
-        /// <author>Jurie.smit</author>
-        /// <datetime>2013/01/14-09:10 AM</datetime>
-        public SystemInfoTO GetSystemInfo()
-        {
-            return new SystemInfoTO
-                {
-                    ApplicationExecutionBits = Bits,
-                    OsBits = OsBits,
-                    Edition = Edition,
-                    Name = Name,
-                    ServicePack = ServicePack,
-                    Version = Version.ToString()
-                };
-        }
-
     }
 }

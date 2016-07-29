@@ -37,15 +37,5 @@ namespace Dev2.TaskScheduler.Wrappers
         }
 
         public NamedValueCollection ValueQueries => Instance.ValueQueries;
-
-        public bool GetBasic(out string log, out string source, out int? eventId)
-        {
-            return Instance.GetBasic(out log, out source, out eventId);
-        }
-
-        public void SetBasic(string log, string source, int? eventId)
-        {
-            Instance.SetBasic(log, source, eventId);
-        }
     }
 }

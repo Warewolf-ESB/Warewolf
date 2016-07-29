@@ -13,6 +13,7 @@ using Dev2.DynamicServices.Objects;
 using Dev2.Workspaces;
 using Microsoft.Win32;
 //http://procbits.com/2010/11/08/get-all-progid-on-system-for-com-automation
+// ReSharper disable NonLocalizedString
 namespace Dev2.Runtime.ESB.Management.Services
 {
     [SuppressMessage("ReSharper", "UnusedMember.Global")]
@@ -44,8 +45,6 @@ namespace Dev2.Runtime.ESB.Management.Services
             try
             {
                 var regClis = Registry.ClassesRoot.OpenSubKey("CLSID");
-                
-                
 
                 if (regClis != null)
                 {
@@ -72,31 +71,26 @@ namespace Dev2.Runtime.ESB.Management.Services
                                         dllListings.Add(new DllListing
                                         {
                                             ClsId = clsid,
-                                            ProgId = pid.ToString(),
-                                            Name = typeFromProgID.Name,
+                                            Is32Bit = typeFromProgID.FullName.Equals("System.__ComObject"),
+                                            Name = pid.ToString(),
                                             IsDirectory = false,
-                                            FullName = typeFromProgID.FullName,
+                                            FullName = pid.ToString(),
                                             Children = new IFileListing[0]
                                         });
                                     }
                                 }
                                 catch (Exception e)
                                 {
-                                    //Assert.Fail(e.Message);
                                     Dev2Logger.Error("GetComDllListingsService-Execute", e);
                                 }
                             }
-
                         }
-
-
                         regClsidKey?.Close();
                     }
-
                     regClis.Close();
                 }
 
-                dllListings = dllListings.OrderBy(listing => listing.ProgId).ToList();
+                dllListings = dllListings.OrderBy(listing => listing.FullName).ToList();
                 msg.Message = serializer.SerializeToBuilder(dllListings);
             }
 

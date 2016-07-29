@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using Dev2.Activities;
 using Dev2.Activities.WcfEndPoint;
@@ -25,6 +26,7 @@ namespace Dev2.FindMissingStrategies
     /// <summary>
     /// Responsible for the find missing logic that applys to all the activities that only have a collection property on them
     /// </summary>
+    [SuppressMessage("ReSharper", "UnusedMember.Global")] //This is loaded based on SpookyAction implementing IFindMissingStrategy
     public class DataGridActivityFindMissingStrategy : IFindMissingStrategy
     {
         #region Implementation of ISpookyLoadable<Enum>
@@ -413,6 +415,40 @@ namespace Dev2.FindMissingStrategies
                     {
                         results.AddRange(InternalFindMissing(maAct.Inputs));
                     }                
+                    if (!string.IsNullOrEmpty(maAct.OnErrorVariable))
+                    {
+                        results.Add(maAct.OnErrorVariable);
+                    }
+                    if (maAct.IsObject)
+                    {
+                        if (!string.IsNullOrEmpty(maAct.ObjectName))
+                        {
+                            results.Add(maAct.ObjectName);
+                        }
+                    }
+                    else
+                    {
+
+                        if (maAct.Outputs != null)
+                        {
+                            results.AddRange(InternalFindMissing(maAct.Outputs));
+                        }
+                    }
+                    if (!string.IsNullOrEmpty(maAct.OnErrorWorkflow))
+                    {
+                        results.Add(maAct.OnErrorWorkflow);
+                    }
+                }
+            }
+            else if (activityType == typeof(DsfComDllActivity))
+            {
+                var maAct = activity as DsfComDllActivity;
+                if (maAct != null)
+                {
+                    if (maAct.Inputs != null)
+                    {
+                        results.AddRange(InternalFindMissing(maAct.Inputs));
+                    }
                     if (!string.IsNullOrEmpty(maAct.OnErrorVariable))
                     {
                         results.Add(maAct.OnErrorVariable);

@@ -442,9 +442,6 @@
     <Compile Include="Views\Help\HelpView.xaml.cs">
       <DependentUpon>HelpView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Dialogs\Dev2MessageBoxView.xaml.cs">
-      <DependentUpon>Dev2MessageBoxView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\ImageWindow.xaml.cs">
       <DependentUpon>ImageWindow.xaml</DependentUpon>
     </Compile>
@@ -649,10 +646,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\Dialogs\Dev2MessageBoxView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Views\ImageWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -765,9 +758,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <None Include="Achitecture\EnvironmentRepositoryRelationships.cd" />
-    <None Include="app.config">
-      <SubType>Designer</SubType>
-    </None>
     <None Include="app.manifest" />
     <None Include="packages.config">
       <SubType>Designer</SubType>

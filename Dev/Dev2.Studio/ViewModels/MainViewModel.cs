@@ -550,14 +550,6 @@ namespace Dev2.Studio.ViewModels
             splashView.Show(true);
         }
 
-        // ReSharper disable once InconsistentNaming
-
-        public string OpenPasteWindow(string current)
-        {
-            var pasteView = new ManageWebservicePasteView();
-            return pasteView.ShowView(current);
-        }
-
         public IServer LocalhostServer => CustomContainer.Get<IServer>();
 
         public void SetActiveEnvironment(Guid environmentId)
@@ -1113,11 +1105,6 @@ namespace Dev2.Studio.ViewModels
         public bool IsWorkFlowOpened(IContextualResourceModel resource)
         {
             return _worksurfaceContextManager.IsWorkFlowOpened(resource);
-        }
-
-        public void UpdateWorkflowLink(IContextualResourceModel resource, string newPath, string oldPath)
-        {
-            _worksurfaceContextManager.UpdateWorkflowLink(resource, newPath, oldPath);
         }
 
         public void AddWorkSurfaceContext(IContextualResourceModel resourceModel)

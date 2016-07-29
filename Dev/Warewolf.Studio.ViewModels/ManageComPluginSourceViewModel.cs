@@ -1,5 +1,5 @@
 using System;
-using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
@@ -25,13 +25,13 @@ namespace Warewolf.Studio.ViewModels
         readonly string _warewolfserverName;
         string _headerText;
         private bool _isDisposed;
-        List<IDllListingModel> _dllListings;
+        ObservableCollection<IDllListingModel> _dllListings;
         bool _isLoading;
         string _searchTerm;
         private IDllListingModel _gacItem;
         string _assemblyName;
         Task<IRequestServiceNameViewModel> _requestServiceNameViewModel;
-        private string _progID;
+        private bool _is32Bit;
         private string _clsId;
 
         /// <exception cref="Exception">A delegate callback throws an exception.</exception>
@@ -86,7 +86,7 @@ namespace Warewolf.Studio.ViewModels
 
                 DispatcherAction.Invoke(() =>
                 {
-                    DllListings = new List<IDllListingModel>(names);
+                    _dllListings = new AsyncObservableCollection<IDllListingModel>(names);
                     IsLoading = false;
                     if (DllListings != null && DllListings.Count > 1)
                     {
@@ -153,7 +153,7 @@ namespace Warewolf.Studio.ViewModels
 
         public ICommand CancelCommand { get; set; }
         public Action CloseAction { get; set; }
-        public List<IDllListingModel> DllListings
+        public ObservableCollection<IDllListingModel> DllListings
         {
             get
             {
@@ -221,15 +221,18 @@ namespace Warewolf.Studio.ViewModels
             var selectedDll = pluginSource;
             if (selectedDll != null)
             {
-                var dllListingModel = DllListings.Find(model => model.ClsId == pluginSource.ClsId || model.ProgId == pluginSource.ProgId);
-                dllListingModel.IsExpanded = true;
-                SelectedDll = dllListingModel;
-                dllListingModel.IsSelected = true;
+                var dllListingModel = DllListings.FirstOrDefault(model => model.ClsId == pluginSource.ClsId || model.Is32Bit == pluginSource.Is32Bit);
+                if(dllListingModel != null)
+                {
+                    dllListingModel.IsExpanded = true;
+                    SelectedDll = dllListingModel;
+                    dllListingModel.IsSelected = true;
+                }
             }
 
             Name = _pluginSource.Name;
-            Path = _pluginSource.ProgId;
-            ProgId = _pluginSource.ProgId;
+            Path = _pluginSource.Path;
+            Is32Bit = _pluginSource.Is32Bit;
             ClsId = _pluginSource.ClsId;
         }
 
@@ -259,7 +262,8 @@ namespace Warewolf.Studio.ViewModels
                 if (SelectedDll != null)
                 {
                     ClsId = SelectedDll.ClsId;
-                    ProgId = SelectedDll.ProgId;
+                    Is32Bit = SelectedDll.Is32Bit;
+                    AssemblyName = SelectedDll.FullName;
                     SelectedDll.IsExpanded = true;
                 }
                 ViewModelUtils.RaiseCanExecuteChanged(OkCommand);
@@ -302,7 +306,7 @@ namespace Warewolf.Studio.ViewModels
 
         public override bool CanSave()
         {
-            return _selectedDll != null && !string.IsNullOrEmpty(ProgId) && HasChanged;
+            return _selectedDll != null && !string.IsNullOrEmpty(ClsId) && HasChanged;
         }
 
         public override void UpdateHelpDescriptor(string helpText)
@@ -324,20 +328,20 @@ namespace Warewolf.Studio.ViewModels
                 {
                     SetupHeaderTextFromExisting();
                 }
-                OnPropertyChanged(_resourceName);
+                OnPropertyChanged(()=>ResourceName);
             }
         }
 
-        public string ProgId
+        public bool Is32Bit
         {
             get
             {
-                return _progID;
+                return _is32Bit;
             }
             set
             {
-                _progID = value;
-                OnPropertyChanged(_progID);
+                _is32Bit = value;
+                OnPropertyChanged(()=>Is32Bit);
             }
         }
 
@@ -350,7 +354,7 @@ namespace Warewolf.Studio.ViewModels
             set
             {
                 _clsId = value;
-                OnPropertyChanged(_clsId);
+                OnPropertyChanged(()=>ClsId);
             }
         }
 
@@ -368,7 +372,7 @@ namespace Warewolf.Studio.ViewModels
                     src.Id = SelectedGuid;
                     src.ClsId = SelectedDll.ClsId;
                     Save(src);
-                    src.ProgId = SelectedDll.ProgId;
+                    src.Is32Bit = SelectedDll.Is32Bit;
                     _pluginSource = src;
                     ToItem();
                     SetupHeaderTextFromExisting();
@@ -392,7 +396,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 Id = _pluginSource.Id,
                 Name = _pluginSource.Name,
-                ProgId = _pluginSource.ProgId,
+                Is32Bit = _pluginSource.Is32Bit,
                 ClsId = _pluginSource.ClsId
             };
             Name = _pluginSource.Name;
@@ -412,7 +416,7 @@ namespace Warewolf.Studio.ViewModels
                 {
                     Name = ResourceName,
                     ClsId = _clsId,
-                    ProgId = _progID
+                    Is32Bit = _is32Bit
                 };
             }
             _pluginSource.SelectedDll = _selectedDll;

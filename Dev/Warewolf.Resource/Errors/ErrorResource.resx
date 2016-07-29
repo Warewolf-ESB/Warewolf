@@ -463,7 +463,7 @@
     <value>Null or empty tokenize string!</value>
   </data>
   <data name="NumberOfResultsMismatch" xml:space="preserve">
-    <value>The number of results for the paths representing the {0}  expression didnt match.</value>
+    <value>The number of results for the paths representing the {0}  expression didn't match.</value>
   </data>
   <data name="OpeningClosingBracketMismatch" xml:space="preserve">
     <value>Invalid expression: opening and closing brackets don't match.</value>
@@ -1102,13 +1102,13 @@
     <value>Values are missing</value>
   </data>
   <data name="ViewModelTypeMustContainAParameterlessContructor" xml:space="preserve">
-    <value>ViewModel type must contain a parameterless constructor.</value>
+    <value>ViewModel type must contain a parameter less constructor.</value>
   </data>
   <data name="ViewModelTypeMustInheritFromSettingsViewModelBase" xml:space="preserve">
     <value>ViewModel type must inherit from SettingsViewModelBase.</value>
   </data>
   <data name="ViewTypeMustContainAParameterlessContructor" xml:space="preserve">
-    <value>View type must contain a parameterless constructor.</value>
+    <value>View type must contain a parameter less constructor.</value>
   </data>
   <data name="ViewTypeMustInheritFromUserControl" xml:space="preserve">
     <value>View type must inherit from UserControl.</value>

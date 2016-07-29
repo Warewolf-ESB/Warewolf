@@ -106,7 +106,9 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Any variable and/or data goes in here.	To assign a value to a variable, put the value in here.	If you put an = as the first character, it will turn into a calculation e.g. =[[qty]]*[[price]].
+        ///   Looks up a localized string similar to Any variable and/or data goes in here.
+        ///To assign a value to a variable, put the value in here.
+        ///If you put an = as the first character, it will turn into a calculation e.g. =[[qty]]*[[price]].
         /// </summary>
         public static string AssignToolTipNewValue {
             get {
@@ -115,7 +117,10 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Only variables go in here.	To assign a value to a variable, put the variable here.	You can use [[Scalar]] as well as [[Recordset().Fields]].	Using recordset () will add a new record and (*) will assign every record..
+        ///   Looks up a localized string similar to Only variables go in here.
+        ///To assign a value to a variable, put the variable here.
+        ///You can use [[Scalar]] as well as [[Recordset().Fields]].
+        ///Using recordset () will add a new record and (*) will assign every record..
         /// </summary>
         public static string AssignToolTipVariable {
             get {
@@ -169,7 +174,8 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Any variable and data goes in here.	To convert Text, Hex, Binary and Base64, put the data to be converted in here..
+        ///   Looks up a localized string similar to Any variable and data goes in here.
+        ///To convert Text, Hex, Binary and Base64, put the data to be converted in here..
         /// </summary>
         public static string BaseConversionToolTipBaseInput {
             get {
@@ -178,7 +184,8 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Select the type of data you are converting from.	e.g. If the data is Binary and you would like Text, then select Binary here..
+        ///   Looks up a localized string similar to Select the type of data you are converting from.
+        ///e.g. If the data is Binary and you would like Text, then select Binary here..
         /// </summary>
         public static string BaseConversionToolTipFromtype {
             get {
@@ -187,7 +194,8 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Select the type of data you are converting to.	e.g. If the data is Binary and you would like Text, then select Text here..
+        ///   Looks up a localized string similar to Select the type of data you are converting to.
+        ///e.g. If the data is Binary and you would like Text, then select Text here..
         /// </summary>
         public static string BaseConversionToolTipTotype {
             get {
@@ -304,7 +312,8 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Any variable and/or data goes in here.	To convert the case of some text, put the variable containing the text here..
+        ///   Looks up a localized string similar to Any variable and/or data goes in here.
+        ///To convert the case of some text, put the variable containing the text here..
         /// </summary>
         public static string CaseConversionToolTipTextInput {
             get {
@@ -358,7 +367,9 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Any variable and/or data goes in here.	To execute a command line action or actions, enter them in here. Acts like a batch file. Any user driven task will simply be ignored..
+        ///   Looks up a localized string similar to Any variable and/or data goes in here. 
+        ///To execute a command line action or actions, enter them in here. 
+        ///Acts like a batch file. Any user driven task will simply be ignored..
         /// </summary>
         public static string CMDLineToolTipCMD {
             get {
@@ -367,7 +378,8 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The process priority for execution. Very helpful for long running processes that need/don’t need to be resource intensive..
+        ///   Looks up a localized string similar to The process priority for execution. 
+        ///Very helpful for long running processes that need/don’t need to be resource intensive..
         /// </summary>
         public static string CMDLineToolTipPrioritytype {
             get {
@@ -412,7 +424,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The PROGrammatic IDentifier you want to use.
+        ///   Looks up a localized string similar to The programmatic identifier you want to use.
         /// </summary>
         public static string ComManagePluginSourceAssemblyNameTooltip {
             get {
@@ -457,7 +469,9 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Comments do not execute and are place holders for future services or tools or simply to leave commentary inside the workflow.	You can connect comments into the process flow and they will simply be skipped during execution. However, they will appear in the debug output..
+        ///   Looks up a localized string similar to Comments do not execute and are place holders for future services or tools or simply to leave commentary inside the workflow.
+        ///You can connect comments into the process flow and they will simply be skipped during execution. 
+        ///However, they will appear in the debug output..
         /// </summary>
         public static string CommentToolTipComment {
             get {
@@ -682,7 +696,9 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Any variable and/or data goes in here.	Put the full path of the destination you are copying to here.	You can use File System, URI, SFTP, FTP or FTPS format..
+        ///   Looks up a localized string similar to Any variable and/or data goes in here.
+        ///Put the full path of the destination you are copying to here.
+        ///You can use File System, URI, SFTP, FTP or FTPS format..
         /// </summary>
         public static string CopyToolTipDestination {
             get {
@@ -691,8 +707,8 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Any variable and/or data goes in here.	
-        ///To copy a file or folder, put the full path and file or folder name here.	
+        ///   Looks up a localized string similar to Any variable and/or data goes in here.
+        ///To copy a file or folder, put the full path and file or folder name here.
         ///You can use File System, URI, SFTP, FTP or FTPS format..
         /// </summary>
         public static string CopyToolTipFileFolder {
@@ -711,7 +727,8 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to For protected resources, specify the Password of an account with permission to access the source. By default the account running Warewolf Server.exe service will be used..
+        ///   Looks up a localized string similar to For protected resources, specify the Password of an account with permission to access the source. 
+        ///By default the account running Warewolf Server.exe service will be used..
         /// </summary>
         public static string CopyToolTipPassword {
             get {
@@ -720,7 +737,10 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Only variables go in here.	Returns Success or will be blank depending on the success of the Copy action.	You can use [[Scalar]] as well as [[Recordset().Fields]].	Using recordset () will add a new record and (*) will assign every record..
+        ///   Looks up a localized string similar to Only variables go in here.
+        ///Returns Success or will be blank depending on the success of the Copy action.
+        ///You can use [[Scalar]] as well as [[Recordset().Fields]].
+        ///Using recordset () will add a new record and (*) will assign every record..
         /// </summary>
         public static string CopyToolTipResult {
             get {
@@ -729,7 +749,8 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to For protected resources, specify the Username of an account with permission to access the source. By default the account running Warewolf Server.exe service will be used..
+        ///   Looks up a localized string similar to For protected resources, specify the Username of an account with permission to access the source.
+        ///By default the account running Warewolf Server.exe service will be used..
         /// </summary>
         public static string CopyToolTipUsername {
             get {
@@ -765,7 +786,10 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Only variables go in here. 	Returns a number specifying how many records/indexes are in the recordset.	You can use [[Scalar]] as well as [[Recordset().Fields]].	Using recordset() will add a new record and (*) will assign every record..
+        ///   Looks up a localized string similar to Only variables go in here. 
+        ///Returns a number specifying how many records/indexes are in the recordset.
+        ///You can use [[Scalar]] as well as [[Recordset().Fields]].
+        ///Using recordset() will add a new record and (*) will assign every record..
         /// </summary>
         public static string CountToolTipResult {
             get {
@@ -846,7 +870,10 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to To create JSON data, enter the Name and Data of the JSON variables. 	To create JSON Arrays use a single recordset field with a star for every record e.g. 	[[rec(*).name]] 	To create JSON Objects, use a comma separated list of recordset fields, or, just the recordset name to use the whole recordset. e.g. 	[[rec(*).surname]], [[rec(*).name]], [[rec(*).middle]] 	or simply 	[[rec(*)]].
+        ///   Looks up a localized string similar to To create JSON data, enter the Name and Data of the JSON variables. 
+        ///To create JSON Arrays use a single recordset field with a star for every record e.g.[[rec(*).name]] 
+        ///To create JSON Objects, use a comma separated list of recordset fields, or, just the recordset name to use the whole recordset. 
+        ///e.g.  [[rec(*).surname]], [[rec(*).name]], [[rec(*).middle]] or simply [[rec(*)]].
         /// </summary>
         public static string CreateJSONToolTipInput {
             get {
@@ -855,7 +882,9 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The JSON variable name will default to the Warewolf variable name in the Data column. 	Array and Object names will default to the recordset name used. 	Object data names will be the field names of the recordset..
+        ///   Looks up a localized string similar to The JSON variable name will default to the Warewolf variable name in the Data column. 
+        ///Array and Object names will default to the recordset name used. 
+        ///Object data names will be the field names of the recordset..
         /// </summary>
         public static string CreateJSONToolTipName {
             get {
@@ -864,7 +893,10 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Only variables go in here.	Returns the inputs in JSON format.	You can use [[Scalar]] as well as [[Recordset().Fields]].	Using recordset () will add a new record and (*) will assign every record..
+        ///   Looks up a localized string similar to Only variables go in here.
+        ///Returns the inputs in JSON format.
+        ///You can use [[Scalar]] as well as [[Recordset().Fields]].
+        ///Using recordset () will add a new record and (*) will assign every record..
         /// </summary>
         public static string CreateJSONToolTipResult {
             get {
@@ -882,7 +914,9 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Any variable and/or data goes in here.	To create a file or folder, put the full path and file or folder name here.	You can use File System, URI, SFTP, FTP or FTPS format..
+        ///   Looks up a localized string similar to Any variable and/or data goes in here.
+        ///To create a file or folder, put the full path and file or folder name here.
+        ///You can use File System, URI, SFTP, FTP or FTPS format..
         /// </summary>
         public static string CreateToolTipFileFolder {
             get {
@@ -900,7 +934,8 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to For protected resources, specify the Password of an account with permission to perform this action. By default the account running Warewolf Server.exe service will be used..
+        ///   Looks up a localized string similar to For protected resources, specify the Password of an account with permission to perform this action. 
+        ///By default the account running Warewolf Server.exe service will be used..
         /// </summary>
         public static string CreateToolTipPassword {
             get {
@@ -909,7 +944,10 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Only variables go in here.	Returns Success or will be blank depending on the success of the Create action.	You can use [[Scalar]] as well as [[Recordset().Fields]].	Using recordset () will add a new record and (*) will assign every record..
+        ///   Looks up a localized string similar to Only variables go in here.
+        ///Returns Success or will be blank depending on the success of the Create action.
+        ///You can use [[Scalar]] as well as [[Recordset().Fields]].
+        ///Using recordset () will add a new record and (*) will assign every record..
         /// </summary>
         public static string CreateToolTipResult {
             get {
@@ -918,7 +956,8 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to For protected resources, specify the Username of an account with permission to perform this action. By default the account running Warewolf Server.exe service will be used..
+        ///   Looks up a localized string similar to For protected resources, specify the Username of an account with permission to perform this action. 
+        ///By default the account running Warewolf Server.exe service will be used..
         /// </summary>
         public static string CreateToolTipUsername {
             get {
@@ -1233,7 +1272,8 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to For Index you can specify if your data is aligned to the right or left.	E.g. Text is normally left and numbers normally right..
+        ///   Looks up a localized string similar to For Index you can specify if your data is aligned to the right or left.
+        ///E.g. Text is normally left and numbers normally right..
         /// </summary>
         public static string DataMergeToolTipAlignType {
             get {
@@ -1242,7 +1282,9 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Any variable and/or data goes in here.	To join two or more pieces of data together list them in the order you would like them joined. If you use recordset (*) notation, the list will be repeated for every record..
+        ///   Looks up a localized string similar to Any variable and/or data goes in here.
+        ///To join two or more pieces of data together list them in the order you would like them joined. 
+        ///If you use recordset (*) notation, the list will be repeated for every record..
         /// </summary>
         public static string DataMergeToolTipInput {
             get {
@@ -1251,7 +1293,8 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to If Index is being used and there is extra space between the data supplied and the number of index characters, you can specify what makes up the padding e.g. 0 for numbers or blank space for text..
+        ///   Looks up a localized string similar to If Index is being used and there is extra space between the data supplied and the number of index characters, 
+        ///you can specify what makes up the padding e.g. 0 for numbers or blank space for text..
         /// </summary>
         public static string DataMergeToolTipPadding {
             get {
@@ -1260,7 +1303,9 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Only variables go in here.	Returns the merged string.	You can use [[Scalar]] as well as [[Recordset().Fields]].	Using recordset () will add a new record and (*) will assign every record..
+        ///   Looks up a localized string similar to Only variables go in here. Returns the merged string.
+        ///You can use [[Scalar]] as well as [[Recordset().Fields]].
+        ///Using recordset () will add a new record and (*) will assign every record..
         /// </summary>
         public static string DataMergeToolTipResult {
             get {
@@ -1269,7 +1314,9 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to For Index use the number of characters that this merge will use. It will either trim if too little, or pad if too much.	For Char put any characters or combination of characters you would like.	Not applicable to New Line or Tab.
+        ///   Looks up a localized string similar to For Index use the number of characters that this merge will use. It will either trim if too little, or pad if too much.
+        ///For Char put any characters or combination of characters you would like.
+        ///Not applicable to New Line or Tab.
         /// </summary>
         public static string DataMergeToolTipUsing {
             get {
@@ -1359,7 +1406,8 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to If there is an occurrence or an item being split on, that should not be split on, it will be preceded with this character. e.g., a comma separated file might have a comma in a name, so don’t split on it if it is preceded by / or some other characters..
+        ///   Looks up a localized string similar to If there is an occurrence or an item being split on, that should not be split on, it will be preceded with this character. 
+        ///e.g., a comma separated file might have a comma in a name, so don’t split on it if it is preceded by / or some other characters..
         /// </summary>
         public static string DataSplitToolTipEscape {
             get {
@@ -1377,7 +1425,8 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Default direction to process is forward or left to right (reading direction). Selecting Backwards will process from the end of the data (right) to the beginning (left)..
+        ///   Looks up a localized string similar to Default direction to process is forward or left to right (reading direction). 
+        ///Selecting Backwards will process from the end of the data (right) to the beginning (left)..
         /// </summary>
         public static string DataSplitToolTipProcessDirection {
             get {
@@ -1386,7 +1435,11 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Only variables go in here.	Returns the split data in the pattern as described by the results.	The variable pattern will be repeated until the end of the input data.	You can use [[Scalar]] as well as [[Recordset().Fields]].	Using recordset () will add a new record and (*) will assign every record..
+        ///   Looks up a localized string similar to Only variables go in here.
+        ///Returns the split data in the pattern as described by the results.
+        ///The variable pattern will be repeated until the end of the input data.
+        ///You can use [[Scalar]] as well as [[Recordset().Fields]].
+        ///Using recordset () will add a new record and (*) will assign every record..
         /// </summary>
         public static string DataSplitToolTipResults {
             get {
@@ -1404,7 +1457,9 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Any variable and/or data goes in here.	To split a value into one or more variables, put the value in here.	You can process entire file content or just trim the white space from a variable..
+        ///   Looks up a localized string similar to Any variable and/or data goes in here.
+        ///To split a value into one or more variables, put the value in here.
+        ///You can process entire file content or just trim the white space from a variable..
         /// </summary>
         public static string DataSplitToolTipString {
             get {
@@ -1413,7 +1468,9 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to For Index use the number of characters that this split will use. 	For Char put any characters or combination of characters you would like.	Not applicable to New Line, Tab or End.
+        ///   Looks up a localized string similar to For Index use the number of characters that this split will use. 
+        ///For Char put any characters or combination of characters you would like.
+        ///Not applicable to New Line, Tab or End.
         /// </summary>
         public static string DataSplitToolTipUsing {
             get {
@@ -1476,7 +1533,9 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Any variable and/or data goes in here.	To find the difference in time between two date times, put the first date time in here. The format needs to be the same for the two.	Leaving this field blank will give you the system date time..
+        ///   Looks up a localized string similar to Any variable and/or data goes in here.
+        ///To find the difference in time between two date times, put the first date time in here. The format needs to be the same for the two.
+        ///Leaving this field blank will give you the system date time..
         /// </summary>
         public static string DateTimeDifferenceToolTipDatetime1 {
             get {
@@ -1485,7 +1544,9 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Any variable and/or data goes in here.	To find the difference in time between two date times, put the second date time in here. The format needs to be the same for the two.	Leaving this field blank will give you the system date time..
+        ///   Looks up a localized string similar to Any variable and/or data goes in here.
+        ///To find the difference in time between two date times, put the second date time in here. The format needs to be the same for the two.
+        ///Leaving this field blank will give you the system date time..
         /// </summary>
         public static string DateTimeDifferenceToolTipDatetime2 {
             get {
@@ -1494,7 +1555,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Describe the format of the date times you are entering. e.g. 23-July 1978 would be described as dd-MM yyyy.	Leaving this field blank will assume the system date time format.	To escape text or non-date information use &apos;around the text you want to escape&apos;. e.g. Time is now 15 hours and 33 minutes. Would have an input format of &apos;Time is now&apos; 24hr &apos;hours and&apos; min &apos;minutes.&apos;.
+        ///   Looks up a localized string similar to 3.
         /// </summary>
         public static string DateTimeDifferenceToolTipInputFormat {
             get {
@@ -1512,7 +1573,10 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Only variables go in here.	Returns the difference in time between the two date times.	You can use [[Scalar]] as well as [[Recordset().Fields]].	Using recordset () will add a new record and (*) will assign every record..
+        ///   Looks up a localized string similar to Only variables go in here.
+        ///Returns the difference in time between the two date times.
+        ///You can use [[Scalar]] as well as [[Recordset().Fields]].
+        ///Using recordset () will add a new record and (*) will assign every record..
         /// </summary>
         public static string DateTimeDifferenceToolTipResult {
             get {
@@ -1575,7 +1639,8 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Put a positive or negative number here to add or subtract from the input date time.	Leave this field blank if you do not want to change the date time..
+        ///   Looks up a localized string similar to Put a positive or negative number here to add or subtract from the input date time.
+        ///Leave this field blank if you do not want to change the date time..
         /// </summary>
         public static string DateTimeToolTipAddtime {
             get {
@@ -1584,7 +1649,9 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Any variable and/or data goes in here.	To format a date time, or to add/subtract from a date time, put it in here.	Leaving this field blank will give you the system date time..
+        ///   Looks up a localized string similar to Any variable and/or data goes in here.
+        ///To format a date time, or to add/subtract from a date time, put it in here.
+        ///Leaving this field blank will give you the system date time..
         /// </summary>
         public static string DateTimeToolTipDatetime {
             get {
@@ -1593,7 +1660,10 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Describe the format of the date time you are entering. e.g. 23-July 1978 would be described as dd-MM yyyy.	Leaving this field blank will assume the system date time format.	To escape text or non-date information use &apos;around the text you want to escape&apos;. e.g. Time is now 15 hours and 33 minutes. Would have an input format of &apos;Time is now&apos; 24hr &apos;hours and&apos; min &apos;minutes.&apos;.
+        ///   Looks up a localized string similar to Describe the format of the date time you are entering. e.g. 23-July 1978 would be described as dd-MM yyyy.
+        ///Leaving this field blank will assume the system date time format.
+        ///To escape text or non-date information use &apos;around the text you want to escape&apos;. 
+        ///e.g. Time is now 15 hours and 33 minutes. Would have an input format of &apos;Time is now&apos; 24hr &apos;hours and&apos; min &apos;minutes.&apos;.
         /// </summary>
         public static string DateTimeToolTipInputformat {
             get {
@@ -1602,7 +1672,10 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Describe the format you would like the date time to be returned in.	Leaving this field blank will assume the same as the Input Format.	To include text or non-date information use &apos;around the text you want to escape&apos;. e.g. Time is now 15 hours and 33 minutes. Would have an output format of &apos;Time is now&apos; 24hr &apos;hours and&apos; min &apos;minutes.&apos;.
+        ///   Looks up a localized string similar to Describe the format you would like the date time to be returned in.
+        ///Leaving this field blank will assume the same as the Input Format.
+        ///To include text or non-date information use &apos;around the text you want to escape&apos;. 
+        ///e.g. Time is now 15 hours and 33 minutes. Would have an output format of &apos;Time is now&apos; 24hr &apos;hours and&apos; min &apos;minutes.&apos;.
         /// </summary>
         public static string DateTimeToolTipOutputformat {
             get {
@@ -1611,7 +1684,10 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Only variables go in here.	Returns the formatted and/or added/subtracted date time.	You can use [[Scalar]] as well as [[Recordset().Fields]].	Using recordset () will add a new record and (*) will assign every record..
+        ///   Looks up a localized string similar to Only variables go in here.
+        ///Returns the formatted and/or added/subtracted date time.
+        ///You can use [[Scalar]] as well as [[Recordset().Fields]].
+        ///Using recordset () will add a new record and (*) will assign every record..
         /// </summary>
         public static string DateTimeToolTipResult {
             get {
@@ -1643,6 +1719,42 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string DbInsertToolTipColumn {
             get {
                 return ResourceManager.GetString("DbInsertToolTipColumn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Warewolf was unable to download the debug output values from the server.{0}Please ensure that the server is accessible..
+        /// </summary>
+        public static string DebugCouldNotGetDebugItemsError {
+            get {
+                return ResourceManager.GetString("DebugCouldNotGetDebugItemsError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Failed to retrieve debug items.
+        /// </summary>
+        public static string DebugCouldNotGetDebugItemsErrorHeader {
+            get {
+                return ResourceManager.GetString("DebugCouldNotGetDebugItemsErrorHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Warewolf was unable to download the debug output values from the remote server.{0}Please ensure that the remote server is accessible..
+        /// </summary>
+        public static string DebugCouldNotGetRemoteDebugItemsError {
+            get {
+                return ResourceManager.GetString("DebugCouldNotGetRemoteDebugItemsError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Failed to retrieve remote debug items.
+        /// </summary>
+        public static string DebugCouldNotGetRemoteDebugItemsErrorHeader {
+            get {
+                return ResourceManager.GetString("DebugCouldNotGetRemoteDebugItemsErrorHeader", resourceCulture);
             }
         }
         
@@ -1773,7 +1885,9 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Any variable and/or data goes in here.	To Delete a file or folder, put the full path and file or folder name to delete in here.	You can use File System, URI, SFTP, FTP or FTPS format..
+        ///   Looks up a localized string similar to Any variable and/or data goes in here.
+        ///To Delete a file or folder, put the full path and file or folder name to delete in here.
+        ///You can use File System, URI, SFTP, FTP or FTPS format..
         /// </summary>
         public static string DeleteToolTipFileFolder {
             get {
@@ -1782,7 +1896,8 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to For protected resources, specify the Password of an account with permission to perform this action. By default the account running Warewolf Server.exe service will be used..
+        ///   Looks up a localized string similar to For protected resources, specify the Password of an account with permission to perform this action. 
+        ///By default the account running Warewolf Server.exe service will be used..
         /// </summary>
         public static string DeleteToolTipPassword {
             get {
@@ -1800,7 +1915,10 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Only variables go in here.	Returns Success or Failure depending on the success of the Delete action.	You can use [[Scalar]] as well as [[Recordset().Fields]].	Using recordset () will add a new record and (*) will assign every record..
+        ///   Looks up a localized string similar to Only variables go in here.
+        ///Returns Success or Failure depending on the success of the Delete action.
+        ///You can use [[Scalar]] as well as [[Recordset().Fields]].
+        ///Using recordset () will add a new record and (*) will assign every record..
         /// </summary>
         public static string DeleteToolTipResult {
             get {
@@ -1809,7 +1927,8 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to For protected resources, specify the Username of an account with permission to perform this action. By default the account running Warewolf Server.exe service will be used..
+        ///   Looks up a localized string similar to For protected resources, specify the Username of an account with permission to perform this action. 
+        ///By default the account running Warewolf Server.exe service will be used..
         /// </summary>
         public static string DeleteToolTipUsername {
             get {
@@ -1935,7 +2054,9 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Any variable and/or data goes in here.	This is the name of the file that will be read from Dropbox.	NOTE: The file path must use &quot;/&quot; to identify folders and not &quot;\&quot;..
+        ///   Looks up a localized string similar to Any variable and/or data goes in here.
+        ///This is the name of the file that will be read from Dropbox.
+        ///NOTE: The file path must use &quot;/&quot; to identify folders and not &quot;\&quot;..
         /// </summary>
         public static string DropBoxDownloadToolTipLocalDestination {
             get {
@@ -2079,7 +2200,8 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Any variable and/or data goes in here.	The file must be available on the local file system..
+        ///   Looks up a localized string similar to Any variable and/or data goes in here.
+        ///The file must be available on the local file system..
         /// </summary>
         public static string DropBoxToolTipLocalSource {
             get {
@@ -2340,7 +2462,8 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to List the email addresses you want to blind carbon copy on the email you are sending separated by a semicolon ;	If you are on a domain, you still need to provide the email address of the account you are sending to..
+        ///   Looks up a localized string similar to List the email addresses you want to blind carbon copy on the email you are sending separated by a semicolon ;
+        ///If you are on a domain, you still need to provide the email address of the account you are sending to..
         /// </summary>
         public static string EmailToolTipBcc {
             get {
@@ -2367,7 +2490,8 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to List the email addresses you want to carbon copy on the email you are sending separated by a semicolon ;	If you are on a domain, you still need to provide the email address of the account you are sending to..
+        ///   Looks up a localized string similar to List the email addresses you want to carbon copy on the email you are sending separated by a semicolon ;
+        ///If you are on a domain, you still need to provide the email address of the account you are sending to..
         /// </summary>
         public static string EmailToolTipCc {
             get {
@@ -2376,7 +2500,10 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Any data or variable can go in here.	To send an email, enter the email address of the account you want to send from.	If you are on a domain, you still need to provide the email address of the account you are sending from.	If you leave it blank, the account used to setup the Email Source will be used..
+        ///   Looks up a localized string similar to Any data or variable can go in here.
+        ///To send an email, enter the email address of the account you want to send from.
+        ///If you are on a domain, you still need to provide the email address of the account you are sending from.
+        ///If you leave it blank, the account used to setup the Email Source will be used..
         /// </summary>
         public static string EmailToolTipFromAddress {
             get {
@@ -2412,7 +2539,8 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Only variables go in here.	Returns Success or Failure depending on the success of the send action..
+        ///   Looks up a localized string similar to Only variables go in here.
+        ///Returns Success or Failure depending on the success of the send action..
         /// </summary>
         public static string EmailToolTipResult {
             get {
@@ -2430,7 +2558,8 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to List the email addresses you want to send to separated by a semicolon ;	If you are on a domain, you still need to provide the email address of the account you are sending to..
+        ///   Looks up a localized string similar to List the email addresses you want to send to separated by a semicolon ;
+        ///If you are on a domain, you still need to provide the email address of the account you are sending to..
         /// </summary>
         public static string EmailToolTipTo {
             get {
@@ -2728,7 +2857,8 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Any variable and/or data goes in here.	Put  the index of the string you are looking for in here..
+        ///   Looks up a localized string similar to Any variable and/or data goes in here.
+        ///Put  the index of the string you are looking for in here..
         /// </summary>
         public static string FindIndexToolTipCharacters {
             get {
@@ -2755,7 +2885,8 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Any variable and/or data goes in here.	To find the character index(s) of a string inside another string, put the string to be searched here..
+        ///   Looks up a localized string similar to Any variable and/or data goes in here.
+        ///To find the character index(s) of a string inside another string, put the string to be searched here..
         /// </summary>
         public static string FindIndexToolTipInField {
             get {
@@ -2764,7 +2895,11 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Only variables go in here.	Returns the index(s) of the found string.	You can use [[Scalar]] as well as [[Recordset().Fields]].	Using recordset () will add a new record and (*) will assign every record. If you are finding All Occurrences and using a scalar, the results will be comma separated..
+        ///   Looks up a localized string similar to Only variables go in here.
+        ///Returns the index(s) of the found string.
+        ///You can use [[Scalar]] as well as [[Recordset().Fields]].
+        ///Using recordset () will add a new record and (*) will assign every record. 
+        ///If you are finding All Occurrences and using a scalar, the results will be comma separated..
         /// </summary>
         public static string FindIndexToolTipResult {
             get {
@@ -2845,7 +2980,11 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Only variables go in here.	Returns the indexes of the successful matches.	You can use [[Scalar]] as well as [[Recordset().Fields]].	Using recordset () will add a new record and (*) will assign every record.	If there are multiple results and a scalar is used, then each result will be separated with a comma..
+        ///   Looks up a localized string similar to Only variables go in here.
+        ///Returns the indexes of the successful matches.
+        ///You can use [[Scalar]] as well as [[Recordset().Fields]].
+        ///Using recordset () will add a new record and (*) will assign every record.
+        ///If there are multiple results and a scalar is used, then each result will be separated with a comma..
         /// </summary>
         public static string FindToolTipResult {
             get {
@@ -2872,7 +3011,13 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Generally Replaces the * in the activity with the relevant index. e.g. If 1-3 is provided then [[Customer(*).ID]] will execute as [[Customer(1).ID]],	[[Customer(2).ID]],	[[Customer(3).ID]].	* in Range allows you to input a range of indexes.	* in CSV allows a specific set of indexes to be specified e.g. 1,5,7,9.	* in Recordset will execute every index in the given recordset.	* in Executes will execute the activity a given number of times and replace the * with the number of times it has executed e.g. 1,2,3.. [rest of string was truncated]&quot;;.
+        ///   Looks up a localized string similar to Generally Replaces the * in the activity with the relevant index. e.g. If 1-3 is provided then [[Customer(*).ID]] will execute as [[Customer(1).ID]],
+        ///[[Customer(2).ID]],
+        ///[[Customer(3).ID]].
+        ///* in Range allows you to input a range of indexes.
+        ///* in CSV allows a specific set of indexes to be specified e.g. 1,5,7,9.
+        ///* in Recordset will execute every index in the given recordset.
+        ///* in Executes will execute the activity a given number of times and replace the * with the number of times it has executed e.g. 1 [rest of string was truncated]&quot;;.
         /// </summary>
         public static string ForEachToolTipForEachType {
             get {
@@ -2935,7 +3080,8 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Any variable and/or data goes in here.	To format a number, put the number in here..
+        ///   Looks up a localized string similar to Any variable and/or data goes in here.
+        ///To format a number, put the number in here..
         /// </summary>
         public static string FormatNumberToolTipNumber {
             get {
@@ -2944,7 +3090,10 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Only variables go in here.	Returns the formatted number.	You can use [[Scalar]] as well as [[Recordset().Fields]].	Using recordset () will add a new record and (*) will assign every record..
+        ///   Looks up a localized string similar to Only variables go in here.
+        ///Returns the formatted number.
+        ///You can use [[Scalar]] as well as [[Recordset().Fields]].
+        ///Using recordset () will add a new record and (*) will assign every record..
         /// </summary>
         public static string FormatNumberToolTipResult {
             get {
@@ -2953,7 +3102,11 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to How would you like to round the number?	None: No rounding is done	Normal: 5,6,7,8,9 round up &amp; 1,2,3,4 round down	Up: 1-9 all round up	Down: 1-9 all round down.
+        ///   Looks up a localized string similar to How would you like to round the number?
+        ///None: No rounding is done
+        ///Normal: 5,6,7,8,9 round up &amp; 1,2,3,4 round down
+        ///Up: 1-9 all round up
+        ///Down: 1-9 all round down.
         /// </summary>
         public static string FormatNumberToolTipRoundType {
             get {
@@ -4096,29 +4249,11 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cancel this action.
-        /// </summary>
-        public static string ManageWebPasteCancelTooltip {
-            get {
-                return ResourceManager.GetString("ManageWebPasteCancelTooltip", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Paste the full response in here.
         /// </summary>
         public static string ManageWebPasteResponseTooltip {
             get {
                 return ResourceManager.GetString("ManageWebPasteResponseTooltip", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Save this response definition.
-        /// </summary>
-        public static string ManageWebPasteSaveTooltip {
-            get {
-                return ResourceManager.GetString("ManageWebPasteSaveTooltip", resourceCulture);
             }
         }
         
@@ -4690,7 +4825,9 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Any variable and/or data goes in here.	Put the full path of the destination you are moving to here.	You can use File System, URI, SFTP, FTP or FTPS format..
+        ///   Looks up a localized string similar to Any variable and/or data goes in here.
+        ///Put the full path of the destination you are moving to here.
+        ///You can use File System, URI, SFTP, FTP or FTPS format..
         /// </summary>
         public static string MoveToolTipDestination {
             get {
@@ -4699,7 +4836,9 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Any variable and/or data goes in here.	To Move a file or folder, put the full path and file or folder name to move in here.	You can use File System, URI, SFTP, FTP or FTPS format..
+        ///   Looks up a localized string similar to Any variable and/or data goes in here.
+        ///To Move a file or folder, put the full path and file or folder name to move in here.
+        ///You can use File System, URI, SFTP, FTP or FTPS format..
         /// </summary>
         public static string MoveToolTipFileFolder {
             get {
@@ -4717,7 +4856,8 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to For protected resources, specify the Password of an account with permission to access the source. By default the account running Warewolf Server.exe service will be used..
+        ///   Looks up a localized string similar to For protected resources, specify the Password of an account with permission to access the source. 
+        ///By default the account running Warewolf Server.exe service will be used..
         /// </summary>
         public static string MoveToolTipPassword {
             get {
@@ -4726,7 +4866,10 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Only variables go in here.	Returns Success or will be blank depending on the success of the Move action.	You can use [[Scalar]] as well as [[Recordset().Fields]].	Using recordset () will add a new record and (*) will assign every record..
+        ///   Looks up a localized string similar to Only variables go in here.
+        ///Returns Success or will be blank depending on the success of the Move action.
+        ///You can use [[Scalar]] as well as [[Recordset().Fields]].
+        ///Using recordset () will add a new record and (*) will assign every record..
         /// </summary>
         public static string MoveToolTipResult {
             get {
@@ -4735,7 +4878,8 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to For protected resources, specify the Username of an account with permission to access the source. By default the account running Warewolf Server.exe service will be used..
+        ///   Looks up a localized string similar to For protected resources, specify the Username of an account with permission to access the source. 
+        ///By default the account running Warewolf Server.exe service will be used..
         /// </summary>
         public static string MoveToolTipUsername {
             get {
@@ -4771,7 +4915,8 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to If an error occurs you can execute a web service / Warewolf workflow to log the error that occurred.	E.g. http://ServerName:3142/Services/LogErrors?Severity=1&amp;Error=[[ErrorMsg]].
+        ///   Looks up a localized string similar to If an error occurs you can execute a web service / Warewolf workflow to log the error that occurred.
+        ///E.g. http://ServerName:3142/Services/LogErrors?Severity=1&amp;Error=[[ErrorMsg]].
         /// </summary>
         public static string NativeActivityToolTipCallthiswebservice {
             get {
@@ -4780,7 +4925,9 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to To end the workflow if an error has occurred at this point, make sure the checkbox is selected. 	If you have also called a web service / Warewolf workflow, that will finish executing first.	If the workflow is nested, the calling workflow will resume..
+        ///   Looks up a localized string similar to To end the workflow if an error has occurred at this point, make sure the checkbox is selected. 
+        ///If you have also called a web service / Warewolf workflow, that will finish executing first.
+        ///If the workflow is nested, the calling workflow will resume..
         /// </summary>
         public static string NativeActivityToolTipEndtheworkflow {
             get {
@@ -4789,7 +4936,8 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to If an error occurs the error message will be placed into this variable as well the result variable.	If left empty the result will still be placed in the result variable. This will cause the error to be handled.
+        ///   Looks up a localized string similar to If an error occurs the error message will be placed into this variable as well the result variable.
+        ///If left empty the result will still be placed in the result variable. This will cause the error to be handled.
         /// </summary>
         public static string NativeActivityToolTipPuterrorinthisvariable {
             get {
@@ -5383,7 +5531,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Select a preconfigured RabbitMQ source or add a new one.&lt; &gt;.
+        ///   Looks up a localized string similar to Select a preconfigured RabbitMQ source or add a new one..
         /// </summary>
         public static string RabbitMQToolTipSource {
             get {
@@ -5473,7 +5621,10 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Only variables go in here.	Returns the randomly generated result.	You can use [[Scalar]] as well as [[Recordset().Fields]].	Using recordset () will add a new record and (*) will assign every record..
+        ///   Looks up a localized string similar to Only variables go in here.
+        ///Returns the randomly generated result.
+        ///You can use [[Scalar]] as well as [[Recordset().Fields]].
+        ///Using recordset () will add a new record and (*) will assign every record..
         /// </summary>
         public static string RandomToolTipResult {
             get {
@@ -5482,7 +5633,11 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The type of random information to generate.	Letters: Alphabetical letters only.	Numbers: Numbers only.	Letters and Numbers: A random combination of letters and numbers.	GUID: A randomly generated Globally Unique Identifier..
+        ///   Looks up a localized string similar to The type of random information to generate.
+        ///Letters: Alphabetical letters only.
+        ///Numbers: Numbers only.
+        ///Letters and Numbers: A random combination of letters and numbers.
+        ///GUID: A randomly generated Globally Unique Identifier..
         /// </summary>
         public static string RandomToolTipType {
             get {
@@ -5527,7 +5682,9 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Any variable and/or data goes in here.	To upload a file, put the full path and file name in here.	You can use File System, URI, SFTP, FTP or FTPS format..
+        ///   Looks up a localized string similar to Any variable and/or data goes in here.
+        ///To upload a file, put the full path and file name in here.
+        ///You can use File System, URI, SFTP, FTP or FTPS format..
         /// </summary>
         public static string ReadFileToolTipFilename {
             get {
@@ -5536,7 +5693,8 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to For protected resources, specify the Password of an account with permission to perform this action. By default the account running Warewolf Server.exe service will be used..
+        ///   Looks up a localized string similar to For protected resources, specify the Password of an account with permission to perform this action. 
+        ///By default the account running Warewolf Server.exe service will be used..
         /// </summary>
         public static string ReadFileToolTipPassword {
             get {
@@ -5545,7 +5703,10 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Only variables go in here.	Returns the content of the file.	You can use [[Scalar]] as well as [[Recordset().Fields]].	Using recordset () will add a new record and (*) will assign every record..
+        ///   Looks up a localized string similar to Only variables go in here.
+        ///Returns the content of the file.
+        ///You can use [[Scalar]] as well as [[Recordset().Fields]].
+        ///Using recordset () will add a new record and (*) will assign every record..
         /// </summary>
         public static string ReadFileToolTipResult {
             get {
@@ -5554,7 +5715,8 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to For protected resources, specify the Username of an account with permission to perform this action. By default the account running Warewolf Server.exe service will be used..
+        ///   Looks up a localized string similar to For protected resources, specify the Username of an account with permission to perform this action. 
+        ///By default the account running Warewolf Server.exe service will be used..
         /// </summary>
         public static string ReadFileToolTipUsername {
             get {
@@ -5608,7 +5770,9 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Any variable and/or data goes in here.	To read the content of a folder, put the full path in here.	You can use File System, URI, SFTP, FTP or FTPS format..
+        ///   Looks up a localized string similar to Any variable and/or data goes in here.
+        ///To read the content of a folder, put the full path in here.
+        ///You can use File System, URI, SFTP, FTP or FTPS format..
         /// </summary>
         public static string ReadFolderToolTipFolder {
             get {
@@ -5617,7 +5781,8 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to For protected resources, specify the Password of an account with permission to perform this action. By default the account running Warewolf Server.exe service will be used..
+        ///   Looks up a localized string similar to For protected resources, specify the Password of an account with permission to perform this action. 
+        ///By default the account running Warewolf Server.exe service will be used..
         /// </summary>
         public static string ReadFolderToolTipPassword {
             get {
@@ -5626,7 +5791,9 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Files will only return files.	Folders will only return folders.	Files and Folders will return everything..
+        ///   Looks up a localized string similar to Files will only return files.
+        ///Folders will only return folders.
+        ///Files and Folders will return everything..
         /// </summary>
         public static string ReadFolderToolTipRead {
             get {
@@ -5635,7 +5802,11 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Only variables go in here.	Returns the content of the folder specified. Each item found will be returned as a separate result so this tool is best used with a recordset.	You can use [[Scalar]] as well as [[Recordset().Fields]].	Using recordset () will add a new record and (*) will assign every record..
+        ///   Looks up a localized string similar to Only variables go in here.
+        ///Returns the content of the folder specified. 
+        ///Each item found will be returned as a separate result so this tool is best used with a recordset.
+        ///You can use [[Scalar]] as well as [[Recordset().Fields]].
+        ///Using recordset () will add a new record and (*) will assign every record..
         /// </summary>
         public static string ReadFolderToolTipResult {
             get {
@@ -5644,7 +5815,8 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to For protected resources, specify the Username of an account with permission to perform this action. By default the account running Warewolf Server.exe service will be used..
+        ///   Looks up a localized string similar to For protected resources, specify the Username of an account with permission to perform this action. 
+        ///By default the account running Warewolf Server.exe service will be used..
         /// </summary>
         public static string ReadFolderToolTipUsername {
             get {
@@ -5725,7 +5897,9 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Any variable and/or data goes in here.	To rename a file or folder, put the full path and file or folder name in here.	You can use File System, URI, SFTP, FTP or FTPS format..
+        ///   Looks up a localized string similar to Any variable and/or data goes in here.
+        ///To rename a file or folder, put the full path and file or folder name in here.
+        ///You can use File System, URI, SFTP, FTP or FTPS format..
         /// </summary>
         public static string RenameToolTipFileFolder {
             get {
@@ -5743,7 +5917,9 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Any variable and/or data goes in here.	Put the full path and new name of the resource here.	You can use File System, URI, SFTP, FTP or FTPS format..
+        ///   Looks up a localized string similar to Any variable and/or data goes in here.
+        ///Put the full path and new name of the resource here.
+        ///You can use File System, URI, SFTP, FTP or FTPS format..
         /// </summary>
         public static string RenameToolTipNewName {
             get {
@@ -5752,7 +5928,8 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to For protected resources, specify the Password of an account with permission to access the source. By default the account running Warewolf Server.exe service will be used..
+        ///   Looks up a localized string similar to For protected resources, specify the Password of an account with permission to access the source. 
+        ///By default the account running Warewolf Server.exe service will be used..
         /// </summary>
         public static string RenameToolTipPassword {
             get {
@@ -5761,7 +5938,10 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Only variables go in here.	Returns Success or will be blank depending on the success of the Rename action.	You can use [[Scalar]] as well as [[Recordset().Fields]].	Using recordset () will add a new record and (*) will assign every record..
+        ///   Looks up a localized string similar to Only variables go in here.
+        ///Returns Success or will be blank depending on the success of the Rename action.
+        ///You can use [[Scalar]] as well as [[Recordset().Fields]].
+        ///Using recordset () will add a new record and (*) will assign every record..
         /// </summary>
         public static string RenameToolTipResult {
             get {
@@ -5770,7 +5950,8 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to For protected resources, specify the Username of an account with permission to access the source. By default the account running Warewolf Server.exe service will be used..
+        ///   Looks up a localized string similar to For protected resources, specify the Username of an account with permission to access the source. 
+        ///By default the account running Warewolf Server.exe service will be used..
         /// </summary>
         public static string RenameToolTipUsername {
             get {
@@ -5824,7 +6005,8 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Only variables go in here.	To search and replace a string, put the variable containing the string to search in here..
+        ///   Looks up a localized string similar to Only variables go in here.
+        ///To search and replace a string, put the variable containing the string to search in here..
         /// </summary>
         public static string ReplaceToolTipInFields {
             get {
@@ -5842,7 +6024,10 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Only variables go in here.	Returns the count of the number of replacements.	You can use [[Scalar]] as well as [[Recordset().Fields]].	Using recordset () will add a new record and (*) will assign every record..
+        ///   Looks up a localized string similar to Only variables go in here.
+        ///Returns the count of the number of replacements.
+        ///You can use [[Scalar]] as well as [[Recordset().Fields]].
+        ///Using recordset () will add a new record and (*) will assign every record..
         /// </summary>
         public static string ReplaceToolTipResult {
             get {
@@ -6211,7 +6396,8 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Only variables go in here.	Returns the output of the script, if any..
+        ///   Looks up a localized string similar to Only variables go in here.
+        ///Returns the output of the script, if any..
         /// </summary>
         public static string ScriptingToolTipResult {
             get {
@@ -6220,7 +6406,8 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Any variable and/or data goes in here.	To run a programming script, put the script you want to execute in here..
+        ///   Looks up a localized string similar to Any variable and/or data goes in here.
+        ///To run a programming script, put the script you want to execute in here..
         /// </summary>
         public static string ScriptingToolTipScript {
             get {
@@ -6238,7 +6425,8 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Specify an alias for the selected data. &lt;br /&gt;	This needs to conform to variable notation..
+        ///   Looks up a localized string similar to Specify an alias for the selected data. 
+        ///This needs to conform to variable notation..
         /// </summary>
         public static string SelectAndApplyAliasToolTip {
             get {
@@ -6256,7 +6444,8 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Only collections go in here.&lt;br /&gt;	You can use the (*) or () notation for record sets or objects..
+        ///   Looks up a localized string similar to Only collections go in here.
+        ///You can use the (*) or () notation for record sets or objects..
         /// </summary>
         public static string SelectAndApplyDataSourceToolTip {
             get {
@@ -6283,7 +6472,10 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to To execute a set of Activities in sequence put them in the order you want them executed.	To execute more than one item in a loop construct etc. put the activities in a sequence first and then put the sequence into the loop construct.	Error handling operates as a catch all for all items in the sequence..
+        ///   Looks up a localized string similar to To execute a set of Activities in sequence put them in the order you want them executed.
+        ///To execute more than one item in a loop construct etc. put the activities in a sequence first 
+        ///and then put the sequence into the loop construct.
+        ///Error handling operates as a catch all for all items in the sequence..
         /// </summary>
         public static string SequenceTooltipSequence {
             get {
@@ -6994,7 +7186,10 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Only variables go in here.	Returns the number of items deleted.	You can use [[Scalar]] as well as [[Recordset().Fields]].	Using recordset () will add a new record and (*) will assign every record..
+        ///   Looks up a localized string similar to Only variables go in here.
+        ///Returns the number of items deleted.
+        ///You can use [[Scalar]] as well as [[Recordset().Fields]].
+        ///Using recordset () will add a new record and (*) will assign every record..
         /// </summary>
         public static string SharepointDelteToolTipResult {
             get {
@@ -7102,7 +7297,10 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Only variables go in here.	Returns Success or Failure.	You can use [[Scalar]] as well as [[Recordset().Fields]].	Using recordset () will add a new record and (*) will assign every record..
+        ///   Looks up a localized string similar to Only variables go in here.
+        ///Returns Success or Failure.
+        ///You can use [[Scalar]] as well as [[Recordset().Fields]].
+        ///Using recordset () will add a new record and (*) will assign every record..
         /// </summary>
         public static string SharepointInsertToolTipResult {
             get {
@@ -7120,7 +7318,8 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Enter SharePoint server folder or	file path.
+        ///   Looks up a localized string similar to Enter SharePoint server folder or
+        ///file path.
         /// </summary>
         public static string SharePointReadFolderInputPathToolTip {
             get {
@@ -7219,7 +7418,8 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Select a list to read from.	If the list has changed or recently added to the source, click the refresh button..
+        ///   Looks up a localized string similar to Select a list to read from.
+        ///If the list has changed or recently added to the source, click the refresh button..
         /// </summary>
         public static string SharepointToolTipList {
             get {
@@ -7282,7 +7482,9 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to To Sort a recordset enter the field in the recordset you would like to sort on.	To sort on more than one field, perform the sort action for each field you would like to sort on, ending with the priority sort..
+        ///   Looks up a localized string similar to To Sort a recordset enter the field in the recordset you would like to sort on.
+        ///To sort on more than one field, perform the sort action for each field you would like to sort on, 
+        ///ending with the priority sort..
         /// </summary>
         public static string SortToolTipSortField {
             get {
@@ -7291,7 +7493,9 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Select the order of the sorting.	Forward will go 1-9 then a-Z.	Backward will go Z-a then 9-1..
+        ///   Looks up a localized string similar to Select the order of the sorting.
+        ///Forward will go 1-9 then a-Z.
+        ///Backward will go Z-a then 9-1..
         /// </summary>
         public static string SortToolTipSortOrderType {
             get {
@@ -7426,7 +7630,9 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The number of rows you would like to insert at a time.	The default is 0 which will do everything in 1 batch.	If you specify 50, then 50 rows will be bulk inserted at a time..
+        ///   Looks up a localized string similar to The number of rows you would like to insert at a time.
+        ///The default is 0 which will do everything in 1 batch.
+        ///If you specify 50, then 50 rows will be bulk inserted at a time..
         /// </summary>
         public static string SqlBulkInsertToolTipBatchSize {
             get {
@@ -7462,7 +7668,10 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to To bulk insert data into a table, put the data to insert in here.	Using recordset (*) notation will put the entire recordset in and is the normal usage scenario for large data inserts to SQL.	A single Recordset will yield the best performance. Do not mix, scalars and/or different recordsets for optimum performance.	To quickly change the input data, press the Quick Variable Input button and amend the mappings as necessary..
+        ///   Looks up a localized string similar to To bulk insert data into a table, put the data to insert in here.
+        ///Using recordset (*) notation will put the entire recordset in and is the normal usage scenario for large data inserts to SQL.
+        ///A single Recordset will yield the best performance. Do not mix, scalars and/or different recordsets for optimum performance.
+        ///To quickly change the input data, press the Quick Variable Input button and amend the mappings as necessary..
         /// </summary>
         public static string SqlBulkInsertToolTipInputColumn {
             get {
@@ -7471,7 +7680,10 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to To bulk insert data into a table, put the data to insert in here.	Using recordset (*) notation will put the entire recordset in and is the normal usage scenario for large data inserts to SQL.	A single Recordset will yield the best performance. Do not mix, scalars and/or different recordsets for optimum performance.	To quickly change the input data, press the Quick Variable Input button and amend the mappings as necessary..
+        ///   Looks up a localized string similar to To bulk insert data into a table, put the data to insert in here.
+        ///Using recordset (*) notation will put the entire recordset in and is the normal usage scenario for large data inserts to SQL.
+        ///A single Recordset will yield the best performance. Do not mix, scalars and/or different recordsets for optimum performance.
+        ///To quickly change the input data, press the Quick Variable Input button and amend the mappings as necessary..
         /// </summary>
         public static string SQLBulkInsertToolTipInputData {
             get {
@@ -7498,7 +7710,10 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Only variables go in here.	Returns Success or the record numbers with errors.	You can use [[Scalar]] as well as [[Recordset().Fields]].	Using recordset () will add a new record and (*) will assign every record..
+        ///   Looks up a localized string similar to Only variables go in here.
+        ///Returns Success or the record numbers with errors.
+        ///You can use [[Scalar]] as well as [[Recordset().Fields]].
+        ///Using recordset () will add a new record and (*) will assign every record..
         /// </summary>
         public static string SqlBulkInsertToolTipResult {
             get {
@@ -7516,7 +7731,8 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Select a table to perform the bulk insert into.	If the table schema has changed or recently added to the source, click the refresh button..
+        ///   Looks up a localized string similar to Select a table to perform the bulk insert into.
+        ///If the table schema has changed or recently added to the source, click the refresh button..
         /// </summary>
         public static string SQLBulkInsertToolTipTable {
             get {
@@ -7525,7 +7741,11 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The number of seconds you would like the operation to complete in.	All batches in total must complete within this time period.	The default is 0 which will be no time constraint.	If you specify 30, then 30 seconds will be allowed for the entire operation to complete before timing out.	Note, the timeout is purely for the actual SQL connection and not the preparation of the data to be inserted..
+        ///   Looks up a localized string similar to The number of seconds you would like the operation to complete in.
+        ///All batches in total must complete within this time period.
+        ///The default is 0 which will be no time constraint.
+        ///If you specify 30, then 30 seconds will be allowed for the entire operation to complete before timing out.
+        ///Note, the timeout is purely for the actual SQL connection and not the preparation of the data to be inserted..
         /// </summary>
         public static string SqlBulkInsertToolTipTimeout {
             get {
@@ -7579,7 +7799,8 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Only variables go in here.	Returns the type of system information selected..
+        ///   Looks up a localized string similar to Only variables go in here.
+        ///Returns the type of system information selected..
         /// </summary>
         public static string SystemInformationToolTipResult {
             get {
@@ -7696,7 +7917,9 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Returns the unique combinations into the variables specified. If there are multiple fields being returned, there should be multiple Results fields specified. Use a comma to separate the variables..
+        ///   Looks up a localized string similar to Returns the unique combinations into the variables specified. 
+        ///If there are multiple fields being returned, there should be multiple Results fields specified. 
+        ///Use a comma to separate the variables..
         /// </summary>
         public static string UniqueToolTipResults {
             get {
@@ -7705,7 +7928,9 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Which fields from the recordset would you like returned when a Unique combination is found? Use a comma separated list of the fields.	Where multiple rows are the same, the first one will be deemed Unique..
+        ///   Looks up a localized string similar to Which fields from the recordset would you like returned when a Unique combination is found? 
+        ///Use a comma separated list of the fields.
+        ///Where multiple rows are the same, the first one will be deemed Unique..
         /// </summary>
         public static string UniqueToolTipReturnFields {
             get {
@@ -7768,7 +7993,8 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Specify the password needed to open the zip file here.	Leaving the Archive Password blank will result in no archive password being used to open the file..
+        ///   Looks up a localized string similar to Specify the password needed to open the zip file here.
+        ///Leaving the Archive Password blank will result in no archive password being used to open the file..
         /// </summary>
         public static string UnzipToolTipArchivePassword {
             get {
@@ -7777,7 +8003,9 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Any variable and/or data goes in here.	Put the full path of the destination you are unzipping to here.	You can use File System, URI, SFTP, FTP or FTPS format..
+        ///   Looks up a localized string similar to Any variable and/or data goes in here.
+        ///Put the full path of the destination you are unzipping to here.
+        ///You can use File System, URI, SFTP, FTP or FTPS format..
         /// </summary>
         public static string UnzipToolTipDestination {
             get {
@@ -7795,7 +8023,8 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to For protected resources, specify the Password of an account with permission to access the source. By default the account running Warewolf Server.exe service will be used..
+        ///   Looks up a localized string similar to For protected resources, specify the Password of an account with permission to access the source. 
+        ///By default the account running Warewolf Server.exe service will be used..
         /// </summary>
         public static string UnzipToolTipPassword {
             get {
@@ -7804,7 +8033,10 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Only variables go in here.	Returns Success or will be blank depending on the success of the Unzip action.	You can use [[Scalar]] as well as [[Recordset().Fields]].	Using recordset () will add a new record and (*) will assign every record..
+        ///   Looks up a localized string similar to Only variables go in here.
+        ///Returns Success or will be blank depending on the success of the Unzip action.
+        ///You can use [[Scalar]] as well as [[Recordset().Fields]].
+        ///Using recordset () will add a new record and (*) will assign every record..
         /// </summary>
         public static string UnzipToolTipResult {
             get {
@@ -7813,7 +8045,8 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to For protected resources, specify the Username of an account with permission to access the source. By default the account running Warewolf Server.exe service will be used..
+        ///   Looks up a localized string similar to For protected resources, specify the Username of an account with permission to access the source. 
+        ///By default the account running Warewolf Server.exe service will be used..
         /// </summary>
         public static string UnzipToolTipUsername {
             get {
@@ -7822,7 +8055,9 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Any variable and/or data goes in here.	To unzip a file, put the full path and zip file name in here.	You can use File System, URI, SFTP, FTP or FTPS format..
+        ///   Looks up a localized string similar to Any variable and/or data goes in here.
+        ///To unzip a file, put the full path and zip file name in here.
+        ///You can use File System, URI, SFTP, FTP or FTPS format..
         /// </summary>
         public static string UnzipToolTipZipname {
             get {
@@ -8056,7 +8291,8 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Only a single variable goes in here.	Returns the response text of the web get request..
+        ///   Looks up a localized string similar to Only a single variable goes in here.
+        ///Returns the response text of the web get request..
         /// </summary>
         public static string WebRequestToolTipResult {
             get {
@@ -8074,7 +8310,8 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Any data or variable can go in here.	To traverse and retrieve the raw response from a webpage, enter it in here..
+        ///   Looks up a localized string similar to Any data or variable can go in here.
+        ///To traverse and retrieve the raw response from a webpage, enter it in here..
         /// </summary>
         public static string WebRequestToolTipURL {
             get {
@@ -8101,15 +8338,6 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cancel your changes to the response body..
-        /// </summary>
-        public static string WebServicePasteCancelCommandHelp {
-            get {
-                return ResourceManager.GetString("WebServicePasteCancelCommandHelp", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to You can manually add the response body here..
         /// </summary>
         public static string WebServicePasteHelp {
@@ -8124,15 +8352,6 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string WebServicePasteInputHelp {
             get {
                 return ResourceManager.GetString("WebServicePasteInputHelp", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Saves this as the mapping that will be used by Warewolf when executing..
-        /// </summary>
-        public static string WebServicePasteSaveCommandHelp {
-            get {
-                return ResourceManager.GetString("WebServicePasteSaveCommandHelp", resourceCulture);
             }
         }
         
@@ -8281,7 +8500,8 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Any variable and/or data goes in here.	Put the contents you want written to the file in here..
+        ///   Looks up a localized string similar to Any variable and/or data goes in here.
+        ///Put the contents you want written to the file in here..
         /// </summary>
         public static string WriteFileToolTipContents {
             get {
@@ -8290,7 +8510,9 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Any variable and/or data goes in here.	To write content to a file, put the full path and file name in here.	You can use File System, URI, SFTP, FTP or FTPS format..
+        ///   Looks up a localized string similar to Any variable and/or data goes in here.
+        ///To write content to a file, put the full path and file name in here.
+        ///You can use File System, URI, SFTP, FTP or FTPS format..
         /// </summary>
         public static string WriteFileToolTipFilename {
             get {
@@ -8299,7 +8521,8 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to For protected resources, specify the Password of an account with permission to perform this action. By default the account running Warewolf Server.exe service will be used..
+        ///   Looks up a localized string similar to For protected resources, specify the Password of an account with permission to perform this action. 
+        ///By default the account running Warewolf Server.exe service will be used..
         /// </summary>
         public static string WriteFileToolTipPassword {
             get {
@@ -8308,7 +8531,10 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Only variables go in here.	Returns Success or will be blank depending on the success of the Write action.	You can use [[Scalar]] as well as [[Recordset().Fields]].	Using recordset () will add a new record and (*) will assign every record..
+        ///   Looks up a localized string similar to Only variables go in here.
+        ///Returns Success or will be blank depending on the success of the Write action.
+        ///You can use [[Scalar]] as well as [[Recordset().Fields]].
+        ///Using recordset () will add a new record and (*) will assign every record..
         /// </summary>
         public static string WriteFileToolTipResult {
             get {
@@ -8317,7 +8543,8 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to For protected resources, specify the Username of an account with permission to perform this action. By default the account running Warewolf Server.exe service will be used..
+        ///   Looks up a localized string similar to For protected resources, specify the Username of an account with permission to perform this action. 
+        ///By default the account running Warewolf Server.exe service will be used..
         /// </summary>
         public static string WriteFileToolTipUsername {
             get {
@@ -8353,7 +8580,11 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Only variables go in here.	Returns the result of the Xpath expression.	You can use [[Scalar]] as well as [[Recordset().Fields]].	Using recordset () will add a new record and (*) will assign every record.	Each Xpath expression returned will be added to the result recordset in a new record or comma separated list if a scalar variable is defined..
+        ///   Looks up a localized string similar to Only variables go in here.
+        ///Returns the result of the Xpath expression.
+        ///You can use [[Scalar]] as well as [[Recordset().Fields]].
+        ///Using recordset () will add a new record and (*) will assign every record.
+        ///Each Xpath expression returned will be added to the result recordset in a new record or comma separated list if a scalar variable is defined..
         /// </summary>
         public static string XpathToolTipResults {
             get {
@@ -8362,7 +8593,8 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Any data or variable can go in here.	To traverse an XML document and return information from it, enter the raw XML in here..
+        ///   Looks up a localized string similar to Any data or variable can go in here.
+        ///To traverse an XML document and return information from it, enter the raw XML in here..
         /// </summary>
         public static string XPathToolTipXML {
             get {
@@ -8452,7 +8684,8 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Specify the password needed to open the zip file here.	Leaving the Archive Password blank will result in no password being required to open the file..
+        ///   Looks up a localized string similar to Specify the password needed to open the zip file here.
+        ///Leaving the Archive Password blank will result in no password being required to open the file..
         /// </summary>
         public static string ZipToolTipArchivePassword {
             get {
@@ -8461,7 +8694,11 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The system will try and match your zipping requirements as far as possible.	None creates the new file with the content and adds no compression - fastest.	Partial attempts some compression.	Normal will apply standard compression.	Max will compress the zipped file as much as possible - slowest..
+        ///   Looks up a localized string similar to The system will try and match your zipping requirements as far as possible.
+        ///None creates the new file with the content and adds no compression - fastest.
+        ///Partial attempts some compression.
+        ///Normal will apply standard compression.
+        ///Max will compress the zipped file as much as possible - slowest..
         /// </summary>
         public static string ZipToolTipCompressiontype {
             get {
@@ -8470,7 +8707,9 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Any variable and/or data goes in here.	Put the full path of the destination you are zipping to here.	You can use File System, URI, SFTP, FTP or FTPS format..
+        ///   Looks up a localized string similar to Any variable and/or data goes in here.
+        ///Put the full path of the destination you are zipping to here.
+        ///You can use File System, URI, SFTP, FTP or FTPS format..
         /// </summary>
         public static string ZipToolTipDestination {
             get {
@@ -8479,7 +8718,9 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Any variable and/or data goes in here.	To zip a file or folder, put the full path of what you want zipped in here.	You can use File System, URI, SFTP, FTP or FTPS format..
+        ///   Looks up a localized string similar to Any variable and/or data goes in here.
+        ///To zip a file or folder, put the full path of what you want zipped in here.
+        ///You can use File System, URI, SFTP, FTP or FTPS format..
         /// </summary>
         public static string ZipToolTipFileFolder {
             get {
@@ -8497,7 +8738,8 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to For protected resources, specify the Password of an account with permission to access the source. By default the account running Warewolf Server.exe service will be used..
+        ///   Looks up a localized string similar to For protected resources, specify the Password of an account with permission to access the source.
+        ///By default the account running Warewolf Server.exe service will be used..
         /// </summary>
         public static string ZipToolTipPassword {
             get {
@@ -8506,7 +8748,10 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Only variables go in here.	Returns Success or will be blank depending on the success of the Zip action.	You can use [[Scalar]] as well as [[Recordset().Fields]].	Using recordset () will add a new record and (*) will assign every record..
+        ///   Looks up a localized string similar to Only variables go in here.
+        ///Returns Success or will be blank depending on the success of the Zip action.
+        ///You can use [[Scalar]] as well as [[Recordset().Fields]].
+        ///Using recordset () will add a new record and (*) will assign every record..
         /// </summary>
         public static string ZipToolTipResult {
             get {
@@ -8515,7 +8760,8 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to For protected resources, specify the Username of an account with permission to access the destination. By default the account running Warewolf Server.exe service will be used..
+        ///   Looks up a localized string similar to For protected resources, specify the Username of an account with permission to access the destination. 
+        ///By default the account running Warewolf Server.exe service will be used..
         /// </summary>
         public static string ZipToolTipUsername {
             get {

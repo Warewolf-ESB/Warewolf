@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 // ReSharper disable CheckNamespace
 namespace Dev2.DataList
@@ -17,6 +18,7 @@ namespace Dev2.DataList
     /// <summary>
     /// Class for the "=" recordset search option 
     /// </summary>
+    [SuppressMessage("ReSharper", "UnusedMember.Global")]
     public class RsOpEqual : AbstractRecsetSearchValidation
     {
         #region Overrides of AbstractRecsetSearchValidation

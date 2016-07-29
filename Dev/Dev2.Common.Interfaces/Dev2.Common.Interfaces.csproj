@@ -289,7 +289,6 @@
     <Compile Include="IntellisenseStringResult.cs" />
     <Compile Include="Interfaces\IDev2TOFn.cs" />
     <Compile Include="IOAuthSource.cs" />
-    <Compile Include="IPasteView.cs" />
     <Compile Include="IPerformanceCountersByMachine.cs" />
     <Compile Include="IPerformanceCountersByResource.cs" />
     <Compile Include="IPluginAction.cs" />
@@ -404,7 +403,6 @@
     <Compile Include="Toolbox\IToolDescriptorViewModel.cs" />
     <Compile Include="Toolbox\IToolManager.cs" />
     <Compile Include="UndoFramework\IAction.cs" />
-    <Compile Include="UndoFramework\SimpleHistoryNode.cs" />
     <Compile Include="WarewolfException.cs" />
     <Compile Include="WebRequestMethod.cs" />
     <Compile Include="WebServices\IWebService.cs" />
