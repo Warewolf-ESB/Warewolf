@@ -124,7 +124,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AsyncObservableCollection.cs" />
-    <Compile Include="Converters\HeightConverter.cs" />
     <Compile Include="CookieHelper.cs" />
     <Compile Include="CustomMenuIcons.cs" />
     <Compile Include="DllListingModel.cs" />
@@ -132,14 +131,12 @@
     <Compile Include="HelpSetter.cs" />
     <Compile Include="Infragistics Prism Region Adapter\IDockAware.cs" />
     <Compile Include="Infragistics Prism Region Adapter\TabGroupPaneRegionActiveAwareBehavior.cs" />
-    <Compile Include="Infragistics Prism Region Adapter\TabGroupPaneRegionAdapter.cs" />
     <Compile Include="IWebBrowser.cs" />
     <Compile Include="PopupViewManageEffects.cs" />
     <Compile Include="Popup\PopupMessage.cs" />
     <Compile Include="..\AssemblyCommonInfo.cs">
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
-    <Compile Include="RegionNames.cs" />
     <Compile Include="ResourceTypeToIconConverter.cs" />
     <Compile Include="ResourceTypeToIconVisibility.cs" />
     <Compile Include="ServerAddedEvent.cs" />
@@ -171,6 +168,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Converters\" />
     <Folder Include="View Interfaces\" />
   </ItemGroup>
   <ItemGroup>
