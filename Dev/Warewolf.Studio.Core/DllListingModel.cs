@@ -55,8 +55,12 @@ namespace Warewolf.Studio.Core
             {
                 Name = dllListing.Name;
                 FullName = dllListing.FullName;
-                ProgId = (dllListing as DllListing)?.ProgId;
-                ClsId = (dllListing as DllListing)?.ClsId;
+                var listing = (dllListing as DllListing);
+                if (listing != null)
+                {
+                    Is32Bit = listing.Is32Bit;
+                    ClsId = listing.ClsId;
+                }
                 if (dllListing.Children != null && dllListing.Children.Count > 0)
                 {
                     Children =
@@ -204,7 +208,7 @@ namespace Warewolf.Studio.Core
             }
         }
         public string ClsId { get; set; }
-        public string ProgId { get; set; }
+        public bool Is32Bit { get; set; }
 
         public ICommand ExpandingCommand { get; set; }
 
@@ -292,6 +296,8 @@ namespace Warewolf.Studio.Core
 
         public void Filter(string searchTerm)
         {
+            if (!_isCom)
+            {
                 _filter = searchTerm;
 
                 if (_children != null)
@@ -314,11 +320,35 @@ namespace Warewolf.Studio.Core
                 }
 
                 OnPropertyChanged(() => Children);
-                
+            }
+            else
 
+            {
+                _filter = searchTerm;
+                if (_children != null)
+                {
+                    foreach (var dllListing in _children)
+                    {
+                        var dllListingModel = dllListing;
+                        dllListingModel.Filter(searchTerm);
+                    }
+                }
+                if (string.IsNullOrEmpty(searchTerm) || Name == "FileSystem" || Name == "GAC" ||
+                    (_children != null && _children.Count > 0 &&
+                     _children.Any(model => model.IsVisible)))
+                {
+                    IsVisible = true;
+                }
+                else
+                {
+                    IsVisible = Name.ToLowerInvariant().Contains(searchTerm.ToLowerInvariant());
+                }
+
+                OnPropertyChanged(() => Children);
+            }
+                
             
         }
-       
 
         public bool IsVisible
         {
@@ -334,7 +364,7 @@ namespace Warewolf.Studio.Core
 
         public bool Equals(DllListingModel other)
         {
-            return string.Equals(Name, other.Name) && string.Equals(FullName, other.FullName) && IsDirectory == other.IsDirectory && string.Equals(ClsId,other.ClsId) && string.Equals(ProgId, other.ProgId);
+            return string.Equals(Name, other.Name) && string.Equals(FullName, other.FullName) && IsDirectory == other.IsDirectory;
         }
 
 

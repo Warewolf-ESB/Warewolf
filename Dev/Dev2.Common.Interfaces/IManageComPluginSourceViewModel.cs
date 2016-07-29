@@ -1,11 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections.ObjectModel;
 using System.Windows.Input;
 
 namespace Dev2.Common.Interfaces
 {
     public interface IManageComPluginSourceViewModel
     {
-        List<IDllListingModel> DllListings { get; set; }
+        ObservableCollection<IDllListingModel> DllListings { get; set; }
         IDllListingModel SelectedDll { get; set; }
         string ResourceName { get; set; }
         ICommand OkCommand { get; set; }
@@ -14,5 +14,6 @@ namespace Dev2.Common.Interfaces
         ICommand ClearSearchTextCommand { get; }
         ICommand RefreshCommand { get; set; }
         IDllListingModel GacItem { get; }
+        string AssemblyName { get; set; }
     }
 }
