@@ -24,7 +24,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.InternalServices 
     [TestClass]
     public class FindDependenciesServiceTest {
         
-        private readonly string _webserverURI = ServerSettings.WebserverURI;
+        private readonly string _webserverURI = "http://localhost:3142/services/";
 
         [TestMethod]
        

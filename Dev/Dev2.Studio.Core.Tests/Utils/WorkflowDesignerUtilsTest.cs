@@ -60,7 +60,7 @@ namespace Dev2.Core.Tests.Utils
         {
             WorkflowDesignerUtils wdu = new WorkflowDesignerUtils();
 
-            IList<string> result = wdu.FormatDsfActivityField(TestResourceStringsTest.SpecialChars);
+            IList<string> result = wdu.FormatDsfActivityField("! @ #$% ^&* ( ) +_{ }| [] \\: \"; \'<> ?, ./");
 
             Assert.AreEqual(0, result.Count, "Strange behaviors parsing special chars, I got results when I should not?!");
         }

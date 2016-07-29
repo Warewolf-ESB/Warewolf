@@ -28,7 +28,7 @@ namespace Dev2.Integration.Tests.Load_Tests
         public void FileWith200kLine_Expect200kRecordsetEntries_In_Under_25Seconds()
         {
 
-            string path = ServerSettings.WebserverURI + "Load Test Resources/DataSplit200kEntryFile_Expect_Sub5SecondProcess";
+            string path = "http://localhost:3142/services/" + "Load Test Resources/DataSplit200kEntryFile_Expect_Sub5SecondProcess";
 
             DateTime start = DateTime.Now;
             TestHelper.PostDataToWebserver(path);
