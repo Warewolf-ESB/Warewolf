@@ -24,6 +24,13 @@
             </ResourceDictionary.MergedDictionaries>
             <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverterPositive" TrueValue="Visible" FalseValue="Collapsed" />
             <views:NotConverter x:Key="NotConverter" />
+
+            <Style x:Key="NodeVisibiltyStyle" TargetType="ig:XamDataTreeNodeControl" BasedOn="{StaticResource XamDataTreeNodeControlStyle}">
+                <Style.Setters>
+                    <Setter Property="Visibility" Value="{Binding Path=Data.IsVisible, Converter={StaticResource BoolToVisibilityConverterPositive}}"/>
+                </Style.Setters>
+            </Style>
+            
         </ResourceDictionary>
     </UserControl.Resources>
     <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
@@ -127,10 +134,11 @@
                                         ActiveDataItem="{Binding SelectedDll, Mode=TwoWay}"
                                         ItemsSource="{Binding DllListings}"
                                         IsSelectedMemberPath="IsSelected"
-                                        DisplayMemberPath="AssemblyName"
+                                        DisplayMemberPath="Name"
                                         IsExpandedMemberPath="IsExpanded"
                                         EnsureNodeExpansion="True"                                        
-                                        NodeLineVisibility="Hidden" >
+                                        NodeLineVisibility="Hidden" 
+                                        NodeStyle="{StaticResource NodeVisibiltyStyle}">
                             <ig:XamDataTree.EditingSettings>
                                 <ig:TreeEditingSettings AllowDeletion="False"
                                         AllowEditing="False"
@@ -142,11 +150,9 @@
                             <ig:XamDataTree.GlobalNodeLayouts>
                                 <ig:NodeLayout Key="DllListings"
                                                TargetTypeName="IDllListingModel"
-                                               DisplayMemberPath="AssemblyName"
+                                               DisplayMemberPath="Name"
                                                IsExpandedMemberPath="IsExpanded"
-                                               IsSelectedMemberPath="IsSelected"
-                                               Visibility="{Binding Path=Node.IsVisible, Converter={StaticResource BoolToVisibilityConverterPositive}}"
-                                               >
+                                               IsSelectedMemberPath="IsSelected">
                                     <ig:NodeLayout.ItemTemplate>
                                         <DataTemplate>
                                             <!-- ADD NEW GRID LAYOUT TO ALIGN DATA TREE ITEMS -->
@@ -160,7 +166,6 @@
                                                            MinWidth="5"
                                                            Height="20"                                                           
                                                            Focusable="True"
-                                                           Visibility="{Binding Path=Data.IsVisible, Converter={StaticResource BoolToVisibilityConverterPositive}}"
                                                            TextTrimming="CharacterEllipsis"
                                                            VerticalAlignment="Center"
                                                            HorizontalAlignment="Stretch"
