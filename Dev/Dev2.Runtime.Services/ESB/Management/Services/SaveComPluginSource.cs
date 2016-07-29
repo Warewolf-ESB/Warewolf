@@ -39,7 +39,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 {
                     ResourceID = src.Id,
                     ClsId = src.ClsId,
-                    ProgId = src.ProgId,
+                    Is32Bit = src.Is32Bit,
                     ResourceName = src.Name,
                     ResourcePath = src.Path
                 };

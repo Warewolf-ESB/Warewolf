@@ -8,9 +8,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using System;
-using System.Collections.ObjectModel;
-
 // ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Core
 {
@@ -21,19 +18,5 @@ namespace Dev2.Studio.Core
     /// <typeparam name="T"></typeparam>
     public class ObjectCloner<T> : IObjectCloner<T>
     {
-
-        public ObservableCollection<T> CloneObservableCollection(ObservableCollection<T> src)
-        {
-
-            ObservableCollection<T> result = new ObservableCollection<T>();
-
-            foreach(T elm in src)
-            {
-                ICloneable tmp = (ICloneable)elm;
-                result.Add((T)tmp.Clone());
-            }
-
-            return result;
-        }
     }
 }

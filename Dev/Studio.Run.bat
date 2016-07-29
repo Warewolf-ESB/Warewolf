@@ -1,4 +1,4 @@
-"TestScripts\Tests\Compile All Tests.bat"
+"%~dp0TestScripts\Tests\Compile All Tests.bat"
 if not %errorlevel%==0 pause
-"TestScripts\Studio\Startup.bat"
+"%~dp0TestScripts\Studio\Startup.bat"
 if not %errorlevel%==0 pause

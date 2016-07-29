@@ -1107,11 +1107,6 @@ namespace Dev2.Studio.ViewModels
             return _worksurfaceContextManager.IsWorkFlowOpened(resource);
         }
 
-        public void UpdateWorkflowLink(IContextualResourceModel resource, string newPath, string oldPath)
-        {
-            _worksurfaceContextManager.UpdateWorkflowLink(resource, newPath, oldPath);
-        }
-
         public void AddWorkSurfaceContext(IContextualResourceModel resourceModel)
         {
             _worksurfaceContextManager.AddWorkSurfaceContext(resourceModel);

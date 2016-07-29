@@ -22,12 +22,7 @@ namespace Dev2.Studio.Core.Interfaces
         ObservableCollection<IInputOutputViewModel> Outputs { get; }
         ObservableCollection<IInputOutputViewModel> Inputs { get; }
         string XmlOutput { get; set; }
-        void CreateXmlOutput(IList<IInputOutputViewModel> outputData, IList<IInputOutputViewModel> inputData);
-        void CopyFrom(IDataMappingViewModel copyObj);
-        void InputLostFocusTextBox(string text);
-        void OutputLostFocusTextBox(string text);
-        void InputTextBoxGotFocus(IInputOutputViewModel selected);
-        void OutputTextBoxGotFocus(IInputOutputViewModel selected);
+
         string GetInputString(IList<IInputOutputViewModel> inputData);
         string GetOutputString(IList<IInputOutputViewModel> outputData);
     }

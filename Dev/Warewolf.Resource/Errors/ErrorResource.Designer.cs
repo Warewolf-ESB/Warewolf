@@ -2401,7 +2401,7 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The number of results for the paths representing the {0}  expression didnt match..
+        ///   Looks up a localized string similar to The number of results for the paths representing the {0}  expression didn&apos;t match..
         /// </summary>
         public static string NumberOfResultsMismatch {
             get {
@@ -3375,7 +3375,7 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ViewModel type must contain a parameterless constructor..
+        ///   Looks up a localized string similar to ViewModel type must contain a parameter less constructor..
         /// </summary>
         public static string ViewModelTypeMustContainAParameterlessContructor {
             get {
@@ -3393,7 +3393,7 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to View type must contain a parameterless constructor..
+        ///   Looks up a localized string similar to View type must contain a parameter less constructor..
         /// </summary>
         public static string ViewTypeMustContainAParameterlessContructor {
             get {

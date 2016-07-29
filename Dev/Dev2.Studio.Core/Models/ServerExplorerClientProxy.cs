@@ -101,14 +101,5 @@ namespace Dev2.Models
             controller.AddPayloadArgument("newPath", newPath);
             return controller.ExecuteCommand<IExplorerRepositoryResult>(Connection, workSpaceId);
         }
-
-        public string GetServerVersion()
-        {
-            var controller = CommunicationControllerFactory.CreateController("GetServerVersion");
-            var version =  controller.ExecuteCommand<string>(Connection, Guid.Empty);
-            if(String.IsNullOrEmpty(version))
-                return "less than 0.4.19.1";
-            return version;
-        }
     }
 }
