@@ -324,6 +324,12 @@
     <Compile Include="BussinessLogic\RsOpNotRegex.cs" />
     <Compile Include="BussinessLogic\RsOpNotStartsWith.cs" />
     <Compile Include="Factories\Dev2FindMissingStrategyFactory.cs" />
+    <Compile Include="FindMissingStrategies\DataGridActivityFindMissingStrategy.cs" />
+    <Compile Include="FindMissingStrategies\DsfActivityFindMissingStrategy.cs" />
+    <Compile Include="FindMissingStrategies\ForEachActivityFindMissingStrategy.cs" />
+    <Compile Include="FindMissingStrategies\MixedActivityFindMissingStrategy.cs" />
+    <Compile Include="FindMissingStrategies\SequenceActivityFindMissingStrategy.cs" />
+    <Compile Include="FindMissingStrategies\StaticActivityFindMissingStrategy.cs" />
     <Compile Include="BussinessLogic\Hosting\WorkflowInstanceInfo.cs" />
     <Compile Include="BussinessLogic\AbstractRecsetSearchValidation.cs" />
     <Compile Include="BussinessLogic\FindRecsetOptions.cs" />
@@ -399,6 +405,7 @@
     <Compile Include="Validation\IsValidJsonCreateMappingSourceRule.cs" />
     <Compile Include="Validation\ShouldNotBeVariableRule.cs" />
     <Compile Include="Validation\VariableUtils.cs" />
+    <Compile Include="Value Objects\ForEachBootstrapTO.cs" />
     <Compile Include="Value Objects\ForEachBootstrapTOEnvironment.cs" />
     <Compile Include="Value Objects\ForEachInnerActivityTO.cs" />
   </ItemGroup>
@@ -490,9 +497,7 @@
       <Name>WarewolfParserInterop</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="FindMissingStrategies\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!--
   <PropertyGroup Condition=" '$(BuildingInsideVisualStudio)' == 'true' ">
