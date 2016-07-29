@@ -236,7 +236,7 @@ namespace Warewolf.UITests
                 }
                 Select_LocalhostConnected_From_Explorer_Remote_Server_Dropdown_List();
                 Enter_Text_Into_Explorer_Filter(SourceName);
-                WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);=
+                WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);
                 if (ControlExistsNow(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem))
                 {
                     RightClick_Explorer_Localhost_First_Item();
@@ -475,15 +475,15 @@ namespace Warewolf.UITests
             }
         }
 
-        public void TryRefreshExplorerUntilOneItemOnly()
+        public void TryRefreshExplorerUntilOneItemOnly(int retries = 3)
         {
-            while (ControlExistsNow(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.SecondItem) || ControlExistsNow(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.SecondItem))
+            while ((ControlExistsNow(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.SecondItem) || ControlExistsNow(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.SecondItem)) && retries-- > 0)
             {
-                
+                Click_Explorer_Refresh_Button();
             }
         }
 
-        public bool ControlExistsNow(this UITestControl thisControl)
+        public bool ControlExistsNow(UITestControl thisControl)
         {
             Playback.PlaybackSettings.MaximumRetryCount = _strictMaximumRetryCount * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
             Playback.PlaybackSettings.SearchTimeout = _strictSearchTimeout * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
