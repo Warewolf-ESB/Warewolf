@@ -37,7 +37,6 @@ using Dev2.Studio.Core.Utils;
 using Dev2.Studio.Core.ViewModels;
 using Dev2.Studio.Factory;
 using Dev2.Studio.ViewModels.DependencyVisualization;
-using Dev2.Studio.ViewModels.Workflow;
 using Dev2.Studio.ViewModels.WorkSurface;
 using Dev2.Studio.Views.DependencyVisualization;
 using Dev2.Utils;
@@ -379,15 +378,6 @@ namespace Dev2.Studio.ViewModels
             return FindWorkSurfaceContextViewModel(resource) != null;
         }
 
-        public void UpdateWorkflowLink(IContextualResourceModel resource, string newPath, string oldPath)
-        {
-            var x = FindWorkSurfaceContextViewModel(resource);
-            if (x == null) return;
-            var path = oldPath.Replace('\\', '/');
-            var b = x.WorkSurfaceViewModel as WorkflowDesignerViewModel;
-            b?.UpdateWorkflowLink(b.DisplayWorkflowLink.Replace(path, newPath.Replace('\\', '/')));
-        }
-
         public void AddWorkSurfaceContext(IContextualResourceModel resourceModel)
         {
             AddWorkSurfaceContextImpl(resourceModel, false);
@@ -576,10 +566,10 @@ namespace Dev2.Studio.ViewModels
             var db = new ComPluginSource(resourceModel.WorkflowXaml.ToXElement());
             var def = new ComPluginSourceDefinition
             {
-                SelectedDll = new DllListing { ClsId = db.ClsId, ProgId = db.ProgId, Children = new Collection<IFileListing>(), IsDirectory = false },
+                SelectedDll = new DllListing { ClsId = db.ClsId, Is32Bit = db.Is32Bit, Children = new Collection<IFileListing>(), IsDirectory = false },
                 Id = db.ResourceID,
                 ClsId = db.ClsId,
-                ProgId = db.ProgId,
+                Is32Bit = db.Is32Bit,
                 Name = db.ResourceName
 
             };

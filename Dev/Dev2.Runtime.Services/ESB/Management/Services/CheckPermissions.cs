@@ -9,6 +9,7 @@
 */
 
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.Serialization;
 using System.Security.AccessControl;
 using System.Security.Principal;
@@ -24,6 +25,7 @@ namespace Dev2.Runtime.ESB.Management.Services
     /// <summary>
     /// Checks a users permissions on the local file system
     /// </summary>
+    [SuppressMessage("ReSharper", "UnusedMember.Global")]
     public class CheckPermissions : IEsbManagementEndpoint
     {
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)

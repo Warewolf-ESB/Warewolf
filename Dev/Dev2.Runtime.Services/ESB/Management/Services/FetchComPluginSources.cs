@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using Dev2.Common;
@@ -14,6 +15,7 @@ using Dev2.Workspaces;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
+    [SuppressMessage("ReSharper", "UnusedMember.Global")]
     public class FetchComPluginSources : IEsbManagementEndpoint
     {
         public string HandlesType()
@@ -37,12 +39,12 @@ namespace Dev2.Runtime.ESB.Management.Services
                         Name = res.ResourceName,
                         Path = res.ResourcePath,
                         ClsId = res.ClsId,
-                        ProgId = res.ProgId,
+                        Is32Bit = res.Is32Bit,
                         SelectedDll = new DllListing
                         {
                             Name = res.ResourceName,
                             ClsId = res.ClsId,
-                            ProgId = res.ProgId,
+                            Is32Bit = res.Is32Bit,
                             Children = new IFileListing[0]
                         }
                     };

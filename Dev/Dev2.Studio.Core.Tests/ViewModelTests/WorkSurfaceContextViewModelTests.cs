@@ -1043,28 +1043,6 @@ namespace Dev2.Core.Tests.ViewModelTests
 
     }
 
-    public class TestWorkSurfaceContextViewModel : WorkSurfaceContextViewModel
-    {
-        public TestWorkSurfaceContextViewModel(WorkSurfaceKey workSurfaceKey, IWorkSurfaceViewModel workSurfaceViewModel)
-            : base(workSurfaceKey, workSurfaceViewModel)
-        {
-        }
-
-        public TestWorkSurfaceContextViewModel(IEventAggregator eventPublisher, WorkSurfaceKey workSurfaceKey, IWorkSurfaceViewModel workSurfaceViewModel)
-            : base(eventPublisher, workSurfaceKey, workSurfaceViewModel, new Mock<IPopupController>().Object, (a, b,c) => { })
-        {
-        }
-
-        public int SaveHitCount { get; private set; }
-
-        protected override bool Save(IContextualResourceModel resource, bool isLocalSave, bool addToTabManager = true, bool isStudioShutdown = false)
-        {
-            SaveHitCount++;
-            return true;
-        }
-
-    }
-
     public class WorkSurfaceViewModelTest : IWorkSurfaceViewModel, IWorkflowDesignerViewModel
     {
         #region Implementation of IHaveDisplayName
@@ -1232,27 +1210,6 @@ namespace Dev2.Core.Tests.ViewModelTests
             {
                 throw new NotImplementedException();
             }
-        }
-    }
-
-    public class DebugVM : DebugOutputViewModel
-    {
-        // ReSharper disable UnusedParameter.Local
-        public DebugVM(IEventPublisher serverEventPublisher, IEnvironmentRepository environmentRepository)
-            // ReSharper restore UnusedParameter.Local
-            : base(new Mock<IEventPublisher>().Object, new Mock<IEnvironmentRepository>().Object, new Mock<IDebugOutputFilterStrategy>().Object)
-        {
-        }
-
-        public override void Append(IDebugState content)
-        {
-            Appended = true;
-        }
-
-        public bool Appended
-        {
-            get;
-            set;
         }
     }
 }

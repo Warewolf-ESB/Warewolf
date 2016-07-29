@@ -9,7 +9,6 @@
 */
 
 using System;
-using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Text;
@@ -416,66 +415,4 @@ namespace Dev2.Core.Tests.Network
 
         #endregion
     }
-
-    internal class TestHubConnection : HubConnection
-    {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="T:Microsoft.AspNet.SignalR.Client.HubConnection"/> class.
-        /// </summary>
-        /// <param name="url">The url to connect to.</param>
-        public TestHubConnection(string url)
-            : base(url)
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="T:Microsoft.AspNet.SignalR.Client.HubConnection"/> class.
-        /// </summary>
-        /// <param name="url">The url to connect to.</param><param name="useDefaultUrl">Determines if the default "/signalr" path should be appended to the specified url.</param>
-        public TestHubConnection(string url, bool useDefaultUrl)
-            : base(url, useDefaultUrl)
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="T:Microsoft.AspNet.SignalR.Client.HubConnection"/> class.
-        /// </summary>
-        /// <param name="url">The url to connect to.</param><param name="queryString">The query string data to pass to the server.</param>
-        public TestHubConnection(string url, string queryString)
-            : base(url, queryString)
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="T:Microsoft.AspNet.SignalR.Client.HubConnection"/> class.
-        /// </summary>
-        /// <param name="url">The url to connect to.</param><param name="queryString">The query string data to pass to the server.</param><param name="useDefaultUrl">Determines if the default "/signalr" path should be appended to the specified url.</param>
-        public TestHubConnection(string url, string queryString, bool useDefaultUrl)
-            : base(url, queryString, useDefaultUrl)
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="T:Microsoft.AspNet.SignalR.Client.HubConnection"/> class.
-        /// </summary>
-        /// <param name="url">The url to connect to.</param><param name="queryString">The query string data to pass to the server.</param>
-        public TestHubConnection(string url, IDictionary<string, string> queryString)
-            : base(url, queryString)
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="T:Microsoft.AspNet.SignalR.Client.HubConnection"/> class.
-        /// </summary>
-        /// <param name="url">The url to connect to.</param><param name="queryString">The query string data to pass to the server.</param><param name="useDefaultUrl">Determines if the default "/signalr" path should be appended to the specified url.</param>
-        public TestHubConnection(string url, IDictionary<string, string> queryString, bool useDefaultUrl)
-            : base(url, queryString, useDefaultUrl)
-        {
-        }
-
-        #region Overrides of HubConnection
-
-        #endregion
-    }
-
 }

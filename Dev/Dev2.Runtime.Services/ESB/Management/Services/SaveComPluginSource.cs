@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Core;
@@ -14,6 +15,7 @@ using Dev2.Workspaces;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
+    [SuppressMessage("ReSharper", "UnusedMember.Global")]
     public class SaveComPluginSource : IEsbManagementEndpoint
     {
         IExplorerServerResourceRepository _serverExplorerRepository;
@@ -39,7 +41,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 {
                     ResourceID = src.Id,
                     ClsId = src.ClsId,
-                    ProgId = src.ProgId,
+                    Is32Bit = src.Is32Bit,
                     ResourceName = src.Name,
                     ResourcePath = src.Path
                 };

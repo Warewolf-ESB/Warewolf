@@ -10,12 +10,14 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Dev2.Common.ExtMethods;
 using Dev2.DataList;
 
 namespace Dev2.BussinessLogic
 {
+    [SuppressMessage("ReSharper", "UnusedMember.Global")]
     public class RsOpIsBinary : AbstractRecsetSearchValidation
     {
         public override string HandlesType()

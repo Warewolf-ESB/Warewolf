@@ -1,6 +1,6 @@
 [![warewolf logo](https://warewolf.io/images/warewolf-logo-mailchimp.png)](https://warewolf.io/)   
 
-[![Bossie award](http://warewolf.io/images/Bossie-Award-badge.png)](http://www.infoworld.com/article/2982622/open-source-tools/bossie-awards-2015-the-best-open-source-applications.html#slide13) 
+[![MS Azure Tweet](https://warewolf.io/images/MSAzure-Tweet-2.png)](https://twitter.com/Azure/status/755863605560705024)[![Bossie award](http://warewolf.io/images/Bossie-Award-badge.png)](http://www.infoworld.com/article/2982622/open-source-tools/bossie-awards-2015-the-best-open-source-applications.html#slide13) 
 
 **What is Warewolf all about?**
 

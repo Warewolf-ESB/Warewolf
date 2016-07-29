@@ -25,9 +25,6 @@ namespace Dev2.Interfaces
         ICommand ExitCommand { get; }
         IEnvironmentModel ActiveEnvironment { get; set; }
         IContextualResourceModel DeployResource { get; set; }
-        void SetActiveEnvironment(IEnvironmentModel activeEnvironment);
-        bool IsWorkFlowOpened(IContextualResourceModel resource);
-        void UpdateWorkflowLink(IContextualResourceModel resource, string newPath, string oldPath);
 
         void AddWorkSurfaceContext(IContextualResourceModel resourceModel);
 
@@ -53,7 +50,7 @@ namespace Dev2.Interfaces
         AuthorizeCommand<string> NewWcfSourceCommand { get; }
 
         void EditServer(IServerSource serverSource);
-        void ShowAboutBox();
+
         void DisplayDialogForNewVersion();
 
         Task<bool> CheckForNewVersion();

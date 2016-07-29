@@ -9,14 +9,11 @@
 */
 
 using System;
-using System.Linq;
 using System.Windows;
 using Caliburn.Micro;
 using Dev2.Common.Utils;
 using Dev2.Interfaces;
-using Dev2.Studio.Core;
 using Dev2.Studio.Core.Interfaces;
-using Dev2.Studio.InterfaceImplementors;
 using Newtonsoft.Json.Linq;
 
 namespace Dev2.Webs.Callbacks
@@ -57,11 +54,6 @@ namespace Dev2.Webs.Callbacks
 
         public ILayoutObjectViewModel SelectedLayoutObject => null;
 
-        public virtual void Save(string value, bool closeBrowserWindow = true)
-        {
-            Save(value, EnvironmentRepository.Instance.Source, closeBrowserWindow);
-        }
-
         public virtual void Save(string value, IEnvironmentModel environmentModel, bool closeBrowserWindow = true)
         {
             if(closeBrowserWindow)
@@ -79,27 +71,6 @@ namespace Dev2.Webs.Callbacks
             Save(environmentModel, jsonObj);
         }
 
-        public virtual void OpenPropertyEditor()
-        {
-        }
-
-        public virtual void Dev2Set(string data, string uri)
-        {
-        }
-
-        public virtual void Dev2SetValue(string value)
-        {
-        }
-
-        public virtual void Dev2Done()
-        {
-        }
-
-        public virtual void Dev2ReloadResource(Guid resourceName, string resourceType)
-        {
-            throw new NotImplementedException();
-        }
-
         public virtual void Close()
         {
             if(Owner != null)
@@ -108,35 +79,9 @@ namespace Dev2.Webs.Callbacks
             }
         }
 
-        public virtual void Cancel()
-        {
-            Close();
-        }
-
-        public string FetchData(string args)
-        {
-            return null;
-        }
-
-        public string GetIntellisenseResults(string searchTerm, int caretPosition)
-        {
-            return GetJsonIntellisenseResults(searchTerm, caretPosition);
-        }
-
         public event NavigateRequestedEventHandler NavigateRequested;
 
         #endregion
 
-        #region GetJsonIntellisenseResults
-
-        public static string GetJsonIntellisenseResults(string searchTerm, int caretPosition)
-        {
-            var provider = new DefaultIntellisenseProvider();
-            var context = new IntellisenseProviderContext { InputText = searchTerm, CaretPosition = caretPosition };
-
-            return "[" + string.Join(",", provider.GetIntellisenseResults(context).Where(c => !c.IsError).Select(r => string.Format("\"{0}\"", r.ToString()))) + "]";
-        }
-
-        #endregion
     }
 }

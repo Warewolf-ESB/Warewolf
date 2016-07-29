@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 // ReSharper disable CheckNamespace
 namespace Dev2.DataList
@@ -18,6 +19,7 @@ namespace Dev2.DataList
     /// Class for the "not xml" recordset search option 
     /// </summary>
     // ReSharper disable once InconsistentNaming
+    [SuppressMessage("ReSharper", "UnusedMember.Global")]
     public class RsOpNotXML : AbstractRecsetSearchValidation
     {
         public override Func<DataStorage.WarewolfAtom, bool> CreateFunc(IEnumerable<DataStorage.WarewolfAtom> values, IEnumerable<DataStorage.WarewolfAtom> warewolfAtoms, IEnumerable<DataStorage.WarewolfAtom> to, bool all)

@@ -237,7 +237,6 @@
     <Compile Include="ActivityTests\NativeActivityTest.cs" />
     <Compile Include="ActivityTests\TestActivityAbstract.cs" />
     <Compile Include="ActivityTests\DsfActivityTests.cs" />
-    <Compile Include="ActivityTests\TestFlowNodeActivity.cs" />
     <Compile Include="ActivityTests\Web\HttpClientCredentialManagerTests.cs" />
     <Compile Include="ActivityTests\TestUtils.cs" />
     <Compile Include="ActivityTests\UniqueActivityTests.cs" />
@@ -281,9 +280,7 @@
     <Compile Include="TOTests\JsonMappingToTest.cs" />
     <Compile Include="TOTests\SharepointSearchToTests.cs" />
     <Compile Include="TOTests\ValidatedObjectTests.cs" />
-    <Compile Include="Utils\DsfFakeActivity.cs" />
     <Compile Include="Utils\FindRecordsDisplayUtilTests.cs" />
-    <Compile Include="Utils\MockDsfNativeActivity.cs" />
     <Compile Include="Utils\StringComparer.cs" />
     <Compile Include="Utils\SharepointUtilsTests.cs" />
     <Compile Include="Utils\UtilTest.cs" />
