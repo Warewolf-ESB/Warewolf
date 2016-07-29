@@ -13,7 +13,9 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
+using System.Windows.Threading;
 using Warewolf.Studio.Core;
 // ReSharper disable InconsistentNaming
 
@@ -121,15 +123,7 @@ namespace Warewolf.Studio.ViewModels
             DisplayName = server.ResourceName;
             RefreshCommand = new DelegateCommand(async () =>
             {
-                if (Children.Any(a => a.AllowResourceCheck))
-                {
-                    await Load(true);
-                    ShowContextMenu = false;
-                }
-                else
-                {
-                    await Load();
-                }
+                await Refresh();
             });
             IsServerIconVisible = true;
             SelectAction = selectAction ?? (a => { });
@@ -142,6 +136,18 @@ namespace Warewolf.Studio.ViewModels
             });
             server.Connect();
             IsConnected = server.IsConnected;
+            server.NetworkStateChanged += (args, server1) =>
+             {
+                 if (args.State == ConnectionNetworkState.Connected)
+                 {
+                     Application.Current.Dispatcher.Invoke(async () =>
+                     {
+                         await Refresh();
+                     },DispatcherPriority.Background);
+                     
+                 }
+             };
+            
             AllowEdit = server.AllowEdit;
             ShowServerVersionCommand = new DelegateCommand(ShowServerVersionAbout);
             CanCreateFolder = Server.UserPermissions == Permissions.Administrator || server.UserPermissions == Permissions.Contribute;
@@ -157,6 +163,19 @@ namespace Warewolf.Studio.ViewModels
             SelectAll = () => { };
             CanDrag = false;
             CanDrop = false;
+        }
+
+        private async Task Refresh()
+        {
+            if(Children.Any(a => a.AllowResourceCheck))
+            {
+                await Load(true);
+                ShowContextMenu = false;
+            }
+            else
+            {
+                await Load();
+            }
         }
 
         private void UpdateActiveEnvironment(IShellViewModel shellViewModel)
@@ -678,7 +697,7 @@ namespace Warewolf.Studio.ViewModels
 
         public async Task<bool> LoadDialog(string selectedPath, bool isDeploy = false)
         {
-            if (IsConnected)
+            if (IsConnected && Server.IsConnected)
             {
                 IsConnecting = true;
                 var explorerItems = await Server.LoadExplorer();
