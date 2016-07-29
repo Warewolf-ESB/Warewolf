@@ -87,11 +87,8 @@ namespace Warewolf.Studio.ViewModels
                 DispatcherAction.Invoke(() =>
                 {
                     _dllListings = new AsyncObservableCollection<IDllListingModel>(names);
+                    DllListings = _dllListings;
                     IsLoading = false;
-                    if (DllListings != null && DllListings.Count > 1)
-                    {
-                        GacItem = DllListings[1];
-                    }
                     actionToPerform?.Invoke();
                 });
             }, () =>
@@ -143,11 +140,34 @@ namespace Warewolf.Studio.ViewModels
         {
             if (DllListings != null)
             {
-                foreach (var dllListingModel in DllListings)
+                IsLoading = true;
+                var temp = _dllListings;
+                if (string.IsNullOrEmpty(searchTerm))
                 {
-                    dllListingModel.Filter(searchTerm);
+                    foreach (var dllListingModel in temp)
+                    {
+                        dllListingModel.IsVisible = true;
+                    }
                 }
+                else
+                {
+                    foreach (var dllListingModel in temp)
+                    {
+                        if (dllListingModel.Name.ToLowerInvariant().Contains(searchTerm.ToLowerInvariant()))
+                        {
+                            dllListingModel.IsVisible = true;
+                        }
+                        else
+                        {
+                            dllListingModel.IsVisible = false;
+                        }
+                    }
+                }
+                _dllListings = new AsyncObservableCollection<IDllListingModel>(temp);
                 OnPropertyChanged(() => DllListings);
+                IsLoading = false;
+
+
             }
         }
 
