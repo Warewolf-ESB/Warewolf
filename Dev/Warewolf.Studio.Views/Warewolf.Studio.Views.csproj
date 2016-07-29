@@ -159,6 +159,7 @@
     <Compile Include="ConnectControl.xaml.cs">
       <DependentUpon>ConnectControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Converters\ComboBoxToMaxItemWidthConverter.cs" />
     <Compile Include="DeployView.xaml.cs">
       <DependentUpon>DeployView.xaml</DependentUpon>
     </Compile>
@@ -395,9 +396,6 @@
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Converters\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

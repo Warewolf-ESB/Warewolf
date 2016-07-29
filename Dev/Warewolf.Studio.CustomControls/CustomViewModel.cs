@@ -4,12 +4,18 @@ using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Windows;
+using System.Windows.Controls;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Studio.Core.Interfaces;
 
 namespace Warewolf.Studio.CustomControls
 {
+    public class EditableSourceControl : Control
+    {
+        
+    }
+
     [SuppressMessage("ReSharper", "UnusedMember.Global")]
     public class CustomViewModel : INotifyPropertyChanged
     {
