@@ -8,21 +8,57 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using System;
 using Dev2.Data.Decisions.Operations;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Data.Tests.DecisionsTests
 {
+    [TestClass]
     public class IsNotEqualTests
     {
-        public Enum HandlesType()
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("IsNotEqual_Invoke")]
+        public void IsEqual_Invoke_ItemsEqual_ReturnsTrue()
         {
-            return enDecisionType.IsNotEqual;
+            //------------Setup for test--------------------------
+            var endsWith = new IsNotEqual();
+            string[] cols = new string[2];
+            cols[0] = "TestData";
+            cols[1] = "TestData";
+            //------------Execute Test---------------------------
+            bool result = endsWith.Invoke(cols);
+            //------------Assert Results-------------------------
+            Assert.IsFalse(result);
         }
 
-        public bool Invoke(string[] cols)
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("IsEqual_Invoke")]
+        public void IsEndsWith_Invoke_NotEqualItems_ReturnsFalse()
         {
-            return !cols[0].Equals(cols[1], StringComparison.InvariantCulture);
+            //------------Setup for test--------------------------
+            var endsWith = new IsNotEqual();
+            string[] cols = new string[2];
+            cols[0] = "TestData";
+            cols[1] = "No";
+            //------------Execute Test---------------------------
+            bool result = endsWith.Invoke(cols);
+            //------------Assert Results-------------------------
+            Assert.IsTrue(result);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("IsEqual_HandlesType")]
+        public void IsEndsWith_HandlesType_ReturnsIsEndsWithType()
+        {
+            var expected = enDecisionType.IsNotEqual;
+            //------------Setup for test--------------------------
+            var isEndsWith = new IsNotEqual();
+            //------------Execute Test---------------------------
+            //------------Assert Results-------------------------
+            Assert.AreEqual(expected, isEndsWith.HandlesType());
         }
     }
 }

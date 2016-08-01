@@ -45,6 +45,7 @@ using Dev2.Threading;
 using Microsoft.AspNet.SignalR.Client;
 using ServiceStack.Messaging.Rcon;
 using Warewolf.Resource.Errors;
+// ReSharper disable ExceptionNotDocumentedOptional
 
 namespace Dev2.Network
 {
@@ -152,6 +153,7 @@ namespace Dev2.Network
         {
             Dev2Logger.Debug("*********** Hub connection down");
             IsConnected = false;
+            IsConnecting = false;
             if (IsShuttingDown)
             {
                 return;
@@ -196,9 +198,10 @@ namespace Dev2.Network
                     IsConnected = false;
                     IsConnecting = true;
                     UpdateIsAuthorized(false);
-                    OnNetworkStateChanged(new NetworkStateEventArgs(NetworkState.Offline, NetworkState.Connecting));
+                    OnNetworkStateChanged(new NetworkStateEventArgs(NetworkState.Online, NetworkState.Offline));
                     break;
                 case ConnectionStateWrapped.Disconnected:
+                    OnNetworkStateChanged(new NetworkStateEventArgs(NetworkState.Online, NetworkState.Offline));
                     HasDisconnected();
                     break;
             }
@@ -239,8 +242,6 @@ namespace Dev2.Network
                 aex.Flatten();
                 aex.Handle(ex =>
                 {
-                    if(ex.Message.Contains("1.4"))
-                        throw new FallbackException();
                     Dev2Logger.Error(this, aex);
                     var hex = ex as HttpClientException;
                     if (hex != null)
@@ -253,13 +254,9 @@ namespace Dev2.Network
                                 throw new UnauthorizedAccessException();
                         }
                     }
-                    throw new NotConnectedException();
+                    throw ex;
                 });
-            }
-            catch (NotConnectedException)
-            {
-                throw;
-            }
+            }          
             catch (Exception e)
             {
                 HandleConnectError(e);

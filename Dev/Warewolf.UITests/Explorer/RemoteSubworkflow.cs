@@ -23,10 +23,6 @@ namespace Warewolf.UITests
         const string RemoteSubWorkflowName = "workflow1";
         const string WindowsGroup = "Domain Users";
 
-        public RemoteSubworkflow()
-        {
-        }
-
         [TestMethod]
         public void BigRemoteSubworkflowUITest()
         {
@@ -44,11 +40,12 @@ namespace Warewolf.UITests
             Uimap.Click_Close_Server_Source_Wizard_Tab_Button();
             Uimap.Enter_Text_Into_Explorer_Filter(ServerSourceName);
             Uimap.WaitForSpinner(Uimap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);
-            Uimap.Select_TSTCIREMOTE_From_Explorer_Remote_Server_Dropdown_List();
+            Uimap.Select_From_Explorer_Remote_Server_Dropdown_List(Uimap.MainStudioWindow.ComboboxListItemAsTSTCIREMOTE);
             Uimap.Click_Explorer_RemoteServer_Connect_Button();
             Uimap.WaitForSpinner(Uimap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.Checkbox.Spinner);
             Uimap.Enter_Text_Into_Explorer_Filter(RemoteSubWorkflowName);
             Uimap.WaitForSpinner(Uimap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.Checkbox.Spinner);
+            Uimap.TryRefreshExplorerUntilOneItemOnly();
             Uimap.Drag_Explorer_Remote_workflow1_Onto_Workflow_Design_Surface();
             Uimap.Click_Save_Ribbon_Button_to_Open_Save_Dialog();
             Uimap.WaitForSpinner(Uimap.SaveDialogWindow.ExplorerView.ExplorerTree.localhost.Checkbox.Spinner);
@@ -80,7 +77,7 @@ namespace Warewolf.UITests
         public void MyTestInitialize()
         {
             Uimap.SetGlobalPlaybackSettings();
-            Uimap.WaitIfStudioDoesNotExist();
+            Uimap.WaitForStudioStart();
             Console.WriteLine("Test \"" + TestContext.TestName + "\" starting on " + System.Environment.MachineName);
         }
         

@@ -87,11 +87,8 @@ namespace Warewolf.Studio.ViewModels
                 DispatcherAction.Invoke(() =>
                 {
                     _dllListings = new AsyncObservableCollection<IDllListingModel>(names);
+                    DllListings = _dllListings;
                     IsLoading = false;
-                    if (DllListings != null && DllListings.Count > 1)
-                    {
-                        GacItem = DllListings[1];
-                    }
                     actionToPerform?.Invoke();
                 });
             }, () =>
@@ -143,11 +140,34 @@ namespace Warewolf.Studio.ViewModels
         {
             if (DllListings != null)
             {
-                foreach (var dllListingModel in DllListings)
+                IsLoading = true;
+                var temp = _dllListings;
+                if (string.IsNullOrEmpty(searchTerm))
                 {
-                    dllListingModel.Filter(searchTerm);
+                    foreach (var dllListingModel in temp)
+                    {
+                        dllListingModel.IsVisible = true;
+                    }
                 }
+                else
+                {
+                    foreach (var dllListingModel in temp)
+                    {
+                        if (dllListingModel.Name.ToLowerInvariant().Contains(searchTerm.ToLowerInvariant()))
+                        {
+                            dllListingModel.IsVisible = true;
+                        }
+                        else
+                        {
+                            dllListingModel.IsVisible = false;
+                        }
+                    }
+                }
+                _dllListings = new AsyncObservableCollection<IDllListingModel>(temp);
                 OnPropertyChanged(() => DllListings);
+                IsLoading = false;
+
+
             }
         }
 
@@ -390,16 +410,25 @@ namespace Warewolf.Studio.ViewModels
 
         public string Path { get; set; }
 
-        void ToItem()
+        IComPluginSource ToItem()
         {
-            Item = new ComPluginSourceDefinition
+            if (_pluginSource == null)
+            {
+                return new ComPluginSourceDefinition
+                {
+                    Id = Guid.NewGuid(),
+                    Name = Name,
+                    Is32Bit = Is32Bit,
+                    ClsId = ClsId
+                };
+            }
+            return new ComPluginSourceDefinition
             {
                 Id = _pluginSource.Id,
                 Name = _pluginSource.Name,
                 Is32Bit = _pluginSource.Is32Bit,
                 ClsId = _pluginSource.ClsId
             };
-            Name = _pluginSource.Name;
         }
 
         void Save(IComPluginSource source)
@@ -410,16 +439,21 @@ namespace Warewolf.Studio.ViewModels
 
         public sealed override IComPluginSource ToModel()
         {
+            if (Item == null)
+            {
+                Item = ToItem();
+                return Item;
+            }
             if (_pluginSource == null)
             {
                 return new ComPluginSourceDefinition
                 {
                     Name = ResourceName,
-                    ClsId = _clsId,
-                    Is32Bit = _is32Bit
+                    ClsId = ClsId,
+                    Is32Bit = Is32Bit,
+                    SelectedDll = SelectedDll
                 };
             }
-            _pluginSource.SelectedDll = _selectedDll;
             return _pluginSource;
         }
 

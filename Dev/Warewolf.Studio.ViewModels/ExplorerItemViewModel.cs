@@ -580,21 +580,32 @@ namespace Warewolf.Studio.ViewModels
 
                     if (_explorerRepository != null && IsRenaming)
                     {
-                        if (_explorerRepository.Rename(this, NewName(newName)))
+                        if (_resourceName == newName)
                         {
-                            if (!ResourcePath.Contains("\\"))
-                            {
-                                if (_resourceName != null)
-                                {
-                                    ResourcePath = ResourcePath.Replace(_resourceName, newName);
-                                }
-                            }
-                            else
-                            {
-                                ResourcePath = ResourcePath.Substring(0, ResourcePath.LastIndexOf("\\", StringComparison.OrdinalIgnoreCase) + 1) + newName;
-                            }
+                            IsRenaming = false;
 
-                            _resourceName = newName;
+                        }
+                        else
+                        {
+                            if (_explorerRepository.Rename(this, NewName(newName)))
+                            {
+                                if (!ResourcePath.Contains("\\"))
+                                {
+                                    if (_resourceName != null)
+                                    {
+                                        ResourcePath = ResourcePath.Replace(_resourceName, newName);
+                                    }
+                                }
+                                else
+                                {
+                                    ResourcePath =
+                                        ResourcePath.Substring(0,
+                                            ResourcePath.LastIndexOf("\\", StringComparison.OrdinalIgnoreCase) + 1) +
+                                        newName;
+                                }
+
+                                _resourceName = newName;
+                            }
                         }
                     }
                     if (!IsRenaming)
@@ -1062,6 +1073,7 @@ namespace Warewolf.Studio.ViewModels
                     if(destfolder != null)
                     {
                         destfolder.ResourcePath = destination.ResourcePath + "\\" + destfolder.ResourceName;
+                        destfolder.Parent = destination;
                         var resourcePath = destfolder.ResourcePath;
                         foreach(var explorerItemViewModel in Children)
                         {
@@ -1074,12 +1086,15 @@ namespace Warewolf.Studio.ViewModels
                     foreach(var explorerItemViewModel in Children)
                     {
                         explorerItemViewModel.ResourcePath = destination.ResourcePath + "\\" + explorerItemViewModel.ResourceName;
+                        explorerItemViewModel.Parent = destination;
                     }
                 }
             }
             else if(!destination.IsFolder)
             {
                 ResourcePath = destination.ResourcePath + (destination.ResourcePath == String.Empty ? "" : "\\") + ResourceName;
+                Parent = destination;
+                Parent.AddChild(this);
             }
         }
 
