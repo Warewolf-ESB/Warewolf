@@ -42,69 +42,15 @@ namespace Dev2.Runtime.ESB.Management.Services
             var msg = new ExecuteMessage();
             var serializer = new Dev2JsonSerializer();
             Dev2Logger.Info("Get COMDll Listings");
-            List<DllListing> dllListings = new List<DllListing>();
+            
             try
             {
-                var regClis = Registry.ClassesRoot.OpenSubKey("CLSID");
+                //ClassRoot
+                var openBaseKey = RegistryKey.OpenBaseKey(RegistryHive.ClassesRoot, RegistryView.Registry32);
+                var dllListings = GetListings(openBaseKey);
+                openBaseKey = RegistryKey.OpenBaseKey(RegistryHive.ClassesRoot, RegistryView.Registry64);
+                dllListings.AddRange(GetListings(openBaseKey));
 
-                if (regClis != null)
-                {
-                    foreach (var clsid in regClis.GetSubKeyNames())
-                    {
-                        var regClsidKey = regClis.OpenSubKey(clsid);
-                        if (regClsidKey != null)
-                        {
-                            var progID = regClsidKey.OpenSubKey("ProgID");
-                            var regPath = regClsidKey.OpenSubKey("InprocServer32" +
-                                                                 "") ?? regClsidKey.OpenSubKey("LocalServer32");
-
-                            if (regPath != null && progID != null)
-                            {
-                                var pid = progID.GetValue("");
-                                regPath.Close();
-
-                                try
-                                {
-                                    if (pid != null)
-                                    {
-                                        var typeFromProgID = Type.GetTypeFromProgID(pid.ToString());
-                                        bool? is32Bit = null;
-                                        if (typeFromProgID == null) continue;
-                                        try
-                                        {
-                                            if (typeFromProgID.AssemblyQualifiedName != null)
-                                            {
-                                                var assemblyName = AssemblyName.GetAssemblyName(typeFromProgID.AssemblyQualifiedName);
-                                                is32Bit = assemblyName.ProcessorArchitecture == ProcessorArchitecture.X86;
-                                            }
-                                        }
-                                        catch(Exception)
-                                        {
-                                            //ignore
-                                        }
-                                        dllListings.Add(new DllListing
-                                        {
-                                            ClsId = clsid,
-                                            Is32Bit = is32Bit ?? typeFromProgID.FullName.Equals("System.__ComObject"),
-                                            Name = pid.ToString(),
-                                            IsDirectory = false,
-                                            FullName = pid.ToString(),
-                                            Children = new IFileListing[0]
-                                        });
-                                    }
-                                }
-                                catch (Exception e)
-                                {
-                                    Dev2Logger.Error("GetComDllListingsService-Execute", e);
-                                }
-                            }
-                        }
-                        regClsidKey?.Close();
-                    }
-                    regClis.Close();
-                }
-
-                dllListings = dllListings.OrderBy(listing => listing.FullName).ToList();
                 msg.Message = serializer.SerializeToBuilder(dllListings);
             }
 
@@ -122,6 +68,76 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
 
             return serializer.SerializeToBuilder(msg);
+        }
+
+        private static List<DllListing> GetListings(RegistryKey registry)
+        {
+            List<DllListing> dllListings = new List<DllListing>();
+            var regClis = registry.OpenSubKey("CLSID");
+
+            if (regClis != null)
+            {
+                foreach (var clsid in regClis.GetSubKeyNames())
+                {
+                    var regClsidKey = regClis.OpenSubKey(clsid);
+                    if (regClsidKey != null)
+                    {
+                        var progID = regClsidKey.OpenSubKey("ProgID");
+                        var regPath = regClsidKey.OpenSubKey("InprocServer32" +
+                                                             "") ?? regClsidKey.OpenSubKey("LocalServer");
+
+                        if (regPath != null && progID != null)
+                        {
+                            var pid = progID.GetValue("");
+                            regPath.Close();
+
+                            try
+                            {
+                                if (pid != null)
+                                {
+                                    var typeFromProgID = Type.GetTypeFromProgID(pid.ToString());
+                                    bool? is32Bit = null;
+                                    if (typeFromProgID == null)
+                                    {
+                                        continue;
+                                    }
+                                    try
+                                    {
+                                        if (typeFromProgID.AssemblyQualifiedName != null)
+                                        {
+                                            var assemblyName = AssemblyName.GetAssemblyName(typeFromProgID.AssemblyQualifiedName);
+                                            is32Bit = assemblyName.ProcessorArchitecture == ProcessorArchitecture.X86;
+                                        }
+                                    }
+                                    catch (Exception)
+                                    {
+                                        //ignore
+                                    }
+                                    dllListings.Add(new DllListing
+                                    {
+                                        ClsId = clsid,
+                                        Is32Bit = is32Bit ?? typeFromProgID.FullName.Equals("System.__ComObject"),
+                                        Name = pid.ToString(),
+                                        IsDirectory = false,
+                                        FullName = pid.ToString(),
+                                        Children = new IFileListing[0]
+                                    });
+                                }
+                            }
+                            catch (Exception e)
+                            {
+                                Dev2Logger.Error("GetComDllListingsService-Execute", e);
+                            }
+                        }
+                    }
+                    regClsidKey?.Close();
+                }
+                regClis.Close();
+            }
+
+            dllListings = dllListings.OrderBy(listing => listing.FullName).ToList();
+
+            return dllListings;
         }
 
         /// <summary>
