@@ -497,7 +497,7 @@ namespace Dev2.Studio.Core {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to http://community.warewolf.io/.
+        ///   Looks up a localized string similar to https://warewolf.io/resources.php.
         /// </summary>
         public static string Uri_Community_HomePage {
             get {
