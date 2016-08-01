@@ -1131,9 +1131,9 @@ namespace Dev2.Core.Tests.Environments
         [TestMethod]
         public void ParseConnectionStringIntoAppServerUri()
         {
-            var toParse = TestResourceStringsTest.ResourceToHydrateConnectionString1;
+            const string toParse = "AppServerUri=http://rsatest1:77/dsf;WebServerPort=1234";
             var result = EnvironmentRepository.GetAppServerUriFromConnectionString(toParse);
-            Assert.AreEqual(TestResourceStringsTest.ResourceToHydrateActualAppUri, result);
+            Assert.AreEqual("http://rsatest1:77/dsf", result);
         }
 
         #region CreateMockEnvironment
