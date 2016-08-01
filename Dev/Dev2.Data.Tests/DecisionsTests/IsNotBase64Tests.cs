@@ -8,30 +8,59 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using System;
-using Dev2.Common.ExtMethods;
+
 using Dev2.Data.Decisions.Operations;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Data.Tests.DecisionsTests
 {
     /// <summary>
     /// Is Not Bse64 Decision
     /// </summary>
+    [TestClass]
     public class IsNotBase64Tests
     {
-        public bool Invoke(string[] cols)
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("IsNotEqual_Invoke")]
+        public void IsNotBase64_Invoke_ItemsEqual_ReturnsTrue()
         {
-            if (!string.IsNullOrEmpty(cols[0]))
-            {
-                return !cols[0].IsBase64();
-            }
-
-            return false;
+            //------------Setup for test--------------------------
+            var endsWith = new IsNotBase64();
+            string[] cols = new string[2];
+            cols[0] = "aGVsbG8=";
+            //------------Execute Test---------------------------
+            bool result = endsWith.Invoke(cols);
+            //------------Assert Results-------------------------
+            Assert.IsFalse(result);
         }
 
-        public Enum HandlesType()
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("IsEqual_Invoke")]
+        public void IsNotBase64_Invoke_NotEqualItems_ReturnsFalse()
         {
-            return enDecisionType.IsNotBase64;
+            //------------Setup for test--------------------------
+            var endsWith = new IsNotBase64();
+            string[] cols = new string[2];
+            cols[0] = "aGVsbG8ASS@";
+            //------------Execute Test---------------------------
+            bool result = endsWith.Invoke(cols);
+            //------------Assert Results-------------------------
+            Assert.IsTrue(result);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("IsEqual_HandlesType")]
+        public void IsNotBase64_HandlesType_ReturnsIsEndsWithType()
+        {
+            var expected = enDecisionType.IsNotBase64;
+            //------------Setup for test--------------------------
+            var isEndsWith = new IsNotBase64();
+            //------------Execute Test---------------------------
+            //------------Assert Results-------------------------
+            Assert.AreEqual(expected, isEndsWith.HandlesType());
         }
     }
 }

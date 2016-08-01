@@ -97,23 +97,17 @@ namespace Warewolf.UITests
             e.Result = PlaybackErrorOptions.Retry;
         }
 
-        public void WaitIfStudioDoesNotExist()
+        public bool ControlExistsNow(UITestControl thisControl)
         {
-            var sleepTimer = 60;
-            try
-            {
-                if (!MainStudioWindow.Exists)
-                {
-                    WaitForStudioStart(sleepTimer * _strictSearchTimeout);
-                }
-            }
-            catch (UITestControlNotFoundException)
-            {
-                WaitForStudioStart(sleepTimer * _strictSearchTimeout);
-            }
+            Playback.PlaybackSettings.MaximumRetryCount = _strictMaximumRetryCount * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
+            Playback.PlaybackSettings.SearchTimeout = _strictSearchTimeout * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
+            bool controlExists = thisControl.Exists;
+            Playback.PlaybackSettings.MaximumRetryCount = _lenientMaximumRetryCount * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
+            Playback.PlaybackSettings.SearchTimeout = _lenientSearchTimeout * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
+            return controlExists;
         }
 
-        private void WaitForStudioStart(int timeout)
+        public void WaitForStudioStart(int timeout = 60000)
         {
             Console.WriteLine("Waiting for studio to start.");
             MainStudioWindow.WaitForControlExist(timeout);
@@ -145,7 +139,7 @@ namespace Warewolf.UITests
 
         public void TryClearExplorerFilter()
         {
-            if(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.SearchTextBox.Text != string.Empty)
+            if (MainStudioWindow.DockManager.SplitPaneLeft.Explorer.SearchTextBox.Text != string.Empty)
             {
                 Click_Explorer_Filter_Clear_Button();
             }
@@ -153,7 +147,7 @@ namespace Warewolf.UITests
 
         public void TryClearToolboxFilter()
         {
-            if(MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox.Text != string.Empty)
+            if (MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox.Text != string.Empty)
             {
                 Click_Clear_Toolbox_Filter_Clear_Button();
             }
@@ -243,12 +237,12 @@ namespace Warewolf.UITests
                     Select_Delete_FromExplorerContextMenu();
                     Click_MessageBox_Yes();
                 }
-                Click_Explorer_Filter_Clear_Button();
+                TryClearExplorerFilter();
             }
             catch (Exception e)
             {
                 Console.WriteLine("Cleanup failed to remove remote server " + SourceName + ". Test may have crashed before remote server " + SourceName + " was connected.\n" + e.Message);
-                Click_Explorer_Filter_Clear_Button();
+                TryClearExplorerFilter();
             }
         }
 
@@ -264,12 +258,12 @@ namespace Warewolf.UITests
                     Select_Delete_FromExplorerContextMenu();
                     Click_MessageBox_Yes();
                 }
-                Click_Explorer_Filter_Clear_Button();
+                TryClearExplorerFilter();
             }
             catch (Exception e)
             {
                 Console.WriteLine("Cleanup failed to remove resource " + ResourceName + ". Test may have crashed before " + ResourceName + " was created.\n" + e.Message);
-                Click_Explorer_Filter_Clear_Button();
+                TryClearExplorerFilter();
             }
         }
 
@@ -452,7 +446,7 @@ namespace Warewolf.UITests
             SelectWindowsGroupDialog.ItemPanel.ObjectNameTextbox.Text = GroupName;
             Assert.IsTrue(SelectWindowsGroupDialog.OKPanel.OK.Enabled, "Windows group dialog OK button is not enabled.");
         }
-        
+
         public void Enter_ServiceName_Into_Service_Picker_Dialog(string ServiceName)
         {
             ServicePickerDialog.Explorer.FilterTextbox.Text = ServiceName;
@@ -482,15 +476,41 @@ namespace Warewolf.UITests
                 Click_Explorer_Refresh_Button();
             }
         }
-
-        public bool ControlExistsNow(UITestControl thisControl)
+        
+        public void Select_From_Explorer_Remote_Server_Dropdown_List(WpfText comboboxListItem, int openComboboxListRetries = 3)
         {
-            Playback.PlaybackSettings.MaximumRetryCount = _strictMaximumRetryCount * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
-            Playback.PlaybackSettings.SearchTimeout = _strictSearchTimeout * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
-            bool controlExists = thisControl.Exists;
-            Playback.PlaybackSettings.MaximumRetryCount = _lenientMaximumRetryCount * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
-            Playback.PlaybackSettings.SearchTimeout = _lenientSearchTimeout * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
-            return controlExists;
+            while (!ControlExistsNow(comboboxListItem) && openComboboxListRetries-- > 0)
+            {
+                Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.ServerListComboBox, new Point(217, 8));
+            }
+            Assert.IsTrue(comboboxListItem.Exists, "TSTCIREMOTE does not exist in explorer remote server drop down list.");
+            Mouse.Click(comboboxListItem, new Point(79, 8));
+        }
+        
+        public void Select_TSTCIREMOTEConnected_From_Explorer_Remote_Server_Dropdown_List()
+        {
+            Mouse.Click(MainStudioWindow.ComboboxListItemAsTSTCIREMOTEConnected, new Point(80, 13));
+        }
+        
+        public void Select_NewRemoteServer_From_Explorer_Server_Dropdownlist()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.ServerListComboBox, new Point(217, 8));
+            Assert.IsTrue(MainStudioWindow.NewRemoteServerListItem.Exists, "New Remote Server... does not exist in explorer remote server drop down list");
+            Mouse.Click(MainStudioWindow.NewRemoteServerListItem.NewRemoteServerItemText, new Point(114, 10));
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.ServerSourceWizardTab.WorkSurfaceContext.NewServerSourceWizard.ProtocolCombobox.ToggleDropdown.Exists, "Server source wizard does not contain protocol dropdown");
+        }
+        
+        public void Select_LocalhostConnected_From_Explorer_Remote_Server_Dropdown_List()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.ServerListComboBox, new Point(217, 8));
+            Assert.IsTrue(MainStudioWindow.ComboboxListItemAsLocalhostConnected.Exists, "localhost (connected) does not exist in explorer remote server drop down list");
+            Mouse.Click(MainStudioWindow.ComboboxListItemAsLocalhostConnected, new Point(94, 10));
+            Assert.AreEqual("localhost", MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.SelectedItemAsLocalhost.DisplayText, "Selected remote server is not localhost");
+        }
+        
+        public void Select_localhost_From_Explorer_Remote_Server_Dropdown_List()
+        {
+            Mouse.Click(MainStudioWindow.ComboboxListItemAsLocalhost, new Point(94, 10));
         }
     }
 }

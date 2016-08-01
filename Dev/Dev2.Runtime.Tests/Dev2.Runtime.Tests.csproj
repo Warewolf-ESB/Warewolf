@@ -239,7 +239,6 @@
     <Compile Include="ESB\RemoteWorkflowExecutionContainerMock.cs" />
     <Compile Include="ESB\DatabaseServiceContainerTests.cs" />
     <Compile Include="ESB\RemoteWorkflowExecutionContainerTests.cs" />
-    <Compile Include="MockNetworkHost.cs" />
     <Compile Include="CompileMessages\ServiceModelCompilerTest.cs" />
     <Compile Include="ServiceModel\Esb\Brokers\PluginBrokerTests.cs" />
     <Compile Include="ServiceModel\Esb\Brokers\AbstractDataBaseBrokerTests.cs" />

@@ -1073,6 +1073,7 @@ namespace Warewolf.Studio.ViewModels
                     if(destfolder != null)
                     {
                         destfolder.ResourcePath = destination.ResourcePath + "\\" + destfolder.ResourceName;
+                        destfolder.Parent = destination;
                         var resourcePath = destfolder.ResourcePath;
                         foreach(var explorerItemViewModel in Children)
                         {
@@ -1085,12 +1086,15 @@ namespace Warewolf.Studio.ViewModels
                     foreach(var explorerItemViewModel in Children)
                     {
                         explorerItemViewModel.ResourcePath = destination.ResourcePath + "\\" + explorerItemViewModel.ResourceName;
+                        explorerItemViewModel.Parent = destination;
                     }
                 }
             }
             else if(!destination.IsFolder)
             {
                 ResourcePath = destination.ResourcePath + (destination.ResourcePath == String.Empty ? "" : "\\") + ResourceName;
+                Parent = destination;
+                Parent.AddChild(this);
             }
         }
 

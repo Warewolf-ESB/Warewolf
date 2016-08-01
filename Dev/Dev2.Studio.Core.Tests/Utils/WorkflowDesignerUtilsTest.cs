@@ -10,9 +10,7 @@
 
 using System;
 using System.Collections.Generic;
-using Caliburn.Micro;
 using Dev2.Studio.Core.Interfaces;
-using Dev2.Studio.Core.Messages;
 using Dev2.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -60,7 +58,7 @@ namespace Dev2.Core.Tests.Utils
         {
             WorkflowDesignerUtils wdu = new WorkflowDesignerUtils();
 
-            IList<string> result = wdu.FormatDsfActivityField(TestResourceStringsTest.SpecialChars);
+            IList<string> result = wdu.FormatDsfActivityField("! @ #$% ^&* ( ) +_{ }| [] \\: \"; \'<> ?, ./");
 
             Assert.AreEqual(0, result.Count, "Strange behaviors parsing special chars, I got results when I should not?!");
         }
@@ -139,21 +137,5 @@ namespace Dev2.Core.Tests.Utils
             Assert.AreEqual("http://rsaklf/bob", act.ServiceUri);
 
         }
-    }
-
-    internal class TestHandleMessages : IHandle<AddWorkSurfaceMessage>
-    {
-        #region Implementation of IHandle<AddWorkSurfaceMessage>
-
-        public void Handle(AddWorkSurfaceMessage message)
-        {
-            WorkSurfaceMessageCalled = true;
-        }
-
-        public bool WorkSurfaceMessageCalled { get; set; }
-
-        #endregion
-
-        
     }
 }
