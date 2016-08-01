@@ -243,7 +243,7 @@ Version History will also be deleted.</value>
     <value>Stop</value>
   </data>
   <data name="Uri_Community_HomePage" xml:space="preserve">
-    <value>http://community.warewolf.io/</value>
+    <value>https://warewolf.io/resources.php</value>
   </data>
   <data name="Warewolf_Homepage_Start" xml:space="preserve">
     <value>http://warewolf.io/start.html</value>
