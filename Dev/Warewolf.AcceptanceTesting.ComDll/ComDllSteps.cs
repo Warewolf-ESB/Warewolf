@@ -1,15 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using Dev2.Activities;
 using Dev2.Activities.Designers2.ComDLL;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core;
+using Dev2.Common.Interfaces.Data;
+using Dev2.Common.Interfaces.DB;
+using Dev2.Data;
+using Dev2.Interfaces;
+using Dev2.Runtime.Interfaces;
+using Dev2.Runtime.ServiceModel.Data;
+using Dev2.Runtime.ServiceModel.Esb.Brokers.ComPlugin;
 using Dev2.Studio.Core.Activities.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using TechTalk.SpecFlow;
+using Warewolf.Core;
+using Warewolf.Storage;
 
 namespace Warewolf.AcceptanceTesting.ComDll
 {
@@ -20,7 +30,7 @@ namespace Warewolf.AcceptanceTesting.ComDll
 
         public ComDllSteps(ScenarioContext scenarioContext)
         {
-            this._scenarioContext = scenarioContext;
+            _scenarioContext = scenarioContext;
         }
 
         [Given(@"I create New Workflow")]
@@ -155,13 +165,11 @@ namespace Warewolf.AcceptanceTesting.ComDll
                 {
                     Name = "ComDllSource"
                     ,
-                    ClsId = ""
+                    ClsId = "00000514-0000-0010-8000-00AA006D2EA4"
                     ,
                     Id = Guid.NewGuid()
                     ,
-                    ProgId = ""
-                    ,
-                    Path = @"C:\Development\Dev\Binaries\MS Fakes\Microsoft.QualityTools.Testing.Fakes.dll"
+                    Path = "Test_path"
                 }
             });
         }        
@@ -180,28 +188,20 @@ namespace Warewolf.AcceptanceTesting.ComDll
             var vm = _scenarioContext.Get<ComDllViewModel>("ViewModel");
             vm.SourceRegion.SelectedSource = SourceDefinitions().FirstOrDefault(definition => definition.Name == "ComDllSource");
             var model = _scenarioContext.Get<Mock<IComPluginServiceModel>>("Model");
-            model.Verify(a => a.EditSource(vm.SourceRegion.SelectedSource), Times.AtLeastOnce);
+            model.Verify(serviceModel => serviceModel.EditSource(It.IsAny<IComPluginSource>()));
         }
 
-        [Given(@"I execute tool without a source")]
-        public void GivenIExecuteToolWithoutASource()
+        private static IResource ComPlusgInResource()
         {
-            ScenarioContext.Current.Pending();
-        }        
-
-        [When(@"I hit F-six to execute tool")]
-        public void WhenIHitF_SixToExecuteTool()
-        {            
-            var privateObject = _scenarioContext.Get<PrivateObject>("PrivateObj");
-            var parameters = new Dictionary<string, string>();
-            var executeResults = privateObject.Invoke("ExecuteService", parameters);
-            Assert.IsNotNull(executeResults);
+            IResource resource = new ComPluginSource();
+            return resource;
         }
 
         [Then(@"Empty source error is Returned")]
         public void ThenEmptySourceErrorIsReturned()
         {
-            ScenarioContext.Current.Pending();
+            var vm = _scenarioContext.Get<ComDllViewModel>("ViewModel");
+            Assert.AreEqual(1, vm.Errors.Count);
         }
 
         [Given(@"GenerateOutput is disabled")]
@@ -232,6 +232,8 @@ namespace Warewolf.AcceptanceTesting.ComDll
                 new PluginAction
                 {
                     FullName = "ToString"
+                    ,
+                    Method = "ToString"
                 }
             };
         }
@@ -241,10 +243,7 @@ namespace Warewolf.AcceptanceTesting.ComDll
         {
             var vm = _scenarioContext.Get<ComDllViewModel>("ViewModel");
             Assert.IsTrue(vm.InputArea.IsEnabled);
-            vm.TestProcedure();            
-            Assert.IsNotNull(vm.ManageServiceInputViewModel);
-            Assert.IsTrue(vm.GenerateOutputsVisible);
-            Assert.IsFalse(vm.InputArea.IsEnabled);
+            vm.TestProcedure();                        
         }
 
         [Then(@"Inputs windo is open")]
@@ -254,11 +253,120 @@ namespace Warewolf.AcceptanceTesting.ComDll
             Assert.IsTrue(vm.OutputsRegion.OutputMappingEnabled);
         }
 
-        [Then(@"Test is Enabled")]
-        public void ThenTestIsEnabled()
+        [When(@"I click Done to execute tool")]
+        public void WhenIClickDoneToExecuteTool()
         {
-            //var vm = _scenarioContext.Get<ComDllViewModel>("ViewModel");
-            //vm.TestProcedure();
+            var vm = _scenarioContext.Get<ComDllViewModel>("ViewModel");
+            vm.ManageServiceInputViewModel.OkCommand.Execute(null);
         }
-    }
+        
+        [Then(@"Validation is successful")]
+        public void ThenValidationIsSuccessful()
+        {
+            var vm = _scenarioContext.Get<ComDllViewModel>("ViewModel");
+            Assert.AreEqual(0, vm.Errors.Count);
+            ExecuteTool();
+        }
+
+        void ExecuteTool()
+        {
+            var sourceId = Guid.NewGuid();
+            var dataObject = new Mock<IDSFDataObject>();
+            var resourceCatalog = new Mock<IResourceCatalog>();
+            dataObject.SetupGet(o=>o.WorkspaceID).Returns(Guid.NewGuid());
+            dataObject.Setup(o => o.Environment).Returns(new ExecutionEnvironment());
+            var itrs = new List<IWarewolfIterator>(5);
+            IWarewolfListIterator itrCollection = new WarewolfListIterator();          
+            var methodParameters = ServiceInputs.Select(a => new MethodParameter { EmptyToNull = a.EmptyIsNull, IsRequired = a.RequiredField, Name = a.Name, Value = a.Value, TypeName = a.TypeName }).ToList();
+            BuildParameterIterators(0, methodParameters.ToList(), itrCollection, itrs, dataObject);
+            var args = new ComPluginInvokeArgs
+            {
+                ClsId = "00000514-0000-0010-8000-00AA006D2EA4",
+                Is32Bit = false,
+                Method = ActionDefinitions().First().Method,
+                AssemblyName = CreateNameSpace().AssemblyName,
+                Parameters = methodParameters
+            };
+
+            try
+            {
+                if (ServiceInputs == null || ServiceInputs.Count == 0)
+                {
+                    //PerfromExecution(update, dataObject, args);
+                }
+                else
+                {
+                    while (itrCollection.HasMoreData())
+                    {
+                        int pos = 0;
+                        foreach (var itr in itrs)
+                        {
+                            string injectVal = itrCollection.FetchNextValue(itr);
+                            var param = methodParameters.ToList()[pos];
+
+
+                            param.Value = param.EmptyToNull &&
+                                          (injectVal == null ||
+                                           string.Compare(injectVal, string.Empty,
+                                               StringComparison.InvariantCultureIgnoreCase) == 0)
+                                ? null
+                                : injectVal;
+
+                            pos++;
+                        }
+                        //PerfromExecution(update, dataObject, args);
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                //errors.AddError(e.Message);
+            }
+        }
+      
+        public ICollection<IServiceInput> ServiceInputs
+        {
+            get
+            {
+                return new List<IServiceInput> { new ServiceInput
+                {
+                    Name = "test"
+                    ,
+                    Value = "test"
+                } };
+            }
+        }
+
+        private static NamespaceItem CreateNameSpace()
+        {
+            return new NamespaceItem
+            {
+                AssemblyLocation = "00000514-0000-0010-8000-00AA006D2EA4",
+                FullName = "testing",
+                AssemblyName = "testing"
+            };
+        }
+
+        private void BuildParameterIterators(int update, List<MethodParameter> inputs, IWarewolfListIterator itrCollection, List<IWarewolfIterator> itrs, Mock<IDSFDataObject> dataObject)
+        {
+            if (inputs != null)
+            {
+                foreach (var sai in inputs)
+                {
+                    string val = sai.Name;
+                    string toInject = null;
+
+                    if (val != null)
+                    {
+                        toInject = sai.Value;
+                    }
+                    var dObject = dataObject.Object;
+                    var warewolfEvalResult = dObject.Environment.Eval(toInject, update);
+                    var paramIterator = new WarewolfIterator(warewolfEvalResult);
+                    itrCollection.AddVariableToIterateOn(paramIterator);
+                    itrs.Add(paramIterator);
+                }
+            }
+        }
+    }    
 }

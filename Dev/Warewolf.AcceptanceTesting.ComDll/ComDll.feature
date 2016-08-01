@@ -59,9 +59,8 @@ Given I create New Workflow
 	And GenerateOutput is disabled
 	And I click Generate output
 	Then Inputs windo is open
-	And Test is Enabled
 
-Scenario: Executing without selecting the source
+Scenario: Validating without selecting the source
 Given I create New Workflow
 	And I drag Comdll tool onto the design surface 	
 	And EditButton is Disabled
@@ -69,5 +68,40 @@ Given I create New Workflow
 	And Namespace is disabled
 	And Action is disabled
 	And New button is Enabled	
-	When I hit F-six to execute tool 
+	When I click Done to execute tool 
 	Then Empty source error is Returned
+
+Scenario: Validating with valid source
+Given I create New Workflow
+	And I drag Comdll tool onto the design surface 	
+	And EditButton is Disabled
+	And Comdll Source is Enabled
+	And Namespace is disabled
+	And Action is disabled
+	And New button is Enabled	
+	When I select "ComDllSource" from source list as the source
+	Then EditButton is Enabled
+	And Namespace is Enabled
+	And Action is Enabled
+	And I select Action
+	And GenerateOutput is disabled
+	And I click Generate output
+	Then Validation is successful
+
+	
+Scenario: Executing com with valid source
+Given I create New Workflow
+	And I drag Comdll tool onto the design surface 	
+	And EditButton is Disabled
+	And Comdll Source is Enabled
+	And Namespace is disabled
+	And Action is disabled
+	And New button is Enabled	
+	When I select "ComDllSource" from source list as the source
+	Then EditButton is Enabled
+	And Namespace is Enabled
+	And Action is Enabled
+	And I select Action
+	And GenerateOutput is disabled
+	And I click Generate output
+	Then Validation is successful
