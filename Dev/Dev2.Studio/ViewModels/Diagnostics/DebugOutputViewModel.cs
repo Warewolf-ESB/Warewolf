@@ -441,6 +441,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
 
         //This is used in the debug view to open the more link file. This is called Dynamically so shows as unused.
         [SuppressMessage("ReSharper", "UnusedMember.Global")]
+        [ExcludeFromCodeCoverage]
         public void OpenMoreLink(IDebugLineItem item)
         {
             if (_outputViewModelUtil.IsItemMoreLinkValid(item) && CanOpenMoreLink(item))
@@ -451,7 +452,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         {
             return !string.IsNullOrEmpty(item?.MoreLink);
         }
-
+        [ExcludeFromCodeCoverage]
         private void CreatProcessController(IDebugLineItem item)
         {
             try
@@ -466,7 +467,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
                 ProcessControllerHasError(ex);
             }
         }
-
+        [ExcludeFromCodeCoverage]
         private void ProcessControllerHasError(Exception ex)
         {
             if (ex.Message.Contains("The remote name could not be resolved"))

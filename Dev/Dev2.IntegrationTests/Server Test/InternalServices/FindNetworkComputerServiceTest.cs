@@ -29,7 +29,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.InternalServices
         public void Service_Returns_JSON()
         {
 
-            string postData = ServerSettings.WebserverURI + "FindNetworkComputersService";
+            string postData = "http://localhost:3142/services/" + "FindNetworkComputersService";
 
             string result = TestHelper.PostDataToWebserver(postData);
 

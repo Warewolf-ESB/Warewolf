@@ -48,7 +48,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.InternalServices
         public void ExecutionWithStar_ExpectedValidXML()
         {
 
-            string path = ServerSettings.WebserverURI + "FindResourcesService?ResourceName=*&ResourceType=*&Roles=*";
+            string path = "http://localhost:3142/services/" + "FindResourcesService?ResourceName=*&ResourceType=*&Roles=*";
 
             string result = TestHelper.PostDataToWebserver(path);
 
@@ -62,7 +62,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.InternalServices
         public void ExecutionWithNoStartNode_ExpectedInvalidValidResult()
         {
 
-            string path = ServerSettings.WebserverURI + "Acceptance%20Testing%20Resources/WorkflowWithNoStartNodeConnected";
+            string path = "http://localhost:3142/services/" + "Acceptance%20Testing%20Resources/WorkflowWithNoStartNodeConnected";
 
             string result = TestHelper.PostDataToWebserver(path);
 
@@ -74,7 +74,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.InternalServices
         public void ExecutionWithSource_ExpectedValidXML()
         {
 
-            string path = ServerSettings.WebserverURI + "FindResourcesService?ResourceName=*&ResourceType=Source&Roles=*";
+            string path = "http://localhost:3142/services/" + "FindResourcesService?ResourceName=*&ResourceType=Source&Roles=*";
 
             string result = TestHelper.PostDataToWebserver(path);
 
@@ -88,7 +88,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.InternalServices
         public void ExecutionWithWorkflowService_ExpectedValidXML()
         {
 
-            string path = ServerSettings.WebserverURI + "FindResourcesService?ResourceName=*&ResourceType=WorkflowService&Roles=*";
+            string path = "http://localhost:3142/services/" + "FindResourcesService?ResourceName=*&ResourceType=WorkflowService&Roles=*";
 
             string result = TestHelper.PostDataToWebserver(path);
 
@@ -102,7 +102,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.InternalServices
         public void ExecutionWithActivity_ExpectedValidXML()
         {
 
-            string path = ServerSettings.WebserverURI + "FindResourcesService?ResourceName=*&ResourceType=Activity&Roles=*";
+            string path = "http://localhost:3142/services/" + "FindResourcesService?ResourceName=*&ResourceType=Activity&Roles=*";
 
             string result = TestHelper.PostDataToWebserver(path);
 
