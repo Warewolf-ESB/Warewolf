@@ -8,30 +8,88 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using System;
-using Dev2.Common.ExtMethods;
 using Dev2.Data.Decisions.Operations;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Data.Tests.DecisionsTests
 {
     /// <summary>
     /// Is Not Hex Decision
     /// </summary>
+    [TestClass]
     public class IsNotHexTests
     {
-        public bool Invoke(string[] cols)
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("IsHex_Invoke")]
+        public void IsHex_Invoke_ItemsEqual_ReturnsTrue()
         {
-            if (!string.IsNullOrEmpty(cols[0]))
-            {
-                return !cols[0].IsHex();
-            }
-
-            return false;
+            //------------Setup for test--------------------------
+            var endsWith = new IsNotHex();
+            string[] cols = new string[1];
+            cols[0] = "01";
+            //------------Execute Test---------------------------
+            bool result = endsWith.Invoke(cols);
+            //------------Assert Results-------------------------
+            Assert.IsFalse(result);
         }
 
-        public Enum HandlesType()
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("IsHex_Invoke")]
+        public void IsHex_Invoke_ItemsEqual_ReturnsFalse()
         {
-            return enDecisionType.IsNotHex;
+            //------------Setup for test--------------------------
+            var endsWith = new IsNotHex();
+            string[] cols = new string[1];
+            cols[0] = "BBB";
+            //------------Execute Test---------------------------
+            bool result = endsWith.Invoke(cols);
+            //------------Assert Results-------------------------
+            Assert.IsTrue(result);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("IsHex_Invoke")]
+        public void IsHex_Invoke_ItemWithxEqual_ReturnsTrue()
+        {
+            //------------Setup for test--------------------------
+            var endsWith = new IsNotHex();
+            string[] cols = new string[1];
+            cols[0] = "0x01";
+            //------------Execute Test---------------------------
+            bool result = endsWith.Invoke(cols);
+            //------------Assert Results-------------------------
+            Assert.IsFalse(result);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("IsHex_Invoke")]
+        public void IsHex_Invoke_NotEqualItems_ReturnsFalse()
+        {
+            //------------Setup for test--------------------------
+            var endsWith = new IsNotHex();
+            string[] cols = new string[2];
+            cols[0] = "TestData";
+            //------------Execute Test---------------------------
+            bool result = endsWith.Invoke(cols);
+            //------------Assert Results-------------------------
+            Assert.IsTrue(result);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("IsHex_HandlesType")]
+        public void IsHex_HandlesType_ReturnsIsEndsWithType()
+        {
+            var expected = enDecisionType.IsNotHex;
+            //------------Setup for test--------------------------
+            var isEndsWith = new IsNotHex();
+            //------------Execute Test---------------------------
+            //------------Assert Results-------------------------
+            Assert.AreEqual(expected, isEndsWith.HandlesType());
         }
     }
 }

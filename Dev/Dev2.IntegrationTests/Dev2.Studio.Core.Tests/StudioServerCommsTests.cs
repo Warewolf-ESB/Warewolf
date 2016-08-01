@@ -75,7 +75,7 @@ namespace Dev2.Integration.Tests.Dev2.Studio.Core.Tests
 
         static IEnvironmentConnection CreateConnection()
         {
-            return CreateConnection(ServerSettings.DsfAddress);
+            return CreateConnection("http://localhost:3142/dsf");
         }
 
         static IEnvironmentConnection CreateConnection(string appServerUri)

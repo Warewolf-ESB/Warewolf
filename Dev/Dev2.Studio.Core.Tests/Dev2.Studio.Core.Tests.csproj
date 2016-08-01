@@ -301,7 +301,6 @@
     <Compile Include="ModelTests\DataListItemModelTest.cs" />
     <Compile Include="Services\UserConfigurationServiceTests.cs" />
     <Compile Include="TestResourceRepository.cs" />
-    <Compile Include="ProperMoqs\MockBehaviourBase.cs" />
     <Compile Include="ResourceDesignerViewModelTest.cs" />
     <Compile Include="ResourceHelperTest.cs" />
     <Compile Include="ResourceModelTest.cs" />
@@ -322,11 +321,6 @@
     <Compile Include="ViewModelTests\BaseWorkSurfaceViewModelTests.cs" />
     <Compile Include="ViewModelTests\HelpViewModelTests.cs" />
     <Compile Include="ViewModelTests\WorkSurfaceContextViewModelTests.cs" />
-    <Compile Include="TestResourceStringsTest.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>TestResourceStringsTest.resx</DependentUpon>
-    </Compile>
     <Compile Include="DebugStateTreeViewItemViewModelTests.cs" />
     <Compile Include="UtilsTests\NewWorkflowNamesTests.cs" />
     <Compile Include="Utils\InputOutputViewModelTestObject.cs" />
@@ -348,11 +342,6 @@
     <EmbeddedResource Include="StringResourcesTest.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>StringResourcesTest1.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="TestResourceStringsTest.resx">
-      <SubType>Designer</SubType>
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>TestResourceStringsTest.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
@@ -482,6 +471,7 @@
     <Folder Include="Diagnostics\Debug\" />
     <Folder Include="Dock\" />
     <Folder Include="MockUtils\" />
+    <Folder Include="ProperMoqs\" />
     <Folder Include="Repositories\" />
     <Folder Include="ViewModelTests\Configuration\" />
     <Folder Include="ViewModelTests\Dialogs\" />

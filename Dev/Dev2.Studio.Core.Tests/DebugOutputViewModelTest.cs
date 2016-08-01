@@ -956,6 +956,28 @@ namespace Dev2.Core.Tests
             Assert.AreEqual("Ready", processingText);
         }
 
+        [TestMethod]
+        public void TestUpdateHelpDescriptor()
+        {
+            //arrange
+            var mockedEnvRepo = new Mock<IEnvironmentRepository>();
+            var debugOutputViewModel = new DebugOutputViewModel(new Mock<IEventPublisher>().Object, mockedEnvRepo.Object,
+                new Mock<IDebugOutputFilterStrategy>().Object)
+            { DebugStatus = DebugStatus.Finished };
+
+            var mainViewModelMock = new Mock<IMainViewModel>();
+            var helpViewModelMock = new Mock<IHelpWindowViewModel>();
+            mainViewModelMock.SetupGet(it => it.HelpViewModel).Returns(helpViewModelMock.Object);
+            CustomContainer.Register(mainViewModelMock.Object);
+            var helpText = "someText";
+
+            //act
+            debugOutputViewModel.UpdateHelpDescriptor(helpText);
+
+            //assert
+            helpViewModelMock.Verify(it => it.UpdateHelpText(helpText));
+        }
+
         #region Setup Methods
 
         static IDebugTreeViewItemViewModel CreateItemViewModel<T>(IEnvironmentRepository envRepository, int n,

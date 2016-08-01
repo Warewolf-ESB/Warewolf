@@ -9,11 +9,13 @@
 */
 
 using System;
+using System.Diagnostics.CodeAnalysis;
 using Dev2.Common.Interfaces.WindowsTaskScheduler.Wrappers;
 using Microsoft.Win32.TaskScheduler;
 
 namespace Dev2.TaskScheduler.Wrappers.Interfaces
 {
+    [SuppressMessage("ReSharper", "UnusedMember.Global")]
     public interface ITimeTrigger : ITriggerDelay, ITrigger, IWrappedObject<TimeTrigger>
     {
         /// <summary>
