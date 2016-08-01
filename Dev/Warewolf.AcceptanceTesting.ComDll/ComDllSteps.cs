@@ -2,23 +2,23 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using Dev2;
 using Dev2.Activities;
 using Dev2.Activities.Designers2.ComDLL;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.DB;
-using Dev2.Data;
 using Dev2.Interfaces;
-using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.ServiceModel.Data;
-using Dev2.Runtime.ServiceModel.Esb.Brokers.ComPlugin;
 using Dev2.Studio.Core.Activities.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using TechTalk.SpecFlow;
+using Unlimited.Framework.Converters.Graph.Ouput;
 using Warewolf.Core;
 using Warewolf.Storage;
+using static System.String;
 
 namespace Warewolf.AcceptanceTesting.ComDll
 {
@@ -43,16 +43,27 @@ namespace Warewolf.AcceptanceTesting.ComDll
         public void GivenIDragComdllToolOntoTheDesignSurface()
         {
             var comDllActivity = new DsfComDllActivity();
-
+            comDllActivity.SourceId = new Guid("f9c016b6-9db4-4971-9634-60295bfc546f");
+            var dataObject = new Mock<IDSFDataObject>();
+            var channel = new Mock<IEsbChannel>();
+            var environment = new Mock<IExecutionEnvironment>();
+            var errors = new HashSet<string>();
+            environment.SetupGet(executionEnvironment => executionEnvironment.Errors).Returns(errors);
+            dataObject.Setup(dObj => dObj.Environment).Returns(environment.Object);
+            dataObject.Setup(dObj => dObj.EsbChannel).Returns(channel.Object);
+            dataObject.SetupGet(dObj => dObj.WorkspaceID).Returns(Guid.NewGuid);
             var modelItem = ModelItemUtils.CreateModelItem(comDllActivity);
             var pluginServiceModel = new Mock<IComPluginServiceModel>();
-            var plugInSources = new Mock<ObservableCollection<IComPluginSource>>();            
+            var plugInSources = new Mock<ObservableCollection<IComPluginSource>>();
             pluginServiceModel.Setup(serviceModel => serviceModel.RetrieveSources())
                 .Returns(plugInSources.Object);
             var viewModel = new ComDllViewModel(modelItem, pluginServiceModel.Object);
             var privateObject = new PrivateObject(comDllActivity);
 
             _scenarioContext.Add("ViewModel", viewModel);
+            _scenarioContext.Add("DataObject", dataObject.Object);
+            _scenarioContext.Add("Channel", channel);
+            _scenarioContext.Add("Environment", environment.Object);
             _scenarioContext.Add("Model", pluginServiceModel);
             _scenarioContext.Add("Activity", comDllActivity);
             _scenarioContext.Add("PrivateObj", privateObject);
@@ -171,7 +182,7 @@ namespace Warewolf.AcceptanceTesting.ComDll
                     Path = "Test_path"
                 }
             });
-        }        
+        }
 
         [Then(@"I click Edit source")]
         public void ThenIClickEditSource()
@@ -233,6 +244,8 @@ namespace Warewolf.AcceptanceTesting.ComDll
                     FullName = "ToString"
                     ,
                     Method = "ToString"
+                    ,
+                    Inputs = ServiceInputs.ToList()
                 }
             };
         }
@@ -242,7 +255,7 @@ namespace Warewolf.AcceptanceTesting.ComDll
         {
             var vm = _scenarioContext.Get<ComDllViewModel>("ViewModel");
             Assert.IsTrue(vm.InputArea.IsEnabled);
-            vm.TestProcedure();                        
+            vm.TestProcedure();
         }
 
         [Then(@"Inputs windo is open")]
@@ -258,71 +271,46 @@ namespace Warewolf.AcceptanceTesting.ComDll
             var vm = _scenarioContext.Get<ComDllViewModel>("ViewModel");
             vm.ManageServiceInputViewModel.OkCommand.Execute(null);
         }
-        
+
         [Then(@"Validation is successful")]
         public void ThenValidationIsSuccessful()
         {
             var vm = _scenarioContext.Get<ComDllViewModel>("ViewModel");
             Assert.AreEqual(0, vm.Errors.Count);
-            ExecuteTool();
         }
-
-        void ExecuteTool()
+        
+        [Then(@"I click fSix to Execute the tool the result is ""(.*)""")]
+        public void ThenIClickFSixToExecuteTheToolTheResultIs(string result)
         {
-            var sourceId = Guid.NewGuid();
-            var dataObject = new Mock<IDSFDataObject>();
-            var resourceCatalog = new Mock<IResourceCatalog>();
-            dataObject.SetupGet(o=>o.WorkspaceID).Returns(Guid.NewGuid());
-            dataObject.Setup(o => o.Environment).Returns(new ExecutionEnvironment());
-            var itrs = new List<IWarewolfIterator>(5);
-            IWarewolfListIterator itrCollection = new WarewolfListIterator();          
-            var methodParameters = ServiceInputs.Select(a => new MethodParameter { EmptyToNull = a.EmptyIsNull, IsRequired = a.RequiredField, Name = a.Name, Value = a.Value, TypeName = a.TypeName }).ToList();
-            BuildParameterIterators(0, methodParameters.ToList(), itrCollection, itrs, dataObject);
-            var args = new ComPluginInvokeArgs
-            {
-                ClsId = "00000514-0000-0010-8000-00AA006D2EA4",
-                Is32Bit = false,
-                Method = ActionDefinitions().First().Method,
-                AssemblyName = CreateNameSpace().AssemblyName,
-                Parameters = methodParameters
-            };
-
-            try
-            {
-                if (ServiceInputs == null || ServiceInputs.Count == 0)
-                {
-                    //PerfromExecution(update, dataObject, args);
-                }
-                else
-                {
-                    while (itrCollection.HasMoreData())
-                    {
-                        int pos = 0;
-                        foreach (var itr in itrs)
-                        {
-                            string injectVal = itrCollection.FetchNextValue(itr);
-                            var param = methodParameters.ToList()[pos];
-
-
-                            param.Value = param.EmptyToNull &&
-                                          (injectVal == null ||
-                                           string.Compare(injectVal, string.Empty,
-                                               StringComparison.InvariantCultureIgnoreCase) == 0)
-                                ? null
-                                : injectVal;
-
-                            pos++;
-                        }
-                        //PerfromExecution(update, dataObject, args);
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                //errors.AddError(e.Message);
-            }
+            var dataObject = _scenarioContext.Get<IDSFDataObject>("DataObject");
+            var vm = _scenarioContext.Get<ComDllViewModel>("ViewModel");
+            var act = _scenarioContext.Get<DsfComDllActivity>("Activity");
+            MyActivity activity = new MyActivity(dataObject, vm, act);
+            activity.ExeTool();
+            Assert.IsNotNull(activity);
+            Assert.AreEqual(result, activity._result);
         }
-      
+        [Then(@"I click fSix to Execute the tool")]
+        public void ThenIClickFSixToExecuteTheTool()
+        {
+            var dataObject = _scenarioContext.Get<IDSFDataObject>("DataObject");
+            var vm = _scenarioContext.Get<ComDllViewModel>("ViewModel");
+            var act = _scenarioContext.Get<DsfComDllActivity>("Activity");
+            MyActivity activity = new MyActivity(dataObject, vm, act);
+            activity.ExeTool();
+        }
+
+
+
+        [Then(@"The result is returned with error ""(.*)""")]
+        public void ThenTheResultIsReturnedWithError(string errorMessage)
+        {
+            var environment = _scenarioContext.Get<IExecutionEnvironment>("Environment");
+            Assert.AreEqual(1, environment.Errors.Count);
+            Assert.AreEqual(errorMessage, environment.Errors.First());
+        }
+
+
         public ICollection<IServiceInput> ServiceInputs
         {
             get
@@ -332,6 +320,8 @@ namespace Warewolf.AcceptanceTesting.ComDll
                     Name = "test"
                     ,
                     Value = "test"
+                    ,
+                    TypeName = typeof(void).Name
                 } };
             }
         }
@@ -345,27 +335,27 @@ namespace Warewolf.AcceptanceTesting.ComDll
                 AssemblyName = "testing"
             };
         }
+    }
 
-        private void BuildParameterIterators(int update, List<MethodParameter> inputs, IWarewolfListIterator itrCollection, List<IWarewolfIterator> itrs, Mock<IDSFDataObject> dataObject)
-        {
-            if (inputs != null)
-            {
-                foreach (var sai in inputs)
-                {
-                    string val = sai.Name;
-                    string toInject = null;
-
-                    if (val != null)
-                    {
-                        toInject = sai.Value;
-                    }
-                    var dObject = dataObject.Object;
-                    var warewolfEvalResult = dObject.Environment.Eval(toInject, update);
-                    var paramIterator = new WarewolfIterator(warewolfEvalResult);
-                    itrCollection.AddVariableToIterateOn(paramIterator);
-                    itrs.Add(paramIterator);
-                }
-            }
+    public class MyActivity : DsfComDllActivity
+    {
+        private IDSFDataObject _dsfDataObject;
+        public string _result = Empty;
+        
+        public MyActivity(IDSFDataObject dsfDataObject, ComDllViewModel vm, DsfComDllActivity act)
+        {           
+            OutputDescription = new OutputDescription();
+            Outputs = new List<IServiceOutputMapping>();
+            Inputs = new List<IServiceInput>();
+            SourceId = new Guid("f9c016b6-9db4-4971-9634-60295bfc546f");
+            _dsfDataObject = dsfDataObject;
+            ResourceID = Guid.NewGuid();
+            Method = vm.ActionRegion.SelectedAction;
         }
-    }    
+        public void ExeTool()
+        {
+            ExecuteTool(_dsfDataObject, 0);
+            _result = base._result;
+        }
+    }
 }
