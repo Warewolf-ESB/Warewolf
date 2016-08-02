@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using Dev2.Common;
 using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces.Core.Graph;
@@ -75,7 +76,12 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.ComPlugin
                 result.DataSourceShapes.Add(dataSourceShape);
                 return result;
             }
-            catch (Exception e)
+            catch (COMException e)
+            {
+                Dev2Logger.Error("IOutputDescription Test(PluginInvokeArgs setupInfo)", e);
+                throw;
+            }
+            catch (Exception e) 
             {
                 Dev2Logger.Error("IOutputDescription Test(PluginInvokeArgs setupInfo)", e);
                 jsonResult = null;
@@ -90,7 +96,21 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.ComPlugin
             if (!string.IsNullOrEmpty(setupInfo.ClsId))
             {
                 var type = GetType(setupInfo.ClsId, setupInfo.Is32Bit);
-                var valuedTypeList = new List<object>();
+
+                if (type?.Name.ToUpper().Contains("ComObject".ToUpper()) ?? false)
+                {
+                    using (var client = new Client())
+                    {
+                        //use Late Binding to Get MethodInfo
+                        dynamic objExcel = Activator.CreateInstance(Type.GetTypeFromCLSID(setupInfo.ClsId.ToGuid()));
+                        MethodInfo method = ((object)objExcel).GetType().GetMethod(setupInfo.Method);
+
+                        pluginResult = client.Invoke(setupInfo.ClsId.ToGuid(), setupInfo.Method, "ExecuteSpecifiedMethod", new object[] { setupInfo.Parameters });
+                        return method;
+                    }
+                }
+                    var valuedTypeList = new List<object>();
+                
                 foreach (var methodParameter in setupInfo.Parameters)
                 {
                     try

@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.IO.Pipes;
 using System.Linq;
-using System.Runtime.Serialization.Formatters;
+using System.Reflection;
 using Newtonsoft.Json;
 using WarewolfCOMIPC.Client;
 // ReSharper disable NonLocalizedString
@@ -67,45 +68,83 @@ namespace WarewolfCOMIPC
                 Enum.TryParse(data.ExecuteType, true, out execute);
             }
 
-            if (execute == Execute.GetType)
+            switch (execute)
             {
-                Console.WriteLine("Executing GetType for:" + data.CLSID);
-                var type = Type.GetTypeFromCLSID(data.CLSID, true);
-                Console.WriteLine("Got Type:" + type.FullName);
-                var sw = new StreamWriter(pipe);
-                Console.WriteLine("Serializing and sending:" + type.FullName);
-                formatter.Serialize(sw, type);
-                sw.Flush();
-                Console.WriteLine("Sent:" + type.FullName);
-            }
-            else if (execute == Execute.GetMethods)
-            {
-                Console.WriteLine("Executing GeMethods for:" + data.CLSID);
-                var type = Type.GetTypeFromCLSID(data.CLSID, true);
-                var objectInstance = Activator.CreateInstance(type);
-                var dict = new Dictionary<string, List<ParameterInfoTO>>();
-
-                var methods = objectInstance.GetType().GetMethods();
-                List<MethodInfoTO> methodInfos = methods
-                    .Select(info => new MethodInfoTO
+                case Execute.GetType:
                     {
-                        Name = info.Name,
-                        Parameters = info
-                                         .GetParameters()
-                                         .Select(parameterInfo => new ParameterInfoTO
-                                         {
-                                             Name = parameterInfo.Name,
-                                             DefaultValue = parameterInfo.DefaultValue,
-                                             IsRequired = parameterInfo.IsOptional,
-                                             TypeName = parameterInfo.ParameterType.AssemblyQualifiedName
-                                         }).ToList()
-                    }).ToList();
-                Console.WriteLine($"Got {1} mrthods");
-                var sw = new StreamWriter(pipe);
-                Console.WriteLine("Serializing and sending methods for:" + type.FullName);                
-                formatter.Serialize(sw, methodInfos);
-                sw.Flush();
-                Console.WriteLine("Sent methods for:" + type.FullName);
+                        Console.WriteLine("Executing GetType for:" + data.CLSID);
+                        var type = Type.GetTypeFromCLSID(data.CLSID, true);
+                        Console.WriteLine("Got Type:" + type.FullName);
+                        var sw = new StreamWriter(pipe);
+                        Console.WriteLine("Serializing and sending:" + type.FullName);
+                        formatter.Serialize(sw, type);
+                        sw.Flush();
+                        Console.WriteLine("Sent:" + type.FullName);
+                    }
+                    break;
+                case Execute.GetMethods:
+                    {
+                        Console.WriteLine("Executing GeMethods for:" + data.CLSID);
+                        var type = Type.GetTypeFromCLSID(data.CLSID, true);
+                        var objectInstance = Activator.CreateInstance(type);
+
+                        var methods = objectInstance.GetType().GetMethods();
+                        List<MethodInfoTO> methodInfos = methods
+                            .Select(info => new MethodInfoTO
+                            {
+                                Name = info.Name,
+                                Parameters = info
+                                                 .GetParameters()
+                                                 .Select(parameterInfo => new ParameterInfoTO
+                                                 {
+                                                     Name = parameterInfo.Name,
+                                                     DefaultValue = parameterInfo.DefaultValue,
+                                                     IsRequired = parameterInfo.IsOptional,
+                                                     TypeName = parameterInfo.ParameterType.AssemblyQualifiedName
+                                                 }).ToList()
+                            }).ToList();
+                        Console.WriteLine($"Got {1} mrthods");
+                        var sw = new StreamWriter(pipe);
+                        Console.WriteLine("Serializing and sending methods for:" + type.FullName);
+                        formatter.Serialize(sw, methodInfos);
+                        sw.Flush();
+                        Console.WriteLine("Sent methods for:" + type.FullName);
+                    }
+                    break;
+                case Execute.ExecuteSpecifiedMethod:
+                    {
+                        Console.WriteLine("Executing GeMethods for:" + data.CLSID);
+                        var type = Type.GetTypeFromCLSID(data.CLSID, true);
+                        var objectInstance = Activator.CreateInstance(type);
+
+
+                        var arguments = data.Parameters.Select(o => o.GetType()).ToArray();
+                        var methodToRun = type.GetMethod(data.MethodToCall, arguments) ?? type.GetMethod(data.MethodToCall);
+                        // ReSharper disable once SuggestVarOrType_Elsewhere
+                        if (methodToRun != null)
+                        {
+                            if (methodToRun.ReturnType == typeof(void))
+                            {
+                                methodToRun.Invoke(objectInstance, BindingFlags.InvokeMethod | BindingFlags.IgnoreCase | BindingFlags.Public, null, data.Parameters, CultureInfo.InvariantCulture);
+                                var sw = new StreamWriter(pipe);
+                                formatter.Serialize(sw, "Success");
+                                sw.Flush();
+                                Console.WriteLine("Execution completed " + data.MethodToCall);
+                            }
+                            else
+                            {
+                                var pluginResult = methodToRun.Invoke(objectInstance, BindingFlags.InvokeMethod | BindingFlags.IgnoreCase | BindingFlags.Public, null, data.Parameters, CultureInfo.InvariantCulture);
+                                var sw = new StreamWriter(pipe);
+                                formatter.Serialize(sw, pluginResult);
+                                sw.Flush();
+                                Console.WriteLine("Execution completed " + data.MethodToCall);
+                            }
+
+
+                        }
+
+                    }
+                    break;
             }
         }
 
