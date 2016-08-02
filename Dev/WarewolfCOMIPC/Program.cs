@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.IO.Pipes;
+using System.Linq;
+using System.Reflection;
 using Newtonsoft.Json;
 using WarewolfCOMIPC.Client;
 // ReSharper disable NonLocalizedString
@@ -17,7 +20,7 @@ namespace WarewolfCOMIPC
 
             // Create new named pipe with token from client
             Console.WriteLine("Starting Server Pipe Stream");
-            using (var pipe = new NamedPipeServerStream(token, PipeDirection.InOut,253, PipeTransmissionMode.Message))
+            using (var pipe = new NamedPipeServerStream(token, PipeDirection.InOut, 253, PipeTransmissionMode.Message))
             {
                 Console.WriteLine("Waiting Server Pipe Stream");
                 pipe.WaitForConnection();
@@ -27,7 +30,7 @@ namespace WarewolfCOMIPC
 
         private static void AcceptMessagesFromPipe(NamedPipeServerStream pipe)
         {
-            
+
 
             // Receive CallData from client
             //var formatter = new BinaryFormatter();
@@ -35,12 +38,20 @@ namespace WarewolfCOMIPC
             var serializer = new JsonSerializer();
             var sr = new StreamReader(pipe);
             var jsonTextReader = new JsonTextReader(sr);
-            var callData = serializer.Deserialize(jsonTextReader, typeof(CallData));
+            object callData = new object();
+            try
+            {
+                callData = serializer.Deserialize(jsonTextReader, typeof(CallData));
+            }
+            catch (Exception)
+            {
+                //
+            }
             Console.WriteLine("Client Data read and Deserialized to Server Pipe Stream");
             Console.WriteLine(callData.GetType());
             var data = (CallData)callData;
 
-            while(data.Status != KeepAliveStatus.Close)
+            while (data.Status != KeepAliveStatus.Close)
             {
                 Console.WriteLine("Executing");
                 LoadLibrary(data, serializer, pipe);
@@ -58,7 +69,7 @@ namespace WarewolfCOMIPC
 
             if (execute == Execute.GetType)
             {
-                Console.WriteLine("Executing GetType for:"+data.CLSID);
+                Console.WriteLine("Executing GetType for:" + data.CLSID);
                 var type = Type.GetTypeFromCLSID(data.CLSID, true);
                 Console.WriteLine("Got Type:" + type.FullName);
                 var sw = new StreamWriter(pipe);
@@ -67,7 +78,20 @@ namespace WarewolfCOMIPC
                 sw.Flush();
                 Console.WriteLine("Sent:" + type.FullName);
             }
+            else if (execute == Execute.GetMethods)
+            {
+                Console.WriteLine("Executing GeMethods for:" + data.CLSID);
+                var type = Type.GetTypeFromCLSID(data.CLSID, true);
+                var objectInstance = Activator.CreateInstance(type);
+                List<MethodInfo> methodInfos = objectInstance.GetType().GetMethods().ToList();
+                Console.WriteLine($"Got {1} mrthods");
+                var sw = new StreamWriter(pipe);
+                Console.WriteLine("Serializing and sending methods for:" + type.FullName);
+                formatter.Serialize(sw, methodInfos);
+                sw.Flush();
+                Console.WriteLine("Sent methods for:" + type.FullName);
+            }
         }
-        
-    }    
+
+    }
 }

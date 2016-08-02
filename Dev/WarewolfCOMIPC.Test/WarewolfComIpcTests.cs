@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+// ReSharper disable InconsistentNaming
 
 namespace WarewolfCOMIPC.Test
 {
@@ -21,6 +23,26 @@ namespace WarewolfCOMIPC.Test
                 Assert.IsNotNull(execute);
             }
             //------------Assert Results-------------------------
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void GetMethods_GivenPersonLib_PersonController_ShouldReturnMethodList()
+        {
+            //---------------Set up test pack-------------------
+            var classId = new Guid("{D267A886-0BAD-4457-BD3A-B800D3C671D0}");
+            //---------------Assert Precondition----------------
+
+            //---------------Execute Test ----------------------
+            using (Client.Client client = new Client.Client())
+            {
+                var execute = client.Invoke(classId, "", "GetMethods", new object[] { });
+                var enumerable = execute as IList;
+                Assert.IsNotNull(enumerable);
+                //---------------Test Result -----------------------
+                Assert.AreNotEqual(0, enumerable.Count);
+            }
+           
         }
     }
 }
