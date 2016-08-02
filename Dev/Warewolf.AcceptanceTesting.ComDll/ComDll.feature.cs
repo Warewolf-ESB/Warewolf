@@ -275,10 +275,10 @@ testRunner.Given("I create New Workflow", ((string)(null)), ((TechTalk.SpecFlow.
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Executing com with valid source")]
-        public virtual void ExecutingComWithValidSource()
+        [NUnit.Framework.DescriptionAttribute("Generating com outputs")]
+        public virtual void GeneratingComOutputs()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Executing com with valid source", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Generating com outputs", ((string[])(null)));
 #line 92
 this.ScenarioSetup(scenarioInfo);
 #line 93
@@ -318,10 +318,10 @@ testRunner.Given("I create New Workflow", ((string)(null)), ((TechTalk.SpecFlow.
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Executing com without method")]
-        public virtual void ExecutingComWithoutMethod()
+        [NUnit.Framework.DescriptionAttribute("Executing com with valid source")]
+        public virtual void ExecutingComWithValidSource()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Executing com without method", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Executing com with valid source", ((string[])(null)));
 #line 110
 this.ScenarioSetup(scenarioInfo);
 #line 111
@@ -345,8 +345,51 @@ testRunner.Given("I create New Workflow", ((string)(null)), ((TechTalk.SpecFlow.
 #line 120
  testRunner.And("Namespace is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 121
- testRunner.And("I click fSix to Execute the tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("Action is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 122
+ testRunner.And("I select Action", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 123
+ testRunner.And("GenerateOutput is disabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 124
+ testRunner.And("I click Generate output", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 125
+ testRunner.Then("Validation is successful", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 126
+ testRunner.And("I click fSix to Execute the tool the result is \"\"System.__ComObject\"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Executing com without method")]
+        public virtual void ExecutingComWithoutMethod()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Executing com without method", ((string[])(null)));
+#line 128
+this.ScenarioSetup(scenarioInfo);
+#line 129
+testRunner.Given("I create New Workflow", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 130
+ testRunner.And("I drag Comdll tool onto the design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 131
+ testRunner.And("EditButton is Disabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 132
+ testRunner.And("Comdll Source is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 133
+ testRunner.And("Namespace is disabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 134
+ testRunner.And("Action is disabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 135
+ testRunner.And("New button is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 136
+ testRunner.When("I select \"ComDllSource\" from source list as the source", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 137
+ testRunner.Then("EditButton is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 138
+ testRunner.And("Namespace is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 139
+ testRunner.And("I click fSix to Execute the tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 140
  testRunner.Then("The result is returned with error \"No Method Selected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
