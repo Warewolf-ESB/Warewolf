@@ -295,8 +295,6 @@
     <Compile Include="Factories\DataMappingListFactory.cs" />
     <Compile Include="Factories\DsfActivityFactory.cs" />
     <Compile Include="Helpers\FileHelper.cs" />
-    <Compile Include="Helpers\RetryUtility.cs" />
-    <Compile Include="InterfaceImplementors\NetworkShareInformation.cs" />
     <Compile Include="Factories\DataListItemModelFactory.cs" />
     <Compile Include="DataList\DataListSingleton.cs" />
     <Compile Include="InterfaceImplementors\DeployDTO.cs" />
@@ -343,7 +341,6 @@
     <Compile Include="Messages\FileChooserMessage.cs" />
     <Compile Include="Messages\SaveUnsavedWorkflowMessage.cs" />
     <Compile Include="Messages\UpdateWorksurfaceDisplayName.cs" />
-    <Compile Include="Messages\DataListItemSelectedMessage.cs" />
     <Compile Include="Messages\DebugResourceMessage.cs" />
     <Compile Include="Messages\DebugWriterWriteMessage.cs" />
     <Compile Include="Messages\DeleteResourcesMessage.cs" />
@@ -368,7 +365,6 @@
     <Compile Include="Models\QuickVariableInput\QuickVariableInputModel.cs" />
     <Compile Include="Models\ResourceModel.cs" />
     <Compile Include="Models\ServiceDebugInfoModel.cs" />
-    <Compile Include="Models\UserInterfaceLayoutModel.cs" />
     <Compile Include="Network\Enums.cs" />
     <Compile Include="Network\ServerProxy.cs" />
     <Compile Include="Network\WebServer.cs" />
@@ -380,7 +376,6 @@
     <Compile Include="Services\Communication\ICommService.cs" />
     <Compile Include="Services\Configuration\ConfigurationService.cs" />
     <Compile Include="Services\Configuration\HelpConfiguration.cs" />
-    <Compile Include="Services\Configuration\UserConfigurationService.cs" />
     <Compile Include="Services\Events\EventPublishers.cs" />
     <Compile Include="Services\Events\DebugSelectionChangedEventArgs.cs" />
     <Compile Include="Services\Events\StudioSubscriptionService.cs" />
