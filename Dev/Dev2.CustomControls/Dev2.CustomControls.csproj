@@ -97,6 +97,7 @@
     <Compile Include="Converters\EmptyStringToBoolConverter.cs" />
     <Compile Include="Converters\EmptyStringToVisibilityConverter.cs" />
     <Compile Include="Converters\MathFunction.cs" />
+    <Compile Include="Converters\MathFunctionDoubleConverter.cs" />
     <Compile Include="Behavior\ControlEnterToTabBehavior.cs" />
     <Compile Include="Behavior\EmptyListBoxWaterMarkBehavior.cs" />
     <Compile Include="CircularProgressBar.xaml.cs">

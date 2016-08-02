@@ -453,6 +453,7 @@
     <Compile Include="Webs\WebHelper.cs" />
     <Compile Include="Webs\Callbacks\Dev2DecisionCallbackHandler.cs" />
     <Compile Include="ViewModels\DependencyVisualization\DependencyVisualiserViewModel.cs" />
+    <Compile Include="AppResources\ExtendedControls\AutoLayoutGrid.cs" />
     <Compile Include="AppResources\ExtensionMethods\FrameworkElementExtensionMethods.cs" />
     <Compile Include="Bootstrapper.cs" />
     <Compile Include="Diagnostics\DebugOutputFilterStrategy.cs" />
@@ -917,7 +918,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="AppResources\ExtendedControls\" />
     <Folder Include="AppResources\TextEditorCompletion\" />
     <Folder Include="CustomControls\Connections\" />
   </ItemGroup>
