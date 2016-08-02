@@ -16,6 +16,7 @@ namespace Warewolf.UITests.Tools
     public class Replace
     {
         [TestMethod]
+		[TestCategory("Tools")]
         public void ReplaceToolUITest()
         {
             Uimap.Drag_Toolbox_Replace_Onto_DesignSurface();

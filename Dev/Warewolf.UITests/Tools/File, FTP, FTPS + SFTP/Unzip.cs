@@ -16,6 +16,7 @@ namespace Warewolf.UITests.Tools
     public class Unzip
     {
         [TestMethod]
+		[TestCategory("Tools")]
         public void UnzipToolUITest()
         {
             Uimap.Drag_Toolbox_Unzip_Onto_DesignSurface();

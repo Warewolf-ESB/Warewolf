@@ -8,9 +8,7 @@ namespace Dev2.Common.Interfaces.Core
 
         public bool Equals(IComPluginSource other)
         {
-            var @equals = SelectedDll?.Equals(other?.SelectedDll);
-            var selectedEquals = @equals != null && @equals.Value;
-            return string.Equals(Name, other?.Name) && Id.Equals(other?.Id) && Equals(ClsId, other?.ClsId) && bool.Equals(Is32Bit, other?.Is32Bit) && selectedEquals;
+            return string.Equals(ResourceName, other.ResourceName) && Id.Equals(other.Id) && Equals(ClsId, other.ClsId) && Is32Bit == other.Is32Bit && Id.Equals(other.Id) && Equals(SelectedDll, other.SelectedDll) && string.Equals(ResourcePath, other.ResourcePath);
         }
 
         /// <summary>
@@ -47,11 +45,11 @@ namespace Dev2.Common.Interfaces.Core
         {
             unchecked
             {
-                var hashCode = Name?.GetHashCode() ?? 0;
+                var hashCode = ResourceName?.GetHashCode() ?? 0;
                 hashCode = (hashCode * 397) ^ Id.GetHashCode();
                 hashCode = (hashCode * 397) ^ Is32Bit.GetHashCode();
                 hashCode = (hashCode * 397) ^ (ClsId?.GetHashCode() ?? 0);
-                hashCode = (hashCode * 397) ^ Path.GetHashCode();
+                hashCode = (hashCode * 397) ^ ResourcePath.GetHashCode();
                 return hashCode;
             }
         }
@@ -70,12 +68,12 @@ namespace Dev2.Common.Interfaces.Core
 
         #region Implementation of IComPluginSource
 
-        public string Name { get; set; }
+        public string ResourceName { get; set; }
         public Guid Id { get; set; }
         public bool Is32Bit { get; set; }
         public string ClsId { get; set; }
         public IFileListing SelectedDll { get; set; }
-        public string Path { get; set; }
+        public string ResourcePath { get; set; }
 
         #endregion
     }
