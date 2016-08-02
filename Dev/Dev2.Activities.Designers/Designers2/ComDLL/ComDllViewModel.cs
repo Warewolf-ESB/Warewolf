@@ -249,7 +249,7 @@ namespace Dev2.Activities.Designers2.ComDLL
         void InitializeProperties()
         {
             Properties = new List<KeyValuePair<string, string>>();
-            AddProperty("Source :", SourceRegion.SelectedSource == null ? "" : SourceRegion.SelectedSource.Name);
+            AddProperty("Source :", SourceRegion.SelectedSource == null ? "" : SourceRegion.SelectedSource.ResourceName);
             AddProperty("Type :", Type);
             AddProperty("Procedure :", ActionRegion.SelectedAction == null ? "" : ActionRegion.SelectedAction.FullName);
         }

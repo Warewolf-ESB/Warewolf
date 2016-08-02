@@ -47,7 +47,7 @@ namespace Dev2.Activities.Designers.Tests.Core.ComDll
             var id = Guid.NewGuid();
             var act = new DsfComDllActivity() { SourceId = id };
             var src = new Mock<IComPluginServiceModel>();
-            var pluginSrc = new ComPluginSourceDefinition() { Id = id, Name = "johnny" };
+            var pluginSrc = new ComPluginSourceDefinition() { Id = id, ResourceName = "johnny" };
             var namespaceItem = new NamespaceItem { FullName = "bravo" };
             src.Setup(a => a.RetrieveSources()).Returns(new ObservableCollection<IComPluginSource>() { pluginSrc });
 
@@ -98,10 +98,10 @@ namespace Dev2.Activities.Designers.Tests.Core.ComDll
             var id = Guid.NewGuid();
             var act = new DsfComDllActivity() { SourceId = id };
             var src = new Mock<IComPluginServiceModel>();
-            var pluginSrc = new ComPluginSourceDefinition() { Id = id, Name = "bob" };
+            var pluginSrc = new ComPluginSourceDefinition() { Id = id, ResourceName = "bob" };
             var namespaceItem = new NamespaceItem { FullName = "bravo" };
 
-            var s2 = new ComPluginSourceDefinition() { Id = Guid.NewGuid(), Name = "bob" };
+            var s2 = new ComPluginSourceDefinition() { Id = Guid.NewGuid(), ResourceName = "bob" };
             var namespaceItem1 = new NamespaceItem { FullName = "bravo" };
             src.Setup(a => a.RetrieveSources()).Returns(new ObservableCollection<IComPluginSource>() { pluginSrc, s2 });
 
