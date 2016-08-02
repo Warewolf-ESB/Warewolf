@@ -128,6 +128,7 @@
     <Compile Include="Exchange\ExchangeServiceFactory.cs" />
     <Compile Include="ExternalProcessExecutor.cs" />
     <Compile Include="ExtMethods\BaseEnumExtensions.cs" />
+    <Compile Include="ExtMethods\GuidExtensions.cs" />
     <Compile Include="ExtMethods\StringExtension.cs" />
     <Compile Include="ExtMethods\TypeExtensions.cs" />
     <Compile Include="GlobalConstants.cs" />
