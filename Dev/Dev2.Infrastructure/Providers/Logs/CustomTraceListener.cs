@@ -10,6 +10,7 @@
 
 using System;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using Dev2.Common;
 
@@ -19,6 +20,7 @@ namespace Dev2.Providers.Logs
     /// This is the trace writer used by the studio. Note other than testing there are no usages
     /// for this class as it is initialized from the app.config
     /// </summary>
+    [SuppressMessage("ReSharper", "UnusedMember.Global")]
     public class CustomTextWriter : TraceListener
     {
         public static string LoggingFileName => Path.Combine(StudioLogPath, "Warewolf Studio.log");

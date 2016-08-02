@@ -63,7 +63,6 @@
     <Compile Include="..\AssemblyCommonInfo.cs">
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
-    <Compile Include="ComponentModel\Extensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Deploy\SqlResources\Readme.txt">
@@ -90,6 +89,9 @@
     <Content Include="Warewolf.snk">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="ComponentModel\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>
