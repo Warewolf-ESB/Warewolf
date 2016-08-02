@@ -50,7 +50,115 @@ using Warewolf.Studio.Views;
 
 namespace Dev2.Studio.ViewModels
 {
-    public class WorksurfaceContextManager
+    public interface IWorksurfaceContextManager
+    {
+        void Handle(RemoveResourceAndCloseTabMessage message);
+
+        void EditServer(IServerSource selectedServer);
+
+        void EditResource(IDbSource selectedSource, IWorkSurfaceKey workSurfaceKey = null);
+
+        void EditResource(IPluginSource selectedSource, IWorkSurfaceKey workSurfaceKey = null);
+
+        void EditResource(IComPluginSource selectedSource, IWorkSurfaceKey workSurfaceKey = null);
+
+        void EditResource(IWebServiceSource selectedSource, IWorkSurfaceKey workSurfaceKey = null);
+
+        void EditResource(IEmailServiceSource selectedSource, IWorkSurfaceKey workSurfaceKey = null);
+
+        void EditResource(IExchangeSource selectedSource, IWorkSurfaceKey workSurfaceKey = null);
+
+        void EditResource(IRabbitMQServiceSourceDefinition selectedSource, IWorkSurfaceKey workSurfaceKey = null);
+
+        void EditResource(IWcfServerSource selectedSource, IWorkSurfaceKey workSurfaceKey = null);
+
+        void NewService(string resourcePath);
+
+        void NewDatabaseSource(string resourcePath);
+
+        void NewWebSource(string resourcePath);
+
+        void NewPluginSource(string resourcePath);
+
+        void NewComPluginSource(string resourcePath);
+
+        void NewWcfSource(string resourcePath);
+
+        void NewDropboxSource(string resourcePath);
+
+        void NewRabbitMQSource(string resourcePath);
+
+        void NewSharepointSource(string resourcePath);
+
+        void AddDeploySurface(IEnumerable<IExplorerTreeItem> items);
+
+        void OpenVersion(Guid resourceId, IVersionInfo versionInfo);
+
+        void NewEmailSource(string resourcePath);
+
+        void NewExchangeSource(string resourcePath);
+
+        bool IsWorkFlowOpened(IContextualResourceModel resource);
+
+        void AddWorkSurfaceContext(IContextualResourceModel resourceModel);
+
+        void ShowDependencies(bool dependsOnMe, IContextualResourceModel model, IServer server);
+
+        void DisplayResourceWizard(IContextualResourceModel resourceModel);
+
+        void EditDbSource(IContextualResourceModel resourceModel);
+
+        void EditPluginSource(IContextualResourceModel resourceModel);
+
+        void EditComPluginSource(IContextualResourceModel resourceModel);
+
+        void EditWebSource(IContextualResourceModel resourceModel);
+
+        void EditSharePointSource(IContextualResourceModel resourceModel);
+
+        void EditEmailSource(IContextualResourceModel resourceModel);
+
+        void EditExchangeSource(IContextualResourceModel resourceModel);
+
+        void EditDropBoxSource(IContextualResourceModel resourceModel);
+
+        void EditRabbitMQSource(IContextualResourceModel resourceModel);
+
+        void EditWcfSource(IContextualResourceModel resourceModel);
+
+        void EditServer(IContextualResourceModel resourceModel);
+
+        void EditResource(IOAuthSource selectedSource, IWorkSurfaceKey workSurfaceKey = null);
+
+        void EditResource(ISharepointServerSource selectedSource, IWorkSurfaceKey workSurfaceKey = null);
+
+        Task<IRequestServiceNameViewModel> GetSaveViewModel(string resourcePath, string header);
+
+        void AddReverseDependencyVisualizerWorkSurface(IContextualResourceModel resource);
+
+        void AddSettingsWorkSurface();
+
+        void AddSchedulerWorkSurface();
+
+        void AddWorkspaceItem(IContextualResourceModel model);
+
+        void DeleteContext(IContextualResourceModel model);
+
+        T ActivateOrCreateUniqueWorkSurface<T>(WorkSurfaceContext context)
+            where T : IWorkSurfaceViewModel;
+
+        WorkSurfaceContextViewModel FindWorkSurfaceContextViewModel(IContextualResourceModel resource);
+
+        void AddWorkSurfaceContextImpl(IContextualResourceModel resourceModel, bool isLoadingWorkspace);
+
+        void AddAndActivateWorkSurface(WorkSurfaceContextViewModel context);
+
+        void AddWorkSurface(IWorkSurfaceObject obj);
+
+        bool CloseWorkSurfaceContext(WorkSurfaceContextViewModel context, PaneClosingEventArgs e, bool dontPrompt = false);
+    }
+
+    public class WorksurfaceContextManager : IWorksurfaceContextManager
     {
         private readonly MainViewModel _mainViewModel;
         private readonly bool _createDesigners;
@@ -522,7 +630,7 @@ namespace Dev2.Studio.ViewModels
             }
         }
 
-        private void EditDbSource(IContextualResourceModel resourceModel)
+        public void EditDbSource(IContextualResourceModel resourceModel)
         {
             var db = new DbSource(resourceModel.WorkflowXaml.ToXElement());
             var def = new DbSourceDefinition
@@ -544,7 +652,7 @@ namespace Dev2.Studio.ViewModels
             EditResource(def, workSurfaceKey);
         }
 
-        private void EditPluginSource(IContextualResourceModel resourceModel)
+        public void EditPluginSource(IContextualResourceModel resourceModel)
         {
             var db = new PluginSource(resourceModel.WorkflowXaml.ToXElement());
             var def = new PluginSourceDefinition
@@ -561,7 +669,7 @@ namespace Dev2.Studio.ViewModels
             EditResource(def, workSurfaceKey);
         }
 
-        private void EditComPluginSource(IContextualResourceModel resourceModel)
+        public void EditComPluginSource(IContextualResourceModel resourceModel)
         {
             var db = new ComPluginSource(resourceModel.WorkflowXaml.ToXElement());
             var def = new ComPluginSourceDefinition
@@ -580,7 +688,7 @@ namespace Dev2.Studio.ViewModels
             EditResource(def, workSurfaceKey);
         }
 
-        private void EditWebSource(IContextualResourceModel resourceModel)
+        public void EditWebSource(IContextualResourceModel resourceModel)
         {
             var db = new WebSource(resourceModel.WorkflowXaml.ToXElement());
             var def = new WebServiceSourceDefinition()
@@ -602,7 +710,7 @@ namespace Dev2.Studio.ViewModels
             EditResource(def, workSurfaceKey);
         }
 
-        private void EditSharePointSource(IContextualResourceModel resourceModel)
+        public void EditSharePointSource(IContextualResourceModel resourceModel)
         {
             var db = new SharepointSource(resourceModel.WorkflowXaml.ToXElement());
             var def = new SharePointServiceSourceDefinition
@@ -622,7 +730,7 @@ namespace Dev2.Studio.ViewModels
             EditResource(def, workSurfaceKey);
         }
 
-        private void EditEmailSource(IContextualResourceModel resourceModel)
+        public void EditEmailSource(IContextualResourceModel resourceModel)
         {
             var db = new EmailSource(resourceModel.WorkflowXaml.ToXElement());
 
@@ -644,7 +752,7 @@ namespace Dev2.Studio.ViewModels
             EditResource(def, workSurfaceKey);
         }
 
-        private void EditExchangeSource(IContextualResourceModel resourceModel)
+        public void EditExchangeSource(IContextualResourceModel resourceModel)
         {
             var db = new ExchangeSource(resourceModel.WorkflowXaml.ToXElement());
 
@@ -664,7 +772,7 @@ namespace Dev2.Studio.ViewModels
             EditResource(def, workSurfaceKey);
         }
 
-        private void EditDropBoxSource(IContextualResourceModel resourceModel)
+        public void EditDropBoxSource(IContextualResourceModel resourceModel)
         {
             var db = new DropBoxSource(resourceModel.WorkflowXaml.ToXElement());
 
@@ -682,7 +790,7 @@ namespace Dev2.Studio.ViewModels
             EditResource(def, workSurfaceKey);
         }
 
-        private void EditRabbitMQSource(IContextualResourceModel resourceModel)
+        public void EditRabbitMQSource(IContextualResourceModel resourceModel)
         {
             var source = new RabbitMQSource(resourceModel.WorkflowXaml.ToXElement());
             var def = new RabbitMQServiceSourceDefinition
@@ -703,7 +811,7 @@ namespace Dev2.Studio.ViewModels
             EditResource(def, workSurfaceKey);
         }
 
-        private void EditWcfSource(IContextualResourceModel resourceModel)
+        public void EditWcfSource(IContextualResourceModel resourceModel)
         {
             var wcfsource = new WcfSource(resourceModel.WorkflowXaml.ToXElement());
 
@@ -722,7 +830,7 @@ namespace Dev2.Studio.ViewModels
             EditResource(def, workSurfaceKey);
         }
 
-        private void EditServer(IContextualResourceModel resourceModel)
+        public void EditServer(IContextualResourceModel resourceModel)
         {
             var connection = new Connection(resourceModel.WorkflowXaml.ToXElement());
             string address = null;
