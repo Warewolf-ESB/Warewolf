@@ -8,6 +8,7 @@ namespace Warewolf.UITests.Tools.Control_Flow
     public class Decision
     {
         [TestMethod]
+		[TestCategory("Tools")]
         public void DecisionToolUITest()
         {
             Uimap.Drag_Toolbox_Decision_Onto_DesignSurface();
