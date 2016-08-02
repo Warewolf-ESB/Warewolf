@@ -8,7 +8,11 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using System;
 using System.Diagnostics.CodeAnalysis;
+using Dev2.Runtime.ServiceModel.Data;
+using Dev2.Runtime.ServiceModel.Esb.Brokers.ComPlugin;
+using DummyNamespaceForTest;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Tests.Runtime.ESB.ComPlugin
