@@ -1074,10 +1074,28 @@ namespace Warewolf.Studio.ViewModels
                     {
                         destfolder.ResourcePath = destination.ResourcePath + "\\" + destfolder.ResourceName;
                         destfolder.Parent = destination;
+
                         var resourcePath = destfolder.ResourcePath;
                         foreach(var explorerItemViewModel in Children)
                         {
                             explorerItemViewModel.ResourcePath = resourcePath + "\\" + explorerItemViewModel.ResourceName;
+                        }
+                        foreach (var child in destination.Children.ToList())
+                        {
+                            if (child.ResourceId != destfolder.ResourceId)
+                            {
+                                if (child.ResourceName == ResourceName)
+                                {
+                                    if (child.Children.Count > 0)
+                                    {
+                                        foreach (var model in child.Children)
+                                        {
+                                            model.Parent = destfolder;
+                                        }
+                                        child.Parent.RemoveChild(child);
+                                    }
+                                }
+                            }
                         }
                     }
                 }
