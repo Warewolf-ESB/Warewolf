@@ -247,7 +247,8 @@ namespace Warewolf.Studio.ViewModels
                 IsFolder = true,
                 ResourcePath = name,
                 IsSelected = true,
-                IsRenaming = true
+                IsRenaming = true,
+                IsVisible = true
             };
             if (_isDialog)
             {
@@ -272,11 +273,8 @@ namespace Warewolf.Studio.ViewModels
 
                 child.ShowContextMenu = ShowContextMenu;
             }
-            _children.Insert(0, child);
-            OnPropertyChanged(() => Children);
+            AddChild(child);
         }
-
-        
 
         public Action<IExplorerItemViewModel> SelectAction { get; set; }
 
@@ -439,13 +437,17 @@ namespace Warewolf.Studio.ViewModels
 
         public void AddChild(IExplorerItemViewModel child)
         {
-            _children.Add(child);
+            var tempChildren = new ObservableCollection<IExplorerItemViewModel>(_children);
+            tempChildren.Insert(0, child);
+            _children = tempChildren;
             OnPropertyChanged(() => Children);
         }
 
         public void RemoveChild(IExplorerItemViewModel child)
         {
-            _children.Remove(child);
+            var tempChildren = new ObservableCollection<IExplorerItemViewModel>(_children);
+            tempChildren.Remove(child);
+            _children = tempChildren;
             OnPropertyChanged(() => Children);
         }
 
