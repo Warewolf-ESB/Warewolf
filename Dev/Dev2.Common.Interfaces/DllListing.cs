@@ -9,6 +9,8 @@ namespace Dev2.Common.Interfaces
             Name = selectedDll.Name;
             FullName = selectedDll.FullName;
             IsDirectory = selectedDll.IsDirectory;
+            ClsId = (selectedDll as DllListing)?.ClsId;
+            Is32Bit = (selectedDll as DllListing)?.Is32Bit ?? false;
         }
 
         public DllListing()

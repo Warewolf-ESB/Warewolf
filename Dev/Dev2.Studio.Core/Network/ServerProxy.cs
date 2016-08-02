@@ -160,6 +160,7 @@ namespace Dev2.Network
                 Dev2Logger.Error(err);
                 throw;
             }
+
         }
         
         public async Task<bool> ConnectAsync(Guid id)
