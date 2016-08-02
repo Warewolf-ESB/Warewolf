@@ -378,6 +378,9 @@
       <DependentUpon>SecurityView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Settings\Security\SecurityViewModel.cs" />
+    <Compile Include="Settings\SettingsView.xaml.cs">
+      <DependentUpon>SettingsView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Settings\SettingsViewModel.cs" />
     <Compile Include="Utils\OpeningWorkflowsHelper.cs" />
     <Compile Include="Utils\ResourceChangeHandler.cs" />
@@ -549,6 +552,10 @@
     <Page Include="Settings\Security\SecurityView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Settings\SettingsView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Themes\Brushes.xaml">
       <SubType>Designer</SubType>
