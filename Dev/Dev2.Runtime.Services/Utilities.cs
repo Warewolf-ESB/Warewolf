@@ -14,7 +14,6 @@ using System.Text;
 
 namespace Dev2.Runtime
 {
-    [SuppressMessage("ReSharper", "UnusedMember.Global")]
     public static class Utilities
     {
         #region GenerateString

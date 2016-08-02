@@ -72,6 +72,7 @@
     <Compile Include="Debug\DebugDispatcher.cs" />
     <Compile Include="Debug\DebugItem.cs" />
     <Compile Include="Debug\DebugItemResult.cs" />
+    <Compile Include="Debug\DebugItemResultEqualityComparer.cs" />
     <Compile Include="Debug\DebugState.cs" />
     <Compile Include="Debug\DirectoryPath.cs" />
     <Compile Include="Debug\FilePath.cs" />

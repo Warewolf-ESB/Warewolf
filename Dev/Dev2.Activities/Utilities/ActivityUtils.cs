@@ -21,7 +21,6 @@ using Warewolf.Core;
 
 namespace Dev2.Utilities
 {
-    [SuppressMessage("ReSharper", "UnusedMember.Global")]
     public static class ActivityUtils
     {
         [SuppressMessage("ReSharper", "UnusedMember.Global")]

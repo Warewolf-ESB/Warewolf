@@ -145,6 +145,7 @@
     <Compile Include="MaintainerApi.cs" />
     <Compile Include="Patterns\SpookyAction.cs" />
     <Compile Include="PropertyApi.cs" />
+    <Compile Include="RecordSetSearchPayload.cs" />
     <Compile Include="Reflection\GAC.cs" />
     <Compile Include="SharepointSourceTo.cs" />
     <Compile Include="SingleApi.cs" />

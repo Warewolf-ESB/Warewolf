@@ -149,6 +149,7 @@
     <Compile Include="ICommunicationResponse.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="Hubs\EsbHub.cs" />
+    <Compile Include="Hubs\ResourcesHub.cs" />
     <Compile Include="Hubs\Server.cs" />
     <Compile Include="Hubs\ServerHub.cs" />
     <Compile Include="Security\AuthorizationRequest.cs" />
