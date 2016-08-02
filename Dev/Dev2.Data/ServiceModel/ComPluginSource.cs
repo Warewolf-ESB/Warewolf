@@ -28,6 +28,7 @@ namespace Dev2.Runtime.ServiceModel.Data
             bool is32Bit;
             bool.TryParse(xml.AttributeSafe("Is32Bit"),out is32Bit);
             Is32Bit = is32Bit;
+            ComName = xml.AttributeSafe("ComName");
         }
 
         #endregion
@@ -36,6 +37,7 @@ namespace Dev2.Runtime.ServiceModel.Data
 
         public string ClsId { get; set; }
         public bool Is32Bit { get; set; }
+        public string ComName { get; set; }
 
         #endregion
 
@@ -47,6 +49,7 @@ namespace Dev2.Runtime.ServiceModel.Data
             result.Add(
                 new XAttribute("ClsId", ClsId ?? string.Empty),
                 new XAttribute("Is32Bit", Is32Bit),
+                new XAttribute("ComName", ComName ?? string.Empty),
                 new XAttribute("Type", GetType().Name),
                 new XElement("TypeOf", enSourceType.ComPluginSource)
                 );
