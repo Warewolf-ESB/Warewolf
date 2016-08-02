@@ -177,9 +177,9 @@ public class COMPluginSourceSteps
     {
         var pluginSrc = new ComPluginSourceDefinition
         {
-            Name = name,
+            ResourceName = name,
             Id = Guid.NewGuid(),
-            Path = "",
+            ResourcePath = "",
             ClsId = Guid.NewGuid().ToString(),
             Is32Bit = true,
             SelectedDll = new DllListing() {ClsId = Guid.NewGuid().ToString(), Name = "Object", Is32Bit = false, FullName = "System.Object", IsDirectory = false},
