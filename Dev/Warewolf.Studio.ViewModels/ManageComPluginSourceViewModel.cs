@@ -391,6 +391,9 @@ namespace Warewolf.Studio.ViewModels
                     var src = ToModel();
                     src.Id = SelectedGuid;
                     src.ClsId = SelectedDll.ClsId;
+                    src.Is32Bit = SelectedDll.Is32Bit;
+                    src.Name = SelectedDll.Name;
+                    
                     Save(src);
                     src.Is32Bit = SelectedDll.Is32Bit;
                     _pluginSource = src;
