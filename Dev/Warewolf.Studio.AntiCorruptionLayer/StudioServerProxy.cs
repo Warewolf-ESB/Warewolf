@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using Dev2;
 using Dev2.Common;
+using Dev2.Common.DependencyVisualization;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Explorer;
 using Dev2.Common.Interfaces.Infrastructure.Communication;
@@ -85,6 +86,7 @@ namespace Warewolf.Studio.AntiCorruptionLayer
                     if (explorerItemViewModel.ResourceType != "Version" && explorerItemViewModel.ResourceType != "Folder")
                     {
                         var dep = QueryManagerProxy.FetchDependants(explorerItemViewModel.ResourceId);
+
                         if (!HasDependencies(explorerItemViewModel, graphGenerator, dep))
                             return new DeletedFileMetadata
                             {
@@ -138,12 +140,12 @@ namespace Warewolf.Studio.AntiCorruptionLayer
                 };
             }
         }
-
+                
         private bool HasDependencies(IExplorerItemViewModel explorerItemViewModel, DependencyGraphGenerator graphGenerator, IExecuteMessage dep)
         {
             var graph = graphGenerator.BuildGraph(dep.Message, "", 1000, 1000, 1);
             _popupController = CustomContainer.Get<IPopupController>();
-
+            RemoveDeletedNodes(graph);
             if (graph.Nodes.Count > 1)
             {
                 _popupController.Show(string.Format(StringResources.Delete_Error, explorerItemViewModel.ResourceName),
@@ -154,6 +156,20 @@ namespace Warewolf.Studio.AntiCorruptionLayer
             return true;
         }
 
+        private void RemoveDeletedNodes(Graph graph)
+        {
+            var nodes = graph.Nodes.Select(node => node.ID).ToList();
+            IList<Node> nodesToRemove = new List<Node>();
+            foreach (var nod in nodes)
+            {
+                var findNode = FindItemByID(new Guid(nod));
+                if(findNode == null)
+                    nodesToRemove.Add(graph.Nodes.FirstOrDefault(node => node.ID == nod));
+            }
+
+            foreach(var node in graph.Nodes.ToList().Where(node => nodesToRemove.Any(p => p.ID == node.ID)))
+                graph.Nodes.Remove(node);
+        }
 
         public StringBuilder GetVersion(IVersionInfo versionInfo)
         {
