@@ -8,6 +8,7 @@ namespace Warewolf.UITests.Tools.Resources
     public class DotNet_DLL
     {
         [TestMethod]
+		[TestCategory("Tools")]
         public void DotNetDLLToolUITest()
         {
             Uimap.Drag_DotNet_DLL_Connector_Onto_DesignSurface();

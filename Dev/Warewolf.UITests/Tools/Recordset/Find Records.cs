@@ -16,6 +16,7 @@ namespace Warewolf.UITests.Tools
     public class Find_Records
     {
         [TestMethod]
+		[TestCategory("Tools")]
         public void FindRecordsToolUITest()
         {
             Uimap.Drag_Toolbox_Find_Index_Onto_DesignSurface();

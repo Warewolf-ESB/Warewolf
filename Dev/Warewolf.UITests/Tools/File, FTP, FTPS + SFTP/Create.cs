@@ -8,6 +8,7 @@ namespace Warewolf.UITests.Tools
     public class Create
     {
         [TestMethod]
+		[TestCategory("Tools")]
         public void CreateToolUITest()
         {
             Uimap.Drag_Toolbox_Create_Onto_DesignSurface();
