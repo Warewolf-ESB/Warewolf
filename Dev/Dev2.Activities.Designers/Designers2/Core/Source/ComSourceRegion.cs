@@ -41,7 +41,7 @@ namespace Dev2.Activities.Designers2.Core.Source
             Dependants = new List<IToolRegion>();
             NewSourceCommand = new DelegateCommand(model.CreateNewSource);
             EditSourceCommand = new DelegateCommand(() => model.EditSource(SelectedSource), CanEditSource);
-            var sources = model.RetrieveSources().OrderBy(source => source.Name);
+            var sources = model.RetrieveSources().OrderBy(source => source.ResourceName);
             Sources = sources.ToObservableCollection();
             IsEnabled = true;
             _modelItem = modelItem;

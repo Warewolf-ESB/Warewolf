@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Dev2.Common.Common;
 using Warewolf.Resource.Errors;
@@ -127,6 +128,7 @@ namespace WarewolfParserInterop
           }
       }
 
+      [SuppressMessage("ReSharper", "UnusedMember.Global")]
       public bool Apply (Func<T,T> action )
       {
           for(int i = 0; i < _count; i++)
@@ -171,7 +173,8 @@ namespace WarewolfParserInterop
 
       public int Length => _values.Length;
 
-      public WarewolfAtomList<T> DeletePosition(int position)
+        [SuppressMessage("ReSharper", "UnusedMember.Global")]
+        public WarewolfAtomList<T> DeletePosition(int position)
       {
           var lst = new WarewolfAtomList<T>(_defaultValue);
           for(int i = 0;i< Count;i++)
@@ -184,7 +187,8 @@ namespace WarewolfParserInterop
       }
 
 
-      public IEnumerable<int> Where(Func<T, bool> func)
+        [SuppressMessage("ReSharper", "UnusedMember.Global")]
+        public IEnumerable<int> Where(Func<T, bool> func)
       {
 
           for (int i = 0; i < _count; i++)

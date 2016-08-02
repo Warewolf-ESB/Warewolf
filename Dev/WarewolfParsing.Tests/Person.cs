@@ -1,7 +1,9 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 
-namespace Dev2.Common.Interfaces
+namespace WarewolfParsingTest
 {
+    [SuppressMessage("ReSharper", "UnusedMember.Global")]
     public class Person
     {
 

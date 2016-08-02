@@ -33,17 +33,18 @@ namespace Dev2.Runtime.ESB.Management.Services
                 values.TryGetValue("ComPluginSource", out resourceDefinition);
 
                 var src = serializer.Deserialize<ComPluginSourceDefinition>(resourceDefinition);
-                if(src.Path == null) 
-                    src.Path = string.Empty;
-                if (src.Path.EndsWith("\\"))
-                    src.Path = src.Path.Substring(0, src.Path.LastIndexOf("\\", StringComparison.Ordinal));
+                if(src.ResourcePath == null) 
+                    src.ResourcePath = string.Empty;
+                if (src.ResourcePath.EndsWith("\\"))
+                    src.ResourcePath = src.ResourcePath.Substring(0, src.ResourcePath.LastIndexOf("\\", StringComparison.Ordinal));
                 var res = new ComPluginSource
                 {
                     ResourceID = src.Id,
                     ClsId = src.ClsId,
                     Is32Bit = src.Is32Bit,
-                    ResourceName = src.Name,
-                    ResourcePath = src.Path
+                    ComName = src.SelectedDll.Name,
+                    ResourceName = src.ResourceName,
+                    ResourcePath = src.ResourcePath
                 };
                 ResourceCatalog.Instance.SaveResource(GlobalConstants.ServerWorkspaceID, res);
                 ServerExplorerRepo.UpdateItem(res);

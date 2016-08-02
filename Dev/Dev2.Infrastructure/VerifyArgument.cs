@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Warewolf.Resource.Errors;
+// ReSharper disable InconsistentNaming
 
 namespace Dev2
 {
@@ -40,7 +41,7 @@ namespace Dev2
         {
             if(args.Any(a => a.Value == null))
             {
-                throw new ArgumentNullException("", String.Format(ErrorResource.ArgumentsNotAllowedToBeNull, args.Where(a => a.Value == null).Aggregate("", (a, b) => string.Format("{0}{1}{2}", a, b.Key, Environment.NewLine))));
+                throw new ArgumentNullException(@"", String.Format(ErrorResource.ArgumentsNotAllowedToBeNull, args.Where(a => a.Value == null).Aggregate(@"", (a, b) => $"{a}{b.Key}{Environment.NewLine}")));
             }
         }
 
