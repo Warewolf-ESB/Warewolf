@@ -13,6 +13,7 @@ using Dev2.Interfaces;
 using Microsoft.Practices.Prism.PubSubEvents;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using Warewolf.Studio.Core;
 
 namespace Warewolf.Studio.ViewModels.Tests
 {
@@ -70,7 +71,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _selectedDllMock = new Mock<IFileListing>();
             _dispatcherAction = action => action();
             _updateManagerMock.SetupGet(it => it.ServerName).Returns(_warewolfServerName);
-            _pluginSourceMock.SetupGet(it => it.Name).Returns(_pluginSourceName);
+            _pluginSourceMock.SetupGet(it => it.ResourceName).Returns(_pluginSourceName);
             _pluginSourceMock.SetupGet(it => it.SelectedDll).Returns(_selectedDllMock.Object);
             _selectedDllMock.SetupGet(it => it.FullName).Returns(_selectedDllFullName);
             _asyncWorkerMock.Setup(
@@ -212,24 +213,6 @@ namespace Warewolf.Studio.ViewModels.Tests
             //assert
             Assert.IsFalse(result);
         }
-     
-
-        [TestMethod]
-        public void TestOkCommandCanExecuteGac()
-        {
-            //arrange
-            var selectedDllMock = new Mock<IDllListingModel>();
-            _target.SelectedDll = selectedDllMock.Object;
-            _target.Name = "GAC:someAssemblyName";
-            var itemMock = new Mock<IComPluginSource>();
-            _target.Item = itemMock.Object;
-
-            //act
-            var result = _target.OkCommand.CanExecute(null);
-
-            //assert
-            Assert.IsTrue(result);
-        }
 
         [TestMethod]
         public void TestOkCommandExecutePluginSourceNullPathNull()
@@ -250,7 +233,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //assert
             Assert.IsTrue(_changedPropertiesRequestServiceNameViewModel.Contains("Header"));
             Assert.AreNotEqual(Guid.NewGuid(), _targetRequestServiceNameViewModel.Item.Id);
-            Assert.AreEqual(expectedName, _targetRequestServiceNameViewModel.Item.Name);
+            Assert.AreEqual(expectedName, _targetRequestServiceNameViewModel.Item.ResourceName);
             Assert.AreEqual(expectedName, _targetRequestServiceNameViewModel.ResourceName);
             Assert.AreSame(selectedDllMock.Object, _targetRequestServiceNameViewModel.Item.SelectedDll);
             Assert.AreEqual(_targetRequestServiceNameViewModel.HeaderText, _targetRequestServiceNameViewModel.ResourceName);
@@ -277,7 +260,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //assert
             Assert.IsTrue(_changedPropertiesRequestServiceNameViewModel.Contains("Header"));
             Assert.AreNotEqual(Guid.NewGuid(), _targetRequestServiceNameViewModel.Item.Id);
-            Assert.AreEqual(expectedName, _targetRequestServiceNameViewModel.Item.Name);
+            Assert.AreEqual(expectedName, _targetRequestServiceNameViewModel.Item.ResourceName);
             Assert.AreEqual(expectedName, _targetRequestServiceNameViewModel.ResourceName);
             Assert.AreSame(selectedDllMock.Object, _targetRequestServiceNameViewModel.Item.SelectedDll);
             Assert.AreEqual(_targetRequestServiceNameViewModel.HeaderText, _targetRequestServiceNameViewModel.ResourceName);
@@ -292,8 +275,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             var expectedName = "someName";
             var expectedPath = "somePath";
             _pluginSourceMock.SetupGet(it => it.Id).Returns(expectedId);
-            _pluginSourceMock.SetupGet(it => it.Name).Returns(expectedName);
-            _pluginSourceMock.SetupGet(it => it.Path).Returns(expectedPath);
+            _pluginSourceMock.SetupGet(it => it.ResourceName).Returns(expectedName);
+            _pluginSourceMock.SetupGet(it => it.ResourcePath).Returns(expectedPath);
             var selectedDllMock = new Mock<IDllListingModel>();
             _targetPluginSource.SelectedDll = selectedDllMock.Object;
             _changedPropertiesPluginSource.Clear();
@@ -306,7 +289,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _updateManagerMock.Verify(it=>it.Save(_pluginSourceMock.Object));
             Assert.IsTrue(_changedPropertiesPluginSource.Contains("Header"));
             Assert.AreEqual(expectedId, _targetPluginSource.Item.Id);
-            Assert.AreEqual(expectedName, _targetPluginSource.Item.Name);
+            Assert.AreEqual(expectedName, _targetPluginSource.Item.ResourceName);
             Assert.AreSame(selectedDllMock.Object, _targetPluginSource.Item.SelectedDll);
         }
 
@@ -388,7 +371,6 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsFalse(_target.IsLoading);
             Assert.IsTrue(_target.DllListings.Any(it => it.FullName == fileListingName1));
             Assert.IsTrue(_target.DllListings.Any(it => it.FullName == fileListingName2));
-            Assert.AreEqual(fileListingName2, _target.GacItem.FullName);
         }
 
         #endregion Test commands
@@ -410,7 +392,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var result = _target.ToModel();
 
             //assert
-            Assert.AreEqual(expectedName, result.Name);
+            Assert.AreEqual(expectedName, result.ResourceName);
             Assert.AreSame(selectedDllMock.Object, result.SelectedDll);
         }
 
@@ -430,37 +412,6 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        public void TestFromModelGAC()
-        {
-            //arrange
-            var expectedName = "someexpectedName";
-            var expectedPath = "someexpectedPath";
-            var pluginSourceMock = new Mock<IComPluginSource>();
-            var selectedDllMock = new Mock<IFileListing>();
-            var selectedDllFullName = "GAC:someSelectedDLLFullName";
-            selectedDllMock.SetupGet(it => it.FullName).Returns(selectedDllFullName);
-            pluginSourceMock.SetupGet(it => it.SelectedDll).Returns(selectedDllMock.Object);
-            _pluginSourceMock.SetupGet(it => it.Name).Returns(expectedName);
-            _pluginSourceMock.SetupGet(it => it.Path).Returns(expectedPath);
-            var dllListingMock = new Mock<IDllListingModel>();
-            dllListingMock.SetupGet(it => it.Name).Returns("GAC");
-            var dllListingChildreMock = new Mock<IDllListingModel>();
-            dllListingMock.SetupGet(it => it.Children)
-                .Returns(new ObservableCollection<IDllListingModel>() { dllListingChildreMock.Object });
-            dllListingChildreMock.SetupGet(it => it.FullName).Returns(selectedDllFullName);
-            _targetPluginSource.DllListings = new ObservableCollection<IDllListingModel> {dllListingMock.Object};
-
-            //act
-            _targetPluginSource.FromModel(pluginSourceMock.Object);
-
-            //assert
-            dllListingMock.VerifySet(it=>it.IsExpanded = true);
-            dllListingMock.VerifySet(it => it.IsSelected = true);
-            Assert.AreSame(dllListingMock.Object, _targetPluginSource.SelectedDll);
-            Assert.AreEqual(expectedName, _targetPluginSource.Name);
-        }
-
-        [TestMethod]
         public void TestFromModelFileSystem()
         {
             //arrange
@@ -468,17 +419,16 @@ namespace Warewolf.Studio.ViewModels.Tests
             var expectedPath = "someexpectedPath";
             var pluginSourceMock = new Mock<IComPluginSource>();
             var selectedDllMock = new Mock<IFileListing>();
-            var selectedDllFullName = "someSelectedDLLFullName";
-            selectedDllMock.SetupGet(it => it.FullName).Returns(selectedDllFullName);
+            var selectedDllName = "someSelectedDLLName";
             pluginSourceMock.SetupGet(it => it.SelectedDll).Returns(selectedDllMock.Object);
-            _pluginSourceMock.SetupGet(it => it.Name).Returns(expectedName);
-            _pluginSourceMock.SetupGet(it => it.Path).Returns(expectedPath);
+            _pluginSourceMock.SetupGet(it => it.ResourceName).Returns(expectedName);
+            _pluginSourceMock.SetupGet(it => it.ResourcePath).Returns(expectedPath);
             var dllListingMock = new Mock<IDllListingModel>();
             dllListingMock.SetupGet(it => it.Name).Returns("File System");
             var dllListingChildrenMock = new Mock<IDllListingModel>();
             dllListingMock.SetupGet(it => it.Children)
                 .Returns(new ObservableCollection<IDllListingModel>() { dllListingChildrenMock.Object });
-            dllListingChildrenMock.SetupGet(it => it.Name).Returns(selectedDllFullName);
+            dllListingChildrenMock.SetupGet(it => it.Name).Returns(selectedDllName);
             _targetPluginSource.DllListings = new ObservableCollection<IDllListingModel>() { dllListingMock.Object };
 
             //act
@@ -511,7 +461,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //assert
             Assert.IsTrue(_changedPropertiesRequestServiceNameViewModel.Contains("Header"));
             Assert.AreNotEqual(Guid.NewGuid(), _targetRequestServiceNameViewModel.Item.Id);
-            Assert.AreEqual(expectedName, _targetRequestServiceNameViewModel.Item.Name);
+            Assert.AreEqual(expectedName, _targetRequestServiceNameViewModel.Item.ResourceName);
             Assert.AreEqual(expectedName, _targetRequestServiceNameViewModel.ResourceName);
             Assert.AreSame(selectedDllMock.Object, _targetRequestServiceNameViewModel.Item.SelectedDll);
             Assert.AreEqual(_targetRequestServiceNameViewModel.HeaderText, _targetRequestServiceNameViewModel.ResourceName);
@@ -541,7 +491,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //assert
             Assert.IsTrue(_changedPropertiesRequestServiceNameViewModel.Contains("Header"));
             Assert.AreNotEqual(Guid.NewGuid(), _targetRequestServiceNameViewModel.Item.Id);
-            Assert.AreEqual(expectedName, _targetRequestServiceNameViewModel.Item.Name);
+            Assert.AreEqual(expectedName, _targetRequestServiceNameViewModel.Item.ResourceName);
             Assert.AreEqual(expectedName, _targetRequestServiceNameViewModel.ResourceName);
             Assert.AreSame(selectedDllMock.Object, _targetRequestServiceNameViewModel.Item.SelectedDll);
             Assert.AreEqual(_targetRequestServiceNameViewModel.HeaderText, _targetRequestServiceNameViewModel.ResourceName);
@@ -558,8 +508,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             var expectedName = "someName";
             var expectedPath = "somePath";
             _pluginSourceMock.SetupGet(it => it.Id).Returns(expectedId);
-            _pluginSourceMock.SetupGet(it => it.Name).Returns(expectedName);
-            _pluginSourceMock.SetupGet(it => it.Path).Returns(expectedPath);
+            _pluginSourceMock.SetupGet(it => it.ResourceName).Returns(expectedName);
+            _pluginSourceMock.SetupGet(it => it.ResourcePath).Returns(expectedPath);
             var selectedDllMock = new Mock<IDllListingModel>();
             _targetPluginSource.SelectedDll = selectedDllMock.Object;
             _changedPropertiesPluginSource.Clear();
@@ -572,7 +522,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _updateManagerMock.Verify(it => it.Save(_pluginSourceMock.Object));
             Assert.IsTrue(_changedPropertiesPluginSource.Contains("Header"));
             Assert.AreEqual(expectedId, _targetPluginSource.Item.Id);
-            Assert.AreEqual(expectedName, _targetPluginSource.Item.Name);
+            Assert.AreEqual(expectedName, _targetPluginSource.Item.ResourceName);
         }
 
         [TestMethod]
@@ -625,25 +575,9 @@ namespace Warewolf.Studio.ViewModels.Tests
         {
             //arrange
             var selectedDllMock = new Mock<IDllListingModel>();
+            selectedDllMock.SetupGet(it => it.ClsId).Returns("ClsId");
             _target.SelectedDll = selectedDllMock.Object;
-            _target.Name = "someAssemblyName.dll";
-            var itemMock = new Mock<IComPluginSource>();
-            _target.Item = itemMock.Object;
-
-            //act
-            var result = _target.CanSave();
-
-            //assert
-            Assert.IsTrue(result);
-        }
-
-        [TestMethod]
-        public void TestCanSaveGac()
-        {
-            //arrange
-            var selectedDllMock = new Mock<IDllListingModel>();
-            _target.SelectedDll = selectedDllMock.Object;
-            _target.Name = "GAC:someAssemblyName";
+            _target.AssemblyName = "someAssemblyName.dll";
             var itemMock = new Mock<IComPluginSource>();
             _target.Item = itemMock.Object;
 
@@ -788,7 +722,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //arrange
             var expectedValue = "someResourceName";
             var pluginSourceName = "pluginSourceName";
-            _pluginSourceMock.SetupGet(it => it.Name).Returns(pluginSourceName);
+            _pluginSourceMock.SetupGet(it => it.ResourceName).Returns(pluginSourceName);
             var expectedHeader = pluginSourceName + " *";
             var expectedHeaderText = pluginSourceName;
             _changedPropertiesPluginSource.Clear();
@@ -816,7 +750,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _targetPluginSource.PropertyChanged += (sender, args) => { _changedPropertiesPluginSource.Add(args.PropertyName); };
             var expectedValue = "someResourceName";
             var pluginSourceName = "pluginSourceName";
-            _pluginSourceMock.SetupGet(it => it.Name).Returns(pluginSourceName);
+            _pluginSourceMock.SetupGet(it => it.ResourceName).Returns(pluginSourceName);
             var expectedHeader = pluginSourceName + " *";
             var expectedHeaderText = pluginSourceName;
             _changedPropertiesPluginSource.Clear();
@@ -868,7 +802,6 @@ namespace Warewolf.Studio.ViewModels.Tests
             //asert
             Assert.AreSame(expectedValueMock.Object, value);
             Assert.IsTrue(_changedProperties.Contains("SelectedDll"));
-            expectedValueMock.VerifySet(it=>it.IsExpanded = true);
         }
 
         [TestMethod]
@@ -904,22 +837,6 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        public void TestGacItem()
-        {
-            //arrange
-            var expectedValueMock = new Mock<IDllListingModel>();
-            _changedProperties.Clear();
-
-            //act
-            _target.GacItem = expectedValueMock.Object;
-            var value = _target.GacItem;
-
-            //asert
-            Assert.AreSame(expectedValueMock.Object, value);
-            Assert.IsTrue(_changedProperties.Contains("GacItem"));
-        }
-
-        [TestMethod]
         public void TestIsLoading()
         {
             //arrange
@@ -941,9 +858,18 @@ namespace Warewolf.Studio.ViewModels.Tests
             //arrange
             var expectedValue = "SearchTerm";
             var listingMock = new Mock<IDllListingModel>();
-            _target.DllListings = new ObservableCollection<IDllListingModel> { listingMock.Object };
+            listingMock.Setup(model => model.Name).Returns("DllSource1");
+            var listingMock1 = new Mock<IDllListingModel>();
+            listingMock1.Setup(model => model.Name).Returns("SearchTerm");
+            var listingMock2 = new Mock<IDllListingModel>();
+            listingMock2.Setup(model => model.Name).Returns("DllSource1");
+            var originalList = new AsyncObservableCollection<IDllListingModel> { listingMock.Object, listingMock1.Object, listingMock2.Object };
+            
+            _target.DllListings = new ObservableCollection<IDllListingModel> { listingMock.Object,listingMock1.Object,listingMock2.Object };
             _changedProperties.Clear();
 
+            PrivateObject p = new PrivateObject(_target);
+            p.SetField("_originalDllListings", originalList);
             //act
             _target.SearchTerm = expectedValue;
             var value = _target.SearchTerm;
@@ -952,7 +878,21 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual(expectedValue, value);
             Assert.IsTrue(_changedProperties.Contains("DllListings"));
             Assert.IsTrue(_changedProperties.Contains("SearchTerm"));
-            listingMock.Verify(it=>it.Filter(expectedValue));
+
+            Assert.AreEqual(1,_target.DllListings.Count);
+            Assert.AreEqual(expectedValue, _target.DllListings[0].Name);
+
+            expectedValue = "";
+            //act
+            _target.SearchTerm = expectedValue;
+            value = _target.SearchTerm;
+
+            //asert
+            Assert.AreEqual(expectedValue, value);
+            Assert.IsTrue(_changedProperties.Contains("DllListings"));
+            Assert.IsTrue(_changedProperties.Contains("SearchTerm"));
+
+            Assert.AreEqual(3, _target.DllListings.Count);
         }
 
         #endregion Test properties

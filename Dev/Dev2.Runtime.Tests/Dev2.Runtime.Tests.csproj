@@ -281,7 +281,7 @@
     <None Include="DynamicServicesHostTests.cs" />
     <Compile Include="Services\HostSecureConfigTests.cs" />
     <Compile Include="Services\MockServiceExecutionAbstract.cs" />
-    <Compile Include="Services\MoveItemService.cs" />
+    <Compile Include="Services\MoveItemsServiceTest.cs" />
     <Compile Include="Services\RenameCategoryResourceTests.cs" />
     <Compile Include="Services\RenameItemsTest.cs" />
     <Compile Include="Services\RollBackToTest.cs" />

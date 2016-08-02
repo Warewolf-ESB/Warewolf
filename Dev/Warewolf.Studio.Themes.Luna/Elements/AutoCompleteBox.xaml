@@ -338,7 +338,7 @@
                         </MultiTrigger>
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
-                                <Condition Property="ui:IntellisenseTextBox.AllowUserInsertLine" Value="True" />
+                                <Condition Property="AllowUserInsertLine" Value="True" />
                             </MultiTrigger.Conditions>
                             <MultiTrigger.Setters>
                                 <Setter Property="Style" TargetName="Text" Value="{StaticResource AcceptReturnTextBoxStyle}" />
@@ -347,7 +347,7 @@
                         </MultiTrigger>
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
-                                <Condition Property="ui:IntellisenseTextBox.AllowUserInsertLine" Value="True" />
+                                <Condition Property="AllowUserInsertLine" Value="True" />
                                 <Condition Property="Text" Value="" />
                             </MultiTrigger.Conditions>
                             <MultiTrigger.Setters>

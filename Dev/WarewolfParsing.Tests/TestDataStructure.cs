@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json.Linq;
-using Dev2.Common.Interfaces;
 // ReSharper disable InconsistentNaming
 
 namespace WarewolfParsingTest

@@ -13,7 +13,7 @@ namespace Dev2.Common.Interfaces
     public interface IServer:IResource
     {
         //Task<bool> Connect();
-        Task<IExplorerItem> LoadExplorer();
+        Task<IExplorerItem> LoadExplorer(bool reloadCatalogue = false);
         IList<IServer> GetServerConnections();
         IList<IToolDescriptor> LoadTools();
         [JsonIgnore]

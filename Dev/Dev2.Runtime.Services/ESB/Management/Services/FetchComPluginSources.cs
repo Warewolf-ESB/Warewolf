@@ -36,13 +36,13 @@ namespace Dev2.Runtime.ESB.Management.Services
                     return new ComPluginSourceDefinition()
                     {
                         Id = res.ResourceID,
-                        Name = res.ResourceName,
-                        Path = res.ResourcePath,
+                        ResourceName = res.ResourceName,
+                        ResourcePath = res.ResourcePath,
                         ClsId = res.ClsId,
                         Is32Bit = res.Is32Bit,
                         SelectedDll = new DllListing
                         {
-                            Name = res.ResourceName,
+                            Name = res.ComName,
                             ClsId = res.ClsId,
                             Is32Bit = res.Is32Bit,
                             Children = new IFileListing[0]

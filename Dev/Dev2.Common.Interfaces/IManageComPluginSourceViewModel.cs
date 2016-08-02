@@ -13,7 +13,6 @@ namespace Dev2.Common.Interfaces
         string SearchTerm { get; set; }
         ICommand ClearSearchTextCommand { get; }
         ICommand RefreshCommand { get; set; }
-        IDllListingModel GacItem { get; }
         string AssemblyName { get; set; }
     }
 }

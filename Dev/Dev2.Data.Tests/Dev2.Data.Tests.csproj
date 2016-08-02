@@ -148,7 +148,6 @@
     <Compile Include="DecisionsTests\NotStartsWithTests.cs" />
     <Compile Include="Dev2ColumnTests.cs" />
     <Compile Include="EnumTests\enTypeOfSystemInformationTests.cs" />
-    <Compile Include="EnvironmentIndexIteratorTests.cs" />
     <Compile Include="IndexListIndexIteratorTests.cs" />
     <Compile Include="PulseTrackerTests.cs" />
     <Compile Include="ServiceModel\SharePointSourceTests.cs" />

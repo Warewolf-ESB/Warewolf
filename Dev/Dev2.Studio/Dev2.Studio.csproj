@@ -378,6 +378,9 @@
       <DependentUpon>SecurityView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Settings\Security\SecurityViewModel.cs" />
+    <Compile Include="Settings\SettingsView.xaml.cs">
+      <DependentUpon>SettingsView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Settings\SettingsViewModel.cs" />
     <Compile Include="Utils\OpeningWorkflowsHelper.cs" />
     <Compile Include="Utils\ResourceChangeHandler.cs" />
@@ -453,7 +456,6 @@
     <Compile Include="Webs\WebHelper.cs" />
     <Compile Include="Webs\Callbacks\Dev2DecisionCallbackHandler.cs" />
     <Compile Include="ViewModels\DependencyVisualization\DependencyVisualiserViewModel.cs" />
-    <Compile Include="AppResources\ExtendedControls\AutoLayoutGrid.cs" />
     <Compile Include="AppResources\ExtensionMethods\FrameworkElementExtensionMethods.cs" />
     <Compile Include="Bootstrapper.cs" />
     <Compile Include="Diagnostics\DebugOutputFilterStrategy.cs" />
@@ -550,6 +552,10 @@
     <Page Include="Settings\Security\SecurityView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Settings\SettingsView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Themes\Brushes.xaml">
       <SubType>Designer</SubType>
@@ -918,6 +924,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="AppResources\ExtendedControls\" />
     <Folder Include="AppResources\TextEditorCompletion\" />
     <Folder Include="CustomControls\Connections\" />
   </ItemGroup>

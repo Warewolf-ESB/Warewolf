@@ -1,10 +1,8 @@
-using System;
 using System.Collections.Generic;
 using Dev2.Data.Binary_Objects;
 using Dev2.Data.MathOperations;
 using Dev2.Data.SystemTemplates;
 using Dev2.DataList.Contract;
-using Dev2.DataList.Contract.EqualityComparers;
 using Dev2.Runtime.ServiceModel.Data;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -25,35 +23,7 @@ namespace Dev2.Data.Tests
             Assert.IsNotNull(DataListConstants.RowGrowthFactor);
         }
 
-        [TestMethod]
-        public void Dev2ColumnComparer_ShouldHave()
-        {
-            Dev2ColumnComparer comparer = Dev2ColumnComparer.Instance;
-            Assert.IsNotNull(comparer);
-        }
-
-        [TestMethod]
-        public void Dev2ColumnComparer_GetHashCode_ShouldHaveHashCode()
-        {
-            Dev2ColumnComparer comparer = Dev2ColumnComparer.Instance;
-            Assert.IsNotNull(comparer);
-            var dev2Column = DataListFactory.CreateDev2Column("", "", false, enDev2ColumnArgumentDirection.None);
-            var hashCode = comparer.GetHashCode(dev2Column);
-            Assert.IsNotNull(hashCode);
-        }
-
-        [TestMethod]
-        public void Dev2ColumnComparer_Equals_Should()
-        {
-            Dev2ColumnComparer comparer = Dev2ColumnComparer.Instance;
-            Assert.IsNotNull(comparer);
-            var dev2Column = DataListFactory.CreateDev2Column("", "Value", false, enDev2ColumnArgumentDirection.None);
-            var dev2Column2 = DataListFactory.CreateDev2Column("", "SomeValue", false,
-                enDev2ColumnArgumentDirection.Input);
-            var equals = comparer.Equals(dev2Column, dev2Column2);
-            Assert.IsFalse(equals);
-        }
-
+        
         [TestMethod]
         public void GivenResourceName_ResourceForTree_ToString_ShouldReturtnResourceName()
         {
@@ -86,17 +56,7 @@ namespace Dev2.Data.Tests
             Assert.AreEqual("</SomeName>", inputDefinition.EndTagReplace);
             Assert.IsFalse(inputDefinition.IsEvaluated);
         }
-
-        [TestMethod]
-        public void RecordsetNotFoundException_ShouldHaveConstructor()
-        {
-            var definition = new RecordsetNotFoundException();
-            Assert.IsNotNull(definition);
-            var foundException = new RecordsetNotFoundException("Error Message");
-            Assert.IsNotNull(foundException);
-            var notFoundException = new RecordsetNotFoundException("Error Message", new Exception());
-            Assert.IsNotNull(notFoundException);
-        }
+       
 
         [TestMethod]
         public void SearchTO_ShouldHaveConstructor()
@@ -117,21 +77,7 @@ namespace Dev2.Data.Tests
             Assert.AreEqual("someFunction", evaluationFunctionTo.Function);
         }
 
-        [TestMethod]
-        public void LoopedIndexIterator_ShouldHaveConstructor()
-        {
-            var indexIterator = new LoopedIndexIterator(2,1);
-            Assert.IsNotNull(indexIterator);
-            Assert.IsTrue(indexIterator.HasMore());
-        }
-
-        [TestMethod]
-        public void LoopedIndexIterator_MaxIndex_ShouldReturn2()
-        {
-            var indexIterator = new LoopedIndexIterator(2,1);
-            Assert.IsNotNull(indexIterator);
-            Assert.AreEqual(2, indexIterator.MaxIndex());
-        }
+        
         [TestMethod]
         public void ListOfIndex_ShouldHaveConstructor()
         {

@@ -10,11 +10,13 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Xml.Linq;
 using Dev2.Common.Interfaces.Data;
 
 namespace Dev2.Runtime.Hosting
 {
+    [SuppressMessage("ReSharper", "UnusedMember.Global")]
     public class ResourceUpgrade:IResourceUpgrade
     {
         public ResourceUpgrade( Func<XElement, XElement> upgradeFunc)
