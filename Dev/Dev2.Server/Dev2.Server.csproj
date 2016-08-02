@@ -344,10 +344,6 @@
       <Project>{b3d070e0-11c1-4c1c-81a5-e680c1494945}</Project>
       <Name>Warewolf.Storage</Name>
     </ProjectReference>
-    <ProjectReference Include="..\WarewolfCOMIPC\WarewolfCOMIPC.csproj">
-      <Project>{d58ab24f-c45b-4df1-9cde-54aff7995513}</Project>
-      <Name>WarewolfCOMIPC</Name>
-    </ProjectReference>
     <ProjectReference Include="..\WarewolfParserInterop\WarewolfParserInterop.csproj">
       <Project>{6eb59eee-4e16-4f29-b1b0-715e56e9139d}</Project>
       <Name>WarewolfParserInterop</Name>
@@ -394,7 +390,8 @@
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>xcopy /Y /E /F /D "$(SolutionDir)Resources - Release" "$(TargetDir)"
-if "$(ConfigurationName)"=="Debug" xcopy /Y /E /F /D "$(SolutionDir)Resources - Debug" "$(TargetDir)"</PostBuildEvent>
+if "$(ConfigurationName)"=="Debug" xcopy /Y /E /F /D "$(SolutionDir)Resources - Debug" "$(TargetDir)"
+xcopy /Y "$(SolutionDir)WarewolfCOMIPC\bin\Debug\WarewolfCOMIPC.exe" "$(TargetDir)"</PostBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
     <PreBuildEvent>copy /Y "$(SolutionDir)Binaries\Trackerbird.x64.dll" "$(TargetDir)"

@@ -1,6 +1,8 @@
 ﻿using System;
-using System.Collections;
+using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using WarewolfCOMIPC.Client;
+
 // ReSharper disable InconsistentNaming
 
 namespace WarewolfCOMIPC.Test
@@ -34,14 +36,14 @@ namespace WarewolfCOMIPC.Test
             //---------------Assert Precondition----------------
 
             //---------------Execute Test ----------------------
-            using (Client.Client client = new Client.Client())
+           /* using (Client.Client client = new Client.Client())
             {
-                var execute = client.Invoke(classId, "", "GetMethods", new object[] { });
-                var enumerable = execute as IList;
+                var execute = client.Invoke(classId, "","GetMethods", new object[] { });
+                var enumerable = execute as List<MethodInfoTO>;
                 Assert.IsNotNull(enumerable);
                 //---------------Test Result -----------------------
-                Assert.AreNotEqual(0, enumerable.Count);
-            }
+                Assert.AreNotEqual(10, enumerable.Count);
+            }*/
            
         }
     }

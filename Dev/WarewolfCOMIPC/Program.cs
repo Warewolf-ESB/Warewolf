@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.IO.Pipes;
 using System.Linq;
-using System.Reflection;
+using System.Runtime.Serialization.Formatters;
 using Newtonsoft.Json;
 using WarewolfCOMIPC.Client;
 // ReSharper disable NonLocalizedString
@@ -83,10 +83,26 @@ namespace WarewolfCOMIPC
                 Console.WriteLine("Executing GeMethods for:" + data.CLSID);
                 var type = Type.GetTypeFromCLSID(data.CLSID, true);
                 var objectInstance = Activator.CreateInstance(type);
-                List<MethodInfo> methodInfos = objectInstance.GetType().GetMethods().ToList();
+                var dict = new Dictionary<string, List<ParameterInfoTO>>();
+
+                var methods = objectInstance.GetType().GetMethods();
+                List<MethodInfoTO> methodInfos = methods
+                    .Select(info => new MethodInfoTO
+                    {
+                        Name = info.Name,
+                        Parameters = info
+                                         .GetParameters()
+                                         .Select(parameterInfo => new ParameterInfoTO
+                                         {
+                                             Name = parameterInfo.Name,
+                                             DefaultValue = parameterInfo.DefaultValue,
+                                             IsRequired = parameterInfo.IsOptional,
+                                             TypeName = parameterInfo.ParameterType.AssemblyQualifiedName
+                                         }).ToList()
+                    }).ToList();
                 Console.WriteLine($"Got {1} mrthods");
                 var sw = new StreamWriter(pipe);
-                Console.WriteLine("Serializing and sending methods for:" + type.FullName);
+                Console.WriteLine("Serializing and sending methods for:" + type.FullName);                
                 formatter.Serialize(sw, methodInfos);
                 sw.Flush();
                 Console.WriteLine("Sent methods for:" + type.FullName);
