@@ -164,7 +164,7 @@ namespace Warewolf.AcceptanceTesting.ComDll
         public void WhenISelectFromSourceListAsTheSource(string source)
         {
             var vm = _scenarioContext.Get<ComDllViewModel>("ViewModel");
-            vm.SourceRegion.SelectedSource = SourceDefinitions().FirstOrDefault(definition => definition.Name == source);
+            vm.SourceRegion.SelectedSource = SourceDefinitions().FirstOrDefault(definition => definition.ResourceName == source);
         }
 
         private IEnumerable<IComPluginSource> SourceDefinitions()
@@ -173,13 +173,13 @@ namespace Warewolf.AcceptanceTesting.ComDll
             {
                 new ComPluginSourceDefinition
                 {
-                    Name = "ComDllSource"
+                    ResourceName = "ComDllSource"
                     ,
                     ClsId = "00000514-0000-0010-8000-00AA006D2EA4"
                     ,
                     Id = Guid.NewGuid()
                     ,
-                    Path = "Test_path"
+                    ResourcePath = "Test_path"
                 }
             });
         }
@@ -189,14 +189,14 @@ namespace Warewolf.AcceptanceTesting.ComDll
         {
             var vm = _scenarioContext.Get<ComDllViewModel>("ViewModel");
             vm.SourceRegion.EditSourceCommand.Execute(null);
-            vm.SourceRegion.SelectedSource = SourceDefinitions().FirstOrDefault(definition => definition.Name == "ComDllSource");
+            vm.SourceRegion.SelectedSource = SourceDefinitions().FirstOrDefault(definition => definition.ResourceName == "ComDllSource");
         }
 
         [Then(@"the Comdll Source window is opened with ComDllSource source")]
         public void ThenTheComdllSourceWindowIsOpenedWithComDllSourceSource()
         {
             var vm = _scenarioContext.Get<ComDllViewModel>("ViewModel");
-            vm.SourceRegion.SelectedSource = SourceDefinitions().FirstOrDefault(definition => definition.Name == "ComDllSource");
+            vm.SourceRegion.SelectedSource = SourceDefinitions().FirstOrDefault(definition => definition.ResourceName == "ComDllSource");
             var model = _scenarioContext.Get<Mock<IComPluginServiceModel>>("Model");
             model.Verify(serviceModel => serviceModel.EditSource(It.IsAny<IComPluginSource>()));
         }

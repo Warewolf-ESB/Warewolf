@@ -53,7 +53,7 @@ namespace Dev2.Activities.Designers.Tests.Core.ComDll
             var id = Guid.NewGuid();
             var act = new DsfComDllActivity { SourceId = id };
             var src = new Mock<IComPluginServiceModel>();
-            var dotNetsrc = new ComPluginSourceDefinition { Id = id, Name = "johnny" };
+            var dotNetsrc = new ComPluginSourceDefinition { Id = id, ResourceName = "johnny" };
             var action = new PluginAction { FullName = "bravo", Method = "bravo", ReturnType = typeof(string), Variables = new List<INameValue>()};
             src.Setup(a => a.RetrieveSources()).Returns(new ObservableCollection<IComPluginSource>() { dotNetsrc });
 
@@ -116,10 +116,10 @@ namespace Dev2.Activities.Designers.Tests.Core.ComDll
             var id = Guid.NewGuid();
             var act = new DsfComDllActivity { SourceId = id };
             var src = new Mock<IComPluginServiceModel>();
-            var dotNetsrc = new ComPluginSourceDefinition { Id = id, Name = "bob" };
+            var dotNetsrc = new ComPluginSourceDefinition { Id = id, ResourceName = "bob" };
             var action = new PluginAction { FullName = "bravo" };
 
-            var s2 = new ComPluginSourceDefinition { Id = Guid.NewGuid(), Name = "bob" };
+            var s2 = new ComPluginSourceDefinition { Id = Guid.NewGuid(), ResourceName = "bob" };
             var action1 = new PluginAction { FullName = "bravo" };
             src.Setup(a => a.RetrieveSources()).Returns(new ObservableCollection<IComPluginSource>() { dotNetsrc, s2 });
 
