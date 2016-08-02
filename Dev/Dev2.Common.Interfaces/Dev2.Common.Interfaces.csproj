@@ -177,9 +177,7 @@
     <Compile Include="Data\IUpgradePath.cs" />
     <Compile Include="Data\TO\IErrorResultTO.cs" />
     <Compile Include="DB\IDatabaseService.cs" />
-    <Compile Include="DB\IDataProviderSanitizer.cs" />
     <Compile Include="DB\IDbAction.cs" />
-    <Compile Include="DB\IDBHelper.cs" />
     <Compile Include="DB\IDbServiceModel.cs" />
     <Compile Include="DB\IServiceInput.cs" />
     <Compile Include="DB\IServiceOutputMapping.cs" />
