@@ -8,6 +8,7 @@ namespace Warewolf.UITests.Tools.Utility
     public class Calculate
     {
         [TestMethod]
+		[TestCategory("Tools")]
         public void CalculateToolUITest()
         {
             Uimap.Drag_Toolbox_Calculate_Onto_DesignSurface();

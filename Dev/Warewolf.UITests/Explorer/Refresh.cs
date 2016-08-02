@@ -28,6 +28,7 @@ namespace Warewolf.UITests
             Uimap.Click_Save_Ribbon_Button();
             Uimap.Enter_Service_Name_Into_Save_Dialog(WorkflowName);
             Uimap.Click_SaveDialog_Save_Button();
+            Uimap.Enter_Text_Into_Explorer_Filter(WorkflowName);
             Uimap.Click_Explorer_Refresh_Button();
             Uimap.WaitForSpinner(Uimap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);
             Assert.IsTrue(Uimap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.Exists, "Saved blank workflow does not appear in the explorer tree.");

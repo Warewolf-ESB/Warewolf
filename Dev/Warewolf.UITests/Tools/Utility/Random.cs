@@ -16,6 +16,7 @@ namespace Warewolf.UITests.Tools
     public class Random
     {
         [TestMethod]
+		[TestCategory("Tools")]
         public void RandomToolUITest()
         {
             Uimap.Drag_Toolbox_Random_Onto_DesignSurface();
