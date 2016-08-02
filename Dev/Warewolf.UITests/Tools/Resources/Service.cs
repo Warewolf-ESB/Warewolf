@@ -16,6 +16,7 @@ namespace Warewolf.UITests.Tools
     public class Service
     {
         [TestMethod]
+		[TestCategory("Tools")]
         public void ServiceToolUITest()
         {
             Uimap.Drag_Toolbox_Service_Picker_Onto_DesignSurface();

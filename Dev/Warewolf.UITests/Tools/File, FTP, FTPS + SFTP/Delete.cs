@@ -8,6 +8,7 @@ namespace Warewolf.UITests.Tools
     public class Delete
     {
         [TestMethod]
+		[TestCategory("Tools")]
         public void DeleteToolUITest()
         {
             Uimap.Drag_Toolbox_Delete_Onto_DesignSurface();

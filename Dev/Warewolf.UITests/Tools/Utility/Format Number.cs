@@ -16,6 +16,7 @@ namespace Warewolf.UITests.Tools
     public class Format_Number
     {
         [TestMethod]
+		[TestCategory("Tools")]
         public void FormatNumberToolUITest()
         {
             Uimap.Drag_Toolbox_Format_Number_Onto_DesignSurface();

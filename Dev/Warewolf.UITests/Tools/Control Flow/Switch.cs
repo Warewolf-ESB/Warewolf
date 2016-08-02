@@ -8,6 +8,7 @@ namespace Warewolf.UITests.Tools.Control_Flow
     public class Switch
     {
         [TestMethod]
+		[TestCategory("Tools")]
         public void SwitchToolUITest()
         {
             Uimap.Drag_Toolbox_Switch_Onto_DesignSurface();

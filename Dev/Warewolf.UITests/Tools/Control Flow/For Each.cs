@@ -8,6 +8,7 @@ namespace Warewolf.UITests.Tools.Control_Flow
     public class For_Each
     {
         [TestMethod]
+		[TestCategory("Tools")]
         public void ForEachToolUITest()
         {
             Uimap.Drag_Toolbox_For_Each_Onto_DesignSurface();

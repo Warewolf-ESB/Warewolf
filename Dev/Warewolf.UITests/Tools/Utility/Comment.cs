@@ -8,6 +8,7 @@ namespace Warewolf.UITests.Tools.Utility
     public class Comment
     {
         [TestMethod]
+		[TestCategory("Tools")]
         public void CommentToolUITest()
         {
             Uimap.Drag_Toolbox_Comment_Onto_DesignSurface();

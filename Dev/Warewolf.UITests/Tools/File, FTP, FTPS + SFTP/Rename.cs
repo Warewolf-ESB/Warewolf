@@ -16,6 +16,7 @@ namespace Warewolf.UITests.Tools
     public class Rename
     {
         [TestMethod]
+		[TestCategory("Tools")]
         public void RenameToolUITest()
         {
             Uimap.Drag_Toolbox_Rename_Onto_DesignSurface();
