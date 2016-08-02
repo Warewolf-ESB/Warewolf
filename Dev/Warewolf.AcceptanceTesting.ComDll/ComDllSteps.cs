@@ -175,11 +175,13 @@ namespace Warewolf.AcceptanceTesting.ComDll
                 {
                     Name = "ComDllSource"
                     ,
-                    ClsId = "00000514-0000-0010-8000-00AA006D2EA4"
+                    ClsId = "00000507-0000-0010-8000-00AA006D2EA4"
                     ,
-                    Id = Guid.NewGuid()
+                    Id = new Guid("4ef43652-655e-440a-b25a-0b1eb149ad04")
                     ,
                     Path = "Test_path"
+                    ,
+                    Is32Bit = false
                 }
             });
         }
@@ -246,6 +248,7 @@ namespace Warewolf.AcceptanceTesting.ComDll
                     Method = "ToString"
                     ,
                     Inputs = ServiceInputs.ToList()
+                    
                 }
             };
         }
@@ -300,8 +303,6 @@ namespace Warewolf.AcceptanceTesting.ComDll
             activity.ExeTool();
         }
 
-
-
         [Then(@"The result is returned with error ""(.*)""")]
         public void ThenTheResultIsReturnedWithError(string errorMessage)
         {
@@ -322,6 +323,7 @@ namespace Warewolf.AcceptanceTesting.ComDll
                     Value = "test"
                     ,
                     TypeName = typeof(void).Name
+                    
                 } };
             }
         }
@@ -347,7 +349,7 @@ namespace Warewolf.AcceptanceTesting.ComDll
             OutputDescription = new OutputDescription();
             Outputs = new List<IServiceOutputMapping>();
             Inputs = new List<IServiceInput>();
-            SourceId = new Guid("f9c016b6-9db4-4971-9634-60295bfc546f");
+            SourceId = new Guid("4ef43652-655e-440a-b25a-0b1eb149ad04");
             _dsfDataObject = dsfDataObject;
             ResourceID = Guid.NewGuid();
             Method = vm.ActionRegion.SelectedAction;
