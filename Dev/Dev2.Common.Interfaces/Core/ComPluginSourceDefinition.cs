@@ -8,9 +8,7 @@ namespace Dev2.Common.Interfaces.Core
 
         public bool Equals(IComPluginSource other)
         {
-            var @equals = SelectedDll?.Equals(other?.SelectedDll);
-            var selectedEquals = @equals != null && @equals.Value;
-            return string.Equals(Name, other?.Name) && Id.Equals(other?.Id) && Equals(ClsId, other?.ClsId) && bool.Equals(Is32Bit, other?.Is32Bit) && selectedEquals;
+            return string.Equals(Name, other.Name) && Id.Equals(other.Id) && Equals(ClsId, other.ClsId) && Is32Bit == other.Is32Bit && Id.Equals(other.Id) && Equals(SelectedDll, other.SelectedDll) && string.Equals(Path, other.Path);
         }
 
         /// <summary>
