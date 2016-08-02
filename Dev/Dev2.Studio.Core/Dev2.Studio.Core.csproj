@@ -296,7 +296,6 @@
     <Compile Include="Factories\DsfActivityFactory.cs" />
     <Compile Include="Helpers\FileHelper.cs" />
     <Compile Include="Helpers\RetryUtility.cs" />
-    <Compile Include="InterfaceImplementors\NetworkShareInformation.cs" />
     <Compile Include="Factories\DataListItemModelFactory.cs" />
     <Compile Include="DataList\DataListSingleton.cs" />
     <Compile Include="InterfaceImplementors\DeployDTO.cs" />
@@ -368,7 +367,6 @@
     <Compile Include="Models\QuickVariableInput\QuickVariableInputModel.cs" />
     <Compile Include="Models\ResourceModel.cs" />
     <Compile Include="Models\ServiceDebugInfoModel.cs" />
-    <Compile Include="Models\UserInterfaceLayoutModel.cs" />
     <Compile Include="Network\Enums.cs" />
     <Compile Include="Network\ServerProxy.cs" />
     <Compile Include="Network\WebServer.cs" />
