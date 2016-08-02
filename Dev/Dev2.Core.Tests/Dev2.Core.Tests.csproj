@@ -183,7 +183,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>TestStrings.resx</DependentUpon>
     </Compile>
-    <Compile Include="RecordsetSearch\AbstractRecsetSearchValidation_GenerateInputRange.cs" />
     <Compile Include="TokenizerTest.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -250,6 +249,7 @@
     <Folder Include="ConverterTests\Case\" />
     <Folder Include="Dev2.Network\" />
     <Folder Include="Logging\" />
+    <Folder Include="RecordsetSearch\" />
     <Folder Include="Repository\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

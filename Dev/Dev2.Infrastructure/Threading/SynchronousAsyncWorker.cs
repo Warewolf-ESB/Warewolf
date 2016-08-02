@@ -9,12 +9,14 @@
 */
 
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Threading;
 using System.Threading.Tasks;
 using Dev2.Common.Interfaces.Threading;
 
 namespace Dev2.Threading
 {
+    [SuppressMessage("ReSharper", "UnusedMember.Global")]
     public class SynchronousAsyncWorker : IAsyncWorker
     {
         public Task Start(Action backgroundAction, Action uiAction)
