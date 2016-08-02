@@ -23,7 +23,6 @@ using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Services.Security;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources.Enums;
-using Dev2.Studio.Core.Helpers;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Models;
 using Dev2.Threading;
@@ -688,7 +687,6 @@ namespace Dev2.Core.Tests.Environments
         public void EnvironmentRepositoryReadSessionWithNonExistingFileExpectedReturnsEmptyList()
         {
             var path = EnvironmentRepository.GetEnvironmentsFilePath();
-            var bakPath = RetryUtility.RetryMethod(() => BackupFile(path), 15, 1000, null);
 
             var source = new Mock<IEnvironmentModel>();
             var repo = new TestEnvironmentRespository(source.Object) { IsReadWriteEnabled = true };
@@ -696,14 +694,12 @@ namespace Dev2.Core.Tests.Environments
 
             Assert.AreEqual(0, result.Count);
 
-            RetryUtility.RetryAction(() => RestoreFile(path, bakPath), 15, 1000);
         }
 
         [TestMethod]
         public void EnvironmentRepositoryReadSessionWithOneEnvironmentExpectedReturnsOneEnvironment()
         {
             var path = EnvironmentRepository.GetEnvironmentsFilePath();
-            var bakPath = RetryUtility.RetryMethod(() => BackupFile(path), 15, 1000, null);
 
             var source = new Mock<IEnvironmentModel>();
             var repo = new TestEnvironmentRespository(source.Object) { IsReadWriteEnabled = true };
@@ -712,10 +708,6 @@ namespace Dev2.Core.Tests.Environments
 
             Assert.AreEqual(1, result.Count);
 
-            // ReSharper disable ImplicitlyCapturedClosure
-            RetryUtility.RetryAction(() => DeleteFile(path), 15, 1000);
-            // ReSharper restore ImplicitlyCapturedClosure
-            RetryUtility.RetryAction(() => RestoreFile(path, bakPath), 15, 1000);
         }
 
         #endregion
@@ -726,7 +718,6 @@ namespace Dev2.Core.Tests.Environments
         public void EnvironmentRepositoryWriteSessionWithNonExistingFileExpectedCreatesFile()
         {
             var path = EnvironmentRepository.GetEnvironmentsFilePath();
-            var bakPath = RetryUtility.RetryMethod(() => BackupFile(path), 15, 1000, null);
 
             var source = new Mock<IEnvironmentModel>();
             var repo = new TestEnvironmentRespository(source.Object) { IsReadWriteEnabled = true };
@@ -734,18 +725,13 @@ namespace Dev2.Core.Tests.Environments
 
             var exists = File.Exists(path);
             Assert.AreEqual(true, exists);
-
-            // ReSharper disable ImplicitlyCapturedClosure
-            RetryUtility.RetryAction(() => DeleteFile(path), 15, 1000);
-            // ReSharper restore ImplicitlyCapturedClosure
-            RetryUtility.RetryAction(() => RestoreFile(path, bakPath), 15, 1000);
+            
         }
 
         [TestMethod]
         public void EnvironmentRepositoryWriteSessionWithExistingFileExpectedOverwritesFile()
         {
             var path = EnvironmentRepository.GetEnvironmentsFilePath();
-            var bakPath = RetryUtility.RetryMethod(() => BackupFile(path), 15, 1000, null);
 
             var c1 = CreateMockConnection();
             var e1 = new EnvironmentModel(Guid.NewGuid(), c1.Object, new Mock<IResourceRepository>().Object);
@@ -764,11 +750,7 @@ namespace Dev2.Core.Tests.Environments
             xml = XElement.Load(path);
             actual = xml.Descendants("Environment").Count();
             Assert.AreEqual(2, actual);
-
-            // ReSharper disable ImplicitlyCapturedClosure
-            RetryUtility.RetryAction(() => DeleteFile(path), 15, 1000);
-            // ReSharper restore ImplicitlyCapturedClosure
-            RetryUtility.RetryAction(() => RestoreFile(path, bakPath), 15, 1000);
+            
         }
 
         #endregion

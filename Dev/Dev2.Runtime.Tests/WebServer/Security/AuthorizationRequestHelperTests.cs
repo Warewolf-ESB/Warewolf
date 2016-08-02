@@ -68,7 +68,6 @@ namespace Dev2.Tests.Runtime.WebServer.Security
             var hubs = new[]
             {
                 new Tuple<Type, string>(typeof(EsbHub), "esb"),
-                new Tuple<Type, string>(typeof(ResourcesHub), "resources")
             };
 
             foreach(var hub in hubs)
