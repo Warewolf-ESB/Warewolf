@@ -126,26 +126,7 @@ namespace Dev2.Runtime.Configuration.Tests.ViewModels
             Assert.AreEqual(1, mainViewModel.Errors.Count, "When the cancel callback throws an exception an error is expected.");
             Assert.AreEqual(Visibility.Visible, mainViewModel.ErrorsVisible, "When there are errors the ErrorsVisible property should have a value of visible.");
         }
-
-        [TestMethod]
-        public void SetSelectedSettingsObjectsExpectedSettingsViewModelActivated()
-        {
-            Configuration.Settings.Configuration config = new Configuration.Settings.Configuration("localhost");
-            MainViewModel mainViewModel = new MainViewModel(config.ToXml(), null, null, null);
-
-            var commService = new Mock<ICommunicationService>();
-
-            commService.Setup(s => s.GetResources(It.IsAny<string>())).Returns(new List<WorkflowDescriptor>());
-            commService.Setup(s => s.GetDataListInputs(It.IsAny<string>(), It.IsAny<string>()))
-                .Returns(new List<DataListVariable> { new DataListVariable { Name = "TestInput" } });
-
-            mainViewModel.CommunicationService = commService.Object;
-
-            mainViewModel.SelectedSettingsObjects = mainViewModel.SettingsObjects[0];
-
-            Assert.IsNotNull(mainViewModel.ActiveItem, "When a settings object is selected the viewmodel isnt activated");
-        }
-
+                
         [TestMethod]
         public void ClearErrorsCommandWhenThereAreErrorsExpectedErrorsCleared()
         {
