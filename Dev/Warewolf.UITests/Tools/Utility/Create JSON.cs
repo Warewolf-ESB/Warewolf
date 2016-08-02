@@ -8,6 +8,7 @@ namespace Warewolf.UITests.Tools.Utility
     public class Create_JSON
     {
         [TestMethod]
+		[TestCategory("Tools")]
         public void CreateJSONToolUITest()
         {
             Uimap.Drag_Toolbox_JSON_Onto_DesignSurface();

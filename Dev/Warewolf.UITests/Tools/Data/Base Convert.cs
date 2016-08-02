@@ -8,6 +8,7 @@ namespace Warewolf.UITests.Tools.Data
     public class Base_Convert
     {
         [TestMethod]
+		[TestCategory("Tools")]
         public void BaseConvertToolUITest()
         {
             Uimap.Drag_Toolbox_Base_Conversion_Onto_DesignSurface();

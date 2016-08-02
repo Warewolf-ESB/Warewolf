@@ -16,6 +16,7 @@ namespace Warewolf.UITests.Tools
     public class SMTP_Send
     {
         [TestMethod]
+		[TestCategory("Tools")]
         public void SMTPSendToolUITest()
         {
             Uimap.Drag_Toolbox_SMTP_Email_Onto_DesignSurface();

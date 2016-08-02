@@ -16,6 +16,7 @@ namespace Warewolf.UITests.Tools
     public class Move
     {
         [TestMethod]
+		[TestCategory("Tools")]
         public void MoveToolUITest()
         {
             Uimap.Drag_Toolbox_Move_Onto_DesignSurface();
