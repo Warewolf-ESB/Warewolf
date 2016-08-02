@@ -566,12 +566,12 @@ namespace Dev2.Studio.ViewModels
             var db = new ComPluginSource(resourceModel.WorkflowXaml.ToXElement());
             var def = new ComPluginSourceDefinition
             {
-                SelectedDll = new DllListing { ClsId = db.ClsId, Is32Bit = db.Is32Bit, Children = new Collection<IFileListing>(), IsDirectory = false },
+                SelectedDll = new DllListing { Name = db.ComName, ClsId = db.ClsId, Is32Bit = db.Is32Bit, Children = new Collection<IFileListing>(), IsDirectory = false },
                 Id = db.ResourceID,
                 ClsId = db.ClsId,
                 Is32Bit = db.Is32Bit,
-                Name = db.ResourceName
-
+                ResourceName = db.ResourceName,
+                ResourcePath = db.ResourcePath
             };
             var workSurfaceKey = WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.ComPluginSource);
             workSurfaceKey.EnvironmentID = resourceModel.Environment.ID;
