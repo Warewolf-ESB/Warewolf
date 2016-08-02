@@ -371,6 +371,20 @@ namespace System.Windows.Controls
             }
         }
 
+        public static readonly DependencyProperty AllowUserInsertLineProperty = DependencyProperty.Register("AllowUserInsertLine", typeof(bool), typeof(AutoCompleteBox), new PropertyMetadata(true));
+
+        public bool AllowUserInsertLine
+        {
+            get
+            {
+                return (bool)GetValue(AllowUserInsertLineProperty);
+            }
+            set
+            {
+                SetValue(AllowUserInsertLineProperty, value);
+            }
+        }
+
         #region public bool IsTextCompletionEnabled
         /// <summary>
         /// Gets or sets a value indicating whether the first possible match

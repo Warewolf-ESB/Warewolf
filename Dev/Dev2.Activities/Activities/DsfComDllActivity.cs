@@ -23,7 +23,7 @@ namespace Dev2.Activities
     [ToolDescriptorInfo("DotNetDll", "Com DLL", ToolType.Native, "6AEB1038-6332-46F9-8BDD-642DE4EA029E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Resources", "/Warewolf.Studio.Themes.Luna;component/Images.xaml")]
     public class DsfComDllActivity : DsfMethodBasedActivity
     {
-        protected string _result;
+        public string _result;
         public IPluginAction Method { get; set; }
         public INamespaceItem Namespace { get; set; }
         public IOutputDescription OutputDescription { get; set; }

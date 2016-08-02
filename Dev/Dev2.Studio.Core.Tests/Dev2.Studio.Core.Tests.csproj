@@ -221,7 +221,6 @@
     <Compile Include="ConverterTests\DateTimeToStringConverterTests.cs" />
     <Compile Include="ConverterTests\EmptyStringToVisibilityConverterTests.cs" />
     <Compile Include="ConverterTests\EmptyStringToBoolConverterTests.cs" />
-    <Compile Include="ConverterTests\MathFunctionToDoubleConverterTests.cs" />
     <Compile Include="ConverterTests\IntEnsureMinConverterTests.cs" />
     <Compile Include="ConverterTests\IntInRangeToVisibilityConverterTests.cs" />
     <Compile Include="DataList\ActivityDataMappingBuilderTest.cs" />
@@ -299,7 +298,6 @@
     <Compile Include="MainViewModelTest.cs" />
     <Compile Include="Dev2MockFactory.cs" />
     <Compile Include="ModelTests\DataListItemModelTest.cs" />
-    <Compile Include="Services\UserConfigurationServiceTests.cs" />
     <Compile Include="TestResourceRepository.cs" />
     <Compile Include="ResourceDesignerViewModelTest.cs" />
     <Compile Include="ResourceHelperTest.cs" />
@@ -315,7 +313,6 @@
     </Compile>
     <Compile Include="DebugProviderTests.cs" />
     <Compile Include="Controller\FlowControllerTests.cs" />
-    <Compile Include="UtilsTests\FrameWorkElementExtensionsTests.cs" />
     <Compile Include="Utils\AsyncWorkerTests.cs" />
     <Compile Include="ViewModelTests\QuickVariableInputModelTests.cs" />
     <Compile Include="ViewModelTests\BaseWorkSurfaceViewModelTests.cs" />

@@ -38,7 +38,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _studioUpdateManagerMock = new Mock<IStudioUpdateManager>();
             _explorerItemMock=new Mock<IExplorerItem>();
             _explorerItemMock.SetupGet(it => it.Children).Returns(new ObservableCollection<IExplorerItem>());
-            _serverMock.Setup(it => it.LoadExplorer()).ReturnsAsync(_explorerItemMock.Object);
+            _serverMock.Setup(it => it.LoadExplorer(false)).ReturnsAsync(_explorerItemMock.Object);
             _serverMock.SetupGet(it => it.UpdateRepository).Returns(_studioUpdateManagerMock.Object);
             _serverMock.SetupGet(it => it.ResourceName).Returns("someResName");
             _shellViewModelMock.SetupGet(it => it.LocalhostServer).Returns(_serverMock.Object);

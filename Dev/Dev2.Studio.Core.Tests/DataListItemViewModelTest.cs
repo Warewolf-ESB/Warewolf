@@ -8,10 +8,8 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using Caliburn.Micro;
 using Dev2.Studio.Core.Factories;
 using Dev2.Studio.Core.Interfaces.DataList;
-using Dev2.Studio.Core.Messages;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Core.Tests
@@ -24,7 +22,7 @@ namespace Dev2.Core.Tests
     ///to contain all DataListItemViewModelTest Unit Tests
     ///</summary>
     [TestClass]
-    public class DataListItemViewModelTest : IHandle<DataListItemSelectedMessage>
+    public class DataListItemViewModelTest
     {
 
         #region Locals
@@ -179,97 +177,7 @@ namespace Dev2.Core.Tests
 
         #endregion VerifyName Tests
 
-        //#region CheckForDuplicates Tests
-
-        //// Sashen - 17-10-2012 - This test case fails because when adding children, a parent is not set on the child
-        ///// <summary>
-        /////Checking if there are dublicates in the Data List
-        /////</summary>
-        //[TestMethod()]
-        //public void CheckForDuplicates() {
-
-        //    _dataListItemViewModel.AddChild(_helper.CreateDataListItemViewModel("Country", _mockDataListViewModel.Object));
-        //    _dataListItemViewModel.AddChild(_helper.CreateDataListItemViewModel("Country", _mockDataListViewModel.Object));
-        //    var lastItem = _dataListItemViewModel.Children[_dataListItemViewModel.Children.Count - 1];
-        //    _dataListItemViewModel.CheckForDuplicate(lastItem);
-        //    Assert.IsTrue(lastItem.ErrorMessage == "You cannot enter duplicate names in the Data List");
-        //}
-
-        //#endregion CheckForDuplicates Tests
-
-        //#region VerifyDataList Structure Tests
-
-        ///// <summary>
-        ///// Test to ensure logic behind VerifyDataListStructure method
-        ///// </summary>
-        //[TestMethod]
-        //public void VerifyDataListStructureDataListContainingChildren_Expected_DataListViewModelAddRowMethodCall() {
-        //    _mockDataListViewModel.Setup(dl => dl.AddRowIfAllRowsHaveData()).Verifiable();
-
-        //    _dataListItemModel.VerifyDataListStructure();
-        //    _mockDataListViewModel.Verify(dl => dl.AddRowIfAllRowsHaveData(), Times.Once());
-        //}
-
-        ///// <summary>
-        ///// Test that the DataListViewModel does not add empty rows if the datalist is empty
-        ///// </summary>
-        //[TestMethod]
-        //public void VerifyDataListStructureDataListEmptyDataList_Expected_DataListViewModelAddRowMethodCall() {
-        //    _mockDataListViewModel.Setup(dl => dl.AddRowIfAllRowsHaveData()).Verifiable();
-        //    _mockDataListViewModel.Setup(dl => dl.DataList).Returns(new OptomizedObservableCollection<IDataListItemModel>());
-
-        //    IDataListItemModel dlVM = _helper.CreateDataListItemViewModel("test", _mockDataListViewModel.Object);
-        //    _dataListItemModel.IsRoot = true;
-
-        //    _dataListItemModel.VerifyDataListStructure();
-
-        //    _mockDataListViewModel.Verify(dl => dl.AddRowIfAllRowsHaveData(), Times.Never());
-        //}
-
-        //#endregion VerifyDataList Structure Tests
-
-        //#region MatchesSearchFilter Tests
-
-        ///// <summary>
-        ///// Test to ensure that partial matches are made by the MatchesSearchFilter Method
-        ///// </summary>
-        //[TestMethod]
-        //public void MatchesSearchFilter_SearchStringMatchesItemInDataList_Expected_ReturnTrue() {
-        //    IDataListItemModel dataListItemViewModel = _helper.CreateDataListItemViewModel("UnitTestDataListItem", _mockDataListViewModel.Object);
-        //    bool actual = dataListItemViewModel.MatchesSearchFilter("UnitTest");
-        //    Assert.IsTrue(actual);
-        //}
-
-        ///// <summary>
-        ///// Test to ensure that non-related items are not returned as a Match by MatchesSearchFilter Method
-        ///// </summary>
-        //[TestMethod]
-        //public void MatchesSearchFilter_SearchStringDoesNotMatchDataListItem_Expected_ReturnFalse() {
-
-        //    int numberOfDataListItems = 10;
-        //    IDataListItemModel dataListItemViewModel = _helper.CreateDataListItemViewModel(string.Empty, _mockDataListViewModel.Object);
-        //    IList<IDataListItemModel> dataListItemViewModelList = _helper.CreateDataListItemViewModel("UniteTestDataListItem", numberOfDataListItems, _mockDataListViewModel.Object);
-        //    dataListItemViewModel.AddChildren(dataListItemViewModelList);
-        //    dataListItemViewModel.IsRoot = true;
-
-        //    bool actual = dataListItemViewModel.MatchesSearchFilter("NoneExistant");
-        //    Assert.IsFalse(actual);
-
-        //}
-
-        ///// <summary>
-        ///// Test to ensure that empty dataListViewModel does not return true when it is empty
-        ///// </summary>
-        //[TestMethod]
-        //public void MatchesSearchFilter_EmptyDataListItem_Expected_ReturnsFalse() {
-        //    IDataListItemModel dataListItemViewModel = _helper.CreateDataListItemViewModel(string.Empty, _mockDataListViewModel.Object);
-        //    dataListItemViewModel.IsRoot = true;
-
-        //    bool actual = dataListItemViewModel.MatchesSearchFilter("TestText");
-        //    Assert.IsFalse(actual);
-        //}
-
-        //#endregion MatchesSearchFilter Tests        
+         
 
         #region Static Method Tests
 
@@ -286,14 +194,6 @@ namespace Dev2.Core.Tests
         }
 
         #endregion Internal Test Methods
-
-        #region Implementation of IHandle<DataListItemSelectedMessage>
-
-        public void Handle(DataListItemSelectedMessage message)
-        {
-            MediatorRecieveTestMethod();
-        }
-
-        #endregion
+      
     }
 }

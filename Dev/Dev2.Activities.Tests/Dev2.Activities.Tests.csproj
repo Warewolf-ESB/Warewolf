@@ -182,7 +182,6 @@
     <Compile Include="ActivityTests\DropBox2016\Download\DropBoxDownloadTests.cs" />
     <Compile Include="ActivityTests\DropBox2016\Download\DsfDropBoxDownloadAcivtityTestShould.cs" />
     <Compile Include="ActivityTests\DropBox2016\Download\DsfDropBoxUploadAcivtityTestShould.cs" />
-    <Compile Include="ActivityTests\DropBox2016\DropboxFileNameValidatorShould.cs" />
     <Compile Include="ActivityTests\DropBox2016\DropboxFiles\DropboxFileListActivityShould.cs" />
     <Compile Include="ActivityTests\DropBox2016\DropboxFiles\DropboxFileReadTests.cs" />
     <Compile Include="ActivityTests\DropBox2016\DropboxListFolderResultShould.cs" />

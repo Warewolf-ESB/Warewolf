@@ -9,7 +9,6 @@
 */
 
 using System;
-using System.Linq;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Diagnostics;
 using Dev2.Diagnostics.Debug;
@@ -127,7 +126,6 @@ namespace Dev2.Tests.Diagnostics
             Assert.AreEqual(debugStateIn.EndTime, debugStateOut.EndTime);
             Assert.AreEqual(debugStateIn.SessionID, debugStateOut.SessionID);
 
-            Assert.IsTrue(debugStateOut.Inputs[0].FetchResultsList().SequenceEqual(debugStateIn.Inputs[0].FetchResultsList(), new DebugItemResultEqualityComparer()));
         }
 
         // ReSharper disable InconsistentNaming

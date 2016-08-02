@@ -91,6 +91,7 @@
                                       Grid.Row="1"
                                       Grid.Column="1" 
                                       Height="25"
+                                      AllowUserInsertLine="False"
                                       Margin="{StaticResource ControlBorderTop}"
                                       Style="{StaticResource AutoCompleteBoxStyle}"
                                       ToolTip="{x:Static languages:Core.ManageDbSourceServerNameTooltip}"
