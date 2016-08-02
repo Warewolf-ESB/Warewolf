@@ -16,6 +16,7 @@ namespace Warewolf.UITests.Tools
     public class Script
     {
         [TestMethod]
+		[TestCategory("Tools")]
         public void ScriptToolUITest()
         {
             Uimap.Drag_Toolbox_Script_Onto_DesignSurface();

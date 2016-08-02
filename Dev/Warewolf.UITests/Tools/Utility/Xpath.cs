@@ -16,6 +16,7 @@ namespace Warewolf.UITests.Tools
     public class Xpath
     {
         [TestMethod]
+		[TestCategory("Tools")]
         public void XpathToolUITest()
         {
             Uimap.Drag_Toolbox_XPath_Onto_DesignSurface();

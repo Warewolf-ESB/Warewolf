@@ -16,6 +16,7 @@ namespace Warewolf.UITests.Tools
     public class Write
     {
         [TestMethod]
+		[TestCategory("Tools")]
         public void WriteToolUITest()
         {
             Uimap.Drag_Toolbox_Write_File_Onto_DesignSurface();
