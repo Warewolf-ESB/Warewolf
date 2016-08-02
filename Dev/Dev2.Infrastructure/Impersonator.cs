@@ -17,6 +17,7 @@ using System.Security.Principal;
 
 namespace Dev2
 {
+    [SuppressMessage("ReSharper", "UnusedMember.Global")]
     public class Impersonator : IDisposable
     {
         // ReSharper disable InconsistentNaming

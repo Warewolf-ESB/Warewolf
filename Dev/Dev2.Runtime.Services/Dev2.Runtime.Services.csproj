@@ -292,7 +292,6 @@
     <Compile Include="Hosting\ResourceCatalogBuilder.cs" />
     <Compile Include="Hosting\ResourceCatalogPluginContainer.cs" />
     <Compile Include="Hosting\ResourceCatalogResultBuilder.cs" />
-    <Compile Include="Hosting\ResourceUpgrade.cs" />
     <Compile Include="Hosting\ResourceUpgrader.cs" />
     <Compile Include="Hosting\ResourceUpgraderFactory.cs" />
     <Compile Include="Hosting\ServerToolRepository.cs" />
@@ -337,7 +336,6 @@
     <Compile Include="Hosting\ManagementServiceResource.cs" />
     <Compile Include="Hosting\ResourceCatalogResult.cs" />
     <Compile Include="Network\IStudioNetworkSession.cs" />
-    <Compile Include="Network\StudioAccount.cs" />
     <Compile Include="Compiler\ServiceModelCompiler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ResourceCatalogImpl\Common.cs" />
