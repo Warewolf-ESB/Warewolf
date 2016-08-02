@@ -334,6 +334,7 @@
     <Compile Include="NameValue.cs" />
     <Compile Include="PathOperations\IResult.cs" />
     <Compile Include="Patterns\ISpookyLoadable.cs" />
+    <Compile Include="Person.cs" />
     <Compile Include="PluginServiceDefinition.cs" />
     <Compile Include="PopupController\IMessage.cs" />
     <Compile Include="PopupController\IPopupController.cs" />
