@@ -89,6 +89,24 @@ Given I create New Workflow
 	Then Validation is successful
 
 	
+Scenario: Generating com outputs
+Given I create New Workflow
+	And I drag Comdll tool onto the design surface 	
+	And EditButton is Disabled
+	And Comdll Source is Enabled
+	And Namespace is disabled
+	And Action is disabled
+	And New button is Enabled	
+	When I select "ComDllSource" from source list as the source
+	Then EditButton is Enabled
+	And Namespace is Enabled
+	And Action is Enabled
+	And I select Action
+	And GenerateOutput is disabled
+	And I click Generate output
+	Then Validation is successful
+	And I click fSix to Execute the tool the result is ""System.__ComObject""
+		
 Scenario: Executing com with valid source
 Given I create New Workflow
 	And I drag Comdll tool onto the design surface 	
