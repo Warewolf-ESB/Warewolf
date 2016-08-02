@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.IO.Pipes;
@@ -68,8 +69,6 @@ namespace WarewolfCOMIPC.Client
             var sr = new StreamReader(_pipe);
             var jsonTextReader = new JsonTextReader(sr);
             object result;
-            var is64BitOperatingSystem = Environment.Is64BitOperatingSystem;
-            var is64BitProcess = Environment.Is64BitProcess;
             switch (info.Execute)
             {
                 case Execute.GetType:
