@@ -21,7 +21,6 @@ using Dev2.Common.Interfaces.SaveDialog;
 using Dev2.Common.Interfaces.Threading;
 using Dev2.Interfaces;
 using Microsoft.Practices.Prism.Commands;
-using Microsoft.Practices.Prism.PubSubEvents;
 using Warewolf.Studio.Core;
 // ReSharper disable MemberCanBePrivate.Global
 // ReSharper disable UnusedAutoPropertyAccessor.Global
@@ -44,9 +43,10 @@ namespace Warewolf.Studio.ViewModels
         Task<IRequestServiceNameViewModel> _requestServiceNameViewModel;
         private bool _is32Bit;
         private string _clsId;
+        private AsyncObservableCollection<IDllListingModel> _originalDllListings;
 
         /// <exception cref="Exception">A delegate callback throws an exception.</exception>
-        public ManageComPluginSourceViewModel(IManageComPluginSourceModel updateManager, IEventAggregator aggregator, IAsyncWorker asyncWorker)
+        public ManageComPluginSourceViewModel(IManageComPluginSourceModel updateManager, Microsoft.Practices.Prism.PubSubEvents.IEventAggregator aggregator, IAsyncWorker asyncWorker)
             : base("ComPluginSource")
         {
             VerifyArgument.IsNotNull("asyncWorker", asyncWorker);
@@ -75,9 +75,9 @@ namespace Warewolf.Studio.ViewModels
 
         public ICommand RefreshCommand { get; set; }
 
-        public Action<Action> DispatcherAction { get; set; }
+        public Action<System.Action> DispatcherAction { get; set; }
 
-        void PerformLoadAll(Action actionToPerform = null)
+        void PerformLoadAll(System.Action actionToPerform = null)
         {
 
             AsyncWorker.Start(() =>
@@ -87,8 +87,8 @@ namespace Warewolf.Studio.ViewModels
 
                 DispatcherAction.Invoke(() =>
                 {
-                    _dllListings = new AsyncObservableCollection<IDllListingModel>(names);
-                    DllListings = _dllListings;
+                    _originalDllListings = new AsyncObservableCollection<IDllListingModel>(names);
+                    DllListings = _originalDllListings;
                     IsLoading = false;
                     actionToPerform?.Invoke();
                 });
@@ -139,18 +139,24 @@ namespace Warewolf.Studio.ViewModels
 
         void PerformSearch(string searchTerm)
         {
+            
             if (DllListings != null)
             {
-                foreach (var dllListingModel in DllListings)
+                if (string.IsNullOrEmpty(searchTerm))
                 {
-                    dllListingModel.Filter(searchTerm);
+                    DllListings = _originalDllListings;
                 }
-                OnPropertyChanged(() => DllListings);
+                else
+                {
+                    var filteredList = _originalDllListings.Where(model => model.Name.ToLowerInvariant().Contains(searchTerm.ToLowerInvariant()));
+                    DllListings = new ObservableCollection<IDllListingModel>(filteredList);
+                }
+
             }
         }
 
         public ICommand CancelCommand { get; set; }
-        public Action CloseAction { get; set; }
+        public System.Action CloseAction { get; set; }
         public ObservableCollection<IDllListingModel> DllListings
         {
             get
@@ -165,7 +171,7 @@ namespace Warewolf.Studio.ViewModels
         }
 
         /// <exception cref="Exception">A delegate callback throws an exception.</exception>
-        public ManageComPluginSourceViewModel(IManageComPluginSourceModel updateManager, Task<IRequestServiceNameViewModel> requestServiceNameViewModel, IEventAggregator aggregator, IAsyncWorker asyncWorker)
+        public ManageComPluginSourceViewModel(IManageComPluginSourceModel updateManager, Task<IRequestServiceNameViewModel> requestServiceNameViewModel, Microsoft.Practices.Prism.PubSubEvents.IEventAggregator aggregator, IAsyncWorker asyncWorker)
             : this(updateManager, aggregator, asyncWorker)
         {
             VerifyArgument.IsNotNull("requestServiceNameViewModel", requestServiceNameViewModel);
@@ -174,7 +180,7 @@ namespace Warewolf.Studio.ViewModels
             Item = ToModel();
         }
 
-        public ManageComPluginSourceViewModel(IManageComPluginSourceModel updateManager, Task<IRequestServiceNameViewModel> requestServiceNameViewModel, IEventAggregator aggregator, IAsyncWorker asyncWorker, Action<Action> dispatcherAction)
+        public ManageComPluginSourceViewModel(IManageComPluginSourceModel updateManager, Task<IRequestServiceNameViewModel> requestServiceNameViewModel, Microsoft.Practices.Prism.PubSubEvents.IEventAggregator aggregator, IAsyncWorker asyncWorker, Action<System.Action> dispatcherAction)
             : this(updateManager, aggregator, asyncWorker)
         {
             DispatcherAction = dispatcherAction;
@@ -185,7 +191,7 @@ namespace Warewolf.Studio.ViewModels
         }
 
         /// <exception cref="Exception">A delegate callback throws an exception.</exception>
-        public ManageComPluginSourceViewModel(IManageComPluginSourceModel updateManager, IEventAggregator aggregator, IComPluginSource pluginSource, IAsyncWorker asyncWorker)
+        public ManageComPluginSourceViewModel(IManageComPluginSourceModel updateManager, Microsoft.Practices.Prism.PubSubEvents.IEventAggregator aggregator, IComPluginSource pluginSource, IAsyncWorker asyncWorker)
             : this(updateManager, aggregator, asyncWorker)
         {
             VerifyArgument.IsNotNull("compluginSource", pluginSource);
@@ -196,7 +202,7 @@ namespace Warewolf.Studio.ViewModels
             ToItem();
         }
 
-        public ManageComPluginSourceViewModel(IManageComPluginSourceModel updateManager, IEventAggregator aggregator, IComPluginSource pluginSource, IAsyncWorker asyncWorker, Action<Action> dispatcherAction)
+        public ManageComPluginSourceViewModel(IManageComPluginSourceModel updateManager, Microsoft.Practices.Prism.PubSubEvents.IEventAggregator aggregator, IComPluginSource pluginSource, IAsyncWorker asyncWorker, Action<System.Action> dispatcherAction)
             : this(updateManager, aggregator, asyncWorker)
         {
             DispatcherAction = dispatcherAction;
