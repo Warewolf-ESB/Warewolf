@@ -23,6 +23,7 @@ namespace Dev2.Activities
     [ToolDescriptorInfo("DotNetDll", "Com DLL", ToolType.Native, "6AEB1038-6332-46F9-8BDD-642DE4EA029E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Resources", "/Warewolf.Studio.Themes.Luna;component/Images.xaml")]
     public class DsfComDllActivity : DsfMethodBasedActivity
     {
+        protected string _result;
         public IPluginAction Method { get; set; }
         public INamespaceItem Namespace { get; set; }
         public IOutputDescription OutputDescription { get; set; }
@@ -99,11 +100,11 @@ namespace Dev2.Activities
                 errors.AddError(e.Message);
             }
         }
-
+                
         private void PerfromExecution(int update, IDSFDataObject dataObject, ComPluginInvokeArgs args)
         {
             if(!IsObject)
-            {
+             {
                 int i = 0;
                 foreach(var serviceOutputMapping in Outputs)
                 {
@@ -113,11 +114,11 @@ namespace Dev2.Activities
                 var outputFormatter = OutputFormatterFactory.CreateOutputFormatter(OutputDescription);
                 args.OutputFormatter = outputFormatter;
             }
-            var result = ComPluginServiceExecutionFactory.InvokeComPlugin(args).ToString();
+            _result = ComPluginServiceExecutionFactory.InvokeComPlugin(args).ToString();
             ResponseManager = new ResponseManager { OutputDescription = OutputDescription, Outputs = Outputs, IsObject = IsObject, ObjectName = ObjectName };
-            ResponseManager.PushResponseIntoEnvironment(result, update, dataObject, false);
+            ResponseManager.PushResponseIntoEnvironment(_result, update, dataObject, false);
         }
-
+       
         public IResponseManager ResponseManager { get; set; }
         public override enFindMissingType GetFindMissingType()
         {
