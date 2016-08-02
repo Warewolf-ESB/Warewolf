@@ -16,6 +16,7 @@ namespace Warewolf.UITests.Tools
     public class Read_Folder
     {
         [TestMethod]
+		[TestCategory("Tools")]
         public void ReadFolderToolUITest()
         {
             Uimap.Drag_Toolbox_Read_Folder_Onto_DesignSurface();

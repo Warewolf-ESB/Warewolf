@@ -16,6 +16,7 @@ namespace Warewolf.UITests.Tools
     public class Zip
     {
         [TestMethod]
+		[TestCategory("Tools")]
         public void ZipToolUITest()
         {
             Uimap.Drag_Toolbox_Zip_Onto_DesignSurface();

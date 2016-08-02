@@ -8,6 +8,7 @@ namespace Warewolf.UITests.Tools.Utility
     public class Date_Time
     {
         [TestMethod]
+		[TestCategory("Tools")]
         public void DateTimeToolUITest()
         {
             Uimap.Drag_Toolbox_Date_And_Time_Onto_DesignSurface();

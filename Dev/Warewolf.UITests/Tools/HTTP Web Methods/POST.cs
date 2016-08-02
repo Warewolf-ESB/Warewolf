@@ -16,6 +16,7 @@ namespace Warewolf.UITests.Tools
     public class POST
     {
         [TestMethod]
+		[TestCategory("Tools")]
         public void POSTToolUITest()
         {
             Uimap.Drag_PostWeb_RequestTool_Onto_DesignSurface();
