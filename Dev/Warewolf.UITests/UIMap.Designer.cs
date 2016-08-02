@@ -899,19 +899,23 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
-        /// Click_Save_Ribbon_Button - Use 'Click_Save_Ribbon_ButtonParams' to pass parameters into this method.
+        /// Click_Save_Ribbon_Button_With_No_Save_Dialog - Use 'Click_Save_Ribbon_Button_With_No_Save_DialogParams' to pass parameters into this method.
         /// </summary>
-        public void Click_Save_Ribbon_Button()
+        public void Click_Save_Ribbon_Button_With_No_Save_Dialog()
         {
             #region Variable Declarations
             WpfButton saveButton = this.MainStudioWindow.SideMenuBar.SaveButton;
             #endregion
 
             // Verify that the 'Exists' property of 'Save this tab' button equals 'True'
-            Assert.AreEqual(this.Click_Save_Ribbon_ButtonParams.SaveButtonExists, saveButton.Exists, "Save ribbon button does not exist");
+            Assert.AreEqual(this.Click_Save_Ribbon_Button_With_No_Save_DialogParams.SaveButtonExists, saveButton.Exists, "Save ribbon button does not exist");
 
             // Click 'Save this tab' button
             Mouse.Click(saveButton, new Point(10, 5));
+
+            // Wait for 2 seconds for user delay between actions; Verify that the 'Enabled' property of 'Save this tab' button equals 'False'
+            Playback.Wait(2000);
+            Assert.AreEqual(this.Click_Save_Ribbon_Button_With_No_Save_DialogParams.SaveButtonEnabled, saveButton.Enabled, "Save ribbon button is still enabled after clicking it.");
         }
         
         /// <summary>
@@ -5211,15 +5215,15 @@ namespace Warewolf.UITests
             }
         }
         
-        public virtual Click_Save_Ribbon_ButtonParams Click_Save_Ribbon_ButtonParams
+        public virtual Click_Save_Ribbon_Button_With_No_Save_DialogParams Click_Save_Ribbon_Button_With_No_Save_DialogParams
         {
             get
             {
-                if ((this.mClick_Save_Ribbon_ButtonParams == null))
+                if ((this.mClick_Save_Ribbon_Button_With_No_Save_DialogParams == null))
                 {
-                    this.mClick_Save_Ribbon_ButtonParams = new Click_Save_Ribbon_ButtonParams();
+                    this.mClick_Save_Ribbon_Button_With_No_Save_DialogParams = new Click_Save_Ribbon_Button_With_No_Save_DialogParams();
                 }
-                return this.mClick_Save_Ribbon_ButtonParams;
+                return this.mClick_Save_Ribbon_Button_With_No_Save_DialogParams;
             }
         }
         
@@ -6741,7 +6745,7 @@ namespace Warewolf.UITests
         
         private Click_Output_OnVariable_InVariableListParams mClick_Output_OnVariable_InVariableListParams;
         
-        private Click_Save_Ribbon_ButtonParams mClick_Save_Ribbon_ButtonParams;
+        private Click_Save_Ribbon_Button_With_No_Save_DialogParams mClick_Save_Ribbon_Button_With_No_Save_DialogParams;
         
         private Click_Save_Ribbon_Button_to_Open_Save_DialogParams mClick_Save_Ribbon_Button_to_Open_Save_DialogParams;
         
@@ -7530,10 +7534,10 @@ namespace Warewolf.UITests
     }
     
     /// <summary>
-    /// Parameters to be passed into 'Click_Save_Ribbon_Button'
+    /// Parameters to be passed into 'Click_Save_Ribbon_Button_With_No_Save_Dialog'
     /// </summary>
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Click_Save_Ribbon_ButtonParams
+    public class Click_Save_Ribbon_Button_With_No_Save_DialogParams
     {
         
         #region Fields
@@ -7541,6 +7545,11 @@ namespace Warewolf.UITests
         /// Verify that the 'Exists' property of 'Save this tab' button equals 'True'
         /// </summary>
         public bool SaveButtonExists = true;
+        
+        /// <summary>
+        /// Wait for 2 seconds for user delay between actions; Verify that the 'Enabled' property of 'Save this tab' button equals 'False'
+        /// </summary>
+        public bool SaveButtonEnabled = false;
         #endregion
     }
     

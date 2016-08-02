@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.IO.Pipes;
+using System.Reflection;
 using System.Text;
 using Newtonsoft.Json;
 
@@ -20,10 +22,10 @@ namespace WarewolfCOMIPC.Client
 
             // Pass token to child process
             var psi = new ProcessStartInfo("WarewolfCOMIPC.exe", token);
-            psi.UseShellExecute = false;
-            psi.ErrorDialog = false;
-            psi.RedirectStandardOutput = false;
-            psi.CreateNoWindow = true;
+            //psi.UseShellExecute = false;
+            //psi.ErrorDialog = false;
+            //psi.RedirectStandardOutput = false;
+            //psi.CreateNoWindow = true;
             psi.Verb = "runas";
 
             _process = Process.Start(psi);
@@ -62,14 +64,28 @@ namespace WarewolfCOMIPC.Client
 
             var sr = new StreamReader(_pipe);
             var jsonTextReader = new JsonTextReader(sr);
-            var result = serializer.Deserialize(jsonTextReader,typeof(Type));
-            var exception = result as Exception;
-            if (exception != null)
+            object result;
+            if (info.Execute == Execute.GetType)
             {
-                throw exception;
-            }            
-            return result;
-            
+                 result = serializer.Deserialize(jsonTextReader, typeof(Type));
+                var exception = result as Exception;
+                if (exception != null)
+                {
+                    throw exception;
+                }
+                return result;
+            }
+            else
+            {
+                result = serializer.Deserialize(jsonTextReader);
+                var exception = result as Exception;
+                if (exception != null)
+                {
+                    throw exception;
+                }
+                return result;
+
+            }
 
         }
 
