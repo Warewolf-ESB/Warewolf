@@ -395,5 +395,10 @@ namespace Dev2.Runtime.Hosting
             }
             return null;
         }
+
+        public void Reload()
+        {
+            LoadWorkspace(GlobalConstants.ServerWorkspaceID);
+        }
     }
 }

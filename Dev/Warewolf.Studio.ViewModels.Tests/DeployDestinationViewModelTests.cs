@@ -36,7 +36,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _studioUpdateManagerMock = new Mock<IStudioUpdateManager>();
             _explorerItemMock = new Mock<IExplorerItem>();
             _explorerItemMock.SetupGet(it => it.Children).Returns(new ObservableCollection<IExplorerItem>());
-            _serverMock.Setup(it => it.LoadExplorer()).ReturnsAsync(_explorerItemMock.Object);
+            _serverMock.Setup(it => it.LoadExplorer(false)).ReturnsAsync(_explorerItemMock.Object);
             _serverMock.SetupGet(it => it.UpdateRepository).Returns(_studioUpdateManagerMock.Object);
             _serverMock.SetupGet(it => it.ResourceName).Returns("someResName");
             _shellViewModelMock.SetupGet(it => it.LocalhostServer).Returns(_serverMock.Object);
@@ -143,7 +143,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             serverMock.SetupGet(it => it.EnvironmentID).Returns(envId);
             serverMock.Setup(it => it.ConnectAsync()).ReturnsAsync(true);
             var explorerMock = new Mock<IExplorerItem>();
-            serverMock.Setup(it => it.LoadExplorer()).ReturnsAsync(explorerMock.Object);
+            serverMock.Setup(it => it.LoadExplorer(false)).ReturnsAsync(explorerMock.Object);
             var isSelectedItemChangedRaised = false;
             _target.ServerStateChanged += (sender, server) =>
             {

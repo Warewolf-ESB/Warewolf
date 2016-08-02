@@ -99,7 +99,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var shell = new Mock<IShellViewModel>();
             CustomContainer.Register<IShellViewModel>(shell.Object);
             Task<IExplorerItem> tsk = new Task<IExplorerItem>(() => new ServerExplorerItem());
-            server.Setup(a => a.LoadExplorer()).Returns(tsk);
+            server.Setup(a => a.LoadExplorer(false)).Returns(tsk);
             server.Setup(a => a.GetServerConnections()).Returns(new List<IServer>());
             shell.Setup(a => a.LocalhostServer).Returns(server.Object);
             var deploySourceExplorerViewModel = new DeploySourceExplorerViewModel(shell.Object, new Mock<IEventAggregator>().Object,new Mock<IDeployStatsViewerViewModel>().Object);
@@ -121,7 +121,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var shell = new Mock<IShellViewModel>();
             CustomContainer.Register<IShellViewModel>(shell.Object);
             Task<IExplorerItem> tsk = new Task<IExplorerItem>(() => new ServerExplorerItem());
-            server.Setup(a => a.LoadExplorer()).Returns(tsk);
+            server.Setup(a => a.LoadExplorer(false)).Returns(tsk);
             server.Setup(a => a.GetServerConnections()).Returns(new List<IServer>());
             shell.Setup(a => a.LocalhostServer).Returns(server.Object);
             var deploySourceExplorerViewModel = new DeploySourceExplorerViewModel(shell.Object, new Mock<IEventAggregator>().Object, new Mock<IDeployStatsViewerViewModel>().Object);

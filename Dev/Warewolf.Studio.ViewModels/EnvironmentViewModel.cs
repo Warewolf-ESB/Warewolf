@@ -169,12 +169,12 @@ namespace Warewolf.Studio.ViewModels
         {
             if(Children.Any(a => a.AllowResourceCheck))
             {
-                await Load(true);
+                await Load(true,true);
                 ShowContextMenu = false;
             }
             else
             {
-                await Load();
+                await Load(false,true);
             }
         }
 
@@ -677,14 +677,14 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        public async Task<bool> Load(bool isDeploy = false)
+        public async Task<bool> Load(bool isDeploy = false,bool reloadCatalogue=false)
         {
             if (!IsLoading)
             {
                 try
                 {
                     IsLoading = true;
-                    var result = await LoadDialog(null, isDeploy);
+                    var result = await LoadDialog(null, isDeploy, reloadCatalogue);
                     return result;
                 }
                 finally
@@ -697,12 +697,12 @@ namespace Warewolf.Studio.ViewModels
 
         public bool IsLoading { get; set; }
 
-        public async Task<bool> LoadDialog(string selectedPath, bool isDeploy = false)
+        public async Task<bool> LoadDialog(string selectedPath, bool isDeploy = false, bool reloadCatalogue = false)
         {
             if (IsConnected && Server.IsConnected)
             {
                 IsConnecting = true;
-                var explorerItems = await Server.LoadExplorer();
+                var explorerItems = await Server.LoadExplorer(reloadCatalogue);
                 await CreateExplorerItems(explorerItems.Children, Server, this, selectedPath != null, Children.Any(a => AllowResourceCheck));
                 IsLoaded = true;
                 IsConnecting = false;
