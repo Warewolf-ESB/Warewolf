@@ -74,7 +74,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
 
             Assert.AreEqual(expected.ResourceType, actual.ResourceType);
             Assert.AreEqual("", actual.ClsId);
-            Assert.AreEqual("false", actual.Is32Bit);
+            Assert.AreEqual(false, actual.Is32Bit);
         }
 
         #endregion

@@ -8,6 +8,7 @@ namespace Warewolf.UITests.Tools.Data
     public class Data_Split
     {
         [TestMethod]
+		[TestCategory("Tools")]
         public void DataSplitToolUITest()
         {
             Uimap.Drag_Toolbox_Data_Split_Onto_DesignSurface();

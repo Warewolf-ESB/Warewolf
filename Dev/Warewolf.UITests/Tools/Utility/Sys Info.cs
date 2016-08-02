@@ -16,6 +16,7 @@ namespace Warewolf.UITests.Tools
     public class Sys_Info
     {
         [TestMethod]
+		[TestCategory("Tools")]
         public void SysInfoToolUITest()
         {
             Uimap.Drag_Toolbox_System_Information_Onto_DesignSurface();

@@ -1410,14 +1410,6 @@
       <ActionType>Click</ActionType>
       <MouseButton>Left</MouseButton>
     </MouseAction>
-    <AssertAction UIObjectName="UIMap.MainStudioWindow.SideMenuBar.SaveButton" ThinkTime="2000">
-      <ParameterName />
-      <PropertyName>Enabled</PropertyName>
-      <ExpectedValue>False</ExpectedValue>
-      <MessageOnValidationFailure>Save ribbon button is still enabled after clicking it.</MessageOnValidationFailure>
-      <Type>String</Type>
-      <PropertyCondition>AreEqual</PropertyCondition>
-    </AssertAction>
     <TestStepMarkerAction Comment="" MarkerInformation="Click_Save_Ribbon_Button">
       <ParameterName />
       <StepId>-1</StepId>

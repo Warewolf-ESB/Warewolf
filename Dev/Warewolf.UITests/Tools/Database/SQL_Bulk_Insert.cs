@@ -16,6 +16,7 @@ namespace Warewolf.UITests.Tools
     public class SQL_Bulk_Insert
     {
         [TestMethod]
+		[TestCategory("Tools")]
         public void SQLBulkInsertToolUITest()
         {
             Uimap.Drag_Toolbox_SQL_Bulk_Insert_Onto_DesignSurface();

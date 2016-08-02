@@ -16,6 +16,7 @@ namespace Warewolf.UITests.Tools
     public class Web_Request
     {
         [TestMethod]
+		[TestCategory("Tools")]
         public void WebRequestToolUITest()
         {
             Uimap.Drag_Toolbox_Web_Request_Onto_DesignSurface();

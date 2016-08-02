@@ -8,6 +8,7 @@ namespace Warewolf.UITests.Tools.Data
     public class Data_Merge
     {
         [TestMethod]
+		[TestCategory("Tools")]
         public void DataMergeUITest()
         {
             Uimap.Drag_Toolbox_Data_Merge_Onto_DesignSurface();
