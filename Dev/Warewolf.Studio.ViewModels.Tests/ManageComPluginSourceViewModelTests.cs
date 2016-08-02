@@ -13,6 +13,7 @@ using Dev2.Interfaces;
 using Microsoft.Practices.Prism.PubSubEvents;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using Warewolf.Studio.Core;
 
 namespace Warewolf.Studio.ViewModels.Tests
 {
@@ -857,9 +858,18 @@ namespace Warewolf.Studio.ViewModels.Tests
             //arrange
             var expectedValue = "SearchTerm";
             var listingMock = new Mock<IDllListingModel>();
-            _target.DllListings = new ObservableCollection<IDllListingModel> { listingMock.Object };
+            listingMock.Setup(model => model.Name).Returns("DllSource1");
+            var listingMock1 = new Mock<IDllListingModel>();
+            listingMock1.Setup(model => model.Name).Returns("SearchTerm");
+            var listingMock2 = new Mock<IDllListingModel>();
+            listingMock2.Setup(model => model.Name).Returns("DllSource1");
+            var originalList = new AsyncObservableCollection<IDllListingModel> { listingMock.Object, listingMock1.Object, listingMock2.Object };
+            
+            _target.DllListings = new ObservableCollection<IDllListingModel> { listingMock.Object,listingMock1.Object,listingMock2.Object };
             _changedProperties.Clear();
 
+            PrivateObject p = new PrivateObject(_target);
+            p.SetField("_originalDllListings", originalList);
             //act
             _target.SearchTerm = expectedValue;
             var value = _target.SearchTerm;
@@ -868,7 +878,21 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual(expectedValue, value);
             Assert.IsTrue(_changedProperties.Contains("DllListings"));
             Assert.IsTrue(_changedProperties.Contains("SearchTerm"));
-            listingMock.Verify(it=>it.Filter(expectedValue));
+
+            Assert.AreEqual(1,_target.DllListings.Count);
+            Assert.AreEqual(expectedValue, _target.DllListings[0].Name);
+
+            expectedValue = "";
+            //act
+            _target.SearchTerm = expectedValue;
+            value = _target.SearchTerm;
+
+            //asert
+            Assert.AreEqual(expectedValue, value);
+            Assert.IsTrue(_changedProperties.Contains("DllListings"));
+            Assert.IsTrue(_changedProperties.Contains("SearchTerm"));
+
+            Assert.AreEqual(3, _target.DllListings.Count);
         }
 
         #endregion Test properties
