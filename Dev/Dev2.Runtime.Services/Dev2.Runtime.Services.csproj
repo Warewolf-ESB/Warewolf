@@ -292,6 +292,7 @@
     <Compile Include="Hosting\ResourceCatalogBuilder.cs" />
     <Compile Include="Hosting\ResourceCatalogPluginContainer.cs" />
     <Compile Include="Hosting\ResourceCatalogResultBuilder.cs" />
+    <Compile Include="Hosting\ResourceUpgrade.cs" />
     <Compile Include="Hosting\ResourceUpgrader.cs" />
     <Compile Include="Hosting\ResourceUpgraderFactory.cs" />
     <Compile Include="Hosting\ServerToolRepository.cs" />
