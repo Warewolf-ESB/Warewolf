@@ -206,7 +206,7 @@
                                                     </ig:XamMenuItem>
                                                     <ig:XamMenuItem Name="NewPluginSource"
                                                                     Command="{Binding Path=Data.NewPluginSourceCommand}"
-                                                                    Header="New Plugin Source"
+                                                                    Header="New DotNet Plugin Source"
                                                                     Visibility="{Binding Path=Data.CanCreateSource,
                                                                                          Converter={StaticResource BoolToVisibilityConverter}}">
                                                         <ig:XamMenuItem.Icon>
@@ -215,7 +215,7 @@
                                                     </ig:XamMenuItem> 
                                                     <ig:XamMenuItem Name="NewComPluginSource"
                                                                     Command="{Binding Path=Data.NewComPluginSourceCommand}"
-                                                                    Header="New COMPlugin Source"
+                                                                    Header="New COM Plugin Source"
                                                                     Visibility="{Binding Path=Data.CanCreateSource,
                                                                                          Converter={StaticResource BoolToVisibilityConverter}}">
                                                         <ig:XamMenuItem.Icon>
@@ -515,7 +515,7 @@
                                                     </ig:XamMenuItem>
                                                     <ig:XamMenuItem Name="NewPluginSource"
                                                                     Command="{Binding Path=Data.NewPluginSourceCommand}"
-                                                                    Header="New Plugin Source"
+                                                                    Header="New DotNet Plugin Source"
                                                                     Visibility="{Binding Path=Data.CanCreateSource,
                                                                                          Converter={StaticResource BoolToVisibilityConverter}}">
                                                         <ig:XamMenuItem.Icon>
@@ -525,7 +525,7 @@
                                                     
                                                     <ig:XamMenuItem Name="NewComPluginSource"
                                                                     Command="{Binding Path=Data.NewComPluginSourceCommand}"
-                                                                    Header="New COMPlugin Source"
+                                                                    Header="New COM Plugin Source"
                                                                     Visibility="{Binding Path=Data.CanCreateSource,
                                                                                          Converter={StaticResource BoolToVisibilityConverter}}">
                                                         <ig:XamMenuItem.Icon>

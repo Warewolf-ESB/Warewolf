@@ -552,7 +552,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to New COMPlugin Source.
+        ///   Looks up a localized string similar to New COM Plugin Source.
         /// </summary>
         public static string ComPluginSourceNewHeaderLabel {
             get {
@@ -5135,7 +5135,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to New Plugin Source.
+        ///   Looks up a localized string similar to New DotNet Plugin Source.
         /// </summary>
         public static string PluginSourceNewHeaderLabel {
             get {

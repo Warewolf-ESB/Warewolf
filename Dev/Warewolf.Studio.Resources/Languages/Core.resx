@@ -269,7 +269,7 @@ The more information you can provide us with, the faster we can track the issue 
     <value>https://www.dropbox.com/1/oauth2/redirect_receiver/</value>
   </data>
   <data name="PluginSourceNewHeaderLabel" xml:space="preserve">
-    <value>New Plugin Source</value>
+    <value>New DotNet Plugin Source</value>
   </data>
   <data name="DatabaseWebserviceLabel" xml:space="preserve">
     <value>Address:</value>
@@ -1673,7 +1673,7 @@ The more information you can provide us with, the faster we can track the issue 
     <value>PROGrammatic IDentifier of the COM DLL</value>
   </data>
   <data name="ComPluginSourceNewHeaderLabel" xml:space="preserve">
-    <value>New COMPlugin Source</value>
+    <value>New COM Plugin Source</value>
   </data>
   <data name="ComPluginSourceRefreshCommandHelp" xml:space="preserve">
     <value>Refresh the view based on the filter.&lt;br/&gt;	&lt;br/&gt;	Newly added resources should show after a refresh.</value>
