@@ -8,6 +8,7 @@ namespace Warewolf.UITests.Tools.Utility
     public class Date_Time_Diff
     {
         [TestMethod]
+		[TestCategory("Tools")]
         public void DateTimeDiffToolUITest()
         {
             Uimap.Drag_Toolbox_DateTime_Difference_Onto_DesignSurface();

@@ -8,6 +8,7 @@ namespace Warewolf.UITests.Tools.Control_Flow
     public class Sequence
     {
         [TestMethod]
+		[TestCategory("Tools")]
         public void SequenceToolUITest()
         {
             Uimap.Drag_Toolbox_Sequence_Onto_DesignSurface();

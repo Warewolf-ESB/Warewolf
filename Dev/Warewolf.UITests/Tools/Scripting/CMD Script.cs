@@ -11,6 +11,7 @@ namespace Warewolf.UITests.Tools.Scripting
     public class CMD_Script
     {
         [TestMethod]
+		[TestCategory("Tools")]
         public void CMDScriptToolUITest()
         {
             Uimap.Drag_Toolbox_CMD_Line_Onto_DesignSurface();

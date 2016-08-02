@@ -1418,7 +1418,7 @@
       <Type>String</Type>
       <PropertyCondition>AreEqual</PropertyCondition>
     </AssertAction>
-    <TestStepMarkerAction Comment="" MarkerInformation="Click_Save_Ribbon_Button">
+    <TestStepMarkerAction Comment="" MarkerInformation="Click_Save_Ribbon_Button_With_No_Save_Dialog">
       <ParameterName />
       <StepId>-1</StepId>
       <Direction>Start</Direction>

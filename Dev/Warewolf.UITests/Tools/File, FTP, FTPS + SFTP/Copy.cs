@@ -8,6 +8,7 @@ namespace Warewolf.UITests.Tools
     public class Copy
     {
         [TestMethod]
+		[TestCategory("Tools")]
         public void CopyToolUITest()
         {
             Uimap.Drag_Toolbox_Copy_Onto_DesignSurface();
