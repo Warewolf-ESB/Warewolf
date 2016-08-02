@@ -240,45 +240,36 @@ namespace Warewolf.Studio.Core
             get { return _isExpanded; }
             set
             {
-                if (_isCom)
+                if (!_isCom)
                 {
                     _isExpanded = value;
-
-                    if (_isExpanded && _updateManager != null && (_children == null || _children.Count == 0))
-                    {
-                        var dllListings = _updateManager.GetDllListings(_dllListing);
-                        if (dllListings != null)
-                        {
-                            _children =
-                                new AsyncObservableCollection<IDllListingModel>(
-                                    dllListings.Select(input => new DllListingModel(_updateManager, input))
-                                        .ToList());
-                        }
-                        IsExpanderVisible = _children != null && _children.Count > 0;
-                    }
+                    SetPluginIsExpanderVisible();
                     OnPropertyChanged(() => IsExpanded);
                     OnPropertyChanged(() => Children);
                 }
                 else
                 {
                     _isExpanded = value;
-
-                    if (_isExpanded && _comUpdateManager != null && (_children == null || _children.Count == 0))
-                    {
-                        var dllListings = _comUpdateManager.GetComDllListings(_dllListing);
-                        if (dllListings != null)
-                        {
-                            _children =
-                                new AsyncObservableCollection<IDllListingModel>(
-                                    dllListings.Select(input => new DllListingModel(_comUpdateManager, input))
-                                        .ToList());
-                        }
-                        IsExpanderVisible = _children != null && _children.Count > 0;
-                    }
                     OnPropertyChanged(() => IsExpanded);
                     OnPropertyChanged(() => Children);
 
                 }
+            }
+        }
+
+        private void SetPluginIsExpanderVisible()
+        {
+            if (_isExpanded && _updateManager != null && (_children == null || _children.Count == 0))
+            {
+                var dllListings = _updateManager.GetDllListings(_dllListing);
+                if (dllListings != null)
+                {
+                    _children =
+                        new AsyncObservableCollection<IDllListingModel>(
+                            dllListings.Select(input => new DllListingModel(_updateManager, input))
+                                .ToList());
+                }
+                IsExpanderVisible = _children != null && _children.Count > 0;
             }
         }
 
@@ -302,11 +293,7 @@ namespace Warewolf.Studio.Core
 
                 if (_children != null)
                 {
-                    foreach (var dllListing in _children)
-                    {
-                        var dllListingModel = dllListing;
-                        dllListingModel.Filter(searchTerm);
-                    }
+                    FilterChildren(searchTerm);
                 }
                 if (string.IsNullOrEmpty(searchTerm) || Name == "FileSystem" || Name == "GAC" ||
                     (_children != null && _children.Count > 0 &&
@@ -316,15 +303,29 @@ namespace Warewolf.Studio.Core
                 }
                 else
                 {
-                    IsVisible = Name.ToLowerInvariant().Contains(searchTerm.ToLowerInvariant());
+                    SetIsVisible(searchTerm);
                 }
 
                 OnPropertyChanged(() => Children);
             }
             else
             {
-                IsVisible = Name.ToLowerInvariant().Contains(searchTerm.ToLowerInvariant());
+                SetIsVisible(searchTerm);
             }
+        }
+
+        private void FilterChildren(string searchTerm)
+        {
+            foreach (var dllListing in _children)
+            {
+                var dllListingModel = dllListing;
+                dllListingModel.Filter(searchTerm);
+            }
+        }
+
+        private void SetIsVisible(string searchTerm)
+        {
+            IsVisible = Name.ToLowerInvariant().Contains(searchTerm.ToLowerInvariant());
         }
 
         public bool IsVisible

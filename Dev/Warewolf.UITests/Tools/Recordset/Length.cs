@@ -8,6 +8,7 @@ namespace Warewolf.UITests.Tools.Recordset
     public class Length
     {
         [TestMethod]
+		[TestCategory("Tools")]
         public void LengthToolUITest()
         {
             Uimap.Drag_Toolbox_Length_Onto_DesignSurface();

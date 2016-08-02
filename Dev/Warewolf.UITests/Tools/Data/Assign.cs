@@ -13,6 +13,7 @@ namespace Warewolf.UITests.Tools.Data
         const string WorkflowName = "SomeWorkflow";
 
         [TestMethod]
+		[TestCategory("Tools")]
         public void AssignToolUITest()
         {
             Uimap.Click_New_Workflow_Ribbon_Button();

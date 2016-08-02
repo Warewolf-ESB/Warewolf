@@ -9,14 +9,10 @@
 */
 
 using System;
-using System.Collections.Generic;
 using System.Windows;
 using System.Xml.Linq;
-using Dev2.Runtime.Configuration.ComponentModel;
-using Dev2.Runtime.Configuration.Services;
 using Dev2.Runtime.Configuration.ViewModels;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
 
 namespace Dev2.Runtime.Configuration.Tests.ViewModels
 {
