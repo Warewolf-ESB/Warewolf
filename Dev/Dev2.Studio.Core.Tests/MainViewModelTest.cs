@@ -1694,8 +1694,11 @@ namespace Dev2.Core.Tests
 
             var source = new Mock<IDbSource>();
             source.Setup(a => a.Name).Returns("TestDatabase");
-
-            MainViewModel.EditResource(source.Object);
+            var mockWM = new Mock<IWorksurfaceContextManager>();
+            mockWM.Setup(manager => manager.EditResource(It.IsAny<IDbSource>(),null)).Verifiable();
+            MainViewModel.WorksurfaceContextManager = mockWM.Object;
+            MainViewModel.WorksurfaceContextManager.EditResource(source.Object);
+            mockWM.Verify(manager => manager.EditResource(It.IsAny<IDbSource>(), null));
         }
 
         [TestMethod]
@@ -1718,7 +1721,11 @@ namespace Dev2.Core.Tests
             var source = new Mock<IOAuthSource>();
             source.Setup(a => a.ResourceName).Returns("TestDropbox");
 
+            var mockWM = new Mock<IWorksurfaceContextManager>();
+            mockWM.Setup(manager => manager.EditResource(It.IsAny<IOAuthSource>(), null)).Verifiable();
+            MainViewModel.WorksurfaceContextManager = mockWM.Object;
             MainViewModel.WorksurfaceContextManager.EditResource(source.Object);
+            mockWM.Verify(manager => manager.EditResource(It.IsAny<IOAuthSource>(), null));
         }
 
         [TestMethod]
@@ -1741,7 +1748,11 @@ namespace Dev2.Core.Tests
             var source = new Mock<IEmailServiceSource>();
             source.Setup(a => a.ResourceName).Returns("TestEmail");
 
-            MainViewModel.EditResource(source.Object);
+            var mockWM = new Mock<IWorksurfaceContextManager>();
+            mockWM.Setup(manager => manager.EditResource(It.IsAny<IEmailServiceSource>(), null)).Verifiable();
+            MainViewModel.WorksurfaceContextManager = mockWM.Object;
+            MainViewModel.WorksurfaceContextManager.EditResource(source.Object);
+            mockWM.Verify(manager => manager.EditResource(It.IsAny<IEmailServiceSource>(), null));
         }
 
         [TestMethod]
@@ -1764,7 +1775,11 @@ namespace Dev2.Core.Tests
             var source = new Mock<IExchangeSource>();
             source.Setup(a => a.Name).Returns("TestExchange");
 
-            MainViewModel.EditResource(source.Object);
+            var mockWM = new Mock<IWorksurfaceContextManager>();
+            mockWM.Setup(manager => manager.EditResource(It.IsAny<IExchangeSource>(), null)).Verifiable();
+            MainViewModel.WorksurfaceContextManager = mockWM.Object;
+            MainViewModel.WorksurfaceContextManager.EditResource(source.Object);
+            mockWM.Verify(manager => manager.EditResource(It.IsAny<IExchangeSource>(), null));
         }
 
         [TestMethod]
@@ -1791,7 +1806,11 @@ namespace Dev2.Core.Tests
             source.Setup(a => a.Name).Returns("TestPlugin");
             source.Setup(a => a.SelectedDll).Returns(file.Object);
 
-            MainViewModel.EditResource(source.Object);
+            var mockWM = new Mock<IWorksurfaceContextManager>();
+            mockWM.Setup(manager => manager.EditResource(It.IsAny<IPluginSource>(), null)).Verifiable();
+            MainViewModel.WorksurfaceContextManager = mockWM.Object;
+            MainViewModel.WorksurfaceContextManager.EditResource(source.Object);
+            mockWM.Verify(manager => manager.EditResource(It.IsAny<IPluginSource>(), null));
         }
 
         [TestMethod]
@@ -1814,7 +1833,11 @@ namespace Dev2.Core.Tests
             var source = new Mock<IRabbitMQServiceSourceDefinition>();
             source.Setup(a => a.ResourceName).Returns("TestRabbitMQ");
 
-            MainViewModel.EditResource(source.Object);
+            var mockWM = new Mock<IWorksurfaceContextManager>();
+            mockWM.Setup(manager => manager.EditResource(It.IsAny<IRabbitMQServiceSourceDefinition>(), null)).Verifiable();
+            MainViewModel.WorksurfaceContextManager = mockWM.Object;
+            MainViewModel.WorksurfaceContextManager.EditResource(source.Object);
+            mockWM.Verify(manager => manager.EditResource(It.IsAny<IRabbitMQServiceSourceDefinition>(), null));
         }
 
         [TestMethod]
@@ -1838,7 +1861,11 @@ namespace Dev2.Core.Tests
             source.Setup(a => a.Name).Returns("TestServer");
             source.Setup(a => a.Address).Returns("https://someServerName:3143");
 
-            MainViewModel.EditServer(source.Object);
+            var mockWM = new Mock<IWorksurfaceContextManager>();
+            mockWM.Setup(manager => manager.EditServer(It.IsAny<IServerSource>())).Verifiable();
+            MainViewModel.WorksurfaceContextManager = mockWM.Object;
+            MainViewModel.WorksurfaceContextManager.EditServer(source.Object);
+            mockWM.Verify(manager => manager.EditServer(It.IsAny<IServerSource>()));
         }
 
         [TestMethod]
@@ -1861,7 +1888,11 @@ namespace Dev2.Core.Tests
             var source = new Mock<ISharepointServerSource>();
             source.Setup(a => a.Name).Returns("TestSharepoint");
 
+            var mockWM = new Mock<IWorksurfaceContextManager>();
+            mockWM.Setup(manager => manager.EditResource(It.IsAny<ISharepointServerSource>(), null)).Verifiable();
+            MainViewModel.WorksurfaceContextManager = mockWM.Object;
             MainViewModel.WorksurfaceContextManager.EditResource(source.Object);
+            mockWM.Verify(manager => manager.EditResource(It.IsAny<ISharepointServerSource>(), null));
         }
 
         [TestMethod]
@@ -1884,7 +1915,11 @@ namespace Dev2.Core.Tests
             var source = new Mock<IWcfServerSource>();
             source.Setup(a => a.Name).Returns("TestWcf");
 
-            MainViewModel.EditResource(source.Object);
+            var mockWM = new Mock<IWorksurfaceContextManager>();
+            mockWM.Setup(manager => manager.EditResource(It.IsAny<IWcfServerSource>(), null)).Verifiable();
+            MainViewModel.WorksurfaceContextManager = mockWM.Object;
+            MainViewModel.WorksurfaceContextManager.EditResource(source.Object);
+            mockWM.Verify(manager => manager.EditResource(It.IsAny<IWcfServerSource>(), null));
         }
 
         [TestMethod]
@@ -1907,7 +1942,11 @@ namespace Dev2.Core.Tests
             var source = new Mock<IWebServiceSource>();
             source.Setup(a => a.Name).Returns("TestWeb");
 
-            MainViewModel.EditResource(source.Object);
+            var mockWM = new Mock<IWorksurfaceContextManager>();
+            mockWM.Setup(manager => manager.EditResource(It.IsAny<IWebServiceSource>(), null)).Verifiable();
+            MainViewModel.WorksurfaceContextManager = mockWM.Object;
+            MainViewModel.WorksurfaceContextManager.EditResource(source.Object);
+            mockWM.Verify(manager => manager.EditResource(It.IsAny<IWebServiceSource>(), null));
         }
 
         #region CommandTests
@@ -1932,7 +1971,12 @@ namespace Dev2.Core.Tests
             var canExecute = MainViewModel.NewDatabaseSourceCommand.CanExecute(null);
             Assert.IsTrue(canExecute);
 
+            
+            var mockWM = new Mock<IWorksurfaceContextManager>();
+            mockWM.Setup(manager => manager.NewDatabaseSource(It.IsAny<string>())).Verifiable();
+            MainViewModel.WorksurfaceContextManager = mockWM.Object;
             MainViewModel.NewDatabaseSourceCommand.Execute(null);
+            mockWM.Verify(manager => manager.NewDatabaseSource(It.IsAny<string>()));
         }
 
         [TestMethod]
@@ -1955,7 +1999,12 @@ namespace Dev2.Core.Tests
             var canExecute = MainViewModel.NewDropboxSourceCommand.CanExecute(null);
             Assert.IsTrue(canExecute);
 
+
+            var mockWM = new Mock<IWorksurfaceContextManager>();
+            mockWM.Setup(manager => manager.NewDropboxSource(It.IsAny<string>())).Verifiable();
+            MainViewModel.WorksurfaceContextManager = mockWM.Object;
             MainViewModel.NewDropboxSourceCommand.Execute(null);
+            mockWM.Verify(manager => manager.NewDropboxSource(It.IsAny<string>()));
         }
 
         [TestMethod]
@@ -1978,7 +2027,12 @@ namespace Dev2.Core.Tests
             var canExecute = MainViewModel.NewEmailSourceCommand.CanExecute(null);
             Assert.IsTrue(canExecute);
 
+
+            var mockWM = new Mock<IWorksurfaceContextManager>();
+            mockWM.Setup(manager => manager.NewEmailSource(It.IsAny<string>())).Verifiable();
+            MainViewModel.WorksurfaceContextManager = mockWM.Object;
             MainViewModel.NewEmailSourceCommand.Execute(null);
+            mockWM.Verify(manager => manager.NewEmailSource(It.IsAny<string>()));
         }
 
         [TestMethod]
@@ -2001,7 +2055,13 @@ namespace Dev2.Core.Tests
             var canExecute = MainViewModel.NewExchangeSourceCommand.CanExecute(null);
             Assert.IsTrue(canExecute);
 
+
+
+            var mockWM = new Mock<IWorksurfaceContextManager>();
+            mockWM.Setup(manager => manager.NewExchangeSource(It.IsAny<string>())).Verifiable();
+            MainViewModel.WorksurfaceContextManager = mockWM.Object;
             MainViewModel.NewExchangeSourceCommand.Execute(null);
+            mockWM.Verify(manager => manager.NewExchangeSource(It.IsAny<string>()));
         }
 
         [TestMethod]
@@ -2024,7 +2084,12 @@ namespace Dev2.Core.Tests
             var canExecute = MainViewModel.NewPluginSourceCommand.CanExecute(null);
             Assert.IsTrue(canExecute);
 
+
+            var mockWM = new Mock<IWorksurfaceContextManager>();
+            mockWM.Setup(manager => manager.NewPluginSource(It.IsAny<string>())).Verifiable();
+            MainViewModel.WorksurfaceContextManager = mockWM.Object;
             MainViewModel.NewPluginSourceCommand.Execute(null);
+            mockWM.Verify(manager => manager.NewPluginSource(It.IsAny<string>()));
         }
 
         [TestMethod]
@@ -2047,32 +2112,15 @@ namespace Dev2.Core.Tests
             var canExecute = MainViewModel.NewRabbitMQSourceCommand.CanExecute(null);
             Assert.IsTrue(canExecute);
 
+
+
+            var mockWM = new Mock<IWorksurfaceContextManager>();
+            mockWM.Setup(manager => manager.NewRabbitMQSource(It.IsAny<string>())).Verifiable();
+            MainViewModel.WorksurfaceContextManager = mockWM.Object;
             MainViewModel.NewRabbitMQSourceCommand.Execute(null);
+            mockWM.Verify(manager => manager.NewRabbitMQSource(It.IsAny<string>()));
         }
-
-        [TestMethod]
-        [Owner("Pieter Terblanche")]
-        [TestCategory("MainViewModel_NewServerSourceCommand")]
-        public void MainViewModel_NewServerSourceCommand_Handle_Result()
-        {
-            //------------Setup for test--------------------------
-            CreateFullExportsAndVm();
-
-            var env = SetupEnvironment();
-
-            //------------Execute Test---------------------------
-            MainViewModel.ActiveEnvironment = env.Object;
-            //------------Assert Results-------------------------
-            Assert.IsNotNull(MainViewModel.ActiveEnvironment);
-            Assert.IsTrue(MainViewModel.ActiveEnvironment.IsConnected);
-            Assert.IsTrue(MainViewModel.ActiveEnvironment.CanStudioExecute);
-
-            var canExecute = MainViewModel.NewServerSourceCommand.CanExecute(null);
-            Assert.IsTrue(canExecute);
-
-            MainViewModel.NewServerSourceCommand.Execute(null);
-        }
-
+        
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory("MainViewModel_NewSharepointSourceCommand")]
@@ -2093,7 +2141,12 @@ namespace Dev2.Core.Tests
             var canExecute = MainViewModel.NewSharepointSourceCommand.CanExecute(null);
             Assert.IsTrue(canExecute);
 
+
+            var mockWM = new Mock<IWorksurfaceContextManager>();
+            mockWM.Setup(manager => manager.NewSharepointSource(It.IsAny<string>())).Verifiable();
+            MainViewModel.WorksurfaceContextManager = mockWM.Object;
             MainViewModel.NewSharepointSourceCommand.Execute(null);
+            mockWM.Verify(manager => manager.NewSharepointSource(It.IsAny<string>()));
         }
 
         [TestMethod]
@@ -2116,7 +2169,12 @@ namespace Dev2.Core.Tests
             var canExecute = MainViewModel.NewWcfSourceCommand.CanExecute(null);
             Assert.IsTrue(canExecute);
 
+
+            var mockWM = new Mock<IWorksurfaceContextManager>();
+            mockWM.Setup(manager => manager.NewWcfSource(It.IsAny<string>())).Verifiable();
+            MainViewModel.WorksurfaceContextManager = mockWM.Object;
             MainViewModel.NewWcfSourceCommand.Execute(null);
+            mockWM.Verify(manager => manager.NewWcfSource(It.IsAny<string>()));
         }
 
         [TestMethod]
@@ -2139,7 +2197,11 @@ namespace Dev2.Core.Tests
             var canExecute = MainViewModel.NewWebSourceCommand.CanExecute(null);
             Assert.IsTrue(canExecute);
 
+            var mockWM = new Mock<IWorksurfaceContextManager>();
+            mockWM.Setup(manager => manager.NewWebSource(It.IsAny<string>())).Verifiable();
+            MainViewModel.WorksurfaceContextManager = mockWM.Object;
             MainViewModel.NewWebSourceCommand.Execute(null);
+            mockWM.Verify(manager => manager.NewWebSource(It.IsAny<string>()));
         }
 
         private static Mock<IEnvironmentModel> SetupEnvironment()

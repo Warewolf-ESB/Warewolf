@@ -264,7 +264,7 @@ namespace Dev2.Studio.ViewModels
             get
             {
                 return _settingsCommand ?? (_settingsCommand =
-                    new AuthorizeCommand(AuthorizationContext.Administrator, param => WorksurfaceContextManager.AddSettingsWorkSurface(), param => IsActiveEnvironmentConnected()));
+                    new AuthorizeCommand(AuthorizationContext.Administrator, param => _worksurfaceContextManager.AddSettingsWorkSurface(), param => IsActiveEnvironmentConnected()));
             }
         }
 
@@ -273,7 +273,7 @@ namespace Dev2.Studio.ViewModels
             get
             {
                 return _schedulerCommand ?? (_schedulerCommand =
-                    new AuthorizeCommand(AuthorizationContext.Administrator, param => WorksurfaceContextManager.AddSchedulerWorkSurface(), param => IsActiveEnvironmentConnected()));
+                    new AuthorizeCommand(AuthorizationContext.Administrator, param => _worksurfaceContextManager.AddSchedulerWorkSurface(), param => IsActiveEnvironmentConnected()));
             }
         }
 
@@ -454,7 +454,7 @@ namespace Dev2.Studio.ViewModels
             Dev2Logger.Debug(message.GetType().Name);
             if (message.Model != null)
             {
-                WorksurfaceContextManager.AddReverseDependencyVisualizerWorkSurface(message.Model);
+                _worksurfaceContextManager.AddReverseDependencyVisualizerWorkSurface(message.Model);
             }
         }
 
@@ -468,7 +468,7 @@ namespace Dev2.Studio.ViewModels
         public void Handle(AddWorkSurfaceMessage message)
         {
             Dev2Logger.Info(message.GetType().Name);
-            WorksurfaceContextManager.AddWorkSurface(message.WorkSurfaceObject);
+            _worksurfaceContextManager.AddWorkSurface(message.WorkSurfaceObject);
 
             if (message.ShowDebugWindowOnLoad)
             {
@@ -508,7 +508,7 @@ namespace Dev2.Studio.ViewModels
             Dev2Logger.Info(message.GetType().Name);
             var model = message.ResourceModel;
             var dependsOnMe = message.ShowDependentOnMe;
-            WorksurfaceContextManager.ShowDependencies(dependsOnMe, model, ActiveServer);
+            _worksurfaceContextManager.ShowDependencies(dependsOnMe, model, ActiveServer);
         }
 
         public void ShowDependencies(Guid resourceId, IServer server)
@@ -521,7 +521,7 @@ namespace Dev2.Studio.ViewModels
                 var contextualResourceModel = new ResourceModel(environmentModel, EventPublisher);
                 contextualResourceModel.Update(resource);
                 contextualResourceModel.ID = resourceId;
-                WorksurfaceContextManager.ShowDependencies(true, contextualResourceModel, server);
+                _worksurfaceContextManager.ShowDependencies(true, contextualResourceModel, server);
             }
         }
 
@@ -586,7 +586,7 @@ namespace Dev2.Studio.ViewModels
             if (environmentModel != null)
             {
                 var contextualResourceModel = environmentModel.ResourceRepository.LoadContextualResourceModel(resourceId);
-                WorksurfaceContextManager.DisplayResourceWizard(contextualResourceModel);
+                _worksurfaceContextManager.DisplayResourceWizard(contextualResourceModel);
             }
         }
 
@@ -596,7 +596,7 @@ namespace Dev2.Studio.ViewModels
             var contextualResourceModel = environmentModel?.ResourceRepository.LoadContextualResourceModel(resourceId);
             if (contextualResourceModel != null)
             {
-                var wfscvm = WorksurfaceContextManager.FindWorkSurfaceContextViewModel(contextualResourceModel);
+                var wfscvm = _worksurfaceContextManager.FindWorkSurfaceContextViewModel(contextualResourceModel);
                 DeactivateItem(wfscvm, true);
             }
         }
@@ -607,7 +607,7 @@ namespace Dev2.Studio.ViewModels
             if (environmentModel != null)
             {
                 var contextualResourceModel = await environmentModel.ResourceRepository.LoadContextualResourceModelAsync(resourceId);
-                var wfscvm = WorksurfaceContextManager.FindWorkSurfaceContextViewModel(contextualResourceModel);
+                var wfscvm = _worksurfaceContextManager.FindWorkSurfaceContextViewModel(contextualResourceModel);
                 DeactivateItem(wfscvm, true);
             }
         }
@@ -678,12 +678,12 @@ namespace Dev2.Studio.ViewModels
 
         public void NewServerSource(string resourcePath)
         {
-            Task<IRequestServiceNameViewModel> saveViewModel = WorksurfaceContextManager.GetSaveViewModel(resourcePath, Warewolf.Studio.Resources.Languages.Core.ServerSourceNewHeaderLabel);
+            Task<IRequestServiceNameViewModel> saveViewModel = _worksurfaceContextManager.GetSaveViewModel(resourcePath, Warewolf.Studio.Resources.Languages.Core.ServerSourceNewHeaderLabel);
             var key = (WorkSurfaceKey)WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.ServerSource);
             key.ServerID = ActiveServer.ServerID;
             // ReSharper disable once PossibleInvalidOperationException
             var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(key, new SourceViewModel<IServerSource>(EventPublisher, new ManageNewServerViewModel(new ManageNewServerSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, ActiveEnvironment.Name), saveViewModel, new Microsoft.Practices.Prism.PubSubEvents.EventAggregator(), _asyncWorker, new ExternalProcessExecutor()) { SelectedGuid = key.ResourceID.Value }, PopupProvider, new ManageServerControl()));
-            WorksurfaceContextManager.AddAndActivateWorkSurface(workSurfaceContextViewModel);
+            _worksurfaceContextManager.AddAndActivateWorkSurface(workSurfaceContextViewModel);
         }
 
         public void NewDatabaseSource(string resourcePath)
@@ -738,7 +738,7 @@ namespace Dev2.Studio.ViewModels
 
         public async void ShowStartPage()
         {
-            WorksurfaceContextManager.ActivateOrCreateUniqueWorkSurface<HelpViewModel>(WorkSurfaceContext.StartPage);
+            _worksurfaceContextManager.ActivateOrCreateUniqueWorkSurface<HelpViewModel>(WorkSurfaceContext.StartPage);
             WorkSurfaceContextViewModel workSurfaceContextViewModel = Items.FirstOrDefault(c => c.WorkSurfaceViewModel.DisplayName == "Start Page" && c.WorkSurfaceViewModel.GetType() == typeof(HelpViewModel));
             if (workSurfaceContextViewModel != null)
             {
@@ -814,7 +814,7 @@ namespace Dev2.Studio.ViewModels
             bool success = true;
             if (close)
             {
-                success = WorksurfaceContextManager.CloseWorkSurfaceContext(item, null);
+                success = _worksurfaceContextManager.CloseWorkSurfaceContext(item, null);
             }
 
             if (success)
@@ -853,7 +853,7 @@ namespace Dev2.Studio.ViewModels
                 var wfItem = item?.WorkSurfaceViewModel as IWorkflowDesignerViewModel;
                 if (wfItem != null)
                 {
-                    WorksurfaceContextManager.AddWorkspaceItem(wfItem.ResourceModel);
+                    _worksurfaceContextManager.AddWorkspaceItem(wfItem.ResourceModel);
                 }
                 NotifyOfPropertyChange(() => SaveCommand);
                 NotifyOfPropertyChange(() => DebugCommand);
@@ -947,7 +947,7 @@ namespace Dev2.Studio.ViewModels
 
                     if (result != MessageBoxResult.OK)
                     {
-                        WorksurfaceContextManager.ShowDependencies(false, model, ActiveServer);
+                        _worksurfaceContextManager.ShowDependencies(false, model, ActiveServer);
                     }
                 }
                 return false;
@@ -1018,7 +1018,7 @@ namespace Dev2.Studio.ViewModels
                     continue;
                 }
 
-                WorksurfaceContextManager.DeleteContext(contextualModel);
+                _worksurfaceContextManager.DeleteContext(contextualModel);
 
                 actionToDoOnDelete?.Invoke();
             }
@@ -1086,7 +1086,7 @@ namespace Dev2.Studio.ViewModels
                             resource.WorkflowXaml = fetchResourceDefinition.Message;
                             resource.IsWorkflowSaved = item.IsWorkflowSaved;
                             resource.OnResourceSaved += model => _getWorkspaceItemRepository().UpdateWorkspaceItemIsWorkflowSaved(model);
-                            WorksurfaceContextManager.AddWorkSurfaceContextImpl(resource, true);
+                            _worksurfaceContextManager.AddWorkSurfaceContextImpl(resource, true);
                         }
                     }
                 }
@@ -1211,7 +1211,19 @@ namespace Dev2.Studio.ViewModels
         IMenuViewModel _menuViewModel;
         IServer _activeServer;
         private IExplorerViewModel _explorerViewModel;
-        private readonly WorksurfaceContextManager _worksurfaceContextManager;
+        private IWorksurfaceContextManager _worksurfaceContextManager;
+
+        public IWorksurfaceContextManager WorksurfaceContextManager
+        {
+            get
+            {
+                return _worksurfaceContextManager;
+            }
+            set
+            {
+                _worksurfaceContextManager = value;
+            }
+        }
 
         public bool IsDownloading()
         {
@@ -1265,13 +1277,7 @@ namespace Dev2.Studio.ViewModels
                 return helpViewModel;
             }
         }
-        public WorksurfaceContextManager WorksurfaceContextManager
-        {
-            get
-            {
-                return _worksurfaceContextManager;
-            }
-        }
+
         public WorkSurfaceContextViewModel PreviousActive
         {
             set
