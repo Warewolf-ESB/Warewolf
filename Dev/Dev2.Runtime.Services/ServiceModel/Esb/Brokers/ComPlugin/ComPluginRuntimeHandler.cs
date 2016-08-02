@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
@@ -81,8 +82,10 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.ComPlugin
                 Dev2Logger.Error("IOutputDescription Test(PluginInvokeArgs setupInfo)", e);
                 throw;
             }
-            catch (Exception e) 
+            catch (Exception e)
             {
+                if(e.InnerException is COMException)
+                    throw e.InnerException;
                 Dev2Logger.Error("IOutputDescription Test(PluginInvokeArgs setupInfo)", e);
                 jsonResult = null;
                 return null;
@@ -109,8 +112,8 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.ComPlugin
                         return method;
                     }
                 }
-                    var valuedTypeList = new List<object>();
-                
+                var valuedTypeList = new List<object>();
+
                 foreach (var methodParameter in setupInfo.Parameters)
                 {
                     try
@@ -123,30 +126,59 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.ComPlugin
                     }
                     catch (Exception)
                     {
-                        valuedTypeList.Add(methodParameter.Value);
+                        var argType = Type.GetType(methodParameter.TypeName);
+                        try
+                        {
+                            if (argType != null)
+                            {
+                                var provider = TypeDescriptor.GetConverter(argType);
+                                var convertFrom = provider.ConvertFrom(methodParameter.Value);
+                                valuedTypeList.Add(convertFrom);
+                            }
+
+
+                        }
+                        catch (Exception)
+                        {
+                            try
+                            {
+                                var typeConverter = TypeDescriptor.GetConverter(methodParameter.Value);
+                                var convertFrom = typeConverter.ConvertFrom(methodParameter.Value);
+                                valuedTypeList.Add(convertFrom);
+                            }
+                            catch(Exception k)
+                            {
+                                Dev2Logger.Error($"Failed to convert {argType?.FullName}", k);
+                            }
+                            
+                        }
+
                     }
                 }
 
-                var methodToRun = type.GetMethod(setupInfo.Method, typeList.ToArray()) ?? type.GetMethod(setupInfo.Method);
-                if (methodToRun == null && typeList.Count == 0)
+                if (type != null)
                 {
-                    methodToRun = type.GetMethod(setupInfo.Method);
-                }
-                var instance = Activator.CreateInstance(type);
-
-                if (methodToRun != null)
-                {
-                    if (methodToRun.ReturnType == typeof(void))
+                    var methodToRun = type.GetMethod(setupInfo.Method, typeList.ToArray()) ?? type.GetMethod(setupInfo.Method);
+                    if (methodToRun == null && typeList.Count == 0)
                     {
-                        methodToRun.Invoke(instance, BindingFlags.InvokeMethod | BindingFlags.IgnoreCase | BindingFlags.Public, null, valuedTypeList.ToArray(), CultureInfo.InvariantCulture);
+                        methodToRun = type.GetMethod(setupInfo.Method);
                     }
-                    else
+                    var instance = Activator.CreateInstance(type);
+
+                    if (methodToRun != null)
                     {
-                        pluginResult = methodToRun.Invoke(instance, BindingFlags.InvokeMethod | BindingFlags.IgnoreCase | BindingFlags.Public, null, valuedTypeList.ToArray(), CultureInfo.InvariantCulture);
-                        return methodToRun;
+                        if (methodToRun.ReturnType == typeof(void))
+                        {
+                            methodToRun.Invoke(instance, BindingFlags.InvokeMethod | BindingFlags.IgnoreCase | BindingFlags.Public, null, valuedTypeList.ToArray(), CultureInfo.InvariantCulture);
+                        }
+                        else
+                        {
+                            pluginResult = methodToRun.Invoke(instance, BindingFlags.InvokeMethod | BindingFlags.IgnoreCase | BindingFlags.Public, null, valuedTypeList.ToArray(), CultureInfo.InvariantCulture);
+                            return methodToRun;
+                        }
+
+
                     }
-
-
                 }
             }
             pluginResult = null;
@@ -217,7 +249,8 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.ComPlugin
         }
         public ServiceMethodList ListMethods(string classId, bool is32Bit)
         {
-            var serviceMethodList = new ServiceMethodList();
+            var serviceMethodList = new List<ServiceMethod>();
+            var orderMethodsLis = new ServiceMethodList();
             classId = classId.Replace("{", "").Replace("}", "");
             var type = GetType(classId, is32Bit);
             if (type?.Name.ToUpper().Contains("ComObject".ToUpper()) ?? false)
@@ -244,12 +277,15 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.ComPlugin
                                     Name = parameterInfo.Name,
                                     TypeName = parameterInfo.TypeName
                                 });
-                                serviceMethodList.Add(serviceMethod);
+                              
                             }
+                            serviceMethodList.Add(serviceMethod);
                         }
 
                     }
-                    return serviceMethodList;
+                    
+                    orderMethodsLis.AddRange(serviceMethodList.OrderBy(method => method.Name));
+                    return orderMethodsLis;
                 }
 
             }
@@ -276,8 +312,8 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.ComPlugin
                         serviceMethodList.Add(serviceMethod);
                     });
 
-
-            return serviceMethodList;
+            orderMethodsLis.AddRange(serviceMethodList.OrderBy(method => method.Name));
+            return orderMethodsLis;
         }
 
         /// <summary>
@@ -362,6 +398,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.ComPlugin
             foreach (var methodParameter in parameters)
             {
                 var type = DeriveType(methodParameter.TypeName);
+
                 typeList.Add(type);
             }
             return typeList;

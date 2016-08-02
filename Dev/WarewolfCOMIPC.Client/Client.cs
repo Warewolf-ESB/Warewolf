@@ -85,24 +85,30 @@ namespace WarewolfCOMIPC.Client
                     }
                 case Execute.GetMethods:
                     {
-                        try
+
+                        result = serializer.Deserialize(jsonTextReader, typeof(List<MethodInfoTO>));
+                        var exception = result as Exception;
+                        if (exception != null)
                         {
-                            result = serializer.Deserialize(jsonTextReader,typeof(List<MethodInfoTO>));
-                            var exception = result as Exception;
-                            if (exception != null)
-                            {
-                                throw exception;
-                            }
-                            return result;
+                            throw exception;
                         }
-                            // ReSharper disable once RedundantCatchClause
-                        catch(Exception e)
-                        {
-                            throw;
-                        }
-                        
+                        return result;
+
 
                     }
+                case Execute.ExecuteSpecifiedMethod:
+                    {
+
+                        result = serializer.Deserialize(jsonTextReader);
+                        var exception = result as Exception;
+                        if (exception != null)
+                        {
+                            throw exception;
+                        }
+                        return result;
+
+                    }
+
                 default:
                     return null;
             }
