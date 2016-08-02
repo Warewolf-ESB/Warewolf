@@ -95,28 +95,16 @@ namespace Dev2.Runtime.ESB.Management.Services
                             {
                                 if (pid != null)
                                 {
-                                    var typeFromProgID = Type.GetTypeFromProgID(pid.ToString());
-                                    bool? is32Bit = null;
+                                    var typeFromProgID = Type.GetTypeFromCLSID(Guid.Parse(clsid));
                                     if (typeFromProgID == null)
                                     {
                                         continue;
                                     }
-                                    try
-                                    {
-                                        if (typeFromProgID.AssemblyQualifiedName != null)
-                                        {
-                                            var assemblyName = AssemblyName.GetAssemblyName(typeFromProgID.AssemblyQualifiedName);
-                                            is32Bit = assemblyName.ProcessorArchitecture == ProcessorArchitecture.X86;
-                                        }
-                                    }
-                                    catch (Exception)
-                                    {
-                                        //ignore
-                                    }
+                                    var fullName = typeFromProgID.FullName;
                                     dllListings.Add(new DllListing
                                     {
                                         ClsId = clsid,
-                                        Is32Bit = is32Bit ?? typeFromProgID.FullName.Equals("System.__ComObject"),
+                                        Is32Bit = fullName.Equals("System.__ComObject"),
                                         Name = pid.ToString(),
                                         IsDirectory = false,
                                         FullName = pid.ToString(),
