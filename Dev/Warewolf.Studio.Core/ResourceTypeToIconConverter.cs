@@ -44,10 +44,8 @@ namespace Warewolf.Studio.Core
                     case "PluginService":
                     case "ComPluginService":
                         return _dict[CustomMenuIcons.PluginService] as DrawingImage;
-
-
-
                     case "PluginSource":
+                    case "ComPluginSource":
                         return _dict[CustomMenuIcons.PluginSource] as DrawingImage;
                     case "WcfSource":
                         return _dict["WcfEndPointSource"] as DrawingImage;

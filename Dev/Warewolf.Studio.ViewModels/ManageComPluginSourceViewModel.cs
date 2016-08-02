@@ -1,3 +1,13 @@
+/*
+*  Warewolf - Once bitten, there's no going back
+*  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Some rights reserved.
+*  Visit our website for more information <http://warewolf.io/>
+*  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
+*  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
+*/
+
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -13,6 +23,8 @@ using Dev2.Interfaces;
 using Microsoft.Practices.Prism.Commands;
 using Microsoft.Practices.Prism.PubSubEvents;
 using Warewolf.Studio.Core;
+// ReSharper disable MemberCanBePrivate.Global
+// ReSharper disable UnusedAutoPropertyAccessor.Global
 
 namespace Warewolf.Studio.ViewModels
 {
@@ -238,7 +250,7 @@ namespace Warewolf.Studio.ViewModels
 
         public override void FromModel(IComPluginSource pluginSource)
         {
-            var selectedDll = pluginSource;
+            var selectedDll = pluginSource.SelectedDll;
             if (selectedDll != null)
             {
                 var dllListingModel = DllListings.FirstOrDefault(model => model.ClsId == pluginSource.ClsId || model.Is32Bit == pluginSource.Is32Bit);
@@ -410,25 +422,18 @@ namespace Warewolf.Studio.ViewModels
 
         public string Path { get; set; }
 
-        IComPluginSource ToItem()
+        void ToItem()
         {
-            if (_pluginSource == null)
-            {
-                return new ComPluginSourceDefinition
-                {
-                    Id = Guid.NewGuid(),
-                    Name = Name,
-                    Is32Bit = Is32Bit,
-                    ClsId = ClsId
-                };
-            }
-            return new ComPluginSourceDefinition
+            Item = new ComPluginSourceDefinition
             {
                 Id = _pluginSource.Id,
                 Name = _pluginSource.Name,
                 Is32Bit = _pluginSource.Is32Bit,
-                ClsId = _pluginSource.ClsId
+                ClsId = _pluginSource.ClsId,
+                Path = _pluginSource.Path,
+                SelectedDll = SelectedDll
             };
+            AssemblyName = _pluginSource.SelectedDll.FullName;
         }
 
         void Save(IComPluginSource source)
@@ -439,11 +444,6 @@ namespace Warewolf.Studio.ViewModels
 
         public sealed override IComPluginSource ToModel()
         {
-            if (Item == null)
-            {
-                Item = ToItem();
-                return Item;
-            }
             if (_pluginSource == null)
             {
                 return new ComPluginSourceDefinition
@@ -451,9 +451,11 @@ namespace Warewolf.Studio.ViewModels
                     Name = ResourceName,
                     ClsId = ClsId,
                     Is32Bit = Is32Bit,
-                    SelectedDll = SelectedDll
+                    SelectedDll = SelectedDll,
+                    Path = Path
                 };
             }
+            _pluginSource.SelectedDll = _selectedDll;
             return _pluginSource;
         }
 

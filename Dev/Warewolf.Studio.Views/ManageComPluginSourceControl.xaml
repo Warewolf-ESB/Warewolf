@@ -125,7 +125,7 @@
                                  Margin="{StaticResource ControlBorderTop}"
                                  Value="{Binding Path=CurrentProgress, Mode=TwoWay}"
                                  Maximum="100"
-                                 Visibility="{Binding Path=ProgressVisibility, Converter={StaticResource BoolToVisibilityConverter}, Mode=TwoWay}"></ProgressBar>
+                                 Visibility="Collapsed"></ProgressBar>
                 </Grid>
 
                 <Grid Grid.Row="3" Margin="{StaticResource ControlBorderTop}">
