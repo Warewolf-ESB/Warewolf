@@ -72,6 +72,7 @@
                                           VerticalAlignment="Top"
                                           Grid.Column="1" 
                                           Height="25"
+                                          AllowUserInsertLine="False"
                                           Style="{StaticResource AutoCompleteBoxStyle}"
                                           ToolTip="{x:Static languages:Core.ServerSourceDialogAddressToolTip}"
                                           FilterMode="Contains"
