@@ -689,22 +689,6 @@ namespace Dev2.UI
                 TextBox.AcceptsReturn = newValue;
         }
 
-        public static readonly DependencyProperty AllowUserInsertLineProperty = DependencyProperty.Register("AllowUserInsertLine", typeof(bool), typeof(IntellisenseTextBox), new PropertyMetadata(true));
-
-        public bool AllowUserInsertLine
-        {
-            get
-            {
-                return (bool)GetValue(AllowUserInsertLineProperty);
-            }
-            set
-            {
-                SetValue(AllowUserInsertLineProperty, value);
-            }
-        }
-
-        
-
         public static readonly DependencyProperty AllowUserCalculateModeProperty =
             DependencyProperty.Register("AllowUserCalculateMode", typeof(bool), typeof(IntellisenseTextBox),
                 new PropertyMetadata(false));
