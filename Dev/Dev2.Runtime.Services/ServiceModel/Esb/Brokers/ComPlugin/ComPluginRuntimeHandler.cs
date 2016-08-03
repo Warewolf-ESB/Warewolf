@@ -112,49 +112,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.ComPlugin
                         return method;
                     }
                 }
-                var valuedTypeList = new List<object>();
-
-                foreach (var methodParameter in setupInfo.Parameters)
-                {
-                    try
-                    {
-                        var anonymousType = JsonConvert.DeserializeObject(methodParameter.Value, Type.GetType(methodParameter.TypeName));
-                        if (anonymousType != null)
-                        {
-                            valuedTypeList.Add(anonymousType);
-                        }
-                    }
-                    catch (Exception)
-                    {
-                        var argType = Type.GetType(methodParameter.TypeName);
-                        try
-                        {
-                            if (argType != null)
-                            {
-                                var provider = TypeDescriptor.GetConverter(argType);
-                                var convertFrom = provider.ConvertFrom(methodParameter.Value);
-                                valuedTypeList.Add(convertFrom);
-                            }
-
-
-                        }
-                        catch (Exception)
-                        {
-                            try
-                            {
-                                var typeConverter = TypeDescriptor.GetConverter(methodParameter.Value);
-                                var convertFrom = typeConverter.ConvertFrom(methodParameter.Value);
-                                valuedTypeList.Add(convertFrom);
-                            }
-                            catch(Exception k)
-                            {
-                                Dev2Logger.Error($"Failed to convert {argType?.FullName}", k);
-                            }
-                            
-                        }
-
-                    }
-                }
+                var valuedTypeList = BuildValuedTypeParams(setupInfo);
 
                 if (type != null)
                 {
@@ -185,13 +143,57 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.ComPlugin
             return null;
         }
 
+        private static List<object> BuildValuedTypeParams(ComPluginInvokeArgs setupInfo)
+        {
+            var valuedTypeList = new List<object>();
+
+            foreach(var methodParameter in setupInfo.Parameters)
+            {
+                try
+                {
+                    var anonymousType = JsonConvert.DeserializeObject(methodParameter.Value, Type.GetType(methodParameter.TypeName));
+                    if(anonymousType != null)
+                    {
+                        valuedTypeList.Add(anonymousType);
+                    }
+                }
+                catch(Exception)
+                {
+                    var argType = Type.GetType(methodParameter.TypeName);
+                    try
+                    {
+                        if(argType != null)
+                        {
+                            var provider = TypeDescriptor.GetConverter(argType);
+                            var convertFrom = provider.ConvertFrom(methodParameter.Value);
+                            valuedTypeList.Add(convertFrom);
+                        }
+                    }
+                    catch(Exception)
+                    {
+                        try
+                        {
+                            var typeConverter = TypeDescriptor.GetConverter(methodParameter.Value);
+                            var convertFrom = typeConverter.ConvertFrom(methodParameter.Value);
+                            valuedTypeList.Add(convertFrom);
+                        }
+                        catch(Exception k)
+                        {
+                            Dev2Logger.Error($"Failed to convert {argType?.FullName}", k);
+                        }
+                    }
+                }
+            }
+            return valuedTypeList;
+        }
+
         /// <summary>
         /// Lists the namespaces.
         /// </summary>
         /// <param name="classId">The assembly location.</param>
         /// <param name="is32Bit"></param>
         /// <returns></returns>
-        public List<string> ListNamespaces(string classId, bool is32Bit)
+        private List<string> ListNamespaces(string classId, bool is32Bit)
         {
             try
             {
