@@ -1,4 +1,3 @@
-REM ** Check for admin **
 @echo off
 echo Administrative permissions required. Detecting permissions...
 REM using the "net session" command to detect admin, it requires elevation in the most operating systems - Ashley
