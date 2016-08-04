@@ -57,8 +57,9 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
                     Dev2Logger.Error(e);
                     throw;
                 }
-                catch
+                catch (Exception e)
                 {
+                    Dev2Logger.Error(e);
                     try
                     {
                         if (assemblyLocation != null)
@@ -68,9 +69,9 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
                         }
                         return true;
                     }
-                    catch (Exception e)
+                    catch (Exception ex)
                     {
-                        Dev2Logger.Error(e);
+                        Dev2Logger.Error(ex);
                     }
                 }
                 try
