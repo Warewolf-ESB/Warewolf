@@ -1,3 +1,15 @@
+REM ** Check for admin **
+@echo off
+echo Administrative permissions required. Detecting permissions...
+REM using the "net session" command to detect admin, it requires elevation in the most operating systems - Ashley
+net session >nul 2>&1
+if %errorLevel% == 0 (
+	echo Success: Administrative permissions confirmed.
+) else (
+	echo Failure: Current permissions inadequate. &pause &exit 1
+)
+@echo on
+
 "%~dp0TestScripts\Tests\NuGet.exe" restore "%~dp0Server.sln" -SolutionDirectory "%~dp0."
 "%~dp0TestScripts\Tests\NuGet.exe" restore "%~dp0Studio.sln" -SolutionDirectory "%~dp0."
 if not %errorlevel%==0 pause
