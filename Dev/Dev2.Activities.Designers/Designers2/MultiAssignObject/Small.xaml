@@ -82,7 +82,7 @@
                                                     IntellisenseProvider="{StaticResource CalculateCompositeIntellisenseProvider}"
                                                     Style="{StaticResource DatagridIntellisenseTextBoxStyle}"
                                                     AutomationProperties.AutomationId="UI_TextBox_AutoID"
-                                                    ToolTip="{x:Static languages:Core.AssignToolTipVariable}">
+                                                    ToolTip="{x:Static languages:Core.AssignObjectToolTipVariable}">
                                 <i:Interaction.Behaviors>
                                     <core1:HelpSetter Text="{x:Static languages:Core.AssignObjectHelpVariable}" DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
                                     <errors:ErrorsSetter Source="{Binding}"

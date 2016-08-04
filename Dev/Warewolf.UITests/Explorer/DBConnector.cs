@@ -12,9 +12,6 @@ using Keyboard = Microsoft.VisualStudio.TestTools.UITesting.Keyboard;
 
 namespace Warewolf.UITests
 {
-    /// <summary>
-    /// Summary description for CodedUITest1
-    /// </summary>
     [CodedUITest]
     public class DBConnector
     {
@@ -24,12 +21,13 @@ namespace Warewolf.UITests
             Uimap.Click_New_Workflow_Ribbon_Button();
             Uimap.Select_NewDatabaseSource_FromExplorerContextMenu();
             Uimap.Select_MSSQLSERVER_From_DB_Source_Wizard_Address_Protocol_Dropdown();
-            // To generate code for this test, select "Generate Code for Coded UI Test" from the shortcut menu and select one of the menu items.
+            Uimap.Type_rsaklfsvrgen_into_DB_Source_Wizard_Server_Textbox();
+            Uimap.Select_RSAKLFSVRGENDEV_From_Server_Source_Wizard_Dropdownlist();
+            Uimap.Click_DB_Source_Wizard_Test_Connection_Button();
+            Uimap.WaitForSpinner(Uimap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DBConnectorWizardTab.WorkSurfaceContext.ErrorText.Spinner);
         }
 
         #region Additional test attributes
-
-        // You can use the following additional attributes as you write your tests:
         
         [TestInitialize()]
         public void MyTestInitialize()

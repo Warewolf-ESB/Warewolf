@@ -106,6 +106,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Only objects go in here. To assign a value to an object, put the object path in here..
+        /// </summary>
+        public static string AssignObjectToolTipVariable {
+            get {
+                return ResourceManager.GetString("AssignObjectToolTipVariable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Any variable and/or data goes in here.
         ///To assign a value to a variable, put the value in here.
         ///If you put an = as the first character, it will turn into a calculation e.g. =[[qty]]*[[price]].
@@ -905,7 +914,8 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Any variable and/or data goes in here.	To create a SFTP Key, put the full path and file or folder name here..
+        ///   Looks up a localized string similar to Any variable and/or data goes in here.
+        ///To create a SFTP Key, put the full path and file or folder name here..
         /// </summary>
         public static string CreateSftpPrivateKey {
             get {
@@ -7168,7 +7178,8 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Any variable and/or data goes in here.	To create a SFTP Key, put the full path and file or folder name here..
+        ///   Looks up a localized string similar to Any variable and/or data goes in here.
+        ///To create a SFTP Key, put the full path and file or folder name here..
         /// </summary>
         public static string SftpPrivateKeyValue {
             get {
