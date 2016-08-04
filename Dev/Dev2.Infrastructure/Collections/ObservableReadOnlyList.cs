@@ -38,7 +38,15 @@ namespace Dev2.Collections
         public ObservableReadOnlyList(IEnumerable<T> collection)
         {
             // Save dispatcher so that we always fire CollectionChanged on it's thread
-            _dispatcher = Dispatcher.CurrentDispatcher;
+
+            try
+            {
+                _dispatcher = Dispatcher.CurrentDispatcher;
+            }
+            catch(Exception)
+            {
+                //No valid dispatcher
+            }
 
             _list = collection == null ? new ObservableCollection<T>() : new ObservableCollection<T>(collection);
             InitCollectionChanged();
@@ -127,7 +135,7 @@ namespace Dev2.Collections
             // Post the CollectionChanged event on the creator thread
             _list.CollectionChanged += (sender, args) =>
             {
-                if(!_dispatcher.CheckAccess())
+                if(_dispatcher!=null && !_dispatcher.CheckAccess())
                 {
                     _dispatcher.BeginInvoke(new Action(() => RaiseCollectionChanged(args)), DispatcherPriority.Normal);
                 }

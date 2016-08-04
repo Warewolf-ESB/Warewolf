@@ -1430,10 +1430,12 @@ The more information you can provide us with, the faster we can track the issue 
     <value>Select the type of data you are converting to.	e.g. If the data is Binary and you would like Text, then select Text here.	Allowed:	na</value>
   </data>
   <data name="CreateSftpPrivateKey" xml:space="preserve">
-    <value>Any variable and/or data goes in here.	To create a SFTP Key, put the full path and file or folder name here.</value>
+    <value>Any variable and/or data goes in here.
+To create a SFTP Key, put the full path and file or folder name here.</value>
   </data>
   <data name="SftpPrivateKeyValue" xml:space="preserve">
-    <value>Any variable and/or data goes in here.	To create a SFTP Key, put the full path and file or folder name here.</value>
+    <value>Any variable and/or data goes in here.
+To create a SFTP Key, put the full path and file or folder name here.</value>
   </data>
   <data name="DropBoxDownloadFileName" xml:space="preserve">
     <value>Any variable and/or data goes in here.	This is the name of the file that will be downloaded from Dropbox.	NOTE: The file path must use "/" to identify folders and not "\".</value>
@@ -1536,6 +1538,9 @@ The more information you can provide us with, the faster we can track the issue 
   </data>
   <data name="AssignObjectHelpVariable" xml:space="preserve">
     <value>Only objects go in here.	To assign a value to an object, put the object path in here.	&lt;br /&gt;	Allowed: &lt;br /&gt;	[[@Object.Property]]&lt;br /&gt;	[[@Object.Object(n).Property]]</value>
+  </data>
+  <data name="AssignObjectToolTipVariable" xml:space="preserve">
+    <value>Only objects go in here. To assign a value to an object, put the object path in here.</value>
   </data>
   <data name="AssignObjectHelpNewValue" xml:space="preserve">
     <value>Any object and/or data goes in here.	To assign a value to a object, put the value in here.	If you put an = as the first character, it will turn into a calculation e.g. =[[qty]]*[[price]]	&lt;br /&gt;	Allowed: &lt;br /&gt;	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;li&gt;[[@Object(*).Field]]&lt;/li&gt;	&lt;li&gt;[[@Object().Field]]&lt;/li&gt;	&lt;li&gt;[[@Object.InnerCollection().Field]]&lt;/li&gt;	&lt;/ol&gt;</value>
