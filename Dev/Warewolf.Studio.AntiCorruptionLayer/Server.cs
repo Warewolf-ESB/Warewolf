@@ -162,9 +162,9 @@ namespace Warewolf.Studio.AntiCorruptionLayer
             }
         }
 
-        public async Task<IExplorerItem> LoadExplorer()
+        public async Task<IExplorerItem> LoadExplorer(bool reloadCatalogue = false)
         {
-            var result = await ProxyLayer.LoadExplorer();
+            var result = await ProxyLayer.LoadExplorer(reloadCatalogue);
             HasLoaded = true;
             return result;
         }

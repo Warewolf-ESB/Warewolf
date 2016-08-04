@@ -8,7 +8,7 @@ namespace Dev2.Common.Interfaces.Core
 
         public bool Equals(IComPluginSource other)
         {
-            return string.Equals(ResourceName, other.ResourceName) && Id.Equals(other.Id) && Equals(ClsId, other.ClsId) && Is32Bit == other.Is32Bit && Id.Equals(other.Id) && Equals(SelectedDll, other.SelectedDll) && string.Equals(ResourcePath, other.ResourcePath);
+            return string.Equals(ResourceName, other.ResourceName) && Id.Equals(other.Id) && Equals(ClsId, other.ClsId) && Is32Bit == other.Is32Bit && Id.Equals(other.Id) && Equals(SelectedDll, other.SelectedDll) && string.Equals(ResourcePath, other.ResourcePath) && string.Equals(Name, ((ComPluginSourceDefinition)other).Name);
         }
 
         /// <summary>
@@ -50,6 +50,7 @@ namespace Dev2.Common.Interfaces.Core
                 hashCode = (hashCode * 397) ^ Is32Bit.GetHashCode();
                 hashCode = (hashCode * 397) ^ (ClsId?.GetHashCode() ?? 0);
                 hashCode = (hashCode * 397) ^ ResourcePath.GetHashCode();
+                hashCode = (hashCode * 397) ^ Name.GetHashCode();
                 return hashCode;
             }
         }
@@ -76,5 +77,12 @@ namespace Dev2.Common.Interfaces.Core
         public string ResourcePath { get; set; }
 
         #endregion
+
+        #region Binding Name added by Nathi 
+
+        public string Name => ResourceName;
+
+        #endregion
+
     }
 }

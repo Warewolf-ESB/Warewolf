@@ -43,9 +43,9 @@ namespace Warewolf.Studio.AntiCorruptionLayer
             AdminManagerProxy = new AdminManagerProxy(controllerFactory, environmentConnection); //todo:swap
         }
 
-        public async Task<IExplorerItem> LoadExplorer()
+        public async Task<IExplorerItem> LoadExplorer(bool reloadCatalogue = false)
         {
-            var explorerItems = await QueryManagerProxy.Load();
+            var explorerItems = await QueryManagerProxy.Load(reloadCatalogue);
             ExplorerItems = explorerItems;
             return explorerItems;
         }

@@ -74,7 +74,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
             //assert
             environmentViewModelMock.VerifyGet(it => it.IsConnected);
-            environmentViewModelMock.Verify(it => it.Load(It.IsAny<bool>()));
+            environmentViewModelMock.Verify(it => it.Load(It.IsAny<bool>(), It.IsAny<bool>()));
             environmentViewModelMock.Verify(it => it.Filter("someText"));
         }
 
@@ -94,7 +94,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
             //assert
             environmentViewModelMock.VerifyGet(it => it.IsConnected);
-            environmentViewModelMock.Verify( it => it.Load(It.IsAny<bool>()));
+            environmentViewModelMock.Verify( it => it.Load(It.IsAny<bool>(), It.IsAny<bool>()));
             environmentViewModelMock.Verify(it => it.Filter("someText"));
         }
 
@@ -438,7 +438,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             connectionMock.Setup(it => it.ConnectAsync()).Returns(Task.FromResult(true));
             connectionMock.SetupGet(it => it.UpdateRepository).Returns(studioUpdateManagerMock.Object);
             var explorerItemMock = new Mock<IExplorerItem>();
-            connectionMock.Setup(it=>it.LoadExplorer()).Returns(Task.FromResult(explorerItemMock.Object));
+            connectionMock.Setup(it=>it.LoadExplorer(It.IsAny<bool>())).Returns(Task.FromResult(explorerItemMock.Object));
             var isEnvironments = false;
             _target.PropertyChanged += (s, e) =>
             {
@@ -463,7 +463,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             connectionMock.Setup(it => it.ConnectAsync()).Returns(Task.FromResult(true));
             connectionMock.SetupGet(it => it.UpdateRepository).Returns(studioUpdateManagerMock.Object);
             var explorerItemMock = new Mock<IExplorerItem>();
-            connectionMock.Setup(it => it.LoadExplorer()).Returns(Task.FromResult(explorerItemMock.Object));
+            connectionMock.Setup(it => it.LoadExplorer(It.IsAny<bool>())).Returns(Task.FromResult(explorerItemMock.Object));
             var isEnvironments = false;
             _target.PropertyChanged += (s, e) =>
             {
@@ -502,7 +502,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
             //assert
             environmentViewModelMock.VerifyGet(it => it.IsConnected);
-            environmentViewModelMock.Verify(it => it.Load(It.IsAny<bool>()));
+            environmentViewModelMock.Verify(it => it.Load(It.IsAny<bool>(), It.IsAny<bool>()));
             environmentViewModelMock.Verify(it => it.Filter("someText"));
         }
 
@@ -524,7 +524,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
             //assert
             environmentViewModelMock.VerifyGet(it => it.IsConnected);
-            environmentViewModelMock.Verify(it => it.Load(It.IsAny<bool>()));
+            environmentViewModelMock.Verify(it => it.Load(It.IsAny<bool>(), It.IsAny<bool>()));
         }
 
         [TestMethod]
