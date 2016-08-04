@@ -374,7 +374,6 @@
     <Compile Include="Security\AuthorizeCommand.cs" />
     <Compile Include="Services\Communication\ICommMessage.cs" />
     <Compile Include="Services\Communication\ICommService.cs" />
-    <Compile Include="Services\Configuration\ConfigurationService.cs" />
     <Compile Include="Services\Configuration\HelpConfiguration.cs" />
     <Compile Include="Services\Events\EventPublishers.cs" />
     <Compile Include="Services\Events\DebugSelectionChangedEventArgs.cs" />

@@ -370,6 +370,7 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
                 ResourceName = "Dummy",
                 ResourceType = "PluginSource",
                 ResourcePath = "Test",
+                AssemblyName = assembly.GetName().Name
             };
         }
 
