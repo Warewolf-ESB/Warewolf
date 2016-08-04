@@ -6,6 +6,7 @@ using GACManagerApi.Fusion;
 // ReSharper disable NonLocalizedString
 // ReSharper disable MemberCanBePrivate.Global
 // ReSharper disable UnusedAutoPropertyAccessor.Global
+// ReSharper disable UnusedMember.Global
 
 namespace GACManagerApi
 {
@@ -34,9 +35,34 @@ namespace GACManagerApi
 
             //  Load properties from the display name.
             LoadPropertiesFromDisplayName(displayName);
-            
+
+            //  We have the assembly name, so we can use the optimised version to load the fusion properties.
+            _lazyFusionProperties = new Lazy<AssemblyFusionProperties>(DoLoadFusionProperties);
+            _lazyReflectionProperties = new Lazy<AssemblyReflectionProperties>(DoLoadReflectionProperties);
         }
 
+        private AssemblyFusionProperties DoLoadFusionProperties()
+        {
+            //  Use the enumerator to get the assembly name.
+            var enumerator = new AssemblyCacheEnumerator(DisplayName);
+            var assemblyName = enumerator.GetNextAssembly();
+            
+            //  Return the properties.
+            return DoLoadFusionProperties(assemblyName);
+        }
+
+        private AssemblyFusionProperties DoLoadFusionProperties(IAssemblyName assemblyName)
+        {
+            //  Create the fusion properties.
+            var fusionProperties = new AssemblyFusionProperties();
+
+            //  Load the properties.
+            fusionProperties.Load(assemblyName);
+
+            //  Return the properties.
+            return fusionProperties;
+        }
+        
         private void LoadPropertiesFromDisplayName(string displayName)
         {
             DisplayName = displayName;
@@ -68,7 +94,7 @@ namespace GACManagerApi
                 }
                 catch (Exception)
                 {
-                    //Ignore Error
+                    //Ignore exception
                 }
             }
 
@@ -82,7 +108,7 @@ namespace GACManagerApi
                 }
                 catch (Exception)
                 {
-                    //Ignore Error
+                    //Ignore exception
                 }
             }
 
@@ -111,7 +137,7 @@ namespace GACManagerApi
                 }
                 catch (Exception)
                 {
-                    //Ignore Error
+                    //Ignore exception
                 }
             }
 
@@ -125,7 +151,7 @@ namespace GACManagerApi
                 }
                 catch (Exception)
                 {
-                    //Ignore Error
+                    //Ignore exception
                 }
             }
 
@@ -148,7 +174,19 @@ namespace GACManagerApi
 
             return data;
         }
+        
+        private AssemblyReflectionProperties DoLoadReflectionProperties()
+        {
+            //  Create reflection properties.
+            var reflectionPropties = new AssemblyReflectionProperties();
 
+            //  Load the reflection properties.
+            reflectionPropties.Load(DisplayName);
+
+            //  Return the properties.
+            return reflectionPropties; 
+        }
+        
         /// <summary>
         /// Gets the short assembly name, such as mscorlib.
         /// </summary>
@@ -194,5 +232,30 @@ namespace GACManagerApi
         /// </summary>
         public string Custom { get; private set; }
 
+        /// <summary>
+        /// The lazy fusion properties are fusion properties loaded only as required.
+        /// </summary>
+        private readonly Lazy<AssemblyFusionProperties> _lazyFusionProperties;
+
+        /// <summary>
+        /// The lazy reflection properties are properties loaded only as needed via reflection.
+        /// </summary>
+        private readonly Lazy<AssemblyReflectionProperties> _lazyReflectionProperties;
+
+        /// <summary>
+        /// Gets the fusion properties.
+        /// </summary>
+        public AssemblyFusionProperties FusionProperties
+        {
+            get { return _lazyFusionProperties.Value; }
+        }
+
+        /// <summary>
+        /// Gets the reflection properties.
+        /// </summary>
+        public AssemblyReflectionProperties ReflectionProperties
+        {
+            get { return _lazyReflectionProperties.Value; }
+        }
     }
 }

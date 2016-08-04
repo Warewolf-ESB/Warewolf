@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+// ReSharper disable UnusedMember.Global
 
 namespace GACManagerApi.Fusion
 {
@@ -11,5 +12,11 @@ namespace GACManagerApi.Fusion
             IntPtr pvReserved,
             out IAssemblyName ppName,
             int flags);
+
+        [PreserveSig]
+        int Reset();
+
+        [PreserveSig]
+        int Clone(out IAssemblyEnum ppEnum);
     }
 }

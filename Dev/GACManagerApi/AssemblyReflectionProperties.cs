@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+// ReSharper disable MemberCanBePrivate.Global
 
 namespace GACManagerApi
 {
@@ -22,7 +23,7 @@ namespace GACManagerApi
             }
             catch
             {
-                //Ignore Error
+                //Ignore exception
             }
         }
 

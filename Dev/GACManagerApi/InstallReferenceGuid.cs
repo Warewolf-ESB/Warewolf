@@ -1,4 +1,7 @@
 ﻿using System;
+// ReSharper disable UnusedMember.Global
+// ReSharper disable MemberCanBePrivate.Global
+// ReSharper disable NonLocalizedString
 
 namespace GACManagerApi
 {
