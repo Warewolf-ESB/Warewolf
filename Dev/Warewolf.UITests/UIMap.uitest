@@ -347,6 +347,24 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
+    <MouseAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DBConnectorWizardTab.WorkSurfaceContext.TestConnectionButton">
+      <ParameterName />
+      <ModifierKeys>None</ModifierKeys>
+      <IsGlobalHotkey>false</IsGlobalHotkey>
+      <Location X="21" Y="16" />
+      <WheelDirection>0</WheelDirection>
+      <ActionType>Click</ActionType>
+      <MouseButton>Left</MouseButton>
+    </MouseAction>
+    <TestStepMarkerAction Comment="" MarkerInformation="Click_DB_Source_Wizard_Test_Connection_Button">
+      <ParameterName />
+      <StepId>-1</StepId>
+      <Direction>Start</Direction>
+      <Outcome />
+      <Disabled>false</Disabled>
+      <WorkItemId>0</WorkItemId>
+      <MarkerRegionType>Action</MarkerRegionType>
+    </TestStepMarkerAction>
     <AssertAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneRight.DebugOutput.DebugOutputTree.Step1.VariableTextbox">
       <ParameterName />
       <PropertyName>DisplayText</PropertyName>
@@ -6614,24 +6632,6 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
-    <MouseAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DBConnectorWizardTab.WorkSurfaceContext.SourcesComboBox">
-      <ParameterName />
-      <ModifierKeys>None</ModifierKeys>
-      <IsGlobalHotkey>false</IsGlobalHotkey>
-      <Location X="228" Y="12" />
-      <WheelDirection>0</WheelDirection>
-      <ActionType>Click</ActionType>
-      <MouseButton>Left</MouseButton>
-    </MouseAction>
-    <TestStepMarkerAction Comment="" MarkerInformation="Select_Data_Source_Droplist">
-      <ParameterName />
-      <StepId>-1</StepId>
-      <Direction>Start</Direction>
-      <Outcome />
-      <Disabled>false</Disabled>
-      <WorkItemId>0</WorkItemId>
-      <MarkerRegionType>Action</MarkerRegionType>
-    </TestStepMarkerAction>
     <MouseAction UIObjectName="UIMap.MainStudioWindow.ExplorerContextMenu.Delete">
       <ParameterName />
       <ModifierKeys>None</ModifierKeys>
@@ -6755,6 +6755,14 @@
       <ActionType>Click</ActionType>
       <MouseButton>Left</MouseButton>
     </MouseAction>
+    <AssertAction UIObjectName="UIMap.MainStudioWindow.MicrosoftSQLServerListItem.UIMicrosoftSQLServerText">
+      <ParameterName />
+      <PropertyName>Exists</PropertyName>
+      <ExpectedValue>True</ExpectedValue>
+      <MessageOnValidationFailure>Microsoft SQL Server does not exist as an option in new DB source wizard type combobox.</MessageOnValidationFailure>
+      <Type>String</Type>
+      <PropertyCondition>AreEqual</PropertyCondition>
+    </AssertAction>
     <MouseAction UIObjectName="UIMap.MainStudioWindow.MicrosoftSQLServerListItem.UIMicrosoftSQLServerText">
       <ParameterName />
       <ModifierKeys>None</ModifierKeys>
@@ -7033,6 +7041,32 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
+    <MouseAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DBConnectorWizardTab.WorkSurfaceContext.NewDBSourceWizard.ServerComboBox.RSAKLFSVRGENDEV">
+      <ParameterName />
+      <ModifierKeys>None</ModifierKeys>
+      <IsGlobalHotkey>false</IsGlobalHotkey>
+      <Location X="97" Y="17" />
+      <WheelDirection>0</WheelDirection>
+      <ActionType>Click</ActionType>
+      <MouseButton>Left</MouseButton>
+    </MouseAction>
+    <AssertAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DBConnectorWizardTab.WorkSurfaceContext.NewDBSourceWizard.ServerComboBox.Textbox">
+      <ParameterName />
+      <PropertyName>Text</PropertyName>
+      <ExpectedValue>RSAKLFSVRGENDEV</ExpectedValue>
+      <MessageOnValidationFailure>RSAKLFSVRGENDEV is not selected as the server in the DB source wizard.</MessageOnValidationFailure>
+      <Type>String</Type>
+      <PropertyCondition>AreEqual</PropertyCondition>
+    </AssertAction>
+    <TestStepMarkerAction Comment="" MarkerInformation="Select_RSAKLFSVRGENDEV_From_Server_Source_Wizard_Dropdownlist">
+      <ParameterName />
+      <StepId>-1</StepId>
+      <Direction>Start</Direction>
+      <Outcome />
+      <Disabled>false</Disabled>
+      <WorkItemId>0</WorkItemId>
+      <MarkerRegionType>Assertion</MarkerRegionType>
+    </TestStepMarkerAction>
     <MouseAction UIObjectName="UIMap.MainStudioWindow.GenericContextMenu.SaveasImage">
       <ParameterName />
       <ModifierKeys>None</ModifierKeys>
@@ -7113,6 +7147,29 @@
       <PropertyCondition>AreEqual</PropertyCondition>
     </AssertAction>
     <TestStepMarkerAction Comment="" MarkerInformation="Select_TSTCIREMOTE_From_Server_Source_Wizard_Dropdownlist">
+      <ParameterName />
+      <StepId>-1</StepId>
+      <Direction>Start</Direction>
+      <Outcome />
+      <Disabled>false</Disabled>
+      <WorkItemId>0</WorkItemId>
+      <MarkerRegionType>Action</MarkerRegionType>
+    </TestStepMarkerAction>
+    <SetValueAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DBConnectorWizardTab.WorkSurfaceContext.ServerComboBox">
+      <ParameterName />
+      <Value Encoded="false">rsaklfsvrgen</Value>
+      <Type>String</Type>
+      <PreferEdit>True</PreferEdit>
+    </SetValueAction>
+    <AssertAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DBConnectorWizardTab.WorkSurfaceContext.NewDBSourceWizard.ServerComboBox.RSAKLFSVRGENDEV">
+      <ParameterName />
+      <PropertyName>Exists</PropertyName>
+      <ExpectedValue>True</ExpectedValue>
+      <MessageOnValidationFailure>RSAKLFSVRGENDEV does not exist as an option in DB source wizard server combobox.</MessageOnValidationFailure>
+      <Type>String</Type>
+      <PropertyCondition>AreEqual</PropertyCondition>
+    </AssertAction>
+    <TestStepMarkerAction Comment="" MarkerInformation="Type_rsaklfsvrgen_into_DB_Source_Wizard_Server_Textbox">
       <ParameterName />
       <StepId>-1</StepId>
       <Direction>Start</Direction>
@@ -14705,6 +14762,102 @@
                                         </UIObject>
                                       </Descendants>
                                     </UIObject>
+                                    <UIObject ControlType="ComboBox" Id="ServerComboBox" FriendlyName="ServerTextBox" SpecialControlType="None">
+                                      <TechnologyName>UIA</TechnologyName>
+                                      <WindowTitles>
+                                        <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
+                                      </WindowTitles>
+                                      <AndCondition>
+                                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                        <PropertyCondition Name="ControlType">ComboBox</PropertyCondition>
+                                        <PropertyCondition Name="AutomationId">ServerTextBox</PropertyCondition>
+                                      </AndCondition>
+                                      <SupportLevel>0</SupportLevel>
+                                      <Descendants>
+                                        <UIObject ControlType="ListItem" Id="RSAKLFSVRGENDEV" FriendlyName="RSAKLFSVRGENDEV" SpecialControlType="None">
+                                          <TechnologyName>UIA</TechnologyName>
+                                          <WindowTitles>
+                                            <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
+                                          </WindowTitles>
+                                          <AndCondition>
+                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                            <PropertyCondition Name="ControlType">ListItem</PropertyCondition>
+                                            <PropertyCondition Name="Name">RSAKLFSVRGENDEV</PropertyCondition>
+                                          </AndCondition>
+                                          <SupportLevel>0</SupportLevel>
+                                          <Descendants />
+                                        </UIObject>
+                                        <UIObject ControlType="Edit" Id="Textbox" FriendlyName="Text" SpecialControlType="None">
+                                          <TechnologyName>UIA</TechnologyName>
+                                          <WindowTitles>
+                                            <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
+                                          </WindowTitles>
+                                          <AndCondition>
+                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                            <PropertyCondition Name="ControlType">Edit</PropertyCondition>
+                                            <PropertyCondition Name="AutomationId">Text</PropertyCondition>
+                                          </AndCondition>
+                                          <SupportLevel>0</SupportLevel>
+                                          <Descendants />
+                                        </UIObject>
+                                      </Descendants>
+                                    </UIObject>
+                                  </Descendants>
+                                </UIObject>
+                                <UIObject ControlType="ComboBox" Id="ServerComboBox" FriendlyName="ServerTextBox" SpecialControlType="None">
+                                  <TechnologyName>UIA</TechnologyName>
+                                  <WindowTitles>
+                                    <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
+                                  </WindowTitles>
+                                  <AndCondition>
+                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                    <PropertyCondition Name="ControlType">ComboBox</PropertyCondition>
+                                    <PropertyCondition Name="AutomationId">ServerTextBox</PropertyCondition>
+                                  </AndCondition>
+                                  <SupportLevel>0</SupportLevel>
+                                  <Descendants />
+                                </UIObject>
+                                <UIObject ControlType="Button" Id="TestConnectionButton" FriendlyName="Test Connection" SpecialControlType="None">
+                                  <TechnologyName>UIA</TechnologyName>
+                                  <WindowTitles>
+                                    <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
+                                  </WindowTitles>
+                                  <AndCondition>
+                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                    <PropertyCondition Name="ControlType">Button</PropertyCondition>
+                                    <PropertyCondition Name="AutomationId">TestConnectionButton</PropertyCondition>
+                                  </AndCondition>
+                                  <SupportLevel>0</SupportLevel>
+                                  <Descendants />
+                                </UIObject>
+                                <UIObject ControlType="Text" Id="ErrorText" FriendlyName="Passed" SpecialControlType="None">
+                                  <TechnologyName>UIA</TechnologyName>
+                                  <WindowTitles>
+                                    <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
+                                  </WindowTitles>
+                                  <AndCondition>
+                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                    <PropertyCondition Name="ControlType">Text</PropertyCondition>
+                                    <PropertyCondition Name="AutomationId">ErrorTextBlock</PropertyCondition>
+                                  </AndCondition>
+                                  <SupportLevel>0</SupportLevel>
+                                  <Descendants>
+                                    <UIObject ControlType="Custom" Id="Spinner" FriendlyName="" SpecialControlType="None">
+                                      <TechnologyName>UIA</TechnologyName>
+                                      <WindowTitles>
+                                        <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
+                                      </WindowTitles>
+                                      <SearchConfigurations>
+                                        <SearchConfiguration>NextTo</SearchConfiguration>
+                                      </SearchConfigurations>
+                                      <AndCondition>
+                                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                        <PropertyCondition Name="ControlType">Custom</PropertyCondition>
+                                        <PropertyCondition Name="ClassName">Uia.CircularProgressBar</PropertyCondition>
+                                      </AndCondition>
+                                      <SupportLevel>0</SupportLevel>
+                                      <Descendants />
+                                    </UIObject>
                                   </Descendants>
                                 </UIObject>
                               </Descendants>
@@ -20217,34 +20370,6 @@
                 <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                 <PropertyCondition Name="ControlType">Button</PropertyCondition>
                 <PropertyCondition Name="AutomationId">UI_SelectServiceCancelButton_AutoID</PropertyCondition>
-              </AndCondition>
-              <SupportLevel>0</SupportLevel>
-              <Descendants />
-            </UIObject>
-          </Descendants>
-        </TopLevelWindow>
-        <TopLevelWindow ControlType="Window" Id="UIWarewolfDEV2ASHLEYLEWindow" FriendlyName="Warewolf (DEV2\ASHLEY.LEWIS)" SpecialControlType="None" SessionId="133352">
-          <TechnologyName>UIA</TechnologyName>
-          <WindowTitles>
-            <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
-          </WindowTitles>
-          <AndCondition>
-            <PropertyCondition Name="ControlType">Window</PropertyCondition>
-            <PropertyCondition Name="Name">Warewolf (DEV2\ASHLEY.LEWIS)</PropertyCondition>
-            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-            <PropertyCondition Name="ClassName" Operator="Contains">HwndWrapper</PropertyCondition>
-          </AndCondition>
-          <SupportLevel>0</SupportLevel>
-          <Descendants>
-            <UIObject ControlType="Custom" Id="UIItemCustom" FriendlyName="" SpecialControlType="None">
-              <TechnologyName>UIA</TechnologyName>
-              <WindowTitles>
-                <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
-              </WindowTitles>
-              <AndCondition>
-                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                <PropertyCondition Name="ControlType">Custom</PropertyCondition>
-                <PropertyCondition Name="ClassName">Uia.ManageDatabaseSourceControl</PropertyCondition>
               </AndCondition>
               <SupportLevel>0</SupportLevel>
               <Descendants />
