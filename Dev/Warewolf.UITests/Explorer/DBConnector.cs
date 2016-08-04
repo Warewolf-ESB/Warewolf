@@ -15,16 +15,30 @@ namespace Warewolf.UITests
     [CodedUITest]
     public class DBConnector
     {
+        const string DBSourceName = "UITestingDBSource";
+
         [TestMethod]
         public void BigDBConnectorUITest()
         {
             Uimap.Click_New_Workflow_Ribbon_Button();
-            Uimap.Select_NewDatabaseSource_FromExplorerContextMenu();
+            Uimap.Click_NewDatabaseSource_Ribbon_Button();
             Uimap.Select_MSSQLSERVER_From_DB_Source_Wizard_Address_Protocol_Dropdown();
             Uimap.Type_rsaklfsvrgen_into_DB_Source_Wizard_Server_Textbox();
             Uimap.Select_RSAKLFSVRGENDEV_From_Server_Source_Wizard_Dropdownlist();
             Uimap.Click_DB_Source_Wizard_Test_Connection_Button();
             Uimap.WaitForSpinner(Uimap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DBConnectorWizardTab.WorkSurfaceContext.ErrorText.Spinner);
+            Uimap.Select_Dev2TestingDB_From_DB_Source_Wizard_Database_Combobox();
+            Uimap.Click_Save_Ribbon_Button_to_Open_Save_Dialog();
+            Uimap.WaitForSpinner(Uimap.SaveDialogWindow.ExplorerView.ExplorerTree.localhost.Checkbox.Spinner);
+            Uimap.Enter_Service_Name_Into_Save_Dialog(DBSourceName);
+            Uimap.Click_SaveDialog_Save_Button();
+            Uimap.Click_Close_DB_Source_Wizard_Tab_Button();
+            Uimap.Drag_Toolbox_SQL_Server_Tool_Onto_DesignSurface();
+            Uimap.Open_Sql_Server_Tool_Large_View();
+            Uimap.Select_UITestingDBSource_From_SQL_Server_Large_View_Source_Combobox();
+            Uimap.Select_GetCountries_From_SQL_Server_Large_View_Action_Combobox();
+            Uimap.Type_S_Into_SQL_Server_Large_View_Inputs_Row1_Data_Textbox();
+            Uimap.Click_SQL_Server_Large_View_Generate_Outputs();
         }
 
         #region Additional test attributes
