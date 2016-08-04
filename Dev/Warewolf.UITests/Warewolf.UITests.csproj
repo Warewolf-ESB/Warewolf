@@ -53,6 +53,7 @@
     </CodeAnalysisDependentAssemblyPaths>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Explorer\DBConnector.cs" />
     <Compile Include="Explorer\Refresh.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Explorer\RemoteSubworkflow.cs" />
