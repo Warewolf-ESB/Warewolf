@@ -59,7 +59,8 @@ namespace Dev2.DataList.Contract
         }
 
         /// <summary>
-        /// Determines whether this instance has errors.
+        /// Determines whether this instance has errors.>	Dev2.Data.dll!Dev2.DataList.Contract.ErrorResultTO.FetchErrors() Line 59	C#
+
         /// </summary>
         /// <returns>
         ///   <c>true</c> if this instance has errors; otherwise, <c>false</c>.
