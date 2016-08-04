@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
 using System.Text;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Core.DynamicServices;
@@ -20,6 +21,7 @@ using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
 using Dev2.Runtime.Hosting;
 using Dev2.Workspaces;
+using Warewolf.Resource.Errors;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
@@ -42,6 +44,26 @@ namespace Dev2.Runtime.ESB.Management.Services
                 if(values == null)
                 {
                     throw new ArgumentNullException(nameof(values));
+                }
+                StringBuilder tmp;
+                values.TryGetValue("ReloadResourceCatalogue", out tmp);
+                String reloadResourceCatalogueString="";
+                if (tmp != null)
+                {
+                    reloadResourceCatalogueString = tmp.ToString();
+                }
+                bool reloadResourceCatalogue = false;
+                if (!string.IsNullOrEmpty(reloadResourceCatalogueString))
+                {
+                    
+                    if (!bool.TryParse(reloadResourceCatalogueString, out reloadResourceCatalogue))
+                    {
+                        reloadResourceCatalogue = false;
+                    }
+                }
+                if (reloadResourceCatalogue)
+                {
+                    ResourceCatalog.Instance.Reload();
                 }
                 var item = ServerExplorerRepo.Load(GlobalConstants.ServerWorkspaceID);
                 CompressedExecuteMessage message = new CompressedExecuteMessage();

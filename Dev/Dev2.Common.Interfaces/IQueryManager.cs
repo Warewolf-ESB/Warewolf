@@ -24,7 +24,7 @@ namespace Dev2.Common.Interfaces
         IExecuteMessage FetchDependants(Guid resourceId);
         [SuppressMessage("ReSharper", "UnusedMember.Global")]
         StringBuilder FetchResourceXaml(Guid resourceId);
-        Task<IExplorerItem> Load();
+        Task<IExplorerItem> Load(bool reloadCatalogue = false);
         IList<IToolDescriptor> FetchTools();
         IList<IExchangeSource> FetchExchangeSources();
         IList<string> GetComputerNames();

@@ -52,9 +52,9 @@ namespace Dev2.Common.Interfaces
 
         Action SelectAll { get; set; }
 
-        Task<bool> Load(bool b = false);
+        Task<bool> Load(bool b = false,bool reloadCatalogue = false);
 
-        Task<bool> LoadDialog(string selectedId, bool b = false);
+        Task<bool> LoadDialog(string selectedId, bool b = false, bool reloadCatalogue = false);
 
         Task<bool> LoadDialog(Guid selectedPath);
     }

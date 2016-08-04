@@ -79,12 +79,12 @@ namespace Warewolf.Studio.ServerProxyLayer
         /// Loads the Tree.
         /// </summary>
         /// <returns></returns>
-        public async Task<IExplorerItem> Load()
+        public async Task<IExplorerItem> Load(bool reloadCatalogue=false)
         {
             var comsController = CommunicationControllerFactory.CreateController("FetchExplorerItemsService");
 
-            var workspaceId = Connection.WorkspaceID;
-            var result = await comsController.ExecuteCompressedCommandAsync<IExplorerItem>(Connection, workspaceId);
+            comsController.AddPayloadArgument("ReloadResourceCatalogue",reloadCatalogue.ToString());
+            var result = await comsController.ExecuteCompressedCommandAsync<IExplorerItem>(Connection, GlobalConstants.ServerWorkspaceID);
             return result;
         }
         #endregion
