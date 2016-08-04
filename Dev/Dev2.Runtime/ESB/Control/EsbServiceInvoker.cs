@@ -20,6 +20,7 @@
 #endregion
 
 using System;
+using System.Collections.Concurrent;
 using System.Diagnostics;
 using System.Linq;
 using Dev2.Common;
@@ -34,7 +35,6 @@ using Dev2.Interfaces;
 using Dev2.Runtime.ESB.Control;
 using Dev2.Runtime.ESB.Execution;
 using Dev2.Workspaces;
-using ServiceStack.Net30.Collections.Concurrent;
 using Warewolf.Resource.Errors;
 
 // ReSharper disable CheckNamespace
