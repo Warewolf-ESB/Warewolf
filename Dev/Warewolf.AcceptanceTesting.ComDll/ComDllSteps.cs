@@ -256,6 +256,8 @@ namespace Warewolf.AcceptanceTesting.ComDll
         {
             var vm = _scenarioContext.Get<ComDllViewModel>("ViewModel");
             Assert.IsTrue(vm.InputArea.IsEnabled);
+            var execute = vm.TestInputCommand.Execute();
+            //execute.Start(TaskScheduler.Current);
             vm.TestProcedure();
         }
 
@@ -347,7 +349,7 @@ namespace Warewolf.AcceptanceTesting.ComDll
             OutputDescription = new OutputDescription();
             Outputs = new List<IServiceOutputMapping>();
             Inputs = new List<IServiceInput>();
-            SourceId = new Guid("4ef43652-655e-440a-b25a-0b1eb149ad04");
+            SourceId = vm.SourceRegion.SelectedSource.Id;
             _dsfDataObject = dsfDataObject;
             ResourceID = Guid.NewGuid();
             Method = vm.ActionRegion.SelectedAction;
