@@ -7,11 +7,11 @@ using System.Text;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core.DynamicServices;
-using Dev2.Common.Reflection;
 using Dev2.Communication;
 using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
 using Dev2.Workspaces;
+using GACManagerApi;
 using Warewolf.Resource.Errors;
 
 namespace Dev2.Runtime.ESB.Management.Services
@@ -65,22 +65,40 @@ namespace Dev2.Runtime.ESB.Management.Services
                 {
                     Dev2Logger.Error(e.Message);
                 }
-                IAssemblyName assemblyName;
-                IAssemblyEnum assemblyEnum = GAC.CreateGACEnum();
+                var enumAssembly = new AssemblyCacheEnumerator();
+                var assemblyName = enumAssembly.GetNextAssembly();
                 var gacList = new List<IFileListing>();
-                while (GAC.GetNextAssembly(assemblyEnum, out assemblyName) == 0)
+                while (assemblyName != null)
                 {
+                    //  Create the assembly description.
+                    
                     try
                     {
-                        var displayName = GAC.GetDisplayName(assemblyName, ASM_DISPLAY_FLAGS.VERSION | ASM_DISPLAY_FLAGS.CULTURE | ASM_DISPLAY_FLAGS.PUBLIC_KEY_TOKEN);
-                        var name = GlobalConstants.GACPrefix+displayName;
+                        var displayName = new AssemblyDescription(assemblyName).DisplayName;
+                        var name = GlobalConstants.GACPrefix + displayName;
                         gacList.Add(new DllListing { Name = displayName, FullName = name, IsDirectory = false });
                     }
                     catch (Exception e)
                     {
                         Dev2Logger.Error(e.Message);
                     }
+                    //  Create an assembly view model.
+                    assemblyName = enumAssembly.GetNextAssembly();
                 }
+//                var gacList = new List<IFileListing>();
+//                while (GAC.GetNextAssembly(assemblyEnum, out assemblyName) == 0)
+//                {
+//                    try
+//                    {
+//                        var displayName = GAC.GetDisplayName(assemblyName, ASM_DISPLAY_FLAGS.VERSION | ASM_DISPLAY_FLAGS.CULTURE | ASM_DISPLAY_FLAGS.PUBLIC_KEY_TOKEN | ASM_DISPLAY_FLAGS.PROCESSORARCHITECTURE);
+//                        var name = GlobalConstants.GACPrefix+displayName;
+//                        gacList.Add(new DllListing { Name = displayName, FullName = name, IsDirectory = false });
+//                    }
+//                    catch (Exception e)
+//                    {
+//                        Dev2Logger.Error(e.Message);
+//                    }
+//                }
                 gacItem.Children = gacList;
 
                 completeList.Add(fileSystemParent);

@@ -1398,94 +1398,94 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsFalse(result);
             _explorerRepositoryMock.Verify(it => it.Move(_target, destinationMock.Object));
         }
-
-        [TestMethod]
-        public async System.Threading.Tasks.Task TestMoveToFolderNotExists()
-        {
-            //arrange
-            var destinationMock = new Mock<IExplorerTreeItem>();
-            destinationMock.Setup(it => it.ResourceType).Returns("Folder");
-            destinationMock.SetupGet(it => it.ResourcePath).Returns("someDestPath");
-            var currentChildrenMock = new Mock<IExplorerItemViewModel>();
-            currentChildrenMock.SetupGet(it => it.ResourceName).Returns("someResourceName");
-            var childDestItem = new Mock<IExplorerItemViewModel>();
-            _target.ResourceName = "someName";
-            _target.ResourceType = "Folder";
-            _target.Children.Add(currentChildrenMock.Object);
-            childDestItem.SetupGet(it => it.ResourceName).Returns("someOtherName");
-            childDestItem.SetupGet(it => it.ResourceType).Returns("Folder");
-            childDestItem.SetupGet(it => it.ResourcePath).Returns("somePath");
-            childDestItem.SetupGet(it => it.Children).Returns(new ObservableCollection<IExplorerItemViewModel>());
-            destinationMock.SetupGet(it => it.Children).Returns(new ObservableCollection<IExplorerItemViewModel>()
-            {
-                childDestItem.Object
-            });
-            var studioUpdateManagerMock = new Mock<IStudioUpdateManager>();
-
-            _serverMock.SetupGet(it => it.UpdateRepository).Returns(studioUpdateManagerMock.Object);
-            //act
-            var result = await _target.Move(destinationMock.Object);
-            //assert
-            Assert.IsTrue(result);
-            _explorerRepositoryMock.Verify(it => it.Move(_target, destinationMock.Object));
-        }
-
-        [TestMethod]
-        public async System.Threading.Tasks.Task TestMoveToLtFolder()
-        {
-            //arrange
-            var destinationMock = new Mock<IExplorerTreeItem>();
-            destinationMock.Setup(it => it.ResourceType).Returns("ServerSource");
-            destinationMock.SetupGet(it => it.ResourcePath).Returns("someDestPath");
-            var childDestItem = new Mock<IExplorerItemViewModel>();
-            childDestItem.SetupGet(it => it.ResourceName).Returns("someOtherName");
-            childDestItem.SetupGet(it => it.ResourceType).Returns("Folder");
-            childDestItem.SetupGet(it => it.ResourcePath).Returns("somePath");
-            childDestItem.SetupGet(it => it.Children).Returns(new ObservableCollection<IExplorerItemViewModel>());
-            destinationMock.SetupGet(it => it.Children).Returns(new ObservableCollection<IExplorerItemViewModel>()
-            {
-                childDestItem.Object
-            });
-            _target.ResourceName = "someName";
-            _target.ResourceType = "WebSource";
-
-            var studioUpdateManagerMock = new Mock<IStudioUpdateManager>();
-
-            _serverMock.SetupGet(it => it.UpdateRepository).Returns(studioUpdateManagerMock.Object);
-            //act
-            var result = await _target.Move(destinationMock.Object);
-            //assert
-            Assert.IsTrue(result);
-        }
-
-        [TestMethod]
-        public async System.Threading.Tasks.Task TestMoveParentNull()
-        {
-            //arrange
-            var destinationMock = new Mock<IExplorerTreeItem>();
-            destinationMock.Setup(it => it.ResourceType).Returns("DropboxSource");
-            destinationMock.SetupGet(it => it.ResourcePath).Returns("someDestPath");
-            destinationMock.SetupGet(it => it.Parent).Returns((IExplorerTreeItem)null);
-            var childDestItem = new Mock<IExplorerItemViewModel>();
-            childDestItem.SetupGet(it => it.ResourceName).Returns("someOtherName");
-            childDestItem.SetupGet(it => it.ResourceType).Returns("Folder");
-            childDestItem.SetupGet(it => it.ResourcePath).Returns("somePath");
-            childDestItem.SetupGet(it => it.Children).Returns(new ObservableCollection<IExplorerItemViewModel>());
-            destinationMock.SetupGet(it => it.Children).Returns(new ObservableCollection<IExplorerItemViewModel>()
-            {
-                childDestItem.Object
-            });
-            _target.ResourceName = "someName";
-            _target.ResourceType = "WebSource";
-
-            var studioUpdateManagerMock = new Mock<IStudioUpdateManager>();
-
-            _serverMock.SetupGet(it => it.UpdateRepository).Returns(studioUpdateManagerMock.Object);
-            //act
-            var result = await _target.Move(destinationMock.Object);
-            //assert
-            Assert.IsTrue(result);
-        }
+//
+//        [TestMethod]
+//        public async System.Threading.Tasks.Task TestMoveToFolderNotExists()
+//        {
+//            //arrange
+//            var destinationMock = new Mock<IExplorerTreeItem>();
+//            destinationMock.Setup(it => it.ResourceType).Returns("Folder");
+//            destinationMock.SetupGet(it => it.ResourcePath).Returns("someDestPath");
+//            var currentChildrenMock = new Mock<IExplorerItemViewModel>();
+//            currentChildrenMock.SetupGet(it => it.ResourceName).Returns("someResourceName");
+//            var childDestItem = new Mock<IExplorerItemViewModel>();
+//            _target.ResourceName = "someName";
+//            _target.ResourceType = "Folder";
+//            _target.Children.Add(currentChildrenMock.Object);
+//            childDestItem.SetupGet(it => it.ResourceName).Returns("someOtherName");
+//            childDestItem.SetupGet(it => it.ResourceType).Returns("Folder");
+//            childDestItem.SetupGet(it => it.ResourcePath).Returns("somePath");
+//            childDestItem.SetupGet(it => it.Children).Returns(new ObservableCollection<IExplorerItemViewModel>());
+//            destinationMock.SetupGet(it => it.Children).Returns(new ObservableCollection<IExplorerItemViewModel>()
+//            {
+//                childDestItem.Object
+//            });
+//            var studioUpdateManagerMock = new Mock<IStudioUpdateManager>();
+//
+//            _serverMock.SetupGet(it => it.UpdateRepository).Returns(studioUpdateManagerMock.Object);
+//            //act
+//            var result = await _target.Move(destinationMock.Object);
+//            //assert
+//            Assert.IsTrue(result);
+//            _explorerRepositoryMock.Verify(it => it.Move(_target, destinationMock.Object));
+//        }
+//
+//        [TestMethod]
+//        public async System.Threading.Tasks.Task TestMoveToLtFolder()
+//        {
+//            //arrange
+//            var destinationMock = new Mock<IExplorerTreeItem>();
+//            destinationMock.Setup(it => it.ResourceType).Returns("ServerSource");
+//            destinationMock.SetupGet(it => it.ResourcePath).Returns("someDestPath");
+//            var childDestItem = new Mock<IExplorerItemViewModel>();
+//            childDestItem.SetupGet(it => it.ResourceName).Returns("someOtherName");
+//            childDestItem.SetupGet(it => it.ResourceType).Returns("Folder");
+//            childDestItem.SetupGet(it => it.ResourcePath).Returns("somePath");
+//            childDestItem.SetupGet(it => it.Children).Returns(new ObservableCollection<IExplorerItemViewModel>());
+//            destinationMock.SetupGet(it => it.Children).Returns(new ObservableCollection<IExplorerItemViewModel>()
+//            {
+//                childDestItem.Object
+//            });
+//            _target.ResourceName = "someName";
+//            _target.ResourceType = "WebSource";
+//
+//            var studioUpdateManagerMock = new Mock<IStudioUpdateManager>();
+//
+//            _serverMock.SetupGet(it => it.UpdateRepository).Returns(studioUpdateManagerMock.Object);
+//            //act
+//            var result = await _target.Move(destinationMock.Object);
+//            //assert
+//            Assert.IsTrue(result);
+//        }
+////
+//        [TestMethod]
+//        public async System.Threading.Tasks.Task TestMoveParentNull()
+//        {
+//            //arrange
+//            var destinationMock = new Mock<IExplorerTreeItem>();
+//            destinationMock.Setup(it => it.ResourceType).Returns("DropboxSource");
+//            destinationMock.SetupGet(it => it.ResourcePath).Returns("someDestPath");
+//            destinationMock.SetupGet(it => it.Parent).Returns((IExplorerTreeItem)null);
+//            var childDestItem = new Mock<IExplorerItemViewModel>();
+//            childDestItem.SetupGet(it => it.ResourceName).Returns("someOtherName");
+//            childDestItem.SetupGet(it => it.ResourceType).Returns("Folder");
+//            childDestItem.SetupGet(it => it.ResourcePath).Returns("somePath");
+//            childDestItem.SetupGet(it => it.Children).Returns(new ObservableCollection<IExplorerItemViewModel>());
+//            destinationMock.SetupGet(it => it.Children).Returns(new ObservableCollection<IExplorerItemViewModel>()
+//            {
+//                childDestItem.Object
+//            });
+//            _target.ResourceName = "someName";
+//            _target.ResourceType = "WebSource";
+//
+//            var studioUpdateManagerMock = new Mock<IStudioUpdateManager>();
+//
+//            _serverMock.SetupGet(it => it.UpdateRepository).Returns(studioUpdateManagerMock.Object);
+//            //act
+//            var result = await _target.Move(destinationMock.Object);
+//            //assert
+//            Assert.IsTrue(result);
+//        }
 
         [TestMethod]
         public async System.Threading.Tasks.Task TestMoveException()
