@@ -236,6 +236,19 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
+        /// Click_DB_Source_Wizard_Test_Connection_Button
+        /// </summary>
+        public void Click_DB_Source_Wizard_Test_Connection_Button()
+        {
+            #region Variable Declarations
+            WpfButton testConnectionButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DBConnectorWizardTab.WorkSurfaceContext.TestConnectionButton;
+            #endregion
+
+            // Click 'Test Connection' button
+            Mouse.Click(testConnectionButton, new Point(21, 16));
+        }
+        
+        /// <summary>
         /// Click_Debug_Output_Assign_Cell - Use 'Click_Debug_Output_Assign_CellParams' to pass parameters into this method.
         /// </summary>
         public void Click_Debug_Output_Assign_Cell()
@@ -4583,19 +4596,6 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
-        /// Select_Data_Source_Droplist
-        /// </summary>
-        public void Select_Data_Source_Droplist()
-        {
-            #region Variable Declarations
-            WpfCustom sourcesComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DBConnectorWizardTab.WorkSurfaceContext.SourcesComboBox;
-            #endregion
-
-            // Click 'SourcesComboBox' custom control
-            Mouse.Click(sourcesComboBox, new Point(228, 12));
-        }
-        
-        /// <summary>
         /// Select_Delete_FromExplorerContextMenu - Use 'Select_Delete_FromExplorerContextMenuParams' to pass parameters into this method.
         /// </summary>
         public void Select_Delete_FromExplorerContextMenu()
@@ -4685,6 +4685,10 @@ namespace Warewolf.UITests
 
             // Click 'ToggleButton' button
             Mouse.Click(toggleButton, new Point(625, 11));
+
+            // Verify that the 'Exists' property of 'Microsoft SQL Server' label equals 'True'
+            Assert.AreEqual(this.Select_MSSQLSERVER_From_DB_Source_Wizard_Address_Protocol_DropdownParams.UIMicrosoftSQLServerTextExists, uIMicrosoftSQLServerText.Exists, "Microsoft SQL Server does not exist as an option in new DB source wizard type com" +
+                    "bobox.");
 
             // Click 'Microsoft SQL Server' label
             Mouse.Click(uIMicrosoftSQLServerText, new Point(118, 6));
@@ -4876,6 +4880,23 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
+        /// Select_RSAKLFSVRGENDEV_From_Server_Source_Wizard_Dropdownlist - Use 'Select_RSAKLFSVRGENDEV_From_Server_Source_Wizard_DropdownlistExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void Select_RSAKLFSVRGENDEV_From_Server_Source_Wizard_Dropdownlist()
+        {
+            #region Variable Declarations
+            WpfListItem rSAKLFSVRGENDEV = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DBConnectorWizardTab.WorkSurfaceContext.NewDBSourceWizard.ServerComboBox.RSAKLFSVRGENDEV;
+            WpfEdit textbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DBConnectorWizardTab.WorkSurfaceContext.NewDBSourceWizard.ServerComboBox.Textbox;
+            #endregion
+
+            // Click 'RSAKLFSVRGENDEV' list item
+            Mouse.Click(rSAKLFSVRGENDEV, new Point(97, 17));
+
+            // Verify that the 'Text' property of 'Text' text box equals 'RSAKLFSVRGENDEV'
+            Assert.AreEqual(this.Select_RSAKLFSVRGENDEV_From_Server_Source_Wizard_DropdownlistExpectedValues.TextboxText, textbox.Text, "RSAKLFSVRGENDEV is not selected as the server in the DB source wizard.");
+        }
+        
+        /// <summary>
         /// Select_SaveAsImage_FromContextMenu
         /// </summary>
         public void Select_SaveAsImage_FromContextMenu()
@@ -4933,6 +4954,23 @@ namespace Warewolf.UITests
 
             // Verify that the 'Exists' property of 'Test Connection' button equals 'True'
             Assert.AreEqual(this.Select_TSTCIREMOTE_From_Server_Source_Wizard_DropdownlistParams.TestConnectionButtonExists, testConnectionButton.Exists, "Server source wizard does not contain a test connection button");
+        }
+        
+        /// <summary>
+        /// Type_rsaklfsvrgen_into_DB_Source_Wizard_Server_Textbox - Use 'Type_rsaklfsvrgen_into_DB_Source_Wizard_Server_TextboxParams' to pass parameters into this method.
+        /// </summary>
+        public void Type_rsaklfsvrgen_into_DB_Source_Wizard_Server_Textbox()
+        {
+            #region Variable Declarations
+            WpfComboBox serverComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DBConnectorWizardTab.WorkSurfaceContext.ServerComboBox;
+            WpfListItem rSAKLFSVRGENDEV = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DBConnectorWizardTab.WorkSurfaceContext.NewDBSourceWizard.ServerComboBox.RSAKLFSVRGENDEV;
+            #endregion
+
+            // Select 'rsaklfsvrgen' in 'ServerTextBox' combo box
+            serverComboBox.EditableItem = this.Type_rsaklfsvrgen_into_DB_Source_Wizard_Server_TextboxParams.ServerComboBoxEditableItem;
+
+            // Verify that the 'Exists' property of 'RSAKLFSVRGENDEV' list item equals 'True'
+            Assert.AreEqual(this.Type_rsaklfsvrgen_into_DB_Source_Wizard_Server_TextboxParams.RSAKLFSVRGENDEVExists, rSAKLFSVRGENDEV.Exists, "RSAKLFSVRGENDEV does not exist as an option in DB source wizard server combobox.");
         }
         
         /// <summary>
@@ -6574,6 +6612,18 @@ namespace Warewolf.UITests
             }
         }
         
+        public virtual Select_RSAKLFSVRGENDEV_From_Server_Source_Wizard_DropdownlistExpectedValues Select_RSAKLFSVRGENDEV_From_Server_Source_Wizard_DropdownlistExpectedValues
+        {
+            get
+            {
+                if ((this.mSelect_RSAKLFSVRGENDEV_From_Server_Source_Wizard_DropdownlistExpectedValues == null))
+                {
+                    this.mSelect_RSAKLFSVRGENDEV_From_Server_Source_Wizard_DropdownlistExpectedValues = new Select_RSAKLFSVRGENDEV_From_Server_Source_Wizard_DropdownlistExpectedValues();
+                }
+                return this.mSelect_RSAKLFSVRGENDEV_From_Server_Source_Wizard_DropdownlistExpectedValues;
+            }
+        }
+        
         public virtual Select_TSTCIREMOTE_From_Server_Source_Wizard_DropdownlistParams Select_TSTCIREMOTE_From_Server_Source_Wizard_DropdownlistParams
         {
             get
@@ -6583,6 +6633,18 @@ namespace Warewolf.UITests
                     this.mSelect_TSTCIREMOTE_From_Server_Source_Wizard_DropdownlistParams = new Select_TSTCIREMOTE_From_Server_Source_Wizard_DropdownlistParams();
                 }
                 return this.mSelect_TSTCIREMOTE_From_Server_Source_Wizard_DropdownlistParams;
+            }
+        }
+        
+        public virtual Type_rsaklfsvrgen_into_DB_Source_Wizard_Server_TextboxParams Type_rsaklfsvrgen_into_DB_Source_Wizard_Server_TextboxParams
+        {
+            get
+            {
+                if ((this.mType_rsaklfsvrgen_into_DB_Source_Wizard_Server_TextboxParams == null))
+                {
+                    this.mType_rsaklfsvrgen_into_DB_Source_Wizard_Server_TextboxParams = new Type_rsaklfsvrgen_into_DB_Source_Wizard_Server_TextboxParams();
+                }
+                return this.mType_rsaklfsvrgen_into_DB_Source_Wizard_Server_TextboxParams;
             }
         }
         
@@ -6691,18 +6753,6 @@ namespace Warewolf.UITests
                     this.mServicePickerDialog = new ServicePickerDialog();
                 }
                 return this.mServicePickerDialog;
-            }
-        }
-        
-        public UIWarewolfDEV2ASHLEYLEWindow UIWarewolfDEV2ASHLEYLEWindow
-        {
-            get
-            {
-                if ((this.mUIWarewolfDEV2ASHLEYLEWindow == null))
-                {
-                    this.mUIWarewolfDEV2ASHLEYLEWindow = new UIWarewolfDEV2ASHLEYLEWindow();
-                }
-                return this.mUIWarewolfDEV2ASHLEYLEWindow;
             }
         }
         #endregion
@@ -6976,7 +7026,11 @@ namespace Warewolf.UITests
         
         private Select_MSSQLSERVER_From_DB_Source_Wizard_Address_Protocol_DropdownParams mSelect_MSSQLSERVER_From_DB_Source_Wizard_Address_Protocol_DropdownParams;
         
+        private Select_RSAKLFSVRGENDEV_From_Server_Source_Wizard_DropdownlistExpectedValues mSelect_RSAKLFSVRGENDEV_From_Server_Source_Wizard_DropdownlistExpectedValues;
+        
         private Select_TSTCIREMOTE_From_Server_Source_Wizard_DropdownlistParams mSelect_TSTCIREMOTE_From_Server_Source_Wizard_DropdownlistParams;
+        
+        private Type_rsaklfsvrgen_into_DB_Source_Wizard_Server_TextboxParams mType_rsaklfsvrgen_into_DB_Source_Wizard_Server_TextboxParams;
         
         private Type_S_Into_DebugInput_Row1_InputDataParams mType_S_Into_DebugInput_Row1_InputDataParams;
         
@@ -6995,8 +7049,6 @@ namespace Warewolf.UITests
         private SelectWindowsGroupDialog mSelectWindowsGroupDialog;
         
         private ServicePickerDialog mServicePickerDialog;
-        
-        private UIWarewolfDEV2ASHLEYLEWindow mUIWarewolfDEV2ASHLEYLEWindow;
         #endregion
     }
     
@@ -9937,9 +9989,29 @@ namespace Warewolf.UITests
         
         #region Fields
         /// <summary>
+        /// Verify that the 'Exists' property of 'Microsoft SQL Server' label equals 'True'
+        /// </summary>
+        public bool UIMicrosoftSQLServerTextExists = true;
+        
+        /// <summary>
         /// Verify that the 'DisplayText' property of 'Microsoft SQL Server' label equals 'Microsoft SQL Server'
         /// </summary>
         public string MicrosoftSQLServerDisplayText = "Microsoft SQL Server";
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Select_RSAKLFSVRGENDEV_From_Server_Source_Wizard_Dropdownlist'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Select_RSAKLFSVRGENDEV_From_Server_Source_Wizard_DropdownlistExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Text' property of 'Text' text box equals 'RSAKLFSVRGENDEV'
+        /// </summary>
+        public string TextboxText = "RSAKLFSVRGENDEV";
         #endregion
     }
     
@@ -9960,6 +10032,26 @@ namespace Warewolf.UITests
         /// Verify that the 'Exists' property of 'Test Connection' button equals 'True'
         /// </summary>
         public bool TestConnectionButtonExists = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Type_rsaklfsvrgen_into_DB_Source_Wizard_Server_Textbox'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Type_rsaklfsvrgen_into_DB_Source_Wizard_Server_TextboxParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Select 'rsaklfsvrgen' in 'ServerTextBox' combo box
+        /// </summary>
+        public string ServerComboBoxEditableItem = "rsaklfsvrgen";
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'RSAKLFSVRGENDEV' list item equals 'True'
+        /// </summary>
+        public bool RSAKLFSVRGENDEVExists = true;
         #endregion
     }
     
@@ -23101,12 +23193,62 @@ namespace Warewolf.UITests
                 return this.mNewDBSourceWizard;
             }
         }
+        
+        public WpfComboBox ServerComboBox
+        {
+            get
+            {
+                if ((this.mServerComboBox == null))
+                {
+                    this.mServerComboBox = new WpfComboBox(this);
+                    #region Search Criteria
+                    this.mServerComboBox.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "ServerTextBox";
+                    this.mServerComboBox.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mServerComboBox;
+            }
+        }
+        
+        public WpfButton TestConnectionButton
+        {
+            get
+            {
+                if ((this.mTestConnectionButton == null))
+                {
+                    this.mTestConnectionButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mTestConnectionButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "TestConnectionButton";
+                    this.mTestConnectionButton.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mTestConnectionButton;
+            }
+        }
+        
+        public ErrorText ErrorText
+        {
+            get
+            {
+                if ((this.mErrorText == null))
+                {
+                    this.mErrorText = new ErrorText(this);
+                }
+                return this.mErrorText;
+            }
+        }
         #endregion
         
         #region Fields
         private SourcesComboBox mSourcesComboBox;
         
         private NewDBSourceWizard mNewDBSourceWizard;
+        
+        private WpfComboBox mServerComboBox;
+        
+        private WpfButton mTestConnectionButton;
+        
+        private ErrorText mErrorText;
         #endregion
     }
     
@@ -23190,10 +23332,24 @@ namespace Warewolf.UITests
                 return this.mServerTypeComboBox;
             }
         }
+        
+        public ServerComboBox1 ServerComboBox
+        {
+            get
+            {
+                if ((this.mServerComboBox == null))
+                {
+                    this.mServerComboBox = new ServerComboBox1(this);
+                }
+                return this.mServerComboBox;
+            }
+        }
         #endregion
         
         #region Fields
         private ServerTypeComboBox mServerTypeComboBox;
+        
+        private ServerComboBox1 mServerComboBox;
         #endregion
     }
     
@@ -23249,6 +23405,97 @@ namespace Warewolf.UITests
         private WpfButton mToggleButton;
         
         private WpfText mMicrosoftSQLServer;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class ServerComboBox1 : WpfComboBox
+    {
+        
+        public ServerComboBox1(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "ServerTextBox";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfListItem RSAKLFSVRGENDEV
+        {
+            get
+            {
+                if ((this.mRSAKLFSVRGENDEV == null))
+                {
+                    this.mRSAKLFSVRGENDEV = new WpfListItem(this);
+                    #region Search Criteria
+                    this.mRSAKLFSVRGENDEV.SearchProperties[WpfListItem.PropertyNames.Name] = "RSAKLFSVRGENDEV";
+                    this.mRSAKLFSVRGENDEV.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mRSAKLFSVRGENDEV;
+            }
+        }
+        
+        public WpfEdit Textbox
+        {
+            get
+            {
+                if ((this.mTextbox == null))
+                {
+                    this.mTextbox = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mTextbox.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "Text";
+                    this.mTextbox.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mTextbox;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfListItem mRSAKLFSVRGENDEV;
+        
+        private WpfEdit mTextbox;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class ErrorText : WpfText
+    {
+        
+        public ErrorText(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfText.PropertyNames.AutomationId] = "ErrorTextBlock";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfCustom Spinner
+        {
+            get
+            {
+                if ((this.mSpinner == null))
+                {
+                    this.mSpinner = new WpfCustom(this);
+                    #region Search Criteria
+                    this.mSpinner.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.CircularProgressBar";
+                    this.mSpinner.SearchConfigurations.Add(SearchConfiguration.NextSibling);
+                    this.mSpinner.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mSpinner;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfCustom mSpinner;
         #endregion
     }
     
@@ -32617,42 +32864,6 @@ namespace Warewolf.UITests
         
         #region Fields
         private WpfTreeItem mSubTreeItem1;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class UIWarewolfDEV2ASHLEYLEWindow : WpfWindow
-    {
-        
-        public UIWarewolfDEV2ASHLEYLEWindow()
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfWindow.PropertyNames.Name] = "Warewolf (DEV2\\ASHLEY.LEWIS)";
-            this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
-            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
-            #endregion
-        }
-        
-        #region Properties
-        public WpfCustom UIItemCustom
-        {
-            get
-            {
-                if ((this.mUIItemCustom == null))
-                {
-                    this.mUIItemCustom = new WpfCustom(this);
-                    #region Search Criteria
-                    this.mUIItemCustom.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ManageDatabaseSourceControl";
-                    this.mUIItemCustom.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
-                    #endregion
-                }
-                return this.mUIItemCustom;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfCustom mUIItemCustom;
         #endregion
     }
 }
