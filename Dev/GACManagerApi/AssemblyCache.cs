@@ -1,17 +1,10 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 using GACManagerApi.Fusion;
+// ReSharper disable NonLocalizedString
 
 namespace GACManagerApi
 {
-    /// <summary>
-    /// AssemblyMustBeStronglyNamedException.
-    /// </summary>
-    public class AssemblyMustBeStronglyNamedException : Exception
-    {
-
-    }
-
     /// <summary>
     /// The AssemblyCache class is a managed wrapper around the Fusion IAssemblyCache COM interface.
     /// </summary>
@@ -28,12 +21,11 @@ namespace GACManagerApi
         {
             if (assemblyName == null)
             {
-                throw new ArgumentException("Invalid name", "assemblyName");
+                throw new ArgumentException("Invalid name", nameof(assemblyName));
             }
 
-            var aInfo = new ASSEMBLY_INFO();
+            var aInfo = new ASSEMBLY_INFO { cchBuf = 1024 };
 
-            aInfo.cchBuf = 1024;
             // Get a string with the desired length
             aInfo.currentAssemblyPath = new String('\0', aInfo.cchBuf);
 

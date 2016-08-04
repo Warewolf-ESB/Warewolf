@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 using GACManagerApi.Fusion;
+// ReSharper disable InconsistentNaming
 
 namespace GACManagerApi
 {
@@ -37,7 +38,7 @@ namespace GACManagerApi
             }
 
             //  Create the assembly enumerator.
-            hr = FusionImports.CreateAssemblyEnum(out _assemblyEnumerator, IntPtr.Zero,
+            hr = FusionImports.CreateAssemblyEnum(out assemblyEnumerator, IntPtr.Zero,
                 fusionName, ASM_CACHE_FLAGS.ASM_CACHE_GAC, IntPtr.Zero);
             
             //  Check the result.
@@ -60,7 +61,7 @@ namespace GACManagerApi
             }
 
             // Now get next IAssemblyName from m_AssemblyEnum
-            hr = _assemblyEnumerator.GetNextAssembly((IntPtr)0, out fusionName, 0);
+            hr = assemblyEnumerator.GetNextAssembly((IntPtr)0, out fusionName, 0);
 
             if (hr < 0)
             {
@@ -77,7 +78,7 @@ namespace GACManagerApi
             return fusionName;
         }
 
-        private IAssemblyEnum _assemblyEnumerator = null;
+        private IAssemblyEnum assemblyEnumerator = null;
         private bool done;
     }
 }

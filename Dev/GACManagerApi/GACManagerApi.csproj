@@ -51,6 +51,7 @@
     <Compile Include="AssemblyCache.cs" />
     <Compile Include="AssemblyCacheEnumerator.cs" />
     <Compile Include="AssemblyDescription.cs" />
+    <Compile Include="AssemblyFusionProperties.cs" />
     <Compile Include="AssemblyReflectionProperties.cs" />
     <Compile Include="Fusion\ASM_DISPLAY_FLAGS.cs" />
     <Compile Include="Fusion\ASM_NAME.cs" />
@@ -58,12 +59,15 @@
     <Compile Include="Fusion\ASSEMBLY_INFO.cs" />
     <Compile Include="Fusion\CREATE_ASM_NAME_OBJ_FLAGS.cs" />
     <Compile Include="Fusion\FusionImports.cs" />
+    <Compile Include="Fusion\FUSION_INSTALL_REFERENCE.cs" />
+    <Compile Include="Fusion\IASSEMBLYCACHE_UNINSTALL_DISPOSITION.cs" />
     <Compile Include="Fusion\IInstallReferenceEnum.cs" />
     <Compile Include="Fusion\IInstallReferenceItem.cs" />
     <Compile Include="Fusion\AssemblyCommitFlags.cs" />
     <Compile Include="Fusion\IAssemblyEnum.cs" />
     <Compile Include="Fusion\IAssemblyCache.cs" />
     <Compile Include="Fusion\IAssemblyName.cs" />
+    <Compile Include="InstallReferenceEnumerator.cs" />
     <Compile Include="InstallReferenceGuid.cs" />
     <Compile Include="..\AssemblyCommonInfo.cs">
       <Link>Properties\AssemblyCommonInfo.cs</Link>
