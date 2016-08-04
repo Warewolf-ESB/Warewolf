@@ -26,6 +26,7 @@
 *.iml
 *.playlist
 *.sln.DotSettings
+*.sln.DotSettings.user
 
 ####################################################################################
 # Compile outputs
