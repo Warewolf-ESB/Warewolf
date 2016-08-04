@@ -10,10 +10,13 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using Dev2.Common;
+using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces.Core.Graph;
 using Dev2.Data.Util;
 using Dev2.Runtime.ServiceModel.Data;
@@ -74,8 +77,15 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.ComPlugin
                 result.DataSourceShapes.Add(dataSourceShape);
                 return result;
             }
+            catch (COMException e)
+            {
+                Dev2Logger.Error("IOutputDescription Test(PluginInvokeArgs setupInfo)", e);
+                throw;
+            }
             catch (Exception e)
             {
+                if(e.InnerException is COMException)
+                    throw e.InnerException;
                 Dev2Logger.Error("IOutputDescription Test(PluginInvokeArgs setupInfo)", e);
                 jsonResult = null;
                 return null;
@@ -89,47 +99,92 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.ComPlugin
             if (!string.IsNullOrEmpty(setupInfo.ClsId))
             {
                 var type = GetType(setupInfo.ClsId, setupInfo.Is32Bit);
-                var valuedTypeList = new List<object>();
-                foreach (var methodParameter in setupInfo.Parameters)
+
+                if (type?.Name.ToUpper().Contains("ComObject".ToUpper()) ?? false)
                 {
-                    try
+                    using (var client = new Client())
                     {
-                        var anonymousType = JsonConvert.DeserializeObject(methodParameter.Value, Type.GetType(methodParameter.TypeName));
-                        if (anonymousType != null)
+                        //use Late Binding to Get MethodInfo
+                        dynamic objExcel = Activator.CreateInstance(Type.GetTypeFromCLSID(setupInfo.ClsId.ToGuid()));
+                        MethodInfo method = ((object)objExcel).GetType().GetMethod(setupInfo.Method);
+
+                        pluginResult = client.Invoke(setupInfo.ClsId.ToGuid(), setupInfo.Method, "ExecuteSpecifiedMethod", new object[] { setupInfo.Parameters });
+                        return method;
+                    }
+                }
+                var valuedTypeList = BuildValuedTypeParams(setupInfo);
+
+                if (type != null)
+                {
+                    var methodToRun = type.GetMethod(setupInfo.Method, typeList.ToArray()) ?? type.GetMethod(setupInfo.Method);
+                    if (methodToRun == null && typeList.Count == 0)
+                    {
+                        methodToRun = type.GetMethod(setupInfo.Method);
+                    }
+                    var instance = Activator.CreateInstance(type);
+
+                    if (methodToRun != null)
+                    {
+                        if (methodToRun.ReturnType == typeof(void))
                         {
-                            valuedTypeList.Add(anonymousType);
+                            methodToRun.Invoke(instance, BindingFlags.InvokeMethod | BindingFlags.IgnoreCase | BindingFlags.Public, null, valuedTypeList.ToArray(), CultureInfo.InvariantCulture);
                         }
-                    }
-                    catch (Exception)
-                    {
-                        valuedTypeList.Add(methodParameter.Value);
-                    }
-                }
+                        else
+                        {
+                            pluginResult = methodToRun.Invoke(instance, BindingFlags.InvokeMethod | BindingFlags.IgnoreCase | BindingFlags.Public, null, valuedTypeList.ToArray(), CultureInfo.InvariantCulture);
+                            return methodToRun;
+                        }
 
-                var methodToRun = type.GetMethod(setupInfo.Method, typeList.ToArray()) ?? type.GetMethod(setupInfo.Method);
-                if (methodToRun == null && typeList.Count == 0)
-                {
-                    methodToRun = type.GetMethod(setupInfo.Method);
-                }
-                var instance = Activator.CreateInstance(type);
 
-                if (methodToRun != null)
-                {
-                    if (methodToRun.ReturnType == typeof (void))
-                    {
-                        methodToRun.Invoke(instance, BindingFlags.InvokeMethod | BindingFlags.IgnoreCase | BindingFlags.Public, null, valuedTypeList.ToArray(), CultureInfo.InvariantCulture);
                     }
-                    else
-                    {
-                        pluginResult = methodToRun.Invoke(instance, BindingFlags.InvokeMethod | BindingFlags.IgnoreCase | BindingFlags.Public, null, valuedTypeList.ToArray(), CultureInfo.InvariantCulture);
-                        return methodToRun;
-                    }
-                  
-                    
                 }
             }
             pluginResult = null;
             return null;
+        }
+
+        private static List<object> BuildValuedTypeParams(ComPluginInvokeArgs setupInfo)
+        {
+            var valuedTypeList = new List<object>();
+
+            foreach(var methodParameter in setupInfo.Parameters)
+            {
+                try
+                {
+                    var anonymousType = JsonConvert.DeserializeObject(methodParameter.Value, Type.GetType(methodParameter.TypeName));
+                    if(anonymousType != null)
+                    {
+                        valuedTypeList.Add(anonymousType);
+                    }
+                }
+                catch(Exception)
+                {
+                    var argType = Type.GetType(methodParameter.TypeName);
+                    try
+                    {
+                        if(argType != null)
+                        {
+                            var provider = TypeDescriptor.GetConverter(argType);
+                            var convertFrom = provider.ConvertFrom(methodParameter.Value);
+                            valuedTypeList.Add(convertFrom);
+                        }
+                    }
+                    catch(Exception)
+                    {
+                        try
+                        {
+                            var typeConverter = TypeDescriptor.GetConverter(methodParameter.Value);
+                            var convertFrom = typeConverter.ConvertFrom(methodParameter.Value);
+                            valuedTypeList.Add(convertFrom);
+                        }
+                        catch(Exception k)
+                        {
+                            Dev2Logger.Error($"Failed to convert {argType?.FullName}", k);
+                        }
+                    }
+                }
+            }
+            return valuedTypeList;
         }
 
         /// <summary>
@@ -138,11 +193,11 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.ComPlugin
         /// <param name="classId">The assembly location.</param>
         /// <param name="is32Bit"></param>
         /// <returns></returns>
-        public List<string> ListNamespaces(string classId, bool is32Bit)
+        private List<string> ListNamespaces(string classId, bool is32Bit)
         {
             try
             {
-                var type = GetType(classId,is32Bit);
+                var type = GetType(classId, is32Bit);
                 var loadedAssembly = type.Assembly;
                 // ensure we flush out the rubbish that GAC brings ;)
                 var namespaces = loadedAssembly.GetTypes()
@@ -170,10 +225,22 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.ComPlugin
             Type type;
             if (is64BitProcess && is32Bit)
             {
-                using (Client client = new Client())
+                using (var client = new Client())
                 {
-                    var execute = client.Invoke(clasID, "", "GetType", new object[] { });
-                    type = execute as Type;
+                    object execute;
+                    try
+                    {
+                        execute = client.Invoke(clasID, "", "GetType", new object[] { });
+                        type = execute as Type;
+                    }
+                    catch (Exception)
+                    {
+
+                        type = Type.GetTypeFromCLSID(clasID, true);
+
+                    }
+
+
                 }
             }
             else
@@ -182,21 +249,60 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.ComPlugin
             }
             return string.IsNullOrEmpty(classId) ? null : type;
         }
-        public ServiceMethodList ListMethods(string classId,bool is32Bit)
+        public ServiceMethodList ListMethods(string classId, bool is32Bit)
         {
-            var serviceMethodList = new ServiceMethodList();
-            classId = classId.Replace("{", "").Replace("}","");
+            var serviceMethodList = new List<ServiceMethod>();
+            var orderMethodsLis = new ServiceMethodList();
+            classId = classId.Replace("{", "").Replace("}", "");
             var type = GetType(classId, is32Bit);
+            if (type?.Name.ToUpper().Contains("ComObject".ToUpper()) ?? false)
+            {
+                using (var client = new Client())
+                {
+
+                    var execute = client.Invoke(classId.ToGuid(), "", "GetMethods", new object[] { });
+                    var ipcMethods = execute as List<MethodInfoTO>;
+                    if (ipcMethods != null)
+                    {
+
+                        foreach (MethodInfoTO ipcMethod in ipcMethods)
+                        {
+                            var parameterInfos = ipcMethod.Parameters;
+                            var serviceMethod = new ServiceMethod { Name = ipcMethod.Name };
+                            foreach (var parameterInfo in parameterInfos)
+                            {
+                                serviceMethod.Parameters.Add(new MethodParameter
+                                {
+                                    DefaultValue = parameterInfo.DefaultValue?.ToString() ?? string.Empty,
+                                    EmptyToNull = false,
+                                    IsRequired = true,
+                                    Name = parameterInfo.Name,
+                                    TypeName = parameterInfo.TypeName
+                                });
+                              
+                            }
+                            serviceMethodList.Add(serviceMethod);
+                        }
+
+                    }
+                    
+                    orderMethodsLis.AddRange(serviceMethodList.OrderBy(method => method.Name));
+                    return orderMethodsLis;
+                }
+
+            }
+
+
             if (type == null) return new ServiceMethodList();
-            
+
             var methodInfos = type.GetMethods();
 
             methodInfos.ToList().ForEach(info =>
-            {
-                var serviceMethod = new ServiceMethod { Name = info.Name };
-                var parameterInfos = info.GetParameters().ToList();
-                parameterInfos.ForEach(parameterInfo =>
-                    serviceMethod.Parameters.Add(
+                    {
+                        var serviceMethod = new ServiceMethod { Name = info.Name };
+                        var parameterInfos = info.GetParameters().ToList();
+                        foreach (var parameterInfo in parameterInfos)
+                            serviceMethod.Parameters.Add(
                         new MethodParameter
                         {
                             DefaultValue = parameterInfo.DefaultValue?.ToString() ?? string.Empty,
@@ -204,12 +310,12 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.ComPlugin
                             IsRequired = true,
                             Name = parameterInfo.Name,
                             TypeName = parameterInfo.ParameterType.AssemblyQualifiedName
-                        }));
-                serviceMethodList.Add(serviceMethod);
-            });
+                        });
+                        serviceMethodList.Add(serviceMethod);
+                    });
 
-
-            return serviceMethodList;
+            orderMethodsLis.AddRange(serviceMethodList.OrderBy(method => method.Name));
+            return orderMethodsLis;
         }
 
         /// <summary>
@@ -219,8 +325,8 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.ComPlugin
         /// <returns></returns>
         public NamespaceList FetchNamespaceListObject(ComPluginSource pluginSource)
         {
-            var interrogatePlugin = ReadNamespaces(pluginSource.ClsId,pluginSource.Is32Bit);
-            var namespacelist = new NamespaceList {  };
+            var interrogatePlugin = ReadNamespaces(pluginSource.ClsId, pluginSource.Is32Bit);
+            var namespacelist = new NamespaceList { };
             namespacelist.AddRange(interrogatePlugin);
             namespacelist.Add(new NamespaceItem());
             return namespacelist;
@@ -258,7 +364,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.ComPlugin
             try
             {
                 var result = new List<NamespaceItem>();
-                var list = ListNamespaces(clsId,is32Bit);
+                var list = ListNamespaces(clsId, is32Bit);
                 list.ForEach(fullName =>
                     result.Add(new NamespaceItem
                     {
@@ -294,6 +400,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.ComPlugin
             foreach (var methodParameter in parameters)
             {
                 var type = DeriveType(methodParameter.TypeName);
+
                 typeList.Add(type);
             }
             return typeList;

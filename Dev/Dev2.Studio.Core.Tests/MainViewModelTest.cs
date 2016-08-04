@@ -76,7 +76,7 @@ namespace Dev2.Core.Tests
             svr.Setup(a => a.ResourceName).Returns("Localhost");
             
             Task<IExplorerItem> ac = new Task<IExplorerItem>(()=> new Mock<IExplorerItem>().Object);
-            svr.Setup(a => a.LoadExplorer()).Returns(()=>ac);
+            svr.Setup(a => a.LoadExplorer(false)).Returns(()=>ac);
             CustomContainer.Register(svr.Object);
             CustomContainer.Register(new Mock<Microsoft.Practices.Prism.PubSubEvents.IEventAggregator>().Object);
         }
