@@ -714,7 +714,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var selPath = Guid.NewGuid();
             var explorerItemMock = new Mock<IExplorerItem>();
             _serverMock.SetupGet(it=>it.IsConnected).Returns(true);
-            _serverMock.Setup(it => it.LoadExplorer()).Returns(Task.FromResult(explorerItemMock.Object));
+            _serverMock.Setup(it => it.LoadExplorer(false)).Returns(Task.FromResult(explorerItemMock.Object));
             _target = new EnvironmentViewModel(_serverMock.Object, _shellViewModelMock.Object);
 
             //act

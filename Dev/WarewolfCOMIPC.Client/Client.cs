@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.IO.Pipes;
@@ -19,12 +20,11 @@ namespace WarewolfCOMIPC.Client
             string token = Guid.NewGuid().ToString();
 
             // Pass token to child process
-            var psi = new ProcessStartInfo("WarewolfCOMIPC.exe", token);
-            //psi.UseShellExecute = false;
-            //psi.ErrorDialog = false;
-            //psi.RedirectStandardOutput = false;
-            //psi.CreateNoWindow = true;
-            psi.Verb = "runas";
+            var psi = new ProcessStartInfo("WarewolfCOMIPC.exe", token) { Verb = "runas" };
+            psi.UseShellExecute = false;
+            psi.ErrorDialog = false;
+            psi.RedirectStandardOutput = false;
+            psi.CreateNoWindow = true;
 
             _process = Process.Start(psi);
             _pipe = new NamedPipeClientStream(".", token, PipeDirection.InOut);
@@ -38,51 +38,79 @@ namespace WarewolfCOMIPC.Client
         /// <param name="clsid"></param>
         /// <param name="function">Name of the function to call.</param>
         /// <param name="executeType"></param>
+        /// <param name="execute"></param>
         /// <param name="args">Array of args to pass to the function.</param>
         /// <returns>Result object returned by the library.</returns>
         /// <exception cref="Exception">This Method will rethrow all exceptions thrown by the wrapper.</exception>
-        public object Invoke(Guid clsid, string function, string executeType, object[] args)
+        public object Invoke(Guid clsid, string function, string execute, object[] args)
         {
             if (_disposed)
                 throw new ObjectDisposedException(nameof(Client));
-
-
+            Execute locaexecute = Execute.GetType;
+            if (!string.IsNullOrEmpty(execute))
+            {
+                Enum.TryParse(execute, true, out locaexecute);
+            }
             var info = new CallData
             {
                 CLSID = clsid,
                 MethodToCall = function,
                 Parameters = args,
-                ExecuteType = executeType,
+                ExecuteType = execute,
+                Execute = locaexecute
             };
+
             // Write request to server
             var serializer = new JsonSerializer();
-            var sw = new StreamWriter(_pipe,Encoding.UTF8,256,true);
+            var sw = new StreamWriter(_pipe, Encoding.UTF8, 256, true);
             serializer.Serialize(sw, info);
             sw.Flush();
 
             var sr = new StreamReader(_pipe);
             var jsonTextReader = new JsonTextReader(sr);
             object result;
-            if (info.Execute == Execute.GetType)
+            switch (info.Execute)
             {
-                 result = serializer.Deserialize(jsonTextReader, typeof(Type));
-                var exception = result as Exception;
-                if (exception != null)
-                {
-                    throw exception;
-                }
-                return result;
-            }
-            else
-            {
-                result = serializer.Deserialize(jsonTextReader);
-                var exception = result as Exception;
-                if (exception != null)
-                {
-                    throw exception;
-                }
-                return result;
+                case Execute.GetType:
+                    {
 
+                        result = serializer.Deserialize(jsonTextReader, typeof(Type));
+                        var exception = result as Exception;
+                        if (exception != null)
+                        {
+                            throw exception;
+                        }
+                        return result;
+
+                    }
+                case Execute.GetMethods:
+                    {
+
+                        result = serializer.Deserialize(jsonTextReader, typeof(List<MethodInfoTO>));
+                        var exception = result as Exception;
+                        if (exception != null)
+                        {
+                            throw exception;
+                        }
+                        return result;
+
+
+                    }
+                case Execute.ExecuteSpecifiedMethod:
+                    {
+
+                        result = serializer.Deserialize(jsonTextReader);
+                        var exception = result as Exception;
+                        if (exception != null)
+                        {
+                            throw exception;
+                        }
+                        return result;
+
+                    }
+
+                default:
+                    return null;
             }
 
         }
@@ -91,7 +119,7 @@ namespace WarewolfCOMIPC.Client
         /// Gracefully close connection to server
         /// </summary>
         protected virtual void Close()
-        {            
+        {
             _pipe.Close();
             _process.Kill();
         }

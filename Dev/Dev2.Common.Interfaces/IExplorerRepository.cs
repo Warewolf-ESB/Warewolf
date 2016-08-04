@@ -25,7 +25,7 @@ namespace Dev2.Common.Interfaces
         IAdminManager AdminManagerProxy { get; set; }
         IQueryManager QueryManagerProxy { get; set; }
 
-        Task<IExplorerItem> LoadExplorer();
+        Task<IExplorerItem> LoadExplorer(bool reloadCatalogue = false);
 
         IExplorerItem FindItemByID(Guid id);
         StringBuilder GetVersion(IVersionInfo versionInfo);

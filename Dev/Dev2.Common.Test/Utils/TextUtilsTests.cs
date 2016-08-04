@@ -8,6 +8,8 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using System;
+using Dev2.Common.ExtMethods;
 using Dev2.Common.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -100,6 +102,24 @@ namespace Dev2.Common.Tests.Utils
             string actual = TextUtils.ReplaceWorkflowNewLinesWithEnvironmentNewLines(stringToReplace);
             //------------Assert Results-------------------------
             Assert.AreEqual(expected, actual, "The replacement didn't work correctly");
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void ToGui_GivenValidString_ShouldReturnGuid()
+        {
+            //---------------Set up test pack-------------------
+
+            //---------------Assert Precondition----------------
+
+            //---------------Execute Test ----------------------
+            var guid = Guid.Empty.ToString().ToGuid();
+            var newGuid = Guid.NewGuid().ToString();
+            var guid1 = newGuid.ToGuid();
+
+            //---------------Test Result -----------------------
+            Assert.AreEqual(Guid.Empty, guid);
+            Assert.AreEqual(Guid.Parse(newGuid),guid1 );
         }
     }
 }
