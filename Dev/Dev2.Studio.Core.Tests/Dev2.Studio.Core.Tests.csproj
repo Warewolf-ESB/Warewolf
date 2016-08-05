@@ -242,6 +242,7 @@
     <Compile Include="MainViewModelBase.cs" />
     <Compile Include="MainViewModelMock.cs" />
     <Compile Include="Custom Dev2 Controls\Intellisense\IntellisenseTextBoxTests.cs" />
+    <Compile Include="MainViewModelSerializerTests.cs" />
     <Compile Include="ModelTests\RecordSetItemModelTests.cs" />
     <Compile Include="ModelTests\ScalarItemModelTests.cs" />
     <Compile Include="Network\ServerProxyTests.UnitTests.cs" />
