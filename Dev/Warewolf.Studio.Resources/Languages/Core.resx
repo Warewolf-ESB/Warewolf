@@ -253,6 +253,230 @@ The more information you can provide us with, the faster we can track the issue 
   <data name="DatabaseSourceServerLabel" xml:space="preserve">
     <value>Server:</value>
   </data>
+  <data name="Tool_Flow_Decision_Tags" xml:space="preserve">
+	<value>assert is match true false</value>
+</data>
+  <data name="Tool_Flow_Switch_Tags" xml:space="preserve">
+	<value>match branch case</value>
+</data>
+  <data name="Tool_Flow_Sequence_Tags" xml:space="preserve">
+	<value>consolidate cleanup group nest</value>
+</data>
+  <data name="Tool_Data_Assign Object_Tags" xml:space="preserve">
+	<value>json array declare setup variable set</value>
+</data>
+  <data name="Tool_Data_Data Merge_Tags" xml:space="preserve">
+	<value>csv join concatenate seperated value index chars new line tab</value>
+</data>
+  <data name="Tool_Data_Base Convert_Tags" xml:space="preserve">
+	<value>text binary base 64 base64 hex</value>
+</data>
+  <data name="Tool_Data_Case Convert_Tags" xml:space="preserve">
+	<value>upper lower title camel sentence</value>
+</data>
+  <data name="Tool_Data_Data Split_Tags" xml:space="preserve">
+	<value>csv file seperated value index chars new line tab</value>
+</data>
+  <data name="Tool_Data_Find Index_Tags" xml:space="preserve">
+	<value>search string position</value>
+</data>
+  <data name="Tool_Data_Replace_Tags" xml:space="preserve">
+	<value>find</value>
+</data>
+  <data name="Tool_Data_Assign_Tags" xml:space="preserve">
+	<value>declare setup variable set</value>
+</data>
+  <data name="Tool_Database_MySQL_Tags" xml:space="preserve">
+	<value>stored procedure function data source</value>
+</data>
+  <data name="Tool_Database_ODBC_Tags" xml:space="preserve">
+	<value>source</value>
+</data>
+  <data name="Tool_Database_Oracle_Tags" xml:space="preserve">
+	<value>stored procedure function data source</value>
+</data>
+  <data name="Tool_Database_PostgreSQL_Tags" xml:space="preserve">
+	<value>stored procedure function data source connector</value>
+</data>
+  <data name="Tool_Database_SQL Bulk Insert_Tags" xml:space="preserve">
+	<value>source</value>
+</data>
+  <data name="Tool_Database_SQL Server_Tags" xml:space="preserve">
+	<value>stored procedure function data source microsoft</value>
+</data>
+  <data name="Tool_Email_SMTP Send_Tags" xml:space="preserve">
+	<value>source</value>
+</data>
+  <data name="Tool_Email_Exchange Send_Tags" xml:space="preserve">
+	<value>source</value>
+</data>
+  <data name="Tool_File_Create_Tags" xml:space="preserve">
+	<value>new directory folder</value>
+</data>
+  <data name="Tool_File_Copy_Tags" xml:space="preserve">
+	<value>duplicate directory folder</value>
+</data>
+  <data name="Tool_File_Delete_Tags" xml:space="preserve">
+	<value>remove directory folder</value>
+</data>
+  <data name="Tool_File_Move_Tags" xml:space="preserve">
+	<value>directory folder</value>
+</data>
+  <data name="Tool_File_Read Folder_Tags" xml:space="preserve">
+	<value>directory</value>
+</data>
+  <data name="Tool_File_Read File_Tags" xml:space="preserve">
+	<value>open get content data</value>
+</data>
+  <data name="Tool_File_Write File_Tags" xml:space="preserve">
+	<value>append overwrite content data set</value>
+</data>
+  <data name="Tool_File_Rename_Tags" xml:space="preserve">
+	<value>directory folder</value>
+</data>
+  <data name="Tool_File_Unzip_Tags" xml:space="preserve">
+	<value>directory folder</value>
+</data>
+  <data name="Tool_File_Zip_Tags" xml:space="preserve">
+	<value>archive directory folder</value>
+</data>
+  <data name="Tool_WebMethod_Delete_Tags" xml:space="preserve">
+	<value>source connector</value>
+</data>
+  <data name="Tool_WebMethod_Get_Tags" xml:space="preserve">
+	<value>source connector</value>
+</data>
+  <data name="Tool_WebMethod_Post_Tags" xml:space="preserve">
+	<value>source connector</value>
+</data>
+  <data name="Tool_WebMethod_Put_Tags" xml:space="preserve">
+	<value>source connector</value>
+</data>
+  <data name="Tool_LoopConstruct_For Each_Tags" xml:space="preserve">
+	<value>repeat while</value>
+</data>
+  <data name="Tool_LoopConstruct_Select and Apply_Tags" xml:space="preserve">
+	<value>repeat update function</value>
+</data>
+  <data name="Tool_Recordset_Length_Tags" xml:space="preserve">
+	<value>max index</value>
+</data>
+  <data name="Tool_Recordset_Find Records_Tags" xml:space="preserve">
+	<value>search</value>
+</data>
+  <data name="Tool_Recordset_Delete_Tags" xml:space="preserve">
+	<value>remove</value>
+</data>
+  <data name="Tool_Recordset_Sort_Tags" xml:space="preserve">
+	<value>order by</value>
+</data>
+  <data name="Tool_Recordset_Count_Tags" xml:space="preserve">
+	<value>total</value>
+</data>
+  <data name="Tool_Recordset_Unique Records_Tags" xml:space="preserve">
+	<value>distinct</value>
+</data>
+  <data name="Tool_Resources_Service_Tags" xml:space="preserve">
+	<value>source connector header</value>
+</data>
+  <data name="Tool_Resources_Com DLL_Tags" xml:space="preserve">
+	<value>source connector header</value>
+</data>
+  <data name="Tool_Resources_Dot net DLL_Tags" xml:space="preserve">
+	<value>source connector header</value>
+</data>
+  <data name="Tool_Resources_WCF_Tags" xml:space="preserve">
+	<value>source connector header</value>
+</data>
+  <data name="Tool_Scripting_CMD Script_Tags" xml:space="preserve">
+	<value>command line shell</value>
+</data>
+  <data name="Tool_Scripting_Script_Tags" xml:space="preserve">
+	<value>javascript python ruby</value>
+</data>
+  <data name="Tool_SharePoint_Copy File_Tags" xml:space="preserve">
+	<value>source connector</value>
+</data>
+  <data name="Tool_SharePoint_Create List Item_Tags" xml:space="preserve">
+	<value>source connector</value>
+</data>
+  <data name="Tool_SharePoint_Delete File_Tags" xml:space="preserve">
+	<value>source connector</value>
+</data>
+  <data name="Tool_SharePoint_Delete List Item_Tags" xml:space="preserve">
+	<value>source connector</value>
+</data>
+  <data name="Tool_SharePoint_Download File_Tags" xml:space="preserve">
+	<value>source connector</value>
+</data>
+  <data name="Tool_SharePoint_Upload File_Tags" xml:space="preserve">
+	<value>source connector</value>
+</data>
+  <data name="Tool_SharePoint_Move File_Tags" xml:space="preserve">
+	<value>source connector</value>
+</data>
+  <data name="Tool_SharePoint_Read Folder_Tags" xml:space="preserve">
+	<value>source connector</value>
+</data>
+  <data name="Tool_SharePoint_Read List Item_Tags" xml:space="preserve">
+	<value>source connector</value>
+</data>
+  <data name="Tool_SharePoint_Update List Item_Tags" xml:space="preserve">
+	<value>source connector</value>
+</data>
+  <data name="Tool_Dropbox_Upload_Tags" xml:space="preserve">
+	<value>source connector</value>
+</data>
+  <data name="Tool_Dropbox_List Contents_Tags" xml:space="preserve">
+	<value>source connector</value>
+</data>
+  <data name="Tool_Dropbox_Download_Tags" xml:space="preserve">
+	<value>source connector</value>
+</data>
+  <data name="Tool_Dropbox_Delete_Tags" xml:space="preserve">
+	<value>source connector</value>
+</data>
+  <data name="Tool_Utility_Aggregate Calculate_Tags" xml:space="preserve">
+	<value>function sum average product count max median min var stdev concatenate choose irr counta subtotal total avedev and or isnull istext npv</value>
+</data>
+  <data name="Tool_Utility_Create JSON_Tags" xml:space="preserve">
+	<value/>
+</data>
+  <data name="Tool_Utility_Calculate_Tags" xml:space="preserve">
+	<value>add subtract minus maths divide power compute excel exel</value>
+</data>
+  <data name="Tool_Utility_Date Time_Tags" xml:space="preserve">
+	<value>year month week day hour second split format add subtract</value>
+</data>
+  <data name="Tool_Utility_Date Time Diff_Tags" xml:space="preserve">
+	<value>year month week day hour second split format compare datepart part</value>
+</data>
+  <data name="Tool_Utility_Format Number_Tags" xml:space="preserve">
+	<value>decimal round</value>
+</data>
+  <data name="Tool_Utility_Comment_Tags" xml:space="preserve">
+	<value>note</value>
+</data>
+  <data name="Tool_Utility_Sys Info_Tags" xml:space="preserve">
+	<value>date time format disk cpu memory ram resource language region user roles name domain computer hardware physical</value>
+</data>
+  <data name="Tool_Utility_Random_Tags" xml:space="preserve">
+	<value>guid generate </value>
+</data>
+  <data name="Tool_Utility_Web Request_Tags" xml:space="preserve">
+	<value>header page content html</value>
+</data>
+  <data name="Tool_Utility_Xpath_Tags" xml:space="preserve">
+	<value/>
+</data>
+  <data name="Tool_Utility_Rabbit MQ Publish_Tags" xml:space="preserve">
+	<value>source connector</value>
+</data>
+  <data name="Tool_Utility_Rabbit MQ Consume_Tags" xml:space="preserve">
+	<value>source connector</value>
+</data>
+
+
   <data name="DatabaseSourceServerNewHeaderLabel" xml:space="preserve">
     <value>New Database Source</value>
   </data>

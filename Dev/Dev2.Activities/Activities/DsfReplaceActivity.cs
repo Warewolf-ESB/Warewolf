@@ -40,7 +40,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
     /// <New>
     /// Activity for replacing a certain character set in a number of field with a new character set 
     /// </New>
-    [ToolDescriptorInfo("Data-Replace", "Replace", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Data", "/Warewolf.Studio.Themes.Luna;component/Images.xaml")]
+    [ToolDescriptorInfo("Data-Replace", "Replace", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Data", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Data_Replace_Tags")]
     public class DsfReplaceActivity : DsfActivityAbstract<string>
     {
 

@@ -9,7 +9,7 @@ using Warewolf.Resource.Errors;
 
 namespace Dev2.Activities
 {
-    [ToolDescriptorInfo("Postgre", "PostgreSQL", ToolType.Native, "8999E59B-38A3-43BB-A92F-6090C5C3EA80", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Database", "/Warewolf.Studio.Themes.Luna;component/Images.xaml")]
+    [ToolDescriptorInfo("Postgre", "PostgreSQL", ToolType.Native, "8999E59B-38A3-43BB-A92F-6090C5C3EA80", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Database", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Database_PostgreSQL_Tags")]
     public class DsfPostgreSqlActivity : DsfActivity
     {
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
