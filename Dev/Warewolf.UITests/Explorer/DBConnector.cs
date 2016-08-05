@@ -16,10 +16,12 @@ namespace Warewolf.UITests
     public class DBConnector
     {
         const string DBSourceName = "UITestingDBSource";
+        const string WorkflowName = "UITestingDBConnector";
 
         [TestMethod]
         public void BigDBConnectorUITest()
         {
+#if RELEASE
             Uimap.Click_New_Workflow_Ribbon_Button();
             Uimap.Click_NewDatabaseSource_Ribbon_Button();
             Uimap.Select_MSSQLSERVER_From_DB_Source_Wizard_Address_Protocol_Dropdown();
@@ -31,14 +33,22 @@ namespace Warewolf.UITests
             Uimap.Save_With_Ribbon_Button_And_Dialog(DBSourceName);
             Uimap.Click_Close_DB_Source_Wizard_Tab_Button();
             Uimap.Drag_Toolbox_SQL_Server_Tool_Onto_DesignSurface();
+            Uimap.TryClearToolboxFilter();
             Uimap.Open_Sql_Server_Tool_Large_View();
             Uimap.Select_UITestingDBSource_From_SQL_Server_Large_View_Source_Combobox();
             Uimap.Select_GetCountries_From_SQL_Server_Large_View_Action_Combobox();
-            Uimap.Type_S_Into_SQL_Server_Large_View_Inputs_Row1_Data_Textbox();
+            Uimap.Type_0_Into_SQL_Server_Large_View_Inputs_Row1_Data_Textbox();
+#endif
             Uimap.Click_SQL_Server_Large_View_Generate_Outputs();
+            Uimap.Type_0_Into_SQL_Server_Large_View_Test_Inputs_Row1_Test_Data_Textbox();
+            Uimap.Click_SQL_Server_Large_View_Test_Inputs_Button();
+            Uimap.Click_SQL_Server_Large_View_Test_Inputs_Done_Button();
+            Uimap.Click_SQL_Server_Large_View_Done_Button();
+            Uimap.Click_Debug_Ribbon_Button();
+            Uimap.Click_DebugInput_Debug_Button();
         }
 
-        #region Additional test attributes
+#region Additional test attributes
         
         [TestInitialize()]
         public void MyTestInitialize()
@@ -47,12 +57,16 @@ namespace Warewolf.UITests
             Uimap.WaitForStudioStart();
             Console.WriteLine("Test \"" + TestContext.TestName + "\" starting on " + System.Environment.MachineName);
         }
-        
+
+#if RELEASE
         [TestCleanup()]
+#endif
         public void MyTestCleanup()
         {
             Uimap.TryCloseHangingSaveDialog();
             Uimap.TryRemoveFromExplorer(DBSourceName);
+            Uimap.TryClearToolboxFilter();
+            Uimap.TryCloseWorkflowTabs();
         }
 
         public TestContext TestContext
@@ -84,6 +98,6 @@ namespace Warewolf.UITests
 
         private UIMap _uiMap;
 
-        #endregion
+#endregion
     }
 }
