@@ -26,7 +26,6 @@ namespace Warewolf.UITests
         const int _lenientMaximumRetryCount = 3;
         const int _strictSearchTimeout = 1000;
         const int _strictMaximumRetryCount = 1;
-        const bool RuntimeUIControlMapDebugging = true;
 
         public void SetGlobalPlaybackSettings()
         {
@@ -51,6 +50,7 @@ namespace Warewolf.UITests
 
         void PlaybackErrorHandler(object sender, PlaybackErrorEventArgs e)
         {
+            e.Result = PlaybackErrorOptions.Retry;
             Console.WriteLine(e.Error.Message);
             if (e.Error is UITestControlNotFoundException)
             {
@@ -70,11 +70,12 @@ namespace Warewolf.UITests
                         parent.SearchProperties.ToList().ForEach(prop => { parentProperties += prop.PropertyName + ": \"" + prop.PropertyValue + "\"\n"; });
                         Console.Write(parentProperties);
                         parent.DrawHighlight();
-                        if (RuntimeUIControlMapDebugging)
+#if DEBUG
                         {
                             System.Windows.Forms.MessageBox.Show(e.Error.Message + "\n" + parentProperties);
+                            throw e.Error;
                         }
-                        e.Result = PlaybackErrorOptions.Retry;
+#endif
                         return;
                     }
                 }
@@ -86,11 +87,12 @@ namespace Warewolf.UITests
                 if (exceptionSource is UITestControl)
                 {
                     (exceptionSource as UITestControl).DrawHighlight();
-                    if (RuntimeUIControlMapDebugging)
+#if DEBUG
                     {
                         System.Windows.Forms.MessageBox.Show(e.Error.Message);
+                        throw e.Error;
                     }
-                    e.Result = PlaybackErrorOptions.Retry;
+#endif
                     return;
                 }
             }
@@ -101,16 +103,16 @@ namespace Warewolf.UITests
                 if (exceptionSource is UITestControl)
                 {
                     (exceptionSource as UITestControl).DrawHighlight();
-                    if (RuntimeUIControlMapDebugging)
+#if DEBUG
                     {
                         System.Windows.Forms.MessageBox.Show(e.Error.Message);
+                        throw e.Error;
                     }
-                    e.Result = PlaybackErrorOptions.Retry;
+#endif
                     return;
                 }
             }
             Playback.Wait(_strictSearchTimeout * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString()));
-            e.Result = PlaybackErrorOptions.Retry;
         }
 
         public bool ControlExistsNow(UITestControl thisControl)
@@ -300,11 +302,11 @@ namespace Warewolf.UITests
 
         public void Click_Settings_Security_Tab_ResourcePermissions_Row1_Execute_Checkbox()
         {
-            #region Variable Declarations
+#region Variable Declarations
             Row1 row1 = MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1;
             WpfCheckBox executeCheckBox = FindExecutePermissionsCheckbox(row1);
             WpfButton saveButton = this.MainStudioWindow.SideMenuBar.SaveButton;
-            #endregion
+#endregion
 
             executeCheckBox.Checked = true;
             Assert.IsTrue(executeCheckBox.Checked, "Settings security tab resource permissions row 1 execute checkbox is not checked.");
@@ -313,11 +315,11 @@ namespace Warewolf.UITests
 
         public void Click_Settings_Security_Tab_Resource_Permissions_Row1_View_Checkbox()
         {
-            #region Variable Declarations
+#region Variable Declarations
             Row1 row1 = MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1;
             WpfCheckBox viewCheckBox = FindViewPermissionsCheckbox(row1);
             WpfButton saveButton = this.MainStudioWindow.SideMenuBar.SaveButton;
-            #endregion
+#endregion
 
             viewCheckBox.Checked = true;
             Assert.IsTrue(viewCheckBox.Checked, "Settings resource permissions row1 view checkbox is not checked.");
@@ -326,11 +328,11 @@ namespace Warewolf.UITests
 
         public void Click_Settings_Security_Tab_Resource_Permissions_Row1_Contribute_Checkbox()
         {
-            #region Variable Declarations
+#region Variable Declarations
             Row1 row1 = MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1;
             WpfCheckBox contributeCheckBox = FindContributePermissionsCheckbox(row1);
             WpfButton saveButton = this.MainStudioWindow.SideMenuBar.SaveButton;
-            #endregion
+#endregion
 
             contributeCheckBox.Checked = true;
             Assert.IsTrue(contributeCheckBox.Checked, "Settings resource permissions row1 view checkbox is not checked.");
