@@ -2069,9 +2069,6 @@
     </Resource>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Behaviors\" />
-    <Folder Include="Designers2\Core\Web\Get\" />
-    <Folder Include="Designers2\Core\Web\Post\" />
     <Folder Include="Themes\" />
   </ItemGroup>
   <ItemGroup>
