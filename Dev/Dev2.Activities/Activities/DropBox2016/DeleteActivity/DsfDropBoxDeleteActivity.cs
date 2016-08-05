@@ -19,7 +19,7 @@ using Warewolf.Resource.Errors;
 
 namespace Dev2.Activities.DropBox2016.DeleteActivity
 {
-    [ToolDescriptorInfo("Dropbox", "Delete", ToolType.Native, "8AC94835-0A28-4166-A53A-D7B07730C135", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Storage: Dropbox", "/Warewolf.Studio.Themes.Luna;component/Images.xaml")]
+    [ToolDescriptorInfo("Dropbox", "Delete", ToolType.Native, "8AC94835-0A28-4166-A53A-D7B07730C135", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Storage: Dropbox", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Dropbox_Delete_Tags")]
     public class DsfDropBoxDeleteActivity : DsfBaseActivity
     {
         private DropboxClient _client;

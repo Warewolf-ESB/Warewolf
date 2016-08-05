@@ -11,7 +11,7 @@ using Warewolf.Storage;
 
 namespace Dev2.Activities
 {
-    [ToolDescriptorInfo("WebMethods", "DELETE", ToolType.Native, "6C5F6D7E-4B42-4874-8197-DBE68D4A9F2D", "Dev2.Acitivities", "1.0.0.0", "Legacy", "HTTP Web Methods", "/Warewolf.Studio.Themes.Luna;component/Images.xaml")]
+    [ToolDescriptorInfo("WebMethods", "DELETE", ToolType.Native, "6C5F6D7E-4B42-4874-8197-DBE68D4A9F2D", "Dev2.Acitivities", "1.0.0.0", "Legacy", "HTTP Web Methods", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_WebMethod_Delete_Tags")]
     public class DsfWebDeleteActivity : DsfWebActivityBase
     {
 

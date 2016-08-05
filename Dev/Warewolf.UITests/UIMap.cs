@@ -15,16 +15,18 @@ using System.Drawing;
 using System.Windows.Input;
 using System.Text.RegularExpressions;
 using System.Reflection;
+using System.Text;
 using System.Threading;
 
 namespace Warewolf.UITests
 {
     public partial class UIMap
     {
-        private int _lenientSearchTimeout = 3000;
-        private int _lenientMaximumRetryCount = 3;
-        private int _strictSearchTimeout = 1000;
-        private int _strictMaximumRetryCount = 1;
+        const int _lenientSearchTimeout = 3000;
+        const int _lenientMaximumRetryCount = 3;
+        const int _strictSearchTimeout = 1000;
+        const int _strictMaximumRetryCount = 1;
+        const bool RuntimeUIControlMapDebugging = true;
 
         public void SetGlobalPlaybackSettings()
         {
@@ -64,8 +66,14 @@ namespace Warewolf.UITests
                     if (parent != null && parent.Exists && parent != MainStudioWindow)
                     {
                         Console.WriteLine("Search actually failed at: " + parent.FriendlyName);
-                        parent.SearchProperties.ToList().ForEach(prop => { Console.WriteLine(prop.PropertyName + ": \"" + prop.PropertyValue + "\""); });
+                        string parentProperties = string.Empty;
+                        parent.SearchProperties.ToList().ForEach(prop => { parentProperties += prop.PropertyName + ": \"" + prop.PropertyValue + "\"\n"; });
+                        Console.Write(parentProperties);
                         parent.DrawHighlight();
+                        if (RuntimeUIControlMapDebugging)
+                        {
+                            System.Windows.Forms.MessageBox.Show(e.Error.Message + "\n" + parentProperties);
+                        }
                         e.Result = PlaybackErrorOptions.Retry;
                         return;
                     }
@@ -78,6 +86,10 @@ namespace Warewolf.UITests
                 if (exceptionSource is UITestControl)
                 {
                     (exceptionSource as UITestControl).DrawHighlight();
+                    if (RuntimeUIControlMapDebugging)
+                    {
+                        System.Windows.Forms.MessageBox.Show(e.Error.Message);
+                    }
                     e.Result = PlaybackErrorOptions.Retry;
                     return;
                 }
@@ -89,6 +101,10 @@ namespace Warewolf.UITests
                 if (exceptionSource is UITestControl)
                 {
                     (exceptionSource as UITestControl).DrawHighlight();
+                    if (RuntimeUIControlMapDebugging)
+                    {
+                        System.Windows.Forms.MessageBox.Show(e.Error.Message);
+                    }
                     e.Result = PlaybackErrorOptions.Retry;
                     return;
                 }
@@ -511,6 +527,19 @@ namespace Warewolf.UITests
         public void Select_localhost_From_Explorer_Remote_Server_Dropdown_List()
         {
             Mouse.Click(MainStudioWindow.ComboboxListItemAsLocalhost, new Point(94, 10));
+        }
+
+        public void Save_With_Ribbon_Button_And_Dialog(string Name)
+        {
+            Click_Save_Ribbon_Button_to_Open_Save_Dialog();
+            WaitForSpinner(SaveDialogWindow.ExplorerView.ExplorerTree.localhost.Checkbox.Spinner);
+            Enter_Service_Name_Into_Save_Dialog(Name);
+            Click_SaveDialog_Save_Button();
+            Enter_Text_Into_Explorer_Filter(Name);
+            Click_Explorer_Refresh_Button();
+            WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.Exists, "Saved " + Name + " does not appear in the explorer tree.");
+            Click_Explorer_Filter_Clear_Button();
         }
     }
 }

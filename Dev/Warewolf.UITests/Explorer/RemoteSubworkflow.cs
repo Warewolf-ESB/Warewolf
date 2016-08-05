@@ -33,10 +33,7 @@ namespace Warewolf.UITests
             Uimap.Type_tstci_into_Server_Source_Wizard_Address_Textbox();
             Uimap.Select_TSTCIREMOTE_From_Server_Source_Wizard_Dropdownlist();
             Uimap.Click_Server_Source_Wizard_Test_Connection_Button();
-            Uimap.Click_Save_Ribbon_Button_to_Open_Save_Dialog();
-            Uimap.WaitForSpinner(Uimap.SaveDialogWindow.ExplorerView.ExplorerTree.localhost.Checkbox.Spinner);
-            Uimap.Enter_Service_Name_Into_Save_Dialog(ServerSourceName);
-            Uimap.Click_SaveDialog_Save_Button();
+            Uimap.Save_With_Ribbon_Button_And_Dialog(ServerSourceName);
             Uimap.Click_Close_Server_Source_Wizard_Tab_Button();
             Uimap.Enter_Text_Into_Explorer_Filter(ServerSourceName);
             Uimap.WaitForSpinner(Uimap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);
@@ -47,10 +44,7 @@ namespace Warewolf.UITests
             Uimap.WaitForSpinner(Uimap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.Checkbox.Spinner);
             Uimap.TryRefreshExplorerUntilOneItemOnly();
             Uimap.Drag_Explorer_Remote_workflow1_Onto_Workflow_Design_Surface();
-            Uimap.Click_Save_Ribbon_Button_to_Open_Save_Dialog();
-            Uimap.WaitForSpinner(Uimap.SaveDialogWindow.ExplorerView.ExplorerTree.localhost.Checkbox.Spinner);
-            Uimap.Enter_Service_Name_Into_Save_Dialog(LocalWorkflowName);
-            Uimap.Click_SaveDialog_Save_Button();
+            Uimap.Save_With_Ribbon_Button_And_Dialog(LocalWorkflowName);
             Uimap.Click_Debug_Ribbon_Button();
             Uimap.Click_DebugInput_Debug_Button();
             Uimap.Click_Debug_Output_Workflow1_Name();

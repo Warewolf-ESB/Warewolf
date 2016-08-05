@@ -50,6 +50,8 @@ namespace Dev2.Common.Interfaces.Toolbox
         /// </summary>
         ToolType ToolType{get;}
         string IconUri { get; }
+
+        string FilterTag { get; set; }
     }
 
     public interface IWarewolfType  
