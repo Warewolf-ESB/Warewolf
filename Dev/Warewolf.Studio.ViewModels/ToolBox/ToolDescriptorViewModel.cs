@@ -33,7 +33,7 @@ namespace Warewolf.Studio.ViewModels.ToolBox
             {
                 foreach (var exportedType in assembly.GetTypes())
                 {
-                    if (exportedType.FullName == tool.Activity.FullyQualifiedName)
+                    if (exportedType.FullName == tool.Activity?.FullyQualifiedName)
                     {
                         if (exportedType.AssemblyQualifiedName != null)
                         {

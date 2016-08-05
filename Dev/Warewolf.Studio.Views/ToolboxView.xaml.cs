@@ -14,6 +14,7 @@ namespace Warewolf.Studio.Views
         public ToolboxView()
         {
             InitializeComponent();
+            FilteredToolListBox.Visibility = Visibility.Collapsed;
         }
 
         private void UIElement_OnMouseMove(object sender, MouseEventArgs e)
@@ -32,6 +33,20 @@ namespace Warewolf.Studio.Views
         void UIElement_OnDragEnter(object sender, DragEventArgs e)
         {
             
+        }
+
+        private void SearchTextBox_OnTextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(SearchTextBox.Text))
+            {
+                ToolListBox.Visibility = Visibility.Visible;
+                FilteredToolListBox.Visibility = Visibility.Collapsed;
+            }
+            else
+            {
+                ToolListBox.Visibility = Visibility.Collapsed;
+                FilteredToolListBox.Visibility = Visibility.Visible;
+            }
         }
     }
 }

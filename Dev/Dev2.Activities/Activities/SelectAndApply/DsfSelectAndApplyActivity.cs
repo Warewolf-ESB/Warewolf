@@ -18,7 +18,7 @@ using Warewolf.Storage;
 
 namespace Dev2.Activities.SelectAndApply
 {
-    [ToolDescriptorInfo("SelectApply", "Select and apply", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090D8C8FA3E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Loop Constructs", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "")]
+    [ToolDescriptorInfo("SelectApply", "Select and apply", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090D8C8FA3E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Loop Constructs", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_LoopConstruct_Select and Apply_Tags")]
     public class DsfSelectAndApplyActivity : DsfActivityAbstract<bool>
     {
         public DsfSelectAndApplyActivity()
