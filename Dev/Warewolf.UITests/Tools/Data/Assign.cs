@@ -26,12 +26,7 @@ namespace Warewolf.UITests.Tools.Data
             Uimap.Enter_Text_Into_Assign_Small_View_Row1_Value_Textbox_As_SomeVariable_UsingIntellisense();
             Uimap.Enter_Text_Into_Assign_Small_View_Row1_Value_Textbox_As_SomeVariable_Using_Click_Intellisense_Suggestion();
             Uimap.Open_Assign_Tool_Qvi_Large_View();
-            Uimap.Click_Save_Ribbon_Button_to_Open_Save_Dialog();
-            Uimap.WaitForSpinner(Uimap.SaveDialogWindow.ExplorerView.ExplorerTree.localhost.Checkbox.Spinner);
-            Uimap.Enter_Service_Name_Into_Save_Dialog(WorkflowName);
-            Uimap.Click_SaveDialog_Save_Button();
-            Uimap.Enter_Text_Into_Explorer_Filter(WorkflowName);
-            Uimap.WaitForSpinner(Uimap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);
+            Uimap.Save_With_Ribbon_Button_And_Dialog(WorkflowName);
             Uimap.Click_Debug_Ribbon_Button();
             Uimap.Click_DebugInput_Debug_Button();
             Uimap.WaitForSpinner(Uimap.MainStudioWindow.DockManager.SplitPaneRight.DebugOutput.StatusBar.Spinner);
