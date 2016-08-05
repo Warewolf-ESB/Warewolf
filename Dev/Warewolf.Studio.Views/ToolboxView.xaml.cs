@@ -33,5 +33,19 @@ namespace Warewolf.Studio.Views
         {
             
         }
+
+        private void SearchTextBox_OnTextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(SearchTextBox.Text))
+            {
+                ToolListBox.Visibility = Visibility.Visible;
+                FilteredToolListBox.Visibility = Visibility.Collapsed;
+            }
+            else
+            {
+                ToolListBox.Visibility = Visibility.Collapsed;
+                FilteredToolListBox.Visibility = Visibility.Visible;
+            }
+        }
     }
 }

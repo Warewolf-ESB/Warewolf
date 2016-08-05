@@ -33,6 +33,12 @@ namespace Warewolf.Studio.ViewModels.ToolBox.Tests
             _localModelMock = new Mock<IToolboxModel>();
             _remoteModelMock = new Mock<IToolboxModel>();
             _remoteModelMock.Setup(it => it.GetTools()).Returns(new List<IToolDescriptor>());
+            SetupViewModel();
+        }
+
+        private void SetupViewModel()
+        {
+           
             _target = new ToolboxViewModel(_localModelMock.Object, _remoteModelMock.Object);
 
             _changedProperties = new List<string>();
@@ -76,55 +82,6 @@ namespace Warewolf.Studio.ViewModels.ToolBox.Tests
         #endregion Test commands
 
         #region Test properties
-
-        [TestMethod]
-        public void TestCategorisedTools()
-        {
-            //arrange
-            var activityMock = new Mock<IWarewolfType>();
-            var toolDescriptorMock1 = new Mock<IToolDescriptor>();
-            toolDescriptorMock1.SetupGet(it => it.Name).Returns("someText1");
-            toolDescriptorMock1.SetupGet(it => it.Category).Returns("someCat");
-            toolDescriptorMock1.SetupGet(it => it.Activity).Returns(activityMock.Object);
-
-            var toolDescriptorMock2 = new Mock<IToolDescriptor>();
-            toolDescriptorMock2.SetupGet(it => it.Name).Returns("someText2");
-            toolDescriptorMock2.SetupGet(it => it.Category).Returns("someCat");
-            toolDescriptorMock2.SetupGet(it => it.Activity).Returns(activityMock.Object);
-
-            var toolDescriptorMock3 = new Mock<IToolDescriptor>();
-            toolDescriptorMock3.SetupGet(it => it.Name).Returns("someOtherText");
-            toolDescriptorMock3.SetupGet(it => it.Category).Returns("someCat2");
-            toolDescriptorMock3.SetupGet(it => it.Activity).Returns(activityMock.Object);
-
-            _remoteModelMock.Setup(it => it.GetTools())
-                .Returns(
-                    new List<IToolDescriptor>()
-                        {
-                            toolDescriptorMock1.Object,
-                            toolDescriptorMock2.Object,
-                            toolDescriptorMock3.Object
-                        });
-            _localModelMock.Setup(it => it.GetTools()).Returns(new List<IToolDescriptor>());
-            _target.ClearFilter();
-
-            //act
-            var values = _target.CategorisedTools;
-
-            //assert
-            Assert.AreEqual(2, values.Count);
-            Assert.IsTrue(
-                values.Any(
-                    it =>
-                    it.Name == "someCat" && it.Tools.Count == 2
-                    && it.Tools.Any(tool => tool.Tool == toolDescriptorMock1.Object)
-                    && it.Tools.Any(tool => tool.Tool == toolDescriptorMock2.Object)));
-            Assert.IsTrue(
-                values.Any(
-                    it =>
-                    it.Name == "someCat2" && it.Tools.Count == 1
-                    && it.Tools.Any(tool => tool.Tool == toolDescriptorMock3.Object)));
-        }
 
         [TestMethod]
         public void TestIsEnabledIsDesignerFocusedfalse()
@@ -248,7 +205,6 @@ namespace Warewolf.Studio.ViewModels.ToolBox.Tests
             //assert
             Assert.IsTrue(string.IsNullOrEmpty(_target.SearchTerm));
             Assert.IsTrue(_changedProperties.Contains("Tools"));
-            Assert.IsTrue(_changedProperties.Contains("CategorisedTools"));
         }
 
         [TestMethod]
@@ -262,13 +218,20 @@ namespace Warewolf.Studio.ViewModels.ToolBox.Tests
             var activityMock = new Mock<IWarewolfType>();
             toolDescriptorMockContainingInLocal.SetupGet(it => it.Name).Returns(searchString);
             toolDescriptorMockContainingInLocal.SetupGet(it => it.Activity).Returns(activityMock.Object);
+            toolDescriptorMockContainingInLocal.SetupGet(it => it.Category).Returns("someCategory");
+            toolDescriptorMockContainingInLocal.SetupGet(it => it.FilterTag).Returns("someFilterTag");
 
             var toolDescriptorMockNotContainingInLocal = new Mock<IToolDescriptor>();
             toolDescriptorMockNotContainingInLocal.SetupGet(it => it.Name).Returns(searchString);
             toolDescriptorMockNotContainingInLocal.SetupGet(it => it.Activity).Returns(activityMock.Object);
+            toolDescriptorMockNotContainingInLocal.SetupGet(it => it.Category).Returns("someCategory");
+            toolDescriptorMockNotContainingInLocal.SetupGet(it => it.FilterTag).Returns("someFilterTag");
 
             var toolDescriptorMockNotMatching = new Mock<IToolDescriptor>();
             toolDescriptorMockNotMatching.SetupGet(it => it.Name).Returns("someOtherText");
+            toolDescriptorMockNotMatching.SetupGet(it => it.Activity).Returns(activityMock.Object);
+            toolDescriptorMockNotMatching.SetupGet(it => it.Category).Returns("notSomeCategory");
+            toolDescriptorMockNotMatching.SetupGet(it => it.FilterTag).Returns("notSomeFilterTag");
 
             _remoteModelMock.Setup(it => it.GetTools())
                 .Returns(
@@ -283,15 +246,16 @@ namespace Warewolf.Studio.ViewModels.ToolBox.Tests
             _changedProperties.Clear();
 
             //act
+            SetupViewModel();
             _target.Filter(searchString);
 
             //assert
+            Assert.IsTrue(_target.IsFiltered);
             Assert.AreEqual(2, _target.Tools.Count);
             Assert.IsTrue(_target.Tools.Any(it => it.Tool == toolDescriptorMockContainingInLocal.Object && it.IsEnabled));
             Assert.IsTrue(_target.Tools.Any(it => it.Tool == toolDescriptorMockNotContainingInLocal.Object && !it.IsEnabled));
             Assert.IsFalse(_target.Tools.Any(it => it.Tool == toolDescriptorMockNotMatching.Object));
             Assert.IsTrue(_changedProperties.Contains("Tools"));
-            Assert.IsTrue(_changedProperties.Contains("CategorisedTools"));
         }
 
         [TestMethod]
@@ -303,14 +267,20 @@ namespace Warewolf.Studio.ViewModels.ToolBox.Tests
             var activityMock = new Mock<IWarewolfType>();
             toolDescriptorMockContainingInLocal.SetupGet(it => it.Name).Returns("someText1");
             toolDescriptorMockContainingInLocal.SetupGet(it => it.Activity).Returns(activityMock.Object);
+            toolDescriptorMockContainingInLocal.SetupGet(it => it.Category).Returns("someCategory1");
+            toolDescriptorMockContainingInLocal.SetupGet(it => it.FilterTag).Returns("someFilterTag1");
 
             var toolDescriptorMockNotContainingInLocal = new Mock<IToolDescriptor>();
             toolDescriptorMockNotContainingInLocal.SetupGet(it => it.Name).Returns("someText2");
             toolDescriptorMockNotContainingInLocal.SetupGet(it => it.Activity).Returns(activityMock.Object);
+            toolDescriptorMockNotContainingInLocal.SetupGet(it => it.Category).Returns("someCategory2");
+            toolDescriptorMockNotContainingInLocal.SetupGet(it => it.FilterTag).Returns("someFilterTag2");
 
             var toolDescriptorMockNotContainingInLocal2 = new Mock<IToolDescriptor>();
             toolDescriptorMockNotContainingInLocal2.SetupGet(it => it.Name).Returns("someOtherText");
             toolDescriptorMockNotContainingInLocal2.SetupGet(it => it.Activity).Returns(activityMock.Object);
+            toolDescriptorMockNotContainingInLocal2.SetupGet(it => it.Category).Returns("someCategory");
+            toolDescriptorMockNotContainingInLocal2.SetupGet(it => it.FilterTag).Returns("someFilterTag");
 
             _remoteModelMock.Setup(it => it.GetTools())
                 .Returns(
@@ -325,15 +295,16 @@ namespace Warewolf.Studio.ViewModels.ToolBox.Tests
             _changedProperties.Clear();
 
             //act
+            SetupViewModel();
             _target.ClearFilter();
 
             //assert
+            Assert.IsFalse(_target.IsFiltered);
             Assert.AreEqual(3, _target.Tools.Count);
             Assert.IsTrue(_target.Tools.Any(it => it.Tool == toolDescriptorMockContainingInLocal.Object && it.IsEnabled));
             Assert.IsTrue(_target.Tools.Any(it => it.Tool == toolDescriptorMockNotContainingInLocal.Object && !it.IsEnabled));
             Assert.IsTrue(_target.Tools.Any(it => it.Tool == toolDescriptorMockNotContainingInLocal2.Object && !it.IsEnabled));
             Assert.IsTrue(_changedProperties.Contains("Tools"));
-            Assert.IsTrue(_changedProperties.Contains("CategorisedTools"));
         }
 
         [TestMethod]
