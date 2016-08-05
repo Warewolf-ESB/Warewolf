@@ -91,7 +91,7 @@
             </i:Interaction.Behaviors>
         </ui:IntellisenseTextBox>
 
-        <TextBlock Grid.Column="0" Grid.Row="2" Text="AddMode Time" Margin="{StaticResource ControlBorderTop}"/>
+        <TextBlock Grid.Column="0" Grid.Row="2" Text="Add Time" Margin="{StaticResource ControlBorderTop}"/>
         <ComboBox Grid.Column="1"
                   Grid.Row="2"
                   Margin="{StaticResource ControlBorderTop}"

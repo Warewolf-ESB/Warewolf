@@ -1,6 +1,6 @@
-git --help
+git --version
 if "%errorlevel%"=="0" GOTO GitCommandline
-:GitInstallBin
+IF NOT EXIST "%programfiles(x86)%\Git\bin\git.exe" echo GIT not found. &pause &exit 1
 "%programfiles(x86)%\Git\bin\git.exe" -C "%~dp0..\.." reset --hard
 if not %errorlevel%==0 pause & exit 1
 "%programfiles(x86)%\Git\bin\git.exe" -C "%~dp0..\.." clean -xdf
@@ -14,6 +14,8 @@ git -C "%~dp0..\.." reset --hard
 if not %errorlevel%==0 pause & exit 1
 git -C "%~dp0..\.." clean -xdf
 if not %errorlevel%==0 pause & exit 1
-if "%1"=="" (git -C "%~dp0..\.." pull) else (git -C "%~dp0..\.." checkout %1)
+echo Repo scorched. Get version? Leave blank to get latest. Branch and tag names are also allowed.
+set /p Version=
+if "%Version%"=="" (git -C "%~dp0..\.." pull) else (git -C "%~dp0..\.." checkout %Version%)
 if not %errorlevel%==0 pause & exit 1
 :exit

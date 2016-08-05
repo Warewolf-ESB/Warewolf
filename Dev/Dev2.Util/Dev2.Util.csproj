@@ -65,7 +65,6 @@
     </Compile>
     <Compile Include="AppSettings.cs" />
     <Compile Include="ExtensionMethods\DependencyObjectExtensionMethods.cs" />
-    <Compile Include="ExtensionMethods\FrameWorkElementExtensions.cs" />
     <Compile Include="ExtensionMethods\StringExtensions.cs" />
     <Compile Include="JsonNetValueSystem.cs" />
     <Compile Include="jsonpath.cs" />
