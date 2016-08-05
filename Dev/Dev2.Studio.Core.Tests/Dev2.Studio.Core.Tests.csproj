@@ -201,15 +201,18 @@
     <Compile Include="AppResources\Converters\SchedulerMultiBoolToVisibilityConverterTests.cs" />
     <Compile Include="AppResources\Converters\MultipleBoolToEnabledConverterTests.cs" />
     <Compile Include="AppResources\Converters\SimpleEnumToBoolConverterTests.cs" />
+    <Compile Include="BaseWorkSurfaceViewModelTests.cs" />
     <Compile Include="ConnectionHelpers\ConnectControlSingletonTests.cs" />
     <Compile Include="CustomContainerTests.cs" />
     <Compile Include="Dialogs\ProgressDialogViewModelTests.cs" />
+    <Compile Include="ExceptionViewModelTest.cs" />
     <Compile Include="Helpers\TestProgressFileDownloaderTests.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ClientExplorerRepositoryTest.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="HelpViewModelTests.cs" />
     <Compile Include="IntellisenseProvider\CompositeIntellisenseProviderTests.cs" />
     <Compile Include="ConverterTests\BoolToStringConvertTests.cs" />
     <Compile Include="ConverterTests\CalculateIntellisenseTextConverterTests.cs" />
@@ -246,6 +249,7 @@
     <Compile Include="Network\ServerProxyWithFallbackTests.Specs.cs" />
     <Compile Include="Network\ServerProxyWithFallbackTests.UnitTests.cs" />
     <Compile Include="PopupControllerTests.cs" />
+    <Compile Include="QuickVariableInputModelTests.cs" />
     <Compile Include="Security\ClientSecurityServiceTests.cs" />
     <Compile Include="Services\HelpConfigurationTests.cs" />
     <Compile Include="Services\ServerServiceConfigurationTest.cs" />
@@ -327,6 +331,7 @@
     <Compile Include="Workflows\WorkflowDesignerUnitTest.cs" />
     <Compile Include="Workflows\WorkflowInputDataViewModelTest.cs" />
     <Compile Include="Workspaces\WorkspaceItemRepositoryTests.cs" />
+    <Compile Include="WorkSurfaceContextViewModelTests.cs" />
     <Compile Include="WorksurfaceKeyFactoryTests.cs" />
     <Compile Include="XML\XmlResource.cs" />
   </ItemGroup>
