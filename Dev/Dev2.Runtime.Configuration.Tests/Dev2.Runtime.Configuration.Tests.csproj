@@ -118,9 +118,6 @@
     <EmbeddedResource Include="XML\Workflow.xml" />
   </ItemGroup>
   <ItemGroup>
-    <WCFMetadata Include="Service References\" />
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="XML\SettingsWithPostWorkflow.xml" />
   </ItemGroup>
   <ItemGroup>

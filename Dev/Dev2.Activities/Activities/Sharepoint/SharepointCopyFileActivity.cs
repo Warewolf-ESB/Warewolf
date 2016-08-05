@@ -20,7 +20,7 @@ using Warewolf.Storage;
 
 namespace Dev2.Activities.Sharepoint
 {
-    [ToolDescriptorInfo("SharepointLogo", "Copy File", ToolType.Native, "2246E59B-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Sharepoint", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "")]
+    [ToolDescriptorInfo("SharepointLogo", "Copy File", ToolType.Native, "2246E59B-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Sharepoint", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_SharePoint_Copy File_Tags")]
     public class SharepointCopyFileActivity : DsfAbstractFileActivity
     {
         public SharepointCopyFileActivity() : base("SharePoint Copy File")

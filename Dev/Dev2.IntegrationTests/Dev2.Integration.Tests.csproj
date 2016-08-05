@@ -215,13 +215,7 @@
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Activities\" />
-    <Folder Include="CommonTest\" />
-    <Folder Include="Mocks\" />
-    <Folder Include="Server Test\Build.Test\" />
-    <Folder Include="Server Test\WebServerTests\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <EmbeddedResource Include="Server Test\Workspace\XML\Calculate_RecordSet_Subtract.xml" />
     <EmbeddedResource Include="Server Test\Workspace\XML\CitiesDatabase.xml" />

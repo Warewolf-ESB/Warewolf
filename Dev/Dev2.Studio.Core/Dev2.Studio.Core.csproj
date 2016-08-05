@@ -511,15 +511,7 @@
       <Name>WarewolfLanguageParser</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Activities\TO\" />
-    <Folder Include="Activities\Translators\" />
-    <Folder Include="AppResources\EventArgs\" />
-    <Folder Include="AppResources\Exceptions\" />
-    <Folder Include="AppResources\Workflow\" />
-    <Folder Include="Models\DataMapping\" />
-    <Folder Include="ViewModels\Wizards\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
