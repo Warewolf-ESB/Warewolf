@@ -320,10 +320,7 @@
       <Name>Warewolf.Testing</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Behaviour Stubs\" />
-    <Folder Include="OracleServer\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />

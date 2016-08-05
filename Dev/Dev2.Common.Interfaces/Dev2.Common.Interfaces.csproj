@@ -432,17 +432,7 @@
     <Compile Include="Wrappers\IFile.cs" />
     <Compile Include="Wrappers\IWrappedObject.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Activity\" />
-    <Folder Include="Core\Convertors\DateTime\" />
-    <Folder Include="Core\Data\" />
-    <Folder Include="Email\" />
-    <Folder Include="Infrastructure\Services\" />
-    <Folder Include="Runtime\ServiceModel\" />
-    <Folder Include="Studio\Core\Activities\" />
-    <Folder Include="Studio\Core\AppResources\Enums\" />
-    <Folder Include="Studio\Core\DataList\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config">
