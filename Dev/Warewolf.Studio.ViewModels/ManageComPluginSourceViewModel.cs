@@ -225,7 +225,7 @@ namespace Warewolf.Studio.ViewModels
             var selectedDll = pluginSource.SelectedDll;
             if (selectedDll != null)
             {
-                var dllListingModel = DllListings.FirstOrDefault(model => model.ClsId == pluginSource.ClsId || model.Is32Bit == pluginSource.Is32Bit);
+                var dllListingModel = DllListings.FirstOrDefault(model => model.Name == selectedDll.Name);
                 if(dllListingModel != null)
                 {
                     dllListingModel.IsExpanded = true;
@@ -375,7 +375,6 @@ namespace Warewolf.Studio.ViewModels
                     src.ResourcePath = RequestServiceNameViewModel.ResourceName.Path ?? RequestServiceNameViewModel.ResourceName.Name;
                     src.ClsId = SelectedDll.ClsId;
                     src.Is32Bit = SelectedDll.Is32Bit;
-                    
                     Save(src);
                     Path = src.ResourcePath;
                     src.Is32Bit = SelectedDll.Is32Bit;
@@ -387,6 +386,8 @@ namespace Warewolf.Studio.ViewModels
             else
             {
                 var src = ToModel();
+                src.ClsId = SelectedDll.ClsId;
+                src.Is32Bit = SelectedDll.Is32Bit;
                 Save(src);
                 _pluginSource = src;
                 ToItem();
