@@ -110,7 +110,7 @@ namespace Dev2.Studio.Controller
         {
             Buttons = MessageBoxButton.OK;
             Header = "Server is not connected";
-            Description = "The server "+ server +" is unreachable and will be removed form your explorer tab. Please reconnect to save any unsaved work.";
+            Description = "The server "+ server +" is unreachable and will be removed from your explorer tab. Please reconnect to save any unsaved work.";
             ImageType = MessageBoxImage.Error;
             IsDependenciesButtonVisible = false;
             IsInfo = false;

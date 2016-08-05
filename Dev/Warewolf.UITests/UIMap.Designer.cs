@@ -126,6 +126,19 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
+        /// Click_Close_DB_Source_Wizard_Tab_Button
+        /// </summary>
+        public void Click_Close_DB_Source_Wizard_Tab_Button()
+        {
+            #region Variable Declarations
+            WpfButton closeButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DBConnectorWizardTab.CloseButton;
+            #endregion
+
+            // Click '' button
+            Mouse.Click(closeButton, new Point(13, 4));
+        }
+        
+        /// <summary>
         /// Click_Close_FullScreen
         /// </summary>
         public void Click_Close_FullScreen()
@@ -233,6 +246,19 @@ namespace Warewolf.UITests
 
             // Click 'ToggleButton' button
             Mouse.Click(serverListComboBox, new Point(217, 8));
+        }
+        
+        /// <summary>
+        /// Click_DB_Source_Wizard_Test_Connection_Button
+        /// </summary>
+        public void Click_DB_Source_Wizard_Test_Connection_Button()
+        {
+            #region Variable Declarations
+            WpfButton testConnectionButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DBConnectorWizardTab.WorkSurfaceContext.TestConnectionButton;
+            #endregion
+
+            // Click 'Test Connection' button
+            Mouse.Click(testConnectionButton, new Point(21, 16));
         }
         
         /// <summary>
@@ -899,26 +925,6 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
-        /// Click_Save_Ribbon_Button_With_No_Save_Dialog - Use 'Click_Save_Ribbon_Button_With_No_Save_DialogParams' to pass parameters into this method.
-        /// </summary>
-        public void Click_Save_Ribbon_Button_With_No_Save_Dialog()
-        {
-            #region Variable Declarations
-            WpfButton saveButton = this.MainStudioWindow.SideMenuBar.SaveButton;
-            #endregion
-
-            // Verify that the 'Exists' property of 'Save this tab' button equals 'True'
-            Assert.AreEqual(this.Click_Save_Ribbon_Button_With_No_Save_DialogParams.SaveButtonExists, saveButton.Exists, "Save ribbon button does not exist");
-
-            // Click 'Save this tab' button
-            Mouse.Click(saveButton, new Point(10, 5));
-
-            // Wait for 2 seconds for user delay between actions; Verify that the 'Enabled' property of 'Save this tab' button equals 'False'
-            Playback.Wait(2000);
-            Assert.AreEqual(this.Click_Save_Ribbon_Button_With_No_Save_DialogParams.SaveButtonEnabled, saveButton.Enabled, "Save ribbon button is still enabled after clicking it.");
-        }
-        
-        /// <summary>
         /// Click_Save_Ribbon_Button_to_Open_Save_Dialog - Use 'Click_Save_Ribbon_Button_to_Open_Save_DialogParams' to pass parameters into this method.
         /// </summary>
         public void Click_Save_Ribbon_Button_to_Open_Save_Dialog()
@@ -979,6 +985,26 @@ namespace Warewolf.UITests
 
             // Verify that the 'Exists' property of 'ServiceNameTextBox' text box equals 'True'
             Assert.AreEqual(this.Click_Save_Ribbon_Button_to_Open_Save_DialogParams.ServiceNameTextBoxExists1, serviceNameTextBox.Exists, "Save dialog service name textbox does not exist");
+        }
+        
+        /// <summary>
+        /// Click_Save_Ribbon_Button_With_No_Save_Dialog - Use 'Click_Save_Ribbon_Button_With_No_Save_DialogParams' to pass parameters into this method.
+        /// </summary>
+        public void Click_Save_Ribbon_Button_With_No_Save_Dialog()
+        {
+            #region Variable Declarations
+            WpfButton saveButton = this.MainStudioWindow.SideMenuBar.SaveButton;
+            #endregion
+
+            // Verify that the 'Exists' property of 'Save this tab' button equals 'True'
+            Assert.AreEqual(this.Click_Save_Ribbon_Button_With_No_Save_DialogParams.SaveButtonExists, saveButton.Exists, "Save ribbon button does not exist");
+
+            // Click 'Save this tab' button
+            Mouse.Click(saveButton, new Point(10, 5));
+
+            // Wait for 2 seconds for user delay between actions; Verify that the 'Enabled' property of 'Save this tab' button equals 'False'
+            Playback.Wait(2000);
+            Assert.AreEqual(this.Click_Save_Ribbon_Button_With_No_Save_DialogParams.SaveButtonEnabled, saveButton.Enabled, "Save ribbon button is still enabled after clicking it.");
         }
         
         /// <summary>
@@ -1351,23 +1377,6 @@ namespace Warewolf.UITests
 
             // Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
             Assert.AreEqual(this.Click_Switch_Dialog_Done_ButtonParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
-        }
-        
-        /// <summary>
-        /// Click_Test_Connector_Calculate_Outputs - Use 'Click_Test_Connector_Calculate_OutputsParams' to pass parameters into this method.
-        /// </summary>
-        public void Click_Test_Connector_Calculate_Outputs()
-        {
-            #region Variable Declarations
-            WpfEdit testData = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DBConnectorWizardTab.WorkSurfaceContext.NewDBConnectorWizard.InputsList.ListItem.TestData;
-            WpfButton testActionButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DBConnectorWizardTab.WorkSurfaceContext.TestActionButton;
-            #endregion
-
-            // Type 's' in 'Test data' text box
-            testData.Text = this.Click_Test_Connector_Calculate_OutputsParams.TestDataText;
-
-            // Click 'Test' button
-            Mouse.Click(testActionButton, new Point(47, 18));
         }
         
         /// <summary>
@@ -3697,6 +3706,19 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
+        /// Open_Sql_Server_Tool_Large_View - Use 'Open_Sql_Server_Tool_Large_ViewExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void Open_Sql_Server_Tool_Large_View()
+        {
+            #region Variable Declarations
+            WpfCustom largeView = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase.LargeView;
+            #endregion
+
+            // Verify that the 'Exists' property of 'LargeViewContent' custom control equals 'True'
+            Assert.AreEqual(this.Open_Sql_Server_Tool_Large_ViewExpectedValues.LargeViewExists, largeView.Exists, "SQL Server tool large view does not exist on the design surface.");
+        }
+        
+        /// <summary>
         /// Open_Sql_Server_Tool_small_View
         /// </summary>
         public void Open_Sql_Server_Tool_small_View()
@@ -4561,19 +4583,6 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
-        /// Select_Action_Droplist_DB_Connector
-        /// </summary>
-        public void Select_Action_Droplist_DB_Connector()
-        {
-            #region Variable Declarations
-            WpfCustom actionsComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DBConnectorWizardTab.WorkSurfaceContext.ActionsComboBox;
-            #endregion
-
-            // Click 'ActionsComboBox' custom control
-            Mouse.Click(actionsComboBox, new Point(226, 6));
-        }
-        
-        /// <summary>
         /// Select_Copy_FromContextMenu
         /// </summary>
         public void Select_Copy_FromContextMenu()
@@ -4610,19 +4619,6 @@ namespace Warewolf.UITests
 
             // Click 'Cut' menu item
             Mouse.Click(cut, new Point(53, 16));
-        }
-        
-        /// <summary>
-        /// Select_Data_Source_Droplist
-        /// </summary>
-        public void Select_Data_Source_Droplist()
-        {
-            #region Variable Declarations
-            WpfCustom sourcesComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DBConnectorWizardTab.WorkSurfaceContext.SourcesComboBox;
-            #endregion
-
-            // Click 'SourcesComboBox' custom control
-            Mouse.Click(sourcesComboBox, new Point(228, 12));
         }
         
         /// <summary>
@@ -4669,6 +4665,47 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
+        /// Select_Dev2TestingDB_From_DB_Source_Wizard_Database_Combobox - Use 'Select_Dev2TestingDB_From_DB_Source_Wizard_Database_ComboboxParams' to pass parameters into this method.
+        /// </summary>
+        public void Select_Dev2TestingDB_From_DB_Source_Wizard_Database_Combobox()
+        {
+            #region Variable Declarations
+            WpfCustom databaseCombobox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DBConnectorWizardTab.WorkSurfaceContext.DatabaseCombobox;
+            WpfCustom dev2TestingDBListItem = this.MainStudioWindow.Dev2TestingDBListItem;
+            WpfText uIDev2TestingDBText = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DBConnectorWizardTab.WorkSurfaceContext.NewDBSourceWizard.UIDatabaseComboxBoxCustom.UIDev2TestingDBText;
+            #endregion
+
+            // Click 'DatabaseComboxBox' custom control
+            Mouse.Click(databaseCombobox, new Point(221, 9));
+
+            // Click 'Dev2TestingDB' custom control
+            Mouse.Click(dev2TestingDBListItem, new Point(129, 19));
+
+            // Verify that the 'DisplayText' property of 'Dev2TestingDB' label equals 'Dev2TestingDB'
+            Assert.AreEqual(this.Select_Dev2TestingDB_From_DB_Source_Wizard_Database_ComboboxParams.UIDev2TestingDBTextDisplayText, uIDev2TestingDBText.DisplayText);
+        }
+        
+        /// <summary>
+        /// Select_GetCountries_From_SQL_Server_Large_View_Action_Combobox - Use 'Select_GetCountries_From_SQL_Server_Large_View_Action_ComboboxExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void Select_GetCountries_From_SQL_Server_Large_View_Action_Combobox()
+        {
+            #region Variable Declarations
+            WpfComboBox actionsCombobox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase.LargeView.ActionsCombobox;
+            WpfListItem getCountriesListItem = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase.LargeView.ActionsCombobox.GetCountriesListItem;
+            #endregion
+
+            // Click 'ActionsComboBox' combo box
+            Mouse.Click(actionsCombobox, new Point(216, 7));
+
+            // Click 'GetCountries' list item
+            Mouse.Click(getCountriesListItem, new Point(137, 7));
+
+            // Verify that the 'SelectedItem' property of 'ActionsComboBox' combo box equals 'dbo.GetCountries'
+            Assert.AreEqual(this.Select_GetCountries_From_SQL_Server_Large_View_Action_ComboboxExpectedValues.ActionsComboboxSelectedItem, actionsCombobox.SelectedItem, "GetCountries is not selected in SQL server large view action combobox.");
+        }
+        
+        /// <summary>
         /// Select_http_From_Server_Source_Wizard_Address_Protocol_Dropdown - Use 'Select_http_From_Server_Source_Wizard_Address_Protocol_DropdownParams' to pass parameters into this method.
         /// </summary>
         public void Select_http_From_Server_Source_Wizard_Address_Protocol_Dropdown()
@@ -4700,6 +4737,31 @@ namespace Warewolf.UITests
 
             // Click 'Insert Row' menu item
             Mouse.Click(insertRow, new Point(66, 19));
+        }
+        
+        /// <summary>
+        /// Select_MSSQLSERVER_From_DB_Source_Wizard_Address_Protocol_Dropdown - Use 'Select_MSSQLSERVER_From_DB_Source_Wizard_Address_Protocol_DropdownParams' to pass parameters into this method.
+        /// </summary>
+        public void Select_MSSQLSERVER_From_DB_Source_Wizard_Address_Protocol_Dropdown()
+        {
+            #region Variable Declarations
+            WpfButton toggleButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DBConnectorWizardTab.WorkSurfaceContext.NewDBSourceWizard.ServerTypeComboBox.ToggleButton;
+            WpfText microsoftSQLServerText = this.MainStudioWindow.MicrosoftSQLServerListItem.MicrosoftSQLServerText;
+            WpfText microsoftSQLServer = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DBConnectorWizardTab.WorkSurfaceContext.NewDBSourceWizard.ServerTypeComboBox.MicrosoftSQLServer;
+            #endregion
+
+            // Click 'ToggleButton' button
+            Mouse.Click(toggleButton, new Point(625, 11));
+
+            // Verify that the 'Exists' property of 'Microsoft SQL Server' label equals 'True'
+            Assert.AreEqual(this.Select_MSSQLSERVER_From_DB_Source_Wizard_Address_Protocol_DropdownParams.MicrosoftSQLServerTextExists, microsoftSQLServerText.Exists, "Microsoft SQL Server does not exist as an option in new DB source wizard type com" +
+                    "bobox.");
+
+            // Click 'Microsoft SQL Server' label
+            Mouse.Click(microsoftSQLServerText, new Point(118, 6));
+
+            // Verify that the 'DisplayText' property of 'Microsoft SQL Server' label equals 'Microsoft SQL Server'
+            Assert.AreEqual(this.Select_MSSQLSERVER_From_DB_Source_Wizard_Address_Protocol_DropdownParams.MicrosoftSQLServerDisplayText, microsoftSQLServer.DisplayText, "Microsoft SQL Server is not selected in DB source wizard.");
         }
         
         /// <summary>
@@ -4885,6 +4947,23 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
+        /// Select_RSAKLFSVRGENDEV_From_Server_Source_Wizard_Dropdownlist - Use 'Select_RSAKLFSVRGENDEV_From_Server_Source_Wizard_DropdownlistExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void Select_RSAKLFSVRGENDEV_From_Server_Source_Wizard_Dropdownlist()
+        {
+            #region Variable Declarations
+            WpfListItem rSAKLFSVRGENDEV = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DBConnectorWizardTab.WorkSurfaceContext.NewDBSourceWizard.ServerComboBox.RSAKLFSVRGENDEV;
+            WpfEdit textbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DBConnectorWizardTab.WorkSurfaceContext.NewDBSourceWizard.ServerComboBox.Textbox;
+            #endregion
+
+            // Click 'RSAKLFSVRGENDEV' list item
+            Mouse.Click(rSAKLFSVRGENDEV, new Point(97, 17));
+
+            // Verify that the 'Text' property of 'Text' text box equals 'RSAKLFSVRGENDEV'
+            Assert.AreEqual(this.Select_RSAKLFSVRGENDEV_From_Server_Source_Wizard_DropdownlistExpectedValues.TextboxText, textbox.Text, "RSAKLFSVRGENDEV is not selected as the server in the DB source wizard.");
+        }
+        
+        /// <summary>
         /// Select_SaveAsImage_FromContextMenu
         /// </summary>
         public void Select_SaveAsImage_FromContextMenu()
@@ -4945,6 +5024,44 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
+        /// Select_UITestingDBSource_From_SQL_Server_Large_View_Source_Combobox - Use 'Select_UITestingDBSource_From_SQL_Server_Large_View_Source_ComboboxParams' to pass parameters into this method.
+        /// </summary>
+        public void Select_UITestingDBSource_From_SQL_Server_Large_View_Source_Combobox()
+        {
+            #region Variable Declarations
+            WpfComboBox sourcesCombobox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase.LargeView.SourcesCombobox;
+            WpfListItem uITestingDBSourceListItem = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase.LargeView.SourcesCombobox.UITestingDBSourceListItem;
+            #endregion
+
+            // Click 'SourcesComboBox' combo box
+            Mouse.Click(sourcesCombobox, new Point(216, 7));
+
+            // Click 'UITestingDBSource' list item
+            Mouse.Click(uITestingDBSourceListItem, new Point(137, 7));
+
+            // Verify that the 'SelectedItem' property of 'SourcesComboBox' combo box equals 'UITestingDBSource'
+            Assert.AreEqual(this.Select_UITestingDBSource_From_SQL_Server_Large_View_Source_ComboboxParams.SourcesComboboxSelectedItem, sourcesCombobox.SelectedItem, "SQL Server large view source combobox selected item is not equal to UITestingDBSo" +
+                    "urce.");
+        }
+        
+        /// <summary>
+        /// Type_rsaklfsvrgen_into_DB_Source_Wizard_Server_Textbox - Use 'Type_rsaklfsvrgen_into_DB_Source_Wizard_Server_TextboxParams' to pass parameters into this method.
+        /// </summary>
+        public void Type_rsaklfsvrgen_into_DB_Source_Wizard_Server_Textbox()
+        {
+            #region Variable Declarations
+            WpfComboBox serverComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DBConnectorWizardTab.WorkSurfaceContext.ServerComboBox;
+            WpfListItem rSAKLFSVRGENDEV = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DBConnectorWizardTab.WorkSurfaceContext.NewDBSourceWizard.ServerComboBox.RSAKLFSVRGENDEV;
+            #endregion
+
+            // Select 'rsaklfsvrgen' in 'ServerTextBox' combo box
+            serverComboBox.EditableItem = this.Type_rsaklfsvrgen_into_DB_Source_Wizard_Server_TextboxParams.ServerComboBoxEditableItem;
+
+            // Verify that the 'Exists' property of 'RSAKLFSVRGENDEV' list item equals 'True'
+            Assert.AreEqual(this.Type_rsaklfsvrgen_into_DB_Source_Wizard_Server_TextboxParams.RSAKLFSVRGENDEVExists, rSAKLFSVRGENDEV.Exists, "RSAKLFSVRGENDEV does not exist as an option in DB source wizard server combobox.");
+        }
+        
+        /// <summary>
         /// Type_S_Into_DebugInput_Row1_InputData - Use 'Type_S_Into_DebugInput_Row1_InputDataParams' to pass parameters into this method.
         /// </summary>
         public void Type_S_Into_DebugInput_Row1_InputData()
@@ -4955,6 +5072,22 @@ namespace Warewolf.UITests
 
             // Type 's' in 'Description' cell
             uIDescriptionCell.Value = this.Type_S_Into_DebugInput_Row1_InputDataParams.UIDescriptionCellValue;
+
+            // Type 's' in 'Description' cell
+            uIDescriptionCell.Value = this.Type_S_Into_DebugInput_Row1_InputDataParams.UIDescriptionCellValue1;
+        }
+        
+        /// <summary>
+        /// Type_S_Into_SQL_Server_Large_View_Inputs_Row1_Data_Textbox - Use 'Type_S_Into_SQL_Server_Large_View_Inputs_Row1_Data_TextboxExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void Type_S_Into_SQL_Server_Large_View_Inputs_Row1_Data_Textbox()
+        {
+            #region Variable Declarations
+            WpfEdit dataTextbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase.LargeView.InputsTable.Row1.DataCell.DataCombobox.DataTextbox;
+            #endregion
+
+            // Verify that the 'Text' property of 'Text' text box equals 'S'
+            Assert.AreEqual(this.Type_S_Into_SQL_Server_Large_View_Inputs_Row1_Data_TextboxExpectedValues.DataTextboxText, dataTextbox.Text, "SQL Server large view inputs row 1 data textbox text is not equal to S");
         }
         
         /// <summary>
@@ -4972,6 +5105,22 @@ namespace Warewolf.UITests
 
             // Verify that the 'Exists' property of 'TST-CI-REMOTE' list item equals 'True'
             Assert.AreEqual(this.Type_tstci_into_Server_Source_Wizard_Address_TextboxParams.TSTCIREMOTEExists, tSTCIREMOTE.Exists, "TSTCIREMOTE does not exist in server source wizard drop down list");
+        }
+        
+        /// <summary>
+        /// Click_SQL_Server_Large_View_Generate_Outputs - Use 'Click_SQL_Server_Large_View_Generate_OutputsExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void Click_SQL_Server_Large_View_Generate_Outputs()
+        {
+            #region Variable Declarations
+            WpfButton generateOutputsButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase.LargeView.GenerateOutputsButton;
+            #endregion
+
+            // Verify that the 'Exists' property of 'Generate Outputs' button equals 'True'
+            Assert.AreEqual(this.Click_SQL_Server_Large_View_Generate_OutputsExpectedValues.GenerateOutputsButtonExists, generateOutputsButton.Exists, "SQL Server large view does not contain a generate inputs button.");
+
+            // Click 'Generate Outputs' button
+            Mouse.Click(generateOutputsButton, new Point(7, 7));
         }
         
         #region Properties
@@ -5215,18 +5364,6 @@ namespace Warewolf.UITests
             }
         }
         
-        public virtual Click_Save_Ribbon_Button_With_No_Save_DialogParams Click_Save_Ribbon_Button_With_No_Save_DialogParams
-        {
-            get
-            {
-                if ((this.mClick_Save_Ribbon_Button_With_No_Save_DialogParams == null))
-                {
-                    this.mClick_Save_Ribbon_Button_With_No_Save_DialogParams = new Click_Save_Ribbon_Button_With_No_Save_DialogParams();
-                }
-                return this.mClick_Save_Ribbon_Button_With_No_Save_DialogParams;
-            }
-        }
-        
         public virtual Click_Save_Ribbon_Button_to_Open_Save_DialogParams Click_Save_Ribbon_Button_to_Open_Save_DialogParams
         {
             get
@@ -5236,6 +5373,18 @@ namespace Warewolf.UITests
                     this.mClick_Save_Ribbon_Button_to_Open_Save_DialogParams = new Click_Save_Ribbon_Button_to_Open_Save_DialogParams();
                 }
                 return this.mClick_Save_Ribbon_Button_to_Open_Save_DialogParams;
+            }
+        }
+        
+        public virtual Click_Save_Ribbon_Button_With_No_Save_DialogParams Click_Save_Ribbon_Button_With_No_Save_DialogParams
+        {
+            get
+            {
+                if ((this.mClick_Save_Ribbon_Button_With_No_Save_DialogParams == null))
+                {
+                    this.mClick_Save_Ribbon_Button_With_No_Save_DialogParams = new Click_Save_Ribbon_Button_With_No_Save_DialogParams();
+                }
+                return this.mClick_Save_Ribbon_Button_With_No_Save_DialogParams;
             }
         }
         
@@ -5356,18 +5505,6 @@ namespace Warewolf.UITests
                     this.mClick_Switch_Dialog_Done_ButtonParams = new Click_Switch_Dialog_Done_ButtonParams();
                 }
                 return this.mClick_Switch_Dialog_Done_ButtonParams;
-            }
-        }
-        
-        public virtual Click_Test_Connector_Calculate_OutputsParams Click_Test_Connector_Calculate_OutputsParams
-        {
-            get
-            {
-                if ((this.mClick_Test_Connector_Calculate_OutputsParams == null))
-                {
-                    this.mClick_Test_Connector_Calculate_OutputsParams = new Click_Test_Connector_Calculate_OutputsParams();
-                }
-                return this.mClick_Test_Connector_Calculate_OutputsParams;
             }
         }
         
@@ -6439,6 +6576,18 @@ namespace Warewolf.UITests
             }
         }
         
+        public virtual Open_Sql_Server_Tool_Large_ViewExpectedValues Open_Sql_Server_Tool_Large_ViewExpectedValues
+        {
+            get
+            {
+                if ((this.mOpen_Sql_Server_Tool_Large_ViewExpectedValues == null))
+                {
+                    this.mOpen_Sql_Server_Tool_Large_ViewExpectedValues = new Open_Sql_Server_Tool_Large_ViewExpectedValues();
+                }
+                return this.mOpen_Sql_Server_Tool_Large_ViewExpectedValues;
+            }
+        }
+        
         public virtual Open_System_Information_Tool_Qvi_Large_ViewParams Open_System_Information_Tool_Qvi_Large_ViewParams
         {
             get
@@ -6571,6 +6720,30 @@ namespace Warewolf.UITests
             }
         }
         
+        public virtual Select_Dev2TestingDB_From_DB_Source_Wizard_Database_ComboboxParams Select_Dev2TestingDB_From_DB_Source_Wizard_Database_ComboboxParams
+        {
+            get
+            {
+                if ((this.mSelect_Dev2TestingDB_From_DB_Source_Wizard_Database_ComboboxParams == null))
+                {
+                    this.mSelect_Dev2TestingDB_From_DB_Source_Wizard_Database_ComboboxParams = new Select_Dev2TestingDB_From_DB_Source_Wizard_Database_ComboboxParams();
+                }
+                return this.mSelect_Dev2TestingDB_From_DB_Source_Wizard_Database_ComboboxParams;
+            }
+        }
+        
+        public virtual Select_GetCountries_From_SQL_Server_Large_View_Action_ComboboxExpectedValues Select_GetCountries_From_SQL_Server_Large_View_Action_ComboboxExpectedValues
+        {
+            get
+            {
+                if ((this.mSelect_GetCountries_From_SQL_Server_Large_View_Action_ComboboxExpectedValues == null))
+                {
+                    this.mSelect_GetCountries_From_SQL_Server_Large_View_Action_ComboboxExpectedValues = new Select_GetCountries_From_SQL_Server_Large_View_Action_ComboboxExpectedValues();
+                }
+                return this.mSelect_GetCountries_From_SQL_Server_Large_View_Action_ComboboxExpectedValues;
+            }
+        }
+        
         public virtual Select_http_From_Server_Source_Wizard_Address_Protocol_DropdownParams Select_http_From_Server_Source_Wizard_Address_Protocol_DropdownParams
         {
             get
@@ -6580,6 +6753,30 @@ namespace Warewolf.UITests
                     this.mSelect_http_From_Server_Source_Wizard_Address_Protocol_DropdownParams = new Select_http_From_Server_Source_Wizard_Address_Protocol_DropdownParams();
                 }
                 return this.mSelect_http_From_Server_Source_Wizard_Address_Protocol_DropdownParams;
+            }
+        }
+        
+        public virtual Select_MSSQLSERVER_From_DB_Source_Wizard_Address_Protocol_DropdownParams Select_MSSQLSERVER_From_DB_Source_Wizard_Address_Protocol_DropdownParams
+        {
+            get
+            {
+                if ((this.mSelect_MSSQLSERVER_From_DB_Source_Wizard_Address_Protocol_DropdownParams == null))
+                {
+                    this.mSelect_MSSQLSERVER_From_DB_Source_Wizard_Address_Protocol_DropdownParams = new Select_MSSQLSERVER_From_DB_Source_Wizard_Address_Protocol_DropdownParams();
+                }
+                return this.mSelect_MSSQLSERVER_From_DB_Source_Wizard_Address_Protocol_DropdownParams;
+            }
+        }
+        
+        public virtual Select_RSAKLFSVRGENDEV_From_Server_Source_Wizard_DropdownlistExpectedValues Select_RSAKLFSVRGENDEV_From_Server_Source_Wizard_DropdownlistExpectedValues
+        {
+            get
+            {
+                if ((this.mSelect_RSAKLFSVRGENDEV_From_Server_Source_Wizard_DropdownlistExpectedValues == null))
+                {
+                    this.mSelect_RSAKLFSVRGENDEV_From_Server_Source_Wizard_DropdownlistExpectedValues = new Select_RSAKLFSVRGENDEV_From_Server_Source_Wizard_DropdownlistExpectedValues();
+                }
+                return this.mSelect_RSAKLFSVRGENDEV_From_Server_Source_Wizard_DropdownlistExpectedValues;
             }
         }
         
@@ -6595,6 +6792,30 @@ namespace Warewolf.UITests
             }
         }
         
+        public virtual Select_UITestingDBSource_From_SQL_Server_Large_View_Source_ComboboxParams Select_UITestingDBSource_From_SQL_Server_Large_View_Source_ComboboxParams
+        {
+            get
+            {
+                if ((this.mSelect_UITestingDBSource_From_SQL_Server_Large_View_Source_ComboboxParams == null))
+                {
+                    this.mSelect_UITestingDBSource_From_SQL_Server_Large_View_Source_ComboboxParams = new Select_UITestingDBSource_From_SQL_Server_Large_View_Source_ComboboxParams();
+                }
+                return this.mSelect_UITestingDBSource_From_SQL_Server_Large_View_Source_ComboboxParams;
+            }
+        }
+        
+        public virtual Type_rsaklfsvrgen_into_DB_Source_Wizard_Server_TextboxParams Type_rsaklfsvrgen_into_DB_Source_Wizard_Server_TextboxParams
+        {
+            get
+            {
+                if ((this.mType_rsaklfsvrgen_into_DB_Source_Wizard_Server_TextboxParams == null))
+                {
+                    this.mType_rsaklfsvrgen_into_DB_Source_Wizard_Server_TextboxParams = new Type_rsaklfsvrgen_into_DB_Source_Wizard_Server_TextboxParams();
+                }
+                return this.mType_rsaklfsvrgen_into_DB_Source_Wizard_Server_TextboxParams;
+            }
+        }
+        
         public virtual Type_S_Into_DebugInput_Row1_InputDataParams Type_S_Into_DebugInput_Row1_InputDataParams
         {
             get
@@ -6607,6 +6828,18 @@ namespace Warewolf.UITests
             }
         }
         
+        public virtual Type_S_Into_SQL_Server_Large_View_Inputs_Row1_Data_TextboxExpectedValues Type_S_Into_SQL_Server_Large_View_Inputs_Row1_Data_TextboxExpectedValues
+        {
+            get
+            {
+                if ((this.mType_S_Into_SQL_Server_Large_View_Inputs_Row1_Data_TextboxExpectedValues == null))
+                {
+                    this.mType_S_Into_SQL_Server_Large_View_Inputs_Row1_Data_TextboxExpectedValues = new Type_S_Into_SQL_Server_Large_View_Inputs_Row1_Data_TextboxExpectedValues();
+                }
+                return this.mType_S_Into_SQL_Server_Large_View_Inputs_Row1_Data_TextboxExpectedValues;
+            }
+        }
+        
         public virtual Type_tstci_into_Server_Source_Wizard_Address_TextboxParams Type_tstci_into_Server_Source_Wizard_Address_TextboxParams
         {
             get
@@ -6616,6 +6849,18 @@ namespace Warewolf.UITests
                     this.mType_tstci_into_Server_Source_Wizard_Address_TextboxParams = new Type_tstci_into_Server_Source_Wizard_Address_TextboxParams();
                 }
                 return this.mType_tstci_into_Server_Source_Wizard_Address_TextboxParams;
+            }
+        }
+        
+        public virtual Click_SQL_Server_Large_View_Generate_OutputsExpectedValues Click_SQL_Server_Large_View_Generate_OutputsExpectedValues
+        {
+            get
+            {
+                if ((this.mClick_SQL_Server_Large_View_Generate_OutputsExpectedValues == null))
+                {
+                    this.mClick_SQL_Server_Large_View_Generate_OutputsExpectedValues = new Click_SQL_Server_Large_View_Generate_OutputsExpectedValues();
+                }
+                return this.mClick_SQL_Server_Large_View_Generate_OutputsExpectedValues;
             }
         }
         
@@ -6745,9 +6990,9 @@ namespace Warewolf.UITests
         
         private Click_Output_OnVariable_InVariableListParams mClick_Output_OnVariable_InVariableListParams;
         
-        private Click_Save_Ribbon_Button_With_No_Save_DialogParams mClick_Save_Ribbon_Button_With_No_Save_DialogParams;
-        
         private Click_Save_Ribbon_Button_to_Open_Save_DialogParams mClick_Save_Ribbon_Button_to_Open_Save_DialogParams;
+        
+        private Click_Save_Ribbon_Button_With_No_Save_DialogParams mClick_Save_Ribbon_Button_With_No_Save_DialogParams;
         
         private Click_Scheduler_Disable_Task_Radio_ButtonParams mClick_Scheduler_Disable_Task_Radio_ButtonParams;
         
@@ -6768,8 +7013,6 @@ namespace Warewolf.UITests
         private Click_Show_Dependencies_In_Explorer_Context_MenuParams mClick_Show_Dependencies_In_Explorer_Context_MenuParams;
         
         private Click_Switch_Dialog_Done_ButtonParams mClick_Switch_Dialog_Done_ButtonParams;
-        
-        private Click_Test_Connector_Calculate_OutputsParams mClick_Test_Connector_Calculate_OutputsParams;
         
         private Click_VariableList_Recordset_Row1_IsInputCheckboxParams mClick_VariableList_Recordset_Row1_IsInputCheckboxParams;
         
@@ -6949,6 +7192,8 @@ namespace Warewolf.UITests
         
         private Open_SQL_Bulk_Insert_Tool_Qvi_Large_ViewParams mOpen_SQL_Bulk_Insert_Tool_Qvi_Large_ViewParams;
         
+        private Open_Sql_Server_Tool_Large_ViewExpectedValues mOpen_Sql_Server_Tool_Large_ViewExpectedValues;
+        
         private Open_System_Information_Tool_Qvi_Large_ViewParams mOpen_System_Information_Tool_Qvi_Large_ViewParams;
         
         private Open_Unzip_Tool_Large_ViewParams mOpen_Unzip_Tool_Large_ViewParams;
@@ -6971,13 +7216,29 @@ namespace Warewolf.UITests
         
         private Select_Delete_FromExplorerContextMenuParams mSelect_Delete_FromExplorerContextMenuParams;
         
+        private Select_Dev2TestingDB_From_DB_Source_Wizard_Database_ComboboxParams mSelect_Dev2TestingDB_From_DB_Source_Wizard_Database_ComboboxParams;
+        
+        private Select_GetCountries_From_SQL_Server_Large_View_Action_ComboboxExpectedValues mSelect_GetCountries_From_SQL_Server_Large_View_Action_ComboboxExpectedValues;
+        
         private Select_http_From_Server_Source_Wizard_Address_Protocol_DropdownParams mSelect_http_From_Server_Source_Wizard_Address_Protocol_DropdownParams;
+        
+        private Select_MSSQLSERVER_From_DB_Source_Wizard_Address_Protocol_DropdownParams mSelect_MSSQLSERVER_From_DB_Source_Wizard_Address_Protocol_DropdownParams;
+        
+        private Select_RSAKLFSVRGENDEV_From_Server_Source_Wizard_DropdownlistExpectedValues mSelect_RSAKLFSVRGENDEV_From_Server_Source_Wizard_DropdownlistExpectedValues;
         
         private Select_TSTCIREMOTE_From_Server_Source_Wizard_DropdownlistParams mSelect_TSTCIREMOTE_From_Server_Source_Wizard_DropdownlistParams;
         
+        private Select_UITestingDBSource_From_SQL_Server_Large_View_Source_ComboboxParams mSelect_UITestingDBSource_From_SQL_Server_Large_View_Source_ComboboxParams;
+        
+        private Type_rsaklfsvrgen_into_DB_Source_Wizard_Server_TextboxParams mType_rsaklfsvrgen_into_DB_Source_Wizard_Server_TextboxParams;
+        
         private Type_S_Into_DebugInput_Row1_InputDataParams mType_S_Into_DebugInput_Row1_InputDataParams;
         
+        private Type_S_Into_SQL_Server_Large_View_Inputs_Row1_Data_TextboxExpectedValues mType_S_Into_SQL_Server_Large_View_Inputs_Row1_Data_TextboxExpectedValues;
+        
         private Type_tstci_into_Server_Source_Wizard_Address_TextboxParams mType_tstci_into_Server_Source_Wizard_Address_TextboxParams;
+        
+        private Click_SQL_Server_Large_View_Generate_OutputsExpectedValues mClick_SQL_Server_Large_View_Generate_OutputsExpectedValues;
         
         private MainStudioWindow mMainStudioWindow;
         
@@ -7534,26 +7795,6 @@ namespace Warewolf.UITests
     }
     
     /// <summary>
-    /// Parameters to be passed into 'Click_Save_Ribbon_Button_With_No_Save_Dialog'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Click_Save_Ribbon_Button_With_No_Save_DialogParams
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Verify that the 'Exists' property of 'Save this tab' button equals 'True'
-        /// </summary>
-        public bool SaveButtonExists = true;
-        
-        /// <summary>
-        /// Wait for 2 seconds for user delay between actions; Verify that the 'Enabled' property of 'Save this tab' button equals 'False'
-        /// </summary>
-        public bool SaveButtonEnabled = false;
-        #endregion
-    }
-    
-    /// <summary>
     /// Parameters to be passed into 'Click_Save_Ribbon_Button_to_Open_Save_Dialog'
     /// </summary>
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
@@ -7625,6 +7866,26 @@ namespace Warewolf.UITests
         /// Verify that the 'Exists' property of 'ServiceNameTextBox' text box equals 'True'
         /// </summary>
         public bool ServiceNameTextBoxExists1 = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Click_Save_Ribbon_Button_With_No_Save_Dialog'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Click_Save_Ribbon_Button_With_No_Save_DialogParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Save this tab' button equals 'True'
+        /// </summary>
+        public bool SaveButtonExists = true;
+        
+        /// <summary>
+        /// Wait for 2 seconds for user delay between actions; Verify that the 'Enabled' property of 'Save this tab' button equals 'False'
+        /// </summary>
+        public bool SaveButtonEnabled = false;
         #endregion
     }
     
@@ -7835,21 +8096,6 @@ namespace Warewolf.UITests
         /// Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
         /// </summary>
         public bool Connector1Exists = true;
-        #endregion
-    }
-    
-    /// <summary>
-    /// Parameters to be passed into 'Click_Test_Connector_Calculate_Outputs'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Click_Test_Connector_Calculate_OutputsParams
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Type 's' in 'Test data' text box
-        /// </summary>
-        public string TestDataText = "s";
         #endregion
     }
     
@@ -9739,6 +9985,21 @@ namespace Warewolf.UITests
     }
     
     /// <summary>
+    /// Parameters to be passed into 'Open_Sql_Server_Tool_Large_View'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Open_Sql_Server_Tool_Large_ViewExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'LargeViewContent' custom control equals 'True'
+        /// </summary>
+        public bool LargeViewExists = true;
+        #endregion
+    }
+    
+    /// <summary>
     /// Parameters to be passed into 'Open_System_Information_Tool_Qvi_Large_View'
     /// </summary>
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
@@ -9919,6 +10180,36 @@ namespace Warewolf.UITests
     }
     
     /// <summary>
+    /// Parameters to be passed into 'Select_Dev2TestingDB_From_DB_Source_Wizard_Database_Combobox'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Select_Dev2TestingDB_From_DB_Source_Wizard_Database_ComboboxParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'DisplayText' property of 'Dev2TestingDB' label equals 'Dev2TestingDB'
+        /// </summary>
+        public string UIDev2TestingDBTextDisplayText = "Dev2TestingDB";
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Select_GetCountries_From_SQL_Server_Large_View_Action_Combobox'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Select_GetCountries_From_SQL_Server_Large_View_Action_ComboboxExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'SelectedItem' property of 'ActionsComboBox' combo box equals 'dbo.GetCountries'
+        /// </summary>
+        public string ActionsComboboxSelectedItem = "dbo.GetCountries";
+        #endregion
+    }
+    
+    /// <summary>
     /// Parameters to be passed into 'Select_http_From_Server_Source_Wizard_Address_Protocol_Dropdown'
     /// </summary>
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
@@ -9935,6 +10226,41 @@ namespace Warewolf.UITests
         /// Verify that the 'Exists' property of 'Text' text box equals 'True'
         /// </summary>
         public bool AddressEditBoxExists = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Select_MSSQLSERVER_From_DB_Source_Wizard_Address_Protocol_Dropdown'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Select_MSSQLSERVER_From_DB_Source_Wizard_Address_Protocol_DropdownParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Microsoft SQL Server' label equals 'True'
+        /// </summary>
+        public bool MicrosoftSQLServerTextExists = true;
+        
+        /// <summary>
+        /// Verify that the 'DisplayText' property of 'Microsoft SQL Server' label equals 'Microsoft SQL Server'
+        /// </summary>
+        public string MicrosoftSQLServerDisplayText = "Microsoft SQL Server";
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Select_RSAKLFSVRGENDEV_From_Server_Source_Wizard_Dropdownlist'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Select_RSAKLFSVRGENDEV_From_Server_Source_Wizard_DropdownlistExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Text' property of 'Text' text box equals 'RSAKLFSVRGENDEV'
+        /// </summary>
+        public string TextboxText = "RSAKLFSVRGENDEV";
         #endregion
     }
     
@@ -9959,6 +10285,41 @@ namespace Warewolf.UITests
     }
     
     /// <summary>
+    /// Parameters to be passed into 'Select_UITestingDBSource_From_SQL_Server_Large_View_Source_Combobox'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Select_UITestingDBSource_From_SQL_Server_Large_View_Source_ComboboxParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'SelectedItem' property of 'SourcesComboBox' combo box equals 'UITestingDBSource'
+        /// </summary>
+        public string SourcesComboboxSelectedItem = "UITestingDBSource";
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Type_rsaklfsvrgen_into_DB_Source_Wizard_Server_Textbox'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Type_rsaklfsvrgen_into_DB_Source_Wizard_Server_TextboxParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Select 'rsaklfsvrgen' in 'ServerTextBox' combo box
+        /// </summary>
+        public string ServerComboBoxEditableItem = "rsaklfsvrgen";
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'RSAKLFSVRGENDEV' list item equals 'True'
+        /// </summary>
+        public bool RSAKLFSVRGENDEVExists = true;
+        #endregion
+    }
+    
+    /// <summary>
     /// Parameters to be passed into 'Type_S_Into_DebugInput_Row1_InputData'
     /// </summary>
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
@@ -9970,6 +10331,26 @@ namespace Warewolf.UITests
         /// Type 's' in 'Description' cell
         /// </summary>
         public string UIDescriptionCellValue = "s";
+        
+        /// <summary>
+        /// Type 's' in 'Description' cell
+        /// </summary>
+        public string UIDescriptionCellValue1 = "s";
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Type_S_Into_SQL_Server_Large_View_Inputs_Row1_Data_Textbox'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Type_S_Into_SQL_Server_Large_View_Inputs_Row1_Data_TextboxExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Text' property of 'Text' text box equals 'S'
+        /// </summary>
+        public string DataTextboxText = "S";
         #endregion
     }
     
@@ -9990,6 +10371,21 @@ namespace Warewolf.UITests
         /// Verify that the 'Exists' property of 'TST-CI-REMOTE' list item equals 'True'
         /// </summary>
         public bool TSTCIREMOTEExists = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Click_SQL_Server_Large_View_Generate_Outputs'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Click_SQL_Server_Large_View_Generate_OutputsExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Generate Outputs' button equals 'True'
+        /// </summary>
+        public bool GenerateOutputsButtonExists = true;
         #endregion
     }
     
@@ -10263,6 +10659,35 @@ namespace Warewolf.UITests
                 return this.mComboboxListItemAsHttp;
             }
         }
+        
+        public MicrosoftSQLServerListItem MicrosoftSQLServerListItem
+        {
+            get
+            {
+                if ((this.mMicrosoftSQLServerListItem == null))
+                {
+                    this.mMicrosoftSQLServerListItem = new MicrosoftSQLServerListItem(this);
+                }
+                return this.mMicrosoftSQLServerListItem;
+            }
+        }
+        
+        public WpfCustom Dev2TestingDBListItem
+        {
+            get
+            {
+                if ((this.mDev2TestingDBListItem == null))
+                {
+                    this.mDev2TestingDBListItem = new WpfCustom(this);
+                    #region Search Criteria
+                    this.mDev2TestingDBListItem.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ComboEditorItemControl";
+                    this.mDev2TestingDBListItem.SearchProperties[WpfControl.PropertyNames.Name] = "Dev2TestingDB";
+                    this.mDev2TestingDBListItem.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mDev2TestingDBListItem;
+            }
+        }
         #endregion
         
         #region Fields
@@ -10301,6 +10726,10 @@ namespace Warewolf.UITests
         private WpfText mComboboxListItemAsLocalhostConnected;
         
         private WpfCustom mComboboxListItemAsHttp;
+        
+        private MicrosoftSQLServerListItem mMicrosoftSQLServerListItem;
+        
+        private WpfCustom mDev2TestingDBListItem;
         #endregion
     }
     
@@ -18599,18 +19028,13 @@ namespace Warewolf.UITests
             }
         }
         
-        public WpfCustom SqlServerDatabase
+        public SqlServerDatabase SqlServerDatabase
         {
             get
             {
                 if ((this.mSqlServerDatabase == null))
                 {
-                    this.mSqlServerDatabase = new WpfCustom(this);
-                    #region Search Criteria
-                    this.mSqlServerDatabase.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.SqlServerDatabaseDesigner";
-                    this.mSqlServerDatabase.SearchProperties[WpfControl.PropertyNames.AutomationId] = "SQL Server Database(SqlServerDatabaseDesigner)";
-                    this.mSqlServerDatabase.WindowTitles.Add("Warewolf");
-                    #endregion
+                    this.mSqlServerDatabase = new SqlServerDatabase(this);
                 }
                 return this.mSqlServerDatabase;
             }
@@ -19471,7 +19895,7 @@ namespace Warewolf.UITests
         
         private WpfCustom mMySqlDatabase;
         
-        private WpfCustom mSqlServerDatabase;
+        private SqlServerDatabase mSqlServerDatabase;
         
         private BaseConvert1 mBaseConvert;
         
@@ -21529,6 +21953,323 @@ namespace Warewolf.UITests
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class SqlServerDatabase : WpfCustom
+    {
+        
+        public SqlServerDatabase(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.SqlServerDatabaseDesigner";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "SQL Server Database(SqlServerDatabaseDesigner)";
+            this.WindowTitles.Add("Warewolf");
+            #endregion
+        }
+        
+        #region Properties
+        public LargeView2 LargeView
+        {
+            get
+            {
+                if ((this.mLargeView == null))
+                {
+                    this.mLargeView = new LargeView2(this);
+                }
+                return this.mLargeView;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private LargeView2 mLargeView;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class LargeView2 : WpfCustom
+    {
+        
+        public LargeView2(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.Large";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "LargeViewContent";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public ActionsCombobox ActionsCombobox
+        {
+            get
+            {
+                if ((this.mActionsCombobox == null))
+                {
+                    this.mActionsCombobox = new ActionsCombobox(this);
+                }
+                return this.mActionsCombobox;
+            }
+        }
+        
+        public SourcesCombobox SourcesCombobox
+        {
+            get
+            {
+                if ((this.mSourcesCombobox == null))
+                {
+                    this.mSourcesCombobox = new SourcesCombobox(this);
+                }
+                return this.mSourcesCombobox;
+            }
+        }
+        
+        public InputsTable InputsTable
+        {
+            get
+            {
+                if ((this.mInputsTable == null))
+                {
+                    this.mInputsTable = new InputsTable(this);
+                }
+                return this.mInputsTable;
+            }
+        }
+        
+        public WpfButton GenerateOutputsButton
+        {
+            get
+            {
+                if ((this.mGenerateOutputsButton == null))
+                {
+                    this.mGenerateOutputsButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mGenerateOutputsButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "TestInputButton";
+                    this.mGenerateOutputsButton.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mGenerateOutputsButton;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private ActionsCombobox mActionsCombobox;
+        
+        private SourcesCombobox mSourcesCombobox;
+        
+        private InputsTable mInputsTable;
+        
+        private WpfButton mGenerateOutputsButton;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class ActionsCombobox : WpfComboBox
+    {
+        
+        public ActionsCombobox(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "ActionsComboBox";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfListItem GetCountriesListItem
+        {
+            get
+            {
+                if ((this.mGetCountriesListItem == null))
+                {
+                    this.mGetCountriesListItem = new WpfListItem(this);
+                    #region Search Criteria
+                    this.mGetCountriesListItem.SearchProperties[WpfListItem.PropertyNames.Name] = "GetCountries";
+                    this.mGetCountriesListItem.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mGetCountriesListItem;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfListItem mGetCountriesListItem;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class SourcesCombobox : WpfComboBox
+    {
+        
+        public SourcesCombobox(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "SourcesComboBox";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfListItem UITestingDBSourceListItem
+        {
+            get
+            {
+                if ((this.mUITestingDBSourceListItem == null))
+                {
+                    this.mUITestingDBSourceListItem = new WpfListItem(this);
+                    #region Search Criteria
+                    this.mUITestingDBSourceListItem.SearchProperties[WpfListItem.PropertyNames.Name] = "UITestingDBSource";
+                    this.mUITestingDBSourceListItem.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mUITestingDBSourceListItem;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfListItem mUITestingDBSourceListItem;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class InputsTable : WpfTable
+    {
+        
+        public InputsTable(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfTable.PropertyNames.AutomationId] = "LargeDataGrid";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public Row13 Row1
+        {
+            get
+            {
+                if ((this.mRow1 == null))
+                {
+                    this.mRow1 = new Row13(this);
+                }
+                return this.mRow1;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private Row13 mRow1;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Row13 : WpfRow
+    {
+        
+        public Row13(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchConfigurations.Add(SearchConfiguration.AlwaysSearch);
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public DataCell DataCell
+        {
+            get
+            {
+                if ((this.mDataCell == null))
+                {
+                    this.mDataCell = new DataCell(this);
+                }
+                return this.mDataCell;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private DataCell mDataCell;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class DataCell : WpfCell
+    {
+        
+        public DataCell(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = "Input Data or [[Variable]]";
+            this.SearchProperties[WpfCell.PropertyNames.AutomationId] = "UI_DataGridCell_AutoID";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public DataCombobox DataCombobox
+        {
+            get
+            {
+                if ((this.mDataCombobox == null))
+                {
+                    this.mDataCombobox = new DataCombobox(this);
+                }
+                return this.mDataCombobox;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private DataCombobox mDataCombobox;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class DataCombobox : WpfComboBox
+    {
+        
+        public DataCombobox(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfComboBox.PropertyNames.HelpText] = "Hard coded values or variables.";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfEdit DataTextbox
+        {
+            get
+            {
+                if ((this.mDataTextbox == null))
+                {
+                    this.mDataTextbox = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mDataTextbox.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "Text";
+                    this.mDataTextbox.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mDataTextbox;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfEdit mDataTextbox;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class BaseConvert1 : WpfCustom
     {
         
@@ -21559,13 +22300,13 @@ namespace Warewolf.UITests
             }
         }
         
-        public LargeView2 LargeView
+        public LargeView3 LargeView
         {
             get
             {
                 if ((this.mLargeView == null))
                 {
-                    this.mLargeView = new LargeView2(this);
+                    this.mLargeView = new LargeView3(this);
                 }
                 return this.mLargeView;
             }
@@ -21603,7 +22344,7 @@ namespace Warewolf.UITests
         #region Fields
         private WpfToggleButton mOpenQuickVariableInpToggleButton;
         
-        private LargeView2 mLargeView;
+        private LargeView3 mLargeView;
         
         private WpfButton mDoneButton;
         
@@ -21612,10 +22353,10 @@ namespace Warewolf.UITests
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class LargeView2 : WpfCustom
+    public class LargeView3 : WpfCustom
     {
         
-        public LargeView2(UITestControl searchLimitContainer) : 
+        public LargeView3(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -21658,13 +22399,13 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public Row13 Row1
+        public Row14 Row1
         {
             get
             {
                 if ((this.mRow1 == null))
                 {
-                    this.mRow1 = new Row13(this);
+                    this.mRow1 = new Row14(this);
                 }
                 return this.mRow1;
             }
@@ -21672,15 +22413,15 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private Row13 mRow1;
+        private Row14 mRow1;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Row13 : WpfRow
+    public class Row14 : WpfRow
     {
         
-        public Row13(UITestControl searchLimitContainer) : 
+        public Row14(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -21827,13 +22568,13 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public Row14 Row1
+        public Row15 Row1
         {
             get
             {
                 if ((this.mRow1 == null))
                 {
-                    this.mRow1 = new Row14(this);
+                    this.mRow1 = new Row15(this);
                 }
                 return this.mRow1;
             }
@@ -21841,15 +22582,15 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private Row14 mRow1;
+        private Row15 mRow1;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Row14 : WpfRow
+    public class Row15 : WpfRow
     {
         
-        public Row14(UITestControl searchLimitContainer) : 
+        public Row15(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -22075,13 +22816,13 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public LargeView3 LargeView
+        public LargeView4 LargeView
         {
             get
             {
                 if ((this.mLargeView == null))
                 {
-                    this.mLargeView = new LargeView3(this);
+                    this.mLargeView = new LargeView4(this);
                 }
                 return this.mLargeView;
             }
@@ -22117,7 +22858,7 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private LargeView3 mLargeView;
+        private LargeView4 mLargeView;
         
         private WpfButton mDoneButton;
         
@@ -22126,10 +22867,10 @@ namespace Warewolf.UITests
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class LargeView3 : WpfCustom
+    public class LargeView4 : WpfCustom
     {
         
-        public LargeView3(UITestControl searchLimitContainer) : 
+        public LargeView4(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -22442,13 +23183,13 @@ namespace Warewolf.UITests
             }
         }
         
-        public LargeView4 LargeView
+        public LargeView5 LargeView
         {
             get
             {
                 if ((this.mLargeView == null))
                 {
-                    this.mLargeView = new LargeView4(this);
+                    this.mLargeView = new LargeView5(this);
                 }
                 return this.mLargeView;
             }
@@ -22507,7 +23248,7 @@ namespace Warewolf.UITests
         #region Fields
         private SmallView4 mSmallView;
         
-        private LargeView4 mLargeView;
+        private LargeView5 mLargeView;
         
         private WpfButton mDoneButton;
         
@@ -22564,13 +23305,13 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public Row15 Row1
+        public Row16 Row1
         {
             get
             {
                 if ((this.mRow1 == null))
                 {
-                    this.mRow1 = new Row15(this);
+                    this.mRow1 = new Row16(this);
                 }
                 return this.mRow1;
             }
@@ -22578,15 +23319,15 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private Row15 mRow1;
+        private Row16 mRow1;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Row15 : WpfRow
+    public class Row16 : WpfRow
     {
         
-        public Row15(UITestControl searchLimitContainer) : 
+        public Row16(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -22736,10 +23477,10 @@ namespace Warewolf.UITests
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class LargeView4 : WpfCustom
+    public class LargeView5 : WpfCustom
     {
         
-        public LargeView4(UITestControl searchLimitContainer) : 
+        public LargeView5(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -22782,13 +23523,13 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public Row16 Row1
+        public Row17 Row1
         {
             get
             {
                 if ((this.mRow1 == null))
                 {
-                    this.mRow1 = new Row16(this);
+                    this.mRow1 = new Row17(this);
                 }
                 return this.mRow1;
             }
@@ -22796,15 +23537,15 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private Row16 mRow1;
+        private Row17 mRow1;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Row16 : WpfRow
+    public class Row17 : WpfRow
     {
         
-        public Row16(UITestControl searchLimitContainer) : 
+        public Row17(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -23033,6 +23774,22 @@ namespace Warewolf.UITests
                 return this.mHorizontalScrollBar;
             }
         }
+        
+        public WpfButton CloseButton
+        {
+            get
+            {
+                if ((this.mCloseButton == null))
+                {
+                    this.mCloseButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mCloseButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "closeBtn";
+                    this.mCloseButton.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mCloseButton;
+            }
+        }
         #endregion
         
         #region Fields
@@ -23041,6 +23798,8 @@ namespace Warewolf.UITests
         private WpfScrollBar mVerticalScrollBar;
         
         private WpfScrollBar mHorizontalScrollBar;
+        
+        private WpfButton mCloseButton;
         #endregion
     }
     
@@ -23059,411 +23818,112 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public SourcesComboBox SourcesComboBox
+        public SourcesComboBox1 SourcesComboBox
         {
             get
             {
                 if ((this.mSourcesComboBox == null))
                 {
-                    this.mSourcesComboBox = new SourcesComboBox(this);
+                    this.mSourcesComboBox = new SourcesComboBox1(this);
                 }
                 return this.mSourcesComboBox;
             }
         }
         
-        public NewDBConnectorWizard NewDBConnectorWizard
+        public NewDBSourceWizard NewDBSourceWizard
         {
             get
             {
-                if ((this.mNewDBConnectorWizard == null))
+                if ((this.mNewDBSourceWizard == null))
                 {
-                    this.mNewDBConnectorWizard = new NewDBConnectorWizard(this);
+                    this.mNewDBSourceWizard = new NewDBSourceWizard(this);
                 }
-                return this.mNewDBConnectorWizard;
+                return this.mNewDBSourceWizard;
             }
         }
         
-        public WpfText Step1Text
+        public WpfComboBox ServerComboBox
         {
             get
             {
-                if ((this.mStep1Text == null))
+                if ((this.mServerComboBox == null))
                 {
-                    this.mStep1Text = new WpfText(this);
+                    this.mServerComboBox = new WpfComboBox(this);
                     #region Search Criteria
-                    this.mStep1Text.SearchProperties[WpfText.PropertyNames.Name] = "1";
-                    this.mStep1Text.WindowTitles.Add("Warewolf");
+                    this.mServerComboBox.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "ServerTextBox";
+                    this.mServerComboBox.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
                     #endregion
                 }
-                return this.mStep1Text;
+                return this.mServerComboBox;
             }
         }
         
-        public WpfText TitleText
+        public WpfButton TestConnectionButton
         {
             get
             {
-                if ((this.mTitleText == null))
+                if ((this.mTestConnectionButton == null))
                 {
-                    this.mTitleText = new WpfText(this);
+                    this.mTestConnectionButton = new WpfButton(this);
                     #region Search Criteria
-                    this.mTitleText.SearchProperties[WpfText.PropertyNames.Name] = "Data Source";
-                    this.mTitleText.WindowTitles.Add("Warewolf");
+                    this.mTestConnectionButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "TestConnectionButton";
+                    this.mTestConnectionButton.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
                     #endregion
                 }
-                return this.mTitleText;
+                return this.mTestConnectionButton;
             }
         }
         
-        public WpfButton EditButton
-        {
-            get
-            {
-                if ((this.mEditButton == null))
-                {
-                    this.mEditButton = new WpfButton(this);
-                    #region Search Criteria
-                    this.mEditButton.SearchProperties[WpfButton.PropertyNames.Name] = " ... ";
-                    this.mEditButton.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mEditButton;
-            }
-        }
-        
-        public WpfText OrText
-        {
-            get
-            {
-                if ((this.mOrText == null))
-                {
-                    this.mOrText = new WpfText(this);
-                    #region Search Criteria
-                    this.mOrText.SearchProperties[WpfText.PropertyNames.Name] = "or";
-                    this.mOrText.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mOrText;
-            }
-        }
-        
-        public WpfButton NewButton
-        {
-            get
-            {
-                if ((this.mNewButton == null))
-                {
-                    this.mNewButton = new WpfButton(this);
-                    #region Search Criteria
-                    this.mNewButton.SearchProperties[WpfButton.PropertyNames.Name] = "New";
-                    this.mNewButton.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mNewButton;
-            }
-        }
-        
-        public WpfText Step2Text
-        {
-            get
-            {
-                if ((this.mStep2Text == null))
-                {
-                    this.mStep2Text = new WpfText(this);
-                    #region Search Criteria
-                    this.mStep2Text.SearchProperties[WpfText.PropertyNames.Name] = "2";
-                    this.mStep2Text.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mStep2Text;
-            }
-        }
-        
-        public WpfText SelectanActionText
-        {
-            get
-            {
-                if ((this.mSelectanActionText == null))
-                {
-                    this.mSelectanActionText = new WpfText(this);
-                    #region Search Criteria
-                    this.mSelectanActionText.SearchProperties[WpfText.PropertyNames.Name] = "Select an Action";
-                    this.mSelectanActionText.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mSelectanActionText;
-            }
-        }
-        
-        public WpfCustom ActionsComboBox
-        {
-            get
-            {
-                if ((this.mActionsComboBox == null))
-                {
-                    this.mActionsComboBox = new WpfCustom(this);
-                    #region Search Criteria
-                    this.mActionsComboBox.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.XamComboEditor";
-                    this.mActionsComboBox.SearchProperties[WpfControl.PropertyNames.AutomationId] = "ActionsComboBox";
-                    this.mActionsComboBox.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mActionsComboBox;
-            }
-        }
-        
-        public RefreshButton RefreshButton
-        {
-            get
-            {
-                if ((this.mRefreshButton == null))
-                {
-                    this.mRefreshButton = new RefreshButton(this);
-                }
-                return this.mRefreshButton;
-            }
-        }
-        
-        public WpfText Step3Text
-        {
-            get
-            {
-                if ((this.mStep3Text == null))
-                {
-                    this.mStep3Text = new WpfText(this);
-                    #region Search Criteria
-                    this.mStep3Text.SearchProperties[WpfText.PropertyNames.Name] = "3";
-                    this.mStep3Text.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mStep3Text;
-            }
-        }
-        
-        public WpfText TestActionTitleText
-        {
-            get
-            {
-                if ((this.mTestActionTitleText == null))
-                {
-                    this.mTestActionTitleText = new WpfText(this);
-                    #region Search Criteria
-                    this.mTestActionTitleText.SearchProperties[WpfText.PropertyNames.Name] = "Test Connector and Calculate Outputs";
-                    this.mTestActionTitleText.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mTestActionTitleText;
-            }
-        }
-        
-        public WpfText InputsText
-        {
-            get
-            {
-                if ((this.mInputsText == null))
-                {
-                    this.mInputsText = new WpfText(this);
-                    #region Search Criteria
-                    this.mInputsText.SearchProperties[WpfText.PropertyNames.Name] = "Inputs";
-                    this.mInputsText.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mInputsText;
-            }
-        }
-        
-        public WpfList InputsList
-        {
-            get
-            {
-                if ((this.mInputsList == null))
-                {
-                    this.mInputsList = new WpfList(this);
-                    #region Search Criteria
-                    this.mInputsList.SearchProperties[WpfList.PropertyNames.AutomationId] = "InputsList";
-                    this.mInputsList.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mInputsList;
-            }
-        }
-        
-        public TestActionButton TestActionButton
-        {
-            get
-            {
-                if ((this.mTestActionButton == null))
-                {
-                    this.mTestActionButton = new TestActionButton(this);
-                }
-                return this.mTestActionButton;
-            }
-        }
-        
-        public OutputsTitleText OutputsTitleText
-        {
-            get
-            {
-                if ((this.mOutputsTitleText == null))
-                {
-                    this.mOutputsTitleText = new OutputsTitleText(this);
-                }
-                return this.mOutputsTitleText;
-            }
-        }
-        
-        public WpfText NoneText
-        {
-            get
-            {
-                if ((this.mNoneText == null))
-                {
-                    this.mNoneText = new WpfText(this);
-                    #region Search Criteria
-                    this.mNoneText.SearchProperties[WpfText.PropertyNames.Name] = "None";
-                    this.mNoneText.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mNoneText;
-            }
-        }
-        
-        public WpfText Step4Text
-        {
-            get
-            {
-                if ((this.mStep4Text == null))
-                {
-                    this.mStep4Text = new WpfText(this);
-                    #region Search Criteria
-                    this.mStep4Text.SearchProperties[WpfText.PropertyNames.Name] = "4";
-                    this.mStep4Text.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mStep4Text;
-            }
-        }
-        
-        public WpfText DefaultsandMappingText
-        {
-            get
-            {
-                if ((this.mDefaultsandMappingText == null))
-                {
-                    this.mDefaultsandMappingText = new WpfText(this);
-                    #region Search Criteria
-                    this.mDefaultsandMappingText.SearchProperties[WpfText.PropertyNames.Name] = "Defaults and Mapping";
-                    this.mDefaultsandMappingText.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mDefaultsandMappingText;
-            }
-        }
-        
-        public WpfCustom MappingsView
-        {
-            get
-            {
-                if ((this.mMappingsView == null))
-                {
-                    this.mMappingsView = new WpfCustom(this);
-                    #region Search Criteria
-                    this.mMappingsView.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.MappingsView";
-                    this.mMappingsView.SearchProperties[WpfControl.PropertyNames.AutomationId] = "MappingsView";
-                    this.mMappingsView.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mMappingsView;
-            }
-        }
-        
-        public WpfText ErrorText
+        public ErrorText ErrorText
         {
             get
             {
                 if ((this.mErrorText == null))
                 {
-                    this.mErrorText = new WpfText(this);
-                    #region Search Criteria
-                    this.mErrorText.SearchProperties[WpfText.PropertyNames.AutomationId] = "ErrorTextBlock";
-                    this.mErrorText.WindowTitles.Add("Warewolf");
-                    #endregion
+                    this.mErrorText = new ErrorText(this);
                 }
                 return this.mErrorText;
             }
         }
         
-        public WpfTable OutputsTable
+        public WpfCustom DatabaseCombobox
         {
             get
             {
-                if ((this.mOutputsTable == null))
+                if ((this.mDatabaseCombobox == null))
                 {
-                    this.mOutputsTable = new WpfTable(this);
+                    this.mDatabaseCombobox = new WpfCustom(this);
                     #region Search Criteria
-                    this.mOutputsTable.SearchProperties[WpfTable.PropertyNames.AutomationId] = "OutputsDataGrid";
-                    this.mOutputsTable.WindowTitles.Add("Warewolf");
+                    this.mDatabaseCombobox.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.XamComboEditor";
+                    this.mDatabaseCombobox.SearchProperties[WpfControl.PropertyNames.AutomationId] = "DatabaseComboxBox";
+                    this.mDatabaseCombobox.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
                     #endregion
                 }
-                return this.mOutputsTable;
+                return this.mDatabaseCombobox;
             }
         }
         #endregion
         
         #region Fields
-        private SourcesComboBox mSourcesComboBox;
+        private SourcesComboBox1 mSourcesComboBox;
         
-        private NewDBConnectorWizard mNewDBConnectorWizard;
+        private NewDBSourceWizard mNewDBSourceWizard;
         
-        private WpfText mStep1Text;
+        private WpfComboBox mServerComboBox;
         
-        private WpfText mTitleText;
+        private WpfButton mTestConnectionButton;
         
-        private WpfButton mEditButton;
+        private ErrorText mErrorText;
         
-        private WpfText mOrText;
-        
-        private WpfButton mNewButton;
-        
-        private WpfText mStep2Text;
-        
-        private WpfText mSelectanActionText;
-        
-        private WpfCustom mActionsComboBox;
-        
-        private RefreshButton mRefreshButton;
-        
-        private WpfText mStep3Text;
-        
-        private WpfText mTestActionTitleText;
-        
-        private WpfText mInputsText;
-        
-        private WpfList mInputsList;
-        
-        private TestActionButton mTestActionButton;
-        
-        private OutputsTitleText mOutputsTitleText;
-        
-        private WpfText mNoneText;
-        
-        private WpfText mStep4Text;
-        
-        private WpfText mDefaultsandMappingText;
-        
-        private WpfCustom mMappingsView;
-        
-        private WpfText mErrorText;
-        
-        private WpfTable mOutputsTable;
+        private WpfCustom mDatabaseCombobox;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class SourcesComboBox : WpfCustom
+    public class SourcesComboBox1 : WpfCustom
     {
         
-        public SourcesComboBox(UITestControl searchLimitContainer) : 
+        public SourcesComboBox1(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -23515,607 +23975,245 @@ namespace Warewolf.UITests
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class NewDBConnectorWizard : WpfCustom
+    public class NewDBSourceWizard : WpfCustom
     {
         
-        public NewDBConnectorWizard(UITestControl searchLimitContainer) : 
+        public NewDBSourceWizard(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
-            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ManageDatabaseServiceControl";
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ManageDatabaseSourceControl";
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
         
         #region Properties
-        public InputsList InputsList
+        public ServerTypeComboBox ServerTypeComboBox
         {
             get
             {
-                if ((this.mInputsList == null))
+                if ((this.mServerTypeComboBox == null))
                 {
-                    this.mInputsList = new InputsList(this);
+                    this.mServerTypeComboBox = new ServerTypeComboBox(this);
                 }
-                return this.mInputsList;
+                return this.mServerTypeComboBox;
             }
         }
         
-        public EditButton EditButton
+        public ServerComboBox1 ServerComboBox
         {
             get
             {
-                if ((this.mEditButton == null))
+                if ((this.mServerComboBox == null))
                 {
-                    this.mEditButton = new EditButton(this);
+                    this.mServerComboBox = new ServerComboBox1(this);
                 }
-                return this.mEditButton;
+                return this.mServerComboBox;
             }
         }
         
-        public NewButton NewButton
+        public UIDatabaseComboxBoxCustom UIDatabaseComboxBoxCustom
         {
             get
             {
-                if ((this.mNewButton == null))
+                if ((this.mUIDatabaseComboxBoxCustom == null))
                 {
-                    this.mNewButton = new NewButton(this);
+                    this.mUIDatabaseComboxBoxCustom = new UIDatabaseComboxBoxCustom(this);
                 }
-                return this.mNewButton;
-            }
-        }
-        
-        public ActionsComboBox ActionsComboBox
-        {
-            get
-            {
-                if ((this.mActionsComboBox == null))
-                {
-                    this.mActionsComboBox = new ActionsComboBox(this);
-                }
-                return this.mActionsComboBox;
-            }
-        }
-        
-        public MappingsView MappingsView
-        {
-            get
-            {
-                if ((this.mMappingsView == null))
-                {
-                    this.mMappingsView = new MappingsView(this);
-                }
-                return this.mMappingsView;
+                return this.mUIDatabaseComboxBoxCustom;
             }
         }
         #endregion
         
         #region Fields
-        private InputsList mInputsList;
+        private ServerTypeComboBox mServerTypeComboBox;
         
-        private EditButton mEditButton;
+        private ServerComboBox1 mServerComboBox;
         
-        private NewButton mNewButton;
-        
-        private ActionsComboBox mActionsComboBox;
-        
-        private MappingsView mMappingsView;
+        private UIDatabaseComboxBoxCustom mUIDatabaseComboxBoxCustom;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class InputsList : WpfList
+    public class ServerTypeComboBox : WpfCustom
     {
         
-        public InputsList(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfList.PropertyNames.AutomationId] = "InputsList";
-            this.WindowTitles.Add("Warewolf");
-            #endregion
-        }
-        
-        #region Properties
-        public ListItem ListItem
-        {
-            get
-            {
-                if ((this.mListItem == null))
-                {
-                    this.mListItem = new ListItem(this);
-                }
-                return this.mListItem;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private ListItem mListItem;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class ListItem : WpfListItem
-    {
-        
-        public ListItem(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfListItem.PropertyNames.Name] = "Warewolf.Core.ServiceInput";
-            this.WindowTitles.Add("Warewolf");
-            #endregion
-        }
-        
-        #region Properties
-        public WpfEdit TestData
-        {
-            get
-            {
-                if ((this.mTestData == null))
-                {
-                    this.mTestData = new WpfEdit(this);
-                    #region Search Criteria
-                    this.mTestData.SearchProperties[WpfEdit.PropertyNames.HelpText] = "Test data";
-                    this.mTestData.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mTestData;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfEdit mTestData;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class EditButton : WpfButton
-    {
-        
-        public EditButton(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfButton.PropertyNames.Name] = " ... ";
-            this.WindowTitles.Add("Warewolf");
-            #endregion
-        }
-        
-        #region Properties
-        public WpfText EditButtonText
-        {
-            get
-            {
-                if ((this.mEditButtonText == null))
-                {
-                    this.mEditButtonText = new WpfText(this);
-                    #region Search Criteria
-                    this.mEditButtonText.SearchProperties[WpfText.PropertyNames.Name] = " ... ";
-                    this.mEditButtonText.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mEditButtonText;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfText mEditButtonText;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class NewButton : WpfButton
-    {
-        
-        public NewButton(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfButton.PropertyNames.Name] = "New";
-            this.WindowTitles.Add("Warewolf");
-            #endregion
-        }
-        
-        #region Properties
-        public WpfText UINewText
-        {
-            get
-            {
-                if ((this.mUINewText == null))
-                {
-                    this.mUINewText = new WpfText(this);
-                    #region Search Criteria
-                    this.mUINewText.SearchProperties[WpfText.PropertyNames.Name] = "New";
-                    this.mUINewText.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mUINewText;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfText mUINewText;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class ActionsComboBox : WpfCustom
-    {
-        
-        public ActionsComboBox(UITestControl searchLimitContainer) : 
+        public ServerTypeComboBox(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
             this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.XamComboEditor";
-            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "ActionsComboBox";
-            this.WindowTitles.Add("Warewolf");
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "ServerTypeComboBox";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
             #endregion
         }
         
         #region Properties
-        public WpfButton UIToggleButtonButton
+        public WpfButton ToggleButton
         {
             get
             {
-                if ((this.mUIToggleButtonButton == null))
+                if ((this.mToggleButton == null))
                 {
-                    this.mUIToggleButtonButton = new WpfButton(this);
+                    this.mToggleButton = new WpfButton(this);
                     #region Search Criteria
-                    this.mUIToggleButtonButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "ToggleButton";
-                    this.mUIToggleButtonButton.WindowTitles.Add("Warewolf");
+                    this.mToggleButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "ToggleButton";
+                    this.mToggleButton.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
                     #endregion
                 }
-                return this.mUIToggleButtonButton;
+                return this.mToggleButton;
             }
         }
         
-        public WpfEdit UITextBoxPresenterEdit
+        public WpfText MicrosoftSQLServer
         {
             get
             {
-                if ((this.mUITextBoxPresenterEdit == null))
+                if ((this.mMicrosoftSQLServer == null))
                 {
-                    this.mUITextBoxPresenterEdit = new WpfEdit(this);
+                    this.mMicrosoftSQLServer = new WpfText(this);
                     #region Search Criteria
-                    this.mUITextBoxPresenterEdit.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "TextBoxPresenter";
-                    this.mUITextBoxPresenterEdit.WindowTitles.Add("Warewolf");
+                    this.mMicrosoftSQLServer.SearchProperties[WpfText.PropertyNames.Name] = "Microsoft SQL Server";
+                    this.mMicrosoftSQLServer.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
                     #endregion
                 }
-                return this.mUITextBoxPresenterEdit;
+                return this.mMicrosoftSQLServer;
             }
         }
         #endregion
         
         #region Fields
-        private WpfButton mUIToggleButtonButton;
+        private WpfButton mToggleButton;
         
-        private WpfEdit mUITextBoxPresenterEdit;
+        private WpfText mMicrosoftSQLServer;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class MappingsView : WpfCustom
+    public class ServerComboBox1 : WpfComboBox
     {
         
-        public MappingsView(UITestControl searchLimitContainer) : 
+        public ServerComboBox1(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
-            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.MappingsView";
-            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "MappingsView";
-            this.WindowTitles.Add("Warewolf");
+            this.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "ServerTextBox";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
             #endregion
         }
         
         #region Properties
-        public WpfPane MappingsPane
+        public WpfListItem RSAKLFSVRGENDEV
         {
             get
             {
-                if ((this.mMappingsPane == null))
+                if ((this.mRSAKLFSVRGENDEV == null))
                 {
-                    this.mMappingsPane = new WpfPane(this);
+                    this.mRSAKLFSVRGENDEV = new WpfListItem(this);
                     #region Search Criteria
-                    this.mMappingsPane.SearchProperties[WpfPane.PropertyNames.ClassName] = "Uia.ScrollViewer";
-                    this.mMappingsPane.WindowTitles.Add("Warewolf");
+                    this.mRSAKLFSVRGENDEV.SearchProperties[WpfListItem.PropertyNames.Name] = "RSAKLFSVRGENDEV";
+                    this.mRSAKLFSVRGENDEV.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
                     #endregion
                 }
-                return this.mMappingsPane;
+                return this.mRSAKLFSVRGENDEV;
             }
         }
         
-        public NoneText NoneText
+        public WpfEdit Textbox
         {
             get
             {
-                if ((this.mNoneText == null))
+                if ((this.mTextbox == null))
                 {
-                    this.mNoneText = new NoneText(this);
-                }
-                return this.mNoneText;
-            }
-        }
-        
-        public WpfTable OutputsMappingsTable
-        {
-            get
-            {
-                if ((this.mOutputsMappingsTable == null))
-                {
-                    this.mOutputsMappingsTable = new WpfTable(this);
+                    this.mTextbox = new WpfEdit(this);
                     #region Search Criteria
-                    this.mOutputsMappingsTable.SearchProperties[WpfTable.PropertyNames.AutomationId] = "OutputsMappingDataGrid";
-                    this.mOutputsMappingsTable.WindowTitles.Add("Warewolf");
+                    this.mTextbox.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "Text";
+                    this.mTextbox.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
                     #endregion
                 }
-                return this.mOutputsMappingsTable;
-            }
-        }
-        
-        public RecordsetNameText RecordsetNameText
-        {
-            get
-            {
-                if ((this.mRecordsetNameText == null))
-                {
-                    this.mRecordsetNameText = new RecordsetNameText(this);
-                }
-                return this.mRecordsetNameText;
-            }
-        }
-        
-        public WpfText NoneText1
-        {
-            get
-            {
-                if ((this.mNoneText1 == null))
-                {
-                    this.mNoneText1 = new WpfText(this);
-                    #region Search Criteria
-                    this.mNoneText1.SearchProperties[WpfText.PropertyNames.Name] = "None";
-                    this.mNoneText1.SearchProperties[WpfText.PropertyNames.Instance] = "2";
-                    this.mNoneText1.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mNoneText1;
+                return this.mTextbox;
             }
         }
         #endregion
         
         #region Fields
-        private WpfPane mMappingsPane;
+        private WpfListItem mRSAKLFSVRGENDEV;
         
-        private NoneText mNoneText;
-        
-        private WpfTable mOutputsMappingsTable;
-        
-        private RecordsetNameText mRecordsetNameText;
-        
-        private WpfText mNoneText1;
+        private WpfEdit mTextbox;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class NoneText : WpfText
+    public class UIDatabaseComboxBoxCustom : WpfCustom
     {
         
-        public NoneText(UITestControl searchLimitContainer) : 
+        public UIDatabaseComboxBoxCustom(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
-            this.SearchProperties[WpfText.PropertyNames.Name] = "None";
-            this.WindowTitles.Add("Warewolf");
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.XamComboEditor";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "DatabaseComboxBox";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
             #endregion
         }
         
         #region Properties
-        public WpfPane NonePane
+        public WpfText UIDev2TestingDBText
         {
             get
             {
-                if ((this.mNonePane == null))
+                if ((this.mUIDev2TestingDBText == null))
                 {
-                    this.mNonePane = new WpfPane(this);
+                    this.mUIDev2TestingDBText = new WpfText(this);
                     #region Search Criteria
-                    this.mNonePane.SearchProperties[WpfPane.PropertyNames.ClassName] = "Uia.ScrollViewer";
-                    this.mNonePane.SearchConfigurations.Add(SearchConfiguration.NextSibling);
-                    this.mNonePane.WindowTitles.Add("Warewolf");
+                    this.mUIDev2TestingDBText.SearchProperties[WpfText.PropertyNames.Name] = "Dev2TestingDB";
+                    this.mUIDev2TestingDBText.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
                     #endregion
                 }
-                return this.mNonePane;
+                return this.mUIDev2TestingDBText;
             }
         }
         #endregion
         
         #region Fields
-        private WpfPane mNonePane;
+        private WpfText mUIDev2TestingDBText;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class RecordsetNameText : WpfText
+    public class ErrorText : WpfText
     {
         
-        public RecordsetNameText(UITestControl searchLimitContainer) : 
+        public ErrorText(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
-            this.SearchProperties[WpfText.PropertyNames.Name] = "Recordset Name";
-            this.WindowTitles.Add("Warewolf");
+            this.SearchProperties[WpfText.PropertyNames.AutomationId] = "ErrorTextBlock";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
             #endregion
         }
         
         #region Properties
-        public WpfEdit RecordsetNameTextBox
+        public WpfCustom Spinner
         {
             get
             {
-                if ((this.mRecordsetNameTextBox == null))
+                if ((this.mSpinner == null))
                 {
-                    this.mRecordsetNameTextBox = new WpfEdit(this);
+                    this.mSpinner = new WpfCustom(this);
                     #region Search Criteria
-                    this.mRecordsetNameTextBox.SearchConfigurations.Add(SearchConfiguration.NextSibling);
-                    this.mRecordsetNameTextBox.WindowTitles.Add("Warewolf");
+                    this.mSpinner.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.CircularProgressBar";
+                    this.mSpinner.SearchConfigurations.Add(SearchConfiguration.NextSibling);
+                    this.mSpinner.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
                     #endregion
                 }
-                return this.mRecordsetNameTextBox;
+                return this.mSpinner;
             }
         }
         #endregion
         
         #region Fields
-        private WpfEdit mRecordsetNameTextBox;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class RefreshButton : WpfButton
-    {
-        
-        public RefreshButton(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfButton.PropertyNames.AutomationId] = "RefreshButton";
-            this.WindowTitles.Add("Warewolf");
-            #endregion
-        }
-        
-        #region Properties
-        public WpfCustom CircularProgressBar
-        {
-            get
-            {
-                if ((this.mCircularProgressBar == null))
-                {
-                    this.mCircularProgressBar = new WpfCustom(this);
-                    #region Search Criteria
-                    this.mCircularProgressBar.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.CircularProgressBar";
-                    this.mCircularProgressBar.SearchConfigurations.Add(SearchConfiguration.NextSibling);
-                    this.mCircularProgressBar.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mCircularProgressBar;
-            }
-        }
-        
-        public WpfText RefreshingText
-        {
-            get
-            {
-                if ((this.mRefreshingText == null))
-                {
-                    this.mRefreshingText = new WpfText(this);
-                    #region Search Criteria
-                    this.mRefreshingText.SearchProperties[WpfText.PropertyNames.Name] = "";
-                    this.mRefreshingText.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mRefreshingText;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfCustom mCircularProgressBar;
-        
-        private WpfText mRefreshingText;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class TestActionButton : WpfButton
-    {
-        
-        public TestActionButton(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfButton.PropertyNames.AutomationId] = "TestActionButton";
-            this.WindowTitles.Add("Warewolf");
-            #endregion
-        }
-        
-        #region Properties
-        public WpfCustom CircularProgressBar
-        {
-            get
-            {
-                if ((this.mCircularProgressBar == null))
-                {
-                    this.mCircularProgressBar = new WpfCustom(this);
-                    #region Search Criteria
-                    this.mCircularProgressBar.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.CircularProgressBar";
-                    this.mCircularProgressBar.SearchConfigurations.Add(SearchConfiguration.NextSibling);
-                    this.mCircularProgressBar.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mCircularProgressBar;
-            }
-        }
-        
-        public WpfText TestText
-        {
-            get
-            {
-                if ((this.mTestText == null))
-                {
-                    this.mTestText = new WpfText(this);
-                    #region Search Criteria
-                    this.mTestText.SearchProperties[WpfText.PropertyNames.Name] = "Test";
-                    this.mTestText.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mTestText;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfCustom mCircularProgressBar;
-        
-        private WpfText mTestText;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class OutputsTitleText : WpfText
-    {
-        
-        public OutputsTitleText(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfText.PropertyNames.Name] = "Outputs";
-            this.WindowTitles.Add("Warewolf");
-            #endregion
-        }
-        
-        #region Properties
-        public WpfPane OutputsScrollViewer
-        {
-            get
-            {
-                if ((this.mOutputsScrollViewer == null))
-                {
-                    this.mOutputsScrollViewer = new WpfPane(this);
-                    #region Search Criteria
-                    this.mOutputsScrollViewer.SearchProperties[WpfPane.PropertyNames.ClassName] = "Uia.ScrollViewer";
-                    this.mOutputsScrollViewer.SearchConfigurations.Add(SearchConfiguration.NextSibling);
-                    this.mOutputsScrollViewer.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mOutputsScrollViewer;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfPane mOutputsScrollViewer;
+        private WpfCustom mSpinner;
         #endregion
     }
     
@@ -24830,13 +24928,13 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public SourcesComboBox1 SourcesComboBox
+        public SourcesComboBox2 SourcesComboBox
         {
             get
             {
                 if ((this.mSourcesComboBox == null))
                 {
-                    this.mSourcesComboBox = new SourcesComboBox1(this);
+                    this.mSourcesComboBox = new SourcesComboBox2(this);
                 }
                 return this.mSourcesComboBox;
             }
@@ -24854,13 +24952,13 @@ namespace Warewolf.UITests
             }
         }
         
-        public NewButton1 NewButton
+        public NewButton NewButton
         {
             get
             {
                 if ((this.mNewButton == null))
                 {
-                    this.mNewButton = new NewButton1(this);
+                    this.mNewButton = new NewButton(this);
                 }
                 return this.mNewButton;
             }
@@ -24878,25 +24976,25 @@ namespace Warewolf.UITests
             }
         }
         
-        public RefreshButton1 RefreshButton
+        public RefreshButton RefreshButton
         {
             get
             {
                 if ((this.mRefreshButton == null))
                 {
-                    this.mRefreshButton = new RefreshButton1(this);
+                    this.mRefreshButton = new RefreshButton(this);
                 }
                 return this.mRefreshButton;
             }
         }
         
-        public TestActionButton1 TestActionButton
+        public TestActionButton TestActionButton
         {
             get
             {
                 if ((this.mTestActionButton == null))
                 {
-                    this.mTestActionButton = new TestActionButton1(this);
+                    this.mTestActionButton = new TestActionButton(this);
                 }
                 return this.mTestActionButton;
             }
@@ -24914,13 +25012,13 @@ namespace Warewolf.UITests
             }
         }
         
-        public MappingsView1 MappingsView
+        public MappingsView MappingsView
         {
             get
             {
                 if ((this.mMappingsView == null))
                 {
-                    this.mMappingsView = new MappingsView1(this);
+                    this.mMappingsView = new MappingsView(this);
                 }
                 return this.mMappingsView;
             }
@@ -24928,29 +25026,29 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private SourcesComboBox1 mSourcesComboBox;
+        private SourcesComboBox2 mSourcesComboBox;
         
         private SourcesEditButton mSourcesEditButton;
         
-        private NewButton1 mNewButton;
+        private NewButton mNewButton;
         
         private ActionsComboBox1 mActionsComboBox;
         
-        private RefreshButton1 mRefreshButton;
+        private RefreshButton mRefreshButton;
         
-        private TestActionButton1 mTestActionButton;
+        private TestActionButton mTestActionButton;
         
         private InputTable mInputTable;
         
-        private MappingsView1 mMappingsView;
+        private MappingsView mMappingsView;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class SourcesComboBox1 : WpfCustom
+    public class SourcesComboBox2 : WpfCustom
     {
         
-        public SourcesComboBox1(UITestControl searchLimitContainer) : 
+        public SourcesComboBox2(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -25038,10 +25136,10 @@ namespace Warewolf.UITests
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class NewButton1 : WpfButton
+    public class NewButton : WpfButton
     {
         
-        public NewButton1(UITestControl searchLimitContainer) : 
+        public NewButton(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -25129,10 +25227,10 @@ namespace Warewolf.UITests
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class RefreshButton1 : WpfButton
+    public class RefreshButton : WpfButton
     {
         
-        public RefreshButton1(UITestControl searchLimitContainer) : 
+        public RefreshButton(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -25184,10 +25282,10 @@ namespace Warewolf.UITests
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class TestActionButton1 : WpfButton
+    public class TestActionButton : WpfButton
     {
         
-        public TestActionButton1(UITestControl searchLimitContainer) : 
+        public TestActionButton(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -25288,13 +25386,13 @@ namespace Warewolf.UITests
             }
         }
         
-        public DataCell DataCell
+        public DataCell1 DataCell
         {
             get
             {
                 if ((this.mDataCell == null))
                 {
-                    this.mDataCell = new DataCell(this);
+                    this.mDataCell = new DataCell1(this);
                 }
                 return this.mDataCell;
             }
@@ -25316,17 +25414,17 @@ namespace Warewolf.UITests
         #region Fields
         private WpfPane mInputPane;
         
-        private DataCell mDataCell;
+        private DataCell1 mDataCell;
         
         private ValueCell4 mValueCell;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class DataCell : WpfCell
+    public class DataCell1 : WpfCell
     {
         
-        public DataCell(UITestControl searchLimitContainer) : 
+        public DataCell1(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -25432,10 +25530,10 @@ namespace Warewolf.UITests
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class MappingsView1 : WpfCustom
+    public class MappingsView : WpfCustom
     {
         
-        public MappingsView1(UITestControl searchLimitContainer) : 
+        public MappingsView(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -25490,13 +25588,13 @@ namespace Warewolf.UITests
             }
         }
         
-        public NoneText1 NoneText
+        public NoneText NoneText
         {
             get
             {
                 if ((this.mNoneText == null))
                 {
-                    this.mNoneText = new NoneText1(this);
+                    this.mNoneText = new NoneText(this);
                 }
                 return this.mNoneText;
             }
@@ -25531,13 +25629,13 @@ namespace Warewolf.UITests
             }
         }
         
-        public RecordsetNameText1 RecordsetNameText
+        public RecordsetNameText RecordsetNameText
         {
             get
             {
                 if ((this.mRecordsetNameText == null))
                 {
-                    this.mRecordsetNameText = new RecordsetNameText1(this);
+                    this.mRecordsetNameText = new RecordsetNameText(this);
                 }
                 return this.mRecordsetNameText;
             }
@@ -25551,13 +25649,13 @@ namespace Warewolf.UITests
         
         private WpfText mDefaultValueText;
         
-        private NoneText1 mNoneText;
+        private NoneText mNoneText;
         
         private OutputsMappingTable mOutputsMappingTable;
         
         private WpfText mNoneText1;
         
-        private RecordsetNameText1 mRecordsetNameText;
+        private RecordsetNameText mRecordsetNameText;
         #endregion
     }
     
@@ -25592,13 +25690,13 @@ namespace Warewolf.UITests
             }
         }
         
-        public DataCell1 DataCell
+        public DataCell2 DataCell
         {
             get
             {
                 if ((this.mDataCell == null))
                 {
-                    this.mDataCell = new DataCell1(this);
+                    this.mDataCell = new DataCell2(this);
                 }
                 return this.mDataCell;
             }
@@ -25644,7 +25742,7 @@ namespace Warewolf.UITests
         #region Fields
         private WpfPane mInputMappingsPane;
         
-        private DataCell1 mDataCell;
+        private DataCell2 mDataCell;
         
         private DefaultValueCell mDefaultValueCell;
         
@@ -25655,10 +25753,10 @@ namespace Warewolf.UITests
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class DataCell1 : WpfCell
+    public class DataCell2 : WpfCell
     {
         
-        public DataCell1(UITestControl searchLimitContainer) : 
+        public DataCell2(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -25835,10 +25933,10 @@ namespace Warewolf.UITests
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class NoneText1 : WpfText
+    public class NoneText : WpfText
     {
         
-        public NoneText1(UITestControl searchLimitContainer) : 
+        public NoneText(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -25996,10 +26094,10 @@ namespace Warewolf.UITests
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class RecordsetNameText1 : WpfText
+    public class RecordsetNameText : WpfText
     {
         
-        public RecordsetNameText1(UITestControl searchLimitContainer) : 
+        public RecordsetNameText(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -27107,13 +27205,13 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public ListItem1 ListItem
+        public ListItem ListItem
         {
             get
             {
                 if ((this.mListItem == null))
                 {
-                    this.mListItem = new ListItem1(this);
+                    this.mListItem = new ListItem(this);
                 }
                 return this.mListItem;
             }
@@ -27121,15 +27219,15 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private ListItem1 mListItem;
+        private ListItem mListItem;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class ListItem1 : WpfListItem
+    public class ListItem : WpfListItem
     {
         
-        public ListItem1(UITestControl searchLimitContainer) : 
+        public ListItem(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -28858,13 +28956,13 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public ListItem2 ListItem
+        public ListItem1 ListItem
         {
             get
             {
                 if ((this.mListItem == null))
                 {
-                    this.mListItem = new ListItem2(this);
+                    this.mListItem = new ListItem1(this);
                 }
                 return this.mListItem;
             }
@@ -28872,15 +28970,15 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private ListItem2 mListItem;
+        private ListItem1 mListItem;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class ListItem2 : WpfListItem
+    public class ListItem1 : WpfListItem
     {
         
-        public ListItem2(UITestControl searchLimitContainer) : 
+        public ListItem1(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -29261,13 +29359,13 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public ListItem3 ListItem
+        public ListItem2 ListItem
         {
             get
             {
                 if ((this.mListItem == null))
                 {
-                    this.mListItem = new ListItem3(this);
+                    this.mListItem = new ListItem2(this);
                 }
                 return this.mListItem;
             }
@@ -29275,15 +29373,15 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private ListItem3 mListItem;
+        private ListItem2 mListItem;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class ListItem3 : WpfListItem
+    public class ListItem2 : WpfListItem
     {
         
-        public ListItem3(UITestControl searchLimitContainer) : 
+        public ListItem2(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -29826,13 +29924,13 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public ListItem4 ListItem
+        public ListItem3 ListItem
         {
             get
             {
                 if ((this.mListItem == null))
                 {
-                    this.mListItem = new ListItem4(this);
+                    this.mListItem = new ListItem3(this);
                 }
                 return this.mListItem;
             }
@@ -29840,15 +29938,15 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private ListItem4 mListItem;
+        private ListItem3 mListItem;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class ListItem4 : WpfListItem
+    public class ListItem3 : WpfListItem
     {
         
-        public ListItem4(UITestControl searchLimitContainer) : 
+        public ListItem3(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -30327,13 +30425,13 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public ListItem5 ListItem
+        public ListItem4 ListItem
         {
             get
             {
                 if ((this.mListItem == null))
                 {
-                    this.mListItem = new ListItem5(this);
+                    this.mListItem = new ListItem4(this);
                 }
                 return this.mListItem;
             }
@@ -30341,15 +30439,15 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private ListItem5 mListItem;
+        private ListItem4 mListItem;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class ListItem5 : WpfListItem
+    public class ListItem4 : WpfListItem
     {
         
-        public ListItem5(UITestControl searchLimitContainer) : 
+        public ListItem4(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -30828,13 +30926,13 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public ListItem6 ListItem
+        public ListItem5 ListItem
         {
             get
             {
                 if ((this.mListItem == null))
                 {
-                    this.mListItem = new ListItem6(this);
+                    this.mListItem = new ListItem5(this);
                 }
                 return this.mListItem;
             }
@@ -30842,15 +30940,15 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private ListItem6 mListItem;
+        private ListItem5 mListItem;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class ListItem6 : WpfListItem
+    public class ListItem5 : WpfListItem
     {
         
-        public ListItem6(UITestControl searchLimitContainer) : 
+        public ListItem5(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -31329,13 +31427,13 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public ListItem7 ListItem
+        public ListItem6 ListItem
         {
             get
             {
                 if ((this.mListItem == null))
                 {
-                    this.mListItem = new ListItem7(this);
+                    this.mListItem = new ListItem6(this);
                 }
                 return this.mListItem;
             }
@@ -31343,15 +31441,15 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private ListItem7 mListItem;
+        private ListItem6 mListItem;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class ListItem7 : WpfListItem
+    public class ListItem6 : WpfListItem
     {
         
-        public ListItem7(UITestControl searchLimitContainer) : 
+        public ListItem6(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -32498,6 +32596,43 @@ namespace Warewolf.UITests
         
         #region Fields
         private WpfText mNewRemoteServerItemText;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class MicrosoftSQLServerListItem : WpfCustom
+    {
+        
+        public MicrosoftSQLServerListItem(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ComboEditorItemControl";
+            this.SearchProperties[WpfControl.PropertyNames.Name] = "Microsoft SQL Server";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfText MicrosoftSQLServerText
+        {
+            get
+            {
+                if ((this.mMicrosoftSQLServerText == null))
+                {
+                    this.mMicrosoftSQLServerText = new WpfText(this);
+                    #region Search Criteria
+                    this.mMicrosoftSQLServerText.SearchProperties[WpfText.PropertyNames.Name] = "Microsoft SQL Server";
+                    this.mMicrosoftSQLServerText.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mMicrosoftSQLServerText;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfText mMicrosoftSQLServerText;
         #endregion
     }
     
