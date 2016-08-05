@@ -2132,7 +2132,7 @@
       <ParameterName />
       <PropertyName>Exists</PropertyName>
       <ExpectedValue>True</ExpectedValue>
-      <MessageOnValidationFailure>SQL Server large view does not contain a generate inputs button.</MessageOnValidationFailure>
+      <MessageOnValidationFailure>SQL Server large view does not contain a generate outputs button.</MessageOnValidationFailure>
       <Type>String</Type>
       <PropertyCondition>AreEqual</PropertyCondition>
     </AssertAction>

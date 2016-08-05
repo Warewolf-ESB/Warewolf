@@ -1385,7 +1385,7 @@ namespace Warewolf.UITests
             #endregion
 
             // Verify that the 'Exists' property of 'Generate Outputs' button equals 'True'
-            Assert.AreEqual(this.Click_SQL_Server_Large_View_Generate_OutputsExpectedValues.GenerateOutputsButtonExists, generateOutputsButton.Exists, "SQL Server large view does not contain a generate inputs button.");
+            Assert.AreEqual(this.Click_SQL_Server_Large_View_Generate_OutputsExpectedValues.GenerateOutputsButtonExists, generateOutputsButton.Exists, "SQL Server large view does not contain a generate outputs button.");
 
             // Click 'Generate Outputs' button
             Mouse.Click(generateOutputsButton, new Point(7, 7));
