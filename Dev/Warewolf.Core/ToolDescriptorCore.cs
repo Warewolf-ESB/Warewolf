@@ -10,11 +10,11 @@ namespace Warewolf.Core
 
 
         // ReSharper disable TooManyDependencies
-        public ToolDescriptor(Guid id, IWarewolfType designer,  IWarewolfType activity, string name, string icon, Version version, bool isSupported, string category, ToolType toolType,string iconUri)
+        public ToolDescriptor(Guid id, IWarewolfType designer,  IWarewolfType activity, string name, string icon, Version version, bool isSupported, string category, ToolType toolType,string iconUri, string filterTag)
             // ReSharper restore TooManyDependencies
         {
             if(id==Guid.Empty) throw  new ArgumentNullException("id","empty guids not allowed fo tools");
-            VerifyArgument.AreNotNull(new Dictionary<string, object> { { "id", id }, { "designer", designer }, { "activity", activity }, { "name", name }, { "icon", icon }, { "version", version }, { "category", category }, { iconUri, "iconUri" } });
+            VerifyArgument.AreNotNull(new Dictionary<string, object> { { "id", id }, { "designer", designer }, { "activity", activity }, { "name", name }, { "icon", icon }, { "version", version }, { "category", category }, { iconUri, "iconUri" }, { filterTag, "filterTag" } });
             ToolType = toolType;
             Category = category;
             IsSupported = isSupported;
@@ -26,6 +26,7 @@ namespace Warewolf.Core
             IconUri = iconUri;
             Designer = designer;
             Id = id;
+            FilterTag = filterTag;
         }
 
         
@@ -57,6 +58,8 @@ namespace Warewolf.Core
         public string Icon { get; private set; }
 
         public string IconUri { get; private set; }
+        public string FilterTag { get; set; }
+
         /// <summary>
         /// Version as per dll
         /// </summary>
