@@ -28,10 +28,7 @@ namespace Warewolf.UITests
             Uimap.Click_DB_Source_Wizard_Test_Connection_Button();
             Uimap.WaitForSpinner(Uimap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DBConnectorWizardTab.WorkSurfaceContext.ErrorText.Spinner);
             Uimap.Select_Dev2TestingDB_From_DB_Source_Wizard_Database_Combobox();
-            Uimap.Click_Save_Ribbon_Button_to_Open_Save_Dialog();
-            Uimap.WaitForSpinner(Uimap.SaveDialogWindow.ExplorerView.ExplorerTree.localhost.Checkbox.Spinner);
-            Uimap.Enter_Service_Name_Into_Save_Dialog(DBSourceName);
-            Uimap.Click_SaveDialog_Save_Button();
+            Uimap.Save_With_Ribbon_Button_And_Dialog(DBSourceName);
             Uimap.Click_Close_DB_Source_Wizard_Tab_Button();
             Uimap.Drag_Toolbox_SQL_Server_Tool_Onto_DesignSurface();
             Uimap.Open_Sql_Server_Tool_Large_View();
@@ -54,7 +51,8 @@ namespace Warewolf.UITests
         [TestCleanup()]
         public void MyTestCleanup()
         {
-            // To generate code for this test, select "Generate Code for Coded UI Test" from the shortcut menu and select one of the menu items.
+            Uimap.TryCloseHangingSaveDialog();
+            Uimap.TryRemoveFromExplorer(DBSourceName);
         }
 
         public TestContext TestContext

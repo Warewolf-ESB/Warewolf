@@ -1359,6 +1359,22 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
+        /// Click_SQL_Server_Large_View_Generate_Outputs - Use 'Click_SQL_Server_Large_View_Generate_OutputsExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void Click_SQL_Server_Large_View_Generate_Outputs()
+        {
+            #region Variable Declarations
+            WpfButton generateOutputsButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase.LargeView.GenerateOutputsButton;
+            #endregion
+
+            // Verify that the 'Exists' property of 'Generate Outputs' button equals 'True'
+            Assert.AreEqual(this.Click_SQL_Server_Large_View_Generate_OutputsExpectedValues.GenerateOutputsButtonExists, generateOutputsButton.Exists, "SQL Server large view does not contain a generate inputs button.");
+
+            // Click 'Generate Outputs' button
+            Mouse.Click(generateOutputsButton, new Point(7, 7));
+        }
+        
+        /// <summary>
         /// Click_Switch_Dialog_Done_Button - Use 'Click_Switch_Dialog_Done_ButtonParams' to pass parameters into this method.
         /// </summary>
         public void Click_Switch_Dialog_Done_Button()
@@ -3711,8 +3727,12 @@ namespace Warewolf.UITests
         public void Open_Sql_Server_Tool_Large_View()
         {
             #region Variable Declarations
+            WpfCustom sqlServerDatabase = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase;
             WpfCustom largeView = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase.LargeView;
             #endregion
+
+            // Double-Click 'DsfSqlServerDatabaseActivity' custom control
+            Mouse.DoubleClick(sqlServerDatabase, new Point(145, 5));
 
             // Verify that the 'Exists' property of 'LargeViewContent' custom control equals 'True'
             Assert.AreEqual(this.Open_Sql_Server_Tool_Large_ViewExpectedValues.LargeViewExists, largeView.Exists, "SQL Server tool large view does not exist on the design surface.");
@@ -5050,12 +5070,12 @@ namespace Warewolf.UITests
         public void Type_rsaklfsvrgen_into_DB_Source_Wizard_Server_Textbox()
         {
             #region Variable Declarations
-            WpfComboBox serverComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DBConnectorWizardTab.WorkSurfaceContext.ServerComboBox;
+            WpfEdit textbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DBConnectorWizardTab.WorkSurfaceContext.NewDBSourceWizard.ServerComboBox.Textbox;
             WpfListItem rSAKLFSVRGENDEV = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DBConnectorWizardTab.WorkSurfaceContext.NewDBSourceWizard.ServerComboBox.RSAKLFSVRGENDEV;
             #endregion
 
-            // Select 'rsaklfsvrgen' in 'ServerTextBox' combo box
-            serverComboBox.EditableItem = this.Type_rsaklfsvrgen_into_DB_Source_Wizard_Server_TextboxParams.ServerComboBoxEditableItem;
+            // Type 'rsaklfsvrgen' in 'Text' text box
+            textbox.Text = this.Type_rsaklfsvrgen_into_DB_Source_Wizard_Server_TextboxParams.TextboxText;
 
             // Verify that the 'Exists' property of 'RSAKLFSVRGENDEV' list item equals 'True'
             Assert.AreEqual(this.Type_rsaklfsvrgen_into_DB_Source_Wizard_Server_TextboxParams.RSAKLFSVRGENDEVExists, rSAKLFSVRGENDEV.Exists, "RSAKLFSVRGENDEV does not exist as an option in DB source wizard server combobox.");
@@ -5105,22 +5125,6 @@ namespace Warewolf.UITests
 
             // Verify that the 'Exists' property of 'TST-CI-REMOTE' list item equals 'True'
             Assert.AreEqual(this.Type_tstci_into_Server_Source_Wizard_Address_TextboxParams.TSTCIREMOTEExists, tSTCIREMOTE.Exists, "TSTCIREMOTE does not exist in server source wizard drop down list");
-        }
-        
-        /// <summary>
-        /// Click_SQL_Server_Large_View_Generate_Outputs - Use 'Click_SQL_Server_Large_View_Generate_OutputsExpectedValues' to pass parameters into this method.
-        /// </summary>
-        public void Click_SQL_Server_Large_View_Generate_Outputs()
-        {
-            #region Variable Declarations
-            WpfButton generateOutputsButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase.LargeView.GenerateOutputsButton;
-            #endregion
-
-            // Verify that the 'Exists' property of 'Generate Outputs' button equals 'True'
-            Assert.AreEqual(this.Click_SQL_Server_Large_View_Generate_OutputsExpectedValues.GenerateOutputsButtonExists, generateOutputsButton.Exists, "SQL Server large view does not contain a generate inputs button.");
-
-            // Click 'Generate Outputs' button
-            Mouse.Click(generateOutputsButton, new Point(7, 7));
         }
         
         #region Properties
@@ -5493,6 +5497,18 @@ namespace Warewolf.UITests
                     this.mClick_Show_Dependencies_In_Explorer_Context_MenuParams = new Click_Show_Dependencies_In_Explorer_Context_MenuParams();
                 }
                 return this.mClick_Show_Dependencies_In_Explorer_Context_MenuParams;
+            }
+        }
+        
+        public virtual Click_SQL_Server_Large_View_Generate_OutputsExpectedValues Click_SQL_Server_Large_View_Generate_OutputsExpectedValues
+        {
+            get
+            {
+                if ((this.mClick_SQL_Server_Large_View_Generate_OutputsExpectedValues == null))
+                {
+                    this.mClick_SQL_Server_Large_View_Generate_OutputsExpectedValues = new Click_SQL_Server_Large_View_Generate_OutputsExpectedValues();
+                }
+                return this.mClick_SQL_Server_Large_View_Generate_OutputsExpectedValues;
             }
         }
         
@@ -6852,18 +6868,6 @@ namespace Warewolf.UITests
             }
         }
         
-        public virtual Click_SQL_Server_Large_View_Generate_OutputsExpectedValues Click_SQL_Server_Large_View_Generate_OutputsExpectedValues
-        {
-            get
-            {
-                if ((this.mClick_SQL_Server_Large_View_Generate_OutputsExpectedValues == null))
-                {
-                    this.mClick_SQL_Server_Large_View_Generate_OutputsExpectedValues = new Click_SQL_Server_Large_View_Generate_OutputsExpectedValues();
-                }
-                return this.mClick_SQL_Server_Large_View_Generate_OutputsExpectedValues;
-            }
-        }
-        
         public MainStudioWindow MainStudioWindow
         {
             get
@@ -7011,6 +7015,8 @@ namespace Warewolf.UITests
         private Click_Settings_Ribbon_ButtonParams mClick_Settings_Ribbon_ButtonParams;
         
         private Click_Show_Dependencies_In_Explorer_Context_MenuParams mClick_Show_Dependencies_In_Explorer_Context_MenuParams;
+        
+        private Click_SQL_Server_Large_View_Generate_OutputsExpectedValues mClick_SQL_Server_Large_View_Generate_OutputsExpectedValues;
         
         private Click_Switch_Dialog_Done_ButtonParams mClick_Switch_Dialog_Done_ButtonParams;
         
@@ -7237,8 +7243,6 @@ namespace Warewolf.UITests
         private Type_S_Into_SQL_Server_Large_View_Inputs_Row1_Data_TextboxExpectedValues mType_S_Into_SQL_Server_Large_View_Inputs_Row1_Data_TextboxExpectedValues;
         
         private Type_tstci_into_Server_Source_Wizard_Address_TextboxParams mType_tstci_into_Server_Source_Wizard_Address_TextboxParams;
-        
-        private Click_SQL_Server_Large_View_Generate_OutputsExpectedValues mClick_SQL_Server_Large_View_Generate_OutputsExpectedValues;
         
         private MainStudioWindow mMainStudioWindow;
         
@@ -8076,6 +8080,21 @@ namespace Warewolf.UITests
         /// Verify that the 'DisplayText' property of 'RemoteServerUITestWorkflow' label equals 'RemoteServerUITestWorkflow'
         /// </summary>
         public string TextDisplayText = "RemoteServerUITestWorkflow";
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Click_SQL_Server_Large_View_Generate_Outputs'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Click_SQL_Server_Large_View_Generate_OutputsExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Generate Outputs' button equals 'True'
+        /// </summary>
+        public bool GenerateOutputsButtonExists = true;
         #endregion
     }
     
@@ -10308,9 +10327,9 @@ namespace Warewolf.UITests
         
         #region Fields
         /// <summary>
-        /// Select 'rsaklfsvrgen' in 'ServerTextBox' combo box
+        /// Type 'rsaklfsvrgen' in 'Text' text box
         /// </summary>
-        public string ServerComboBoxEditableItem = "rsaklfsvrgen";
+        public string TextboxText = "rsaklfsvrgen";
         
         /// <summary>
         /// Verify that the 'Exists' property of 'RSAKLFSVRGENDEV' list item equals 'True'
@@ -10371,21 +10390,6 @@ namespace Warewolf.UITests
         /// Verify that the 'Exists' property of 'TST-CI-REMOTE' list item equals 'True'
         /// </summary>
         public bool TSTCIREMOTEExists = true;
-        #endregion
-    }
-    
-    /// <summary>
-    /// Parameters to be passed into 'Click_SQL_Server_Large_View_Generate_Outputs'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Click_SQL_Server_Large_View_Generate_OutputsExpectedValues
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Verify that the 'Exists' property of 'Generate Outputs' button equals 'True'
-        /// </summary>
-        public bool GenerateOutputsButtonExists = true;
         #endregion
     }
     
@@ -23842,22 +23846,6 @@ namespace Warewolf.UITests
             }
         }
         
-        public WpfComboBox ServerComboBox
-        {
-            get
-            {
-                if ((this.mServerComboBox == null))
-                {
-                    this.mServerComboBox = new WpfComboBox(this);
-                    #region Search Criteria
-                    this.mServerComboBox.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "ServerTextBox";
-                    this.mServerComboBox.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
-                    #endregion
-                }
-                return this.mServerComboBox;
-            }
-        }
-        
         public WpfButton TestConnectionButton
         {
             get
@@ -23908,8 +23896,6 @@ namespace Warewolf.UITests
         private SourcesComboBox1 mSourcesComboBox;
         
         private NewDBSourceWizard mNewDBSourceWizard;
-        
-        private WpfComboBox mServerComboBox;
         
         private WpfButton mTestConnectionButton;
         

@@ -2102,6 +2102,32 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
+    <AssertAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase.LargeView.GenerateOutputsButton">
+      <ParameterName />
+      <PropertyName>Exists</PropertyName>
+      <ExpectedValue>True</ExpectedValue>
+      <MessageOnValidationFailure>SQL Server large view does not contain a generate inputs button.</MessageOnValidationFailure>
+      <Type>String</Type>
+      <PropertyCondition>AreEqual</PropertyCondition>
+    </AssertAction>
+    <MouseAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase.LargeView.GenerateOutputsButton">
+      <ParameterName />
+      <ModifierKeys>None</ModifierKeys>
+      <IsGlobalHotkey>false</IsGlobalHotkey>
+      <Location X="7" Y="7" />
+      <WheelDirection>0</WheelDirection>
+      <ActionType>Click</ActionType>
+      <MouseButton>Left</MouseButton>
+    </MouseAction>
+    <TestStepMarkerAction Comment="" MarkerInformation="Click_SQL_Server_Large_View_Generate_Outputs">
+      <ParameterName />
+      <StepId>-1</StepId>
+      <Direction>Start</Direction>
+      <Outcome />
+      <Disabled>false</Disabled>
+      <WorkItemId>0</WorkItemId>
+      <MarkerRegionType>Assertion</MarkerRegionType>
+    </TestStepMarkerAction>
     <MouseAction UIObjectName="UIMap.DecisionOrSwitchDialog.DoneButton">
       <ParameterName />
       <ModifierKeys>None</ModifierKeys>
@@ -5388,6 +5414,15 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
+    <MouseAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase">
+      <ParameterName />
+      <ModifierKeys>None</ModifierKeys>
+      <IsGlobalHotkey>false</IsGlobalHotkey>
+      <Location X="145" Y="5" />
+      <WheelDirection>0</WheelDirection>
+      <ActionType>DoubleClick</ActionType>
+      <MouseButton>Left</MouseButton>
+    </MouseAction>
     <AssertAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase.LargeView">
       <ParameterName />
       <PropertyName>Exists</PropertyName>
@@ -7295,7 +7330,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
-    <SetValueAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DBConnectorWizardTab.WorkSurfaceContext.ServerComboBox">
+    <SetValueAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DBConnectorWizardTab.WorkSurfaceContext.NewDBSourceWizard.ServerComboBox.Textbox">
       <ParameterName />
       <Value Encoded="false">rsaklfsvrgen</Value>
       <Type>String</Type>
@@ -7376,32 +7411,6 @@
       <Disabled>false</Disabled>
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
-    </TestStepMarkerAction>
-    <AssertAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase.LargeView.GenerateOutputsButton">
-      <ParameterName />
-      <PropertyName>Exists</PropertyName>
-      <ExpectedValue>True</ExpectedValue>
-      <MessageOnValidationFailure>SQL Server large view does not contain a generate inputs button.</MessageOnValidationFailure>
-      <Type>String</Type>
-      <PropertyCondition>AreEqual</PropertyCondition>
-    </AssertAction>
-    <MouseAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase.LargeView.GenerateOutputsButton">
-      <ParameterName />
-      <ModifierKeys>None</ModifierKeys>
-      <IsGlobalHotkey>false</IsGlobalHotkey>
-      <Location X="7" Y="7" />
-      <WheelDirection>0</WheelDirection>
-      <ActionType>Click</ActionType>
-      <MouseButton>Left</MouseButton>
-    </MouseAction>
-    <TestStepMarkerAction Comment="" MarkerInformation="Click_SQL_Server_Large_View_Generate_Outputs">
-      <ParameterName />
-      <StepId>-1</StepId>
-      <Direction>Start</Direction>
-      <Outcome />
-      <Disabled>false</Disabled>
-      <WorkItemId>0</WorkItemId>
-      <MarkerRegionType>Assertion</MarkerRegionType>
     </TestStepMarkerAction>
   </ExecuteActions>
   <CleanupActions />
@@ -15174,19 +15183,6 @@
                                       </Descendants>
                                     </UIObject>
                                   </Descendants>
-                                </UIObject>
-                                <UIObject ControlType="ComboBox" Id="ServerComboBox" FriendlyName="ServerTextBox" SpecialControlType="None">
-                                  <TechnologyName>UIA</TechnologyName>
-                                  <WindowTitles>
-                                    <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
-                                  </WindowTitles>
-                                  <AndCondition>
-                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                    <PropertyCondition Name="ControlType">ComboBox</PropertyCondition>
-                                    <PropertyCondition Name="AutomationId">ServerTextBox</PropertyCondition>
-                                  </AndCondition>
-                                  <SupportLevel>0</SupportLevel>
-                                  <Descendants />
                                 </UIObject>
                                 <UIObject ControlType="Button" Id="TestConnectionButton" FriendlyName="Test Connection" SpecialControlType="None">
                                   <TechnologyName>UIA</TechnologyName>
