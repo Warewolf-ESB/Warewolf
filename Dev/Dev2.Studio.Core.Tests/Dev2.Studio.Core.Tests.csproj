@@ -314,17 +314,12 @@
     <Compile Include="DebugProviderTests.cs" />
     <Compile Include="Controller\FlowControllerTests.cs" />
     <Compile Include="Utils\AsyncWorkerTests.cs" />
-    <Compile Include="ViewModelTests\QuickVariableInputModelTests.cs" />
-    <Compile Include="ViewModelTests\BaseWorkSurfaceViewModelTests.cs" />
-    <Compile Include="ViewModelTests\HelpViewModelTests.cs" />
-    <Compile Include="ViewModelTests\WorkSurfaceContextViewModelTests.cs" />
     <Compile Include="DebugStateTreeViewItemViewModelTests.cs" />
     <Compile Include="UtilsTests\NewWorkflowNamesTests.cs" />
     <Compile Include="Utils\InputOutputViewModelTestObject.cs" />
     <Compile Include="Utils\TestModelItemFactory.cs" />
     <Compile Include="Utils\UIElementExtensionMethods.cs" />
     <Compile Include="Utils\WorkflowDesignerUtilsTest.cs" />
-    <Compile Include="ViewModelTests\ExceptionViewModelTest.cs" />
     <Compile Include="WindowNavigationBehavior.cs" />
     <Compile Include="Workflows\DesignerDataListUtilsTest.cs" />
     <Compile Include="Workflows\TestActivity.cs" />
@@ -462,19 +457,7 @@
       <Name>Warewolf.Studio.ViewModels</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="ActivityDropView\" />
-    <Folder Include="AppResources\Behaviors\" />
-    <Folder Include="Diagnostics\Debug\" />
-    <Folder Include="Dock\" />
-    <Folder Include="MockUtils\" />
-    <Folder Include="ProperMoqs\" />
-    <Folder Include="Repositories\" />
-    <Folder Include="ViewModelTests\Configuration\" />
-    <Folder Include="ViewModelTests\Dialogs\" />
-    <Folder Include="ViewModelTests\ViewModelMocks\" />
-    <Folder Include="Views\Global\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
