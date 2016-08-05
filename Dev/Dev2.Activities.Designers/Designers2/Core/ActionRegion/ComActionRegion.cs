@@ -52,12 +52,10 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
                 _namespace.SomethingChanged += SourceOnSomethingChanged;
                 Dependants = new List<IToolRegion>();
                 IsRefreshing = false;
-                //
-            /*    if (_source.SelectedSource != null && _namespace.SelectedNamespace != null)
+                if (_source.SelectedSource != null)
                 {
                     Actions = model.GetActions(_source.SelectedSource, _namespace.SelectedNamespace);
-                }*/
-                Actions = model.GetActions(_source.SelectedSource, _namespace.SelectedNamespace);
+                }
                 IsActionEnabled = true;
                 if (Method != null && Actions != null)
                 {

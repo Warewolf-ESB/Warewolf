@@ -55,7 +55,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
                 _namespace.SomethingChanged += SourceOnSomethingChanged;
                 Dependants = new List<IToolRegion>();
                 IsRefreshing = false;
-                if (_source.SelectedSource != null && _namespace.SelectedNamespace != null)
+                if (_source.SelectedSource != null)
                 {
                     Actions = model.GetActions(_source.SelectedSource, _namespace.SelectedNamespace);
                 }
@@ -139,7 +139,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
 
         private void UpdateBasedOnNamespace()
         {
-            if(_source?.SelectedSource != null && _namespace?.SelectedNamespace != null)
+            if(_source?.SelectedSource != null)
             {
                 Actions = _model.GetActions(_source.SelectedSource, _namespace.SelectedNamespace);
                 SelectedAction = null;
@@ -150,8 +150,8 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
 
         public bool CanRefresh()
         {
-            IsActionEnabled = _source.SelectedSource != null && _namespace.SelectedNamespace != null;
-            return _source.SelectedSource != null && _namespace.SelectedNamespace != null;
+            IsActionEnabled = _source.SelectedSource != null;
+            return _source.SelectedSource != null;
         }
 
         public IPluginAction SelectedAction
