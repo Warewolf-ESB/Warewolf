@@ -49,7 +49,12 @@ namespace Dev2.TaskScheduler.Wrappers
 
         public ITaskFolder GetFolder(string folderName)
         {
-            var taskFolder = _nativeService.GetFolder(folderName)?? _nativeService.GetFolder("\\");       
+            var taskFolder = _nativeService.GetFolder(folderName);
+            if(taskFolder == null)
+            {
+                var newFolder = _nativeService.RootFolder.CreateFolder(folderName);
+                return _taskServiceConvertorFactory.CreateRootFolder(newFolder);
+            }
             return _taskServiceConvertorFactory.CreateRootFolder(taskFolder);
         }
 
