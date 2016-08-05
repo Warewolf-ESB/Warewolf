@@ -17,10 +17,11 @@ namespace Warewolf.Studio.ViewModels.ToolBox
         readonly IToolboxModel _localModel;
         readonly IToolboxModel _remoteModel;
         ICollection<IToolDescriptorViewModel> _tools;
-        private ICollection<IToolDescriptorViewModel> _filteredTools;
         bool _isDesignerFocused;
         IToolDescriptorViewModel _selectedTool;
         private string _searchTerm;
+        private ObservableCollection<IToolDescriptorViewModel> _backedUpTools;
+        private bool _isFiltered;
 
         public ToolboxViewModel(IToolboxModel localModel, IToolboxModel remoteModel)
         {
@@ -29,6 +30,7 @@ namespace Warewolf.Studio.ViewModels.ToolBox
             _remoteModel = remoteModel;
             _localModel.OnserverDisconnected += _localModel_OnserverDisconnected;
             _remoteModel.OnserverDisconnected += _remoteModel_OnserverDisconnected;
+            IsFiltered = false;
             FilteredTools = new List<IToolDescriptorViewModel>();
             BackedUpTools = new ObservableCollection<IToolDescriptorViewModel>(_remoteModel.GetTools().Select(a => new ToolDescriptorViewModel(a, _localModel.GetTools().Contains(a))));
             Tools = BackedUpTools;
@@ -55,28 +57,20 @@ namespace Warewolf.Studio.ViewModels.ToolBox
                 OnPropertyChanged("Tools");
             }
         }
-        private ICollection<IToolDescriptorViewModel> FilteredTools
+        private ICollection<IToolDescriptorViewModel> FilteredTools { get; set; }
+
+        // ReSharper disable once MemberCanBePrivate.Global
+        public ObservableCollection<IToolDescriptorViewModel> BackedUpTools
         {
-            get { return _filteredTools; }
+            get { return _backedUpTools; }
             set
             {
-                _filteredTools = value;
+                _backedUpTools = value;
+                OnPropertyChanged("BackedUpTools");
             }
         }
 
-        private ObservableCollection<IToolDescriptorViewModel> BackedUpTools { get; set; }
-        /// <summary>
-        /// points to the active servers tools. unlike explorer, this only ever needs to look at one set of tools at a time
-        /// </summary>
-        public ICollection<IToolboxCatergoryViewModel> CategorisedTools
-        {
-            get
-            {
-                var toolboxCatergoryViewModels = new ObservableCollection<IToolboxCatergoryViewModel>(Tools.GroupBy(a => a.Tool.Category)
-                    .Select(b => new ToolBoxCategoryViewModel(b.Key, new ObservableCollection<IToolDescriptorViewModel>(b))));
-                return toolboxCatergoryViewModels;
-            }
-        }
+
         /// <summary>
         /// the toolbox is only enabled when the active server is connected and the designer is in focus
         /// </summary>
@@ -138,6 +132,7 @@ namespace Warewolf.Studio.ViewModels.ToolBox
             }
             else
             {
+                IsFiltered = true;
                 var toolboxCatergoryViewModels = BackedUpTools.Where(model => model.Tool.Name.ToLower().Contains(searchString.ToLower()) ||
                                                                             model.Tool.Category.ToLower().Contains(searchString.ToLower()) ||
                                                                             model.Tool.FilterTag.ToLower().Contains(searchString.ToLower()));
@@ -152,8 +147,20 @@ namespace Warewolf.Studio.ViewModels.ToolBox
 
         public void ClearFilter()
         {
+            IsFiltered = false;
             Tools = BackedUpTools;
             SearchTerm = "";
+        }
+
+        public bool IsFiltered
+        {
+            get { return _isFiltered; }
+            // ReSharper disable once MemberCanBePrivate.Global
+            set
+            {
+                _isFiltered = value; 
+                OnPropertyChanged("IsFiltered");
+            }
         }
 
         void _remoteModel_OnserverDisconnected(object sender)
