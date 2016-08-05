@@ -34,13 +34,20 @@ namespace Dev2.Settings.Scheduler
             SchedulerFactory = new ClientSchedulerFactory(new Dev2TaskService(taskServiceConvertorFactory), taskServiceConvertorFactory);
         }
 
-        public Task<IResourcePickerDialog> GetResourcePickerDialog => _resourcePickerDialogTask ?? ResourcePickerDialog.CreateAsync(enDsfActivityType.Workflow, _source);
+        private IResourcePickerDialog CreateResourcePickerDialog()
+        {
+            var res = new ResourcePickerDialog(enDsfActivityType.All, _source);
+            ResourcePickerDialog.CreateAsync(enDsfActivityType.Workflow, _source).ContinueWith(a => _currentResourcePicker = a.Result);
+            return res;
+        }
+
+        private Task<IResourcePickerDialog> GetResourcePickerDialog => _resourcePickerDialogTask ?? ResourcePickerDialog.CreateAsync(enDsfActivityType.Workflow, _source);
 
         public IResourcePickerDialog CurrentResourcePickerDialog
         {
-            get
+            private get
             {
-                return _currentResourcePicker;
+                return _currentResourcePicker ?? CreateResourcePickerDialog();
             }
             set
             {
@@ -48,7 +55,7 @@ namespace Dev2.Settings.Scheduler
                 _schedulerViewModel.NotifyOfPropertyChange(() => CurrentResourcePickerDialog);
             }
         }
-        protected IClientSchedulerFactory SchedulerFactory { get; set; }
+        protected IClientSchedulerFactory SchedulerFactory { get; }
         public TriggerEditDialog TriggerEditDialog
         {
             get

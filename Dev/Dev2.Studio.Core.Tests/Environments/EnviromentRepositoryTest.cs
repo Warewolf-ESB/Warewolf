@@ -685,19 +685,6 @@ namespace Dev2.Core.Tests.Environments
         #region ReadSession
 
         [TestMethod]
-        public void EnvironmentRepositoryReadSessionWithNonExistingFileExpectedReturnsEmptyList()
-        {
-            var path = EnvironmentRepository.GetEnvironmentsFilePath();
-
-            var source = new Mock<IEnvironmentModel>();
-            var repo = new TestEnvironmentRespository(source.Object) { IsReadWriteEnabled = true };
-            var result = repo.ReadSession();
-
-            Assert.AreEqual(0, result.Count);
-
-        }
-
-        [TestMethod]
         public void EnvironmentRepositoryReadSessionWithOneEnvironmentExpectedReturnsOneEnvironment()
         {
             var path = EnvironmentRepository.GetEnvironmentsFilePath();

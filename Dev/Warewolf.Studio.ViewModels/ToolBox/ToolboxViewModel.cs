@@ -17,19 +17,22 @@ namespace Warewolf.Studio.ViewModels.ToolBox
         readonly IToolboxModel _localModel;
         readonly IToolboxModel _remoteModel;
         ICollection<IToolDescriptorViewModel> _tools;
+        private ICollection<IToolDescriptorViewModel> _filteredTools;
         bool _isDesignerFocused;
         IToolDescriptorViewModel _selectedTool;
         private string _searchTerm;
 
-        public ToolboxViewModel( IToolboxModel localModel,IToolboxModel remoteModel)
+        public ToolboxViewModel(IToolboxModel localModel, IToolboxModel remoteModel)
         {
-            VerifyArgument.AreNotNull(new Dictionary<string, object>{{"localModel",localModel},{"remoteModel",remoteModel}});
+            VerifyArgument.AreNotNull(new Dictionary<string, object> { { "localModel", localModel }, { "remoteModel", remoteModel } });
             _localModel = localModel;
             _remoteModel = remoteModel;
             _localModel.OnserverDisconnected += _localModel_OnserverDisconnected;
             _remoteModel.OnserverDisconnected += _remoteModel_OnserverDisconnected;
-            ClearFilter();
-            ClearFilterCommand = new DelegateCommand(ClearFilter);
+            FilteredTools = new List<IToolDescriptorViewModel>();
+            BackedUpTools = new ObservableCollection<IToolDescriptorViewModel>(_remoteModel.GetTools().Select(a => new ToolDescriptorViewModel(a, _localModel.GetTools().Contains(a))));
+            Tools = BackedUpTools;
+            ClearFilterCommand = new DelegateCommand(() => SearchTerm = string.Empty);
         }
 
         public ICommand ClearFilterCommand { get; set; }
@@ -50,10 +53,18 @@ namespace Warewolf.Studio.ViewModels.ToolBox
             {
                 _tools = value;
                 OnPropertyChanged("Tools");
-                OnPropertyChanged("CategorisedTools");
-                
             }
         }
+        private ICollection<IToolDescriptorViewModel> FilteredTools
+        {
+            get { return _filteredTools; }
+            set
+            {
+                _filteredTools = value;
+            }
+        }
+
+        private ObservableCollection<IToolDescriptorViewModel> BackedUpTools { get; set; }
         /// <summary>
         /// points to the active servers tools. unlike explorer, this only ever needs to look at one set of tools at a time
         /// </summary>
@@ -61,8 +72,8 @@ namespace Warewolf.Studio.ViewModels.ToolBox
         {
             get
             {
-                var toolboxCatergoryViewModels = new ObservableCollection<IToolboxCatergoryViewModel>(Tools.GroupBy(a=>a.Tool.Category)
-                    .Select(b=> new ToolBoxCategoryViewModel(b.Key,new ObservableCollection<IToolDescriptorViewModel>(b))));
+                var toolboxCatergoryViewModels = new ObservableCollection<IToolboxCatergoryViewModel>(Tools.GroupBy(a => a.Tool.Category)
+                    .Select(b => new ToolBoxCategoryViewModel(b.Key, new ObservableCollection<IToolDescriptorViewModel>(b))));
                 return toolboxCatergoryViewModels;
             }
         }
@@ -91,7 +102,7 @@ namespace Warewolf.Studio.ViewModels.ToolBox
             }
             set
             {
-                
+
                 // ReSharper disable once PossibleUnintendedReferenceComparison
                 if (value != _selectedTool)
                 {
@@ -121,16 +132,27 @@ namespace Warewolf.Studio.ViewModels.ToolBox
         /// <param name="searchString"></param>
         public void Filter(string searchString)
         {
-            if(searchString == "")
+            if (string.IsNullOrWhiteSpace(searchString))
+            {
                 ClearFilter();
-            Tools = new ObservableCollection<IToolDescriptorViewModel>(_remoteModel.GetTools()
-                .Where(a => a.Name.ToLower().Contains(searchString.ToLower()))
-                .Select(a => new ToolDescriptorViewModel(a, _localModel.GetTools().Contains(a))));
+            }
+            else
+            {
+                var toolboxCatergoryViewModels = BackedUpTools.Where(model => model.Tool.Name.ToLower().Contains(searchString.ToLower()) ||
+                                                                            model.Tool.Category.ToLower().Contains(searchString.ToLower()) ||
+                                                                            model.Tool.FilterTag.ToLower().Contains(searchString.ToLower()));
+                FilteredTools =
+                    toolboxCatergoryViewModels.OrderBy(model => model.Tool.Name)
+                        .ThenBy(model => model.Tool.Category)
+                        .ThenBy(model => model.Tool.FilterTag)
+                        .ToList();
+                Tools = FilteredTools;
+            }
         }
 
         public void ClearFilter()
         {
-            Tools = new ObservableCollection<IToolDescriptorViewModel>(_remoteModel.GetTools().Select(a => new ToolDescriptorViewModel(a, _localModel.GetTools().Contains(a))));
+            Tools = BackedUpTools;
             SearchTerm = "";
         }
 
@@ -158,7 +180,7 @@ namespace Warewolf.Studio.ViewModels.ToolBox
 
         // ReSharper disable UnusedParameter.Local
         void Dispose(bool disposing)
-            // ReSharper restore UnusedParameter.Local
+        // ReSharper restore UnusedParameter.Local
         {
             _localModel.OnserverDisconnected -= _localModel_OnserverDisconnected;
             _remoteModel.OnserverDisconnected -= _remoteModel_OnserverDisconnected;
@@ -169,10 +191,7 @@ namespace Warewolf.Studio.ViewModels.ToolBox
         public void UpdateHelpDescriptor(string helpText)
         {
             var mainViewModel = CustomContainer.Get<IMainViewModel>();
-            if (mainViewModel != null)
-            {
-                mainViewModel.HelpViewModel.UpdateHelpText(helpText);
-            }
+            mainViewModel?.HelpViewModel.UpdateHelpText(helpText);
         }
     }
 }
