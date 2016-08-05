@@ -472,6 +472,10 @@
       <Project>{CA5E9373-46FE-41B9-AB2E-BD637F48B456}</Project>
       <Name>Warewolf.Security</Name>
     </ProjectReference>
+    <ProjectReference Include="..\GACManagerApi\GACManagerApi.csproj">
+      <Project>{2909743e-72ff-48bf-a081-e61a73d2e6ec}</Project>
+      <Name>GACManagerApi</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Warewolf.Core\Warewolf.Core.csproj">
       <Project>{8fd23ce0-02bb-48e1-a914-ba467938ce78}</Project>
       <Name>Warewolf.Core</Name>

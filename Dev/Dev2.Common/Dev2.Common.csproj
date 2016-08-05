@@ -147,7 +147,6 @@
     <Compile Include="Patterns\SpookyAction.cs" />
     <Compile Include="PropertyApi.cs" />
     <Compile Include="RecordSetSearchPayload.cs" />
-    <Compile Include="Reflection\GAC.cs" />
     <Compile Include="SharepointSourceTo.cs" />
     <Compile Include="SingleApi.cs" />
     <Compile Include="StringTokenizer\Builders\Dev2TokenizerBuilder.cs" />
@@ -189,7 +188,10 @@
     <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="DB Support\DB_Helper\" />
+    <Folder Include="DB Support\DB_Sanity\" />
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

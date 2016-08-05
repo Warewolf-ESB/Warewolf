@@ -7847,6 +7847,24 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Assign Calculate.
+        /// </summary>
+        public static string ToolAssign_Tags {
+            get {
+                return ResourceManager.GetString("ToolAssign_Tags", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Assign Object Calculate.
+        /// </summary>
+        public static string ToolAssignObject_Tags {
+            get {
+                return ResourceManager.GetString("ToolAssignObject_Tags", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Clear the filter box.
         /// </summary>
         public static string ToolboxClearSearchTooltip {

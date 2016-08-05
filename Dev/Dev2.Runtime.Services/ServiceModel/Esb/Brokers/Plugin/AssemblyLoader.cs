@@ -4,6 +4,7 @@ using System.IO;
 using System.Reflection;
 using Dev2.Common;
 using Warewolf.Resource.Errors;
+// ReSharper disable NonLocalizedString
 
 namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
 {
@@ -57,9 +58,8 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
                     Dev2Logger.Error(e);
                     throw;
                 }
-                catch (Exception e)
+                catch
                 {
-                    Dev2Logger.Error(e);
                     try
                     {
                         if (assemblyLocation != null)
@@ -69,9 +69,9 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
                         }
                         return true;
                     }
-                    catch (Exception ex)
+                    catch (Exception e)
                     {
-                        Dev2Logger.Error(ex);
+                        Dev2Logger.Error(e);
                     }
                 }
                 try
@@ -123,7 +123,17 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
                         if (path != null)
                         {
                             var myLoad = Path.Combine(path, toLoad.Name + ".dll");
-                            depAsm = Assembly.LoadFrom(myLoad);
+                            try
+                            {
+                                depAsm = Assembly.LoadFrom(myLoad);
+                            }
+                            catch(Exception)
+                            {
+                                if (!_loadedAssemblies.Contains(fullName))
+                                {
+                                    _loadedAssemblies.Add(fullName);
+                                }
+                            }
                         }
                     }
                     if (depAsm != null)

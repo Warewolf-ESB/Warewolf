@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Reflection;
 using System.Text;
 using System.Threading;
 using System.Xml.Linq;
@@ -684,19 +685,6 @@ namespace Dev2.Core.Tests.Environments
         #region ReadSession
 
         [TestMethod]
-        public void EnvironmentRepositoryReadSessionWithNonExistingFileExpectedReturnsEmptyList()
-        {
-            var path = EnvironmentRepository.GetEnvironmentsFilePath();
-
-            var source = new Mock<IEnvironmentModel>();
-            var repo = new TestEnvironmentRespository(source.Object) { IsReadWriteEnabled = true };
-            var result = repo.ReadSession();
-
-            Assert.AreEqual(0, result.Count);
-
-        }
-
-        [TestMethod]
         public void EnvironmentRepositoryReadSessionWithOneEnvironmentExpectedReturnsOneEnvironment()
         {
             var path = EnvironmentRepository.GetEnvironmentsFilePath();
@@ -725,7 +713,7 @@ namespace Dev2.Core.Tests.Environments
 
             var exists = File.Exists(path);
             Assert.AreEqual(true, exists);
-            
+
         }
 
         [TestMethod]
@@ -750,7 +738,7 @@ namespace Dev2.Core.Tests.Environments
             xml = XElement.Load(path);
             actual = xml.Descendants("Environment").Count();
             Assert.AreEqual(2, actual);
-            
+
         }
 
         #endregion
@@ -1045,12 +1033,12 @@ namespace Dev2.Core.Tests.Environments
             var id = Guid.NewGuid();
 
             Connection theCon = new Connection
-                {
-                    Address = "http://127.0.0.1:1234",
-                    ResourceName = "TheConnection",
-                    ResourceID = id,
-                    WebServerPort = 1234
-                };
+            {
+                Address = "http://127.0.0.1:1234",
+                ResourceName = "TheConnection",
+                ResourceID = id,
+                WebServerPort = 1234
+            };
 
             List<Connection> cons = new List<Connection> { theCon };
             repo.Setup(r => r.FindSourcesByType<Connection>(It.IsAny<IEnvironmentModel>(), enSourceType.Dev2Server)).Returns(cons);
@@ -1068,6 +1056,87 @@ namespace Dev2.Core.Tests.Environments
         }
 
         #endregion
+
+        #region CreateEnvironment
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void CreateEnvironment_GivenEmptyUri_ShouldUseMachineName()
+        {
+
+
+            var env = new Mock<IEnvironmentModel>();
+            var con = new Mock<IEnvironmentConnection>();
+            var repo = new Mock<IResourceRepository>();
+
+            var id = Guid.NewGuid();
+
+            Connection theCon = new Connection
+            {
+                Address = "http://127.0.0.1:1234",
+                ResourceName = "TheConnection",
+                ResourceID = id,
+                WebServerPort = 1234
+            };
+
+            List<Connection> cons = new List<Connection> { theCon };
+            repo.Setup(r => r.FindSourcesByType<Connection>(It.IsAny<IEnvironmentModel>(), enSourceType.Dev2Server)).Returns(cons);
+
+            con.Setup(c => c.IsConnected).Returns(true);
+            con.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Returns(new StringBuilder());
+
+            env.Setup(e => e.IsConnected).Returns(true);
+            env.Setup(e => e.Connection).Returns(con.Object);
+            env.Setup(e => e.ResourceRepository).Returns(repo.Object);
+
+            var instance = EnvironmentRepository.Instance;
+
+            var obj = new PrivateObject(instance, new PrivateType(typeof(EnvironmentRepository)));
+            var environmentModel = obj.Invoke("CreateEnvironmentModel", BindingFlags.NonPublic | BindingFlags.Static, new[] { typeof(Guid), typeof(Uri), typeof(string) }, new object[] { Guid.NewGuid(), new Uri("http://LOCALHOST"), "" }) as IEnvironmentModel;
+
+            Assert.IsTrue(environmentModel?.Connection.WebServerUri.AbsoluteUri.Contains(Environment.MachineName.ToLowerInvariant()) ?? false);
+        }
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void CreateEnvironment_GivenLocalHostIsEmpty_ShouldUseMachineName()
+        {
+
+            AppSettings.LocalHost = "";
+            var env = new Mock<IEnvironmentModel>();
+            var con = new Mock<IEnvironmentConnection>();
+            var repo = new Mock<IResourceRepository>();
+
+            var id = Guid.NewGuid();
+
+            Connection theCon = new Connection
+            {
+                Address = "http://127.0.0.1:1234",
+                ResourceName = "TheConnection",
+                ResourceID = id,
+                WebServerPort = 1234
+            };
+
+            List<Connection> cons = new List<Connection> { theCon };
+            repo.Setup(r => r.FindSourcesByType<Connection>(It.IsAny<IEnvironmentModel>(), enSourceType.Dev2Server)).Returns(cons);
+
+            con.Setup(c => c.IsConnected).Returns(true);
+            con.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Returns(new StringBuilder());
+
+            env.Setup(e => e.IsConnected).Returns(true);
+            env.Setup(e => e.Connection).Returns(con.Object);
+            env.Setup(e => e.ResourceRepository).Returns(repo.Object);
+
+            var instance = EnvironmentRepository.Instance;
+
+            var obj = new PrivateObject(instance, new PrivateType(typeof(EnvironmentRepository)));
+            var environmentModel = obj.Invoke("CreateEnvironmentModel", BindingFlags.NonPublic | BindingFlags.Static, new[] { typeof(Guid), typeof(Uri), typeof(string) }, new object[] { Guid.NewGuid(), new Uri("http://LOCALHOST"), "" }) as IEnvironmentModel;
+
+            Assert.IsTrue(environmentModel?.Connection.WebServerUri.AbsoluteUri.Contains(Environment.MachineName.ToLowerInvariant()) ?? false);
+            Assert.AreEqual(new Uri($"http://{Environment.MachineName.ToLowerInvariant()}"), environmentModel?.Connection.WebServerUri);
+        }
+
+        #endregion
+
 
         //
         // Static Helpers
