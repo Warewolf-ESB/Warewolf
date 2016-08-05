@@ -58,24 +58,6 @@ namespace Dev2.Tests.Runtime.ESB.ComPlugin
             ComPluginServiceExecutionFactory.GetNamespaces(null);
         }
 
-        
-        [TestMethod]
-        [Owner("Nkosinathi Sangweni")]
-        [TestCategory("PluginServiceExecutionFactory_GetMethods")]
-        public void PluginRuntimeHandler_GetMethods_WhenValidDll_ExpectValidResults()
-        {
-            //------------Setup for test--------------------------
-            var source = CreatePluginSource();
-            var service = CreatePluginService();
-            //------------Execute Test---------------------------
-            using (Isolated<ComPluginRuntimeHandler> isolated = new Isolated<ComPluginRuntimeHandler>())
-            {
-                var result = ComPluginServiceExecutionFactory.GetMethods(source.ClsId,true);
-                //------------Assert Results-------------------------
-                Assert.IsTrue(result.Count > 0);
-            }            
-        }
-       
 
 
         [TestMethod]
@@ -90,11 +72,6 @@ namespace Dev2.Tests.Runtime.ESB.ComPlugin
             Assert.IsNotNull(ns);
             
             var result = ComPluginServiceExecutionFactory.GetMethods(adodbConGuid,true);
-            //            using (Isolated<ComPluginRuntimeHandler> isolated = new Isolated<ComPluginRuntimeHandler>())
-            //            {
-            //                result.AddRange(isolated.Value.ListMethods(adodbConGuid));
-            //               
-            //            }
             //------------Assert Results-------------------------
             var openMethod = result.First(method => method.Name.ToUpper() == "open".ToUpper());
             //---------------Test Result -----------------------
