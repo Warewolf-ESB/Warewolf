@@ -671,43 +671,31 @@ namespace Dev2.Settings.Scheduler
 
                 ScheduledResourceModel = new ClientScheduledResourceModel(CurrentEnvironment, CreateNewTask);
                 IsLoading = true;
-
-                _asyncWorker.Start(() =>
+                try
                 {
-                    if (SchedulerTaskManager.CurrentResourcePickerDialog == null)
+                    var cmd = AddWorkflowCommand as Microsoft.Practices.Prism.Commands.DelegateCommand;
+                    cmd?.RaiseCanExecuteChanged();
+
+                    foreach (var scheduledResource in ScheduledResourceModel.ScheduledResources.Where(a => !a.IsNewItem))
                     {
-                        SchedulerTaskManager.GetResourcePickerDialog.Wait();
+                        scheduledResource.NextRunDate = scheduledResource.Trigger.Trigger.StartBoundary;
+                        scheduledResource.OldName = scheduledResource.Name;
                     }
-                }, () =>
+                    NotifyOfPropertyChange(() => TaskList);
+                    if (TaskList.Count > 0)
+                    {
+                        SelectedTask = TaskList[0];
+                    }
+                    IsLoading = false;
+                }
+                catch (Exception ex)
                 {
-                    try
+                    if (!_errorShown)
                     {
-                        SchedulerTaskManager.CurrentResourcePickerDialog = SchedulerTaskManager.GetResourcePickerDialog.Result;
-                        var cmd = AddWorkflowCommand as Microsoft.Practices.Prism.Commands.DelegateCommand;
-                        cmd?.RaiseCanExecuteChanged();
-
-                        foreach (var scheduledResource in ScheduledResourceModel.ScheduledResources.Where(a => !a.IsNewItem))
-                        {
-                            scheduledResource.NextRunDate = scheduledResource.Trigger.Trigger.StartBoundary;
-                            scheduledResource.OldName = scheduledResource.Name;
-                        }
-
-                        NotifyOfPropertyChange(() => TaskList);
-                        if (TaskList.Count > 0)
-                        {
-                            SelectedTask = TaskList[0];
-                        }
-                        IsLoading = false;
+                        Dev2Logger.Error(ex);
+                        _errorShown = true;
                     }
-                    catch (Exception ex)
-                    {
-                        if (!_errorShown)
-                        {
-                            Dev2Logger.Error(ex);
-                            _errorShown = true;
-                        }
-                    }
-                });            
+                }
             }
             else
             {
