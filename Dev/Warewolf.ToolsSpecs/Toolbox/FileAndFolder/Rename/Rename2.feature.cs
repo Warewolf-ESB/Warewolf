@@ -240,7 +240,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[destPath]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "sftp://rsaklfsvrsbspdc/renamed0.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "sftp://rsaklfsvrgendev/renamed0.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destUsername", "dev2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destPassword", "Q/ulw&]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:selected", "True")]
@@ -251,7 +251,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void RenameFileAtLocation_4()
         {
-            this.RenameFileAtLocation("4", "Local to SFTP", "[[sourcePath]]", "C:\\renamefile3.txt", "\"\"", "\"\"", "[[destPath]]", "sftp://rsaklfsvrsbspdc/renamed0.txt", "dev2", "Q/ulw&]", "True", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
+            this.RenameFileAtLocation("4", "Local to SFTP", "[[sourcePath]]", "C:\\renamefile3.txt", "\"\"", "\"\"", "[[destPath]]", "sftp://rsaklfsvrgendev/renamed0.txt", "dev2", "Q/ulw&]", "True", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
 #line hidden
         }
         
@@ -375,7 +375,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[destPath]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "sftp://rsaklfsvrsbspdc/renamed1.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "sftp://rsaklfsvrgendev/renamed1.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destUsername", "dev2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destPassword", "Q/ulw&]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:selected", "True")]
@@ -386,7 +386,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void RenameFileAtLocation_9()
         {
-            this.RenameFileAtLocation("9", "UNC to SFTP", "[[sourcePath]]", "\\\\RSAKLFSVRSBSPDC\\FileSystemShareTestingSite\\renamefile3.txt", "\"\"", "\"\"", "[[destPath]]", "sftp://rsaklfsvrsbspdc/renamed1.txt", "dev2", "Q/ulw&]", "True", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
+            this.RenameFileAtLocation("9", "UNC to SFTP", "[[sourcePath]]", "\\\\RSAKLFSVRSBSPDC\\FileSystemShareTestingSite\\renamefile3.txt", "\"\"", "\"\"", "[[destPath]]", "sftp://rsaklfsvrgendev/renamed1.txt", "dev2", "Q/ulw&]", "True", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
 #line hidden
         }
         
@@ -510,7 +510,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[destPath]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "sftp://rsaklfsvrsbspdc/renamed2.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "sftp://rsaklfsvrgendev/renamed2.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destUsername", "dev2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destPassword", "Q/ulw&]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:selected", "True")]
@@ -521,7 +521,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void RenameFileAtLocation_14()
         {
-            this.RenameFileAtLocation("14", "FTP to SFTP", "[[sourcePath]]", "ftp://rsaklfsvrsbspdc:1001/FORTESTING/renamefile3.txt", "\"\"", "\"\"", "[[destPath]]", "sftp://rsaklfsvrsbspdc/renamed2.txt", "dev2", "Q/ulw&]", "True", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
+            this.RenameFileAtLocation("14", "FTP to SFTP", "[[sourcePath]]", "ftp://rsaklfsvrsbspdc:1001/FORTESTING/renamefile3.txt", "\"\"", "\"\"", "[[destPath]]", "sftp://rsaklfsvrgendev/renamed2.txt", "dev2", "Q/ulw&]", "True", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
 #line hidden
         }
         
@@ -645,7 +645,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "integrationtester")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "I73573r0")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[destPath]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "sftp://rsaklfsvrsbspdc/renamed3.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "sftp://rsaklfsvrgendev/renamed3.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destUsername", "dev2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destPassword", "Q/ulw&]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:selected", "True")]
@@ -656,7 +656,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void RenameFileAtLocation_19()
         {
-            this.RenameFileAtLocation("19", "FTPS to SFTP", "[[sourcePath]]", "ftp://rsaklfsvrsbspdc:1002/FORTESTING/renamefile3.txt", "integrationtester", "I73573r0", "[[destPath]]", "sftp://rsaklfsvrsbspdc/renamed3.txt", "dev2", "Q/ulw&]", "True", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
+            this.RenameFileAtLocation("19", "FTPS to SFTP", "[[sourcePath]]", "ftp://rsaklfsvrsbspdc:1002/FORTESTING/renamefile3.txt", "integrationtester", "I73573r0", "[[destPath]]", "sftp://rsaklfsvrgendev/renamed3.txt", "dev2", "Q/ulw&]", "True", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
 #line hidden
         }
         
@@ -695,7 +695,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "21")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "SFTP to Local")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[sourcePath]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "sftp://rsaklfsvrsbspdc/renamefile0.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "sftp://rsaklfsvrgendev/renamefile0.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "dev2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "Q/ulw&]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[destPath]]")]
@@ -710,7 +710,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void RenameFileAtLocation_21()
         {
-            this.RenameFileAtLocation("21", "SFTP to Local", "[[sourcePath]]", "sftp://rsaklfsvrsbspdc/renamefile0.txt", "dev2", "Q/ulw&]", "[[destPath]]", "C:\\renamed4.txt", "\"\"", "\"\"", "True", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
+            this.RenameFileAtLocation("21", "SFTP to Local", "[[sourcePath]]", "sftp://rsaklfsvrgendev/renamefile0.txt", "dev2", "Q/ulw&]", "[[destPath]]", "C:\\renamed4.txt", "\"\"", "\"\"", "True", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
 #line hidden
         }
         
@@ -722,7 +722,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "22")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "SFTP to UNC")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[sourcePath]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "sftp://rsaklfsvrsbspdc/renamefile1.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "sftp://rsaklfsvrgendev/renamefile1.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "dev2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "Q/ulw&]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[destPath]]")]
@@ -737,7 +737,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void RenameFileAtLocation_22()
         {
-            this.RenameFileAtLocation("22", "SFTP to UNC", "[[sourcePath]]", "sftp://rsaklfsvrsbspdc/renamefile1.txt", "dev2", "Q/ulw&]", "[[destPath]]", "\\\\RSAKLFSVRSBSPDC\\FileSystemShareTestingSite\\renamed4.txt", "\"\"", "\"\"", "True", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
+            this.RenameFileAtLocation("22", "SFTP to UNC", "[[sourcePath]]", "sftp://rsaklfsvrgendev/renamefile1.txt", "dev2", "Q/ulw&]", "[[destPath]]", "\\\\RSAKLFSVRSBSPDC\\FileSystemShareTestingSite\\renamed4.txt", "\"\"", "\"\"", "True", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
 #line hidden
         }
         
@@ -749,7 +749,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "23")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "SFTP to FTP")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[sourcePath]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "sftp://rsaklfsvrsbspdc/renamefile2.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "sftp://rsaklfsvrgendev/renamefile2.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "dev2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "Q/ulw&]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[destPath]]")]
@@ -764,7 +764,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void RenameFileAtLocation_23()
         {
-            this.RenameFileAtLocation("23", "SFTP to FTP", "[[sourcePath]]", "sftp://rsaklfsvrsbspdc/renamefile2.txt", "dev2", "Q/ulw&]", "[[destPath]]", "ftp://rsaklfsvrsbspdc:1001/FORTESTING/renamed4.txt", "\"\"", "\"\"", "True", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
+            this.RenameFileAtLocation("23", "SFTP to FTP", "[[sourcePath]]", "sftp://rsaklfsvrgendev/renamefile2.txt", "dev2", "Q/ulw&]", "[[destPath]]", "ftp://rsaklfsvrsbspdc:1001/FORTESTING/renamed4.txt", "\"\"", "\"\"", "True", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
 #line hidden
         }
         
@@ -776,7 +776,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "24")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "SFTP to FTPS")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[sourcePath]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "sftp://rsaklfsvrsbspdc/renamefile3.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "sftp://rsaklfsvrgendev/renamefile3.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "dev2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "Q/ulw&]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[destPath]]")]
@@ -791,7 +791,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void RenameFileAtLocation_24()
         {
-            this.RenameFileAtLocation("24", "SFTP to FTPS", "[[sourcePath]]", "sftp://rsaklfsvrsbspdc/renamefile3.txt", "dev2", "Q/ulw&]", "[[destPath]]", "ftp://rsaklfsvrsbspdc:1002/FORTESTING/renamed4.txt", "integrationtester", "I73573r0", "True", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
+            this.RenameFileAtLocation("24", "SFTP to FTPS", "[[sourcePath]]", "sftp://rsaklfsvrgendev/renamefile3.txt", "dev2", "Q/ulw&]", "[[destPath]]", "ftp://rsaklfsvrsbspdc:1002/FORTESTING/renamed4.txt", "integrationtester", "I73573r0", "True", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
 #line hidden
         }
         
@@ -803,11 +803,11 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "25")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "SFTP to SFTP")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[sourcePath]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "sftp://rsaklfsvrsbspdc/renamefile4.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "sftp://rsaklfsvrgendev/renamefile4.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "dev2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "Q/ulw&]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[destPath]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "sftp://rsaklfsvrsbspdc/renamed4.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "sftp://rsaklfsvrgendev/renamed4.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destUsername", "dev2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destPassword", "Q/ulw&]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:selected", "True")]
@@ -818,7 +818,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void RenameFileAtLocation_25()
         {
-            this.RenameFileAtLocation("25", "SFTP to SFTP", "[[sourcePath]]", "sftp://rsaklfsvrsbspdc/renamefile4.txt", "dev2", "Q/ulw&]", "[[destPath]]", "sftp://rsaklfsvrsbspdc/renamed4.txt", "dev2", "Q/ulw&]", "True", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
+            this.RenameFileAtLocation("25", "SFTP to SFTP", "[[sourcePath]]", "sftp://rsaklfsvrgendev/renamefile4.txt", "dev2", "Q/ulw&]", "[[destPath]]", "sftp://rsaklfsvrgendev/renamed4.txt", "dev2", "Q/ulw&]", "True", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
 #line hidden
         }
         
@@ -830,11 +830,11 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "26")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "SFTP to SFTP PK")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[sourcePath]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "sftp://rsaklfsvrsbspdc/renamefile41.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "sftp://rsaklfsvrgendev/renamefile41.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "dev2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "Q/ulw&]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[destPath]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "sftp://rsaklfsvrsbspdc/renamed41.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "sftp://rsaklfsvrgendev/renamed41.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destUsername", "dev2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destPassword", "Q/ulw&]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:selected", "True")]
@@ -845,7 +845,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "C:\\Temp\\key.opk")]
         public virtual void RenameFileAtLocation_26()
         {
-            this.RenameFileAtLocation("26", "SFTP to SFTP PK", "[[sourcePath]]", "sftp://rsaklfsvrsbspdc/renamefile41.txt", "dev2", "Q/ulw&]", "[[destPath]]", "sftp://rsaklfsvrsbspdc/renamed41.txt", "dev2", "Q/ulw&]", "True", "[[result]]", "\"Success\"", "NO", "C:\\Temp\\key.opk", "C:\\Temp\\key.opk", ((string[])(null)));
+            this.RenameFileAtLocation("26", "SFTP to SFTP PK", "[[sourcePath]]", "sftp://rsaklfsvrgendev/renamefile41.txt", "dev2", "Q/ulw&]", "[[destPath]]", "sftp://rsaklfsvrgendev/renamed41.txt", "dev2", "Q/ulw&]", "True", "[[result]]", "\"Success\"", "NO", "C:\\Temp\\key.opk", "C:\\Temp\\key.opk", ((string[])(null)));
 #line hidden
         }
         
@@ -1216,7 +1216,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[destPath]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "sftp://rsaklfsvrsbspdc/renamed12.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "sftp://rsaklfsvrgendev/renamed12.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destUsername", "dev2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destPassword", "Q/ulw&]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:selected", "True")]
@@ -1228,7 +1228,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "\"\"")]
         public virtual void RenameFileValidation_9()
         {
-            this.RenameFileValidation("9", "[[sourcePath]]", "\"\"", "\"\"", "C:\\renamefile14.txt", "\"\"", "\"\"", "[[destPath]]", "sftp://rsaklfsvrsbspdc/renamed12.txt", "dev2", "Q/ulw&]", "True", "[[result]]", "\"Success\"", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
+            this.RenameFileValidation("9", "[[sourcePath]]", "\"\"", "\"\"", "C:\\renamefile14.txt", "\"\"", "\"\"", "[[destPath]]", "sftp://rsaklfsvrgendev/renamed12.txt", "dev2", "Q/ulw&]", "True", "[[result]]", "\"Success\"", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
 #line hidden
         }
         

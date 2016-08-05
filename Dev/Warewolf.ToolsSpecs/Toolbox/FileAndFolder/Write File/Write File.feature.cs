@@ -215,7 +215,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 4")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "SFTP with Overwrite")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[path]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "sftp://rsaklfsvrsbspdc/filetowrite0.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "sftp://rsaklfsvrgendev/filetowrite0.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:method", "Overwrite")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:content", "warewolf rules")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "dev2")]
@@ -226,7 +226,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
         public virtual void WriteFileAtLocation_Variant4()
         {
-            this.WriteFileAtLocation("SFTP with Overwrite", "[[path]]", "sftp://rsaklfsvrsbspdc/filetowrite0.txt", "Overwrite", "warewolf rules", "dev2", "Q/ulw&]", "[[result]]", "Success", "NO", "", ((string[])(null)));
+            this.WriteFileAtLocation("SFTP with Overwrite", "[[path]]", "sftp://rsaklfsvrgendev/filetowrite0.txt", "Overwrite", "warewolf rules", "dev2", "Q/ulw&]", "[[result]]", "Success", "NO", "", ((string[])(null)));
 #line hidden
         }
         
@@ -325,7 +325,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 9")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "SFTP with Append Top")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[path]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "sftp://rsaklfsvrsbspdc/filetowrite1.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "sftp://rsaklfsvrgendev/filetowrite1.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:method", "Append Top")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:content", "warewolf rules")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "dev2")]
@@ -336,7 +336,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
         public virtual void WriteFileAtLocation_Variant9()
         {
-            this.WriteFileAtLocation("SFTP with Append Top", "[[path]]", "sftp://rsaklfsvrsbspdc/filetowrite1.txt", "Append Top", "warewolf rules", "dev2", "Q/ulw&]", "[[result]]", "Success", "NO", "", ((string[])(null)));
+            this.WriteFileAtLocation("SFTP with Append Top", "[[path]]", "sftp://rsaklfsvrgendev/filetowrite1.txt", "Append Top", "warewolf rules", "dev2", "Q/ulw&]", "[[result]]", "Success", "NO", "", ((string[])(null)));
 #line hidden
         }
         
@@ -435,7 +435,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 14")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "SFTP with Append Bottom")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[path]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "sftp://rsaklfsvrsbspdc/filetowrite2.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "sftp://rsaklfsvrgendev/filetowrite2.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:method", "Append Bottom")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:content", "warewolf rules")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "dev2")]
@@ -446,7 +446,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
         public virtual void WriteFileAtLocation_Variant14()
         {
-            this.WriteFileAtLocation("SFTP with Append Bottom", "[[path]]", "sftp://rsaklfsvrsbspdc/filetowrite2.txt", "Append Bottom", "warewolf rules", "dev2", "Q/ulw&]", "[[result]]", "Success", "NO", "", ((string[])(null)));
+            this.WriteFileAtLocation("SFTP with Append Bottom", "[[path]]", "sftp://rsaklfsvrgendev/filetowrite2.txt", "Append Bottom", "warewolf rules", "dev2", "Q/ulw&]", "[[result]]", "Success", "NO", "", ((string[])(null)));
 #line hidden
         }
         
@@ -457,7 +457,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 15")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "SFTP with Append Bottom PK")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[path]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "sftp://rsaklfsvrsbspdc/filetowrite21.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "sftp://rsaklfsvrgendev/filetowrite21.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:method", "Append Bottom")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:content", "warewolf rules")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "dev2")]
@@ -468,7 +468,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "C:\\Temp\\key.opk")]
         public virtual void WriteFileAtLocation_Variant15()
         {
-            this.WriteFileAtLocation("SFTP with Append Bottom PK", "[[path]]", "sftp://rsaklfsvrsbspdc/filetowrite21.txt", "Append Bottom", "warewolf rules", "dev2", "Q/ulw&]", "[[result]]", "Success", "NO", "C:\\Temp\\key.opk", ((string[])(null)));
+            this.WriteFileAtLocation("SFTP with Append Bottom PK", "[[path]]", "sftp://rsaklfsvrgendev/filetowrite21.txt", "Append Bottom", "warewolf rules", "dev2", "Q/ulw&]", "[[result]]", "Success", "NO", "C:\\Temp\\key.opk", ((string[])(null)));
 #line hidden
         }
         

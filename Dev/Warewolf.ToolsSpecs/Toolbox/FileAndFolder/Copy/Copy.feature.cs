@@ -235,7 +235,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[destPath]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "sftp://rsaklfsvrsbspdc/copied0.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "sftp://rsaklfsvrgendev/copied0.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destUsername", "dev2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destPassword", "Q/ulw&]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:selected", "True")]
@@ -246,7 +246,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void CopyFileAtLocation_4()
         {
-            this.CopyFileAtLocation("4", "[[sourcePath]]", "c:\\copyfile3.txt", "\"\"", "\"\"", "[[destPath]]", "sftp://rsaklfsvrsbspdc/copied0.txt", "dev2", "Q/ulw&]", "True", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
+            this.CopyFileAtLocation("4", "[[sourcePath]]", "c:\\copyfile3.txt", "\"\"", "\"\"", "[[destPath]]", "sftp://rsaklfsvrgendev/copied0.txt", "dev2", "Q/ulw&]", "True", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
 #line hidden
         }
         
@@ -287,7 +287,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[destPath]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "sftp://rsaklfsvrsbspdc/copied61.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "sftp://rsaklfsvrgendev/copied61.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destUsername", "dev2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destPassword", "Q/ulw&]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:selected", "True")]
@@ -298,7 +298,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void CopyFileAtLocation_6()
         {
-            this.CopyFileAtLocation("6", "[[sourcePath]]", "c:\\copyfile5.txt", "\"\"", "\"\"", "[[destPath]]", "sftp://rsaklfsvrsbspdc/copied61.txt", "dev2", "Q/ulw&]", "True", "[[result]]", "\"Success\"", "NO", "C:\\Temp\\key.opk", "", ((string[])(null)));
+            this.CopyFileAtLocation("6", "[[sourcePath]]", "c:\\copyfile5.txt", "\"\"", "\"\"", "[[destPath]]", "sftp://rsaklfsvrgendev/copied61.txt", "dev2", "Q/ulw&]", "True", "[[result]]", "\"Success\"", "NO", "C:\\Temp\\key.opk", "", ((string[])(null)));
 #line hidden
         }
         
@@ -391,7 +391,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[destPath]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "sftp://rsaklfsvrsbspdc/copied1.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "sftp://rsaklfsvrgendev/copied1.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destUsername", "dev2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destPassword", "Q/ulw&]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:selected", "True")]
@@ -402,7 +402,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void CopyFileAtLocation_10()
         {
-            this.CopyFileAtLocation("10", "[[sourcePath]]", "\\\\RSAKLFSVRSBSPDC\\FileSystemShareTestingSite\\copyfile3.txt", "\"\"", "\"\"", "[[destPath]]", "sftp://rsaklfsvrsbspdc/copied1.txt", "dev2", "Q/ulw&]", "True", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
+            this.CopyFileAtLocation("10", "[[sourcePath]]", "\\\\RSAKLFSVRSBSPDC\\FileSystemShareTestingSite\\copyfile3.txt", "\"\"", "\"\"", "[[destPath]]", "sftp://rsaklfsvrgendev/copied1.txt", "dev2", "Q/ulw&]", "True", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
 #line hidden
         }
         
@@ -521,7 +521,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[destPath]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "sftp://rsaklfsvrsbspdc/copied2.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "sftp://rsaklfsvrgendev/copied2.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destUsername", "dev2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destPassword", "Q/ulw&]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:selected", "True")]
@@ -532,7 +532,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void CopyFileAtLocation_15()
         {
-            this.CopyFileAtLocation("15", "[[sourcePath]]", "ftp://rsaklfsvrsbspdc:1001/FORTESTING/copyfile3.txt", "\"\"", "\"\"", "[[destPath]]", "sftp://rsaklfsvrsbspdc/copied2.txt", "dev2", "Q/ulw&]", "True", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
+            this.CopyFileAtLocation("15", "[[sourcePath]]", "ftp://rsaklfsvrsbspdc:1001/FORTESTING/copyfile3.txt", "\"\"", "\"\"", "[[destPath]]", "sftp://rsaklfsvrgendev/copied2.txt", "dev2", "Q/ulw&]", "True", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
 #line hidden
         }
         
@@ -677,7 +677,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "integrationtester")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "I73573r0")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[destPath]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "sftp://rsaklfsvrsbspdc/copied3.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "sftp://rsaklfsvrgendev/copied3.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destUsername", "dev2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destPassword", "Q/ulw&]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:selected", "True")]
@@ -688,7 +688,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void CopyFileAtLocation_21()
         {
-            this.CopyFileAtLocation("21", "[[sourcePath]]", "ftp://rsaklfsvrsbspdc:1002/FORTESTING/copyfile4.txt", "integrationtester", "I73573r0", "[[destPath]]", "sftp://rsaklfsvrsbspdc/copied3.txt", "dev2", "Q/ulw&]", "True", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
+            this.CopyFileAtLocation("21", "[[sourcePath]]", "ftp://rsaklfsvrsbspdc:1002/FORTESTING/copyfile4.txt", "integrationtester", "I73573r0", "[[destPath]]", "sftp://rsaklfsvrgendev/copied3.txt", "dev2", "Q/ulw&]", "True", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
 #line hidden
         }
         
@@ -699,7 +699,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "22")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "22")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[sourcePath]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "sftp://rsaklfsvrsbspdc/copyfile0.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "sftp://rsaklfsvrgendev/copyfile0.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "dev2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "Q/ulw&]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[destPath]]")]
@@ -714,7 +714,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void CopyFileAtLocation_22()
         {
-            this.CopyFileAtLocation("22", "[[sourcePath]]", "sftp://rsaklfsvrsbspdc/copyfile0.txt", "dev2", "Q/ulw&]", "[[destPath]]", "C:\\copied40.txt", "\"\"", "\"\"", "True", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
+            this.CopyFileAtLocation("22", "[[sourcePath]]", "sftp://rsaklfsvrgendev/copyfile0.txt", "dev2", "Q/ulw&]", "[[destPath]]", "C:\\copied40.txt", "\"\"", "\"\"", "True", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
 #line hidden
         }
         
@@ -725,7 +725,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "23")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "23")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[sourcePath]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "sftp://rsaklfsvrsbspdc/copyfile1.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "sftp://rsaklfsvrgendev/copyfile1.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "dev2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "Q/ulw&]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[destPath]]")]
@@ -740,7 +740,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void CopyFileAtLocation_23()
         {
-            this.CopyFileAtLocation("23", "[[sourcePath]]", "sftp://rsaklfsvrsbspdc/copyfile1.txt", "dev2", "Q/ulw&]", "[[destPath]]", "\\\\RSAKLFSVRSBSPDC\\FileSystemShareTestingSite\\copied4.txt", "\"\"", "\"\"", "True", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
+            this.CopyFileAtLocation("23", "[[sourcePath]]", "sftp://rsaklfsvrgendev/copyfile1.txt", "dev2", "Q/ulw&]", "[[destPath]]", "\\\\RSAKLFSVRSBSPDC\\FileSystemShareTestingSite\\copied4.txt", "\"\"", "\"\"", "True", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
 #line hidden
         }
         
@@ -751,7 +751,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "24")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "24")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[sourcePath]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "sftp://rsaklfsvrsbspdc/copyfile2.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "sftp://rsaklfsvrgendev/copyfile2.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "dev2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "Q/ulw&]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[destPath]]")]
@@ -766,7 +766,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void CopyFileAtLocation_24()
         {
-            this.CopyFileAtLocation("24", "[[sourcePath]]", "sftp://rsaklfsvrsbspdc/copyfile2.txt", "dev2", "Q/ulw&]", "[[destPath]]", "ftp://rsaklfsvrsbspdc:1001/FORTESTING/copied4.txt", "\"\"", "\"\"", "True", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
+            this.CopyFileAtLocation("24", "[[sourcePath]]", "sftp://rsaklfsvrgendev/copyfile2.txt", "dev2", "Q/ulw&]", "[[destPath]]", "ftp://rsaklfsvrsbspdc:1001/FORTESTING/copied4.txt", "\"\"", "\"\"", "True", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
 #line hidden
         }
         
@@ -777,7 +777,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "25")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "25")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[sourcePath]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "sftp://rsaklfsvrsbspdc/copyfile3.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "sftp://rsaklfsvrgendev/copyfile3.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "dev2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "Q/ulw&]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[destPath]]")]
@@ -792,7 +792,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void CopyFileAtLocation_25()
         {
-            this.CopyFileAtLocation("25", "[[sourcePath]]", "sftp://rsaklfsvrsbspdc/copyfile3.txt", "dev2", "Q/ulw&]", "[[destPath]]", "ftp://rsaklfsvrsbspdc:1002/FORTESTING/copied4.txt", "integrationtester", "I73573r0", "True", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
+            this.CopyFileAtLocation("25", "[[sourcePath]]", "sftp://rsaklfsvrgendev/copyfile3.txt", "dev2", "Q/ulw&]", "[[destPath]]", "ftp://rsaklfsvrsbspdc:1002/FORTESTING/copied4.txt", "integrationtester", "I73573r0", "True", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
 #line hidden
         }
         
@@ -803,11 +803,11 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "26")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "26")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[sourcePath]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "sftp://rsaklfsvrsbspdc/copyfile5.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "sftp://rsaklfsvrgendev/copyfile5.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "dev2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "Q/ulw&]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[destPath]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "sftp://rsaklfsvrsbspdc/copied4.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "sftp://rsaklfsvrgendev/copied4.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destUsername", "dev2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destPassword", "Q/ulw&]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:selected", "True")]
@@ -818,7 +818,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void CopyFileAtLocation_26()
         {
-            this.CopyFileAtLocation("26", "[[sourcePath]]", "sftp://rsaklfsvrsbspdc/copyfile5.txt", "dev2", "Q/ulw&]", "[[destPath]]", "sftp://rsaklfsvrsbspdc/copied4.txt", "dev2", "Q/ulw&]", "True", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
+            this.CopyFileAtLocation("26", "[[sourcePath]]", "sftp://rsaklfsvrgendev/copyfile5.txt", "dev2", "Q/ulw&]", "[[destPath]]", "sftp://rsaklfsvrgendev/copied4.txt", "dev2", "Q/ulw&]", "True", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
 #line hidden
         }
         
@@ -829,11 +829,11 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "27")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "27")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[sourcePath]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "sftp://rsaklfsvrsbspdc/copyfile6.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "sftp://rsaklfsvrgendev/copyfile6.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "dev2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "Q/ulw&]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[destPath]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "sftp://rsaklfsvrsbspdc/copied51.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "sftp://rsaklfsvrgendev/copied51.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destUsername", "dev2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destPassword", "Q/ulw&]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:selected", "True")]
@@ -844,7 +844,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void CopyFileAtLocation_27()
         {
-            this.CopyFileAtLocation("27", "[[sourcePath]]", "sftp://rsaklfsvrsbspdc/copyfile6.txt", "dev2", "Q/ulw&]", "[[destPath]]", "sftp://rsaklfsvrsbspdc/copied51.txt", "dev2", "Q/ulw&]", "True", "[[result]]", "\"Success\"", "NO", "C:\\Temp\\key.opk", "", ((string[])(null)));
+            this.CopyFileAtLocation("27", "[[sourcePath]]", "sftp://rsaklfsvrgendev/copyfile6.txt", "dev2", "Q/ulw&]", "[[destPath]]", "sftp://rsaklfsvrgendev/copied51.txt", "dev2", "Q/ulw&]", "True", "[[result]]", "\"Success\"", "NO", "C:\\Temp\\key.opk", "", ((string[])(null)));
 #line hidden
         }
         
@@ -855,11 +855,11 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "28")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "28")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[sourcePath]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "sftp://rsaklfsvrsbspdc/copyfile7.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "sftp://rsaklfsvrgendev/copyfile7.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "dev2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "Q/ulw&]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[destPath]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "sftp://rsaklfsvrsbspdc/copied71.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "sftp://rsaklfsvrgendev/copied71.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destUsername", "dev2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destPassword", "Q/ulw&]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:selected", "True")]
@@ -870,7 +870,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "C:\\Temp\\key.opk")]
         public virtual void CopyFileAtLocation_28()
         {
-            this.CopyFileAtLocation("28", "[[sourcePath]]", "sftp://rsaklfsvrsbspdc/copyfile7.txt", "dev2", "Q/ulw&]", "[[destPath]]", "sftp://rsaklfsvrsbspdc/copied71.txt", "dev2", "Q/ulw&]", "True", "[[result]]", "\"Success\"", "NO", "C:\\Temp\\key.opk", "C:\\Temp\\key.opk", ((string[])(null)));
+            this.CopyFileAtLocation("28", "[[sourcePath]]", "sftp://rsaklfsvrgendev/copyfile7.txt", "dev2", "Q/ulw&]", "[[destPath]]", "sftp://rsaklfsvrgendev/copied71.txt", "dev2", "Q/ulw&]", "True", "[[result]]", "\"Success\"", "NO", "C:\\Temp\\key.opk", "C:\\Temp\\key.opk", ((string[])(null)));
 #line hidden
         }
         

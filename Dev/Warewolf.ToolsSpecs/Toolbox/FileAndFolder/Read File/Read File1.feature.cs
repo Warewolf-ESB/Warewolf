@@ -225,7 +225,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:NO", "6")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "SFTP")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[path]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "sftp://rsaklfsvrsbspdc/filetoread.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "sftp://rsaklfsvrgendev/filetoread.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "dev2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "Q/ulw&]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
@@ -234,7 +234,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
         public virtual void ReadFileAtLocation_6()
         {
-            this.ReadFileAtLocation("6", "SFTP", "[[path]]", "sftp://rsaklfsvrsbspdc/filetoread.txt", "dev2", "Q/ulw&]", "[[result]]", "Guid", "NO", "", ((string[])(null)));
+            this.ReadFileAtLocation("6", "SFTP", "[[path]]", "sftp://rsaklfsvrgendev/filetoread.txt", "dev2", "Q/ulw&]", "[[result]]", "Guid", "NO", "", ((string[])(null)));
 #line hidden
         }
         
@@ -246,7 +246,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:NO", "7")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "SFTP PK")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[path]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "sftp://rsaklfsvrsbspdc/filetoread1.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "sftp://rsaklfsvrgendev/filetoread1.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "dev2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "Q/ulw&]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
@@ -255,7 +255,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "C:\\Temp\\key.opk")]
         public virtual void ReadFileAtLocation_7()
         {
-            this.ReadFileAtLocation("7", "SFTP PK", "[[path]]", "sftp://rsaklfsvrsbspdc/filetoread1.txt", "dev2", "Q/ulw&]", "[[result]]", "Guid", "NO", "C:\\Temp\\key.opk", ((string[])(null)));
+            this.ReadFileAtLocation("7", "SFTP PK", "[[path]]", "sftp://rsaklfsvrgendev/filetoread1.txt", "dev2", "Q/ulw&]", "[[result]]", "Guid", "NO", "C:\\Temp\\key.opk", ((string[])(null)));
 #line hidden
         }
         
@@ -393,7 +393,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:NO", "6")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "SFTP")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[path]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "sftp://rsaklfsvrsbspdc/filetoread.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "sftp://rsaklfsvrgendev/filetoread.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "dev2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "Q/ulw&]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
@@ -402,7 +402,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
         public virtual void ReadFileAtLocationNull_6()
         {
-            this.ReadFileAtLocationNull("6", "SFTP", "[[path]]", "sftp://rsaklfsvrsbspdc/filetoread.txt", "dev2", "Q/ulw&]", "[[result]]", "Guid", "NO", "", ((string[])(null)));
+            this.ReadFileAtLocationNull("6", "SFTP", "[[path]]", "sftp://rsaklfsvrgendev/filetoread.txt", "dev2", "Q/ulw&]", "[[result]]", "Guid", "NO", "", ((string[])(null)));
 #line hidden
         }
         
@@ -414,7 +414,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:NO", "7")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "SFTP PK")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[path]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "sftp://rsaklfsvrsbspdc/filetoread1.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "sftp://rsaklfsvrgendev/filetoread1.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "dev2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "Q/ulw&]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
@@ -423,7 +423,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "C:\\Temp\\key.opk")]
         public virtual void ReadFileAtLocationNull_7()
         {
-            this.ReadFileAtLocationNull("7", "SFTP PK", "[[path]]", "sftp://rsaklfsvrsbspdc/filetoread1.txt", "dev2", "Q/ulw&]", "[[result]]", "Guid", "NO", "C:\\Temp\\key.opk", ((string[])(null)));
+            this.ReadFileAtLocationNull("7", "SFTP PK", "[[path]]", "sftp://rsaklfsvrgendev/filetoread1.txt", "dev2", "Q/ulw&]", "[[result]]", "Guid", "NO", "C:\\Temp\\key.opk", ((string[])(null)));
 #line hidden
         }
         
