@@ -52,13 +52,13 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
                 _namespace.SomethingChanged += SourceOnSomethingChanged;
                 Dependants = new List<IToolRegion>();
                 IsRefreshing = false;
-                if (_source.SelectedSource != null)
+                if (_source.SelectedSource != null && _namespace.SelectedNamespace != null)
                 {
                     Actions = model.GetActions(_source.SelectedSource, _namespace.SelectedNamespace);
                 }
-                IsActionEnabled = true;
                 if (Method != null && Actions != null)
                 {
+                    IsActionEnabled = true;
                     SelectedAction = Actions.FirstOrDefault(action => action.Method == Method.Method);
                 }
                 RefreshActionsCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(() =>
@@ -136,7 +136,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
 
         private void UpdateBasedOnNamespace()
         {
-            if (_source?.SelectedSource != null)
+            if (_source?.SelectedSource != null && _namespace?.SelectedNamespace != null)
             {
                 Actions = _model.GetActions(_source.SelectedSource, _namespace.SelectedNamespace);
                 SelectedAction = null;
@@ -147,8 +147,8 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
 
         public bool CanRefresh()
         {
-            IsActionEnabled = _source.SelectedSource != null ;
-            return _source.SelectedSource != null ;
+            IsActionEnabled = _source.SelectedSource != null && _namespace.SelectedNamespace != null;
+            return _source.SelectedSource != null && _namespace.SelectedNamespace != null;
         }
 
         public IPluginAction SelectedAction
