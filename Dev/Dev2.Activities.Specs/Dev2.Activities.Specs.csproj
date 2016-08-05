@@ -376,12 +376,7 @@
   <ItemGroup>
     <EmbeddedResource Include="Composition\DBSource\testingDBSrc.xml" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="WarewolfVersionUpdater\" />
-  </ItemGroup>
-  <ItemGroup>
-    <WCFMetadata Include="Service References\" />
-  </ItemGroup>
+  <ItemGroup />
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>
