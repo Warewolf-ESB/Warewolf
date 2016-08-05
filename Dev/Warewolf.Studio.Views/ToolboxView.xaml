@@ -181,7 +181,6 @@
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="30" />
             </Grid.ColumnDefinitions>
 
             <customControls:SearchTextBox Grid.Column="0" 
@@ -198,12 +197,6 @@
                     <core:HelpSetter Text="{x:Static languages:Core.ToolboxViewFilterSearchHelp}" DataContext="{Binding}" />
                 </i:Interaction.Behaviors>
             </customControls:SearchTextBox>
-            <Button Width="25" Grid.Column="1" Grid.Row="0" Height="25" ToolTip="{x:Static languages:Core.ToolboxRefreshToolTip}">
-                <fa:FontAwesome TextOptions.TextFormattingMode="Display" FontSize="16" Icon="Refresh" VerticalAlignment="Top" HorizontalAlignment="Center"/>
-                <i:Interaction.Behaviors>
-                    <core:HelpSetter Text="{x:Static languages:Core.ToolboxViewRefreshHelp}" DataContext="{Binding}" />
-                </i:Interaction.Behaviors>
-            </Button>
         </Grid>
 
         <ListBox Name="ToolListBox" 
