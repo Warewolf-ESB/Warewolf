@@ -14,6 +14,7 @@ namespace Warewolf.Studio.Views
         public ToolboxView()
         {
             InitializeComponent();
+            FilteredToolListBox.Visibility = Visibility.Collapsed;
         }
 
         private void UIElement_OnMouseMove(object sender, MouseEventArgs e)
