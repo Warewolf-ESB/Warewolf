@@ -1359,12 +1359,29 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
+        /// Click_SQL_Server_Large_View_Done_Button - Use 'Click_SQL_Server_Large_View_Done_ButtonExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void Click_SQL_Server_Large_View_Done_Button()
+        {
+            #region Variable Declarations
+            WpfButton doneButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase.DoneButton;
+            #endregion
+
+            // Verify that the 'Exists' property of 'Done' button equals 'True'
+            Assert.AreEqual(this.Click_SQL_Server_Large_View_Done_ButtonExpectedValues.DoneButtonExists, doneButton.Exists, "SQL Server large view done button does not exist.");
+
+            // Click 'Done' button
+            Mouse.Click(doneButton, new Point(35, 6));
+        }
+        
+        /// <summary>
         /// Click_SQL_Server_Large_View_Generate_Outputs - Use 'Click_SQL_Server_Large_View_Generate_OutputsExpectedValues' to pass parameters into this method.
         /// </summary>
         public void Click_SQL_Server_Large_View_Generate_Outputs()
         {
             #region Variable Declarations
             WpfButton generateOutputsButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase.LargeView.GenerateOutputsButton;
+            WpfEdit testDataTextbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase.LargeView.TestInputsTable.Row1.TestDataCell.TestDataComboBox.TestDataTextbox;
             #endregion
 
             // Verify that the 'Exists' property of 'Generate Outputs' button equals 'True'
@@ -1372,6 +1389,38 @@ namespace Warewolf.UITests
 
             // Click 'Generate Outputs' button
             Mouse.Click(generateOutputsButton, new Point(7, 7));
+
+            // Verify that the 'Exists' property of 'Text' text box equals 'True'
+            Assert.AreEqual(this.Click_SQL_Server_Large_View_Generate_OutputsExpectedValues.TestDataTextboxExists, testDataTextbox.Exists, "SQL Server large view test inputs row 1 test data textbox does not exist.");
+        }
+        
+        /// <summary>
+        /// Click_SQL_Server_Large_View_Test_Inputs_Button
+        /// </summary>
+        public void Click_SQL_Server_Large_View_Test_Inputs_Button()
+        {
+            #region Variable Declarations
+            WpfButton testInputsButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase.LargeView.TestInputsButton;
+            #endregion
+
+            // Click 'Test' button
+            Mouse.Click(testInputsButton, new Point(21, 11));
+        }
+        
+        /// <summary>
+        /// Click_SQL_Server_Large_View_Test_Inputs_Done_Button - Use 'Click_SQL_Server_Large_View_Test_Inputs_Done_ButtonExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void Click_SQL_Server_Large_View_Test_Inputs_Done_Button()
+        {
+            #region Variable Declarations
+            WpfButton testInputsDoneButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase.LargeView.TestInputsDoneButton;
+            #endregion
+
+            // Verify that the 'Exists' property of 'Done' button equals 'True'
+            Assert.AreEqual(this.Click_SQL_Server_Large_View_Test_Inputs_Done_ButtonExpectedValues.TestInputsDoneButtonExists, testInputsDoneButton.Exists, "SQL Server large view test inputs done button does not exist.");
+
+            // Click 'Done' button
+            Mouse.Click(testInputsDoneButton, new Point(35, 6));
         }
         
         /// <summary>
@@ -5065,6 +5114,38 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
+        /// Type_0_Into_SQL_Server_Large_View_Inputs_Row1_Data_Textbox - Use 'Type_0_Into_SQL_Server_Large_View_Inputs_Row1_Data_TextboxExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void Type_0_Into_SQL_Server_Large_View_Inputs_Row1_Data_Textbox()
+        {
+            #region Variable Declarations
+            WpfEdit dataTextbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase.LargeView.InputsTable.Row1.DataCell.DataCombobox.DataTextbox;
+            #endregion
+
+            // Type '0' in 'Text' text box
+            dataTextbox.Text = this.Type_0_Into_SQL_Server_Large_View_Inputs_Row1_Data_TextboxExpectedValues.DataTextboxText;
+
+            // Verify that the 'Text' property of 'Text' text box equals '0'
+            Assert.AreEqual(this.Type_0_Into_SQL_Server_Large_View_Inputs_Row1_Data_TextboxExpectedValues.DataTextboxText1, dataTextbox.Text, "SQL Server large view inputs row 1 data textbox text is not equal to S");
+        }
+        
+        /// <summary>
+        /// Type_0_Into_SQL_Server_Large_View_Test_Inputs_Row1_Test_Data_Textbox - Use 'Type_0_Into_SQL_Server_Large_View_Test_Inputs_Row1_Test_Data_TextboxExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void Type_0_Into_SQL_Server_Large_View_Test_Inputs_Row1_Test_Data_Textbox()
+        {
+            #region Variable Declarations
+            WpfEdit testDataTextbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase.LargeView.TestInputsTable.Row1.TestDataCell.TestDataComboBox.TestDataTextbox;
+            #endregion
+
+            // Type '0' in 'Text' text box
+            testDataTextbox.Text = this.Type_0_Into_SQL_Server_Large_View_Test_Inputs_Row1_Test_Data_TextboxExpectedValues.TestDataTextboxText;
+
+            // Verify that the 'Text' property of 'Text' text box equals '0'
+            Assert.AreEqual(this.Type_0_Into_SQL_Server_Large_View_Test_Inputs_Row1_Test_Data_TextboxExpectedValues.TestDataTextboxText1, testDataTextbox.Text, "SQL Server large view test inputs row 1 test data textbox text is not equal to S");
+        }
+        
+        /// <summary>
         /// Type_rsaklfsvrgen_into_DB_Source_Wizard_Server_Textbox - Use 'Type_rsaklfsvrgen_into_DB_Source_Wizard_Server_TextboxParams' to pass parameters into this method.
         /// </summary>
         public void Type_rsaklfsvrgen_into_DB_Source_Wizard_Server_Textbox()
@@ -5092,22 +5173,6 @@ namespace Warewolf.UITests
 
             // Type 's' in 'Description' cell
             uIDescriptionCell.Value = this.Type_S_Into_DebugInput_Row1_InputDataParams.UIDescriptionCellValue;
-
-            // Type 's' in 'Description' cell
-            uIDescriptionCell.Value = this.Type_S_Into_DebugInput_Row1_InputDataParams.UIDescriptionCellValue1;
-        }
-        
-        /// <summary>
-        /// Type_S_Into_SQL_Server_Large_View_Inputs_Row1_Data_Textbox - Use 'Type_S_Into_SQL_Server_Large_View_Inputs_Row1_Data_TextboxExpectedValues' to pass parameters into this method.
-        /// </summary>
-        public void Type_S_Into_SQL_Server_Large_View_Inputs_Row1_Data_Textbox()
-        {
-            #region Variable Declarations
-            WpfEdit dataTextbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase.LargeView.InputsTable.Row1.DataCell.DataCombobox.DataTextbox;
-            #endregion
-
-            // Verify that the 'Text' property of 'Text' text box equals 'S'
-            Assert.AreEqual(this.Type_S_Into_SQL_Server_Large_View_Inputs_Row1_Data_TextboxExpectedValues.DataTextboxText, dataTextbox.Text, "SQL Server large view inputs row 1 data textbox text is not equal to S");
         }
         
         /// <summary>
@@ -5500,6 +5565,18 @@ namespace Warewolf.UITests
             }
         }
         
+        public virtual Click_SQL_Server_Large_View_Done_ButtonExpectedValues Click_SQL_Server_Large_View_Done_ButtonExpectedValues
+        {
+            get
+            {
+                if ((this.mClick_SQL_Server_Large_View_Done_ButtonExpectedValues == null))
+                {
+                    this.mClick_SQL_Server_Large_View_Done_ButtonExpectedValues = new Click_SQL_Server_Large_View_Done_ButtonExpectedValues();
+                }
+                return this.mClick_SQL_Server_Large_View_Done_ButtonExpectedValues;
+            }
+        }
+        
         public virtual Click_SQL_Server_Large_View_Generate_OutputsExpectedValues Click_SQL_Server_Large_View_Generate_OutputsExpectedValues
         {
             get
@@ -5509,6 +5586,18 @@ namespace Warewolf.UITests
                     this.mClick_SQL_Server_Large_View_Generate_OutputsExpectedValues = new Click_SQL_Server_Large_View_Generate_OutputsExpectedValues();
                 }
                 return this.mClick_SQL_Server_Large_View_Generate_OutputsExpectedValues;
+            }
+        }
+        
+        public virtual Click_SQL_Server_Large_View_Test_Inputs_Done_ButtonExpectedValues Click_SQL_Server_Large_View_Test_Inputs_Done_ButtonExpectedValues
+        {
+            get
+            {
+                if ((this.mClick_SQL_Server_Large_View_Test_Inputs_Done_ButtonExpectedValues == null))
+                {
+                    this.mClick_SQL_Server_Large_View_Test_Inputs_Done_ButtonExpectedValues = new Click_SQL_Server_Large_View_Test_Inputs_Done_ButtonExpectedValues();
+                }
+                return this.mClick_SQL_Server_Large_View_Test_Inputs_Done_ButtonExpectedValues;
             }
         }
         
@@ -6820,6 +6909,30 @@ namespace Warewolf.UITests
             }
         }
         
+        public virtual Type_0_Into_SQL_Server_Large_View_Inputs_Row1_Data_TextboxExpectedValues Type_0_Into_SQL_Server_Large_View_Inputs_Row1_Data_TextboxExpectedValues
+        {
+            get
+            {
+                if ((this.mType_0_Into_SQL_Server_Large_View_Inputs_Row1_Data_TextboxExpectedValues == null))
+                {
+                    this.mType_0_Into_SQL_Server_Large_View_Inputs_Row1_Data_TextboxExpectedValues = new Type_0_Into_SQL_Server_Large_View_Inputs_Row1_Data_TextboxExpectedValues();
+                }
+                return this.mType_0_Into_SQL_Server_Large_View_Inputs_Row1_Data_TextboxExpectedValues;
+            }
+        }
+        
+        public virtual Type_0_Into_SQL_Server_Large_View_Test_Inputs_Row1_Test_Data_TextboxExpectedValues Type_0_Into_SQL_Server_Large_View_Test_Inputs_Row1_Test_Data_TextboxExpectedValues
+        {
+            get
+            {
+                if ((this.mType_0_Into_SQL_Server_Large_View_Test_Inputs_Row1_Test_Data_TextboxExpectedValues == null))
+                {
+                    this.mType_0_Into_SQL_Server_Large_View_Test_Inputs_Row1_Test_Data_TextboxExpectedValues = new Type_0_Into_SQL_Server_Large_View_Test_Inputs_Row1_Test_Data_TextboxExpectedValues();
+                }
+                return this.mType_0_Into_SQL_Server_Large_View_Test_Inputs_Row1_Test_Data_TextboxExpectedValues;
+            }
+        }
+        
         public virtual Type_rsaklfsvrgen_into_DB_Source_Wizard_Server_TextboxParams Type_rsaklfsvrgen_into_DB_Source_Wizard_Server_TextboxParams
         {
             get
@@ -6841,18 +6954,6 @@ namespace Warewolf.UITests
                     this.mType_S_Into_DebugInput_Row1_InputDataParams = new Type_S_Into_DebugInput_Row1_InputDataParams();
                 }
                 return this.mType_S_Into_DebugInput_Row1_InputDataParams;
-            }
-        }
-        
-        public virtual Type_S_Into_SQL_Server_Large_View_Inputs_Row1_Data_TextboxExpectedValues Type_S_Into_SQL_Server_Large_View_Inputs_Row1_Data_TextboxExpectedValues
-        {
-            get
-            {
-                if ((this.mType_S_Into_SQL_Server_Large_View_Inputs_Row1_Data_TextboxExpectedValues == null))
-                {
-                    this.mType_S_Into_SQL_Server_Large_View_Inputs_Row1_Data_TextboxExpectedValues = new Type_S_Into_SQL_Server_Large_View_Inputs_Row1_Data_TextboxExpectedValues();
-                }
-                return this.mType_S_Into_SQL_Server_Large_View_Inputs_Row1_Data_TextboxExpectedValues;
             }
         }
         
@@ -7016,7 +7117,11 @@ namespace Warewolf.UITests
         
         private Click_Show_Dependencies_In_Explorer_Context_MenuParams mClick_Show_Dependencies_In_Explorer_Context_MenuParams;
         
+        private Click_SQL_Server_Large_View_Done_ButtonExpectedValues mClick_SQL_Server_Large_View_Done_ButtonExpectedValues;
+        
         private Click_SQL_Server_Large_View_Generate_OutputsExpectedValues mClick_SQL_Server_Large_View_Generate_OutputsExpectedValues;
+        
+        private Click_SQL_Server_Large_View_Test_Inputs_Done_ButtonExpectedValues mClick_SQL_Server_Large_View_Test_Inputs_Done_ButtonExpectedValues;
         
         private Click_Switch_Dialog_Done_ButtonParams mClick_Switch_Dialog_Done_ButtonParams;
         
@@ -7236,11 +7341,13 @@ namespace Warewolf.UITests
         
         private Select_UITestingDBSource_From_SQL_Server_Large_View_Source_ComboboxParams mSelect_UITestingDBSource_From_SQL_Server_Large_View_Source_ComboboxParams;
         
+        private Type_0_Into_SQL_Server_Large_View_Inputs_Row1_Data_TextboxExpectedValues mType_0_Into_SQL_Server_Large_View_Inputs_Row1_Data_TextboxExpectedValues;
+        
+        private Type_0_Into_SQL_Server_Large_View_Test_Inputs_Row1_Test_Data_TextboxExpectedValues mType_0_Into_SQL_Server_Large_View_Test_Inputs_Row1_Test_Data_TextboxExpectedValues;
+        
         private Type_rsaklfsvrgen_into_DB_Source_Wizard_Server_TextboxParams mType_rsaklfsvrgen_into_DB_Source_Wizard_Server_TextboxParams;
         
         private Type_S_Into_DebugInput_Row1_InputDataParams mType_S_Into_DebugInput_Row1_InputDataParams;
-        
-        private Type_S_Into_SQL_Server_Large_View_Inputs_Row1_Data_TextboxExpectedValues mType_S_Into_SQL_Server_Large_View_Inputs_Row1_Data_TextboxExpectedValues;
         
         private Type_tstci_into_Server_Source_Wizard_Address_TextboxParams mType_tstci_into_Server_Source_Wizard_Address_TextboxParams;
         
@@ -8084,6 +8191,21 @@ namespace Warewolf.UITests
     }
     
     /// <summary>
+    /// Parameters to be passed into 'Click_SQL_Server_Large_View_Done_Button'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Click_SQL_Server_Large_View_Done_ButtonExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Done' button equals 'True'
+        /// </summary>
+        public bool DoneButtonExists = true;
+        #endregion
+    }
+    
+    /// <summary>
     /// Parameters to be passed into 'Click_SQL_Server_Large_View_Generate_Outputs'
     /// </summary>
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
@@ -8095,6 +8217,26 @@ namespace Warewolf.UITests
         /// Verify that the 'Exists' property of 'Generate Outputs' button equals 'True'
         /// </summary>
         public bool GenerateOutputsButtonExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Text' text box equals 'True'
+        /// </summary>
+        public bool TestDataTextboxExists = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Click_SQL_Server_Large_View_Test_Inputs_Done_Button'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Click_SQL_Server_Large_View_Test_Inputs_Done_ButtonExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Done' button equals 'True'
+        /// </summary>
+        public bool TestInputsDoneButtonExists = true;
         #endregion
     }
     
@@ -10319,6 +10461,46 @@ namespace Warewolf.UITests
     }
     
     /// <summary>
+    /// Parameters to be passed into 'Type_0_Into_SQL_Server_Large_View_Inputs_Row1_Data_Textbox'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Type_0_Into_SQL_Server_Large_View_Inputs_Row1_Data_TextboxExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Type '0' in 'Text' text box
+        /// </summary>
+        public string DataTextboxText = "0";
+        
+        /// <summary>
+        /// Verify that the 'Text' property of 'Text' text box equals '0'
+        /// </summary>
+        public string DataTextboxText1 = "0";
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Type_0_Into_SQL_Server_Large_View_Test_Inputs_Row1_Test_Data_Textbox'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Type_0_Into_SQL_Server_Large_View_Test_Inputs_Row1_Test_Data_TextboxExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Type '0' in 'Text' text box
+        /// </summary>
+        public string TestDataTextboxText = "0";
+        
+        /// <summary>
+        /// Verify that the 'Text' property of 'Text' text box equals '0'
+        /// </summary>
+        public string TestDataTextboxText1 = "0";
+        #endregion
+    }
+    
+    /// <summary>
     /// Parameters to be passed into 'Type_rsaklfsvrgen_into_DB_Source_Wizard_Server_Textbox'
     /// </summary>
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
@@ -10350,26 +10532,6 @@ namespace Warewolf.UITests
         /// Type 's' in 'Description' cell
         /// </summary>
         public string UIDescriptionCellValue = "s";
-        
-        /// <summary>
-        /// Type 's' in 'Description' cell
-        /// </summary>
-        public string UIDescriptionCellValue1 = "s";
-        #endregion
-    }
-    
-    /// <summary>
-    /// Parameters to be passed into 'Type_S_Into_SQL_Server_Large_View_Inputs_Row1_Data_Textbox'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Type_S_Into_SQL_Server_Large_View_Inputs_Row1_Data_TextboxExpectedValues
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Verify that the 'Text' property of 'Text' text box equals 'S'
-        /// </summary>
-        public string DataTextboxText = "S";
         #endregion
     }
     
@@ -21965,7 +22127,7 @@ namespace Warewolf.UITests
         {
             #region Search Criteria
             this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.SqlServerDatabaseDesigner";
-            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "SQL Server Database(SqlServerDatabaseDesigner)";
+            this.SearchProperties.Add(new PropertyExpression(WpfControl.PropertyNames.AutomationId, "SQL Server Database", PropertyExpressionOperator.Contains));
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
@@ -21982,10 +22144,28 @@ namespace Warewolf.UITests
                 return this.mLargeView;
             }
         }
+        
+        public WpfButton DoneButton
+        {
+            get
+            {
+                if ((this.mDoneButton == null))
+                {
+                    this.mDoneButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mDoneButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "DoneButton";
+                    this.mDoneButton.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mDoneButton;
+            }
+        }
         #endregion
         
         #region Fields
         private LargeView2 mLargeView;
+        
+        private WpfButton mDoneButton;
         #endregion
     }
     
@@ -22055,6 +22235,50 @@ namespace Warewolf.UITests
                 return this.mGenerateOutputsButton;
             }
         }
+        
+        public TestInputsTable TestInputsTable
+        {
+            get
+            {
+                if ((this.mTestInputsTable == null))
+                {
+                    this.mTestInputsTable = new TestInputsTable(this);
+                }
+                return this.mTestInputsTable;
+            }
+        }
+        
+        public WpfButton TestInputsButton
+        {
+            get
+            {
+                if ((this.mTestInputsButton == null))
+                {
+                    this.mTestInputsButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mTestInputsButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "TestActionButton";
+                    this.mTestInputsButton.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mTestInputsButton;
+            }
+        }
+        
+        public WpfButton TestInputsDoneButton
+        {
+            get
+            {
+                if ((this.mTestInputsDoneButton == null))
+                {
+                    this.mTestInputsDoneButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mTestInputsDoneButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "GenerateOutputsDoneButton";
+                    this.mTestInputsDoneButton.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mTestInputsDoneButton;
+            }
+        }
         #endregion
         
         #region Fields
@@ -22065,6 +22289,12 @@ namespace Warewolf.UITests
         private InputsTable mInputsTable;
         
         private WpfButton mGenerateOutputsButton;
+        
+        private TestInputsTable mTestInputsTable;
+        
+        private WpfButton mTestInputsButton;
+        
+        private WpfButton mTestInputsDoneButton;
         #endregion
     }
     
@@ -22090,7 +22320,7 @@ namespace Warewolf.UITests
                 {
                     this.mGetCountriesListItem = new WpfListItem(this);
                     #region Search Criteria
-                    this.mGetCountriesListItem.SearchProperties[WpfListItem.PropertyNames.Name] = "GetCountries";
+                    this.mGetCountriesListItem.SearchProperties[WpfListItem.PropertyNames.Name] = "dbo.GetCountries";
                     this.mGetCountriesListItem.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
                     #endregion
                 }
@@ -22274,6 +22504,140 @@ namespace Warewolf.UITests
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class TestInputsTable : WpfTable
+    {
+        
+        public TestInputsTable(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfTable.PropertyNames.AutomationId] = "LargeDataGrid";
+            this.SearchProperties[WpfTable.PropertyNames.Instance] = "2";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public Row14 Row1
+        {
+            get
+            {
+                if ((this.mRow1 == null))
+                {
+                    this.mRow1 = new Row14(this);
+                }
+                return this.mRow1;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private Row14 mRow1;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Row14 : WpfRow
+    {
+        
+        public Row14(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchConfigurations.Add(SearchConfiguration.AlwaysSearch);
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public TestDataCell TestDataCell
+        {
+            get
+            {
+                if ((this.mTestDataCell == null))
+                {
+                    this.mTestDataCell = new TestDataCell(this);
+                }
+                return this.mTestDataCell;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private TestDataCell mTestDataCell;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class TestDataCell : WpfCell
+    {
+        
+        public TestDataCell(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = "Test Data";
+            this.SearchProperties[WpfCell.PropertyNames.AutomationId] = "UI_DataGridCell_AutoID";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public TestDataComboBox TestDataComboBox
+        {
+            get
+            {
+                if ((this.mTestDataComboBox == null))
+                {
+                    this.mTestDataComboBox = new TestDataComboBox(this);
+                }
+                return this.mTestDataComboBox;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private TestDataComboBox mTestDataComboBox;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class TestDataComboBox : WpfComboBox
+    {
+        
+        public TestDataComboBox(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfComboBox.PropertyNames.HelpText] = "This data is used for testing and not at run time.";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfEdit TestDataTextbox
+        {
+            get
+            {
+                if ((this.mTestDataTextbox == null))
+                {
+                    this.mTestDataTextbox = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mTestDataTextbox.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "Text";
+                    this.mTestDataTextbox.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mTestDataTextbox;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfEdit mTestDataTextbox;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class BaseConvert1 : WpfCustom
     {
         
@@ -22403,13 +22767,13 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public Row14 Row1
+        public Row15 Row1
         {
             get
             {
                 if ((this.mRow1 == null))
                 {
-                    this.mRow1 = new Row14(this);
+                    this.mRow1 = new Row15(this);
                 }
                 return this.mRow1;
             }
@@ -22417,15 +22781,15 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private Row14 mRow1;
+        private Row15 mRow1;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Row14 : WpfRow
+    public class Row15 : WpfRow
     {
         
-        public Row14(UITestControl searchLimitContainer) : 
+        public Row15(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -22572,13 +22936,13 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public Row15 Row1
+        public Row16 Row1
         {
             get
             {
                 if ((this.mRow1 == null))
                 {
-                    this.mRow1 = new Row15(this);
+                    this.mRow1 = new Row16(this);
                 }
                 return this.mRow1;
             }
@@ -22586,15 +22950,15 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private Row15 mRow1;
+        private Row16 mRow1;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Row15 : WpfRow
+    public class Row16 : WpfRow
     {
         
-        public Row15(UITestControl searchLimitContainer) : 
+        public Row16(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -23309,13 +23673,13 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public Row16 Row1
+        public Row17 Row1
         {
             get
             {
                 if ((this.mRow1 == null))
                 {
-                    this.mRow1 = new Row16(this);
+                    this.mRow1 = new Row17(this);
                 }
                 return this.mRow1;
             }
@@ -23323,15 +23687,15 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private Row16 mRow1;
+        private Row17 mRow1;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Row16 : WpfRow
+    public class Row17 : WpfRow
     {
         
-        public Row16(UITestControl searchLimitContainer) : 
+        public Row17(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -23527,13 +23891,13 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public Row17 Row1
+        public Row18 Row1
         {
             get
             {
                 if ((this.mRow1 == null))
                 {
-                    this.mRow1 = new Row17(this);
+                    this.mRow1 = new Row18(this);
                 }
                 return this.mRow1;
             }
@@ -23541,15 +23905,15 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private Row17 mRow1;
+        private Row18 mRow1;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Row17 : WpfRow
+    public class Row18 : WpfRow
     {
         
-        public Row17(UITestControl searchLimitContainer) : 
+        public Row18(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
