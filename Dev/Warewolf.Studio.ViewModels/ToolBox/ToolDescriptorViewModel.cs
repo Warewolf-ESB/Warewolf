@@ -8,6 +8,7 @@ using Dev2;
 using Dev2.Common.Interfaces.Toolbox;
 using Microsoft.Practices.Prism.Mvvm;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
+// ReSharper disable NonLocalizedString
 
 namespace Warewolf.Studio.ViewModels.ToolBox
 {
@@ -37,7 +38,7 @@ namespace Warewolf.Studio.ViewModels.ToolBox
                     {
                         if (exportedType.AssemblyQualifiedName != null)
                         {
-                            if (exportedType.FullName.Contains("DsfFlowDecisionActivity"))
+                            if (exportedType.FullName != null && exportedType.FullName.Contains("DsfFlowDecisionActivity"))
                             {
                                 var decisionType = typeof(FlowDecision);
                                 if (decisionType.AssemblyQualifiedName != null)
@@ -45,7 +46,7 @@ namespace Warewolf.Studio.ViewModels.ToolBox
                                     _activityType = new DataObject(DragDropHelper.WorkflowItemTypeNameFormat, decisionType.AssemblyQualifiedName);
                                 }
                             }
-                            else if (exportedType.FullName.Contains("DsfFlowSwitchActivity"))
+                            else if (exportedType.FullName != null && exportedType.FullName.Contains("DsfFlowSwitchActivity"))
                             {
                                 var switchType = typeof(FlowSwitch<string>);
                                 if (switchType.AssemblyQualifiedName != null)

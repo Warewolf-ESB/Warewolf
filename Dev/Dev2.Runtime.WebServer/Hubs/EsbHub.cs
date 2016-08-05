@@ -333,7 +333,7 @@ namespace Dev2.Runtime.WebServer.Hubs
                             User = user
                         };
 
-                        var value = processRequest.ToString();
+                        var value = processRequest?.ToString();
                         if (!string.IsNullOrEmpty(value))
                         {
                             if (!ResultsCache.Instance.AddResult(future, value))
