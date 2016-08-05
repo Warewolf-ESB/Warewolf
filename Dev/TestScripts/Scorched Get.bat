@@ -1,6 +1,6 @@
-git --help
+git --version
 if "%errorlevel%"=="0" GOTO GitCommandline
-:GitInstallBin
+IF NOT EXIST "%programfiles(x86)%\Git\bin\git.exe" echo GIT not found. &pause &exit 1
 "%programfiles(x86)%\Git\bin\git.exe" -C "%~dp0..\.." reset --hard
 if not %errorlevel%==0 pause & exit 1
 "%programfiles(x86)%\Git\bin\git.exe" -C "%~dp0..\.." clean -xdf
