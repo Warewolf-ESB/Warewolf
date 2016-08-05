@@ -122,7 +122,7 @@ securityWrapper
         public void ScheduledResourceModel_Constructor_ShouldSelectedCorrectResourcesWithId()
         {
             //setup
-            SetupSingleTaskWithId(); ;
+            SetupSingleTaskWithId();
             //create
             var model = new ScheduledResourceModel(_mockService.Object, _folderId, _agentPath,
                                                    _convertorFactory.Object, @"c:\", _wrapper.Object, a => a.WorkflowName);

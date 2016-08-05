@@ -79,7 +79,7 @@ namespace Dev2.Studio.Core
 
         // Singleton instance only
         protected EnvironmentRepository()
-            : this(CreateEnvironmentModel(Guid.Empty, new Uri(AppSettings.LocalHost), StringResources.DefaultEnvironmentName))
+            : this(CreateEnvironmentModel(Guid.Empty, new Uri(string.IsNullOrEmpty(AppSettings.LocalHost) ? $"http://{Environment.MachineName.ToLowerInvariant()}:3142" : AppSettings.LocalHost), StringResources.DefaultEnvironmentName))
         {
         }
 
@@ -88,7 +88,7 @@ namespace Dev2.Studio.Core
         {
             if (source == null)
             {
-                throw new ArgumentNullException("source");
+                throw new ArgumentNullException(nameof(source));
             }
             Source = source;
             Environments = new List<IEnvironmentModel> { Source };
@@ -597,9 +597,9 @@ namespace Dev2.Studio.Core
 
         #region CreateEnvironmentModel
 
-        static IEnvironmentModel CreateEnvironmentModel(Guid id, Uri applicationServerUri, string alias)
+        private static IEnvironmentModel CreateEnvironmentModel(Guid id, Uri applicationServerUri, string alias)
         {
-            var acutalWebServerUri = new Uri(applicationServerUri.ToString().Replace("localhost", Environment.MachineName));
+            var acutalWebServerUri = new Uri(applicationServerUri.ToString().ToUpper().Replace("localhost".ToUpper(), Environment.MachineName));
             var environmentConnection = new ServerProxy(acutalWebServerUri);
             return new EnvironmentModel(id, environmentConnection) { Name = alias };
         }

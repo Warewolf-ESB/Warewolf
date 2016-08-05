@@ -253,6 +253,12 @@ The more information you can provide us with, the faster we can track the issue 
   <data name="DatabaseSourceServerLabel" xml:space="preserve">
     <value>Server:</value>
   </data>
+  <data name="ToolAssign_Tags" xml:space="preserve">
+    <value>Assign Calculate</value>
+  </data>
+  <data name="ToolAssignObject_Tags" xml:space="preserve">
+    <value>Assign Object Calculate</value>
+  </data>
   <data name="DatabaseSourceServerNewHeaderLabel" xml:space="preserve">
     <value>New Database Source</value>
   </data>
