@@ -134,9 +134,25 @@ namespace Warewolf.Studio.ViewModels.ToolBox
         private void Filter(object sender, DoWorkEventArgs e)
         {
             var query = (string)e.Argument;
-            e.Result = string.IsNullOrWhiteSpace(query) ? _backedUpTools : _backedUpTools.Where(a => a.Tool.Name.ToLowerInvariant().Contains(query) ||
-                                                                            a.Tool.Category.ToLower().Contains(query) ||
-                                                                            a.Tool.FilterTag.ToLower().Contains(query));
+
+            var searchWords = query.ToLower().Split(' ');
+
+            var results = _backedUpTools.Where(i => i.Tool.Name.ToLower().Contains(searchWords[0])
+                  || i.Tool.Category.ToLower().Contains(searchWords[0])
+                  || i.Tool.FilterTag.ToLower().Contains(searchWords[0]));
+
+            if (searchWords.Length > 1)
+            {
+                for (int x = 1; x < searchWords.Length; x++)
+                {
+                    var x1 = x;
+                    results = results.Where(i => i.Tool.Name.ToLower().Contains(searchWords[x1])
+                                                 || i.Tool.Category.ToLower().Contains(searchWords[x1])
+                                                 || i.Tool.FilterTag.ToLower().Contains(searchWords[x1]));
+                }
+            }
+
+            e.Result = results;
         }
 
         private void FilterComplete(object sender, RunWorkerCompletedEventArgs e)
