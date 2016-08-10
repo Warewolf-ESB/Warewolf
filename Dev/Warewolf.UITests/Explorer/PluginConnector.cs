@@ -56,6 +56,7 @@ namespace Warewolf.UITests
             Uimap.TryCloseHangingSaveDialog();
             Uimap.TryRemoveFromExplorer(PluginSourceName);
             Uimap.TryClearToolboxFilter();
+            Uimap.TryCloseNewPluginSourceWizardTab();
             Uimap.TryCloseWorkflowTabs();
         }
 
