@@ -25,6 +25,7 @@ using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Common.Interfaces.Versioning;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Interfaces;
+using Microsoft.Practices.Prism;
 using Microsoft.Practices.Prism.Commands;
 using Microsoft.Practices.Prism.Mvvm;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
@@ -1080,23 +1081,7 @@ namespace Warewolf.Studio.ViewModels
                         {
                             explorerItemViewModel.ResourcePath = resourcePath + "\\" + explorerItemViewModel.ResourceName;
                         }
-                        foreach (var child in destination.Children.ToList())
-                        {
-                            if (child.ResourceId != destfolder.ResourceId)
-                            {
-                                if (child.ResourceName == ResourceName)
-                                {
-                                    if (child.Children.Count > 0)
-                                    {
-                                        foreach (var model in child.Children)
-                                        {
-                                            model.Parent = destfolder;
-                                        }
-                                        child.Parent.RemoveChild(child);
-                                    }
-                                }
-                            }
-                        }
+                        RemoveDuplicate(destination, destfolder);
                     }
                 }
                 else
@@ -1110,9 +1095,33 @@ namespace Warewolf.Studio.ViewModels
             }
             else if(!destination.IsFolder)
             {
-                ResourcePath = destination.ResourcePath + (destination.ResourcePath == String.Empty ? "" : "\\") + ResourceName;
+                ResourcePath = destination.ResourcePath + (destination.ResourcePath == string.Empty ? "" : "\\") + ResourceName;
                 Parent = destination;
                 Parent.AddChild(this);
+                var destfolder = Parent.Children.FirstOrDefault(a => a.ResourceName == ResourceName && a.IsFolder);
+                RemoveDuplicate(destination, destfolder);
+            }
+        }
+
+        private void RemoveDuplicate(IExplorerTreeItem destination, IExplorerItemViewModel destfolder)
+        {
+            if (destfolder != null)
+            {
+                for (int index = 0; index < destination.Children.ToList().Count; index++)
+                {
+                    var child = destination.Children.ToList()[index];
+                    if (child.ResourceId != destfolder.ResourceId)
+                    {
+                        if (child.ResourceName == ResourceName)
+                        {
+                            if (child.Children.Count > 0)
+                            {
+                                destfolder.Children.AddRange(child.Children);
+                            }
+                            destination.Children.RemoveAt(index);
+                        }
+                    }
+                }
             }
         }
 

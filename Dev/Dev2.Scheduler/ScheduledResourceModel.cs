@@ -118,7 +118,6 @@ namespace Dev2.Scheduler
 
         public void Save(IScheduledResource resource, string userName, string password)
         {
-
             if(!_securityWrapper.IsWindowsAuthorised(Sebatchlogonright, userName))
             {
                 throw new SecurityException(
@@ -136,7 +135,6 @@ Please contact your Warewolf System Administrator.", resource.WorkflowName));
             var folder = TaskService.GetFolder(WarewolfFolderPath);
             var created = CreateNewTask(resource);
             created.Settings.Enabled = resource.Status == SchedulerStatus.Enabled;
-
             folder.RegisterTaskDefinition(resource.Name, created, TaskCreation.CreateOrUpdate, userName, password,
                                           TaskLogonType.InteractiveTokenOrPassword);
         }

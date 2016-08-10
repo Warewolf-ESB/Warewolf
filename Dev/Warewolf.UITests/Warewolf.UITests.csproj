@@ -53,6 +53,8 @@
     </CodeAnalysisDependentAssemblyPaths>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Explorer\WebConnector.cs" />
+    <Compile Include="Explorer\PluginConnector.cs" />
     <Compile Include="Explorer\DBConnector.cs" />
     <Compile Include="Explorer\Refresh.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
