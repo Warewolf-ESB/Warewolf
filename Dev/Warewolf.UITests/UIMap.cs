@@ -582,6 +582,22 @@ namespace Warewolf.UITests
             if (ControlExistsNow(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.PluginSourceWizardTab.CloseButton))
             {
                 Click_Close_Plugin_Source_Wizard_Tab_Button();
+                if (ControlExistsNow(MessageBoxWindow.NoButton))
+                {
+                    Click_MessageBox_No();
+                }
+            }
+        }
+
+        public void TryCloseNewWebSourceWizardTab()
+        {
+            if (ControlExistsNow(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WebSourceWizardTab.CloseButton))
+            {
+                Click_Close_Web_Source_Wizard_Tab_Button();
+                if (ControlExistsNow(MessageBoxWindow.NoButton))
+                {
+                    Click_MessageBox_No();
+                }
             }
         }
     }
