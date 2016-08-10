@@ -12,6 +12,7 @@ using Keyboard = Microsoft.VisualStudio.TestTools.UITesting.Keyboard;
 using Mouse = Microsoft.VisualStudio.TestTools.UITesting.Mouse;
 using MouseButtons = System.Windows.Forms.MouseButtons;
 using System.Drawing;
+using System.IO;
 using System.Windows.Input;
 using System.Text.RegularExpressions;
 using System.Reflection;
@@ -290,19 +291,25 @@ namespace Warewolf.UITests
         {
             try
             {
-                Enter_Text_Into_Explorer_Filter(ResourceName);
-                WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);
-                if (ControlExistsNow(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem))
+                var resourcesFolder = Environment.ExpandEnvironmentVariables("%programdata%") + @"\Warewolf\Resources";
+                if (File.Exists(resourcesFolder + @"\" + ResourceName + ".xml"))
                 {
-                    RightClick_Explorer_Localhost_First_Item();
-                    Select_Delete_FromExplorerContextMenu();
-                    Click_MessageBox_Yes();
+                    Enter_Text_Into_Explorer_Filter(ResourceName);
+                    WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);
+                    if (ControlExistsNow(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem))
+                    {
+                        RightClick_Explorer_Localhost_First_Item();
+                        Select_Delete_FromExplorerContextMenu();
+                        Click_MessageBox_Yes();
+                    }
                 }
-                TryClearExplorerFilter();
             }
             catch (Exception e)
             {
                 Console.WriteLine("Cleanup failed to remove resource " + ResourceName + ". Test may have crashed before " + ResourceName + " was created.\n" + e.Message);
+            }
+            finally
+            {
                 TryClearExplorerFilter();
             }
         }
@@ -568,6 +575,14 @@ namespace Warewolf.UITests
             WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.Exists, "Saved " + Name + " does not appear in the explorer tree.");
             Click_Explorer_Filter_Clear_Button();
+        }
+
+        public void TryCloseNewPluginSourceWizardTab()
+        {
+            if (ControlExistsNow(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.PluginSourceWizardTab.CloseButton))
+            {
+                Click_Close_Plugin_Source_Wizard_Tab_Button();
+            }
         }
     }
 }

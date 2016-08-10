@@ -1374,6 +1374,22 @@
       <ActionType>Click</ActionType>
       <MouseButton>Left</MouseButton>
     </MouseAction>
+    <AssertAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.PluginSourceWizardTab.WorkSurfaceContext.NewPluginSourceWizard.ScrollViewer.Tree" ThinkTime="1000">
+      <ParameterName />
+      <PropertyName>Exists</PropertyName>
+      <ExpectedValue>True</ExpectedValue>
+      <MessageOnValidationFailure>Select assembly tree does not exist in new plugin source wizard tab.</MessageOnValidationFailure>
+      <Type>String</Type>
+      <PropertyCondition>AreEqual</PropertyCondition>
+    </AssertAction>
+    <AssertAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.PluginSourceWizardTab.WorkSurfaceContext.AssemblyNameTextbox">
+      <ParameterName />
+      <PropertyName>Exists</PropertyName>
+      <ExpectedValue>True</ExpectedValue>
+      <MessageOnValidationFailure>Assembly textbox does not exist in new plugin source wizard tab.</MessageOnValidationFailure>
+      <Type>String</Type>
+      <PropertyCondition>AreEqual</PropertyCondition>
+    </AssertAction>
     <TestStepMarkerAction Comment="" MarkerInformation="Click_NewPluginSource_Ribbon_Button">
       <ParameterName />
       <StepId>-1</StepId>
@@ -7643,7 +7659,7 @@
     </TestStepMarkerAction>
     <SetValueAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.PluginSourceWizardTab.WorkSurfaceContext.AssemblyNameTextbox">
       <ParameterName />
-      <Value Encoded="false">C:\Windows\Microsoft.NET\Framework64\v4.0.30319\fusion.dll</Value>
+      <Value Encoded="false">C:\Windows\Microsoft.NET\Framework64\v4.0.30319\mscorlib.dll</Value>
       <Type>String</Type>
     </SetValueAction>
     <AssertAction UIObjectName="UIMap.MainStudioWindow.SideMenuBar.SaveButton">
@@ -16228,7 +16244,24 @@
                                             <PropertyCondition Name="AutomationId">ExplorerTree</PropertyCondition>
                                           </AndCondition>
                                           <SupportLevel>0</SupportLevel>
-                                          <Descendants />
+                                          <Descendants>
+                                            <UIObject ControlType="TreeItem" Id="FileSystemTreeItem" FriendlyName="File System" SpecialControlType="None">
+                                              <TechnologyName>UIA</TechnologyName>
+                                              <WindowTitles>
+                                                <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
+                                              </WindowTitles>
+                                              <SearchConfigurations>
+                                                <SearchConfiguration>Expand</SearchConfiguration>
+                                              </SearchConfigurations>
+                                              <AndCondition>
+                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                <PropertyCondition Name="ControlType">TreeItem</PropertyCondition>
+                                                <PropertyCondition Name="Name">File System</PropertyCondition>
+                                              </AndCondition>
+                                              <SupportLevel>0</SupportLevel>
+                                              <Descendants />
+                                            </UIObject>
+                                          </Descendants>
                                         </UIObject>
                                       </Descendants>
                                     </UIObject>

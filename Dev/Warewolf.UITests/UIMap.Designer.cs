@@ -868,16 +868,25 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
-        /// Click_NewPluginSource_Ribbon_Button
+        /// Click_NewPluginSource_Ribbon_Button - Use 'Click_NewPluginSource_Ribbon_ButtonParams' to pass parameters into this method.
         /// </summary>
         public void Click_NewPluginSource_Ribbon_Button()
         {
             #region Variable Declarations
             WpfButton pluginSourceButton = this.MainStudioWindow.SideMenuBar.PluginSourceButton;
+            WpfTree tree = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.PluginSourceWizardTab.WorkSurfaceContext.NewPluginSourceWizard.ScrollViewer.Tree;
+            WpfEdit assemblyNameTextbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.PluginSourceWizardTab.WorkSurfaceContext.AssemblyNameTextbox;
             #endregion
 
             // Click 'Create a new plugin source' button
             Mouse.Click(pluginSourceButton, new Point(22, 13));
+
+            // Wait for 1 seconds for user delay between actions; Verify that the 'Exists' property of 'ExplorerTree' tree equals 'True'
+            Playback.Wait(1000);
+            Assert.AreEqual(this.Click_NewPluginSource_Ribbon_ButtonParams.TreeExists, tree.Exists, "Select assembly tree does not exist in new plugin source wizard tab.");
+
+            // Verify that the 'Exists' property of 'AssemblyNameTextBox' text box equals 'True'
+            Assert.AreEqual(this.Click_NewPluginSource_Ribbon_ButtonParams.AssemblyNameTextboxExists, assemblyNameTextbox.Exists, "Assembly textbox does not exist in new plugin source wizard tab.");
         }
         
         /// <summary>
@@ -5266,7 +5275,7 @@ namespace Warewolf.UITests
             WpfButton saveButton = this.MainStudioWindow.SideMenuBar.SaveButton;
             #endregion
 
-            // Type 'C:\Windows\Microsoft.NET\Framework64\v4.0.30319\fusion.dll' in 'AssemblyNameTextBox' text box
+            // Type 'C:\Windows\Microsoft.NET\Framework64\v4.0.30319\mscorlib.dll' in 'AssemblyNameTextBox' text box
             assemblyNameTextbox.Text = this.Type_dll_into_Plugin_Source_Wizard_Assembly_TextboxParams.AssemblyNameTextboxText;
 
             // Verify that the 'Enabled' property of 'Save this tab' button equals 'True'
@@ -5558,6 +5567,18 @@ namespace Warewolf.UITests
                     this.mClick_New_Workflow_Ribbon_ButtonParams = new Click_New_Workflow_Ribbon_ButtonParams();
                 }
                 return this.mClick_New_Workflow_Ribbon_ButtonParams;
+            }
+        }
+        
+        public virtual Click_NewPluginSource_Ribbon_ButtonParams Click_NewPluginSource_Ribbon_ButtonParams
+        {
+            get
+            {
+                if ((this.mClick_NewPluginSource_Ribbon_ButtonParams == null))
+                {
+                    this.mClick_NewPluginSource_Ribbon_ButtonParams = new Click_NewPluginSource_Ribbon_ButtonParams();
+                }
+                return this.mClick_NewPluginSource_Ribbon_ButtonParams;
             }
         }
         
@@ -7295,6 +7316,8 @@ namespace Warewolf.UITests
         
         private Click_New_Workflow_Ribbon_ButtonParams mClick_New_Workflow_Ribbon_ButtonParams;
         
+        private Click_NewPluginSource_Ribbon_ButtonParams mClick_NewPluginSource_Ribbon_ButtonParams;
+        
         private Click_Output_OnRecordset_InVariableListParams mClick_Output_OnRecordset_InVariableListParams;
         
         private Click_Output_OnVariable_InVariableListParams mClick_Output_OnVariable_InVariableListParams;
@@ -8114,6 +8137,26 @@ namespace Warewolf.UITests
         /// Verify that the 'Exists' property of 'UI_VariablesControl_AutoID' custom control equals 'True'
         /// </summary>
         public bool VariablesControlExists = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Click_NewPluginSource_Ribbon_Button'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Click_NewPluginSource_Ribbon_ButtonParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Wait for 1 seconds for user delay between actions; Verify that the 'Exists' property of 'ExplorerTree' tree equals 'True'
+        /// </summary>
+        public bool TreeExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'AssemblyNameTextBox' text box equals 'True'
+        /// </summary>
+        public bool AssemblyNameTextboxExists = true;
         #endregion
     }
     
@@ -10816,9 +10859,9 @@ namespace Warewolf.UITests
         
         #region Fields
         /// <summary>
-        /// Type 'C:\Windows\Microsoft.NET\Framework64\v4.0.30319\fusion.dll' in 'AssemblyNameTextBox' text box
+        /// Type 'C:\Windows\Microsoft.NET\Framework64\v4.0.30319\mscorlib.dll' in 'AssemblyNameTextBox' text box
         /// </summary>
-        public string AssemblyNameTextboxText = "C:\\Windows\\Microsoft.NET\\Framework64\\v4.0.30319\\fusion.dll";
+        public string AssemblyNameTextboxText = "C:\\Windows\\Microsoft.NET\\Framework64\\v4.0.30319\\mscorlib.dll";
         
         /// <summary>
         /// Verify that the 'Enabled' property of 'Save this tab' button equals 'True'
@@ -25808,17 +25851,13 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public WpfTree Tree
+        public Tree Tree
         {
             get
             {
                 if ((this.mTree == null))
                 {
-                    this.mTree = new WpfTree(this);
-                    #region Search Criteria
-                    this.mTree.SearchProperties[WpfTree.PropertyNames.AutomationId] = "ExplorerTree";
-                    this.mTree.WindowTitles.Add("Warewolf");
-                    #endregion
+                    this.mTree = new Tree(this);
                 }
                 return this.mTree;
             }
@@ -25826,7 +25865,43 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private WpfTree mTree;
+        private Tree mTree;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Tree : WpfTree
+    {
+        
+        public Tree(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfTree.PropertyNames.AutomationId] = "ExplorerTree";
+            this.WindowTitles.Add("Warewolf");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfTreeItem FileSystemTreeItem
+        {
+            get
+            {
+                if ((this.mFileSystemTreeItem == null))
+                {
+                    this.mFileSystemTreeItem = new WpfTreeItem(this);
+                    #region Search Criteria
+                    this.mFileSystemTreeItem.SearchProperties[WpfTreeItem.PropertyNames.Name] = "File System";
+                    this.mFileSystemTreeItem.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mFileSystemTreeItem;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfTreeItem mFileSystemTreeItem;
         #endregion
     }
     

@@ -46,7 +46,7 @@ namespace Warewolf.UITests
         {
             Uimap.SetGlobalPlaybackSettings();
             Uimap.WaitForStudioStart();
-            Console.WriteLine("Test \"" + TestContext.TestName + "\" starting on " + System.Environment.MachineName);
+            Console.WriteLine("Test \"" + TestContext.TestName + "\" starting on " + Environment.MachineName);
         }
         
         [TestCleanup()]
@@ -56,6 +56,7 @@ namespace Warewolf.UITests
             Uimap.TryCloseHangingSaveDialog();
             Uimap.TryRemoveFromExplorer(PluginSourceName);
             Uimap.TryClearToolboxFilter();
+            Uimap.TryCloseNewPluginSourceWizardTab();
             Uimap.TryCloseWorkflowTabs();
         }
 
