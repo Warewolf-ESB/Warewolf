@@ -7641,6 +7641,15 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Assertion</MarkerRegionType>
     </TestStepMarkerAction>
+    <MouseAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.PluginSourceWizardTab.WorkSurfaceContext.NewPluginSourceWizard.ScrollViewer.Tree.FileSystemTreeItem">
+      <ParameterName />
+      <ModifierKeys>None</ModifierKeys>
+      <IsGlobalHotkey>false</IsGlobalHotkey>
+      <Location X="39" Y="9" />
+      <WheelDirection>0</WheelDirection>
+      <ActionType>Click</ActionType>
+      <MouseButton>Left</MouseButton>
+    </MouseAction>
     <SetValueAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.PluginSourceWizardTab.WorkSurfaceContext.AssemblyNameTextbox">
       <ParameterName />
       <Value Encoded="false">C:\Windows\Microsoft.NET\Framework64\v4.0.30319\fusion.dll</Value>
@@ -16228,7 +16237,24 @@
                                             <PropertyCondition Name="AutomationId">ExplorerTree</PropertyCondition>
                                           </AndCondition>
                                           <SupportLevel>0</SupportLevel>
-                                          <Descendants />
+                                          <Descendants>
+                                            <UIObject ControlType="TreeItem" Id="FileSystemTreeItem" FriendlyName="File System" SpecialControlType="None">
+                                              <TechnologyName>UIA</TechnologyName>
+                                              <WindowTitles>
+                                                <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
+                                              </WindowTitles>
+                                              <SearchConfigurations>
+                                                <SearchConfiguration>Expand</SearchConfiguration>
+                                              </SearchConfigurations>
+                                              <AndCondition>
+                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                <PropertyCondition Name="ControlType">TreeItem</PropertyCondition>
+                                                <PropertyCondition Name="Name">File System</PropertyCondition>
+                                              </AndCondition>
+                                              <SupportLevel>0</SupportLevel>
+                                              <Descendants />
+                                            </UIObject>
+                                          </Descendants>
                                         </UIObject>
                                       </Descendants>
                                     </UIObject>

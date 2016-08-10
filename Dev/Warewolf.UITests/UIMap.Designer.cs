@@ -5262,9 +5262,13 @@ namespace Warewolf.UITests
         public void Type_dll_into_Plugin_Source_Wizard_Assembly_Textbox()
         {
             #region Variable Declarations
+            WpfTreeItem fileSystemTreeItem = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.PluginSourceWizardTab.WorkSurfaceContext.NewPluginSourceWizard.ScrollViewer.Tree.FileSystemTreeItem;
             WpfEdit assemblyNameTextbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.PluginSourceWizardTab.WorkSurfaceContext.AssemblyNameTextbox;
             WpfButton saveButton = this.MainStudioWindow.SideMenuBar.SaveButton;
             #endregion
+
+            // Click 'File System' tree item
+            Mouse.Click(fileSystemTreeItem, new Point(39, 9));
 
             // Type 'C:\Windows\Microsoft.NET\Framework64\v4.0.30319\fusion.dll' in 'AssemblyNameTextBox' text box
             assemblyNameTextbox.Text = this.Type_dll_into_Plugin_Source_Wizard_Assembly_TextboxParams.AssemblyNameTextboxText;
@@ -25808,17 +25812,13 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public WpfTree Tree
+        public Tree Tree
         {
             get
             {
                 if ((this.mTree == null))
                 {
-                    this.mTree = new WpfTree(this);
-                    #region Search Criteria
-                    this.mTree.SearchProperties[WpfTree.PropertyNames.AutomationId] = "ExplorerTree";
-                    this.mTree.WindowTitles.Add("Warewolf");
-                    #endregion
+                    this.mTree = new Tree(this);
                 }
                 return this.mTree;
             }
@@ -25826,7 +25826,43 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private WpfTree mTree;
+        private Tree mTree;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Tree : WpfTree
+    {
+        
+        public Tree(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfTree.PropertyNames.AutomationId] = "ExplorerTree";
+            this.WindowTitles.Add("Warewolf");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfTreeItem FileSystemTreeItem
+        {
+            get
+            {
+                if ((this.mFileSystemTreeItem == null))
+                {
+                    this.mFileSystemTreeItem = new WpfTreeItem(this);
+                    #region Search Criteria
+                    this.mFileSystemTreeItem.SearchProperties[WpfTreeItem.PropertyNames.Name] = "File System";
+                    this.mFileSystemTreeItem.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mFileSystemTreeItem;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfTreeItem mFileSystemTreeItem;
         #endregion
     }
     
