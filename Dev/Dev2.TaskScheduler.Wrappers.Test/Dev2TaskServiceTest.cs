@@ -69,6 +69,18 @@ namespace Dev2.TaskScheduler.Wrappers.Test
            
         }
 
+        [TestMethod]
+        [Owner("Sanele Mthembu")]
+        [TestCategory("TaskShedulerWrapper_Dev2TaskServiceTest_GetUnexistingFolder")]
+        public void TaskShedulerWrapper_Dev2TaskServiceTest_GetUnexistingFolder()
+        {
+            using (var service = new Dev2TaskService(new TaskServiceConvertorFactory()))
+            {
+                const string NewFolder = "SomethingThatDoesNotExist";
+                Assert.IsNotNull(service.GetFolder(NewFolder).Instance);
+                Assert.AreEqual(service.GetFolder(NewFolder).Instance.Name, NewFolder);
+            }
+        }
 
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
