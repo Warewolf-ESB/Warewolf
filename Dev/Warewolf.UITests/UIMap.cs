@@ -41,11 +41,11 @@ namespace Warewolf.UITests
             Playback.PlaybackSettings.MatchExactHierarchy = true;
             Playback.PlaybackSettings.SkipSetPropertyVerification = true;
             Playback.PlaybackSettings.SmartMatchOptions = SmartMatchOptions.None;
-            Playback.PlaybackError -= new EventHandler<PlaybackErrorEventArgs>(OnError);
-            Playback.PlaybackError += new EventHandler<PlaybackErrorEventArgs>(OnError);
+            Playback.PlaybackError -= OnError;
+            Playback.PlaybackError += OnError;
         }
 
-        void OnError(object sender, PlaybackErrorEventArgs e)
+        public void OnError(object sender, PlaybackErrorEventArgs e)
         {
             e.Result = PlaybackErrorOptions.Retry;
             var type = e.Error.GetType().ToString();
@@ -163,6 +163,7 @@ namespace Warewolf.UITests
 
         public void CleanupABlankWorkflow()
         {
+            Playback.PlaybackError -= OnError;
             try
             {
                 TryClearToolboxFilter();

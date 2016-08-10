@@ -561,6 +561,23 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
+        /// Click_DotNet_DLL_Large_View_Done_Button - Use 'Click_DotNet_DLL_Large_View_Done_ButtonParams' to pass parameters into this method.
+        /// </summary>
+        public void Click_DotNet_DLL_Large_View_Done_Button()
+        {
+            #region Variable Declarations
+            WpfButton doneButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.DoneButton;
+            WpfCustom smallView = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.SmallView;
+            #endregion
+
+            // Click 'Done' button
+            Mouse.Click(doneButton, new Point(33, 11));
+
+            // Verify that the 'Exists' property of 'SmallViewContent' custom control equals 'True'
+            Assert.AreEqual(this.Click_DotNet_DLL_Large_View_Done_ButtonParams.SmallViewExists, smallView.Exists, "DotNet DLL small view does not exist after clicking done on large view.");
+        }
+        
+        /// <summary>
         /// Click_DotNet_DLL_Large_View_Generate_Outputs - Use 'Click_DotNet_DLL_Large_View_Generate_OutputsExpectedValues' to pass parameters into this method.
         /// </summary>
         public void Click_DotNet_DLL_Large_View_Generate_Outputs()
@@ -579,6 +596,32 @@ namespace Warewolf.UITests
 
             // Verify that the 'Exists' property of 'Done' button equals 'True'
             Assert.AreEqual(this.Click_DotNet_DLL_Large_View_Generate_OutputsExpectedValues.DoneButtonExists, doneButton.Exists, "DotNet DLL generate outputs done button does not exist.");
+        }
+        
+        /// <summary>
+        /// Click_DotNet_DLL_Large_View_Test_Inputs_Button
+        /// </summary>
+        public void Click_DotNet_DLL_Large_View_Test_Inputs_Button()
+        {
+            #region Variable Declarations
+            WpfButton testButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.TestButton;
+            #endregion
+
+            // Click 'Test' button
+            Mouse.Click(testButton, new Point(21, 11));
+        }
+        
+        /// <summary>
+        /// Click_DotNet_DLL_Large_View_Test_Inputs_Done_Button
+        /// </summary>
+        public void Click_DotNet_DLL_Large_View_Test_Inputs_Done_Button()
+        {
+            #region Variable Declarations
+            WpfButton doneButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.DoneButton;
+            #endregion
+
+            // Click 'Done' button
+            Mouse.Click(doneButton, new Point(35, 6));
         }
         
         /// <summary>
@@ -772,7 +815,6 @@ namespace Warewolf.UITests
             WpfButton newWorkflowButton = this.MainStudioWindow.SideMenuBar.NewWorkflowButton;
             WpfCustom startNode = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.StartNode;
             WpfEdit searchTextBox = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox;
-            WpfButton refreshButton = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.RefreshButton;
             WpfCustom explorer = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer;
             WpfButton serverListComboBox = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.ServerListComboBox;
             WpfButton connectServerButton = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ConnectServerButton;
@@ -795,9 +837,6 @@ namespace Warewolf.UITests
 
             // Verify that the 'Exists' property of 'SearchTextBox' text box equals 'True'
             Assert.AreEqual(this.Click_New_Workflow_Ribbon_ButtonParams.SearchTextBoxExists, searchTextBox.Exists, "Toolbox filter textbox does not exist");
-
-            // Verify that the 'Exists' property of '' button equals 'True'
-            Assert.AreEqual(this.Click_New_Workflow_Ribbon_ButtonParams.RefreshButtonExists, refreshButton.Exists, "Toolbox refresh button does not exist");
 
             // Verify that the 'Exists' property of 'UI_ExplorerControl_AutoID' custom control equals 'True'
             Assert.AreEqual(this.Click_New_Workflow_Ribbon_ButtonParams.ExplorerExists, explorer.Exists, "Explorer does not exist in the studio");
@@ -1442,19 +1481,6 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
-        /// Click_DotNet_DLL_Large_View_Test_Inputs_Button
-        /// </summary>
-        public void Click_DotNet_DLL_Large_View_Test_Inputs_Button()
-        {
-            #region Variable Declarations
-            WpfButton testButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.TestButton;
-            #endregion
-
-            // Click 'Test' button
-            Mouse.Click(testButton, new Point(21, 11));
-        }
-        
-        /// <summary>
         /// Click_SQL_Server_Large_View_Test_Inputs_Done_Button - Use 'Click_SQL_Server_Large_View_Test_Inputs_Done_ButtonExpectedValues' to pass parameters into this method.
         /// </summary>
         public void Click_SQL_Server_Large_View_Test_Inputs_Done_Button()
@@ -1468,19 +1494,6 @@ namespace Warewolf.UITests
 
             // Click 'Done' button
             Mouse.Click(testInputsDoneButton, new Point(35, 6));
-        }
-        
-        /// <summary>
-        /// Click_DotNet_DLL_Large_View_Test_Inputs_Done_Button
-        /// </summary>
-        public void Click_DotNet_DLL_Large_View_Test_Inputs_Done_Button()
-        {
-            #region Variable Declarations
-            WpfButton doneButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.DoneButton;
-            #endregion
-
-            // Click 'Done' button
-            Mouse.Click(doneButton, new Point(35, 6));
         }
         
         /// <summary>
@@ -4855,46 +4868,6 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
-        /// Select_SystemRandom_From_DotNet_DLL_Large_View_Namespace_Combobox - Use 'Select_SystemRandom_From_DotNet_DLL_Large_View_Namespace_ComboboxExpectedValues' to pass parameters into this method.
-        /// </summary>
-        public void Select_SystemRandom_From_DotNet_DLL_Large_View_Namespace_Combobox()
-        {
-            #region Variable Declarations
-            WpfComboBox namespaceComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.NamespaceComboBox;
-            WpfListItem systemRandomListItem = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.NamespaceComboBox.SystemRandomListItem;
-            #endregion
-
-            // Click 'NamespaceComboBox' combo box
-            Mouse.Click(namespaceComboBox, new Point(216, 7));
-
-            // Click 'SystemRandom' list item
-            Mouse.Click(systemRandomListItem, new Point(137, 7));
-
-            // Verify that the 'SelectedItem' property of 'NamespaceComboBox' combo box equals 'System.Random'
-            Assert.AreEqual(this.Select_SystemRandom_From_DotNet_DLL_Large_View_Namespace_ComboboxExpectedValues.NamespaceComboBoxSelectedItem, namespaceComboBox.SelectedItem, "System.Random is not selected in DotNet DLL tool large view namespace combobox.");
-        }
-        
-        /// <summary>
-        /// Select_Next_From_DotNet_DLL_Large_View_Action_Combobox - Use 'Select_Next_From_DotNet_DLL_Large_View_Action_ComboboxExpectedValues' to pass parameters into this method.
-        /// </summary>
-        public void Select_Next_From_DotNet_DLL_Large_View_Action_Combobox()
-        {
-            #region Variable Declarations
-            WpfComboBox actionsComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ActionsComboBox;
-            WpfListItem nextListItem = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ActionsComboBox.NextListItem;
-            #endregion
-
-            // Click 'ActionsComboBox' combo box
-            Mouse.Click(actionsComboBox, new Point(216, 7));
-
-            // Click 'Next' list item
-            Mouse.Click(nextListItem, new Point(137, 7));
-
-            // Verify that the 'SelectedItem' property of 'ActionsComboBox' combo box equals 'Next'
-            Assert.AreEqual(this.Select_Next_From_DotNet_DLL_Large_View_Action_ComboboxExpectedValues.ActionsComboBoxSelectedItem, actionsComboBox.SelectedItem, "System.Random is not selected in DotNet DLL tool large view namespace combobox.");
-        }
-        
-        /// <summary>
         /// Select_http_From_Server_Source_Wizard_Address_Protocol_Dropdown - Use 'Select_http_From_Server_Source_Wizard_Address_Protocol_DropdownParams' to pass parameters into this method.
         /// </summary>
         public void Select_http_From_Server_Source_Wizard_Address_Protocol_Dropdown()
@@ -5071,6 +5044,26 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
+        /// Select_Next_From_DotNet_DLL_Large_View_Action_Combobox - Use 'Select_Next_From_DotNet_DLL_Large_View_Action_ComboboxExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void Select_Next_From_DotNet_DLL_Large_View_Action_Combobox()
+        {
+            #region Variable Declarations
+            WpfComboBox actionsComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ActionsComboBox;
+            WpfListItem nextListItem = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ActionsComboBox.NextListItem;
+            #endregion
+
+            // Click 'ActionsComboBox' combo box
+            Mouse.Click(actionsComboBox, new Point(216, 7));
+
+            // Click 'Next' list item
+            Mouse.Click(nextListItem, new Point(137, 7));
+
+            // Verify that the 'SelectedItem' property of 'ActionsComboBox' combo box equals 'Next'
+            Assert.AreEqual(this.Select_Next_From_DotNet_DLL_Large_View_Action_ComboboxExpectedValues.ActionsComboBoxSelectedItem, actionsComboBox.SelectedItem, "System.Random is not selected in DotNet DLL tool large view namespace combobox.");
+        }
+        
+        /// <summary>
         /// Select_Paste_FromContextMenu
         /// </summary>
         public void Select_Paste_FromContextMenu()
@@ -5150,6 +5143,26 @@ namespace Warewolf.UITests
 
             // Click 'Show Large View' menu item
             Mouse.Click(showLargeView, new Point(43, 15));
+        }
+        
+        /// <summary>
+        /// Select_SystemRandom_From_DotNet_DLL_Large_View_Namespace_Combobox - Use 'Select_SystemRandom_From_DotNet_DLL_Large_View_Namespace_ComboboxExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void Select_SystemRandom_From_DotNet_DLL_Large_View_Namespace_Combobox()
+        {
+            #region Variable Declarations
+            WpfComboBox namespaceComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.NamespaceComboBox;
+            WpfListItem systemRandomListItem = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.NamespaceComboBox.SystemRandomListItem;
+            #endregion
+
+            // Click 'NamespaceComboBox' combo box
+            Mouse.Click(namespaceComboBox, new Point(216, 7));
+
+            // Click 'SystemRandom' list item
+            Mouse.Click(systemRandomListItem, new Point(137, 7));
+
+            // Verify that the 'SelectedItem' property of 'NamespaceComboBox' combo box equals 'System.Random'
+            Assert.AreEqual(this.Select_SystemRandom_From_DotNet_DLL_Large_View_Namespace_ComboboxExpectedValues.NamespaceComboBoxSelectedItem, namespaceComboBox.SelectedItem, "System.Random is not selected in DotNet DLL tool large view namespace combobox.");
         }
         
         /// <summary>
@@ -5305,23 +5318,6 @@ namespace Warewolf.UITests
 
             // Verify that the 'Exists' property of 'TST-CI-REMOTE' list item equals 'True'
             Assert.AreEqual(this.Type_tstci_into_Server_Source_Wizard_Address_TextboxParams.TSTCIREMOTEExists, tSTCIREMOTE.Exists, "TSTCIREMOTE does not exist in server source wizard drop down list");
-        }
-        
-        /// <summary>
-        /// Click_DotNet_DLL_Large_View_Done_Button - Use 'Click_DotNet_DLL_Large_View_Done_ButtonParams' to pass parameters into this method.
-        /// </summary>
-        public void Click_DotNet_DLL_Large_View_Done_Button()
-        {
-            #region Variable Declarations
-            WpfButton doneButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.DoneButton;
-            WpfCustom smallView = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.SmallView;
-            #endregion
-
-            // Click 'Done' button
-            Mouse.Click(doneButton, new Point(33, 11));
-
-            // Verify that the 'Exists' property of 'SmallViewContent' custom control equals 'True'
-            Assert.AreEqual(this.Click_DotNet_DLL_Large_View_Done_ButtonParams.SmallViewExists, smallView.Exists, "DotNet DLL small view does not exist after clicking done on large view.");
         }
         
         #region Properties
@@ -5490,6 +5486,18 @@ namespace Warewolf.UITests
                     this.mClick_Deploy_Ribbon_ButtonParams = new Click_Deploy_Ribbon_ButtonParams();
                 }
                 return this.mClick_Deploy_Ribbon_ButtonParams;
+            }
+        }
+        
+        public virtual Click_DotNet_DLL_Large_View_Done_ButtonParams Click_DotNet_DLL_Large_View_Done_ButtonParams
+        {
+            get
+            {
+                if ((this.mClick_DotNet_DLL_Large_View_Done_ButtonParams == null))
+                {
+                    this.mClick_DotNet_DLL_Large_View_Done_ButtonParams = new Click_DotNet_DLL_Large_View_Done_ButtonParams();
+                }
+                return this.mClick_DotNet_DLL_Large_View_Done_ButtonParams;
             }
         }
         
@@ -7005,30 +7013,6 @@ namespace Warewolf.UITests
             }
         }
         
-        public virtual Select_SystemRandom_From_DotNet_DLL_Large_View_Namespace_ComboboxExpectedValues Select_SystemRandom_From_DotNet_DLL_Large_View_Namespace_ComboboxExpectedValues
-        {
-            get
-            {
-                if ((this.mSelect_SystemRandom_From_DotNet_DLL_Large_View_Namespace_ComboboxExpectedValues == null))
-                {
-                    this.mSelect_SystemRandom_From_DotNet_DLL_Large_View_Namespace_ComboboxExpectedValues = new Select_SystemRandom_From_DotNet_DLL_Large_View_Namespace_ComboboxExpectedValues();
-                }
-                return this.mSelect_SystemRandom_From_DotNet_DLL_Large_View_Namespace_ComboboxExpectedValues;
-            }
-        }
-        
-        public virtual Select_Next_From_DotNet_DLL_Large_View_Action_ComboboxExpectedValues Select_Next_From_DotNet_DLL_Large_View_Action_ComboboxExpectedValues
-        {
-            get
-            {
-                if ((this.mSelect_Next_From_DotNet_DLL_Large_View_Action_ComboboxExpectedValues == null))
-                {
-                    this.mSelect_Next_From_DotNet_DLL_Large_View_Action_ComboboxExpectedValues = new Select_Next_From_DotNet_DLL_Large_View_Action_ComboboxExpectedValues();
-                }
-                return this.mSelect_Next_From_DotNet_DLL_Large_View_Action_ComboboxExpectedValues;
-            }
-        }
-        
         public virtual Select_http_From_Server_Source_Wizard_Address_Protocol_DropdownParams Select_http_From_Server_Source_Wizard_Address_Protocol_DropdownParams
         {
             get
@@ -7053,6 +7037,18 @@ namespace Warewolf.UITests
             }
         }
         
+        public virtual Select_Next_From_DotNet_DLL_Large_View_Action_ComboboxExpectedValues Select_Next_From_DotNet_DLL_Large_View_Action_ComboboxExpectedValues
+        {
+            get
+            {
+                if ((this.mSelect_Next_From_DotNet_DLL_Large_View_Action_ComboboxExpectedValues == null))
+                {
+                    this.mSelect_Next_From_DotNet_DLL_Large_View_Action_ComboboxExpectedValues = new Select_Next_From_DotNet_DLL_Large_View_Action_ComboboxExpectedValues();
+                }
+                return this.mSelect_Next_From_DotNet_DLL_Large_View_Action_ComboboxExpectedValues;
+            }
+        }
+        
         public virtual Select_RSAKLFSVRGENDEV_From_Server_Source_Wizard_DropdownlistExpectedValues Select_RSAKLFSVRGENDEV_From_Server_Source_Wizard_DropdownlistExpectedValues
         {
             get
@@ -7062,6 +7058,18 @@ namespace Warewolf.UITests
                     this.mSelect_RSAKLFSVRGENDEV_From_Server_Source_Wizard_DropdownlistExpectedValues = new Select_RSAKLFSVRGENDEV_From_Server_Source_Wizard_DropdownlistExpectedValues();
                 }
                 return this.mSelect_RSAKLFSVRGENDEV_From_Server_Source_Wizard_DropdownlistExpectedValues;
+            }
+        }
+        
+        public virtual Select_SystemRandom_From_DotNet_DLL_Large_View_Namespace_ComboboxExpectedValues Select_SystemRandom_From_DotNet_DLL_Large_View_Namespace_ComboboxExpectedValues
+        {
+            get
+            {
+                if ((this.mSelect_SystemRandom_From_DotNet_DLL_Large_View_Namespace_ComboboxExpectedValues == null))
+                {
+                    this.mSelect_SystemRandom_From_DotNet_DLL_Large_View_Namespace_ComboboxExpectedValues = new Select_SystemRandom_From_DotNet_DLL_Large_View_Namespace_ComboboxExpectedValues();
+                }
+                return this.mSelect_SystemRandom_From_DotNet_DLL_Large_View_Namespace_ComboboxExpectedValues;
             }
         }
         
@@ -7158,18 +7166,6 @@ namespace Warewolf.UITests
                     this.mType_tstci_into_Server_Source_Wizard_Address_TextboxParams = new Type_tstci_into_Server_Source_Wizard_Address_TextboxParams();
                 }
                 return this.mType_tstci_into_Server_Source_Wizard_Address_TextboxParams;
-            }
-        }
-        
-        public virtual Click_DotNet_DLL_Large_View_Done_ButtonParams Click_DotNet_DLL_Large_View_Done_ButtonParams
-        {
-            get
-            {
-                if ((this.mClick_DotNet_DLL_Large_View_Done_ButtonParams == null))
-                {
-                    this.mClick_DotNet_DLL_Large_View_Done_ButtonParams = new Click_DotNet_DLL_Large_View_Done_ButtonParams();
-                }
-                return this.mClick_DotNet_DLL_Large_View_Done_ButtonParams;
             }
         }
         
@@ -7286,6 +7282,8 @@ namespace Warewolf.UITests
         private Click_Decision_Dialog_Done_ButtonParams mClick_Decision_Dialog_Done_ButtonParams;
         
         private Click_Deploy_Ribbon_ButtonParams mClick_Deploy_Ribbon_ButtonParams;
+        
+        private Click_DotNet_DLL_Large_View_Done_ButtonParams mClick_DotNet_DLL_Large_View_Done_ButtonParams;
         
         private Click_DotNet_DLL_Large_View_Generate_OutputsExpectedValues mClick_DotNet_DLL_Large_View_Generate_OutputsExpectedValues;
         
@@ -7539,15 +7537,15 @@ namespace Warewolf.UITests
         
         private Select_GetCountries_From_SQL_Server_Large_View_Action_ComboboxExpectedValues mSelect_GetCountries_From_SQL_Server_Large_View_Action_ComboboxExpectedValues;
         
-        private Select_SystemRandom_From_DotNet_DLL_Large_View_Namespace_ComboboxExpectedValues mSelect_SystemRandom_From_DotNet_DLL_Large_View_Namespace_ComboboxExpectedValues;
-        
-        private Select_Next_From_DotNet_DLL_Large_View_Action_ComboboxExpectedValues mSelect_Next_From_DotNet_DLL_Large_View_Action_ComboboxExpectedValues;
-        
         private Select_http_From_Server_Source_Wizard_Address_Protocol_DropdownParams mSelect_http_From_Server_Source_Wizard_Address_Protocol_DropdownParams;
         
         private Select_MSSQLSERVER_From_DB_Source_Wizard_Address_Protocol_DropdownParams mSelect_MSSQLSERVER_From_DB_Source_Wizard_Address_Protocol_DropdownParams;
         
+        private Select_Next_From_DotNet_DLL_Large_View_Action_ComboboxExpectedValues mSelect_Next_From_DotNet_DLL_Large_View_Action_ComboboxExpectedValues;
+        
         private Select_RSAKLFSVRGENDEV_From_Server_Source_Wizard_DropdownlistExpectedValues mSelect_RSAKLFSVRGENDEV_From_Server_Source_Wizard_DropdownlistExpectedValues;
+        
+        private Select_SystemRandom_From_DotNet_DLL_Large_View_Namespace_ComboboxExpectedValues mSelect_SystemRandom_From_DotNet_DLL_Large_View_Namespace_ComboboxExpectedValues;
         
         private Select_TSTCIREMOTE_From_Server_Source_Wizard_DropdownlistParams mSelect_TSTCIREMOTE_From_Server_Source_Wizard_DropdownlistParams;
         
@@ -7564,8 +7562,6 @@ namespace Warewolf.UITests
         private Type_S_Into_DebugInput_Row1_InputDataParams mType_S_Into_DebugInput_Row1_InputDataParams;
         
         private Type_tstci_into_Server_Source_Wizard_Address_TextboxParams mType_tstci_into_Server_Source_Wizard_Address_TextboxParams;
-        
-        private Click_DotNet_DLL_Large_View_Done_ButtonParams mClick_DotNet_DLL_Large_View_Done_ButtonParams;
         
         private MainStudioWindow mMainStudioWindow;
         
@@ -7987,6 +7983,21 @@ namespace Warewolf.UITests
     }
     
     /// <summary>
+    /// Parameters to be passed into 'Click_DotNet_DLL_Large_View_Done_Button'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Click_DotNet_DLL_Large_View_Done_ButtonParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'SmallViewContent' custom control equals 'True'
+        /// </summary>
+        public bool SmallViewExists = true;
+        #endregion
+    }
+    
+    /// <summary>
     /// Parameters to be passed into 'Click_DotNet_DLL_Large_View_Generate_Outputs'
     /// </summary>
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
@@ -8078,11 +8089,6 @@ namespace Warewolf.UITests
         /// Verify that the 'Exists' property of 'SearchTextBox' text box equals 'True'
         /// </summary>
         public bool SearchTextBoxExists = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of '' button equals 'True'
-        /// </summary>
-        public bool RefreshButtonExists = true;
         
         /// <summary>
         /// Verify that the 'Exists' property of 'UI_ExplorerControl_AutoID' custom control equals 'True'
@@ -10642,36 +10648,6 @@ namespace Warewolf.UITests
     }
     
     /// <summary>
-    /// Parameters to be passed into 'Select_SystemRandom_From_DotNet_DLL_Large_View_Namespace_Combobox'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Select_SystemRandom_From_DotNet_DLL_Large_View_Namespace_ComboboxExpectedValues
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Verify that the 'SelectedItem' property of 'NamespaceComboBox' combo box equals 'System.Random'
-        /// </summary>
-        public string NamespaceComboBoxSelectedItem = "System.Random";
-        #endregion
-    }
-    
-    /// <summary>
-    /// Parameters to be passed into 'Select_Next_From_DotNet_DLL_Large_View_Action_Combobox'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Select_Next_From_DotNet_DLL_Large_View_Action_ComboboxExpectedValues
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Verify that the 'SelectedItem' property of 'ActionsComboBox' combo box equals 'Next'
-        /// </summary>
-        public string ActionsComboBoxSelectedItem = "Next";
-        #endregion
-    }
-    
-    /// <summary>
     /// Parameters to be passed into 'Select_http_From_Server_Source_Wizard_Address_Protocol_Dropdown'
     /// </summary>
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
@@ -10712,6 +10688,21 @@ namespace Warewolf.UITests
     }
     
     /// <summary>
+    /// Parameters to be passed into 'Select_Next_From_DotNet_DLL_Large_View_Action_Combobox'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Select_Next_From_DotNet_DLL_Large_View_Action_ComboboxExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'SelectedItem' property of 'ActionsComboBox' combo box equals 'Next'
+        /// </summary>
+        public string ActionsComboBoxSelectedItem = "Next";
+        #endregion
+    }
+    
+    /// <summary>
     /// Parameters to be passed into 'Select_RSAKLFSVRGENDEV_From_Server_Source_Wizard_Dropdownlist'
     /// </summary>
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
@@ -10723,6 +10714,21 @@ namespace Warewolf.UITests
         /// Verify that the 'Text' property of 'Text' text box equals 'RSAKLFSVRGENDEV'
         /// </summary>
         public string TextboxText = "RSAKLFSVRGENDEV";
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Select_SystemRandom_From_DotNet_DLL_Large_View_Namespace_Combobox'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Select_SystemRandom_From_DotNet_DLL_Large_View_Namespace_ComboboxExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'SelectedItem' property of 'NamespaceComboBox' combo box equals 'System.Random'
+        /// </summary>
+        public string NamespaceComboBoxSelectedItem = "System.Random";
         #endregion
     }
     
@@ -10873,21 +10879,6 @@ namespace Warewolf.UITests
         /// Verify that the 'Exists' property of 'TST-CI-REMOTE' list item equals 'True'
         /// </summary>
         public bool TSTCIREMOTEExists = true;
-        #endregion
-    }
-    
-    /// <summary>
-    /// Parameters to be passed into 'Click_DotNet_DLL_Large_View_Done_Button'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Click_DotNet_DLL_Large_View_Done_ButtonParams
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Verify that the 'Exists' property of 'SmallViewContent' custom control equals 'True'
-        /// </summary>
-        public bool SmallViewExists = true;
         #endregion
     }
     
@@ -12980,22 +12971,6 @@ namespace Warewolf.UITests
             }
         }
         
-        public WpfButton RefreshButton
-        {
-            get
-            {
-                if ((this.mRefreshButton == null))
-                {
-                    this.mRefreshButton = new WpfButton(this);
-                    #region Search Criteria
-                    this.mRefreshButton.SearchProperties[WpfButton.PropertyNames.Name] = "";
-                    this.mRefreshButton.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mRefreshButton;
-            }
-        }
-        
         public ToolListBox ToolListBox
         {
             get
@@ -13013,8 +12988,6 @@ namespace Warewolf.UITests
         private WpfButton mToolUnpinBtn;
         
         private SearchTextBox1 mSearchTextBox;
-        
-        private WpfButton mRefreshButton;
         
         private ToolListBox mToolListBox;
         #endregion
