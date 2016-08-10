@@ -123,10 +123,5 @@ namespace Dev2.TaskScheduler.Wrappers.Test
             Assert.AreEqual(folder.ValidTasks.Count,2);
 
         }
-
-
-
-
-       
     }
 }

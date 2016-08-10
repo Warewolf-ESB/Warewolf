@@ -78,6 +78,7 @@ namespace Warewolf.UITests
         [TestCleanup]
         public void MyTestCleanup()
         {
+            Playback.PlaybackError -= Uimap.OnError;
             Uimap.TryCloseHangingSaveDialog();
             Uimap.TryCloseHangingWindowsGroupDialog();
             Uimap.TryCloseHangingDebugInputDialog();

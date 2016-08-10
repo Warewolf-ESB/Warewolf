@@ -21,9 +21,10 @@ namespace Dev2.TaskScheduler.Wrappers
 
         public Dev2TaskSettings(TaskSettings nativeInstance)
         {
-            _nativeInstance = nativeInstance;
+            nativeInstance.Priority = ProcessPriorityClass.Normal;
+            _nativeInstance = nativeInstance;            
         }
-
+        
         public ProcessPriorityClass Priority
         {
             get { return Instance.Priority; }
