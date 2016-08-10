@@ -1801,10 +1801,14 @@ namespace Warewolf.UITests
         public void Drag_GET_Web_Connector_Onto_DesignSurface()
         {
             #region Variable Declarations
+            WpfEdit searchTextBox = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox;
             WpfListItem gET = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.HTTPWebMethods.GET;
             WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
             WpfCustom webGet = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebGet;
             #endregion
+
+            // Type 'GET' in 'SearchTextBox' text box
+            searchTextBox.Text = this.Drag_GET_Web_Connector_Onto_DesignSurfaceParams.SearchTextBoxText;
 
             // Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
             flowchart.EnsureClickable(new Point(306, 126));
@@ -4965,7 +4969,7 @@ namespace Warewolf.UITests
         {
             #region Variable Declarations
             WpfCustom databaseCombobox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DBSourceWizardTab.WorkSurfaceContext.DatabaseCombobox;
-            WpfCustom dev2TestingDBListItem = this.MainStudioWindow.Dev2TestingDBListItem;
+            WpfCustom comboboxListItemAsDev2TestingDB = this.MainStudioWindow.ComboboxListItemAsDev2TestingDB;
             WpfText uIDev2TestingDBText = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DBSourceWizardTab.WorkSurfaceContext.NewDBSourceWizard.UIDatabaseComboxBoxCustom.UIDev2TestingDBText;
             #endregion
 
@@ -4973,7 +4977,7 @@ namespace Warewolf.UITests
             Mouse.Click(databaseCombobox, new Point(221, 9));
 
             // Click 'Dev2TestingDB' custom control
-            Mouse.Click(dev2TestingDBListItem, new Point(129, 19));
+            Mouse.Click(comboboxListItemAsDev2TestingDB, new Point(129, 19));
 
             // Verify that the 'DisplayText' property of 'Dev2TestingDB' label equals 'Dev2TestingDB'
             Assert.AreEqual(this.Select_Dev2TestingDB_From_DB_Source_Wizard_Database_ComboboxParams.UIDev2TestingDBTextDisplayText, uIDev2TestingDBText.DisplayText);
@@ -5057,7 +5061,7 @@ namespace Warewolf.UITests
         {
             #region Variable Declarations
             WpfButton toggleButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DBSourceWizardTab.WorkSurfaceContext.NewDBSourceWizard.ServerTypeComboBox.ToggleButton;
-            WpfText microsoftSQLServerText = this.MainStudioWindow.MicrosoftSQLServerListItem.MicrosoftSQLServerText;
+            WpfText microsoftSQLServerText = this.MainStudioWindow.ComboboxListItemAsMicrosoftSQLServer.MicrosoftSQLServerText;
             WpfText microsoftSQLServer = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DBSourceWizardTab.WorkSurfaceContext.NewDBSourceWizard.ServerTypeComboBox.MicrosoftSQLServer;
             #endregion
 
@@ -5386,7 +5390,7 @@ namespace Warewolf.UITests
             // Click 'SourcesComboBox' combo box
             Mouse.Click(sourcesComboBox, new Point(175, 9));
 
-            // Click 'UITestingWebSource' list item
+            // Click 'Dev2.Common.Interfaces.Core.WebServiceSourceDefinition' list item
             Mouse.Click(uITestingWebSourceListItem, new Point(163, 17));
         }
         
@@ -8977,6 +8981,11 @@ namespace Warewolf.UITests
         
         #region Fields
         /// <summary>
+        /// Type 'GET' in 'SearchTextBox' text box
+        /// </summary>
+        public string SearchTextBoxText = "GET";
+        
+        /// <summary>
         /// Verify that the 'Exists' property of 'DsfWebGetActivity' custom control equals 'True'
         /// </summary>
         public bool WebGetExists = true;
@@ -11579,32 +11588,32 @@ namespace Warewolf.UITests
             }
         }
         
-        public MicrosoftSQLServerListItem MicrosoftSQLServerListItem
+        public ComboboxListItemAsMicrosoftSQLServer ComboboxListItemAsMicrosoftSQLServer
         {
             get
             {
-                if ((this.mMicrosoftSQLServerListItem == null))
+                if ((this.mComboboxListItemAsMicrosoftSQLServer == null))
                 {
-                    this.mMicrosoftSQLServerListItem = new MicrosoftSQLServerListItem(this);
+                    this.mComboboxListItemAsMicrosoftSQLServer = new ComboboxListItemAsMicrosoftSQLServer(this);
                 }
-                return this.mMicrosoftSQLServerListItem;
+                return this.mComboboxListItemAsMicrosoftSQLServer;
             }
         }
         
-        public WpfCustom Dev2TestingDBListItem
+        public WpfCustom ComboboxListItemAsDev2TestingDB
         {
             get
             {
-                if ((this.mDev2TestingDBListItem == null))
+                if ((this.mComboboxListItemAsDev2TestingDB == null))
                 {
-                    this.mDev2TestingDBListItem = new WpfCustom(this);
+                    this.mComboboxListItemAsDev2TestingDB = new WpfCustom(this);
                     #region Search Criteria
-                    this.mDev2TestingDBListItem.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ComboEditorItemControl";
-                    this.mDev2TestingDBListItem.SearchProperties[WpfControl.PropertyNames.Name] = "Dev2TestingDB";
-                    this.mDev2TestingDBListItem.WindowTitles.Add("Warewolf");
+                    this.mComboboxListItemAsDev2TestingDB.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ComboEditorItemControl";
+                    this.mComboboxListItemAsDev2TestingDB.SearchProperties[WpfControl.PropertyNames.Name] = "Dev2TestingDB";
+                    this.mComboboxListItemAsDev2TestingDB.WindowTitles.Add("Warewolf");
                     #endregion
                 }
-                return this.mDev2TestingDBListItem;
+                return this.mComboboxListItemAsDev2TestingDB;
             }
         }
         #endregion
@@ -11646,9 +11655,9 @@ namespace Warewolf.UITests
         
         private WpfCustom mComboboxListItemAsHttp;
         
-        private MicrosoftSQLServerListItem mMicrosoftSQLServerListItem;
+        private ComboboxListItemAsMicrosoftSQLServer mComboboxListItemAsMicrosoftSQLServer;
         
-        private WpfCustom mDev2TestingDBListItem;
+        private WpfCustom mComboboxListItemAsDev2TestingDB;
         #endregion
     }
     
@@ -25045,7 +25054,7 @@ namespace Warewolf.UITests
         {
             #region Search Criteria
             this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.WebServiceGetDesigner";
-            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "GET Web Method(WebServiceGetDesigner)";
+            this.SearchProperties.Add(new PropertyExpression(WpfControl.PropertyNames.AutomationId, "GET Web Method", PropertyExpressionOperator.Contains));
             this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
             #endregion
         }
@@ -25215,7 +25224,7 @@ namespace Warewolf.UITests
                 {
                     this.mUITestingWebSourceListItem = new WpfListItem(this);
                     #region Search Criteria
-                    this.mUITestingWebSourceListItem.SearchProperties[WpfListItem.PropertyNames.Name] = "UITestingWebSource";
+                    this.mUITestingWebSourceListItem.SearchProperties[WpfListItem.PropertyNames.Name] = "Dev2.Common.Interfaces.Core.WebServiceSourceDefinition";
                     this.mUITestingWebSourceListItem.WindowTitles.Add("Warewolf");
                     #endregion
                 }
@@ -32453,10 +32462,10 @@ namespace Warewolf.UITests
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class MicrosoftSQLServerListItem : WpfCustom
+    public class ComboboxListItemAsMicrosoftSQLServer : WpfCustom
     {
         
-        public MicrosoftSQLServerListItem(UITestControl searchLimitContainer) : 
+        public ComboboxListItemAsMicrosoftSQLServer(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria

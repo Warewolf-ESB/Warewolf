@@ -2751,6 +2751,11 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
+    <SetValueAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox">
+      <ParameterName />
+      <Value Encoded="false">GET</Value>
+      <Type>String</Type>
+    </SetValueAction>
     <DragDropAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.HTTPWebMethods.GET">
       <ParameterName />
       <ModifierKeys>None</ModifierKeys>
@@ -7195,7 +7200,7 @@
       <ActionType>Click</ActionType>
       <MouseButton>Left</MouseButton>
     </MouseAction>
-    <MouseAction UIObjectName="UIMap.MainStudioWindow.Dev2TestingDBListItem">
+    <MouseAction UIObjectName="UIMap.MainStudioWindow.ComboboxListItemAsDev2TestingDB">
       <ParameterName />
       <ModifierKeys>None</ModifierKeys>
       <IsGlobalHotkey>false</IsGlobalHotkey>
@@ -7343,7 +7348,7 @@
       <ActionType>Click</ActionType>
       <MouseButton>Left</MouseButton>
     </MouseAction>
-    <AssertAction UIObjectName="UIMap.MainStudioWindow.MicrosoftSQLServerListItem.MicrosoftSQLServerText">
+    <AssertAction UIObjectName="UIMap.MainStudioWindow.ComboboxListItemAsMicrosoftSQLServer.MicrosoftSQLServerText">
       <ParameterName />
       <PropertyName>Exists</PropertyName>
       <ExpectedValue>True</ExpectedValue>
@@ -7351,7 +7356,7 @@
       <Type>String</Type>
       <PropertyCondition>AreEqual</PropertyCondition>
     </AssertAction>
-    <MouseAction UIObjectName="UIMap.MainStudioWindow.MicrosoftSQLServerListItem.MicrosoftSQLServerText">
+    <MouseAction UIObjectName="UIMap.MainStudioWindow.ComboboxListItemAsMicrosoftSQLServer.MicrosoftSQLServerText">
       <ParameterName />
       <ModifierKeys>None</ModifierKeys>
       <IsGlobalHotkey>false</IsGlobalHotkey>
@@ -15774,10 +15779,10 @@
                                                             <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
                                                           </WindowTitles>
                                                           <AndCondition>
-                                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                                             <PropertyCondition Name="ControlType">Custom</PropertyCondition>
+                                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                                             <PropertyCondition Name="ClassName">Uia.WebServiceGetDesigner</PropertyCondition>
-                                                            <PropertyCondition Name="AutomationId">GET Web Method(WebServiceGetDesigner)</PropertyCondition>
+                                                            <PropertyCondition Name="AutomationId" Operator="Contains">GET Web Method</PropertyCondition>
                                                           </AndCondition>
                                                           <SupportLevel>0</SupportLevel>
                                                           <Descendants>
@@ -15806,7 +15811,7 @@
                                                                   </AndCondition>
                                                                   <SupportLevel>0</SupportLevel>
                                                                   <Descendants>
-                                                                    <UIObject ControlType="ListItem" Id="UITestingWebSourceListItem" FriendlyName="UITestingWebSource" SpecialControlType="None">
+                                                                    <UIObject ControlType="ListItem" Id="UITestingWebSourceListItem" FriendlyName="Dev2.Common.Interfaces.Core.WebServiceSourceDefinition" SpecialControlType="None">
                                                                       <TechnologyName>UIA</TechnologyName>
                                                                       <WindowTitles>
                                                                         <WindowTitle>Warewolf</WindowTitle>
@@ -15814,7 +15819,7 @@
                                                                       <AndCondition>
                                                                         <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                                                         <PropertyCondition Name="ControlType">ListItem</PropertyCondition>
-                                                                        <PropertyCondition Name="Name">UITestingWebSource</PropertyCondition>
+                                                                        <PropertyCondition Name="Name">Dev2.Common.Interfaces.Core.WebServiceSourceDefinition</PropertyCondition>
                                                                       </AndCondition>
                                                                       <SupportLevel>0</SupportLevel>
                                                                       <Descendants />
@@ -20010,7 +20015,7 @@
               <SupportLevel>0</SupportLevel>
               <Descendants />
             </UIObject>
-            <UIObject ControlType="Custom" Id="MicrosoftSQLServerListItem" FriendlyName="Microsoft SQL Server" SpecialControlType="None">
+            <UIObject ControlType="Custom" Id="ComboboxListItemAsMicrosoftSQLServer" FriendlyName="Microsoft SQL Server" SpecialControlType="None">
               <TechnologyName>UIA</TechnologyName>
               <WindowTitles>
                 <WindowTitle>Warewolf</WindowTitle>
@@ -20038,7 +20043,7 @@
                 </UIObject>
               </Descendants>
             </UIObject>
-            <UIObject ControlType="Custom" Id="Dev2TestingDBListItem" FriendlyName="Dev2TestingDB" SpecialControlType="None">
+            <UIObject ControlType="Custom" Id="ComboboxListItemAsDev2TestingDB" FriendlyName="Dev2TestingDB" SpecialControlType="None">
               <TechnologyName>UIA</TechnologyName>
               <WindowTitles>
                 <WindowTitle>Warewolf</WindowTitle>
