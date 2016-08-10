@@ -130,6 +130,7 @@
     <Compile Include="ComPluginServiceDefinition.cs" />
     <Compile Include="ComponentModel\IWorkflowDescriptor.cs" />
     <Compile Include="ComputerName.cs" />
+    <Compile Include="Core\ExplorerLightTreeSource.cs" />
     <Compile Include="Core\Collections\IObservableReadOnlyList.cs" />
     <Compile Include="Core\ComPluginSourceDefinition.cs" />
     <Compile Include="Core\Convertors\Base\IBaseConversionBroker.cs" />
@@ -230,6 +231,7 @@
     <Compile Include="IExecutionToken.cs" />
     <Compile Include="IExplorerItemNodeViewModel.cs" />
     <Compile Include="IExplorerItemViewModel.cs" />
+    <Compile Include="IExplorerLightTreeSource.cs" />
     <Compile Include="IExplorerRepository.cs" />
     <Compile Include="IExplorerTreeItem.cs" />
     <Compile Include="IExplorerUpdateManager.cs" />
