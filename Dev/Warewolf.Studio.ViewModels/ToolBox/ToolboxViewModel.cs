@@ -10,6 +10,7 @@ using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Interfaces;
 using Microsoft.Practices.Prism.Commands;
 using Microsoft.Practices.Prism.Mvvm;
+using Warewolf.Studio.Core;
 
 namespace Warewolf.Studio.ViewModels.ToolBox
 {
@@ -117,9 +118,10 @@ namespace Warewolf.Studio.ViewModels.ToolBox
                 if (_searchTerm != value)
                 {
                     _searchTerm = value;
+                    OnPropertyChanged("SearchTerm");
                     if (string.IsNullOrWhiteSpace(value))
                     {
-                        Tools = new ObservableCollection<IToolDescriptorViewModel>(_backedUpTools);
+                        Tools = new AsyncObservableCollection<IToolDescriptorViewModel>(_backedUpTools.ToList());
                     }
                     else
                     {
@@ -143,9 +145,7 @@ namespace Warewolf.Studio.ViewModels.ToolBox
                 return;
 
             var filtered = (IEnumerable<IToolDescriptorViewModel>)e.Result;
-
-            var toolDescriptorViewModels = filtered.ToList();
-            Tools = new ObservableCollection<IToolDescriptorViewModel>(toolDescriptorViewModels);
+            Tools = new AsyncObservableCollection<IToolDescriptorViewModel>(filtered.ToList());
         }
 
         private void RefilterOnCompletion(object sender, RunWorkerCompletedEventArgs e)
