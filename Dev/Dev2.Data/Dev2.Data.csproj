@@ -144,6 +144,7 @@
     <Compile Include="Scalar.cs" />
     <Compile Include="ServiceModel\ComPluginSource.cs" />
     <Compile Include="ServiceModel\Connection.cs" />
+    <Compile Include="ServiceModel\ExplorerLightTree.cs" />
     <Compile Include="ServiceModel\RabbitMQSource.cs" />
     <Compile Include="ServiceModel\OauthSource.cs" />
     <Compile Include="ServiceModel\Helper\ServiceUtils.cs" />
