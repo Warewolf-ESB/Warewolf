@@ -184,6 +184,7 @@ namespace Warewolf.UITests
             {
                 Click_Explorer_Filter_Clear_Button();
             }
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.SearchTextBox.Text == string.Empty, "Explorer filter textbox is not empty after clicking clear filter button.");
         }
 
         public void TryClearToolboxFilter()
@@ -192,6 +193,7 @@ namespace Warewolf.UITests
             {
                 Click_Clear_Toolbox_Filter_Clear_Button();
             }
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox.Text == string.Empty, "Toolbox filter textbox is not empty after clicking clear filter button.");
         }
 
         public void Click_Settings_Resource_Permissions_Row1_Add_Resource_Button()
@@ -582,6 +584,22 @@ namespace Warewolf.UITests
             if (ControlExistsNow(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.PluginSourceWizardTab.CloseButton))
             {
                 Click_Close_Plugin_Source_Wizard_Tab_Button();
+                if (ControlExistsNow(MessageBoxWindow.NoButton))
+                {
+                    Click_MessageBox_No();
+                }
+            }
+        }
+
+        public void TryCloseNewWebSourceWizardTab()
+        {
+            if (ControlExistsNow(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WebSourceWizardTab.CloseButton))
+            {
+                Click_Close_Web_Source_Wizard_Tab_Button();
+                if (ControlExistsNow(MessageBoxWindow.NoButton))
+                {
+                    Click_MessageBox_No();
+                }
             }
         }
     }
