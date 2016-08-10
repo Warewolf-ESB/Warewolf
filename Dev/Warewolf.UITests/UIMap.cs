@@ -393,6 +393,10 @@ namespace Warewolf.UITests
                     {
                         TryCloseWorkflowTab();
                     }
+                    else
+                    {
+                        workflowTabCloseButtonExists = false;
+                    }
                 }
                 catch (Exception e)
                 {
