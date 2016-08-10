@@ -69,6 +69,7 @@ namespace Warewolf.UITests
 #else
                     Console.WriteLine(messageText);
                     Playback.Wait(Playback.PlaybackSettings.SearchTimeout);
+                    break;
 #endif
             }
         }
