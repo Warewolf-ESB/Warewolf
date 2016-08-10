@@ -31,88 +31,103 @@ namespace Warewolf.UITests
         {
             Playback.PlaybackSettings.WaitForReadyLevel = WaitForReadyLevel.Disabled;
             Playback.PlaybackSettings.ShouldSearchFailFast = false;
-            if (Environment.ProcessorCount <= 4)
-            {
-                Playback.PlaybackSettings.ThinkTimeMultiplier = 2;
-            }
-            else
-            {
-                Playback.PlaybackSettings.ThinkTimeMultiplier = 1;
-            }
+#if DEBUG
+            Playback.PlaybackSettings.ThinkTimeMultiplier = 1;
+#else
+            Playback.PlaybackSettings.ThinkTimeMultiplier = 2;
+#endif
             Playback.PlaybackSettings.MaximumRetryCount = _lenientMaximumRetryCount * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
             Playback.PlaybackSettings.SearchTimeout = _lenientSearchTimeout * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
             Playback.PlaybackSettings.MatchExactHierarchy = true;
             Playback.PlaybackSettings.SkipSetPropertyVerification = true;
             Playback.PlaybackSettings.SmartMatchOptions = SmartMatchOptions.None;
-            Playback.PlaybackError -= new EventHandler<PlaybackErrorEventArgs>(PlaybackErrorHandler);
-            Playback.PlaybackError += new EventHandler<PlaybackErrorEventArgs>(PlaybackErrorHandler);
+            Playback.PlaybackError -= new EventHandler<PlaybackErrorEventArgs>(OnError);
+            Playback.PlaybackError += new EventHandler<PlaybackErrorEventArgs>(OnError);
         }
 
-        void PlaybackErrorHandler(object sender, PlaybackErrorEventArgs e)
+        void OnError(object sender, PlaybackErrorEventArgs e)
         {
             e.Result = PlaybackErrorOptions.Retry;
-            Console.WriteLine(e.Error.Message);
-            if (e.Error is UITestControlNotFoundException)
+            var type = e.Error.GetType().ToString();
+            var message = e.Error.Message;
+            switch (type)
             {
-                UITestControlNotFoundException asControlNotFoundException = e.Error as UITestControlNotFoundException;
-                var exceptionSource = asControlNotFoundException.ExceptionSource;
-                if (exceptionSource is UITestControl)
-                {
-                    UITestControl parent = (exceptionSource as UITestControl).Container;
-                    while (parent != null && !parent.Exists)
-                    {
-                        parent = parent.Container;
-                    }
-                    if (parent != null && parent.Exists && parent != MainStudioWindow)
-                    {
-                        Console.WriteLine("Search actually failed at: " + parent.FriendlyName);
-                        string parentProperties = string.Empty;
-                        parent.SearchProperties.ToList().ForEach(prop => { parentProperties += prop.PropertyName + ": \"" + prop.PropertyValue + "\"\n"; });
-                        Console.Write(parentProperties);
-                        parent.DrawHighlight();
+                case "Microsoft.VisualStudio.TestTools.UITest.Extension.UITestControlNotFoundException":
+                    UITestControlNotFoundExceptionHandler(message, e.Error as UITestControlNotFoundException);
+                    break;
+                case "Microsoft.VisualStudio.TestTools.UITest.Extension.UITestControlNotAvailableException":
+                    UITestControlNotAvailableExceptionHandler(message, e.Error as UITestControlNotAvailableException);
+                    break;
+                case "Microsoft.VisualStudio.TestTools.UITest.Extension.FailedToPerformActionOnBlockedControlException":
+                    FailedToPerformActionOnBlockedControlExceptionHandler(message, e.Error as FailedToPerformActionOnBlockedControlException);
+                    break;
+                default:
+                    var messageText = type + "\n" + message;
 #if DEBUG
-                        {
-                            System.Windows.Forms.MessageBox.Show(e.Error.Message + "\n" + parentProperties);
-                            throw e.Error;
-                        }
+                    System.Windows.Forms.MessageBox.Show(messageText);
+                    throw e.Error;
+#else
+                    Console.WriteLine(messageText);
+                    Playback.Wait(Playback.PlaybackSettings.SearchTimeout);
 #endif
-                        return;
-                    }
-                }
             }
-            if (e.Error is UITestControlNotAvailableException)
+        }
+
+        void UITestControlNotFoundExceptionHandler(string message, UITestControlNotFoundException e)
+        {
+            var exceptionSource = e.ExceptionSource;
+            if (exceptionSource is UITestControl)
             {
-                UITestControlNotAvailableException asControlNotAvailableException = e.Error as UITestControlNotAvailableException;
-                var exceptionSource = asControlNotAvailableException.ExceptionSource;
-                if (exceptionSource is UITestControl)
+                UITestControl parent = (exceptionSource as UITestControl).Container;
+                while (parent != null && !parent.Exists)
                 {
-                    (exceptionSource as UITestControl).DrawHighlight();
+                    parent = parent.Container;
+                }
+                if (parent != null && parent.Exists && parent != MainStudioWindow)
+                {
+                    Console.WriteLine("Search actually failed at: " + parent.FriendlyName);
+                    string parentProperties = string.Empty;
+                    parent.SearchProperties.ToList().ForEach(prop => { parentProperties += prop.PropertyName + ": \"" + prop.PropertyValue + "\"\n"; });
+                    Console.Write(parentProperties);
+                    parent.DrawHighlight();
 #if DEBUG
-                    {
-                        System.Windows.Forms.MessageBox.Show(e.Error.Message);
-                        throw e.Error;
-                    }
-#endif
+                    System.Windows.Forms.MessageBox.Show(message + "\n" + parentProperties);
+                    throw e;
+#else
                     return;
-                }
-            }
-            if (e.Error is FailedToPerformActionOnBlockedControlException)
-            {
-                FailedToPerformActionOnBlockedControlException asBlockedControlException = e.Error as FailedToPerformActionOnBlockedControlException;
-                var exceptionSource = asBlockedControlException.ExceptionSource;
-                if (exceptionSource is UITestControl)
-                {
-                    (exceptionSource as UITestControl).DrawHighlight();
-#if DEBUG
-                    {
-                        System.Windows.Forms.MessageBox.Show(e.Error.Message);
-                        throw e.Error;
-                    }
 #endif
-                    return;
                 }
             }
-            Playback.Wait(_strictSearchTimeout * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString()));
+        }
+
+        void UITestControlNotAvailableExceptionHandler(string message, UITestControlNotAvailableException e)
+        {
+            var asControlNotAvailableExceptionExceptionSource = e.ExceptionSource;
+            if (asControlNotAvailableExceptionExceptionSource is UITestControl)
+            {
+                (asControlNotAvailableExceptionExceptionSource as UITestControl).DrawHighlight();
+#if DEBUG
+                System.Windows.Forms.MessageBox.Show(message);
+                throw e;
+#else
+                return;
+#endif
+            }
+        }
+
+        void FailedToPerformActionOnBlockedControlExceptionHandler(string message, FailedToPerformActionOnBlockedControlException e)
+        {
+            var asBlockedControlExceptionExceptionSource = e.ExceptionSource;
+            if (asBlockedControlExceptionExceptionSource is UITestControl)
+            {
+                (asBlockedControlExceptionExceptionSource as UITestControl).DrawHighlight();
+#if DEBUG
+                System.Windows.Forms.MessageBox.Show(message);
+                throw e;
+#else
+                return;
+#endif
+            }
         }
 
         public bool ControlExistsNow(UITestControl thisControl)
