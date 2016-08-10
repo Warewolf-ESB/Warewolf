@@ -4936,20 +4936,20 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
-        /// Select_Fusiondll_From_Plugin_Source_Wizard_Tree - Use 'Select_Fusiondll_From_Plugin_Source_Wizard_TreeParams' to pass parameters into this method.
+        /// Select_First_Item_From_DotNet_DLL_Large_View_Source_Combobox
         /// </summary>
-        public void Select_Fusiondll_From_Plugin_Source_Wizard_Tree()
+        public void Select_First_Item_From_DotNet_DLL_Large_View_Source_Combobox()
         {
             #region Variable Declarations
-            WpfTree tree = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.PluginSourceWizardTab.WorkSurfaceContext.NewPluginSourceWizard.ScrollViewer.Tree;
-            WpfButton saveButton = this.MainStudioWindow.SideMenuBar.SaveButton;
+            WpfComboBox sourcesComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.SourcesComboBox;
+            WpfListItem listItem1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.SourcesComboBox.ListItem1;
             #endregion
 
-            // Click 'ExplorerTree' tree
-            Mouse.Click(tree, new Point(164, 278));
+            // Click 'SourcesComboBox' combo box
+            Mouse.Click(sourcesComboBox, new Point(175, 9));
 
-            // Verify that the 'Enabled' property of 'Save this tab' button equals 'True'
-            Assert.AreEqual(this.Select_Fusiondll_From_Plugin_Source_Wizard_TreeParams.SaveButtonEnabled, saveButton.Enabled, "Save button is not enabled after DLL has been selected in plugin source wizard.");
+            // Click 'Dev2.Common.Interfaces.Core.PluginSourceDefinition' list item
+            Mouse.Click(listItem1, new Point(163, 17));
         }
         
         /// <summary>
@@ -5310,23 +5310,6 @@ namespace Warewolf.UITests
             // Verify that the 'SelectedItem' property of 'SourcesComboBox' combo box equals 'UITestingDBSource'
             Assert.AreEqual(this.Select_UITestingDBSource_From_SQL_Server_Large_View_Source_ComboboxParams.SourcesComboboxSelectedItem, sourcesCombobox.SelectedItem, "SQL Server large view source combobox selected item is not equal to UITestingDBSo" +
                     "urce.");
-        }
-        
-        /// <summary>
-        /// Select_UITestingPluginSource_From_DotNet_DLL_Large_View_Source_Combobox
-        /// </summary>
-        public void Select_UITestingPluginSource_From_DotNet_DLL_Large_View_Source_Combobox()
-        {
-            #region Variable Declarations
-            WpfComboBox sourcesComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.SourcesComboBox;
-            WpfListItem listItem1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.SourcesComboBox.ListItem1;
-            #endregion
-
-            // Click 'SourcesComboBox' combo box
-            Mouse.Click(sourcesComboBox, new Point(175, 9));
-
-            // Click 'Dev2.Common.Interfaces.Core.PluginSourceDefinition' list item
-            Mouse.Click(listItem1, new Point(163, 17));
         }
         
         /// <summary>
@@ -7172,18 +7155,6 @@ namespace Warewolf.UITests
             }
         }
         
-        public virtual Select_Fusiondll_From_Plugin_Source_Wizard_TreeParams Select_Fusiondll_From_Plugin_Source_Wizard_TreeParams
-        {
-            get
-            {
-                if ((this.mSelect_Fusiondll_From_Plugin_Source_Wizard_TreeParams == null))
-                {
-                    this.mSelect_Fusiondll_From_Plugin_Source_Wizard_TreeParams = new Select_Fusiondll_From_Plugin_Source_Wizard_TreeParams();
-                }
-                return this.mSelect_Fusiondll_From_Plugin_Source_Wizard_TreeParams;
-            }
-        }
-        
         public virtual Select_GetCountries_From_SQL_Server_Large_View_Action_ComboboxExpectedValues Select_GetCountries_From_SQL_Server_Large_View_Action_ComboboxExpectedValues
         {
             get
@@ -7749,8 +7720,6 @@ namespace Warewolf.UITests
         private Select_Delete_FromExplorerContextMenuParams mSelect_Delete_FromExplorerContextMenuParams;
         
         private Select_Dev2TestingDB_From_DB_Source_Wizard_Database_ComboboxParams mSelect_Dev2TestingDB_From_DB_Source_Wizard_Database_ComboboxParams;
-        
-        private Select_Fusiondll_From_Plugin_Source_Wizard_TreeParams mSelect_Fusiondll_From_Plugin_Source_Wizard_TreeParams;
         
         private Select_GetCountries_From_SQL_Server_Large_View_Action_ComboboxExpectedValues mSelect_GetCountries_From_SQL_Server_Large_View_Action_ComboboxExpectedValues;
         
@@ -10895,21 +10864,6 @@ namespace Warewolf.UITests
         /// Verify that the 'DisplayText' property of 'Dev2TestingDB' label equals 'Dev2TestingDB'
         /// </summary>
         public string UIDev2TestingDBTextDisplayText = "Dev2TestingDB";
-        #endregion
-    }
-    
-    /// <summary>
-    /// Parameters to be passed into 'Select_Fusiondll_From_Plugin_Source_Wizard_Tree'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Select_Fusiondll_From_Plugin_Source_Wizard_TreeParams
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Verify that the 'Enabled' property of 'Save this tab' button equals 'True'
-        /// </summary>
-        public bool SaveButtonEnabled = true;
         #endregion
     }
     
