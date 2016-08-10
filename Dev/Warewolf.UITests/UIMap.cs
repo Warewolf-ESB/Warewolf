@@ -12,6 +12,7 @@ using Keyboard = Microsoft.VisualStudio.TestTools.UITesting.Keyboard;
 using Mouse = Microsoft.VisualStudio.TestTools.UITesting.Mouse;
 using MouseButtons = System.Windows.Forms.MouseButtons;
 using System.Drawing;
+using System.IO;
 using System.Windows.Input;
 using System.Text.RegularExpressions;
 using System.Reflection;
@@ -31,88 +32,109 @@ namespace Warewolf.UITests
         {
             Playback.PlaybackSettings.WaitForReadyLevel = WaitForReadyLevel.Disabled;
             Playback.PlaybackSettings.ShouldSearchFailFast = false;
-            if (Environment.ProcessorCount <= 4)
-            {
-                Playback.PlaybackSettings.ThinkTimeMultiplier = 2;
-            }
-            else
-            {
-                Playback.PlaybackSettings.ThinkTimeMultiplier = 1;
-            }
+#if DEBUG
+            Playback.PlaybackSettings.ThinkTimeMultiplier = 1;
+#else
+            Playback.PlaybackSettings.ThinkTimeMultiplier = 2;
+#endif
             Playback.PlaybackSettings.MaximumRetryCount = _lenientMaximumRetryCount * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
             Playback.PlaybackSettings.SearchTimeout = _lenientSearchTimeout * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
             Playback.PlaybackSettings.MatchExactHierarchy = true;
             Playback.PlaybackSettings.SkipSetPropertyVerification = true;
             Playback.PlaybackSettings.SmartMatchOptions = SmartMatchOptions.None;
-            Playback.PlaybackError -= new EventHandler<PlaybackErrorEventArgs>(PlaybackErrorHandler);
-            Playback.PlaybackError += new EventHandler<PlaybackErrorEventArgs>(PlaybackErrorHandler);
+            Playback.PlaybackError -= OnError;
+            Playback.PlaybackError += OnError;
         }
 
-        void PlaybackErrorHandler(object sender, PlaybackErrorEventArgs e)
+        public void OnError(object sender, PlaybackErrorEventArgs e)
         {
             e.Result = PlaybackErrorOptions.Retry;
-            Console.WriteLine(e.Error.Message);
-            if (e.Error is UITestControlNotFoundException)
+            var type = e.Error.GetType().ToString();
+            var message = e.Error.Message;
+            switch (type)
             {
-                UITestControlNotFoundException asControlNotFoundException = e.Error as UITestControlNotFoundException;
-                var exceptionSource = asControlNotFoundException.ExceptionSource;
-                if (exceptionSource is UITestControl)
-                {
-                    UITestControl parent = (exceptionSource as UITestControl).Container;
-                    while (parent != null && !parent.Exists)
-                    {
-                        parent = parent.Container;
-                    }
-                    if (parent != null && parent.Exists && parent != MainStudioWindow)
-                    {
-                        Console.WriteLine("Search actually failed at: " + parent.FriendlyName);
-                        string parentProperties = string.Empty;
-                        parent.SearchProperties.ToList().ForEach(prop => { parentProperties += prop.PropertyName + ": \"" + prop.PropertyValue + "\"\n"; });
-                        Console.Write(parentProperties);
-                        parent.DrawHighlight();
+                case "Microsoft.VisualStudio.TestTools.UITest.Extension.UITestControlNotFoundException":
+                    UITestControlNotFoundExceptionHandler(type, message, e.Error as UITestControlNotFoundException);
+                    break;
+                case "Microsoft.VisualStudio.TestTools.UITest.Extension.UITestControlNotAvailableException":
+                    UITestControlNotAvailableExceptionHandler(type, message, e.Error as UITestControlNotAvailableException);
+                    break;
+                case "Microsoft.VisualStudio.TestTools.UITest.Extension.FailedToPerformActionOnBlockedControlException":
+                    FailedToPerformActionOnBlockedControlExceptionHandler(type, message, e.Error as FailedToPerformActionOnBlockedControlException);
+                    break;
+                default:
+                    var messageText = type + "\n" + message;
 #if DEBUG
-                        {
-                            System.Windows.Forms.MessageBox.Show(e.Error.Message + "\n" + parentProperties);
-                            throw e.Error;
-                        }
+                    System.Windows.Forms.MessageBox.Show(messageText);
+                    throw e.Error;
+#else
+                    Console.WriteLine(messageText);
+                    Playback.Wait(Playback.PlaybackSettings.SearchTimeout);
+                    break;
 #endif
-                        return;
-                    }
-                }
             }
-            if (e.Error is UITestControlNotAvailableException)
+        }
+
+        void UITestControlNotFoundExceptionHandler(string type, string message, UITestControlNotFoundException e)
+        {
+            var exceptionSource = e.ExceptionSource;
+            if (exceptionSource is UITestControl)
             {
-                UITestControlNotAvailableException asControlNotAvailableException = e.Error as UITestControlNotAvailableException;
-                var exceptionSource = asControlNotAvailableException.ExceptionSource;
-                if (exceptionSource is UITestControl)
+                UITestControl parent = (exceptionSource as UITestControl).Container;
+                while (parent != null && !parent.Exists)
                 {
-                    (exceptionSource as UITestControl).DrawHighlight();
+                    parent = parent.Container;
+                }
+                if (parent != null && parent.Exists && parent != MainStudioWindow)
+                {
+                    string parentProperties = string.Empty;
+                    parent.SearchProperties.ToList().ForEach(prop => { parentProperties += prop.PropertyName + ": \"" + prop.PropertyValue + "\"\n"; });
+                    var messageText = type + "\n" + message + "\n" + "Search actually failed at: " + parent.FriendlyName + "\n" + parentProperties;
+                    parent.DrawHighlight();
 #if DEBUG
-                    {
-                        System.Windows.Forms.MessageBox.Show(e.Error.Message);
-                        throw e.Error;
-                    }
-#endif
+                    System.Windows.Forms.MessageBox.Show(messageText);
+                    throw e;
+#else
+                    Console.WriteLine(messageText);
                     return;
-                }
-            }
-            if (e.Error is FailedToPerformActionOnBlockedControlException)
-            {
-                FailedToPerformActionOnBlockedControlException asBlockedControlException = e.Error as FailedToPerformActionOnBlockedControlException;
-                var exceptionSource = asBlockedControlException.ExceptionSource;
-                if (exceptionSource is UITestControl)
-                {
-                    (exceptionSource as UITestControl).DrawHighlight();
-#if DEBUG
-                    {
-                        System.Windows.Forms.MessageBox.Show(e.Error.Message);
-                        throw e.Error;
-                    }
 #endif
-                    return;
                 }
             }
-            Playback.Wait(_strictSearchTimeout * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString()));
+            Playback.Wait(Playback.PlaybackSettings.SearchTimeout);
+        }
+
+        void UITestControlNotAvailableExceptionHandler(string type, string message, UITestControlNotAvailableException e)
+        {
+            var exceptionSource = e.ExceptionSource;
+            if (exceptionSource is UITestControl)
+            {
+                (exceptionSource as UITestControl).DrawHighlight();
+#if DEBUG
+                System.Windows.Forms.MessageBox.Show(type + "\n" + message);
+                throw e;
+#else
+                Console.WriteLine(message);
+                return;
+#endif
+            }
+            Playback.Wait(Playback.PlaybackSettings.SearchTimeout);
+        }
+
+        void FailedToPerformActionOnBlockedControlExceptionHandler(string type, string message, FailedToPerformActionOnBlockedControlException e)
+        {
+            var exceptionSource = e.ExceptionSource;
+            if (exceptionSource is UITestControl)
+            {
+                (exceptionSource as UITestControl).DrawHighlight();
+#if DEBUG
+                System.Windows.Forms.MessageBox.Show(type + "\n" + message);
+                throw e;
+#else
+                Console.WriteLine(message);
+                return;
+#endif
+            }
+            Playback.Wait(Playback.PlaybackSettings.SearchTimeout);
         }
 
         public bool ControlExistsNow(UITestControl thisControl)
@@ -142,6 +164,7 @@ namespace Warewolf.UITests
 
         public void CleanupABlankWorkflow()
         {
+            Playback.PlaybackError -= OnError;
             try
             {
                 TryClearToolboxFilter();
@@ -161,6 +184,7 @@ namespace Warewolf.UITests
             {
                 Click_Explorer_Filter_Clear_Button();
             }
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.SearchTextBox.Text == string.Empty, "Explorer filter textbox is not empty after clicking clear filter button.");
         }
 
         public void TryClearToolboxFilter()
@@ -169,6 +193,7 @@ namespace Warewolf.UITests
             {
                 Click_Clear_Toolbox_Filter_Clear_Button();
             }
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox.Text == string.Empty, "Toolbox filter textbox is not empty after clicking clear filter button.");
         }
 
         public void Click_Settings_Resource_Permissions_Row1_Add_Resource_Button()
@@ -268,19 +293,25 @@ namespace Warewolf.UITests
         {
             try
             {
-                Enter_Text_Into_Explorer_Filter(ResourceName);
-                WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);
-                if (ControlExistsNow(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem))
+                var resourcesFolder = Environment.ExpandEnvironmentVariables("%programdata%") + @"\Warewolf\Resources";
+                if (File.Exists(resourcesFolder + @"\" + ResourceName + ".xml"))
                 {
-                    RightClick_Explorer_Localhost_First_Item();
-                    Select_Delete_FromExplorerContextMenu();
-                    Click_MessageBox_Yes();
+                    Enter_Text_Into_Explorer_Filter(ResourceName);
+                    WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);
+                    if (ControlExistsNow(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem))
+                    {
+                        RightClick_Explorer_Localhost_First_Item();
+                        Select_Delete_FromExplorerContextMenu();
+                        Click_MessageBox_Yes();
+                    }
                 }
-                TryClearExplorerFilter();
             }
             catch (Exception e)
             {
                 Console.WriteLine("Cleanup failed to remove resource " + ResourceName + ". Test may have crashed before " + ResourceName + " was created.\n" + e.Message);
+            }
+            finally
+            {
                 TryClearExplorerFilter();
             }
         }
@@ -371,6 +402,10 @@ namespace Warewolf.UITests
                     if (ControlExistsNow(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.CloseButton))
                     {
                         TryCloseWorkflowTab();
+                    }
+                    else
+                    {
+                        workflowTabCloseButtonExists = false;
                     }
                 }
                 catch (Exception e)
@@ -542,6 +577,30 @@ namespace Warewolf.UITests
             WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.Exists, "Saved " + Name + " does not appear in the explorer tree.");
             Click_Explorer_Filter_Clear_Button();
+        }
+
+        public void TryCloseNewPluginSourceWizardTab()
+        {
+            if (ControlExistsNow(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.PluginSourceWizardTab.CloseButton))
+            {
+                Click_Close_Plugin_Source_Wizard_Tab_Button();
+                if (ControlExistsNow(MessageBoxWindow.NoButton))
+                {
+                    Click_MessageBox_No();
+                }
+            }
+        }
+
+        public void TryCloseNewWebSourceWizardTab()
+        {
+            if (ControlExistsNow(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WebSourceWizardTab.CloseButton))
+            {
+                Click_Close_Web_Source_Wizard_Tab_Button();
+                if (ControlExistsNow(MessageBoxWindow.NoButton))
+                {
+                    Click_MessageBox_No();
+                }
+            }
         }
     }
 }
