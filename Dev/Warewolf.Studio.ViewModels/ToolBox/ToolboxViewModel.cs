@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Windows.Input;
 using Dev2;
@@ -21,7 +22,7 @@ namespace Warewolf.Studio.ViewModels.ToolBox
         IToolDescriptorViewModel _selectedTool;
         private string _searchTerm;
         private ObservableCollection<IToolDescriptorViewModel> _backedUpTools;
-        private bool _isFiltered;
+        private readonly BackgroundWorker _worker;
 
         public ToolboxViewModel(IToolboxModel localModel, IToolboxModel remoteModel)
         {
@@ -30,11 +31,15 @@ namespace Warewolf.Studio.ViewModels.ToolBox
             _remoteModel = remoteModel;
             _localModel.OnserverDisconnected += _localModel_OnserverDisconnected;
             _remoteModel.OnserverDisconnected += _remoteModel_OnserverDisconnected;
-            IsFiltered = false;
-            FilteredTools = new List<IToolDescriptorViewModel>();
             BackedUpTools = new ObservableCollection<IToolDescriptorViewModel>(_remoteModel.GetTools().Select(a => new ToolDescriptorViewModel(a, _localModel.GetTools().Contains(a))));
             Tools = BackedUpTools;
             ClearFilterCommand = new DelegateCommand(() => SearchTerm = string.Empty);
+            _worker = new BackgroundWorker
+            {
+                WorkerSupportsCancellation = true
+            };
+            _worker.DoWork += Filter;
+            _worker.RunWorkerCompleted += FilterComplete;
         }
 
         public ICommand ClearFilterCommand { get; set; }
@@ -51,13 +56,12 @@ namespace Warewolf.Studio.ViewModels.ToolBox
 
                 return _tools;
             }
-            private set
+            set
             {
                 _tools = value;
                 OnPropertyChanged("Tools");
             }
         }
-        private ICollection<IToolDescriptorViewModel> FilteredTools { get; set; }
 
         // ReSharper disable once MemberCanBePrivate.Global
         public ObservableCollection<IToolDescriptorViewModel> BackedUpTools
@@ -69,7 +73,6 @@ namespace Warewolf.Studio.ViewModels.ToolBox
                 OnPropertyChanged("BackedUpTools");
             }
         }
-
 
         /// <summary>
         /// the toolbox is only enabled when the active server is connected and the designer is in focus
@@ -114,52 +117,56 @@ namespace Warewolf.Studio.ViewModels.ToolBox
                 if (_searchTerm != value)
                 {
                     _searchTerm = value;
-                    OnPropertyChanged(() => SearchTerm);
-                    Filter(_searchTerm);
+                    if (string.IsNullOrWhiteSpace(value))
+                    {
+                        Tools = new ObservableCollection<IToolDescriptorViewModel>(_backedUpTools);
+                    }
+                    else
+                    {
+                        BeginFilter(value.ToLowerInvariant());
+                    }
                 }
             }
         }
 
-        /// <summary>
-        /// filters the list of tools available to the user.
-        /// </summary>
-        /// <param name="searchString"></param>
-        public void Filter(string searchString)
+        private void Filter(object sender, DoWorkEventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(searchString))
+            var query = (string)e.Argument;
+            e.Result = string.IsNullOrWhiteSpace(query) ? _backedUpTools : _backedUpTools.Where(a => a.Tool.Name.ToLowerInvariant().Contains(query) ||
+                                                                            a.Tool.Category.ToLower().Contains(query) ||
+                                                                            a.Tool.FilterTag.ToLower().Contains(query));
+        }
+
+        private void FilterComplete(object sender, RunWorkerCompletedEventArgs e)
+        {
+            if (e.Cancelled)
+                return;
+
+            var filtered = (IEnumerable<IToolDescriptorViewModel>)e.Result;
+
+            var toolDescriptorViewModels = filtered.ToList();
+            Tools = new ObservableCollection<IToolDescriptorViewModel>(toolDescriptorViewModels);
+        }
+
+        private void RefilterOnCompletion(object sender, RunWorkerCompletedEventArgs e)
+        {
+            _worker.RunWorkerCompleted -= RefilterOnCompletion;
+            _worker.RunWorkerAsync(_searchTerm.ToLowerInvariant());
+        }
+
+        private void BeginFilter(string filterText)
+        {
+            if (_worker.IsBusy)
             {
-                ClearFilter();
+                if (!_worker.CancellationPending)
+                {
+                    _worker.RunWorkerCompleted += RefilterOnCompletion;
+                    _worker.CancelAsync();
+                }
             }
             else
             {
-                IsFiltered = true;
-                var toolboxCatergoryViewModels = BackedUpTools.Where(model => model.Tool.Name.ToLower().Contains(searchString.ToLower()) ||
-                                                                            model.Tool.Category.ToLower().Contains(searchString.ToLower()) ||
-                                                                            model.Tool.FilterTag.ToLower().Contains(searchString.ToLower()));
-                FilteredTools =
-                    toolboxCatergoryViewModels.OrderBy(model => model.Tool.Name)
-                        .ThenBy(model => model.Tool.Category)
-                        .ThenBy(model => model.Tool.FilterTag)
-                        .ToList();
-                Tools = FilteredTools;
-            }
-        }
-
-        public void ClearFilter()
-        {
-            IsFiltered = false;
-            Tools = BackedUpTools;
-            SearchTerm = "";
-        }
-
-        public bool IsFiltered
-        {
-            get { return _isFiltered; }
-            // ReSharper disable once MemberCanBePrivate.Global
-            set
-            {
-                _isFiltered = value; 
-                OnPropertyChanged("IsFiltered");
+                _worker.RunWorkerAsync(filterText.ToLowerInvariant());
             }
         }
 
