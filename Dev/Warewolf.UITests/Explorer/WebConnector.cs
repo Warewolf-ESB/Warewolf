@@ -21,7 +21,7 @@ namespace Warewolf.UITests
         public void BigWebConnectorUITest()
         {
             Uimap.Click_New_Workflow_Ribbon_Button();
-            Uimap.Click_NewWebSource_Ribbon_Button();
+            Uimap.Click_New_Web_Source_Ribbon_Button();
             Uimap.Type_TestSite_into_Web_Source_Wizard_Address_Textbox();
             Uimap.Click_New_Web_Source_Test_Connection_Button();
             Uimap.Save_With_Ribbon_Button_And_Dialog(WebSourceName);
