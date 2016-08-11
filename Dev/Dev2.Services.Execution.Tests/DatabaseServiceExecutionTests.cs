@@ -19,7 +19,7 @@ namespace Dev2.Services.Execution.Tests
             //---------------Assert Precondition----------------
 
             //---------------Execute Test ----------------------
-            var newDatabaseServiceExecution = new DatabaseServiceExecution(new Mock<IDSFDataObject>().Object));
+            var newDatabaseServiceExecution = new DatabaseServiceExecution(new Mock<IDSFDataObject>().Object);
             //---------------Test Result -----------------------
             Assert.IsNotNull(newDatabaseServiceExecution, "Cannot create new DatabaseServiceExecution object.");
         }
