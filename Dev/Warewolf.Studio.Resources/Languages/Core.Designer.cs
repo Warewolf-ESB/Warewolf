@@ -2037,6 +2037,24 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Select a ClassName or a fully qualified ClassName(Namespace+ClassName) if it exists to filter the actions you can perform..
+        /// </summary>
+        public static string DotNetPluginServiceSelectNamespaceHelp {
+            get {
+                return ResourceManager.GetString("DotNetPluginServiceSelectNamespaceHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select a ClassName or a fully qualified ClassName(Namespace+ClassName) to help find the correct action..
+        /// </summary>
+        public static string DotNetPluginServiceSelectNamespaceToolTip {
+            get {
+                return ResourceManager.GetString("DotNetPluginServiceSelectNamespaceToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Specify the Dropbox file or folder you would like to delete. This is the path from the root of the Dropbox account..
         /// </summary>
         public static string DropBoxDeleteFileNameHelpText {

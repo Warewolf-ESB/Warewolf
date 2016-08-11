@@ -3,7 +3,6 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 	         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:customControls="clr-namespace:Warewolf.Studio.CustomControls;assembly=Warewolf.Studio.CustomControls"
-             xmlns:fa="http://schemas.fontawesome.io/icons/"
              xmlns:toolBox="clr-namespace:Warewolf.Studio.ViewModels.ToolBox;assembly=Warewolf.Studio.ViewModels"
              xmlns:core="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
@@ -26,6 +25,12 @@
             <ResourceDictionary.MergedDictionaries>
                 <luna:SharedResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Theme.xaml"/>
             </ResourceDictionary.MergedDictionaries>
+            <CollectionViewSource x:Key="BackedUpToolViewSource" Source="{Binding BackedUpTools}">
+                <!-- Grouping -->
+                <CollectionViewSource.GroupDescriptions>
+                    <PropertyGroupDescription PropertyName="Tool.Category" />
+                </CollectionViewSource.GroupDescriptions>
+            </CollectionViewSource>
             <CollectionViewSource x:Key="ToolViewSource" Source="{Binding Tools}">
                 <!-- Grouping -->
                 <CollectionViewSource.GroupDescriptions>
@@ -122,6 +127,9 @@
                                           ClearSearchCommand="{Binding ClearFilterCommand}"
                                           ClearSearchToolTip="{x:Static languages:Core.ToolboxClearSearchTooltip}"
                                           Style="{StaticResource SearchTextboxStyle}"
+                                          GotKeyboardFocus="SelectAllText"
+                                          MouseDoubleClick="SelectAllText"
+                                          PreviewMouseLeftButtonDown="SelectivelyIgnoreMouseButton"
                                           ToolTip="{x:Static languages:Core.ToolboxSearchToolTip}"
                                           Text="{Binding SearchTerm, Delay=300, UpdateSourceTrigger=PropertyChanged}">
                 <i:Interaction.Behaviors>
@@ -130,13 +138,86 @@
             </customControls:SearchTextBox>
         </Grid>
 
-        <ListBox Name="ToolListBox" 
+
+            <ListBox Name="ToolListBox" 
                  ItemTemplate="{StaticResource ToolDataTemplate}"  
-                 Style="{StaticResource ListBoxToolboxStyle}" 
                  Grid.Row="1" 
                  Margin="{StaticResource ControlBorderTop}"
                  Grid.Column="0" 
                  ItemsSource="{Binding Source={StaticResource ToolViewSource}}">
+                <ListBox.Style >
+                    <Style TargetType="ListBox" BasedOn="{StaticResource ListBoxToolboxStyle}">
+                        <Setter Property="Visibility" Value="Collapsed"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding ElementName=BackedupToolListBox, Path=Visibility}" Value="Collapsed">
+                                <Setter Property="Visibility" Value="Visible"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </ListBox.Style>
+                <ListBox.ItemsPanel>
+                    <ItemsPanelTemplate >
+                        <WrapPanel Orientation="Horizontal">
+                            <WrapPanel.MaxWidth>
+                                <Binding Converter="{StaticResource ListBoxWidthToItemsPanelWidthConverter}" Path="ActualWidth">
+                                    <Binding.RelativeSource>
+                                        <RelativeSource Mode="FindAncestor">
+                                            <RelativeSource.AncestorType>
+                                                <x:Type TypeName="ListBox" />
+                                            </RelativeSource.AncestorType>
+                                        </RelativeSource>
+                                    </Binding.RelativeSource>
+                                </Binding>
+                            </WrapPanel.MaxWidth>
+                        </WrapPanel>
+                    </ItemsPanelTemplate>
+                </ListBox.ItemsPanel>
+                <ListBox.GroupStyle>
+                    <GroupStyle>
+                        <GroupStyle.ContainerStyle>
+                            <Style>
+                                <Style.TargetType>
+                                    <x:Type TypeName="GroupItem" />
+                                </Style.TargetType>
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate>
+                                            <ControlTemplate.TargetType>
+                                                <x:Type TypeName="GroupItem" />
+                                            </ControlTemplate.TargetType>
+                                            <Expander Margin="0,1,0,0"
+                                                  HorizontalAlignment="Stretch"
+                                                  VerticalAlignment="Stretch"
+                                                  Header="{Binding Name}"
+                                                  IsExpanded="True"
+                                                  Style="{DynamicResource ToolboxGroupExpander}">
+                                                <ItemsPresenter />
+                                            </Expander>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </GroupStyle.ContainerStyle>
+                    </GroupStyle>
+                </ListBox.GroupStyle>
+            </ListBox>
+
+        <ListBox Name="BackedupToolListBox" 
+                 ItemTemplate="{StaticResource ToolDataTemplate}"  
+                 Grid.Row="1" 
+                 Margin="{StaticResource ControlBorderTop}"
+                 Grid.Column="0" 
+                 ItemsSource="{Binding Source={StaticResource BackedUpToolViewSource}}">
+            <ListBox.Style >
+                <Style TargetType="ListBox" BasedOn="{StaticResource ListBoxToolboxStyle}">
+                    <Setter Property="Visibility" Value="Collapsed"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding ElementName=SearchTextBox, Path=Text}" Value="">
+                            <Setter Property="Visibility" Value="Visible"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </ListBox.Style>
             <ListBox.ItemsPanel>
                 <ItemsPanelTemplate >
                     <WrapPanel Orientation="Horizontal">
@@ -183,5 +264,6 @@
                 </GroupStyle>
             </ListBox.GroupStyle>
         </ListBox>
+
     </Grid>
 </UserControl>
