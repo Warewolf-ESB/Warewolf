@@ -43,7 +43,7 @@ namespace Dev2.Scheduler
         private const char ArgWrapper = '"';
 
         public ScheduledResourceModel(IDev2TaskService taskService, string warewolfFolderId, string warewolfAgentPath,
-                                      ITaskServiceConvertorFactory taskServiceFactory, string debugHistoryPath, ISecurityWrapper securityWrapper,Func<IScheduledResource,string> pathResolve )
+                                      ITaskServiceConvertorFactory taskServiceFactory, string debugHistoryPath, ISecurityWrapper securityWrapper, Func<IScheduledResource, string> pathResolve)
         {
             var nullables = new Dictionary<string, object>
                 {
@@ -97,7 +97,7 @@ namespace Dev2.Scheduler
         public void DeleteSchedule(IScheduledResource resource)
         {
             ITaskFolder folder = TaskService.GetFolder(WarewolfFolderPath);
-            if(folder.TaskExists(resource.Name))
+            if (folder.TaskExists(resource.Name))
                 folder.DeleteTask(resource.Name, false);
         }
 
@@ -107,7 +107,7 @@ namespace Dev2.Scheduler
             {
                 Save(resource, resource.UserName, resource.Password);
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 errorMessage = e.Message;
                 return false;
@@ -118,19 +118,19 @@ namespace Dev2.Scheduler
 
         public void Save(IScheduledResource resource, string userName, string password)
         {
-            if(!_securityWrapper.IsWindowsAuthorised(Sebatchlogonright, userName))
+            if (!_securityWrapper.IsWindowsAuthorised(Sebatchlogonright, userName))
             {
                 throw new SecurityException(
                     @"This task requires that the user account specified has 'Log On As Batch' job rights. 
 Please contact your Windows System Administrator.");
             }
-            if(!_securityWrapper.IsWarewolfAuthorised(Sebatchlogonright, userName, resource.ResourceId.ToString()))
+            if (!_securityWrapper.IsWarewolfAuthorised(Sebatchlogonright, userName, resource.ResourceId.ToString()))
             {
                 throw new SecurityException(
                    String.Format(@"This Workflow requires that you have Execute permission on the '{0}' Workflow. 
 Please contact your Warewolf System Administrator.", resource.WorkflowName));
             }
-            if(resource.Name.Any(a => "\\/:*?\"<>|".Contains(a)))
+            if (resource.Name.Any(a => "\\/:*?\"<>|".Contains(a)))
                 throw new Exception("The task name may not contain the following characters \\/:*?\"<>| .");
             var folder = TaskService.GetFolder(WarewolfFolderPath);
             var created = CreateNewTask(resource);
@@ -165,7 +165,7 @@ Please contact your Warewolf System Administrator.", resource.WorkflowName));
                             .Select(CreateScheduledResource)
                             .ToObservableCollection();
             }
-            catch(FileNotFoundException)
+            catch (FileNotFoundException)
             {
                 // if the folder does not exist we should create it
                 TaskService.RootFolder.CreateFolder(WarewolfFolderPath);
@@ -190,13 +190,13 @@ Please contact your Warewolf System Administrator.", resource.WorkflowName));
             ITrigger trigger;
             DateTime nextDate;
             List<string> output;
-            using(var action = ConvertorFactory.CreateExecAction(arg.Action))
+            using (var action = ConvertorFactory.CreateExecAction(arg.Action))
             {
                 trigger = arg.Trigger;
                 nextDate = trigger.StartBoundary;
                 output = action.Arguments.Split(ArgWrapper).Where(a => !String.IsNullOrEmpty(a.Trim())).ToList();
             }
-            if(output.Count == ArgCount && output.All(a => a.Contains(NameSeperator)))
+            if (output.Count == ArgCount && output.All(a => a.Contains(NameSeperator)))
             {
 
                 var split = output.SelectMany(a => a.Split(NameSeperator)).ToList();
@@ -204,7 +204,7 @@ Please contact your Warewolf System Administrator.", resource.WorkflowName));
                 {
 
                     var id = split[5];
-                    Guid resourceId; 
+                    Guid resourceId;
                     Guid.TryParse(id, out resourceId);
 
                     var res = new ScheduledResource(arg.Definition.Data,
@@ -213,19 +213,19 @@ Please contact your Warewolf System Administrator.", resource.WorkflowName));
                                                      : SchedulerStatus.Disabled,
                                                  nextDate,
                                                  new ScheduleTrigger(arg.State, _factory.SanitiseTrigger(trigger),
-                                                                     _taskService, _factory), split[1],split[5])
-                        {
-                            Status =
+                                                                     _taskService, _factory), split[1], split[5])
+                    {
+                        Status =
                                 arg.Definition.Settings.Enabled
                                     ? SchedulerStatus.Enabled
                                     : SchedulerStatus.Disabled,
-                            RunAsapIfScheduleMissed = arg.Definition.Settings.StartWhenAvailable,
-                            UserName = arg.Definition.UserName,
-                        
-                        };
+                        RunAsapIfScheduleMissed = arg.Definition.Settings.StartWhenAvailable,
+                        UserName = arg.Definition.UserName,
+
+                    };
 
                     res.WorkflowName = resourceId == Guid.Empty ? split[1] : _pathResolve(res);
-                   
+
                     return res;
                 }
                 finally
@@ -263,11 +263,13 @@ Please contact your Warewolf System Administrator.", resource.WorkflowName));
                     arg.Dispose();
                 }
             }
-            
+
             throw new InvalidScheduleException(String.Format("Invalid resource found:{0}", arg.Definition.Data)); // this should not be reachable because isvaliddev2task checks same conditions
 
 
         }
+
+
 
         public int ArgCount => 3;
 
@@ -282,33 +284,48 @@ Please contact your Warewolf System Administrator.", resource.WorkflowName));
                     evt.Where(x => !String.IsNullOrEmpty(x.Correlation) && !String.IsNullOrEmpty(x.TaskCategory) && _taskStates.Values.Contains(x.TaskCategory))
                 group a by a.Correlation
                     into corrGroup
-                    select new
+                select new
 
-                        {
-                            StartDate = corrGroup.Min(a => a.TimeCreated),
-                            EndDate = corrGroup.Max(a => a.TimeCreated),
-                            EventId = corrGroup.Max(a => a.EventId),
-                            corrGroup.Key
-                        };
+                {
+                    StartDate = corrGroup.Min(a => a.TimeCreated),
+                    EndDate = corrGroup.Max(a => a.TimeCreated),
+                    EventId = corrGroup.Max(a => a.EventId),
+                    corrGroup.Key
+                };
+
             // for each grouping get the data and debug output
-            IList<IResourceHistory> eventList = groupings.OrderBy(a => a.StartDate).Reverse().Take(resource.NumberOfHistoryToKeep == 0 ? int.MaxValue : resource.NumberOfHistoryToKeep).Select(
-                a =>
-                    new ResourceHistory("", CreateDebugHistory(DebugHistoryPath, a.Key),
-                        new EventInfo(a.StartDate.Value, a.StartDate.HasValue && a.EndDate.HasValue ? a.EndDate.Value.Subtract(a.StartDate.Value) : TimeSpan.MaxValue, a.EndDate.Value, GetRunStatus(a.EventId, DebugHistoryPath, a.Key), a.Key, a.EventId < 103 ? "" : _taskStates[a.EventId]), GetUserName(DebugHistoryPath, a.Key))
-                        as IResourceHistory).ToList();
+            IList<IResourceHistory> eventList = groupings.OrderBy(a => a.StartDate).Reverse().Take(resource.NumberOfHistoryToKeep == 0 ? int.MaxValue : resource.NumberOfHistoryToKeep)
+                .Select(a =>
+                {
+                    var duration = TimeSpan.Zero;
+                    DateTime start = DateTime.MinValue;
+                    DateTime end = DateTime.MinValue;
+                    var debugOutput = CreateDebugHistory(DebugHistoryPath, a.Key);
+                    var output = debugOutput.FirstOrDefault();
+                    if (output != null)
+                    {
+                        duration = new TimeSpan(output.Duration.Hours,output.Duration.Minutes,output.Duration.Seconds);
+                        start = output.StartTime;
+                        end = output.EndTime;
+                    }
+                    return new ResourceHistory("", debugOutput,
+                        new EventInfo(start, duration, end, GetRunStatus(a.EventId, DebugHistoryPath, a.Key), a.Key, a.EventId < 103 ? "" : _taskStates[a.EventId]), GetUserName(DebugHistoryPath, a.Key))
+                        as IResourceHistory;
+                }).ToList();
             return eventList;
         }
 
+
         ScheduleRunStatus GetRunStatus(int eventId, string debugHistoryPath, string key)
         {
-            bool debugExists = DebugHistoryExists(debugHistoryPath,key);
-            bool debugHasErrors = DebugHasErrors(debugHistoryPath,key);
+            bool debugExists = DebugHistoryExists(debugHistoryPath, key);
+            bool debugHasErrors = DebugHasErrors(debugHistoryPath, key);
             bool winSuccess = eventId < 103;
-            if(debugExists && !debugHasErrors && winSuccess)
+            if (debugExists && !debugHasErrors && winSuccess)
                 return ScheduleRunStatus.Success;
             if (!debugExists)
-                return  ScheduleRunStatus.Unknown;
-            return  ScheduleRunStatus.Error;
+                return ScheduleRunStatus.Unknown;
+            return ScheduleRunStatus.Error;
         }
 
         bool DebugHasErrors(string debugHistoryPath, string correlationId)
@@ -321,18 +338,18 @@ Please contact your Warewolf System Administrator.", resource.WorkflowName));
                 return false;
             }
 
-             return  serializer.Deserialize<List<IDebugState>>(FileHelper.ReadAllText(file)).Last().HasError;
+            return serializer.Deserialize<List<IDebugState>>(FileHelper.ReadAllText(file)).Last().HasError;
         }
 
         bool DebugHistoryExists(string debugHistoryPath, string correlationId)
         {
-            return DirectoryHelper.GetFiles(debugHistoryPath).FirstOrDefault(a => a.Contains(correlationId))!= null;
+            return DirectoryHelper.GetFiles(debugHistoryPath).FirstOrDefault(a => a.Contains(correlationId)) != null;
         }
 
         private string GetUserName(string debugHistoryPath, string correlationId)
         {
             var file = DirectoryHelper.GetFiles(debugHistoryPath).FirstOrDefault(a => a.Contains(correlationId));
-            if(file != null) return file.Split('_').Last();
+            if (file != null) return file.Split('_').Last();
             return "";
         }
 
@@ -341,7 +358,7 @@ Please contact your Warewolf System Administrator.", resource.WorkflowName));
             var serializer = new Dev2JsonSerializer();
             var file = DirectoryHelper.GetFiles(debugHistoryPath).FirstOrDefault(a => a.Contains(correlationId));
 
-            if(file == null)
+            if (file == null)
             {
                 return new List<IDebugState>();
             }

@@ -29,7 +29,7 @@ namespace Warewolf.UITests
             Uimap.Drag_GET_Web_Connector_Onto_DesignSurface();
             Uimap.TryClearToolboxFilter();
             Uimap.Open_GET_Web_Connector_Tool_Large_View();
-            Uimap.Select_UITestingWebSource_From_GET_Web_Large_View_Source_Combobox();
+            Uimap.Select_Last_Source_From_GET_Web_Large_View_Source_Combobox();
             Uimap.Click_GET_Web_Large_View_Generate_Outputs();
             Uimap.Click_GET_Web_Large_View_Test_Inputs_Button();
             Uimap.Click_GET_Web_Large_View_Test_Inputs_Done_Button();

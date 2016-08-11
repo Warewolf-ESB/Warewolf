@@ -901,54 +901,6 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
-        /// Click_New_Workflow_Ribbon_Button - Use 'Click_New_Workflow_Ribbon_ButtonParams' to pass parameters into this method.
-        /// </summary>
-        public void Click_New_Workflow_Ribbon_Button()
-        {
-            #region Variable Declarations
-            WpfButton newWorkflowButton = this.MainStudioWindow.SideMenuBar.NewWorkflowButton;
-            WpfCustom startNode = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.StartNode;
-            WpfEdit searchTextBox = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox;
-            WpfCustom explorer = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer;
-            WpfButton serverListComboBox = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.ServerListComboBox;
-            WpfButton connectServerButton = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ConnectServerButton;
-            WpfButton editServerButton = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.EditServerButton;
-            WpfCustom variablesControl = this.MainStudioWindow.DockManager.SplitPaneRight.Variables.VariablesControl;
-            #endregion
-
-            // Verify that the 'Exists' property of 'Create a new service' button equals 'True'
-            Assert.AreEqual(this.Click_New_Workflow_Ribbon_ButtonParams.NewWorkflowButtonExists, newWorkflowButton.Exists, "New Workflow Ribbon Button Does Not Exist!");
-
-            // Click 'Create a new service' button
-            Mouse.Click(newWorkflowButton, new Point(3, 8));
-
-            // Wait for 1 seconds for user delay between actions; Verify that the 'Exists' property of 'StartNode' custom control equals 'True'
-            Playback.Wait(1000);
-            Assert.AreEqual(this.Click_New_Workflow_Ribbon_ButtonParams.StartNodeExists, startNode.Exists, "StartNode Does Not Exist.");
-
-            // Verify that the 'Exists' property of 'StartNode' custom control equals 'True'
-            Assert.AreEqual(this.Click_New_Workflow_Ribbon_ButtonParams.StartNodeExists1, startNode.Exists, "Start Node Does Not Exist.");
-
-            // Verify that the 'Exists' property of 'SearchTextBox' text box equals 'True'
-            Assert.AreEqual(this.Click_New_Workflow_Ribbon_ButtonParams.SearchTextBoxExists, searchTextBox.Exists, "Toolbox filter textbox does not exist");
-
-            // Verify that the 'Exists' property of 'UI_ExplorerControl_AutoID' custom control equals 'True'
-            Assert.AreEqual(this.Click_New_Workflow_Ribbon_ButtonParams.ExplorerExists, explorer.Exists, "Explorer does not exist in the studio");
-
-            // Verify that the 'Exists' property of 'ToggleButton' button equals 'True'
-            Assert.AreEqual(this.Click_New_Workflow_Ribbon_ButtonParams.ServerListComboBoxExists, serverListComboBox.Exists, "Explorer connect control does not exist");
-
-            // Verify that the 'Exists' property of 'UI_ConnectServerBtn_AutoID' button equals 'True'
-            Assert.AreEqual(this.Click_New_Workflow_Ribbon_ButtonParams.ConnectServerButtonExists, connectServerButton.Exists, "Connect in Explorer does not exist");
-
-            // Verify that the 'Exists' property of '...' button equals 'True'
-            Assert.AreEqual(this.Click_New_Workflow_Ribbon_ButtonParams.EditServerButtonExists, editServerButton.Exists, "Edit Connect control button does not exist");
-
-            // Verify that the 'Exists' property of 'UI_VariablesControl_AutoID' custom control equals 'True'
-            Assert.AreEqual(this.Click_New_Workflow_Ribbon_ButtonParams.VariablesControlExists, variablesControl.Exists, "Variable list view does not exist");
-        }
-        
-        /// <summary>
         /// Click_NewDatabaseSource_Ribbon_Button
         /// </summary>
         public void Click_NewDatabaseSource_Ribbon_Button()
@@ -4984,20 +4936,20 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
-        /// Select_Fusiondll_From_Plugin_Source_Wizard_Tree - Use 'Select_Fusiondll_From_Plugin_Source_Wizard_TreeParams' to pass parameters into this method.
+        /// Select_First_Item_From_DotNet_DLL_Large_View_Source_Combobox
         /// </summary>
-        public void Select_Fusiondll_From_Plugin_Source_Wizard_Tree()
+        public void Select_First_Item_From_DotNet_DLL_Large_View_Source_Combobox()
         {
             #region Variable Declarations
-            WpfTree tree = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.PluginSourceWizardTab.WorkSurfaceContext.NewPluginSourceWizard.ScrollViewer.Tree;
-            WpfButton saveButton = this.MainStudioWindow.SideMenuBar.SaveButton;
+            WpfComboBox sourcesComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.SourcesComboBox;
+            WpfListItem listItem1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.SourcesComboBox.ListItem1;
             #endregion
 
-            // Click 'ExplorerTree' tree
-            Mouse.Click(tree, new Point(164, 278));
+            // Click 'SourcesComboBox' combo box
+            Mouse.Click(sourcesComboBox, new Point(175, 9));
 
-            // Verify that the 'Enabled' property of 'Save this tab' button equals 'True'
-            Assert.AreEqual(this.Select_Fusiondll_From_Plugin_Source_Wizard_TreeParams.SaveButtonEnabled, saveButton.Enabled, "Save button is not enabled after DLL has been selected in plugin source wizard.");
+            // Click 'Dev2.Common.Interfaces.Core.PluginSourceDefinition' list item
+            Mouse.Click(listItem1, new Point(163, 17));
         }
         
         /// <summary>
@@ -5358,40 +5310,6 @@ namespace Warewolf.UITests
             // Verify that the 'SelectedItem' property of 'SourcesComboBox' combo box equals 'UITestingDBSource'
             Assert.AreEqual(this.Select_UITestingDBSource_From_SQL_Server_Large_View_Source_ComboboxParams.SourcesComboboxSelectedItem, sourcesCombobox.SelectedItem, "SQL Server large view source combobox selected item is not equal to UITestingDBSo" +
                     "urce.");
-        }
-        
-        /// <summary>
-        /// Select_UITestingPluginSource_From_DotNet_DLL_Large_View_Source_Combobox
-        /// </summary>
-        public void Select_UITestingPluginSource_From_DotNet_DLL_Large_View_Source_Combobox()
-        {
-            #region Variable Declarations
-            WpfComboBox sourcesComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.SourcesComboBox;
-            WpfListItem listItem1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.SourcesComboBox.ListItem1;
-            #endregion
-
-            // Click 'SourcesComboBox' combo box
-            Mouse.Click(sourcesComboBox, new Point(175, 9));
-
-            // Click 'Dev2.Common.Interfaces.Core.PluginSourceDefinition' list item
-            Mouse.Click(listItem1, new Point(163, 17));
-        }
-        
-        /// <summary>
-        /// Select_UITestingWebSource_From_GET_Web_Large_View_Source_Combobox
-        /// </summary>
-        public void Select_UITestingWebSource_From_GET_Web_Large_View_Source_Combobox()
-        {
-            #region Variable Declarations
-            WpfComboBox sourcesComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebGet.LargeView.SourcesComboBox;
-            WpfListItem uITestingWebSourceListItem = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebGet.LargeView.SourcesComboBox.UITestingWebSourceListItem;
-            #endregion
-
-            // Click 'SourcesComboBox' combo box
-            Mouse.Click(sourcesComboBox, new Point(175, 9));
-
-            // Click 'Dev2.Common.Interfaces.Core.WebServiceSourceDefinition' list item
-            Mouse.Click(uITestingWebSourceListItem, new Point(163, 17));
         }
         
         /// <summary>
@@ -5770,18 +5688,6 @@ namespace Warewolf.UITests
                     this.mClick_New_Web_Source_Test_Connection_ButtonParams = new Click_New_Web_Source_Test_Connection_ButtonParams();
                 }
                 return this.mClick_New_Web_Source_Test_Connection_ButtonParams;
-            }
-        }
-        
-        public virtual Click_New_Workflow_Ribbon_ButtonParams Click_New_Workflow_Ribbon_ButtonParams
-        {
-            get
-            {
-                if ((this.mClick_New_Workflow_Ribbon_ButtonParams == null))
-                {
-                    this.mClick_New_Workflow_Ribbon_ButtonParams = new Click_New_Workflow_Ribbon_ButtonParams();
-                }
-                return this.mClick_New_Workflow_Ribbon_ButtonParams;
             }
         }
         
@@ -7249,18 +7155,6 @@ namespace Warewolf.UITests
             }
         }
         
-        public virtual Select_Fusiondll_From_Plugin_Source_Wizard_TreeParams Select_Fusiondll_From_Plugin_Source_Wizard_TreeParams
-        {
-            get
-            {
-                if ((this.mSelect_Fusiondll_From_Plugin_Source_Wizard_TreeParams == null))
-                {
-                    this.mSelect_Fusiondll_From_Plugin_Source_Wizard_TreeParams = new Select_Fusiondll_From_Plugin_Source_Wizard_TreeParams();
-                }
-                return this.mSelect_Fusiondll_From_Plugin_Source_Wizard_TreeParams;
-            }
-        }
-        
         public virtual Select_GetCountries_From_SQL_Server_Large_View_Action_ComboboxExpectedValues Select_GetCountries_From_SQL_Server_Large_View_Action_ComboboxExpectedValues
         {
             get
@@ -7583,8 +7477,6 @@ namespace Warewolf.UITests
         
         private Click_New_Web_Source_Test_Connection_ButtonParams mClick_New_Web_Source_Test_Connection_ButtonParams;
         
-        private Click_New_Workflow_Ribbon_ButtonParams mClick_New_Workflow_Ribbon_ButtonParams;
-        
         private Click_NewPluginSource_Ribbon_ButtonParams mClick_NewPluginSource_Ribbon_ButtonParams;
         
         private Click_Output_OnRecordset_InVariableListParams mClick_Output_OnRecordset_InVariableListParams;
@@ -7828,8 +7720,6 @@ namespace Warewolf.UITests
         private Select_Delete_FromExplorerContextMenuParams mSelect_Delete_FromExplorerContextMenuParams;
         
         private Select_Dev2TestingDB_From_DB_Source_Wizard_Database_ComboboxParams mSelect_Dev2TestingDB_From_DB_Source_Wizard_Database_ComboboxParams;
-        
-        private Select_Fusiondll_From_Plugin_Source_Wizard_TreeParams mSelect_Fusiondll_From_Plugin_Source_Wizard_TreeParams;
         
         private Select_GetCountries_From_SQL_Server_Large_View_Action_ComboboxExpectedValues mSelect_GetCountries_From_SQL_Server_Large_View_Action_ComboboxExpectedValues;
         
@@ -8409,61 +8299,6 @@ namespace Warewolf.UITests
         /// Verify that the 'Enabled' property of 'Save this tab' button equals 'True'
         /// </summary>
         public bool SaveButtonEnabled = true;
-        #endregion
-    }
-    
-    /// <summary>
-    /// Parameters to be passed into 'Click_New_Workflow_Ribbon_Button'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Click_New_Workflow_Ribbon_ButtonParams
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Verify that the 'Exists' property of 'Create a new service' button equals 'True'
-        /// </summary>
-        public bool NewWorkflowButtonExists = true;
-        
-        /// <summary>
-        /// Wait for 1 seconds for user delay between actions; Verify that the 'Exists' property of 'StartNode' custom control equals 'True'
-        /// </summary>
-        public bool StartNodeExists = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'StartNode' custom control equals 'True'
-        /// </summary>
-        public bool StartNodeExists1 = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'SearchTextBox' text box equals 'True'
-        /// </summary>
-        public bool SearchTextBoxExists = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'UI_ExplorerControl_AutoID' custom control equals 'True'
-        /// </summary>
-        public bool ExplorerExists = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'ToggleButton' button equals 'True'
-        /// </summary>
-        public bool ServerListComboBoxExists = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'UI_ConnectServerBtn_AutoID' button equals 'True'
-        /// </summary>
-        public bool ConnectServerButtonExists = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of '...' button equals 'True'
-        /// </summary>
-        public bool EditServerButtonExists = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'UI_VariablesControl_AutoID' custom control equals 'True'
-        /// </summary>
-        public bool VariablesControlExists = true;
         #endregion
     }
     
@@ -11029,21 +10864,6 @@ namespace Warewolf.UITests
         /// Verify that the 'DisplayText' property of 'Dev2TestingDB' label equals 'Dev2TestingDB'
         /// </summary>
         public string UIDev2TestingDBTextDisplayText = "Dev2TestingDB";
-        #endregion
-    }
-    
-    /// <summary>
-    /// Parameters to be passed into 'Select_Fusiondll_From_Plugin_Source_Wizard_Tree'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Select_Fusiondll_From_Plugin_Source_Wizard_TreeParams
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Verify that the 'Enabled' property of 'Save this tab' button equals 'True'
-        /// </summary>
-        public bool SaveButtonEnabled = true;
         #endregion
     }
     
@@ -25216,25 +25036,197 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public WpfListItem UITestingWebSourceListItem
+        public WpfListItem ListItem1
         {
             get
             {
-                if ((this.mUITestingWebSourceListItem == null))
+                if ((this.mListItem1 == null))
                 {
-                    this.mUITestingWebSourceListItem = new WpfListItem(this);
+                    this.mListItem1 = new WpfListItem(this);
                     #region Search Criteria
-                    this.mUITestingWebSourceListItem.SearchProperties[WpfListItem.PropertyNames.Name] = "Dev2.Common.Interfaces.Core.WebServiceSourceDefinition";
-                    this.mUITestingWebSourceListItem.WindowTitles.Add("Warewolf");
+                    this.mListItem1.SearchProperties[WpfListItem.PropertyNames.Name] = "Dev2.Common.Interfaces.Core.WebServiceSourceDefinition";
+                    this.mListItem1.SearchProperties[WpfListItem.PropertyNames.Instance] = "1";
+                    this.mListItem1.WindowTitles.Add("Warewolf");
                     #endregion
                 }
-                return this.mUITestingWebSourceListItem;
+                return this.mListItem1;
+            }
+        }
+        
+        public WpfListItem ListItem2
+        {
+            get
+            {
+                if ((this.mListItem2 == null))
+                {
+                    this.mListItem2 = new WpfListItem(this);
+                    #region Search Criteria
+                    this.mListItem2.SearchProperties[WpfListItem.PropertyNames.Name] = "Dev2.Common.Interfaces.Core.WebServiceSourceDefinition";
+                    this.mListItem2.SearchProperties[WpfListItem.PropertyNames.Instance] = "2";
+                    this.mListItem2.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mListItem2;
+            }
+        }
+        
+        public WpfListItem ListItem3
+        {
+            get
+            {
+                if ((this.mListItem3 == null))
+                {
+                    this.mListItem3 = new WpfListItem(this);
+                    #region Search Criteria
+                    this.mListItem3.SearchProperties[WpfListItem.PropertyNames.Name] = "Dev2.Common.Interfaces.Core.WebServiceSourceDefinition";
+                    this.mListItem3.SearchProperties[WpfListItem.PropertyNames.Instance] = "3";
+                    this.mListItem3.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mListItem3;
+            }
+        }
+        
+        public WpfListItem ListItem4
+        {
+            get
+            {
+                if ((this.mListItem4 == null))
+                {
+                    this.mListItem4 = new WpfListItem(this);
+                    #region Search Criteria
+                    this.mListItem4.SearchProperties[WpfListItem.PropertyNames.Name] = "Dev2.Common.Interfaces.Core.WebServiceSourceDefinition";
+                    this.mListItem4.SearchProperties[WpfListItem.PropertyNames.Instance] = "4";
+                    this.mListItem4.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mListItem4;
+            }
+        }
+        
+        public WpfListItem ListItem5
+        {
+            get
+            {
+                if ((this.mListItem5 == null))
+                {
+                    this.mListItem5 = new WpfListItem(this);
+                    #region Search Criteria
+                    this.mListItem5.SearchProperties[WpfListItem.PropertyNames.Name] = "Dev2.Common.Interfaces.Core.WebServiceSourceDefinition";
+                    this.mListItem5.SearchProperties[WpfListItem.PropertyNames.Instance] = "5";
+                    this.mListItem5.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mListItem5;
+            }
+        }
+        
+        public WpfListItem ListItem6
+        {
+            get
+            {
+                if ((this.mListItem6 == null))
+                {
+                    this.mListItem6 = new WpfListItem(this);
+                    #region Search Criteria
+                    this.mListItem6.SearchProperties[WpfListItem.PropertyNames.Name] = "Dev2.Common.Interfaces.Core.WebServiceSourceDefinition";
+                    this.mListItem6.SearchProperties[WpfListItem.PropertyNames.Instance] = "6";
+                    this.mListItem6.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mListItem6;
+            }
+        }
+        
+        public WpfListItem ListItem7
+        {
+            get
+            {
+                if ((this.mListItem7 == null))
+                {
+                    this.mListItem7 = new WpfListItem(this);
+                    #region Search Criteria
+                    this.mListItem7.SearchProperties[WpfListItem.PropertyNames.Name] = "Dev2.Common.Interfaces.Core.WebServiceSourceDefinition";
+                    this.mListItem7.SearchProperties[WpfListItem.PropertyNames.Instance] = "7";
+                    this.mListItem7.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mListItem7;
+            }
+        }
+        
+        public WpfListItem ListItem8
+        {
+            get
+            {
+                if ((this.mListItem8 == null))
+                {
+                    this.mListItem8 = new WpfListItem(this);
+                    #region Search Criteria
+                    this.mListItem8.SearchProperties[WpfListItem.PropertyNames.Name] = "Dev2.Common.Interfaces.Core.WebServiceSourceDefinition";
+                    this.mListItem8.SearchProperties[WpfListItem.PropertyNames.Instance] = "8";
+                    this.mListItem8.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mListItem8;
+            }
+        }
+        
+        public WpfListItem ListItem9
+        {
+            get
+            {
+                if ((this.mListItem9 == null))
+                {
+                    this.mListItem9 = new WpfListItem(this);
+                    #region Search Criteria
+                    this.mListItem9.SearchProperties[WpfListItem.PropertyNames.Name] = "Dev2.Common.Interfaces.Core.WebServiceSourceDefinition";
+                    this.mListItem9.SearchProperties[WpfListItem.PropertyNames.Instance] = "9";
+                    this.mListItem9.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mListItem9;
+            }
+        }
+        
+        public WpfListItem ListItem10
+        {
+            get
+            {
+                if ((this.mListItem10 == null))
+                {
+                    this.mListItem10 = new WpfListItem(this);
+                    #region Search Criteria
+                    this.mListItem10.SearchProperties[WpfListItem.PropertyNames.Name] = "Dev2.Common.Interfaces.Core.WebServiceSourceDefinition";
+                    this.mListItem10.SearchProperties[WpfListItem.PropertyNames.Instance] = "10";
+                    this.mListItem10.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mListItem10;
             }
         }
         #endregion
         
         #region Fields
-        private WpfListItem mUITestingWebSourceListItem;
+        private WpfListItem mListItem1;
+        
+        private WpfListItem mListItem2;
+        
+        private WpfListItem mListItem3;
+        
+        private WpfListItem mListItem4;
+        
+        private WpfListItem mListItem5;
+        
+        private WpfListItem mListItem6;
+        
+        private WpfListItem mListItem7;
+        
+        private WpfListItem mListItem8;
+        
+        private WpfListItem mListItem9;
+        
+        private WpfListItem mListItem10;
         #endregion
     }
     
