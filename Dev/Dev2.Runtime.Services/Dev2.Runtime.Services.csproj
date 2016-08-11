@@ -200,7 +200,6 @@
     <Compile Include="ESB\Management\Services\FetchPerfCounters.cs" />
     <Compile Include="ESB\Management\Services\FetchPluginActions.cs" />
     <Compile Include="ESB\Management\Services\FetchPluginNamespaces.cs" />
-    <Compile Include="ESB\Management\Services\FetchExplorerLightTree.cs" />
     <Compile Include="ESB\Management\Services\FetchPluginSources.cs" />
     <Compile Include="ESB\Management\Services\FetchServerPermissions.cs" />
     <Compile Include="ESB\Management\Services\FetchRabbitMQServiceSources.cs" />
@@ -262,7 +261,6 @@
     <Compile Include="ESB\Management\Services\FetchDependantCompileMessages.cs" />
     <Compile Include="ESB\Management\Services\GetDependanciesOnList.cs" />
     <Compile Include="ESB\Management\Services\RenameResource.cs" />
-    <Compile Include="ESB\Management\Services\SaveExplorerLightTreeSource.cs" />
     <Compile Include="ESB\Management\Services\SaveServerSource.cs" />
     <Compile Include="ESB\Management\Services\SaveSharePointServiceSource.cs" />
     <Compile Include="ESB\Management\Services\SaveWcfServiceSource.cs" />
