@@ -61,7 +61,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
                 }
                 if (Method != null && Actions != null)
                 {
-                    IsActionEnabled = true;
+                    IsActionEnabled = _source.SelectedSource != null && _namespace.SelectedNamespace != null; 
                     SelectedAction = Actions.FirstOrDefault(action => action.Method == Method.Method);
                 }
                 RefreshActionsCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(() =>
@@ -91,7 +91,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
             }
             set
             {
-                _modelItem.SetProperty("Method",value);
+                _modelItem.SetProperty("Method", value);
             }
         }
 
@@ -120,7 +120,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
                 // ReSharper disable once ExplicitCallerInfoArgument
                 OnPropertyChanged(@"IsEnabled");
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 IsRefreshing = false;
                 Errors.Add(e.Message);
@@ -139,7 +139,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
 
         private void UpdateBasedOnNamespace()
         {
-            if(_source?.SelectedSource != null)
+            if (_source?.SelectedSource != null)
             {
                 Actions = _model.GetActions(_source.SelectedSource, _namespace.SelectedNamespace);
                 SelectedAction = null;
@@ -150,7 +150,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
 
         public bool CanRefresh()
         {
-            IsActionEnabled = _source.SelectedSource != null;
+            IsActionEnabled = _source.SelectedSource != null && _namespace.SelectedNamespace != null;
             return _source.SelectedSource != null;
         }
 
@@ -167,7 +167,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
                     if (!string.IsNullOrEmpty(_selectedAction.Method))
                         StorePreviousValues(_selectedAction.GetIdentifier());
                 }
-                if(Dependants != null)
+                if (Dependants != null)
                 {
                     var outputs = Dependants.FirstOrDefault(a => a is IOutputsToolRegion);
                     var region = outputs as OutputsRegion;
@@ -279,7 +279,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
                 IsEnabled = IsEnabled,
                 SelectedAction = SelectedAction == null ? null : new PluginAction
                 {
-                    Inputs = SelectedAction?.Inputs.Select(a => new ServiceInput(a.Name, a.Value) as IServiceInput).ToList(), 
+                    Inputs = SelectedAction?.Inputs.Select(a => new ServiceInput(a.Name, a.Value) as IServiceInput).ToList(),
                     FullName = SelectedAction.FullName,
                     Method = SelectedAction.Method
                 }
@@ -319,7 +319,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
 
             OnPropertyChanged("SelectedAction");
         }
-      
+
 
         private void StorePreviousValues(string actionName)
         {
