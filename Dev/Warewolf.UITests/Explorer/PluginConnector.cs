@@ -28,7 +28,7 @@ namespace Warewolf.UITests
             Uimap.Drag_DotNet_DLL_Connector_Onto_DesignSurface();
             Uimap.TryClearToolboxFilter();
             Uimap.Open_DotNet_DLL_Connector_Tool_Large_View();
-            Uimap.Select_UITestingPluginSource_From_DotNet_DLL_Large_View_Source_Combobox();
+            Uimap.Select_First_Item_From_DotNet_DLL_Large_View_Source_Combobox();
             Uimap.Select_SystemRandom_From_DotNet_DLL_Large_View_Namespace_Combobox();
             Uimap.Select_Next_From_DotNet_DLL_Large_View_Action_Combobox();
             Uimap.Click_DotNet_DLL_Large_View_Generate_Outputs();

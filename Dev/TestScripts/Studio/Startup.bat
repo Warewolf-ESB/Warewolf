@@ -64,11 +64,15 @@ IF EXIST %windir%\nircmd.exe (nircmd elevate "%DeploymentDirectory%\Warewolf Ser
 
 rem using the "ping" command as make-shift wait or sleep command, wait for server started file to appear
 :WaitForServerStart
-IF EXIST "%DeploymentDirectory%\ServerStarted" goto StartStudio 
+set /a LoopCounter=0
+:MainLoopBody
+IF EXIST "%DeploymentDirectory%\ServerStarted" goto StartStudio
+set /a LoopCounter=LoopCounter+1
+IF %LoopCounter% EQU 30 echo Timed out waiting for the Warewolf server to start. &exit 1
 rem wait for 5 seconds before trying again
 @echo Waiting 5 seconds...
 ping -n 5 -w 1000 192.0.2.2 > nul
-goto WaitForServerStart 
+goto MainLoopBody 
 
 :StartStudio
 REM Try use Default Workspace Layout
