@@ -127,6 +127,9 @@
                                           ClearSearchCommand="{Binding ClearFilterCommand}"
                                           ClearSearchToolTip="{x:Static languages:Core.ToolboxClearSearchTooltip}"
                                           Style="{StaticResource SearchTextboxStyle}"
+                                          GotKeyboardFocus="SelectAllText"
+                                          MouseDoubleClick="SelectAllText"
+                                          PreviewMouseLeftButtonDown="SelectivelyIgnoreMouseButton"
                                           ToolTip="{x:Static languages:Core.ToolboxSearchToolTip}"
                                           Text="{Binding SearchTerm, Delay=300, UpdateSourceTrigger=PropertyChanged}">
                 <i:Interaction.Behaviors>
