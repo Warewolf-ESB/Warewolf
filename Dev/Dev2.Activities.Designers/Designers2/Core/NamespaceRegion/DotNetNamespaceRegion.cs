@@ -41,7 +41,7 @@ namespace Dev2.Activities.Designers2.Core.NamespaceRegion
             {
                 Errors = new List<string>();
 
-                LabelWidth = 70;
+                LabelWidth = 71.5;
                 ToolRegionName = "DotNetNamespaceRegion";
                 _modelItem = modelItem;
                 _model = model;
@@ -93,6 +93,18 @@ namespace Dev2.Activities.Designers2.Core.NamespaceRegion
             {
                 _labelWidth = value;
                 OnPropertyChanged();
+            }
+        }
+
+        public string NamespaceDisplayText
+        {
+            get
+            {
+                if(ToolRegionName.ToUpper().Contains("DOTNET"))
+                {
+                    return "Namespace/Class";
+                }
+                return "Namespace";
             }
         }
 

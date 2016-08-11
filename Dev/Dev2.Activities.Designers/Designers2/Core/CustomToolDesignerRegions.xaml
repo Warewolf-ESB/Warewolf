@@ -66,6 +66,7 @@
             </Button>
         </Grid>
     </ControlTemplate>
+    
     <ControlTemplate x:Key="NewActionGrid">
         <Grid x:Name="ActionsGrid" Margin="{StaticResource ControlBorderTop}" >
             <Grid.ColumnDefinitions>
@@ -246,6 +247,48 @@
                                                         Visibility="{Binding Path=NamespaceRegion.IsRefreshing, Converter={StaticResource BoolToVis}}"/>
         </Grid>
     </ControlTemplate>
+    
+    <ControlTemplate x:Key="NewDotNetNamespaceGrid">
+        <Grid x:Name="ActionsGrid" 
+                      Margin="{StaticResource ControlBorderTop}" >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="{Binding NamespaceRegion.LabelWidth}"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock x:Name="NamespaceLabel" TextWrapping="WrapWithOverflow" Text="ClassName/Namespace" Margin="{StaticResource ControlBorderRight}" />
+            <ComboBox x:Name="NamespaceComboBox"
+                              Grid.Column="1"
+                              Margin="{StaticResource ControlBorderRight}"
+                              ItemsSource="{Binding NamespaceRegion.Namespaces}"
+                              DisplayMemberPath="FullName" 
+                              IsEnabled="{Binding NamespaceRegion.IsNamespaceEnabled}"
+                              ToolTip="{x:Static languages:Core.DotNetPluginServiceSelectNamespaceToolTip}"
+                              IsEditable="False"
+                              SelectedItem="{Binding NamespaceRegion.SelectedNamespace}">
+                <i:Interaction.Behaviors>
+                    <core:HelpSetter Text="{x:Static languages:Core.DotNetPluginServiceSelectNamespaceHelp}" DataContext="{Binding}" />
+                </i:Interaction.Behaviors>
+            </ComboBox>
+            <Button x:Name="NamespaceRefreshButton" 
+                            Grid.Column="2"
+                            Command="{Binding Path=NamespaceRegion.RefreshNamespaceCommand, Mode=TwoWay}"
+                            Visibility="{Binding Path=NamespaceRegion.IsRefreshing, Converter={StaticResource BoolToVisibilityConverterNegative}}">
+                <i:Interaction.Behaviors>
+                    <core:HelpSetter Text="{x:Static languages:Core.PluginServiceRefreshHelp}" DataContext="{Binding}" />
+                </i:Interaction.Behaviors>
+                <Button.Content>
+                    <fa:FontAwesome Icon="Refresh"/>
+                </Button.Content>
+            </Button>
+            <customControls:CircularProgressBar Margin="{StaticResource ControlBorderLeft}"
+                                                        Grid.Column="2"
+                                                        Width="22"
+                                                        Height="22"
+                                                        Visibility="{Binding Path=NamespaceRegion.IsRefreshing, Converter={StaticResource BoolToVis}}"/>
+        </Grid>
+    </ControlTemplate>
+    
     <ControlTemplate x:Key="NewSelectionActionGrid">
         <Grid>
             <Grid.RowDefinitions>
@@ -293,6 +336,21 @@
             <Control Template="{StaticResource NewSelectionGrid}"/>
 
             <Control Template="{StaticResource NewNamespaceGrid}" Grid.Row="1"/>
+
+            <Control Template="{StaticResource NewDotNetActionGrid}" Grid.Row="2"/>
+        </Grid>
+    </ControlTemplate>
+    <ControlTemplate x:Key="NewDotNetSelectionNamespaceGrid">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <Control Template="{StaticResource NewSelectionGrid}"/>
+
+            <Control Template="{StaticResource NewDotNetNamespaceGrid}" Grid.Row="1"/>
 
             <Control Template="{StaticResource NewDotNetActionGrid}" Grid.Row="2"/>
         </Grid>

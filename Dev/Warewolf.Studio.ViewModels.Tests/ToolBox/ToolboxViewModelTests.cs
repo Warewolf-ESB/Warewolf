@@ -203,11 +203,9 @@ namespace Warewolf.Studio.ViewModels.ToolBox.Tests
 
             //assert
             Assert.IsTrue(string.IsNullOrEmpty(_target.SearchTerm));
-            Assert.IsTrue(_changedProperties.Contains("Tools"));
         }
 
         [TestMethod]
-        [Ignore] //Ignore until Background worker in place
         public void TestFilter()
         {
             //arrange
@@ -302,7 +300,6 @@ namespace Warewolf.Studio.ViewModels.ToolBox.Tests
             Assert.IsTrue(_target.Tools.Any(it => it.Tool == toolDescriptorMockContainingInLocal.Object && it.IsEnabled));
             Assert.IsTrue(_target.Tools.Any(it => it.Tool == toolDescriptorMockNotContainingInLocal.Object && !it.IsEnabled));
             Assert.IsTrue(_target.Tools.Any(it => it.Tool == toolDescriptorMockNotContainingInLocal2.Object && !it.IsEnabled));
-            Assert.IsTrue(_changedProperties.Contains("Tools"));
         }
 
         [TestMethod]
