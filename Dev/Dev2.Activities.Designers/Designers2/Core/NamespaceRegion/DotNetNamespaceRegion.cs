@@ -40,8 +40,7 @@ namespace Dev2.Activities.Designers2.Core.NamespaceRegion
             try
             {
                 Errors = new List<string>();
-
-                LabelWidth = 71.5;
+                LabelWidth = 70;
                 ToolRegionName = "DotNetNamespaceRegion";
                 _modelItem = modelItem;
                 _model = model;

@@ -256,7 +256,7 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
-            <TextBlock x:Name="NamespaceLabel" TextWrapping="WrapWithOverflow" Text="ClassName/Namespace" Margin="{StaticResource ControlBorderRight}" />
+            <TextBlock x:Name="NamespaceLabel" Text="ClassName" Margin="{StaticResource ControlBorderRight}" />
             <ComboBox x:Name="NamespaceComboBox"
                               Grid.Column="1"
                               Margin="{StaticResource ControlBorderRight}"
