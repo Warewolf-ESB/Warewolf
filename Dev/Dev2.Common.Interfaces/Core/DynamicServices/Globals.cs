@@ -166,8 +166,7 @@ namespace Dev2.Common.Interfaces.Core.DynamicServices
         RabbitMQSource,
         ExchangeSource,
         WcfSource,
-        ComPluginSource,
-        ExplorerTreeSoure,
+        ComPluginSource
     }
 
     /// <summary>
