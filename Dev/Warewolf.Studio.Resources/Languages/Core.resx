@@ -660,6 +660,9 @@ The more information you can provide us with, the faster we can track the issue 
   <data name="PluginServiceSelectNamespaceHelp" xml:space="preserve">
     <value>Select a namespace if it exists to filter the actions you can perform.</value>
   </data>
+  <data name="DotNetPluginServiceSelectNamespaceHelp" xml:space="preserve">
+    <value>Select a ClassName or a fully qualified ClassName(Namespace+ClassName) if it exists to filter the actions you can perform.</value>
+  </data>
   <data name="PluginServiceSelectActionHelp" xml:space="preserve">
     <value>Select the method in the DLL you want to execute. You can provide a namespace filter above if you want.</value>
   </data>
@@ -2511,6 +2514,9 @@ Using recordset () will add a new record and (*) will assign every record.</valu
   </data>
   <data name="PluginServiceSelectNamespaceToolTip" xml:space="preserve">
     <value>Select a namespace to help find the correct action.</value>
+  </data>
+  <data name="DotNetPluginServiceSelectNamespaceToolTip" xml:space="preserve">
+    <value>Select a ClassName or a fully qualified ClassName(Namespace+ClassName) to help find the correct action.</value>
   </data>
   <data name="PluginServiceSelectActionToolTip" xml:space="preserve">
     <value>Select method to execute.</value>
