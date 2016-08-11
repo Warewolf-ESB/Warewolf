@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Linq;
 using System.Windows.Input;
 using Dev2;
@@ -23,7 +22,6 @@ namespace Warewolf.Studio.ViewModels.ToolBox
         IToolDescriptorViewModel _selectedTool;
         private string _searchTerm;
         private ObservableCollection<IToolDescriptorViewModel> _backedUpTools;
-        private readonly BackgroundWorker _worker;
 
         public ToolboxViewModel(IToolboxModel localModel, IToolboxModel remoteModel)
         {
@@ -35,12 +33,6 @@ namespace Warewolf.Studio.ViewModels.ToolBox
             BackedUpTools = new ObservableCollection<IToolDescriptorViewModel>(_remoteModel.GetTools().Select(a => new ToolDescriptorViewModel(a, _localModel.GetTools().Contains(a))));
             Tools = BackedUpTools;
             ClearFilterCommand = new DelegateCommand(() => SearchTerm = string.Empty);
-            _worker = new BackgroundWorker
-            {
-                WorkerSupportsCancellation = true
-            };
-            _worker.DoWork += Filter;
-            _worker.RunWorkerCompleted += FilterComplete;
         }
 
         public ICommand ClearFilterCommand { get; set; }
@@ -119,71 +111,25 @@ namespace Warewolf.Studio.ViewModels.ToolBox
                 {
                     _searchTerm = value;
                     OnPropertyChanged("SearchTerm");
-                    if (string.IsNullOrWhiteSpace(value))
+                    if (!string.IsNullOrWhiteSpace(value))
                     {
-                        Tools = new AsyncObservableCollection<IToolDescriptorViewModel>(_backedUpTools.ToList());
-                    }
-                    else
-                    {
-                        BeginFilter(value.ToLowerInvariant());
+                        FilterItems(value.ToLowerInvariant());
                     }
                 }
             }
         }
 
-        private void Filter(object sender, DoWorkEventArgs e)
+        private void FilterItems(string filterText)
         {
-            var query = (string)e.Argument;
+            var searchWords = filterText.ToLower().Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
 
-            var searchWords = query.ToLower().Split(' ');
+            var results = _backedUpTools.Where(i =>
+                     searchWords.All(s => i.Tool.Name.ToLower().Contains(s))
+                     || searchWords.All(s => i.Tool.Category.ToLower().Contains(s))
+                     || i.Tool.FilterTag.ToLower().Equals(filterText)
+                     || i.Tool.FilterTag.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries).Any(s => searchWords.Any(s1 => s1.Equals(s.ToLower()))));
 
-            var results = _backedUpTools.Where(i => i.Tool.Name.ToLower().Contains(searchWords[0])
-                  || i.Tool.Category.ToLower().Contains(searchWords[0])
-                  || i.Tool.FilterTag.ToLower().Contains(searchWords[0]));
-
-            if (searchWords.Length > 1)
-            {
-                for (int x = 1; x < searchWords.Length; x++)
-                {
-                    var x1 = x;
-                    results = results.Where(i => i.Tool.Name.ToLower().Contains(searchWords[x1])
-                                                 || i.Tool.Category.ToLower().Contains(searchWords[x1])
-                                                 || i.Tool.FilterTag.ToLower().Contains(searchWords[x1]));
-                }
-            }
-
-            e.Result = results;
-        }
-
-        private void FilterComplete(object sender, RunWorkerCompletedEventArgs e)
-        {
-            if (e.Cancelled)
-                return;
-
-            var filtered = (IEnumerable<IToolDescriptorViewModel>)e.Result;
-            Tools = new AsyncObservableCollection<IToolDescriptorViewModel>(filtered.ToList());
-        }
-
-        private void RefilterOnCompletion(object sender, RunWorkerCompletedEventArgs e)
-        {
-            _worker.RunWorkerCompleted -= RefilterOnCompletion;
-            _worker.RunWorkerAsync(_searchTerm.ToLowerInvariant());
-        }
-
-        private void BeginFilter(string filterText)
-        {
-            if (_worker.IsBusy)
-            {
-                if (!_worker.CancellationPending)
-                {
-                    _worker.RunWorkerCompleted += RefilterOnCompletion;
-                    _worker.CancelAsync();
-                }
-            }
-            else
-            {
-                _worker.RunWorkerAsync(filterText.ToLowerInvariant());
-            }
+            Tools = new AsyncObservableCollection<IToolDescriptorViewModel>(results);
         }
 
         void _remoteModel_OnserverDisconnected(object sender)
