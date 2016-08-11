@@ -18,6 +18,7 @@ using System.Text.RegularExpressions;
 using System.Reflection;
 using System.Text;
 using System.Threading;
+using System.Windows.Forms.VisualStyles;
 
 namespace Warewolf.UITests
 {
@@ -193,7 +194,7 @@ namespace Warewolf.UITests
             {
                 Click_Clear_Toolbox_Filter_Clear_Button();
             }
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox.Text == string.Empty, "Toolbox filter textbox text value of "+ MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox.Text + " is not empty after clicking clear filter button.");
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox.Text == string.Empty, "Toolbox filter textbox text value of " + MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox.Text + " is not empty after clicking clear filter button.");
         }
 
         public void Click_Settings_Resource_Permissions_Row1_Add_Resource_Button()
@@ -619,8 +620,11 @@ namespace Warewolf.UITests
         {
             Assert.IsTrue(MainStudioWindow.SideMenuBar.NewWorkflowButton.Exists, "New Workflow Ribbon Button Does Not Exist!");
             Mouse.Click(MainStudioWindow.SideMenuBar.NewWorkflowButton, new Point(3, 8));
+            var getTimeBefore = System.DateTime.Now;
             MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.StartNode.WaitForControlExist(Playback.PlaybackSettings.SearchTimeout);
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.StartNode.Exists, "Start Node Does Not Exist.");
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.StartNode.WaitForControlExist(Playback.PlaybackSettings.SearchTimeout);
+            var timeWaited = System.DateTime.Now - getTimeBefore;
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.StartNode.Exists, "Start Node Does Not Exist after waiting for " + timeWaited.Milliseconds + "ms.");
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox.Exists, "Toolbox filter textbox does not exist");
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.Exists, "Explorer does not exist in the studio");
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.ServerListComboBox.Exists, "Explorer connect control does not exist");
@@ -673,13 +677,51 @@ namespace Warewolf.UITests
                 Mouse.Click(MainStudioWindow.WebServerSourceComboboxListItem1, new Point(163, 17));
             }
         }
-        
+
         public void Click_New_Web_Source_Ribbon_Button()
         {
             Mouse.Click(MainStudioWindow.SideMenuBar.WebSourceButton, new Point(13, 18));
             MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WebSourceWizardTab.WaitForControlExist(Playback.PlaybackSettings.SearchTimeout);
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WebSourceWizardTab.WorkSurfaceContext.AddressTextbox.Exists, "Web server address textbox does not exist on new web source wizard tab.");
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WebSourceWizardTab.WorkSurfaceContext.TestConnectionButton.Exists, "Web server test connection button does not exist on new web source wizard tab.");
+        }
+
+        public void First_Drag_Toolbox_Comment_Onto_Switch_Left_Arm_On_DesignSurface()
+        {
+            #region Variable Declarations
+            WpfEdit searchTextBox = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox;
+            WpfListItem commentToolboxItem = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.UtilityTools.Comment;
+            WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
+            WpfCustom connector2 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector2;
+            WpfCustom commentOnTheDesignSurface = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Comment;
+            #endregion
+
+            searchTextBox.Text = "Comment";
+            var switchLeftAutoConnector = new Point(250, 200);
+            flowchart.EnsureClickable(switchLeftAutoConnector);
+            Mouse.StartDragging(commentToolboxItem, new Point(16, 25));
+            Mouse.StopDragging(flowchart, switchLeftAutoConnector);
+            Assert.IsTrue(connector2.Exists, "Third connector does not exist on design surface.");
+            Assert.IsTrue(commentOnTheDesignSurface.Exists, "Comment tool does not exist on the design surface");
+        }
+
+        public void Then_Drag_Toolbox_Comment_Onto_Switch_Right_Arm_On_DesignSurface()
+        {
+            #region Variable Declarations
+            WpfEdit searchTextBox = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox;
+            WpfListItem commentToolboxItem = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.UtilityTools.Comment;
+            WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
+            WpfCustom connector3 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector3;
+            WpfCustom commentOnTheDesignSurface = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Comment;
+            #endregion
+
+            var switchRightAutoConnector = new Point(360, 200);
+            flowchart.EnsureClickable(switchRightAutoConnector);
+            Mouse.StartDragging(commentToolboxItem, new Point(16, 25));
+            Mouse.StopDragging(flowchart, switchRightAutoConnector);
+            Assert.IsTrue(connector3.Exists, "Second auto connector does not exist on design surface after drop onto autoconnector.");
+            Assert.IsTrue(commentOnTheDesignSurface.Exists, "Comment tool does not exist on the design surface after drag and drop from the toolbox.");
+            TryClearToolboxFilter();
         }
     }
 }

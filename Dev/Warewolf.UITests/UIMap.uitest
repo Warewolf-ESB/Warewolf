@@ -15594,6 +15594,34 @@
                                                           <SupportLevel>0</SupportLevel>
                                                           <Descendants />
                                                         </UIObject>
+                                                        <UIObject ControlType="Custom" Id="Connector2" FriendlyName="Connector2" SpecialControlType="None">
+                                                          <TechnologyName>UIA</TechnologyName>
+                                                          <WindowTitles>
+                                                            <WindowTitle>Warewolf</WindowTitle>
+                                                          </WindowTitles>
+                                                          <AndCondition>
+                                                            <PropertyCondition Name="ControlType">Custom</PropertyCondition>
+                                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                            <PropertyCondition Name="ClassName">Uia.ConnectorWithoutStartDot</PropertyCondition>
+                                                            <PropertyCondition Name="Instance">2</PropertyCondition>
+                                                          </AndCondition>
+                                                          <SupportLevel>0</SupportLevel>
+                                                          <Descendants />
+                                                        </UIObject>
+                                                        <UIObject ControlType="Custom" Id="Connector3" FriendlyName="Connector3" SpecialControlType="None">
+                                                          <TechnologyName>UIA</TechnologyName>
+                                                          <WindowTitles>
+                                                            <WindowTitle>Warewolf</WindowTitle>
+                                                          </WindowTitles>
+                                                          <AndCondition>
+                                                            <PropertyCondition Name="ControlType">Custom</PropertyCondition>
+                                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                            <PropertyCondition Name="ClassName">Uia.ConnectorWithoutStartDot</PropertyCondition>
+                                                            <PropertyCondition Name="Instance">3</PropertyCondition>
+                                                          </AndCondition>
+                                                          <SupportLevel>0</SupportLevel>
+                                                          <Descendants />
+                                                        </UIObject>
                                                         <UIObject ControlType="Text" Id="Error1" FriendlyName="Error1" SpecialControlType="None">
                                                           <TechnologyName>UIA</TechnologyName>
                                                           <WindowTitles>
@@ -20636,35 +20664,6 @@
                 <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                 <PropertyCondition Name="ControlType">Button</PropertyCondition>
                 <PropertyCondition Name="AutomationId">UI_SelectServiceCancelButton_AutoID</PropertyCondition>
-              </AndCondition>
-              <SupportLevel>0</SupportLevel>
-              <Descendants />
-            </UIObject>
-          </Descendants>
-        </TopLevelWindow>
-        <TopLevelWindow ControlType="Window" Id="UIWarewolfDEV2ASHLEYLEWindow" FriendlyName="Warewolf (DEV2\ASHLEY.LEWIS)" SpecialControlType="None" SessionId="1312442">
-          <TechnologyName>UIA</TechnologyName>
-          <WindowTitles>
-            <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
-          </WindowTitles>
-          <AndCondition>
-            <PropertyCondition Name="ControlType">Window</PropertyCondition>
-            <PropertyCondition Name="Name">Warewolf (DEV2\ASHLEY.LEWIS)</PropertyCondition>
-            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-            <PropertyCondition Name="ClassName" Operator="Contains">HwndWrapper</PropertyCondition>
-          </AndCondition>
-          <SupportLevel>0</SupportLevel>
-          <Descendants>
-            <UIObject ControlType="Custom" Id="UIDsfWebGetActivityCustom" FriendlyName="DsfWebGetActivity" SpecialControlType="None">
-              <TechnologyName>UIA</TechnologyName>
-              <WindowTitles>
-                <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
-              </WindowTitles>
-              <AndCondition>
-                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                <PropertyCondition Name="ControlType">Custom</PropertyCondition>
-                <PropertyCondition Name="ClassName">Uia.WebServiceGetDesigner</PropertyCondition>
-                <PropertyCondition Name="AutomationId">GET Web Method(WebServiceGetDesigner)</PropertyCondition>
               </AndCondition>
               <SupportLevel>0</SupportLevel>
               <Descendants />
