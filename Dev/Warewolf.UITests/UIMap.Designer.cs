@@ -936,19 +936,6 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
-        /// Click_NewWebSource_Ribbon_Button
-        /// </summary>
-        public void Click_NewWebSource_Ribbon_Button()
-        {
-            #region Variable Declarations
-            WpfButton webSourceButton = this.MainStudioWindow.SideMenuBar.WebSourceButton;
-            #endregion
-
-            // Click 'Create a new web source' button
-            Mouse.Click(webSourceButton, new Point(13, 18));
-        }
-        
-        /// <summary>
         /// Click_Output_OnRecordset_InVariableList - Use 'Click_Output_OnRecordset_InVariableListParams' to pass parameters into this method.
         /// </summary>
         public void Click_Output_OnRecordset_InVariableList()
@@ -11436,6 +11423,176 @@ namespace Warewolf.UITests
                 return this.mComboboxListItemAsDev2TestingDB;
             }
         }
+        
+        public WpfListItem WebServerSourceComboboxListItem1
+        {
+            get
+            {
+                if ((this.mWebServerSourceComboboxListItem1 == null))
+                {
+                    this.mWebServerSourceComboboxListItem1 = new WpfListItem(this);
+                    #region Search Criteria
+                    this.mWebServerSourceComboboxListItem1.SearchProperties[WpfListItem.PropertyNames.Name] = "Dev2.Common.Interfaces.Core.WebServiceSourceDefinition";
+                    this.mWebServerSourceComboboxListItem1.SearchProperties[WpfListItem.PropertyNames.Instance] = "1";
+                    this.mWebServerSourceComboboxListItem1.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mWebServerSourceComboboxListItem1;
+            }
+        }
+        
+        public WpfListItem WebServerSourceComboboxListItem10
+        {
+            get
+            {
+                if ((this.mWebServerSourceComboboxListItem10 == null))
+                {
+                    this.mWebServerSourceComboboxListItem10 = new WpfListItem(this);
+                    #region Search Criteria
+                    this.mWebServerSourceComboboxListItem10.SearchProperties[WpfListItem.PropertyNames.Name] = "Dev2.Common.Interfaces.Core.WebServiceSourceDefinition";
+                    this.mWebServerSourceComboboxListItem10.SearchProperties[WpfListItem.PropertyNames.Instance] = "10";
+                    this.mWebServerSourceComboboxListItem10.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mWebServerSourceComboboxListItem10;
+            }
+        }
+        
+        public WpfListItem WebServerSourceComboboxListItem2
+        {
+            get
+            {
+                if ((this.mWebServerSourceComboboxListItem2 == null))
+                {
+                    this.mWebServerSourceComboboxListItem2 = new WpfListItem(this);
+                    #region Search Criteria
+                    this.mWebServerSourceComboboxListItem2.SearchProperties[WpfListItem.PropertyNames.Name] = "Dev2.Common.Interfaces.Core.WebServiceSourceDefinition";
+                    this.mWebServerSourceComboboxListItem2.SearchProperties[WpfListItem.PropertyNames.Instance] = "2";
+                    this.mWebServerSourceComboboxListItem2.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mWebServerSourceComboboxListItem2;
+            }
+        }
+        
+        public WpfListItem WebServerSourceComboboxListItem3
+        {
+            get
+            {
+                if ((this.mWebServerSourceComboboxListItem3 == null))
+                {
+                    this.mWebServerSourceComboboxListItem3 = new WpfListItem(this);
+                    #region Search Criteria
+                    this.mWebServerSourceComboboxListItem3.SearchProperties[WpfListItem.PropertyNames.Name] = "Dev2.Common.Interfaces.Core.WebServiceSourceDefinition";
+                    this.mWebServerSourceComboboxListItem3.SearchProperties[WpfListItem.PropertyNames.Instance] = "3";
+                    this.mWebServerSourceComboboxListItem3.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mWebServerSourceComboboxListItem3;
+            }
+        }
+        
+        public WpfListItem WebServerSourceComboboxListItem4
+        {
+            get
+            {
+                if ((this.mWebServerSourceComboboxListItem4 == null))
+                {
+                    this.mWebServerSourceComboboxListItem4 = new WpfListItem(this);
+                    #region Search Criteria
+                    this.mWebServerSourceComboboxListItem4.SearchProperties[WpfListItem.PropertyNames.Name] = "Dev2.Common.Interfaces.Core.WebServiceSourceDefinition";
+                    this.mWebServerSourceComboboxListItem4.SearchProperties[WpfListItem.PropertyNames.Instance] = "4";
+                    this.mWebServerSourceComboboxListItem4.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mWebServerSourceComboboxListItem4;
+            }
+        }
+        
+        public WpfListItem WebServerSourceComboboxListItem5
+        {
+            get
+            {
+                if ((this.mWebServerSourceComboboxListItem5 == null))
+                {
+                    this.mWebServerSourceComboboxListItem5 = new WpfListItem(this);
+                    #region Search Criteria
+                    this.mWebServerSourceComboboxListItem5.SearchProperties[WpfListItem.PropertyNames.Name] = "Dev2.Common.Interfaces.Core.WebServiceSourceDefinition";
+                    this.mWebServerSourceComboboxListItem5.SearchProperties[WpfListItem.PropertyNames.Instance] = "5";
+                    this.mWebServerSourceComboboxListItem5.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mWebServerSourceComboboxListItem5;
+            }
+        }
+        
+        public WpfListItem WebServerSourceComboboxListItem6
+        {
+            get
+            {
+                if ((this.mWebServerSourceComboboxListItem6 == null))
+                {
+                    this.mWebServerSourceComboboxListItem6 = new WpfListItem(this);
+                    #region Search Criteria
+                    this.mWebServerSourceComboboxListItem6.SearchProperties[WpfListItem.PropertyNames.Name] = "Dev2.Common.Interfaces.Core.WebServiceSourceDefinition";
+                    this.mWebServerSourceComboboxListItem6.SearchProperties[WpfListItem.PropertyNames.Instance] = "6";
+                    this.mWebServerSourceComboboxListItem6.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mWebServerSourceComboboxListItem6;
+            }
+        }
+        
+        public WpfListItem WebServerSourceComboboxListItem7
+        {
+            get
+            {
+                if ((this.mWebServerSourceComboboxListItem7 == null))
+                {
+                    this.mWebServerSourceComboboxListItem7 = new WpfListItem(this);
+                    #region Search Criteria
+                    this.mWebServerSourceComboboxListItem7.SearchProperties[WpfListItem.PropertyNames.Name] = "Dev2.Common.Interfaces.Core.WebServiceSourceDefinition";
+                    this.mWebServerSourceComboboxListItem7.SearchProperties[WpfListItem.PropertyNames.Instance] = "7";
+                    this.mWebServerSourceComboboxListItem7.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mWebServerSourceComboboxListItem7;
+            }
+        }
+        
+        public WpfListItem WebServerSourceComboboxListItem8
+        {
+            get
+            {
+                if ((this.mWebServerSourceComboboxListItem8 == null))
+                {
+                    this.mWebServerSourceComboboxListItem8 = new WpfListItem(this);
+                    #region Search Criteria
+                    this.mWebServerSourceComboboxListItem8.SearchProperties[WpfListItem.PropertyNames.Name] = "Dev2.Common.Interfaces.Core.WebServiceSourceDefinition";
+                    this.mWebServerSourceComboboxListItem8.SearchProperties[WpfListItem.PropertyNames.Instance] = "8";
+                    this.mWebServerSourceComboboxListItem8.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mWebServerSourceComboboxListItem8;
+            }
+        }
+        
+        public WpfListItem WebServerSourceComboboxListItem9
+        {
+            get
+            {
+                if ((this.mWebServerSourceComboboxListItem9 == null))
+                {
+                    this.mWebServerSourceComboboxListItem9 = new WpfListItem(this);
+                    #region Search Criteria
+                    this.mWebServerSourceComboboxListItem9.SearchProperties[WpfListItem.PropertyNames.Name] = "Dev2.Common.Interfaces.Core.WebServiceSourceDefinition";
+                    this.mWebServerSourceComboboxListItem9.SearchProperties[WpfListItem.PropertyNames.Instance] = "9";
+                    this.mWebServerSourceComboboxListItem9.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mWebServerSourceComboboxListItem9;
+            }
+        }
         #endregion
         
         #region Fields
@@ -11478,6 +11635,26 @@ namespace Warewolf.UITests
         private ComboboxListItemAsMicrosoftSQLServer mComboboxListItemAsMicrosoftSQLServer;
         
         private WpfCustom mComboboxListItemAsDev2TestingDB;
+        
+        private WpfListItem mWebServerSourceComboboxListItem1;
+        
+        private WpfListItem mWebServerSourceComboboxListItem10;
+        
+        private WpfListItem mWebServerSourceComboboxListItem2;
+        
+        private WpfListItem mWebServerSourceComboboxListItem3;
+        
+        private WpfListItem mWebServerSourceComboboxListItem4;
+        
+        private WpfListItem mWebServerSourceComboboxListItem5;
+        
+        private WpfListItem mWebServerSourceComboboxListItem6;
+        
+        private WpfListItem mWebServerSourceComboboxListItem7;
+        
+        private WpfListItem mWebServerSourceComboboxListItem8;
+        
+        private WpfListItem mWebServerSourceComboboxListItem9;
         #endregion
     }
     
@@ -24950,18 +25127,6 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public SourcesComboBox2 SourcesComboBox
-        {
-            get
-            {
-                if ((this.mSourcesComboBox == null))
-                {
-                    this.mSourcesComboBox = new SourcesComboBox2(this);
-                }
-                return this.mSourcesComboBox;
-            }
-        }
-        
         public WpfButton GenerateOutputsButton
         {
             get
@@ -25009,224 +25174,32 @@ namespace Warewolf.UITests
                 return this.mTestButton;
             }
         }
+        
+        public WpfComboBox SourcesComboBox
+        {
+            get
+            {
+                if ((this.mSourcesComboBox == null))
+                {
+                    this.mSourcesComboBox = new WpfComboBox(this);
+                    #region Search Criteria
+                    this.mSourcesComboBox.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "SourcesComboBox";
+                    this.mSourcesComboBox.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mSourcesComboBox;
+            }
+        }
         #endregion
         
         #region Fields
-        private SourcesComboBox2 mSourcesComboBox;
-        
         private WpfButton mGenerateOutputsButton;
         
         private WpfButton mDoneButton;
         
         private WpfButton mTestButton;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class SourcesComboBox2 : WpfComboBox
-    {
         
-        public SourcesComboBox2(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "SourcesComboBox";
-            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
-            #endregion
-        }
-        
-        #region Properties
-        public WpfListItem ListItem1
-        {
-            get
-            {
-                if ((this.mListItem1 == null))
-                {
-                    this.mListItem1 = new WpfListItem(this);
-                    #region Search Criteria
-                    this.mListItem1.SearchProperties[WpfListItem.PropertyNames.Name] = "Dev2.Common.Interfaces.Core.WebServiceSourceDefinition";
-                    this.mListItem1.SearchProperties[WpfListItem.PropertyNames.Instance] = "1";
-                    this.mListItem1.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mListItem1;
-            }
-        }
-        
-        public WpfListItem ListItem2
-        {
-            get
-            {
-                if ((this.mListItem2 == null))
-                {
-                    this.mListItem2 = new WpfListItem(this);
-                    #region Search Criteria
-                    this.mListItem2.SearchProperties[WpfListItem.PropertyNames.Name] = "Dev2.Common.Interfaces.Core.WebServiceSourceDefinition";
-                    this.mListItem2.SearchProperties[WpfListItem.PropertyNames.Instance] = "2";
-                    this.mListItem2.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mListItem2;
-            }
-        }
-        
-        public WpfListItem ListItem3
-        {
-            get
-            {
-                if ((this.mListItem3 == null))
-                {
-                    this.mListItem3 = new WpfListItem(this);
-                    #region Search Criteria
-                    this.mListItem3.SearchProperties[WpfListItem.PropertyNames.Name] = "Dev2.Common.Interfaces.Core.WebServiceSourceDefinition";
-                    this.mListItem3.SearchProperties[WpfListItem.PropertyNames.Instance] = "3";
-                    this.mListItem3.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mListItem3;
-            }
-        }
-        
-        public WpfListItem ListItem4
-        {
-            get
-            {
-                if ((this.mListItem4 == null))
-                {
-                    this.mListItem4 = new WpfListItem(this);
-                    #region Search Criteria
-                    this.mListItem4.SearchProperties[WpfListItem.PropertyNames.Name] = "Dev2.Common.Interfaces.Core.WebServiceSourceDefinition";
-                    this.mListItem4.SearchProperties[WpfListItem.PropertyNames.Instance] = "4";
-                    this.mListItem4.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mListItem4;
-            }
-        }
-        
-        public WpfListItem ListItem5
-        {
-            get
-            {
-                if ((this.mListItem5 == null))
-                {
-                    this.mListItem5 = new WpfListItem(this);
-                    #region Search Criteria
-                    this.mListItem5.SearchProperties[WpfListItem.PropertyNames.Name] = "Dev2.Common.Interfaces.Core.WebServiceSourceDefinition";
-                    this.mListItem5.SearchProperties[WpfListItem.PropertyNames.Instance] = "5";
-                    this.mListItem5.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mListItem5;
-            }
-        }
-        
-        public WpfListItem ListItem6
-        {
-            get
-            {
-                if ((this.mListItem6 == null))
-                {
-                    this.mListItem6 = new WpfListItem(this);
-                    #region Search Criteria
-                    this.mListItem6.SearchProperties[WpfListItem.PropertyNames.Name] = "Dev2.Common.Interfaces.Core.WebServiceSourceDefinition";
-                    this.mListItem6.SearchProperties[WpfListItem.PropertyNames.Instance] = "6";
-                    this.mListItem6.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mListItem6;
-            }
-        }
-        
-        public WpfListItem ListItem7
-        {
-            get
-            {
-                if ((this.mListItem7 == null))
-                {
-                    this.mListItem7 = new WpfListItem(this);
-                    #region Search Criteria
-                    this.mListItem7.SearchProperties[WpfListItem.PropertyNames.Name] = "Dev2.Common.Interfaces.Core.WebServiceSourceDefinition";
-                    this.mListItem7.SearchProperties[WpfListItem.PropertyNames.Instance] = "7";
-                    this.mListItem7.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mListItem7;
-            }
-        }
-        
-        public WpfListItem ListItem8
-        {
-            get
-            {
-                if ((this.mListItem8 == null))
-                {
-                    this.mListItem8 = new WpfListItem(this);
-                    #region Search Criteria
-                    this.mListItem8.SearchProperties[WpfListItem.PropertyNames.Name] = "Dev2.Common.Interfaces.Core.WebServiceSourceDefinition";
-                    this.mListItem8.SearchProperties[WpfListItem.PropertyNames.Instance] = "8";
-                    this.mListItem8.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mListItem8;
-            }
-        }
-        
-        public WpfListItem ListItem9
-        {
-            get
-            {
-                if ((this.mListItem9 == null))
-                {
-                    this.mListItem9 = new WpfListItem(this);
-                    #region Search Criteria
-                    this.mListItem9.SearchProperties[WpfListItem.PropertyNames.Name] = "Dev2.Common.Interfaces.Core.WebServiceSourceDefinition";
-                    this.mListItem9.SearchProperties[WpfListItem.PropertyNames.Instance] = "9";
-                    this.mListItem9.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mListItem9;
-            }
-        }
-        
-        public WpfListItem ListItem10
-        {
-            get
-            {
-                if ((this.mListItem10 == null))
-                {
-                    this.mListItem10 = new WpfListItem(this);
-                    #region Search Criteria
-                    this.mListItem10.SearchProperties[WpfListItem.PropertyNames.Name] = "Dev2.Common.Interfaces.Core.WebServiceSourceDefinition";
-                    this.mListItem10.SearchProperties[WpfListItem.PropertyNames.Instance] = "10";
-                    this.mListItem10.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mListItem10;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfListItem mListItem1;
-        
-        private WpfListItem mListItem2;
-        
-        private WpfListItem mListItem3;
-        
-        private WpfListItem mListItem4;
-        
-        private WpfListItem mListItem5;
-        
-        private WpfListItem mListItem6;
-        
-        private WpfListItem mListItem7;
-        
-        private WpfListItem mListItem8;
-        
-        private WpfListItem mListItem9;
-        
-        private WpfListItem mListItem10;
+        private WpfComboBox mSourcesComboBox;
         #endregion
     }
     
@@ -25332,13 +25305,13 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public SourcesComboBox3 SourcesComboBox
+        public SourcesComboBox2 SourcesComboBox
         {
             get
             {
                 if ((this.mSourcesComboBox == null))
                 {
-                    this.mSourcesComboBox = new SourcesComboBox3(this);
+                    this.mSourcesComboBox = new SourcesComboBox2(this);
                 }
                 return this.mSourcesComboBox;
             }
@@ -25403,7 +25376,7 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private SourcesComboBox3 mSourcesComboBox;
+        private SourcesComboBox2 mSourcesComboBox;
         
         private NewDBSourceWizard mNewDBSourceWizard;
         
@@ -25416,10 +25389,10 @@ namespace Warewolf.UITests
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class SourcesComboBox3 : WpfCustom
+    public class SourcesComboBox2 : WpfCustom
     {
         
-        public SourcesComboBox3(UITestControl searchLimitContainer) : 
+        public SourcesComboBox2(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
