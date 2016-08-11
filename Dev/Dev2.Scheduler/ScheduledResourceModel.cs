@@ -298,14 +298,18 @@ Please contact your Warewolf System Administrator.", resource.WorkflowName));
                 .Select(a =>
                 {
                     var duration = TimeSpan.Zero;
+                    DateTime start = DateTime.MinValue;
+                    DateTime end = DateTime.MinValue;
                     var debugOutput = CreateDebugHistory(DebugHistoryPath, a.Key);
                     var output = debugOutput.FirstOrDefault();
                     if (output != null)
                     {
-                        duration = output.Duration;
+                        duration = new TimeSpan(output.Duration.Hours,output.Duration.Minutes,output.Duration.Seconds);
+                        start = output.StartTime;
+                        end = output.EndTime;
                     }
                     return new ResourceHistory("", debugOutput,
-                        new EventInfo(a.StartDate.Value, duration, a.EndDate.Value, GetRunStatus(a.EventId, DebugHistoryPath, a.Key), a.Key, a.EventId < 103 ? "" : _taskStates[a.EventId]), GetUserName(DebugHistoryPath, a.Key))
+                        new EventInfo(start, duration, end, GetRunStatus(a.EventId, DebugHistoryPath, a.Key), a.Key, a.EventId < 103 ? "" : _taskStates[a.EventId]), GetUserName(DebugHistoryPath, a.Key))
                         as IResourceHistory;
                 }).ToList();
             return eventList;
