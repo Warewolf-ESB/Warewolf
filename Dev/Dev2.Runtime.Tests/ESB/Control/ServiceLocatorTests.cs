@@ -31,16 +31,9 @@ namespace Dev2.Tests.Runtime.ESB.Control
             //---------------Assert Precondition----------------
 
             //---------------Execute Test ----------------------
-            try
-            {
-                // ReSharper disable once UnusedVariable
-                ServiceLocator locator = new ServiceLocator();
-            }
-            catch (Exception ex)
-            {
-                Assert.Fail(ex.Message);
-            }
+            ServiceLocator locator = new ServiceLocator();
             //---------------Test Result -----------------------
+            Assert.IsNotNull(locator, "Cannot create new ServiceLocator object.");
         }
 
         [TestMethod]

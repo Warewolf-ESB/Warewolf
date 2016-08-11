@@ -46,16 +46,9 @@ namespace Dev2.Tests.Runtime.ESB.Control
             //---------------Assert Precondition----------------
 
             //---------------Execute Test ----------------------
-            try
-            {
-                // ReSharper disable once UnusedVariable
-                var invoker = new EsbServiceInvoker(channel.Object, workSpace.Object);
-            }
-            catch (Exception ex)
-            {
-                Assert.Fail(ex.Message);
-            }
+            var invoker = new EsbServiceInvoker(channel.Object, workSpace.Object);
             //---------------Test Result -----------------------
+            Assert.IsNotNull(invoker, "Cannot create new EsbServiceInvoker object.");
         }
 
         [TestMethod]

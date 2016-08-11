@@ -2224,17 +2224,10 @@ namespace Dev2.Core.Tests
             //---------------Assert Precondition----------------
 
             //---------------Execute Test ----------------------
-            try
-            {
-                Mock<IEventAggregator> eventAggregator = new Mock<IEventAggregator>();
-                var dataListViewModel = new DataListViewModel(eventAggregator.Object);
-                dataListViewModel.InitializeDataListViewModel(null);
+            Mock<IEventAggregator> eventAggregator = new Mock<IEventAggregator>();
+            var dataListViewModel = new DataListViewModel(eventAggregator.Object);
+            dataListViewModel.InitializeDataListViewModel(null);
 
-            }
-            catch (Exception ex)
-            {
-                Assert.Fail(ex.Message);
-            }
             //---------------Test Result -----------------------
         }
 

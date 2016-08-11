@@ -26,21 +26,14 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
             //---------------Set up test pack-------------------
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
-            try
+            var newResponseManager = new ResponseManager()
             {
-                // ReSharper disable once ObjectCreationAsStatement
-                new ResponseManager()
-                {
-                    OutputDescription = It.IsAny<IOutputDescription>()
-                    ,
-                    Outputs = It.IsAny<ICollection<IServiceOutputMapping>>()
-                };
-            }
-            catch (Exception ex)
-            {
-                Assert.Fail(ex.Message);
-            }
+                OutputDescription = It.IsAny<IOutputDescription>()
+                ,
+                Outputs = It.IsAny<ICollection<IServiceOutputMapping>>()
+            };
             //---------------Test Result -----------------------
+            Assert.IsNotNull(newResponseManager, "Cannot create new ResponseManager object.");
         }
 
         [TestMethod]

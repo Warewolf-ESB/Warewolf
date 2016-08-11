@@ -33,18 +33,11 @@ namespace Dev2.Tests.Runtime.ESB.Control
             dsfObject.Setup(o => o.Environment).Returns(env.Object);
 
             //---------------Execute Test ----------------------
-            try
-            {
-                ErrorResultTO errors = new ErrorResultTO();
-                var executionEnvironment = manager.UpdatePreviousEnvironmentWithSubExecutionResultUsingOutputMappings(dsfObject.Object, "", 0, true, errors);
-                //---------------Test Result -----------------------
-                dsfObject.Verify(o => o.PopEnvironment(), Times.Once);
-                Assert.IsNotNull(executionEnvironment);
-            }
-            catch (Exception ex)
-            {
-                Assert.Fail(ex.Message);
-            }
+            ErrorResultTO errors = new ErrorResultTO();
+            var executionEnvironment = manager.UpdatePreviousEnvironmentWithSubExecutionResultUsingOutputMappings(dsfObject.Object, "", 0, true, errors);
+            //---------------Test Result -----------------------
+            dsfObject.Verify(o => o.PopEnvironment(), Times.Once);
+            Assert.IsNotNull(executionEnvironment);
 
         }
 
@@ -64,20 +57,13 @@ namespace Dev2.Tests.Runtime.ESB.Control
             dsfObject.Setup(o => o.Environment).Returns(env.Object);
             dsfObject.Setup(o => o.Environment).Returns(env.Object);
             //---------------Execute Test ----------------------
-            try
-            {
-                ErrorResultTO errors = new ErrorResultTO();
-                var executionEnvironment = manager.UpdatePreviousEnvironmentWithSubExecutionResultUsingOutputMappings(dsfObject.Object, "", 0, false, errors);
-                //---------------Test Result -----------------------
-                dsfObject.Verify(o => o.PopEnvironment(), Times.Once);
-                env.VerifyGet(o => o.AllErrors);
-                env.VerifyGet(o => o.Errors);
-                Assert.IsNotNull(executionEnvironment);
-            }
-            catch (Exception ex)
-            {
-                Assert.Fail(ex.Message);
-            }
+            ErrorResultTO errors = new ErrorResultTO();
+            var executionEnvironment = manager.UpdatePreviousEnvironmentWithSubExecutionResultUsingOutputMappings(dsfObject.Object, "", 0, false, errors);
+            //---------------Test Result -----------------------
+            dsfObject.Verify(o => o.PopEnvironment(), Times.Once);
+            env.VerifyGet(o => o.AllErrors);
+            env.VerifyGet(o => o.Errors);
+            Assert.IsNotNull(executionEnvironment);
             //---------------Test Result -----------------------
         }
 
