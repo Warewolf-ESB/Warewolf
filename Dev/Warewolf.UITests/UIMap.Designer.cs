@@ -40,6 +40,7 @@ namespace Warewolf.UITests
             WpfButton doneButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.DoneButton;
             WpfEdit textbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView.DataGrid.Row1.VariableCell.Listbox.Textbox;
             WpfEdit textBox1 = this.MainStudioWindow.DockManager.SplitPaneRight.Variables.VariablesControl.XtgDataPresenter.Table.VariableDataItem.List.ListItem.Table.DataItem1.VariableNameCell.ValueEditor.TextBox;
+            WpfToggleButton openQuickVariableInpToggleButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.OpenQuickVariableInpToggleButton;
             #endregion
 
             // Click 'Done' button
@@ -50,6 +51,10 @@ namespace Warewolf.UITests
 
             // Verify that the 'Text' property of 'UI_NameTextBox_AutoID' text box equals 'SomeVariable'
             Assert.AreEqual(this.Click_Assign_Tool_Large_View_Done_ButtonParams.TextBoxText1, textBox1.Text, "Variable list scalar row 1 textbox text does not equal somevariable");
+
+            // Verify that the 'Exists' property of 'Open Quick Variable Input' toggle button equals 'True'
+            Assert.AreEqual(this.Click_Assign_Tool_Large_View_Done_ButtonParams.OpenQuickVariableInpToggleButtonExists, openQuickVariableInpToggleButton.Exists, "QVI toggle button does not exist in assign tool small view after clicking done bu" +
+                    "tton on large view.");
         }
         
         /// <summary>
@@ -7773,6 +7778,11 @@ namespace Warewolf.UITests
         /// Verify that the 'Text' property of 'UI_NameTextBox_AutoID' text box equals 'SomeVariable'
         /// </summary>
         public string TextBoxText1 = "SomeVariable";
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Open Quick Variable Input' toggle button equals 'True'
+        /// </summary>
+        public bool OpenQuickVariableInpToggleButtonExists = true;
         #endregion
     }
     
