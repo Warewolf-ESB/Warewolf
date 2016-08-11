@@ -381,13 +381,25 @@ namespace Warewolf.UITests
                 {
                     TryCloseWorkflowTab();
                 }
+                else
+                {
+                    workflowTabCloseButtonExists = false;
+                }
                 if (ControlExistsNow(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.CloseButton))
                 {
                     TryCloseSettingsTab();
                 }
+                else
+                {
+                    settingsTabCloseButtonExists = false;
+                }
                 if (ControlExistsNow(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.ServerSourceWizardTab.TabCloseButton))
                 {
                     TryCloseServerSourceWizardTab();
+                }
+                else
+                {
+                    serverSourceWizardTabCloseButtonExists = false;
                 }
             }
         }
