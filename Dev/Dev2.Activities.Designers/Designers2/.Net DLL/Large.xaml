@@ -67,7 +67,7 @@
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
-            <Control Template="{StaticResource NewSelectionNamespaceGrid}"/>
+            <Control Template="{StaticResource NewDotNetSelectionNamespaceGrid}"/>
 
             <!-- ReSharper disable UnusedMember.Global -->
             <Control x:Name="InputsControl" Grid.Row="1" Template="{StaticResource NewInputsGrid}"/>
