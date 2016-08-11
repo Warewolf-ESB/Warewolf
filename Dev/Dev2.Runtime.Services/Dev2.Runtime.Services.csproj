@@ -105,6 +105,7 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Prism.Mvvm.1.1.1\lib\net45\Microsoft.Practices.Prism.SharedInterfaces.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="Moq, Version=4.2.1510.2205, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL">
       <HintPath>..\packages\Moq.4.2.1510.2205\lib\net40\Moq.dll</HintPath>
       <Private>True</Private>
@@ -197,6 +198,7 @@
     <Compile Include="ESB\Management\Services\FetchDbSources.cs" />
     <Compile Include="ESB\Management\Services\FetchExchangeSources.cs" />
     <Compile Include="ESB\Management\Services\FetchDropboxSource.cs" />
+    <Compile Include="ESB\Management\Services\FetchListSysExplorerStructure.cs" />
     <Compile Include="ESB\Management\Services\FetchPerfCounters.cs" />
     <Compile Include="ESB\Management\Services\FetchPluginActions.cs" />
     <Compile Include="ESB\Management\Services\FetchPluginNamespaces.cs" />
@@ -287,6 +289,8 @@
     <Compile Include="ESB\Management\Services\TestSharepointServerService.cs" />
     <Compile Include="ESB\Management\Services\TestNetworkService.cs" />
     <Compile Include="Execution\ExecutionToken.cs" />
+    <Compile Include="FileResource.cs" />
+    <Compile Include="FileResourceBuilder.cs" />
     <Compile Include="Hosting\CompileMessageRepo.cs" />
     <Compile Include="Hosting\ExplorerItemFactory.cs" />
     <Compile Include="Hosting\ExplorerRepositoryResult.cs" />
