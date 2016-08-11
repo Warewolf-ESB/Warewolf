@@ -1449,24 +1449,6 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
-    <MouseAction UIObjectName="UIMap.MainStudioWindow.SideMenuBar.WebSourceButton">
-      <ParameterName />
-      <ModifierKeys>None</ModifierKeys>
-      <IsGlobalHotkey>false</IsGlobalHotkey>
-      <Location X="13" Y="18" />
-      <WheelDirection>0</WheelDirection>
-      <ActionType>Click</ActionType>
-      <MouseButton>Left</MouseButton>
-    </MouseAction>
-    <TestStepMarkerAction Comment="" MarkerInformation="Click_NewWebSource_Ribbon_Button">
-      <ParameterName />
-      <StepId>-1</StepId>
-      <Direction>Start</Direction>
-      <Outcome />
-      <Disabled>false</Disabled>
-      <WorkItemId>0</WorkItemId>
-      <MarkerRegionType>Action</MarkerRegionType>
-    </TestStepMarkerAction>
     <SetStateAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneRight.Variables.VariablesControl.XtgDataPresenter.Table.RecordsetDataItem.List.ListItem.Table.DataItem1.OutputCell.IsOutputCheckbox">
       <ParameterName />
       <State>Checked</State>
@@ -15656,160 +15638,6 @@
                                                               </AndCondition>
                                                               <SupportLevel>0</SupportLevel>
                                                               <Descendants>
-                                                                <UIObject ControlType="ComboBox" Id="SourcesComboBox" FriendlyName="SourcesComboBox" SpecialControlType="None">
-                                                                  <TechnologyName>UIA</TechnologyName>
-                                                                  <WindowTitles>
-                                                                    <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
-                                                                  </WindowTitles>
-                                                                  <AndCondition>
-                                                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                                                    <PropertyCondition Name="ControlType">ComboBox</PropertyCondition>
-                                                                    <PropertyCondition Name="AutomationId">SourcesComboBox</PropertyCondition>
-                                                                  </AndCondition>
-                                                                  <SupportLevel>0</SupportLevel>
-                                                                  <Descendants>
-                                                                    <UIObject ControlType="ListItem" Id="ListItem1" FriendlyName="Dev2.Common.Interfaces.Core.WebServiceSourceDefinition" SpecialControlType="None">
-                                                                      <TechnologyName>UIA</TechnologyName>
-                                                                      <WindowTitles>
-                                                                        <WindowTitle>Warewolf</WindowTitle>
-                                                                      </WindowTitles>
-                                                                      <AndCondition>
-                                                                        <PropertyCondition Name="ControlType">ListItem</PropertyCondition>
-                                                                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                                                        <PropertyCondition Name="Name">Dev2.Common.Interfaces.Core.WebServiceSourceDefinition</PropertyCondition>
-                                                                        <PropertyCondition Name="Instance">1</PropertyCondition>
-                                                                      </AndCondition>
-                                                                      <SupportLevel>0</SupportLevel>
-                                                                      <Descendants />
-                                                                    </UIObject>
-                                                                    <UIObject ControlType="ListItem" Id="ListItem2" FriendlyName="Dev2.Common.Interfaces.Core.WebServiceSourceDefinition" SpecialControlType="None">
-                                                                      <TechnologyName>UIA</TechnologyName>
-                                                                      <WindowTitles>
-                                                                        <WindowTitle>Warewolf</WindowTitle>
-                                                                      </WindowTitles>
-                                                                      <AndCondition>
-                                                                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                                                        <PropertyCondition Name="ControlType">ListItem</PropertyCondition>
-                                                                        <PropertyCondition Name="Name">Dev2.Common.Interfaces.Core.WebServiceSourceDefinition</PropertyCondition>
-                                                                        <PropertyCondition Name="Instance">2</PropertyCondition>
-                                                                      </AndCondition>
-                                                                      <SupportLevel>0</SupportLevel>
-                                                                      <Descendants />
-                                                                    </UIObject>
-                                                                    <UIObject ControlType="ListItem" Id="ListItem3" FriendlyName="Dev2.Common.Interfaces.Core.WebServiceSourceDefinition" SpecialControlType="None">
-                                                                      <TechnologyName>UIA</TechnologyName>
-                                                                      <WindowTitles>
-                                                                        <WindowTitle>Warewolf</WindowTitle>
-                                                                      </WindowTitles>
-                                                                      <AndCondition>
-                                                                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                                                        <PropertyCondition Name="ControlType">ListItem</PropertyCondition>
-                                                                        <PropertyCondition Name="Name">Dev2.Common.Interfaces.Core.WebServiceSourceDefinition</PropertyCondition>
-                                                                        <PropertyCondition Name="Instance">3</PropertyCondition>
-                                                                      </AndCondition>
-                                                                      <SupportLevel>0</SupportLevel>
-                                                                      <Descendants />
-                                                                    </UIObject>
-                                                                    <UIObject ControlType="ListItem" Id="ListItem4" FriendlyName="Dev2.Common.Interfaces.Core.WebServiceSourceDefinition" SpecialControlType="None">
-                                                                      <TechnologyName>UIA</TechnologyName>
-                                                                      <WindowTitles>
-                                                                        <WindowTitle>Warewolf</WindowTitle>
-                                                                      </WindowTitles>
-                                                                      <AndCondition>
-                                                                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                                                        <PropertyCondition Name="ControlType">ListItem</PropertyCondition>
-                                                                        <PropertyCondition Name="Name">Dev2.Common.Interfaces.Core.WebServiceSourceDefinition</PropertyCondition>
-                                                                        <PropertyCondition Name="Instance">4</PropertyCondition>
-                                                                      </AndCondition>
-                                                                      <SupportLevel>0</SupportLevel>
-                                                                      <Descendants />
-                                                                    </UIObject>
-                                                                    <UIObject ControlType="ListItem" Id="ListItem5" FriendlyName="Dev2.Common.Interfaces.Core.WebServiceSourceDefinition" SpecialControlType="None">
-                                                                      <TechnologyName>UIA</TechnologyName>
-                                                                      <WindowTitles>
-                                                                        <WindowTitle>Warewolf</WindowTitle>
-                                                                      </WindowTitles>
-                                                                      <AndCondition>
-                                                                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                                                        <PropertyCondition Name="ControlType">ListItem</PropertyCondition>
-                                                                        <PropertyCondition Name="Name">Dev2.Common.Interfaces.Core.WebServiceSourceDefinition</PropertyCondition>
-                                                                        <PropertyCondition Name="Instance">5</PropertyCondition>
-                                                                      </AndCondition>
-                                                                      <SupportLevel>0</SupportLevel>
-                                                                      <Descendants />
-                                                                    </UIObject>
-                                                                    <UIObject ControlType="ListItem" Id="ListItem6" FriendlyName="Dev2.Common.Interfaces.Core.WebServiceSourceDefinition" SpecialControlType="None">
-                                                                      <TechnologyName>UIA</TechnologyName>
-                                                                      <WindowTitles>
-                                                                        <WindowTitle>Warewolf</WindowTitle>
-                                                                      </WindowTitles>
-                                                                      <AndCondition>
-                                                                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                                                        <PropertyCondition Name="ControlType">ListItem</PropertyCondition>
-                                                                        <PropertyCondition Name="Name">Dev2.Common.Interfaces.Core.WebServiceSourceDefinition</PropertyCondition>
-                                                                        <PropertyCondition Name="Instance">6</PropertyCondition>
-                                                                      </AndCondition>
-                                                                      <SupportLevel>0</SupportLevel>
-                                                                      <Descendants />
-                                                                    </UIObject>
-                                                                    <UIObject ControlType="ListItem" Id="ListItem7" FriendlyName="Dev2.Common.Interfaces.Core.WebServiceSourceDefinition" SpecialControlType="None">
-                                                                      <TechnologyName>UIA</TechnologyName>
-                                                                      <WindowTitles>
-                                                                        <WindowTitle>Warewolf</WindowTitle>
-                                                                      </WindowTitles>
-                                                                      <AndCondition>
-                                                                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                                                        <PropertyCondition Name="ControlType">ListItem</PropertyCondition>
-                                                                        <PropertyCondition Name="Name">Dev2.Common.Interfaces.Core.WebServiceSourceDefinition</PropertyCondition>
-                                                                        <PropertyCondition Name="Instance">7</PropertyCondition>
-                                                                      </AndCondition>
-                                                                      <SupportLevel>0</SupportLevel>
-                                                                      <Descendants />
-                                                                    </UIObject>
-                                                                    <UIObject ControlType="ListItem" Id="ListItem8" FriendlyName="Dev2.Common.Interfaces.Core.WebServiceSourceDefinition" SpecialControlType="None">
-                                                                      <TechnologyName>UIA</TechnologyName>
-                                                                      <WindowTitles>
-                                                                        <WindowTitle>Warewolf</WindowTitle>
-                                                                      </WindowTitles>
-                                                                      <AndCondition>
-                                                                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                                                        <PropertyCondition Name="ControlType">ListItem</PropertyCondition>
-                                                                        <PropertyCondition Name="Name">Dev2.Common.Interfaces.Core.WebServiceSourceDefinition</PropertyCondition>
-                                                                        <PropertyCondition Name="Instance">8</PropertyCondition>
-                                                                      </AndCondition>
-                                                                      <SupportLevel>0</SupportLevel>
-                                                                      <Descendants />
-                                                                    </UIObject>
-                                                                    <UIObject ControlType="ListItem" Id="ListItem9" FriendlyName="Dev2.Common.Interfaces.Core.WebServiceSourceDefinition" SpecialControlType="None">
-                                                                      <TechnologyName>UIA</TechnologyName>
-                                                                      <WindowTitles>
-                                                                        <WindowTitle>Warewolf</WindowTitle>
-                                                                      </WindowTitles>
-                                                                      <AndCondition>
-                                                                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                                                        <PropertyCondition Name="ControlType">ListItem</PropertyCondition>
-                                                                        <PropertyCondition Name="Name">Dev2.Common.Interfaces.Core.WebServiceSourceDefinition</PropertyCondition>
-                                                                        <PropertyCondition Name="Instance">9</PropertyCondition>
-                                                                      </AndCondition>
-                                                                      <SupportLevel>0</SupportLevel>
-                                                                      <Descendants />
-                                                                    </UIObject>
-                                                                    <UIObject ControlType="ListItem" Id="ListItem10" FriendlyName="Dev2.Common.Interfaces.Core.WebServiceSourceDefinition" SpecialControlType="None">
-                                                                      <TechnologyName>UIA</TechnologyName>
-                                                                      <WindowTitles>
-                                                                        <WindowTitle>Warewolf</WindowTitle>
-                                                                      </WindowTitles>
-                                                                      <AndCondition>
-                                                                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                                                        <PropertyCondition Name="ControlType">ListItem</PropertyCondition>
-                                                                        <PropertyCondition Name="Name">Dev2.Common.Interfaces.Core.WebServiceSourceDefinition</PropertyCondition>
-                                                                        <PropertyCondition Name="Instance">10</PropertyCondition>
-                                                                      </AndCondition>
-                                                                      <SupportLevel>0</SupportLevel>
-                                                                      <Descendants />
-                                                                    </UIObject>
-                                                                  </Descendants>
-                                                                </UIObject>
                                                                 <UIObject ControlType="Button" Id="GenerateOutputsButton" FriendlyName="Generate Outputs" SpecialControlType="None">
                                                                   <TechnologyName>UIA</TechnologyName>
                                                                   <WindowTitles>
@@ -15845,6 +15673,19 @@
                                                                     <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                                                     <PropertyCondition Name="ControlType">Button</PropertyCondition>
                                                                     <PropertyCondition Name="AutomationId">TestActionButton</PropertyCondition>
+                                                                  </AndCondition>
+                                                                  <SupportLevel>0</SupportLevel>
+                                                                  <Descendants />
+                                                                </UIObject>
+                                                                <UIObject ControlType="ComboBox" Id="SourcesComboBox" FriendlyName="SourcesComboBox" SpecialControlType="None">
+                                                                  <TechnologyName>UIA</TechnologyName>
+                                                                  <WindowTitles>
+                                                                    <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
+                                                                  </WindowTitles>
+                                                                  <AndCondition>
+                                                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                                    <PropertyCondition Name="ControlType">ComboBox</PropertyCondition>
+                                                                    <PropertyCondition Name="AutomationId">SourcesComboBox</PropertyCondition>
                                                                   </AndCondition>
                                                                   <SupportLevel>0</SupportLevel>
                                                                   <Descendants />
@@ -20037,6 +19878,146 @@
                 <PropertyCondition Name="ControlType">Custom</PropertyCondition>
                 <PropertyCondition Name="ClassName">Uia.ComboEditorItemControl</PropertyCondition>
                 <PropertyCondition Name="Name">Dev2TestingDB</PropertyCondition>
+              </AndCondition>
+              <SupportLevel>0</SupportLevel>
+              <Descendants />
+            </UIObject>
+            <UIObject ControlType="ListItem" Id="WebServerSourceComboboxListItem1" FriendlyName="Dev2.Common.Interfaces.Core.WebServiceSourceDefinition" SpecialControlType="None">
+              <TechnologyName>UIA</TechnologyName>
+              <WindowTitles>
+                <WindowTitle>Warewolf</WindowTitle>
+              </WindowTitles>
+              <AndCondition>
+                <PropertyCondition Name="ControlType">ListItem</PropertyCondition>
+                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                <PropertyCondition Name="Name">Dev2.Common.Interfaces.Core.WebServiceSourceDefinition</PropertyCondition>
+                <PropertyCondition Name="Instance">1</PropertyCondition>
+              </AndCondition>
+              <SupportLevel>0</SupportLevel>
+              <Descendants />
+            </UIObject>
+            <UIObject ControlType="ListItem" Id="WebServerSourceComboboxListItem10" FriendlyName="Dev2.Common.Interfaces.Core.WebServiceSourceDefinition" SpecialControlType="None">
+              <TechnologyName>UIA</TechnologyName>
+              <WindowTitles>
+                <WindowTitle>Warewolf</WindowTitle>
+              </WindowTitles>
+              <AndCondition>
+                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                <PropertyCondition Name="ControlType">ListItem</PropertyCondition>
+                <PropertyCondition Name="Name">Dev2.Common.Interfaces.Core.WebServiceSourceDefinition</PropertyCondition>
+                <PropertyCondition Name="Instance">10</PropertyCondition>
+              </AndCondition>
+              <SupportLevel>0</SupportLevel>
+              <Descendants />
+            </UIObject>
+            <UIObject ControlType="ListItem" Id="WebServerSourceComboboxListItem2" FriendlyName="Dev2.Common.Interfaces.Core.WebServiceSourceDefinition" SpecialControlType="None">
+              <TechnologyName>UIA</TechnologyName>
+              <WindowTitles>
+                <WindowTitle>Warewolf</WindowTitle>
+              </WindowTitles>
+              <AndCondition>
+                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                <PropertyCondition Name="ControlType">ListItem</PropertyCondition>
+                <PropertyCondition Name="Name">Dev2.Common.Interfaces.Core.WebServiceSourceDefinition</PropertyCondition>
+                <PropertyCondition Name="Instance">2</PropertyCondition>
+              </AndCondition>
+              <SupportLevel>0</SupportLevel>
+              <Descendants />
+            </UIObject>
+            <UIObject ControlType="ListItem" Id="WebServerSourceComboboxListItem3" FriendlyName="Dev2.Common.Interfaces.Core.WebServiceSourceDefinition" SpecialControlType="None">
+              <TechnologyName>UIA</TechnologyName>
+              <WindowTitles>
+                <WindowTitle>Warewolf</WindowTitle>
+              </WindowTitles>
+              <AndCondition>
+                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                <PropertyCondition Name="ControlType">ListItem</PropertyCondition>
+                <PropertyCondition Name="Name">Dev2.Common.Interfaces.Core.WebServiceSourceDefinition</PropertyCondition>
+                <PropertyCondition Name="Instance">3</PropertyCondition>
+              </AndCondition>
+              <SupportLevel>0</SupportLevel>
+              <Descendants />
+            </UIObject>
+            <UIObject ControlType="ListItem" Id="WebServerSourceComboboxListItem4" FriendlyName="Dev2.Common.Interfaces.Core.WebServiceSourceDefinition" SpecialControlType="None">
+              <TechnologyName>UIA</TechnologyName>
+              <WindowTitles>
+                <WindowTitle>Warewolf</WindowTitle>
+              </WindowTitles>
+              <AndCondition>
+                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                <PropertyCondition Name="ControlType">ListItem</PropertyCondition>
+                <PropertyCondition Name="Name">Dev2.Common.Interfaces.Core.WebServiceSourceDefinition</PropertyCondition>
+                <PropertyCondition Name="Instance">4</PropertyCondition>
+              </AndCondition>
+              <SupportLevel>0</SupportLevel>
+              <Descendants />
+            </UIObject>
+            <UIObject ControlType="ListItem" Id="WebServerSourceComboboxListItem5" FriendlyName="Dev2.Common.Interfaces.Core.WebServiceSourceDefinition" SpecialControlType="None">
+              <TechnologyName>UIA</TechnologyName>
+              <WindowTitles>
+                <WindowTitle>Warewolf</WindowTitle>
+              </WindowTitles>
+              <AndCondition>
+                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                <PropertyCondition Name="ControlType">ListItem</PropertyCondition>
+                <PropertyCondition Name="Name">Dev2.Common.Interfaces.Core.WebServiceSourceDefinition</PropertyCondition>
+                <PropertyCondition Name="Instance">5</PropertyCondition>
+              </AndCondition>
+              <SupportLevel>0</SupportLevel>
+              <Descendants />
+            </UIObject>
+            <UIObject ControlType="ListItem" Id="WebServerSourceComboboxListItem6" FriendlyName="Dev2.Common.Interfaces.Core.WebServiceSourceDefinition" SpecialControlType="None">
+              <TechnologyName>UIA</TechnologyName>
+              <WindowTitles>
+                <WindowTitle>Warewolf</WindowTitle>
+              </WindowTitles>
+              <AndCondition>
+                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                <PropertyCondition Name="ControlType">ListItem</PropertyCondition>
+                <PropertyCondition Name="Name">Dev2.Common.Interfaces.Core.WebServiceSourceDefinition</PropertyCondition>
+                <PropertyCondition Name="Instance">6</PropertyCondition>
+              </AndCondition>
+              <SupportLevel>0</SupportLevel>
+              <Descendants />
+            </UIObject>
+            <UIObject ControlType="ListItem" Id="WebServerSourceComboboxListItem7" FriendlyName="Dev2.Common.Interfaces.Core.WebServiceSourceDefinition" SpecialControlType="None">
+              <TechnologyName>UIA</TechnologyName>
+              <WindowTitles>
+                <WindowTitle>Warewolf</WindowTitle>
+              </WindowTitles>
+              <AndCondition>
+                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                <PropertyCondition Name="ControlType">ListItem</PropertyCondition>
+                <PropertyCondition Name="Name">Dev2.Common.Interfaces.Core.WebServiceSourceDefinition</PropertyCondition>
+                <PropertyCondition Name="Instance">7</PropertyCondition>
+              </AndCondition>
+              <SupportLevel>0</SupportLevel>
+              <Descendants />
+            </UIObject>
+            <UIObject ControlType="ListItem" Id="WebServerSourceComboboxListItem8" FriendlyName="Dev2.Common.Interfaces.Core.WebServiceSourceDefinition" SpecialControlType="None">
+              <TechnologyName>UIA</TechnologyName>
+              <WindowTitles>
+                <WindowTitle>Warewolf</WindowTitle>
+              </WindowTitles>
+              <AndCondition>
+                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                <PropertyCondition Name="ControlType">ListItem</PropertyCondition>
+                <PropertyCondition Name="Name">Dev2.Common.Interfaces.Core.WebServiceSourceDefinition</PropertyCondition>
+                <PropertyCondition Name="Instance">8</PropertyCondition>
+              </AndCondition>
+              <SupportLevel>0</SupportLevel>
+              <Descendants />
+            </UIObject>
+            <UIObject ControlType="ListItem" Id="WebServerSourceComboboxListItem9" FriendlyName="Dev2.Common.Interfaces.Core.WebServiceSourceDefinition" SpecialControlType="None">
+              <TechnologyName>UIA</TechnologyName>
+              <WindowTitles>
+                <WindowTitle>Warewolf</WindowTitle>
+              </WindowTitles>
+              <AndCondition>
+                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                <PropertyCondition Name="ControlType">ListItem</PropertyCondition>
+                <PropertyCondition Name="Name">Dev2.Common.Interfaces.Core.WebServiceSourceDefinition</PropertyCondition>
+                <PropertyCondition Name="Instance">9</PropertyCondition>
               </AndCondition>
               <SupportLevel>0</SupportLevel>
               <Descendants />
