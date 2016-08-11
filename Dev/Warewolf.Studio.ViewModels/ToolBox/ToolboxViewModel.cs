@@ -124,8 +124,8 @@ namespace Warewolf.Studio.ViewModels.ToolBox
             var searchWords = filterText.ToLower().Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
 
             var results = _backedUpTools.Where(i =>
-                     searchWords.Any(s => i.Tool.Name.ToLower().Contains(s))
-                     || searchWords.Any(s => i.Tool.Category.ToLower().Contains(s))
+                     searchWords.All(s => i.Tool.Name.ToLower().Contains(s))
+                     || searchWords.All(s => i.Tool.Category.ToLower().Contains(s))
                      || i.Tool.FilterTag.ToLower().Equals(filterText)
                      || i.Tool.FilterTag.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries).Any(s => searchWords.Any(s1 => s1.Equals(s.ToLower()))));
 
