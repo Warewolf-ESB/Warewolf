@@ -34,13 +34,13 @@ namespace Dev2.ScheduleExecutor
     {
         private const string WarewolfTaskSchedulerPath = "\\warewolf\\";
         private static readonly string OutputPath = string.Format("{0}\\{1}", Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), GlobalConstants.SchedulerDebugPath);
-        private static readonly string SchedulerLogDirectory = OutputPath +  "SchedulerLogs";
+        private static readonly string SchedulerLogDirectory = OutputPath + "SchedulerLogs";
         private static readonly Stopwatch Stopwatch = new Stopwatch();
         private static readonly DateTime StartTime = DateTime.Now.Subtract(new TimeSpan(0, 0, 5));
 
         private static void Main(string[] args)
         {
-        
+
             try
             {
 
@@ -50,13 +50,13 @@ namespace Dev2.ScheduleExecutor
 
                 AppDomain.CurrentDomain.SetPrincipalPolicy(PrincipalPolicy.WindowsPrincipal);
                 Log("Info", "Task Started");
-                if(args.Length < 2)
+                if (args.Length < 2)
                 {
                     Log("Error", ErrorResource.InvalidArguments);
                     return;
                 }
                 var paramters = new Dictionary<string, string>();
-                for(int i = 0; i < args.Count(); i++)
+                for (int i = 0; i < args.Count(); i++)
                 {
                     string[] singleParameters = args[i].Split(':');
 
@@ -67,11 +67,11 @@ namespace Dev2.ScheduleExecutor
                 try
                 {
                     if (paramters.ContainsKey("ResourceId"))
-                    PostDataToWebserverAsRemoteAgent(paramters["Workflow"], paramters["TaskName"], Guid.NewGuid(),paramters["ResourceId"]);
+                        PostDataToWebserverAsRemoteAgent(paramters["Workflow"], paramters["TaskName"], Guid.NewGuid(), paramters["ResourceId"]);
                     else
                     {
                         PostDataToWebserverAsRemoteAgent(paramters["Workflow"], paramters["TaskName"], Guid.NewGuid());
-  
+
                     }
                 }
                 catch
@@ -80,7 +80,7 @@ namespace Dev2.ScheduleExecutor
                     throw;
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Log("Error", string.Format("Error from execution: {0}{1}", e.Message, e.StackTrace));
 
@@ -148,7 +148,7 @@ namespace Dev2.ScheduleExecutor
             string postUrl = string.Format("http://localhost:3142/services/{0}.xml?Name=&wid={1}", workflowName, resourceId);
             Log("Info", string.Format("Executing as {0}", CredentialCache.DefaultNetworkCredentials.UserName));
             int len = postUrl.Split('?').Count();
-            if(len == 2)
+            if (len == 2)
             {
                 string result = string.Empty;
 
@@ -158,18 +158,18 @@ namespace Dev2.ScheduleExecutor
 
                 try
                 {
-                    using(var response = req.GetResponse() as HttpWebResponse)
+                    using (var response = req.GetResponse() as HttpWebResponse)
                     {
-                        if(response != null)
+                        if (response != null)
                         {
                             // ReSharper disable AssignNullToNotNullAttribute
-                            using(var reader = new StreamReader(response.GetResponseStream()))
+                            using (var reader = new StreamReader(response.GetResponseStream()))
                             // ReSharper restore AssignNullToNotNullAttribute
                             {
                                 result = reader.ReadToEnd();
                             }
 
-                            if(response.StatusCode != HttpStatusCode.OK)
+                            if (response.StatusCode != HttpStatusCode.OK)
                             {
                                 Log("Error", string.Format("Error from execution: {0}", result));
                             }
@@ -182,7 +182,7 @@ namespace Dev2.ScheduleExecutor
                         }
                     }
                 }
-                catch(Exception e)
+                catch (Exception e)
                 {
                     CreateDebugState("Warewolf Server Unavailable", workflowName, taskName);
                     Console.Write(e.Message);
@@ -202,15 +202,15 @@ namespace Dev2.ScheduleExecutor
         {
             string user = Thread.CurrentPrincipal.Identity.Name.Replace("\\", "-");
             var state = new DebugState
-                {
-                    HasError = true,
-                    ID = Guid.NewGuid(),
-                    Message = string.Format("{0}", result),
-                    StartTime = DateTime.Now,
-                    EndTime = DateTime.Now,
-                    ErrorMessage = string.Format("{0}", result),
-                    DisplayName = workflowName
-                };
+            {
+                HasError = true,
+                ID = Guid.NewGuid(),
+                Message = string.Format("{0}", result),
+                StartTime = StartTime,
+                EndTime = DateTime.Now,
+                ErrorMessage = string.Format("{0}", result),
+                DisplayName = workflowName
+            };
             var debug = new DebugItem();
             debug.Add(new DebugItemResult
             {
@@ -225,7 +225,7 @@ namespace Dev2.ScheduleExecutor
             if (!Directory.Exists(OutputPath))
                 Directory.CreateDirectory(OutputPath);
             File.WriteAllText(
-                string.Format("{0}DebugItems_{1}_{2}_{3}_{4}.txt", OutputPath, workflowName.Replace("\\","_"),
+                string.Format("{0}DebugItems_{1}_{2}_{3}_{4}.txt", OutputPath, workflowName.Replace("\\", "_"),
                               DateTime.Now.ToString("yyyy-MM-dd"), correlation, user),
                 js.SerializeToBuilder(new List<DebugState> { state }).ToString());
         }
@@ -241,13 +241,13 @@ namespace Dev2.ScheduleExecutor
                                      where a.TaskCategory == "Task Started" && time > StartTime
                                      orderby a.TimeCreated
                                      select a).LastOrDefault();
-                if(null != events)
+                if (null != events)
                 {
                     return events.Correlation;
                 }
                 return "";
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Console.WriteLine(e.Message);
                 Console.WriteLine(e.StackTrace);
@@ -268,7 +268,7 @@ namespace Dev2.ScheduleExecutor
             {
                 HasError = result.Contains("Exception"),
                 ID = Guid.NewGuid(),
-                StartTime = DateTime.Now,
+                StartTime = StartTime,
                 EndTime = DateTime.Now,
                 ActivityType = ActivityType.Workflow,
                 ExecutingUser = user,
@@ -276,24 +276,24 @@ namespace Dev2.ScheduleExecutor
                 ServerID = Guid.Empty,
                 DisplayName = workflowName
             };
-            if(!string.IsNullOrEmpty(result))
+            if (!string.IsNullOrEmpty(result))
             {
                 var data = DataListUtil.AdjustForEncodingIssues(result);
                 bool isFragment;
                 var isXml = DataListUtil.IsXml(data, out isFragment);
-                if(isXml)
+                if (isXml)
                 {
                     var xmlData = XElement.Parse(data);
                     var allChildren = xmlData.Elements();
                     var groupedData = allChildren.GroupBy(element => element.Name);
 
                     var recSets = groupedData as IGrouping<XName, XElement>[] ?? groupedData.ToArray();
-                    foreach(var grouping in recSets)
+                    foreach (var grouping in recSets)
                     {
                         var debugItem = new DebugItem();
-                        foreach(var name in grouping)
+                        foreach (var name in grouping)
                         {
-                            if(name.HasElements)
+                            if (name.HasElements)
                             {
                                 var debugItemResult = ProcessRecordSet(name, name.Elements());
                                 debugItem.ResultsList.AddRange(debugItemResult);
@@ -317,7 +317,7 @@ namespace Dev2.ScheduleExecutor
             var js = new Dev2JsonSerializer();
             Thread.Sleep(5000);
             string correlation = GetCorrelationId(WarewolfTaskSchedulerPath + taskName);
-            if(!Directory.Exists(OutputPath))
+            if (!Directory.Exists(OutputPath))
                 Directory.CreateDirectory(OutputPath);
             File.WriteAllText(
                 string.Format("{0}DebugItems_{1}_{2}_{3}_{4}.txt", OutputPath, workflowName.Replace("\\", "_"),
@@ -331,7 +331,7 @@ namespace Dev2.ScheduleExecutor
             var processRecordSet = new List<IDebugItemResult>();
             var recSetName = recordSetElement.Name.LocalName;
             var index = recordSetElement.Attribute("Index").Value;
-            foreach(var xElement in elements)
+            foreach (var xElement in elements)
             {
                 var debugItemResult = new DebugItemResult
                 {
@@ -351,9 +351,9 @@ namespace Dev2.ScheduleExecutor
         {
             try
             {
-                using(
+                using (
                     TextWriter tsw =
-                        new StreamWriter(new FileStream(SchedulerLogDirectory + "/" + DateTime.Now.ToString("yyyy-MM-dd")+".log",
+                        new StreamWriter(new FileStream(SchedulerLogDirectory + "/" + DateTime.Now.ToString("yyyy-MM-dd") + ".log",
                                                         FileMode.Append)))
                 {
                     tsw.WriteLine();
@@ -372,11 +372,11 @@ namespace Dev2.ScheduleExecutor
         private static void SetupForLogging()
         {
             bool hasSchedulerLogDirectory = Directory.Exists(SchedulerLogDirectory);
-            if(hasSchedulerLogDirectory)
+            if (hasSchedulerLogDirectory)
             {
                 var directoryInfo = new DirectoryInfo(SchedulerLogDirectory);
                 FileInfo[] logFiles = directoryInfo.GetFiles();
-                if(logFiles.Length > 20)
+                if (logFiles.Length > 20)
                 {
                     try
                     {
