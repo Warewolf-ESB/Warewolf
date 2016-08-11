@@ -701,8 +701,8 @@ namespace Warewolf.UITests
             flowchart.EnsureClickable(switchLeftAutoConnector);
             Mouse.StartDragging(commentToolboxItem, new Point(16, 25));
             Mouse.StopDragging(flowchart, switchLeftAutoConnector);
-            Assert.IsTrue(connector2.Exists, "Third connector does not exist on design surface.");
-            Assert.IsTrue(commentOnTheDesignSurface.Exists, "Comment tool does not exist on the design surface");
+            Assert.IsTrue(connector2.Exists, "Third connector does not exist on design surface after drop onto autoconnector.");
+            Assert.IsTrue(commentOnTheDesignSurface.Exists, "Comment tool does not exist on the design surface after drag and drop from the toolbox.");
         }
 
         public void Then_Drag_Toolbox_Comment_Onto_Switch_Right_Arm_On_DesignSurface()
