@@ -1,6 +1,7 @@
-﻿namespace Dev2.Common.Interfaces.PopupController
+﻿
+namespace Dev2.Common.Interfaces.PopupController
 {
     public interface IPopupController
-    {
+    {        
     }
 }
