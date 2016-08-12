@@ -47,5 +47,6 @@ namespace Dev2.Common.Interfaces
         IEnumerable<IRabbitMQServiceSourceDefinition> FetchRabbitMQServiceSources();
         IList<IWcfServerSource> FetchWcfSources();
         IList<IWcfAction> WcfActions(IWcfServerSource source);
+        Task<List<IFileResource>> FetchResourceFileTree();
     }
 }

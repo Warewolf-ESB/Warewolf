@@ -2,18 +2,30 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 using Dev2.Common;
-using Dev2.Common.Interfaces.Data;
+using Dev2.Common.Interfaces;
+using Dev2.Common.Interfaces.Core.DynamicServices;
+using Dev2.Communication;
+using Dev2.DynamicServices;
+using Dev2.DynamicServices.Objects;
+using Dev2.Workspaces;
+// ReSharper disable UnusedMember.Global
 
-namespace Dev2.Runtime
+namespace Dev2.Runtime.ESB.Management.Services
 {
-    public class FileResourceBuilder
+    public class FileResourceBuilder : IEsbManagementEndpoint
     {
         private readonly IResourceHolder _resourceHolder;
 
         public FileResourceBuilder(IResourceHolder resourceHolder)
         {
             _resourceHolder = resourceHolder;
+        }
+
+        public FileResourceBuilder()
+        {
+            _resourceHolder = new ResourceHolder(EnvironmentVariables.AppDataPath);
         }
 
         public IEnumerable<FileResource> Build()
@@ -29,7 +41,7 @@ namespace Dev2.Runtime
                         ResourceName = fileInfo.Name,
                         ResourcePath = fileInfo.FullName,
                         ParentPath = fileInfo.DirectoryName,
-                        Children = new List<FileResource>()
+                        Children = new List<IFileResource>()
                     };
                     var files = Directory.GetFiles(fileResource.ResourcePath);
                     if (files.Any())
@@ -73,7 +85,7 @@ namespace Dev2.Runtime
                 newFileResource.ResourceName = info.Name;
                 newFileResource.ResourcePath = info.FullName;
                 newFileResource.ParentPath = fileResource.ResourcePath;
-                newFileResource.Children = new List<FileResource>();
+                newFileResource.Children = new List<IFileResource>();
             }
 
             return newFileResource;
@@ -88,7 +100,7 @@ namespace Dev2.Runtime
                 newFileResource.ResourceName = info.Name;
                 newFileResource.ResourcePath = info.FullName;
                 newFileResource.ParentPath = fileResource.ResourcePath;
-                newFileResource.Children = new List<FileResource>();
+                newFileResource.Children = new List<IFileResource>();
 
                 var files = Directory.GetFiles(newFileResource.ResourcePath);
                 if (files.Any())
@@ -110,26 +122,29 @@ namespace Dev2.Runtime
             }
             return newFileResource;
         }
-    }
 
-    public interface IResourceHolder
-    {
-        List<FileInfo> GetFilesList();
-    }
-    public class ResourceHolder : IResourceHolder
-    {
-        private readonly string _path;
-
-        public ResourceHolder(string path)
+        public string HandlesType()
         {
-            _path = path;
+            return "FileResourceBuilder";
         }
 
-        public List<FileInfo> GetFilesList()
+        public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
-            var list = Directory.GetDirectories(_path, "*", SearchOption.AllDirectories).ToList();
-            var fileInfos = list.Select(fileName => new FileInfo(fileName)).ToList();
-            return fileInfos;
+            var list = Build().ToList();
+            var serializer = new Dev2JsonSerializer();
+
+            return serializer.SerializeToBuilder(new ExecuteMessage() { HasError = false, Message = serializer.SerializeToBuilder(list) });
+        }
+
+        public DynamicService CreateServiceEntry()
+        {
+            var findServices = new DynamicService { Name = HandlesType(), DataListSpecification = new StringBuilder("<DataList><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>") };
+
+            var fetchItemsAction = new ServiceAction { Name = HandlesType(), ActionType = enActionType.InvokeManagementDynamicService, SourceMethod = HandlesType() };
+
+            findServices.Actions.Add(fetchItemsAction);
+
+            return findServices;
         }
     }
 }

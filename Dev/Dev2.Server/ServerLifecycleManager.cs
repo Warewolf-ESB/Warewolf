@@ -346,15 +346,16 @@ namespace Dev2
                 LoadHostSecurityProvider();
                 PreloadReferences();
                 InitializeServer();
-                LoadPerformanceCounters();
-                LoadResourceCatalog();
-                LoadServerWorkspace();
-                StartWebServer();
                 LoadSettingsProvider();
                 ConfigureLoggging();
+                var catalog = LoadResourceCatalog();
+                StartWebServer();
                 _timer = new Timer(PerformTimerActions, null, 1000, GlobalConstants.NetworkComputerNameQueryFreq);
-                ServerLoop(interactiveMode);
                 StartPulseLogger();
+                LoadPerformanceCounters();
+                LoadServerWorkspace();
+                LoadActivityCache(catalog);
+                ServerLoop(interactiveMode);
             }
             catch(Exception e)
             {
@@ -787,18 +788,23 @@ namespace Dev2
         /// <returns></returns>
         /// <author>Trevor.Williams-Ros</author>
         /// <date>2013/03/13</date>
-        void LoadResourceCatalog()
+        ResourceCatalog LoadResourceCatalog()
         {
-            CustomContainer.Register<IActivityParser>(new ActivityParser());
             MigrateOldResources();
             ValidateResourceFolder();
             Write("Loading resource catalog...  ");
             var catalog = ResourceCatalog.Instance;
             WriteLine("done.");
+            return catalog;
+        }
+
+        private static void LoadActivityCache(ResourceCatalog catalog)
+        {
+            CustomContainer.Register<IActivityParser>(new ActivityParser());
             Write("Loading resource activity cache...  ");
             catalog.LoadResourceActivityCache(GlobalConstants.ServerWorkspaceID);
             WriteLine("done.");
-        }       
+        }
 
         static void MigrateOldResources()
         {            

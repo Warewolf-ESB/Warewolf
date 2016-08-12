@@ -134,6 +134,24 @@ namespace Warewolf.Studio.ServerProxyLayer
             return serializer.Deserialize<IList<IDbSource>>(result.Message.ToString());
         }
 
+        public async Task<List<IFileResource>> FetchResourceFileTree()
+        {
+            var comsController = CommunicationControllerFactory.CreateController("FileResourceBuilder");
+
+            var workspaceId = Connection.WorkspaceID;
+            var result = await comsController.ExecuteCommandAsync<ExecuteMessage>(Connection, workspaceId);
+            if (result == null || result.HasError)
+            {
+                if (result != null)
+                {
+                    throw new WarewolfSupportServiceException(result.Message.ToString(), null);
+                }
+                throw new WarewolfSupportServiceException(ErrorResource.ServiceDoesNotExist, null);
+            }
+            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+            return serializer.Deserialize<List<IFileResource>>(result.Message.ToString());
+        }
+
         public IList<IExchangeSource> FetchExchangeSources()
         {
             var comsController = CommunicationControllerFactory.CreateController("FetchExchangeSources");
