@@ -12,8 +12,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Scheduler.Interfaces;
 using Dev2.Common.Interfaces.WindowsTaskScheduler.Wrappers;
+using Dev2.Diagnostics.Debug;
+using Dev2.Runtime.ESB.Management.Services;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Microsoft.Win32.TaskScheduler;
 using Moq;
@@ -216,12 +219,14 @@ securityWrapper
         public void ScheduledResourceModel_HistoryTest_CorrectTaskEventsSelected()
         {
             // setup 
+            var startTime = new DateTime(2000, 1, 1);
+            var endTime = new DateTime(2003, 1, 1);
             var log = new MockTaskEventLog
                 {
-                    new MockTaskEvent(Guid.NewGuid(), 12, "Task Started", new DateTime(2000, 1, 1), "12345", "dave"),
+                    new MockTaskEvent(Guid.NewGuid(), 12, "Task Started", startTime, "12345", "dave"),
                     new MockTaskEvent(Guid.NewGuid(), 12, "2", new DateTime(2001, 1, 1), "12346", "dave"),
                     new MockTaskEvent(Guid.NewGuid(), 12, "3", new DateTime(2002, 1, 1), "12347", "dave"),
-                    new MockTaskEvent(Guid.NewGuid(), 12, "Task Completed", new DateTime(2003, 1, 1), "12348", "dave")
+                    new MockTaskEvent(Guid.NewGuid(), 12, "Task Completed", endTime, "12348", "dave")
                 };
             var dirHelper = new Mock<IDirectoryHelper>();
             var fileHelper = new Mock<IFileHelper>();
@@ -232,14 +237,9 @@ securityWrapper
             res.Setup(a => a.Name).Returns("Bob");
             _convertorFactory.Setup(a => a.CreateTaskEventLog(It.IsAny<string>())).Returns(log);
 
-            //construct
-            var model = new ScheduledResourceModel(_mockService.Object, _folderId, _agentPath, _convertorFactory.Object,
-                                                   @"c:\", _wrapper.Object, a => a.WorkflowName);
-
-            IList<IResourceHistory> history = model.CreateHistory(res.Object);
-            Assert.AreEqual(2, history.Count);
-            Assert.AreEqual(new DateTime(2003, 1, 1), history.First().TaskHistoryOutput.StartDate);
-            Assert.AreEqual(new DateTime(2000, 1, 1), history.Last().TaskHistoryOutput.EndDate);
+            var history = RunOutput(startTime, endTime);
+            Assert.AreEqual(startTime, history.First().DebugOutput.First().StartTime);
+            Assert.AreEqual(endTime, history.Last().DebugOutput.First().EndTime);
         }
 
         [TestMethod]
@@ -247,13 +247,15 @@ securityWrapper
         [TestCategory("ScheduledResourceModel_History")]
         public void ScheduledResourceModel_HistoryTestDebugCreated()
         {
+            var startTime = new DateTime(2000, 1, 1);
+            var endTime = new DateTime(2003, 1, 1);
             //setup
             var log = new MockTaskEventLog
                 {
-                    new MockTaskEvent(Guid.NewGuid(), 12, "Task Started", new DateTime(2000, 1, 1), "12345", "dave"),
+                    new MockTaskEvent(Guid.NewGuid(), 12, "Task Started", startTime, "12345", "dave"),
                     new MockTaskEvent(Guid.NewGuid(), 12, "2", new DateTime(2001, 1, 1), "12345", "dave"),
                     new MockTaskEvent(Guid.NewGuid(), 12, "3", new DateTime(2002, 1, 1), "12345", "dave"),
-                    new MockTaskEvent(Guid.NewGuid(), 12, "Task Completed", new DateTime(2003, 1, 1), "12345", "dave")
+                    new MockTaskEvent(Guid.NewGuid(), 12, "Task Completed", endTime, "12345", "dave")
                 };
             // this should return two history items without any debug output
             var dirHelper = new Mock<IDirectoryHelper>();
@@ -275,14 +277,12 @@ securityWrapper
                                                    @"c:\", _wrapper.Object, a => a.WorkflowName);
             model.DirectoryHelper = dirHelper.Object;
             model.FileHelper = fileHelper.Object;
-            IList<IResourceHistory> history = model.CreateHistory(res.Object);
-
+            var history = RunOutput(startTime, endTime, "Bob");
             Assert.AreEqual(1, history.Count);
-            Assert.AreEqual(new DateTime(2000, 1, 1), history.First().TaskHistoryOutput.StartDate);
-            Assert.AreEqual(new DateTime(2003, 1, 1), history.First().TaskHistoryOutput.EndDate);
+            Assert.AreEqual(new DateTime(2000, 1, 1), history.First().DebugOutput.First().StartTime);
+            Assert.AreEqual(new DateTime(2003, 1, 1), history.First().DebugOutput.First().EndTime);
             Assert.AreEqual(history.Last().DebugOutput.Count, 1);
             Assert.AreEqual("Bob", history.Last().UserName);
-            Assert.AreEqual(ScheduleRunStatus.Success, history.Last().TaskHistoryOutput.Success);
         }
 
 
@@ -291,13 +291,15 @@ securityWrapper
         [TestCategory("ScheduledResourceModel_History")]
         public void ScheduledResourceModel_HistoryTestStatusNotFoundIfNoDebugDebugCreated()
         {
+            var startTime = new DateTime(2000, 1, 1);
+            var endTime = new DateTime(2003, 1, 1);
             //setup
             var log = new MockTaskEventLog
                 {
-                    new MockTaskEvent(Guid.NewGuid(), 12, "Task Started", new DateTime(2000, 1, 1), "12345", "dave"),
+                    new MockTaskEvent(Guid.NewGuid(), 12, "Task Started", startTime, "12345", "dave"),
                     new MockTaskEvent(Guid.NewGuid(), 12, "2", new DateTime(2001, 1, 1), "12346", "dave"),
                     new MockTaskEvent(Guid.NewGuid(), 12, "3", new DateTime(2002, 1, 1), "12347", "dave"),
-                    new MockTaskEvent(Guid.NewGuid(), 12, "Task Completed", new DateTime(2003, 1, 1), "12348", "dave")
+                    new MockTaskEvent(Guid.NewGuid(), 12, "Task Completed", endTime, "12348", "dave")
                 };
             // this should return two history items without any debug output
             var dirHelper = new Mock<IDirectoryHelper>();
@@ -320,10 +322,7 @@ securityWrapper
             model.DirectoryHelper = dirHelper.Object;
             model.FileHelper = fileHelper.Object;
             IList<IResourceHistory> history = model.CreateHistory(res.Object);
-
             Assert.AreEqual(2, history.Count);
-            Assert.AreEqual(new DateTime(2003, 1, 1), history.First().TaskHistoryOutput.StartDate);
-            Assert.AreEqual(new DateTime(2000, 1, 1), history.Last().TaskHistoryOutput.EndDate);
             Assert.AreEqual(history.Last().DebugOutput.Count, 0);
             Assert.AreEqual(ScheduleRunStatus.Unknown, history.Last().TaskHistoryOutput.Success);
         }
@@ -406,13 +405,9 @@ securityWrapper
             IList<IResourceHistory> history = model.CreateHistory(res.Object);
 
             Assert.AreEqual(2, history.Count);
-            Assert.AreEqual(new DateTime(2003, 1, 1), history.First().TaskHistoryOutput.StartDate);
-            Assert.AreEqual(new DateTime(2000, 1, 1), history.Last().TaskHistoryOutput.EndDate);
             Assert.AreEqual(history.Last().DebugOutput.Count, 1);
             Assert.AreEqual("Bob", history.Last().UserName);
         }
-
-
 
 
         [TestMethod]
@@ -613,6 +608,29 @@ securityWrapper
             action1.Setup(a => a.Arguments).Returns("\"Workflow:a\" \"TaskName:b\" \"ResourceId:" + Guid.NewGuid() + "\"");
             _folder.Setup(a => a.ValidTasks).Returns(new List<IDev2Task> { task1.Object, task2.Object });
         }
+
+        private List<IResourceHistory> RunOutput(DateTime starTime, DateTime endTime, string username = null)
+        {
+            var esbMethod = new GetScheduledResourceHistory();
+            var security = new Mock<ISecurityWrapper>();
+            esbMethod.SecurityWrapper = security.Object;
+            var history = new List<IResourceHistory>
+                {
+                    new ResourceHistory("", new List<IDebugState>
+                    {
+                        new DebugState
+                        {
+                         StartTime = starTime
+                         ,EndTime = endTime
+                        }
+                    },
+                    new EventInfo(starTime, TimeSpan.MaxValue, endTime, ScheduleRunStatus.Error, "115"),
+                        username)
+                };
+            return history;
+        }
+        // ReSharper restore InconsistentNaming
+
     }
 
 
