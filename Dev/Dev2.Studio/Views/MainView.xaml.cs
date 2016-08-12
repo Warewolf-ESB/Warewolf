@@ -9,26 +9,21 @@
 */
 
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media.Animation;
 using System.Xml;
 using Dev2.Common;
-using Dev2.CustomControls;
 using Dev2.Studio.ViewModels;
 using Dev2.Views;
 using FontAwesome.WPF;
 using Infragistics.Windows.DockManager.Events;
 using WinInterop = System.Windows.Interop;
 using Dev2.Studio.Core;
-using Infragistics.Controls.Menus;
-using Warewolf.Studio.Views;
 
 // ReSharper disable CheckNamespace
 namespace Dev2.Studio.Views
@@ -38,7 +33,6 @@ namespace Dev2.Studio.Views
         private static bool _isSuperMaximising;
         private bool _isLocked;
         readonly string _savedLayout;
-        readonly Dictionary<FrameworkElement, DependencyProperty> _savedElements = new Dictionary<FrameworkElement, DependencyProperty>();
 
         #region Constructor
 
@@ -262,34 +256,6 @@ namespace Dev2.Studio.Views
                 }
             }
             Toolbox.Activate();
-
-            var content = ExplorerViewControl.Content;
-            if (content != null)
-            {
-                if (content.GetType() == typeof (Grid))
-                {
-                    var grid = content as Grid;
-                    if (grid != null && grid.Children.Count > 0)
-                    {
-                        var grid1 = grid.Children[1];
-                        var grid2 = grid1 as Grid;
-                        if (grid2 != null)
-                        {
-                            var grid3 = grid2.Children[2];
-                            if (grid3.GetType() == typeof (XamDataTree))
-                            {
-                                var exp = grid3 as XamDataTree;
-                                if (exp != null)
-                                    _savedElements.Add(exp, DataContextProperty);
-                            }
-                        }
-                    }
-                }
-            }
-
-            
-
-            //StudioSettingsManager.LoadSettings(this, _savedElements);
         }
         #region Implementation of IWin32Window
 
@@ -343,8 +309,6 @@ namespace Dev2.Studio.Views
             {
                 document.Save(fs);
             }
-
-            //StudioSettingsManager.SaveSettings(this, _savedElements);
         }
 
         private void SlidingMenuPane_OnSizeChanged(object sender, SizeChangedEventArgs e)

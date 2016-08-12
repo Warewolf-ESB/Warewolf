@@ -131,6 +131,7 @@
     <Compile Include="ExtMethods\GuidExtensions.cs" />
     <Compile Include="ExtMethods\StringExtension.cs" />
     <Compile Include="ExtMethods\TypeExtensions.cs" />
+    <Compile Include="FileResource.cs" />
     <Compile Include="GlobalConstants.cs" />
     <Compile Include="IncludeApi.cs" />
     <Compile Include="Interfaces\IAssignManager.cs" />
