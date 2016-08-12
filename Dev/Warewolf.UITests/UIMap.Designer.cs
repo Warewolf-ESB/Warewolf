@@ -5289,23 +5289,6 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
-        /// Type_dll_into_Plugin_Source_Wizard_Assembly_Textbox - Use 'Type_dll_into_Plugin_Source_Wizard_Assembly_TextboxParams' to pass parameters into this method.
-        /// </summary>
-        public void Type_dll_into_Plugin_Source_Wizard_Assembly_Textbox()
-        {
-            #region Variable Declarations
-            WpfEdit assemblyNameTextbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.PluginSourceWizardTab.WorkSurfaceContext.AssemblyNameTextbox;
-            WpfButton saveButton = this.MainStudioWindow.SideMenuBar.SaveButton;
-            #endregion
-
-            // Type 'C:\Windows\Microsoft.NET\Framework64\v4.0.30319\mscorlib.dll' in 'AssemblyNameTextBox' text box
-            assemblyNameTextbox.Text = this.Type_dll_into_Plugin_Source_Wizard_Assembly_TextboxParams.AssemblyNameTextboxText;
-
-            // Verify that the 'Enabled' property of 'Save this tab' button equals 'True'
-            Assert.AreEqual(this.Type_dll_into_Plugin_Source_Wizard_Assembly_TextboxParams.SaveButtonEnabled, saveButton.Enabled, "Save button is not enabled after DLL has been selected in plugin source wizard.");
-        }
-        
-        /// <summary>
         /// Type_rsaklfsvrgen_into_DB_Source_Wizard_Server_Textbox - Use 'Type_rsaklfsvrgen_into_DB_Source_Wizard_Server_TextboxParams' to pass parameters into this method.
         /// </summary>
         public void Type_rsaklfsvrgen_into_DB_Source_Wizard_Server_Textbox()
@@ -7194,18 +7177,6 @@ namespace Warewolf.UITests
             }
         }
         
-        public virtual Type_dll_into_Plugin_Source_Wizard_Assembly_TextboxParams Type_dll_into_Plugin_Source_Wizard_Assembly_TextboxParams
-        {
-            get
-            {
-                if ((this.mType_dll_into_Plugin_Source_Wizard_Assembly_TextboxParams == null))
-                {
-                    this.mType_dll_into_Plugin_Source_Wizard_Assembly_TextboxParams = new Type_dll_into_Plugin_Source_Wizard_Assembly_TextboxParams();
-                }
-                return this.mType_dll_into_Plugin_Source_Wizard_Assembly_TextboxParams;
-            }
-        }
-        
         public virtual Type_rsaklfsvrgen_into_DB_Source_Wizard_Server_TextboxParams Type_rsaklfsvrgen_into_DB_Source_Wizard_Server_TextboxParams
         {
             get
@@ -7633,8 +7604,6 @@ namespace Warewolf.UITests
         private Type_0_Into_SQL_Server_Large_View_Inputs_Row1_Data_TextboxExpectedValues mType_0_Into_SQL_Server_Large_View_Inputs_Row1_Data_TextboxExpectedValues;
         
         private Type_0_Into_SQL_Server_Large_View_Test_Inputs_Row1_Test_Data_TextboxExpectedValues mType_0_Into_SQL_Server_Large_View_Test_Inputs_Row1_Test_Data_TextboxExpectedValues;
-        
-        private Type_dll_into_Plugin_Source_Wizard_Assembly_TextboxParams mType_dll_into_Plugin_Source_Wizard_Assembly_TextboxParams;
         
         private Type_rsaklfsvrgen_into_DB_Source_Wizard_Server_TextboxParams mType_rsaklfsvrgen_into_DB_Source_Wizard_Server_TextboxParams;
         
@@ -10878,26 +10847,6 @@ namespace Warewolf.UITests
         /// Verify that the 'Text' property of 'Text' text box equals '0'
         /// </summary>
         public string TestDataTextboxText1 = "0";
-        #endregion
-    }
-    
-    /// <summary>
-    /// Parameters to be passed into 'Type_dll_into_Plugin_Source_Wizard_Assembly_Textbox'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Type_dll_into_Plugin_Source_Wizard_Assembly_TextboxParams
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Type 'C:\Windows\Microsoft.NET\Framework64\v4.0.30319\mscorlib.dll' in 'AssemblyNameTextBox' text box
-        /// </summary>
-        public string AssemblyNameTextboxText = "C:\\Windows\\Microsoft.NET\\Framework64\\v4.0.30319\\mscorlib.dll";
-        
-        /// <summary>
-        /// Verify that the 'Enabled' property of 'Save this tab' button equals 'True'
-        /// </summary>
-        public bool SaveButtonEnabled = true;
         #endregion
     }
     
