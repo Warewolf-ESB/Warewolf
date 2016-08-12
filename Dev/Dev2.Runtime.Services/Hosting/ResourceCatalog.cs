@@ -43,11 +43,11 @@ namespace Dev2.Runtime.Hosting
         private readonly ResourceCatalogPluginContainer _catalogPluginContainer;
         #region Singleton Instance
         private static readonly Lazy<ResourceCatalog> LazyCat = new Lazy<ResourceCatalog>(() =>
-                                            {
-                                                var c = new ResourceCatalog(EsbManagementServiceLocator.GetServices());
-                                                CompileMessageRepo.Instance.Ping();
-                                                return c;
-                                            }, LazyThreadSafetyMode.PublicationOnly);
+        {
+            var c = new ResourceCatalog(EsbManagementServiceLocator.GetServices());
+            CompileMessageRepo.Instance.Ping();
+            return c;
+        }, LazyThreadSafetyMode.PublicationOnly);
 
         /// <summary>
         /// Gets the instance.
@@ -116,7 +116,7 @@ namespace Dev2.Runtime.Hosting
         public virtual IResource GetResource(Guid workspaceID, Guid serviceID) => _catalogPluginContainer.LoadProvider.GetResource(workspaceID, serviceID);
         public virtual T GetResource<T>(Guid workspaceID, Guid serviceID) where T : Resource, new() => _catalogPluginContainer.LoadProvider.GetResource<T>(workspaceID, serviceID);
         public T GetResource<T>(Guid workspaceID, string resourceName) where T : Resource, new() => _catalogPluginContainer.LoadProvider.GetResource<T>(workspaceID, resourceName);
-        public string GetResourcePath(Guid workspaceID,Guid resourceId) => _catalogPluginContainer.LoadProvider.GetResourcePath(workspaceID,resourceId);
+        public string GetResourcePath(Guid workspaceID, Guid resourceId) => _catalogPluginContainer.LoadProvider.GetResourcePath(workspaceID, resourceId);
         public List<Guid> GetDependants(Guid workspaceID, Guid? resourceId) => _catalogPluginContainer.LoadProvider.GetDependants(workspaceID, resourceId);
         public List<ResourceForTree> GetDependentsAsResourceForTrees(Guid workspaceID, Guid resourceId) => _catalogPluginContainer.LoadProvider.GetDependentsAsResourceForTrees(workspaceID, resourceId);
         public IList<IResource> GetResourceList(Guid workspaceId) => _catalogPluginContainer.LoadProvider.GetResources(workspaceId);
@@ -249,11 +249,12 @@ namespace Dev2.Runtime.Hosting
             ResourceCatalogBuilder builder = new ResourceCatalogBuilder();
 
             builder.BuildCatalogFromWorkspace(workspacePath, folders);
-
-
+            DuplicateResources = builder.DuplicateResources;
             var resources = builder.ResourceList;
             return resources;
         }
+
+        public IList<DuplicateResource> DuplicateResources { get; set; }
 
         #endregion
 

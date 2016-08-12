@@ -45,6 +45,7 @@ namespace Dev2.Runtime.Hosting
     /// </summary>
     public class ResourceCatalogBuilder
     {
+        public IList<DuplicateResource> DuplicateResources { get; set; }
         private readonly List<IResource> _resources = new List<IResource>();
         private readonly HashSet<Guid> _addedResources = new HashSet<Guid>();
         private readonly IResourceUpgrader _resourceUpgrader;
@@ -57,7 +58,9 @@ namespace Dev2.Runtime.Hosting
         public ResourceCatalogBuilder()
         {
             _resourceUpgrader = ResourceUpgraderFactory.GetUpgrader();
+            DuplicateResources = new List<DuplicateResource>();
         }
+
         public IList<IResource> ResourceList => _resources;
 
 
@@ -120,7 +123,7 @@ namespace Dev2.Runtime.Hosting
                     var assemblies = AppDomain.CurrentDomain.GetAssemblies();
                     var types = assemblies
                         .SelectMany(s => s.GetTypes())
-                        .Where(p => resourceBaseType.IsAssignableFrom(p));                    
+                        .Where(p => resourceBaseType.IsAssignableFrom(p));
                     allTypes = types as IList<Type> ?? types.ToList();
                 }
                 catch (Exception e)
@@ -157,10 +160,10 @@ namespace Dev2.Runtime.Hosting
                                 typeName = dbType;
                             }
                         }
-                        
+
                         if (typeName == "Dev2Server" || typeName == "Server" || typeName == "ServerSource")
                         {
-                            xml.SetAttributeValue("Type",connectionTypeName);
+                            xml.SetAttributeValue("Type", connectionTypeName);
                             typeName = connectionTypeName;
                         }
 
@@ -174,7 +177,7 @@ namespace Dev2.Runtime.Hosting
                         Type type = null;
                         if (allTypes.Count != 0)
                         {
-                            type=allTypes.FirstOrDefault(type1 => type1.Name == typeName);
+                            type = allTypes.FirstOrDefault(type1 => type1.Name == typeName);
                         }
                         Resource resource;
                         if (type != null)
@@ -207,7 +210,7 @@ namespace Dev2.Runtime.Hosting
                                     signedXml.WriteToFile(currentItem.FilePath, Encoding.UTF8, fileManager);
                                     tx.Complete();
                                 }
-                                catch 
+                                catch
                                 {
                                     try
                                     {
@@ -232,20 +235,20 @@ namespace Dev2.Runtime.Hosting
 
                             StringBuilder updateXml = xml.ToStringBuilder();
                             var signedXml = HostSecurityProvider.Instance.SignXml(updateXml);
-                             var fileManager = new TxFileManager();
-                             using (TransactionScope tx = new TransactionScope())
-                             {
-                                 try
-                                 {
-                                     signedXml.WriteToFile(currentItem.FilePath, Encoding.UTF8,fileManager);
-                                     tx.Complete();
-                                 }
-                                 catch
-                                 {
-                                     Transaction.Current.Rollback();
-                                     throw;
-                                 }
-                             }
+                            var fileManager = new TxFileManager();
+                            using (TransactionScope tx = new TransactionScope())
+                            {
+                                try
+                                {
+                                    signedXml.WriteToFile(currentItem.FilePath, Encoding.UTF8, fileManager);
+                                    tx.Complete();
+                                }
+                                catch
+                                {
+                                    Transaction.Current.Rollback();
+                                    throw;
+                                }
+                            }
                         }
                         if (resource.VersionInfo == null)
                         {
@@ -295,6 +298,7 @@ namespace Dev2.Runtime.Hosting
                     Dev2Logger.Debug(
                         string.Format(ErrorResource.ResourceAlreadyLoaded,
                             res.ResourceName, filePath, dupRes.FilePath));
+                    AddToDuplicateResources(res.ResourceName, filePath, dupRes.FilePath);
                 }
                 else
                 {
@@ -306,5 +310,17 @@ namespace Dev2.Runtime.Hosting
             }
         }
 
+        private void AddToDuplicateResources(string resourceName, string filePath, string filePath2)
+        {
+            DuplicateResources.Add(new DuplicateResource
+            {
+                ResourceName = resourceName
+               ,
+                FilePath = filePath
+               ,
+                FilePath2 = filePath2
+
+            });
+        }
     }
 }
