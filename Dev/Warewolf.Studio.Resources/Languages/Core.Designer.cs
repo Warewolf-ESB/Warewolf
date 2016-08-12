@@ -2037,7 +2037,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Select a namespace or a fully qualified class name if it exists to filter the actions you can perform..
+        ///   Looks up a localized string similar to Select a ClassName or a fully qualified ClassName(Namespace+ClassName) if it exists to filter the actions you can perform..
         /// </summary>
         public static string DotNetPluginServiceSelectNamespaceHelp {
             get {
@@ -2046,7 +2046,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Select a namespace or a class to help find the correct action..
+        ///   Looks up a localized string similar to Select a ClassName or a fully qualified ClassName(Namespace+ClassName) to help find the correct action..
         /// </summary>
         public static string DotNetPluginServiceSelectNamespaceToolTip {
             get {
