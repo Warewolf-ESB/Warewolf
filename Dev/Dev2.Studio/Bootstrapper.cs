@@ -38,7 +38,6 @@ namespace Dev2
         {
             base.PrepareApplication();
             CustomContainer.LoadedTypes = new List<Type>();
-            PreloadReferences();
             CheckPath();
             FileHelper.MigrateTempData(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData));
         }
@@ -175,45 +174,6 @@ namespace Dev2
             }
 
             return false;
-        }
-
-        private void PreloadReferences()
-        {
-            var currentAsm = typeof(App).Assembly;
-            var inspected = new HashSet<string> { currentAsm.GetName().ToString() };
-            LoadReferences(currentAsm, inspected);
-        }
-
-        private void LoadReferences(Assembly asm, HashSet<string> inspected)
-        {
-            var allReferences = asm.GetReferencedAssemblies();
-
-            foreach(AssemblyName toLoad in allReferences)
-            {
-                if(inspected.Add(toLoad.ToString()))
-                {
-                    try
-                    {
-                        Assembly loaded = AppDomain.CurrentDomain.Load(toLoad);
-                        var types = loaded.GetTypes();
-                        foreach(var type in types)
-                        {
-                            if (!CustomContainer.LoadedTypes.Contains(type))
-                            {
-                                CustomContainer.LoadedTypes.Add(type);
-                            } 
-                        }
-                        LoadReferences(loaded, inspected);
-                    }
-                    // ReSharper disable EmptyGeneralCatchClause
-                    catch
-                    // ReSharper restore EmptyGeneralCatchClause
-                    {
-                        // Pissing me off ;) - Some strange dependency :: 'Microsoft.Scripting.Metadata'
-                    }
-              
-                }
-            }
         }
 
         private void CheckPath()

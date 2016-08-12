@@ -201,12 +201,9 @@ namespace Dev2.Studio
             SplashView.Show(false);
             
             // Now that the window is created, allow the rest of the startup to run 
-            if (_resetSplashCreated != null)
-            {
-                _resetSplashCreated.Set();
-            }
+            _resetSplashCreated?.Set();
             splashViewModel.ShowServerVersion();
-            System.Windows.Threading.Dispatcher.Run();
+            Dispatcher.Run();
         }
 
         protected override void OnExit(ExitEventArgs e)
