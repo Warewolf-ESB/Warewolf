@@ -7973,7 +7973,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to source.
+        ///   Looks up a localized string similar to source microsoft.
         /// </summary>
         public static string Tool_Database_SQL_Bulk_Insert_Tags {
             get {
