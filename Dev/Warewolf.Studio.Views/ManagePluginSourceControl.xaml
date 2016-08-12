@@ -72,7 +72,7 @@
                                                   Margin="{StaticResource ControlBorderTopRight}"
                                                   Grid.Column="0"
                                                   x:Name="SearchTextBox" 
-                                                  Text="{Binding SearchTerm, Delay=300, UpdateSourceTrigger=PropertyChanged}"
+                                                  Text="{Binding SearchTerm, Delay=450, UpdateSourceTrigger=PropertyChanged}"
                                                   Style="{StaticResource SearchTextboxStyle}"
                                                   LabelText="Filter"
                                                   ToolTip="{x:Static languages:Core.ManagePluginSourceFilterTooltip}"
