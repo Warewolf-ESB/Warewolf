@@ -39,16 +39,9 @@ namespace Dev2.Tests.Runtime.ESB.Control
             //---------------Assert Precondition----------------
 
             //---------------Execute Test ----------------------
-            try
-            {
-                // ReSharper disable once UnusedVariable
                 var esbServicesEndpoint = new EsbServicesEndpoint();
-            }
-            catch (Exception ex)
-            {
-                Assert.Fail(ex.Message);
-            }
             //---------------Test Result -----------------------
+            Assert.IsNotNull(esbServicesEndpoint, "Cannot create new EsbServicesEndpoint object.");
         }
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]

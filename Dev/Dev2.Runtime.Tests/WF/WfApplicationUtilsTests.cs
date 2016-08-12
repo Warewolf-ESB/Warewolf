@@ -31,16 +31,9 @@ namespace Dev2.Tests.Runtime.WF
             //---------------Assert Precondition----------------
 
             //---------------Execute Test ----------------------
-            try
-            {
-                // ReSharper disable once ObjectCreationAsStatement
-                new WfApplicationUtils();
-            }
-            catch (Exception ex)
-            {
-                Assert.Fail(ex.Message);
-            }
+            var newWfApplicationUtils = new WfApplicationUtils();
             //---------------Test Result -----------------------
+            Assert.IsNotNull(newWfApplicationUtils, "Cannot create new WfApplicationUtils object.");
         }
 
         [TestMethod]

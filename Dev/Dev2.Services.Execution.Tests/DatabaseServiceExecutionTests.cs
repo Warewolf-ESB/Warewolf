@@ -15,23 +15,13 @@ namespace Dev2.Services.Execution.Tests
         public void OnConstruction_GivenDataObject_ShouldConstruct()
         {
             //---------------Set up test pack-------------------
-            
+
             //---------------Assert Precondition----------------
 
             //---------------Execute Test ----------------------
-            try
-            {
-                //---------------Test Result -----------------------
-                
-                // ReSharper disable once ObjectCreationAsStatement
-                new DatabaseServiceExecution(new Mock<IDSFDataObject>().Object);
-            }
-            catch(Exception ex) 
-            {
-                Assert.Fail(ex.Message);
-            }
-            
+            var newDatabaseServiceExecution = new DatabaseServiceExecution(new Mock<IDSFDataObject>().Object);
+            //---------------Test Result -----------------------
+            Assert.IsNotNull(newDatabaseServiceExecution, "Cannot create new DatabaseServiceExecution object.");
         }
-       
     }
 }

@@ -7410,18 +7410,6 @@ namespace Warewolf.UITests
                 return this.mServicePickerDialog;
             }
         }
-        
-        public UIWarewolfDEV2ASHLEYLEWindow UIWarewolfDEV2ASHLEYLEWindow
-        {
-            get
-            {
-                if ((this.mUIWarewolfDEV2ASHLEYLEWindow == null))
-                {
-                    this.mUIWarewolfDEV2ASHLEYLEWindow = new UIWarewolfDEV2ASHLEYLEWindow();
-                }
-                return this.mUIWarewolfDEV2ASHLEYLEWindow;
-            }
-        }
         #endregion
         
         #region Fields
@@ -7756,8 +7744,6 @@ namespace Warewolf.UITests
         private SelectWindowsGroupDialog mSelectWindowsGroupDialog;
         
         private ServicePickerDialog mServicePickerDialog;
-        
-        private UIWarewolfDEV2ASHLEYLEWindow mUIWarewolfDEV2ASHLEYLEWindow;
         #endregion
     }
     
@@ -20716,6 +20702,40 @@ namespace Warewolf.UITests
             }
         }
         
+        public WpfCustom Connector2
+        {
+            get
+            {
+                if ((this.mConnector2 == null))
+                {
+                    this.mConnector2 = new WpfCustom(this);
+                    #region Search Criteria
+                    this.mConnector2.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ConnectorWithoutStartDot";
+                    this.mConnector2.SearchProperties[WpfControl.PropertyNames.Instance] = "2";
+                    this.mConnector2.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mConnector2;
+            }
+        }
+        
+        public WpfCustom Connector3
+        {
+            get
+            {
+                if ((this.mConnector3 == null))
+                {
+                    this.mConnector3 = new WpfCustom(this);
+                    #region Search Criteria
+                    this.mConnector3.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ConnectorWithoutStartDot";
+                    this.mConnector3.SearchProperties[WpfControl.PropertyNames.Instance] = "3";
+                    this.mConnector3.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mConnector3;
+            }
+        }
+        
         public Error1 Error1
         {
             get
@@ -20859,6 +20879,10 @@ namespace Warewolf.UITests
         private WebPost mWebPost;
         
         private WpfCustom mConnector1;
+        
+        private WpfCustom mConnector2;
+        
+        private WpfCustom mConnector3;
         
         private Error1 mError1;
         
@@ -33419,43 +33443,6 @@ namespace Warewolf.UITests
         
         #region Fields
         private WpfTreeItem mSubTreeItem1;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class UIWarewolfDEV2ASHLEYLEWindow : WpfWindow
-    {
-        
-        public UIWarewolfDEV2ASHLEYLEWindow()
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfWindow.PropertyNames.Name] = "Warewolf (DEV2\\ASHLEY.LEWIS)";
-            this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
-            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
-            #endregion
-        }
-        
-        #region Properties
-        public WpfCustom UIDsfWebGetActivityCustom
-        {
-            get
-            {
-                if ((this.mUIDsfWebGetActivityCustom == null))
-                {
-                    this.mUIDsfWebGetActivityCustom = new WpfCustom(this);
-                    #region Search Criteria
-                    this.mUIDsfWebGetActivityCustom.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.WebServiceGetDesigner";
-                    this.mUIDsfWebGetActivityCustom.SearchProperties[WpfControl.PropertyNames.AutomationId] = "GET Web Method(WebServiceGetDesigner)";
-                    this.mUIDsfWebGetActivityCustom.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
-                    #endregion
-                }
-                return this.mUIDsfWebGetActivityCustom;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfCustom mUIDsfWebGetActivityCustom;
         #endregion
     }
 }
