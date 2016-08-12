@@ -365,54 +365,6 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
-        /// Click_Debug_Ribbon_Button - Use 'Click_Debug_Ribbon_ButtonParams' to pass parameters into this method.
-        /// </summary>
-        public void Click_Debug_Ribbon_Button()
-        {
-            #region Variable Declarations
-            WpfButton runAndDebugButton = this.MainStudioWindow.SideMenuBar.RunAndDebugButton;
-            WpfWindow debugInputDialog = this.MainStudioWindow.DebugInputDialog;
-            WpfButton debugF6Button = this.MainStudioWindow.DebugInputDialog.DebugF6Button;
-            WpfButton cancelButton = this.MainStudioWindow.DebugInputDialog.CancelButton;
-            WpfCheckBox rememberDebugInputCheckBox = this.MainStudioWindow.DebugInputDialog.RememberDebugInputCheckBox;
-            WpfButton viewInBrowserF7Button = this.MainStudioWindow.DebugInputDialog.ViewInBrowserF7Button;
-            WpfTable dataListInputsTable = this.MainStudioWindow.DebugInputDialog.UITabItemsTabList.InputDataTab.DataListInputsTable;
-            WpfTabPage xMLTab = this.MainStudioWindow.DebugInputDialog.UITabItemsTabList.XMLTab;
-            WpfTabPage jSONTab = this.MainStudioWindow.DebugInputDialog.UITabItemsTabList.JSONTab;
-            #endregion
-
-            // Click 'Run and debug your workflow service' button
-            Mouse.Click(runAndDebugButton, new Point(13, 14));
-
-            // Verify that the 'Exists' property of 'Wpf' window equals 'True'
-            Assert.AreEqual(this.Click_Debug_Ribbon_ButtonParams.DebugInputDialogExists, debugInputDialog.Exists, "Debug Input window does not exist");
-
-            // Verify that the 'Exists' property of 'Debug (F6)' button equals 'True'
-            Assert.AreEqual(this.Click_Debug_Ribbon_ButtonParams.DebugF6ButtonExists, debugF6Button.Exists, "Debug button in Debug Input window does not Exist");
-
-            // Verify that the 'Exists' property of 'Cancel' button equals 'True'
-            Assert.AreEqual(this.Click_Debug_Ribbon_ButtonParams.CancelButtonExists, cancelButton.Exists, "Cancel Debug Input Window button does not Exist");
-
-            // Verify that the 'Exists' property of 'Remember Debug Inputs' check box equals 'True'
-            Assert.AreEqual(this.Click_Debug_Ribbon_ButtonParams.RememberDebugInputCheckBoxExists, rememberDebugInputCheckBox.Exists, "Remember Checkbox does not exist in the Debug Input window");
-
-            // Verify that the 'Enabled' property of 'View In Browser (F7)' button equals 'True'
-            Assert.AreEqual(this.Click_Debug_Ribbon_ButtonParams.ViewInBrowserF7ButtonEnabled, viewInBrowserF7Button.Enabled, "View in Browser button does not exist in Debug Input window");
-
-            // Verify that the 'Exists' property of 'Debug (F6)' button equals 'True'
-            Assert.AreEqual(this.Click_Debug_Ribbon_ButtonParams.DebugF6ButtonExists1, debugF6Button.Exists, "Debug button in Debug Input window does not Exist");
-
-            // Verify that the 'Exists' property of 'DataListInputs' table equals 'True'
-            Assert.AreEqual(this.Click_Debug_Ribbon_ButtonParams.DataListInputsTableExists, dataListInputsTable.Exists, "Input Data Window does not exist in Debug Input window");
-
-            // Verify that the 'Exists' property of 'XML' tab equals 'True'
-            Assert.AreEqual(this.Click_Debug_Ribbon_ButtonParams.XMLTabExists, xMLTab.Exists, "Xml tab does not Exist in the Debug Input window");
-
-            // Verify that the 'Exists' property of 'JSON' tab equals 'True'
-            Assert.AreEqual(this.Click_Debug_Ribbon_ButtonParams.JSONTabExists, jSONTab.Exists, "Assert Json tab does not exist in the debug input window");
-        }
-        
-        /// <summary>
         /// Click_DebugInput_Cancel_Button
         /// </summary>
         public void Click_DebugInput_Cancel_Button()
@@ -5371,19 +5323,6 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
-        /// Type_S_Into_DebugInput_Row1_InputData - Use 'Type_S_Into_DebugInput_Row1_InputDataParams' to pass parameters into this method.
-        /// </summary>
-        public void Type_S_Into_DebugInput_Row1_InputData()
-        {
-            #region Variable Declarations
-            WpfCell uIDescriptionCell = this.MainStudioWindow.DebugInputDialog.UITabItemsTabList.InputDataTab.DataListInputsTable.UIDescriptionCell;
-            #endregion
-
-            // Type 's' in 'Description' cell
-            uIDescriptionCell.Value = this.Type_S_Into_DebugInput_Row1_InputDataParams.UIDescriptionCellValue;
-        }
-        
-        /// <summary>
         /// Type_TestSite_into_Web_Source_Wizard_Address_Textbox - Use 'Type_TestSite_into_Web_Source_Wizard_Address_TextboxParams' to pass parameters into this method.
         /// </summary>
         public void Type_TestSite_into_Web_Source_Wizard_Address_Textbox()
@@ -5536,18 +5475,6 @@ namespace Warewolf.UITests
                     this.mClick_Debug_Output_Workflow1_NameParams = new Click_Debug_Output_Workflow1_NameParams();
                 }
                 return this.mClick_Debug_Output_Workflow1_NameParams;
-            }
-        }
-        
-        public virtual Click_Debug_Ribbon_ButtonParams Click_Debug_Ribbon_ButtonParams
-        {
-            get
-            {
-                if ((this.mClick_Debug_Ribbon_ButtonParams == null))
-                {
-                    this.mClick_Debug_Ribbon_ButtonParams = new Click_Debug_Ribbon_ButtonParams();
-                }
-                return this.mClick_Debug_Ribbon_ButtonParams;
             }
         }
         
@@ -7291,18 +7218,6 @@ namespace Warewolf.UITests
             }
         }
         
-        public virtual Type_S_Into_DebugInput_Row1_InputDataParams Type_S_Into_DebugInput_Row1_InputDataParams
-        {
-            get
-            {
-                if ((this.mType_S_Into_DebugInput_Row1_InputDataParams == null))
-                {
-                    this.mType_S_Into_DebugInput_Row1_InputDataParams = new Type_S_Into_DebugInput_Row1_InputDataParams();
-                }
-                return this.mType_S_Into_DebugInput_Row1_InputDataParams;
-            }
-        }
-        
         public virtual Type_TestSite_into_Web_Source_Wizard_Address_TextboxParams Type_TestSite_into_Web_Source_Wizard_Address_TextboxParams
         {
             get
@@ -7432,8 +7347,6 @@ namespace Warewolf.UITests
         private Click_Debug_Output_Calculate_CellParams mClick_Debug_Output_Calculate_CellParams;
         
         private Click_Debug_Output_Workflow1_NameParams mClick_Debug_Output_Workflow1_NameParams;
-        
-        private Click_Debug_Ribbon_ButtonParams mClick_Debug_Ribbon_ButtonParams;
         
         private Click_DebugInput_Debug_ButtonParams mClick_DebugInput_Debug_ButtonParams;
         
@@ -7725,8 +7638,6 @@ namespace Warewolf.UITests
         
         private Type_rsaklfsvrgen_into_DB_Source_Wizard_Server_TextboxParams mType_rsaklfsvrgen_into_DB_Source_Wizard_Server_TextboxParams;
         
-        private Type_S_Into_DebugInput_Row1_InputDataParams mType_S_Into_DebugInput_Row1_InputDataParams;
-        
         private Type_TestSite_into_Web_Source_Wizard_Address_TextboxParams mType_TestSite_into_Web_Source_Wizard_Address_TextboxParams;
         
         private Type_tstci_into_Server_Source_Wizard_Address_TextboxParams mType_tstci_into_Server_Source_Wizard_Address_TextboxParams;
@@ -7922,61 +7833,6 @@ namespace Warewolf.UITests
         /// Verify that the 'DisplayText' property of 'workflow1 - ci-remote' label equals 'workflow1 - ci-remote'
         /// </summary>
         public string Workflow1ciremoteTextDisplayText = "workflow1 - ci-remote";
-        #endregion
-    }
-    
-    /// <summary>
-    /// Parameters to be passed into 'Click_Debug_Ribbon_Button'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Click_Debug_Ribbon_ButtonParams
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Verify that the 'Exists' property of 'Wpf' window equals 'True'
-        /// </summary>
-        public bool DebugInputDialogExists = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'Debug (F6)' button equals 'True'
-        /// </summary>
-        public bool DebugF6ButtonExists = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'Cancel' button equals 'True'
-        /// </summary>
-        public bool CancelButtonExists = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'Remember Debug Inputs' check box equals 'True'
-        /// </summary>
-        public bool RememberDebugInputCheckBoxExists = true;
-        
-        /// <summary>
-        /// Verify that the 'Enabled' property of 'View In Browser (F7)' button equals 'True'
-        /// </summary>
-        public bool ViewInBrowserF7ButtonEnabled = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'Debug (F6)' button equals 'True'
-        /// </summary>
-        public bool DebugF6ButtonExists1 = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'DataListInputs' table equals 'True'
-        /// </summary>
-        public bool DataListInputsTableExists = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'XML' tab equals 'True'
-        /// </summary>
-        public bool XMLTabExists = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'JSON' tab equals 'True'
-        /// </summary>
-        public bool JSONTabExists = true;
         #endregion
     }
     
@@ -11062,21 +10918,6 @@ namespace Warewolf.UITests
         /// Verify that the 'Exists' property of 'RSAKLFSVRGENDEV' list item equals 'True'
         /// </summary>
         public bool RSAKLFSVRGENDEVExists = true;
-        #endregion
-    }
-    
-    /// <summary>
-    /// Parameters to be passed into 'Type_S_Into_DebugInput_Row1_InputData'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Type_S_Into_DebugInput_Row1_InputDataParams
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Type 's' in 'Description' cell
-        /// </summary>
-        public string UIDescriptionCellValue = "s";
         #endregion
     }
     
@@ -32098,15 +31939,15 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public UITabItemsTabList UITabItemsTabList
+        public TabItemsTabList TabItemsTabList
         {
             get
             {
-                if ((this.mUITabItemsTabList == null))
+                if ((this.mTabItemsTabList == null))
                 {
-                    this.mUITabItemsTabList = new UITabItemsTabList(this);
+                    this.mTabItemsTabList = new TabItemsTabList(this);
                 }
-                return this.mUITabItemsTabList;
+                return this.mTabItemsTabList;
             }
         }
         
@@ -32176,7 +32017,7 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private UITabItemsTabList mUITabItemsTabList;
+        private TabItemsTabList mTabItemsTabList;
         
         private WpfCheckBox mRememberDebugInputCheckBox;
         
@@ -32189,10 +32030,10 @@ namespace Warewolf.UITests
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class UITabItemsTabList : WpfTabList
+    public class TabItemsTabList : WpfTabList
     {
         
-        public UITabItemsTabList(UITestControl searchLimitContainer) : 
+        public TabItemsTabList(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -32262,29 +32103,29 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public DataListInputsTable DataListInputsTable
+        public InputsTable1 InputsTable
         {
             get
             {
-                if ((this.mDataListInputsTable == null))
+                if ((this.mInputsTable == null))
                 {
-                    this.mDataListInputsTable = new DataListInputsTable(this);
+                    this.mInputsTable = new InputsTable1(this);
                 }
-                return this.mDataListInputsTable;
+                return this.mInputsTable;
             }
         }
         #endregion
         
         #region Fields
-        private DataListInputsTable mDataListInputsTable;
+        private InputsTable1 mInputsTable;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class DataListInputsTable : WpfTable
+    public class InputsTable1 : WpfTable
     {
         
-        public DataListInputsTable(UITestControl searchLimitContainer) : 
+        public InputsTable1(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -32294,57 +32135,123 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public UIDescriptionCell UIDescriptionCell
+        public Row19 Row1
         {
             get
             {
-                if ((this.mUIDescriptionCell == null))
+                if ((this.mRow1 == null))
                 {
-                    this.mUIDescriptionCell = new UIDescriptionCell(this);
+                    this.mRow1 = new Row19(this);
                 }
-                return this.mUIDescriptionCell;
+                return this.mRow1;
             }
         }
         #endregion
         
         #region Fields
-        private UIDescriptionCell mUIDescriptionCell;
+        private Row19 mRow1;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class UIDescriptionCell : WpfCell
+    public class Row19 : WpfPane
     {
         
-        public UIDescriptionCell(UITestControl searchLimitContainer) : 
+        public Row19(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
-            this.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = null;
-            this.WindowTitles.Add("Warewolf");
+            this.SearchProperties[WpfPane.PropertyNames.ClassName] = "Uia.CellsPanel";
+            this.SearchProperties[WpfPane.PropertyNames.Name] = "0";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
             #endregion
         }
         
         #region Properties
-        public WpfText UIRec1setText
+        public Cell2 Cell
         {
             get
             {
-                if ((this.mUIRec1setText == null))
+                if ((this.mCell == null))
                 {
-                    this.mUIRec1setText = new WpfText(this);
-                    #region Search Criteria
-                    this.mUIRec1setText.SearchProperties[WpfText.PropertyNames.Name] = "rec(1).set";
-                    this.mUIRec1setText.WindowTitles.Add("Warewolf");
-                    #endregion
+                    this.mCell = new Cell2(this);
                 }
-                return this.mUIRec1setText;
+                return this.mCell;
             }
         }
         #endregion
         
         #region Fields
-        private WpfText mUIRec1setText;
+        private Cell2 mCell;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Cell2 : WpfCell
+    {
+        
+        public Cell2(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = null;
+            this.SearchProperties[WpfCell.PropertyNames.Instance] = "2";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public ComboBox ComboBox
+        {
+            get
+            {
+                if ((this.mComboBox == null))
+                {
+                    this.mComboBox = new ComboBox(this);
+                }
+                return this.mComboBox;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private ComboBox mComboBox;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class ComboBox : WpfComboBox
+    {
+        
+        public ComboBox(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "UI_Nametxt_AutoID";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfEdit Textbox
+        {
+            get
+            {
+                if ((this.mTextbox == null))
+                {
+                    this.mTextbox = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mTextbox.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "Text";
+                    this.mTextbox.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mTextbox;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfEdit mTextbox;
         #endregion
     }
     
