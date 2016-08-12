@@ -17,8 +17,8 @@ namespace Warewolf.Studio.ViewModels
 
         public SplashViewModel(IServer server, IExternalProcessExecutor externalProcessExecutor)
         {
-            if (server == null) throw new ArgumentNullException("server");
-            if (externalProcessExecutor == null) throw new ArgumentNullException("externalProcessExecutor");
+            if (server == null) throw new ArgumentNullException(nameof(server));
+            if (externalProcessExecutor == null) throw new ArgumentNullException(nameof(externalProcessExecutor));
             Server = server;
             ExternalProcessExecutor = externalProcessExecutor;
 
@@ -115,8 +115,8 @@ namespace Warewolf.Studio.ViewModels
                     var splitServerVersion = serverVersion.Split('.');
                     var totalDays = Convert.ToDouble(splitServerVersion[2]);
                     var totalSeconds = Convert.ToDouble(splitServerVersion[3])*2;
-                    var CSharpEpoc = new DateTime(2000, 1, 1);
-                    var compileTIme = CSharpEpoc.AddDays(totalDays).AddSeconds(totalSeconds);
+                    var cSharpEpoc = new DateTime(2000, 1, 1);
+                    var compileTIme = cSharpEpoc.AddDays(totalDays).AddSeconds(totalSeconds);
                     ServerVersion = "Compiled " + GetInformalDate(compileTIme);
                 }
                 else
@@ -160,7 +160,7 @@ namespace Warewolf.Studio.ViewModels
             }
             if (totalHours == 0)
             {
-                return string.Format("{0} minutes ago", totalMinutes);
+                return $"{totalMinutes} minutes ago";
             }
             if (totalHours == 1)
             {
@@ -168,7 +168,7 @@ namespace Warewolf.Studio.ViewModels
             }
             if (totalDays == 0)
             {
-                return string.Format("{0} hours ago", totalHours);
+                return $"{totalHours} hours ago";
             }
             if (totalDays == 1)
             {
@@ -176,7 +176,7 @@ namespace Warewolf.Studio.ViewModels
             }
             if (totalDays < 7)
             {
-                return string.Format("{0} days ago", totalDays);
+                return $"{totalDays} days ago";
             }
             if (totalDays < 14)
             {
@@ -184,7 +184,7 @@ namespace Warewolf.Studio.ViewModels
             }
             if (totalDays < 31)
             {
-                return string.Format("{0} weeks ago", Math.Ceiling((double)totalDays / 7));
+                return $"{Math.Ceiling((double) totalDays/7)} weeks ago";
             }
             if (totalDays < 62)
             {
@@ -192,13 +192,13 @@ namespace Warewolf.Studio.ViewModels
             }
             if (totalDays < 365)
             {
-                return string.Format("{0} months ago", Math.Ceiling((double)totalDays / 31));
+                return $"{Math.Ceiling((double) totalDays/31)} months ago";
             }
             if (totalDays < 730)
             {
                 return "a year ago";
             }
-            return string.Format("{0} years ago", Math.Ceiling((double)totalDays / 365));
+            return $"{Math.Ceiling((double) totalDays/365)} years ago";
         }
     }
 }
