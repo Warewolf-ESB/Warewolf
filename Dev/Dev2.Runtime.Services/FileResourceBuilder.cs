@@ -24,23 +24,33 @@ namespace Dev2.Runtime
                 var filesList = _resourceHolder.GetFilesList();
                 foreach (var fileInfo in filesList)
                 {
-                    var fileResource = new FileResource();
-                    fileResource.Name = fileInfo.Name;
-                    fileResource.ResourcePath = fileInfo.FullName;
-                    fileResource.Children = new List<FileResource>();
-                    var directories = Directory.GetDirectories(fileResource.Name);
-                    foreach (var directory in directories)
+                    var fileResource = new FileResource
                     {
-                        FileInfo info = new FileInfo(directory);
-                        fileResource.Children.Add(new FileResource
+                        ResourceName = fileInfo.Name,
+                        ResourcePath = fileInfo.FullName,
+                        ParentPath = fileInfo.DirectoryName,
+                        Children = new List<FileResource>()
+                    };
+                    var files = Directory.GetFiles(fileResource.ResourcePath);
+                    if (files.Any())
+                    {
+                        foreach (var file in files)
                         {
-                            
-                        });
+                            fileResource.Children.Add(AddFileChildren(file, fileResource));
+                        }
                     }
-                 
+                    var directories = Directory.GetDirectories(fileResource.ResourcePath);
+                    if (directories.Any())
+                    {
+                        foreach (var directory in directories)
+                        {
+                            fileResource.Children.Add(AddDirectoryChildren(directory, fileResource));
+                        }
+                    }
+                    fileResources.Add(fileResource);
                 }
 
-                return new List<FileResource>();
+                return fileResources;
             }
             catch (Exception ex) when (ex is AccessViolationException)
             {
@@ -52,6 +62,53 @@ namespace Dev2.Runtime
                 Dev2Logger.Error(ex.Message, ex);
                 throw;
             }
+        }
+
+        private static FileResource AddFileChildren(string file, FileResource fileResource)
+        {
+            FileResource newFileResource = new FileResource();
+            if (!file.Contains("VersionControl"))
+            {
+                FileInfo info = new FileInfo(file);
+                newFileResource.ResourceName = info.Name;
+                newFileResource.ResourcePath = info.FullName;
+                newFileResource.ParentPath = fileResource.ResourcePath;
+                newFileResource.Children = new List<FileResource>();
+            }
+
+            return newFileResource;
+        }
+
+        private static FileResource AddDirectoryChildren(string directory, FileResource fileResource)
+        {
+            FileResource newFileResource = new FileResource();
+            if (!directory.Contains("VersionControl"))
+            {
+                FileInfo info = new FileInfo(directory);
+                newFileResource.ResourceName = info.Name;
+                newFileResource.ResourcePath = info.FullName;
+                newFileResource.ParentPath = fileResource.ResourcePath;
+                newFileResource.Children = new List<FileResource>();
+
+                var files = Directory.GetFiles(newFileResource.ResourcePath);
+                if (files.Any())
+                {
+                    foreach (var file in files)
+                    {
+                        newFileResource.Children.Add(AddFileChildren(file, newFileResource));
+                    }
+                }
+
+                var childDir = Directory.GetDirectories(newFileResource.ResourcePath);
+                if (childDir.Any())
+                {
+                    foreach (var child in childDir)
+                    {
+                        AddDirectoryChildren(child, newFileResource);
+                    }
+                }
+            }
+            return newFileResource;
         }
     }
 
@@ -70,7 +127,7 @@ namespace Dev2.Runtime
 
         public List<FileInfo> GetFilesList()
         {
-            var list = Directory.GetDirectories(_path, ".*", SearchOption.AllDirectories).ToList();
+            var list = Directory.GetDirectories(_path, "*", SearchOption.AllDirectories).ToList();
             var fileInfos = list.Select(fileName => new FileInfo(fileName)).ToList();
             return fileInfos;
         }

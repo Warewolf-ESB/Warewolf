@@ -314,7 +314,7 @@
                                                      IsPinned="True"
                                                      Style="{StaticResource DockmangerToolPaneStyle}"
                                                      WindowPositionMenuVisibility="Hidden" >
-                                <views1:ExplorerView DataContext="{Binding ExplorerViewModel}" AutomationProperties.AutomationId="UI_ExplorerControl_AutoID"/>
+                                <views1:ExplorerView DataContext="{Binding ExplorerViewModel}" x:Name="ExplorerViewControl" AutomationProperties.AutomationId="UI_ExplorerControl_AutoID"/>
                             </igDock:ContentPane>
                             <igDock:ContentPane x:Name="Toolbox"
                                                      AllowClose="False"
