@@ -413,14 +413,7 @@ namespace Dev2.Data.Tests.Operations
             const string ranString = "Rando.net";
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
-            try
-            {
-                commonDataUtils.AppendToTemp( stream, ranString);
-            }
-            catch (Exception ex)
-            {
-                Assert.Fail(ex.Message);
-            }
+            commonDataUtils.AppendToTemp( stream, ranString);
 
             //---------------Test Result -----------------------
         }

@@ -40,16 +40,10 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             //---------------Assert Precondition----------------
 
             //---------------Execute Test ----------------------
-            try
-            {
-                //---------------Test Result -----------------------
-                var internalServiceContainer = new InternalServiceContainer(serviceAction, dsfObj.Object, workSpace.Object, channel.Object, esbExecuteRequest);
-                Assert.AreEqual(4, esbExecuteRequest.Args.Count);
-            }
-            catch (Exception ex)
-            {
-                Assert.Fail(ex.Message);
-            }
+            var internalServiceContainer = new InternalServiceContainer(serviceAction, dsfObj.Object, workSpace.Object, channel.Object, esbExecuteRequest);
+            //---------------Test Result -----------------------
+            Assert.AreEqual(4, esbExecuteRequest.Args.Count);
+            Assert.IsNotNull(internalServiceContainer, "Cannot create new InternalServiceContainer object.");
 
         }
 

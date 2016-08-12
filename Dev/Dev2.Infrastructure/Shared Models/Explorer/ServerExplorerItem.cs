@@ -110,7 +110,7 @@ namespace Dev2.Explorer
 
         public override string ToString()
         {
-            return String.Format("Name:{0} Path:{1} Id:{2}", DisplayName, ResourcePath, ResourceId);
+            return $"Name:{DisplayName} Path:{ResourcePath} Id:{ResourceId}";
         }
     }
 }

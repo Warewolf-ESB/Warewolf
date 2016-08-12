@@ -214,10 +214,7 @@ namespace Dev2.Studio
             Tracker.Stop();
 
             // this is already handled ;)
-            if (_mainViewModel != null)
-            {
-                _mainViewModel.PersistTabs(true);
-            }
+            _mainViewModel?.PersistTabs(true);
             ProgressFileDownloader.PerformCleanup(new DirectoryWrapper(), GlobalConstants.VersionDownloadPath, new FileWrapper());
             HasShutdownStarted = true;
             DebugDispatcher.Instance.Shutdown();
