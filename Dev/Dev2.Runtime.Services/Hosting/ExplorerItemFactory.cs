@@ -17,7 +17,6 @@ using Dev2.Common;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Explorer;
 using Dev2.Common.Interfaces.Runtime;
-using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Common.Interfaces.Wrappers;
 using Dev2.Explorer;
 using Dev2.Runtime.Interfaces;
@@ -37,18 +36,18 @@ namespace Dev2.Runtime.Hosting
             Directory = directory;
         }
 
-        public void ShowDuplicatedResources()
+        public string CreateDuplicatedResources()
         {
             var stringBuilder = new StringBuilder();
-            var resourceList = Catalogue.DuplicateResources;
+            var resourceList = Catalogue.GetDuplicateResources();
+            if (resourceList.Count <= 0) return String.Empty;
             foreach (var duplicateResource in resourceList)
             {
                 stringBuilder.Append(string.Format(" Resource {0} in path {1} and path {2} are the same",
                     duplicateResource.ResourceName, duplicateResource.FilePath, duplicateResource.FilePath2));
                 stringBuilder.AppendLine();
             }
-            IPopupController controller = CustomContainer.Get<IPopupController>();
-            controller.ShowResourcesConflict(stringBuilder.ToString());
+            return stringBuilder.ToString();
         }
 
         public IExplorerItem CreateRootExplorerItem(string workSpacePath, Guid workSpaceId)
@@ -182,5 +181,7 @@ namespace Dev2.Runtime.Hosting
 
         public IResourceCatalog Catalogue { get; private set; }
         public IDirectory Directory { get; private set; }
+
     }
+
 }

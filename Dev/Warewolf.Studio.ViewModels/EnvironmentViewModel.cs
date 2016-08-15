@@ -44,7 +44,7 @@ namespace Warewolf.Studio.ViewModels
         private bool _canDrag;
 
         public EnvironmentViewModel(IServer server, IShellViewModel shellViewModel, bool isDialog = false, Action<IExplorerItemViewModel> selectAction = null)
-        {
+        {            
             if (server == null)
                 throw new ArgumentNullException(nameof(server));
             if (shellViewModel == null)
@@ -703,6 +703,12 @@ namespace Warewolf.Studio.ViewModels
             {
                 IsConnecting = true;
                 var explorerItems = await Server.LoadExplorer(reloadCatalogue);
+                var loadExplorerDuplicates = await Server.LoadExplorerDuplicates();
+                if(loadExplorerDuplicates!= String.Empty)
+                {
+                    var controller = CustomContainer.Get<IPopupController>();
+                    controller.ShowResourcesConflict(loadExplorerDuplicates);
+                }
                 await CreateExplorerItems(explorerItems.Children, Server, this, selectedPath != null, Children.Any(a => AllowResourceCheck));
                 IsLoaded = true;
                 IsConnecting = false;
@@ -719,6 +725,8 @@ namespace Warewolf.Studio.ViewModels
             {
                 IsConnecting = true;
                 var explorerItems = await Server.LoadExplorer();
+                Server.LoadExplorerDuplicates();
+
                 await CreateExplorerItems(explorerItems.Children, Server, this, selectedPath != Guid.Empty);
                 IsLoaded = true;
                 IsConnecting = false;

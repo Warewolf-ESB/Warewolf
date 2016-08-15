@@ -110,7 +110,7 @@ namespace Dev2.Studio.Controller
         {
             Buttons = MessageBoxButton.OK;
             Header = "Duplicated Resources";
-            Description = $"{duplicateResource}. Please resolve the files on File Explorer";
+            Description = $"{duplicateResource} \nPlease resolve the files on File Explorer";
             ImageType = MessageBoxImage.Error;
             IsDependenciesButtonVisible = false;
             IsInfo = false;

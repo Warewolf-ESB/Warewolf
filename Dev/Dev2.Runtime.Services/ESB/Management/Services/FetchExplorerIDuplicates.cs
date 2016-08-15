@@ -23,13 +23,13 @@ using Dev2.Workspaces;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
-    public class FetchExplorerItems : IEsbManagementEndpoint
+    public class FetchExplorerIDuplicates : IEsbManagementEndpoint
     {
         private IExplorerServerResourceRepository _serverExplorerRepository;
 
         public string HandlesType()
         {
-            return "FetchExplorerItemsService";
+            return "FetchExplorerIDuplicates";
         }
 
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
@@ -63,10 +63,11 @@ namespace Dev2.Runtime.ESB.Management.Services
                 {
                     ResourceCatalog.Instance.Reload();
                 }
-                var item = ServerExplorerRepo.Load(GlobalConstants.ServerWorkspaceID);
+                var item = ServerExplorerRepo.LoadDuplicate();
                 CompressedExecuteMessage message = new CompressedExecuteMessage();
                 message.SetMessage(serializer.Serialize(item));
                 return serializer.SerializeToBuilder(message);
+
             }
             catch (Exception e)
             {

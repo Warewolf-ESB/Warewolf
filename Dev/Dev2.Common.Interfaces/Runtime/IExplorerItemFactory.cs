@@ -17,6 +17,6 @@ namespace Dev2.Common.Interfaces.Runtime
     {
         IExplorerItem CreateRootExplorerItem(string workSpacePath, Guid workSpaceId);
         IExplorerItem CreateRootExplorerItem(string type, string workSpacePath, Guid workSpaceId);
-        void ShowDuplicatedResources();
+        string CreateDuplicatedResources();
     }
 }
