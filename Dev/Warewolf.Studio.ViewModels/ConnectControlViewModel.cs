@@ -110,7 +110,10 @@ namespace Warewolf.Studio.ViewModels
 
                 if (SelectedConnection.EnvironmentID == server1.EnvironmentID)
                 {
-                    ServerHasDisconnected(this, server1);
+                    if (!IsConnecting)
+                    {
+                        ServerHasDisconnected(this, server1);
+                    }
                     SelectedConnection.DisplayName = SelectedConnection.DisplayName.Replace("(Connected)", "");
                     IsConnected = false;
                 }

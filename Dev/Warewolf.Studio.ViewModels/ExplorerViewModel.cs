@@ -329,7 +329,7 @@ namespace Warewolf.Studio.ViewModels
                 Application.Current.Dispatcher.Invoke(async () =>
                 {
                     IsLoading = true;
-
+                    
                     var existing = _environments.FirstOrDefault(a => a.ResourceId == server.EnvironmentID);
                     if (existing == null)
                     {
@@ -340,6 +340,7 @@ namespace Warewolf.Studio.ViewModels
                     var result = await LoadEnvironment(existing, IsDeploy);
 
                     IsLoading = result;
+                    ShowServerDownError = false;
                 });
         }
 
@@ -374,9 +375,17 @@ namespace Warewolf.Studio.ViewModels
             {
                 IPopupController controller = CustomContainer.Get<IPopupController>();
                 ServerDisconnected(_, server);
-                controller.ShowServerNotConnected(server.DisplayName);
+                if (!ShowServerDownError && !ExpectedStudioClose)
+                {
+                    controller.ShowServerNotConnected(server.DisplayName);
+                    ShowServerDownError = true;
+                }
             });
         }
+
+        public bool ExpectedStudioClose { get; set; }
+
+        public bool ShowServerDownError { get; set; }
 
         void ServerDisconnected(object _, IServer server)
         {

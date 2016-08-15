@@ -138,10 +138,7 @@ namespace Dev2.Network
         void OnReceiveResourcesAffectedMemo(string objString)
         {
             var obj = _serializer.Deserialize<CompileMessageList>(objString);
-            if (ReceivedResourceAffectedMessage != null)
-            {
-                ReceivedResourceAffectedMessage(obj.ServiceID, obj);
-            }
+            ReceivedResourceAffectedMessage?.Invoke(obj.ServiceID, obj);
         }
 
         void HubConnectionOnClosed()
@@ -345,26 +342,21 @@ namespace Dev2.Network
 
             var application = Application.Current;
             MessageBoxResult res;
-            if (application != null && application.Dispatcher != null)
+            application?.Dispatcher?.Invoke(() =>
             {
-                application.Dispatcher.Invoke(() =>
+                res = popup.ShowConnectionTimeoutConfirmation(DisplayName);
+                if (res == MessageBoxResult.Yes)
                 {
-                    res = popup.ShowConnectionTimeoutConfirmation(DisplayName);
-                    if (res == MessageBoxResult.Yes)
+                    if (!HubConnection.Start().Wait(30000))
                     {
-                        if (!HubConnection.Start().Wait(30000))
-                        {
-                            ConnectionRetry();
-                        }
+                        ConnectionRetry();
                     }
-                    else
-                    {
-                        throw new NotConnectedException();
-                    }
-                });
-            }
-
-            
+                }
+                else
+                {
+                    throw new NotConnectedException();
+                }
+            });
         }
 
         bool ValidateServerCertificate(object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslpolicyerrors)
@@ -532,11 +524,7 @@ namespace Dev2.Network
               //  return;
             }
             serverExplorerItem.ServerId = ID;
-            if (ItemAddedMessageAction != null)
-            {
-        
-                ItemAddedMessageAction(serverExplorerItem);
-            }
+            ItemAddedMessageAction?.Invoke(serverExplorerItem);
         }
 
         public Action<IExplorerItem> ItemItemDeletedMessageAction { get; set; }
@@ -544,20 +532,14 @@ namespace Dev2.Network
         {
             var serverExplorerItem = _serializer.Deserialize<ServerExplorerItem>(obj);
             serverExplorerItem.ServerId = ID;
-            if (ItemItemDeletedMessageAction != null)
-            {
-                ItemItemDeletedMessageAction(serverExplorerItem);
-            }
+            ItemItemDeletedMessageAction?.Invoke(serverExplorerItem);
         }
 
         public Action<IExplorerItem> ItemItemUpdatedMessageAction { get; set; }
         void OnItemUpdatedMessageReceived(string obj)
         {
             var serverExplorerItem = _serializer.Deserialize<ServerExplorerItem>(obj);
-            if (ItemItemUpdatedMessageAction != null)
-            {
-                ItemItemUpdatedMessageAction(serverExplorerItem);
-            }
+            ItemItemUpdatedMessageAction?.Invoke(serverExplorerItem);
         }
 
         public Guid ServerID { get; set; }
@@ -579,20 +561,14 @@ namespace Dev2.Network
 
         void RaisePermissionsChanged()
         {
-            if (PermissionsChanged != null)
-            {
-                PermissionsChanged(this, EventArgs.Empty);
-            }
+            PermissionsChanged?.Invoke(this, EventArgs.Empty);
         }
 
         public event EventHandler<List<WindowsGroupPermission>> PermissionsModified;
 
         void RaisePermissionsModified(List<WindowsGroupPermission> args)
         {
-            if (PermissionsModified != null)
-            {
-                PermissionsModified(this, args);
-            }
+            PermissionsModified?.Invoke(this, args);
         }
 
         void UpdateIsAuthorized(bool isAuthorized)
@@ -607,17 +583,14 @@ namespace Dev2.Network
         protected virtual void OnNetworkStateChanged(NetworkStateEventArgs e)
         {
             var handler = NetworkStateChanged;
-            if (handler != null)
-            {
-                handler(this, e);
-            }
+            handler?.Invoke(this, e);
         }
 
         public StringBuilder ExecuteCommand(StringBuilder payload, Guid workspaceId)
         {
             if (payload == null || payload.Length == 0)
             {
-                throw new ArgumentNullException("payload");
+                throw new ArgumentNullException(nameof(payload));
             }
 
             Dev2Logger.Debug("Execute Command Payload [ " + payload + " ]");
@@ -637,10 +610,7 @@ namespace Dev2.Network
             if (invoke.IsFaulted)
             {
                 var popupController = CustomContainer.Get<IPopupController>();
-                if (popupController != null)
-                {
-                    popupController.Show(ErrorResource.ErrorConnectingToServer, "Error connecting",MessageBoxButton.OK, MessageBoxImage.Information, null, false, false, true, false);
-                }
+                popupController?.Show(ErrorResource.ErrorConnectingToServer, "Error connecting",MessageBoxButton.OK, MessageBoxImage.Information, null, false, false, true, false);
                 return result;
             }
             Task<string> fragmentInvoke = EsbProxy.Invoke<string>("FetchExecutePayloadFragment", new FutureReceipt { PartID = 0, RequestID = messageId });
@@ -715,10 +685,7 @@ namespace Dev2.Network
             {
                 Dev2Logger.Error(e);
                 var popupController = CustomContainer.Get<IPopupController>();
-                if (popupController != null)
-                {
-                    popupController.Show(ErrorResource.ErrorConnectingToServer, "Error connecting", MessageBoxButton.OK, MessageBoxImage.Information, null, false, false, true, false);
-                }
+                popupController?.Show(ErrorResource.ErrorConnectingToServer, "Error connecting", MessageBoxButton.OK, MessageBoxImage.Information, null, false, false, true, false);
             }
             return result;
         }
