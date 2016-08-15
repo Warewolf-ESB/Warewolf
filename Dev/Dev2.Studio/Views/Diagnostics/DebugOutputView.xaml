@@ -311,7 +311,7 @@
                                            LabelText="Filter"
                                            HorizontalAlignment="Stretch"
                                            ToolTip="{x:Static languages:Core.DebugOutputSearchToolTip}"
-                                           Text="{Binding Path=SearchText, Delay=300, UpdateSourceTrigger=PropertyChanged}" >
+                                           Text="{Binding Path=SearchText, Delay=450, UpdateSourceTrigger=PropertyChanged}" >
                 <i:Interaction.Behaviors>
                     <core:HelpSetter Text="{x:Static languages:Core.DebugOutputViewFilterSearchHelp}" DataContext="{Binding}" />
                 </i:Interaction.Behaviors>
