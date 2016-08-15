@@ -4,6 +4,7 @@ using System.Text.RegularExpressions;
 using System.Windows.Input;
 using System.Windows.Forms;
 using System.Drawing;
+using System.IO;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Microsoft.VisualStudio.TestTools.UITest.Extension;
@@ -16,13 +17,22 @@ namespace Warewolf.UITests
     public class PluginConnector
     {
         const string PluginSourceName = "UITestingPluginSource";
+        string DLLPath = @"C:\Windows\Microsoft.NET\Framework64\v4.0.30319\mscorlib.dll";
 
         [TestMethod]
         public void BigPluginConnectorUITest()
         {
             Uimap.Click_New_Workflow_Ribbon_Button();
             Uimap.Click_NewPluginSource_Ribbon_Button();
-            Uimap.Type_dll_into_Plugin_Source_Wizard_Assembly_Textbox();
+            if (!File.Exists(DLLPath))
+            {
+                DLLPath = DLLPath.Replace("Framework64", "Framework");
+                if (!File.Exists(DLLPath))
+                {
+                    throw new Exception("No suitable DLL could be found for this test to use.");
+                }
+            }
+            Uimap.Type_dll_into_Plugin_Source_Wizard_Assembly_Textbox(DLLPath);
             Uimap.Save_With_Ribbon_Button_And_Dialog(PluginSourceName);
             Uimap.Click_Close_Plugin_Source_Wizard_Tab_Button();
             Uimap.Drag_DotNet_DLL_Connector_Onto_DesignSurface();
