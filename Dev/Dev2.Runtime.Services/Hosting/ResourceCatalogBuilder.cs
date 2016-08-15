@@ -47,9 +47,11 @@ namespace Dev2.Runtime.Hosting
     {
         public IList<DuplicateResource> DuplicateResources { get; set; }
         private readonly List<IResource> _resources = new List<IResource>();
+        private readonly List<IResource> _dupresources = new List<IResource>();
         private readonly HashSet<Guid> _addedResources = new HashSet<Guid>();
         private readonly IResourceUpgrader _resourceUpgrader;
         private readonly object _addLock = new object();
+        
 
         public ResourceCatalogBuilder(IResourceUpgrader resourceUpgrader)
         {
@@ -66,19 +68,12 @@ namespace Dev2.Runtime.Hosting
 
         public void BuildCatalogFromWorkspace(string workspacePath, params string[] folders)
         {
-            if (string.IsNullOrEmpty(workspacePath))
-            {
+            if(string.IsNullOrEmpty(workspacePath))
                 throw new ArgumentNullException("workspacePath");
-            }
-            if (folders == null)
-            {
+            if(folders == null)
                 throw new ArgumentNullException("folders");
-            }
-
-            if (folders.Length == 0 || !Directory.Exists(workspacePath))
-            {
+            if(folders.Length == 0 || !Directory.Exists(workspacePath))
                 return;
-            }
 
             var streams = new List<ResourceBuilderTO>();
 
@@ -276,7 +271,7 @@ namespace Dev2.Runtime.Hosting
                     stream.FileStream.Close();
                 }
             }
-        }
+        }        
 
         /// <summary>
         /// Adds the resource.
@@ -284,7 +279,7 @@ namespace Dev2.Runtime.Hosting
         /// <param name="res">The res.</param>
         /// <param name="filePath">The file path.</param>
         private void AddResource(IResource res, string filePath)
-        {
+        {            
             if (!_addedResources.Contains(res.ResourceID))
             {
                 _resources.Add(res);
@@ -292,6 +287,7 @@ namespace Dev2.Runtime.Hosting
             }
             else
             {
+                _dupresources.Add(res);
                 var dupRes = _resources.Find(c => c.ResourceID == res.ResourceID);
                 if (dupRes != null)
                 {
@@ -319,7 +315,6 @@ namespace Dev2.Runtime.Hosting
                 FilePath = filePath
                ,
                 FilePath2 = filePath2
-
             });
         }
     }

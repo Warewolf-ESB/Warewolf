@@ -199,6 +199,7 @@
     <Compile Include="ESB\Management\Services\FetchDbSources.cs" />
     <Compile Include="ESB\Management\Services\FetchExchangeSources.cs" />
     <Compile Include="ESB\Management\Services\FetchDropboxSource.cs" />
+    <Compile Include="ESB\Management\Services\FetchExplorerIDuplicates.cs" />
     <Compile Include="ESB\Management\Services\FetchListSysExplorerStructure.cs" />
     <Compile Include="ESB\Management\Services\FetchPerfCounters.cs" />
     <Compile Include="ESB\Management\Services\FetchPluginActions.cs" />

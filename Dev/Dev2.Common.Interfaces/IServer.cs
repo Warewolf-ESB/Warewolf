@@ -43,6 +43,8 @@ namespace Dev2.Common.Interfaces
         IExplorerRepository ProxyLayer { get; }
 
         string GetMinSupportedVersion();
+
+        Task<string> LoadExplorerDuplicates();
     }
 
     public delegate void PermissionsChanged(PermissionsChangedArgs args);

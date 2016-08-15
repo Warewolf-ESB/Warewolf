@@ -10,6 +10,6 @@ namespace Dev2.Runtime.Interfaces
         void LoadWorkspace(Guid workspaceID);
         IList<IResource> LoadWorkspaceViaBuilder(string workspacePath, params string[] folders);
 
-        IList<DuplicateResource> DuplicateResources { get; set; }
+        IList<DuplicateResource> GetDuplicateResources();
     }
 }

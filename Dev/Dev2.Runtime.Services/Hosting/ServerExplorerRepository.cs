@@ -92,10 +92,10 @@ namespace Dev2.Runtime.Hosting
         public IExplorerItem Load(Guid workSpaceId)
         {
             var root = ExplorerItemFactory.CreateRootExplorerItem(EnvironmentVariables.GetWorkspacePath(workSpaceId), workSpaceId);
-            ExplorerItemFactory.ShowDuplicatedResources();
+            ExplorerItemFactory.CreateDuplicatedResources();
             return root;
         }
-
+        
         public IExplorerItem Load(string type, Guid workSpaceId)
         {
             return ExplorerItemFactory.CreateRootExplorerItem(type, EnvironmentVariables.GetWorkspacePath(workSpaceId), workSpaceId);
@@ -207,6 +207,10 @@ namespace Dev2.Runtime.Hosting
             return Find(items, predicate);
         }
 
+        public string LoadDuplicate()
+        {
+            return ExplorerItemFactory.CreateDuplicatedResources();
+        }
 
         public IExplorerItem Find(IExplorerItem item, Guid itemToFind)
         {

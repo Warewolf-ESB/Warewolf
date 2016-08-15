@@ -16,21 +16,30 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading;
+using System.Transactions;
+using System.Xml.Linq;
+using ChinhDo.Transactions;
 using Dev2.Common;
+using Dev2.Common.Common;
+using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Infrastructure.SharedModels;
 using Dev2.Common.Interfaces.Versioning;
 using Dev2.Common.Wrappers;
+using Dev2.Data.ServiceModel;
 using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
 using Dev2.DynamicServices.Objects.Base;
 using Dev2.Runtime.ESB.Management;
 using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.ResourceCatalogImpl;
+using Dev2.Runtime.Security;
 using Dev2.Runtime.ServiceModel.Data;
+using Warewolf.Resource.Errors;
 using Warewolf.ResourceManagement;
 
 namespace Dev2.Runtime.Hosting
@@ -39,6 +48,7 @@ namespace Dev2.Runtime.Hosting
     public class ResourceCatalog : IResourceCatalog, IDisposable
     {
         readonly object _loadLock = new object();
+        ResourceCatalogBuilder _builder { get; set; }
 
         private readonly ResourceCatalogPluginContainer _catalogPluginContainer;
         #region Singleton Instance
@@ -66,7 +76,7 @@ namespace Dev2.Runtime.Hosting
         /// </summary>
         /// <param name="managementServices">The management services to be loaded.</param>
         public ResourceCatalog(IEnumerable<DynamicService> managementServices = null)
-        {
+        {            
             InitializeWorkspaceResources();
             // MUST load management services BEFORE server workspace!!
             IServerVersionRepository versioningRepository = new ServerVersionRepository(new VersionStrategy(), this, new DirectoryWrapper(), EnvironmentVariables.GetWorkspacePath(GlobalConstants.ServerWorkspaceID), new FileWrapper());
@@ -77,7 +87,7 @@ namespace Dev2.Runtime.Hosting
         }
         [ExcludeFromCodeCoverage]//Used by tests only
         public ResourceCatalog(IEnumerable<DynamicService> managementServices, IServerVersionRepository serverVersionRepository)
-        {
+        {            
             InitializeWorkspaceResources();
             // MUST load management services BEFORE server workspace!!
             var versioningRepository = serverVersionRepository;
@@ -152,6 +162,7 @@ namespace Dev2.Runtime.Hosting
 
         List<IResource> LoadWorkspaceImpl(Guid workspaceID)
         {
+            
             var workspacePath = workspaceID == GlobalConstants.ServerWorkspaceID ? EnvironmentVariables.ResourcePath : EnvironmentVariables.GetWorkspacePath(workspaceID);
             IList<IResource> userServices = new List<IResource>();
             if (Directory.Exists(workspacePath))
@@ -246,15 +257,249 @@ namespace Dev2.Runtime.Hosting
         /// <returns></returns>
         public IList<IResource> LoadWorkspaceViaBuilder(string workspacePath, params string[] folders)
         {
-            ResourceCatalogBuilder builder = new ResourceCatalogBuilder();
-
-            builder.BuildCatalogFromWorkspace(workspacePath, folders);
-            DuplicateResources = builder.DuplicateResources;
-            var resources = builder.ResourceList;
+            _builder = new ResourceCatalogBuilder();
+            _builder.BuildCatalogFromWorkspace(workspacePath, folders);
+            var resources = _builder.ResourceList;
             return resources;
         }
 
-        public IList<DuplicateResource> DuplicateResources { get; set; }
+        public IList<DuplicateResource> GetDuplicateResources()
+        {
+            _duplicates = new List<DuplicateResource>();
+            var workspacePath = EnvironmentVariables.ResourcePath;
+            var folders = Directory.EnumerateDirectories(workspacePath, "*", SearchOption.AllDirectories);
+            var subFolders = folders as IList<string> ?? folders.ToList();
+            var allFolders = subFolders.ToList();
+            allFolders.Add(workspacePath);
+            var enumerable = folders as string[] ?? allFolders.ToArray();
+            var resourceUpgrader = ResourceUpgraderFactory.GetUpgrader();
+            if (string.IsNullOrEmpty(workspacePath))
+                throw new ArgumentNullException("workspacePath");
+            if (folders == null)
+                throw new ArgumentNullException("folders");
+            if (enumerable.Length == 0 || !Directory.Exists(workspacePath))
+                return null;
+
+            var streams = new List<ResourceBuilderTO>();            
+            try
+            {
+                foreach (var path in enumerable.Where(f => !string.IsNullOrEmpty(f) && !f.EndsWith("VersionControl")).Select(f => Path.Combine(workspacePath, f)))
+                {
+                    if (!Directory.Exists(path))
+                    {
+                        continue;
+                    }
+
+                    var files = Directory.GetFiles(path, "*.xml");
+                    foreach (var file in files)
+                    {
+
+                        FileAttributes fa = File.GetAttributes(file);
+
+                        if ((fa & FileAttributes.ReadOnly) == FileAttributes.ReadOnly)
+                        {
+                            Dev2Logger.Info("Removed READONLY Flag from [ " + file + " ]");
+                            File.SetAttributes(file, FileAttributes.Normal);
+                        }
+
+                        // Use the FileStream class, which has an option that causes asynchronous I/O to occur at the operating system level.  
+                        // In many cases, this will avoid blocking a ThreadPool thread.  
+                        var sourceStream = new FileStream(file, FileMode.Open, FileAccess.Read, FileShare.ReadWrite, 4096, true);
+                        streams.Add(new ResourceBuilderTO { FilePath = file, FileStream = sourceStream });
+                    }
+                }
+
+                // Use the parallel task library to process file system ;)
+                IList<Type> allTypes = new List<Type>();
+                var connectionTypeName = typeof(Connection).Name;
+                var dropBoxSourceName = typeof(DropBoxSource).Name;
+                var dbType = typeof(DbSource).Name;
+                try
+                {
+                    var resourceBaseType = typeof(IResourceSource);
+                    var assemblies = AppDomain.CurrentDomain.GetAssemblies();
+                    var types = assemblies
+                        .SelectMany(s => s.GetTypes())
+                        .Where(p => resourceBaseType.IsAssignableFrom(p));
+                    allTypes = types as IList<Type> ?? types.ToList();
+                }
+                catch (Exception e)
+                {
+                    Dev2Logger.Error(ErrorResource.ErrorLoadingTypes, e);
+                }
+                streams.ForEach(currentItem =>
+                {
+
+                    XElement xml = null;
+                    try
+                    {
+                        xml = XElement.Load(currentItem.FileStream);
+                    }
+                    catch (Exception e)
+                    {
+                        Dev2Logger.Error("Resource [ " + currentItem.FilePath + " ] caused " + e.Message);
+                    }
+
+                    StringBuilder result = xml.ToStringBuilder();
+
+                    var isValid = xml != null && HostSecurityProvider.Instance.VerifyXml(result);
+                    if (isValid)
+                    {
+                        //TODO: Remove this after V1 is released. All will be updated.
+                        #region old typing to be removed after V1
+                        var typeName = xml.AttributeSafe("Type");
+                        if (typeName == "Unknown")
+                        {
+                            var servertype = xml.AttributeSafe("ResourceType");
+                            if (servertype != null && servertype == dbType)
+                            {
+                                xml.SetAttributeValue("Type", dbType);
+                                typeName = dbType;
+                            }
+                        }
+
+                        if (typeName == "Dev2Server" || typeName == "Server" || typeName == "ServerSource")
+                        {
+                            xml.SetAttributeValue("Type", connectionTypeName);
+                            typeName = connectionTypeName;
+                        }
+
+                        if (typeName == "OauthSource")
+                        {
+                            xml.SetAttributeValue("Type", dropBoxSourceName);
+                            typeName = dropBoxSourceName;
+                        }
+                        #endregion
+
+                        Type type = null;
+                        if (allTypes.Count != 0)
+                        {
+                            type = allTypes.FirstOrDefault(type1 => type1.Name == typeName);
+                        }
+                        Resource resource;
+                        if (type != null)
+                        {
+                            resource = (Resource)Activator.CreateInstance(type, xml);
+                        }
+                        else
+                        {
+                            resource = new Resource(xml);
+                        }
+                        resource.FilePath = currentItem.FilePath;
+                        //2013.08.26: Prevent duplicate unassigned folder in save dialog and studio explorer tree by interpreting 'unassigned' as blank
+                        if (resource.ResourcePath.ToUpper() == "UNASSIGNED")
+                        {
+                            resource.ResourcePath = string.Empty;
+                            // DON'T FORCE A SAVE HERE - EVER!!!!
+                        }
+                        xml = resourceUpgrader.UpgradeResource(xml, Assembly.GetExecutingAssembly().GetName().Version, a =>
+                        {
+
+                            var fileManager = new TxFileManager();
+                            using (TransactionScope tx = new TransactionScope())
+                            {
+                                try
+                                {
+
+                                    StringBuilder updateXml = a.ToStringBuilder();
+                                    var signedXml = HostSecurityProvider.Instance.SignXml(updateXml);
+
+                                    signedXml.WriteToFile(currentItem.FilePath, Encoding.UTF8, fileManager);
+                                    tx.Complete();
+                                }
+                                catch
+                                {
+                                    try
+                                    {
+                                        Transaction.Current.Rollback();
+                                    }
+                                    catch (Exception err)
+                                    {
+                                        Dev2Logger.Error(err);
+                                    }
+                                    throw;
+                                }
+                            }
+
+                        });
+                        if (resource.IsUpgraded)
+                        {
+                            // Must close the source stream first and then add a new target stream 
+                            // otherwise the file will be remain locked
+                            currentItem.FileStream.Close();
+
+                            xml = resource.UpgradeXml(xml, resource);
+
+                            StringBuilder updateXml = xml.ToStringBuilder();
+                            var signedXml = HostSecurityProvider.Instance.SignXml(updateXml);
+                            var fileManager = new TxFileManager();
+                            using (TransactionScope tx = new TransactionScope())
+                            {
+                                try
+                                {
+                                    signedXml.WriteToFile(currentItem.FilePath, Encoding.UTF8, fileManager);
+                                    tx.Complete();
+                                }
+                                catch
+                                {
+                                    Transaction.Current.Rollback();
+                                    throw;
+                                }
+                            }
+                        }
+                        var added = CreateDupResource(resource, currentItem.FilePath);
+                        if(added != null)
+                            _duplicates.Add(added);
+                    }
+                    else
+                    {
+                        Dev2Logger.Debug(string.Format("'{0}' wasn't loaded because it isn't signed or has modified since it was signed.", currentItem.FilePath));
+                    }
+                });
+            }
+            finally
+            {
+                // Close all FileStream instances in a finally block after the tasks are complete. 
+                // If each FileStream was instead created in a using statement, the FileStream 
+                // might be disposed of before the task was complete
+                foreach (var stream in streams)
+                {
+                    stream.FileStream.Close();
+                }
+            }
+            return _duplicates;
+        }
+        List<DuplicateResource> _duplicates;
+        List<IResource> _resources = new List<IResource>();
+        DuplicateResource _dupresource;
+        HashSet<Guid> _addedResources = new HashSet<Guid>();
+
+        private DuplicateResource CreateDupResource(Resource resource, string filePath)
+        {
+            if (!_addedResources.Contains(resource.ResourceID))
+            {
+                _resources.Add(resource);
+                _addedResources.Add(resource.ResourceID);
+            }
+            else
+            {
+                var dupRes = _resources.Find(c => c.ResourceID == resource.ResourceID);
+                if (dupRes != null)
+                {
+                    if (_duplicates.Any(p => p.ResourceName == dupRes.ResourceName))
+                        return null;
+                    _dupresource = new DuplicateResource
+                    {
+                        ResourceName = resource.ResourceName
+                    ,
+                        FilePath = filePath
+                    ,
+                        FilePath2 = dupRes.FilePath
+                    };
+                }
+            }
+            return _dupresource;
+        }
 
         #endregion
 

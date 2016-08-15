@@ -21,6 +21,7 @@ using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Interfaces;
 using Microsoft.Practices.ObjectBuilder2;
 using Microsoft.Practices.Prism.Mvvm;
+
 // ReSharper disable MemberCanBeProtected.Global
 // ReSharper disable MemberCanBePrivate.Global
 // ReSharper disable UnusedAutoPropertyAccessor.Global
@@ -39,8 +40,10 @@ namespace Warewolf.Studio.ViewModels
         bool _fromActivityDrop;
         bool _allowDrag;
 
+        public IPopupController PopupController { get; set; }
+
         protected ExplorerViewModelBase()
-        {
+        {            
             RefreshCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(Refresh);
             ClearSearchTextCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(() => SearchText = "");
             CreateFolderCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(CreateFolder);
@@ -348,7 +351,7 @@ namespace Warewolf.Studio.ViewModels
             if (ConnectControlViewModel != null)
             {
                 ConnectControlViewModel.IsLoading = false;
-            }
+            }            
             var env = Environments.FirstOrDefault(a => a.ResourceId == environmentId);
             env?.SetPropertiesForDialogFromPermissions(env.Server.Permissions[0]);
         }

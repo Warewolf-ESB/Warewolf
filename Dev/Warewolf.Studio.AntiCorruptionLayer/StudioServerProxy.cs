@@ -49,6 +49,12 @@ namespace Warewolf.Studio.AntiCorruptionLayer
             ExplorerItems = explorerItems;
             return explorerItems;
         }
+        public Task<string> LoadExplorerDuplicates()
+        {
+            var explorerItems = QueryManagerProxy.LoadDuplicates();
+            return explorerItems;
+        }
+
         public IAdminManager AdminManagerProxy { get; set; }
         public IExplorerItem ExplorerItems { get; set; }
         public Dev2.Common.Interfaces.ServerProxyLayer.IVersionManager VersionManager { get; set; }
