@@ -92,7 +92,7 @@ namespace Dev2.Runtime.Hosting
         public IExplorerItem Load(Guid workSpaceId)
         {
             var root = ExplorerItemFactory.CreateRootExplorerItem(EnvironmentVariables.GetWorkspacePath(workSpaceId), workSpaceId);
-            ExplorerItemFactory.CreateDuplicatedResources();
+            ExplorerItemFactory.GetDuplicatedResourcesPaths();
             return root;
         }
         
@@ -209,7 +209,7 @@ namespace Dev2.Runtime.Hosting
 
         public string LoadDuplicate()
         {
-            return ExplorerItemFactory.CreateDuplicatedResources();
+            return ExplorerItemFactory.GetDuplicatedResourcesPaths();
         }
 
         public IExplorerItem Find(IExplorerItem item, Guid itemToFind)
