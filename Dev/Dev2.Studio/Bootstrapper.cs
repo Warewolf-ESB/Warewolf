@@ -29,6 +29,7 @@ using Dev2.Studio.Core.Services;
 using Dev2.Studio.Core.Services.System;
 using Dev2.Studio.ViewModels;
 using Dev2.Threading;
+using Warewolf.Studio.ViewModels;
 
 namespace Dev2
 {
@@ -38,8 +39,20 @@ namespace Dev2
         {
             base.PrepareApplication();
             CustomContainer.LoadedTypes = new List<Type>();
+            AddRegionTypes();
             CheckPath();
             FileHelper.MigrateTempData(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData));
+        }
+
+        private void AddRegionTypes()
+        {
+            CustomContainer.AddToLoadedTypes(typeof(ManagePluginServiceModel));
+            CustomContainer.AddToLoadedTypes(typeof(ManageComPluginServiceModel));
+            CustomContainer.AddToLoadedTypes(typeof(ManageDbServiceModel));
+            CustomContainer.AddToLoadedTypes(typeof(ManageWebServiceModel));
+            CustomContainer.AddToLoadedTypes(typeof(ManageWcfServiceModel));
+            CustomContainer.AddToLoadedTypes(typeof(ExchangeServiceModel));
+            CustomContainer.AddToLoadedTypes(typeof(ManageRabbitMQSourceModel));
         }
 
         protected override IEnumerable<Assembly> SelectAssemblies()

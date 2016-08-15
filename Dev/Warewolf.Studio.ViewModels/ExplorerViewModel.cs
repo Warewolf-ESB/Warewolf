@@ -351,7 +351,10 @@ namespace Warewolf.Studio.ViewModels
                 ConnectControlViewModel.IsLoading = false;
             }
             var env = Environments.FirstOrDefault(a => a.ResourceId == environmentId);
-            env?.SetPropertiesForDialogFromPermissions(env.Server.Permissions[0]);
+            if (env!=null && env.IsConnected)
+            {
+                env.SetPropertiesForDialogFromPermissions(env.Server.Permissions[0]);
+            }
         }
 
         public bool IsDeploy { get; set; }
@@ -375,15 +378,13 @@ namespace Warewolf.Studio.ViewModels
             {
                 IPopupController controller = CustomContainer.Get<IPopupController>();
                 ServerDisconnected(_, server);
-                if (!ShowServerDownError && !ExpectedStudioClose)
+                if (!ShowServerDownError)
                 {
                     controller.ShowServerNotConnected(server.DisplayName);
                     ShowServerDownError = true;
                 }
             });
         }
-
-        public bool ExpectedStudioClose { get; set; }
 
         public bool ShowServerDownError { get; set; }
 

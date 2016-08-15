@@ -654,7 +654,7 @@ namespace Warewolf.Studio.ViewModels
                 IsConnecting = true;
                 IsConnected = false;
                 Server.Connect();
-                IsConnected = true;
+                IsConnected = Server.IsConnected;
                 IsConnecting = false;
                 return IsConnected;
             }

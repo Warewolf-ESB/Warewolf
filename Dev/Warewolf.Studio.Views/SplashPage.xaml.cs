@@ -40,13 +40,7 @@ namespace Warewolf.Studio.Views
                 PopupViewManageEffects.RemoveBlackOutEffect(_blackoutGrid);
                 Close();
             }
-            else
-            {
-                Dispatcher.InvokeShutdown();
-            }
         }
-
-        
 
         public void Show(bool isDialog)
         {
