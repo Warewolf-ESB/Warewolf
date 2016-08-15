@@ -171,7 +171,6 @@ namespace Dev2.Studio
                 XmlConfigurator.ConfigureAndWatch(new FileInfo(settingsConfigFile));
                 _appExceptionHandler = new AppExceptionHandler(this, _mainViewModel);
             }
-            //MainWindow.Show();
         }
 
 
