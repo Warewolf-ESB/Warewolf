@@ -260,7 +260,8 @@ namespace Dev2.TaskScheduler.Wrappers.Test
             //---------------Assert Precondition----------------
             Assert.IsNotNull(factory);
             //---------------Execute Test ----------------------
-            var taskSettings = factory.CreateTaskSettings(It.IsAny<TaskSettings>());
+            var taskService = new TaskService().NewTask();            
+            var taskSettings = factory.CreateTaskSettings(taskService.Settings);
             //---------------Test Result -----------------------
             Assert.IsNotNull(taskSettings);
         }
