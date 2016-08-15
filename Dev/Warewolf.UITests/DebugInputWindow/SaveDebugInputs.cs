@@ -13,12 +13,12 @@ using Keyboard = Microsoft.VisualStudio.TestTools.UITesting.Keyboard;
 namespace Warewolf.UITests.DebugInputWindow
 {
     [CodedUITest]
-    public class DebuggingHelloWorld
+    public class SaveDebugInputs
     {
         private const string InputDataText = "Coded UI Test";
 
         [TestMethod]
-        public void DebuggingHelloWorldUITest()
+        public void SaveDebugInputsUITest()
         {
             Uimap.Enter_Text_Into_Explorer_Filter("Hello World");
             Uimap.DoubleClick_Explorer_Localhost_First_Item();

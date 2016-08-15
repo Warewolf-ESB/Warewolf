@@ -16,6 +16,7 @@ using System.IO;
 using System.Windows.Input;
 using System.Text.RegularExpressions;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using System.Windows.Forms.VisualStyles;
@@ -429,7 +430,7 @@ namespace Warewolf.UITests
             }
         }
 
-        private void TryCloseWorkflowTab()
+        public void TryCloseWorkflowTab()
         {
             try
             {
@@ -448,7 +449,7 @@ namespace Warewolf.UITests
             }
         }
 
-        private void TryCloseSettingsTab()
+        public void TryCloseSettingsTab()
         {
             try
             {
@@ -752,6 +753,68 @@ namespace Warewolf.UITests
         {
             MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.PluginSourceWizardTab.WorkSurfaceContext.AssemblyNameTextbox.Text = text;
             Assert.IsTrue(MainStudioWindow.SideMenuBar.SaveButton.Enabled, "Save button is not enabled after DLL has been selected in plugin source wizard.");
+        }
+
+        public void Enter_GroupName_Into_Settings_Dialog_Resource_Permissions_Row1_Windows_Group_Textbox(string GroupName)
+        {
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1.WindowsGroupCell.AddWindowsGroupsEdit.Text = GroupName;
+            Assert.AreEqual(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1.WindowsGroupCell.AddWindowsGroupsEdit.Text, "Settings security tab resource permissions row 1 windows gorup textbox text does not equal Public.");
+        }
+
+        public void SetResourcePermissions(string ResourceName, string WindowsGroupName, bool setView = false, bool setExecute = false, bool setContribute = false)
+        {
+            Click_Settings_Ribbon_Button();
+            Click_Settings_Resource_Permissions_Row1_Add_Resource_Button();
+            Enter_ServiceName_Into_Service_Picker_Dialog(ResourceName);
+            Click_Service_Picker_Dialog_OK();
+            Enter_GroupName_Into_Settings_Dialog_Resource_Permissions_Row1_Windows_Group_Textbox(WindowsGroupName);
+            if (setView)
+            {
+                Click_Settings_Security_Tab_Resource_Permissions_Row1_View_Checkbox();
+            }
+            if (setExecute)
+            {
+                Click_Settings_Security_Tab_ResourcePermissions_Row1_Execute_Checkbox();
+            }
+            if (setContribute)
+            {
+                Click_Settings_Security_Tab_Resource_Permissions_Row1_Contribute_Checkbox();
+            }
+            Click_Save_Ribbon_Button_With_No_Save_Dialog();
+        }
+
+        public void CreateRemoteServerSource(string ServerSourceName, string ServerAddress, bool PublicAuth = false)
+        {
+            Click_Server_Source_Wizard_Address_Protocol_Dropdown();
+            Select_http_From_Server_Source_Wizard_Address_Protocol_Dropdown();
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.ServerSourceWizardTab.WorkSurfaceContext
+                .NewServerSourceWizard.AddressComboBox.AddressEditBox.Text = ServerAddress;
+            if (ServerAddress == "tst-ci-")
+            {
+                Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.ServerSourceWizardTab.WorkSurfaceContext.NewServerSourceWizard.AddressComboBox.TSTCIREMOTE.Exists, "TSTCIREMOTE does not exist in server source wizard drop down list after starting by typing tst-ci-.");
+                Select_TSTCIREMOTE_From_Server_Source_Wizard_Dropdownlist();
+            }
+            if (PublicAuth)
+            {
+                MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.ServerSourceWizardTab.WorkSurfaceContext.PublicRadioButton.Selected = true;
+            }
+            Click_Server_Source_Wizard_Test_Connection_Button();
+            WaitForSpinner(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.ServerSourceWizardTab.WorkSurfaceContext.ErrorText.Spinner);
+            Save_With_Ribbon_Button_And_Dialog(ServerSourceName);
+            Click_Close_Server_Source_Wizard_Tab_Button();
+        }
+
+        public void Select_Deploy_First_Source_Item()
+        {
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DeployTab.FirstExplorerTreeItem.Selected = true;
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DeployTab.WorkSurfaceContext.DeployButton.Enabled,
+                "Deploy button is not enable after valid server and resource are selected.");
+        }
+
+        public void Click_Deploy_Tab_Deploy_Button()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DeployTab.WorkSurfaceContext.DeployButton);
+            WaitForSpinner(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DeployTab.WorkSurfaceContext.DeployButton.Spinner);
         }
     }
 }
