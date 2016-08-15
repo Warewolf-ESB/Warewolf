@@ -754,11 +754,21 @@ namespace Dev2.Studio.ViewModels
         public bool IsActiveEnvironmentConnected()
         {
             if (ActiveEnvironment == null)
+
             {
                 return false;
             }
-            
-            return ActiveEnvironment != null && ActiveEnvironment.IsConnected && ActiveEnvironment.CanStudioExecute;
+
+            var isActiveEnvironmentConnected = ActiveEnvironment != null && ActiveEnvironment.IsConnected && ActiveEnvironment.CanStudioExecute;
+            if (ActiveEnvironment.IsConnected)
+            {
+                if (ToolboxViewModel.BackedUpTools.Count == 0)
+                {
+                    ToolboxViewModel.BuildToolsList();
+                }
+            }
+            ToolboxViewModel.IsVisible = isActiveEnvironmentConnected;
+            return isActiveEnvironmentConnected;
         }
 
         public void NewEmailSource(string resourcePath)

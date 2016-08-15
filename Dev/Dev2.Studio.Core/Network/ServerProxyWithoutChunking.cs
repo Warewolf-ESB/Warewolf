@@ -398,7 +398,10 @@ namespace Dev2.Network
 
         void OnReconnectHeartbeatElapsed(object sender, ElapsedEventArgs args)
         {
-            Connect(ID);
+            if (!IsConnecting)
+            {
+                Connect(ID);
+            }
             if (IsConnected)
             {
                 StopReconnectHeartbeat();

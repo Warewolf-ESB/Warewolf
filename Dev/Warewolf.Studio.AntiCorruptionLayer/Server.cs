@@ -177,7 +177,11 @@ namespace Warewolf.Studio.AntiCorruptionLayer
 
         public IList<IToolDescriptor> LoadTools()
         {
-            return _tools ?? (_tools = ProxyLayer.QueryManagerProxy.FetchTools());
+            if (_tools == null || _tools.Count == 0)
+            {
+                _tools = ProxyLayer.QueryManagerProxy.FetchTools();
+            }
+            return _tools;
         }
 
         public IExplorerRepository ExplorerRepository => ProxyLayer;

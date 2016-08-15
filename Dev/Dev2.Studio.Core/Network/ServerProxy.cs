@@ -158,7 +158,6 @@ namespace Dev2.Network
             catch (Exception err)
             {
                 Dev2Logger.Error(err);
-                throw;
             }
         }
         

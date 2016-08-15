@@ -11,6 +11,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Reflection;
 
 namespace Dev2
 {
@@ -65,6 +66,14 @@ namespace Dev2
             if(RegisterdTypes.ContainsKey(typeof(T)))
             {
                 RegisterdTypes.Remove(typeof(T));
+            }
+        }
+
+        public static void AddToLoadedTypes(Type type)
+        {
+            if (!LoadedTypes.Contains(type))
+            {
+                LoadedTypes.Add(type);
             }
         }
 
