@@ -266,6 +266,8 @@ namespace Dev2.Runtime.Hosting
         public IList<DuplicateResource> GetDuplicateResources()
         {
             _duplicates = new List<DuplicateResource>();
+            _resources = new List<IResource>();
+            _addedResources = new HashSet<Guid>();
             var workspacePath = EnvironmentVariables.ResourcePath;
             var folders = Directory.EnumerateDirectories(workspacePath, "*", SearchOption.AllDirectories);
             var subFolders = folders as IList<string> ?? folders.ToList();
@@ -469,13 +471,14 @@ namespace Dev2.Runtime.Hosting
             }
             return _duplicates;
         }
-        List<DuplicateResource> _duplicates;
+        List<DuplicateResource> _duplicates;// = new List<DuplicateResource>();
         List<IResource> _resources = new List<IResource>();
         DuplicateResource _dupresource;
         HashSet<Guid> _addedResources = new HashSet<Guid>();
 
         private DuplicateResource CreateDupResource(Resource resource, string filePath)
         {
+            _dupresource = null;
             if (!_addedResources.Contains(resource.ResourceID))
             {
                 _resources.Add(resource);

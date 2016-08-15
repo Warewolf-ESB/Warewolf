@@ -36,7 +36,7 @@ namespace Dev2.Runtime.Hosting
             Directory = directory;
         }
 
-        public string CreateDuplicatedResources()
+        public string GetDuplicatedResourcesPaths()
         {
             var stringBuilder = new StringBuilder();
             var resourceList = Catalogue.GetDuplicateResources();
