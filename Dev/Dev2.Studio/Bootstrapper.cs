@@ -64,7 +64,6 @@ namespace Dev2
         protected override void Configure()
         {
             CustomContainer.Register<IWindowManager>(new WindowManager());
-            //CustomContainer.Register<IDockAwareWindowManager>(new XamDockManagerDockAwareWindowManager());
             CustomContainer.Register<ISystemInfoService>(new SystemInfoService());
             CustomContainer.Register<IPopupController>(new PopupController());
             var mainViewModel = new MainViewModel();
@@ -123,12 +122,6 @@ namespace Dev2
             }
             // ReSharper restore HeuristicUnreachableCode
         }
-//
-//        protected override void StartRuntime()
-//        {
-//            //Dev2SplashScreen.Show();
-//            base.StartRuntime();
-//        }
 
         #region Overrides of BootstrapperBase
 
@@ -185,9 +178,10 @@ namespace Dev2
             var popup = new PopupController
                 {
                     Header = "Load Error",
-                    Description = String.Format(@"The Design Studio could not be launched from a network location.
-                                                    {0}Please install the application on your local machine",
-                                                Environment.NewLine),
+                    Description = 
+                        $@"The Design Studio could not be launched from a network location.
+                                                    {Environment
+                            .NewLine}Please install the application on your local machine",
                     Buttons = MessageBoxButton.OK
                 };
 
