@@ -344,7 +344,6 @@ namespace Dev2
             {
                 SetWorkingDirectory();
                 LoadHostSecurityProvider();
-                PreloadReferences();
                 InitializeServer();
                 LoadSettingsProvider();
                 ConfigureLoggging();
@@ -515,39 +514,6 @@ namespace Dev2
                 {
                     Fail("Configuration error, " + sectionName);
                     result = false;
-                }
-            }
-        }
-
-        /// <summary>
-        /// Ensures all external dependencies have been loaded, then loads all referenced assemblies by the 
-        /// currently executing assembly, and recursively loads each of the referenced assemblies of the 
-        /// initial dependency set until all dependencies have been loaded.
-        /// </summary>
-        void PreloadReferences()
-        {
-            Write("Preloading assemblies...  ");
-            Assembly currentAsm = typeof(ServerLifecycleManager).Assembly;
-            HashSet<string> inspected = new HashSet<string> { currentAsm.GetName().ToString(), "GroupControls" };
-            LoadReferences(currentAsm, inspected);
-            WriteLine("done.");
-        }
-
-        /// <summary>
-        /// Loads the assemblies that are referenced by the input assembly, but only if that assembly has not
-        /// already been inspected.
-        /// </summary>
-        void LoadReferences(Assembly asm, HashSet<string> inspected)
-        {
-            AssemblyName[] allReferences = asm.GetReferencedAssemblies();
-
-            foreach(AssemblyName toLoad in allReferences)
-            {
-                if(!inspected.Contains(toLoad.Name))
-                {
-                    inspected.Add(toLoad.Name);
-                    Assembly loaded = AppDomain.CurrentDomain.Load(toLoad);
-                    LoadReferences(loaded, inspected);
                 }
             }
         }
@@ -794,6 +760,7 @@ namespace Dev2
             ValidateResourceFolder();
             Write("Loading resource catalog...  ");
             var catalog = ResourceCatalog.Instance;
+            ServerExplorerRepository.Instance.Load(GlobalConstants.ServerWorkspaceID);
             WriteLine("done.");
             return catalog;
         }
