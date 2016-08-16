@@ -63,7 +63,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 {
                     ResourceCatalog.Instance.Reload();
                 }
-                var item = ServerExplorerRepo.Load(GlobalConstants.ServerWorkspaceID);
+                var item = ServerExplorerRepo.Load(GlobalConstants.ServerWorkspaceID, reloadResourceCatalogue);
                 CompressedExecuteMessage message = new CompressedExecuteMessage();
                 message.SetMessage(serializer.Serialize(item));
                 return serializer.SerializeToBuilder(message);

@@ -69,14 +69,14 @@ namespace Dev2.Tests.Runtime.Services
             ServerExplorerItem item = new ServerExplorerItem("a", Guid.NewGuid(), "Folder", null, Permissions.DeployFrom, "", "", "");
             var repo = new Mock<IExplorerServerResourceRepository>();
             var ws = new Mock<IWorkspace>();
-            repo.Setup(a => a.Load(It.IsAny<Guid>())).Returns(item).Verifiable();
+            repo.Setup(a => a.Load(It.IsAny<Guid>(),true)).Returns(item).Verifiable();
             var serializer = new Dev2JsonSerializer();
             ws.Setup(a => a.ID).Returns(Guid.Empty);
             fetchExplorerItems.ServerExplorerRepo = repo.Object;
             //------------Execute Test---------------------------
             var ax = fetchExplorerItems.Execute(new Dictionary<string, StringBuilder>(), ws.Object);
             //------------Assert Results-------------------------
-            repo.Verify(a => a.Load(It.IsAny<Guid>()));
+            repo.Verify(a => a.Load(It.IsAny<Guid>(), true));
             var message = serializer.Deserialize<CompressedExecuteMessage>(ax);
             Assert.AreEqual(serializer.Deserialize<IExplorerItem>(message.GetDecompressedMessage()).ResourceId, item.ResourceId);
         }
