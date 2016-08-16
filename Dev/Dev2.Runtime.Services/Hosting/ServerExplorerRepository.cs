@@ -36,7 +36,8 @@ namespace Dev2.Runtime.Hosting
         public static IExplorerServerResourceRepository Instance { get; private set; }
        
         bool _isDirty;
-        
+        private IExplorerItem _root;
+
         public bool IsDirty
         {
             get
@@ -89,11 +90,14 @@ namespace Dev2.Runtime.Hosting
         public IResourceCatalog ResourceCatalogue { get; private set; }
         public IServerVersionRepository VersionRepository { get; set; }
 
-        public IExplorerItem Load(Guid workSpaceId)
+        public IExplorerItem Load(Guid workSpaceId,bool reload=false)
         {
-
-            var root = ExplorerItemFactory.CreateRootExplorerItem(EnvironmentVariables.GetWorkspacePath(workSpaceId), workSpaceId);
-            return root;
+            if (_root == null || reload)
+            {
+                _root = ExplorerItemFactory.CreateRootExplorerItem(EnvironmentVariables.GetWorkspacePath(workSpaceId),
+                    workSpaceId);
+            }
+            return _root;
         }
 
         public IExplorerItem Load(string type, Guid workSpaceId)
