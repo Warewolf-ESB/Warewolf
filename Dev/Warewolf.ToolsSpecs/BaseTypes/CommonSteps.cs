@@ -412,10 +412,12 @@ namespace Dev2.Activities.Specs.BaseTypes
                 //Call the service and get the result
                 WebClient webClient = new WebClient
                 {
+                    UseDefaultCredentials = true,
                     Credentials = CredentialCache.DefaultCredentials
                 };
                 webCallResult = webClient.DownloadString(webservice);
-            } while (webCallResult.Contains("<FatalError>") && retryCount < 10);
+            }
+            while (webCallResult.Contains("<FatalError>") && retryCount < 10);
             StringAssert.Contains(webCallResult, errorValue);
         }
         private static WebSource CreateTestWebSource()
