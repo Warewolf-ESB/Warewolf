@@ -815,68 +815,7 @@ namespace Warewolf.Studio.ViewModels
         }
 
         // ReSharper disable ParameterTypeCanBeEnumerable.Local
-#pragma warning disable 1998
-
-        public async Task<ObservableCollection<IExplorerItemViewModel>> CreateExplorerItems(IList<IExplorerItem> explorerItems, IServer server, IExplorerTreeItem parent, bool isDialog = false, bool isDeploy = false)
-#pragma warning restore 1998
-        // ReSharper restore ParameterTypeCanBeEnumerable.Local
-        {
-            if (explorerItems == null) return null;
-            var explorerItemModels = new ObservableCollection<IExplorerItemViewModel>();
-            if (parent != null)
-            {
-                parent.Children.Clear();
-                parent.Children = new ObservableCollection<IExplorerItemViewModel>();
-
-            }
-            // ReSharper disable once LoopCanBeConvertedToQuery
-            foreach (var explorerItem in explorerItems)
-            {
-                var itemCreated = new ExplorerItemViewModel(server, parent, a => { SelectAction(a); }, _shellViewModel, _controller)
-                {
-                    ResourceName = explorerItem.DisplayName,
-                    ResourceId = explorerItem.ResourceId,
-                    ResourceType = explorerItem.ResourceType,
-                    ResourcePath = explorerItem.ResourcePath,
-                    AllowResourceCheck = isDeploy,
-                    ShowContextMenu = !isDeploy,
-                    IsService =  explorerItem.IsService,
-                    IsFolder = explorerItem.IsFolder,
-                    IsSource = explorerItem.IsSource,
-                    IsReservedService = explorerItem.IsReservedService,
-                    IsResourceVersion = explorerItem.IsResourceVersion,
-                    IsServer = explorerItem.IsServer
-                };
-                if (isDeploy)
-                {
-                    itemCreated.CanExecute = false;
-                    itemCreated.CanEdit = false;
-                    itemCreated.CanView = false;
-                }
-                itemCreated.SetPermissions(server.Permissions, isDeploy);
-                if (isDialog)
-                {
-                    SetPropertiesForDialog(itemCreated);
-                }
-
-                CreateExplorerItemsSync(explorerItem.Children, server, itemCreated, isDialog, isDeploy);
-                explorerItemModels.Add(itemCreated);
-            }
-            if (parent != null)
-            {
-                var col = (AsyncObservableCollection<IExplorerItemViewModel>) parent.Children;
-                col.AddRange(explorerItemModels);
-                parent.Children = col;
-            }
-            if (isDeploy)
-            {
-                ShowContextMenu = false;
-            }
-            return null;
-        }
-
-        // ReSharper disable ParameterTypeCanBeEnumerable.Local
-        private void CreateExplorerItemsSync(IList<IExplorerItem> explorerItems, IServer server, IExplorerTreeItem parent, bool isDialog = false, bool isDeploy = false)
+        public void CreateExplorerItemsSync(IList<IExplorerItem> explorerItems, IServer server, IExplorerTreeItem parent, bool isDialog = false, bool isDeploy = false)
         // ReSharper restore ParameterTypeCanBeEnumerable.Local
         {
             if (explorerItems == null) return;
