@@ -76,7 +76,7 @@
                                               ClearSearchToolTip="{Binding ExplorerClearSearchTooltip}"
                                               LabelText="Filter"
                                               Style="{StaticResource SearchTextboxStyle}"
-                                              Text="{Binding SearchText, Delay=300, UpdateSourceTrigger=PropertyChanged}"
+                                              Text="{Binding SearchText, Delay=450, UpdateSourceTrigger=PropertyChanged}"
                                               ToolTip="{Binding SearchToolTip}">
                     <i:Interaction.Behaviors>
                         <core:HelpSetter DataContext="{Binding}" Text="{x:Static languages:Core.ExplorerViewFilterSearchHelp}" />

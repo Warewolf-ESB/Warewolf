@@ -13,6 +13,8 @@ namespace Warewolf.UITests.Tools.Control_Flow
         {
             Uimap.Drag_Toolbox_Switch_Onto_DesignSurface();
             Uimap.Click_Switch_Dialog_Done_Button();
+            Uimap.First_Drag_Toolbox_Comment_Onto_Switch_Left_Arm_On_DesignSurface();
+            Uimap.Then_Drag_Toolbox_Comment_Onto_Switch_Right_Arm_On_DesignSurface();
         }
 
         #region Additional test attributes

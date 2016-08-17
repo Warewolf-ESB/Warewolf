@@ -53,11 +53,13 @@ namespace Dev2.Common.Interfaces.Studio.Controller
         MessageBoxResult ShowDeployServerMinVersionConflict(string sourceServerVersion, string destinationServerVersion);
 
         MessageBoxResult ShowServerNotConnected(string server);
+
         IPopupMessage GetDeleteConfirmation(string nameOfItemBeingDeleted);
         IPopupMessage GetDuplicateMessage(string name);
 
         MessageBoxResult ShowNoInputsSelectedWhenClickLink();
 
         MessageBoxResult ShowRollbackVersionMessage(string displayName);
+        MessageBoxResult ShowResourcesConflict(string resourceDuplicates);
     }
 }

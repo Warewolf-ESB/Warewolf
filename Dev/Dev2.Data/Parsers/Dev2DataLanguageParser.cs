@@ -990,9 +990,7 @@ namespace Dev2.Data.Parsers
             bool addAll = !(payload.Parent != null && payload.Parent.IsRecordSet);
 
             // opened region, return the entire list
-            refParts
-                .ToList()
-                .ForEach(part =>
+            refParts.ToList().ForEach(part =>
                 {
                     // only add children of recordset if parent not a region within a recordset
 
@@ -1033,7 +1031,7 @@ namespace Dev2.Data.Parsers
                         }
                     }
                 });
-        }
+        }        
 
         private bool ValidateName(string rawSearch, string displayString, IList<IIntellisenseResult> result, out IList<IIntellisenseResult> intellisenseResults)
             => _parserHelper.ValidateName(rawSearch, displayString, result, out intellisenseResults);

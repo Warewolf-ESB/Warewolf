@@ -48,5 +48,7 @@ namespace Dev2.Common.Interfaces
         IList<IWcfServerSource> FetchWcfSources();
         IList<IWcfAction> WcfActions(IWcfServerSource source);
         Task<List<IFileResource>> FetchResourceFileTree();
+
+        Task<string> LoadDuplicates();
     }
 }

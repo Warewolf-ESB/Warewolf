@@ -41,7 +41,7 @@ namespace Dev2.Studio.Controller
         {
             return Show(popupMessage.Description, popupMessage.Header, popupMessage.Buttons, popupMessage.Image, popupMessage.DontShowAgainKey, popupMessage.IsDependenciesButtonVisible, popupMessage.IsError, popupMessage.IsInfo, popupMessage.IsQuestion);
         }
-        
+
         public MessageBoxResult Show()
         {
             return ShowDev2MessageBox(Description, Header, Buttons, ImageType, DontShowAgainKey, IsDependenciesButtonVisible, IsError, IsInfo, IsQuestion);
@@ -79,7 +79,7 @@ namespace Dev2.Studio.Controller
         public MessageBoxResult ShowRollbackVersionMessage(string displayName)
         {
             Header = Warewolf.Studio.Resources.Languages.Core.RollbackHeader;
-            var description = String.Format(Warewolf.Studio.Resources.Languages.Core.RollbackMessage,displayName,Environment.NewLine);
+            var description = String.Format(Warewolf.Studio.Resources.Languages.Core.RollbackMessage, displayName, Environment.NewLine);
             Description = description;
             Buttons = MessageBoxButton.YesNo;
             ImageType = MessageBoxImage.Warning;
@@ -92,7 +92,7 @@ namespace Dev2.Studio.Controller
 
 
         public MessageBoxResult ShowNoInputsSelectedWhenClickLink()
-        {         
+        {
             Header = Warewolf.Studio.Resources.Languages.Core.VariablesInput_Information_Title;
             var description = string.Format(Warewolf.Studio.Resources.Languages.Core.VariablesInput_Information, Environment.NewLine);
             Description = description;
@@ -106,11 +106,23 @@ namespace Dev2.Studio.Controller
             return Show();
         }
 
+        public MessageBoxResult ShowResourcesConflict(string duplicateResource)
+        {
+            Buttons = MessageBoxButton.OK;
+            Header = "Duplicated Resources";
+            Description = $"{duplicateResource} \nPlease resolve the files on File Explorer";
+            ImageType = MessageBoxImage.Error;
+            IsDependenciesButtonVisible = false;
+            IsInfo = false;
+            IsError = true;
+            IsQuestion = false;
+            return Show();
+        }
         public MessageBoxResult ShowServerNotConnected(string server)
         {
             Buttons = MessageBoxButton.OK;
             Header = "Server is not connected";
-            Description = "The server "+ server +" is unreachable and will be removed from your explorer tab. Please reconnect to save any unsaved work.";
+            Description = "The server " + server + " is unreachable and will be removed from your explorer tab. Please reconnect to save any unsaved work.";
             ImageType = MessageBoxImage.Error;
             IsDependenciesButtonVisible = false;
             IsInfo = false;
@@ -135,7 +147,7 @@ namespace Dev2.Studio.Controller
         {
             Buttons = MessageBoxButton.OK;
             Header = "We’ve got your feedback!";
-            Description = "Thank you for taking the time to log it. Follow the issue " + Environment.NewLine + 
+            Description = "Thank you for taking the time to log it. Follow the issue " + Environment.NewLine +
                 "in the Community to keep updated on the progress.";
             ImageType = MessageBoxImage.Information;
             IsDependenciesButtonVisible = false;
@@ -148,9 +160,9 @@ namespace Dev2.Studio.Controller
         {
             Buttons = MessageBoxButton.OK;
             Header = "Scheduler load error";
-            Description = "Unable to retrieve tasks." + Environment.NewLine + 
-                          "ERROR: " + errorMessage + ". " + Environment.NewLine + 
-                          "Please check that there a no corrupt files."  + Environment.NewLine + 
+            Description = "Unable to retrieve tasks." + Environment.NewLine +
+                          "ERROR: " + errorMessage + ". " + Environment.NewLine +
+                          "Please check that there a no corrupt files." + Environment.NewLine +
                          @"C:\Windows\System32\Tasks\Warewolf";
             ImageType = MessageBoxImage.Error;
             IsDependenciesButtonVisible = false;
@@ -212,7 +224,7 @@ namespace Dev2.Studio.Controller
             Description = "There is a conflict between the two versions in this deploy." +
                 Environment.NewLine + "Source Server Version: " + sourceServerVersion +
                 Environment.NewLine + "Destination Server Version: " + destinationServerVersion +
-                Environment.NewLine + "Click OK to continue or Cancel to return." + 
+                Environment.NewLine + "Click OK to continue or Cancel to return." +
                 Environment.NewLine +
                           "--------------------------------------------------------------------------------" +
                               Environment.NewLine +
@@ -252,9 +264,9 @@ namespace Dev2.Studio.Controller
         {
             Buttons = MessageBoxButton.OK;
             Header = "Server Version conflict";
-            Description = "There is a version conflict with the current selected server." + Environment.NewLine + 
+            Description = "There is a version conflict with the current selected server." + Environment.NewLine +
                 Environment.NewLine + "Selected Server Version: " + selectedServerVersion +
-                Environment.NewLine + "Current Server Version: " + currentServerVersion + Environment.NewLine + 
+                Environment.NewLine + "Current Server Version: " + currentServerVersion + Environment.NewLine +
                 Environment.NewLine + "Please make sure that the server you are trying to connect to has the latest version.";
             ImageType = MessageBoxImage.Error;
             IsDependenciesButtonVisible = false;

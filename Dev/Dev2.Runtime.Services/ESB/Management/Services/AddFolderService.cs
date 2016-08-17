@@ -42,8 +42,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             if(itemToAdd.ResourcePath.ToLower().StartsWith("root\\"))
             {
                 itemToAdd.ResourcePath = itemToAdd.ResourcePath.Remove(0, 5);
-            }
-
+            }            
             var item = ServerExplorerRepo.AddItem(itemToAdd, theWorkspace.ID);
             return serializer.SerializeToBuilder(item);
         }
