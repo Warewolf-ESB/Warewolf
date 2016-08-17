@@ -138,69 +138,6 @@
 			</customControls:SearchTextBox>
 		</Grid>
 
-
-			<ListBox Name="ToolListBox" 
-				 ItemTemplate="{StaticResource ToolDataTemplate}"  
-				 Grid.Row="1" 
-				 Margin="{StaticResource ControlBorderTop}"
-				 Grid.Column="0" 
-				 ItemsSource="{Binding Source={StaticResource ToolViewSource}}">
-				<ListBox.Style >
-					<Style TargetType="ListBox" BasedOn="{StaticResource ListBoxToolboxStyle}">
-						<Setter Property="Visibility" Value="Collapsed"/>
-						<Style.Triggers>
-							<DataTrigger Binding="{Binding ElementName=BackedupToolListBox, Path=Visibility}" Value="Collapsed">
-								<Setter Property="Visibility" Value="Visible"/>
-							</DataTrigger>
-						</Style.Triggers>
-					</Style>
-				</ListBox.Style>
-				<ListBox.ItemsPanel>
-					<ItemsPanelTemplate >
-						<WrapPanel Orientation="Horizontal">
-							<WrapPanel.MaxWidth>
-								<Binding Converter="{StaticResource ListBoxWidthToItemsPanelWidthConverter}" Path="ActualWidth">
-									<Binding.RelativeSource>
-										<RelativeSource Mode="FindAncestor">
-											<RelativeSource.AncestorType>
-												<x:Type TypeName="ListBox" />
-											</RelativeSource.AncestorType>
-										</RelativeSource>
-									</Binding.RelativeSource>
-								</Binding>
-							</WrapPanel.MaxWidth>
-						</WrapPanel>
-					</ItemsPanelTemplate>
-				</ListBox.ItemsPanel>
-				<ListBox.GroupStyle>
-					<GroupStyle>
-						<GroupStyle.ContainerStyle>
-							<Style>
-								<Style.TargetType>
-									<x:Type TypeName="GroupItem" />
-								</Style.TargetType>
-								<Setter Property="Template">
-									<Setter.Value>
-										<ControlTemplate>
-											<ControlTemplate.TargetType>
-												<x:Type TypeName="GroupItem" />
-											</ControlTemplate.TargetType>
-											<Expander Margin="0,1,0,0"
-												  HorizontalAlignment="Stretch"
-												  VerticalAlignment="Stretch"
-												  Header="{Binding Name}"
-												  IsExpanded="True"
-												  Style="{DynamicResource ToolboxGroupExpander}">
-												<ItemsPresenter />
-											</Expander>
-										</ControlTemplate>
-									</Setter.Value>
-								</Setter>
-							</Style>
-						</GroupStyle.ContainerStyle>
-					</GroupStyle>
-				</ListBox.GroupStyle>
-			</ListBox>
         <ListBox Name="ToolListBox" 
                  ItemTemplate="{StaticResource ToolDataTemplate}"  
                  Grid.Row="1" 
