@@ -86,7 +86,8 @@ namespace Warewolf.Studio.ServerProxyLayer
             comsController.AddPayloadArgument("ReloadResourceCatalogue",reloadCatalogue.ToString());
             var result = await comsController.ExecuteCompressedCommandAsync<IExplorerItem>(Connection, GlobalConstants.ServerWorkspaceID);
             return result;
-        }
+        }        
+                
         #endregion
 
         public IList<IToolDescriptor> FetchTools()
@@ -492,5 +493,11 @@ namespace Warewolf.Studio.ServerProxyLayer
             return serializer.Deserialize<IList<IWcfAction>>(payload.Message);
         }
 
+        public Task<string> LoadDuplicates()
+        {            
+            var comsController = CommunicationControllerFactory.CreateController("FetchExplorerIDuplicates");
+            var result = comsController.ExecuteCompressedCommandAsync<string>(Connection, GlobalConstants.ServerWorkspaceID);     
+            return result;
+        }
     }
 }

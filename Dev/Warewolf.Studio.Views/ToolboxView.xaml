@@ -1,105 +1,105 @@
 ﻿<UserControl xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-	         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:customControls="clr-namespace:Warewolf.Studio.CustomControls;assembly=Warewolf.Studio.CustomControls"
-             xmlns:toolBox="clr-namespace:Warewolf.Studio.ViewModels.ToolBox;assembly=Warewolf.Studio.ViewModels"
-             xmlns:core="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
-             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
-             xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
-             xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna;assembly=Warewolf.Studio.Themes.Luna"
-             mc:Ignorable="d"
-             x:Class="Warewolf.Studio.Views.ToolboxView"
-             x:Name="UserControl"
-             d:DesignWidth="640" d:DesignHeight="480">
+			 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+			 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+			 xmlns:customControls="clr-namespace:Warewolf.Studio.CustomControls;assembly=Warewolf.Studio.CustomControls"
+			 xmlns:toolBox="clr-namespace:Warewolf.Studio.ViewModels.ToolBox;assembly=Warewolf.Studio.ViewModels"
+			 xmlns:core="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
+			 xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+			 xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
+			 xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna;assembly=Warewolf.Studio.Themes.Luna"
+			 mc:Ignorable="d"
+			 x:Class="Warewolf.Studio.Views.ToolboxView"
+			 x:Name="UserControl"
+			 d:DesignWidth="640" d:DesignHeight="480">
 
-    <d:UserControl.DataContext>
-        <d:DesignInstance>
-            <d:DesignInstance.Type>
-                <x:Type TypeName="toolBox:ToolboxViewModel" />
-            </d:DesignInstance.Type>
-        </d:DesignInstance>
-    </d:UserControl.DataContext>
-    <UserControl.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <luna:SharedResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Theme.xaml"/>
-            </ResourceDictionary.MergedDictionaries>
-            <CollectionViewSource x:Key="BackedUpToolViewSource" Source="{Binding BackedUpTools}">
-                <!-- Grouping -->
-                <CollectionViewSource.GroupDescriptions>
-                    <PropertyGroupDescription PropertyName="Tool.Category" />
-                </CollectionViewSource.GroupDescriptions>
-            </CollectionViewSource>
-            <CollectionViewSource x:Key="ToolViewSource" Source="{Binding Tools}">
-                <!-- Grouping -->
-                <CollectionViewSource.GroupDescriptions>
-                    <PropertyGroupDescription PropertyName="Tool.Category" />
-                </CollectionViewSource.GroupDescriptions>
-            </CollectionViewSource>
-            <DataTemplate x:Key="ToolDataTemplate" DataType="toolBox:ToolDescriptorViewModel">
-                <Grid MouseMove="UIElement_OnMouseMove" 
-                      x:Name="ToolGrid"
-                      HorizontalAlignment="Stretch" 
-                      VerticalAlignment="Stretch"
-                      Background="Transparent" AllowDrop="True">
-                    <Grid.RowDefinitions>
-                        <RowDefinition x:Name="ToolImageRow" Height="28" />
-                        <RowDefinition x:Name="ToolNameRow" Height="30" />
-                    </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="55" />
-                    </Grid.ColumnDefinitions>
-                    <Label x:Name="ToolButtonImage" Grid.Row="0" Padding="1" Style="{StaticResource ToolboxLabelStyle}">
-                        <Label.Content>
-                            <Image Width="18"
-                               Height="18"
-                               Margin="0,6,0,0"
-                               VerticalAlignment="Center"
-                               Source="{Binding Icon}"
-                               AutomationProperties.AutomationId="{Binding Name}"/>
-                        </Label.Content>
-                    </Label>
+	<d:UserControl.DataContext>
+		<d:DesignInstance>
+			<d:DesignInstance.Type>
+				<x:Type TypeName="toolBox:ToolboxViewModel" />
+			</d:DesignInstance.Type>
+		</d:DesignInstance>
+	</d:UserControl.DataContext>
+	<UserControl.Resources>
+		<ResourceDictionary>
+			<ResourceDictionary.MergedDictionaries>
+				<luna:SharedResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Theme.xaml"/>
+			</ResourceDictionary.MergedDictionaries>
+			<CollectionViewSource x:Key="BackedUpToolViewSource" Source="{Binding BackedUpTools}">
+				<!-- Grouping -->
+				<CollectionViewSource.GroupDescriptions>
+					<PropertyGroupDescription PropertyName="Tool.Category" />
+				</CollectionViewSource.GroupDescriptions>
+			</CollectionViewSource>
+			<CollectionViewSource x:Key="ToolViewSource" Source="{Binding Tools}">
+				<!-- Grouping -->
+				<CollectionViewSource.GroupDescriptions>
+					<PropertyGroupDescription PropertyName="Tool.Category" />
+				</CollectionViewSource.GroupDescriptions>
+			</CollectionViewSource>
+			<DataTemplate x:Key="ToolDataTemplate" DataType="toolBox:ToolDescriptorViewModel">
+				<Grid MouseMove="UIElement_OnMouseMove" 
+					  x:Name="ToolGrid"
+					  HorizontalAlignment="Stretch" 
+					  VerticalAlignment="Stretch"
+					  Background="Transparent" AllowDrop="True">
+					<Grid.RowDefinitions>
+						<RowDefinition x:Name="ToolImageRow" Height="28" />
+						<RowDefinition x:Name="ToolNameRow" Height="30" />
+					</Grid.RowDefinitions>
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="55" />
+					</Grid.ColumnDefinitions>
+					<Label x:Name="ToolButtonImage" Grid.Row="0" Padding="1" Style="{StaticResource ToolboxLabelStyle}">
+						<Label.Content>
+							<Image Width="18"
+							   Height="18"
+							   Margin="0,6,0,0"
+							   VerticalAlignment="Center"
+							   Source="{Binding Icon}"
+							   AutomationProperties.AutomationId="{Binding Name}"/>
+						</Label.Content>
+					</Label>
 
-                    <TextBlock Grid.Row="1"
-                           x:Name="ToolName"
-                           HorizontalAlignment="Center"
-                           Text="{Binding Name}"
-                           TextAlignment="Center"
-                           TextWrapping="WrapWithOverflow" 
-                           Style="{StaticResource TextBlockNoPaddingStyle}"
-                           FontSize="{StaticResource FontSize-Toolbox}"
-                           Padding="2"
-                           TextTrimming="None" 
-                           Margin="0,3,0,-3"/>
+					<TextBlock Grid.Row="1"
+						   x:Name="ToolName"
+						   HorizontalAlignment="Center"
+						   Text="{Binding Name}"
+						   TextAlignment="Center"
+						   TextWrapping="WrapWithOverflow" 
+						   Style="{StaticResource TextBlockNoPaddingStyle}"
+						   FontSize="{StaticResource FontSize-Toolbox}"
+						   Padding="2"
+						   TextTrimming="None" 
+						   Margin="0,3,0,-3"/>
 
-                </Grid>
-                <DataTemplate.Triggers>
-                    <DataTrigger Value="True">
-                        <DataTrigger.Binding>
-                            <Binding
-                            Path="IsMouseOver">
-                                <Binding.RelativeSource>
-                                    <RelativeSource Mode="FindAncestor">
-                                        <RelativeSource.AncestorType>
-                                            <x:Type TypeName="ListBoxItem" />
-                                        </RelativeSource.AncestorType>
-                                    </RelativeSource>
-                                </Binding.RelativeSource>
-                            </Binding>
-                        </DataTrigger.Binding>
-                        <Setter TargetName="ToolButtonImage" Property="Opacity" Value="1"/>
-                        <Setter TargetName="ToolButtonImage" Property="Padding" Value="0"/>
+				</Grid>
+				<DataTemplate.Triggers>
+					<DataTrigger Value="True">
+						<DataTrigger.Binding>
+							<Binding
+							Path="IsMouseOver">
+								<Binding.RelativeSource>
+									<RelativeSource Mode="FindAncestor">
+										<RelativeSource.AncestorType>
+											<x:Type TypeName="ListBoxItem" />
+										</RelativeSource.AncestorType>
+									</RelativeSource>
+								</Binding.RelativeSource>
+							</Binding>
+						</DataTrigger.Binding>
+						<Setter TargetName="ToolButtonImage" Property="Opacity" Value="1"/>
+						<Setter TargetName="ToolButtonImage" Property="Padding" Value="0"/>
 
-                        <Setter TargetName="ToolName" Property="Opacity" Value="1"/>
-                        <Setter TargetName="ToolName" Property="FontWeight" Value="Bold"/>
-                        <Setter TargetName="ToolName" Property="Padding" Value="0"/>
-                    </DataTrigger>
-                </DataTemplate.Triggers>
-            </DataTemplate>
-            <core:WidthConvertForWrapPanel x:Key="ListBoxWidthToItemsPanelWidthConverter" />
-        </ResourceDictionary>
-    </UserControl.Resources>
+						<Setter TargetName="ToolName" Property="Opacity" Value="1"/>
+						<Setter TargetName="ToolName" Property="FontWeight" Value="Bold"/>
+						<Setter TargetName="ToolName" Property="Padding" Value="0"/>
+					</DataTrigger>
+				</DataTemplate.Triggers>
+			</DataTemplate>
+			<core:WidthConvertForWrapPanel x:Key="ListBoxWidthToItemsPanelWidthConverter" />
+		</ResourceDictionary>
+	</UserControl.Resources>
 
     <Grid x:Name="LayoutRoot" Margin="{StaticResource ElementBorder}" Visibility="{Binding IsVisible, Converter={StaticResource BoolToVisibilityConverter}}">
         <Grid.RowDefinitions>
@@ -107,38 +107,100 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="*"/>
+		</Grid.ColumnDefinitions>
 
-        <!--  TOOL SEARCH BOX  -->
-        <Grid Grid.Row="0">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
+		<!--  TOOL SEARCH BOX  -->
+		<Grid Grid.Row="0">
+			<Grid.RowDefinitions>
+				<RowDefinition Height="Auto"/>
+			</Grid.RowDefinitions>
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="*" />
+			</Grid.ColumnDefinitions>
 
-            <customControls:SearchTextBox Grid.Column="0" 
-                                          Grid.Row="0"  
-                                          LabelText="Filter"
-                                          x:Name="SearchTextBox"
-                                          ClearSearchCommand="{Binding ClearFilterCommand}"
-                                          ClearSearchToolTip="{x:Static languages:Core.ToolboxClearSearchTooltip}"
-                                          Style="{StaticResource SearchTextboxStyle}"
-                                          GotKeyboardFocus="SelectAllText"
-                                          MouseDoubleClick="SelectAllText"
-                                          PreviewMouseLeftButtonDown="SelectivelyIgnoreMouseButton"
-                                          ToolTip="{x:Static languages:Core.ToolboxSearchToolTip}"
-                                          Text="{Binding SearchTerm, Delay=300, UpdateSourceTrigger=PropertyChanged}">
-                <i:Interaction.Behaviors>
-                    <core:HelpSetter Text="{x:Static languages:Core.ToolboxViewFilterSearchHelp}" DataContext="{Binding}" />
-                </i:Interaction.Behaviors>
-            </customControls:SearchTextBox>
-        </Grid>
+			<customControls:SearchTextBox Grid.Column="0" 
+										  Grid.Row="0"  
+										  LabelText="Filter"
+										  x:Name="SearchTextBox"
+										  ClearSearchCommand="{Binding ClearFilterCommand}"
+										  ClearSearchToolTip="{x:Static languages:Core.ToolboxClearSearchTooltip}"
+										  Style="{StaticResource SearchTextboxStyle}"
+										  GotKeyboardFocus="SelectAllText"
+										  MouseDoubleClick="SelectAllText"
+										  PreviewMouseLeftButtonDown="SelectivelyIgnoreMouseButton"
+										  ToolTip="{x:Static languages:Core.ToolboxSearchToolTip}"
+										  Text="{Binding SearchTerm, Delay=450, UpdateSourceTrigger=PropertyChanged}">
+				<i:Interaction.Behaviors>
+					<core:HelpSetter Text="{x:Static languages:Core.ToolboxViewFilterSearchHelp}" DataContext="{Binding}" />
+				</i:Interaction.Behaviors>
+			</customControls:SearchTextBox>
+		</Grid>
 
 
+			<ListBox Name="ToolListBox" 
+				 ItemTemplate="{StaticResource ToolDataTemplate}"  
+				 Grid.Row="1" 
+				 Margin="{StaticResource ControlBorderTop}"
+				 Grid.Column="0" 
+				 ItemsSource="{Binding Source={StaticResource ToolViewSource}}">
+				<ListBox.Style >
+					<Style TargetType="ListBox" BasedOn="{StaticResource ListBoxToolboxStyle}">
+						<Setter Property="Visibility" Value="Collapsed"/>
+						<Style.Triggers>
+							<DataTrigger Binding="{Binding ElementName=BackedupToolListBox, Path=Visibility}" Value="Collapsed">
+								<Setter Property="Visibility" Value="Visible"/>
+							</DataTrigger>
+						</Style.Triggers>
+					</Style>
+				</ListBox.Style>
+				<ListBox.ItemsPanel>
+					<ItemsPanelTemplate >
+						<WrapPanel Orientation="Horizontal">
+							<WrapPanel.MaxWidth>
+								<Binding Converter="{StaticResource ListBoxWidthToItemsPanelWidthConverter}" Path="ActualWidth">
+									<Binding.RelativeSource>
+										<RelativeSource Mode="FindAncestor">
+											<RelativeSource.AncestorType>
+												<x:Type TypeName="ListBox" />
+											</RelativeSource.AncestorType>
+										</RelativeSource>
+									</Binding.RelativeSource>
+								</Binding>
+							</WrapPanel.MaxWidth>
+						</WrapPanel>
+					</ItemsPanelTemplate>
+				</ListBox.ItemsPanel>
+				<ListBox.GroupStyle>
+					<GroupStyle>
+						<GroupStyle.ContainerStyle>
+							<Style>
+								<Style.TargetType>
+									<x:Type TypeName="GroupItem" />
+								</Style.TargetType>
+								<Setter Property="Template">
+									<Setter.Value>
+										<ControlTemplate>
+											<ControlTemplate.TargetType>
+												<x:Type TypeName="GroupItem" />
+											</ControlTemplate.TargetType>
+											<Expander Margin="0,1,0,0"
+												  HorizontalAlignment="Stretch"
+												  VerticalAlignment="Stretch"
+												  Header="{Binding Name}"
+												  IsExpanded="True"
+												  Style="{DynamicResource ToolboxGroupExpander}">
+												<ItemsPresenter />
+											</Expander>
+										</ControlTemplate>
+									</Setter.Value>
+								</Setter>
+							</Style>
+						</GroupStyle.ContainerStyle>
+					</GroupStyle>
+				</ListBox.GroupStyle>
+			</ListBox>
         <ListBox Name="ToolListBox" 
                  ItemTemplate="{StaticResource ToolDataTemplate}"  
                  Grid.Row="1" 
@@ -202,68 +264,68 @@
             </ListBox.GroupStyle>
         </ListBox>
 
-        <ListBox Name="BackedupToolListBox" 
-                 ItemTemplate="{StaticResource ToolDataTemplate}"  
-                 Grid.Row="1" 
-                 Margin="{StaticResource ControlBorderTop}"
-                 Grid.Column="0" 
-                 ItemsSource="{Binding Source={StaticResource BackedUpToolViewSource}}">
-            <ListBox.Style >
-                <Style TargetType="ListBox" BasedOn="{StaticResource ListBoxToolboxStyle}">
-                    <Setter Property="Visibility" Value="Collapsed"/>
-                    <Style.Triggers>
-                        <DataTrigger Binding="{Binding ElementName=SearchTextBox, Path=Text}" Value="">
-                            <Setter Property="Visibility" Value="Visible"/>
-                        </DataTrigger>
-                    </Style.Triggers>
-                </Style>
-            </ListBox.Style>
-            <ListBox.ItemsPanel>
-                <ItemsPanelTemplate >
-                    <WrapPanel Orientation="Horizontal">
-                        <WrapPanel.MaxWidth>
-                            <Binding Converter="{StaticResource ListBoxWidthToItemsPanelWidthConverter}" Path="ActualWidth">
-                                <Binding.RelativeSource>
-                                    <RelativeSource Mode="FindAncestor">
-                                        <RelativeSource.AncestorType>
-                                            <x:Type TypeName="ListBox" />
-                                        </RelativeSource.AncestorType>
-                                    </RelativeSource>
-                                </Binding.RelativeSource>
-                            </Binding>
-                        </WrapPanel.MaxWidth>
-                    </WrapPanel>
-                </ItemsPanelTemplate>
-            </ListBox.ItemsPanel>
-            <ListBox.GroupStyle>
-                <GroupStyle>
-                    <GroupStyle.ContainerStyle>
-                        <Style>
-                            <Style.TargetType>
-                                <x:Type TypeName="GroupItem" />
-                            </Style.TargetType>
-                            <Setter Property="Template">
-                                <Setter.Value>
-                                    <ControlTemplate>
-                                        <ControlTemplate.TargetType>
-                                            <x:Type TypeName="GroupItem" />
-                                        </ControlTemplate.TargetType>
-                                        <Expander Margin="0,1,0,0"
-                                                  HorizontalAlignment="Stretch"
-                                                  VerticalAlignment="Stretch"
-                                                  Header="{Binding Name}"
-                                                  IsExpanded="True"
-                                                  Style="{DynamicResource ToolboxGroupExpander}">
-                                            <ItemsPresenter />
-                                        </Expander>
-                                    </ControlTemplate>
-                                </Setter.Value>
-                            </Setter>
-                        </Style>
-                    </GroupStyle.ContainerStyle>
-                </GroupStyle>
-            </ListBox.GroupStyle>
-        </ListBox>
+		<ListBox Name="BackedupToolListBox" 
+				 ItemTemplate="{StaticResource ToolDataTemplate}"  
+				 Grid.Row="1" 
+				 Margin="{StaticResource ControlBorderTop}"
+				 Grid.Column="0" 
+				 ItemsSource="{Binding Source={StaticResource BackedUpToolViewSource}}">
+			<ListBox.Style >
+				<Style TargetType="ListBox" BasedOn="{StaticResource ListBoxToolboxStyle}">
+					<Setter Property="Visibility" Value="Collapsed"/>
+					<Style.Triggers>
+						<DataTrigger Binding="{Binding ElementName=SearchTextBox, Path=Text}" Value="">
+							<Setter Property="Visibility" Value="Visible"/>
+						</DataTrigger>
+					</Style.Triggers>
+				</Style>
+			</ListBox.Style>
+			<ListBox.ItemsPanel>
+				<ItemsPanelTemplate >
+					<WrapPanel Orientation="Horizontal">
+						<WrapPanel.MaxWidth>
+							<Binding Converter="{StaticResource ListBoxWidthToItemsPanelWidthConverter}" Path="ActualWidth">
+								<Binding.RelativeSource>
+									<RelativeSource Mode="FindAncestor">
+										<RelativeSource.AncestorType>
+											<x:Type TypeName="ListBox" />
+										</RelativeSource.AncestorType>
+									</RelativeSource>
+								</Binding.RelativeSource>
+							</Binding>
+						</WrapPanel.MaxWidth>
+					</WrapPanel>
+				</ItemsPanelTemplate>
+			</ListBox.ItemsPanel>
+			<ListBox.GroupStyle>
+				<GroupStyle>
+					<GroupStyle.ContainerStyle>
+						<Style>
+							<Style.TargetType>
+								<x:Type TypeName="GroupItem" />
+							</Style.TargetType>
+							<Setter Property="Template">
+								<Setter.Value>
+									<ControlTemplate>
+										<ControlTemplate.TargetType>
+											<x:Type TypeName="GroupItem" />
+										</ControlTemplate.TargetType>
+										<Expander Margin="0,1,0,0"
+												  HorizontalAlignment="Stretch"
+												  VerticalAlignment="Stretch"
+												  Header="{Binding Name}"
+												  IsExpanded="True"
+												  Style="{DynamicResource ToolboxGroupExpander}">
+											<ItemsPresenter />
+										</Expander>
+									</ControlTemplate>
+								</Setter.Value>
+							</Setter>
+						</Style>
+					</GroupStyle.ContainerStyle>
+				</GroupStyle>
+			</ListBox.GroupStyle>
+		</ListBox>
 
-    </Grid>
+	</Grid>
 </UserControl>

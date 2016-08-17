@@ -90,7 +90,12 @@ namespace Warewolf.Testing
         {
             return null;
         }
-
+        
+        public Task<string> LoadExplorerDuplicates()
+        {
+            return null;
+        }
+        
         public List<IResource> Load()
         {
             return CreateResources();

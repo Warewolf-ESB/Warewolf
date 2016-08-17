@@ -104,6 +104,7 @@ namespace Warewolf.Studio.AntiCorruptionLayer
             return _minversion;
         }
 
+
         void RaiseNetworkStateChangeEvent(object sender, System.Network.NetworkStateEventArgs e)
         {
             NetworkStateChanged?.Invoke(new NetworkStateChangedEventArgs(e), this);
@@ -168,9 +169,16 @@ namespace Warewolf.Studio.AntiCorruptionLayer
             HasLoaded = true;
             return result;
         }
-
-        public IList<IServer> GetServerConnections()
+        
+        public Task<string> LoadExplorerDuplicates()
         {
+            var result = ProxyLayer.LoadExplorerDuplicates();
+            HasLoaded = true;
+            return result;
+        }
+        
+        public IList<IServer> GetServerConnections()
+        {            
             var environmentModels = EnvironmentRepository.Instance.ReloadServers();
             return environmentModels.Select(environmentModel => new Server(environmentModel)).Cast<IServer>().ToList();
         }

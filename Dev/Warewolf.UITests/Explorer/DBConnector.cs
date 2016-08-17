@@ -94,6 +94,6 @@ namespace Warewolf.UITests
 
         private UIMap _uiMap;
 
-#endregion
+        #endregion
     }
 }

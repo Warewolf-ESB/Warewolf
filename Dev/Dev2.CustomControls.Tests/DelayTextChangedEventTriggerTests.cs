@@ -1,5 +1,4 @@
-﻿using System;
-using Dev2.CustomControls.Trigger;
+﻿using Dev2.CustomControls.Trigger;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 // ReSharper disable InconsistentNaming
 
@@ -19,16 +18,9 @@ namespace Dev2.CustomControls.Tests
             //---------------Assert Precondition----------------
 
             //---------------Execute Test ----------------------
-            try
-            {
-                // ReSharper disable once UnusedVariable
-                var changedEventTrigger = new DelayTextChangedEventTrigger();
-            }
-            catch (Exception ex)
-            {
-                Assert.Fail(ex.Message);
-            }
+            var changedEventTrigger = new DelayTextChangedEventTrigger();
             //---------------Test Result -----------------------
+            Assert.IsNotNull(changedEventTrigger, "Cannot create new changedEventTrigger object.");
         }
       
     }

@@ -30,16 +30,9 @@ namespace Dev2.Data.Tests.Parsers
             //---------------Assert Precondition----------------
 
             //---------------Execute Test ----------------------
-            try
-            {
-                // ReSharper disable once ObjectCreationAsStatement
-                new Dev2DataLanguageParser();
-            }
-            catch (Exception ex)
-            {
-                Assert.Fail(ex.Message);
-            }
+            var newDev2DataLanguageParser = new Dev2DataLanguageParser();
             //---------------Test Result -----------------------
+            Assert.IsNotNull(newDev2DataLanguageParser, "Cannot create new Dev2DataLanguageParser object.");
         }
 
         [TestMethod]
@@ -50,7 +43,7 @@ namespace Dev2.Data.Tests.Parsers
             var parser = new Dev2DataLanguageParser();
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
-            var expressionIntoParts = parser.ParseExpressionIntoParts("[[a]]", new List<IDev2DataLanguageIntellisensePart>());
+            var expressionIntoParts = parser.ParseExpressionIntoParts("[[x]]", new List<IDev2DataLanguageIntellisensePart>());
             //---------------Test Result -----------------------
             Assert.AreEqual(1, expressionIntoParts.Count);
             var error = expressionIntoParts.SingleOrDefault(result => !string.IsNullOrEmpty(result.Message));
@@ -123,17 +116,10 @@ namespace Dev2.Data.Tests.Parsers
             const string noneString = "None";
             var datalist = string.Format("<DataList><var Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" /><a Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" /><rec Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" ><set Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" /></rec></DataList>", trueString, noneString);
             //---------------Assert Precondition----------------
-            try
-            {
-                //---------------Execute Test ----------------------
-                var expressionIntoParts = parser.ParseDataLanguageForIntellisense("", datalist);
-                //---------------Test Result -----------------------
-                Assert.AreEqual(0, expressionIntoParts.Count);
-            }
-            catch (Exception ex)
-            {
-                Assert.Fail(ex.Message);
-            }
+            //---------------Execute Test ----------------------
+            var expressionIntoParts = parser.ParseDataLanguageForIntellisense("", datalist);
+            //---------------Test Result -----------------------
+            Assert.AreEqual(0, expressionIntoParts.Count);
         }
 
         [TestMethod]
@@ -148,19 +134,11 @@ namespace Dev2.Data.Tests.Parsers
             //---------------Assert Precondition----------------
 
             //---------------Execute Test ----------------------
-            try
+            object obj = new object();
+            lock (obj)
             {
-
-                object obj = new object();
-                lock (obj)
-                {
-                    var expressionIntoParts = parser.ParseDataLanguageForIntellisense("[[a]]", datalist, false, new IntellisenseFilterOpsTO() { FilterType = enIntellisensePartType.RecordsetsOnly });
-                    //---------------Test Result -----------------------
-                }
-            }
-            catch (Exception ex)
-            {
-                Assert.Fail(ex.Message);
+                var expressionIntoParts = parser.ParseDataLanguageForIntellisense("[[a]]", datalist, false, new IntellisenseFilterOpsTO() { FilterType = enIntellisensePartType.RecordsetsOnly });
+                //---------------Test Result -----------------------
             }
 
         }
@@ -370,22 +348,15 @@ namespace Dev2.Data.Tests.Parsers
             Dev2DataLanguageParseError error = new Dev2DataLanguageParseError("Error", 1, 5, enIntellisenseErrorCode.SyntaxError);
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
-            try
+            var invoke = privateObject.Invoke("AddErrorToResults", true, "rec().Name", error, false) as IntellisenseResult;
+            if (invoke != null)
             {
-                var invoke = privateObject.Invoke("AddErrorToResults", true, "rec().Name", error, false) as IntellisenseResult;
-                if (invoke != null)
-                {
-                    Assert.AreEqual(5, invoke.EndIndex);
-                    Assert.AreEqual(enIntellisenseErrorCode.SyntaxError, invoke.ErrorCode);
-                    Assert.AreEqual("Error", invoke.Message);
-                    Assert.AreEqual("[[rec()]]", invoke.Option.DisplayValue);
-                    Assert.AreEqual("rec", invoke.Option.Recordset);
-                    Assert.AreEqual("Error", invoke.Type.ToString());
-                }
-            }
-            catch (Exception ex)
-            {
-                Assert.Fail(ex.Message);
+                Assert.AreEqual(5, invoke.EndIndex);
+                Assert.AreEqual(enIntellisenseErrorCode.SyntaxError, invoke.ErrorCode);
+                Assert.AreEqual("Error", invoke.Message);
+                Assert.AreEqual("[[rec()]]", invoke.Option.DisplayValue);
+                Assert.AreEqual("rec", invoke.Option.Recordset);
+                Assert.AreEqual("Error", invoke.Type.ToString());
             }
 
             //---------------Test Result -----------------------
@@ -403,25 +374,18 @@ namespace Dev2.Data.Tests.Parsers
             Dev2DataLanguageParseError error = new Dev2DataLanguageParseError("Error", 1, 5, enIntellisenseErrorCode.SyntaxError);
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
-            try
+            var invoke = privateObject.Invoke("AddErrorToResults", false, "rec().Name", error, false) as IntellisenseResult;
+            if (invoke != null)
             {
-                var invoke = privateObject.Invoke("AddErrorToResults", false, "rec().Name", error, false) as IntellisenseResult;
-                if (invoke != null)
-                {
-                    Assert.AreEqual(5, invoke.EndIndex);
-                    Assert.AreEqual(enIntellisenseErrorCode.SyntaxError, invoke.ErrorCode);
-                    Assert.AreEqual("Error", invoke.Message);
-                    Assert.AreEqual("[[rec().Name]]", invoke.Option.DisplayValue);
-                    Assert.AreEqual("", invoke.Option.Recordset);
-                    Assert.AreEqual("Error", invoke.Type.ToString());
-                }
-            }
-            catch (Exception ex)
-            {
-                Assert.Fail(ex.Message);
+                //---------------Test Result -----------------------
+                Assert.AreEqual(5, invoke.EndIndex);
+                Assert.AreEqual(enIntellisenseErrorCode.SyntaxError, invoke.ErrorCode);
+                Assert.AreEqual("Error", invoke.Message);
+                Assert.AreEqual("[[rec().Name]]", invoke.Option.DisplayValue);
+                Assert.AreEqual("", invoke.Option.Recordset);
+                Assert.AreEqual("Error", invoke.Type.ToString());
             }
 
-            //---------------Test Result -----------------------
         }
 
         [TestMethod]
@@ -436,21 +400,22 @@ namespace Dev2.Data.Tests.Parsers
             var result = new List<IIntellisenseResult>();
             var parseTO = new ParseTO()
             {
-                Parent = new ParseTO() { Payload = "rec().Name" },
-
+                Parent = new ParseTO() { Payload = "rec().Name" }
             };
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
+            bool invoke;
             try
             {
-                var invoke = privateObject.Invoke("ProcessForOnlyOpenRegion", parseTO, refParts, result);
+                privateObject.Invoke("ProcessForOnlyOpenRegion", parseTO, refParts, result);
+                invoke = true;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                Assert.Fail(ex.Message);
+                invoke = false;
             }
-
             //---------------Test Result -----------------------
+            Assert.IsTrue(invoke);//, "Cannot invoke new Dev2DataLanguageParser PrivateObject.");
         }
 
         [TestMethod]
@@ -472,16 +437,18 @@ namespace Dev2.Data.Tests.Parsers
             };
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
+            bool invoke;
             try
             {
-                var invoke = privateObject.Invoke("ProcessForOnlyOpenRegion", parseTO, refParts, result);
+                privateObject.Invoke("ProcessForOnlyOpenRegion", parseTO, refParts, result);
+                invoke = true;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                Assert.Fail(ex.Message);
+                invoke = false;
             }
-
             //---------------Test Result -----------------------
+            Assert.IsTrue(invoke, "Cannot invoke new Dev2DataLanguageParser PrivateObject.");
         }
 
         [TestMethod]

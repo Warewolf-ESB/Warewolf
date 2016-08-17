@@ -126,6 +126,7 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
     </Reference>
+    <Reference Include="PresentationFramework" />
     <Reference Include="RabbitMQ.Client, Version=3.6.1.0, Culture=neutral, PublicKeyToken=89e7d7c5feba84ce, processorArchitecture=MSIL">
       <HintPath>..\packages\RabbitMQ.Client.3.6.1\lib\net45\RabbitMQ.Client.dll</HintPath>
       <Private>True</Private>
@@ -198,6 +199,7 @@
     <Compile Include="ESB\Management\Services\FetchDbSources.cs" />
     <Compile Include="ESB\Management\Services\FetchExchangeSources.cs" />
     <Compile Include="ESB\Management\Services\FetchDropboxSource.cs" />
+    <Compile Include="ESB\Management\Services\FetchExplorerIDuplicates.cs" />
     <Compile Include="ESB\Management\Services\FetchListSysExplorerStructure.cs" />
     <Compile Include="ESB\Management\Services\FetchPerfCounters.cs" />
     <Compile Include="ESB\Management\Services\FetchPluginActions.cs" />

@@ -29,5 +29,7 @@ namespace Dev2.Common.Interfaces
 
         IExplorerItem FindItemByID(Guid id);
         StringBuilder GetVersion(IVersionInfo versionInfo);
+
+        Task<string> LoadExplorerDuplicates();
     }
 }

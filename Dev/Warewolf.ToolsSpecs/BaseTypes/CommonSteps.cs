@@ -31,6 +31,7 @@ using Dev2.DataList.Contract;
 using Dev2.Diagnostics;
 using Dev2.Interfaces;
 using Dev2.PathOperations;
+using Dev2.Runtime.ServiceModel.Data;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TechTalk.SpecFlow;
@@ -409,12 +410,26 @@ namespace Dev2.Activities.Specs.BaseTypes
             {
                 retryCount++;
                 //Call the service and get the result
-                WebClient webClient = new WebClient { Credentials = CredentialCache.DefaultCredentials };
+                WebClient webClient = new WebClient
+                {
+                    UseDefaultCredentials = true,
+                    Credentials = CredentialCache.DefaultCredentials
+                };
                 webCallResult = webClient.DownloadString(webservice);
-            } while (webCallResult.Contains("<FatalError>") && retryCount < 10);
+            }
+            while (webCallResult.Contains("<FatalError>") && retryCount < 10);
             StringAssert.Contains(webCallResult, errorValue);
         }
-
+        private static WebSource CreateTestWebSource()
+        {
+            return new WebSource
+            {
+                Password = "PasJun1",
+                UserName = "User1",
+                AuthenticationType = AuthenticationType.User,
+                //Address = Tests.TestUtils.ExampleURL
+            };
+        }
         [Then(@"the result variable ""(.*)"" will be ""(.*)""")]
         public void ThenTheResultVariableWillBe(string variable, string expectedValue)
         {

@@ -23,5 +23,7 @@ namespace Dev2.Common.Interfaces.Infrastructure
 
         IExplorerItem Find(Guid id);
         IExplorerItem Find(Func<IExplorerItem,bool> predicate);
+
+        string LoadDuplicate();
     }
 }

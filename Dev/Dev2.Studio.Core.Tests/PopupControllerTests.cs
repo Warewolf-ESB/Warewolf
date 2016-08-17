@@ -479,7 +479,7 @@ namespace Dev2.Core.Tests
             string server = "localhost";
             popupController.ShowServerNotConnected(server);
 
-            var message = "The server " + server + " is unreachable and will be removed form your explorer tab. Please reconnect to save any unsaved work.";
+            var message = "The server " + server + " is unreachable and will be removed from your explorer tab. Please reconnect to save any unsaved work.";
 
             //------------Assert Results-------------------------
             Assert.IsTrue(popupWasCalled);

@@ -98,6 +98,7 @@
     <Compile Include="..\AssemblyCommonInfo.cs">
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
+    <Compile Include="DuplicateResource.cs" />
     <Compile Include="ApisJson.cs" />
     <Compile Include="Common\DeleteHelper.cs" />
     <Compile Include="Common\DirectoryHelper.cs" />
