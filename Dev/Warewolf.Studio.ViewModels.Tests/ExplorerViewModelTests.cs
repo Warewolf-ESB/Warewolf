@@ -70,7 +70,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _target.Environments.Remove(_target.Environments.First(it => it is EnvironmentViewModel));
             
             //act
-            studioUpdateManagerMock.Raise(it => it.ItemSaved += null);
+            studioUpdateManagerMock.Raise(it => it.ItemSaved+=delegate {  },false);
 
             //assert
             environmentViewModelMock.VerifyGet(it => it.IsConnected);
