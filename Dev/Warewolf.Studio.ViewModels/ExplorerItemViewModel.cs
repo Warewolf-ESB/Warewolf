@@ -39,6 +39,24 @@ namespace Warewolf.Studio.ViewModels
 {
     public class ExplorerItemViewModel : BindableBase, IExplorerItemViewModel, IEquatable<ExplorerItemViewModel>
     {
+
+        public bool Equals(IExplorerTreeItem x, IExplorerTreeItem y)
+        {
+            if (ReferenceEquals(x, y)) return true;
+            if (ReferenceEquals(x, null)) return false;
+            if (ReferenceEquals(y, null)) return false;
+            if (x.GetType() != y.GetType()) return false;
+            return string.Equals(x.ResourcePath, y.ResourcePath) && x.ResourceId.Equals(y.ResourceId);
+        }
+
+        public int GetHashCode(IExplorerTreeItem obj)
+        {
+            unchecked
+            {
+                return ((obj.ResourcePath?.GetHashCode() ?? 0) * 397) ^ obj.ResourceId.GetHashCode();
+            }
+        }
+
         /// <summary>
         /// Indicates whether the current object is equal to another object of the same type.
         /// </summary>
@@ -56,7 +74,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 return true;
             }
-            return ResourceId.Equals(other.ResourceId);
+            return Equals(this, other);
         }
 
         /// <summary>
@@ -91,18 +109,12 @@ namespace Warewolf.Studio.ViewModels
         /// </returns>
         public override int GetHashCode()
         {
-            return ResourceId.GetHashCode();
+            unchecked
+            {
+                return ((ResourcePath?.GetHashCode() ?? 0) * 397) ^ ResourceId.GetHashCode();
+            }
         }
-
-        public static bool operator ==(ExplorerItemViewModel left, ExplorerItemViewModel right)
-        {
-            return Equals(left, right);
-        }
-
-        public static bool operator !=(ExplorerItemViewModel left, ExplorerItemViewModel right)
-        {
-            return !Equals(left, right);
-        }
+        
 
         public Action<IExplorerItemViewModel> SelectAction { get; set; }
         string _resourceName;
@@ -135,8 +147,9 @@ namespace Warewolf.Studio.ViewModels
         IVersionInfo _versionInfo;
         private IEnvironmentModel _environmentModel;
         private readonly ExplorerItemViewModelCommandController _explorerItemViewModelCommandController;
+        private bool _forcedRefresh;
 
-       
+
         public ExplorerItemViewModel(IServer server, IExplorerTreeItem parent, Action<IExplorerItemViewModel> selectAction, IShellViewModel shellViewModel, IPopupController popupController)
         {
             VerifyArgument.AreNotNull(new Dictionary<string, object> { { "server", server }, });
@@ -159,7 +172,8 @@ namespace Warewolf.Studio.ViewModels
             IsVisible = true;
             IsVersion = false;
             CanShowServerVersion = false;
-            
+            if (ForcedRefresh)
+                ForcedRefresh = true;
             SetupCommands();
 
             Server.PermissionsChanged += UpdatePermissions;
@@ -710,6 +724,19 @@ namespace Warewolf.Studio.ViewModels
         public ICommand NewDropboxSourceSourceCommand { get; set; }
         public ICommand DeployCommand { get; set; }
 
+        public bool ForcedRefresh
+        {
+            get
+            {
+                return Parent?.ForcedRefresh ?? _forcedRefresh;
+            }
+            set
+            {
+                _forcedRefresh = value;
+                OnPropertyChanged(() => ForcedRefresh);
+            }
+        }
+
         public bool IsSelected
         {
             get { return _isSelected; }
@@ -1045,21 +1072,26 @@ namespace Warewolf.Studio.ViewModels
                         return false;
                     }
                 }
-                var moveResult = await _explorerRepository.Move(this, destination);
+                
+                var moveResult = await _explorerRepository.Move(this, destination);              
                 if (!moveResult)
                 {
-                    ShowErrorMessage("An unexpected error occured which prevented the resource from being moved.", "Move Not allowed");
-                    Server.UpdateRepository.FireItemSaved();
+                    ShowErrorMessage("An unexpected error occured which prevented the resource from being moved.",
+                        "Move Not allowed");
+                    Server.UpdateRepository.FireItemSaved(true);
                     return false;
                 }
-                UpdateResourcePaths(destination);                
-                destination.UpdateChildrenCount();
+                UpdateResourcePaths(destination);
             }
             catch (Exception ex)
             {
                 ShowErrorMessage(ex.Message, "Move Not allowed");
-                Server.UpdateRepository.FireItemSaved();
+                Server.UpdateRepository.FireItemSaved(true);
                 return false;
+            }
+            finally
+            {
+                Server.UpdateRepository.FireItemSaved(true);
             }
             return true;
         }
@@ -1081,7 +1113,6 @@ namespace Warewolf.Studio.ViewModels
                         {
                             explorerItemViewModel.ResourcePath = resourcePath + "\\" + explorerItemViewModel.ResourceName;
                         }
-                        RemoveDuplicate(destination, destfolder);
                     }
                 }
                 else
@@ -1098,28 +1129,6 @@ namespace Warewolf.Studio.ViewModels
                 ResourcePath = destination.ResourcePath + (destination.ResourcePath == string.Empty ? "" : "\\") + ResourceName;
                 Parent = destination;
                 Parent.Children.Add(this);
-                var destfolder = Parent.Children.FirstOrDefault(a => a.ResourceName == ResourceName && a.IsFolder);
-                RemoveDuplicate(destination, destfolder);
-            }
-        }
-
-        private void RemoveDuplicate(IExplorerTreeItem destination, IExplorerItemViewModel destfolder)
-        {
-            if (destfolder != null)
-            {
-                for (int index = 0; index < destination.Children.ToList().Count; index++)
-                {
-                    var child = destination.Children.ToList()[index];
-
-                    if (child.ResourceName == ResourceName)
-                    {
-                        if (child.Children.Count > 0)
-                        {
-                            destfolder.Children.ToList().AddRange(child.Children.ToList());
-                        }
-                        destination.Children.ToList().RemoveAt(index);
-                    }
-                }
             }
         }
 
@@ -1168,15 +1177,19 @@ namespace Warewolf.Studio.ViewModels
         {
             get
             {
+                if (ForcedRefresh && _isExpanded)
+                {
+                    return true;
+                }
                 return _isExpanded;
             }
             set
             {
                 _isExpanded = value;
-
                 OnPropertyChanged(() => IsExpanded);
             }
         }
+
         public ICommand Expand { get; set; }
 
         public void Filter(string filter)

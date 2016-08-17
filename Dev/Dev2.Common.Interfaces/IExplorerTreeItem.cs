@@ -1,10 +1,11 @@
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 
 namespace Dev2.Common.Interfaces
 {
-    public interface IExplorerTreeItem : IDisposable
+    public interface IExplorerTreeItem : IDisposable,IEqualityComparer<IExplorerTreeItem>
     {
         string ResourceType { get; set; }
         string ResourcePath { get; set; }
@@ -23,6 +24,7 @@ namespace Dev2.Common.Interfaces
         bool CanShowVersions { get; set; }
         bool CanRollback { get; }
         bool IsExpanded { get; set; }
+        bool ForcedRefresh { get; set; }
         bool IsSelected { get; set; }
         bool CanShowServerVersion { get; set; }
         bool AllowResourceCheck { get; set; }
