@@ -887,19 +887,14 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void TestSave_serverSourceNotNull()
+        public void TestSave_Given_ValidSource_Should_Save()
         {
             //arrange
             var expectedAuthenticationType = AuthenticationType.User;
             var expectedPassword = "somePassword";
             var expectedUserName = "someUserName";
             var expectedName = "someExpectedName";
-
             var sourceName = "someSourceName";
-
-            var expectedHeaderText = sourceName;
-            var expectedHeader = sourceName + " *";
 
             _serverSourceMock.Setup(it => it.Name).Returns(sourceName);
 
@@ -916,8 +911,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void TesSave_serverSourceNull()
+        public void TesSave_GivenNoServerSource_Should_Save()
         {
             //arrange
             var expectedAuthenticationType = AuthenticationType.User;
@@ -937,6 +931,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _targetRequestServiceViewModel.ServerName = new ComputerName() { Name = "somecomputer" };
             _targetRequestServiceViewModel.Protocol = "http";
             _targetRequestServiceViewModel.SelectedPort = "8080";
+            _targetRequestServiceViewModel.SelectedGuid = Guid.NewGuid();
 
             //act
             _targetRequestServiceViewModel.Save();
