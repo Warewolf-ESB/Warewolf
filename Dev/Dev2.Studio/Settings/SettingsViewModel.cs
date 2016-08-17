@@ -118,7 +118,7 @@ namespace Dev2.Settings
         {
             if (server != null && server.UpdateRepository != null)
             {
-                server.UpdateRepository.ItemSaved += Refresh;
+                //server.UpdateRepository.ItemSaved += Refresh;
             }
         }
         public RelayCommand SaveCommand { get; private set; }
