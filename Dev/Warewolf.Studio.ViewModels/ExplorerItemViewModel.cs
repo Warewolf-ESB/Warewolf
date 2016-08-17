@@ -1093,11 +1093,11 @@ namespace Warewolf.Studio.ViewModels
                     }
                 }
             }
-            else if(!destination.IsFolder)
+            else if(destination.ResourceType == "ServerSource")
             {
                 ResourcePath = destination.ResourcePath + (destination.ResourcePath == string.Empty ? "" : "\\") + ResourceName;
                 Parent = destination;
-                Parent.AddChild(this);
+                Parent.Children.Add(this);
                 var destfolder = Parent.Children.FirstOrDefault(a => a.ResourceName == ResourceName && a.IsFolder);
                 RemoveDuplicate(destination, destfolder);
             }
@@ -1110,16 +1110,14 @@ namespace Warewolf.Studio.ViewModels
                 for (int index = 0; index < destination.Children.ToList().Count; index++)
                 {
                     var child = destination.Children.ToList()[index];
-                    if (child.ResourceId != destfolder.ResourceId)
+
+                    if (child.ResourceName == ResourceName)
                     {
-                        if (child.ResourceName == ResourceName)
+                        if (child.Children.Count > 0)
                         {
-                            if (child.Children.Count > 0)
-                            {
-                                destfolder.Children.AddRange(child.Children);
-                            }
-                            destination.Children.RemoveAt(index);
+                            destfolder.Children.ToList().AddRange(child.Children.ToList());
                         }
+                        destination.Children.ToList().RemoveAt(index);
                     }
                 }
             }
