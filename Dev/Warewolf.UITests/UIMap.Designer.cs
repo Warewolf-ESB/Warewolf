@@ -30,7 +30,6 @@ namespace Warewolf.UITests
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public partial class UIMap
     {
-        
         /// <summary>
         /// Click_Assign_Tool_Large_View_Done_Button - Use 'Click_Assign_Tool_Large_View_Done_ButtonParams' to pass parameters into this method.
         /// </summary>
@@ -544,23 +543,6 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
-        /// Click_Deploy_Tab_Source_Server_Combobox - Use 'Click_Deploy_Tab_Source_Server_ComboboxParams' to pass parameters into this method.
-        /// </summary>
-        public void Click_Deploy_Tab_Source_Server_Combobox()
-        {
-            #region Variable Declarations
-            WpfButton toggleButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DeployTab.WorkSurfaceContext.SourceServerConectControl.Combobox.ToggleButton;
-            WpfCustom comboboxListItemAsNewRemoteServer = this.MainStudioWindow.ComboboxListItemAsNewRemoteServer;
-            #endregion
-
-            // Click 'ToggleButton' button
-            Mouse.Click(toggleButton, new Point(230, 9));
-
-            // Verify that the 'Exists' property of 'New Remote Server...' custom control equals 'True'
-            Assert.AreEqual(this.Click_Deploy_Tab_Source_Server_ComboboxParams.ComboboxListItemAsNewRemoteServerExists, comboboxListItemAsNewRemoteServer.Exists, "New Remote Server... option does not exist in Source server combobox.");
-        }
-        
-        /// <summary>
         /// Click_Deploy_Tab_Destination_Server_Connect_Button
         /// </summary>
         public void Click_Deploy_Tab_Destination_Server_Connect_Button()
@@ -584,6 +566,23 @@ namespace Warewolf.UITests
 
             // Click 'New Remote Server...' custom control
             Mouse.Click(comboboxListItemAsNewRemoteServer, new Point(223, 10));
+        }
+        
+        /// <summary>
+        /// Click_Deploy_Tab_Source_Server_Combobox - Use 'Click_Deploy_Tab_Source_Server_ComboboxParams' to pass parameters into this method.
+        /// </summary>
+        public void Click_Deploy_Tab_Source_Server_Combobox()
+        {
+            #region Variable Declarations
+            WpfButton toggleButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DeployTab.WorkSurfaceContext.SourceServerConectControl.Combobox.ToggleButton;
+            WpfCustom comboboxListItemAsNewRemoteServer = this.MainStudioWindow.ComboboxListItemAsNewRemoteServer;
+            #endregion
+
+            // Click 'ToggleButton' button
+            Mouse.Click(toggleButton, new Point(230, 9));
+
+            // Verify that the 'Exists' property of 'New Remote Server...' custom control equals 'True'
+            Assert.AreEqual(this.Click_Deploy_Tab_Source_Server_ComboboxParams.ComboboxListItemAsNewRemoteServerExists, comboboxListItemAsNewRemoteServer.Exists, "New Remote Server... option does not exist in Source server combobox.");
         }
         
         /// <summary>
@@ -864,6 +863,19 @@ namespace Warewolf.UITests
 
             // Click 'No' button
             Mouse.Click(noButton, new Point(32, 5));
+        }
+        
+        /// <summary>
+        /// Click_MessageBox_OK
+        /// </summary>
+        public void Click_MessageBox_OK()
+        {
+            #region Variable Declarations
+            WpfButton oKButton = this.MessageBoxWindow.OKButton;
+            #endregion
+
+            // Click 'OK' button
+            Mouse.Click(oKButton, new Point(35, 11));
         }
         
         /// <summary>
@@ -5410,6 +5422,18 @@ namespace Warewolf.UITests
         }
         
         #region Properties
+        public virtual Assert_Then_Drag_Toolbox_Comment_Onto_Switch_Right_Arm_On_DesignSurfaceExpectedValues Assert_Then_Drag_Toolbox_Comment_Onto_Switch_Right_Arm_On_DesignSurfaceExpectedValues
+        {
+            get
+            {
+                if ((this.mAssert_Then_Drag_Toolbox_Comment_Onto_Switch_Right_Arm_On_DesignSurfaceExpectedValues == null))
+                {
+                    this.mAssert_Then_Drag_Toolbox_Comment_Onto_Switch_Right_Arm_On_DesignSurfaceExpectedValues = new Assert_Then_Drag_Toolbox_Comment_Onto_Switch_Right_Arm_On_DesignSurfaceExpectedValues();
+                }
+                return this.mAssert_Then_Drag_Toolbox_Comment_Onto_Switch_Right_Arm_On_DesignSurfaceExpectedValues;
+            }
+        }
+        
         public virtual Click_Assign_Tool_Large_View_Done_ButtonParams Click_Assign_Tool_Large_View_Done_ButtonParams
         {
             get
@@ -7389,9 +7413,23 @@ namespace Warewolf.UITests
                 return this.mServicePickerDialog;
             }
         }
+        
+        public SwitchCaseDialog SwitchCaseDialog
+        {
+            get
+            {
+                if ((this.mSwitchCaseDialog == null))
+                {
+                    this.mSwitchCaseDialog = new SwitchCaseDialog();
+                }
+                return this.mSwitchCaseDialog;
+            }
+        }
         #endregion
         
         #region Fields
+        private Assert_Then_Drag_Toolbox_Comment_Onto_Switch_Right_Arm_On_DesignSurfaceExpectedValues mAssert_Then_Drag_Toolbox_Comment_Onto_Switch_Right_Arm_On_DesignSurfaceExpectedValues;
+        
         private Click_Assign_Tool_Large_View_Done_ButtonParams mClick_Assign_Tool_Large_View_Done_ButtonParams;
         
         private Click_Assign_Tool_Large_View_Done_Button_With_Row1_Variable_Textbox_As_SomeInvalidVariableNameParams mClick_Assign_Tool_Large_View_Done_Button_With_Row1_Variable_Textbox_As_SomeInvalidVariableNameParams;
@@ -7721,6 +7759,23 @@ namespace Warewolf.UITests
         private SelectWindowsGroupDialog mSelectWindowsGroupDialog;
         
         private ServicePickerDialog mServicePickerDialog;
+        
+        private SwitchCaseDialog mSwitchCaseDialog;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Assert_Then_Drag_Toolbox_Comment_Onto_Switch_Right_Arm_On_DesignSurface'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Assert_Then_Drag_Toolbox_Comment_Onto_Switch_Right_Arm_On_DesignSurfaceExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Done' button equals 'True'
+        /// </summary>
+        public bool DoneButtonExists = true;
         #endregion
     }
     
@@ -33025,6 +33080,22 @@ namespace Warewolf.UITests
                 return this.mCancelButton;
             }
         }
+        
+        public WpfButton OKButton
+        {
+            get
+            {
+                if ((this.mOKButton == null))
+                {
+                    this.mOKButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mOKButton.SearchProperties[WpfButton.PropertyNames.Name] = "OK";
+                    this.mOKButton.WindowTitles.Add("WarewolfMessageBox");
+                    #endregion
+                }
+                return this.mOKButton;
+            }
+        }
         #endregion
         
         #region Fields
@@ -33033,6 +33104,8 @@ namespace Warewolf.UITests
         private NoButton mNoButton;
         
         private CancelButton mCancelButton;
+        
+        private WpfButton mOKButton;
         #endregion
     }
     
@@ -33922,6 +33995,42 @@ namespace Warewolf.UITests
         
         #region Fields
         private WpfTreeItem mSubTreeItem1;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class SwitchCaseDialog : WpfWindow
+    {
+        
+        public SwitchCaseDialog()
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfWindow.PropertyNames.Name] = "ActivityDefaultWindow";
+            this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
+            this.WindowTitles.Add("ActivityDefaultWindow");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfButton DoneButton
+        {
+            get
+            {
+                if ((this.mDoneButton == null))
+                {
+                    this.mDoneButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mDoneButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "DoneButton";
+                    this.mDoneButton.WindowTitles.Add("ActivityDefaultWindow");
+                    #endregion
+                }
+                return this.mDoneButton;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfButton mDoneButton;
         #endregion
     }
 }
