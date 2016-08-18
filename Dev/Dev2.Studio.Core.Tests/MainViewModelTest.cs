@@ -1957,6 +1957,8 @@ namespace Dev2.Core.Tests
         public void MainViewModel_NewDatabaseSource_Handle_Result()
         {
             //------------Setup for test--------------------------
+            var toolboxViewModel = new Mock<IToolboxViewModel>().Object;
+            CustomContainer.Register(toolboxViewModel);
             CreateFullExportsAndVm();
 
             var env = SetupEnvironment();
@@ -1985,6 +1987,8 @@ namespace Dev2.Core.Tests
         public void MainViewModel_NewDropboxSourceCommand_Handle_Result()
         {
             //------------Setup for test--------------------------
+            var toolboxViewModel = new Mock<IToolboxViewModel>().Object;
+            CustomContainer.Register(toolboxViewModel);
             CreateFullExportsAndVm();
 
             var env = SetupEnvironment();
@@ -2013,6 +2017,8 @@ namespace Dev2.Core.Tests
         public void MainViewModel_NewEmailSourceCommand_Handle_Result()
         {
             //------------Setup for test--------------------------
+            var toolboxViewModel = new Mock<IToolboxViewModel>().Object;
+            CustomContainer.Register(toolboxViewModel);
             CreateFullExportsAndVm();
 
             var env = SetupEnvironment();
@@ -2041,6 +2047,8 @@ namespace Dev2.Core.Tests
         public void MainViewModel_NewExchangeSourceCommand_Handle_Result()
         {
             //------------Setup for test--------------------------
+            var toolboxViewModel = new Mock<IToolboxViewModel>().Object;
+            CustomContainer.Register(toolboxViewModel);
             CreateFullExportsAndVm();
 
             var env = SetupEnvironment();
@@ -2070,6 +2078,8 @@ namespace Dev2.Core.Tests
         public void MainViewModel_NewPluginSourceCommand_Handle_Result()
         {
             //------------Setup for test--------------------------
+            var toolboxViewModel = new Mock<IToolboxViewModel>().Object;
+            CustomContainer.Register(toolboxViewModel);
             CreateFullExportsAndVm();
 
             var env = SetupEnvironment();
@@ -2098,6 +2108,8 @@ namespace Dev2.Core.Tests
         public void MainViewModel_NewRabbitMQSourceCommand_Handle_Result()
         {
             //------------Setup for test--------------------------
+            var toolboxViewModel = new Mock<IToolboxViewModel>().Object;
+            CustomContainer.Register(toolboxViewModel);
             CreateFullExportsAndVm();
 
             var env = SetupEnvironment();
@@ -2127,6 +2139,8 @@ namespace Dev2.Core.Tests
         public void MainViewModel_NewSharepointSourceCommand_Handle_Result()
         {
             //------------Setup for test--------------------------
+            var toolboxViewModel = new Mock<IToolboxViewModel>().Object;
+            CustomContainer.Register(toolboxViewModel);
             CreateFullExportsAndVm();
 
             var env = SetupEnvironment();
@@ -2155,6 +2169,8 @@ namespace Dev2.Core.Tests
         public void MainViewModel_NewWcfSourceCommand_Handle_Result()
         {
             //------------Setup for test--------------------------
+            var toolboxViewModel = new Mock<IToolboxViewModel>().Object;
+            CustomContainer.Register(toolboxViewModel);
             CreateFullExportsAndVm();
 
             var env = SetupEnvironment();
@@ -2183,6 +2199,8 @@ namespace Dev2.Core.Tests
         public void MainViewModel_NewWebSourceCommand_Handle_Result()
         {
             //------------Setup for test--------------------------
+            var toolboxViewModel = new Mock<IToolboxViewModel>().Object;
+            CustomContainer.Register(toolboxViewModel);
             CreateFullExportsAndVm();
 
             var env = SetupEnvironment();
@@ -2316,11 +2334,6 @@ namespace Dev2.Core.Tests
             mvm.Items.Add(vm);
             Assert.IsTrue(mvm.OnStudioClosing());   // assert that the studio closes
             connected1.Verify(a => a.IsConnected);
-            connected1.Verify(a => a.Disconnect());
-            connected2.Verify(a => a.IsConnected);
-            connected2.Verify(a => a.Disconnect());
-            notConnected.Verify(a => a.IsConnected);
-
         }
 
 
