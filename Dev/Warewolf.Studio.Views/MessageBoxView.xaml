@@ -6,6 +6,7 @@
         xmlns:cal="http://www.caliburnproject.org"
         xmlns:fa="http://schemas.fontawesome.io/icons/"
         xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna;assembly=Warewolf.Studio.Themes.Luna"
+        xmlns:system="clr-namespace:System;assembly=mscorlib"
         mc:Ignorable="d" 
         Style="{DynamicResource ModalDialogStyle}"
         Closing="MessageBoxView_OnClosing"
@@ -17,7 +18,7 @@
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-              <luna:SharedResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Theme.xaml"/>
+                <luna:SharedResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Theme.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Window.Resources>
@@ -25,6 +26,7 @@
         <Grid Margin="{StaticResource ElementBorder}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
                 <RowDefinition Height="*" />
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
@@ -35,8 +37,19 @@
                 <TextBlock Text="{Binding Path=Title}" Margin="6,0,0,0" />
             </StackPanel>
             <TextBlock Grid.Row="1" Text="{Binding Path=Message}" TextWrapping="Wrap" Margin="{StaticResource ControlBorderTop}" />
+            <ListBox Grid.Row="2" Height="200" ItemsSource="{Binding Path=UrlsFound, Mode=OneWay}" Name="listBox1" >
+                <ListBox.ItemTemplate>
+                    <DataTemplate DataType="system:String">
+                        <TextBlock>
+                            <Hyperlink NavigateUri="{Binding}" RequestNavigate="Hyperlink_OnRequestNavigate">
+                                <TextBlock Text="{Binding}" />
+                            </Hyperlink>
+                        </TextBlock>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
 
-            <StackPanel Grid.Row="2" HorizontalAlignment="Right" Margin="{StaticResource ControlBorderTop}" Orientation="Horizontal">
+            <StackPanel Grid.Row="3" HorizontalAlignment="Right" Margin="{StaticResource ControlBorderTop}" Orientation="Horizontal">
                 <Button Width="Auto" 
                         Visibility="{Binding Path=IsDependenciesButtonVisible, Converter={StaticResource BooleanToVisibilityConverter}}" 
                         Content="Show Dependencies" 

@@ -170,7 +170,7 @@ namespace Warewolf.Studio.AntiCorruptionLayer
             return result;
         }
         
-        public Task<string> LoadExplorerDuplicates()
+        public Task<List<string>> LoadExplorerDuplicates()
         {
             var result = ProxyLayer.LoadExplorerDuplicates();
             HasLoaded = true;
