@@ -40,7 +40,6 @@ namespace Warewolf.Studio.ViewModels
         IList<IExplorerTreeItem> _newItems;
         string _errorMessage;
         string _deploySuccessMessage;
-        private List<Guid> notfolders;
 
         #region Implementation of IDeployViewModel
 
@@ -238,7 +237,7 @@ namespace Warewolf.Studio.ViewModels
                 else
                 {
                     var selected = Source.SelectedItems.Where(a => a.ResourceType != "Folder");
-                    notfolders = selected.Select(a => a.ResourceId).ToList();
+                    var notfolders = selected.Select(a => a.ResourceId).ToList();
                     _shell.DeployResources(Source.Environments.First().Server.EnvironmentID, Destination.ConnectControlViewModel.SelectedConnection.EnvironmentID, notfolders);
                     DeploySuccessfull = true;
                     Destination.RefreshSelectedEnvironment();
@@ -375,8 +374,8 @@ namespace Warewolf.Studio.ViewModels
 
                 if (IsDeploying)
                     return false;
-                if (!CanDeploySelectedItems(Source.SelectedItems))
-                    return false;
+                //if (!CanDeploySelectedItems(Source.SelectedItems))
+                //    return false;
                 if (Source.SelectedEnvironment == null || !Source.SelectedEnvironment.IsConnected)
                 {
                     ErrorMessage = "Please select and connect a Source.";

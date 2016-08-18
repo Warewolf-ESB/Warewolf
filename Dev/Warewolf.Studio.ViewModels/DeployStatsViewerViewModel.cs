@@ -207,7 +207,8 @@ namespace Warewolf.Studio.ViewModels
 
 
                 Overrides = Conflicts.Count;
-                NewResources = SetCounters(New);
+                //NewResources = SetCounters(New);
+                NewResources = New.Count;
             }
             else
             {
