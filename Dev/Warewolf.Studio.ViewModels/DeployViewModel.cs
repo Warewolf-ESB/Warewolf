@@ -371,7 +371,6 @@ namespace Warewolf.Studio.ViewModels
         {
             get
             {
-
                 if (IsDeploying)
                     return false;
                 if (!CanDeploySelectedItems(Source.SelectedItems))
