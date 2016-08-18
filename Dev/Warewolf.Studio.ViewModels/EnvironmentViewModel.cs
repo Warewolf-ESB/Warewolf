@@ -42,6 +42,7 @@ namespace Warewolf.Studio.ViewModels
         private bool _showContextMenu;
         private readonly IPopupController _controller;
         private bool _canDrag;
+        private bool _forcedRefresh;
 
         public EnvironmentViewModel(IServer server, IShellViewModel shellViewModel, bool isDialog = false, Action<IExplorerItemViewModel> selectAction = null)
         {            
@@ -136,6 +137,7 @@ namespace Warewolf.Studio.ViewModels
             });
             server.Connect();
             IsConnected = server.IsConnected;
+            
             server.NetworkStateChanged += (args, server1) =>
              {
                  if (args.State == ConnectionNetworkState.Connected)
@@ -163,11 +165,13 @@ namespace Warewolf.Studio.ViewModels
             SelectAll = () => { };
             CanDrag = false;
             CanDrop = false;
+            if (ForcedRefresh)
+                ForcedRefresh = true;
         }
 
         private async Task Refresh()
         {
-            if(Children.Any(a => a.AllowResourceCheck))
+            if (Children.Any(a => a.AllowResourceCheck))
             {
                 await Load(true,true);
                 ShowContextMenu = false;
@@ -191,20 +195,21 @@ namespace Warewolf.Studio.ViewModels
         private int GetChildrenCount()
         {
             int total = 0;
-            foreach (var explorerItemModel in Children)
-            {
-                if (!explorerItemModel.IsResourceVersion && explorerItemModel.ResourceType != "Message")
+            if (Children != null)
+                foreach (var explorerItemModel in Children)
                 {
-                    if (explorerItemModel.IsFolder)
+                    if (!explorerItemModel.IsResourceVersion && explorerItemModel.ResourceType != "Message")
                     {
-                        total += explorerItemModel.ChildrenCount;
-                    }
-                    else
-                    {
-                        total++;
+                        if (explorerItemModel.IsFolder)
+                        {
+                            total += explorerItemModel.ChildrenCount;
+                        }
+                        else
+                        {
+                            total++;
+                        }
                     }
                 }
-            }
             return total;
         }
 
@@ -422,12 +427,12 @@ namespace Warewolf.Studio.ViewModels
             get
             {
                 if (_children == null)
-                    return _children;
+                    return new AsyncObservableCollection<IExplorerItemViewModel>();
                 return new AsyncObservableCollection<IExplorerItemViewModel>(_children.Where(a => a.IsVisible));
             }
             set
             {
-                _children = new AsyncObservableCollection<IExplorerItemViewModel>(value);
+                _children = value;
                 OnPropertyChanged(() => Children);
                 OnPropertyChanged(() => ChildrenCount);
             }
@@ -509,11 +514,28 @@ namespace Warewolf.Studio.ViewModels
 
         public bool IsExpanded
         {
-            get { return _isExpanded; }
+            get
+            {
+                if (ForcedRefresh && _isExpanded)
+                {
+                    return true;
+                }
+                return _isExpanded;
+            }
             set
             {
                 _isExpanded = value;
                 OnPropertyChanged(() => IsExpanded);
+            }
+        }
+
+        public bool ForcedRefresh
+        {
+            get { return _forcedRefresh; }
+            set
+            {
+                _forcedRefresh = value;
+                OnPropertyChanged(() => ForcedRefresh);
             }
         }
 
@@ -703,13 +725,13 @@ namespace Warewolf.Studio.ViewModels
             {
                 IsConnecting = true;
                 var explorerItems = await Server.LoadExplorer(reloadCatalogue);
-                var loadExplorerDuplicates = await Server.LoadExplorerDuplicates();
-                if(loadExplorerDuplicates!= String.Empty)
+                //var loadExplorerDuplicates = await Server.LoadExplorerDuplicates();
+                //if(loadExplorerDuplicates!= String.Empty)
                 {
                     var controller = CustomContainer.Get<IPopupController>();
-                    controller.ShowResourcesConflict(loadExplorerDuplicates);
+                    //controller.ShowResourcesConflict(loadExplorerDuplicates);
                 }
-                await CreateExplorerItems(explorerItems.Children, Server, this, selectedPath != null, Children.Any(a => AllowResourceCheck));
+                CreateExplorerItemsSync(explorerItems.Children, Server, this, selectedPath != null, Children.Any(a => AllowResourceCheck));
                 IsLoaded = true;
                 IsConnecting = false;
                 IsExpanded = true;
@@ -725,9 +747,8 @@ namespace Warewolf.Studio.ViewModels
             {
                 IsConnecting = true;
                 var explorerItems = await Server.LoadExplorer();
-                Server.LoadExplorerDuplicates();
 
-                await CreateExplorerItems(explorerItems.Children, Server, this, selectedPath != Guid.Empty);
+                CreateExplorerItemsSync(explorerItems.Children, Server, this, selectedPath != Guid.Empty);
                 IsLoaded = true;
                 IsConnecting = false;
                 IsExpanded = true;
@@ -794,117 +815,67 @@ namespace Warewolf.Studio.ViewModels
         }
 
         // ReSharper disable ParameterTypeCanBeEnumerable.Local
-#pragma warning disable 1998
-
-        public async Task<ObservableCollection<IExplorerItemViewModel>> CreateExplorerItems(IList<IExplorerItem> explorerItems, IServer server, IExplorerTreeItem parent, bool isDialog = false, bool isDeploy = false)
-#pragma warning restore 1998
-        // ReSharper restore ParameterTypeCanBeEnumerable.Local
-        {
-            if (explorerItems == null) return null;
-            var explorerItemModels = new ObservableCollection<IExplorerItemViewModel>();
-            if (parent != null)
-            {
-                parent.Children = new AsyncObservableCollection<IExplorerItemViewModel>();
-            }
-            // ReSharper disable once LoopCanBeConvertedToQuery
-            foreach (var explorerItem in explorerItems)
-            {
-                var itemCreated = new ExplorerItemViewModel(server, parent, a => { SelectAction(a); }, _shellViewModel, _controller)
-                {
-                    ResourceName = explorerItem.DisplayName,
-                    ResourceId = explorerItem.ResourceId,
-                    ResourceType = explorerItem.ResourceType,
-                    ResourcePath = explorerItem.ResourcePath,
-                    AllowResourceCheck = isDeploy,
-                    ShowContextMenu = !isDeploy,
-                    IsService =  explorerItem.IsService,
-                    IsFolder = explorerItem.IsFolder,
-                    IsSource = explorerItem.IsSource,
-                    IsReservedService = explorerItem.IsReservedService,
-                    IsResourceVersion = explorerItem.IsResourceVersion,
-                    IsServer = explorerItem.IsServer
-                };
-                if (isDeploy)
-                {
-                    itemCreated.CanExecute = false;
-                    itemCreated.CanEdit = false;
-                    itemCreated.CanView = false;
-                }
-                itemCreated.SetPermissions(server.Permissions, isDeploy);
-                if (isDialog)
-                {
-                    SetPropertiesForDialog(itemCreated);
-                }
-
-                CreateExplorerItemsSync(explorerItem.Children, server, itemCreated, isDialog, isDeploy);
-                explorerItemModels.Add(itemCreated);
-            }
-            if (parent != null)
-            {
-                var col = (AsyncObservableCollection<IExplorerItemViewModel>) parent.Children;
-                col.AddRange(explorerItemModels);
-                parent.Children = col;
-            }
-            if (isDeploy)
-            {
-                ShowContextMenu = false;
-            }
-            return null;
-        }
-
-        // ReSharper disable ParameterTypeCanBeEnumerable.Local
-        private void CreateExplorerItemsSync(IList<IExplorerItem> explorerItems, IServer server, IExplorerTreeItem parent, bool isDialog = false, bool isDeploy = false)
+        public void CreateExplorerItemsSync(IList<IExplorerItem> explorerItems, IServer server, IExplorerTreeItem parent, bool isDialog = false, bool isDeploy = false)
         // ReSharper restore ParameterTypeCanBeEnumerable.Local
         {
             if (explorerItems == null) return;
             var explorerItemModels = new ObservableCollection<IExplorerItemViewModel>();
-            if (parent != null)
-            {
-                parent.Children = new AsyncObservableCollection<IExplorerItemViewModel>();
-            }
             // ReSharper disable once LoopCanBeConvertedToQuery
             foreach (var explorerItem in explorerItems)
             {
-                var itemCreated = new ExplorerItemViewModel(server, parent, a => { SelectAction(a); }, _shellViewModel, _controller)
+                var existingItem = parent?.Children?.FirstOrDefault(model => model.ResourcePath.ToLowerInvariant() == explorerItem.ResourcePath.ToLower());
+                if (existingItem != null)
                 {
-                    ResourceName = explorerItem.DisplayName,
-                    ResourceId = explorerItem.ResourceId,
-                    ResourceType = explorerItem.ResourceType,
-                    ResourcePath = explorerItem.ResourcePath,
-                    AllowResourceCheck = isDeploy,
-                    ShowContextMenu = !isDeploy,
-                    IsService = explorerItem.IsService,
-                    IsFolder = explorerItem.IsFolder,
-                    IsSource = explorerItem.IsSource,
-                    IsReservedService = explorerItem.IsReservedService,
-                    IsResourceVersion = explorerItem.IsResourceVersion,
-                    IsServer = explorerItem.IsServer
-                };
-                if (isDeploy)
-                {
-                    itemCreated.CanExecute = false;
-                    itemCreated.CanView = false;
-                    itemCreated.CanEdit = false;
+                    CreateExplorerItemsSync(explorerItem.Children, server, existingItem, isDialog, isDeploy);
+                    explorerItemModels.Add(existingItem);
                 }
-                itemCreated.SetPermissions(server.Permissions, isDeploy);
-                if (isDialog)
+                else
                 {
-                    SetPropertiesForDialog(itemCreated);
+                    var itemCreated = CreateExplorerItem(server, parent, isDialog, isDeploy, explorerItem);
+                    CreateExplorerItemsSync(explorerItem.Children, server, itemCreated, isDialog, isDeploy);
+                    explorerItemModels.Add(itemCreated);
                 }
-
-                CreateExplorerItemsSync(explorerItem.Children, server, itemCreated, isDialog, isDeploy);
-                explorerItemModels.Add(itemCreated);
+                
             }
             if (parent != null)
             {
-                var col = (AsyncObservableCollection<IExplorerItemViewModel>) parent.Children;
-                col.AddRange(explorerItemModels);
-                parent.Children = col;
+                parent.Children = explorerItemModels;
             }
             if (isDeploy)
             {
                 ShowContextMenu = false;
             }
+        }
+
+        private ExplorerItemViewModel CreateExplorerItem(IServer server, IExplorerTreeItem parent, bool isDialog, bool isDeploy, IExplorerItem explorerItem)
+        {
+            var itemCreated = new ExplorerItemViewModel(server, parent, a => { SelectAction(a); }, _shellViewModel, _controller)
+            {
+                ResourceName = explorerItem.DisplayName,
+                ResourceId = explorerItem.ResourceId,
+                ResourceType = explorerItem.ResourceType,
+                ResourcePath = explorerItem.ResourcePath,
+                AllowResourceCheck = isDeploy,
+                ShowContextMenu = !isDeploy,
+                IsService = explorerItem.IsService,
+                IsFolder = explorerItem.IsFolder,
+                IsSource = explorerItem.IsSource,
+                IsReservedService = explorerItem.IsReservedService,
+                IsResourceVersion = explorerItem.IsResourceVersion,
+                IsServer = explorerItem.IsServer
+            };
+            if (isDeploy)
+            {
+                itemCreated.CanExecute = false;
+                itemCreated.CanView = false;
+                itemCreated.CanEdit = false;
+            }
+            itemCreated.SetPermissions(server.Permissions, isDeploy);
+            if (isDialog)
+            {
+                SetPropertiesForDialog(itemCreated);
+            }
+            return itemCreated;
         }
 
         private static void SetPropertiesForDialog(IExplorerItemViewModel itemCreated)
@@ -932,6 +903,24 @@ namespace Warewolf.Studio.ViewModels
                 {
                     explorerItemViewModel?.Dispose();
                 }
+        }
+
+        
+        public bool Equals(IExplorerTreeItem x, IExplorerTreeItem y)
+        {
+            if (ReferenceEquals(x, y)) return true;
+            if (ReferenceEquals(x, null)) return false;
+            if (ReferenceEquals(y, null)) return false;
+            if (x.GetType() != y.GetType()) return false;
+            return string.Equals(x.ResourcePath, y.ResourcePath) && x.ResourceId.Equals(y.ResourceId);
+        }
+
+        public int GetHashCode(IExplorerTreeItem obj)
+        {
+            unchecked
+            {
+                return ((obj.ResourcePath?.GetHashCode() ?? 0) * 397) ^ obj.ResourceId.GetHashCode();
+            }
         }
     }
 }

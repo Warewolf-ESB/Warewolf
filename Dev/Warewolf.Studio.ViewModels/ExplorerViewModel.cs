@@ -20,6 +20,7 @@ using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Interfaces;
 using Microsoft.Practices.ObjectBuilder2;
+using Microsoft.Practices.Prism;
 using Microsoft.Practices.Prism.Mvvm;
 
 // ReSharper disable MemberCanBeProtected.Global
@@ -44,7 +45,7 @@ namespace Warewolf.Studio.ViewModels
 
         protected ExplorerViewModelBase()
         {            
-            RefreshCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(Refresh);
+            RefreshCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(()=>Refresh(true));
             ClearSearchTextCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(() => SearchText = "");
             CreateFolderCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(CreateFolder);
         }
@@ -166,7 +167,7 @@ namespace Warewolf.Studio.ViewModels
             var environmentViewModel = Environments.FirstOrDefault(model => model.Server.EnvironmentID == environmentId);
             if (environmentViewModel != null)
             {
-                RefreshEnvironment(environmentViewModel);
+                RefreshEnvironment(environmentViewModel, true);
             }
         }
 
@@ -174,28 +175,31 @@ namespace Warewolf.Studio.ViewModels
         {
             if (SelectedEnvironment != null)
             {
-                RefreshEnvironment(SelectedEnvironment);
+                RefreshEnvironment(SelectedEnvironment,true);
             }
         }
-        protected virtual void Refresh()
+        protected virtual void Refresh(bool refresh)
         {
             IsRefreshing = true;
-            Environments.ForEach(RefreshEnvironment);
+            Environments.ForEach(env=>RefreshEnvironment(env,refresh));
             IsRefreshing = false;
             ConnectControlViewModel.LoadNewServers();
         }
 
-        private async void RefreshEnvironment(IEnvironmentViewModel environmentViewModel)
+        private async void RefreshEnvironment(IEnvironmentViewModel environmentViewModel, bool refresh)
         {
             IsRefreshing = true;
+            
             if (environmentViewModel.IsConnected)
             {
-                await environmentViewModel.Load();
+                environmentViewModel.ForcedRefresh = true;
+                await environmentViewModel.Load(false,refresh);               
                 if (!string.IsNullOrEmpty(SearchText))
                 {
                     Filter(SearchText);
                 }
             }
+            environmentViewModel.ForcedRefresh = false;
             IsRefreshing = false;
         }
 
