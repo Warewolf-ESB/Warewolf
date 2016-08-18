@@ -11,6 +11,7 @@
 
 // ReSharper disable CheckNamespace
 
+using System.Collections.Generic;
 using System.Windows;
 using Dev2.Common.Interfaces.PopupController;
 
@@ -60,6 +61,6 @@ namespace Dev2.Common.Interfaces.Studio.Controller
         MessageBoxResult ShowNoInputsSelectedWhenClickLink();
 
         MessageBoxResult ShowRollbackVersionMessage(string displayName);
-        MessageBoxResult ShowResourcesConflict(string resourceDuplicates);
+        MessageBoxResult ShowResourcesConflict(List<string> resourceDuplicates);
     }
 }

@@ -44,7 +44,7 @@ namespace Dev2.Common.Interfaces
 
         string GetMinSupportedVersion();
 
-        Task<string> LoadExplorerDuplicates();
+        Task<List<string>> LoadExplorerDuplicates();
     }
 
     public delegate void PermissionsChanged(PermissionsChangedArgs args);
