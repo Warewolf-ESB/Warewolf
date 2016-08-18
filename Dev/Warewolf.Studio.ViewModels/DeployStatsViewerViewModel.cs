@@ -205,10 +205,8 @@ namespace Warewolf.Studio.ViewModels
                     _new = new List<IExplorerTreeItem>();
                 }
 
-
                 Overrides = Conflicts.Count;
-                //NewResources = SetCounters(New);
-                NewResources = New.Count;
+                NewResources = SetCounters(New);
             }
             else
             {
@@ -227,10 +225,16 @@ namespace Warewolf.Studio.ViewModels
 
         private int SetCounters(IList<IExplorerTreeItem> items)
         {
-            return items.Select(explorerTreeItem => explorerTreeItem.Server.Permissions
-            .FirstOrDefault(p => p.ResourceID == explorerTreeItem.ResourceId))
-            .Count(windowsGroupPermission => windowsGroupPermission != null
-                    && windowsGroupPermission.Permissions != Permissions.View);
+            int count = 0;
+            foreach(var explorerTreeItem in items)
+            {
+                var windowsGroupPermission = explorerTreeItem.Server.Permissions?.FirstOrDefault(p => p.ResourceID == explorerTreeItem.ResourceId);
+                if((windowsGroupPermission == null) || windowsGroupPermission.Permissions != Permissions.View)
+                {
+                    count++;
+                }
+            }
+            return count;
         }
 
         public IList<Conflict> Conflicts => _conflicts.ToList();
