@@ -35,17 +35,17 @@ if not %errorlevel%==0 pause
 START "%~dp0Dev2.Server\bin\Debug\Warewolf Server.exe" /D "%~dp0Dev2.Server\bin\Debug" "Warewolf Server.exe"
 if not %errorlevel%==0 pause
 
-@echo off
 set /a LoopCounter=0
 :MainLoopBody
 IF EXIST "%~dp0Dev2.Server\bin\Debug\ServerStarted" goto StartStudio
 set /a LoopCounter=LoopCounter+1
 IF %LoopCounter% EQU 30 echo Timed out waiting for the Warewolf server to start. &pause &exit 1
+@echo off
 @echo Waiting 5 more seconds for server start...
 ping -n 5 -w 1000 192.0.2.2 > nul
+@echo on
 goto MainLoopBody
 
 :StartStudio
-@echo on
 START "%~dp0Dev2.Studio\bin\Debug\Warewolf Studio.exe" /D "%~dp0Dev2.Studio\bin\Debug" "Warewolf Studio.exe"
 if not %errorlevel%==0 pause
