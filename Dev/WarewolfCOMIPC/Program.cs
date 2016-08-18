@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Globalization;
 using System.IO;
 using System.IO.Pipes;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using Newtonsoft.Json;
 using WarewolfCOMIPC.Client;
 // ReSharper disable NonLocalizedString
@@ -74,12 +76,14 @@ namespace WarewolfCOMIPC
                     {
                         Console.WriteLine("Executing GetType for:" + data.CLSID);
                         var type = Type.GetTypeFromCLSID(data.CLSID, true);
-                        Console.WriteLine("Got Type:" + type.FullName);
+                        var objectInstance = Activator.CreateInstance(type);
+                        Type dispatchedtype = DispatchUtility.GetType(objectInstance, false);
+                        Console.WriteLine("Got Type:" + dispatchedtype.FullName);
                         var sw = new StreamWriter(pipe);
-                        Console.WriteLine("Serializing and sending:" + type.FullName);
-                        formatter.Serialize(sw, type);
+                        Console.WriteLine("Serializing and sending:" + dispatchedtype.FullName);
+                        formatter.Serialize(sw, dispatchedtype);
                         sw.Flush();
-                        Console.WriteLine("Sent:" + type.FullName);
+                        Console.WriteLine("Sent:" + dispatchedtype.FullName);
                     }
                     break;
                 case Execute.GetMethods:
@@ -87,8 +91,20 @@ namespace WarewolfCOMIPC
                         Console.WriteLine("Executing GeMethods for:" + data.CLSID);
                         var type = Type.GetTypeFromCLSID(data.CLSID, true);
                         var objectInstance = Activator.CreateInstance(type);
+                        var dispatchedtype = DispatchUtility.GetType(objectInstance, false);
+                        MethodInfo[] methods;
 
-                        var methods = objectInstance.GetType().GetMethods();
+                        try
+                        {
+                            var dispatchedInstance = Activator.CreateInstance(dispatchedtype);
+                            methods = dispatchedInstance.GetType().GetMethods();
+                            Marshal.ReleaseComObject(dispatchedInstance);
+                        }
+                        catch (Exception)
+                        {
+                            methods = dispatchedtype.GetMethods();
+                        }
+
                         List<MethodInfoTO> methodInfos = methods
                             .Select(info => new MethodInfoTO
                             {
@@ -103,12 +119,12 @@ namespace WarewolfCOMIPC
                                                      TypeName = parameterInfo.ParameterType.AssemblyQualifiedName
                                                  }).ToList()
                             }).ToList();
-                        Console.WriteLine($"Got {1} mrthods");
+                        Console.WriteLine($"Got {methods.Count()} mrthods");
                         var sw = new StreamWriter(pipe);
-                        Console.WriteLine("Serializing and sending methods for:" + type.FullName);
+                        Console.WriteLine("Serializing and sending methods for:" + dispatchedtype.FullName);
                         formatter.Serialize(sw, methodInfos);
                         sw.Flush();
-                        Console.WriteLine("Sent methods for:" + type.FullName);
+                        Console.WriteLine("Sent methods for:" + dispatchedtype.FullName);
                     }
                     break;
                 case Execute.ExecuteSpecifiedMethod:
@@ -116,16 +132,17 @@ namespace WarewolfCOMIPC
                         Console.WriteLine("Executing GeMethods for:" + data.CLSID);
                         var type = Type.GetTypeFromCLSID(data.CLSID, true);
                         var objectInstance = Activator.CreateInstance(type);
-
+                        var dispatchedtype = DispatchUtility.GetType(objectInstance, false);
+                        var dispatchedInstance = Activator.CreateInstance(dispatchedtype);
 
                         var arguments = data.Parameters.Select(o => o.GetType()).ToArray();
-                        var methodToRun = type.GetMethod(data.MethodToCall, arguments) ?? type.GetMethod(data.MethodToCall);
+                        var methodToRun = dispatchedtype.GetMethod(data.MethodToCall, arguments) ?? dispatchedtype.GetMethod(data.MethodToCall);
                         // ReSharper disable once SuggestVarOrType_Elsewhere
                         if (methodToRun != null)
                         {
                             if (methodToRun.ReturnType == typeof(void))
                             {
-                                methodToRun.Invoke(objectInstance, BindingFlags.InvokeMethod | BindingFlags.IgnoreCase | BindingFlags.Public, null, data.Parameters, CultureInfo.InvariantCulture);
+                                methodToRun.Invoke(dispatchedInstance, BindingFlags.InvokeMethod | BindingFlags.IgnoreCase | BindingFlags.Public, null, data.Parameters, CultureInfo.InvariantCulture);
                                 var sw = new StreamWriter(pipe);
                                 formatter.Serialize(sw, "Success");
                                 sw.Flush();
@@ -133,7 +150,7 @@ namespace WarewolfCOMIPC
                             }
                             else
                             {
-                                var pluginResult = methodToRun.Invoke(objectInstance, BindingFlags.InvokeMethod | BindingFlags.IgnoreCase | BindingFlags.Public, null, data.Parameters, CultureInfo.InvariantCulture);
+                                var pluginResult = methodToRun.Invoke(dispatchedInstance, BindingFlags.InvokeMethod | BindingFlags.IgnoreCase | BindingFlags.Public, null, data.Parameters, CultureInfo.InvariantCulture);
                                 var sw = new StreamWriter(pipe);
                                 formatter.Serialize(sw, pluginResult);
                                 sw.Flush();
