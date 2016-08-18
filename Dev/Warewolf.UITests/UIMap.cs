@@ -157,6 +157,15 @@ namespace Warewolf.UITests
             {
                 throw new InvalidOperationException("Warewolf studio is not running. You are expected to run \"Dev\\TestScripts\\Studio\\Startup.bat\" as an administrator and wait for it to complete before running any coded UI tests");
             }
+            TryClickMessageBoxOK();
+        }
+
+        private void TryClickMessageBoxOK()
+        {
+            if (ControlExistsNow(MessageBoxWindow.OKButton))
+            {
+                Click_MessageBox_OK();
+            }
         }
 
         public void InitializeABlankWorkflow()
