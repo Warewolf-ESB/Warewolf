@@ -1,5 +1,6 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
+using System.Runtime.InteropServices;
 using System.Xml.Linq;
 using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.ServiceModel.Data;
@@ -95,6 +96,10 @@ namespace Dev2.Runtime.ServiceModel
                 RaiseError(e);
                 throw;
             }
+            catch (Exception ex) when (ex is COMException)
+            {
+                throw;
+            }
             catch (Exception ex)
             {
                 RaiseError(ex);
@@ -114,7 +119,7 @@ namespace Dev2.Runtime.ServiceModel
             {
                 var broker = new ComPluginBroker();
                 var comPluginSource = (ComPluginSource)service.Source;
-                result = broker.GetMethods(comPluginSource.ClsId,comPluginSource.Is32Bit);
+                result = broker.GetMethods(comPluginSource.ClsId, comPluginSource.Is32Bit);
                 return result;
             }
             catch (Exception ex)
