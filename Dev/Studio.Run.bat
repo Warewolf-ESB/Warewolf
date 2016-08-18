@@ -32,7 +32,7 @@ IF EXIST MSBuild (
 )
 if not %errorlevel%==0 pause
 
-DEL "%~dp0Dev2.Server\bin\Debug\ServerStarted"
+IF EXIST "%~dp0Dev2.Server\bin\Debug\ServerStarted" DEL "%~dp0Dev2.Server\bin\Debug\ServerStarted"
 START "%~dp0Dev2.Server\bin\Debug\Warewolf Server.exe" /D "%~dp0Dev2.Server\bin\Debug" "Warewolf Server.exe"
 if not %errorlevel%==0 pause
 
