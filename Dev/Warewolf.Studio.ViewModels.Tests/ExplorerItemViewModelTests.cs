@@ -526,14 +526,14 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsFalse(_target == null);
             // ReSharper disable once EqualExpressionComparison
             Assert.IsTrue(Equals(_target, _target));
-            Assert.IsTrue(_target == otherSameId);
+            Assert.IsFalse(_target == otherSameId);
             Assert.IsFalse(_target == otherDifferentId);
             Assert.IsFalse(ReferenceEquals(_target, otherDifferentType));
 
             Assert.IsTrue(_target != null);
             // ReSharper disable once EqualExpressionComparison
             Assert.IsFalse(!Equals(_target, _target));
-            Assert.IsFalse(_target != otherSameId);
+            Assert.IsTrue(_target != otherSameId);
             Assert.IsTrue(_target != otherDifferentId);
 #pragma warning disable 252,253
             Assert.IsTrue(_target != otherDifferentType);

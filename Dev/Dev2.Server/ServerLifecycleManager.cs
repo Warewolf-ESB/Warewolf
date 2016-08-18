@@ -380,6 +380,40 @@ namespace Dev2
             }
         }
 
+        /// <summary>
+        /// Ensures all external dependencies have been loaded, then loads all referenced assemblies by the 
+        /// currently executing assembly, and recursively loads each of the referenced assemblies of the 
+        /// initial dependency set until all dependencies have been loaded.
+        /// </summary>
+        static void PreloadReferences()
+        {
+            Write("Preloading assemblies...  ");
+            Assembly currentAsm = typeof(ServerLifecycleManager).Assembly;
+            HashSet<string> inspected = new HashSet<string> { currentAsm.GetName().ToString(), "GroupControls" };
+            LoadReferences(currentAsm, inspected);
+            WriteLine("done.");
+        }
+
+        /// <summary>
+        /// Loads the assemblies that are referenced by the input assembly, but only if that assembly has not
+        /// already been inspected.
+        /// </summary>
+        static void LoadReferences(Assembly asm, HashSet<string> inspected)
+        {
+            AssemblyName[] allReferences = asm.GetReferencedAssemblies();
+
+            foreach (AssemblyName toLoad in allReferences)
+            {
+                if (!inspected.Contains(toLoad.Name))
+                {
+                    inspected.Add(toLoad.Name);
+                    Assembly loaded = AppDomain.CurrentDomain.Load(toLoad);
+                    LoadReferences(loaded, inspected);
+                }
+            }
+        }
+
+
         private void DeleteTempFiles()
         {
             var tempPath = Path.Combine(GlobalConstants.TempLocation, "Warewolf", "Debug");
@@ -767,6 +801,7 @@ namespace Dev2
 
         private static void LoadActivityCache(ResourceCatalog catalog)
         {
+            PreloadReferences();
             CustomContainer.Register<IActivityParser>(new ActivityParser());
             Write("Loading resource activity cache...  ");
             catalog.LoadResourceActivityCache(GlobalConstants.ServerWorkspaceID);

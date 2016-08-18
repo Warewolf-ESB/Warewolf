@@ -37,10 +37,10 @@ namespace Warewolf.Studio.AntiCorruptionLayer
 
         public event ServerSaved ServerSaved;
 
-        public void FireItemSaved()
+        public void FireItemSaved(bool forcedRefresh)
         {
             var handler = ItemSaved;
-            handler?.Invoke();
+            handler?.Invoke(forcedRefresh);
         }
 
         public void FireServerSaved()
@@ -54,7 +54,7 @@ namespace Warewolf.Studio.AntiCorruptionLayer
         public void Save(IServerSource serverSource)
         {
             UpdateManagerProxy.SaveServerSource(serverSource, GlobalConstants.ServerWorkspaceID);
-            ItemSaved?.Invoke();
+            ItemSaved?.Invoke(true);
             ServerSaved?.Invoke();
         }
 
@@ -62,28 +62,28 @@ namespace Warewolf.Studio.AntiCorruptionLayer
         {
             UpdateManagerProxy.SavePluginSource(source, GlobalConstants.ServerWorkspaceID);
             PluginServiceSourceSaved?.Invoke(source);
-            ItemSaved?.Invoke();
+            ItemSaved?.Invoke(true);
         }
 
         public void Save(IComPluginSource source)
         {
             UpdateManagerProxy.SaveComPluginSource(source, GlobalConstants.ServerWorkspaceID);
             ComPluginServiceSourceSaved?.Invoke(source);
-            ItemSaved?.Invoke();
+            ItemSaved?.Invoke(true);
         }
 
         public void Save(IOAuthSource source)
         {
             UpdateManagerProxy.SaveOAuthSource(source, GlobalConstants.ServerWorkspaceID);
             OAuthSourceSaved?.Invoke(source);
-            ItemSaved?.Invoke();
+            ItemSaved?.Invoke(true);
         }
 
         public void Save(IEmailServiceSource emailServiceSource)
         {
             UpdateManagerProxy.SaveEmailServiceSource(emailServiceSource, GlobalConstants.ServerWorkspaceID);
             EmailServiceSourceSaved?.Invoke(emailServiceSource);
-            ItemSaved?.Invoke();
+            ItemSaved?.Invoke(true);
         }
 
         // ReSharper disable once InconsistentNaming
@@ -91,13 +91,13 @@ namespace Warewolf.Studio.AntiCorruptionLayer
         {
             UpdateManagerProxy.SaveRabbitMQServiceSource(rabbitMqServiceSource, GlobalConstants.ServerWorkspaceID);
             RabbitMQServiceSourceSaved?.Invoke(rabbitMqServiceSource);
-            ItemSaved?.Invoke();
+            ItemSaved?.Invoke(true);
         }
         public void Save(IExchangeSource exchangeSource)
         {
             UpdateManagerProxy.SaveExchangeSource(exchangeSource, GlobalConstants.ServerWorkspaceID);
             ExchangedServiceSourceSaved?.Invoke(exchangeSource);
-            ItemSaved?.Invoke();
+            ItemSaved?.Invoke(true);
         }
 
 
@@ -141,13 +141,13 @@ namespace Warewolf.Studio.AntiCorruptionLayer
         {
             UpdateManagerProxy.SaveDbSource(toDbSource, GlobalConstants.ServerWorkspaceID);
             DatabaseServiceSourceSaved?.Invoke(toDbSource);
-            ItemSaved?.Invoke();
+            ItemSaved?.Invoke(true);
         }
 
         public void Save(IWebService model)
         {
             UpdateManagerProxy.SaveWebservice(model, GlobalConstants.ServerWorkspaceID);
-            ItemSaved?.Invoke();
+            ItemSaved?.Invoke(true);
         }
 
         public void Save(IWebServiceSource resource)
@@ -156,7 +156,7 @@ namespace Warewolf.Studio.AntiCorruptionLayer
             {
                 UpdateManagerProxy.SaveWebserviceSource(resource, GlobalConstants.ServerWorkspaceID);
                 WebServiceSourceSaved?.Invoke(resource);
-                ItemSaved?.Invoke();
+                ItemSaved?.Invoke(true);
             }
             catch (Exception)
             {
@@ -170,7 +170,7 @@ namespace Warewolf.Studio.AntiCorruptionLayer
             {
                 UpdateManagerProxy.SaveSharePointServiceSource(resource, GlobalConstants.ServerWorkspaceID);
                 SharePointServiceSourceSaved?.Invoke(resource);
-                ItemSaved?.Invoke();
+                ItemSaved?.Invoke(true);
             }
             catch (Exception)
             {
@@ -181,7 +181,7 @@ namespace Warewolf.Studio.AntiCorruptionLayer
         public void Save(IDatabaseService toDbSource)
         {
             UpdateManagerProxy.SaveDbService(toDbSource);
-            ItemSaved?.Invoke();
+            ItemSaved?.Invoke(true);
         }
 
         public DataTable TestDbService(IDatabaseService inputValues)
@@ -226,13 +226,13 @@ namespace Warewolf.Studio.AntiCorruptionLayer
         public void Save(IPluginService toDbSource)
         {
             UpdateManagerProxy.SavePluginService(toDbSource);
-            ItemSaved?.Invoke();
+            ItemSaved?.Invoke(true);
         }
 
         public void Save(IComPluginService toDbSource)
         {
             UpdateManagerProxy.SaveComPluginService(toDbSource);
-            ItemSaved?.Invoke();
+            ItemSaved?.Invoke(true);
         }
 
         public void Save(IWcfService toSource)
@@ -244,7 +244,7 @@ namespace Warewolf.Studio.AntiCorruptionLayer
         {
             UpdateManagerProxy.SaveWcfSource(wcfSource, GlobalConstants.ServerWorkspaceID);
             WcfSourceSaved?.Invoke(wcfSource);
-            ItemSaved?.Invoke();
+            ItemSaved?.Invoke(true);
         }
 
         public string TestWcfService(IWcfService inputValues)

@@ -51,14 +51,14 @@ namespace Dev2.Common.Interfaces
         event Action<IWebServiceSource> WebServiceSourceSaved;
         event ItemSaved ItemSaved;
         event ServerSaved ServerSaved;
-        void FireItemSaved();
+        void FireItemSaved(bool forcedRefresh);
         void FireServerSaved();
         event Action<IDbSource> DatabaseServiceSourceSaved;
         event Action<IPluginSource> PluginServiceSourceSaved;
         event Action<IEmailServiceSource> EmailServiceSourceSaved;
     }
 
-    public delegate void ItemSaved();
+    public delegate void ItemSaved(bool refresh);
 
     public delegate void ServerSaved();
 }
