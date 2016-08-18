@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.25123.0
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.UITests", "Warewolf.UITests\Warewolf.UITests.csproj", "{91A84D74-7D50-4046-A8FE-82E52B5DBEE5}"
 EndProject
@@ -45,6 +45,11 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Older.Studio.UI.Specs", "Warewolf.Studio.UISpecs\Old.Studio.UISpecs\Older.Studio.UI.Specs.csproj", "{2E886FC7-A0F6-4BBF-AE66-6884B3FD8AC5}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Oldest.Studio.UI.Tests", "Warewolf.Studio.UISpecs\Older.Studio.UI.Tests\Oldest.Studio.UI.Tests.csproj", "{9C452452-634E-4A21-AB9E-681D3F05DF52}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{420E71D8-43C5-48B2-978E-0D37C2349407}"
+	ProjectSection(SolutionItems) = preProject
+		Studio.Run.bat = Studio.Run.bat
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

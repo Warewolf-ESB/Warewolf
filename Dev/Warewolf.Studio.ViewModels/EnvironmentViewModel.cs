@@ -704,7 +704,7 @@ namespace Warewolf.Studio.ViewModels
                 IsConnecting = true;
                 var explorerItems = await Server.LoadExplorer(reloadCatalogue);
                 var loadExplorerDuplicates = await Server.LoadExplorerDuplicates();
-                if(loadExplorerDuplicates!= String.Empty)
+                if(loadExplorerDuplicates.Length > 0)
                 {
                     var controller = CustomContainer.Get<IPopupController>();
                     controller.ShowResourcesConflict(loadExplorerDuplicates);
