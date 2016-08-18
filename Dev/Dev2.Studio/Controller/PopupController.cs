@@ -9,7 +9,9 @@
 */
 
 using System;
+using System.Collections.Generic;
 using System.Windows;
+using System.Windows.Documents;
 using Dev2.Common;
 using Dev2.Common.Interfaces.PopupController;
 using Dev2.Studio.ViewModels.Dialogs;
@@ -35,6 +37,7 @@ namespace Dev2.Studio.Controller
         public bool IsError { get; private set; }
         public bool IsInfo { get; private set; }
         public bool IsQuestion { get; private set; }
+        public List<string> UrlsFound { get; private set; }
         public bool IsDependenciesButtonVisible { get; private set; }
 
         public MessageBoxResult Show(IPopupMessage popupMessage)
@@ -44,7 +47,7 @@ namespace Dev2.Studio.Controller
 
         public MessageBoxResult Show()
         {
-            return ShowDev2MessageBox(Description, Header, Buttons, ImageType, DontShowAgainKey, IsDependenciesButtonVisible, IsError, IsInfo, IsQuestion);
+            return ShowDev2MessageBox(Description, Header, Buttons, ImageType, DontShowAgainKey, IsDependenciesButtonVisible, IsError, IsInfo, IsQuestion, UrlsFound);
         }
 
         public MessageBoxResult Show(string description, string header = "", MessageBoxButton buttons = MessageBoxButton.OK, MessageBoxImage image = MessageBoxImage.Asterisk, string dontShowAgainKey = null, bool isDependenciesButtonVisible = false, bool isError = false, bool isInfo = false, bool isQuestion = false)
@@ -61,7 +64,7 @@ namespace Dev2.Studio.Controller
             return Show();
         }
 
-        public Func<string, string, MessageBoxButton, MessageBoxImage, string, bool, bool, bool, bool, MessageBoxResult> ShowDev2MessageBox = (description, header, buttons, imageType, dontShowAgainKey, isDependenciesButtonVisible, isError, isInfo, isQuestion) => Dev2MessageBoxViewModel.Show(description, header, buttons, imageType, dontShowAgainKey, isDependenciesButtonVisible, isError, isInfo, isQuestion);
+        public Func<string, string, MessageBoxButton, MessageBoxImage, string, bool, bool, bool, bool, List<string>, MessageBoxResult> ShowDev2MessageBox = (description, header, buttons, imageType, dontShowAgainKey, isDependenciesButtonVisible, isError, isInfo, isQuestion, urlsFound) => Dev2MessageBoxViewModel.Show(description, header, buttons, imageType, dontShowAgainKey, isDependenciesButtonVisible, isError, isInfo, isQuestion, urlsFound);
 
         public MessageBoxResult ShowNotConnected()
         {
@@ -106,11 +109,12 @@ namespace Dev2.Studio.Controller
             return Show();
         }
 
-        public MessageBoxResult ShowResourcesConflict(string duplicateResource)
+        public MessageBoxResult ShowResourcesConflict(List<string> duplicateResource)
         {
             Buttons = MessageBoxButton.OK;
             Header = "Duplicated Resources";
-            Description = $"{duplicateResource} \nPlease resolve the files on File Explorer";
+            UrlsFound = duplicateResource;
+            Description = "Duplicate resources found. Please resolve the files on File Explorer. \nTo view the resource, click on the individual items below.";
             ImageType = MessageBoxImage.Error;
             IsDependenciesButtonVisible = false;
             IsInfo = false;

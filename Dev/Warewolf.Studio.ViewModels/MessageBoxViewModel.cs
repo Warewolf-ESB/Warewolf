@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.Collections.Generic;
+using System.Windows;
 using System.Windows.Input;
 using Caliburn.Micro;
 using FontAwesome.WPF;
@@ -17,15 +18,17 @@ namespace Warewolf.Studio.ViewModels
         bool _isError;
         bool _isInfo;
         bool _isQuestion;
+        private List<string> _urlsFound;
 
         public MessageBoxViewModel(string message, string title, MessageBoxButton buttons, FontAwesomeIcon icon, bool isDependenciesButtonVisible,
-            bool isError, bool isInfo, bool isQuestion)
+            bool isError, bool isInfo, bool isQuestion, List<string> urlsFound)
         {
             Title = title;
             IsError = isError;
             IsInfo = isInfo;
             IsQuestion = isQuestion;
             Message = message;
+            UrlsFound = urlsFound;
             Buttons = buttons;
             Icon = icon;
             YesCommand = new DelegateCommand(Yes);
@@ -33,6 +36,16 @@ namespace Warewolf.Studio.ViewModels
             CancelCommand = new DelegateCommand(Cancel);
             OkCommand = new DelegateCommand(Ok);
             IsDependenciesButtonVisible = isDependenciesButtonVisible;
+        }
+
+        public List<string> UrlsFound
+        {
+            get { return _urlsFound; }
+            set
+            {
+                _urlsFound = value;
+                NotifyOfPropertyChange(() => UrlsFound);
+            }
         }
 
         FontAwesomeIcon Icon
