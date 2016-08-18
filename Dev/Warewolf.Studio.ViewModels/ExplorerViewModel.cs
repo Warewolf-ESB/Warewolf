@@ -20,7 +20,6 @@ using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Interfaces;
 using Microsoft.Practices.ObjectBuilder2;
-using Microsoft.Practices.Prism;
 using Microsoft.Practices.Prism.Mvvm;
 
 // ReSharper disable MemberCanBeProtected.Global
