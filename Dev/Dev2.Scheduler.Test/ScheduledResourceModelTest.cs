@@ -15,6 +15,7 @@ using System.Text;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Scheduler.Interfaces;
 using Dev2.Common.Interfaces.WindowsTaskScheduler.Wrappers;
+using Dev2.Communication;
 using Dev2.Diagnostics.Debug;
 using Dev2.Runtime.ESB.Management.Services;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -264,9 +265,9 @@ securityWrapper
 
             //expectations
             dirHelper.Setup(a => a.GetFiles(@"c:\")).Returns(new[] { "b_12345_Bob" });
+            const string content = "[{\"$type\":\"Dev2.Diagnostics.Debug.DebugState, Dev2.Diagnostics\",\"ID\":\"cd902be2-a202-4d54-8c07-c5f56bae97fe\",\"ParentID\":\"00000000-0000-0000-0000-000000000000\",\"ServerID\":\"00000000-0000-0000-0000-000000000000\",\"EnvironmentID\":\"00000000-0000-0000-0000-000000000000\",\"ClientID\":\"00000000-0000-0000-0000-000000000000\",\"StateType\":64,\"DisplayName\":\"dave\",\"HasError\":false,\"ErrorMessage\":\"Service [ dave ] not found.\",\"Version\":\"\",\"Name\":\"DynamicServicesInvoker\",\"ActivityType\":0,\"Duration\":\"00:00:00\",\"DurationString\":\"PT0S\",\"StartTime\":\"2014-03-20T17:23:14.0224329+02:00\",\"EndTime\":\"2014-03-20T17:23:14.0224329+02:00\",\"Inputs\":[],\"Outputs\":[],\"Server\":\"\",\"WorkspaceID\":\"00000000-0000-0000-0000-000000000000\",\"OriginalInstanceID\":\"00000000-0000-0000-0000-000000000000\",\"OriginatingResourceID\":\"00000000-0000-0000-0000-000000000000\",\"IsSimulation\":false,\"Message\":null,\"NumberOfSteps\":0,\"Origin\":\"\",\"ExecutionOrigin\":0,\"ExecutionOriginDescription\":null,\"ExecutingUser\":null,\"SessionID\":\"00000000-0000-0000-0000-000000000000\"}]";
             fileHelper.Setup(a => a.ReadAllText("b_12345_Bob"))
-                      .Returns(
-                          "[{\"$type\":\"Dev2.Diagnostics.Debug.DebugState, Dev2.Diagnostics\",\"ID\":\"cd902be2-a202-4d54-8c07-c5f56bae97fe\",\"ParentID\":\"00000000-0000-0000-0000-000000000000\",\"ServerID\":\"00000000-0000-0000-0000-000000000000\",\"EnvironmentID\":\"00000000-0000-0000-0000-000000000000\",\"ClientID\":\"00000000-0000-0000-0000-000000000000\",\"StateType\":64,\"DisplayName\":\"dave\",\"HasError\":false,\"ErrorMessage\":\"Service [ dave ] not found.\",\"Version\":\"\",\"Name\":\"DynamicServicesInvoker\",\"ActivityType\":0,\"Duration\":\"00:00:00\",\"DurationString\":\"PT0S\",\"StartTime\":\"2014-03-20T17:23:14.0224329+02:00\",\"EndTime\":\"2014-03-20T17:23:14.0224329+02:00\",\"Inputs\":[],\"Outputs\":[],\"Server\":\"\",\"WorkspaceID\":\"00000000-0000-0000-0000-000000000000\",\"OriginalInstanceID\":\"00000000-0000-0000-0000-000000000000\",\"OriginatingResourceID\":\"00000000-0000-0000-0000-000000000000\",\"IsSimulation\":false,\"Message\":null,\"NumberOfSteps\":0,\"Origin\":\"\",\"ExecutionOrigin\":0,\"ExecutionOriginDescription\":null,\"ExecutingUser\":null,\"SessionID\":\"00000000-0000-0000-0000-000000000000\"}]");
+                      .Returns(content);
             res.Setup(a => a.Name).Returns("Bob");
             _convertorFactory.Setup(a => a.CreateTaskEventLog(It.IsAny<string>())).Returns(log);
 
@@ -277,10 +278,13 @@ securityWrapper
                                                    @"c:\", _wrapper.Object, a => a.WorkflowName);
             model.DirectoryHelper = dirHelper.Object;
             model.FileHelper = fileHelper.Object;
-            var history = RunOutput(startTime, endTime, "Bob");
+            //var history = RunOutput(startTime, endTime, "Bob");
+            var serializer = new Dev2JsonSerializer();
+            var debugStates = serializer.Deserialize<List<IDebugState>>(content).First();
+            IList<IResourceHistory> history = model.CreateHistory(res.Object);
             Assert.AreEqual(1, history.Count);
-            Assert.AreEqual(new DateTime(2000, 1, 1), history.First().DebugOutput.First().StartTime);
-            Assert.AreEqual(new DateTime(2003, 1, 1), history.First().DebugOutput.First().EndTime);
+            Assert.AreEqual(debugStates.StartTime, history.First().DebugOutput.First().StartTime);
+            Assert.AreEqual(debugStates.EndTime, history.First().DebugOutput.First().EndTime);
             Assert.AreEqual(history.Last().DebugOutput.Count, 1);
             Assert.AreEqual("Bob", history.Last().UserName);
         }
@@ -366,8 +370,6 @@ securityWrapper
             Assert.AreEqual(2, history.Count);
             Assert.AreEqual(ScheduleRunStatus.Error, history.Last().TaskHistoryOutput.Success);
         }
-
-
 
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]

@@ -43,7 +43,7 @@ namespace Dev2.Data.Tests.Parsers
             var parser = new Dev2DataLanguageParser();
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
-            var expressionIntoParts = parser.ParseExpressionIntoParts("[[a]]", new List<IDev2DataLanguageIntellisensePart>());
+            var expressionIntoParts = parser.ParseExpressionIntoParts("[[x]]", new List<IDev2DataLanguageIntellisensePart>());
             //---------------Test Result -----------------------
             Assert.AreEqual(1, expressionIntoParts.Count);
             var error = expressionIntoParts.SingleOrDefault(result => !string.IsNullOrEmpty(result.Message));
@@ -400,15 +400,22 @@ namespace Dev2.Data.Tests.Parsers
             var result = new List<IIntellisenseResult>();
             var parseTO = new ParseTO()
             {
-                Parent = new ParseTO() { Payload = "rec().Name" },
-
+                Parent = new ParseTO() { Payload = "rec().Name" }
             };
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
-            var invoke = privateObject.Invoke("ProcessForOnlyOpenRegion", parseTO, refParts, result);
-
+            bool invoke;
+            try
+            {
+                privateObject.Invoke("ProcessForOnlyOpenRegion", parseTO, refParts, result);
+                invoke = true;
+            }
+            catch (Exception)
+            {
+                invoke = false;
+            }
             //---------------Test Result -----------------------
-            Assert.IsNotNull(invoke, "Cannot invoke new Dev2DataLanguageParser PrivateObject.");
+            Assert.IsTrue(invoke);//, "Cannot invoke new Dev2DataLanguageParser PrivateObject.");
         }
 
         [TestMethod]
@@ -430,9 +437,18 @@ namespace Dev2.Data.Tests.Parsers
             };
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
-            var invoke = privateObject.Invoke("ProcessForOnlyOpenRegion", parseTO, refParts, result);
+            bool invoke;
+            try
+            {
+                privateObject.Invoke("ProcessForOnlyOpenRegion", parseTO, refParts, result);
+                invoke = true;
+            }
+            catch (Exception)
+            {
+                invoke = false;
+            }
             //---------------Test Result -----------------------
-            Assert.IsNotNull(invoke, "Cannot invoke new Dev2DataLanguageParser PrivateObject.");
+            Assert.IsTrue(invoke, "Cannot invoke new Dev2DataLanguageParser PrivateObject.");
         }
 
         [TestMethod]

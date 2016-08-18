@@ -16,6 +16,7 @@ using System.IO;
 using System.Windows.Input;
 using System.Text.RegularExpressions;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using System.Windows.Forms.VisualStyles;
@@ -151,10 +152,19 @@ namespace Warewolf.UITests
         public void WaitForStudioStart(int timeout = 60000)
         {
             Console.WriteLine("Waiting for studio to start.");
-            MainStudioWindow.WaitForControlExist(timeout);
+            WaitForControlVisible(MainStudioWindow, timeout);
             if (!MainStudioWindow.Exists)
             {
                 throw new InvalidOperationException("Warewolf studio is not running. You are expected to run \"Dev\\TestScripts\\Studio\\Startup.bat\" as an administrator and wait for it to complete before running any coded UI tests");
+            }
+            TryClickMessageBoxOK();
+        }
+
+        private void TryClickMessageBoxOK()
+        {
+            if (ControlExistsNow(MessageBoxWindow.OKButton))
+            {
+                Click_MessageBox_OK();
             }
         }
 
@@ -274,7 +284,7 @@ namespace Warewolf.UITests
                 }
                 Select_LocalhostConnected_From_Explorer_Remote_Server_Dropdown_List();
                 Enter_Text_Into_Explorer_Filter(SourceName);
-                WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);
+                WaitForControlNotVisible(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);
                 if (ControlExistsNow(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem))
                 {
                     RightClick_Explorer_Localhost_First_Item();
@@ -298,7 +308,7 @@ namespace Warewolf.UITests
                 if (File.Exists(resourcesFolder + @"\" + ResourceName + ".xml"))
                 {
                     Enter_Text_Into_Explorer_Filter(ResourceName);
-                    WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);
+                    WaitForControlNotVisible(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);
                     if (ControlExistsNow(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem))
                     {
                         RightClick_Explorer_Localhost_First_Item();
@@ -429,7 +439,7 @@ namespace Warewolf.UITests
             }
         }
 
-        private void TryCloseWorkflowTab()
+        public void TryCloseWorkflowTab()
         {
             try
             {
@@ -448,7 +458,7 @@ namespace Warewolf.UITests
             }
         }
 
-        private void TryCloseSettingsTab()
+        public void TryCloseSettingsTab()
         {
             try
             {
@@ -486,13 +496,24 @@ namespace Warewolf.UITests
             }
         }
 
-        public void WaitForSpinner(UITestControl spinner)
+        private void WaitForControlVisible(UITestControl control, int searchTimeout = 60000)
         {
-            spinner.WaitForControlCondition((control) =>
+            control.WaitForControlCondition((uicontrol) =>
             {
                 var point = new Point();
-                return !control.TryGetClickablePoint(out point);
-            }, 60000 * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString()));
+                TryClickMessageBoxOK();
+                return control.TryGetClickablePoint(out point);
+            }, searchTimeout * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString()));
+        }
+
+        public void WaitForControlNotVisible(UITestControl control, int searchTimeout = 60000)
+        {
+            control.WaitForControlCondition((uicontrol) =>
+            {
+                var point = new Point();
+                TryClickMessageBoxOK();
+                return !uicontrol.TryGetClickablePoint(out point);
+            }, searchTimeout * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString()));
         }
 
         public void Enter_Service_Name_Into_Save_Dialog(string ServiceName)
@@ -561,8 +582,8 @@ namespace Warewolf.UITests
         public void Select_NewRemoteServer_From_Explorer_Server_Dropdownlist()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.ServerListComboBox, new Point(217, 8));
-            Assert.IsTrue(MainStudioWindow.NewRemoteServerListItem.Exists, "New Remote Server... does not exist in explorer remote server drop down list");
-            Mouse.Click(MainStudioWindow.NewRemoteServerListItem.NewRemoteServerItemText, new Point(114, 10));
+            Assert.IsTrue(MainStudioWindow.ComboboxListItemAsNewRemoteServer.Exists, "New Remote Server... does not exist in explorer remote server drop down list");
+            Mouse.Click(MainStudioWindow.ComboboxListItemAsNewRemoteServer.NewRemoteServerItemText, new Point(114, 10));
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.ServerSourceWizardTab.WorkSurfaceContext.NewServerSourceWizard.ProtocolCombobox.ToggleDropdown.Exists, "Server source wizard does not contain protocol dropdown");
         }
 
@@ -582,12 +603,12 @@ namespace Warewolf.UITests
         public void Save_With_Ribbon_Button_And_Dialog(string Name)
         {
             Click_Save_Ribbon_Button_to_Open_Save_Dialog();
-            WaitForSpinner(SaveDialogWindow.ExplorerView.ExplorerTree.localhost.Checkbox.Spinner);
+            WaitForControlNotVisible(SaveDialogWindow.ExplorerView.ExplorerTree.localhost.Checkbox.Spinner);
             Enter_Service_Name_Into_Save_Dialog(Name);
             Click_SaveDialog_Save_Button();
             Enter_Text_Into_Explorer_Filter(Name);
             Click_Explorer_Refresh_Button();
-            WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);
+            WaitForControlNotVisible(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.Exists, "Saved " + Name + " does not appear in the explorer tree.");
             Click_Explorer_Filter_Clear_Button();
         }
@@ -621,7 +642,7 @@ namespace Warewolf.UITests
             Assert.IsTrue(MainStudioWindow.SideMenuBar.NewWorkflowButton.Exists, "New Workflow Ribbon Button Does Not Exist!");
             Mouse.Click(MainStudioWindow.SideMenuBar.NewWorkflowButton, new Point(3, 8));
             var getTimeBefore = System.DateTime.Now;
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.StartNode.WaitForControlExist(Playback.PlaybackSettings.SearchTimeout);
+            WaitForControlVisible(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.StartNode);
             var timeWaited = System.DateTime.Now - getTimeBefore;
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.StartNode.Exists, "Start Node Does Not Exist after waiting for " + timeWaited.Milliseconds + "ms.");
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox.Exists, "Toolbox filter textbox does not exist");
@@ -680,28 +701,20 @@ namespace Warewolf.UITests
         public void Click_New_Web_Source_Ribbon_Button()
         {
             Mouse.Click(MainStudioWindow.SideMenuBar.WebSourceButton, new Point(13, 18));
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WebSourceWizardTab.WaitForControlExist(Playback.PlaybackSettings.SearchTimeout);
+            WaitForControlVisible(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WebSourceWizardTab);
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WebSourceWizardTab.WorkSurfaceContext.AddressTextbox.Exists, "Web server address textbox does not exist on new web source wizard tab.");
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WebSourceWizardTab.WorkSurfaceContext.TestConnectionButton.Exists, "Web server test connection button does not exist on new web source wizard tab.");
         }
 
         public void First_Drag_Toolbox_Comment_Onto_Switch_Left_Arm_On_DesignSurface()
         {
-            #region Variable Declarations
-            WpfEdit searchTextBox = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox;
-            WpfListItem commentToolboxItem = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.UtilityTools.Comment;
-            WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
-            WpfCustom connector2 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector2;
-            WpfCustom commentOnTheDesignSurface = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Comment;
-            #endregion
-
-            searchTextBox.Text = "Comment";
+            MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox.Text = "Comment";
             var switchLeftAutoConnector = new Point(250, 200);
-            flowchart.EnsureClickable(switchLeftAutoConnector);
-            Mouse.StartDragging(commentToolboxItem, new Point(16, 25));
-            Mouse.StopDragging(flowchart, switchLeftAutoConnector);
-            Assert.IsTrue(connector2.Exists, "Third connector does not exist on design surface after drop onto autoconnector.");
-            Assert.IsTrue(commentOnTheDesignSurface.Exists, "Comment tool does not exist on the design surface after drag and drop from the toolbox.");
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.EnsureClickable(switchLeftAutoConnector);
+            Mouse.StartDragging(MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.UtilityTools.Comment, new Point(16, 25));
+            Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart, switchLeftAutoConnector);
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector2.Exists, "Second connector does not exist on design surface after drop onto autoconnector.");
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Comment.Exists, "Comment tool does not exist on the design surface after drag and drop from the toolbox.");
         }
 
         public void Then_Drag_Toolbox_Comment_Onto_Switch_Right_Arm_On_DesignSurface()
@@ -718,7 +731,9 @@ namespace Warewolf.UITests
             flowchart.EnsureClickable(switchRightAutoConnector);
             Mouse.StartDragging(commentToolboxItem, new Point(16, 25));
             Mouse.StopDragging(flowchart, switchRightAutoConnector);
-            Assert.IsTrue(connector3.Exists, "Second auto connector does not exist on design surface after drop onto autoconnector.");
+            Assert.IsTrue(SwitchCaseDialog.DoneButton.Exists, "Switch case dialog done button does not exist after dragging onto switch case arm.");
+            Mouse.Click(SwitchCaseDialog.DoneButton, new Point(34, 10));
+            Assert.IsTrue(connector3.Exists, "Third auto connector does not exist on design surface after drop onto autoconnector.");
             Assert.IsTrue(commentOnTheDesignSurface.Exists, "Comment tool does not exist on the design surface after drag and drop from the toolbox.");
             TryClearToolboxFilter();
         }
@@ -736,7 +751,7 @@ namespace Warewolf.UITests
         {
             Mouse.Click(MainStudioWindow.SideMenuBar.RunAndDebugButton, new Point(13, 14));
             var getTimeBefore = System.DateTime.Now;
-            MainStudioWindow.DebugInputDialog.WaitForControlExist(Playback.PlaybackSettings.SearchTimeout);
+            WaitForControlVisible(MainStudioWindow.DebugInputDialog);
             var timeWaited = System.DateTime.Now - getTimeBefore;
             Assert.IsTrue(MainStudioWindow.DebugInputDialog.Exists, "Debug Input window does not exist after waiting for " + timeWaited.Milliseconds + "ms.");
             Assert.IsTrue(MainStudioWindow.DebugInputDialog.DebugF6Button.Exists, "Debug button in Debug Input window does not exist.");
@@ -752,6 +767,68 @@ namespace Warewolf.UITests
         {
             MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.PluginSourceWizardTab.WorkSurfaceContext.AssemblyNameTextbox.Text = text;
             Assert.IsTrue(MainStudioWindow.SideMenuBar.SaveButton.Enabled, "Save button is not enabled after DLL has been selected in plugin source wizard.");
+        }
+
+        public void Enter_GroupName_Into_Settings_Dialog_Resource_Permissions_Row1_Windows_Group_Textbox(string GroupName)
+        {
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1.WindowsGroupCell.AddWindowsGroupsEdit.Text = GroupName;
+            Assert.AreEqual(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1.WindowsGroupCell.AddWindowsGroupsEdit.Text, "Settings security tab resource permissions row 1 windows gorup textbox text does not equal Public.");
+        }
+
+        public void SetResourcePermissions(string ResourceName, string WindowsGroupName, bool setView = false, bool setExecute = false, bool setContribute = false)
+        {
+            Click_Settings_Ribbon_Button();
+            Click_Settings_Resource_Permissions_Row1_Add_Resource_Button();
+            Enter_ServiceName_Into_Service_Picker_Dialog(ResourceName);
+            Click_Service_Picker_Dialog_OK();
+            Enter_GroupName_Into_Settings_Dialog_Resource_Permissions_Row1_Windows_Group_Textbox(WindowsGroupName);
+            if (setView)
+            {
+                Click_Settings_Security_Tab_Resource_Permissions_Row1_View_Checkbox();
+            }
+            if (setExecute)
+            {
+                Click_Settings_Security_Tab_ResourcePermissions_Row1_Execute_Checkbox();
+            }
+            if (setContribute)
+            {
+                Click_Settings_Security_Tab_Resource_Permissions_Row1_Contribute_Checkbox();
+            }
+            Click_Save_Ribbon_Button_With_No_Save_Dialog();
+        }
+
+        public void CreateRemoteServerSource(string ServerSourceName, string ServerAddress, bool PublicAuth = false)
+        {
+            Click_Server_Source_Wizard_Address_Protocol_Dropdown();
+            Select_http_From_Server_Source_Wizard_Address_Protocol_Dropdown();
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.ServerSourceWizardTab.WorkSurfaceContext
+                .NewServerSourceWizard.AddressComboBox.AddressEditBox.Text = ServerAddress;
+            if (ServerAddress == "tst-ci-")
+            {
+                Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.ServerSourceWizardTab.WorkSurfaceContext.NewServerSourceWizard.AddressComboBox.TSTCIREMOTE.Exists, "TSTCIREMOTE does not exist in server source wizard drop down list after starting by typing tst-ci-.");
+                Select_TSTCIREMOTE_From_Server_Source_Wizard_Dropdownlist();
+            }
+            if (PublicAuth)
+            {
+                MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.ServerSourceWizardTab.WorkSurfaceContext.PublicRadioButton.Selected = true;
+            }
+            Click_Server_Source_Wizard_Test_Connection_Button();
+            WaitForControlNotVisible(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.ServerSourceWizardTab.WorkSurfaceContext.ErrorText.Spinner);
+            Save_With_Ribbon_Button_And_Dialog(ServerSourceName);
+            Click_Close_Server_Source_Wizard_Tab_Button();
+        }
+
+        public void Select_Deploy_First_Source_Item()
+        {
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DeployTab.FirstExplorerTreeItem.Selected = true;
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DeployTab.WorkSurfaceContext.DeployButton.Enabled,
+                "Deploy button is not enable after valid server and resource are selected.");
+        }
+
+        public void Click_Deploy_Tab_Deploy_Button()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DeployTab.WorkSurfaceContext.DeployButton);
+            WaitForControlNotVisible(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DeployTab.WorkSurfaceContext.DeployButton.Spinner);
         }
     }
 }

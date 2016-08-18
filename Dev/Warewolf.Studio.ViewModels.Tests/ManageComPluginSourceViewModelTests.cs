@@ -420,6 +420,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var pluginSourceMock = new Mock<IComPluginSource>();
             var selectedDllMock = new Mock<IFileListing>();
             var selectedDllName = "someSelectedDLLName";
+            selectedDllMock.SetupGet(listing => listing.Name).Returns("File System");
             pluginSourceMock.SetupGet(it => it.SelectedDll).Returns(selectedDllMock.Object);
             _pluginSourceMock.SetupGet(it => it.ResourceName).Returns(expectedName);
             _pluginSourceMock.SetupGet(it => it.ResourcePath).Returns(expectedPath);

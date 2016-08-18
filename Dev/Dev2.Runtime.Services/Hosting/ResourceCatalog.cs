@@ -489,10 +489,14 @@ namespace Dev2.Runtime.Hosting
                 var dupRes = _resources.Find(c => c.ResourceID == resource.ResourceID);
                 if (dupRes != null)
                 {
-                    if (_duplicates.Any(p => p.ResourceName == dupRes.ResourceName))
+                    if (_duplicates.Any(p => p.ResourceId == dupRes.ResourceID))
+                        return null;
+                    if(filePath == dupRes.FilePath)
                         return null;
                     _dupresource = new DuplicateResource
                     {
+                        ResourceId = resource.ResourceID
+                        ,
                         ResourceName = resource.ResourceName
                     ,
                         FilePath = filePath
