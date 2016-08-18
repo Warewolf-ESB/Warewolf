@@ -4,6 +4,7 @@ using System.Linq;
 using Dev2;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Deploy;
+using Dev2.Common.Interfaces.Security;
 using Microsoft.Practices.Prism.Mvvm;
 
 namespace Warewolf.Studio.ViewModels
@@ -152,22 +153,22 @@ namespace Warewolf.Studio.ViewModels
             {
                 //Connectors = items.Count(a => a.ResourceType >= "DbService" && a.ResourceType <= "WebService");
                 // FIX?
-              
-                    Connectors = items.Count(a =>
-                                            !string.IsNullOrEmpty(a.ResourceType)
-                                            && a.ResourceType.Contains(@"Service")
-                                            && a.ResourceType != @"WorkflowService"
-                                            && a.ResourceType != @"ReservedService");
+
+                Connectors = items.Count(a =>
+                                        !string.IsNullOrEmpty(a.ResourceType)
+                                        && a.ResourceType.Contains(@"Service")
+                                        && a.ResourceType != @"WorkflowService"
+                                        && a.ResourceType != @"ReservedService");
 
 
 
-                    Services = items.Count(a => !string.IsNullOrEmpty(a.ResourceType)
-                                            && a.ResourceType == @"WorkflowService");
+                Services = items.Count(a => !string.IsNullOrEmpty(a.ResourceType)
+                                        && a.ResourceType == @"WorkflowService");
 
-                    Sources = items.Count(a => !string.IsNullOrEmpty(a.ResourceType)
+                Sources = items.Count(a => !string.IsNullOrEmpty(a.ResourceType)
                                             && IsSource(a.ResourceType));
-                    Unknown = items.Count(a => a.ResourceType == @"Unknown" || string.IsNullOrEmpty(a.ResourceType));
-                
+                Unknown = items.Count(a => a.ResourceType == @"Unknown" || string.IsNullOrEmpty(a.ResourceType));
+
                 if (_destination.SelectedEnvironment != null)
                 {
                     var explorerItemViewModels = _destination.SelectedEnvironment.AsList();
@@ -196,7 +197,7 @@ namespace Warewolf.Studio.ViewModels
                     else
                     {
                         RenameErrors = @"";
-                    }                    
+                    }
                 }
                 else
                 {
@@ -206,7 +207,7 @@ namespace Warewolf.Studio.ViewModels
 
 
                 Overrides = Conflicts.Count;
-                NewResources = New.Count;
+                NewResources = SetCounters(New);
             }
             else
             {
@@ -221,6 +222,14 @@ namespace Warewolf.Studio.ViewModels
             OnPropertyChanged(() => Conflicts);
             OnPropertyChanged(() => New);
             CalculateAction?.Invoke();
+        }
+
+        private int SetCounters(IList<IExplorerTreeItem> items)
+        {
+            return items.Select(explorerTreeItem => explorerTreeItem.Server.Permissions
+            .FirstOrDefault(p => p.ResourceID == explorerTreeItem.ResourceId))
+            .Count(windowsGroupPermission => windowsGroupPermission != null
+                    && windowsGroupPermission.Permissions != Permissions.View);
         }
 
         public IList<Conflict> Conflicts => _conflicts.ToList();
