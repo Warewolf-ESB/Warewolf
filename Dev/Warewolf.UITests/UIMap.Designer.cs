@@ -30,7 +30,6 @@ namespace Warewolf.UITests
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public partial class UIMap
     {
-        
         /// <summary>
         /// Click_Assign_Tool_Large_View_Done_Button - Use 'Click_Assign_Tool_Large_View_Done_ButtonParams' to pass parameters into this method.
         /// </summary>
@@ -5423,6 +5422,18 @@ namespace Warewolf.UITests
         }
         
         #region Properties
+        public virtual Assert_Then_Drag_Toolbox_Comment_Onto_Switch_Right_Arm_On_DesignSurfaceExpectedValues Assert_Then_Drag_Toolbox_Comment_Onto_Switch_Right_Arm_On_DesignSurfaceExpectedValues
+        {
+            get
+            {
+                if ((this.mAssert_Then_Drag_Toolbox_Comment_Onto_Switch_Right_Arm_On_DesignSurfaceExpectedValues == null))
+                {
+                    this.mAssert_Then_Drag_Toolbox_Comment_Onto_Switch_Right_Arm_On_DesignSurfaceExpectedValues = new Assert_Then_Drag_Toolbox_Comment_Onto_Switch_Right_Arm_On_DesignSurfaceExpectedValues();
+                }
+                return this.mAssert_Then_Drag_Toolbox_Comment_Onto_Switch_Right_Arm_On_DesignSurfaceExpectedValues;
+            }
+        }
+        
         public virtual Click_Assign_Tool_Large_View_Done_ButtonParams Click_Assign_Tool_Large_View_Done_ButtonParams
         {
             get
@@ -7402,9 +7413,23 @@ namespace Warewolf.UITests
                 return this.mServicePickerDialog;
             }
         }
+        
+        public SwitchCaseDialog SwitchCaseDialog
+        {
+            get
+            {
+                if ((this.mSwitchCaseDialog == null))
+                {
+                    this.mSwitchCaseDialog = new SwitchCaseDialog();
+                }
+                return this.mSwitchCaseDialog;
+            }
+        }
         #endregion
         
         #region Fields
+        private Assert_Then_Drag_Toolbox_Comment_Onto_Switch_Right_Arm_On_DesignSurfaceExpectedValues mAssert_Then_Drag_Toolbox_Comment_Onto_Switch_Right_Arm_On_DesignSurfaceExpectedValues;
+        
         private Click_Assign_Tool_Large_View_Done_ButtonParams mClick_Assign_Tool_Large_View_Done_ButtonParams;
         
         private Click_Assign_Tool_Large_View_Done_Button_With_Row1_Variable_Textbox_As_SomeInvalidVariableNameParams mClick_Assign_Tool_Large_View_Done_Button_With_Row1_Variable_Textbox_As_SomeInvalidVariableNameParams;
@@ -7734,6 +7759,23 @@ namespace Warewolf.UITests
         private SelectWindowsGroupDialog mSelectWindowsGroupDialog;
         
         private ServicePickerDialog mServicePickerDialog;
+        
+        private SwitchCaseDialog mSwitchCaseDialog;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Assert_Then_Drag_Toolbox_Comment_Onto_Switch_Right_Arm_On_DesignSurface'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Assert_Then_Drag_Toolbox_Comment_Onto_Switch_Right_Arm_On_DesignSurfaceExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Done' button equals 'True'
+        /// </summary>
+        public bool DoneButtonExists = true;
         #endregion
     }
     
@@ -33953,6 +33995,42 @@ namespace Warewolf.UITests
         
         #region Fields
         private WpfTreeItem mSubTreeItem1;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class SwitchCaseDialog : WpfWindow
+    {
+        
+        public SwitchCaseDialog()
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfWindow.PropertyNames.Name] = "ActivityDefaultWindow";
+            this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
+            this.WindowTitles.Add("ActivityDefaultWindow");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfButton DoneButton
+        {
+            get
+            {
+                if ((this.mDoneButton == null))
+                {
+                    this.mDoneButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mDoneButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "DoneButton";
+                    this.mDoneButton.WindowTitles.Add("ActivityDefaultWindow");
+                    #endregion
+                }
+                return this.mDoneButton;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfButton mDoneButton;
         #endregion
     }
 }
