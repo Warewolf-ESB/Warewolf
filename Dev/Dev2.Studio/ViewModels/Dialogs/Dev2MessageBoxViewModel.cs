@@ -221,7 +221,7 @@ namespace Dev2.Studio.ViewModels.Dialogs
         }
 
         public static MessageBoxResult Show(string messageBoxText, string caption, MessageBoxButton button, MessageBoxImage icon, string dontShowAgainKey, bool isDependenciesButtonVisible,
-            bool isError, bool isInfo, bool isQuestion)
+            bool isError, bool isInfo, bool isQuestion, List<string> urlsFound)
         {
             // Claculate the appropriate default result
             var defaultResult = MessageBoxResult.OK;
@@ -237,12 +237,12 @@ namespace Dev2.Studio.ViewModels.Dialogs
                     break;
             }
 
-            return Show(messageBoxText, caption, button, icon, defaultResult, dontShowAgainKey, isDependenciesButtonVisible, isError, isInfo, isQuestion);
+            return Show(messageBoxText, caption, button, icon, defaultResult, dontShowAgainKey, isDependenciesButtonVisible, isError, isInfo, isQuestion, urlsFound);
         }
 
         public static MessageBoxResult Show(string messageBoxText, string caption, MessageBoxButton button, MessageBoxImage icon,
                                             MessageBoxResult defaultResult, string dontShowAgainKey, bool isDependenciesButtonVisible,
-            bool isError, bool isInfo, bool isQuestion)
+            bool isError, bool isInfo, bool isQuestion, List<string> urlsFound)
         {
             // Check for don't show again option
             Tuple<bool, MessageBoxResult> dontShowAgainOption = GetDontShowAgainOption(dontShowAgainKey);
@@ -252,7 +252,7 @@ namespace Dev2.Studio.ViewModels.Dialogs
                 return dontShowAgainOption.Item2;
             }
 
-            var msgBoxViewModel = new MessageBoxViewModel(messageBoxText, caption, button, FontAwesomeIcon.ExclamationTriangle, isDependenciesButtonVisible, isError, isInfo, isQuestion);
+            var msgBoxViewModel = new MessageBoxViewModel(messageBoxText, caption, button, FontAwesomeIcon.ExclamationTriangle, isDependenciesButtonVisible, isError, isInfo, isQuestion, urlsFound);
 
             var msgBoxView = new MessageBoxView
             {

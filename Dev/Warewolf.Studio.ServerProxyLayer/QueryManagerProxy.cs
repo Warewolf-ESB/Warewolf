@@ -493,10 +493,10 @@ namespace Warewolf.Studio.ServerProxyLayer
             return serializer.Deserialize<IList<IWcfAction>>(payload.Message);
         }
 
-        public Task<string> LoadDuplicates()
+        public Task<List<string>> LoadDuplicates()
         {            
             var comsController = CommunicationControllerFactory.CreateController("FetchExplorerIDuplicates");
-            var result = comsController.ExecuteCompressedCommandAsync<string>(Connection, GlobalConstants.ServerWorkspaceID);     
+            var result = comsController.ExecuteCompressedCommandAsync<List<string>>(Connection, GlobalConstants.ServerWorkspaceID);     
             return result;
         }
     }

@@ -9,6 +9,7 @@
 */
 
 using System;
+using System.Collections.Generic;
 using System.Windows;
 using Dev2.Common;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -34,7 +35,7 @@ namespace Dev2.Core.Tests
 
             var popupController = new PopupController
                 {
-                    ShowDev2MessageBox = (desc, hdr, btn, img, dntShwAgKy, isDependBtnVisible, isErr, isInf, isQuest) =>
+                    ShowDev2MessageBox = (desc, hdr, btn, img, dntShwAgKy, isDependBtnVisible, isErr, isInf, isQuest, duplicates) =>
                         {
                             description = desc;
                             header = hdr;
@@ -67,7 +68,7 @@ namespace Dev2.Core.Tests
 
             var popupController = new PopupController
             {
-                ShowDev2MessageBox = (desc, hdr, btn, img, dntShwAgKy, isDependBtnVisible, isErr, isInf, isQuest) =>
+                ShowDev2MessageBox = (desc, hdr, btn, img, dntShwAgKy, isDependBtnVisible, isErr, isInf, isQuest, duplicates) =>
                 {
                     description = desc;
                     header = hdr;
@@ -100,7 +101,7 @@ namespace Dev2.Core.Tests
 
             var popupController = new PopupController
             {
-                ShowDev2MessageBox = (desc, hdr, btn, img, dntShwAgKy, isDependBtnVisible, isErr, isInf, isQuest) =>
+                ShowDev2MessageBox = (desc, hdr, btn, img, dntShwAgKy, isDependBtnVisible, isErr, isInf, isQuest, duplicates) =>
                 {
                     description = desc;
                     header = hdr;
@@ -147,7 +148,7 @@ namespace Dev2.Core.Tests
 
             var popupController = new PopupController
             {
-                ShowDev2MessageBox = (desc, hdr, btn, img, dntShwAgKy, isDependBtnVisible, isErr, isInf, isQuest) =>
+                ShowDev2MessageBox = (desc, hdr, btn, img, dntShwAgKy, isDependBtnVisible, isErr, isInf, isQuest, duplicates) =>
                 {
                     description = desc;
                     header = hdr;
@@ -194,7 +195,7 @@ namespace Dev2.Core.Tests
 
             var popupController = new PopupController
             {
-                ShowDev2MessageBox = (desc, hdr, btn, img, dntShwAgKy, isDependBtnVisible, isErr, isInf, isQuest) =>
+                ShowDev2MessageBox = (desc, hdr, btn, img, dntShwAgKy, isDependBtnVisible, isErr, isInf, isQuest, duplicates) =>
                 {
                     description = desc;
                     header = hdr;
@@ -232,7 +233,7 @@ namespace Dev2.Core.Tests
 
             var popupController = new PopupController
             {
-                ShowDev2MessageBox = (desc, hdr, btn, img, dntShwAgKy, isDependBtnVisible, isErr, isInf, isQuest) =>
+                ShowDev2MessageBox = (desc, hdr, btn, img, dntShwAgKy, isDependBtnVisible, isErr, isInf, isQuest, duplicates) =>
                 {
                     description = desc;
                     header = hdr;
@@ -278,7 +279,7 @@ namespace Dev2.Core.Tests
 
             var popupController = new PopupController
             {
-                ShowDev2MessageBox = (desc, hdr, btn, img, dntShwAgKy, isDependBtnVisible, isErr, isInf, isQuest) =>
+                ShowDev2MessageBox = (desc, hdr, btn, img, dntShwAgKy, isDependBtnVisible, isErr, isInf, isQuest, duplicates) =>
                 {
                     description = desc;
                     header = hdr;
@@ -328,7 +329,7 @@ namespace Dev2.Core.Tests
 
             var popupController = new PopupController
             {
-                ShowDev2MessageBox = (desc, hdr, btn, img, dntShwAgKy, isDependBtnVisible, isErr, isInf, isQuest) =>
+                ShowDev2MessageBox = (desc, hdr, btn, img, dntShwAgKy, isDependBtnVisible, isErr, isInf, isQuest, duplicates) =>
                 {
                     description = desc;
                     header = hdr;
@@ -377,7 +378,7 @@ namespace Dev2.Core.Tests
 
             var popupController = new PopupController
             {
-                ShowDev2MessageBox = (desc, hdr, btn, img, dntShwAgKy, isDependBtnVisible, isErr, isInf, isQuest) =>
+                ShowDev2MessageBox = (desc, hdr, btn, img, dntShwAgKy, isDependBtnVisible, isErr, isInf, isQuest, duplicates) =>
                 {
                     description = desc;
                     header = hdr;
@@ -454,6 +455,49 @@ namespace Dev2.Core.Tests
 
         [TestMethod]
         [Owner("Pieter Terblanche")]
+        [TestCategory("PopupController_GetDuplicateResources")]
+        public void PopupController_GetDuplicateResources_SetProperties_AllPropertiesDisplayed()
+        {
+            //------------Setup for test--------------------------
+            var popupWasCalled = false;
+            string description = string.Empty;
+            List<string> duplicateResources = new List<string>();
+            string header = string.Empty;
+            MessageBoxButton buttons = MessageBoxButton.OK;
+
+            var popupController = new PopupController
+            {
+                ShowDev2MessageBox = (desc, hdr, btn, img, dntShwAgKy, isDependBtnVisible, isErr, isInf, isQuest, duplicates) =>
+                {
+                    description = desc;
+                    duplicateResources = duplicates;
+                    header = hdr;
+                    buttons = btn;
+                    popupWasCalled = true;
+                    return MessageBoxResult.OK;
+                }
+            };
+
+            //------------Execute Test---------------------------
+            List<string> duplicateList = new List<string> {"test1", "test2"};
+            popupController.ShowResourcesConflict(duplicateList);
+
+            var message = "Duplicate resources found. Please resolve the files on File Explorer. \nTo view the resource, click on the individual items below.";
+
+            //------------Assert Results-------------------------
+            Assert.IsTrue(popupWasCalled);
+            Assert.AreEqual(MessageBoxButton.OK, buttons);
+            Assert.AreEqual("Duplicated Resources", header);
+            Assert.AreEqual(message, description);
+            Assert.AreEqual(duplicateList, duplicateResources);
+            Assert.IsFalse(popupController.IsInfo);
+            Assert.IsFalse(popupController.IsDependenciesButtonVisible);
+            Assert.IsTrue(popupController.IsError);
+            Assert.IsFalse(popupController.IsQuestion);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
         [TestCategory("PopupController_ShowServerNotConnected")]
         public void PopupController_ShowServerNotConnected_SetProperties_AllPropertiesDisplayed()
         {
@@ -465,7 +509,7 @@ namespace Dev2.Core.Tests
 
             var popupController = new PopupController
             {
-                ShowDev2MessageBox = (desc, hdr, btn, img, dntShwAgKy, isDependBtnVisible, isErr, isInf, isQuest) =>
+                ShowDev2MessageBox = (desc, hdr, btn, img, dntShwAgKy, isDependBtnVisible, isErr, isInf, isQuest, duplicates) =>
                 {
                     description = desc;
                     header = hdr;
@@ -505,7 +549,7 @@ namespace Dev2.Core.Tests
 
             var popupController = new PopupController
             {
-                ShowDev2MessageBox = (desc, hdr, btn, img, dntShwAgKy, isDependBtnVisible, isErr, isInf, isQuest) =>
+                ShowDev2MessageBox = (desc, hdr, btn, img, dntShwAgKy, isDependBtnVisible, isErr, isInf, isQuest, duplicates) =>
                 {
                     description = desc;
                     header = hdr;
@@ -549,7 +593,7 @@ namespace Dev2.Core.Tests
 
             var popupController = new PopupController
             {
-                ShowDev2MessageBox = (desc, hdr, btn, img, dntShwAgKy, isDependBtnVisible, isErr, isInf, isQuest) =>
+                ShowDev2MessageBox = (desc, hdr, btn, img, dntShwAgKy, isDependBtnVisible, isErr, isInf, isQuest, duplicates) =>
                 {
                     description = desc;
                     header = hdr;
@@ -592,7 +636,7 @@ namespace Dev2.Core.Tests
 
             var popupController = new PopupController
             {
-                ShowDev2MessageBox = (desc, hdr, btn, img, dntShwAgKy, isDependBtnVisible, isErr, isInf, isQuest) =>
+                ShowDev2MessageBox = (desc, hdr, btn, img, dntShwAgKy, isDependBtnVisible, isErr, isInf, isQuest, duplicates) =>
                 {
                     description = desc;
                     header = hdr;
@@ -646,7 +690,7 @@ namespace Dev2.Core.Tests
 
             var popupController = new PopupController
             {
-                ShowDev2MessageBox = (desc, hdr, btn, img, dntShwAgKy, isDependBtnVisible, isErr, isInf, isQuest) =>
+                ShowDev2MessageBox = (desc, hdr, btn, img, dntShwAgKy, isDependBtnVisible, isErr, isInf, isQuest, duplicates) =>
                 {
                     description = desc;
                     header = hdr;
@@ -682,7 +726,7 @@ namespace Dev2.Core.Tests
 
             var popupController = new PopupController
             {
-                ShowDev2MessageBox = (desc, hdr, btn, img, dntShwAgKy, isDependBtnVisible, isErr, isInf, isQuest) =>
+                ShowDev2MessageBox = (desc, hdr, btn, img, dntShwAgKy, isDependBtnVisible, isErr, isInf, isQuest, duplicates) =>
                 {
                     description = desc;
                     header = hdr;
@@ -725,7 +769,7 @@ namespace Dev2.Core.Tests
 
             var popupController = new PopupController
             {
-                ShowDev2MessageBox = (desc, hdr, btn, img, dntShwAgKy, isDependBtnVisible, isErr, isInf, isQuest) =>
+                ShowDev2MessageBox = (desc, hdr, btn, img, dntShwAgKy, isDependBtnVisible, isErr, isInf, isQuest, duplicates) =>
                 {
                     description = desc;
                     header = hdr;
@@ -761,7 +805,7 @@ namespace Dev2.Core.Tests
 
             var popupController = new PopupController
             {
-                ShowDev2MessageBox = (desc, hdr, btn, img, dntShwAgKy, isDependBtnVisible, isErr, isInf, isQuest) =>
+                ShowDev2MessageBox = (desc, hdr, btn, img, dntShwAgKy, isDependBtnVisible, isErr, isInf, isQuest, duplicates) =>
                 {
                     description = desc;
                     header = hdr;
@@ -798,7 +842,7 @@ namespace Dev2.Core.Tests
 
             var popupController = new PopupController
             {
-                ShowDev2MessageBox = (desc, hdr, btn, img, dntShwAgKy, isDependBtnVisible, isErr, isInf, isQuest) =>
+                ShowDev2MessageBox = (desc, hdr, btn, img, dntShwAgKy, isDependBtnVisible, isErr, isInf, isQuest, duplicates) =>
                 {
                     description = desc;
                     header = hdr;
@@ -840,7 +884,7 @@ namespace Dev2.Core.Tests
 
             var popupController = new PopupController
             {
-                ShowDev2MessageBox = (desc, hdr, btn, img, dntShwAgKy, isDependBtnVisible, isErr, isInf, isQuest) =>
+                ShowDev2MessageBox = (desc, hdr, btn, img, dntShwAgKy, isDependBtnVisible, isErr, isInf, isQuest, duplicates) =>
                 {
                     description = desc;
                     header = hdr;
@@ -882,7 +926,7 @@ namespace Dev2.Core.Tests
 
             var popupController = new PopupController
             {
-                ShowDev2MessageBox = (desc, hdr, btn, img, dntShwAgKy, isDependBtnVisible, isErr, isInf, isQuest) =>
+                ShowDev2MessageBox = (desc, hdr, btn, img, dntShwAgKy, isDependBtnVisible, isErr, isInf, isQuest, duplicates) =>
                 {
                     description = desc;
                     header = hdr;
@@ -921,7 +965,7 @@ namespace Dev2.Core.Tests
 
             var popupController = new PopupController
             {
-                ShowDev2MessageBox = (desc, hdr, btn, img, dntShwAgKy, isDependBtnVisible, isErr, isInf, isQuest) =>
+                ShowDev2MessageBox = (desc, hdr, btn, img, dntShwAgKy, isDependBtnVisible, isErr, isInf, isQuest, duplicates) =>
                 {
                     description = desc;
                     header = hdr;
@@ -960,7 +1004,7 @@ namespace Dev2.Core.Tests
 
             var popupController = new PopupController
             {
-                ShowDev2MessageBox = (desc, hdr, btn, img, dntShwAgKy, isDependBtnVisible, isErr, isInf, isQuest) =>
+                ShowDev2MessageBox = (desc, hdr, btn, img, dntShwAgKy, isDependBtnVisible, isErr, isInf, isQuest, duplicates) =>
                 {
                     description = desc;
                     header = hdr;
