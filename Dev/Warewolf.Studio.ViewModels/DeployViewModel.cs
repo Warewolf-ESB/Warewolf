@@ -374,8 +374,8 @@ namespace Warewolf.Studio.ViewModels
 
                 if (IsDeploying)
                     return false;
-                //if (!CanDeploySelectedItems(Source.SelectedItems))
-                //    return false;
+                if (!CanDeploySelectedItems(Source.SelectedItems))
+                    return false;
                 if (Source.SelectedEnvironment == null || !Source.SelectedEnvironment.IsConnected)
                 {
                     ErrorMessage = "Please select and connect a Source.";
