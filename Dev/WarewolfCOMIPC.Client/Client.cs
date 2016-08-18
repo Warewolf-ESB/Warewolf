@@ -74,13 +74,27 @@ namespace WarewolfCOMIPC.Client
                 case Execute.GetType:
                     {
 
-                        result = serializer.Deserialize(jsonTextReader, typeof(Type));
-                        var exception = result as Exception;
-                        if (exception != null)
+                        try
                         {
-                            throw exception;
+                            result = serializer.Deserialize(jsonTextReader, typeof(Type));
+                            var exception = result as Exception;
+                            if (exception != null)
+                            {
+                                throw exception;
+                            }
+                            return result;
                         }
-                        return result;
+                        catch (Exception)
+                        {
+                            result = serializer.Deserialize(jsonTextReader);
+                            var exception = result as Exception;
+                            if (exception != null)
+                            {
+                                throw exception;
+                            }
+                            return result;
+                        }
+
 
                     }
                 case Execute.GetMethods:
