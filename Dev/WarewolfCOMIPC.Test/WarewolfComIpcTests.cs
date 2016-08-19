@@ -26,7 +26,8 @@ namespace WarewolfCOMIPC.Test
             }
             //------------Assert Results-------------------------
         }
-
+        //Ignoring these methods on purpose
+        [Ignore]
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void GetMethods_GivenPersonLib_PersonController_ShouldReturnMethodList()
@@ -43,6 +44,66 @@ namespace WarewolfCOMIPC.Test
                 Assert.IsNotNull(enumerable);
                 //---------------Test Result -----------------------
                 Assert.AreNotEqual(10, enumerable.Count);
+            }
+
+        }
+        [Ignore]
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void GetMethods_GivenConnection_ShouldReturnMethodList()
+        {
+            //---------------Set up test pack-------------------
+            var classId = new Guid("00000514-0000-0010-8000-00aa006d2ea4");
+            //---------------Assert Precondition----------------
+
+            //---------------Execute Test ----------------------
+            using (Client.Client client = new Client.Client())
+            {
+                var execute = client.Invoke(classId, "", "GetMethods", new object[] { });
+                var enumerable = execute as List<MethodInfoTO>;
+                Assert.IsNotNull(enumerable);
+                //---------------Test Result -----------------------
+                Assert.AreNotEqual(30, enumerable.Count);
+            }
+
+        }
+        [Ignore]
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void GetMethods_GivenAcroPDF_ShouldReturnMethodList()
+        {
+            //---------------Set up test pack-------------------
+            var classId = new Guid("CA8A9780-280D-11CF-A24D-444553540000");
+            //---------------Assert Precondition----------------
+
+            //---------------Execute Test ----------------------
+            using (Client.Client client = new Client.Client())
+            {
+                var execute = client.Invoke(classId, "", "GetMethods", new object[] { });
+                var enumerable = execute as List<MethodInfoTO>;
+                Assert.IsNotNull(enumerable);
+                //---------------Test Result -----------------------
+                Assert.AreNotEqual(33, enumerable.Count);
+            }
+
+        }
+
+        [Ignore]
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void ExecuteSpecifiedMethod_GivenConnection_ReturnSuccess()
+        {
+            //---------------Set up test pack-------------------
+            var classId = new Guid("00000514-0000-0010-8000-00aa006d2ea4");
+            //---------------Assert Precondition----------------
+
+            //---------------Execute Test ----------------------
+            using (Client.Client client = new Client.Client())
+            {
+                var execute = client.Invoke(classId, "Open", "ExecuteSpecifiedMethod", new object[] { "SQLServer", "testuser", "test123", -1 });
+                var actual = execute as string;
+                Assert.IsNotNull(actual);
+                //---------------Test Result -----------------------
             }
 
         }

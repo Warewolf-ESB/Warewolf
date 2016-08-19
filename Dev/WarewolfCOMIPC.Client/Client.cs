@@ -67,40 +67,17 @@ namespace WarewolfCOMIPC.Client
             sw.Flush();
 
             var sr = new StreamReader(_pipe);
+            string stringData;
             var jsonTextReader = new JsonTextReader(sr);
+         
             object result;
             switch (info.Execute)
             {
+
                 case Execute.GetType:
                     {
 
-                        try
-                        {
-                            result = serializer.Deserialize(jsonTextReader, typeof(Type));
-                            var exception = result as Exception;
-                            if (exception != null)
-                            {
-                                throw exception;
-                            }
-                            return result;
-                        }
-                        catch (Exception)
-                        {
-                            result = serializer.Deserialize(jsonTextReader);
-                            var exception = result as Exception;
-                            if (exception != null)
-                            {
-                                throw exception;
-                            }
-                            return result;
-                        }
-
-
-                    }
-                case Execute.GetMethods:
-                    {
-
-                        result = serializer.Deserialize(jsonTextReader, typeof(List<MethodInfoTO>));
+                        result = serializer.Deserialize(jsonTextReader, typeof(Type));
                         var exception = result as Exception;
                         if (exception != null)
                         {
@@ -108,7 +85,16 @@ namespace WarewolfCOMIPC.Client
                         }
                         return result;
 
-
+                    }
+                case Execute.GetMethods:
+                    {
+                        result = serializer.Deserialize(jsonTextReader, typeof(List<MethodInfoTO>));
+                        var exception = result as Exception;
+                        if (exception != null)
+                        {
+                            throw exception;
+                        }
+                        return result;
                     }
                 case Execute.ExecuteSpecifiedMethod:
                     {
@@ -120,7 +106,6 @@ namespace WarewolfCOMIPC.Client
                             throw exception;
                         }
                         return result;
-
                     }
 
                 default:
