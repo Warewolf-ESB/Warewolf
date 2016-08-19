@@ -228,6 +228,7 @@
     <Compile Include="Security\SecurityConfigFetcher.cs" />
     <Compile Include="Services\DeleteScheduledResourceTest.cs" />
     <Compile Include="Services\DeleteVersionTest.cs" />
+    <Compile Include="Services\FetchExplorerIDuplicatesTests.cs" />
     <Compile Include="Services\FetchExplorerItemsTest.cs" />
     <Compile Include="Services\FetchPerformanceCountersTests.cs" />
     <Compile Include="Services\FindDependenciesTests.cs" />

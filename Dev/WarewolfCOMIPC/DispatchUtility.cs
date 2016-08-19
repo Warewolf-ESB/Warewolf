@@ -98,8 +98,7 @@ namespace WarewolfCOMIPC
 		{
 			RequireReference(obj, "obj");
 			Type type = obj.GetType();
-			object result = type.InvokeMember(memberName, BindingFlags.InvokeMethod | BindingFlags.GetProperty,
-				null, obj, args, null);
+			object result = type.InvokeMember(memberName, BindingFlags.InvokeMethod ,null, obj, args, null);
 			return result;
 		}
 
@@ -185,7 +184,6 @@ namespace WarewolfCOMIPC
 			{
 				// This is the only supported "error" case because it means IDispatch
 				// is saying it doesn't know the member we asked about.
-				result = false;
 			}
 			else
 			{
