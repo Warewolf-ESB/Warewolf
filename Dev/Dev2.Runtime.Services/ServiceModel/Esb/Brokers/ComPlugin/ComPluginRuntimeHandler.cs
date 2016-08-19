@@ -45,7 +45,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.ComPlugin
             var formater = setupInfo.OutputFormatter;
             if (formater != null)
             {
-                pluginResult = AdjustPluginResult(pluginResult, methodToRun);
+                pluginResult = AdjustPluginResult(pluginResult);
                 return formater.Format(pluginResult).ToString();
             }
             pluginResult = JsonConvert.SerializeObject(pluginResult);
@@ -67,7 +67,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.ComPlugin
                 if (pluginResult != null)
                 {
                     jsonResult = JsonConvert.SerializeObject(pluginResult);
-                    pluginResult = AdjustPluginResult(pluginResult, methodToRun);
+                    pluginResult = AdjustPluginResult(pluginResult);
                     var tmpData = dataBrowser.Map(pluginResult);
                     dataSourceShape.Paths.AddRange(tmpData);
 
@@ -99,20 +99,18 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.ComPlugin
             if (!string.IsNullOrEmpty(setupInfo.ClsId))
             {
                 var type = GetType(setupInfo.ClsId, setupInfo.Is32Bit);
+                var valuedTypeList = BuildValuedTypeParams(setupInfo);
 
                 if (type == null || type.Name.ToUpper().Contains("ComObject".ToUpper()))
                 {
                     using (var client = new Client())
                     {
                         //use Late Binding to Get MethodInfo
-                        dynamic objExcel = Activator.CreateInstance(Type.GetTypeFromCLSID(setupInfo.ClsId.ToGuid()));
-                        MethodInfo method = ((object)objExcel).GetType().GetMethod(setupInfo.Method);
-
-                        pluginResult = client.Invoke(setupInfo.ClsId.ToGuid(), setupInfo.Method, "ExecuteSpecifiedMethod", new object[] { setupInfo.Parameters });
-                        return method;
+                        pluginResult = client.Invoke(setupInfo.ClsId.ToGuid(), setupInfo.Method, "ExecuteSpecifiedMethod", new object[] { valuedTypeList });
+                        return null;
                     }
                 }
-                var valuedTypeList = BuildValuedTypeParams(setupInfo);
+               
 
                 if (type != null)
                 {
@@ -287,31 +285,6 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.ComPlugin
 
 
             }
-
-
-            /*   if (type == null) return new ServiceMethodList();
-
-               var methodInfos = type.GetMethods();
-
-               methodInfos.ToList().ForEach(info =>
-                       {
-                           var serviceMethod = new ServiceMethod { Name = info.Name };
-                           var parameterInfos = info.GetParameters().ToList();
-                           foreach (var parameterInfo in parameterInfos)
-                               serviceMethod.Parameters.Add(
-                           new MethodParameter
-                           {
-                               DefaultValue = parameterInfo.DefaultValue?.ToString() ?? string.Empty,
-                               EmptyToNull = false,
-                               IsRequired = true,
-                               Name = parameterInfo.Name,
-                               TypeName = parameterInfo.ParameterType.AssemblyQualifiedName
-                           });
-                           serviceMethodList.Add(serviceMethod);
-                       });
-
-               orderMethodsLis.AddRange(serviceMethodList.OrderBy(method => method.Name));
-               return orderMethodsLis;*/
         }
 
         /// <summary>
@@ -333,13 +306,14 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.ComPlugin
         /// Adjusts the plugin result.
         /// </summary>
         /// <param name="pluginResult">The plugin result.</param>
-        /// <param name="methodToRun">The method automatic run.</param>
         /// <returns></returns>
-        private object AdjustPluginResult(object pluginResult, MethodInfo methodToRun)
+        private object AdjustPluginResult(object pluginResult)
         {
             object result = pluginResult;
+            var typeConverter = TypeDescriptor.GetConverter(result);
             // When it returns a primitive or string and it is not XML or JSON, make it so ;)
-            if ((methodToRun.ReturnType.IsPrimitive || methodToRun.ReturnType.FullName == "System.String")
+            
+            if ((typeConverter.GetType().IsPrimitive || typeConverter.GetType().FullName.ToLower().Contains("stringconverter"))
                 && !DataListUtil.IsXml(pluginResult.ToString()) && !DataListUtil.IsJson(pluginResult.ToString()))
             {
                 // add our special tags ;)
