@@ -29,6 +29,7 @@ using Dev2.Studio.Core.Services;
 using Dev2.Studio.Core.Services.System;
 using Dev2.Studio.ViewModels;
 using Dev2.Threading;
+using Warewolf.Studio.ViewModels;
 
 namespace Dev2
 {
@@ -38,9 +39,20 @@ namespace Dev2
         {
             base.PrepareApplication();
             CustomContainer.LoadedTypes = new List<Type>();
-            PreloadReferences();
+            AddRegionTypes();
             CheckPath();
             FileHelper.MigrateTempData(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData));
+        }
+
+        private void AddRegionTypes()
+        {
+            CustomContainer.AddToLoadedTypes(typeof(ManagePluginServiceModel));
+            CustomContainer.AddToLoadedTypes(typeof(ManageComPluginServiceModel));
+            CustomContainer.AddToLoadedTypes(typeof(ManageDbServiceModel));
+            CustomContainer.AddToLoadedTypes(typeof(ManageWebServiceModel));
+            CustomContainer.AddToLoadedTypes(typeof(ManageWcfServiceModel));
+            CustomContainer.AddToLoadedTypes(typeof(ExchangeServiceModel));
+            CustomContainer.AddToLoadedTypes(typeof(ManageRabbitMQSourceModel));
         }
 
         protected override IEnumerable<Assembly> SelectAssemblies()
@@ -65,7 +77,6 @@ namespace Dev2
         protected override void Configure()
         {
             CustomContainer.Register<IWindowManager>(new WindowManager());
-            //CustomContainer.Register<IDockAwareWindowManager>(new XamDockManagerDockAwareWindowManager());
             CustomContainer.Register<ISystemInfoService>(new SystemInfoService());
             CustomContainer.Register<IPopupController>(new PopupController());
             var mainViewModel = new MainViewModel();
@@ -124,12 +135,6 @@ namespace Dev2
             }
             // ReSharper restore HeuristicUnreachableCode
         }
-//
-//        protected override void StartRuntime()
-//        {
-//            //Dev2SplashScreen.Show();
-//            base.StartRuntime();
-//        }
 
         #region Overrides of BootstrapperBase
 
@@ -177,45 +182,6 @@ namespace Dev2
             return false;
         }
 
-        private void PreloadReferences()
-        {
-            var currentAsm = typeof(App).Assembly;
-            var inspected = new HashSet<string> { currentAsm.GetName().ToString() };
-            LoadReferences(currentAsm, inspected);
-        }
-
-        private void LoadReferences(Assembly asm, HashSet<string> inspected)
-        {
-            var allReferences = asm.GetReferencedAssemblies();
-
-            foreach(AssemblyName toLoad in allReferences)
-            {
-                if(inspected.Add(toLoad.ToString()))
-                {
-                    try
-                    {
-                        Assembly loaded = AppDomain.CurrentDomain.Load(toLoad);
-                        var types = loaded.GetTypes();
-                        foreach(var type in types)
-                        {
-                            if (!CustomContainer.LoadedTypes.Contains(type))
-                            {
-                                CustomContainer.LoadedTypes.Add(type);
-                            } 
-                        }
-                        LoadReferences(loaded, inspected);
-                    }
-                    // ReSharper disable EmptyGeneralCatchClause
-                    catch
-                    // ReSharper restore EmptyGeneralCatchClause
-                    {
-                        // Pissing me off ;) - Some strange dependency :: 'Microsoft.Scripting.Metadata'
-                    }
-              
-                }
-            }
-        }
-
         private void CheckPath()
         {
             var sysUri = new Uri(AppDomain.CurrentDomain.BaseDirectory);
@@ -225,9 +191,10 @@ namespace Dev2
             var popup = new PopupController
                 {
                     Header = "Load Error",
-                    Description = String.Format(@"The Design Studio could not be launched from a network location.
-                                                    {0}Please install the application on your local machine",
-                                                Environment.NewLine),
+                    Description = 
+                        $@"The Design Studio could not be launched from a network location.
+                                                    {Environment
+                            .NewLine}Please install the application on your local machine",
                     Buttons = MessageBoxButton.OK
                 };
 

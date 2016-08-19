@@ -28,13 +28,13 @@ namespace Warewolf.UITests
             Uimap.Select_NewRemoteServer_From_Explorer_Server_Dropdownlist();
             Uimap.CreateRemoteServerSource(ServerSourceName, ServerAddress);
             Uimap.Enter_Text_Into_Explorer_Filter(ServerSourceName);
-            Uimap.WaitForSpinner(Uimap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);
+            Uimap.WaitForControlNotVisible(Uimap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);
             Assert.IsTrue(Uimap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.Exists);
             Uimap.Select_From_Explorer_Remote_Server_Dropdown_List(Uimap.MainStudioWindow.ComboboxListItemAsTSTCIREMOTE);
             Uimap.Click_Explorer_RemoteServer_Connect_Button();
-            Uimap.WaitForSpinner(Uimap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.Checkbox.Spinner);
+            Uimap.WaitForControlNotVisible(Uimap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.Checkbox.Spinner);
             Uimap.Enter_Text_Into_Explorer_Filter(RemoteSubWorkflowName);
-            Uimap.WaitForSpinner(Uimap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.Checkbox.Spinner);
+            Uimap.WaitForControlNotVisible(Uimap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.Checkbox.Spinner);
             Uimap.TryRefreshExplorerUntilOneItemOnly();
             Uimap.Drag_Explorer_Remote_workflow1_Onto_Workflow_Design_Surface();
             Uimap.Save_With_Ribbon_Button_And_Dialog(LocalWorkflowName);
@@ -42,7 +42,7 @@ namespace Warewolf.UITests
             Uimap.Click_DebugInput_Debug_Button();
             Uimap.Click_Debug_Output_Workflow1_Name();
             Uimap.Enter_Text_Into_Explorer_Filter(LocalWorkflowName);
-            Uimap.WaitForSpinner(Uimap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);
+            Uimap.WaitForControlNotVisible(Uimap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);
             Uimap.RightClick_Explorer_Localhost_First_Item();
             Uimap.Click_Show_Dependencies_In_Explorer_Context_Menu();
             Uimap.SetResourcePermissions(LocalWorkflowName, WindowsGroup, true, true);

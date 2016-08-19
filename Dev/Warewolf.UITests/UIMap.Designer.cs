@@ -30,6 +30,7 @@ namespace Warewolf.UITests
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public partial class UIMap
     {
+        
         /// <summary>
         /// Click_Assign_Tool_Large_View_Done_Button - Use 'Click_Assign_Tool_Large_View_Done_ButtonParams' to pass parameters into this method.
         /// </summary>
@@ -676,20 +677,20 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
-        /// Click_Explorer_Filter_Clear_Button
+        /// Click_Explorer_Filter_Clear_Button - Use 'Click_Explorer_Filter_Clear_ButtonParams' to pass parameters into this method.
         /// </summary>
         public void Click_Explorer_Filter_Clear_Button()
         {
             #region Variable Declarations
-            WpfButton uIClearSearchButtonButton = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.SearchTextBox.UIClearSearchButtonButton;
-            WpfButton explorerRefreshButton = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerRefreshButton;
+            WpfButton clearFilterButton = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.SearchTextBox.ClearFilterButton;
+            WpfText filterText = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.SearchTextBox.FilterText;
             #endregion
 
             // Click 'ClearSearchButton' button
-            Mouse.Click(uIClearSearchButtonButton, new Point(6, 8));
+            Mouse.Click(clearFilterButton, new Point(6, 8));
 
-            // Click '' button
-            Mouse.Click(explorerRefreshButton, new Point(10, 10));
+            // Verify that the 'Text' property of 'Filter' label equals ''
+            Assert.AreEqual(this.Click_Explorer_Filter_Clear_ButtonParams.FilterTextText, filterText.GetProperty("Text").ToString(), "Explorer Filter Textbox text is not blank afrter clicking the clear button.");
         }
         
         /// <summary>
@@ -5422,18 +5423,6 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public virtual Assert_Then_Drag_Toolbox_Comment_Onto_Switch_Right_Arm_On_DesignSurfaceExpectedValues Assert_Then_Drag_Toolbox_Comment_Onto_Switch_Right_Arm_On_DesignSurfaceExpectedValues
-        {
-            get
-            {
-                if ((this.mAssert_Then_Drag_Toolbox_Comment_Onto_Switch_Right_Arm_On_DesignSurfaceExpectedValues == null))
-                {
-                    this.mAssert_Then_Drag_Toolbox_Comment_Onto_Switch_Right_Arm_On_DesignSurfaceExpectedValues = new Assert_Then_Drag_Toolbox_Comment_Onto_Switch_Right_Arm_On_DesignSurfaceExpectedValues();
-                }
-                return this.mAssert_Then_Drag_Toolbox_Comment_Onto_Switch_Right_Arm_On_DesignSurfaceExpectedValues;
-            }
-        }
-        
         public virtual Click_Assign_Tool_Large_View_Done_ButtonParams Click_Assign_Tool_Large_View_Done_ButtonParams
         {
             get
@@ -5647,6 +5636,18 @@ namespace Warewolf.UITests
                     this.mClick_ExpandAndStepIn_NestedWorkflowParams = new Click_ExpandAndStepIn_NestedWorkflowParams();
                 }
                 return this.mClick_ExpandAndStepIn_NestedWorkflowParams;
+            }
+        }
+        
+        public virtual Click_Explorer_Filter_Clear_ButtonParams Click_Explorer_Filter_Clear_ButtonParams
+        {
+            get
+            {
+                if ((this.mClick_Explorer_Filter_Clear_ButtonParams == null))
+                {
+                    this.mClick_Explorer_Filter_Clear_ButtonParams = new Click_Explorer_Filter_Clear_ButtonParams();
+                }
+                return this.mClick_Explorer_Filter_Clear_ButtonParams;
             }
         }
         
@@ -7428,8 +7429,6 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private Assert_Then_Drag_Toolbox_Comment_Onto_Switch_Right_Arm_On_DesignSurfaceExpectedValues mAssert_Then_Drag_Toolbox_Comment_Onto_Switch_Right_Arm_On_DesignSurfaceExpectedValues;
-        
         private Click_Assign_Tool_Large_View_Done_ButtonParams mClick_Assign_Tool_Large_View_Done_ButtonParams;
         
         private Click_Assign_Tool_Large_View_Done_Button_With_Row1_Variable_Textbox_As_SomeInvalidVariableNameParams mClick_Assign_Tool_Large_View_Done_Button_With_Row1_Variable_Textbox_As_SomeInvalidVariableNameParams;
@@ -7465,6 +7464,8 @@ namespace Warewolf.UITests
         private Click_DotNet_DLL_Large_View_Generate_OutputsExpectedValues mClick_DotNet_DLL_Large_View_Generate_OutputsExpectedValues;
         
         private Click_ExpandAndStepIn_NestedWorkflowParams mClick_ExpandAndStepIn_NestedWorkflowParams;
+        
+        private Click_Explorer_Filter_Clear_ButtonParams mClick_Explorer_Filter_Clear_ButtonParams;
         
         private Click_Explorer_RemoteServer_Connect_ButtonParams mClick_Explorer_RemoteServer_Connect_ButtonParams;
         
@@ -7761,21 +7762,6 @@ namespace Warewolf.UITests
         private ServicePickerDialog mServicePickerDialog;
         
         private SwitchCaseDialog mSwitchCaseDialog;
-        #endregion
-    }
-    
-    /// <summary>
-    /// Parameters to be passed into 'Assert_Then_Drag_Toolbox_Comment_Onto_Switch_Right_Arm_On_DesignSurface'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Assert_Then_Drag_Toolbox_Comment_Onto_Switch_Right_Arm_On_DesignSurfaceExpectedValues
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Verify that the 'Exists' property of 'Done' button equals 'True'
-        /// </summary>
-        public bool DoneButtonExists = true;
         #endregion
     }
     
@@ -8204,6 +8190,21 @@ namespace Warewolf.UITests
         /// Expand 'Hello World' tree item
         /// </summary>
         public bool SubWorkflowExpanded = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Click_Explorer_Filter_Clear_Button'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Click_Explorer_Filter_Clear_ButtonParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Text' property of 'Filter' label equals ''
+        /// </summary>
+        public string FilterTextText = "";
         #endregion
     }
     
@@ -13004,19 +13005,19 @@ namespace Warewolf.UITests
             }
         }
         
-        public WpfButton UIClearSearchButtonButton
+        public WpfButton ClearFilterButton
         {
             get
             {
-                if ((this.mUIClearSearchButtonButton == null))
+                if ((this.mClearFilterButton == null))
                 {
-                    this.mUIClearSearchButtonButton = new WpfButton(this);
+                    this.mClearFilterButton = new WpfButton(this);
                     #region Search Criteria
-                    this.mUIClearSearchButtonButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "ClearSearchButton";
-                    this.mUIClearSearchButtonButton.WindowTitles.Add("Warewolf");
+                    this.mClearFilterButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "ClearSearchButton";
+                    this.mClearFilterButton.WindowTitles.Add("Warewolf");
                     #endregion
                 }
-                return this.mUIClearSearchButtonButton;
+                return this.mClearFilterButton;
             }
         }
         #endregion
@@ -13024,7 +13025,7 @@ namespace Warewolf.UITests
         #region Fields
         private WpfText mFilterText;
         
-        private WpfButton mUIClearSearchButtonButton;
+        private WpfButton mClearFilterButton;
         #endregion
     }
     

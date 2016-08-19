@@ -344,17 +344,17 @@ namespace Dev2
             {
                 SetWorkingDirectory();
                 LoadHostSecurityProvider();
-                PreloadReferences();
                 InitializeServer();
-                LoadPerformanceCounters();
-                LoadResourceCatalog();
-                LoadServerWorkspace();
-                StartWebServer();
                 LoadSettingsProvider();
                 ConfigureLoggging();
+                var catalog = LoadResourceCatalog();
+                StartWebServer();
                 _timer = new Timer(PerformTimerActions, null, 1000, GlobalConstants.NetworkComputerNameQueryFreq);
-                ServerLoop(interactiveMode);
                 StartPulseLogger();
+                LoadPerformanceCounters();
+                LoadServerWorkspace();
+                LoadActivityCache(catalog);
+                ServerLoop(interactiveMode);
             }
             catch(Exception e)
             {
@@ -379,6 +379,40 @@ namespace Dev2
                 DeleteTempFiles();
             }
         }
+
+        /// <summary>
+        /// Ensures all external dependencies have been loaded, then loads all referenced assemblies by the 
+        /// currently executing assembly, and recursively loads each of the referenced assemblies of the 
+        /// initial dependency set until all dependencies have been loaded.
+        /// </summary>
+        static void PreloadReferences()
+        {
+            Write("Preloading assemblies...  ");
+            Assembly currentAsm = typeof(ServerLifecycleManager).Assembly;
+            HashSet<string> inspected = new HashSet<string> { currentAsm.GetName().ToString(), "GroupControls" };
+            LoadReferences(currentAsm, inspected);
+            WriteLine("done.");
+        }
+
+        /// <summary>
+        /// Loads the assemblies that are referenced by the input assembly, but only if that assembly has not
+        /// already been inspected.
+        /// </summary>
+        static void LoadReferences(Assembly asm, HashSet<string> inspected)
+        {
+            AssemblyName[] allReferences = asm.GetReferencedAssemblies();
+
+            foreach (AssemblyName toLoad in allReferences)
+            {
+                if (!inspected.Contains(toLoad.Name))
+                {
+                    inspected.Add(toLoad.Name);
+                    Assembly loaded = AppDomain.CurrentDomain.Load(toLoad);
+                    LoadReferences(loaded, inspected);
+                }
+            }
+        }
+
 
         private void DeleteTempFiles()
         {
@@ -514,39 +548,6 @@ namespace Dev2
                 {
                     Fail("Configuration error, " + sectionName);
                     result = false;
-                }
-            }
-        }
-
-        /// <summary>
-        /// Ensures all external dependencies have been loaded, then loads all referenced assemblies by the 
-        /// currently executing assembly, and recursively loads each of the referenced assemblies of the 
-        /// initial dependency set until all dependencies have been loaded.
-        /// </summary>
-        void PreloadReferences()
-        {
-            Write("Preloading assemblies...  ");
-            Assembly currentAsm = typeof(ServerLifecycleManager).Assembly;
-            HashSet<string> inspected = new HashSet<string> { currentAsm.GetName().ToString(), "GroupControls" };
-            LoadReferences(currentAsm, inspected);
-            WriteLine("done.");
-        }
-
-        /// <summary>
-        /// Loads the assemblies that are referenced by the input assembly, but only if that assembly has not
-        /// already been inspected.
-        /// </summary>
-        void LoadReferences(Assembly asm, HashSet<string> inspected)
-        {
-            AssemblyName[] allReferences = asm.GetReferencedAssemblies();
-
-            foreach(AssemblyName toLoad in allReferences)
-            {
-                if(!inspected.Contains(toLoad.Name))
-                {
-                    inspected.Add(toLoad.Name);
-                    Assembly loaded = AppDomain.CurrentDomain.Load(toLoad);
-                    LoadReferences(loaded, inspected);
                 }
             }
         }
@@ -787,18 +788,25 @@ namespace Dev2
         /// <returns></returns>
         /// <author>Trevor.Williams-Ros</author>
         /// <date>2013/03/13</date>
-        void LoadResourceCatalog()
+        ResourceCatalog LoadResourceCatalog()
         {
-            CustomContainer.Register<IActivityParser>(new ActivityParser());
             MigrateOldResources();
             ValidateResourceFolder();
             Write("Loading resource catalog...  ");
             var catalog = ResourceCatalog.Instance;
+            ServerExplorerRepository.Instance.Load(GlobalConstants.ServerWorkspaceID);
             WriteLine("done.");
+            return catalog;
+        }
+
+        private static void LoadActivityCache(ResourceCatalog catalog)
+        {
+            PreloadReferences();
+            CustomContainer.Register<IActivityParser>(new ActivityParser());
             Write("Loading resource activity cache...  ");
             catalog.LoadResourceActivityCache(GlobalConstants.ServerWorkspaceID);
             WriteLine("done.");
-        }       
+        }
 
         static void MigrateOldResources()
         {            

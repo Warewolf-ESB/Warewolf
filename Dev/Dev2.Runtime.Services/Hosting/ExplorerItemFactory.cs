@@ -36,18 +36,17 @@ namespace Dev2.Runtime.Hosting
             Directory = directory;
         }
 
-        public string GetDuplicatedResourcesPaths()
+        public List<string> GetDuplicatedResourcesPaths()
         {
-            var stringBuilder = new StringBuilder();
+            List<string> duplicateList = new List<string>();
             var resourceList = Catalogue.GetDuplicateResources();
-            if (resourceList.Count <= 0) return String.Empty;
+            if (resourceList.Count <= 0) return new List<string>();
             foreach (var duplicateResource in resourceList)
             {
-                stringBuilder.Append(string.Format(" Resource {0} in path {1} and path {2} are the same",
+                duplicateList.Add(string.Format("{0}" + Environment.NewLine + "{1}" + Environment.NewLine + "{2}",
                     duplicateResource.ResourceName, duplicateResource.FilePath, duplicateResource.FilePath2));
-                stringBuilder.AppendLine();
             }
-            return stringBuilder.ToString();
+            return duplicateList;
         }
 
         public IExplorerItem CreateRootExplorerItem(string workSpacePath, Guid workSpaceId)

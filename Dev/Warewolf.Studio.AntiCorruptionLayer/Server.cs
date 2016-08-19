@@ -41,7 +41,7 @@ namespace Warewolf.Studio.AntiCorruptionLayer
             ResourceName = EnvironmentConnection.DisplayName;
             EnvironmentConnection.NetworkStateChanged += RaiseNetworkStateChangeEvent;
             EnvironmentConnection.ItemAddedMessageAction += ItemAdded;
-            environmentModel.WorkflowSaved += (sender, args) => UpdateRepository.FireItemSaved();
+            environmentModel.WorkflowSaved += (sender, args) => UpdateRepository.FireItemSaved(true);
             _environmentModel = environmentModel;
         }
 
@@ -170,7 +170,7 @@ namespace Warewolf.Studio.AntiCorruptionLayer
             return result;
         }
         
-        public Task<string> LoadExplorerDuplicates()
+        public Task<List<string>> LoadExplorerDuplicates()
         {
             var result = ProxyLayer.LoadExplorerDuplicates();
             HasLoaded = true;
@@ -185,7 +185,11 @@ namespace Warewolf.Studio.AntiCorruptionLayer
 
         public IList<IToolDescriptor> LoadTools()
         {
-            return _tools ?? (_tools = ProxyLayer.QueryManagerProxy.FetchTools());
+            if (_tools == null || _tools.Count == 0)
+            {
+                _tools = ProxyLayer.QueryManagerProxy.FetchTools();
+            }
+            return _tools;
         }
 
         public IExplorerRepository ExplorerRepository => ProxyLayer;

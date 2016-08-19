@@ -7,6 +7,7 @@ using Caliburn.Micro;
 using Dev2;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Deploy;
+using Dev2.Common.Interfaces.Security;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Interfaces;
 using Microsoft.Practices.Prism.Commands;
@@ -32,7 +33,7 @@ namespace Warewolf.Studio.ViewModels
         bool _deploySuccessfull;
         string _conflictNewResourceText;
         readonly IShellViewModel _shell;
-        public  virtual IPopupController PopupController { get; set; }
+        public virtual IPopupController PopupController { get; set; }
         bool _showNewItemsList;
         bool _showConflictItemsList;
         IList<Conflict> _conflictItems;
@@ -58,10 +59,10 @@ namespace Warewolf.Studio.ViewModels
             _shell = shell;
             _stats.CalculateAction = () =>
             {
-       
+
                 ServicesCount = _stats.Services.ToString();
                 SourcesCount = _stats.Sources.ToString();
-           
+
                 NewResourcesCount = _stats.NewResources.ToString();
                 OverridesCount = _stats.Overrides.ToString();
                 ConflictItems = _stats.Conflicts;
@@ -126,14 +127,14 @@ namespace Warewolf.Studio.ViewModels
         void UpdateServerCompareChanged(object sender, Guid environmentid)
         {
             ShowConflicts = false;
-         
+
             ServicesCount = _stats.Services.ToString();
             SourcesCount = _stats.Sources.ToString();
-  
+
             NewResourcesCount = _stats.NewResources.ToString();
             OverridesCount = _stats.Overrides.ToString();
             ViewModelUtils.RaiseCanExecuteChanged(DeployCommand);
-            OnPropertyChanged(()=>CanDeploy);
+            OnPropertyChanged(() => CanDeploy);
         }
 
         void ViewOverrides()
@@ -241,7 +242,6 @@ namespace Warewolf.Studio.ViewModels
                     DeploySuccessfull = true;
                     Destination.RefreshSelectedEnvironment();
                     DeploySuccessMessage = string.Format("{0} Resource{1} Deployed Successfully.", notfolders.Count, notfolders.Count == 1 ? "" : "s");
-
                     _stats.Calculate(new List<IExplorerTreeItem>());
                     UpdateServerCompareChanged(this, Guid.Empty);
                     Source.SelectedEnvironment.AsList().Apply(o => o.IsResourceUnchecked = false);
@@ -254,6 +254,19 @@ namespace Warewolf.Studio.ViewModels
             IsDeploying = false;
         }
 
+        private bool CanDeploySelectedItems(IEnumerable<IExplorerTreeItem> selected)
+        {
+            var copy = Source.SelectedItems;
+            foreach (var explorerTreeItem in selected)
+            {
+                var windowsGroupPermission = explorerTreeItem.Server.Permissions
+                    .FirstOrDefault(p => p.ResourceID == explorerTreeItem.ResourceId);
+                if (windowsGroupPermission?.Permissions == Permissions.View)
+                    copy.Remove(explorerTreeItem);
+            }
+            return copy.Count > 0;
+        }
+
         bool CheckResourceNameConflict()
         {
             var selected = Source.SelectedItems.Where(a => a.ResourceType != "Folder");
@@ -262,10 +275,10 @@ namespace Warewolf.Studio.ViewModels
             var conf = from b in itemViewModels
                        join explorerTreeItem in selected on b.ResourcePath.ToUpper() equals explorerTreeItem.ResourcePath.ToUpper()
                        where b.ResourceId != explorerTreeItem.ResourceId
-                select b;
+                       select b;
 
             var explorerItemViewModels = conf as IExplorerItemViewModel[] ?? conf.ToArray();
-            if(explorerItemViewModels.Any())
+            if (explorerItemViewModels.Any())
             {
                 var msgResult = PopupController.ShowDeployResourceNameConflict(string.Join("; ", explorerItemViewModels.Select(a => a.ResourcePath)));
                 if (msgResult == MessageBoxResult.OK)
@@ -358,12 +371,10 @@ namespace Warewolf.Studio.ViewModels
         {
             get
             {
-                
                 if (IsDeploying)
                     return false;
-                
-                
-
+                if (!CanDeploySelectedItems(Source.SelectedItems))
+                    return false;
                 if (Source.SelectedEnvironment == null || !Source.SelectedEnvironment.IsConnected)
                 {
                     ErrorMessage = "Please select and connect a Source.";
@@ -386,7 +397,7 @@ namespace Warewolf.Studio.ViewModels
                     ErrorMessage = "Nothing selected to deploy.";
                     return false;
                 }
-                
+
                 if (Source.ConnectControlViewModel.SelectedConnection.Permissions == null || !Source.ConnectControlViewModel.SelectedConnection.CanDeployFrom)
                 {
                     ErrorMessage = StringResources.SourcePermission_Error;
@@ -603,7 +614,7 @@ namespace Warewolf.Studio.ViewModels
             set
             {
                 _errorMessage = value;
-                if(! String.IsNullOrEmpty(DeploySuccessMessage) && !String.IsNullOrEmpty(value))
+                if (!String.IsNullOrEmpty(DeploySuccessMessage) && !String.IsNullOrEmpty(value))
                 {
                     DeploySuccessMessage = String.Empty;
                     DeploySuccessfull = false;

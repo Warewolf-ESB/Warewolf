@@ -158,7 +158,6 @@ namespace Dev2.Network
             catch (Exception err)
             {
                 Dev2Logger.Error(err);
-                throw;
             }
         }
         
@@ -237,10 +236,7 @@ namespace Dev2.Network
 
         void RaisePermissionsChanged()
         {
-            if (PermissionsChanged != null)
-            {
-                PermissionsChanged(this, EventArgs.Empty);
-            }
+            PermissionsChanged?.Invoke(this, EventArgs.Empty);
         }
 
         public event EventHandler<List<WindowsGroupPermission>> PermissionsModified;
@@ -270,10 +266,7 @@ namespace Dev2.Network
             // ReSharper restore VirtualMemberNeverOverriden.Global
         {
             var handler = NetworkStateChanged;
-            if (handler != null)
-            {
-                handler(this, e);
-            }
+            handler?.Invoke(this, e);
         }
         #endregion
     }

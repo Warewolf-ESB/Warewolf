@@ -207,10 +207,7 @@
         <KeyBinding Command="{Binding QuickDebugCommand}" Key="F6" />
         <KeyBinding Command="{Binding QuickViewInBrowserCommand}" Key="F7" />
         <KeyBinding Command="{Binding DeployCommand}" Key="D" Modifiers="Ctrl" />
-        <KeyBinding Command="{Binding NewResourceCommand}"  CommandParameter="DbService" Key="D" Modifiers="Ctrl+Shift" />
-        <KeyBinding Command="{Binding NewResourceCommand}"  CommandParameter="PluginService" Key="P" Modifiers="Ctrl+Shift" />
-        <KeyBinding Command="{Binding NewResourceCommand}"  CommandParameter="WebService" Key="W" Modifiers="Ctrl+Shift" />
-        <KeyBinding Command="{Binding NewResourceCommand}" CommandParameter="Workflow" Key="W" Modifiers="Ctrl" />
+        <KeyBinding Command="{Binding NewServiceCommand}" CommandParameter="Workflow" Key="W" Modifiers="Ctrl" />
         <KeyBinding Command="{Binding SchedulerCommand}" Key="S" Modifiers="Alt" />
     </Window.InputBindings>
 
@@ -314,7 +311,7 @@
                                                      IsPinned="True"
                                                      Style="{StaticResource DockmangerToolPaneStyle}"
                                                      WindowPositionMenuVisibility="Hidden" >
-                                <views1:ExplorerView DataContext="{Binding ExplorerViewModel}" AutomationProperties.AutomationId="UI_ExplorerControl_AutoID"/>
+                                <views1:ExplorerView DataContext="{Binding ExplorerViewModel}" x:Name="ExplorerViewControl" AutomationProperties.AutomationId="UI_ExplorerControl_AutoID"/>
                             </igDock:ContentPane>
                             <igDock:ContentPane x:Name="Toolbox"
                                                      AllowClose="False"

@@ -46,7 +46,7 @@ namespace Warewolf.Studio.ViewModels
         }
         private bool FilterByType { get; set; }
 
-        protected override void Refresh()
+        protected override void Refresh(bool refresh)
         {
             IsRefreshing = true;
             Environments.ForEach(async model =>

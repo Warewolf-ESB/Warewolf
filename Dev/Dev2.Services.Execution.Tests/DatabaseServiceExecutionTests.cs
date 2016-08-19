@@ -1,5 +1,4 @@
-﻿using System;
-using Dev2.Interfaces;
+﻿using Dev2.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 

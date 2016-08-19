@@ -91,7 +91,7 @@ namespace Warewolf.Testing
             return null;
         }
         
-        public Task<string> LoadExplorerDuplicates()
+        public Task<List<string>> LoadExplorerDuplicates()
         {
             return null;
         }

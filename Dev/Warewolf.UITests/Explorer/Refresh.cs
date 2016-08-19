@@ -29,7 +29,7 @@ namespace Warewolf.UITests
             var resourcesFolder = Environment.ExpandEnvironmentVariables("%programdata%") + @"\Warewolf\Resources";
             File.Delete(resourcesFolder + @"\" + WorkflowName + ".xml");
             Uimap.Click_Explorer_Refresh_Button();
-            Uimap.WaitForSpinner(Uimap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);
+            Uimap.WaitForControlNotVisible(Uimap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);
             Assert.IsFalse(Uimap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.Exists, "Saved blank workflow appears in the explorer tree after delete from disk.");
         }
 
