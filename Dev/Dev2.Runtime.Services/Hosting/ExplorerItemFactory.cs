@@ -40,7 +40,8 @@ namespace Dev2.Runtime.Hosting
         {
             var stringBuilder = new StringBuilder();
             var resourceList = Catalogue.GetDuplicateResources();
-            if (resourceList.Count <= 0) return String.Empty;
+            if (resourceList == null ||resourceList.Count <= 0)
+                return string.Empty;
             foreach (var duplicateResource in resourceList)
             {
                 stringBuilder.Append(string.Format(" Resource {0} in path {1} and path {2} are the same",
