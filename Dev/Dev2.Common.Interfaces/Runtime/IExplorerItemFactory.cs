@@ -9,7 +9,6 @@
 */
 
 using System;
-using System.Collections.Generic;
 using Dev2.Common.Interfaces.Explorer;
 
 namespace Dev2.Common.Interfaces.Runtime
@@ -18,6 +17,6 @@ namespace Dev2.Common.Interfaces.Runtime
     {
         IExplorerItem CreateRootExplorerItem(string workSpacePath, Guid workSpaceId);
         IExplorerItem CreateRootExplorerItem(string type, string workSpacePath, Guid workSpaceId);
-        List<string> GetDuplicatedResourcesPaths();
+        string GetDuplicatedResourcesPaths();
     }
 }
