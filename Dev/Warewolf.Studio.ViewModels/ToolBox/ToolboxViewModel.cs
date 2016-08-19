@@ -22,6 +22,8 @@ namespace Warewolf.Studio.ViewModels.ToolBox
         IToolDescriptorViewModel _selectedTool;
         private string _searchTerm;
         private ObservableCollection<IToolDescriptorViewModel> _backedUpTools;
+        private bool _isEnabled;
+        private bool _isVisible;
 
         public ToolboxViewModel(IToolboxModel localModel, IToolboxModel remoteModel)
         {
@@ -30,9 +32,16 @@ namespace Warewolf.Studio.ViewModels.ToolBox
             _remoteModel = remoteModel;
             _localModel.OnserverDisconnected += _localModel_OnserverDisconnected;
             _remoteModel.OnserverDisconnected += _remoteModel_OnserverDisconnected;
-            BackedUpTools = new ObservableCollection<IToolDescriptorViewModel>(_remoteModel.GetTools().Select(a => new ToolDescriptorViewModel(a, _localModel.GetTools().Contains(a))));
-            Tools = BackedUpTools;
+            BuildToolsList();
             ClearFilterCommand = new DelegateCommand(() => SearchTerm = string.Empty);
+        }
+
+        public void BuildToolsList()
+        {
+            BackedUpTools =
+                new ObservableCollection<IToolDescriptorViewModel>(
+                    _remoteModel.GetTools().Select(a => new ToolDescriptorViewModel(a, _localModel.GetTools().Contains(a))));
+            Tools = BackedUpTools;
         }
 
         public ICommand ClearFilterCommand { get; set; }
@@ -71,6 +80,15 @@ namespace Warewolf.Studio.ViewModels.ToolBox
         /// the toolbox is only enabled when the active server is connected and the designer is in focus
         /// </summary>
         public bool IsEnabled => IsDesignerFocused && _localModel.IsEnabled() && _remoteModel.IsEnabled();
+        public bool IsVisible
+        {
+            get { return _isVisible; }
+            set
+            {
+                _isVisible = value; 
+                OnPropertyChanged("IsVisible");
+            }
+        }
 
         public bool IsDesignerFocused
         {

@@ -55,6 +55,7 @@
     <Reference Include="System" />
     <Reference Include="System.Activities" />
     <Reference Include="System.Activities.Presentation" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
     <Reference Include="System.Reactive">
       <HintPath>..\Binaries\System.Reactive.dll</HintPath>

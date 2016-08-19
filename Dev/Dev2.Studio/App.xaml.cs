@@ -162,6 +162,7 @@ namespace Dev2.Studio
             if(_mainViewModel != null)
             {
                 SplashView.CloseSplash();
+                CheckForDuplicateResources();
                 var settingsConfigFile = HelperUtils.GetStudioLogSettingsConfigFile();
                 if (!File.Exists(settingsConfigFile))
                 {
@@ -171,9 +172,18 @@ namespace Dev2.Studio
                 XmlConfigurator.ConfigureAndWatch(new FileInfo(settingsConfigFile));
                 _appExceptionHandler = new AppExceptionHandler(this, _mainViewModel);
             }
-            //MainWindow.Show();
         }
 
+        private async void CheckForDuplicateResources()
+        {
+            var server = new Warewolf.Studio.AntiCorruptionLayer.Server(EnvironmentRepository.Instance.Source);
+            var loadExplorerDuplicates = await server.LoadExplorerDuplicates();
+            if (loadExplorerDuplicates?.Count > 0)
+            {
+                var controller = CustomContainer.Get<IPopupController>();
+                controller.ShowResourcesConflict(loadExplorerDuplicates);
+            }
+        }
 
         private void ShowSplash()
         {
@@ -201,12 +211,9 @@ namespace Dev2.Studio
             SplashView.Show(false);
             
             // Now that the window is created, allow the rest of the startup to run 
-            if (_resetSplashCreated != null)
-            {
-                _resetSplashCreated.Set();
-            }
+            _resetSplashCreated?.Set();
             splashViewModel.ShowServerVersion();
-            System.Windows.Threading.Dispatcher.Run();
+            Dispatcher.Run();
         }
 
         protected override void OnExit(ExitEventArgs e)

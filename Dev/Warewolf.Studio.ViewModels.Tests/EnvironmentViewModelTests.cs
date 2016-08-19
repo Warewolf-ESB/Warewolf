@@ -752,7 +752,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _target.SelectAction = (a) => { };
 
             //act
-            var result = await _target.CreateExplorerItems(items,serverMock.Object,parentMock.Object,true,true);
+            _target.CreateExplorerItemsSync(items,serverMock.Object,parentMock.Object,true,true);
 
             //assert
             Assert.IsFalse(_target.Children.Any());

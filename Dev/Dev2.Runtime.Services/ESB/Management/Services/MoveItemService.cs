@@ -72,8 +72,9 @@ namespace Dev2.Runtime.ESB.Management.Services
                         if (Directory.Exists(ServerExplorerRepository.DirectoryStructureFromPath(itemToMove.ResourcePath)))
                             Directory.Delete(ServerExplorerRepository.DirectoryStructureFromPath(itemToMove.ResourcePath), true);
                     }
-                    //ServerExplorerRepo.Reload(Guid.Empty);
                 }
+                ResourceCatalog.Instance.Reload();
+                ServerExplorerRepo.Load(GlobalConstants.ServerWorkspaceID, true);
             }
             catch (Exception e)
             {

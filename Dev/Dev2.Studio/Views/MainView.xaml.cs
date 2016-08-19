@@ -21,7 +21,6 @@ using Dev2.Common;
 using Dev2.Studio.ViewModels;
 using Dev2.Views;
 using FontAwesome.WPF;
-using Infragistics.Windows.DockManager;
 using Infragistics.Windows.DockManager.Events;
 using WinInterop = System.Windows.Interop;
 using Dev2.Studio.Core;
@@ -31,7 +30,6 @@ namespace Dev2.Studio.Views
 {
     public partial class MainView : IWin32Window
     {
-        ContentPane _contentPane;
         private static bool _isSuperMaximising;
         private bool _isLocked;
         readonly string _savedLayout;
@@ -222,43 +220,58 @@ namespace Dev2.Studio.Views
             MainViewModel mainViewModel = DataContext as MainViewModel;
             if (mainViewModel != null)
             {
-                var elementsByTagNameMenuExpanded = xmlDocument.GetElementsByTagName("MenuExpanded");
-                var elementsByTagNameMenuPanelOpen = xmlDocument.GetElementsByTagName("MenuPanelOpen");
-                var elementsByTagNameMenuPanelLockedOpen = xmlDocument.GetElementsByTagName("MenuPanelLockedOpen");
-
-                if (elementsByTagNameMenuExpanded.Count > 0)
-                {
-                    var menuExpandedString = elementsByTagNameMenuExpanded[0].InnerXml;
-
-                    bool menuExpanded;
-                    if (bool.TryParse(menuExpandedString, out menuExpanded))
-                    {
-                        mainViewModel.MenuExpanded = menuExpanded;
-                    }
-                }
-                if (elementsByTagNameMenuPanelOpen.Count > 0)
-                {
-                    var menuPanelOpenString = elementsByTagNameMenuPanelOpen[0].InnerXml;
-
-                    bool panelOpen;
-                    if (bool.TryParse(menuPanelOpenString, out panelOpen))
-                    {
-                        mainViewModel.MenuViewModel.IsPanelOpen = panelOpen;
-                    }
-                }
-                if (elementsByTagNameMenuPanelLockedOpen.Count > 0)
-                {
-                    var menuPanelLockedOpenString = elementsByTagNameMenuPanelLockedOpen[0].InnerXml;
-
-                    bool panelLockedOpen;
-                    if (bool.TryParse(menuPanelLockedOpenString, out panelLockedOpen))
-                    {
-                        mainViewModel.MenuViewModel.IsPanelLockedOpen = panelLockedOpen;
-                    }
-                }
+                SetMenuExpanded(xmlDocument, mainViewModel);
+                SetMenuPanelOpen(xmlDocument, mainViewModel);
+                SetMenuPanelLockedOpen(xmlDocument, mainViewModel);
             }
             Toolbox.Activate();
         }
+
+        private static void SetMenuExpanded(XmlDocument xmlDocument, MainViewModel mainViewModel)
+        {
+            var elementsByTagNameMenuExpanded = xmlDocument.GetElementsByTagName("MenuExpanded");
+            if (elementsByTagNameMenuExpanded.Count > 0)
+            {
+                var menuExpandedString = elementsByTagNameMenuExpanded[0].InnerXml;
+
+                bool menuExpanded;
+                if (bool.TryParse(menuExpandedString, out menuExpanded))
+                {
+                    mainViewModel.MenuExpanded = menuExpanded;
+                }
+            }
+        }
+
+        private static void SetMenuPanelOpen(XmlDocument xmlDocument, MainViewModel mainViewModel)
+        {
+            var elementsByTagNameMenuPanelOpen = xmlDocument.GetElementsByTagName("MenuPanelOpen");
+            if (elementsByTagNameMenuPanelOpen.Count > 0)
+            {
+                var menuPanelOpenString = elementsByTagNameMenuPanelOpen[0].InnerXml;
+
+                bool panelOpen;
+                if (bool.TryParse(menuPanelOpenString, out panelOpen))
+                {
+                    mainViewModel.MenuViewModel.IsPanelOpen = panelOpen;
+                }
+            }
+        }
+
+        private static void SetMenuPanelLockedOpen(XmlDocument xmlDocument, MainViewModel mainViewModel)
+        {
+            var elementsByTagNameMenuPanelLockedOpen = xmlDocument.GetElementsByTagName("MenuPanelLockedOpen");
+            if (elementsByTagNameMenuPanelLockedOpen.Count > 0)
+            {
+                var menuPanelLockedOpenString = elementsByTagNameMenuPanelLockedOpen[0].InnerXml;
+
+                bool panelLockedOpen;
+                if (bool.TryParse(menuPanelLockedOpenString, out panelLockedOpen))
+                {
+                    mainViewModel.MenuViewModel.IsPanelLockedOpen = panelLockedOpen;
+                }
+            }
+        }
+
         #region Implementation of IWin32Window
 
         public IntPtr Handle
@@ -289,6 +302,11 @@ namespace Dev2.Studio.Views
             }
 
             GetFilePath();
+            SaveLayout(mainViewModel);
+        }
+
+        private void SaveLayout(MainViewModel mainViewModel)
+        {
             var dockManagerLayout = DockManager.SaveLayout();
             XmlDocument document = new XmlDocument();
             document.LoadXml(dockManagerLayout);
@@ -299,7 +317,8 @@ namespace Dev2.Studio.Views
             menuPanelOpenNode.InnerXml = (mainViewModel != null && mainViewModel.MenuViewModel.IsPanelOpen).ToString();
 
             var menuPanelLockedOpenNode = document.CreateNode(XmlNodeType.Element, "MenuPanelLockedOpen", document.NamespaceURI);
-            menuPanelLockedOpenNode.InnerXml = (mainViewModel != null && mainViewModel.MenuViewModel.IsPanelLockedOpen).ToString();
+            menuPanelLockedOpenNode.InnerXml =
+                (mainViewModel != null && mainViewModel.MenuViewModel.IsPanelLockedOpen).ToString();
 
             if (document.DocumentElement != null)
             {
@@ -367,10 +386,7 @@ namespace Dev2.Studio.Views
         private void DoCloseExitFullScreenPanelAnimation()
         {
             var storyboard = Resources["AnimateExitFullScreenPanelClose"] as Storyboard;
-            if (storyboard != null)
-            {
-                storyboard.Begin();
-            }
+            storyboard?.Begin();
         }
 
         private void ShowFullScreenPanel_OnMouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
@@ -378,10 +394,7 @@ namespace Dev2.Studio.Views
             if (_isSuperMaximising)
             {
                 var storyboard = Resources["AnimateExitFullScreenPanelOpen"] as Storyboard;
-                if (storyboard != null)
-                {
-                    storyboard.Begin();
-                }
+                storyboard?.Begin();
             }
             if (!_isLocked)
             {

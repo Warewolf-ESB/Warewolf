@@ -35,7 +35,7 @@ namespace Dev2.Models
         }
         public IEnvironmentConnection Connection => _connection;
 
-        public IExplorerItem Load(Guid workSpaceId)
+        public IExplorerItem Load(Guid workSpaceId,bool reload=true)
         {
             var controller = CommunicationControllerFactory.CreateController("FetchExplorerItemsService");
             return controller.ExecuteCommand<IExplorerItem>(Connection, workSpaceId);

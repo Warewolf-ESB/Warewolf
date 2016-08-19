@@ -19,6 +19,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         private bool _isError;
         private bool _isInfo;
         private bool _isQuestion;
+        private List<string> _duplicates;
 
         private List<string> _changedProperties;
         private MessageBoxViewModel _target;
@@ -38,6 +39,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _isError = false;
             _isInfo = true;
             _isQuestion = false;
+            _duplicates = new List<string>();
             _changedProperties = new List<string>();
             _target = new MessageBoxViewModel(
                 _message,
@@ -47,7 +49,8 @@ namespace Warewolf.Studio.ViewModels.Tests
                 _isDependenciesButtonVisible,
                 _isError,
                 _isInfo,
-                _isQuestion);
+                _isQuestion,
+                _duplicates);
             _target.PropertyChanged += (sender, args) => { _changedProperties.Add(args.PropertyName); };
         }
 
@@ -117,6 +120,38 @@ namespace Warewolf.Studio.ViewModels.Tests
             //asert
             Assert.AreEqual(expectedValue, value);
             Assert.IsTrue(_changedProperties.Contains("IsQuestion"));
+        }
+
+        [TestMethod]
+        public void TestIsDuplicatesVisible()
+        {
+            //arrange
+            var expectedValue = true;
+            _changedProperties.Clear();
+
+            //act
+            _target.IsDuplicatesVisible = expectedValue;
+            var value = _target.IsDuplicatesVisible;
+
+            //asert
+            Assert.AreEqual(expectedValue, value);
+            Assert.IsTrue(_changedProperties.Contains("IsDuplicatesVisible"));
+        }
+
+        [TestMethod]
+        public void TestUrlsFound()
+        {
+            //arrange
+            List<string> duplicateList = new List<string> { "test1", "test2" };
+            _changedProperties.Clear();
+
+            //act
+            _target.UrlsFound = duplicateList;
+            var value = _target.UrlsFound;
+
+            //asert
+            Assert.AreEqual(duplicateList, value);
+            Assert.IsTrue(_changedProperties.Contains("UrlsFound"));
         }
 
         [TestMethod]
