@@ -11,8 +11,6 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using Dev2.Common;
-using Dev2.Common.Interfaces.Explorer;
 using Dev2.Common.Interfaces.Hosting;
 using Dev2.Common.Interfaces.Infrastructure;
 using Dev2.Common.Interfaces.Security;
@@ -27,74 +25,65 @@ using Moq;
 namespace Dev2.Tests.Runtime.Services
 {
     [TestClass]
-    public class FetchExplorerItemsTest
+    public class FetchExplorerIDuplicatesTests
     {
         [TestMethod]
-        [Owner("Leon Rajindrapersadh")]
-        [TestCategory("FetchExplorerItems_HandlesType")]
-        public void FetchExplorerItems_HandlesType_ExpectName()
+        [Owner("Sanele Mthembu")]
+        [TestCategory("FetchExplorerIDuplicates_HandlesType")]
+        public void FetchExplorerIDuplicates_HandlesType_ExpectName()
         {
             //------------Setup for test--------------------------
-            var fetchExplorerItems = new FetchExplorerItems();
-
-
+            var FetchExplorerIDuplicates = new FetchExplorerIDuplicates();
             //------------Execute Test---------------------------
-
             //------------Assert Results-------------------------
-            Assert.AreEqual("FetchExplorerItemsService", fetchExplorerItems.HandlesType());
+            Assert.AreEqual("FetchExplorerIDuplicates", FetchExplorerIDuplicates.HandlesType());
         }
 
         [TestMethod]
-        [Owner("Hagashen Naidu")]
-        [TestCategory("FetchExplorerItems_Execute")]
-        public void FetchExplorerItems_Execute_NullValuesParameter_ErrorResult()
+        [Owner("Sanele Mthembu")]
+        [TestCategory("FetchExplorerIDuplicates_Execute")]
+        public void FetchExplorerIDuplicates_Execute_NullValuesParameter_ErrorResult()
         {
             //------------Setup for test--------------------------
-            var fetchExplorerItems = new FetchExplorerItems();
+            var FetchExplorerIDuplicates = new FetchExplorerIDuplicates();
             var serializer = new Dev2JsonSerializer();
             //------------Execute Test---------------------------
-            StringBuilder jsonResult = fetchExplorerItems.Execute(null, null);
+            StringBuilder jsonResult = FetchExplorerIDuplicates.Execute(null, null);
             IExplorerRepositoryResult result = serializer.Deserialize<IExplorerRepositoryResult>(jsonResult);
             //------------Assert Results-------------------------
             Assert.AreEqual(ExecStatus.Fail, result.Status);
         }
 
         [TestMethod]
-        [Owner("Leon Rajindrapersadh")]
-        [TestCategory("FetchExplorerItems_HandlesType")]
-        public void FetchExplorerItems_Execute_ExpectName()
+        [Owner("Sanele Mthembu")]
+        [TestCategory("FetchExplorerIDuplicates_HandlesType")]
+        public void FetchExplorerIDuplicates_Execute_ExpectName()
         {
             //------------Setup for test--------------------------
-            var fetchExplorerItems = new FetchExplorerItems();
+            var fetchExplorerIDuplicates = new FetchExplorerIDuplicates();
 
-            var item = new ServerExplorerItem("a", Guid.NewGuid(), "Folder", null, Permissions.DeployFrom, "", "", "");
-            Assert.IsNotNull(item);
+            var serverExplorerItem = new ServerExplorerItem("a", Guid.NewGuid(), "Folder", null, Permissions.DeployFrom, "", "", "");
+            Assert.IsNotNull(serverExplorerItem);
             var repo = new Mock<IExplorerServerResourceRepository>();
             var ws = new Mock<IWorkspace>();
-            repo.Setup(a => a.Load(GlobalConstants.ServerWorkspaceID, false))
-                .Returns(item).Verifiable();
-            var serializer = new Dev2JsonSerializer();
+            repo.Setup(a => a.LoadDuplicate());
             ws.Setup(a => a.ID).Returns(Guid.Empty);
-            fetchExplorerItems.ServerExplorerRepo = repo.Object;
+            fetchExplorerIDuplicates.ServerExplorerRepo = repo.Object;
             //------------Execute Test---------------------------
-            var execute = fetchExplorerItems.Execute(new Dictionary<string, StringBuilder>(), ws.Object);
+            fetchExplorerIDuplicates.Execute(new Dictionary<string, StringBuilder>(), ws.Object);
             //------------Assert Results-------------------------
-            repo.Verify(a => a.Load(GlobalConstants.ServerWorkspaceID, false));
-            var message = serializer.Deserialize<CompressedExecuteMessage>(execute);
-            Assert.AreEqual(serializer.Deserialize<IExplorerItem>(message.GetDecompressedMessage()).ResourceId, item.ResourceId);
+            repo.Verify(a => a.LoadDuplicate());
         }
 
         [TestMethod]
-        [Owner("Leon Rajindrapersadh")]
-        [TestCategory("FetchExplorerItems_HandlesType")]
-        public void FetchExplorerItems_CreateServiceEntry_ExpectProperlyFormedDynamicService()
+        [Owner("Sanele Mthembu")]
+        [TestCategory("FetchExplorerIDuplicates_HandlesType")]
+        public void FetchExplorerIDuplicates_CreateServiceEntry_ExpectProperlyFormedDynamicService()
         {
             //------------Setup for test--------------------------
-            var fetchExplorerItems = new FetchExplorerItems();
-
-
+            var FetchExplorerIDuplicates = new FetchExplorerIDuplicates();
             //------------Execute Test---------------------------
-            var a = fetchExplorerItems.CreateServiceEntry();
+            var a = FetchExplorerIDuplicates.CreateServiceEntry();
             //------------Assert Results-------------------------
             var b = a.DataListSpecification.ToString();
             Assert.AreEqual("<DataList><ResourceType ColumnIODirection=\"Input\"/><Roles ColumnIODirection=\"Input\"/><ResourceName ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>", b);

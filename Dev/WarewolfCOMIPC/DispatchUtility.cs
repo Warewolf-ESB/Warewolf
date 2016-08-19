@@ -184,7 +184,6 @@ namespace WarewolfCOMIPC
 			{
 				// This is the only supported "error" case because it means IDispatch
 				// is saying it doesn't know the member we asked about.
-				result = false;
 			}
 			else
 			{
