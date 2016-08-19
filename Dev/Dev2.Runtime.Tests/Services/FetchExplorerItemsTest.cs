@@ -11,6 +11,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Dev2.Common;
 using Dev2.Common.Interfaces.Explorer;
 using Dev2.Common.Interfaces.Hosting;
 using Dev2.Common.Interfaces.Infrastructure;
@@ -66,18 +67,20 @@ namespace Dev2.Tests.Runtime.Services
             //------------Setup for test--------------------------
             var fetchExplorerItems = new FetchExplorerItems();
 
-            ServerExplorerItem item = new ServerExplorerItem("a", Guid.NewGuid(), "Folder", null, Permissions.DeployFrom, "", "", "");
+            var item = new ServerExplorerItem("a", Guid.NewGuid(), "Folder", null, Permissions.DeployFrom, "", "", "");
+            Assert.IsNotNull(item);
             var repo = new Mock<IExplorerServerResourceRepository>();
             var ws = new Mock<IWorkspace>();
-            repo.Setup(a => a.Load(It.IsAny<Guid>(),true)).Returns(item).Verifiable();
+            repo.Setup(a => a.Load(GlobalConstants.ServerWorkspaceID, false))
+                .Returns(item).Verifiable();
             var serializer = new Dev2JsonSerializer();
             ws.Setup(a => a.ID).Returns(Guid.Empty);
             fetchExplorerItems.ServerExplorerRepo = repo.Object;
             //------------Execute Test---------------------------
-            var ax = fetchExplorerItems.Execute(new Dictionary<string, StringBuilder>(), ws.Object);
+            var execute = fetchExplorerItems.Execute(new Dictionary<string, StringBuilder>(), ws.Object);
             //------------Assert Results-------------------------
-            repo.Verify(a => a.Load(It.IsAny<Guid>(), true));
-            var message = serializer.Deserialize<CompressedExecuteMessage>(ax);
+            repo.Verify(a => a.Load(GlobalConstants.ServerWorkspaceID, false));
+            var message = serializer.Deserialize<CompressedExecuteMessage>(execute);
             Assert.AreEqual(serializer.Deserialize<IExplorerItem>(message.GetDecompressedMessage()).ResourceId, item.ResourceId);
         }
 

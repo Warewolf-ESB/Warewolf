@@ -61,17 +61,17 @@ namespace Dev2.Tests.Runtime.Services
         public void FetchExplorerIDuplicates_Execute_ExpectName()
         {
             //------------Setup for test--------------------------
-            var FetchExplorerIDuplicates = new FetchExplorerIDuplicates();
+            var fetchExplorerIDuplicates = new FetchExplorerIDuplicates();
 
-            ServerExplorerItem item = new ServerExplorerItem("a", Guid.NewGuid(), "Folder", null, Permissions.DeployFrom, "", "", "");
+            var serverExplorerItem = new ServerExplorerItem("a", Guid.NewGuid(), "Folder", null, Permissions.DeployFrom, "", "", "");
+            Assert.IsNotNull(serverExplorerItem);
             var repo = new Mock<IExplorerServerResourceRepository>();
             var ws = new Mock<IWorkspace>();
             repo.Setup(a => a.LoadDuplicate());
-            var serializer = new Dev2JsonSerializer();
             ws.Setup(a => a.ID).Returns(Guid.Empty);
-            FetchExplorerIDuplicates.ServerExplorerRepo = repo.Object;
+            fetchExplorerIDuplicates.ServerExplorerRepo = repo.Object;
             //------------Execute Test---------------------------
-            var ax = FetchExplorerIDuplicates.Execute(new Dictionary<string, StringBuilder>(), ws.Object);
+            fetchExplorerIDuplicates.Execute(new Dictionary<string, StringBuilder>(), ws.Object);
             //------------Assert Results-------------------------
             repo.Verify(a => a.LoadDuplicate());
         }

@@ -9,7 +9,6 @@
 */
 
 using System;
-using System.Collections.Generic;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Explorer;
 
@@ -25,6 +24,6 @@ namespace Dev2.Common.Interfaces.Infrastructure
         IExplorerItem Find(Guid id);
         IExplorerItem Find(Func<IExplorerItem,bool> predicate);
 
-        List<string> LoadDuplicate();
+        string LoadDuplicate();
     }
 }
