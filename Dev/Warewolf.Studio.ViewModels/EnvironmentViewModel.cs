@@ -725,12 +725,6 @@ namespace Warewolf.Studio.ViewModels
             {
                 IsConnecting = true;
                 var explorerItems = await Server.LoadExplorer(reloadCatalogue);
-                var loadExplorerDuplicates = await Server.LoadExplorerDuplicates();
-                if(loadExplorerDuplicates?.Count > 0)
-                {
-                    var controller = CustomContainer.Get<IPopupController>();
-                    controller.ShowResourcesConflict(loadExplorerDuplicates);
-                }
                 CreateExplorerItemsSync(explorerItems.Children, Server, this, selectedPath != null, Children.Any(a => AllowResourceCheck));
                 IsLoaded = true;
                 IsConnecting = false;
