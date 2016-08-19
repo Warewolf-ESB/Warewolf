@@ -4,6 +4,7 @@ using System.IO;
 using System.IO.Pipes;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using Newtonsoft.Json;
 using WarewolfCOMIPC.Client;
 // ReSharper disable NonLocalizedString
@@ -120,8 +121,9 @@ namespace WarewolfCOMIPC
                         var objectInstance = Activator.CreateInstance(type);
                         var paramsObjects = data.Parameters.ToList();
                         object[] correctValues = new object[paramsObjects.Count];
-                        foreach (var o in paramsObjects)
+                        for (int index = 0; index < paramsObjects.Count; index++)
                         {
+                            var o = paramsObjects[index];
                             var cleanValue = o.ToString()
                                 .Replace("]", "")
                                 .Replace("[", "")
@@ -129,16 +131,23 @@ namespace WarewolfCOMIPC
                                 .Replace(Environment.NewLine, "")
                                 .Replace("\n", "")
                                 .Trim();
-                            correctValues.ToList().Add(cleanValue);
+                            correctValues[index] = cleanValue;
                         }
-                        var result = DispatchUtility.Invoke(objectInstance, data.MethodToCall, correctValues);
-
-                        var sw = new StreamWriter(pipe);
-                        formatter.Serialize(sw, result);
-                        sw.Flush();
-                        Console.WriteLine("Execution completed " + data.MethodToCall);
-
-
+                        try
+                        {
+                            var result = DispatchUtility.Invoke(objectInstance, data.MethodToCall, correctValues);
+                            var sw = new StreamWriter(pipe);
+                            formatter.Serialize(sw, result ?? "Success");
+                            sw.Flush();
+                            Console.WriteLine("Execution completed " + data.MethodToCall);
+                        }
+                        catch (Exception ex)
+                        {
+                            if (ex.InnerException != null)
+                            {
+                                throw new COMException(ex.InnerException?.Message);
+                            }
+                        }
                     }
                     break;
             }
