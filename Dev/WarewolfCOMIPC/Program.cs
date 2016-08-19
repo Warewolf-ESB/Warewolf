@@ -92,18 +92,7 @@ namespace WarewolfCOMIPC
                         var type = Type.GetTypeFromCLSID(data.CLSID, true);
                         var objectInstance = Activator.CreateInstance(type);
                         var dispatchedtype = DispatchUtility.GetType(objectInstance, false);
-                        MethodInfo[] methods;
-
-                        try
-                        {
-                            var dispatchedInstance = Activator.CreateInstance(dispatchedtype);
-                            methods = dispatchedInstance.GetType().GetMethods();
-                            Marshal.ReleaseComObject(dispatchedInstance);
-                        }
-                        catch (Exception)
-                        {
-                            methods = dispatchedtype.GetMethods();
-                        }
+                        MethodInfo[] methods = dispatchedtype.GetMethods();
 
                         List<MethodInfoTO> methodInfos = methods
                             .Select(info => new MethodInfoTO
@@ -132,33 +121,26 @@ namespace WarewolfCOMIPC
                         Console.WriteLine("Executing GeMethods for:" + data.CLSID);
                         var type = Type.GetTypeFromCLSID(data.CLSID, true);
                         var objectInstance = Activator.CreateInstance(type);
-                        var dispatchedtype = DispatchUtility.GetType(objectInstance, false);
-                        var dispatchedInstance = Activator.CreateInstance(dispatchedtype);
-
-                        var arguments = data.Parameters.Select(o => o.GetType()).ToArray();
-                        var methodToRun = dispatchedtype.GetMethod(data.MethodToCall, arguments) ?? dispatchedtype.GetMethod(data.MethodToCall);
-                        // ReSharper disable once SuggestVarOrType_Elsewhere
-                        if (methodToRun != null)
+                        var paramsObjects = data.Parameters.ToList();
+                        object[] correctValues = new object[paramsObjects.Count];
+                        foreach (var o in paramsObjects)
                         {
-                            if (methodToRun.ReturnType == typeof(void))
-                            {
-                                methodToRun.Invoke(dispatchedInstance, BindingFlags.InvokeMethod | BindingFlags.IgnoreCase | BindingFlags.Public, null, data.Parameters, CultureInfo.InvariantCulture);
-                                var sw = new StreamWriter(pipe);
-                                formatter.Serialize(sw, "Success");
-                                sw.Flush();
-                                Console.WriteLine("Execution completed " + data.MethodToCall);
-                            }
-                            else
-                            {
-                                var pluginResult = methodToRun.Invoke(dispatchedInstance, BindingFlags.InvokeMethod | BindingFlags.IgnoreCase | BindingFlags.Public, null, data.Parameters, CultureInfo.InvariantCulture);
-                                var sw = new StreamWriter(pipe);
-                                formatter.Serialize(sw, pluginResult);
-                                sw.Flush();
-                                Console.WriteLine("Execution completed " + data.MethodToCall);
-                            }
-
-
+                            var cleanValue = o.ToString()
+                                .Replace("]", "")
+                                .Replace("[", "")
+                                .Replace("\r", "")
+                                .Replace(Environment.NewLine, "")
+                                .Replace("\n", "")
+                                .Trim();
+                            correctValues.ToList().Add(cleanValue);
                         }
+                        var result = DispatchUtility.Invoke(objectInstance, data.MethodToCall, correctValues);
+
+                        var sw = new StreamWriter(pipe);
+                        formatter.Serialize(sw, result);
+                        sw.Flush();
+                        Console.WriteLine("Execution completed " + data.MethodToCall);
+
 
                     }
                     break;
