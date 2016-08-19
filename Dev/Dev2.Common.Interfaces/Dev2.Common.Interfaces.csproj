@@ -237,6 +237,7 @@
     <Compile Include="IExplorerViewModel.cs" />
     <Compile Include="IExternalProcessExecutor.cs" />
     <Compile Include="IFilenameValidator.cs" />
+    <Compile Include="IFileResource.cs" />
     <Compile Include="IFrameworkRepository.cs" />
     <Compile Include="IHelpView.cs" />
     <Compile Include="IIntellisenseStringResult.cs" />
@@ -297,6 +298,7 @@
     <Compile Include="IQueryManager.cs" />
     <Compile Include="IRabbitMQServiceSourceDefinition.cs" />
     <Compile Include="IRequestServiceNameView.cs" />
+    <Compile Include="IResourceHolder.cs" />
     <Compile Include="IResourceSource.cs" />
     <Compile Include="IServer.cs" />
     <Compile Include="IServerSource.cs" />

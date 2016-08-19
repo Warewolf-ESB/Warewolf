@@ -29,7 +29,7 @@ namespace Warewolf.UITests.Tools.Data
             Uimap.Save_With_Ribbon_Button_And_Dialog(WorkflowName);
             Uimap.Click_Debug_Ribbon_Button();
             Uimap.Click_DebugInput_Debug_Button();
-            Uimap.WaitForSpinner(Uimap.MainStudioWindow.DockManager.SplitPaneRight.DebugOutput.StatusBar.Spinner);
+            Uimap.WaitForControlNotVisible(Uimap.MainStudioWindow.DockManager.SplitPaneRight.DebugOutput.StatusBar.Spinner);
             Uimap.Click_Debug_Output_Assign_Cell();
         }
 
@@ -46,6 +46,7 @@ namespace Warewolf.UITests.Tools.Data
         [TestCleanup]
         public void MyTestCleanup()
         {
+            Playback.PlaybackError -= Uimap.OnError;
             Uimap.TryCloseHangingSaveDialog();
             Uimap.TryRemoveFromExplorer(WorkflowName);
             Uimap.TryClearToolboxFilter();

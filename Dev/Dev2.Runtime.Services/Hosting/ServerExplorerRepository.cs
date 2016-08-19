@@ -36,6 +36,7 @@ namespace Dev2.Runtime.Hosting
         public static IExplorerServerResourceRepository Instance { get; private set; }
 
         bool _isDirty;
+        private IExplorerItem _root;
 
         public bool IsDirty
         {
@@ -89,11 +90,14 @@ namespace Dev2.Runtime.Hosting
         public IResourceCatalog ResourceCatalogue { get; private set; }
         public IServerVersionRepository VersionRepository { get; set; }
 
-        public IExplorerItem Load(Guid workSpaceId)
+        public IExplorerItem Load(Guid workSpaceId,bool reload=false)
         {
-            var root = ExplorerItemFactory.CreateRootExplorerItem(EnvironmentVariables.GetWorkspacePath(workSpaceId), workSpaceId);
-            ExplorerItemFactory.GetDuplicatedResourcesPaths();
-            return root;
+            if (_root == null || reload)
+            {
+                _root = ExplorerItemFactory.CreateRootExplorerItem(EnvironmentVariables.GetWorkspacePath(workSpaceId),
+                    workSpaceId);
+            }
+            return _root;
         }
         
         public IExplorerItem Load(string type, Guid workSpaceId)
@@ -207,7 +211,7 @@ namespace Dev2.Runtime.Hosting
             return Find(items, predicate);
         }
 
-        public string LoadDuplicate()
+        public List<string> LoadDuplicate()
         {
             return ExplorerItemFactory.GetDuplicatedResourcesPaths();
         }

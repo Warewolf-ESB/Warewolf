@@ -33,6 +33,7 @@ using Dev2.Common.Interfaces.Versioning;
 using Dev2.Factory;
 using Dev2.Interfaces;
 using Dev2.Runtime.Configuration.ViewModels.Base;
+using Dev2.Runtime.Security;
 using Dev2.Security;
 using Dev2.Services.Events;
 using Dev2.Services.Security;
@@ -408,7 +409,7 @@ namespace Dev2.Studio.ViewModels
         [ExcludeFromCodeCoverage]
         public MainViewModel()
             : this(EventPublishers.Aggregator, new AsyncWorker(), Core.EnvironmentRepository.Instance, new VersionChecker())
-        {            
+        {
         }
 
         public MainViewModel(IEventAggregator eventPublisher, IAsyncWorker asyncWorker, IEnvironmentRepository environmentRepository,
@@ -440,7 +441,7 @@ namespace Dev2.Studio.ViewModels
             _menuExpanded = false;
 
             ExplorerViewModel = explorer ?? new ExplorerViewModel(this, CustomContainer.Get<Microsoft.Practices.Prism.PubSubEvents.IEventAggregator>());
-            
+
             // ReSharper disable DoNotCallOverridableMethodsInConstructor
             AddWorkspaceItems();
             ShowStartPage();
@@ -448,7 +449,7 @@ namespace Dev2.Studio.ViewModels
             // ReSharper restore DoNotCallOverridableMethodsInConstructor
 
         }
-        
+
         public void Handle(ShowReverseDependencyVisualizer message)
         {
             Dev2Logger.Debug(message.GetType().Name);
@@ -535,7 +536,7 @@ namespace Dev2.Studio.ViewModels
         {
             if (ActiveItem?.Environment != null)
             {
-               SetActiveEnvironment(ActiveItem.Environment);
+                SetActiveEnvironment(ActiveItem.Environment);
             }
         }
 
@@ -578,7 +579,7 @@ namespace Dev2.Studio.ViewModels
 
         public void OpenResource(Guid resourceId, IServer server)
         {
-            OpenResource(resourceId,server.EnvironmentID);
+            OpenResource(resourceId, server.EnvironmentID);
         }
         public void OpenResource(Guid resourceId, Guid environmentId)
         {
@@ -618,6 +619,7 @@ namespace Dev2.Studio.ViewModels
             var sourceEnvironmentModel = EnvironmentRepository.Get(sourceEnvironmentId);
             var dto = new DeployDto { ResourceModels = resources.Select(a => sourceEnvironmentModel.ResourceRepository.LoadContextualResourceModel(a) as IResourceModel).ToList() };
             environmentModel.ResourceRepository.DeployResources(sourceEnvironmentModel, environmentModel, dto);
+            ServerAuthorizationService.Instance.GetResourcePermissions(dto.ResourceModels.First().ID);
             ExplorerViewModel.RefreshEnvironment(destinationEnvironmentId);
         }
 
@@ -750,15 +752,25 @@ namespace Dev2.Studio.ViewModels
         {
             BrowserPopupController.ShowPopup(StringResources.Uri_Community_HomePage);
         }
-      
+
         public bool IsActiveEnvironmentConnected()
         {
             if (ActiveEnvironment == null)
+
             {
                 return false;
             }
-            
-            return ActiveEnvironment != null && ActiveEnvironment.IsConnected && ActiveEnvironment.CanStudioExecute;
+
+            var isActiveEnvironmentConnected = ActiveEnvironment != null && ActiveEnvironment.IsConnected && ActiveEnvironment.CanStudioExecute;
+            if (ActiveEnvironment.IsConnected)
+            {
+                if (ToolboxViewModel.BackedUpTools != null && ToolboxViewModel.BackedUpTools.Count == 0)
+                {
+                    ToolboxViewModel.BuildToolsList();
+                }
+            }
+            ToolboxViewModel.IsVisible = isActiveEnvironmentConnected;
+            return isActiveEnvironmentConnected;
         }
 
         public void NewEmailSource(string resourcePath)
@@ -802,7 +814,7 @@ namespace Dev2.Studio.ViewModels
 
         public void BaseDeactivateItem(WorkSurfaceContextViewModel item, bool close)
         {
-            base.DeactivateItem(item,close);
+            base.DeactivateItem(item, close);
         }
         public override void DeactivateItem(WorkSurfaceContextViewModel item, bool close)
         {
@@ -893,8 +905,8 @@ namespace Dev2.Studio.ViewModels
                 }
             }
         }
-        
-        public void UpdateCurrentDataListWithObjectFromJson(string parentObjectName,string json)
+
+        public void UpdateCurrentDataListWithObjectFromJson(string parentObjectName, string json)
         {
             ActiveItem?.DataListViewModel?.GenerateComplexObjectFromJson(parentObjectName, json);
         }
@@ -912,7 +924,7 @@ namespace Dev2.Studio.ViewModels
             {
                 item.DebugOutputViewModel.PropertyChanged += DebugOutputViewModelOnPropertyChanged;
             }
-            SetActiveEnvironment(item.Environment);            
+            SetActiveEnvironment(item.Environment);
         }
 
         void DebugOutputViewModelOnPropertyChanged(object sender, PropertyChangedEventArgs args)
@@ -1195,17 +1207,7 @@ namespace Dev2.Studio.ViewModels
                     }
                 }
             }
-            CloseRemoteConnections();
             return true;
-        }
-
-        private void CloseRemoteConnections()
-        {
-            var connected = EnvironmentRepository.All().Where(a => a.IsConnected);
-            foreach (var environmentModel in connected)
-            {
-                environmentModel.Disconnect();
-            }
         }
 
         IMenuViewModel _menuViewModel;
@@ -1228,7 +1230,7 @@ namespace Dev2.Studio.ViewModels
         public bool IsDownloading()
         {
             return false;
-        }        
+        }
 
         public async Task<bool> CheckForNewVersion()
         {

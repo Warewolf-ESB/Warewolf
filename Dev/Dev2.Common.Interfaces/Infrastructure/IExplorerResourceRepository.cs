@@ -17,7 +17,8 @@ namespace Dev2.Common.Interfaces.Infrastructure
 {
     public interface IExplorerResourceRepository
     {
-        IExplorerItem Load(Guid workSpaceId);
+
+        IExplorerItem Load(Guid workSpaceId, bool reload = false);
         [SuppressMessage("ReSharper", "UnusedMember.Global")]
         IExplorerItem Load(string type, Guid workSpaceId);
         IExplorerRepositoryResult RenameItem(IExplorerItem itemToRename, string newName, Guid workSpaceId);
