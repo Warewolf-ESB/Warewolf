@@ -37,7 +37,7 @@
                 <TextBlock Text="{Binding Path=Title}" Margin="6,0,0,0" />
             </StackPanel>
             <TextBlock Grid.Row="1" Text="{Binding Path=Message}" TextWrapping="Wrap" Margin="{StaticResource ControlBorderTop}" />
-            <ListBox Grid.Row="2" Height="200" ItemsSource="{Binding Path=UrlsFound, Mode=OneWay}" Name="listBox1" >
+            <ListBox Grid.Row="2" Height="Auto" MaxHeight="200" ItemsSource="{Binding Path=UrlsFound, Mode=OneWay}" Name="listBox1" Visibility="{Binding IsDuplicatesVisible, Converter={StaticResource BoolToVisibilityConverter}}" >
                 <ListBox.ItemTemplate>
                     <DataTemplate DataType="system:String">
                         <TextBlock>
