@@ -16,8 +16,8 @@ Feature: PluginSource
 
 Scenario: New Plugin Source File
 	Given I open New Plugin Source
-	Then "New Plugin Source" tab is opened
-	And title is "New Plugin Source"
+	Then "New DotNet Plugin Source" tab is opened
+	And title is "New DotNet Plugin Source"
 	And I open "File System"
 	Then local drive "C:\" is visible
 	Then local drive "D:\" is visible
