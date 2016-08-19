@@ -19,6 +19,7 @@ namespace Warewolf.Studio.ViewModels
         bool _isInfo;
         bool _isQuestion;
         private List<string> _urlsFound;
+        private bool _isDuplicatesVisible;
 
         public MessageBoxViewModel(string message, string title, MessageBoxButton buttons, FontAwesomeIcon icon, bool isDependenciesButtonVisible,
             bool isError, bool isInfo, bool isQuestion, List<string> urlsFound)
@@ -93,6 +94,15 @@ namespace Warewolf.Studio.ViewModels
             {
                 _isQuestion = value;
                 NotifyOfPropertyChange(() => IsQuestion);
+            }
+        }
+        public bool IsDuplicatesVisible
+        {
+            get { return _isDuplicatesVisible; }
+            set
+            {
+                _isDuplicatesVisible = value;
+                NotifyOfPropertyChange(() => IsDuplicatesVisible);
             }
         }
 

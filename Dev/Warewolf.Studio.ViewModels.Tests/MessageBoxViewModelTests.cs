@@ -123,6 +123,38 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
+        public void TestIsDuplicatesVisible()
+        {
+            //arrange
+            var expectedValue = true;
+            _changedProperties.Clear();
+
+            //act
+            _target.IsDuplicatesVisible = expectedValue;
+            var value = _target.IsDuplicatesVisible;
+
+            //asert
+            Assert.AreEqual(expectedValue, value);
+            Assert.IsTrue(_changedProperties.Contains("IsDuplicatesVisible"));
+        }
+
+        [TestMethod]
+        public void TestUrlsFound()
+        {
+            //arrange
+            List<string> duplicateList = new List<string> { "test1", "test2" };
+            _changedProperties.Clear();
+
+            //act
+            _target.UrlsFound = duplicateList;
+            var value = _target.UrlsFound;
+
+            //asert
+            Assert.AreEqual(duplicateList, value);
+            Assert.IsTrue(_changedProperties.Contains("UrlsFound"));
+        }
+
+        [TestMethod]
         public void TestButtons()
         {
             //arrange

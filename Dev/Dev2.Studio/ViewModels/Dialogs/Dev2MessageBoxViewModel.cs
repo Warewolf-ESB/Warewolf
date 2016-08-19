@@ -252,12 +252,18 @@ namespace Dev2.Studio.ViewModels.Dialogs
                 return dontShowAgainOption.Item2;
             }
 
+            if (caption != "Duplicated Resources")
+            {
+                urlsFound = new List<string>();
+            }
+
             var msgBoxViewModel = new MessageBoxViewModel(messageBoxText, caption, button, FontAwesomeIcon.ExclamationTriangle, isDependenciesButtonVisible, isError, isInfo, isQuestion, urlsFound);
 
             var msgBoxView = new MessageBoxView
             {
                 DataContext = msgBoxViewModel
             };
+            msgBoxViewModel.IsDuplicatesVisible = urlsFound.Count > 0;
             msgBoxViewModel.IsError = isError;
             msgBoxViewModel.IsInfo = isInfo;
             msgBoxViewModel.IsQuestion = isQuestion;
