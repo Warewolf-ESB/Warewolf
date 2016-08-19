@@ -3220,6 +3220,70 @@ namespace Dev2.Tests.Runtime.Hosting
         #endregion
 
 
+        [TestMethod]
+        [Owner("Sanele Mthembu")]
+        public void ResourceCatalog_GetResourceDuplicate()
+        {
+            var path = EnvironmentVariables.ResourcePath;
+            var sameResourceId = Guid.NewGuid();
+            //------------Setup for test--------------------------            
+            var resourcePath = path + "\\MyTest\\Folder1";
+            var resourcePath1 = path + "\\MyTest\\Folder2";
+            //------------Setup for test--------------------------         
+            var catalog = new ResourceCatalog();
+            Directory.CreateDirectory(path);
+            const string resourceName = "Bug6619Dep";
+            SaveResources(resourcePath, null, false, false, new[] { "Bug6619", resourceName }, new[]{ sameResourceId, Guid.NewGuid()});
+            SaveResources(resourcePath1, null, false, false, new[] { "Bug6619", resourceName }, new[]{ sameResourceId, Guid.NewGuid()});
+            
+            //------------Execute Test---------------------------
+            var duplicateResources = catalog.GetDuplicateResources();
+            //------------Assert Results-------------------------
+            Assert.IsTrue(duplicateResources.Count > 0);
+        }
+
+
+        [TestMethod]
+        [Owner("Sanele Mthembu")]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void ResourceCatalog_GivenEmptyWorkspace_IsWorkspaceValid_ShouldThrowException()
+        {
+            //------------Setup for test--------------------------            
+            var catalog = new ResourceCatalog();
+            Assert.IsNotNull(catalog);
+            //------------Execute Test---------------------------
+            catalog.IsWorkspaceValid(string.Empty, null, null);
+            //------------Assert Results-------------------------
+        }
+
+        [TestMethod]
+        [Owner("Sanele Mthembu")]
+        public void ResourceCatalog_GivenWorkspaceAndFolder_IsWorkspaceValid_ShouldBeFalse()
+        {
+            var path = EnvironmentVariables.ResourcePath;
+            var resourcePath = path + "\\MyTest\\Folder1";
+            //------------Setup for test--------------------------            
+            var catalog = new ResourceCatalog();
+            Assert.IsNotNull(catalog);
+            //------------Execute Test---------------------------
+            var isWorkspaceValid = catalog.IsWorkspaceValid(resourcePath, new List<string>(), new string[0]);
+            //------------Assert Results-------------------------
+            Assert.IsFalse(isWorkspaceValid);
+        }
+
+        [TestMethod]
+        [Owner("Sanele Mthembu")]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void ResourceCatalog_GivenEmptyDirectory_IsWorkspaceValid_ShouldThrowException()
+        {
+            //------------Setup for test--------------------------            
+            var catalog = new ResourceCatalog();
+            Assert.IsNotNull(catalog);
+            //------------Execute Test---------------------------
+            catalog.IsWorkspaceValid("SomeString", null, null);
+            //------------Assert Results-------------------------
+        }
+
         private ExecuteMessage ConvertToMsg(string payload)
         {
             return JsonConvert.DeserializeObject<ExecuteMessage>(payload);
