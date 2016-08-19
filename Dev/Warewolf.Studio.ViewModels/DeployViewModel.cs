@@ -372,9 +372,7 @@ namespace Warewolf.Studio.ViewModels
             get
             {
                 if (IsDeploying)
-                    return false;
-                if (!CanDeploySelectedItems(Source.SelectedItems))
-                    return false;
+                    return false;                
                 if (Source.SelectedEnvironment == null || !Source.SelectedEnvironment.IsConnected)
                 {
                     ErrorMessage = "Please select and connect a Source.";
@@ -408,6 +406,8 @@ namespace Warewolf.Studio.ViewModels
                     ErrorMessage = StringResources.DestinationPermission_Error;
                     return false;
                 }
+                //if(!CanDeploySelectedItems(Source.SelectedItems))
+                //    return false;
                 ErrorMessage = string.Empty;
                 return true;
             }
