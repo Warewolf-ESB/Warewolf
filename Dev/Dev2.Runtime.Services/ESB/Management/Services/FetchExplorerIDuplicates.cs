@@ -45,7 +45,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 }
                 StringBuilder tmp;
                 values.TryGetValue("ReloadResourceCatalogue", out tmp);
-                String reloadResourceCatalogueString = "";
+                string reloadResourceCatalogueString = "";
                 if (tmp != null)
                 {
                     reloadResourceCatalogueString = tmp.ToString();

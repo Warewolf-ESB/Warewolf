@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using Dev2.Common;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Security;
 using Dev2.Common.Interfaces.Wrappers;
@@ -420,5 +421,52 @@ namespace Dev2.Tests.Runtime.Hosting
         }
 
 
+        [TestMethod]
+        [Owner("Sanele Mthembu")]
+        public void ExplorerItemFactory_GetDuplicatedResourcesPaths_ShouldReturnDuplicateStringMessage()
+        {
+            const string expectedResults = "Resource Test_Resource in path Test_path and path Test_path2 are the same";
+            var catalogue = new Mock<IResourceCatalog>();
+            var directory = new Mock<IDirectory>();
+            var auth = new Mock<IAuthorizationService>();
+            //------------Setup for test--------------------------
+            catalogue.Setup(catalog => catalog.GetDuplicateResources())
+                .Returns(new List<DuplicateResource>
+                {
+                    new DuplicateResource
+                    {
+                        FilePath = "Test_path"
+                        ,
+                        FilePath2 = "Test_path2"
+                        ,
+                        ResourceName = "Test_Resource"
+                        ,
+                        ResourceId = Guid.NewGuid()
+                    }
+                });
+            //------------Execute Test---------------------------
+            var explorerItemFactory = new ExplorerItemFactory(catalogue.Object, directory.Object, auth.Object);
+            Assert.IsNotNull(explorerItemFactory);
+            var results = explorerItemFactory.GetDuplicatedResourcesPaths();
+            //------------Assert Results-------------------------
+            Assert.IsFalse(string.IsNullOrEmpty(results));
+            Assert.IsFalse(string.Equals(expectedResults, results));
+        }
+
+        [TestMethod]
+        [Owner("Sanele Mthembu")]
+        public void ExplorerItemFactory_GivenEmptyResourceDir_GetDuplicatedResourcesPaths_ShouldReturnEmptyString()
+        {
+            var catalogue = new Mock<IResourceCatalog>();
+            var directory = new Mock<IDirectory>();
+            var auth = new Mock<IAuthorizationService>();
+            //------------Setup for test--------------------------
+            //------------Execute Test---------------------------
+            var explorerItemFactory = new ExplorerItemFactory(catalogue.Object, directory.Object, auth.Object);
+            Assert.IsNotNull(explorerItemFactory);
+            var results = explorerItemFactory.GetDuplicatedResourcesPaths();
+            //------------Assert Results-------------------------
+            Assert.IsTrue(string.IsNullOrEmpty(results));
+        }
     }
 }
