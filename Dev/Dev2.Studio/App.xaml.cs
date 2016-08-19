@@ -162,6 +162,7 @@ namespace Dev2.Studio
             if(_mainViewModel != null)
             {
                 SplashView.CloseSplash();
+                CheckForDuplicateResources();
                 var settingsConfigFile = HelperUtils.GetStudioLogSettingsConfigFile();
                 if (!File.Exists(settingsConfigFile))
                 {
@@ -173,6 +174,16 @@ namespace Dev2.Studio
             }
         }
 
+        private async void CheckForDuplicateResources()
+        {
+            var server = new Warewolf.Studio.AntiCorruptionLayer.Server(EnvironmentRepository.Instance.Source);
+            var loadExplorerDuplicates = await server.LoadExplorerDuplicates();
+            if (loadExplorerDuplicates?.Count > 0)
+            {
+                var controller = CustomContainer.Get<IPopupController>();
+                controller.ShowResourcesConflict(loadExplorerDuplicates);
+            }
+        }
 
         private void ShowSplash()
         {
