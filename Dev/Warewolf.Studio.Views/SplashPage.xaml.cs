@@ -42,11 +42,12 @@ namespace Warewolf.Studio.Views
             }
             else
             {
-                Dispatcher.InvokeShutdown();
+                Dispatcher.BeginInvoke(new Action(() => {
+                    System.Windows.Threading.Dispatcher.CurrentDispatcher.InvokeShutdown();
+                    Close();
+                }));
             }
         }
-
-        
 
         public void Show(bool isDialog)
         {

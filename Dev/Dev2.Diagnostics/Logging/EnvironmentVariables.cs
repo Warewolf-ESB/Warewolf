@@ -64,7 +64,7 @@ namespace Dev2.Common
                 return resourcePath;
             }
         }
-        private static string AppDataPath
+        public static string AppDataPath
         {
             get
             {

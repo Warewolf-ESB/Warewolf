@@ -44,7 +44,7 @@ namespace Warewolf.Studio.ViewModels
 
         protected ExplorerViewModelBase()
         {            
-            RefreshCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(Refresh);
+            RefreshCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(()=>Refresh(true));
             ClearSearchTextCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(() => SearchText = "");
             CreateFolderCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(CreateFolder);
         }
@@ -166,7 +166,7 @@ namespace Warewolf.Studio.ViewModels
             var environmentViewModel = Environments.FirstOrDefault(model => model.Server.EnvironmentID == environmentId);
             if (environmentViewModel != null)
             {
-                RefreshEnvironment(environmentViewModel);
+                RefreshEnvironment(environmentViewModel, true);
             }
         }
 
@@ -174,28 +174,31 @@ namespace Warewolf.Studio.ViewModels
         {
             if (SelectedEnvironment != null)
             {
-                RefreshEnvironment(SelectedEnvironment);
+                RefreshEnvironment(SelectedEnvironment,true);
             }
         }
-        protected virtual void Refresh()
+        protected virtual void Refresh(bool refresh)
         {
             IsRefreshing = true;
-            Environments.ForEach(RefreshEnvironment);
+            Environments.ForEach(env=>RefreshEnvironment(env,refresh));
             IsRefreshing = false;
             ConnectControlViewModel.LoadNewServers();
         }
 
-        private async void RefreshEnvironment(IEnvironmentViewModel environmentViewModel)
+        private async void RefreshEnvironment(IEnvironmentViewModel environmentViewModel, bool refresh)
         {
             IsRefreshing = true;
+            
             if (environmentViewModel.IsConnected)
             {
-                await environmentViewModel.Load();
+                environmentViewModel.ForcedRefresh = true;
+                await environmentViewModel.Load(false,refresh);               
                 if (!string.IsNullOrEmpty(SearchText))
                 {
                     Filter(SearchText);
                 }
             }
+            environmentViewModel.ForcedRefresh = false;
             IsRefreshing = false;
         }
 
@@ -332,7 +335,7 @@ namespace Warewolf.Studio.ViewModels
                 Application.Current.Dispatcher.Invoke(async () =>
                 {
                     IsLoading = true;
-
+                    
                     var existing = _environments.FirstOrDefault(a => a.ResourceId == server.EnvironmentID);
                     if (existing == null)
                     {
@@ -343,6 +346,7 @@ namespace Warewolf.Studio.ViewModels
                     var result = await LoadEnvironment(existing, IsDeploy);
 
                     IsLoading = result;
+                    ShowServerDownError = false;
                 });
         }
 
@@ -353,7 +357,10 @@ namespace Warewolf.Studio.ViewModels
                 ConnectControlViewModel.IsLoading = false;
             }            
             var env = Environments.FirstOrDefault(a => a.ResourceId == environmentId);
-            env?.SetPropertiesForDialogFromPermissions(env.Server.Permissions[0]);
+            if (env!=null && env.IsConnected)
+            {
+                env.SetPropertiesForDialogFromPermissions(env.Server.Permissions[0]);
+            }
         }
 
         public bool IsDeploy { get; set; }
@@ -377,9 +384,15 @@ namespace Warewolf.Studio.ViewModels
             {
                 IPopupController controller = CustomContainer.Get<IPopupController>();
                 ServerDisconnected(_, server);
-                controller.ShowServerNotConnected(server.DisplayName);
+                if (!ShowServerDownError)
+                {
+                    controller.ShowServerNotConnected(server.DisplayName);
+                    ShowServerDownError = true;
+                }
             });
         }
+
+        public bool ShowServerDownError { get; set; }
 
         void ServerDisconnected(object _, IServer server)
         {

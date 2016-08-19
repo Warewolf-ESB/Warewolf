@@ -68,6 +68,14 @@ namespace Dev2
             }
         }
 
+        public static void AddToLoadedTypes(Type type)
+        {
+            if (!LoadedTypes.Contains(type))
+            {
+                LoadedTypes.Add(type);
+            }
+        }
+
         public static T CreateInstance<T>(params object[] constructorParameters)
         {
             var typeToCreate = typeof(T);
