@@ -84,7 +84,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.ComPlugin
             }
             catch (Exception e)
             {
-                if(e.InnerException is COMException)
+                if (e.InnerException is COMException)
                     throw e.InnerException;
                 Dev2Logger.Error("IOutputDescription Test(PluginInvokeArgs setupInfo)", e);
                 jsonResult = null;
@@ -100,7 +100,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.ComPlugin
             {
                 var type = GetType(setupInfo.ClsId, setupInfo.Is32Bit);
 
-                if (type?.Name.ToUpper().Contains("ComObject".ToUpper()) ?? false)
+                if (type == null || type.Name.ToUpper().Contains("ComObject".ToUpper()))
                 {
                     using (var client = new Client())
                     {
@@ -147,29 +147,29 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.ComPlugin
         {
             var valuedTypeList = new List<object>();
 
-            foreach(var methodParameter in setupInfo.Parameters)
+            foreach (var methodParameter in setupInfo.Parameters)
             {
                 try
                 {
                     var anonymousType = JsonConvert.DeserializeObject(methodParameter.Value, Type.GetType(methodParameter.TypeName));
-                    if(anonymousType != null)
+                    if (anonymousType != null)
                     {
                         valuedTypeList.Add(anonymousType);
                     }
                 }
-                catch(Exception)
+                catch (Exception)
                 {
                     var argType = Type.GetType(methodParameter.TypeName);
                     try
                     {
-                        if(argType != null)
+                        if (argType != null)
                         {
                             var provider = TypeDescriptor.GetConverter(argType);
                             var convertFrom = provider.ConvertFrom(methodParameter.Value);
                             valuedTypeList.Add(convertFrom);
                         }
                     }
-                    catch(Exception)
+                    catch (Exception)
                     {
                         try
                         {
@@ -177,7 +177,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.ComPlugin
                             var convertFrom = typeConverter.ConvertFrom(methodParameter.Value);
                             valuedTypeList.Add(convertFrom);
                         }
-                        catch(Exception k)
+                        catch (Exception k)
                         {
                             Dev2Logger.Error($"Failed to convert {argType?.FullName}", k);
                         }
@@ -233,14 +233,12 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.ComPlugin
                         execute = client.Invoke(clasID, "", "GetType", new object[] { });
                         type = execute as Type;
                     }
-                    catch (Exception)
+                    catch (Exception ex)
                     {
-
+                        Dev2Logger.Error("GetType", ex);
                         type = Type.GetTypeFromCLSID(clasID, true);
 
                     }
-
-
                 }
             }
             else
@@ -254,68 +252,66 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.ComPlugin
             var serviceMethodList = new List<ServiceMethod>();
             var orderMethodsLis = new ServiceMethodList();
             classId = classId.Replace("{", "").Replace("}", "");
-            var type = GetType(classId, is32Bit);
-            if (type?.Name.ToUpper().Contains("ComObject".ToUpper()) ?? false)
+
+            using (var client = new Client())
             {
-                using (var client = new Client())
+
+                var execute = client.Invoke(classId.ToGuid(), "", "GetMethods", new object[] { });
+                var ipcMethods = execute as List<MethodInfoTO>;
+                if (ipcMethods != null)
                 {
 
-                    var execute = client.Invoke(classId.ToGuid(), "", "GetMethods", new object[] { });
-                    var ipcMethods = execute as List<MethodInfoTO>;
-                    if (ipcMethods != null)
+                    foreach (MethodInfoTO ipcMethod in ipcMethods)
                     {
-
-                        foreach (MethodInfoTO ipcMethod in ipcMethods)
+                        var parameterInfos = ipcMethod.Parameters;
+                        var serviceMethod = new ServiceMethod { Name = ipcMethod.Name };
+                        foreach (var parameterInfo in parameterInfos)
                         {
-                            var parameterInfos = ipcMethod.Parameters;
-                            var serviceMethod = new ServiceMethod { Name = ipcMethod.Name };
-                            foreach (var parameterInfo in parameterInfos)
+                            serviceMethod.Parameters.Add(new MethodParameter
                             {
-                                serviceMethod.Parameters.Add(new MethodParameter
-                                {
-                                    DefaultValue = parameterInfo.DefaultValue?.ToString() ?? string.Empty,
-                                    EmptyToNull = false,
-                                    IsRequired = true,
-                                    Name = parameterInfo.Name,
-                                    TypeName = parameterInfo.TypeName
-                                });
-                              
-                            }
-                            serviceMethodList.Add(serviceMethod);
-                        }
+                                DefaultValue = parameterInfo.DefaultValue?.ToString() ?? string.Empty,
+                                EmptyToNull = false,
+                                IsRequired = true,
+                                Name = parameterInfo.Name,
+                                TypeName = parameterInfo.TypeName
+                            });
 
+                        }
+                        serviceMethodList.Add(serviceMethod);
                     }
-                    
-                    orderMethodsLis.AddRange(serviceMethodList.OrderBy(method => method.Name));
-                    return orderMethodsLis;
+
                 }
+
+                orderMethodsLis.AddRange(serviceMethodList.OrderBy(method => method.Name));
+                return orderMethodsLis;
+
 
             }
 
 
-            if (type == null) return new ServiceMethodList();
+            /*   if (type == null) return new ServiceMethodList();
 
-            var methodInfos = type.GetMethods();
+               var methodInfos = type.GetMethods();
 
-            methodInfos.ToList().ForEach(info =>
-                    {
-                        var serviceMethod = new ServiceMethod { Name = info.Name };
-                        var parameterInfos = info.GetParameters().ToList();
-                        foreach (var parameterInfo in parameterInfos)
-                            serviceMethod.Parameters.Add(
-                        new MethodParameter
-                        {
-                            DefaultValue = parameterInfo.DefaultValue?.ToString() ?? string.Empty,
-                            EmptyToNull = false,
-                            IsRequired = true,
-                            Name = parameterInfo.Name,
-                            TypeName = parameterInfo.ParameterType.AssemblyQualifiedName
-                        });
-                        serviceMethodList.Add(serviceMethod);
-                    });
+               methodInfos.ToList().ForEach(info =>
+                       {
+                           var serviceMethod = new ServiceMethod { Name = info.Name };
+                           var parameterInfos = info.GetParameters().ToList();
+                           foreach (var parameterInfo in parameterInfos)
+                               serviceMethod.Parameters.Add(
+                           new MethodParameter
+                           {
+                               DefaultValue = parameterInfo.DefaultValue?.ToString() ?? string.Empty,
+                               EmptyToNull = false,
+                               IsRequired = true,
+                               Name = parameterInfo.Name,
+                               TypeName = parameterInfo.ParameterType.AssemblyQualifiedName
+                           });
+                           serviceMethodList.Add(serviceMethod);
+                       });
 
-            orderMethodsLis.AddRange(serviceMethodList.OrderBy(method => method.Name));
-            return orderMethodsLis;
+               orderMethodsLis.AddRange(serviceMethodList.OrderBy(method => method.Name));
+               return orderMethodsLis;*/
         }
 
         /// <summary>

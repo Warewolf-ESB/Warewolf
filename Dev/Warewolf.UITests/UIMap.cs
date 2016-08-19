@@ -149,10 +149,10 @@ namespace Warewolf.UITests
             return controlExists;
         }
 
-        public void WaitForStudioStart(int timeoutInSeconds = 60)
+        public void WaitForStudioStart(int timeout = 60000)
         {
             Console.WriteLine("Waiting for studio to start.");
-            WaitForControlExist(MainStudioWindow, timeoutInSeconds);
+            WaitForControlVisible(MainStudioWindow, timeout);
             if (!MainStudioWindow.Exists)
             {
                 throw new InvalidOperationException("Warewolf studio is not running. You are expected to run \"Dev\\TestScripts\\Studio\\Startup.bat\" as an administrator and wait for it to complete before running any coded UI tests");
@@ -284,7 +284,7 @@ namespace Warewolf.UITests
                 }
                 Select_LocalhostConnected_From_Explorer_Remote_Server_Dropdown_List();
                 Enter_Text_Into_Explorer_Filter(SourceName);
-                WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);
+                WaitForControlNotVisible(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);
                 if (ControlExistsNow(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem))
                 {
                     RightClick_Explorer_Localhost_First_Item();
@@ -308,7 +308,7 @@ namespace Warewolf.UITests
                 if (File.Exists(resourcesFolder + @"\" + ResourceName + ".xml"))
                 {
                     Enter_Text_Into_Explorer_Filter(ResourceName);
-                    WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);
+                    WaitForControlNotVisible(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);
                     if (ControlExistsNow(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem))
                     {
                         RightClick_Explorer_Localhost_First_Item();
@@ -496,13 +496,24 @@ namespace Warewolf.UITests
             }
         }
 
-        public void WaitForSpinner(UITestControl spinner)
+        private void WaitForControlVisible(UITestControl control, int searchTimeout = 60000)
         {
-            spinner.WaitForControlCondition((control) =>
+            control.WaitForControlCondition((uicontrol) =>
             {
                 var point = new Point();
-                return !control.TryGetClickablePoint(out point);
-            }, 60000 * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString()));
+                TryClickMessageBoxOK();
+                return control.TryGetClickablePoint(out point);
+            }, searchTimeout * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString()));
+        }
+
+        public void WaitForControlNotVisible(UITestControl control, int searchTimeout = 60000)
+        {
+            control.WaitForControlCondition((uicontrol) =>
+            {
+                var point = new Point();
+                TryClickMessageBoxOK();
+                return !uicontrol.TryGetClickablePoint(out point);
+            }, searchTimeout * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString()));
         }
 
         public void Enter_Service_Name_Into_Save_Dialog(string ServiceName)
@@ -592,12 +603,12 @@ namespace Warewolf.UITests
         public void Save_With_Ribbon_Button_And_Dialog(string Name)
         {
             Click_Save_Ribbon_Button_to_Open_Save_Dialog();
-            WaitForSpinner(SaveDialogWindow.ExplorerView.ExplorerTree.localhost.Checkbox.Spinner);
+            WaitForControlNotVisible(SaveDialogWindow.ExplorerView.ExplorerTree.localhost.Checkbox.Spinner);
             Enter_Service_Name_Into_Save_Dialog(Name);
             Click_SaveDialog_Save_Button();
             Enter_Text_Into_Explorer_Filter(Name);
             Click_Explorer_Refresh_Button();
-            WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);
+            WaitForControlNotVisible(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.Exists, "Saved " + Name + " does not appear in the explorer tree.");
             Click_Explorer_Filter_Clear_Button();
         }
@@ -631,8 +642,7 @@ namespace Warewolf.UITests
             Assert.IsTrue(MainStudioWindow.SideMenuBar.NewWorkflowButton.Exists, "New Workflow Ribbon Button Does Not Exist!");
             Mouse.Click(MainStudioWindow.SideMenuBar.NewWorkflowButton, new Point(3, 8));
             var getTimeBefore = System.DateTime.Now;
-            var searchTimeoutInSeconds = Playback.PlaybackSettings.SearchTimeout/1000;
-            WaitForControlExist(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.StartNode, searchTimeoutInSeconds);
+            WaitForControlVisible(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.StartNode);
             var timeWaited = System.DateTime.Now - getTimeBefore;
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.StartNode.Exists, "Start Node Does Not Exist after waiting for " + timeWaited.Milliseconds + "ms.");
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox.Exists, "Toolbox filter textbox does not exist");
@@ -641,14 +651,6 @@ namespace Warewolf.UITests
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ConnectServerButton.Exists, "Connect in Explorer does not exist");
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.EditServerButton.Exists, "Edit Connect control button does not exist");
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneRight.Variables.VariablesControl.Exists, "Variable list view does not exist");
-        }
-
-        private void WaitForControlExist(UITestControl control, int searchTimeoutInSeconds)
-        {
-            while(searchTimeoutInSeconds-->0 && !ControlExistsNow(control))
-            {
-                Playback.Wait(1000);
-            }
         }
 
         public void Select_Last_Source_From_GET_Web_Large_View_Source_Combobox()
@@ -699,8 +701,7 @@ namespace Warewolf.UITests
         public void Click_New_Web_Source_Ribbon_Button()
         {
             Mouse.Click(MainStudioWindow.SideMenuBar.WebSourceButton, new Point(13, 18));
-            var searchTimeoutInSeconds = Playback.PlaybackSettings.SearchTimeout/1000;
-            WaitForControlExist(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WebSourceWizardTab, searchTimeoutInSeconds);
+            WaitForControlVisible(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WebSourceWizardTab);
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WebSourceWizardTab.WorkSurfaceContext.AddressTextbox.Exists, "Web server address textbox does not exist on new web source wizard tab.");
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WebSourceWizardTab.WorkSurfaceContext.TestConnectionButton.Exists, "Web server test connection button does not exist on new web source wizard tab.");
         }
@@ -750,8 +751,7 @@ namespace Warewolf.UITests
         {
             Mouse.Click(MainStudioWindow.SideMenuBar.RunAndDebugButton, new Point(13, 14));
             var getTimeBefore = System.DateTime.Now;
-            var searchTimeoutInSeconds = Playback.PlaybackSettings.SearchTimeout/1000;
-            WaitForControlExist(MainStudioWindow.DebugInputDialog, searchTimeoutInSeconds);
+            WaitForControlVisible(MainStudioWindow.DebugInputDialog);
             var timeWaited = System.DateTime.Now - getTimeBefore;
             Assert.IsTrue(MainStudioWindow.DebugInputDialog.Exists, "Debug Input window does not exist after waiting for " + timeWaited.Milliseconds + "ms.");
             Assert.IsTrue(MainStudioWindow.DebugInputDialog.DebugF6Button.Exists, "Debug button in Debug Input window does not exist.");
@@ -813,7 +813,7 @@ namespace Warewolf.UITests
                 MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.ServerSourceWizardTab.WorkSurfaceContext.PublicRadioButton.Selected = true;
             }
             Click_Server_Source_Wizard_Test_Connection_Button();
-            WaitForSpinner(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.ServerSourceWizardTab.WorkSurfaceContext.ErrorText.Spinner);
+            WaitForControlNotVisible(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.ServerSourceWizardTab.WorkSurfaceContext.ErrorText.Spinner);
             Save_With_Ribbon_Button_And_Dialog(ServerSourceName);
             Click_Close_Server_Source_Wizard_Tab_Button();
         }
@@ -828,7 +828,7 @@ namespace Warewolf.UITests
         public void Click_Deploy_Tab_Deploy_Button()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DeployTab.WorkSurfaceContext.DeployButton);
-            WaitForSpinner(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DeployTab.WorkSurfaceContext.DeployButton.Spinner);
+            WaitForControlNotVisible(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DeployTab.WorkSurfaceContext.DeployButton.Spinner);
         }
     }
 }
