@@ -230,9 +230,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 var windowsGroupPermission = explorerTreeItem.Server.Permissions?.FirstOrDefault(p => p.ResourceID == explorerTreeItem.ResourceId);
                 if((windowsGroupPermission == null) || windowsGroupPermission.Permissions != Permissions.View)
-                {
                     count++;
-                }
             }
             return count;
         }

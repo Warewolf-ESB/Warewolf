@@ -26,9 +26,7 @@ namespace Warewolf.Studio.ViewModels.Tests
        {
            //------------Setup for test--------------------------
            var deployViewModel = new SingleExplorerDeployViewModel(null, new Mock<IDeploySourceExplorerViewModel>().Object, new List<IExplorerTreeItem>(), new Mock<IDeployStatsViewerViewModel>().Object, new Mock<IShellViewModel>().Object, new Mock<Dev2.Common.Interfaces.Studio.Controller.IPopupController>().Object);
-                      
            //------------Execute Test---------------------------
-
            //------------Assert Results-------------------------
        }
 

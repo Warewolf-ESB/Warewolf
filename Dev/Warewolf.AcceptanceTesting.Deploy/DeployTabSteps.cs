@@ -470,7 +470,7 @@ namespace Warewolf.AcceptanceTesting.Deploy
         [Then(@"New Resource is ""(.*)""")]
         public void ThenNewResourceIs(string p0)
         {
-            Assert.AreEqual(GetView().New, p0);
+            Assert.AreEqual(p0, GetView().New);
         }
 
         [Given(@"Override is ""(.*)""")]
