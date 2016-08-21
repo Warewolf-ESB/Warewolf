@@ -106,34 +106,32 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.ComPlugin
                     using (var client = new Client())
                     {
                         //use Late Binding to Get MethodInfo
-                        pluginResult = client.Invoke(setupInfo.ClsId.ToGuid(), setupInfo.Method, "ExecuteSpecifiedMethod", new object[] { valuedTypeList });
+                        pluginResult = client.Invoke(setupInfo.ClsId.ToGuid(), setupInfo.Method, "ExecuteSpecifiedMethod", valuedTypeList);
                         return null;
                     }
                 }
-               
-
-                if (type != null)
+                var methodToRun = type.GetMethod(setupInfo.Method, typeList.ToArray()) ??
+                                  type.GetMethod(setupInfo.Method);
+                if (methodToRun == null && typeList.Count == 0)
                 {
-                    var methodToRun = type.GetMethod(setupInfo.Method, typeList.ToArray()) ?? type.GetMethod(setupInfo.Method);
-                    if (methodToRun == null && typeList.Count == 0)
+                    methodToRun = type.GetMethod(setupInfo.Method);
+                }
+                var instance = Activator.CreateInstance(type);
+
+                if (methodToRun != null)
+                {
+                    if (methodToRun.ReturnType == typeof(void))
                     {
-                        methodToRun = type.GetMethod(setupInfo.Method);
+                        methodToRun.Invoke(instance,
+                            BindingFlags.InvokeMethod | BindingFlags.IgnoreCase | BindingFlags.Public, null,
+                            valuedTypeList.ToArray(), CultureInfo.InvariantCulture);
                     }
-                    var instance = Activator.CreateInstance(type);
-
-                    if (methodToRun != null)
+                    else
                     {
-                        if (methodToRun.ReturnType == typeof(void))
-                        {
-                            methodToRun.Invoke(instance, BindingFlags.InvokeMethod | BindingFlags.IgnoreCase | BindingFlags.Public, null, valuedTypeList.ToArray(), CultureInfo.InvariantCulture);
-                        }
-                        else
-                        {
-                            pluginResult = methodToRun.Invoke(instance, BindingFlags.InvokeMethod | BindingFlags.IgnoreCase | BindingFlags.Public, null, valuedTypeList.ToArray(), CultureInfo.InvariantCulture);
-                            return methodToRun;
-                        }
-
-
+                        pluginResult = methodToRun.Invoke(instance,
+                            BindingFlags.InvokeMethod | BindingFlags.IgnoreCase | BindingFlags.Public, null,
+                            valuedTypeList.ToArray(), CultureInfo.InvariantCulture);
+                        return methodToRun;
                     }
                 }
             }
@@ -141,18 +139,20 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.ComPlugin
             return null;
         }
 
-        private static List<object> BuildValuedTypeParams(ComPluginInvokeArgs setupInfo)
+        private static object[] BuildValuedTypeParams(ComPluginInvokeArgs setupInfo)
         {
-            var valuedTypeList = new List<object>();
+            var valuedTypeList = new object[setupInfo.Parameters.Count];
 
-            foreach (var methodParameter in setupInfo.Parameters)
+            for (int index = 0; index < setupInfo.Parameters.Count; index++)
             {
+                var methodParameter = setupInfo.Parameters[index];
                 try
                 {
-                    var anonymousType = JsonConvert.DeserializeObject(methodParameter.Value, Type.GetType(methodParameter.TypeName));
+                    var anonymousType = JsonConvert.DeserializeObject(methodParameter.Value,
+                        Type.GetType(methodParameter.TypeName));
                     if (anonymousType != null)
                     {
-                        valuedTypeList.Add(anonymousType);
+                        valuedTypeList[index] = anonymousType;
                     }
                 }
                 catch (Exception)
@@ -164,7 +164,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.ComPlugin
                         {
                             var provider = TypeDescriptor.GetConverter(argType);
                             var convertFrom = provider.ConvertFrom(methodParameter.Value);
-                            valuedTypeList.Add(convertFrom);
+                            valuedTypeList[index] = convertFrom;
                         }
                     }
                     catch (Exception)
@@ -173,7 +173,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.ComPlugin
                         {
                             var typeConverter = TypeDescriptor.GetConverter(methodParameter.Value);
                             var convertFrom = typeConverter.ConvertFrom(methodParameter.Value);
-                            valuedTypeList.Add(convertFrom);
+                            valuedTypeList[index] = convertFrom;
                         }
                         catch (Exception k)
                         {
@@ -312,7 +312,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.ComPlugin
             object result = pluginResult;
             var typeConverter = TypeDescriptor.GetConverter(result);
             // When it returns a primitive or string and it is not XML or JSON, make it so ;)
-            
+
             if ((typeConverter.GetType().IsPrimitive || typeConverter.GetType().FullName.ToLower().Contains("stringconverter"))
                 && !DataListUtil.IsXml(pluginResult.ToString()) && !DataListUtil.IsJson(pluginResult.ToString()))
             {
