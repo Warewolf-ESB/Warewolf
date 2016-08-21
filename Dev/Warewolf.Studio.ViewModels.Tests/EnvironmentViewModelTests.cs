@@ -78,10 +78,45 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
+        public void TestCommands()
+        {
+            //arrange
+            var canCreateNewServiceCommand = _target.NewServiceCommand.CanExecute(null);
+            var canCreateNewServerCommand = _target.NewServerCommand.CanExecute(null);
+            var canCreateNewDatabaseSourceCommand = _target.NewDatabaseSourceCommand.CanExecute(null);
+            var canCreateNewPluginSourceCommand = _target.NewPluginSourceCommand.CanExecute(null);
+            var canCreateNewWebSourceSourceCommand = _target.NewWebSourceSourceCommand.CanExecute(null);
+            var canCreateNewEmailSourceSourceCommand = _target.NewEmailSourceSourceCommand.CanExecute(null);
+            var canCreateNewExchangeSourceSourceCommand = _target.NewExchangeSourceSourceCommand.CanExecute(null);
+            var canCreateNewSharepointSourceSourceCommand = _target.NewSharepointSourceSourceCommand.CanExecute(null);
+            var canCreateNewDropboxSourceSourceCommand = _target.NewDropboxSourceSourceCommand.CanExecute(null);
+            var canCreateNewComPluginSourceCommand = _target.NewComPluginSourceCommand.CanExecute(null);
+            var canCreateNewRabbitMQSourceSourceCommand = _target.NewRabbitMQSourceSourceCommand.CanExecute(null);
+            var canCreateFolderCommand = _target.CreateFolderCommand.CanExecute(null);
+
+            //act
+
+            //assert
+            Assert.IsTrue(canCreateNewServiceCommand);
+            Assert.IsTrue(canCreateNewServerCommand);
+            Assert.IsTrue(canCreateNewDatabaseSourceCommand);
+            Assert.IsTrue(canCreateNewPluginSourceCommand);
+            Assert.IsTrue(canCreateNewWebSourceSourceCommand);
+            Assert.IsTrue(canCreateNewEmailSourceSourceCommand);
+            Assert.IsTrue(canCreateNewExchangeSourceSourceCommand);
+            Assert.IsTrue(canCreateNewSharepointSourceSourceCommand);
+            Assert.IsTrue(canCreateNewDropboxSourceSourceCommand);
+            Assert.IsTrue(canCreateNewComPluginSourceCommand);
+            Assert.IsTrue(canCreateNewRabbitMQSourceSourceCommand);
+            Assert.IsTrue(canCreateFolderCommand);
+        }
+
+        [TestMethod]
         public void TestExpand()
         {
             //arrange
             _target.IsExpanded = false;
+            _target.ForcedRefresh = true;
 
             //act
             _target.Expand.Execute(2);
@@ -132,10 +167,13 @@ namespace Warewolf.Studio.ViewModels.Tests
             var childFolder = new Mock<IExplorerItemViewModel>();
             childFolder.SetupGet(it => it.IsVisible).Returns(true);
             childFolder.SetupGet(it => it.ResourceType).Returns("Folder");
+            childFolder.SetupGet(it => it.IsFolder).Returns(true);
             childFolder.SetupGet(it => it.ChildrenCount).Returns(2);
             var childDbService = new Mock<IExplorerItemViewModel>();
             childDbService.SetupGet(it => it.IsVisible).Returns(true);
-            childDbService.SetupGet(it => it.ResourceType).Returns("DbService");
+            childDbService.SetupGet(it => it.ResourceName).Returns("DbSource");
+            childDbService.SetupGet(it => it.ResourcePath).Returns("DbSourcePath");
+            childDbService.SetupGet(it => it.IsSource).Returns(true);
             _target.Children = new ObservableCollection<IExplorerItemViewModel>()
             {
                 childVersion.Object,
@@ -145,10 +183,34 @@ namespace Warewolf.Studio.ViewModels.Tests
             };
 
             //act
+            _target.IsSource = true;
+            _target.IsService = false;
+            _target.IsFolder = false;
+            _target.IsReservedService = false;
+            _target.IsResourceVersion = false;
+            _target.IsServer = false;
+            _target.ResourcePath = "";
+            _target.ResourceName = "localhost";
+
+            _target.UpdateChildrenCount();
             var value = _target.ChildrenCount;
 
             //assert    
-            Assert.AreEqual(3, value);
+            Assert.AreEqual(4, value);
+            Assert.AreEqual("ServerSource", _target.ResourceType);
+            Assert.AreEqual("localhost", _target.ResourceName);
+            Assert.AreEqual(null, _target.Parent);
+            Assert.AreEqual("", _target.ResourcePath);
+            Assert.AreEqual(true, _target.IsSource);
+            Assert.AreEqual(false, _target.IsService);
+            Assert.AreEqual(false, _target.IsFolder);
+            Assert.AreEqual(false, _target.IsReservedService);
+            Assert.AreEqual(false, _target.IsResourceVersion);
+            Assert.AreEqual(false, _target.IsServer);
+            Assert.AreEqual("DbSource", _target.Children[3].ResourceName);
+            Assert.AreEqual("DbSourcePath", _target.Children[3].ResourcePath);
+            Assert.AreEqual(false, _target.Children[3].IsExpanderVisible);
+            Assert.AreEqual(true, _target.Children[3].IsSource);
         }
 
         [TestMethod]
@@ -225,6 +287,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             //assert
             Assert.IsTrue(_target.IsSelected);
             Assert.IsTrue(isIsSelectedChanged);
+            Assert.IsFalse(_target.CanDrag);
+            Assert.IsFalse(_target.CanDrop);
         }
 
         [TestMethod]
