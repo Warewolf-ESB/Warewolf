@@ -151,10 +151,10 @@ Scenario: Deploy Summary is showing new and overiding resources
      When selected Destination Server is "Remote"
 	 And destination is connected
 	 And I select "Examples\bob" from Source Server
-	 Then New Resource is "0"
+	 Then New Resource is "1"
 	 And Override is "0"
 	 When I select "DB Service\FetchPlayers" from Source Server
-	 Then New Resource is "1"
+	 Then New Resource is "2"
 	 And Override is "0"
 	 When I Unselect "Examples\bob" from Source Server
 	 Then Override is "0"
@@ -172,6 +172,15 @@ Scenario: Deploy is enabled when I change server after validation thrown
 	 And destination is connected
 	 Then "Deploy" is "Enabled" 
 	  And the validation message is ""
+#
+#Scenario: Deploy is disabled when I select resource with only View Permissions
+#     Given I have deploy tab opened
+#	 And selected Source Server is "localhost"
+#	 And source is connected
+#     When selected Destination Server is "Remote"
+#	 And destination is connected
+#	 When I select "Examples\bob" from Source Server
+#	 Then "Deploy" is "Disabled" 
 
 #new feature?
 	
