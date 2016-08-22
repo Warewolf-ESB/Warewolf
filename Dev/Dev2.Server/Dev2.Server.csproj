@@ -392,7 +392,8 @@
     <PostBuildEvent>xcopy /Y /E /F /D "$(SolutionDir)Resources - Release" "$(TargetDir)"
 if "$(ConfigurationName)"=="Debug" xcopy /Y /E /F /D "$(SolutionDir)Resources - Debug" "$(TargetDir)"
 taskkill /f /im WarewolfCOMIPC.exe &gt;nul 2&gt;&amp;1
-set errorlevel=0
+tasklist /FI "IMAGENAME eq WarewolfCOMIPC.exe" 2&gt;NUL | find /I /N "WarewolfCOMIPC.exe"&gt;NUL
+if "%25ERRORLEVEL%25"=="0" taskkill /f /im WarewolfCOMIPC.exe
 xcopy /Y "$(SolutionDir)WarewolfCOMIPC\bin\$(ConfigurationName)\WarewolfCOMIPC.exe" "$(TargetDir)"</PostBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
