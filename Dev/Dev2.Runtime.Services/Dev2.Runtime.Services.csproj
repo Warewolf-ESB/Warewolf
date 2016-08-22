@@ -192,6 +192,7 @@
     <Compile Include="ESB\Management\Services\AddFolderService.cs" />
     <Compile Include="ESB\Management\Services\DeleteItemService.cs" />
     <Compile Include="ESB\Management\Services\DeleteVersion.cs" />
+    <Compile Include="ESB\Management\Services\DuplicateResourceService.cs" />
     <Compile Include="ESB\Management\Services\FetchComPluginActions.cs" />
     <Compile Include="ESB\Management\Services\FetchComPluginNameSpaces.cs" />
     <Compile Include="ESB\Management\Services\FetchComPluginSources.cs" />
