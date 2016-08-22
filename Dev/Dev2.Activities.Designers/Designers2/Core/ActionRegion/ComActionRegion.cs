@@ -138,7 +138,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
         {
             if (_source?.SelectedSource != null)
             {
-                Actions = _model.GetActions(_source.SelectedSource, null);
+                Actions = _model.GetActions(_source.SelectedSource, _namespace.SelectedNamespace);
                 SelectedAction = null;
                 IsActionEnabled = true;
                 IsEnabled = true;
