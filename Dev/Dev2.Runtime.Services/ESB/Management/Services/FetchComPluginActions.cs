@@ -51,7 +51,17 @@ namespace Dev2.Runtime.ESB.Management.Services
                 var methods = serviceMethodList.Select(a => new PluginAction
                 {
                     FullName = ns?.FullName,
-                    Inputs = a.Parameters.Select(x => new ServiceInput(x.Name, x.DefaultValue ?? "") { Name = x.Name, EmptyIsNull = x.EmptyToNull, RequiredField = x.IsRequired, TypeName = x.TypeName } as IServiceInput).ToList(),
+                    Inputs = a.Parameters.Select(x =>
+                    new ServiceInput(x.Name, x.DefaultValue ?? "")
+                    {
+                        Name = BuildServiceInputName(x.Name, x.TypeName)
+                        ,
+                        EmptyIsNull = x.EmptyToNull
+                        ,
+                        RequiredField = x.IsRequired
+                        ,
+                        TypeName = x.TypeName
+                    } as IServiceInput).ToList(),
                     Method = a.Name,
                     Variables = a.Parameters.Select(x => new NameValue() { Name = x.Name + " (" + x.TypeName + ")", Value = "" } as INameValue).ToList(),
                 } as IPluginAction).ToList();
@@ -60,19 +70,6 @@ namespace Dev2.Runtime.ESB.Management.Services
                     HasError = false,
                     Message = serializer.SerializeToBuilder(methods)
                 });
-                //}
-
-                /*  // ReSharper disable once RedundantIfElseBlock
-                  else
-                  {
-                      return serializer.SerializeToBuilder(new ExecuteMessage()
-                      {
-                          HasError = false,
-                          Message = serializer.SerializeToBuilder(new List<IPluginAction>())
-                      });
-                  }*/
-
-                // ReSharper restore MaximumChainedReferences
             }
             catch (Exception e)
             {
@@ -85,7 +82,29 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
         }
 
+        private string BuildServiceInputName(string name, string typeName)
+        {
+            try
+            {
+                var cleanTypeName = Type.GetType(typeName);
+                return $"{name}: {cleanTypeName.Name}";
+            }
+            catch (Exception)
+            {
+                try
+                {
+                    var cleanTypeName = typeName.Contains("&") ? typeName.Split('&').First() : typeName.Split(',').First();
+                    var newName = $"{name}: {cleanTypeName}";
+                    return newName;
+                }
+                catch (Exception)
+                {
+                    return name;
+                }
 
+            }
+
+        }
 
         public DynamicService CreateServiceEntry()
         {
