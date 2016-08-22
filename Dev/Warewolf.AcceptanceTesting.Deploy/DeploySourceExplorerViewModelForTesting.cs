@@ -4,6 +4,9 @@ using System.Collections.ObjectModel;
 using Caliburn.Micro;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Deploy;
+using Dev2.Common.Interfaces.Infrastructure;
+using Dev2.Common.Interfaces.Security;
+using Dev2.Services.Security;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Warewolf.Studio.ViewModels;
@@ -36,6 +39,14 @@ namespace Warewolf.AcceptanceTesting.Deploy
         IExplorerItemViewModel CreateExplorerVMS()
         {
             ExplorerItemViewModel ax = null;
+            var perm = new Mock<IServer>();
+            List<IWindowsGroupPermission> perms = new List<IWindowsGroupPermission>();
+            perms.Add(new WindowsGroupPermission
+            {
+                Permissions = Permissions.View
+            });
+            perm.Setup(server => server.Permissions)
+                .Returns(perms);
             ax = new ExplorerItemViewModel(new Mock<IServer>().Object, null, a => { }, new Mock<IShellViewModel>().Object, new Mock<Dev2.Common.Interfaces.Studio.Controller.IPopupController>().Object)
             {
                 ResourceName = "Examples",
@@ -44,7 +55,7 @@ namespace Warewolf.AcceptanceTesting.Deploy
                 Children = new ObservableCollection<IExplorerItemViewModel>
                 {
                     new ExplorerItemViewModel(new Mock<IServer>().Object, ax, a => { }, new Mock<IShellViewModel>().Object, new Mock<Dev2.Common.Interfaces.Studio.Controller.IPopupController>().Object) {ResourceId = Guid.NewGuid(),ResourceName = "Utility - Date and Time", ResourcePath = "Examples\\Utility - Date and Time",ResourceType = "WorkflowService" },
-                    new ExplorerItemViewModel(new Mock<IServer>().Object, ax, a => { }, new Mock<IShellViewModel>().Object, new Mock<Dev2.Common.Interfaces.Studio.Controller.IPopupController>().Object) {ResourceId = Guid.Parse("9CC8CA4E-8261-433F-8EF1-612DE003907C"),ResourceName = "bob", ResourcePath = "Examples\\bob" },
+                    new ExplorerItemViewModel(perm.Object, ax, a => { }, new Mock<IShellViewModel>().Object, new Mock<Dev2.Common.Interfaces.Studio.Controller.IPopupController>().Object) {ResourceId = Guid.Parse("9CC8CA4E-8261-433F-8EF1-612DE003907C"),ResourceName = "bob", ResourcePath = "Examples\\bob"},
                     new ExplorerItemViewModel(new Mock<IServer>().Object, ax, a => { }, new Mock<IShellViewModel>().Object, new Mock<Dev2.Common.Interfaces.Studio.Controller.IPopupController>().Object) {ResourceId = Guid.Parse("5C8B5660-CE6E-4D22-84D8-5B77DC749F70"),ResourceName = "DemoDB", ResourcePath = "sqlServers\\DemoDB",ResourceType = "DbSource" },
                     new ExplorerItemViewModel(new Mock<IServer>().Object, ax, a => { }, new Mock<IShellViewModel>().Object, new Mock<Dev2.Common.Interfaces.Studio.Controller.IPopupController>().Object) {ResourceId = Guid.NewGuid(),ResourceName = "Data - Data - Data Split", ResourcePath = "Examples\\Data - Data - Data Split" },
                     new ExplorerItemViewModel(new Mock<IServer>().Object, ax, a => { }, new Mock<IShellViewModel>().Object, new Mock<Dev2.Common.Interfaces.Studio.Controller.IPopupController>().Object) {ResourceId = Guid.NewGuid(),ResourceName = "Control Flow - Switch", ResourcePath = "Examples\\Control Flow - Switch" },
@@ -54,9 +65,7 @@ namespace Warewolf.AcceptanceTesting.Deploy
                     new ExplorerItemViewModel(new Mock<IServer>().Object, ax, a => { }, new Mock<IShellViewModel>().Object, new Mock<Dev2.Common.Interfaces.Studio.Controller.IPopupController>().Object) {ResourceId = Guid.NewGuid(),ResourceName = "FetchPlayers", ResourcePath = "DB Service\\FetchPlayers",ResourceType = "DbService"},                  
                     new ExplorerItemViewModel(new Mock<IServer>().Object, ax, a => { }, new Mock<IShellViewModel>().Object, new Mock<Dev2.Common.Interfaces.Studio.Controller.IPopupController>().Object) {ResourceId = Guid.NewGuid(),ResourceName = "Source", ResourcePath = "Remote\\Source",ResourceType = "DbSource"},
                     new ExplorerItemViewModel(new Mock<IServer>().Object, ax, a => { }, new Mock<IShellViewModel>().Object, new Mock<Dev2.Common.Interfaces.Studio.Controller.IPopupController>().Object) {ResourceId = Guid.NewGuid(),ResourceName = "NameIdConflict", ResourcePath = "Examples\bob",ResourceType = "DbSource"},
-                    new ExplorerItemViewModel(new Mock<IServer>().Object, ax, a => { }, new Mock<IShellViewModel>().Object, new Mock<Dev2.Common.Interfaces.Studio.Controller.IPopupController>().Object) {ResourceId = Guid.Parse("7CC8CA4E-8261-433F-8EF1-612DE003907C"),ResourceName = "DifferentNameSameID", ResourcePath = "Examples\\DifferentNameSameID",ResourceType = "DbSource"},
-
-                
+                    new ExplorerItemViewModel(new Mock<IServer>().Object, ax, a => { }, new Mock<IShellViewModel>().Object, new Mock<Dev2.Common.Interfaces.Studio.Controller.IPopupController>().Object) {ResourceId = Guid.Parse("7CC8CA4E-8261-433F-8EF1-612DE003907C"),ResourceName = "DifferentNameSameID", ResourcePath = "Examples\\DifferentNameSameID",ResourceType = "DbSource"}
                 }
             };
             ax.Children.Apply(a=>a.Parent = ax);

@@ -449,8 +449,8 @@ namespace Dev2.Tests.Runtime.Hosting
             Assert.IsNotNull(explorerItemFactory);
             var results = explorerItemFactory.GetDuplicatedResourcesPaths();
             //------------Assert Results-------------------------
-            Assert.IsFalse(string.IsNullOrEmpty(results));
-            Assert.IsFalse(string.Equals(expectedResults, results));
+            Assert.IsFalse(results.Count == 0);
+            Assert.IsFalse(string.Equals(expectedResults, results.Any().ToString()));
         }
 
         [TestMethod]
@@ -466,7 +466,7 @@ namespace Dev2.Tests.Runtime.Hosting
             Assert.IsNotNull(explorerItemFactory);
             var results = explorerItemFactory.GetDuplicatedResourcesPaths();
             //------------Assert Results-------------------------
-            Assert.IsTrue(string.IsNullOrEmpty(results));
+            Assert.AreEqual(0, results.Count);
         }
     }
 }

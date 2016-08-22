@@ -211,7 +211,7 @@ namespace Dev2.Runtime.Hosting
             return Find(items, predicate);
         }
 
-        public string LoadDuplicate()
+        public List<string> LoadDuplicate()
         {
             return ExplorerItemFactory.GetDuplicatedResourcesPaths();
         }

@@ -259,7 +259,7 @@ namespace Warewolf.Studio.ViewModels
             var copy = Source.SelectedItems;
             foreach (var explorerTreeItem in selected)
             {
-                var windowsGroupPermission = explorerTreeItem.Server.Permissions
+                var windowsGroupPermission = explorerTreeItem.Server.Permissions?
                     .FirstOrDefault(p => p.ResourceID == explorerTreeItem.ResourceId);
                 if (windowsGroupPermission?.Permissions == Permissions.View)
                     copy.Remove(explorerTreeItem);
@@ -406,8 +406,8 @@ namespace Warewolf.Studio.ViewModels
                     ErrorMessage = StringResources.DestinationPermission_Error;
                     return false;
                 }
-                //if(!CanDeploySelectedItems(Source.SelectedItems))
-                //    return false;
+                if (!CanDeploySelectedItems(Source.SelectedItems))
+                    return false;
                 ErrorMessage = string.Empty;
                 return true;
             }
