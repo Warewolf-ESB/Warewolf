@@ -44,15 +44,9 @@ namespace Warewolf.Studio.Views
             {
                 var listStrLineElements = resourcePath.NavigateUri.OriginalString.Split(new[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries).ToList();
 
-                if (File.Exists(listStrLineElements[1]))
+                for (int i = 1; i < listStrLineElements.Count; i++)
                 {
-                    var input = listStrLineElements[1].Remove(listStrLineElements[1].LastIndexOf(@"\", StringComparison.Ordinal) + 1);
-                    Process.Start(input);
-                }
-                if (File.Exists(listStrLineElements[2]))
-                {
-                    var input = listStrLineElements[2].Remove(listStrLineElements[2].LastIndexOf(@"\", StringComparison.Ordinal) + 1);
-                    Process.Start(input);
+                    Process.Start("explorer.exe", "/select," + listStrLineElements[i]);
                 }
             }
         }
