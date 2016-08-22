@@ -623,6 +623,36 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
+        public void TestCommands()
+        {
+            //arrange
+            var canCreateNewServiceCommand = _target.NewServiceCommand.CanExecute(null);
+            var canCreateNewServerCommand = _target.NewServerCommand.CanExecute(null);
+            var canCreateNewDatabaseSourceCommand = _target.NewDatabaseSourceCommand.CanExecute(null);
+            var canCreateNewPluginSourceCommand = _target.NewPluginSourceCommand.CanExecute(null);
+            var canCreateNewWebSourceSourceCommand = _target.NewWebSourceSourceCommand.CanExecute(null);
+            var canCreateNewEmailSourceSourceCommand = _target.NewEmailSourceSourceCommand.CanExecute(null);
+            var canCreateNewExchangeSourceSourceCommand = _target.NewExchangeSourceSourceCommand.CanExecute(null);
+            var canCreateNewSharepointSourceSourceCommand = _target.NewSharepointSourceSourceCommand.CanExecute(null);
+            var canCreateNewDropboxSourceSourceCommand = _target.NewDropboxSourceSourceCommand.CanExecute(null);
+            var canCreateNewRabbitMQSourceSourceCommand = _target.NewRabbitMQSourceSourceCommand.CanExecute(null);
+            
+            //act
+            
+            //assert
+            Assert.IsTrue(canCreateNewServiceCommand);
+            Assert.IsTrue(canCreateNewServerCommand);
+            Assert.IsTrue(canCreateNewDatabaseSourceCommand);
+            Assert.IsTrue(canCreateNewPluginSourceCommand);
+            Assert.IsTrue(canCreateNewWebSourceSourceCommand);
+            Assert.IsTrue(canCreateNewEmailSourceSourceCommand);
+            Assert.IsTrue(canCreateNewExchangeSourceSourceCommand);
+            Assert.IsTrue(canCreateNewSharepointSourceSourceCommand);
+            Assert.IsTrue(canCreateNewDropboxSourceSourceCommand);
+            Assert.IsTrue(canCreateNewRabbitMQSourceSourceCommand);
+        }
+
+        [TestMethod]
         public void TestCanDragGetOther()
         {
             //arrange
@@ -981,6 +1011,59 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
+        public void TestFilterNoText()
+        {
+            //arrange
+            var isChildrenChanged = false;
+            var childMock = new Mock<IExplorerItemViewModel>();
+            childMock.SetupGet(it => it.IsVisible).Returns(false);
+            childMock.SetupGet(it => it.ResourceType).Returns("Folder");
+            _target.ResourceName = "someFilter";
+            _target.ResourceType = "Folder";
+            _target.IsFolder = true;
+            _target.Children.Add(childMock.Object);
+            _target.PropertyChanged += (sender, e) =>
+            {
+                isChildrenChanged = isChildrenChanged || e.PropertyName == "Children";
+            };
+            //act
+            _target.Filter("");
+            //assert
+            Assert.IsTrue(isChildrenChanged);
+            Assert.IsTrue(_target.IsVisible);
+        }
+
+        [TestMethod]
+        public void TestFilterVersion()
+        {
+            //arrange
+            var isChildrenChanged = false;
+            var childMock = new Mock<IExplorerItemViewModel>();
+            childMock.SetupGet(it => it.IsVisible).Returns(false);
+            childMock.SetupGet(it => it.ResourceType).Returns("Version");
+            childMock.SetupGet(it => it.IsVersion).Returns(true);
+            _target.ResourceName = "someFilter";
+            _target.ResourceType = "Version";
+            _target.IsVersion = true;
+
+            var parent = new Mock<IExplorerTreeItem>();
+            parent.SetupGet(it => it.ResourceName).Returns("parent");
+
+            _target.Parent = parent.Object;
+            _target.Children.Add(childMock.Object);
+            _target.PropertyChanged += (sender, e) =>
+            {
+                isChildrenChanged = isChildrenChanged || e.PropertyName == "Children";
+            };
+            //act
+            _target.Filter("someFilter");
+            //assert
+            Assert.IsTrue(isChildrenChanged);
+            Assert.IsFalse(_target.IsVisible);
+            childMock.Verify(it => it.Filter("someFilter"));
+        }
+
+        [TestMethod]
         public void TestFilterInvisible()
         {
             //arrange
@@ -1082,6 +1165,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void TestCreateNewFolderResourceTypeDbService()
         {
             //arrange
+            _target.ForcedRefresh = false;
             _target.IsExpanded = false;
             _target.ResourceType = "DbService";
             _target.Children.Clear();
@@ -1101,6 +1185,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _target.IsExpanded = false;
             _target.ResourceType = "Folder";
             _target.IsFolder = true;
+            _target.IsReservedService = false;
             _target.Children.Clear();
             _target.AllowResourceCheck = true;
             _target.IsResourceChecked = true;
@@ -1124,7 +1209,9 @@ namespace Warewolf.Studio.ViewModels.Tests
             var createdFolder = _target.Children.Single();
             Assert.AreEqual("New Folder", createdFolder.ResourceName);
             Assert.AreEqual("Folder", createdFolder.ResourceType);
+            Assert.AreEqual(_target.IsFolder, createdFolder.IsFolder);
             Assert.AreEqual(_target.AllowResourceCheck, createdFolder.AllowResourceCheck);
+            Assert.AreEqual(_target.IsReservedService, createdFolder.IsReservedService);
             Assert.AreEqual(_target.IsResourceChecked, createdFolder.IsResourceChecked);
             Assert.AreEqual(_target.IsFolderChecked, createdFolder.IsFolderChecked);
             Assert.AreEqual(_target.CanCreateFolder, createdFolder.CanCreateFolder);
