@@ -36,19 +36,25 @@ namespace Dev2.Runtime.Hosting
             Directory = directory;
         }
 
-        public string GetDuplicatedResourcesPaths()
+
+        //List<string> IExplorerItemFactory.GetDuplicatedResourcesPaths()
+        //{
+        //    throw new NotImplementedException();
+        //}
+
+        public List<string> GetDuplicatedResourcesPaths()
         {
             var stringBuilder = new StringBuilder();
             var resourceList = Catalogue.GetDuplicateResources();
             if (resourceList == null ||resourceList.Count <= 0)
-                return string.Empty;
+                return new List<string>();
             foreach (var duplicateResource in resourceList)
             {
                 stringBuilder.Append(string.Format(" Resource {0} in path {1} and path {2} are the same",
                     duplicateResource.ResourceName, duplicateResource.FilePath, duplicateResource.FilePath2));
                 stringBuilder.AppendLine();
             }
-            return stringBuilder.ToString();
+            return new List<string> { stringBuilder.ToString() };
         }
 
         public IExplorerItem CreateRootExplorerItem(string workSpacePath, Guid workSpaceId)
@@ -179,7 +185,6 @@ namespace Dev2.Runtime.Hosting
             };
             return serverExplorerItem;
         }
-
         public IResourceCatalog Catalogue { get; private set; }
         public IDirectory Directory { get; private set; }
 
