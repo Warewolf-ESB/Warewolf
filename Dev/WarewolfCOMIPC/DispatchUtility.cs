@@ -98,7 +98,7 @@ namespace WarewolfCOMIPC
 		{
 			RequireReference(obj, "obj");
 			Type type = obj.GetType();
-			object result = type.InvokeMember(memberName, BindingFlags.InvokeMethod ,null, obj, args, null);
+			object result = type.InvokeMember(memberName, BindingFlags.InvokeMethod | BindingFlags.GetProperty ,null, obj, args, null);
 			return result;
 		}
 
