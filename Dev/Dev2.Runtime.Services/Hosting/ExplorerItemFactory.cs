@@ -12,7 +12,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Explorer;
@@ -36,25 +35,18 @@ namespace Dev2.Runtime.Hosting
             Directory = directory;
         }
 
-
-        //List<string> IExplorerItemFactory.GetDuplicatedResourcesPaths()
-        //{
-        //    throw new NotImplementedException();
-        //}
-
         public List<string> GetDuplicatedResourcesPaths()
         {
-            var stringBuilder = new StringBuilder();
+            var duplicateList = new List<string>();
             var resourceList = Catalogue.GetDuplicateResources();
             if (resourceList == null ||resourceList.Count <= 0)
                 return new List<string>();
             foreach (var duplicateResource in resourceList)
             {
-                stringBuilder.Append(string.Format(" Resource {0} in path {1} and path {2} are the same",
+                duplicateList.Add(string.Format("{0}"+ Environment.NewLine + "{1}" + Environment.NewLine +"{2}",
                     duplicateResource.ResourceName, duplicateResource.FilePath, duplicateResource.FilePath2));
-                stringBuilder.AppendLine();
             }
-            return new List<string> { stringBuilder.ToString() };
+            return duplicateList;
         }
 
         public IExplorerItem CreateRootExplorerItem(string workSpacePath, Guid workSpaceId)
