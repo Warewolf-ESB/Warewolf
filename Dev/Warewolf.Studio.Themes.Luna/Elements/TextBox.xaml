@@ -458,7 +458,6 @@
     </Style>
     <Style x:Key="AcceptReturnTextBoxStyle" TargetType="TextBox" BasedOn="{StaticResource TextBoxStyle}">
         <Setter Property="Height" Value="Auto" />
-        <Setter Property="MaxHeight" Value="80"/>
         <Setter Property="AcceptsReturn" Value="True" />
         <Setter Property="VerticalContentAlignment" Value="Top" />
         <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto"/>
