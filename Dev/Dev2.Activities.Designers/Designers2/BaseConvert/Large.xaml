@@ -75,7 +75,7 @@
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
                 <DataGridTemplateColumn Header="Results"
-                                        Width="100"
+                                        Width="*"
                                         d:DataContext="{d:DesignInstance Type=dev2:BaseConvertTO}"
                                         IsReadOnly="False">
                     <DataGridTemplateColumn.CellTemplate>
@@ -110,7 +110,7 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTemplateColumn Width="*" d:DataContext="{d:DesignInstance Type=dev2:BaseConvertTO}">
+                <DataGridTemplateColumn Width="85" d:DataContext="{d:DesignInstance Type=dev2:BaseConvertTO}">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <ComboBox ItemContainerStyle="{StaticResource ComboBoxItemStyle}"
@@ -137,7 +137,7 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTemplateColumn Width="65" IsReadOnly="True" d:DataContext="{d:DesignInstance Type=dev2:BaseConvertTO}">
+                <DataGridTemplateColumn Width="85" IsReadOnly="True" d:DataContext="{d:DesignInstance Type=dev2:BaseConvertTO}">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <ComboBox Margin="0,0,1,1"
