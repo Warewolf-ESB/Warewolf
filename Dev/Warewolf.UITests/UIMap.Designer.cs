@@ -683,14 +683,14 @@ namespace Warewolf.UITests
         {
             #region Variable Declarations
             WpfButton clearFilterButton = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.SearchTextBox.ClearFilterButton;
-            WpfText filterText = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.SearchTextBox.FilterText;
+            WpfEdit searchTextBox = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.SearchTextBox;
             #endregion
 
             // Click 'ClearSearchButton' button
             Mouse.Click(clearFilterButton, new Point(6, 8));
 
-            // Verify that the 'Text' property of 'Filter' label equals ''
-            Assert.AreEqual(this.Click_Explorer_Filter_Clear_ButtonParams.FilterTextText, filterText.GetProperty("Text").ToString(), "Explorer Filter Textbox text is not blank afrter clicking the clear button.");
+            // Verify that the 'Text' property of 'SearchTextBox' text box equals ''
+            Assert.AreEqual(this.Click_Explorer_Filter_Clear_ButtonParams.SearchTextBoxText, searchTextBox.Text, "Explorer Filter Textbox text is not blank afrter clicking the clear button.");
         }
         
         /// <summary>
@@ -8202,9 +8202,9 @@ namespace Warewolf.UITests
         
         #region Fields
         /// <summary>
-        /// Verify that the 'Text' property of 'Filter' label equals ''
+        /// Verify that the 'Text' property of 'SearchTextBox' text box equals ''
         /// </summary>
-        public string FilterTextText = "";
+        public string SearchTextBoxText = "";
         #endregion
     }
     
