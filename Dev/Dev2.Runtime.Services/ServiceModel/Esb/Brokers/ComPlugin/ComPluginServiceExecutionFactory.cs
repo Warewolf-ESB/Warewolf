@@ -33,44 +33,26 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.ComPlugin
 
         public static IOutputDescription TestComPlugin(ComPluginInvokeArgs args,out string serializedResult)
         {
-
-            //using (var runtime = CreateInvokeAppDomain())
-            {
-                var runtime = CreateInvokeAppDomain();
-                return runtime.Test(args,out serializedResult);
-            }
-
+            var runtime = CreateInvokeAppDomain();
+            return runtime.Test(args, out serializedResult);
         }
 
         public static object InvokeComPlugin(ComPluginInvokeArgs args)
         {
-
-            //using (var runtime = CreateInvokeAppDomain())
-            {
-                var runtime = CreateInvokeAppDomain();
-                return runtime.Run(args);
-            }
-           
+            var runtime = CreateInvokeAppDomain();
+            return runtime.Run(args);
         }
-
 
         public static ServiceMethodList GetMethods(string classId,bool is32Bit)
         {
-            //using (var runtime = CreateInvokeAppDomain())
-            {
-                var runtime = CreateInvokeAppDomain();
-                return runtime.ListMethods(classId, is32Bit);
-            }           
-         
+            var runtime = CreateInvokeAppDomain();
+            return runtime.ListMethods(classId, is32Bit);
         }
 
         public static NamespaceList GetNamespaces(ComPluginSource pluginSource)
         {
-            //using (var runtime = CreateInvokeAppDomain())
-            {
-                var runtime = CreateInvokeAppDomain();
-                return runtime.FetchNamespaceListObject(pluginSource);
-            }            
+            var runtime = CreateInvokeAppDomain();
+            return runtime.FetchNamespaceListObject(pluginSource);
         }
 
         #endregion
