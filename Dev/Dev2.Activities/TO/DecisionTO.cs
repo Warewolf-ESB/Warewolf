@@ -71,10 +71,7 @@ namespace Dev2.TO
             DeleteAction = delectAction;
             DeleteCommand = new RelayCommand(a=>
             {
-                if (DeleteAction != null)
-                {
-                    DeleteAction(this);
-                }
+                DeleteAction?.Invoke(this);
             }, CanDelete);
             _isInitializing = false;
         }
@@ -109,10 +106,7 @@ namespace Dev2.TO
             IsLast = false;
             DeleteCommand = new RelayCommand(x =>
             {
-                if (DeleteAction != null)
-                {
-                    DeleteAction(this);
-                }
+                DeleteAction?.Invoke(this);
             },CanDelete);
             _isInitializing = false;
         }
@@ -132,10 +126,7 @@ namespace Dev2.TO
             {
                 _isLast = value;
 
-                if(DeleteCommand != null)
-                {
-                    DeleteCommand.RaiseCanExecuteChanged();
-                }
+                DeleteCommand?.RaiseCanExecuteChanged();
             }
         }
 
@@ -232,12 +223,6 @@ namespace Dev2.TO
             }
         }
 
-        
-
-        //    public bool IsMatchValueFocused { get { return _isMatchValueFocused; } set { OnPropertyChanged(ref _isMatchValueFocused, value); } }
-
-     //   public bool IsSearchCriteriaFocused { get { return _isSearchCriteriaFocused; } set { OnPropertyChanged(ref _isSearchCriteriaFocused, value); } }
-
         public string SearchType
         {
             get
@@ -316,7 +301,7 @@ namespace Dev2.TO
 
         public bool CanRemove()
         {
-            if (string.IsNullOrEmpty(SearchCriteria) && string.IsNullOrEmpty(SearchType))
+            if (string.IsNullOrEmpty(MatchValue) && string.IsNullOrEmpty(SearchCriteria) && string.IsNullOrEmpty(SearchType))
             {
                 return true;
             }
@@ -325,11 +310,12 @@ namespace Dev2.TO
 
         public bool CanAdd()
         {
-            return !string.IsNullOrEmpty(SearchType);
+            return !string.IsNullOrEmpty(MatchValue) || !string.IsNullOrEmpty(SearchCriteria);
         }
 
         public void ClearRow()
         {
+            MatchValue = "";
             SearchCriteria = string.Empty;
             SearchType = "";
         }
