@@ -33,6 +33,8 @@ namespace Dev2.Common.Interfaces
         bool ShowContextMenu { get; set; }
         bool? IsFolderChecked { get; set; }
         bool? IsResourceChecked { get; set; }
+        bool IsResourceCheckedEnabled { get; set; }
+        string DeployResourceCheckboxTooltip { get; set; }
         bool? IsResourceUnchecked { get; set; }
         bool IsSource { get; set; }
         bool IsService { get; set; }

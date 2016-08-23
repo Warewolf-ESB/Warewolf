@@ -42,7 +42,7 @@
                     <DataTemplate DataType="system:String">
                         <TextBlock>
                             <Hyperlink NavigateUri="{Binding}" RequestNavigate="Hyperlink_OnRequestNavigate">
-                                <TextBlock Text="{Binding}" />
+                                <TextBlock Foreground="Black" Text="{Binding}" />
                             </Hyperlink>
                         </TextBlock>
                     </DataTemplate>

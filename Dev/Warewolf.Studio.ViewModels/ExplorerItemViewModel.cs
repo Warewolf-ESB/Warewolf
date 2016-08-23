@@ -148,6 +148,8 @@ namespace Warewolf.Studio.ViewModels
         private IEnvironmentModel _environmentModel;
         private readonly ExplorerItemViewModelCommandController _explorerItemViewModelCommandController;
         private bool _forcedRefresh;
+        private bool _isResourceCheckedEnabled;
+        private string _deployResourceCheckboxTooltip;
 
 
         public ExplorerItemViewModel(IServer server, IExplorerTreeItem parent, Action<IExplorerItemViewModel> selectAction, IShellViewModel shellViewModel, IPopupController popupController)
@@ -782,12 +784,10 @@ namespace Warewolf.Studio.ViewModels
                 OnPropertyChanged(() => IsResourceUnchecked);
             }
         }
+
         public bool? IsResourceChecked
         {
-            get
-            {
-                return _isResource;
-            }
+            get { return _isResource; }
             set
             {
                 if (IsFolder)
@@ -802,16 +802,47 @@ namespace Warewolf.Studio.ViewModels
                 }
                 else
                 {
-                    var permission = Server.Permissions?
-                   .FirstOrDefault(p => p.ResourceID == ResourceId);
+                    IsResourceCheckedEnabled = true;
+                    var permission = Server.Permissions?.FirstOrDefault(p => p.ResourceID == ResourceId);
                     if (permission?.Permissions == Permissions.View)
+                    {
+                        IsResourceCheckedEnabled = false;
+                        OnPropertyChanged(() => IsResourceCheckedEnabled);
                         value = false;
-                        _isResource = value.HasValue && !IsFolder && value.Value;
+                    }
+                    _isResource = value.HasValue && !IsFolder && value.Value;
                 }
                 SelectAction?.Invoke(this);
                 OnPropertyChanged(() => IsResourceChecked);
             }
         }
+
+        public bool IsResourceCheckedEnabled
+        {
+            get { return _isResourceCheckedEnabled; }
+            set
+            {
+                DeployResourceCheckboxTooltip = Resources.Languages.Core.DeployResourceCheckbox;
+                if (!value)
+                {
+                    DeployResourceCheckboxTooltip = Resources.Languages.Core.DeployResourceCheckboxViewPermissionError;
+                }
+                _isResourceCheckedEnabled = value;
+                OnPropertyChanged(() => IsResourceCheckedEnabled);
+                OnPropertyChanged(() => DeployResourceCheckboxTooltip);
+            }
+        }
+
+        public string DeployResourceCheckboxTooltip
+        {
+            get { return _deployResourceCheckboxTooltip; }
+            set
+            {
+                _deployResourceCheckboxTooltip = value;
+                OnPropertyChanged(() => DeployResourceCheckboxTooltip);
+            }
+        }
+
         public bool? IsFolderChecked
         {
             get
