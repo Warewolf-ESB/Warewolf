@@ -1,0 +1,54 @@
+﻿<Window x:Class="Warewolf.Studio.Views.CreateDuplicateResourceDialog"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Warewolf.Studio.Views"
+             xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna;assembly=Warewolf.Studio.Themes.Luna"
+             mc:Ignorable="d" 
+        Height="120"
+             d:DesignHeight="300" d:DesignWidth="300">
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <luna:SharedResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Theme.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Background="{StaticResource WareWolfMenuBrush}" Grid.ColumnSpan="2" HorizontalAlignment="Stretch">
+            <TextBlock Margin="5" Style="{StaticResource SourceHeader}" x:Name="HeaderTextBlock" ><Run Text="Duplicate "/><Run Text="Resource"/></TextBlock>
+        </StackPanel>
+
+        <Grid Grid.Row="1" Margin="{StaticResource ElementBorder}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Grid.Column="0" Grid.Row="0" Text="New Resource Name:" Margin="{StaticResource ControlBorderRight}"/>
+            <TextBox Grid.Column="1" Grid.Row="0" Text="{Binding NewResourceName, UpdateSourceTrigger=PropertyChanged}"/>
+
+            <CheckBox Grid.Column="1" Grid.Row="1" Content="Fix References?" IsChecked="{Binding FixReferences, UpdateSourceTrigger=PropertyChanged}"/>
+
+            <StackPanel Grid.Column="1" Grid.Row="2" HorizontalAlignment="Right" Orientation="Horizontal" Margin="{StaticResource ControlBorderTop}">
+                <Button Content="Cancel" Command="{Binding CancelCommand}" Margin="{StaticResource ControlBorderRight}"/>
+                <Button Content="Create" Command="{Binding CreateCommand}" />
+            </StackPanel>
+        </Grid>
+    </Grid>
+    
+    
+
+</Window>

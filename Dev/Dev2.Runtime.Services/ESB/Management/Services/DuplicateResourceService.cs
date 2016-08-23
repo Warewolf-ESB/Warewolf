@@ -80,7 +80,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                                     ResourceName = newResourceName.ToString(),
                                     ResourceID = newGuid
                                 };
-
+                                
                                 GetResourceCatalog().CopyResource(newResource, GlobalConstants.ServerWorkspaceID);
                             }
                             else
