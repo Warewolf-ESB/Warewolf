@@ -1,4 +1,4 @@
-param([string]$CustomVersionString = "")
+param([Parameter(Mandatory = $false)][AllowEmptyString()][string]$CustomVersionString = "")
 $WarewolfGitRepoDirectory = "$PSScriptRoot"
 Write-Host Writing C# and F# versioning files...
 
