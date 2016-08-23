@@ -83,11 +83,6 @@ namespace Dev2.Runtime.ESB.Management.Services
 
                                 GetResourceCatalog().CopyResource(newResource, GlobalConstants.ServerWorkspaceID);
                             }
-                            else if (explorerItem.IsService)
-                            {
-                                var service = GetResourceCatalog().GetResource(GlobalConstants.ServerWorkspaceID, explorerItem.ResourceId) as Service;
-                                
-                            }
                             else
                             {
 
