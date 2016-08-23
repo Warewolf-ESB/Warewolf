@@ -204,7 +204,9 @@ namespace Warewolf.UITests
             {
                 Click_Clear_Toolbox_Filter_Clear_Button();
             }
+#if DEBUG
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox.Text == string.Empty, "Toolbox filter textbox text value of " + MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox.Text + " is not empty after clicking clear filter button.");
+#endif
         }
 
         public void Click_Settings_Resource_Permissions_Row1_Add_Resource_Button()
