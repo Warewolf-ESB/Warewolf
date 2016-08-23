@@ -202,6 +202,86 @@ namespace Dev2.Activities.Designers.Tests.Decision
 
         [TestMethod]
         [Owner("Pieter Terblanche")]
+        [TestCategory("DecisionTo_CanAddOrRemove")]
+        public void DecisionTo_CanAddOrRemove_Validate_IsTrue()
+        {
+            //------------Setup for test--------------------------
+            //------------Setup for test--------------------------
+            var decisionTO = new DecisionTO("xxxx", "xxxx", "Equals", 1);
+
+            var canAdd = decisionTO.CanAdd();
+            var canDelete = decisionTO.CanDelete(decisionTO);
+            var canRemove = decisionTO.CanRemove();
+
+            //------------Execute Test---------------------------
+
+            //------------Assert Results-------------------------
+            Assert.IsTrue(canAdd);
+            Assert.IsTrue(canDelete);
+            Assert.IsFalse(canRemove);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("DecisionTo_CanAddOrRemoveItems")]
+        public void DecisionTo_CanAddOrRemoveItems_Validate_IsTrue()
+        {
+            //------------Setup for test--------------------------
+            //------------Setup for test--------------------------
+            var items = new List<DecisionTO>
+            {
+                new DecisionTO("xxxx","xxxx", "Equals", 1),
+                new DecisionTO("","", "Contains", 2)
+            };
+
+            //------------Execute Test---------------------------
+            var item1 = items[0];
+            var item2 = items[1];
+
+            item1.IsFromFocused = false;
+            item1.IsToFocused = true;
+
+            //------------Assert Results-------------------------
+            Assert.IsFalse(item1.IsFromFocused);
+            Assert.IsTrue(item1.IsToFocused);
+            Assert.IsTrue(item1.CanAdd());
+            Assert.IsTrue(item1.CanDelete(item1));
+            Assert.IsFalse(item1.CanRemove());
+
+            Assert.IsFalse(item2.CanAdd());
+            Assert.IsTrue(item2.CanDelete(item1));
+            Assert.IsFalse(item2.CanRemove());
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("DecisionTo_ClearRow")]
+        public void DecisionTo_ClearRow_Validate_RowRemoved()
+        {
+            //------------Setup for test--------------------------
+            //------------Setup for test--------------------------
+            var items = new List<DecisionTO>
+            {
+                new DecisionTO("xxxx","xxxx", "Equals", 1),
+                new DecisionTO("","", "Contains", 2)
+            };
+
+            //------------Execute Test---------------------------
+            var item2 = items[1];
+
+            //------------Assert Results-------------------------
+
+            Assert.AreEqual(2, items.Count);
+
+            item2.ClearRow();
+
+            Assert.AreEqual("", item2.MatchValue);
+            Assert.AreEqual("", item2.SearchCriteria);
+            Assert.AreEqual("", item2.SearchType);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
         [TestCategory("DecisionDesignerViewModel_Constructor")]
         public void DecisionDesignerViewModel_Constructor_PropertiesInitialized()
         {

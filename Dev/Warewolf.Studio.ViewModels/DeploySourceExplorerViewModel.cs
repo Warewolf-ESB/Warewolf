@@ -6,6 +6,7 @@ using Caliburn.Micro;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Deploy;
 using Dev2.Common.Interfaces.Infrastructure;
+using Dev2.Common.Interfaces.Security;
 
 namespace Warewolf.Studio.ViewModels
 {
@@ -158,13 +159,10 @@ namespace Warewolf.Studio.ViewModels
                 });
             }
             else
-            {
+            {                
                 if (ax.Parent?.ResourceType == @"Folder" || ax.Parent?.ResourceType == @"ServerSource")
-                {
                     ax.Parent.IsFolderChecked = ax.IsResourceChecked;
-                }
             }
-
             _statsArea.Calculate(SelectedItems.ToList());
         }
 
@@ -172,7 +170,10 @@ namespace Warewolf.Studio.ViewModels
         {
             get
             {
-                return SelectedEnvironment != null ? SelectedEnvironment.AsList().Select(a => a as IExplorerTreeItem).Where(a => a.IsResourceChecked.HasValue && a.IsResourceChecked.Value).ToList() : new List<IExplorerTreeItem>();
+                return SelectedEnvironment != null ? SelectedEnvironment.AsList()
+                    .Select(a => a as IExplorerTreeItem)
+                    .Where(a => a.IsResourceChecked.HasValue && a.IsResourceChecked.Value)
+                    .ToList() : new List<IExplorerTreeItem>();
             }
             set
             {
@@ -201,7 +202,7 @@ namespace Warewolf.Studio.ViewModels
         {
             var item = SelectedEnvironment != null ? SelectedEnvironment.AsList().FirstOrDefault(a => a.ResourceId == explorerTreeItem.ResourceId) : null;
             if (item != null)
-            {
+            {               
                 item.IsSelected = true;
             }
         }
@@ -214,7 +215,8 @@ namespace Warewolf.Studio.ViewModels
         /// <param name="selectedItems"></param>
         private void SelectItemsForDeploy(IEnumerable<IExplorerTreeItem> selectedItems)
         {
-            SelectedEnvironment.AsList().Apply(a => a.IsResourceChecked = selectedItems.Contains(a));
+            SelectedEnvironment.AsList()
+                .Apply(a => a.IsResourceChecked = selectedItems.Contains(a));
         }
 
         #endregion
