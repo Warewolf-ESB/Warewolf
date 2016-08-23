@@ -383,14 +383,14 @@ namespace Dev2.Runtime.Hosting
                 {
                     if (_duplicates.Any(p => p.ResourceId == dupRes.ResourceID))
                     {
-                        var firstDup = _duplicates.First(p=>p.ResourceId == dupRes.ResourceID);
-                        if(!firstDup.ResourcePath.Contains(filePath))
+                        var firstDup = _duplicates.First(p => p.ResourceId == dupRes.ResourceID);
+                        if (!firstDup.ResourcePath.Contains(filePath))
                             firstDup.ResourcePath.Add(filePath);
                         return null;
                     }
                     var duplicatePaths = filePath == dupRes.FilePath ? string.Empty : filePath;
                     var resourcePaths = new List<string> { dupRes.FilePath };
-                    if(!string.IsNullOrEmpty(duplicatePaths))
+                    if (!string.IsNullOrEmpty(duplicatePaths))
                         resourcePaths.Add(duplicatePaths);
                     _dupresource = new DuplicateResource
                     {
@@ -400,7 +400,7 @@ namespace Dev2.Runtime.Hosting
                         ,
                         ResourcePath = resourcePaths
                     };
-                }
+                }                
             }
             return _dupresource;
         }
