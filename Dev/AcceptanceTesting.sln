@@ -215,7 +215,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.AcceptanceTesting.
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "VersionScripts", "VersionScripts", "{BD257381-0CA0-49B8-9FC6-BCEAD24022CA}"
 	ProjectSection(SolutionItems) = preProject
-		BakeInVersion.ps1 = BakeInVersion.ps1
+		AssemblyCommonInfo.ps1 = AssemblyCommonInfo.ps1
 		ReadOutVersion.ps1 = ReadOutVersion.ps1
 	EndProjectSection
 EndProject
@@ -287,6 +287,11 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GACManagerApi", "GACManagerApi\GACManagerApi.csproj", "{2909743E-72FF-48BF-A081-E61A73D2E6EC}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestingDotnetDllCascading", "TestingDotnetDllCascading\TestingDotnetDllCascading.csproj", "{A4F1DAA7-9EAB-4E46-9E73-BAE87179F737}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{2B92A973-AA53-4E0C-9E2E-13F40A352C80}"
+	ProjectSection(SolutionItems) = preProject
+		Studio.Run.bat = Studio.Run.bat
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
