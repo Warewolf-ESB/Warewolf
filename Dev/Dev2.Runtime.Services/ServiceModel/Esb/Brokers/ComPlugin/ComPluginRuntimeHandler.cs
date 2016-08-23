@@ -106,12 +106,9 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.ComPlugin
 
                 if (setupInfo.Is32Bit)
                 {
-                    using (var client = new Client())
-                    {
-                        //use Late Binding to Get MethodInfo
-                        pluginResult = client.Invoke(setupInfo.ClsId.ToGuid(), setupInfo.Method, Execute.ExecuteSpecifiedMethod, valuedTypeList);
-                        return null;
-                    }
+
+                    pluginResult = Client.IPCExecutor.Invoke(setupInfo.ClsId.ToGuid(), setupInfo.Method, Execute.ExecuteSpecifiedMethod, valuedTypeList);
+                    return null;
                 }
                 var type = GetType(setupInfo.ClsId, setupInfo.Is32Bit);
                 var methodToRun = type.GetMethod(setupInfo.Method, typeList.ToArray()) ??
@@ -201,12 +198,11 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.ComPlugin
             {
                 if (is32Bit)
                 {
-                    using (var client = new Client())
-                    {
-                        var execute = client.Invoke(classId.ToGuid(), "", Execute.GetNamespaces, new object[] { });
-                        var namespaceList = execute as List<string>;
-                        return namespaceList;
-                    }
+
+                    var execute = Client.IPCExecutor.Invoke(classId.ToGuid(), "", Execute.GetNamespaces, new object[] { });
+                    var namespaceList = execute as List<string>;
+                    return namespaceList;
+
                 }
                 var type = GetType(classId, false);
                 var loadedAssembly = type.Assembly;
@@ -236,20 +232,18 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.ComPlugin
             Type type;
             if (is64BitProcess && is32Bit)
             {
-                using (var client = new Client())
-                {
-                    try
-                    {
-                        var execute = client.Invoke(clasID, "", Execute.GetType, new object[] { });
-                        type = execute as Type;
-                    }
-                    catch (Exception ex)
-                    {
-                        Dev2Logger.Error("GetType", ex);
-                        type = Type.GetTypeFromCLSID(clasID, true);
 
-                    }
+                try
+                {
+                    var execute = Client.IPCExecutor.Invoke(clasID, "", Execute.GetType, new object[] { });
+                    type = execute as Type;
                 }
+                catch (Exception ex)
+                {
+                    Dev2Logger.Error("GetType", ex);
+                    type = Type.GetTypeFromCLSID(clasID, true);
+
+                }                
             }
             else
             {
@@ -264,10 +258,9 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.ComPlugin
             classId = classId.Replace("{", "").Replace("}", "");
             if (is32Bit)
             {
-                using (var client = new Client())
-                {
+                
 
-                    var execute = client.Invoke(classId.ToGuid(), "", Execute.GetMethods, new object[] { });
+                    var execute = Client.IPCExecutor.Invoke(classId.ToGuid(), "", Execute.GetMethods, new object[] { });
                     var ipcMethods = execute as List<MethodInfoTO>;
                     if (ipcMethods != null)
                     {
@@ -291,11 +284,10 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.ComPlugin
                             serviceMethodList.Add(serviceMethod);
                         }
 
-                    }
+                    
 
                     orderMethodsList.AddRange(serviceMethodList.OrderBy(method => method.Name));
                     return orderMethodsList;
-
                 }
             }
             var type = Type.GetTypeFromCLSID(classId.ToGuid(), true);
