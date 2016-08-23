@@ -431,6 +431,26 @@ namespace Warewolf.Studio.Views
                     }
                 }
             }
+            else
+            {
+                ShowDropNotAllowedError(e);
+            }
+        }
+
+        private static void ShowDropNotAllowedError(DropEventArgs e)
+        {
+            var dropActivity = Utilities.GetAncestorFromType(e.DropTarget, typeof (ContentControl), false) as ContentControl;
+            var dragSource = e.DragSource as XamDataTreeNodeControl;
+            if (dropActivity == null || dragSource == null)
+            {
+                return;
+            }
+            var sourceNodeData = dragSource.Node.Data as IExplorerItemViewModel;
+            if (sourceNodeData != null && sourceNodeData.ResourceType != "WorkflowService")
+            {
+                sourceNodeData.ShowErrorMessage(Studio.Resources.Languages.Core.ExplorerDropNotAllowedMessage,
+                    Studio.Resources.Languages.Core.ExplorerDropNotAllowedHeader);
+            }
         }
 
         private void ClearException(DragDropMoveEventArgs e)
