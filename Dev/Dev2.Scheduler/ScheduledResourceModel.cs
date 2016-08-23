@@ -277,41 +277,50 @@ Please contact your Warewolf System Administrator.", resource.WorkflowName));
 
         public IList<IResourceHistory> CreateHistory(IScheduledResource resource)
         {
-            // group event log entries by correlation id
-            ITaskEventLog evt = _factory.CreateTaskEventLog(String.Format("\\{0}\\", _warewolfFolderPath) + resource.Name);
+            ITaskEventLog evt = _factory.CreateTaskEventLog(string.Format("\\{0}\\", _warewolfFolderPath) + resource.Name);
             var groupings =
                 from a in
-                    evt.Where(x => !String.IsNullOrEmpty(x.Correlation) && !String.IsNullOrEmpty(x.TaskCategory) && _taskStates.Values.Contains(x.TaskCategory))
+                    evt.Where(x => !string.IsNullOrEmpty(x.Correlation) && !string.IsNullOrEmpty(x.TaskCategory) && _taskStates.Values.Contains(x.TaskCategory))
                 group a by a.Correlation
                     into corrGroup
                 select new
-
                 {
+
                     StartDate = corrGroup.Min(a => a.TimeCreated),
                     EndDate = corrGroup.Max(a => a.TimeCreated),
                     EventId = corrGroup.Max(a => a.EventId),
                     corrGroup.Key
                 };
-
             // for each grouping get the data and debug output
-            IList<IResourceHistory> eventList = groupings.OrderBy(a => a.StartDate).Reverse().Take(resource.NumberOfHistoryToKeep == 0 ? int.MaxValue : resource.NumberOfHistoryToKeep)
+            IList<IResourceHistory> eventList = groupings.OrderBy(a => a.StartDate).Reverse()
+                .Take(resource.NumberOfHistoryToKeep == 0 ? int.MaxValue : resource.NumberOfHistoryToKeep)
                 .Select(a =>
                 {
-                    var duration = TimeSpan.Zero;
-                    DateTime start = DateTime.MinValue;
-                    DateTime end = DateTime.MinValue;
+                    TimeSpan duration;
+                    DateTime start;
+                    DateTime end;
                     var debugOutput = CreateDebugHistory(DebugHistoryPath, a.Key);
                     var output = debugOutput.FirstOrDefault();
                     if (output != null)
                     {
-                        duration = new TimeSpan(output.Duration.Hours,output.Duration.Minutes,output.Duration.Seconds);
+                        duration = new TimeSpan(output.Duration.Hours, output.Duration.Minutes, output.Duration.Seconds);
                         start = output.StartTime;
                         end = output.EndTime;
+                    }
+                    else
+                    {
+                        start = a.StartDate.Value; end = a.EndDate.Value;
+                        duration = a.StartDate.HasValue && a.EndDate.HasValue ? a.EndDate.Value.Subtract(a.StartDate.Value) : TimeSpan.MaxValue;
                     }
                     return new ResourceHistory("", debugOutput,
                         new EventInfo(start, duration, end, GetRunStatus(a.EventId, DebugHistoryPath, a.Key), a.Key, a.EventId < 103 ? "" : _taskStates[a.EventId]), GetUserName(DebugHistoryPath, a.Key))
                         as IResourceHistory;
                 }).ToList();
+            //.Select(
+            //a =>
+            //    new ResourceHistory("", CreateDebugHistory(DebugHistoryPath, a.Key),
+            //        new EventInfo(a.StartDate.Value, a.StartDate.HasValue && a.EndDate.HasValue ? a.EndDate.Value.Subtract(a.StartDate.Value) : TimeSpan.MaxValue, a.EndDate.Value, GetRunStatus(a.EventId, DebugHistoryPath, a.Key), a.Key, a.EventId < 103 ? "" : _taskStates[a.EventId]), GetUserName(DebugHistoryPath, a.Key))
+            //        as IResourceHistory).ToList();
             return eventList;
         }
 
