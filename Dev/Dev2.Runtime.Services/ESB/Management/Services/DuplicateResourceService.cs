@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Transactions;
 using System.Xml.Linq;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Core.DynamicServices;
@@ -33,7 +32,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         public DuplicateResourceService()
         {
-            
+
         }
 
         private IResourceCatalog GetResourceCatalog()
@@ -83,6 +82,11 @@ namespace Dev2.Runtime.ESB.Management.Services
                                 };
 
                                 GetResourceCatalog().CopyResource(newResource, GlobalConstants.ServerWorkspaceID);
+                            }
+                            else if (explorerItem.IsService)
+                            {
+                                var service = GetResourceCatalog().GetResource(GlobalConstants.ServerWorkspaceID, explorerItem.ResourceId) as Service;
+                                
                             }
                             else
                             {
