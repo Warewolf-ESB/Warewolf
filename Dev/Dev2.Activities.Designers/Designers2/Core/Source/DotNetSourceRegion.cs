@@ -255,11 +255,7 @@ namespace Dev2.Activities.Designers2.Core.Source
                 SourceChangedAction();
                 OnSomethingChanged(this);
                 var delegateCommand = EditSourceCommand as DelegateCommand;
-                if (delegateCommand != null)
-                {
-                    delegateCommand.RaiseCanExecuteChanged();
-                }
-
+                delegateCommand?.RaiseCanExecuteChanged();
             }
         }
 
@@ -308,19 +304,13 @@ namespace Dev2.Activities.Designers2.Core.Source
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             var handler = PropertyChanged;
-            if (handler != null)
-            {
-                handler(this, new PropertyChangedEventArgs(propertyName));
-            }
+            handler?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
         protected virtual void OnSomethingChanged(IToolRegion args)
         {
             var handler = SomethingChanged;
-            if (handler != null)
-            {
-                handler(this, args);
-            }
+            handler?.Invoke(this, args);
         }
     }
 }

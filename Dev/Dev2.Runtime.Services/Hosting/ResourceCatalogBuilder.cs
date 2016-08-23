@@ -245,10 +245,6 @@ namespace Dev2.Runtime.Hosting
                                 }
                             }
                         }
-                        if (resource.VersionInfo == null)
-                        {
-
-                        }
 
                         lock (_addLock)
                         {
