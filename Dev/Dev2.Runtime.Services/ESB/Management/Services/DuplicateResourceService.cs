@@ -22,8 +22,8 @@ namespace Dev2.Runtime.ESB.Management.Services
 {
     public class DuplicateResourceService : IEsbManagementEndpoint
     {
-        private readonly IResourceCatalog _resourceCatalog;
-        private readonly IExplorerServerResourceRepository _resourceRepository;
+        private IResourceCatalog _resourceCatalog;
+        private IExplorerServerResourceRepository _resourceRepository;
 
         public DuplicateResourceService(IResourceCatalog resourceCatalog, IExplorerServerResourceRepository resourceRepository)
         {
@@ -32,9 +32,17 @@ namespace Dev2.Runtime.ESB.Management.Services
         }
 
         public DuplicateResourceService()
-            : this(ResourceCatalog.Instance, ServerExplorerRepository.Instance)
         {
+            
+        }
 
+        private IResourceCatalog GetResourceCatalog()
+        {
+            return _resourceCatalog ?? (_resourceCatalog = ResourceCatalog.Instance);
+        }
+        private IExplorerServerResourceRepository GetItemExplorer()
+        {
+            return _resourceRepository ?? (_resourceRepository = ServerExplorerRepository.Instance);
         }
 
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
@@ -56,8 +64,8 @@ namespace Dev2.Runtime.ESB.Management.Services
                     if (!string.IsNullOrEmpty(newResourceName?.ToString()))
                     {
 
-                        var explorerItem = _resourceRepository.Find(resourceId);
-                        var resource = _resourceCatalog.GetResource(GlobalConstants.ServerWorkspaceID, resourceId);
+                        var explorerItem = GetItemExplorer().Find(resourceId);
+                        var resource = GetResourceCatalog().GetResource(GlobalConstants.ServerWorkspaceID, resourceId);
 
                         try
                         {
@@ -74,33 +82,33 @@ namespace Dev2.Runtime.ESB.Management.Services
                                     ResourceID = newGuid
                                 };
 
-                                _resourceCatalog.CopyResource(newResource, GlobalConstants.ServerWorkspaceID);
+                                GetResourceCatalog().CopyResource(newResource, GlobalConstants.ServerWorkspaceID);
                             }
                             else
                             {
 
                                 var explorerItems = explorerItem.Children;
-                                var folderResource = _resourceCatalog.GetResource(GlobalConstants.ServerWorkspaceID, explorerItem.ResourceId);
+                                var folderResource = GetResourceCatalog().GetResource(GlobalConstants.ServerWorkspaceID, explorerItem.ResourceId);
 
                                 var newFolder = new Resource(folderResource)
                                 {
                                     ResourceName = newResourceName.ToString(),
                                     ResourceID = Guid.NewGuid()
                                 };
-                                _resourceCatalog.SaveResource(GlobalConstants.ServerWorkspaceID, newFolder);
-                                var guidIds =new StringBuilder() ;
-                              
+                                GetResourceCatalog().CopyResource(newFolder, GlobalConstants.ServerWorkspaceID);
+                                var guidIds = new StringBuilder();
+
                                 foreach (var guidId in explorerItems.Select(item => item.ResourceId))
                                 {
                                     guidIds.Append(guidId + ",");
                                 }
-                                var resourceList = _resourceCatalog.GetResourceList(GlobalConstants.ServerWorkspaceID,
+                                var resourceList = GetResourceCatalog().GetResourceList(GlobalConstants.ServerWorkspaceID,
                                     new Dictionary<string, string> { { "guidCsv", guidIds.ToString() } });
                                 var recourceClones = new List<IResource>(resourceList);
                                 foreach (var recourceClone in recourceClones)
                                 {
                                     recourceClone.ResourceID = Guid.NewGuid();
-                                    _resourceCatalog.SaveResource(GlobalConstants.ServerWorkspaceID, recourceClone);
+                                    GetResourceCatalog().SaveResource(GlobalConstants.ServerWorkspaceID, recourceClone);
                                 }
 
                             }
