@@ -114,7 +114,8 @@ namespace Dev2.Activities
                 var outputFormatter = OutputFormatterFactory.CreateOutputFormatter(OutputDescription);
                 args.OutputFormatter = outputFormatter;
             }
-            _result = ComPluginServiceExecutionFactory.InvokeComPlugin(args).ToString();
+            Common.Utilities.PerformActionInsideImpersonatedContext(Common.Utilities.ServerUser, () => { _result = ComPluginServiceExecutionFactory.InvokeComPlugin(args).ToString(); });
+            
             ResponseManager = new ResponseManager { OutputDescription = OutputDescription, Outputs = Outputs, IsObject = IsObject, ObjectName = ObjectName };
             ResponseManager.PushResponseIntoEnvironment(_result, update, dataObject, false);
         }
