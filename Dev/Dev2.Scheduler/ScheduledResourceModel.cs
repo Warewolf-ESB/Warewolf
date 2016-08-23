@@ -269,8 +269,6 @@ Please contact your Warewolf System Administrator.", resource.WorkflowName));
 
         }
 
-
-
         public int ArgCount => 3;
 
         public int ArgCountOld => 2;
@@ -280,12 +278,13 @@ Please contact your Warewolf System Administrator.", resource.WorkflowName));
             ITaskEventLog evt = _factory.CreateTaskEventLog(string.Format("\\{0}\\", _warewolfFolderPath) + resource.Name);
             var groupings =
                 from a in
-                    evt.Where(x => !string.IsNullOrEmpty(x.Correlation) && !string.IsNullOrEmpty(x.TaskCategory) && _taskStates.Values.Contains(x.TaskCategory))
-                group a by a.Correlation
+                    evt.Where(x => !string.IsNullOrEmpty(x.Correlation) 
+                                && !string.IsNullOrEmpty(x.TaskCategory) 
+                                && _taskStates.Values.Contains(x.TaskCategory))
+                group a by a.Correlation                
                     into corrGroup
                 select new
                 {
-
                     StartDate = corrGroup.Min(a => a.TimeCreated),
                     EndDate = corrGroup.Max(a => a.TimeCreated),
                     EventId = corrGroup.Max(a => a.EventId),
@@ -316,12 +315,8 @@ Please contact your Warewolf System Administrator.", resource.WorkflowName));
                         new EventInfo(start, duration, end, GetRunStatus(a.EventId, DebugHistoryPath, a.Key), a.Key, a.EventId < 103 ? "" : _taskStates[a.EventId]), GetUserName(DebugHistoryPath, a.Key))
                         as IResourceHistory;
                 }).ToList();
-            //.Select(
-            //a =>
-            //    new ResourceHistory("", CreateDebugHistory(DebugHistoryPath, a.Key),
-            //        new EventInfo(a.StartDate.Value, a.StartDate.HasValue && a.EndDate.HasValue ? a.EndDate.Value.Subtract(a.StartDate.Value) : TimeSpan.MaxValue, a.EndDate.Value, GetRunStatus(a.EventId, DebugHistoryPath, a.Key), a.Key, a.EventId < 103 ? "" : _taskStates[a.EventId]), GetUserName(DebugHistoryPath, a.Key))
-            //        as IResourceHistory).ToList();
-            return eventList;
+            var result = eventList.Where(history => history.TaskHistoryOutput.Success != ScheduleRunStatus.Unknown).ToList();
+            return result;
         }
 
 
