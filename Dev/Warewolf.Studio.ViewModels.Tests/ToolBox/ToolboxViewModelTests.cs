@@ -256,6 +256,108 @@ namespace Warewolf.Studio.ViewModels.ToolBox.Tests
         }
 
         [TestMethod]
+        public void TestFilterCategory()
+        {
+            //arrange
+
+            var searchCategory = "someCategory";
+
+            var toolDescriptorMockContainingInLocal = new Mock<IToolDescriptor>();
+
+            var activityMock = new Mock<IWarewolfType>();
+            toolDescriptorMockContainingInLocal.SetupGet(it => it.Name).Returns("someSearchString");
+            toolDescriptorMockContainingInLocal.SetupGet(it => it.Activity).Returns(activityMock.Object);
+            toolDescriptorMockContainingInLocal.SetupGet(it => it.Category).Returns(searchCategory);
+            toolDescriptorMockContainingInLocal.SetupGet(it => it.FilterTag).Returns("someFilterTag");
+
+            var toolDescriptorMockNotContainingInLocal = new Mock<IToolDescriptor>();
+            toolDescriptorMockNotContainingInLocal.SetupGet(it => it.Name).Returns("someSearchString");
+            toolDescriptorMockNotContainingInLocal.SetupGet(it => it.Activity).Returns(activityMock.Object);
+            toolDescriptorMockNotContainingInLocal.SetupGet(it => it.Category).Returns(searchCategory);
+            toolDescriptorMockNotContainingInLocal.SetupGet(it => it.FilterTag).Returns("someFilterTag");
+
+            var toolDescriptorMockNotMatching = new Mock<IToolDescriptor>();
+            toolDescriptorMockNotMatching.SetupGet(it => it.Name).Returns("someOtherText");
+            toolDescriptorMockNotMatching.SetupGet(it => it.Activity).Returns(activityMock.Object);
+            toolDescriptorMockNotMatching.SetupGet(it => it.Category).Returns("notSomeCategory");
+            toolDescriptorMockNotMatching.SetupGet(it => it.FilterTag).Returns("notSomeFilterTag");
+
+            _remoteModelMock.Setup(it => it.GetTools())
+                .Returns(
+                    new List<IToolDescriptor>()
+                        {
+                            toolDescriptorMockContainingInLocal.Object,
+                            toolDescriptorMockNotContainingInLocal.Object,
+                            toolDescriptorMockNotMatching.Object
+                        });
+            _localModelMock.Setup(it => it.GetTools())
+                .Returns(new List<IToolDescriptor>() { toolDescriptorMockContainingInLocal.Object });
+            _changedProperties.Clear();
+
+            //act
+            SetupViewModel();
+            _target.SearchTerm = searchCategory;
+
+            //assert
+            Assert.AreEqual(3, _target.Tools.Count);
+            Assert.IsTrue(_target.Tools.Any(it => it.Tool == toolDescriptorMockContainingInLocal.Object && it.IsEnabled));
+            Assert.IsTrue(_target.Tools.Any(it => it.Tool == toolDescriptorMockNotContainingInLocal.Object && !it.IsEnabled));
+            Assert.IsTrue(_target.Tools.Any(it => it.Tool == toolDescriptorMockNotMatching.Object));
+            Assert.IsTrue(_changedProperties.Contains("Tools"));
+        }
+
+        [TestMethod]
+        public void TestFilterTag()
+        {
+            //arrange
+            var searchFilterTag = "some string match";
+            var searchString = "some";
+
+            var toolDescriptorMockContainingInLocal = new Mock<IToolDescriptor>();
+
+            var activityMock = new Mock<IWarewolfType>();
+            toolDescriptorMockContainingInLocal.SetupGet(it => it.Name).Returns(searchString);
+            toolDescriptorMockContainingInLocal.SetupGet(it => it.Activity).Returns(activityMock.Object);
+            toolDescriptorMockContainingInLocal.SetupGet(it => it.Category).Returns("someCategory");
+            toolDescriptorMockContainingInLocal.SetupGet(it => it.FilterTag).Returns(searchFilterTag);
+
+            var toolDescriptorMockNotContainingInLocal = new Mock<IToolDescriptor>();
+            toolDescriptorMockNotContainingInLocal.SetupGet(it => it.Name).Returns("someSearchString");
+            toolDescriptorMockNotContainingInLocal.SetupGet(it => it.Activity).Returns(activityMock.Object);
+            toolDescriptorMockNotContainingInLocal.SetupGet(it => it.Category).Returns("someCategory");
+            toolDescriptorMockNotContainingInLocal.SetupGet(it => it.FilterTag).Returns(searchFilterTag);
+
+            var toolDescriptorMockNotMatching = new Mock<IToolDescriptor>();
+            toolDescriptorMockNotMatching.SetupGet(it => it.Name).Returns(searchString);
+            toolDescriptorMockNotMatching.SetupGet(it => it.Activity).Returns(activityMock.Object);
+            toolDescriptorMockNotMatching.SetupGet(it => it.Category).Returns("notSomeCategory");
+            toolDescriptorMockNotMatching.SetupGet(it => it.FilterTag).Returns("notSomeFilterTag");
+
+            _remoteModelMock.Setup(it => it.GetTools())
+                .Returns(
+                    new List<IToolDescriptor>()
+                        {
+                            toolDescriptorMockContainingInLocal.Object,
+                            toolDescriptorMockNotContainingInLocal.Object,
+                            toolDescriptorMockNotMatching.Object
+                        });
+            _localModelMock.Setup(it => it.GetTools())
+                .Returns(new List<IToolDescriptor>() { toolDescriptorMockContainingInLocal.Object });
+            _changedProperties.Clear();
+
+            //act
+            SetupViewModel();
+            _target.SearchTerm = searchString;
+
+            //assert
+            Assert.AreEqual(3, _target.Tools.Count);
+            Assert.IsTrue(_target.Tools.Any(it => it.Tool == toolDescriptorMockContainingInLocal.Object && it.IsEnabled));
+            Assert.IsTrue(_target.Tools.Any(it => it.Tool == toolDescriptorMockNotContainingInLocal.Object && !it.IsEnabled));
+            Assert.IsTrue(_target.Tools.Any(it => it.Tool == toolDescriptorMockNotMatching.Object));
+            Assert.IsTrue(_changedProperties.Contains("Tools"));
+        }
+
+        [TestMethod]
         public void TestClearFilter()
         {
             //arrange
@@ -313,6 +415,7 @@ namespace Warewolf.Studio.ViewModels.ToolBox.Tests
 
             //assert
             _changedProperties.Contains("IsEnabled");
+            _changedProperties.Contains("IsVisible");
         }
         
         [TestMethod]
@@ -324,8 +427,12 @@ namespace Warewolf.Studio.ViewModels.ToolBox.Tests
             //act
             _localModelMock.Raise(it => it.OnserverDisconnected += null, _localModelMock.Object);
 
+            _target.IsVisible = false;
+
+            Assert.IsFalse(_target.IsVisible);
             //assert
             _changedProperties.Contains("IsEnabled");
+            _changedProperties.Contains("IsVisible");
         }
 
         [TestMethod]
