@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
 using Dev2.Common;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -461,7 +462,7 @@ namespace Dev2.Core.Tests
             //------------Setup for test--------------------------
             var popupWasCalled = false;
             string description = string.Empty;
-            List<string> duplicateResources = new List<string>();
+            var duplicateResources = new List<string>();
             string header = string.Empty;
             MessageBoxButton buttons = MessageBoxButton.OK;
 
@@ -489,7 +490,10 @@ namespace Dev2.Core.Tests
             Assert.AreEqual(MessageBoxButton.OK, buttons);
             Assert.AreEqual("Duplicated Resources", header);
             Assert.AreEqual(message, description);
-            Assert.AreEqual(duplicateList, duplicateResources);
+            var value = duplicateList.First();
+            Assert.IsTrue(duplicateResources.Contains(value));
+            value = duplicateList.Last();
+            Assert.IsTrue(duplicateResources.Contains(value));
             Assert.IsFalse(popupController.IsInfo);
             Assert.IsFalse(popupController.IsDependenciesButtonVisible);
             Assert.IsTrue(popupController.IsError);

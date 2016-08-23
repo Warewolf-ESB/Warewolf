@@ -142,7 +142,8 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void TestUrlsFound()
         {
             //arrange
-            List<string> duplicateList = new List<string> { "test1", "test2" };
+            var duplicateList = new List<string> { "test1", "test2" };
+            
             _changedProperties.Clear();
 
             //act

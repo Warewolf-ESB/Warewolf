@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace Dev2.Common
 {
@@ -7,8 +8,7 @@ namespace Dev2.Common
     {
         Guid ResourceId { get; set; }
         string ResourceName { get; set; }
-        string FilePath { get; set; }
-        string FilePath2 { get; set; }
+        List<string> ResourcePath { get; set; }
     }
     public class DuplicateResource:IDuplicateResource
     {
@@ -16,8 +16,7 @@ namespace Dev2.Common
 
         public Guid ResourceId { get; set; }
         public string ResourceName { get; set; }
-        public string FilePath { get; set; }
-        public string FilePath2 { get; set; }
+        public List<string> ResourcePath { get; set; }
 
         #endregion
     }
