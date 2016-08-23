@@ -392,8 +392,7 @@
     <PostBuildEvent>xcopy /Y /E /F /D "$(SolutionDir)Resources - Release" "$(TargetDir)"
 if "$(ConfigurationName)"=="Debug" xcopy /Y /E /F /D "$(SolutionDir)Resources - Debug" "$(TargetDir)"
 taskkill /f /im WarewolfCOMIPC.exe /fi "STATUS eq RUNNING"
-xcopy /Y "$(SolutionDir)WarewolfCOMIPC\bin\$(ConfigurationName)\WarewolfCOMIPC.exe" "$(TargetDir)"
-set errorlevel=0</PostBuildEvent>
+IF EXIST "$(SolutionDir)WarewolfCOMIPC\bin\$(ConfigurationName)\WarewolfCOMIPC.exe" xcopy /Y "$(SolutionDir)WarewolfCOMIPC\bin\$(ConfigurationName)\WarewolfCOMIPC.exe" "$(TargetDir)"</PostBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
     <PreBuildEvent>copy /Y "$(SolutionDir)Binaries\Trackerbird.x64.dll" "$(TargetDir)"
