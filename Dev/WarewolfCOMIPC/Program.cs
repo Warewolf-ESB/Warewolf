@@ -150,6 +150,25 @@ namespace WarewolfCOMIPC
                         }
                     }
                     break;
+                case Execute.GetNamespaces:
+                {
+                        var type = Type.GetTypeFromCLSID(data.CLSID, true);
+                        var loadedAssembly = type.Assembly;
+                        // ensure we flush out the rubbish that GAC brings ;)
+                        var namespaces = loadedAssembly.GetTypes()
+                            .Select(t => t.FullName)
+                            .Distinct()
+                            .Where(q => q.IndexOf("`", StringComparison.Ordinal) < 0
+                                        && q.IndexOf("+", StringComparison.Ordinal) < 0
+                                        && q.IndexOf("<", StringComparison.Ordinal) < 0
+                                        && !q.StartsWith("_")).ToList();
+                        Console.WriteLine($"Got {namespaces.Count} namespaces");
+                        var sw = new StreamWriter(pipe);
+                        formatter.Serialize(sw, namespaces);
+                        sw.Flush();
+                        Console.WriteLine("Sent methods for:" + type.FullName);
+                    }
+                    break;
             }
         }
 
