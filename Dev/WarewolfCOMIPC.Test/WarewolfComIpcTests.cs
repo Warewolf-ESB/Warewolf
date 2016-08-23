@@ -21,7 +21,7 @@ namespace WarewolfCOMIPC.Test
             //------------Execute Test---------------------------
             using (Client.Client client = new Client.Client())
             {
-                var execute = client.Invoke(clsid, "", "GetType", new object[] { });
+                var execute = client.Invoke(clsid, "", Execute.GetType,  new object[] { });
                 Assert.IsNotNull(execute);
             }
             //------------Assert Results-------------------------
@@ -39,7 +39,7 @@ namespace WarewolfCOMIPC.Test
             //---------------Execute Test ----------------------
             using (Client.Client client = new Client.Client())
             {
-                var execute = client.Invoke(classId, "", "GetMethods", new object[] { });
+                var execute = client.Invoke(classId, "", Execute.GetMethods,  new object[] { });
                 var enumerable = execute as List<MethodInfoTO>;
                 Assert.IsNotNull(enumerable);
                 //---------------Test Result -----------------------
@@ -59,7 +59,7 @@ namespace WarewolfCOMIPC.Test
             //---------------Execute Test ----------------------
             using (Client.Client client = new Client.Client())
             {
-                var execute = client.Invoke(classId, "", "GetMethods", new object[] { });
+                var execute = client.Invoke(classId, "", Execute.GetMethods, new object[] { });
                 var enumerable = execute as List<MethodInfoTO>;
                 Assert.IsNotNull(enumerable);
                 //---------------Test Result -----------------------
@@ -79,7 +79,7 @@ namespace WarewolfCOMIPC.Test
             //---------------Execute Test ----------------------
             using (Client.Client client = new Client.Client())
             {
-                var execute = client.Invoke(classId, "", "GetMethods", new object[] { });
+                var execute = client.Invoke(classId, "", Execute.GetMethods, new object[] { });
                 var enumerable = execute as List<MethodInfoTO>;
                 Assert.IsNotNull(enumerable);
                 //---------------Test Result -----------------------
@@ -100,7 +100,7 @@ namespace WarewolfCOMIPC.Test
             //---------------Execute Test ----------------------
             using (Client.Client client = new Client.Client())
             {
-                var execute = client.Invoke(classId, "Open", "ExecuteSpecifiedMethod", new object[] { "SQLServer", "testuser", "test123", -1 });
+                var execute = client.Invoke(classId, "Open", Execute.ExecuteSpecifiedMethod,  new object[] { "SQLServer", "testuser", "test123", -1 });
                 var actual = execute as string;
                 Assert.IsNotNull(actual);
                 //---------------Test Result -----------------------
