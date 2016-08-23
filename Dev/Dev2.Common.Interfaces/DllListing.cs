@@ -1,7 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Dev2.Common.Interfaces
 {
+    [Serializable]
     public class DllListing : IFileListing
     {
         public DllListing(IFileListing selectedDll)

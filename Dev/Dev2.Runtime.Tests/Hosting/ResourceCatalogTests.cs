@@ -3222,7 +3222,7 @@ namespace Dev2.Tests.Runtime.Hosting
 
         [TestMethod]
         [Owner("Sanele Mthembu")]
-        public void ResourceCatalog_GetResourceDuplicate()
+        public void ResourceCatalog_GetResourceDuplicate_Give2SameFilesInDifferentFolders_ShouldReturnPaths()
         {
             var path = EnvironmentVariables.ResourcePath;
             var sameResourceId = Guid.NewGuid();
@@ -3233,13 +3233,28 @@ namespace Dev2.Tests.Runtime.Hosting
             var catalog = new ResourceCatalog();
             Directory.CreateDirectory(path);
             const string resourceName = "Bug6619Dep";
-            SaveResources(resourcePath, null, false, false, new[] { "Bug6619", resourceName }, new[]{ sameResourceId, Guid.NewGuid()});
-            SaveResources(resourcePath1, null, false, false, new[] { "Bug6619", resourceName }, new[]{ sameResourceId, Guid.NewGuid()});
-            
+            SaveResources(resourcePath, null, false, false, new[]
+            {
+                "Bug6619", resourceName, "Bug6619"
+            }, new[]
+            {
+                sameResourceId, Guid.NewGuid(), sameResourceId
+            });
+            SaveResources(resourcePath1, null, false, false, new[]
+            {
+                "Bug6619"
+            }, new[]
+            {
+                sameResourceId
+            });            
             //------------Execute Test---------------------------
             var duplicateResources = catalog.GetDuplicateResources();
             //------------Assert Results-------------------------
             Assert.IsTrue(duplicateResources.Count > 0);
+            var duplicateResource = duplicateResources.Single();
+            Assert.IsTrue(duplicateResource.ResourcePath.Count == 2);
+            Assert.IsTrue(duplicateResource.ResourcePath[0].Contains(resourcePath));
+            Assert.IsTrue(duplicateResource.ResourcePath[1].Contains(resourcePath1));
         }
 
 

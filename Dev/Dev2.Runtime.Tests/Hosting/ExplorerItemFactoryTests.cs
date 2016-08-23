@@ -435,9 +435,7 @@ namespace Dev2.Tests.Runtime.Hosting
                 {
                     new DuplicateResource
                     {
-                        FilePath = "Test_path"
-                        ,
-                        FilePath2 = "Test_path2"
+                        ResourcePath = new List<string> {"Test_path","Test_path2" }
                         ,
                         ResourceName = "Test_Resource"
                         ,

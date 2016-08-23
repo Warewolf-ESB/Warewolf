@@ -70,7 +70,7 @@ namespace Dev2.Tests.Runtime.Services
         {
             var workspace = new Mock<IWorkspace>();
 
-            var values = new Dictionary<string, StringBuilder> { { "FilePath", new StringBuilder() }, { "Directory", new StringBuilder("xyz") } };
+            var values = new Dictionary<string, StringBuilder> { { "ResourcePath", new StringBuilder() }, { "Directory", new StringBuilder("xyz") } };
             var esb = new DeleteLog();
             var result = esb.Execute(values, workspace.Object);
             var msg = ConvertToMsg(result);
@@ -82,7 +82,7 @@ namespace Dev2.Tests.Runtime.Services
         {
             var workspace = new Mock<IWorkspace>();
 
-            var values = new Dictionary<string, StringBuilder> { { "FilePath", new StringBuilder("abc") }, { "Directory", new StringBuilder() } };
+            var values = new Dictionary<string, StringBuilder> { { "ResourcePath", new StringBuilder("abc") }, { "Directory", new StringBuilder() } };
             var esb = new DeleteLog();
             var result = esb.Execute(values, workspace.Object);
             var msg = ConvertToMsg(result);
@@ -94,7 +94,7 @@ namespace Dev2.Tests.Runtime.Services
         {
             var workspace = new Mock<IWorkspace>();
 
-            var values = new Dictionary<string, StringBuilder> { { "FilePath", new StringBuilder("abc") }, { "Directory", new StringBuilder("xyz") } };
+            var values = new Dictionary<string, StringBuilder> { { "ResourcePath", new StringBuilder("abc") }, { "Directory", new StringBuilder("xyz") } };
             var esb = new DeleteLog();
             var result = esb.Execute(values, workspace.Object);
             var msg = ConvertToMsg(result);
@@ -106,7 +106,7 @@ namespace Dev2.Tests.Runtime.Services
         {
             var workspace = new Mock<IWorkspace>();
 
-            var values = new Dictionary<string, StringBuilder> { { "FilePath", new StringBuilder(Guid.NewGuid().ToString()) }, { "Directory", new StringBuilder("C:") } };
+            var values = new Dictionary<string, StringBuilder> { { "ResourcePath", new StringBuilder(Guid.NewGuid().ToString()) }, { "Directory", new StringBuilder("C:") } };
             var esb = new DeleteLog();
             var result = esb.Execute(values, workspace.Object);
             var msg = ConvertToMsg(result);
@@ -132,7 +132,7 @@ namespace Dev2.Tests.Runtime.Services
                 {
                     var workspace = new Mock<IWorkspace>();
 
-                    var values = new Dictionary<string, StringBuilder> { { "FilePath", new StringBuilder(fileName) }, { "Directory", new StringBuilder(_testDir) } };
+                    var values = new Dictionary<string, StringBuilder> { { "ResourcePath", new StringBuilder(fileName) }, { "Directory", new StringBuilder(_testDir) } };
                     var esb = new DeleteLog();
                     var result = esb.Execute(values, workspace.Object);
                     var msg = ConvertToMsg(result);
@@ -167,7 +167,7 @@ namespace Dev2.Tests.Runtime.Services
             var esb = new DeleteLog();
             var result = esb.CreateServiceEntry();
             Assert.AreEqual(esb.HandlesType(), result.Name);
-            Assert.AreEqual("<DataList><Directory ColumnIODirection=\"Input\"/><FilePath ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>", result.DataListSpecification.ToString());
+            Assert.AreEqual("<DataList><Directory ColumnIODirection=\"Input\"/><ResourcePath ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>", result.DataListSpecification.ToString());
             Assert.AreEqual(1, result.Actions.Count);
 
             var serviceAction = result.Actions[0];
