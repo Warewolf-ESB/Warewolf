@@ -69,7 +69,6 @@ namespace Dev2.Tests.Runtime.Services
         {
             var output = RunOutput(false);
             Assert.AreEqual(0, output.Count);
-
         }
 
         private List<IResourceHistory> RunOutput(bool expectCorrectInput)
