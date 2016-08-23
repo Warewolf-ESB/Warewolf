@@ -16,6 +16,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Reflection;
 using System.Text;
 using System.Threading;
@@ -30,7 +31,6 @@ using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Infrastructure.SharedModels;
 using Dev2.Common.Interfaces.Versioning;
 using Dev2.Common.Wrappers;
-using Dev2.Data.ServiceModel;
 using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
 using Dev2.DynamicServices.Objects.Base;
@@ -39,7 +39,6 @@ using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.ResourceCatalogImpl;
 using Dev2.Runtime.Security;
 using Dev2.Runtime.ServiceModel.Data;
-using Warewolf.Resource.Errors;
 using Warewolf.ResourceManagement;
 
 namespace Dev2.Runtime.Hosting
@@ -273,34 +272,22 @@ namespace Dev2.Runtime.Hosting
             allFolders.Add(workspacePath);
             var enumerable = folders as string[] ?? allFolders.ToArray();
             var resourceUpgrader = ResourceUpgraderFactory.GetUpgrader();
-            if (string.IsNullOrEmpty(workspacePath))
-                throw new ArgumentNullException("workspacePath");
-            if (folders == null)
-                throw new ArgumentNullException("folders");
-            if (enumerable.Length == 0 || !Directory.Exists(workspacePath))
-                return null;
-
+            IsWorkspaceValid(workspacePath, folders, enumerable);
             var streams = new List<ResourceBuilderTO>();
             try
             {
                 foreach (var path in enumerable.Where(f => !string.IsNullOrEmpty(f) && !f.EndsWith("VersionControl")).Select(f => Path.Combine(workspacePath, f)))
                 {
-                    if (!Directory.Exists(path))
-                    {
+                    if(!Directory.Exists(path))
                         continue;
-                    }
 
                     var files = Directory.GetFiles(path, "*.xml");
                     foreach (var file in files)
                     {
-
                         FileAttributes fa = File.GetAttributes(file);
 
-                        if ((fa & FileAttributes.ReadOnly) == FileAttributes.ReadOnly)
-                        {
-                            Dev2Logger.Info("Removed READONLY Flag from [ " + file + " ]");
+                        if((fa & FileAttributes.ReadOnly) == FileAttributes.ReadOnly)
                             File.SetAttributes(file, FileAttributes.Normal);
-                        }
 
                         // Use the FileStream class, which has an option that causes asynchronous I/O to occur at the operating system level.  
                         // In many cases, this will avoid blocking a ThreadPool thread.  
@@ -309,159 +296,53 @@ namespace Dev2.Runtime.Hosting
                     }
                 }
 
-                // Use the parallel task library to process file system ;)
-                IList<Type> allTypes = new List<Type>();
-                var connectionTypeName = typeof(Connection).Name;
-                var dropBoxSourceName = typeof(DropBoxSource).Name;
-                var dbType = typeof(DbSource).Name;
-                try
-                {
-                    var resourceBaseType = typeof(IResourceSource);
+                var resourceBaseType = typeof(IResourceSource);
                     var assemblies = AppDomain.CurrentDomain.GetAssemblies();
                     var types = assemblies
                         .SelectMany(s => s.GetTypes())
                         .Where(p => resourceBaseType.IsAssignableFrom(p));
-                    allTypes = types as IList<Type> ?? types.ToList();
-                }
-                catch (Exception e)
-                {
-                    Dev2Logger.Error(ErrorResource.ErrorLoadingTypes, e);
-                }
+                    var allTypes = types as IList<Type> ?? types.ToList();                                
                 streams.ForEach(currentItem =>
                 {
-
-                    XElement xml = null;
-                    try
-                    {
-                        xml = XElement.Load(currentItem.FileStream);
-                    }
-                    catch (Exception e)
-                    {
-                        Dev2Logger.Error("Resource [ " + currentItem.FilePath + " ] caused " + e.Message);
-                    }
-
-                    StringBuilder result = xml.ToStringBuilder();
-
-                    var isValid = xml != null && HostSecurityProvider.Instance.VerifyXml(result);
+                    var xml = XElement.Load(currentItem.FileStream);
+                    
+                    var result = xml.ToStringBuilder();
+                    var isValid = HostSecurityProvider.Instance.VerifyXml(result);
                     if (isValid)
                     {
-                        //TODO: Remove this after V1 is released. All will be updated.
-                        #region old typing to be removed after V1
                         var typeName = xml.AttributeSafe("Type");
-                        if (typeName == "Unknown")
-                        {
-                            var servertype = xml.AttributeSafe("ResourceType");
-                            if (servertype != null && servertype == dbType)
-                            {
-                                xml.SetAttributeValue("Type", dbType);
-                                typeName = dbType;
-                            }
-                        }
-
-                        if (typeName == "Dev2Server" || typeName == "Server" || typeName == "ServerSource")
-                        {
-                            xml.SetAttributeValue("Type", connectionTypeName);
-                            typeName = connectionTypeName;
-                        }
-
-                        if (typeName == "OauthSource")
-                        {
-                            xml.SetAttributeValue("Type", dropBoxSourceName);
-                            typeName = dropBoxSourceName;
-                        }
-                        #endregion
-
                         Type type = null;
-                        if (allTypes.Count != 0)
-                        {
+                        if(allTypes.Count != 0)
                             type = allTypes.FirstOrDefault(type1 => type1.Name == typeName);
-                        }
                         Resource resource;
-                        if (type != null)
-                        {
+                        if(type != null)
                             resource = (Resource)Activator.CreateInstance(type, xml);
-                        }
                         else
-                        {
                             resource = new Resource(xml);
-                        }
                         resource.FilePath = currentItem.FilePath;
-                        //2013.08.26: Prevent duplicate unassigned folder in save dialog and studio explorer tree by interpreting 'unassigned' as blank
-                        if (resource.ResourcePath.ToUpper() == "UNASSIGNED")
-                        {
-                            resource.ResourcePath = string.Empty;
-                            // DON'T FORCE A SAVE HERE - EVER!!!!
-                        }
-                        xml = resourceUpgrader.UpgradeResource(xml, Assembly.GetExecutingAssembly().GetName().Version, a =>
-                        {
 
+                        if(resource.ResourcePath.ToUpper() == "UNASSIGNED")
+                            resource.ResourcePath = string.Empty;
+                        resourceUpgrader.UpgradeResource(xml, Assembly.GetExecutingAssembly().GetName().Version, a =>
+                        {
                             var fileManager = new TxFileManager();
                             using (TransactionScope tx = new TransactionScope())
                             {
-                                try
-                                {
-
-                                    StringBuilder updateXml = a.ToStringBuilder();
+                                StringBuilder updateXml = a.ToStringBuilder();
                                     var signedXml = HostSecurityProvider.Instance.SignXml(updateXml);
 
                                     signedXml.WriteToFile(currentItem.FilePath, Encoding.UTF8, fileManager);
-                                    tx.Complete();
-                                }
-                                catch
-                                {
-                                    try
-                                    {
-                                        Transaction.Current.Rollback();
-                                    }
-                                    catch (Exception err)
-                                    {
-                                        Dev2Logger.Error(err);
-                                    }
-                                    throw;
-                                }
+                                    tx.Complete();                                
                             }
-
                         });
-                        if (resource.IsUpgraded)
-                        {
-                            // Must close the source stream first and then add a new target stream 
-                            // otherwise the file will be remain locked
-                            currentItem.FileStream.Close();
-
-                            xml = resource.UpgradeXml(xml, resource);
-
-                            StringBuilder updateXml = xml.ToStringBuilder();
-                            var signedXml = HostSecurityProvider.Instance.SignXml(updateXml);
-                            var fileManager = new TxFileManager();
-                            using (TransactionScope tx = new TransactionScope())
-                            {
-                                try
-                                {
-                                    signedXml.WriteToFile(currentItem.FilePath, Encoding.UTF8, fileManager);
-                                    tx.Complete();
-                                }
-                                catch
-                                {
-                                    Transaction.Current.Rollback();
-                                    throw;
-                                }
-                            }
-                        }
                         var added = CreateDupResource(resource, currentItem.FilePath);
                         if (added != null)
                             _duplicates.Add(added);
-                    }
-                    else
-                    {
-                        Dev2Logger.Debug(string.Format("'{0}' wasn't loaded because it isn't signed or has modified since it was signed.", currentItem.FilePath));
                     }
                 });
             }
             finally
             {
-                // Close all FileStream instances in a finally block after the tasks are complete. 
-                // If each FileStream was instead created in a using statement, the FileStream 
-                // might be disposed of before the task was complete
                 foreach (var stream in streams)
                 {
                     stream.FileStream.Close();
@@ -501,18 +382,24 @@ namespace Dev2.Runtime.Hosting
                 var dupRes = _resources.Find(c => c.ResourceID == resource.ResourceID);
                 if (dupRes != null)
                 {
-                    if (_duplicates.Any(p => p.ResourceId == dupRes.ResourceID)
-                        || filePath == dupRes.FilePath)
+                    if (_duplicates.Any(p => p.ResourceId == dupRes.ResourceID))
+                    {
+                        var firstDup = _duplicates.First(p=>p.ResourceId == dupRes.ResourceID);
+                        if(!firstDup.ResourcePath.Contains(filePath))
+                            firstDup.ResourcePath.Add(filePath);
                         return null;
+                    }
+                    var duplicatePaths = filePath == dupRes.FilePath ? string.Empty : filePath;
+                    var resourcePaths = new List<string> { dupRes.FilePath };
+                    if(!string.IsNullOrEmpty(duplicatePaths))
+                        resourcePaths.Add(duplicatePaths);
                     _dupresource = new DuplicateResource
                     {
                         ResourceId = resource.ResourceID
                         ,
                         ResourceName = resource.ResourceName
-                    ,
-                        FilePath = filePath
-                    ,
-                        FilePath2 = dupRes.FilePath
+                        ,
+                        ResourcePath = resourcePaths
                     };
                 }
             }

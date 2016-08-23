@@ -45,7 +45,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 if(tmp != null)
                 {
                     password = tmp.ToString();
-                    values.TryGetValue("FilePath", out tmp);
+                    values.TryGetValue("ResourcePath", out tmp);
                     if(tmp != null)
                     {
                         path = tmp.ToString();
@@ -87,7 +87,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             var checkPermissionsService = new DynamicService
             {
                 Name = HandlesType(),
-                DataListSpecification = new StringBuilder("<DataList><FilePath ColumnIODirection=\"Input\"><Username ColumnIODirection=\"Input\"/><Password ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>")
+                DataListSpecification = new StringBuilder("<DataList><ResourcePath ColumnIODirection=\"Input\"><Username ColumnIODirection=\"Input\"/><Password ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>")
             };
 
             var checkPermissionsServiceAction = new ServiceAction
