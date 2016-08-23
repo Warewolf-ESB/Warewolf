@@ -23,6 +23,9 @@ using Dev2.Runtime.ServiceModel.Data;
 using Newtonsoft.Json;
 using Unlimited.Framework.Converters.Graph;
 using WarewolfCOMIPC.Client;
+// ReSharper disable ClassNeverInstantiated.Global
+// ReSharper disable UnusedVariable
+// ReSharper disable NonLocalizedString
 
 namespace Dev2.Runtime.ServiceModel.Esb.Brokers.ComPlugin
 {
@@ -98,18 +101,16 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.ComPlugin
             var typeList = BuildTypeList(setupInfo.Parameters);
             if (!string.IsNullOrEmpty(setupInfo.ClsId))
             {
-                var type = GetType(setupInfo.ClsId, setupInfo.Is32Bit);
+               
                 var valuedTypeList = BuildValuedTypeParams(setupInfo);
 
-                if (type == null || type.Name.ToUpper().Contains("ComObject".ToUpper()))
+                if (setupInfo.Is32Bit)
                 {
-                    using (var client = new Client())
-                    {
-                        //use Late Binding to Get MethodInfo
-                        pluginResult = client.Invoke(setupInfo.ClsId.ToGuid(), setupInfo.Method, "ExecuteSpecifiedMethod", valuedTypeList);
-                        return null;
-                    }
+
+                    pluginResult = Client.IPCExecutor.Invoke(setupInfo.ClsId.ToGuid(), setupInfo.Method, Execute.ExecuteSpecifiedMethod, valuedTypeList);
+                    return null;
                 }
+                var type = GetType(setupInfo.ClsId, setupInfo.Is32Bit);
                 var methodToRun = type.GetMethod(setupInfo.Method, typeList.ToArray()) ??
                                   type.GetMethod(setupInfo.Method);
                 if (methodToRun == null && typeList.Count == 0)
@@ -195,16 +196,24 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.ComPlugin
         {
             try
             {
-                var type = GetType(classId, is32Bit);
+                if (is32Bit)
+                {
+
+                    var execute = Client.IPCExecutor.Invoke(classId.ToGuid(), "", Execute.GetNamespaces, new object[] { });
+                    var namespaceList = execute as List<string>;
+                    return namespaceList;
+
+                }
+                var type = GetType(classId, false);
                 var loadedAssembly = type.Assembly;
                 // ensure we flush out the rubbish that GAC brings ;)
                 var namespaces = loadedAssembly.GetTypes()
-                      .Select(t => t.FullName)
-                      .Distinct()
-                      .Where(q => q.IndexOf("`", StringComparison.Ordinal) < 0
-                                  && q.IndexOf("+", StringComparison.Ordinal) < 0
-                                  && q.IndexOf("<", StringComparison.Ordinal) < 0
-                                  && !q.StartsWith("_")).ToList();
+                    .Select(t => t.FullName)
+                    .Distinct()
+                    .Where(q => q.IndexOf("`", StringComparison.Ordinal) < 0
+                                && q.IndexOf("+", StringComparison.Ordinal) < 0
+                                && q.IndexOf("<", StringComparison.Ordinal) < 0
+                                && !q.StartsWith("_")).ToList();
 
                 return namespaces;
             }
@@ -223,21 +232,18 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.ComPlugin
             Type type;
             if (is64BitProcess && is32Bit)
             {
-                using (var client = new Client())
-                {
-                    object execute;
-                    try
-                    {
-                        execute = client.Invoke(clasID, "", "GetType", new object[] { });
-                        type = execute as Type;
-                    }
-                    catch (Exception ex)
-                    {
-                        Dev2Logger.Error("GetType", ex);
-                        type = Type.GetTypeFromCLSID(clasID, true);
 
-                    }
+                try
+                {
+                    var execute = Client.IPCExecutor.Invoke(clasID, "", Execute.GetType, new object[] { });
+                    type = execute as Type;
                 }
+                catch (Exception ex)
+                {
+                    Dev2Logger.Error("GetType", ex);
+                    type = Type.GetTypeFromCLSID(clasID, true);
+
+                }                
             }
             else
             {
@@ -248,43 +254,62 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.ComPlugin
         public ServiceMethodList ListMethods(string classId, bool is32Bit)
         {
             var serviceMethodList = new List<ServiceMethod>();
-            var orderMethodsLis = new ServiceMethodList();
+            var orderMethodsList = new ServiceMethodList();
             classId = classId.Replace("{", "").Replace("}", "");
-
-            using (var client = new Client())
+            if (is32Bit)
             {
+                
 
-                var execute = client.Invoke(classId.ToGuid(), "", "GetMethods", new object[] { });
-                var ipcMethods = execute as List<MethodInfoTO>;
-                if (ipcMethods != null)
-                {
-
-                    foreach (MethodInfoTO ipcMethod in ipcMethods)
+                    var execute = Client.IPCExecutor.Invoke(classId.ToGuid(), "", Execute.GetMethods, new object[] { });
+                    var ipcMethods = execute as List<MethodInfoTO>;
+                    if (ipcMethods != null)
                     {
-                        var parameterInfos = ipcMethod.Parameters;
-                        var serviceMethod = new ServiceMethod { Name = ipcMethod.Name };
-                        foreach (var parameterInfo in parameterInfos)
+
+                        foreach (MethodInfoTO ipcMethod in ipcMethods)
                         {
-                            serviceMethod.Parameters.Add(new MethodParameter
+                            var parameterInfos = ipcMethod.Parameters;
+                            var serviceMethod = new ServiceMethod { Name = ipcMethod.Name };
+                            foreach (var parameterInfo in parameterInfos)
                             {
-                                DefaultValue = parameterInfo.DefaultValue?.ToString() ?? string.Empty,
-                                EmptyToNull = false,
-                                IsRequired = true,
-                                Name = parameterInfo.Name,
-                                TypeName = parameterInfo.TypeName
-                            });
+                                serviceMethod.Parameters.Add(new MethodParameter
+                                {
+                                    DefaultValue = parameterInfo.DefaultValue?.ToString() ?? string.Empty,
+                                    EmptyToNull = false,
+                                    IsRequired = true,
+                                    Name = parameterInfo.Name,
+                                    TypeName = parameterInfo.TypeName
+                                });
 
+                            }
+                            serviceMethodList.Add(serviceMethod);
                         }
-                        serviceMethodList.Add(serviceMethod);
-                    }
 
+                    
+
+                    orderMethodsList.AddRange(serviceMethodList.OrderBy(method => method.Name));
+                    return orderMethodsList;
                 }
-
-                orderMethodsLis.AddRange(serviceMethodList.OrderBy(method => method.Name));
-                return orderMethodsLis;
-
-
             }
+            var type = Type.GetTypeFromCLSID(classId.ToGuid(), true);
+            var methodInfos = type.GetMethods();
+
+            methodInfos.ToList().ForEach(info =>
+            {
+                var serviceMethod = new ServiceMethod { Name = info.Name };
+                var parameterInfos = info.GetParameters().ToList();
+                parameterInfos.ForEach(parameterInfo =>
+                    serviceMethod.Parameters.Add(
+                        new MethodParameter
+                        {
+                            DefaultValue = parameterInfo.DefaultValue == null ? string.Empty : parameterInfo.DefaultValue.ToString(),
+                            EmptyToNull = false,
+                            IsRequired = true,
+                            Name = parameterInfo.Name,
+                            TypeName = parameterInfo.ParameterType.AssemblyQualifiedName
+                        }));
+                orderMethodsList.Add(serviceMethod);
+            });
+            return orderMethodsList;
         }
 
         /// <summary>
@@ -295,7 +320,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.ComPlugin
         public NamespaceList FetchNamespaceListObject(ComPluginSource pluginSource)
         {
             var interrogatePlugin = ReadNamespaces(pluginSource.ClsId, pluginSource.Is32Bit);
-            var namespacelist = new NamespaceList { };
+            var namespacelist = new NamespaceList();
             namespacelist.AddRange(interrogatePlugin);
             namespacelist.Add(new NamespaceItem());
             return namespacelist;

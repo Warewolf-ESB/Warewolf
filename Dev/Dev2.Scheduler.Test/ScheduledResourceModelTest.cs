@@ -326,11 +326,9 @@ securityWrapper
             model.DirectoryHelper = dirHelper.Object;
             model.FileHelper = fileHelper.Object;
             IList<IResourceHistory> history = model.CreateHistory(res.Object);
-            Assert.AreEqual(2, history.Count);
-            Assert.AreEqual(history.Last().DebugOutput.Count, 0);
-            Assert.AreEqual(ScheduleRunStatus.Unknown, history.Last().TaskHistoryOutput.Success);
+            //WE ONLY RETURN EXECUTED HISTORY
+            Assert.AreEqual(0, history.Count);
         }
-
 
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
@@ -367,7 +365,7 @@ securityWrapper
             model.FileHelper = fileHelper.Object;
             IList<IResourceHistory> history = model.CreateHistory(res.Object);
 
-            Assert.AreEqual(2, history.Count);
+            Assert.AreEqual(1, history.Count);
             Assert.AreEqual(ScheduleRunStatus.Error, history.Last().TaskHistoryOutput.Success);
         }
 
@@ -406,7 +404,7 @@ securityWrapper
             model.FileHelper = fileHelper.Object;
             IList<IResourceHistory> history = model.CreateHistory(res.Object);
 
-            Assert.AreEqual(2, history.Count);
+            Assert.AreEqual(1, history.Count);
             Assert.AreEqual(history.Last().DebugOutput.Count, 1);
             Assert.AreEqual("Bob", history.Last().UserName);
         }
