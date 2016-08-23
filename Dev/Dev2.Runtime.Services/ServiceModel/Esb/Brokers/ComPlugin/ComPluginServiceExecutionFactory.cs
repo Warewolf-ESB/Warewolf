@@ -21,9 +21,9 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.ComPlugin
     {
         #region Private Methods
 
-        private static Isolated<ComPluginRuntimeHandler> CreateInvokeAppDomain()
+        private static ComPluginRuntimeHandler CreateInvokeAppDomain()
         {
-            Isolated<ComPluginRuntimeHandler> isolated = new Isolated<ComPluginRuntimeHandler>();
+            ComPluginRuntimeHandler isolated = new ComPluginRuntimeHandler();
             return isolated;
         }
 
@@ -34,9 +34,10 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.ComPlugin
         public static IOutputDescription TestComPlugin(ComPluginInvokeArgs args,out string serializedResult)
         {
 
-            using (var runtime = CreateInvokeAppDomain())
+            //using (var runtime = CreateInvokeAppDomain())
             {
-                return runtime.Value.Test(args,out serializedResult);
+                var runtime = CreateInvokeAppDomain();
+                return runtime.Test(args,out serializedResult);
             }
 
         }
@@ -44,9 +45,10 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.ComPlugin
         public static object InvokeComPlugin(ComPluginInvokeArgs args)
         {
 
-            using (var runtime = CreateInvokeAppDomain())
+            //using (var runtime = CreateInvokeAppDomain())
             {
-                return runtime.Value.Run(args);
+                var runtime = CreateInvokeAppDomain();
+                return runtime.Run(args);
             }
            
         }
@@ -54,18 +56,20 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.ComPlugin
 
         public static ServiceMethodList GetMethods(string classId,bool is32Bit)
         {
-            using (var runtime = CreateInvokeAppDomain())
+            //using (var runtime = CreateInvokeAppDomain())
             {
-                return runtime.Value.ListMethods(classId, is32Bit);
+                var runtime = CreateInvokeAppDomain();
+                return runtime.ListMethods(classId, is32Bit);
             }           
          
         }
 
         public static NamespaceList GetNamespaces(ComPluginSource pluginSource)
         {
-            using (var runtime = CreateInvokeAppDomain())
+            //using (var runtime = CreateInvokeAppDomain())
             {
-                return runtime.Value.FetchNamespaceListObject(pluginSource);
+                var runtime = CreateInvokeAppDomain();
+                return runtime.FetchNamespaceListObject(pluginSource);
             }            
         }
 
