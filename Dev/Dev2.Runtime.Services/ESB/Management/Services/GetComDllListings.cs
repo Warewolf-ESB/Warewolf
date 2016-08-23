@@ -44,15 +44,16 @@ namespace Dev2.Runtime.ESB.Management.Services
             
             try
             {
-                //ClassRoot
-                var openBaseKey = RegistryKey.OpenBaseKey(RegistryHive.ClassesRoot, RegistryView.Registry32);
-                var dllListings = GetListings(openBaseKey);
-                openBaseKey = RegistryKey.OpenBaseKey(RegistryHive.ClassesRoot, RegistryView.Registry64);
-                dllListings.AddRange(GetListings(openBaseKey));
-
+                List<DllListing> dllListings = new List<DllListing>();
+                using (Isolated<ComDllLoaderHandler> isolated = new Isolated<ComDllLoaderHandler>())
+                {
+                    var openBaseKey = RegistryKey.OpenBaseKey(RegistryHive.ClassesRoot, RegistryView.Registry32);
+                    dllListings = isolated.Value.GetListings(openBaseKey);
+                    openBaseKey = RegistryKey.OpenBaseKey(RegistryHive.ClassesRoot, RegistryView.Registry64);
+                    dllListings.AddRange(isolated.Value.GetListings(openBaseKey));
+                }
                 msg.Message = serializer.SerializeToBuilder(dllListings);
             }
-
             catch (COMException ex)
             {
                 Dev2Logger.Error(ex);
@@ -67,64 +68,6 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
 
             return serializer.SerializeToBuilder(msg);
-        }
-
-        private static List<DllListing> GetListings(RegistryKey registry)
-        {
-            List<DllListing> dllListings = new List<DllListing>();
-            var regClis = registry.OpenSubKey("CLSID");
-
-            if (regClis != null)
-            {
-                foreach (var clsid in regClis.GetSubKeyNames())
-                {
-                    var regClsidKey = regClis.OpenSubKey(clsid);
-                    if (regClsidKey != null)
-                    {
-                        var progID = regClsidKey.OpenSubKey("ProgID");
-                        var regPath = regClsidKey.OpenSubKey("InprocServer32" +
-                                                             "") ?? regClsidKey.OpenSubKey("LocalServer");
-
-                        if (regPath != null && progID != null)
-                        {
-                            var pid = progID.GetValue("");
-                            regPath.Close();
-
-                            try
-                            {
-                                if (pid != null)
-                                {
-                                    var typeFromProgID = Type.GetTypeFromCLSID(Guid.Parse(clsid));
-                                    if (typeFromProgID == null)
-                                    {
-                                        continue;
-                                    }
-                                    var fullName = typeFromProgID.FullName;
-                                    dllListings.Add(new DllListing
-                                    {
-                                        ClsId = clsid,
-                                        Is32Bit = fullName.Equals("System.__ComObject"),
-                                        Name = pid.ToString(),
-                                        IsDirectory = false,
-                                        FullName = pid.ToString(),
-                                        Children = new IFileListing[0]
-                                    });
-                                }
-                            }
-                            catch (Exception e)
-                            {
-                                Dev2Logger.Error("GetComDllListingsService-Execute", e);
-                            }
-                        }
-                    }
-                    regClsidKey?.Close();
-                }
-                regClis.Close();
-            }
-
-            dllListings = dllListings.OrderBy(listing => listing.FullName).ToList();
-
-            return dllListings;
         }
 
         /// <summary>
