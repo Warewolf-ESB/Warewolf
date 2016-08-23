@@ -87,7 +87,8 @@ namespace Dev2.Runtime.ESB.Management.Services
             try
             {
                 var cleanTypeName = Type.GetType(typeName);
-                return $"{name}: {cleanTypeName?.Name}";
+                // ReSharper disable once PossibleNullReferenceException
+                return $"{name}: {cleanTypeName.Name}";
             }
             catch (Exception)
             {
