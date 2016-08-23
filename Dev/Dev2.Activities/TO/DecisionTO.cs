@@ -71,10 +71,7 @@ namespace Dev2.TO
             DeleteAction = delectAction;
             DeleteCommand = new RelayCommand(a=>
             {
-                if (DeleteAction != null)
-                {
-                    DeleteAction(this);
-                }
+                DeleteAction?.Invoke(this);
             }, CanDelete);
             _isInitializing = false;
         }
@@ -109,10 +106,7 @@ namespace Dev2.TO
             IsLast = false;
             DeleteCommand = new RelayCommand(x =>
             {
-                if (DeleteAction != null)
-                {
-                    DeleteAction(this);
-                }
+                DeleteAction?.Invoke(this);
             },CanDelete);
             _isInitializing = false;
         }
@@ -132,10 +126,7 @@ namespace Dev2.TO
             {
                 _isLast = value;
 
-                if(DeleteCommand != null)
-                {
-                    DeleteCommand.RaiseCanExecuteChanged();
-                }
+                DeleteCommand?.RaiseCanExecuteChanged();
             }
         }
 
@@ -231,12 +222,6 @@ namespace Dev2.TO
                 UpdateDisplay();
             }
         }
-
-        
-
-        //    public bool IsMatchValueFocused { get { return _isMatchValueFocused; } set { OnPropertyChanged(ref _isMatchValueFocused, value); } }
-
-     //   public bool IsSearchCriteriaFocused { get { return _isSearchCriteriaFocused; } set { OnPropertyChanged(ref _isSearchCriteriaFocused, value); } }
 
         public string SearchType
         {
