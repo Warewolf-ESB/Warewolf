@@ -19,11 +19,9 @@ namespace WarewolfCOMIPC.Test
 
             var clsid = new Guid("00000514-0000-0010-8000-00AA006D2EA4");
             //------------Execute Test---------------------------
-            using (Client.Client client = new Client.Client())
-            {
-                var execute = client.Invoke(clsid, "", Execute.GetType,  new object[] { });
+           
+                var execute = Client.Client.IPCExecutor.Invoke(clsid, "", Execute.GetType,  new object[] { });
                 Assert.IsNotNull(execute);
-            }
             //------------Assert Results-------------------------
         }
         //Ignoring these methods on purpose
@@ -37,9 +35,8 @@ namespace WarewolfCOMIPC.Test
             //---------------Assert Precondition----------------
 
             //---------------Execute Test ----------------------
-            using (Client.Client client = new Client.Client())
             {
-                var execute = client.Invoke(classId, "", Execute.GetMethods,  new object[] { });
+                var execute = Client.Client.IPCExecutor.Invoke(classId, "", Execute.GetMethods,  new object[] { });
                 var enumerable = execute as List<MethodInfoTO>;
                 Assert.IsNotNull(enumerable);
                 //---------------Test Result -----------------------
@@ -57,9 +54,8 @@ namespace WarewolfCOMIPC.Test
             //---------------Assert Precondition----------------
 
             //---------------Execute Test ----------------------
-            using (Client.Client client = new Client.Client())
             {
-                var execute = client.Invoke(classId, "", Execute.GetMethods, new object[] { });
+                var execute = Client.Client.IPCExecutor.Invoke(classId, "", Execute.GetMethods, new object[] { });
                 var enumerable = execute as List<MethodInfoTO>;
                 Assert.IsNotNull(enumerable);
                 //---------------Test Result -----------------------
@@ -77,9 +73,8 @@ namespace WarewolfCOMIPC.Test
             //---------------Assert Precondition----------------
 
             //---------------Execute Test ----------------------
-            using (Client.Client client = new Client.Client())
             {
-                var execute = client.Invoke(classId, "", Execute.GetMethods, new object[] { });
+                var execute = Client.Client.IPCExecutor.Invoke(classId, "", Execute.GetMethods, new object[] { });
                 var enumerable = execute as List<MethodInfoTO>;
                 Assert.IsNotNull(enumerable);
                 //---------------Test Result -----------------------
@@ -98,9 +93,8 @@ namespace WarewolfCOMIPC.Test
             //---------------Assert Precondition----------------
 
             //---------------Execute Test ----------------------
-            using (Client.Client client = new Client.Client())
             {
-                var execute = client.Invoke(classId, "Open", Execute.ExecuteSpecifiedMethod,  new object[] { "SQLServer", "testuser", "test123", -1 });
+                var execute = Client.Client.IPCExecutor.Invoke(classId, "Open", Execute.ExecuteSpecifiedMethod,  new object[] { "SQLServer", "testuser", "test123", -1 });
                 var actual = execute as string;
                 Assert.IsNotNull(actual);
                 //---------------Test Result -----------------------

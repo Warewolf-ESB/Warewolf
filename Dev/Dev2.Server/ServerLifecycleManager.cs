@@ -43,6 +43,8 @@ using Dev2.Runtime.WebServer;
 using Dev2.Services.Security.MoqInstallerActions;
 using Dev2.Workspaces;
 using log4net.Config;
+using WarewolfCOMIPC.Client;
+
 // ReSharper disable AssignNullToNotNullAttribute
 // ReSharper disable MemberCanBePrivate.Global
 // ReSharper disable UnusedMember.Global
@@ -232,6 +234,7 @@ namespace Dev2
         readonly IPulseLogger _pulseLogger;
         private int _daysToKeepTempFiles;
         private readonly PulseTracker _pulseTracker;
+        private Client _ipcClient;
 
         /// <summary>
         /// Get a value indicating if the lifecycle manager has been disposed.
@@ -457,7 +460,8 @@ namespace Dev2
 
         void ServerLoop(bool interactiveMode)
         {
-            if(interactiveMode)
+            _ipcClient = Client.IPCExecutor;
+            if (interactiveMode)
             {
                 Write("Press <ENTER> to terminate service and/or web server if started");
                 if(EnvironmentVariables.IsServerOnline)
@@ -678,6 +682,11 @@ namespace Dev2
                 {
                     _owinServer.Dispose();
                     _owinServer = null;
+                }
+                if (_ipcClient != null)
+                {
+                    _ipcClient.Dispose();
+                    _ipcClient = null;
                 }
                 DebugDispatcher.Instance.Shutdown();
             }

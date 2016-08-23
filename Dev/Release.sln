@@ -159,8 +159,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WarewolfCOMIPC", "WarewolfC
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WarewolfCOMIPC.Client", "WarewolfCOMIPC.Client\WarewolfCOMIPC.Client.csproj", "{BCA6F2B3-C102-45B5-8F64-F0CCE2533F1F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.ValidationFramework", "Dev2.ValidationFramework\Dev2.ValidationFramework.csproj", "{C4A56233-631D-4B04-8ABC-8F5DEB969D63}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -575,14 +573,6 @@ Global
 		{BCA6F2B3-C102-45B5-8F64-F0CCE2533F1F}.Release|Any CPU.Build.0 = Release|Any CPU
 		{BCA6F2B3-C102-45B5-8F64-F0CCE2533F1F}.Release|x86.ActiveCfg = Release|Any CPU
 		{BCA6F2B3-C102-45B5-8F64-F0CCE2533F1F}.Release|x86.Build.0 = Release|Any CPU
-		{C4A56233-631D-4B04-8ABC-8F5DEB969D63}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C4A56233-631D-4B04-8ABC-8F5DEB969D63}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C4A56233-631D-4B04-8ABC-8F5DEB969D63}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{C4A56233-631D-4B04-8ABC-8F5DEB969D63}.Debug|x86.Build.0 = Debug|Any CPU
-		{C4A56233-631D-4B04-8ABC-8F5DEB969D63}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C4A56233-631D-4B04-8ABC-8F5DEB969D63}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C4A56233-631D-4B04-8ABC-8F5DEB969D63}.Release|x86.ActiveCfg = Release|Any CPU
-		{C4A56233-631D-4B04-8ABC-8F5DEB969D63}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
