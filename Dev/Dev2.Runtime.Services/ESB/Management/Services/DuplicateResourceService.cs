@@ -1,15 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
+using System.Transactions;
 using System.Xml.Linq;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Core.DynamicServices;
+using Dev2.Common.Interfaces.Data;
+using Dev2.Common.Interfaces.Infrastructure;
 using Dev2.Communication;
 using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.ServiceModel.Data;
+
+
 using Dev2.Workspaces;
 
 namespace Dev2.Runtime.ESB.Management.Services
@@ -17,14 +23,16 @@ namespace Dev2.Runtime.ESB.Management.Services
     public class DuplicateResourceService : IEsbManagementEndpoint
     {
         private readonly IResourceCatalog _resourceCatalog;
+        private readonly IExplorerServerResourceRepository _resourceRepository;
 
-        public DuplicateResourceService(IResourceCatalog resourceCatalog)
+        public DuplicateResourceService(IResourceCatalog resourceCatalog, IExplorerServerResourceRepository resourceRepository)
         {
             _resourceCatalog = resourceCatalog;
+            _resourceRepository = resourceRepository;
         }
 
         public DuplicateResourceService()
-            : this(ResourceCatalog.Instance)
+            : this(ResourceCatalog.Instance, ServerExplorerRepository.Instance)
         {
 
         }
@@ -35,8 +43,10 @@ namespace Dev2.Runtime.ESB.Management.Services
 
             StringBuilder tmp;
             StringBuilder newResourceName;
+            StringBuilder fixRefs;
             values.TryGetValue("ResourceID", out tmp);
             values.TryGetValue("NewResourceName", out newResourceName);
+            values.TryGetValue("FixRefs", out fixRefs);
             var resourceId = Guid.Empty;
 
             if (tmp != null)
@@ -45,26 +55,69 @@ namespace Dev2.Runtime.ESB.Management.Services
                 {
                     if (!string.IsNullOrEmpty(newResourceName?.ToString()))
                     {
+
+                        var explorerItem = _resourceRepository.Find(resourceId);
                         var resource = _resourceCatalog.GetResource(GlobalConstants.ServerWorkspaceID, resourceId);
-                        if (!resource.IsFolder)
+
+                        try
                         {
-                            var xElement = resource.ToXml();
-                            var newResourceXml = new XElement(xElement);
-                            //Allocate new ID
-                            var newGuid = Guid.NewGuid();
-                            var newResource = new Resource(newResourceXml)
+
+                            if (!explorerItem.IsFolder)
                             {
-                                ResourceName = newResourceName.ToString(),
-                                ResourceID = newGuid
-                            };
-                            //Allocate new Path
-                            _resourceCatalog.SaveResource(GlobalConstants.ServerWorkspaceID, newResource);
+                                var xElement = resource.ToXml();
+                                var newResourceXml = new XElement(xElement);
+                                //Allocate new ID
+                                var newGuid = Guid.NewGuid();
+                                var newResource = new Resource(newResourceXml)
+                                {
+                                    ResourceName = newResourceName.ToString(),
+                                    ResourceID = newGuid
+                                };
+
+                                _resourceCatalog.CopyResource(newResource, GlobalConstants.ServerWorkspaceID);
+                            }
+                            else
+                            {
+
+                                var explorerItems = explorerItem.Children;
+                                var folderResource = _resourceCatalog.GetResource(GlobalConstants.ServerWorkspaceID, explorerItem.ResourceId);
+
+                                var newFolder = new Resource(folderResource)
+                                {
+                                    ResourceName = newResourceName.ToString(),
+                                    ResourceID = Guid.NewGuid()
+                                };
+                                _resourceCatalog.SaveResource(GlobalConstants.ServerWorkspaceID, newFolder);
+                                var guidIds =new StringBuilder() ;
+                              
+                                foreach (var guidId in explorerItems.Select(item => item.ResourceId))
+                                {
+                                    guidIds.Append(guidId + ",");
+                                }
+                                var resourceList = _resourceCatalog.GetResourceList(GlobalConstants.ServerWorkspaceID,
+                                    new Dictionary<string, string> { { "guidCsv", guidIds.ToString() } });
+                                var recourceClones = new List<IResource>(resourceList);
+                                foreach (var recourceClone in recourceClones)
+                                {
+                                    recourceClone.ResourceID = Guid.NewGuid();
+                                    _resourceCatalog.SaveResource(GlobalConstants.ServerWorkspaceID, recourceClone);
+                                }
+
+                            }
+
                         }
+                        catch (Exception x)
+                        {
+                            Dev2Logger.Error(x.Message + " DuplicateResourceService", x);
+                            var result = new ExecuteMessage { HasError = true };
+                            return serializer.SerializeToBuilder(result);
+                        }
+
                     }
                 }
             }
-            var result = new ExecuteMessage { HasError = false };
-            return serializer.SerializeToBuilder(result);
+            var success = new ExecuteMessage { HasError = false };
+            return serializer.SerializeToBuilder(success);
         }
 
         public string HandlesType()
