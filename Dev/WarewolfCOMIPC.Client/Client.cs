@@ -5,6 +5,7 @@ using System.IO;
 using System.IO.Pipes;
 using System.Text;
 using Newtonsoft.Json;
+// ReSharper disable InconsistentNaming
 
 // ReSharper disable NonLocalizedString
 namespace WarewolfCOMIPC.Client
@@ -13,24 +14,38 @@ namespace WarewolfCOMIPC.Client
     {
         private bool _disposed;
         private readonly NamedPipeClientStream _pipe;
-        private Process _process;
+        private readonly Process _process;
+        private static Client _client;
+        private static readonly object padlock = new object();
 
-        public Client()
+        private Client()
         {
             string token = Guid.NewGuid().ToString();
 
             // Pass token to child process
             var psi = new ProcessStartInfo("WarewolfCOMIPC.exe", token) { Verb = "runas" };
-#if !DEBUG
             psi.UseShellExecute = false;
             psi.ErrorDialog = false;
             psi.RedirectStandardOutput = false;
             psi.CreateNoWindow = true;
-#endif
             _process = Process.Start(psi);
             _pipe = new NamedPipeClientStream(".", token, PipeDirection.InOut);
             _pipe.Connect();
             _pipe.ReadMode = PipeTransmissionMode.Message;
+        }
+        
+        /// <summary>
+        /// Gets the instance.
+        /// </summary>
+        public static Client IPCExecutor
+        {
+            get
+            {
+                lock (padlock)
+                {
+                    return _client ?? (_client = new Client());
+                }
+            }
         }
 
         /// <summary>
@@ -104,7 +119,6 @@ namespace WarewolfCOMIPC.Client
                     }
                 case Execute.ExecuteSpecifiedMethod:
                     {
-
                         result = serializer.Deserialize(jsonTextReader);
                         var exception = result as Exception;
                         if (exception != null)
