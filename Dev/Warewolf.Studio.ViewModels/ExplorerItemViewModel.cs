@@ -21,6 +21,7 @@ using Caliburn.Micro;
 using Dev2;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Infrastructure;
+using Dev2.Common.Interfaces.Security;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Common.Interfaces.Versioning;
 using Dev2.Studio.Core;
@@ -801,7 +802,11 @@ namespace Warewolf.Studio.ViewModels
                 }
                 else
                 {
-                    _isResource = value.HasValue && !IsFolder && value.Value;
+                    var permission = Server.Permissions?
+                   .FirstOrDefault(p => p.ResourceID == ResourceId);
+                    if (permission?.Permissions == Permissions.View)
+                        value = false;
+                        _isResource = value.HasValue && !IsFolder && value.Value;
                 }
                 SelectAction?.Invoke(this);
                 OnPropertyChanged(() => IsResourceChecked);
