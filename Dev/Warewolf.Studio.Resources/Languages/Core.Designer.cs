@@ -2714,6 +2714,24 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Drop not allowed.
+        /// </summary>
+        public static string ExplorerDropNotAllowedHeader {
+            get {
+                return ResourceManager.GetString("ExplorerDropNotAllowedHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You cannot drop sources onto the design surface. Only WorkflowService can be dropped..
+        /// </summary>
+        public static string ExplorerDropNotAllowedMessage {
+            get {
+                return ResourceManager.GetString("ExplorerDropNotAllowedMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to You have view permission on this item. Click to open.
         /// </summary>
         public static string ExplorerItemEditToolTip {
@@ -2728,6 +2746,24 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string ExplorerItemExecuteToolTip {
             get {
                 return ResourceManager.GetString("ExplorerItemExecuteToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Move not allowed.
+        /// </summary>
+        public static string ExplorerMoveFailedHeader {
+            get {
+                return ResourceManager.GetString("ExplorerMoveFailedHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to An unexpected error occured which prevented the resource from being moved..
+        /// </summary>
+        public static string ExplorerMoveFailedMessage {
+            get {
+                return ResourceManager.GetString("ExplorerMoveFailedMessage", resourceCulture);
             }
         }
         

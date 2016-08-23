@@ -310,7 +310,7 @@ namespace Dev2.Activities.Designers2.Core
             var dto = (TDev2TOFn)sender;
             if(dto.CanAdd())
             {
-                if (ItemCount == 2)
+                if (ItemCount == 1)
                 {
                     var firstDto = GetDto(1);
                     if(!firstDto.CanRemove())
