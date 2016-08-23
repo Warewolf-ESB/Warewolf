@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using Dev2.Common;
@@ -44,7 +43,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             
             try
             {
-                List<DllListing> dllListings = new List<DllListing>();
+                List<DllListing> dllListings;
                 using (Isolated<ComDllLoaderHandler> isolated = new Isolated<ComDllLoaderHandler>())
                 {
                     var openBaseKey = RegistryKey.OpenBaseKey(RegistryHive.ClassesRoot, RegistryView.Registry32);
