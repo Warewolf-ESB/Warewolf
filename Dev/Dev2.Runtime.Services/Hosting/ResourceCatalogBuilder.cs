@@ -30,7 +30,7 @@ namespace Dev2.Runtime.Hosting
 {
 
     /// <summary>
-    /// Transfer FileStream and FilePath together
+    /// Transfer FileStream and ResourcePath together
     /// </summary>
     // ReSharper disable InconsistentNaming
     internal class ResourceBuilderTO
@@ -245,10 +245,6 @@ namespace Dev2.Runtime.Hosting
                                 }
                             }
                         }
-                        if (resource.VersionInfo == null)
-                        {
-
-                        }
 
                         lock (_addLock)
                         {
@@ -294,7 +290,7 @@ namespace Dev2.Runtime.Hosting
                     Dev2Logger.Debug(
                         string.Format(ErrorResource.ResourceAlreadyLoaded,
                             res.ResourceName, filePath, dupRes.FilePath));
-                    AddToDuplicateResources(res.ResourceName, filePath, dupRes.FilePath);
+                    AddToDuplicateResources(res.ResourceName, new List<string>{ filePath, dupRes.FilePath});
                 }
                 else
                 {
@@ -306,15 +302,13 @@ namespace Dev2.Runtime.Hosting
             }
         }
 
-        private void AddToDuplicateResources(string resourceName, string filePath, string filePath2)
+        private void AddToDuplicateResources(string resourceName, List<string> filePath)
         {
             DuplicateResources.Add(new DuplicateResource
             {
                 ResourceName = resourceName
-               ,
-                FilePath = filePath
-               ,
-                FilePath2 = filePath2
+                ,
+                ResourcePath = filePath
             });
         }
     }

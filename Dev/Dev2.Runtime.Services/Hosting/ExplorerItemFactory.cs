@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Explorer;
@@ -40,11 +41,14 @@ namespace Dev2.Runtime.Hosting
             var duplicateList = new List<string>();
             var resourceList = Catalogue.GetDuplicateResources();
             if (resourceList == null ||resourceList.Count <= 0)
-                return new List<string>();
+                return new List<string>();            
             foreach (var duplicateResource in resourceList)
             {
-                duplicateList.Add(string.Format("{0}"+ Environment.NewLine + "{1}" + Environment.NewLine +"{2}",
-                    duplicateResource.ResourceName, duplicateResource.FilePath, duplicateResource.FilePath2));
+                var res = new StringBuilder();
+                foreach (var path in duplicateResource.ResourcePath)
+                    res.AppendLine(path);
+                duplicateList.Add(string.Format("{0}"+ Environment.NewLine + "{1}" + Environment.NewLine,
+                    duplicateResource.ResourceName, res));
             }
             return duplicateList;
         }

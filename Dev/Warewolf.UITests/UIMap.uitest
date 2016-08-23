@@ -1059,11 +1059,11 @@
       <ActionType>Click</ActionType>
       <MouseButton>Left</MouseButton>
     </MouseAction>
-    <AssertAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.SearchTextBox.FilterText">
+    <AssertAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.SearchTextBox">
       <ParameterName />
       <PropertyName>Text</PropertyName>
       <ExpectedValue />
-      <MessageOnValidationFailure>Explorer Filter Textbox text is not blank afrter clicking the clear button.</MessageOnValidationFailure>
+      <MessageOnValidationFailure>Explorer Filter Textbox text is not blank after clicking the clear button.</MessageOnValidationFailure>
       <Type>String</Type>
       <PropertyCondition>AreEqual</PropertyCondition>
     </AssertAction>

@@ -11,13 +11,12 @@
                                xmlns:core1="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
                                xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
                                xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna;assembly=Warewolf.Studio.Themes.Luna"
-                               xmlns:attachedProperties="clr-namespace:Dev2.Activities.AttachedProperties"
                                Width="320"
                                MinWidth="320"
                                MinHeight="280"
                                Height="280"
                                MaxWidth="Infinity"
-                               MaxHeight="280"
+                               MaxHeight="600"
                                mc:Ignorable="d"
                                d:DesignWidth="230"
                                d:DataContext="{d:DesignInstance local:ScriptDesignerViewModel}">
@@ -46,7 +45,7 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
@@ -123,9 +122,8 @@
                                  AllowMultilinePaste="True"
                                  AcceptsReturn="True"
                                  AllowUserInsertLine="True"
-                                 MaxHeight="53"
                                  TextWrapping="Wrap"
-                                 Height="53"
+                                 Height="Auto"
                                  MinHeight="53"
                                  FilterType="All"
                                  Margin="0,1,0,0"
@@ -136,7 +134,7 @@
                                  Text="{Binding Path=ModelItem.Script, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                  AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_txtScript_AutoID}">
             <ui:IntellisenseTextBox.DefaultText>
-                <TextBlock Text="{Binding ScriptTypeDefaultText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Margin="0,-3,0,0"></TextBlock>
+                <TextBlock Text="{Binding ScriptTypeDefaultText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Margin="0,-1,0,0"></TextBlock>
             </ui:IntellisenseTextBox.DefaultText>
             <i:Interaction.Behaviors>
                 <core1:HelpSetter Text="{x:Static languages:Core.ScriptingHelpScript}" DataContext="{Binding}" />
