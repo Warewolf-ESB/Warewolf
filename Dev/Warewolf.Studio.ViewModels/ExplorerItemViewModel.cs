@@ -1075,8 +1075,7 @@ namespace Warewolf.Studio.ViewModels
                 var moveResult = await _explorerRepository.Move(this, destination);              
                 if (!moveResult)
                 {
-                    ShowErrorMessage("An unexpected error occured which prevented the resource from being moved.",
-                        "Move Not allowed");
+                    ShowErrorMessage(Resources.Languages.Core.ExplorerMoveFailedMessage, Resources.Languages.Core.ExplorerMoveFailedHeader);
                     Server.UpdateRepository.FireItemSaved(true);
                     return false;
                 }
@@ -1084,7 +1083,7 @@ namespace Warewolf.Studio.ViewModels
             }
             catch (Exception ex)
             {
-                ShowErrorMessage(ex.Message, "Move Not allowed");
+                ShowErrorMessage(ex.Message, Resources.Languages.Core.ExplorerMoveFailedHeader);
                 Server.UpdateRepository.FireItemSaved(true);
                 return false;
             }
