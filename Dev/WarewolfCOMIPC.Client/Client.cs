@@ -21,11 +21,12 @@ namespace WarewolfCOMIPC.Client
 
             // Pass token to child process
             var psi = new ProcessStartInfo("WarewolfCOMIPC.exe", token) { Verb = "runas" };
+#if !DEBUG
             psi.UseShellExecute = false;
             psi.ErrorDialog = false;
             psi.RedirectStandardOutput = false;
             psi.CreateNoWindow = true;
-
+#endif
             _process = Process.Start(psi);
             _pipe = new NamedPipeClientStream(".", token, PipeDirection.InOut);
             _pipe.Connect();
@@ -42,22 +43,17 @@ namespace WarewolfCOMIPC.Client
         /// <param name="args">Array of args to pass to the function.</param>
         /// <returns>Result object returned by the library.</returns>
         /// <exception cref="Exception">This Method will rethrow all exceptions thrown by the wrapper.</exception>
-        public object Invoke(Guid clsid, string function, string execute, object[] args)
+        public object Invoke(Guid clsid, string function, Execute execute, object[] args)
         {
             if (_disposed)
                 throw new ObjectDisposedException(nameof(Client));
-            Execute locaexecute = Execute.GetType;
-            if (!string.IsNullOrEmpty(execute))
-            {
-                Enum.TryParse(execute, true, out locaexecute);
-            }
             var info = new CallData
             {
                 CLSID = clsid,
                 MethodToCall = function,
                 Parameters = args,
-                ExecuteType = execute,
-                Execute = locaexecute
+                ExecuteType = execute.ToString(),
+                Execute = execute
             };
 
             // Write request to server
@@ -67,7 +63,6 @@ namespace WarewolfCOMIPC.Client
             sw.Flush();
 
             var sr = new StreamReader(_pipe);
-            string stringData;
             var jsonTextReader = new JsonTextReader(sr);
          
             object result;
@@ -95,6 +90,17 @@ namespace WarewolfCOMIPC.Client
                             throw exception;
                         }
                         return result;
+                    }
+                case Execute.GetNamespaces:
+                {
+                        result = serializer.Deserialize(jsonTextReader, typeof(List<string>));
+                        var exception = result as Exception;
+                        if (exception != null)
+                        {
+                            throw exception;
+                        }
+                        return result;
+
                     }
                 case Execute.ExecuteSpecifiedMethod:
                     {
