@@ -490,6 +490,24 @@ The more information you can provide us with, the faster we can track the issue 
   <data name="ExplorerDropNotAllowedHeader" xml:space="preserve">
     <value>Drop not allowed</value>
   </data>
+  <data name="DeploySourceNotConnected" xml:space="preserve">
+    <value>Please select and connect a Source.</value>
+  </data>
+  <data name="DeployDestinationNotConnected" xml:space="preserve">
+    <value>Please select and connect a Destination.</value>
+  </data>
+  <data name="DeploySourceDestinationAreSame" xml:space="preserve">
+    <value>Source and Destination cannot be the same.</value>
+  </data>
+  <data name="DeployNoResourcesSelected" xml:space="preserve">
+    <value>Nothing selected to deploy.</value>
+  </data>
+  <data name="DeployResourceCheckbox" xml:space="preserve">
+    <value>Select this item to deploy.</value>
+  </data>
+  <data name="DeployResourceCheckboxViewPermissionError" xml:space="preserve">
+    <value>You do not have view permission on this item to deploy.</value>
+  </data>
   <data name="ServiceDesignerSourceNotFound" xml:space="preserve">
     <value>Source was not found. This service will not execute.</value>
   </data>

@@ -1974,6 +1974,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Please select and connect a Destination..
+        /// </summary>
+        public static string DeployDestinationNotConnected {
+            get {
+                return ResourceManager.GetString("DeployDestinationNotConnected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to These are the new resources that will be found on the remote server after deploy..
         /// </summary>
         public static string DeployNewResourcesViewHelp {
@@ -1983,11 +1992,38 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Nothing selected to deploy..
+        /// </summary>
+        public static string DeployNoResourcesSelected {
+            get {
+                return ResourceManager.GetString("DeployNoResourcesSelected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to These resources will be overwritten on the destination server.
         /// </summary>
         public static string DeployOverridesCountViewHelp {
             get {
                 return ResourceManager.GetString("DeployOverridesCountViewHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select this item to deploy..
+        /// </summary>
+        public static string DeployResourceCheckbox {
+            get {
+                return ResourceManager.GetString("DeployResourceCheckbox", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You do not have view permission on this item to deploy..
+        /// </summary>
+        public static string DeployResourceCheckboxViewPermissionError {
+            get {
+                return ResourceManager.GetString("DeployResourceCheckboxViewPermissionError", resourceCulture);
             }
         }
         
@@ -2006,6 +2042,24 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string DeploySelectDependenciesTooltip {
             get {
                 return ResourceManager.GetString("DeploySelectDependenciesTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Source and Destination cannot be the same..
+        /// </summary>
+        public static string DeploySourceDestinationAreSame {
+            get {
+                return ResourceManager.GetString("DeploySourceDestinationAreSame", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please select and connect a Source..
+        /// </summary>
+        public static string DeploySourceNotConnected {
+            get {
+                return ResourceManager.GetString("DeploySourceNotConnected", resourceCulture);
             }
         }
         
