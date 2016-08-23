@@ -478,6 +478,18 @@ The more information you can provide us with, the faster we can track the issue 
   <data name="DatabaseSourceServerNewHeaderLabel" xml:space="preserve">
     <value>New Database Source</value>
   </data>
+  <data name="ExplorerMoveFailedMessage" xml:space="preserve">
+    <value>An unexpected error occured which prevented the resource from being moved.</value>
+  </data>
+  <data name="ExplorerMoveFailedHeader" xml:space="preserve">
+    <value>Move not allowed</value>
+  </data>
+  <data name="ExplorerDropNotAllowedMessage" xml:space="preserve">
+    <value>You cannot drop sources onto the design surface. Only WorkflowService can be dropped.</value>
+  </data>
+  <data name="ExplorerDropNotAllowedHeader" xml:space="preserve">
+    <value>Drop not allowed</value>
+  </data>
   <data name="ServiceDesignerSourceNotFound" xml:space="preserve">
     <value>Source was not found. This service will not execute.</value>
   </data>

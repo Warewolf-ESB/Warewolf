@@ -12,6 +12,7 @@ using Dev2.Studio.Core.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using IPopupController = Dev2.Common.Interfaces.Studio.Controller.IPopupController;
+// ReSharper disable PossibleUnintendedReferenceComparison
 
 namespace Warewolf.Studio.ViewModels.Tests
 {

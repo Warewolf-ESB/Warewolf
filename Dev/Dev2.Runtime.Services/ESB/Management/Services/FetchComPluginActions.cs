@@ -87,7 +87,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             try
             {
                 var cleanTypeName = Type.GetType(typeName);
-                return $"{name}: {cleanTypeName.Name}";
+                return $"{name}: {cleanTypeName?.Name}";
             }
             catch (Exception)
             {
