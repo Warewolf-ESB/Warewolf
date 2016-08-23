@@ -316,7 +316,7 @@ namespace Dev2.TO
 
         public bool CanRemove()
         {
-            if (string.IsNullOrEmpty(SearchCriteria) && string.IsNullOrEmpty(SearchType))
+            if (string.IsNullOrEmpty(MatchValue) && string.IsNullOrEmpty(SearchCriteria) && string.IsNullOrEmpty(SearchType))
             {
                 return true;
             }
@@ -325,11 +325,12 @@ namespace Dev2.TO
 
         public bool CanAdd()
         {
-            return !string.IsNullOrEmpty(SearchType);
+            return !string.IsNullOrEmpty(MatchValue) || !string.IsNullOrEmpty(SearchCriteria);
         }
 
         public void ClearRow()
         {
+            MatchValue = "";
             SearchCriteria = string.Empty;
             SearchType = "";
         }
