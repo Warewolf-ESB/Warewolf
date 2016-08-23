@@ -583,9 +583,6 @@
     <EmbeddedResource Include="XML\EmailTest.xml" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="XML\Big Bulk Testing.xml" />
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="XML\WebserviceWithRecordsetFieldsMissing.xml" />
   </ItemGroup>
   <ItemGroup>
@@ -620,6 +617,7 @@
     <EmbeddedResource Include="XML\OauthSource.xml" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="XML\Big Bulk Testing.xml" />
     <Content Include="XML\GenDev.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
