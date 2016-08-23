@@ -88,14 +88,14 @@ namespace Dev2.Runtime.ESB.Management.Services
             {
                 var cleanTypeName = Type.GetType(typeName);
                 // ReSharper disable once PossibleNullReferenceException
-                return $"{name}: {cleanTypeName.Name}";
+                return $"{name} ({cleanTypeName.Name})";
             }
             catch (Exception)
             {
                 try
                 {
                     var cleanTypeName = typeName.Contains("&") ? typeName.Split('&').First() : typeName.Split(',').First();
-                    var newName = $"{name}: {cleanTypeName}";
+                    var newName = $"{name} ({cleanTypeName})";
                     return newName;
                 }
                 catch (Exception)

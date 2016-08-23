@@ -19,7 +19,7 @@ namespace Dev2.Tests.Runtime.Services
             PrivateObject privateObject = new PrivateObject(comPluginActions);
             var invoke = privateObject.Invoke("BuildServiceInputName", "Class2", "Project1.Class2&, Project1, Version=5.0.0.0, Culture=neutral, PublicKeyToken=null");
             //---------------Test Result -----------------------
-            Assert.AreEqual("Class2: Project1.Class2", invoke.ToString());
+            Assert.AreEqual("Class2 (Project1.Class2)", invoke.ToString());
         }
 
         [TestMethod]
@@ -37,7 +37,7 @@ namespace Dev2.Tests.Runtime.Services
 
             var invoke = privateObject.Invoke("BuildServiceInputName", "Class2", "ADODB.CursorLocationEnum, ADODB, Version=6.1.0.0, Culture=neutral, PublicKeyToken=null");
             //---------------Test Result -----------------------
-            Assert.AreEqual("Class2: ADODB.CursorLocationEnum", invoke.ToString());
+            Assert.AreEqual("Class2 (ADODB.CursorLocationEnum)", invoke.ToString());
         }
     }
 }

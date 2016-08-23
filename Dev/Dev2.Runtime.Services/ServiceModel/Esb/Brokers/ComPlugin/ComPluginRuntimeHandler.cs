@@ -98,18 +98,17 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.ComPlugin
 
         private MethodInfo ExecuteComPlugin(ComPluginInvokeArgs setupInfo, out object pluginResult)
         {
-            var typeList = BuildTypeList(setupInfo.Parameters);
+            
             if (!string.IsNullOrEmpty(setupInfo.ClsId))
             {
-               
-                var valuedTypeList = BuildValuedTypeParams(setupInfo);
-
                 if (setupInfo.Is32Bit)
                 {
-
-                    pluginResult = Client.IPCExecutor.Invoke(setupInfo.ClsId.ToGuid(), setupInfo.Method, Execute.ExecuteSpecifiedMethod, valuedTypeList);
+                    ParameterInfoTO[] strings = setupInfo.Parameters.Select(parameter => new ParameterInfoTO {Name = parameter.Name,DefaultValue = parameter.Value,TypeName = parameter.TypeName}).ToArray();
+                    pluginResult = Client.IPCExecutor.Invoke(setupInfo.ClsId.ToGuid(), setupInfo.Method, Execute.ExecuteSpecifiedMethod, strings);
                     return null;
                 }
+                var typeList = BuildTypeList(setupInfo.Parameters);
+                var valuedTypeList = BuildValuedTypeParams(setupInfo);
                 var type = GetType(setupInfo.ClsId, setupInfo.Is32Bit);
                 var methodToRun = type.GetMethod(setupInfo.Method, typeList.ToArray()) ??
                                   type.GetMethod(setupInfo.Method);
@@ -149,8 +148,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.ComPlugin
                 var methodParameter = setupInfo.Parameters[index];
                 try
                 {
-                    var anonymousType = JsonConvert.DeserializeObject(methodParameter.Value,
-                        Type.GetType(methodParameter.TypeName));
+                    var anonymousType = JsonConvert.DeserializeObject(methodParameter.Value,Type.GetType(methodParameter.TypeName));
                     if (anonymousType != null)
                     {
                         valuedTypeList[index] = anonymousType;
@@ -199,7 +197,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.ComPlugin
                 if (is32Bit)
                 {
 
-                    var execute = Client.IPCExecutor.Invoke(classId.ToGuid(), "", Execute.GetNamespaces, new object[] { });
+                    var execute = Client.IPCExecutor.Invoke(classId.ToGuid(), "", Execute.GetNamespaces, new ParameterInfoTO[] { });
                     var namespaceList = execute as List<string>;
                     return namespaceList;
 
@@ -235,7 +233,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.ComPlugin
 
                 try
                 {
-                    var execute = Client.IPCExecutor.Invoke(clasID, "", Execute.GetType, new object[] { });
+                    var execute = Client.IPCExecutor.Invoke(clasID, "", Execute.GetType, new ParameterInfoTO[] { });
                     type = execute as Type;
                 }
                 catch (Exception ex)
@@ -260,7 +258,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.ComPlugin
             {
                 
 
-                    var execute = Client.IPCExecutor.Invoke(classId.ToGuid(), "", Execute.GetMethods, new object[] { });
+                    var execute = Client.IPCExecutor.Invoke(classId.ToGuid(), "", Execute.GetMethods, new ParameterInfoTO[] { });
                     var ipcMethods = execute as List<MethodInfoTO>;
                     if (ipcMethods != null)
                     {
