@@ -9,8 +9,9 @@
              mc:Ignorable="d" 
         d:DataContext="{d:DesignInstance viewModels:DuplicateResourceViewModel  }"
         Closing="CreateDuplicateResourceDialog_OnClosing"
-              Height="120"
-             d:DesignHeight="300" d:DesignWidth="300">
+              Height="200"
+             Width="300"
+             d:DesignHeight="400" d:DesignWidth="50">
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -46,8 +47,8 @@
             <CheckBox Grid.Column="1" Grid.Row="1" Content="Fix References?" IsChecked="{Binding FixReferences, UpdateSourceTrigger=PropertyChanged}"/>
 
             <StackPanel Grid.Column="1" Grid.Row="2" HorizontalAlignment="Right" Orientation="Horizontal" Margin="{StaticResource ControlBorderTop}">
-                <Button Content="Cancel" Command="{Binding CancelCommand}" Margin="{StaticResource ControlBorderRight}"/>
-                <Button Content="Create" Command="{Binding CreateCommand}" />
+                <Button Content="Cancel" Command="{Binding CancelCommand}" Width="auto" Margin="{StaticResource ControlBorderRight}"/>
+                <Button Content="Create" Command="{Binding CreateCommand}" Width="auto" />
             </StackPanel>
         </Grid>
     </Grid>

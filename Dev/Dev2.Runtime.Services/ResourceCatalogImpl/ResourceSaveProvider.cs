@@ -282,10 +282,6 @@ namespace Dev2.Runtime.ResourceCatalogImpl
             return updated;
         }
 
-      
-
-
-
         private void PerfomSaveResult(out ResourceCatalogResult saveResult, Guid workspaceID, IResource resource, StringBuilder contents, bool overwriteExisting)
         {
             var fileManager = new TxFileManager();
