@@ -75,7 +75,6 @@ namespace Warewolf.Studio.ViewModels
             };
             SourceConnectControlViewModel = _source.ConnectControlViewModel;
             DestinationConnectControlViewModel = _destination.ConnectControlViewModel;
-            //IsConnecting = DestinationConnectControlViewModel.IsConnecting;
 
             SourceConnectControlViewModel.SelectedEnvironmentChanged += UpdateServerCompareChanged;
             DestinationConnectControlViewModel.SelectedEnvironmentChanged += UpdateServerCompareChanged;
@@ -213,11 +212,10 @@ namespace Warewolf.Studio.ViewModels
             {
                 ErrorMessage = "";
 
-                bool canDeploy;
                 CheckVersionConflict();
                 CheckResourceNameConflict();
 
-                canDeploy = false;
+                var canDeploy = false;
                 if (ConflictItems != null && ConflictItems.Count >= 1)
                 {
                     var msgResult = PopupController.ShowDeployConflict(ConflictItems.Count);
@@ -241,7 +239,7 @@ namespace Warewolf.Studio.ViewModels
                     _shell.DeployResources(Source.Environments.First().Server.EnvironmentID, Destination.ConnectControlViewModel.SelectedConnection.EnvironmentID, notfolders);
                     DeploySuccessfull = true;
                     Destination.RefreshSelectedEnvironment();
-                    DeploySuccessMessage = string.Format("{0} Resource{1} Deployed Successfully.", notfolders.Count, notfolders.Count == 1 ? "" : "s");
+                    DeploySuccessMessage = $"{notfolders.Count} Resource{(notfolders.Count == 1 ? "" : "s")} Deployed Successfully.";
                     _stats.Calculate(new List<IExplorerTreeItem>());
                     UpdateServerCompareChanged(this, Guid.Empty);
                     Source.SelectedEnvironment.AsList().Apply(o => o.IsResourceUnchecked = false);
@@ -325,7 +323,7 @@ namespace Warewolf.Studio.ViewModels
 
         private void SelectDependencies()
         {
-            if (Source != null && Source.SelectedEnvironment != null && Source.SelectedEnvironment.Server != null)
+            if (Source?.SelectedEnvironment?.Server != null)
             {
                 var guids = Source.SelectedEnvironment.Server.QueryProxy.FetchDependenciesOnList(Source.SelectedItems.Select(a => a.ResourceId));
                 Source.SelectedEnvironment.AsList().Where(a => guids.Contains(a.ResourceId)).Apply(a => a.IsResourceChecked = true);
@@ -375,24 +373,24 @@ namespace Warewolf.Studio.ViewModels
                     return false;                
                 if (Source.SelectedEnvironment == null || !Source.SelectedEnvironment.IsConnected)
                 {
-                    ErrorMessage = "Please select and connect a Source.";
+                    ErrorMessage = Resources.Languages.Core.DeploySourceNotConnected;
                     return false;
                 }
                 if (Destination.SelectedEnvironment == null || !Destination.ConnectControlViewModel.SelectedConnection.IsConnected)
                 {
-                    ErrorMessage = "Please select and connect a Destination.";
+                    ErrorMessage = Resources.Languages.Core.DeployDestinationNotConnected;
                     return false;
                 }
 
                 if (Source.SelectedEnvironment.Server.EnvironmentID == Destination.ConnectControlViewModel.SelectedConnection.EnvironmentID)
                 {
-                    ErrorMessage = "Source and Destination cannot be the same.";
+                    ErrorMessage = Resources.Languages.Core.DeploySourceDestinationAreSame;
                     return false;
                 }
 
                 if (Source.SelectedItems == null || Source.SelectedItems.Count <= 0)
                 {
-                    ErrorMessage = "Nothing selected to deploy.";
+                    ErrorMessage = Resources.Languages.Core.DeploySourceDestinationAreSame;
                     return false;
                 }
 
@@ -434,16 +432,10 @@ namespace Warewolf.Studio.ViewModels
         void RaiseCanExecuteDependencies()
         {
             var delegateCommand = SelectDependenciesCommand as DelegateCommand;
-            if (delegateCommand != null)
-            {
-                delegateCommand.RaiseCanExecuteChanged();
-            }
+            delegateCommand?.RaiseCanExecuteChanged();
 
             delegateCommand = DeployCommand as DelegateCommand;
-            if (delegateCommand != null)
-            {
-                delegateCommand.RaiseCanExecuteChanged();
-            }
+            delegateCommand?.RaiseCanExecuteChanged();
         }
 
         public string NewResourcesCount
@@ -638,10 +630,7 @@ namespace Warewolf.Studio.ViewModels
         public void UpdateHelpDescriptor(string helpText)
         {
             var mainViewModel = CustomContainer.Get<IMainViewModel>();
-            if (mainViewModel != null)
-            {
-                mainViewModel.HelpViewModel.UpdateHelpText(helpText);
-            }
+            mainViewModel?.HelpViewModel.UpdateHelpText(helpText);
         }
 
         #endregion
