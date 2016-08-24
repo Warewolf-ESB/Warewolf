@@ -61,16 +61,17 @@
                 <core1:HelpSetter Text="{x:Static languages:Core.SequenceHelpSequence}" DataContext="{Binding}" />
             </i:Interaction.Behaviors>
         </DataGrid>
-        <Border BorderBrush="Black"
-                BorderThickness="1,1,1,1"
-                Margin="0,2"
-                Grid.Row="1">
+        <Border BorderBrush="#CFD6E1"
+                BorderThickness="1"
+                Margin="0"
+                Grid.Row="1"
+                CornerRadius="12">
             <sap:WorkflowItemPresenter x:Name="DropPoint"
                                        AllowDrop="False"
                                        HintText="Drop Activity Here"
                                        BorderBrush="Black"
                                        BorderThickness="2"
-                                       Height="35"
+                                       Height="40"
                                        Item="{Binding SmallViewItem}"
                                        attachedProperties2:WizardEngineAttachedProperties.DontOpenWizard="True">
                 <AutomationProperties.AutomationId>

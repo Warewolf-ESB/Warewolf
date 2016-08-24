@@ -37,7 +37,6 @@
         <Border Grid.Row="0">
             <sap:WorkflowItemsPresenter x:Uid="sad:WorkflowItemsPresenter_1"
                                         x:Name="ActivitiesPresenter"
-                                        AllowedItemType="{x:Type sa:Activity}"
                                         HintText="AddMode New Activity"
                                         ToolTip="{x:Static languages:Core.SequenceTooltipSequence}"
                                         IsDefaultContainer="true">
