@@ -257,6 +257,7 @@ namespace Warewolf.Studio.ViewModels
             ShowDependenciesCommand = new DelegateCommand(ShowDependencies);
             ShowVersionHistory = new DelegateCommand(() => AreVersionsVisible = !AreVersionsVisible);
             DeleteCommand = new DelegateCommand(Delete);
+            DuplicateCommand = new DelegateCommand(DuplicateResource);
             OpenVersionCommand = new DelegateCommand(OpenVersion);
             VersionHeader = "Show Version History";
             Expand = new DelegateCommand<int?>(clickCount =>
@@ -272,6 +273,17 @@ namespace Warewolf.Studio.ViewModels
             });
             CreateFolderCommand = new DelegateCommand(CreateNewFolder);
             DeleteVersionCommand = new DelegateCommand(DeleteVersion);
+        }
+
+        private void DuplicateResource()
+        {
+            var newResourceName = _explorerItemViewModelCommandController.DuplicateResource();
+
+            if (!string.IsNullOrWhiteSpace(newResourceName))
+            {
+                //StartDuplicate(newResoureName, ResourceID);
+            }
+
         }
 
         internal void ShowDependencies()
@@ -563,6 +575,7 @@ namespace Warewolf.Studio.ViewModels
 
         public ICommand CreateFolderCommand { get; set; }
         public ICommand DeleteCommand { get; set; }
+        public ICommand DuplicateCommand { get; set; }
         public ICommand ShowVersionHistory { get; set; }
         public ICommand RollbackCommand { get; set; }
         public bool IsRenaming

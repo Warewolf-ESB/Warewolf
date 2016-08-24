@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using System.Windows;
+using Dev2;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Common.Interfaces.Versioning;
@@ -121,6 +122,15 @@ namespace Warewolf.Studio.ViewModels
                 parent?.RemoveChild(parent.Children.First(a => a.ResourceName == resourceName));
             }
         }
+        public string DuplicateResource()
+        {
+            
+                var view = CustomContainer.GetInstancePerRequestType<ICreateDuplicateResourceView>();
+                DuplicateResourceViewModel viewModel = new DuplicateResourceViewModel(view);
+                viewModel.ShowDialog();
+                return viewModel.NewResourceName;
+
+        }
 
         public void DeleteCommand(IEnvironmentModel environmentModel, IExplorerTreeItem parent, IExplorerRepository explorerRepository, ExplorerItemViewModel explorerItemViewModel, IPopupController popupController,IServer server)
         {
@@ -193,5 +203,7 @@ namespace Warewolf.Studio.ViewModels
             };
             return child;
         }
+
+       
     }
 }
