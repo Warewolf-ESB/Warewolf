@@ -24,10 +24,10 @@ namespace WarewolfCOMIPC.Client
 
             // Pass token to child process
             var psi = new ProcessStartInfo("WarewolfCOMIPC.exe", token) { Verb = "runas" };
-//            psi.UseShellExecute = false;
-//            psi.ErrorDialog = false;
-//            psi.RedirectStandardOutput = false;
-//            psi.CreateNoWindow = true;
+            psi.UseShellExecute = false;
+            psi.ErrorDialog = false;
+            psi.RedirectStandardOutput = false;
+            psi.CreateNoWindow = true;
             _process = Process.Start(psi);
             _pipe = new NamedPipeClientStream(".", token, PipeDirection.InOut);
             _pipe.Connect();
