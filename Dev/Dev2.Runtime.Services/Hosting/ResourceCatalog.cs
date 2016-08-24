@@ -391,15 +391,17 @@ namespace Dev2.Runtime.Hosting
                     var duplicatePaths = filePath == dupRes.FilePath ? string.Empty : filePath;
                     var resourcePaths = new List<string> { dupRes.FilePath };
                     if (!string.IsNullOrEmpty(duplicatePaths))
-                        resourcePaths.Add(duplicatePaths);
-                    _dupresource = new DuplicateResource
                     {
-                        ResourceId = resource.ResourceID
-                        ,
-                        ResourceName = resource.ResourceName
-                        ,
-                        ResourcePath = resourcePaths
-                    };
+                        resourcePaths.Add(duplicatePaths);
+                        _dupresource = new DuplicateResource
+                        {
+                            ResourceId = resource.ResourceID
+                            ,
+                            ResourceName = resource.ResourceName
+                            ,
+                            ResourcePath = resourcePaths
+                        };
+                    }
                 }                
             }
             return _dupresource;
