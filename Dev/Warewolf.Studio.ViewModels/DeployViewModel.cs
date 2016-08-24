@@ -7,7 +7,6 @@ using Caliburn.Micro;
 using Dev2;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Deploy;
-using Dev2.Common.Interfaces.Security;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Interfaces;
 using Microsoft.Practices.Prism.Commands;
@@ -252,18 +251,18 @@ namespace Warewolf.Studio.ViewModels
             IsDeploying = false;
         }
 
-        private bool CanDeploySelectedItems(IEnumerable<IExplorerTreeItem> selected)
-        {
-            var copy = Source.SelectedItems;
-            foreach (var explorerTreeItem in selected)
-            {
-                var windowsGroupPermission = explorerTreeItem.Server.Permissions?
-                    .FirstOrDefault(p => p.ResourceID == explorerTreeItem.ResourceId);
-                if (windowsGroupPermission?.Permissions == Permissions.View)
-                    copy.Remove(explorerTreeItem);
-            }
-            return copy.Count > 0;
-        }
+        //private bool CanDeploySelectedItems(IEnumerable<IExplorerTreeItem> selected)
+        //{
+        //    var copy = Source.SelectedItems;
+        //    foreach (var explorerTreeItem in selected)
+        //    {
+        //        var windowsGroupPermission = explorerTreeItem.Server.Permissions?
+        //            .FirstOrDefault(p => p.ResourceID == explorerTreeItem.ResourceId);
+        //        if (windowsGroupPermission?.Permissions == Permissions.View)
+        //            copy.Remove(explorerTreeItem);
+        //    }
+        //    return copy.Count > 0;
+        //}
 
         bool CheckResourceNameConflict()
         {
@@ -404,8 +403,8 @@ namespace Warewolf.Studio.ViewModels
                     ErrorMessage = StringResources.DestinationPermission_Error;
                     return false;
                 }
-                if (!CanDeploySelectedItems(Source.SelectedItems))
-                    return false;
+                //if (!CanDeploySelectedItems(Source.SelectedItems))
+                //    return false;
                 ErrorMessage = string.Empty;
                 return true;
             }

@@ -21,7 +21,6 @@ using Caliburn.Micro;
 using Dev2;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Infrastructure;
-using Dev2.Common.Interfaces.Security;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Common.Interfaces.Versioning;
 using Dev2.Studio.Core;
@@ -505,8 +504,21 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        void SetPermission(IWindowsGroupPermission permission, bool isDeploy = false)
+        public void SetPermission(IWindowsGroupPermission permission, bool isDeploy = false)
         {
+            if (permission.DeployFrom)
+            {
+                CanDeploy = true;
+            }
+            if (permission.View)
+            {
+                CanDeploy = false;
+                CanView = !isDeploy;
+            }
+            if (permission.Execute)
+            {
+                CanExecute = IsService && !isDeploy;
+            }
             if (permission.Contribute)
             {
                 SetContributePermissions(isDeploy);
@@ -515,18 +527,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 SetAdministratorPermissions();
             }
-            if (permission.DeployFrom)
-            {
-                CanDeploy = true;
-            }
-            if (permission.View)
-            {
-                CanView = !isDeploy;
-            }
-            if (permission.Execute)
-            {
-                CanExecute = IsService && !isDeploy;
-            }
+            
         }
 
         private void SetAdministratorPermissions()
@@ -546,6 +547,7 @@ namespace Warewolf.Studio.ViewModels
             CanCreateFolder = true;
             CanCreateWorkflowService = true;
             CanCreateSource = true;
+            CanDeploy = true;
         }
 
         bool UserShouldEditValueNow
@@ -802,15 +804,7 @@ namespace Warewolf.Studio.ViewModels
                 }
                 else
                 {
-                    IsResourceCheckedEnabled = true;
-                    var permission = Server.Permissions?.FirstOrDefault(p => p.ResourceID == ResourceId);
-                    
-                    if (permission?.Permissions == Permissions.View)
-                    {
-                        IsResourceCheckedEnabled = false;
-                        OnPropertyChanged(() => IsResourceCheckedEnabled);
-                        value = false;
-                    }
+                    IsResourceCheckedEnabled = CanDeploy;
                     _isResource = value.HasValue && !IsFolder && value.Value;
                 }
                 SelectAction?.Invoke(this);
@@ -820,7 +814,7 @@ namespace Warewolf.Studio.ViewModels
 
         public bool IsResourceCheckedEnabled
         {
-            get { return _isResourceCheckedEnabled; }
+            get { return CanDeploy; }
             set
             {
                 DeployResourceCheckboxTooltip = Resources.Languages.Core.DeployResourceCheckbox;

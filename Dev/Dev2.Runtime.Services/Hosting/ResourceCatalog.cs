@@ -24,7 +24,6 @@ using System.Xml.Linq;
 using ChinhDo.Transactions;
 using Dev2.Common;
 using Dev2.Common.Common;
-using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Infrastructure.SharedModels;
@@ -261,46 +260,18 @@ namespace Dev2.Runtime.Hosting
             return resources;
         }
 
+        readonly string _workspacePath = EnvironmentVariables.ResourcePath;
         public IList<DuplicateResource> GetDuplicateResources()
-        {
+        {            
             _duplicates = new List<DuplicateResource>();
-            var workspacePath = EnvironmentVariables.ResourcePath;
-            var folders = Directory.EnumerateDirectories(workspacePath, "*", SearchOption.AllDirectories);
-            var subFolders = folders as IList<string> ?? folders.ToList();
-            var allFolders = subFolders.ToList();
-            allFolders.Add(workspacePath);
-            var enumerable = folders as string[] ?? allFolders.ToArray();
+            string[] enumerable;
+            var folders = GetResouceFolders(out enumerable);
+            IsWorkspaceValid(_workspacePath, folders, enumerable);
             var resourceUpgrader = ResourceUpgraderFactory.GetUpgrader();
-            IsWorkspaceValid(workspacePath, folders, enumerable);
             var streams = new List<ResourceBuilderTO>();
             try
             {
-                foreach (var path in enumerable.Where(f => !string.IsNullOrEmpty(f) && !f.EndsWith("VersionControl")).Select(f => Path.Combine(workspacePath, f)))
-                {
-                    if(!Directory.Exists(path))
-                        continue;
-
-                    var files = Directory.GetFiles(path, "*.xml");
-                    foreach (var file in files)
-                    {
-                        FileAttributes fa = File.GetAttributes(file);
-
-                        if((fa & FileAttributes.ReadOnly) == FileAttributes.ReadOnly)
-                            File.SetAttributes(file, FileAttributes.Normal);
-
-                        // Use the FileStream class, which has an option that causes asynchronous I/O to occur at the operating system level.  
-                        // In many cases, this will avoid blocking a ThreadPool thread.  
-                        var sourceStream = new FileStream(file, FileMode.Open, FileAccess.Read, FileShare.ReadWrite, 4096, true);
-                        streams.Add(new ResourceBuilderTO { FilePath = file, FileStream = sourceStream });
-                    }
-                }
-
-                var resourceBaseType = typeof(IResourceSource);
-                    var assemblies = AppDomain.CurrentDomain.GetAssemblies();
-                    var types = assemblies
-                        .SelectMany(s => s.GetTypes())
-                        .Where(p => resourceBaseType.IsAssignableFrom(p));
-                    var allTypes = types as IList<Type> ?? types.ToList();                                
+                GetFileContent(enumerable, streams);
                 streams.ForEach(currentItem =>
                 {
                     var xml = XElement.Load(currentItem.FileStream);
@@ -309,17 +280,7 @@ namespace Dev2.Runtime.Hosting
                     var isValid = HostSecurityProvider.Instance.VerifyXml(result);
                     if (isValid)
                     {
-                        var typeName = xml.AttributeSafe("Type");
-                        Type type = null;
-                        if(allTypes.Count != 0)
-                            type = allTypes.FirstOrDefault(type1 => type1.Name == typeName);
-                        Resource resource;
-                        if(type != null)
-                            resource = (Resource)Activator.CreateInstance(type, xml);
-                        else
-                            resource = new Resource(xml);
-                        resource.FilePath = currentItem.FilePath;
-
+                        var resource = new Resource(xml) { FilePath = currentItem.FilePath };
                         if(resource.ResourcePath.ToUpper() == "UNASSIGNED")
                             resource.ResourcePath = string.Empty;
                         resourceUpgrader.UpgradeResource(xml, Assembly.GetExecutingAssembly().GetName().Version, a =>
@@ -349,7 +310,40 @@ namespace Dev2.Runtime.Hosting
             }
             return _duplicates;
         }
-        
+
+        private void GetFileContent(IEnumerable<string> enumerable, List<ResourceBuilderTO> streams)
+        {
+            foreach(var path in enumerable.Where(f => !string.IsNullOrEmpty(f) && !f.EndsWith("VersionControl")).Select(f => Path.Combine(_workspacePath, f)))
+            {
+                if(!Directory.Exists(path))
+                    continue;
+                var files = Directory.GetFiles(path, "*.xml");
+                foreach(var file in files)
+                {
+                    FileAttributes fa = File.GetAttributes(file);
+
+                    if((fa & FileAttributes.ReadOnly) == FileAttributes.ReadOnly)
+                    {
+                        File.SetAttributes(file, FileAttributes.Normal);
+                    }
+                    // Use the FileStream class, which has an option that causes asynchronous I/O to occur at the operating system level.  
+                    // In many cases, this will avoid blocking a ThreadPool thread.  
+                    var sourceStream = new FileStream(file, FileMode.Open, FileAccess.Read, FileShare.ReadWrite, 4096, true);
+                    streams.Add(new ResourceBuilderTO { FilePath = file, FileStream = sourceStream });
+                }
+            }
+        }
+
+        private IEnumerable<string> GetResouceFolders(out string[] enumerable)
+        {
+            var folders = Directory.EnumerateDirectories(_workspacePath, "*", SearchOption.AllDirectories);
+            var resouceFolders = folders as string[] ?? folders.ToArray();
+            var allFolders = resouceFolders.ToList();
+            allFolders.Add(_workspacePath);
+            enumerable = folders as string[] ?? allFolders.ToArray();
+            return resouceFolders;
+        }
+
         public bool IsWorkspaceValid(string workspacePath, IEnumerable<string> folders, string[] enumerable)
         {
             const string Workspacepath = "workspacePath";

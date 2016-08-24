@@ -46,7 +46,7 @@ namespace Dev2.Studio.Core.Network
             }
             asyncWorker.Start(() =>
             {
-                var controller = new CommunicationController { ServiceName = resourceModel.Category };
+                var controller = new CommunicationController { ServiceName = string.IsNullOrEmpty(resourceModel.Category) ? resourceModel.ResourceName : resourceModel.Category };
                 controller.AddPayloadArgument("DebugPayload", payload);
                 controller.ExecuteCommand<string>(clientContext, clientContext.WorkspaceID);
             }, () => { });
