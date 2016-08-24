@@ -1,5 +1,5 @@
-﻿using System.Windows;
-using System.Windows.Input;
+﻿using System.Windows.Input;
+using Dev2.Common.Interfaces;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using Microsoft.Practices.Prism.Mvvm;
 
@@ -7,6 +7,8 @@ namespace Warewolf.Studio.ViewModels
 {
     public class DuplicateResourceViewModel : BindableBase, IDuplicateResourceViewModel
     {
+        private ICreateDuplicateResourceView _createDuplicateResourceView;
+
         private string _newResourceName;
         public string NewResourceName
         {
@@ -38,15 +40,21 @@ namespace Warewolf.Studio.ViewModels
         // ReSharper disable once UnusedAutoPropertyAccessor.Local
         public ICommand CreateCommand { get; private set; }
 
-        public DuplicateResourceViewModel()
+        public DuplicateResourceViewModel(ICreateDuplicateResourceView createDuplicateResourceView)
         {
+            _createDuplicateResourceView = createDuplicateResourceView;
             CancelCommand = new DelegateCommand(CancelAndClose);
         }
 
         private void CancelAndClose(object obj)
         {
-            var window = obj as Window;
-            window?.Close();
+            _createDuplicateResourceView.CloseView();
+        }
+
+        public void ShowDialog()
+        {
+            _createDuplicateResourceView.DataContext = this;
+            _createDuplicateResourceView.ShowView();
         }
     }
 }
