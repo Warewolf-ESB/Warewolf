@@ -60,6 +60,9 @@ using Dev2.Workspaces;
 using Warewolf.Studio.ViewModels;
 using Warewolf.Studio.Views;
 using Dev2.Studio.Core;
+using Dev2.Studio.Core.Network;
+using Dev2.Studio.ViewModels.Workflow;
+
 // ReSharper disable CatchAllClause
 // ReSharper disable InconsistentNaming
 // ReSharper disable NonLocalizedString
@@ -588,6 +591,27 @@ namespace Dev2.Studio.ViewModels
             {
                 var contextualResourceModel = environmentModel.ResourceRepository.LoadContextualResourceModel(resourceId);
                 _worksurfaceContextManager.DisplayResourceWizard(contextualResourceModel);
+            }
+        }
+        public void ViewSwagger(Guid resourceId, IServer server)
+        {
+            ViewSwagger(resourceId, server.EnvironmentID);
+        }
+        public void ViewSwagger(Guid resourceId, Guid environmentId)
+        {
+            var environmentModel = EnvironmentRepository.Get(environmentId);
+            if (environmentModel != null)
+            {
+                var contextualResourceModel = environmentModel.ResourceRepository.LoadContextualResourceModel(resourceId);
+
+                var _workflowInputDataViewModel = WorkflowInputDataViewModel.Create(contextualResourceModel);
+                var buildWebPayLoad = _workflowInputDataViewModel.BuildWebPayLoad();
+                var workflowUri = WebServer.GetWorkflowUri(contextualResourceModel, buildWebPayLoad, UrlType.API);
+                if (workflowUri != null)
+                {
+                    BrowserPopupController.ShowPopup(workflowUri.ToString());
+
+                }
             }
         }
 
