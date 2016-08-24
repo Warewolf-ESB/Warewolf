@@ -36,7 +36,7 @@
         <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="BorderThickness" Value="2" />
         <Setter Property="IsTabStop" Value="False" />
-        <Setter Property="ShowInTaskbar" Value="False" />
+        <Setter Property="ShowInTaskbar" Value="True" />
         <Setter Property="BorderBrush" Value="{StaticResource WindowBorderBrush}" />
         <Setter Property="Background" Value="{StaticResource WindowBackgroundBrush}" />
         <Setter Property="Template" Value="{DynamicResource ModalTemplateKey}" />
