@@ -206,7 +206,7 @@ namespace Warewolf.Studio.ViewModels
                 }
 
                 Overrides = Conflicts.Count;
-                NewResources = SetCounters(New);
+                NewResources = New.Count;
             }
             else
             {
@@ -221,18 +221,6 @@ namespace Warewolf.Studio.ViewModels
             OnPropertyChanged(() => Conflicts);
             OnPropertyChanged(() => New);
             CalculateAction?.Invoke();
-        }
-
-        private int SetCounters(IList<IExplorerTreeItem> items)
-        {
-            int count = 0;
-            foreach(var explorerTreeItem in items)
-            {
-                var windowsGroupPermission = explorerTreeItem.Server.Permissions?.FirstOrDefault(p => p.ResourceID == explorerTreeItem.ResourceId);
-                if((windowsGroupPermission == null) || windowsGroupPermission.Permissions != Permissions.View)
-                    count++;
-            }
-            return count;
         }
 
         public IList<Conflict> Conflicts => _conflicts.ToList();

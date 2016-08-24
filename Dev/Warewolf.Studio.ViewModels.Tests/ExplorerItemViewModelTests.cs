@@ -7,7 +7,6 @@ using Dev2;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Infrastructure;
 using Dev2.Common.Interfaces.PopupController;
-using Dev2.Common.Interfaces.Security;
 using Dev2.Common.Interfaces.Versioning;
 using Dev2.Studio.Core.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -776,40 +775,64 @@ namespace Warewolf.Studio.ViewModels.Tests
             var windowsGroupPermissionMock = new Mock<IWindowsGroupPermission>();
             windowsGroupPermissionMock.SetupGet(it => it.IsServer).Returns(true);
             windowsGroupPermissionMock.SetupGet(it => it.View).Returns(false);
+            windowsGroupPermissionMock.SetupGet(it => it.DeployFrom).Returns(true);
             _serverMock.SetupGet(it => it.Permissions).Returns(new List<IWindowsGroupPermission>()
             {
                 windowsGroupPermissionMock.Object
             });
-            _target.SetPermissions(_serverMock.Object.Permissions);
+            _target.SetPermission(windowsGroupPermissionMock.Object);
             _target.IsFolder = false;
             _target.IsResourceChecked = false;
             //act
             //assert
-            Assert.IsTrue(_target.IsResourceCheckedEnabled);
+            Assert.IsTrue(_target.CanDeploy);
+            Assert.AreEqual(_target.CanDeploy,_target.IsResourceCheckedEnabled);
             Assert.AreEqual(_target.DeployResourceCheckboxTooltip, Resources.Languages.Core.DeployResourceCheckbox);
         }
-
         [TestMethod]
-        public void TestDeployIsResourceCheckedDisabled()
+        public void TestDeployIsResourceCheckedEnabled_GivenView_ThenChangedToAdministrator()
         {
             //arrange
             var windowsGroupPermissionMock = new Mock<IWindowsGroupPermission>();
             windowsGroupPermissionMock.SetupGet(it => it.IsServer).Returns(true);
             windowsGroupPermissionMock.SetupGet(it => it.View).Returns(true);
-            windowsGroupPermissionMock.SetupGet(it => it.Permissions).Returns(Permissions.View);
+            windowsGroupPermissionMock.SetupGet(it => it.Administrator).Returns(true);
             _serverMock.SetupGet(it => it.Permissions).Returns(new List<IWindowsGroupPermission>()
             {
                 windowsGroupPermissionMock.Object
             });
-            _target.SetPermissions(_serverMock.Object.Permissions);
+            _target.SetPermission(windowsGroupPermissionMock.Object);
             _target.IsFolder = false;
             _target.IsResourceChecked = false;
             //act
             //assert
-            Assert.IsFalse(_target.IsResourceCheckedEnabled);
-            Assert.AreEqual(_target.DeployResourceCheckboxTooltip, Resources.Languages.Core.DeployResourceCheckboxViewPermissionError);
+            Assert.IsTrue(_target.CanDeploy);
+            Assert.AreEqual(_target.CanDeploy,_target.IsResourceCheckedEnabled);
+            Assert.AreEqual(_target.DeployResourceCheckboxTooltip, Resources.Languages.Core.DeployResourceCheckbox);
         }
 
+        [TestMethod]
+        public void TestDeployIsResourceCheckedEnabled_GivenAdministrator_ThenChangedToView()
+        {
+            //arrange
+            var windowsGroupPermissionMock = new Mock<IWindowsGroupPermission>();
+            windowsGroupPermissionMock.SetupGet(it => it.IsServer).Returns(true);
+            windowsGroupPermissionMock.SetupGet(it => it.Administrator).Returns(true);
+            windowsGroupPermissionMock.SetupGet(it => it.View).Returns(true);            
+            _serverMock.SetupGet(it => it.Permissions).Returns(new List<IWindowsGroupPermission>()
+            {
+                windowsGroupPermissionMock.Object
+            });
+            _target.SetPermission(windowsGroupPermissionMock.Object);
+            _target.IsFolder = false;
+            _target.IsResourceChecked = false;
+            //act
+            //assert
+            Assert.IsTrue(_target.CanDeploy);
+            Assert.AreEqual(_target.CanDeploy,_target.IsResourceCheckedEnabled);
+            Assert.AreEqual(_target.DeployResourceCheckboxTooltip, Resources.Languages.Core.DeployResourceCheckbox);
+        }
+        
         [TestMethod]
         public void TestAreVersionsVisibleFalse()
         {

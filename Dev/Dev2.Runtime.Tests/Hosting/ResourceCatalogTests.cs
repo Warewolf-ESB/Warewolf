@@ -3257,7 +3257,6 @@ namespace Dev2.Tests.Runtime.Hosting
             Assert.IsTrue(duplicateResource.ResourcePath[1].Contains(resourcePath1));
         }
 
-
         [TestMethod]
         [Owner("Sanele Mthembu")]
         [ExpectedException(typeof(ArgumentNullException))]
