@@ -350,6 +350,7 @@ namespace Dev2
                 InitializeServer();
                 LoadSettingsProvider();
                 ConfigureLoggging();
+                _ipcClient = Client.IPCExecutor;
                 var catalog = LoadResourceCatalog();
                 StartWebServer();
                 _timer = new Timer(PerformTimerActions, null, 1000, GlobalConstants.NetworkComputerNameQueryFreq);
@@ -460,7 +461,7 @@ namespace Dev2
 
         void ServerLoop(bool interactiveMode)
         {
-            _ipcClient = Client.IPCExecutor;
+            
             if (interactiveMode)
             {
                 Write("Press <ENTER> to terminate service and/or web server if started");
