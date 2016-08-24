@@ -13,16 +13,14 @@ using System.Diagnostics;
 // ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Core.AppResources.Browsers
 {
-    // BUG 9798 - 2013.06.25 - TWR : added
     public class ExternalBrowserPopupController : BrowserPopupControllerAbstract
     {
-        public override bool ShowPopup(string url)
+        public override void ShowPopup(string url)
         {
             if(!string.IsNullOrEmpty(url))
             {
                 Process.Start(url);
             }
-            return true;
         }
     }
 }
