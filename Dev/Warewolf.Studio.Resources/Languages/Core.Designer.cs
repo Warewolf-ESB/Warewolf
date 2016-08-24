@@ -2028,7 +2028,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to You do not have view permission on this item to deploy..
+        ///   Looks up a localized string similar to You only have view permission on this item, you cannot deploy it..
         /// </summary>
         public static string DeployResourceCheckboxViewPermissionError {
             get {
