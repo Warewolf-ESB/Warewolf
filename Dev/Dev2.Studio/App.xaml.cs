@@ -12,6 +12,7 @@ using System;
 using System.Configuration;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Security.Permissions;
 using System.Security.Principal;
 using System.Threading;
@@ -180,8 +181,9 @@ namespace Dev2.Studio
             var loadExplorerDuplicates = await server.LoadExplorerDuplicates();
             if (loadExplorerDuplicates?.Count > 0)
             {
+                var newLoadExplorerDuplicates = loadExplorerDuplicates.Select(duplicate => duplicate.Remove(duplicate.LastIndexOf(Environment.NewLine, StringComparison.Ordinal))).ToList();
                 var controller = CustomContainer.Get<IPopupController>();
-                controller.ShowResourcesConflict(loadExplorerDuplicates);
+                controller.ShowResourcesConflict(newLoadExplorerDuplicates);
             }
         }
 

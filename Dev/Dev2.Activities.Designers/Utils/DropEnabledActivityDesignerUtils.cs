@@ -14,6 +14,8 @@ using System.Activities.Statements;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
+using Dev2.Common.Interfaces;
+using Warewolf.Studio.Core.Popup;
 
 namespace Dev2.Activities.Utils
 {
@@ -30,9 +32,8 @@ namespace Dev2.Activities.Utils
                 return true;
             }
 
-
             var modelItemString = formats.FirstOrDefault(s => s.IndexOf("ModelItemsFormat", StringComparison.Ordinal) >= 0);
-            if(!String.IsNullOrEmpty(modelItemString))
+            if(!string.IsNullOrEmpty(modelItemString))
             {
                 var innnerObjectData = data.GetData(modelItemString);
                 var modelList = innnerObjectData as List<ModelItem>;
@@ -46,10 +47,10 @@ namespace Dev2.Activities.Utils
             }
 
             modelItemString = formats.FirstOrDefault(s => s.IndexOf("ModelItemFormat", StringComparison.Ordinal) >= 0);
-            if(String.IsNullOrEmpty(modelItemString))
+            if(string.IsNullOrEmpty(modelItemString))
             {
                 modelItemString = formats.FirstOrDefault(s => s.IndexOf("WorkflowItemTypeNameFormat", StringComparison.Ordinal) >= 0);
-                if(String.IsNullOrEmpty(modelItemString))
+                if(string.IsNullOrEmpty(modelItemString))
                 {
                     return true;
                 }
@@ -68,27 +69,84 @@ namespace Dev2.Activities.Utils
         /// <returns>If the activity is drop-able into a foreach</returns>
         bool DropPointOnDragEnter(object objectData)
         {
-            bool dropEnabled = true;
-
             var data = objectData as ModelItem;
 
-            if(data != null && (data.ItemType == typeof(FlowDecision) || data.ItemType == typeof(FlowSwitch<string>)))
+            if (!ValidateDecision(objectData, data, true))
+            {
+                return false;
+            }
+            if (!ValidateSwitch(objectData, data, true))
+            {
+                return false;
+            }
+            if (!ValidateSelectAndApply(objectData, data, true))
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        private bool ValidateDecision(object objectData, ModelItem data, bool dropEnabled)
+        {
+            var stringValue = objectData as string;
+            if ((data != null && data.ItemType.Name == "FlowDecision") || (stringValue != null && stringValue.Contains("Decision")))
             {
                 dropEnabled = false;
-
             }
-            else
+            if (!dropEnabled)
             {
-                var stringValue = objectData as string;
-                if (stringValue != null && (stringValue.Contains("Decision") || stringValue.Contains("Switch") || stringValue.Contains("SelectAndApply")))
-                {
-                    dropEnabled = false;
-                }
+                ShowErrorMessage(Warewolf.Studio.Resources.Languages.Core.DecisionDropNotAllowedMessage,
+                    Warewolf.Studio.Resources.Languages.Core.ExplorerDropNotAllowedHeader);
+            }
+            return dropEnabled;
+        }
 
+        private bool ValidateSwitch(object objectData, ModelItem data, bool dropEnabled)
+        {
+            var stringValue = objectData as string;
+            if ((data != null && data.ItemType.Name == "FlowSwitch`1") || (stringValue != null && stringValue.Contains("Switch")))
+            {
+                dropEnabled = false;
+            }
+
+            if (!dropEnabled)
+            {
+                ShowErrorMessage(Warewolf.Studio.Resources.Languages.Core.SwitchDropNotAllowedMessage,
+                    Warewolf.Studio.Resources.Languages.Core.ExplorerDropNotAllowedHeader);
+            }
+            return dropEnabled;
+        }
+
+        private bool ValidateSelectAndApply(object objectData, ModelItem data, bool dropEnabled)
+        {
+            var stringValue = objectData as string;
+            if ((data != null && data.ItemType.Name == "DsfSelectAndApplyActivity") || (stringValue != null && stringValue.Contains("SelectAndApply")))
+            {
+                dropEnabled = false;
+            }
+
+            if (!dropEnabled)
+            {
+                ShowErrorMessage(Warewolf.Studio.Resources.Languages.Core.SelectAndApplyDropNotAllowedMessage,
+                    Warewolf.Studio.Resources.Languages.Core.ExplorerDropNotAllowedHeader);
             }
             return dropEnabled;
         }
 
         #endregion
+
+        private void ShowErrorMessage(string errorMessage, string header)
+        {
+            var a = new PopupMessage
+            {
+                Buttons = MessageBoxButton.OK,
+                Description = errorMessage,
+                Header = header,
+                Image = MessageBoxImage.Error
+            };
+            var popup = CustomContainer.Get<IShellViewModel>();
+            popup.ShowPopup(a);
+        }
     }
 }
