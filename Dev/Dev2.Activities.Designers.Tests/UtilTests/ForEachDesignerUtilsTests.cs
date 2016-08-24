@@ -15,6 +15,7 @@ using System.Security.Permissions;
 using System.Windows;
 using Castle.DynamicProxy.Generators;
 using Dev2.Activities.Utils;
+using Dev2.Common.Interfaces;
 using Dev2.Studio.Core.Activities.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -74,6 +75,8 @@ namespace Dev2.Core.Tests.Activities
             dataObject.Setup(o => o.GetFormats()).Returns(new[] { "ModelItemFormat" });
             dataObject.Setup(o => o.GetData(It.IsAny<string>())).Returns("Decision");
             //------------Execute Test---------------------------
+            var shell = new Mock<IShellViewModel>();
+            CustomContainer.Register(shell.Object);
             var dropEnabled = activityDesignerUtils.LimitDragDropOptions(dataObject.Object);
             //------------Assert Results-------------------------
             Assert.IsFalse(dropEnabled);
@@ -124,6 +127,8 @@ namespace Dev2.Core.Tests.Activities
             dataObject.Setup(o => o.GetFormats()).Returns(new[] { "ModelItemFormat" });
             dataObject.Setup(o => o.GetData(It.IsAny<string>())).Returns("Switch");
             //------------Execute Test---------------------------
+            var shell = new Mock<IShellViewModel>();
+            CustomContainer.Register(shell.Object);
             var dropEnabled = activityDesignerUtils.LimitDragDropOptions(dataObject.Object);
             //------------Assert Results-------------------------
             Assert.IsFalse(dropEnabled);
@@ -171,6 +176,8 @@ namespace Dev2.Core.Tests.Activities
             dataObject.Setup(o => o.GetFormats()).Returns(new[] { "WorkflowItemTypeNameFormat" });
             dataObject.Setup(o => o.GetData(It.IsAny<string>())).Returns("Decision");
             //------------Execute Test---------------------------
+            var shell = new Mock<IShellViewModel>();
+            CustomContainer.Register(shell.Object);
             var dropEnabled = activityDesignerUtils.LimitDragDropOptions(dataObject.Object);
             //------------Assert Results-------------------------
             Assert.IsFalse(dropEnabled);
@@ -187,6 +194,8 @@ namespace Dev2.Core.Tests.Activities
             dataObject.Setup(o => o.GetFormats()).Returns(new[] { "WorkflowItemTypeNameFormat" });
             dataObject.Setup(o => o.GetData(It.IsAny<string>())).Returns("Switch");
             //------------Execute Test---------------------------
+            var shell = new Mock<IShellViewModel>();
+            CustomContainer.Register(shell.Object);
             var dropEnabled = activityDesignerUtils.LimitDragDropOptions(dataObject.Object);
             //------------Assert Results-------------------------
             Assert.IsFalse(dropEnabled);
@@ -340,6 +349,8 @@ namespace Dev2.Core.Tests.Activities
             dataObject.Setup(o => o.GetFormats()).Returns(new[] { "ModelItemFormat" });
             dataObject.Setup(o => o.GetData(It.IsAny<string>())).Returns("SelectAndApply");
             //------------Execute Test---------------------------
+            var shell = new Mock<IShellViewModel>();
+            CustomContainer.Register(shell.Object);
             var dropEnabled = activityDesignerUtils.LimitDragDropOptions(dataObject.Object);
             //------------Assert Results-------------------------
             Assert.IsFalse(dropEnabled);
@@ -356,6 +367,8 @@ namespace Dev2.Core.Tests.Activities
             dataObject.Setup(o => o.GetFormats()).Returns(new[] { "WorkflowItemTypeNameFormat" });
             dataObject.Setup(o => o.GetData(It.IsAny<string>())).Returns("SelectAndApply");
             //------------Execute Test---------------------------
+            var shell = new Mock<IShellViewModel>();
+            CustomContainer.Register(shell.Object);
             var dropEnabled = activityDesignerUtils.LimitDragDropOptions(dataObject.Object);
             //------------Assert Results-------------------------
             Assert.IsFalse(dropEnabled);
