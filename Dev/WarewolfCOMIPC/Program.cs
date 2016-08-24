@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.IO.Pipes;
 using System.Linq;
@@ -55,7 +56,18 @@ namespace WarewolfCOMIPC
             while (data.Status != KeepAliveStatus.Close)
             {
                 Console.WriteLine("Executing");
-                LoadLibrary(data, serializer, pipe);
+                try
+                {
+                    LoadLibrary(data, serializer, pipe);
+                }
+                catch(Exception e)
+                {
+                    var newException = new Exception("Error executing COM",e);
+                    var sw = new StreamWriter(pipe);
+                    serializer.Serialize(sw, newException);
+                    sw.Flush();
+                    Console.WriteLine("Execution errored " + data.MethodToCall);
+                }
                 AcceptMessagesFromPipe(pipe);
             }
         }
@@ -119,33 +131,48 @@ namespace WarewolfCOMIPC
                         Console.WriteLine("Executing GeMethods for:" + data.CLSID);
                         var type = Type.GetTypeFromCLSID(data.CLSID, true);
                         var objectInstance = Activator.CreateInstance(type);
-                        var paramsObjects = data.Parameters.ToList();
-                        object[] correctValues = new object[paramsObjects.Count];
-                        for (int index = 0; index < paramsObjects.Count; index++)
+                        var dispatchedtype = DispatchUtility.GetType(objectInstance, false);
+                        MethodInfo[] methods = dispatchedtype.GetMethods();
+                        var matchingMethods = methods.Where(info => info.Name == data.MethodToCall);
+                        MethodInfo methodBeingCalled = null;
+                        foreach(var matchingMethod in matchingMethods)
                         {
-                            var o = paramsObjects[index];
-                            var cleanValue = o.ToString()
-                                .Replace("]", "")
-                                .Replace("[", "")
-                                .Replace("\r", "")
-                                .Replace(Environment.NewLine, "")
-                                .Replace("\n", "")
-                                .Trim();
-                            correctValues[index] = cleanValue;
-                        }
-                        try
-                        {
-                            var result = DispatchUtility.Invoke(objectInstance, data.MethodToCall, correctValues);
-                            var sw = new StreamWriter(pipe);
-                            formatter.Serialize(sw, result ?? "Success");
-                            sw.Flush();
-                            Console.WriteLine("Execution completed " + data.MethodToCall);
-                        }
-                        catch (Exception ex)
-                        {
-                            if (ex.InnerException != null)
+                            var found = true;
+                            var parameters = matchingMethod.GetParameters();
+                            if (parameters.Length == data.Parameters.Length)
                             {
-                                throw new COMException(ex.InnerException?.Message);
+                                var parameterTypes = parameters.Select(info => info.ParameterType.AssemblyQualifiedName).ToList();
+                                for(int i = 0; i < parameterTypes.Count; i++)
+                                {
+                                    if (data.Parameters[i].TypeName != parameterTypes[i])
+                                    {
+                                        found = false;
+                                    }
+                                }
+                            }
+                            if (found)
+                            {
+                                methodBeingCalled = matchingMethod;
+                            }
+                        }
+                        if (methodBeingCalled != null)
+                        {
+                            var paramsObjects = BuildValuedTypeParams(data.Parameters, methodBeingCalled.GetParameters());
+
+                            try
+                            {
+                                var result = DispatchUtility.Invoke(objectInstance, data.MethodToCall, paramsObjects);
+                                var sw = new StreamWriter(pipe);
+                                formatter.Serialize(sw, result ?? "Success");
+                                sw.Flush();
+                                Console.WriteLine("Execution completed " + data.MethodToCall);
+                            }
+                            catch (Exception ex)
+                            {
+                                if (ex.InnerException != null)
+                                {
+                                    throw new COMException(ex.InnerException?.Message);
+                                }
                             }
                         }
                     }
@@ -172,5 +199,53 @@ namespace WarewolfCOMIPC
             }
         }
 
+        private static object[] BuildValuedTypeParams(ParameterInfoTO[] setupInfo, ParameterInfo[] getParameters)
+        {
+            var valuedTypeList = new object[setupInfo.Length];
+
+            for (int index = 0; index < setupInfo.Length; index++)
+            {
+                var methodParameter = setupInfo[index];
+                
+                var type = getParameters[index].ParameterType;
+                try                    
+                {
+                    var obj = Microsoft.VisualBasic.Interaction.CreateObject("Project1.Class2");
+
+                    var anonymousType = JsonConvert.DeserializeObject(methodParameter.DefaultValue.ToString(), type);
+                    if (anonymousType != null)
+                    {
+                        valuedTypeList[index] = anonymousType;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    var argType = type;
+                    try
+                    {
+                        if (argType != null)
+                        {
+                            var provider = TypeDescriptor.GetConverter(argType);
+                            var convertFrom = provider.ConvertFrom(methodParameter.DefaultValue);
+                            valuedTypeList[index] = convertFrom;
+                        }
+                    }
+                    catch (Exception)
+                    {
+                        try
+                        {
+                            var typeConverter = TypeDescriptor.GetConverter(methodParameter.DefaultValue);
+                            var convertFrom = typeConverter.ConvertFrom(methodParameter.DefaultValue);
+                            valuedTypeList[index] = convertFrom;
+                        }
+                        catch (Exception k)
+                        {
+                            Console.WriteLine(k.Message);
+                        }
+                    }
+                }
+            }
+            return valuedTypeList;
+        }
     }
 }
