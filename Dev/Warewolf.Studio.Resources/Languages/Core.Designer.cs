@@ -1832,6 +1832,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The Decision tool cannot be dropped onto this tool..
+        /// </summary>
+        public static string DecisionDropNotAllowedMessage {
+            get {
+                return ResourceManager.GetString("DecisionDropNotAllowedMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Default Query:.
         /// </summary>
         public static string DefaultQueryLabel {
@@ -6572,6 +6581,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The Select And Apply tool cannot be dropped onto this tool..
+        /// </summary>
+        public static string SelectAndApplyDropNotAllowedMessage {
+            get {
+                return ResourceManager.GetString("SelectAndApplyDropNotAllowedMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to https://warewolf.userecho.com/api/v2/forums/1/topics.json?access_token=Lc2neiss3Kwc5jBrMcX9nq9v2XfPlRyomaE4bW69.
         /// </summary>
         public static string SendErrorReportUrl {
@@ -7896,6 +7914,15 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string StandardStyling {
             get {
                 return ResourceManager.GetString("StandardStyling", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The Switch tool cannot be dropped onto this tool..
+        /// </summary>
+        public static string SwitchDropNotAllowedMessage {
+            get {
+                return ResourceManager.GetString("SwitchDropNotAllowedMessage", resourceCulture);
             }
         }
         

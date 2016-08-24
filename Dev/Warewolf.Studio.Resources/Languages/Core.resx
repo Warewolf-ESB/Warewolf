@@ -508,6 +508,15 @@ The more information you can provide us with, the faster we can track the issue 
   <data name="DeployResourceCheckboxViewPermissionError" xml:space="preserve">
     <value>You do not have view permission on this item to deploy.</value>
   </data>
+  <data name="DecisionDropNotAllowedMessage" xml:space="preserve">
+    <value>The Decision tool cannot be dropped onto this tool.</value>
+  </data>
+  <data name="SwitchDropNotAllowedMessage" xml:space="preserve">
+    <value>The Switch tool cannot be dropped onto this tool.</value>
+  </data>
+  <data name="SelectAndApplyDropNotAllowedMessage" xml:space="preserve">
+    <value>The Select And Apply tool cannot be dropped onto this tool.</value>
+  </data>
   <data name="ServiceDesignerSourceNotFound" xml:space="preserve">
     <value>Source was not found. This service will not execute.</value>
   </data>

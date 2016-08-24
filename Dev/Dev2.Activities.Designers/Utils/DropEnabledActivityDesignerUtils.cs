@@ -14,6 +14,8 @@ using System.Activities.Statements;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
+using Dev2.Common.Interfaces;
+using Warewolf.Studio.Core.Popup;
 
 namespace Dev2.Activities.Utils
 {
@@ -80,9 +82,20 @@ namespace Dev2.Activities.Utils
             else
             {
                 var stringValue = objectData as string;
-                if (stringValue != null && (stringValue.Contains("Decision") || stringValue.Contains("Switch") || stringValue.Contains("SelectAndApply")))
+                if (stringValue != null && stringValue.Contains("Decision"))
                 {
                     dropEnabled = false;
+                    ShowErrorMessage(Warewolf.Studio.Resources.Languages.Core.DecisionDropNotAllowedMessage, Warewolf.Studio.Resources.Languages.Core.ExplorerDropNotAllowedHeader);
+                }
+                else if (stringValue != null && stringValue.Contains("Switch"))
+                {
+                    dropEnabled = false;
+                    ShowErrorMessage(Warewolf.Studio.Resources.Languages.Core.SwitchDropNotAllowedMessage, Warewolf.Studio.Resources.Languages.Core.ExplorerDropNotAllowedHeader);
+                }
+                else if (stringValue != null && stringValue.Contains("SelectAndApply"))
+                {
+                    dropEnabled = false;
+                    ShowErrorMessage(Warewolf.Studio.Resources.Languages.Core.SelectAndApplyDropNotAllowedMessage, Warewolf.Studio.Resources.Languages.Core.ExplorerDropNotAllowedHeader);
                 }
 
             }
@@ -90,5 +103,18 @@ namespace Dev2.Activities.Utils
         }
 
         #endregion
+
+        private void ShowErrorMessage(string errorMessage, string header)
+        {
+            var a = new PopupMessage
+            {
+                Buttons = MessageBoxButton.OK,
+                Description = errorMessage,
+                Header = header,
+                Image = MessageBoxImage.Error
+            };
+            var popup = CustomContainer.Get<IShellViewModel>();
+            popup.ShowPopup(a);
+        }
     }
 }
