@@ -206,7 +206,6 @@ namespace Dev2.Activities.Designers2.Decision
                         DisplayText = decisions.DisplayText;
                         RequireAllDecisionsToBeTrue = decisions.Mode == Dev2DecisionMode.AND;
                         return new ObservableCollection<IDev2TOFn>(decisions.TheStack.Select((a, i) => new DecisionTO(a, i + 1, UpdateDecisionDisplayName, DeleteRow)));
-
                     }
 
                 }
