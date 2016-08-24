@@ -15,6 +15,7 @@ using Dev2.Common.Interfaces.Data.TO;
 using Dev2.Common.Interfaces.Scheduler.Interfaces;
 using Dev2.DataList.Contract;
 using Newtonsoft.Json;
+// ReSharper disable NonLocalizedString
 
 namespace Dev2.Scheduler
 {
