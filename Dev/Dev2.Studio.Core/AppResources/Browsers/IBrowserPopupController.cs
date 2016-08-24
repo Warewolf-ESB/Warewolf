@@ -15,6 +15,6 @@ namespace Dev2.Studio.Core.AppResources.Browsers
 {
     public interface IBrowserPopupController
     {
-        bool ShowPopup(string url); // BUG 9798 - 2013.06.25 - TWR : added
+        void ShowPopup(string url);
     }
 }

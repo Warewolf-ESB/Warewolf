@@ -19,11 +19,10 @@ namespace Dev2.Core.Tests.AppResources.Browsers
         #region ShowPopup
 
         [TestMethod]
-        public void ExternalBrowserPopupControllerShowPopupExpectedReturnsTrue()
+        public void ExternalBrowserPopupControllerShowPopupExpectedNoUnhandledExceptions()
         {
             var controller = new ExternalBrowserPopupController();
-            var result = controller.ShowPopup(null);
-            Assert.IsTrue(result);
+            controller.ShowPopup(null);
         }
 
         #endregion
