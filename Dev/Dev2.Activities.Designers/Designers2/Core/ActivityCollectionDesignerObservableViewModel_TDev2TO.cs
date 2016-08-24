@@ -9,6 +9,8 @@ using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Validation;
 using Dev2.Interfaces;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
+// ReSharper disable NonLocalizedString
+// ReSharper disable ConvertToAutoProperty
 
 namespace Dev2.Activities.Designers2.Core
 {
