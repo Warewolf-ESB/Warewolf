@@ -335,6 +335,7 @@
                                                   IsChecked="{Binding Path=Data.IsResourceChecked, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                   IsEnabled="{Binding Path=Data.IsResourceCheckedEnabled, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                   ToolTip="{Binding Path=Data.DeployResourceCheckboxTooltip, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                  ToolTipService.ShowOnDisabled="True"
                                                   Style="{StaticResource DeployCheckBoxStyle}"
                                                   Visibility="{Binding Path=Data.AllowResourceCheck,
                                                                        Converter={StaticResource BoolToVisibilityConverter}}" />
@@ -687,6 +688,7 @@
                                                       IsChecked="{Binding Path=Data.IsResourceChecked, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                       IsEnabled="{Binding Path=Data.IsResourceCheckedEnabled, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                       ToolTip="{Binding Path=Data.DeployResourceCheckboxTooltip, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                      ToolTipService.ShowOnDisabled="True"
                                                       Style="{StaticResource DeployCheckBoxStyle}"
                                                       Visibility="{Binding Path=Data.AllowResourceCheck, Converter={StaticResource BoolToVisibilityConverter}}" />
                                             <TextBlock x:Name="ResourceNameTextBlock"
