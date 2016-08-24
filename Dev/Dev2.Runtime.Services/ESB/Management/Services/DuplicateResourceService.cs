@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Xml.Linq;
 using Dev2.Common;
+using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Infrastructure;
@@ -71,22 +71,19 @@ namespace Dev2.Runtime.ESB.Management.Services
 
                             if (!explorerItem.IsFolder)
                             {
-                                var xElement = resource.ToXml();
-                                var newResourceXml = new XElement(xElement);
+                                var newResourceClone = new Resource(resource);
                                 //Allocate new ID
                                 var newGuid = Guid.NewGuid();
-                                var newResource = new Resource(newResourceXml)
-                                {
-                                    ResourceName = newResourceName.ToString(),
-                                    ResourceID = newGuid
-                                };
-                                
-                                GetResourceCatalog().CopyResource(newResource, GlobalConstants.ServerWorkspaceID);
+                                newResourceClone.ResourceName = newResourceName.ToString();
+                                newResourceClone.ResourceID = newGuid;
+                                newResourceClone.ResourcePath = string.Empty;
+                                newResourceClone.VersionInfo = null;
+                                GetResourceCatalog().SaveResource(GlobalConstants.ServerWorkspaceID, newResourceClone);
                             }
                             else
                             {
 
-                                var explorerItems = explorerItem.Children;
+                                var explorerItems = explorerItem.Children.Flatten(item => item.Children);
                                 var folderResource = GetResourceCatalog().GetResource(GlobalConstants.ServerWorkspaceID, explorerItem.ResourceId);
 
                                 var newFolder = new Resource(folderResource)
@@ -116,7 +113,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                         catch (Exception x)
                         {
                             Dev2Logger.Error(x.Message + " DuplicateResourceService", x);
-                            var result = new ExecuteMessage { HasError = true };
+                            var result = new ExecuteMessage { HasError = true, Message = x.Message.ToStringBuilder() };
                             return serializer.SerializeToBuilder(result);
                         }
 

@@ -1,4 +1,6 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
+using System.Windows;
 using System.Windows.Controls;
 using Dev2.Common.Interfaces;
 using Warewolf.Studio.Core;
@@ -15,6 +17,7 @@ namespace Warewolf.Studio.Views
         public CreateDuplicateResourceDialog()
         {
             InitializeComponent();
+            WindowStartupLocation = WindowStartupLocation.CenterScreen;
         }
 
         private void CreateDuplicateResourceDialog_OnClosing(object sender, CancelEventArgs e)
@@ -33,7 +36,7 @@ namespace Warewolf.Studio.Views
         public void ShowView()
         {
             PopupViewManageEffects.AddBlackOutEffect(_blackoutGrid);
-            Show();
+            ShowDialog();
         }
 
         #endregion
