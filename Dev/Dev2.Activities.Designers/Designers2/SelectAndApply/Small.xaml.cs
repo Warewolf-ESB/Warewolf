@@ -20,12 +20,11 @@ namespace Dev2.Activities.Designers2.SelectAndApply
         public Small()
         {
             InitializeComponent();
-            DropPoint.PreviewDragOver += DropPoint_OnDragOver;
             DropPoint.PreviewDrop += DropPoint_OnPreviewDrop;
             _dropEnabledActivityDesignerUtils = new DropEnabledActivityDesignerUtils();
         }
 
-        void AllowDrag(DragEventArgs e)
+        void DropPoint_OnPreviewDrop(object sender, DragEventArgs e)
         {
             if (_dropEnabledActivityDesignerUtils != null)
             {
@@ -37,22 +36,6 @@ namespace Dev2.Activities.Designers2.SelectAndApply
                 }
             }
         }
-
-        void DropPoint_OnPreviewDrop(object sender, DragEventArgs e)
-        {
-//            var viewModel = DataContext as SelectAndApplyDesignerViewModel;
-//            if (viewModel != null)
-//            {
-//               viewModel.DoDrop(e.Data);
-//            }
-        }
-
-        void DropPoint_OnDragOver(object sender, DragEventArgs e)
-        {
-            AllowDrag(e);
-            OnDragOver(e);
-        }
-
 
         protected override IInputElement GetInitialFocusElement()
         {
