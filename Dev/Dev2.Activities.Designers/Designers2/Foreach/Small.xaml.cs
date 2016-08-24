@@ -21,7 +21,6 @@ namespace Dev2.Activities.Designers2.Foreach
         {
             InitializeComponent();
             DropPoint.PreviewDrop += DoDrop;
-            DropPoint.PreviewDragOver += DropPointOnDragEnter;
             _dropEnabledActivityDesignerUtils = new DropEnabledActivityDesignerUtils();
         }
 
@@ -30,6 +29,24 @@ namespace Dev2.Activities.Designers2.Foreach
         void DoDrop(object sender, DragEventArgs e)
         {
             var dataObject = e.Data;
+
+            if (_dropEnabledActivityDesignerUtils != null)
+            {
+                var dropEnabled = _dropEnabledActivityDesignerUtils.LimitDragDropOptions(dataObject);
+                if (!dropEnabled)
+                {
+                    e.Effects = DragDropEffects.None;
+                    e.Handled = true;
+                }
+                else
+                {
+                    if (ViewModel.MultipleItemsToSequence(dataObject))
+                    {
+                        e.Effects = DragDropEffects.None;
+                        e.Handled = true;
+                    }
+                }
+            }
             bool multipleItemsToSequence = ViewModel.MultipleItemsToSequence(dataObject);
             if(multipleItemsToSequence)
             {
@@ -38,28 +55,6 @@ namespace Dev2.Activities.Designers2.Foreach
             }
 
         }
-
-        void DropPointOnDragEnter(object sender, DragEventArgs e)
-        {
-            if(_dropEnabledActivityDesignerUtils != null)
-            {
-                var dropEnabled = _dropEnabledActivityDesignerUtils.LimitDragDropOptions(e.Data);
-                if(!dropEnabled)
-                {
-                    e.Effects = DragDropEffects.None;
-                    e.Handled = true;
-                }
-                else
-                {
-                    if(ViewModel.MultipleItemsToSequence(e.Data))
-                    {
-                        e.Effects = DragDropEffects.None;
-                        e.Handled = true;
-                    }
-                }
-            }
-        }
-
 
         protected override IInputElement GetInitialFocusElement()
         {
