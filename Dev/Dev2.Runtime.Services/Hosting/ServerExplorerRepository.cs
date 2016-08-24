@@ -24,6 +24,7 @@ using Dev2.Common.Wrappers;
 using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.Security;
 using Warewolf.Resource.Errors;
+// ReSharper disable UnusedMember.Global
 
 // ReSharper disable ConvertToAutoProperty
 // ReSharper disable MemberCanBePrivate.Global
