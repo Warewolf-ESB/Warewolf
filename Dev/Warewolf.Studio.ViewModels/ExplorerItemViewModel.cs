@@ -204,7 +204,12 @@ namespace Warewolf.Studio.ViewModels
                 _explorerItemViewModelCommandController.OpenCommand(this, Server);
             });
             RenameCommand = new DelegateCommand(() => IsRenaming = true);
-           
+
+            ViewSwaggerCommand = new DelegateCommand(() =>
+            {
+                _explorerItemViewModelCommandController.ViewSwaggerCommand(this, Server);
+            });
+
             NewServerCommand = new DelegateCommand(() =>
             {
                 _explorerItemViewModelCommandController.NewServerSourceCommand(ResourcePath, Server);
@@ -697,6 +702,7 @@ namespace Warewolf.Studio.ViewModels
             get;
             set;
         }
+        public ICommand ViewSwaggerCommand { get; set; }
 
         public ICommand DebugCommand => new DelegateCommand(() =>
         {
