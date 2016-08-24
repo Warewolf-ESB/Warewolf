@@ -804,6 +804,7 @@ namespace Warewolf.Studio.ViewModels
                 {
                     IsResourceCheckedEnabled = true;
                     var permission = Server.Permissions?.FirstOrDefault(p => p.ResourceID == ResourceId);
+                    
                     if (permission?.Permissions == Permissions.View)
                     {
                         IsResourceCheckedEnabled = false;

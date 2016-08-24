@@ -47,8 +47,8 @@ namespace Dev2.Runtime.Hosting
                 var res = new StringBuilder();
                 foreach (var path in duplicateResource.ResourcePath)
                     res.AppendLine(path);
-                duplicateList.Add(string.Format("{0}"+ Environment.NewLine + "{1}" + Environment.NewLine,
-                    duplicateResource.ResourceName, res));
+                var format = string.Format("ResourceName: {0}"+ Environment.NewLine + "{1}", duplicateResource.ResourceName, res);
+                duplicateList.Add(format);
             }
             return duplicateList;
         }
