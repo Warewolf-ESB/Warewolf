@@ -3257,7 +3257,6 @@ namespace Dev2.Tests.Runtime.Hosting
             Assert.IsTrue(duplicateResource.ResourcePath[1].Contains(resourcePath1));
         }
 
-
         [TestMethod]
         [Owner("Sanele Mthembu")]
         [ExpectedException(typeof(ArgumentNullException))]
@@ -3267,7 +3266,7 @@ namespace Dev2.Tests.Runtime.Hosting
             var catalog = new ResourceCatalog();
             Assert.IsNotNull(catalog);
             //------------Execute Test---------------------------
-            catalog.ValidateWorkspace(string.Empty, null, null);
+            catalog.IsWorkspaceValid(string.Empty, null, null);
             //------------Assert Results-------------------------
         }
 
@@ -3281,7 +3280,7 @@ namespace Dev2.Tests.Runtime.Hosting
             var catalog = new ResourceCatalog();
             Assert.IsNotNull(catalog);
             //------------Execute Test---------------------------
-            var isWorkspaceValid = catalog.ValidateWorkspace(resourcePath, new List<string>(), new string[0]);
+            var isWorkspaceValid = catalog.IsWorkspaceValid(resourcePath, new List<string>(), new string[0]);
             //------------Assert Results-------------------------
             Assert.IsFalse(isWorkspaceValid);
         }
@@ -3295,7 +3294,7 @@ namespace Dev2.Tests.Runtime.Hosting
             var catalog = new ResourceCatalog();
             Assert.IsNotNull(catalog);
             //------------Execute Test---------------------------
-            catalog.ValidateWorkspace("SomeString", null, null);
+            catalog.IsWorkspaceValid("SomeString", null, null);
             //------------Assert Results-------------------------
         }
 

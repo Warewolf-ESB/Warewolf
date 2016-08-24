@@ -273,12 +273,6 @@ namespace Dev2.Runtime.Hosting
             try
             {
                 GetFileContent(enumerable, streams);
-                var resourceBaseType = typeof(IResourceSource);
-                    var assemblies = AppDomain.CurrentDomain.GetAssemblies();
-                    var types = assemblies
-                        .SelectMany(s => s.GetTypes())
-                        .Where(p => resourceBaseType.IsAssignableFrom(p));
-                    var allTypes = types as IList<Type> ?? types.ToList();                                
                 streams.ForEach(currentItem =>
                 {
                     var xml = XElement.Load(currentItem.FileStream);
@@ -287,17 +281,7 @@ namespace Dev2.Runtime.Hosting
                     var isValid = HostSecurityProvider.Instance.VerifyXml(result);
                     if (isValid)
                     {
-                        var typeName = xml.AttributeSafe("Type");
-                        Type type = null;
-                        if(allTypes.Count != 0)
-                            type = allTypes.FirstOrDefault(type1 => type1.Name == typeName);
-                        Resource resource;
-                        if(type != null)
-                            resource = (Resource)Activator.CreateInstance(type, xml);
-                        else
-                            resource = new Resource(xml);
-                        resource.FilePath = currentItem.FilePath;
-
+                        var resource = new Resource(xml) { FilePath = currentItem.FilePath };
                         if(resource.ResourcePath.ToUpper() == "UNASSIGNED")
                             resource.ResourcePath = string.Empty;
                         resourceUpgrader.UpgradeResource(xml, Assembly.GetExecutingAssembly().GetName().Version, a =>
