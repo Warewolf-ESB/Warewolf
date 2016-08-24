@@ -24,7 +24,7 @@ namespace WarewolfCOMIPC.Client
         /// <summary>
         /// Array of parameters to pass to the function call.
         /// </summary>
-        public object[] Parameters { get; set; }
+        public ParameterInfoTO[] Parameters { get; set; }
 
         /// <summary>
         /// Status indicating if the wrapper executable should close the connection and terminate itself

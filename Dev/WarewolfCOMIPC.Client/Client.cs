@@ -24,10 +24,10 @@ namespace WarewolfCOMIPC.Client
 
             // Pass token to child process
             var psi = new ProcessStartInfo("WarewolfCOMIPC.exe", token) { Verb = "runas" };
-            psi.UseShellExecute = false;
-            psi.ErrorDialog = false;
-            psi.RedirectStandardOutput = false;
-            psi.CreateNoWindow = true;
+//            psi.UseShellExecute = false;
+//            psi.ErrorDialog = false;
+//            psi.RedirectStandardOutput = false;
+//            psi.CreateNoWindow = true;
             _process = Process.Start(psi);
             _pipe = new NamedPipeClientStream(".", token, PipeDirection.InOut);
             _pipe.Connect();
@@ -58,7 +58,7 @@ namespace WarewolfCOMIPC.Client
         /// <param name="args">Array of args to pass to the function.</param>
         /// <returns>Result object returned by the library.</returns>
         /// <exception cref="Exception">This Method will rethrow all exceptions thrown by the wrapper.</exception>
-        public object Invoke(Guid clsid, string function, Execute execute, object[] args)
+        public object Invoke(Guid clsid, string function, Execute execute, ParameterInfoTO[] args)
         {
             if (_disposed)
                 throw new ObjectDisposedException(nameof(Client));
@@ -119,11 +119,19 @@ namespace WarewolfCOMIPC.Client
                     }
                 case Execute.ExecuteSpecifiedMethod:
                     {
-                        result = serializer.Deserialize(jsonTextReader);
-                        var exception = result as Exception;
-                        if (exception != null)
+                        var obj = serializer.Deserialize(jsonTextReader);
+                        result = obj.ToString();
+                        try
                         {
-                            throw exception;
+                            var exception = JsonConvert.DeserializeObject<Exception>(result.ToString());
+                            if (exception != null)
+                            {
+                                throw exception;
+                            }
+                        }
+                        catch(Exception)
+                        {
+                            // Do nothing was not an exception
                         }
                         return result;
                     }
