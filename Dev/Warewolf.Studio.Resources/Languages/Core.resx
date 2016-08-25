@@ -892,9 +892,6 @@ The more information you can provide us with, the faster we can track the issue 
   <data name="ViewInBrowserLabel" xml:space="preserve">
     <value>View Results In Browser</value>
   </data>
-  <data name="DevUrl" xml:space="preserve">
-    <value>http://dev2.co.za/</value>
-  </data>
   <data name="WarewolfUrl" xml:space="preserve">
     <value>https://warewolf.io/</value>
   </data>
