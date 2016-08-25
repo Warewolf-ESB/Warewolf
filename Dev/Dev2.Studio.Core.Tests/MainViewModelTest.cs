@@ -1677,6 +1677,67 @@ namespace Dev2.Core.Tests
 
         [TestMethod]
         [Owner("Pieter Terblanche")]
+        [TestCategory("MainViewModel_ViewViewApisJson")]
+        public void MainViewModel_ViewViewApisJson_Handle_Result()
+        {
+            //------------Setup for test--------------------------
+            CreateFullExportsAndVm();
+
+            var env = SetupEnvironment();
+
+            //------------Execute Test---------------------------
+            MainViewModel.ActiveEnvironment = env.Object;
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(MainViewModel.ActiveEnvironment);
+            Assert.IsTrue(MainViewModel.ActiveEnvironment.IsConnected);
+            Assert.IsTrue(MainViewModel.ActiveEnvironment.CanStudioExecute);
+
+            var source = new Mock<IExplorerItemViewModel>();
+            source.Setup(a => a.ResourceId).Returns(Guid.NewGuid);
+            source.Setup(a => a.ResourceName).Returns("TestResourceFolder");
+            source.Setup(a => a.ResourceType).Returns("Folder");
+            source.Setup(a => a.IsService).Returns(false);
+            source.Setup(a => a.IsFolder).Returns(true);
+
+            MainViewModel.ViewApisJson(source.Object.ResourcePath, new Uri("http://localhost:3142"));
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("MainViewModel_OpenResource")]
+        public void MainViewModel_OpenResource_Handle_Result()
+        {
+            //------------Setup for test--------------------------
+            CreateFullExportsAndVm();
+
+            var env = SetupEnvironment();
+
+            //------------Execute Test---------------------------
+            MainViewModel.ActiveEnvironment = env.Object;
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(MainViewModel.ActiveEnvironment);
+            Assert.IsTrue(MainViewModel.ActiveEnvironment.IsConnected);
+            Assert.IsTrue(MainViewModel.ActiveEnvironment.CanStudioExecute);
+
+            var source = new Mock<IExplorerItemViewModel>();
+            source.Setup(a => a.ResourceId).Returns(Guid.NewGuid);
+            source.Setup(a => a.ResourceName).Returns("TestResourceName");
+            source.Setup(a => a.ResourceType).Returns("WorkflowService");
+            source.Setup(a => a.IsService).Returns(true);
+            source.Setup(a => a.IsFolder).Returns(false);
+
+            var viewModel = new Mock<IShellViewModel>();
+            var server = new Mock<IServer>();
+            server.SetupGet(server1 => server1.IsConnected).Returns(true);
+            viewModel.SetupGet(model => model.ActiveServer).Returns(server.Object);
+            viewModel.SetupGet(model => model.LocalhostServer).Returns(server.Object);
+            viewModel.SetupGet(model => model.ActiveServer.EnvironmentID).Returns(Guid.NewGuid);
+
+            MainViewModel.OpenResource(source.Object.ResourceId, viewModel.Object.ActiveServer);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
         [TestCategory("MainViewModel_EditDatabaseSource")]
         public void MainViewModel_EditDatabaseSource_Handle_Result()
         {
@@ -1694,11 +1755,13 @@ namespace Dev2.Core.Tests
 
             var source = new Mock<IDbSource>();
             source.Setup(a => a.Name).Returns("TestDatabase");
+
             var mockWM = new Mock<IWorksurfaceContextManager>();
             mockWM.Setup(manager => manager.EditResource(It.IsAny<IDbSource>(),null)).Verifiable();
             MainViewModel.WorksurfaceContextManager = mockWM.Object;
             MainViewModel.WorksurfaceContextManager.EditResource(source.Object);
             mockWM.Verify(manager => manager.EditResource(It.IsAny<IDbSource>(), null));
+            MainViewModel.EditResource(source.Object);
         }
 
         [TestMethod]
@@ -1753,6 +1816,7 @@ namespace Dev2.Core.Tests
             MainViewModel.WorksurfaceContextManager = mockWM.Object;
             MainViewModel.WorksurfaceContextManager.EditResource(source.Object);
             mockWM.Verify(manager => manager.EditResource(It.IsAny<IEmailServiceSource>(), null));
+            MainViewModel.EditResource(source.Object);
         }
 
         [TestMethod]
@@ -1780,6 +1844,7 @@ namespace Dev2.Core.Tests
             MainViewModel.WorksurfaceContextManager = mockWM.Object;
             MainViewModel.WorksurfaceContextManager.EditResource(source.Object);
             mockWM.Verify(manager => manager.EditResource(It.IsAny<IExchangeSource>(), null));
+            MainViewModel.EditResource(source.Object);
         }
 
         [TestMethod]
@@ -1806,11 +1871,46 @@ namespace Dev2.Core.Tests
             source.Setup(a => a.Name).Returns("TestPlugin");
             source.Setup(a => a.SelectedDll).Returns(file.Object);
 
+            
             var mockWM = new Mock<IWorksurfaceContextManager>();
             mockWM.Setup(manager => manager.EditResource(It.IsAny<IPluginSource>(), null)).Verifiable();
             MainViewModel.WorksurfaceContextManager = mockWM.Object;
             MainViewModel.WorksurfaceContextManager.EditResource(source.Object);
             mockWM.Verify(manager => manager.EditResource(It.IsAny<IPluginSource>(), null));
+            MainViewModel.EditResource(source.Object);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("MainViewModel_EditComPluginSource")]
+        public void MainViewModel_EditComPluginSource_Handle_Result()
+        {
+            //------------Setup for test--------------------------
+            CreateFullExportsAndVm();
+
+            var env = SetupEnvironment();
+
+            //------------Execute Test---------------------------
+            MainViewModel.ActiveEnvironment = env.Object;
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(MainViewModel.ActiveEnvironment);
+            Assert.IsTrue(MainViewModel.ActiveEnvironment.IsConnected);
+            Assert.IsTrue(MainViewModel.ActiveEnvironment.CanStudioExecute);
+
+            var file = new Mock<IFileListing>();
+            file.Setup(a => a.FullName).Returns("File");
+
+            var source = new Mock<IComPluginSource>();
+            source.Setup(a => a.ResourceName).Returns("TestPlugin");
+            source.Setup(a => a.SelectedDll).Returns(file.Object);
+
+
+            var mockWM = new Mock<IWorksurfaceContextManager>();
+            mockWM.Setup(manager => manager.EditResource(It.IsAny<IComPluginSource>(), null)).Verifiable();
+            MainViewModel.WorksurfaceContextManager = mockWM.Object;
+            MainViewModel.WorksurfaceContextManager.EditResource(source.Object);
+            mockWM.Verify(manager => manager.EditResource(It.IsAny<IComPluginSource>(), null));
+            MainViewModel.EditResource(source.Object);
         }
 
         [TestMethod]
@@ -1838,6 +1938,7 @@ namespace Dev2.Core.Tests
             MainViewModel.WorksurfaceContextManager = mockWM.Object;
             MainViewModel.WorksurfaceContextManager.EditResource(source.Object);
             mockWM.Verify(manager => manager.EditResource(It.IsAny<IRabbitMQServiceSourceDefinition>(), null));
+            MainViewModel.EditResource(source.Object);
         }
 
         [TestMethod]
@@ -1866,6 +1967,7 @@ namespace Dev2.Core.Tests
             MainViewModel.WorksurfaceContextManager = mockWM.Object;
             MainViewModel.WorksurfaceContextManager.EditServer(source.Object);
             mockWM.Verify(manager => manager.EditServer(It.IsAny<IServerSource>()));
+            MainViewModel.EditServer(source.Object);
         }
 
         [TestMethod]
@@ -1920,6 +2022,7 @@ namespace Dev2.Core.Tests
             MainViewModel.WorksurfaceContextManager = mockWM.Object;
             MainViewModel.WorksurfaceContextManager.EditResource(source.Object);
             mockWM.Verify(manager => manager.EditResource(It.IsAny<IWcfServerSource>(), null));
+            MainViewModel.EditResource(source.Object);
         }
 
         [TestMethod]
@@ -1947,6 +2050,7 @@ namespace Dev2.Core.Tests
             MainViewModel.WorksurfaceContextManager = mockWM.Object;
             MainViewModel.WorksurfaceContextManager.EditResource(source.Object);
             mockWM.Verify(manager => manager.EditResource(It.IsAny<IWebServiceSource>(), null));
+            MainViewModel.EditResource(source.Object);
         }
 
         #region CommandTests
