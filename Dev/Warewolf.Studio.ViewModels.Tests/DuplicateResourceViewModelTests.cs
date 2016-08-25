@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Reflection;
-using System.Text;
 using Dev2.Common.Interfaces;
 using Dev2.Communication;
 using Dev2.Controller;
@@ -24,8 +23,11 @@ namespace Warewolf.Studio.ViewModels.Tests
             //---------------Execute Test ----------------------
 
             var resourceView = new Mock<ICreateDuplicateResourceView>();
+            var mock = new Mock<IExplorerItemViewModel>();
             var resourceId = Guid.NewGuid();
-            DuplicateResourceViewModel vm = new DuplicateResourceViewModel(resourceView.Object, resourceId);
+            mock.Setup(model => model.ResourceId).Returns(resourceId);
+            
+            DuplicateResourceViewModel vm = new DuplicateResourceViewModel(resourceView.Object, mock.Object);
             Assert.IsNull(vm.NewResourceName);
             Assert.IsFalse(vm.FixReferences);
             Assert.IsFalse(vm.FixReferences);
@@ -42,8 +44,10 @@ namespace Warewolf.Studio.ViewModels.Tests
         {
             //---------------Set up test pack-------------------
             var resourceView = new Mock<ICreateDuplicateResourceView>();
+            var mock = new Mock<IExplorerItemViewModel>();
             var resourceId = Guid.NewGuid();
-            DuplicateResourceViewModel vm = new DuplicateResourceViewModel(resourceView.Object, resourceId);
+            mock.Setup(model => model.ResourceId).Returns(resourceId);
+            DuplicateResourceViewModel vm = new DuplicateResourceViewModel(resourceView.Object, mock.Object);
             Assert.IsNull(vm.NewResourceName);
             Assert.IsFalse(vm.FixReferences);
             var fieldInfo = vm.GetType().GetField("_resourceId", BindingFlags.GetField | BindingFlags.NonPublic | BindingFlags.Instance);
@@ -66,8 +70,10 @@ namespace Warewolf.Studio.ViewModels.Tests
             var resourceView = new Mock<ICreateDuplicateResourceView>();
             resourceView.Setup(view => view.ShowView());
             resourceView.SetupProperty(view => view.DataContext);
+            var mock = new Mock<IExplorerItemViewModel>();
             var resourceId = Guid.NewGuid();
-            DuplicateResourceViewModel vm = new DuplicateResourceViewModel(resourceView.Object, resourceId);
+            mock.Setup(model => model.ResourceId).Returns(resourceId);
+            DuplicateResourceViewModel vm = new DuplicateResourceViewModel(resourceView.Object, mock.Object);
 
             //---------------Assert Precondition----------------
             Assert.IsNull(vm.NewResourceName);
@@ -85,8 +91,10 @@ namespace Warewolf.Studio.ViewModels.Tests
             //---------------Set up test pack-------------------
             var resourceView = new Mock<ICreateDuplicateResourceView>();
             resourceView.Setup(view => view.CloseView());
+            var mock = new Mock<IExplorerItemViewModel>();
             var resourceId = Guid.NewGuid();
-            DuplicateResourceViewModel vm = new DuplicateResourceViewModel(resourceView.Object, resourceId);
+            mock.Setup(model => model.ResourceId).Returns(resourceId);
+            DuplicateResourceViewModel vm = new DuplicateResourceViewModel(resourceView.Object, mock.Object);
 
             //---------------Assert Precondition----------------
             Assert.IsNull(vm.NewResourceName);

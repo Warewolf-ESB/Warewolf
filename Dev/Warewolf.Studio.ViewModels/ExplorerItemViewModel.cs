@@ -281,7 +281,7 @@ namespace Warewolf.Studio.ViewModels
 
         private void DuplicateResource()
         {
-            _explorerItemViewModelCommandController.DuplicateResource(ResourceId);
+            _explorerItemViewModelCommandController.DuplicateResource(this);
         }
 
         internal void ShowDependencies()
