@@ -43,7 +43,6 @@ namespace Warewolf.Studio.ViewModels
         public ICommand ContributorsCommand { get; set; }
         public ICommand CommunityCommand { get; set; }
         public ICommand ExpertHelpCommand { get; set; }
-        public ICommand DevUrlCommand { get; set; }
         public ICommand WarewolfUrlCommand { get; set; }
         public string ServerVersion
         {

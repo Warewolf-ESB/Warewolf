@@ -119,16 +119,6 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        public void TestDevUrlCommandCanExecute()
-        {
-            //act
-            var result = _target.DevUrlCommand.CanExecute(null);
-
-            //assert
-            Assert.IsTrue(result);
-        }
-
-        [TestMethod]
         public void TestWarewolfUrlCommandCanExecute()
         {
             //act
