@@ -7,11 +7,14 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using WarewolfCOMIPC.Client;
 // ReSharper disable NonLocalizedString
+// ReSharper disable ArrangeTypeModifiers
 
 namespace WarewolfCOMIPC
 {
+    // ReSharper disable once ClassNeverInstantiated.Global
     class Program
     {
         static void Main(string[] args)
@@ -79,7 +82,7 @@ namespace WarewolfCOMIPC
             {
                 Enum.TryParse(data.ExecuteType, true, out execute);
             }
-
+            var sw = new StreamWriter(pipe);
             switch (execute)
             {
                 case Execute.GetType:
@@ -89,7 +92,7 @@ namespace WarewolfCOMIPC
                         var objectInstance = Activator.CreateInstance(type);
                         Type dispatchedtype = DispatchUtility.GetType(objectInstance, false);
                         Console.WriteLine("Got Type:" + dispatchedtype.FullName);
-                        var sw = new StreamWriter(pipe);
+                        
                         Console.WriteLine("Serializing and sending:" + dispatchedtype.FullName);
                         formatter.Serialize(sw, dispatchedtype);
                         sw.Flush();
@@ -119,7 +122,6 @@ namespace WarewolfCOMIPC
                                                  }).ToList()
                             }).ToList();
                         Console.WriteLine($"Got {methods.Count()} mrthods");
-                        var sw = new StreamWriter(pipe);
                         Console.WriteLine("Serializing and sending methods for:" + dispatchedtype.FullName);
                         formatter.Serialize(sw, methodInfos);
                         sw.Flush();
@@ -127,55 +129,46 @@ namespace WarewolfCOMIPC
                     }
                     break;
                 case Execute.ExecuteSpecifiedMethod:
+                {
+                    Console.WriteLine("Executing GeMethods for:" + data.CLSID);
+                    var type = Type.GetTypeFromCLSID(data.CLSID, true);
+                    var objectInstance = Activator.CreateInstance(type);
+                    var paramsObjects = BuildValuedTypeParams(data.Parameters);
+                    try
                     {
-                        Console.WriteLine("Executing GeMethods for:" + data.CLSID);
-                        var type = Type.GetTypeFromCLSID(data.CLSID, true);
-                        var objectInstance = Activator.CreateInstance(type);
-                        var dispatchedtype = DispatchUtility.GetType(objectInstance, false);
-                        MethodInfo[] methods = dispatchedtype.GetMethods();
-                        var matchingMethods = methods.Where(info => info.Name == data.MethodToCall);
-                        MethodInfo methodBeingCalled = null;
-                        foreach(var matchingMethod in matchingMethods)
-                        {
-                            var found = true;
-                            var parameters = matchingMethod.GetParameters();
-                            if (parameters.Length == data.Parameters.Length)
+                            var result = DispatchUtility.Invoke(objectInstance, data.MethodToCall, paramsObjects);
+                            if (result != null && result.ToString() == "System.__ComObject")
                             {
-                                var parameterTypes = parameters.Select(info => info.ParameterType.AssemblyQualifiedName).ToList();
-                                for(int i = 0; i < parameterTypes.Count; i++)
+                                var retType = DispatchUtility.GetType(result, false);
+                                var props = retType.GetProperties(BindingFlags.Instance | BindingFlags.Public);
+                                var retObj = new JObject();
+                                foreach(var propertyInfo in props)
                                 {
-                                    if (data.Parameters[i].TypeName != parameterTypes[i])
-                                    {
-                                        found = false;
-                                    }
+                                    var propValue = retType.InvokeMember(propertyInfo.Name, BindingFlags.Public | BindingFlags.Instance | BindingFlags.GetProperty, null, result, null);
+                                    retObj.Add(propertyInfo.Name,new JValue(propValue.ToString()));
                                 }
+                                formatter.Serialize(sw, retObj);
+                                sw.Flush();
                             }
-                            if (found)
+                            else
                             {
-                                methodBeingCalled = matchingMethod;
-                            }
-                        }
-                        if (methodBeingCalled != null)
-                        {
-                            var paramsObjects = BuildValuedTypeParams(data.Parameters, methodBeingCalled.GetParameters());
-
-                            try
-                            {
-                                var result = DispatchUtility.Invoke(objectInstance, data.MethodToCall, paramsObjects);
-                                var sw = new StreamWriter(pipe);
+                                if (result!=null && result.ToString() == "0")
+                                {
+                                    result = "0";
+                                }
                                 formatter.Serialize(sw, result ?? "Success");
                                 sw.Flush();
-                                Console.WriteLine("Execution completed " + data.MethodToCall);
                             }
-                            catch (Exception ex)
-                            {
-                                if (ex.InnerException != null)
-                                {
-                                    throw new COMException(ex.InnerException?.Message);
-                                }
-                            }
+                        Console.WriteLine("Execution completed " + data.MethodToCall);
+                    }
+                    catch(Exception ex)
+                    {
+                        if(ex.InnerException != null)
+                        {
+                            throw new COMException(ex.InnerException?.Message);
                         }
                     }
+                }
                     break;
                 case Execute.GetNamespaces:
                 {
@@ -190,7 +183,6 @@ namespace WarewolfCOMIPC
                                         && q.IndexOf("<", StringComparison.Ordinal) < 0
                                         && !q.StartsWith("_")).ToList();
                         Console.WriteLine($"Got {namespaces.Count} namespaces");
-                        var sw = new StreamWriter(pipe);
                         formatter.Serialize(sw, namespaces);
                         sw.Flush();
                         Console.WriteLine("Sent methods for:" + type.FullName);
@@ -199,53 +191,62 @@ namespace WarewolfCOMIPC
             }
         }
 
-        private static object[] BuildValuedTypeParams(ParameterInfoTO[] setupInfo, ParameterInfo[] getParameters)
+        private static object[] BuildValuedTypeParams(ParameterInfoTO[] setupInfo)
         {
             var valuedTypeList = new object[setupInfo.Length];
 
             for (int index = 0; index < setupInfo.Length; index++)
             {
                 var methodParameter = setupInfo[index];
-                
-                var type = getParameters[index].ParameterType;
-                try                    
-                {
-                    var obj = Microsoft.VisualBasic.Interaction.CreateObject("Project1.Class2");
 
-                    var anonymousType = JsonConvert.DeserializeObject(methodParameter.DefaultValue.ToString(), type);
-                    if (anonymousType != null)
-                    {
-                        valuedTypeList[index] = anonymousType;
-                    }
-                }
-                catch (Exception ex)
+                var methodParameterTypeName = methodParameter.TypeName;
+                var type = Type.GetTypeFromProgID(methodParameterTypeName.Substring(0,methodParameterTypeName.IndexOf("&,",StringComparison.InvariantCultureIgnoreCase)));
+                if (type != null)
                 {
-                    var argType = type;
-                    try
-                    {
-                        if (argType != null)
-                        {
-                            var provider = TypeDescriptor.GetConverter(argType);
-                            var convertFrom = provider.ConvertFrom(methodParameter.DefaultValue);
-                            valuedTypeList[index] = convertFrom;
-                        }
-                    }
-                    catch (Exception)
-                    {
-                        try
-                        {
-                            var typeConverter = TypeDescriptor.GetConverter(methodParameter.DefaultValue);
-                            var convertFrom = typeConverter.ConvertFrom(methodParameter.DefaultValue);
-                            valuedTypeList[index] = convertFrom;
-                        }
-                        catch (Exception k)
-                        {
-                            Console.WriteLine(k.Message);
-                        }
-                    }
+                    BuildObjectType(type, methodParameter, valuedTypeList, index);
+                }
+                else
+                {
+                    BuildPrimitiveType(methodParameterTypeName, methodParameter, valuedTypeList, index);
                 }
             }
             return valuedTypeList;
+        }
+
+        private static void BuildPrimitiveType(string methodParameterTypeName, ParameterInfoTO methodParameter, object[] valuedTypeList, int index)
+        {
+            var type = Type.GetType(methodParameterTypeName);
+            if(type != null)
+            {
+                try
+                {
+                    var provider = TypeDescriptor.GetConverter(type);
+                    var convertFrom = provider.ConvertFrom(methodParameter.DefaultValue);
+                    valuedTypeList[index] = convertFrom;
+                }
+                catch (Exception)
+                {
+                    var typeConverter = TypeDescriptor.GetConverter(methodParameter.DefaultValue);
+                    var convertFrom = typeConverter.ConvertFrom(methodParameter.DefaultValue);
+                    valuedTypeList[index] = convertFrom;
+                }
+            }
+        }
+
+        private static void BuildObjectType(Type type, ParameterInfoTO methodParameter, object[] valuedTypeList, int index)
+        {
+            var obj = Activator.CreateInstance(type);
+            var anonymousType = JsonConvert.DeserializeObject(methodParameter.DefaultValue.ToString()) as JObject;
+            if(anonymousType != null)
+            {
+                var props = anonymousType.Properties().ToList();
+                foreach(var prop in props)
+                {
+                    var valueForProp = prop.Value.ToString();
+                    type.InvokeMember(prop.Name, BindingFlags.Instance | BindingFlags.SetProperty | BindingFlags.Public, null, obj, new object[] { valueForProp });
+                }
+                valuedTypeList[index] = obj;
+            }
         }
     }
 }
