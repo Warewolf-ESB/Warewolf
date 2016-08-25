@@ -2073,15 +2073,6 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to http://dev2.co.za/.
-        /// </summary>
-        public static string DevUrl {
-            get {
-                return ResourceManager.GetString("DevUrl", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to The data or variable that will be passed into the action at run time..
         /// </summary>
         public static string DotNetInputDefaultValueHelp {
