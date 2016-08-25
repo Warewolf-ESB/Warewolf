@@ -146,6 +146,26 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
+        public void CheckPermissionPersmisions()
+        {
+            var destItems = _destination.SelectedEnvironment.AsList();
+            if (destItems != null)
+            {
+                foreach(var explorerItemViewModel in destItems)
+                {
+                    var currentItem = _items.FirstOrDefault(p=>p.ResourceId == explorerItemViewModel.ResourceId);
+                    {
+                        if(currentItem != null)
+                        {
+                            var permission = explorerItemViewModel.Server.Permissions.FirstOrDefault(p => p.ResourceID == explorerItemViewModel.ResourceId);
+                            if(permission?.Permissions == Permissions.View)
+                                currentItem.CanDeploy = false;
+                        }
+                    }
+                }
+            }
+        }
+
         public void Calculate(IList<IExplorerTreeItem> items)
         {
             _items = items;
