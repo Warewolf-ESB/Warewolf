@@ -615,6 +615,25 @@ namespace Dev2.Studio.ViewModels
             }
         }
 
+        public void ViewApisJson(string resourcePath, Uri webServerUri)
+        {
+            var relativeUrl = "";
+
+            if (!string.IsNullOrWhiteSpace(resourcePath))
+            {
+                relativeUrl = $"/secure/" + resourcePath + "/apis.json";
+            }
+            else
+            {
+                relativeUrl += $"/secure/" + resourcePath + "apis.json";
+            }
+
+            Uri url;
+            Uri.TryCreate(webServerUri, relativeUrl, out url);
+
+            BrowserPopupController.ShowPopup(url.ToString());
+        }
+
         public void CloseResource(Guid resourceId, Guid environmentId)
         {
             var environmentModel = EnvironmentRepository.Get(environmentId);
