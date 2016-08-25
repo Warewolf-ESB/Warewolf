@@ -193,5 +193,10 @@ namespace Warewolf.Studio.ViewModels
             };
             return child;
         }
+
+        public void ViewSwaggerCommand(ExplorerItemViewModel explorerItemViewModel, IServer server)
+        {
+            _shellViewModel.ViewSwagger(explorerItemViewModel.ResourceId, server);
+        }
     }
 }

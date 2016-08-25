@@ -21,22 +21,12 @@ namespace Dev2.Activities.Designers2.SelectAndApply
         {
             InitializeComponent();
             DropPoint.PreviewDrop += DoDrop;
-            DropPoint.PreviewDragOver += DropPointOnDragEnter;
             _dropEnabledActivityDesignerUtils = new DropEnabledActivityDesignerUtils();
         }
 
         SelectAndApplyDesignerViewModel ViewModel => DataContext as SelectAndApplyDesignerViewModel;
 
         void DoDrop(object sender, DragEventArgs e)
-        {
-            DropPointOnDragEnter(sender, e);
-//            if (ViewModel.SetModelItemForServiceTypes(e.Data))
-//            {
-//                e.Handled = true;
-//            }
-        }
-
-        void DropPointOnDragEnter(object sender, DragEventArgs e)
         {
             if (_dropEnabledActivityDesignerUtils != null)
             {
@@ -48,7 +38,6 @@ namespace Dev2.Activities.Designers2.SelectAndApply
                 }
             }
         }
-
 
         protected override IInputElement GetInitialFocusElement()
         {
