@@ -13,6 +13,7 @@ using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Workspaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+// ReSharper disable InconsistentNaming
 
 namespace Dev2.Tests.Runtime.Services
 {
@@ -170,5 +171,60 @@ namespace Dev2.Tests.Runtime.Services
             Assert.IsNotNull(executeMessage);
             Assert.IsFalse(executeMessage.HasError);
         }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void Execute_GivenDuplicateName_ShouldReplaceOldFolderNameWithNewname()
+        {
+            //---------------Set up test pack-------------------
+            var resourceCatalog = new Mock<IResourceCatalog>();
+            var serverExploer = new Mock<IExplorerServerResourceRepository>();
+            var explorerItem = new Mock<IExplorerItem>();
+            explorerItem.Setup(item => item.IsFolder).Returns(true);
+            explorerItem.Setup(item => item.ResourceId).Returns(guid);
+            explorerItem.Setup(item => item.DisplayName).Returns("COM");
+            var childXplorerItem = new Mock<IExplorerItem>();
+            childXplorerItem.Setup(item => item.IsFolder).Returns(true);
+            childXplorerItem.Setup(item => item.ResourceId).Returns(guid);
+            explorerItem.Setup(item => item.Children).Returns(new List<IExplorerItem>() { childXplorerItem.Object });
+            serverExploer.Setup(repository => repository.Find(It.IsAny<Guid>())).Returns(explorerItem.Object);
+            var workScpace = new Mock<IWorkspace>();
+            var folderResource = new Mock<IResource>();
+            folderResource.SetupGet(resource => resource.IsFolder).Returns(true);
+
+            resourceCatalog.Setup(catalog => catalog.GetResource(GlobalConstants.ServerWorkspaceID, guid)).Returns(folderResource.Object);
+            resourceCatalog.Setup(catalog => catalog.SaveResource(GlobalConstants.ServerWorkspaceID, It.IsAny<IResource>(), It.IsAny<string>(), It.IsAny<string>()))
+                .Callback((Guid a,IResource b,string c, string d) =>
+                {
+                    var first = b.ResourcePath.Split('\\')[1];
+                    Assert.AreEqual("NewName", first);
+                });
+            resourceCatalog.Setup(catalog => catalog.GetResourceList(GlobalConstants.ServerWorkspaceID, It.IsAny<Dictionary<string, string>>()))
+                .Returns(new List<Resource>()
+                {
+                    new ComPluginService {ResourceID = Guid.NewGuid(), ResourceName = "COM", ResourcePath = "COM\\ComSubFolder1"},
+                    new ComPluginService() {ResourceID = Guid.NewGuid(), ResourceName = "COM1", ResourcePath = "COM\\ComSubFolder2"},
+                });
+            DuplicateResourceService resourceService = new DuplicateResourceService(resourceCatalog.Object, serverExploer.Object);
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(resourceService);
+            //---------------Execute Test ----------------------
+            var stringBuilder = resourceService.Execute(new Dictionary<string, StringBuilder>
+            {
+                {"ResourceID", new StringBuilder(guid.ToString()) },
+                {"NewResourceName", new StringBuilder("NewName") },
+                {"FixRefs", new StringBuilder("true") },
+            }, workScpace.Object);
+            //---------------Test Result -----------------------
+            resourceCatalog.Verify(catalog => catalog.GetResource(GlobalConstants.ServerWorkspaceID, guid));
+            resourceCatalog.Verify(catalog => catalog.SaveResource(GlobalConstants.ServerWorkspaceID, It.IsAny<IResource>(), It.IsAny<string>(), It.IsAny<string>()), Times.Exactly(2));
+            resourceCatalog.Verify(catalog => catalog.GetResourceList(GlobalConstants.ServerWorkspaceID, It.IsAny<Dictionary<string, string>>()));
+            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+            var executeMessage = serializer.Deserialize<ExecuteMessage>(stringBuilder);
+            Assert.IsNotNull(executeMessage);
+            Assert.IsFalse(executeMessage.HasError);
+        }
+
+
     }
 }

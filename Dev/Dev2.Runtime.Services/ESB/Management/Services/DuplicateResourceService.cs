@@ -137,7 +137,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                     var value = folderName[index];
                     if (index > 0)
                     {
-                        if (value == explorerItem.DisplayName)
+                        if (value.ToLower() == explorerItem.DisplayName.ToLower())
                         {
                             fixedResourcename.Append("\\" + newResourceName);
                         }
@@ -148,7 +148,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                     }
                     else
                     {
-                        if (value == explorerItem.DisplayName)
+                        if (value.ToLower() == explorerItem.DisplayName.ToLower())
                         {
                             fixedResourcename.Append("\\" + newResourceName);
                         }
