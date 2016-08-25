@@ -33,11 +33,12 @@ namespace Dev2.Runtime.ESB.Management.Services
         /// <summary>
         /// USED, 
         /// </summary>
+        // ReSharper disable once UnusedParameter.Local
         public DuplicateResourceService()
         {
 
         }
-
+        
         private IResourceCatalog GetResourceCatalog()
         {
             return _resourceCatalog ?? (_resourceCatalog = ResourceCatalog.Instance);
@@ -110,7 +111,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             GetResourceCatalog().SaveResource(GlobalConstants.ServerWorkspaceID, newResourceClone);
         }
 
-        private static IEnumerable<T> Traverse<T>(T item, Func<T, IEnumerable<T>> childSelector)
+        private static IEnumerable<T> TraverseItems<T>(T item, Func<T, IEnumerable<T>> childSelector)
         {
             var stack = new Stack<T>();
             stack.Push(item);
@@ -127,7 +128,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             IEnumerable<IExplorerItem> explorerItems;
             try
             {
-                explorerItems = Traverse(explorerItem, item => item?.Children ?? new List<IExplorerItem>())
+                explorerItems = TraverseItems(explorerItem, item => item?.Children ?? new List<IExplorerItem>())
                     .Where(item => item.ResourceId != explorerItem.ResourceId);
             }
             // ReSharper disable once UnusedVariable
