@@ -617,7 +617,16 @@ namespace Dev2.Studio.ViewModels
 
         public void ViewApisJson(string resourcePath, Uri webServerUri)
         {
-            var relativeUrl = $"/secure/" + resourcePath + "/apis.json";
+            var relativeUrl = "";
+
+            if (!string.IsNullOrWhiteSpace(resourcePath))
+            {
+                relativeUrl = $"/secure/" + resourcePath + "/apis.json";
+            }
+            else
+            {
+                relativeUrl += $"/secure/" + resourcePath + "apis.json";
+            }
 
             Uri url;
             Uri.TryCreate(webServerUri, relativeUrl, out url);
