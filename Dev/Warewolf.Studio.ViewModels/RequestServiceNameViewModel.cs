@@ -6,8 +6,12 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using Dev2;
+using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.SaveDialog;
+using Dev2.Communication;
+using Dev2.Controller;
+using Dev2.Studio.Core;
 using Microsoft.Practices.Prism.Commands;
 using Microsoft.Practices.Prism.Mvvm;
 using Warewolf.Resource.Errors;
@@ -26,7 +30,9 @@ namespace Warewolf.Studio.ViewModels
         private bool _hasLoaded;
         string _header;
         private IEnvironmentViewModel _environmentViewModel;
+        IExplorerItemViewModel _explorerItemViewModel;
         private bool _isDuplicate;
+        private bool _fixReferences;
         MessageBoxResult ViewResult { get; set; }
 
         // ReSharper disable once EmptyConstructor
@@ -38,7 +44,7 @@ namespace Warewolf.Studio.ViewModels
 
 #pragma warning disable 1998
 #pragma warning disable 1998
-        private async Task<IRequestServiceNameViewModel> InitializeAsync(IEnvironmentViewModel environmentViewModel,  string selectedPath, string header, bool isDuplicate = false)
+        private async Task<IRequestServiceNameViewModel> InitializeAsync(IEnvironmentViewModel environmentViewModel, string selectedPath, string header, IExplorerItemViewModel explorerItemViewModel = null)
 #pragma warning restore 1998
 #pragma warning restore 1998
         {
@@ -46,15 +52,41 @@ namespace Warewolf.Studio.ViewModels
             _environmentViewModel.Connect();
             _selectedPath = selectedPath;
             _header = header;
-          
+            _explorerItemViewModel = explorerItemViewModel;
             OkCommand = new DelegateCommand(SetServiceName, () => string.IsNullOrEmpty(ErrorMessage) && HasLoaded);
-            DuplicateCommand = new DelegateCommand(SetServiceName, () => string.IsNullOrEmpty(ErrorMessage) && HasLoaded);
+            DuplicateCommand = new DelegateCommand(CallDuplicateService, () => explorerItemViewModel != null);
             CancelCommand = new DelegateCommand(CloseView);
             Name = header;
-            IsDuplicate = isDuplicate;
+            IsDuplicate = explorerItemViewModel != null;
             environmentViewModel.CanShowServerVersion = false;
             _environmentViewModel = environmentViewModel;
             return this;
+        }
+
+        private void CallDuplicateService()
+        {
+            var controller = new CommunicationController { ServiceName = "DuplicateResourceService" };
+            controller.AddPayloadArgument("ResourceID", _explorerItemViewModel.ResourceId.ToString());
+            controller.AddPayloadArgument("NewResourceName", Name);
+            controller.AddPayloadArgument("FixRefs", FixReferences.ToString());
+            var environmentConnection = EnvironmentRepository.Instance.ActiveEnvironment.Connection;
+            // ReSharper disable once UnusedVariable
+            var executeCommand = controller.ExecuteCommand<ExecuteMessage>(environmentConnection, GlobalConstants.ServerWorkspaceID);
+            CloseView();
+            _environmentViewModel.Server.UpdateRepository.FireItemSaved(true);
+        }
+
+        public bool FixReferences
+        {
+            get
+            {
+                return _fixReferences;
+            }
+            set
+            {
+                _fixReferences = value;
+                OnPropertyChanged(() => FixReferences);
+            }
         }
 
         void SingleEnvironmentExplorerViewModelPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
@@ -63,7 +95,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 ValidateName();
             }
-        
+
         }
 
         bool HasLoaded
@@ -79,14 +111,14 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        public static Task<IRequestServiceNameViewModel> CreateAsync(IEnvironmentViewModel environmentViewModel, string selectedPath, string header, bool isDuplicate = false)
+        public static Task<IRequestServiceNameViewModel> CreateAsync(IEnvironmentViewModel environmentViewModel, string selectedPath, string header, IExplorerItemViewModel explorerItemViewModel = null)
         {
             if (environmentViewModel == null)
-        {
+            {
                 throw new ArgumentNullException(nameof(environmentViewModel));
             }
             var ret = new RequestServiceNameViewModel();
-            return ret.InitializeAsync(environmentViewModel, selectedPath, header, isDuplicate);
+            return ret.InitializeAsync(environmentViewModel, selectedPath, header, explorerItemViewModel);
         }
 
         public Guid IdToSave { get; set; }
@@ -163,7 +195,7 @@ namespace Warewolf.Studio.ViewModels
                 }
                 HasLoaded = a.Result;
                 ValidateName();
-            },TaskContinuationOptions.ExecuteSynchronously);
+            }, TaskContinuationOptions.ExecuteSynchronously);
             SingleEnvironmentExplorerViewModel = new SingleEnvironmentExplorerViewModel(_environmentViewModel, Guid.Empty, false);
             SingleEnvironmentExplorerViewModel.PropertyChanged += SingleEnvironmentExplorerViewModelPropertyChanged;
             _view.DataContext = this;

@@ -18,6 +18,7 @@ namespace Dev2.Common.Interfaces.SaveDialog
         IExplorerViewModel SingleEnvironmentExplorerViewModel { get; }
         string Header { get; }
         bool IsDuplicate { get; set; }
+        bool FixReferences { get; }
     }
 
     public class ResourceName

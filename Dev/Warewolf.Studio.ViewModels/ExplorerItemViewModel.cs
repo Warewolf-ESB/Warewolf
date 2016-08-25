@@ -151,7 +151,7 @@ namespace Warewolf.Studio.ViewModels
         private string _deployResourceCheckboxTooltip;
         private bool _isService;
         private bool _isFolder;
-
+        private bool _canDuplicate;
 
         public ExplorerItemViewModel(IServer server, IExplorerTreeItem parent, Action<IExplorerItemViewModel> selectAction, IShellViewModel shellViewModel, IPopupController popupController)
         {
@@ -268,7 +268,7 @@ namespace Warewolf.Studio.ViewModels
             ShowDependenciesCommand = new DelegateCommand(ShowDependencies);
             ShowVersionHistory = new DelegateCommand(() => AreVersionsVisible = !AreVersionsVisible);
             DeleteCommand = new DelegateCommand(Delete);
-            DuplicateCommand = new DelegateCommand(DuplicateResource);
+            DuplicateCommand = new DelegateCommand(DuplicateResource, () => true);
             OpenVersionCommand = new DelegateCommand(OpenVersion);
             VersionHeader = "Show Version History";
             Expand = new DelegateCommand<int?>(clickCount =>
@@ -285,6 +285,8 @@ namespace Warewolf.Studio.ViewModels
             CreateFolderCommand = new DelegateCommand(CreateNewFolder);
             DeleteVersionCommand = new DelegateCommand(DeleteVersion);
         }
+
+      
 
         private void DuplicateResource()
         {
