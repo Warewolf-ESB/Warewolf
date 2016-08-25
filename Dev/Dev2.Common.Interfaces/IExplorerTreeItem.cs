@@ -42,7 +42,9 @@ namespace Dev2.Common.Interfaces
         bool IsReservedService { get; set; }
         bool IsServer { get; set; }
         bool IsResourceVersion { get; set; }
+        bool CanViewApisJson { get; set; }
 
+        ICommand ViewApisJsonCommand { get; set; }
         ICommand DeployCommand { get; set; }
         ICommand RenameCommand { get; set; }
         ICommand CreateFolderCommand { get; set; }
