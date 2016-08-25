@@ -156,6 +156,7 @@ namespace Dev2.Utilities
         public void SetProperties(ICollection<DynamicActivityProperty> properties)
         {
             if(properties == null)
+
             {
                 throw new ArgumentNullException(nameof(properties));
             }

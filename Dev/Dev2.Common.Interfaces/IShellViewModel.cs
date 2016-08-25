@@ -34,6 +34,7 @@ namespace Dev2.Common.Interfaces
         void NewDropboxSource(string resourcePath);
         void NewWcfSource(string resourcePath);
         void NewComPluginSource(string resourcePath);
+        void DuplicateResource(IExplorerItemViewModel explorerItemViewModel);
     }
 
     public interface IShellViewModelOpen

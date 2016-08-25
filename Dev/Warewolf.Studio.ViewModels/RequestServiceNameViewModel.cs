@@ -26,6 +26,7 @@ namespace Warewolf.Studio.ViewModels
         private bool _hasLoaded;
         string _header;
         private IEnvironmentViewModel _environmentViewModel;
+        private bool _isDuplicate;
         MessageBoxResult ViewResult { get; set; }
 
         // ReSharper disable once EmptyConstructor
@@ -37,7 +38,7 @@ namespace Warewolf.Studio.ViewModels
 
 #pragma warning disable 1998
 #pragma warning disable 1998
-        private async Task<IRequestServiceNameViewModel> InitializeAsync(IEnvironmentViewModel environmentViewModel,  string selectedPath, string header)
+        private async Task<IRequestServiceNameViewModel> InitializeAsync(IEnvironmentViewModel environmentViewModel,  string selectedPath, string header, bool isDuplicate = false)
 #pragma warning restore 1998
 #pragma warning restore 1998
         {
@@ -47,8 +48,10 @@ namespace Warewolf.Studio.ViewModels
             _header = header;
           
             OkCommand = new DelegateCommand(SetServiceName, () => string.IsNullOrEmpty(ErrorMessage) && HasLoaded);
+            DuplicateCommand = new DelegateCommand(SetServiceName, () => string.IsNullOrEmpty(ErrorMessage) && HasLoaded);
             CancelCommand = new DelegateCommand(CloseView);
-            Name = "";
+            Name = header;
+            IsDuplicate = isDuplicate;
             environmentViewModel.CanShowServerVersion = false;
             _environmentViewModel = environmentViewModel;
             return this;
@@ -76,14 +79,14 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        public static Task<IRequestServiceNameViewModel> CreateAsync(IEnvironmentViewModel environmentViewModel, string selectedPath, string header)
+        public static Task<IRequestServiceNameViewModel> CreateAsync(IEnvironmentViewModel environmentViewModel, string selectedPath, string header, bool isDuplicate = false)
         {
             if (environmentViewModel == null)
         {
                 throw new ArgumentNullException(nameof(environmentViewModel));
             }
             var ret = new RequestServiceNameViewModel();
-            return ret.InitializeAsync(environmentViewModel, selectedPath, header);
+            return ret.InitializeAsync(environmentViewModel, selectedPath, header, isDuplicate);
         }
 
         public Guid IdToSave { get; set; }
@@ -191,6 +194,18 @@ namespace Warewolf.Studio.ViewModels
                 OnPropertyChanged(() => Header);
             }
         }
+        public bool IsDuplicate
+        {
+            get
+            {
+                return _isDuplicate;
+            }
+            set
+            {
+                _isDuplicate = value;
+                OnPropertyChanged(() => IsDuplicate);
+            }
+        }
 
         void ValidateName()
         {
@@ -251,6 +266,7 @@ namespace Warewolf.Studio.ViewModels
         }
 
         public ICommand OkCommand { get; set; }
+        public ICommand DuplicateCommand { get; set; }
 
         public ICommand CancelCommand { get; private set; }
 

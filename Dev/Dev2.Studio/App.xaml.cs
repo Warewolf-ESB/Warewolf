@@ -205,7 +205,7 @@ namespace Dev2.Studio
             CustomContainer.Register<IEventAggregator>(new EventAggregator());
             CustomContainer.Register<IPopupController>(new PopupController());
             CustomContainer.RegisterInstancePerRequestType<IRequestServiceNameView>(() => new RequestServiceNameView());
-            CustomContainer.RegisterInstancePerRequestType<ICreateDuplicateResourceView>(() => new CreateDuplicateResourceDialog());
+            //CustomContainer.RegisterInstancePerRequestType<ICreateDuplicateResourceView>(() => new CreateDuplicateResourceDialog());
             
             
           
