@@ -122,10 +122,10 @@ namespace Warewolf.Studio.ViewModels
                 parent?.RemoveChild(parent.Children.First(a => a.ResourceName == resourceName));
             }
         }
-        public void DuplicateResource(Guid resourceId)
+        public void DuplicateResource(ExplorerItemViewModel explorerItemViewModel)
         {
             var view = CustomContainer.GetInstancePerRequestType<ICreateDuplicateResourceView>();
-            DuplicateResourceViewModel viewModel = new DuplicateResourceViewModel(view, resourceId);
+            DuplicateResourceViewModel viewModel = new DuplicateResourceViewModel(view, explorerItemViewModel);
             viewModel.ShowDialog();
         }
 

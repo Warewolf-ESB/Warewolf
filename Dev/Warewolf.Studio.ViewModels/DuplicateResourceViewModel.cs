@@ -33,6 +33,7 @@ namespace Warewolf.Studio.ViewModels
 
         private bool _fixReferences;
         private Guid _resourceId;
+        private readonly IExplorerItemViewModel _explorerItemViewModel;
         public bool FixReferences
         {
             get
@@ -51,11 +52,12 @@ namespace Warewolf.Studio.ViewModels
         public ICommand CreateCommand { get; private set; }
 
 
-        public DuplicateResourceViewModel(ICreateDuplicateResourceView createDuplicateResourceView, Guid resourceId)
+        public DuplicateResourceViewModel(ICreateDuplicateResourceView createDuplicateResourceView, IExplorerItemViewModel explorerItemViewModel)
             : this(new CommunicationController { ServiceName = "DuplicateResourceService" })
         {
             _createDuplicateResourceView = createDuplicateResourceView;
-            _resourceId = resourceId;
+            _resourceId = explorerItemViewModel.ResourceId;
+            _explorerItemViewModel = explorerItemViewModel;
 
         }
 
@@ -79,7 +81,8 @@ namespace Warewolf.Studio.ViewModels
             // ReSharper disable once UnusedVariable
             var executeCommand = _controller.ExecuteCommand<ExecuteMessage>(environmentConnection, GlobalConstants.ServerWorkspaceID);
             CancelAndClose(null);
-            EnvironmentRepository.Instance.Load();
+
+            _explorerItemViewModel.Server.UpdateRepository.FireItemSaved(true);
         }
 
         private static IEnvironmentConnection EnvironmentConnection(IEnvironmentModel model) => model.Connection;
