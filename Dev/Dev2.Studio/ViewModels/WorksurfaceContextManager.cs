@@ -93,7 +93,7 @@ namespace Dev2.Studio.ViewModels
         void EditServer(IContextualResourceModel resourceModel);
         void EditResource(IOAuthSource selectedSource, IWorkSurfaceKey workSurfaceKey = null);
         void EditResource(ISharepointServerSource selectedSource, IWorkSurfaceKey workSurfaceKey = null);
-        Task<IRequestServiceNameViewModel> GetSaveViewModel(string resourcePath, string header, bool isDuplicate=false);
+        Task<IRequestServiceNameViewModel> GetSaveViewModel(string resourcePath, string header, IExplorerItemViewModel explorerItemViewModel = null);
         void AddReverseDependencyVisualizerWorkSurface(IContextualResourceModel resource);
         void AddSettingsWorkSurface();
 
@@ -304,7 +304,7 @@ namespace Dev2.Studio.ViewModels
         }
         public void DuplicateResource(IExplorerItemViewModel explorerItemViewModel)
         {
-            Task<IRequestServiceNameViewModel> saveViewModel = GetSaveViewModel(explorerItemViewModel.ResourcePath, explorerItemViewModel.ResourceName, true);
+            Task<IRequestServiceNameViewModel> saveViewModel = GetSaveViewModel(explorerItemViewModel.ResourcePath, explorerItemViewModel.ResourceName, explorerItemViewModel);
             var messageBoxResult = saveViewModel.Result.ShowSaveDialog();
         }
 
@@ -845,9 +845,9 @@ namespace Dev2.Studio.ViewModels
             AddAndActivateWorkSurface(workSurfaceContextViewModel);
         }
 
-        public async Task<IRequestServiceNameViewModel> GetSaveViewModel(string resourcePath, string header, bool isDuplicate = false)
+        public async Task<IRequestServiceNameViewModel> GetSaveViewModel(string resourcePath, string header, IExplorerItemViewModel explorerItemViewModel = null)
         {
-            return await RequestServiceNameViewModel.CreateAsync(new EnvironmentViewModel(ActiveServer, _mainViewModel), resourcePath, header, isDuplicate);
+            return await RequestServiceNameViewModel.CreateAsync(new EnvironmentViewModel(ActiveServer, _mainViewModel), resourcePath, header, explorerItemViewModel);
         }
 
         public void AddReverseDependencyVisualizerWorkSurface(IContextualResourceModel resource)

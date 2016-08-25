@@ -91,7 +91,7 @@
                        Text="{Binding Path=ErrorMessage}"
                        TextAlignment="Right" />
             <CheckBox Visibility="{Binding IsDuplicate, Converter={StaticResource BoolToVisibilityConverter}}" 
-                      Content="Fix References?" Margin="{StaticResource ControlBorderBottomRight}"/>
+                      Content="Fix References?" IsChecked="{Binding FixReferences}" Margin="{StaticResource ControlBorderBottomRight}"/>
             <Button x:Name="DuplicateButton"
                     Width="60"
                     Command="{Binding Path=DuplicateCommand}"

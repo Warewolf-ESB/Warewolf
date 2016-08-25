@@ -635,7 +635,7 @@
 
                                                     <ig:XamMenuItem Name="Duplicate"
                                                                     Command="{Binding Path=Data.DuplicateCommand}"
-                                                                    CommandParameter="{Binding Data}"
+                                                                    CommandParameter="{Binding Path=Data}"
                                                                     Header="Duplicate"
                                                                     Visibility="{Binding Path=Data.CanDuplicate,
                                                                                          Converter={StaticResource BoolToVisibilityConverter}}">
