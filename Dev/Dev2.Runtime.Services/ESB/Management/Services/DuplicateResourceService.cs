@@ -30,7 +30,9 @@ namespace Dev2.Runtime.ESB.Management.Services
             _resourceCatalog = resourceCatalog;
             _resourceRepository = resourceRepository;
         }
-
+        /// <summary>
+        /// USED, 
+        /// </summary>
         public DuplicateResourceService()
         {
 
@@ -55,10 +57,10 @@ namespace Dev2.Runtime.ESB.Management.Services
             values.TryGetValue("ResourceID", out tmp);
             values.TryGetValue("NewResourceName", out newResourceName);
             values.TryGetValue("FixRefs", out fixRefs);
-            var resourceId = Guid.Empty;
 
             if (tmp != null)
             {
+                Guid resourceId;
                 if (Guid.TryParse(tmp.ToString(), out resourceId))
                 {
                     if (!string.IsNullOrEmpty(newResourceName?.ToString()))
@@ -108,16 +110,31 @@ namespace Dev2.Runtime.ESB.Management.Services
             GetResourceCatalog().SaveResource(GlobalConstants.ServerWorkspaceID, newResourceClone);
         }
 
+        private static IEnumerable<T> Traverse<T>(T item, Func<T, IEnumerable<T>> childSelector)
+        {
+            var stack = new Stack<T>();
+            stack.Push(item);
+            while (stack.Any())
+            {
+                var next = stack.Pop();
+                yield return next;
+                foreach (var child in childSelector(next))
+                    stack.Push(child);
+            }
+        }
         private void SaveFolders(IExplorerItem explorerItem, StringBuilder newResourceName)
         {
             IEnumerable<IExplorerItem> explorerItems;
             try
             {
-                explorerItems = explorerItem.Children.Flatten(item => item.Children).ToList();
+                explorerItems = Traverse(explorerItem, item => item?.Children ?? new List<IExplorerItem>())
+                    .Where(item => item.ResourceId != explorerItem.ResourceId);
             }
-            catch (Exception)
+            // ReSharper disable once UnusedVariable
+            catch (Exception ex)
             {
                 explorerItems = explorerItem.Children;
+                Console.WriteLine(ex.Message);
             }
             var guidIds = new StringBuilder();
 
