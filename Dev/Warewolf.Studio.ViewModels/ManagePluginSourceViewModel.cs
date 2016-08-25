@@ -11,11 +11,13 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using Dev2;
+using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core;
 using Dev2.Common.Interfaces.SaveDialog;
@@ -322,14 +324,26 @@ namespace Warewolf.Studio.ViewModels
             set
             {
                 _assemblyName = value;
-                if (string.IsNullOrEmpty(_assemblyName))
-                {
+                _selectedDll = null;
+                if(string.IsNullOrEmpty(_assemblyName))
                     SelectedDll = null;
-                }
+                else
+                    SelectDllFromUsingAssemblyName();
                 OnPropertyChanged(() => Header);
                 OnPropertyChanged(()=>AssemblyName);
                 ViewModelUtils.RaiseCanExecuteChanged(OkCommand);
             }
+        }
+
+        private void SelectDllFromUsingAssemblyName()
+        {
+            if(_selectedDll != null) return;
+            if (_assemblyName == null) return;
+            if(!File.Exists(_assemblyName)) return;
+            var dll = new FileInfo(_assemblyName);
+            if (dll.Extension != ".dll") return;
+            var fileListing = new FileListing { Name = dll.Name, FullName = dll.FullName };
+            _selectedDll = new DllListingModel(_updateManager, fileListing);
         }
 
         void SetupHeaderTextFromExisting()
