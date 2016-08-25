@@ -66,7 +66,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 {
                     if (!string.IsNullOrEmpty(newResourceName?.ToString()))
                     {
-
+                        GetItemExplorer().Load(GlobalConstants.ServerWorkspaceID);
                         var explorerItem = GetItemExplorer().Find(resourceId);
                         var resource = GetResourceCatalog().GetResource(GlobalConstants.ServerWorkspaceID, resourceId);
 
@@ -76,7 +76,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                             if (!explorerItem.IsFolder)
                             {
                                 // ReSharper disable once UnusedVariable
-                                SaveSingleResource(resource, newResourceName);
+                                SaveSingleResource(resource, newResourceName, explorerItem);
 
                             }
                             else
@@ -99,15 +99,21 @@ namespace Dev2.Runtime.ESB.Management.Services
             return serializer.SerializeToBuilder(success);
         }
 
-        private void SaveSingleResource(IResource resource, StringBuilder newResourceName)
+        private void SaveSingleResource(IResource resource, StringBuilder newResourceName, IExplorerItem explorerItem)
         {
             var newResourceClone = new Resource(resource);
+            newResourceClone.SetIsNew(newResourceClone.ToXml());
+            StringBuilder fixedResourcename = new StringBuilder();
+
+            GetResourceName(explorerItem, newResourceName, newResourceClone.ResourcePath.Split('\\'), fixedResourcename);
             //Allocate new ID
             var newGuid = Guid.NewGuid();
             newResourceClone.ResourceName = newResourceName.ToString();
             newResourceClone.ResourceID = newGuid;
-            newResourceClone.ResourcePath = string.Empty;
+            newResourceClone.ResourcePath = fixedResourcename.ToString();
             newResourceClone.VersionInfo = null;
+            
+            newResourceClone.DataList = resource.DataList;
             GetResourceCatalog().SaveResource(GlobalConstants.ServerWorkspaceID, newResourceClone);
         }
 
@@ -148,39 +154,44 @@ namespace Dev2.Runtime.ESB.Management.Services
             foreach (var recourceClone in recourceClones)
             {
                 StringBuilder fixedResourcename = new StringBuilder();
-                var folderName = recourceClone.ResourcePath.Split('\\');
+                var names = recourceClone.ResourcePath.Split('\\');
 
-                for (int index = 0; index < folderName.Length; index++)
-                {
-                    var value = folderName[index];
-                    if (index > 0)
-                    {
-                        if (value.ToLower() == explorerItem.DisplayName.ToLower())
-                        {
-                            fixedResourcename.Append("\\" + newResourceName);
-                        }
-                        else
-                        {
-                            fixedResourcename.Append("\\" + value);
-                        }
-                    }
-                    else
-                    {
-                        if (value.ToLower() == explorerItem.DisplayName.ToLower())
-                        {
-                            fixedResourcename.Append("\\" + newResourceName);
-                        }
-                        else
-                        {
-                            fixedResourcename.Append(value);
-                        }
-                    }
-                }
+                GetResourceName(explorerItem, newResourceName, names, fixedResourcename);
 
                 recourceClone.ResourceID = Guid.NewGuid();
                 recourceClone.ResourcePath = fixedResourcename.ToString();
                 recourceClone.VersionInfo = null;
                 GetResourceCatalog().SaveResource(GlobalConstants.ServerWorkspaceID, recourceClone);
+            }
+        }
+
+        private static void GetResourceName(IExplorerItem explorerItem, StringBuilder newResourceName, string[] folderName, StringBuilder fixedResourcename)
+        {
+            for(int index = 0; index < folderName.Length; index++)
+            {
+                var value = folderName[index];
+                if(index > 0)
+                {
+                    if(value.ToLower() == explorerItem.DisplayName.ToLower())
+                    {
+                        fixedResourcename.Append("\\" + newResourceName);
+                    }
+                    else
+                    {
+                        fixedResourcename.Append("\\" + value);
+                    }
+                }
+                else
+                {
+                    if(value.ToLower() == explorerItem.DisplayName.ToLower())
+                    {
+                        fixedResourcename.Append("\\" + newResourceName);
+                    }
+                    else
+                    {
+                        fixedResourcename.Append(value);
+                    }
+                }
             }
         }
 

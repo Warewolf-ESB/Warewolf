@@ -118,7 +118,6 @@
     <Compile Include="DeployDestinationViewModelTests.cs" />
     <Compile Include="DeploySourceExplorerViewModelTests.cs" />
     <Compile Include="DeployViewModelTests.cs" />
-    <Compile Include="DuplicateResourceViewModelTests.cs" />
     <Compile Include="EmailAttachmentModelTests.cs" />
     <Compile Include="EmailAttachmentVmTests.cs" />
     <Compile Include="EnvironmentViewModelTests.cs" />
