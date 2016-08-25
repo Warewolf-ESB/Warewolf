@@ -25,7 +25,7 @@ namespace Warewolf.Studio.ViewModels
         private void ServerConnected(object sender, IServer server)
         {
             var environmentViewModel = _environments.FirstOrDefault(a => a.Server.EnvironmentID == server.EnvironmentID);
-            SelectedEnvironment = environmentViewModel;
+            SelectedEnvironment = environmentViewModel;           
         }
 
         void DeploySourceExplorerViewModelSelectedEnvironmentChanged(object sender, Guid environmentid)
@@ -72,6 +72,7 @@ namespace Warewolf.Studio.ViewModels
             if(StatsArea != null)
             {
                 StatsArea.ReCalculate();
+                StatsArea.CheckPermissionPersmisions();
             }
         }
 
