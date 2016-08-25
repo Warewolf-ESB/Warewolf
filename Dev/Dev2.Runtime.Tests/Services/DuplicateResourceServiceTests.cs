@@ -132,6 +132,7 @@ namespace Dev2.Tests.Runtime.Services
             var explorerItem = new Mock<IExplorerItem>();
             explorerItem.Setup(item => item.IsFolder).Returns(true);
             explorerItem.Setup(item => item.ResourceId).Returns(guid);
+            explorerItem.Setup(item => item.DisplayName).Returns("COM");
             var childXplorerItem = new Mock<IExplorerItem>();
             childXplorerItem.Setup(item => item.IsFolder).Returns(true);
             childXplorerItem.Setup(item => item.ResourceId).Returns(guid);
@@ -146,8 +147,8 @@ namespace Dev2.Tests.Runtime.Services
             resourceCatalog.Setup(catalog => catalog.GetResourceList(GlobalConstants.ServerWorkspaceID, It.IsAny<Dictionary<string, string>>()))
                 .Returns(new List<Resource>()
                 {
-                    new ComPluginService() {ResourceID = Guid.NewGuid(), ResourceName = "COM"},
-                    new ComPluginService() {ResourceID = Guid.NewGuid(), ResourceName = "COM1"},
+                    new ComPluginService() {ResourceID = Guid.NewGuid(), ResourceName = "COM", ResourcePath = "Com"},
+                    new ComPluginService() {ResourceID = Guid.NewGuid(), ResourceName = "COM1", ResourcePath = "Com1"},
                 });
             DuplicateResourceService resourceService = new DuplicateResourceService(resourceCatalog.Object, serverExploer.Object);
             //---------------Assert Precondition----------------
@@ -158,10 +159,10 @@ namespace Dev2.Tests.Runtime.Services
             {
                 {"ResourceID", new StringBuilder(guid.ToString()) },
                 {"NewResourceName", new StringBuilder("NewName") },
+                {"FixRefs", new StringBuilder("true") },
             }, workScpace.Object);
             //---------------Test Result -----------------------
             resourceCatalog.Verify(catalog => catalog.GetResource(GlobalConstants.ServerWorkspaceID, guid));
-            resourceCatalog.Verify(catalog => catalog.CopyResource(It.IsAny<IResource>(), GlobalConstants.ServerWorkspaceID, It.IsAny<string>()), Times.Once);
             resourceCatalog.Verify(catalog => catalog.SaveResource(GlobalConstants.ServerWorkspaceID, It.IsAny<IResource>(), It.IsAny<string>(), It.IsAny<string>()), Times.Exactly(2));
             resourceCatalog.Verify(catalog => catalog.GetResourceList(GlobalConstants.ServerWorkspaceID, It.IsAny<Dictionary<string, string>>()));
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();

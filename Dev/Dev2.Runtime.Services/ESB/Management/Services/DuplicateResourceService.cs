@@ -6,6 +6,7 @@ using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Data;
+using Dev2.Common.Interfaces.Explorer;
 using Dev2.Common.Interfaces.Infrastructure;
 using Dev2.Communication;
 using Dev2.DynamicServices;
@@ -71,44 +72,15 @@ namespace Dev2.Runtime.ESB.Management.Services
 
                             if (!explorerItem.IsFolder)
                             {
-                                var newResourceClone = new Resource(resource);
-                                //Allocate new ID
-                                var newGuid = Guid.NewGuid();
-                                newResourceClone.ResourceName = newResourceName.ToString();
-                                newResourceClone.ResourceID = newGuid;
-                                newResourceClone.ResourcePath = string.Empty;
-                                newResourceClone.VersionInfo = null;
-                                GetResourceCatalog().SaveResource(GlobalConstants.ServerWorkspaceID, newResourceClone);
+                                // ReSharper disable once UnusedVariable
+                                SaveSingleResource(resource, newResourceName);
+
                             }
                             else
                             {
-
-                                var explorerItems = explorerItem.Children.Flatten(item => item.Children);
-                                var folderResource = GetResourceCatalog().GetResource(GlobalConstants.ServerWorkspaceID, explorerItem.ResourceId);
-
-                                var newFolder = new Resource(folderResource)
-                                {
-                                    ResourceName = newResourceName.ToString(),
-                                    ResourceID = Guid.NewGuid()
-                                };
-                                GetResourceCatalog().CopyResource(newFolder, GlobalConstants.ServerWorkspaceID);
-                                var guidIds = new StringBuilder();
-
-                                foreach (var guidId in explorerItems.Select(item => item.ResourceId))
-                                {
-                                    guidIds.Append(guidId + ",");
-                                }
-                                var resourceList = GetResourceCatalog().GetResourceList(GlobalConstants.ServerWorkspaceID,
-                                    new Dictionary<string, string> { { "guidCsv", guidIds.ToString() } });
-                                var recourceClones = new List<IResource>(resourceList);
-                                foreach (var recourceClone in recourceClones)
-                                {
-                                    recourceClone.ResourceID = Guid.NewGuid();
-                                    GetResourceCatalog().SaveResource(GlobalConstants.ServerWorkspaceID, recourceClone);
-                                }
-
+                                // ReSharper disable once UnusedVariable
+                                SaveFolders(explorerItem, newResourceName);
                             }
-
                         }
                         catch (Exception x)
                         {
@@ -122,6 +94,76 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
             var success = new ExecuteMessage { HasError = false };
             return serializer.SerializeToBuilder(success);
+        }
+
+        private void SaveSingleResource(IResource resource, StringBuilder newResourceName)
+        {
+            var newResourceClone = new Resource(resource);
+            //Allocate new ID
+            var newGuid = Guid.NewGuid();
+            newResourceClone.ResourceName = newResourceName.ToString();
+            newResourceClone.ResourceID = newGuid;
+            newResourceClone.ResourcePath = string.Empty;
+            newResourceClone.VersionInfo = null;
+            GetResourceCatalog().SaveResource(GlobalConstants.ServerWorkspaceID, newResourceClone);
+        }
+
+        private void SaveFolders(IExplorerItem explorerItem, StringBuilder newResourceName)
+        {
+            IEnumerable<IExplorerItem> explorerItems;
+            try
+            {
+                explorerItems = explorerItem.Children.Flatten(item => item.Children).ToList();
+            }
+            catch (Exception)
+            {
+                explorerItems = explorerItem.Children;
+            }
+            var guidIds = new StringBuilder();
+
+            foreach (var guidId in explorerItems.Select(item => item.ResourceId))
+            {
+                guidIds.Append(guidId + ",");
+            }
+            var resourceList = GetResourceCatalog().GetResourceList(GlobalConstants.ServerWorkspaceID, new Dictionary<string, string> { { "guidCsv", guidIds.ToString() } });
+            var recourceClones = new List<IResource>(resourceList);
+            foreach (var recourceClone in recourceClones)
+            {
+                StringBuilder fixedResourcename = new StringBuilder();
+                var folderName = recourceClone.ResourcePath.Split('\\');
+
+                for (int index = 0; index < folderName.Length; index++)
+                {
+                    var value = folderName[index];
+                    if (index > 0)
+                    {
+                        if (value == explorerItem.DisplayName)
+                        {
+                            fixedResourcename.Append("\\" + newResourceName);
+                        }
+                        else
+                        {
+                            fixedResourcename.Append("\\" + value);
+                        }
+                    }
+                    else
+                    {
+                        if (value == explorerItem.DisplayName)
+                        {
+                            fixedResourcename.Append("\\" + newResourceName);
+                        }
+                        else
+                        {
+                            fixedResourcename.Append(value);
+                        }
+                    }
+                }
+
+                recourceClone.ResourceID = Guid.NewGuid();
+                recourceClone.ResourcePath = fixedResourcename.ToString();
+                recourceClone.VersionInfo = null;
+                GetResourceCatalog().SaveResource(GlobalConstants.ServerWorkspaceID, recourceClone);
+            }
         }
 
         public string HandlesType()
