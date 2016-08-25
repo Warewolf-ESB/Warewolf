@@ -194,7 +194,7 @@ namespace Dev2.Tests.Runtime.Services
 
             resourceCatalog.Setup(catalog => catalog.GetResource(GlobalConstants.ServerWorkspaceID, guid)).Returns(folderResource.Object);
             resourceCatalog.Setup(catalog => catalog.SaveResource(GlobalConstants.ServerWorkspaceID, It.IsAny<IResource>(), It.IsAny<string>(), It.IsAny<string>()))
-                .Callback((Guid a,IResource b,string c, string d) =>
+                .Callback((Guid a, IResource b, string c, string d) =>
                 {
                     var first = b.ResourcePath.Split('\\')[1];
                     Assert.AreEqual("NewName", first);
@@ -223,6 +223,31 @@ namespace Dev2.Tests.Runtime.Services
             var executeMessage = serializer.Deserialize<ExecuteMessage>(stringBuilder);
             Assert.IsNotNull(executeMessage);
             Assert.IsFalse(executeMessage.HasError);
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void SaveSingleResource_GivenResourceAndNewName_ShouldSaveCorrectly()
+        {
+            //---------------Set up test pack-------------------
+            IResource resource = new Resource();
+            var builder = new StringBuilder();
+            var resourceCatalog = new Mock<IResourceCatalog>();
+            resourceCatalog.Setup(catalog => catalog.SaveResource(GlobalConstants.ServerWorkspaceID, It.IsAny<IResource>(), It.IsAny<string>(), It.IsAny<string>()))
+               .Callback((Guid a, IResource b, string c, string d) =>
+               {
+                   Assert.IsNotNull(b.ResourcePath);
+                   Assert.IsNotNull(b.ResourceID);
+                   Assert.IsNotNull(b.ResourceName);
+               });
+            var serverExploer = new Mock<IExplorerServerResourceRepository>();
+            DuplicateResourceService resourceService = new DuplicateResourceService(resourceCatalog.Object,serverExploer.Object);
+            PrivateObject privateObject = new PrivateObject(resourceService);
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(resourceService);
+            //---------------Execute Test ----------------------
+            privateObject.Invoke("SaveSingleResource", resource, builder);
+         
         }
 
 
