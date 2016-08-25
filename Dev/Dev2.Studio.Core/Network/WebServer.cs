@@ -28,6 +28,7 @@ namespace Dev2.Studio.Core.Network
     {
         Xml,
         Json,
+        API
     }
 
     public static class WebServer
@@ -124,7 +125,10 @@ namespace Dev2.Studio.Core.Network
                 case UrlType.Json:
                     urlExtension = "json";
                     break;
-
+    
+                    case UrlType.API:
+                    urlExtension = "api";
+                    break;
                 default:
                     throw new ArgumentOutOfRangeException("urlType");
             }
@@ -134,9 +138,12 @@ namespace Dev2.Studio.Core.Network
             {
                 category = resourceModel.ResourceName;
             }
-            var relativeUrl = string.Format("/secure/{0}.{1}?", category, urlExtension);
-            relativeUrl += xmlData;
-            relativeUrl += "&wid=" + environmentConnection.WorkspaceID;
+            var relativeUrl = $"/secure/{category}.{urlExtension}";
+            if (urlType != UrlType.API)
+            {
+                relativeUrl += "?"+xmlData;
+                relativeUrl += "&wid=" + environmentConnection.WorkspaceID;
+            }
             Uri url;
             Uri.TryCreate(environmentConnection.WebServerUri, relativeUrl, out url);
             return url;
