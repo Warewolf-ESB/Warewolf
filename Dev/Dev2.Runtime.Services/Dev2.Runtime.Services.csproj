@@ -508,7 +508,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <Content Include="SSL Generation\makecert.exe">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

@@ -23,6 +23,19 @@ namespace Dev2.Common
             return second.SelectMany(c => f(c).Flatten(f)).Concat(second);
         }
 
+        public static IEnumerable<T> TraverseItems<T>(T item, Func<T, IEnumerable<T>> childSelector)
+        {
+            var stack = new Stack<T>();
+            stack.Push(item);
+            while (stack.Any())
+            {
+                var next = stack.Pop();
+                yield return next;
+                foreach (var child in childSelector(next))
+                    stack.Push(child);
+            }
+        }
+
         public static void PerformActionInsideImpersonatedContext(IPrincipal userPrinciple, Action actionToBePerformed)
         {
             if (userPrinciple == null)
