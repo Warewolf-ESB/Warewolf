@@ -470,5 +470,45 @@ namespace Warewolf.Studio.ViewModels.Tests
             //---------------Test Result -----------------------
             envModel.Verify(model => model.Server.UpdateRepository.FireItemSaved(true), Times.Once);
         }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void CallDuplicateCommand_GivenNoItemPassed_ShouldSetCanExecuteFalse()
+        {
+            //---------------Set up test pack-------------------
+           
+            var envMock = new Mock<IEnvironmentConnection>();
+            var controller = new Mock<ICommunicationController>();
+            var envModel = new Mock<IEnvironmentViewModel>();
+            envModel.Setup(model => model.Server.UpdateRepository.FireItemSaved(true)).Verifiable("Explorer Not Refreshed");
+            var selectedItemMock = new Mock<IExplorerViewModel>();
+            var item = new Mock<IExplorerTreeItem>();
+            item.Setup(model => model.ResourceName).Returns("name");
+            item.Setup(model => model.ResourceType).Returns("type");
+            item.Setup(model => model.ResourceName).Returns("name");
+            selectedItemMock.Setup(sitem => sitem.SelectedItem).Returns(item.Object);
+            var viewModel = RequestServiceNameViewModel.CreateAsync(envModel.Object, "", "").Result;
+
+            controller.Setup(communicationController => communicationController.AddPayloadArgument("ResourceID", It.IsAny<string>()));
+            controller.Setup(communicationController => communicationController.AddPayloadArgument("NewResourceName", It.IsAny<string>()));
+            controller.Setup(communicationController => communicationController.AddPayloadArgument("FixRefs", It.IsAny<string>()));
+            controller.Setup(communicationController => communicationController.ExecuteCommand<ExecuteMessage>(It.IsAny<IEnvironmentConnection>(), It.IsAny<Guid>()));
+            var lazyCon = typeof(RequestServiceNameViewModel).GetField("_lazyCon", BindingFlags.Instance | BindingFlags.GetField | BindingFlags.NonPublic);
+            // ReSharper disable once PossibleNullReferenceException
+            lazyCon.SetValue(viewModel, envMock.Object);
+            var lazyComs = typeof(RequestServiceNameViewModel).GetField("_lazyComs", BindingFlags.Instance | BindingFlags.GetField | BindingFlags.NonPublic);
+            // ReSharper disable once PossibleNullReferenceException
+            lazyComs.SetValue(viewModel, controller.Object);
+            var selectedItem = typeof(RequestServiceNameViewModel).GetProperty("SingleEnvironmentExplorerViewModel", BindingFlags.Instance | BindingFlags.GetProperty | BindingFlags.Public);
+            // ReSharper disable once PossibleNullReferenceException
+            selectedItem.SetValue(viewModel, selectedItemMock.Object);
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(viewModel);
+            //---------------Execute Test ----------------------
+
+            var canExecute = viewModel.DuplicateCommand.CanExecute(null);
+            //---------------Test Result -----------------------
+            Assert.IsFalse(canExecute);
+        }
     }
 }
