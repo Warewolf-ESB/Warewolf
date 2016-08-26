@@ -834,7 +834,6 @@ namespace Warewolf.Studio.ViewModels
                 }
                 SelectAction?.Invoke(this);
                 OnPropertyChanged(() => IsResourceChecked);
-                OnPropertyChanged(() => CanDeploy);
             }
         }
 

@@ -241,7 +241,7 @@ namespace Warewolf.Studio.ViewModels
                     DeploySuccessMessage = $"{notfolders.Count} Resource{(notfolders.Count == 1 ? "" : "s")} Deployed Successfully.";
                     _stats.Calculate(new List<IExplorerTreeItem>());
                     UpdateServerCompareChanged(this, Guid.Empty);
-                    Source.SelectedEnvironment.AsList().Apply(o => o.IsResourceUnchecked = false);
+                    Source.SelectedEnvironment.AsList().Where(model => model.IsResourceChecked == true).Apply(o => o.IsResourceUnchecked = false);
                 }
             }
             catch (Exception e)

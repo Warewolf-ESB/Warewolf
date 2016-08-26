@@ -153,15 +153,17 @@ namespace Warewolf.Studio.ViewModels
             {
                 foreach(var explorerItemViewModel in destItems)
                 {
-                    var currentItem = _items.FirstOrDefault(p=>p.ResourceName == explorerItemViewModel.ResourceName);
+                    var currentItem = _items.FirstOrDefault(p=>p.ResourceId == explorerItemViewModel.ResourceId);
                     {
                         if(currentItem != null)
                         {
                             var permission = explorerItemViewModel.Server.Permissions.FirstOrDefault(p => p.ResourceID == explorerItemViewModel.ResourceId);
                             var perms = permission?.Permissions.ToString();
                             if(perms != null && !perms.Contains(Permissions.Contribute.ToString()))
-                                currentItem.CanDeploy = false;                            
-                        }
+                                currentItem.CanDeploy = false;
+                            else
+                                currentItem.CanDeploy = true; //The item does not exist in the destination, you can send it
+                        }                        
                     }
                 }
             }
@@ -242,6 +244,7 @@ namespace Warewolf.Studio.ViewModels
             OnPropertyChanged(() => Conflicts);
             OnPropertyChanged(() => New);
             CalculateAction?.Invoke();
+            CheckDestinationPersmisions();
         }
 
         public IList<Conflict> Conflicts => _conflicts.ToList();
