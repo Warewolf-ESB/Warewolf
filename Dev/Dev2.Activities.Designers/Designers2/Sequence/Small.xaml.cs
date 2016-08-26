@@ -20,7 +20,6 @@ namespace Dev2.Activities.Designers2.Sequence
         public Small()
         {
             InitializeComponent();
-            DropPoint.PreviewDragOver += DropPoint_OnDragOver;
             DropPoint.PreviewDrop += DropPoint_OnPreviewDrop;
             _dropEnabledActivityDesignerUtils = new DropEnabledActivityDesignerUtils();
         }
@@ -48,15 +47,18 @@ namespace Dev2.Activities.Designers2.Sequence
             var viewModel = DataContext as SequenceDesignerViewModel;
             if(viewModel != null)
             {
+                if (_dropEnabledActivityDesignerUtils != null)
+                {
+                    var dropEnabled = _dropEnabledActivityDesignerUtils.LimitDragDropOptions(e.Data);
+                    if (!dropEnabled)
+                    {
+                        e.Effects = DragDropEffects.None;
+                        e.Handled = true;
+                    }
+                }
                 viewModel.DoDrop(e.Data);
             }
             DropPoint.Item = null;
-        }
-
-        void DropPoint_OnDragOver(object sender, DragEventArgs e)
-        {
-            AllowDrag(e);
-            OnDragOver(e);
         }
     }
 }

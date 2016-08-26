@@ -60,6 +60,9 @@ using Dev2.Workspaces;
 using Warewolf.Studio.ViewModels;
 using Warewolf.Studio.Views;
 using Dev2.Studio.Core;
+using Dev2.Studio.Core.Network;
+using Dev2.Studio.ViewModels.Workflow;
+
 // ReSharper disable CatchAllClause
 // ReSharper disable InconsistentNaming
 // ReSharper disable NonLocalizedString
@@ -589,6 +592,44 @@ namespace Dev2.Studio.ViewModels
                 var contextualResourceModel = environmentModel.ResourceRepository.LoadContextualResourceModel(resourceId);
                 _worksurfaceContextManager.DisplayResourceWizard(contextualResourceModel);
             }
+        }
+        public void ViewSwagger(Guid resourceId, IServer server)
+        {
+            ViewSwagger(resourceId, server.EnvironmentID);
+        }
+
+        private void ViewSwagger(Guid resourceId, Guid environmentId)
+        {
+            var environmentModel = EnvironmentRepository.Get(environmentId);
+            if (environmentModel != null)
+            {
+                var contextualResourceModel = environmentModel.ResourceRepository.LoadContextualResourceModel(resourceId);
+
+                var workflowUri = WebServer.GetWorkflowUri(contextualResourceModel, "", UrlType.API);
+                if (workflowUri != null)
+                {
+                    BrowserPopupController.ShowPopup(workflowUri.ToString());
+                }
+            }
+        }
+
+        public void ViewApisJson(string resourcePath, Uri webServerUri)
+        {
+            var relativeUrl = "";
+
+            if (!string.IsNullOrWhiteSpace(resourcePath))
+            {
+                relativeUrl = "/secure/" + resourcePath + "/apis.json";
+            }
+            else
+            {
+                relativeUrl += "/secure/apis.json";
+            }
+
+            Uri url;
+            Uri.TryCreate(webServerUri, relativeUrl, out url);
+
+            BrowserPopupController.ShowPopup(url.ToString());
         }
 
         public void CloseResource(Guid resourceId, Guid environmentId)

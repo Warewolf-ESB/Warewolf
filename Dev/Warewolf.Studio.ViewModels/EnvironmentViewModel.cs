@@ -16,6 +16,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
+using Dev2.Studio.Core;
 using Warewolf.Studio.Core;
 // ReSharper disable InconsistentNaming
 
@@ -122,7 +123,13 @@ namespace Warewolf.Studio.ViewModels
                 UpdateActiveEnvironment(shellViewModel);
                 shellViewModel.NewDropboxSource(ResourcePath);
             });
-           
+
+            ViewApisJsonCommand = new DelegateCommand(() =>
+            {
+                var environmentModel = EnvironmentRepository.Instance.FindSingle(model => model.ID == Server.EnvironmentID);
+                shellViewModel.ViewApisJson(ResourcePath, environmentModel.Connection.WebServerUri);
+            });
+
             DisplayName = server.ResourceName;
             RefreshCommand = new DelegateCommand(async () =>
             {
@@ -167,6 +174,7 @@ namespace Warewolf.Studio.ViewModels
             SelectAll = () => { };
             CanDrag = false;
             CanDrop = false;
+            CanViewApisJson = true;
             if (ForcedRefresh)
                 ForcedRefresh = true;
         }
@@ -365,6 +373,7 @@ namespace Warewolf.Studio.ViewModels
         public bool IsReservedService { get; set; }
         public bool IsServer { get; set; }
         public bool IsResourceVersion { get; set; }
+        public bool CanViewApisJson { get; set; }
 
         public void SelectItem(string path, Action<IExplorerItemViewModel> foundAction)
         {
@@ -662,6 +671,7 @@ namespace Warewolf.Studio.ViewModels
         public ICommand ShowServerVersionCommand { get; set; }
         public ICommand Expand { get; set; }
         public ICommand RefreshCommand { get; set; }
+        public ICommand ViewApisJsonCommand { get; set; }
 
         #endregion
 

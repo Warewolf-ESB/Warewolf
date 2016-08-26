@@ -11,6 +11,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
@@ -306,8 +307,8 @@ namespace Warewolf.Studio.ViewModels
                 OnPropertyChanged(() => SelectedDll);
                 if(SelectedDll != null)
                 {
-                    AssemblyName = SelectedDll.FullName;
                     SelectedDll.IsExpanded = true;
+                    AssemblyName = SelectedDll.FullName;                    
                 }
                 ViewModelUtils.RaiseCanExecuteChanged(OkCommand);
             }
@@ -322,14 +323,31 @@ namespace Warewolf.Studio.ViewModels
             set
             {
                 _assemblyName = value;
-                if (string.IsNullOrEmpty(_assemblyName))
+                if(!string.IsNullOrEmpty(_assemblyName))
                 {
-                    SelectedDll = null;
+                    if(!_assemblyName.StartsWith("GAC"))
+                    //    SelectedDll = null;
+                    //else
+                        SelectDllFromUsingAssemblyName();
                 }
+                else
+                    SelectedDll = null;
                 OnPropertyChanged(() => Header);
                 OnPropertyChanged(()=>AssemblyName);
                 ViewModelUtils.RaiseCanExecuteChanged(OkCommand);
             }
+        }
+
+        private void SelectDllFromUsingAssemblyName()
+        {
+            if(_selectedDll != null) return;
+            if (_assemblyName == null) return;
+            if(!_assemblyName.StartsWith("GAC"))
+                if(!File.Exists(_assemblyName)) return;
+            var dll = new FileInfo(_assemblyName);
+            if (dll.Extension != ".dll") return;
+            var fileListing = new FileListing { Name = dll.Name, FullName = dll.FullName };
+            _selectedDll = new DllListingModel(_updateManager, fileListing);
         }
 
         void SetupHeaderTextFromExisting()
