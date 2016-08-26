@@ -304,9 +304,7 @@
                                                                     Header="View Apis.Json"
                                                                     Visibility="{Binding Path=Data.CanViewApisJson,
                                                                                          Converter={StaticResource BoolToVisibilityConverter}}" >
-                                                        <ig:XamMenuItem.Icon>
-                                                            {A}
-                                                        </ig:XamMenuItem.Icon>
+                                                        
                                                     </ig:XamMenuItem>
 
                                                 </ig:XamContextMenu>
