@@ -323,11 +323,15 @@ namespace Warewolf.Studio.ViewModels
             set
             {
                 _assemblyName = value;
-                _selectedDll = null;
-                if(string.IsNullOrEmpty(_assemblyName))
-                    SelectedDll = null;
+                if(!string.IsNullOrEmpty(_assemblyName))
+                {
+                    if(!_assemblyName.StartsWith("GAC"))
+                    //    SelectedDll = null;
+                    //else
+                        SelectDllFromUsingAssemblyName();
+                }
                 else
-                    SelectDllFromUsingAssemblyName();
+                    SelectedDll = null;
                 OnPropertyChanged(() => Header);
                 OnPropertyChanged(()=>AssemblyName);
                 ViewModelUtils.RaiseCanExecuteChanged(OkCommand);
