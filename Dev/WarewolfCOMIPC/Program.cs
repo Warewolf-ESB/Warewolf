@@ -144,7 +144,7 @@ namespace WarewolfCOMIPC
                                 var retObj = new JObject();
                                 foreach(var propertyInfo in props)
                                 {
-                                    var propValue = retType.InvokeMember(propertyInfo.Name, BindingFlags.Public | BindingFlags.Instance | BindingFlags.GetProperty, null, result, null);
+                                    var propValue = retType.InvokeMember(propertyInfo.Name, BindingFlags.Instance | BindingFlags.GetProperty, null, result, null);
                                     retObj.Add(propertyInfo.Name,new JValue(propValue.ToString()));
                                 }
                                 formatter.Serialize(sw, retObj);
