@@ -160,6 +160,9 @@
       <DependentUpon>ConnectControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Converters\ComboBoxToMaxItemWidthConverter.cs" />
+    <Compile Include="CreateDuplicateResourceDialog.xaml.cs">
+      <DependentUpon>CreateDuplicateResourceDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="DeployView.xaml.cs">
       <DependentUpon>DeployView.xaml</DependentUpon>
     </Compile>
@@ -241,6 +244,10 @@
     <Page Include="ConnectControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="CreateDuplicateResourceDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="DeployView.xaml">
       <SubType>Designer</SubType>

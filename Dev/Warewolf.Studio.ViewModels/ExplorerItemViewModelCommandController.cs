@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using System.Windows;
+using Dev2;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Common.Interfaces.Versioning;
@@ -35,13 +36,13 @@ namespace Warewolf.Studio.ViewModels
             }
             else if (item.IsResourceVersion)
             {
-                OpenVersionCommand(item.Parent.ResourceId,item.VersionInfo);
+                OpenVersionCommand(item.Parent.ResourceId, item.VersionInfo);
             }
             else
             {
                 SetActiveStates(_shellViewModel, server);
                 _shellViewModel.OpenResource(item.ResourceId, server);
-            }                        
+            }
         }
 
         public void OpenVersionCommand(Guid resourceId, IVersionInfo versionInfo)
@@ -96,7 +97,7 @@ namespace Warewolf.Studio.ViewModels
             _shellViewModel.NewDatabaseSource(resourcePath);
         }
 
-        public void NewServerSourceCommand( string resourcePath, IServer server)
+        public void NewServerSourceCommand(string resourcePath, IServer server)
         {
             SetActiveStates(_shellViewModel, server);
             _shellViewModel.NewServerSource(resourcePath);
@@ -121,8 +122,14 @@ namespace Warewolf.Studio.ViewModels
                 parent?.RemoveChild(parent.Children.First(a => a.ResourceName == resourceName));
             }
         }
+        public void DuplicateResource(ExplorerItemViewModel explorerItemViewModel)
+        {
+            var view = CustomContainer.GetInstancePerRequestType<ICreateDuplicateResourceView>();
+            DuplicateResourceViewModel viewModel = new DuplicateResourceViewModel(view, explorerItemViewModel);
+            viewModel.ShowDialog();
+        }
 
-        public void DeleteCommand(IEnvironmentModel environmentModel, IExplorerTreeItem parent, IExplorerRepository explorerRepository, ExplorerItemViewModel explorerItemViewModel, IPopupController popupController,IServer server)
+        public void DeleteCommand(IEnvironmentModel environmentModel, IExplorerTreeItem parent, IExplorerRepository explorerRepository, ExplorerItemViewModel explorerItemViewModel, IPopupController popupController, IServer server)
         {
             try
             {
@@ -161,7 +168,7 @@ namespace Warewolf.Studio.ViewModels
                 explorerItemViewModel.ShowErrorMessage(ex.Message, @"Delete not allowed");
             }
 
-            
+
         }
 
         internal void CreateFolderCommand(IExplorerRepository explorerRepository, string resourcePath, string name, Guid id)
