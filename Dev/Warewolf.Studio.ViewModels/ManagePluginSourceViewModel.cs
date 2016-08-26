@@ -307,8 +307,8 @@ namespace Warewolf.Studio.ViewModels
                 OnPropertyChanged(() => SelectedDll);
                 if(SelectedDll != null)
                 {
-                    AssemblyName = SelectedDll.FullName;
                     SelectedDll.IsExpanded = true;
+                    AssemblyName = SelectedDll.FullName;                    
                 }
                 ViewModelUtils.RaiseCanExecuteChanged(OkCommand);
             }
@@ -338,7 +338,8 @@ namespace Warewolf.Studio.ViewModels
         {
             if(_selectedDll != null) return;
             if (_assemblyName == null) return;
-            if(!File.Exists(_assemblyName)) return;
+            if(!_assemblyName.StartsWith("GAC"))
+                if(!File.Exists(_assemblyName)) return;
             var dll = new FileInfo(_assemblyName);
             if (dll.Extension != ".dll") return;
             var fileListing = new FileListing { Name = dll.Name, FullName = dll.FullName };
