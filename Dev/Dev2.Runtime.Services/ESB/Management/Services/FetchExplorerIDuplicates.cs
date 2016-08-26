@@ -35,10 +35,9 @@ namespace Dev2.Runtime.ESB.Management.Services
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
             Dev2Logger.Info("Fetch Duplicate ResourcesError");
-
             var serializer = new Dev2JsonSerializer();
             try
-            {                
+            {
                 var item = ServerExplorerRepo.LoadDuplicate();
                 CompressedExecuteMessage message = new CompressedExecuteMessage();
                 message.SetMessage(serializer.Serialize(item));

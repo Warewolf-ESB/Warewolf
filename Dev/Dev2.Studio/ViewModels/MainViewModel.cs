@@ -597,20 +597,18 @@ namespace Dev2.Studio.ViewModels
         {
             ViewSwagger(resourceId, server.EnvironmentID);
         }
-        public void ViewSwagger(Guid resourceId, Guid environmentId)
+
+        private void ViewSwagger(Guid resourceId, Guid environmentId)
         {
             var environmentModel = EnvironmentRepository.Get(environmentId);
             if (environmentModel != null)
             {
                 var contextualResourceModel = environmentModel.ResourceRepository.LoadContextualResourceModel(resourceId);
 
-                var _workflowInputDataViewModel = WorkflowInputDataViewModel.Create(contextualResourceModel);
-                var buildWebPayLoad = _workflowInputDataViewModel.BuildWebPayLoad();
-                var workflowUri = WebServer.GetWorkflowUri(contextualResourceModel, buildWebPayLoad, UrlType.API);
+                var workflowUri = WebServer.GetWorkflowUri(contextualResourceModel, "", UrlType.API);
                 if (workflowUri != null)
                 {
                     BrowserPopupController.ShowPopup(workflowUri.ToString());
-
                 }
             }
         }
@@ -621,11 +619,11 @@ namespace Dev2.Studio.ViewModels
 
             if (!string.IsNullOrWhiteSpace(resourcePath))
             {
-                relativeUrl = $"/secure/" + resourcePath + "/apis.json";
+                relativeUrl = "/secure/" + resourcePath + "/apis.json";
             }
             else
             {
-                relativeUrl += $"/secure/" + resourcePath + "apis.json";
+                relativeUrl += "/secure/apis.json";
             }
 
             Uri url;

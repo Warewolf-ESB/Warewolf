@@ -4,7 +4,6 @@ using System.Linq;
 using Dev2;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Deploy;
-using Dev2.Common.Interfaces.Security;
 using Microsoft.Practices.Prism.Mvvm;
 
 namespace Warewolf.Studio.ViewModels
@@ -153,7 +152,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 foreach(var explorerItemViewModel in destItems)
                 {
-                    var currentItem = _items.FirstOrDefault(p=>p.ResourceId == explorerItemViewModel.ResourceId);
+                    var currentItem = _items.FirstOrDefault(p=>p.ResourceName == explorerItemViewModel.ResourceName);
                     {
                         if(currentItem != null)
                         {
