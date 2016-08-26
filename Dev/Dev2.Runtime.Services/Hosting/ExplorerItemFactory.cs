@@ -22,6 +22,7 @@ using Dev2.Explorer;
 using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.Security;
 using Dev2.Services.Security;
+// ReSharper disable MemberCanBePrivate.Global
 
 namespace Dev2.Runtime.Hosting
 {

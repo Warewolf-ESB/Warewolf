@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.IO.Pipes;
-using System.Text;
 using Newtonsoft.Json;
 // ReSharper disable InconsistentNaming
 
@@ -31,6 +30,7 @@ namespace WarewolfCOMIPC.Client
             _process = Process.Start(psi);
             _pipe = new NamedPipeClientStream(".", token, PipeDirection.InOut);
             _pipe.Connect();
+            
             _pipe.ReadMode = PipeTransmissionMode.Message;
         }
         
@@ -73,7 +73,7 @@ namespace WarewolfCOMIPC.Client
 
             // Write request to server
             var serializer = new JsonSerializer();
-            var sw = new StreamWriter(_pipe, Encoding.UTF8, 256, true);
+            var sw = new StreamWriter(_pipe);
             serializer.Serialize(sw, info);
             sw.Flush();
 
