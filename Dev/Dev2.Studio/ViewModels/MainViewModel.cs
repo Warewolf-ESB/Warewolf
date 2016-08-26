@@ -61,7 +61,6 @@ using Warewolf.Studio.ViewModels;
 using Warewolf.Studio.Views;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Network;
-using Dev2.Studio.ViewModels.Workflow;
 
 // ReSharper disable CatchAllClause
 // ReSharper disable InconsistentNaming

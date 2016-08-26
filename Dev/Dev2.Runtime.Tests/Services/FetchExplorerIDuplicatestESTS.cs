@@ -11,10 +11,8 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using Dev2.Common.Interfaces.Hosting;
 using Dev2.Common.Interfaces.Infrastructure;
 using Dev2.Common.Interfaces.Security;
-using Dev2.Communication;
 using Dev2.Explorer;
 using Dev2.Runtime.ESB.Management.Services;
 using Dev2.Workspaces;
@@ -37,21 +35,6 @@ namespace Dev2.Tests.Runtime.Services
             //------------Execute Test---------------------------
             //------------Assert Results-------------------------
             Assert.AreEqual("FetchResourceDuplicates", FetchResourceDuplicates.HandlesType());
-        }
-
-        [TestMethod]
-        [Owner("Sanele Mthembu")]
-        [TestCategory("FetchResourceDuplicates_Execute")]
-        public void FetchResourceDuplicates_Execute_NullValuesParameter_ErrorResult()
-        {
-            //------------Setup for test--------------------------
-            var FetchResourceDuplicates = new FetchResourceDuplicates();
-            var serializer = new Dev2JsonSerializer();
-            //------------Execute Test---------------------------
-            StringBuilder jsonResult = FetchResourceDuplicates.Execute(null, null);
-            IExplorerRepositoryResult result = serializer.Deserialize<IExplorerRepositoryResult>(jsonResult);
-            //------------Assert Results-------------------------
-            Assert.AreEqual(ExecStatus.Fail, result.Status);
         }
 
         [TestMethod]

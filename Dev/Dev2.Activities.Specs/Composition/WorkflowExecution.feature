@@ -41,9 +41,9 @@ Scenario: Workflow with an assign and remote workflow
 	  | [[inputData]] | hello |
 	And "TestAssignWithRemoteWF" contains "WorkflowUsedBySpecs" from server "Remote Connection Integration" with mapping as
 	| Input to Service | From Variable | Output from Service | To Variable      |
-	| inputData            | [[inputData]] | output              | [[output]]       |
-	|                  |               | values(*).up     | [[values().up]]  |
-	|                  |               | values(*).low     | [[values().low]] |
+	| inputData        | [[inputData]] | output              | [[output]]       |
+	|                  |               | values(*).up        | [[values().up]]  |
+	|                  |               | values(*).low       | [[values().low]] |
 	  When "TestAssignWithRemoteWF" is executed
 	  Then the workflow execution has "NO" error
 	   And the "AssignData" in WorkFlow "TestAssignWithRemoteWF" debug inputs as
@@ -3900,10 +3900,7 @@ Scenario: Error not bubbling up error message
 	And the "ErrorBubbleUp" in Workflow "Wolf-1212_2" debug outputs as
 	  |                   |
 	  | [[Result]] = Pass |
-
 	  
-
-
 #PostgreSQL
 Scenario Outline: Database PostgreSql Database service inputs and outputs
      Given I have a workflow "<WorkflowName>"
