@@ -153,7 +153,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 foreach(var explorerItemViewModel in destItems)
                 {
-                    var currentItem = _items.FirstOrDefault(p=>p.ResourceId == explorerItemViewModel.ResourceId);
+                    var currentItem = _items.FirstOrDefault(p=>p.ResourceName == explorerItemViewModel.ResourceName);
                     {
                         if(currentItem != null)
                         {
