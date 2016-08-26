@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -71,8 +72,26 @@ namespace Warewolf.Studio.ViewModels
         {
             try
             {
+                var explorerTreeItems = Utilities.TraverseItems(SelectedItem, item => item.Children ?? new ObservableCollection<IExplorerItemViewModel>())
+                                                 .Where(item => item.ResourceId != SelectedItem.ResourceId);
+                bool isFolder = SelectedItem.IsFolder;
+                List<LightExplorerItem> lightExplorerItems = explorerTreeItems.Select(item => new LightExplorerItem
+                {
+                    IsFolder = item.IsFolder,
+                    IsService = item.IsFolder,
+                    IsSource = item.IsSource,
+                    ResourceName = item.ResourceName,
+                    ResourcePath = string.IsNullOrEmpty(Path) ? Name : Path + "\\" + Name,
+                    ResourceType = item.ResourceType,
+                    ResourceId = item.ResourceId,
+                }).ToList();
+                Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+                var serializeToBuilder = serializer.SerializeToBuilder(lightExplorerItems);
+                // explorerTreeItem.Children.Select(model => model.)
                 _lazyComs.AddPayloadArgument("ResourceID", _explorerItemViewModel.ResourceId.ToString());
-                _lazyComs.AddPayloadArgument("NewResourceName", string.IsNullOrEmpty(Path) ? Name : Path + "\\" + Name);
+                _lazyComs.AddPayloadArgument("isFolder", isFolder.ToString());
+                _lazyComs.AddPayloadArgument("lightExplorerItems", serializeToBuilder);
+                _lazyComs.AddPayloadArgument("NewResourceName", Name);
                 _lazyComs.AddPayloadArgument("FixRefs", FixReferences.ToString());
                 // ReSharper disable once UnusedVariable
                 var executeCommand = _lazyComs.ExecuteCommand<ExecuteMessage>(_lazyCon ?? EnvironmentRepository.Instance.ActiveEnvironment?.Connection, GlobalConstants.ServerWorkspaceID);
@@ -342,4 +361,5 @@ namespace Warewolf.Studio.ViewModels
             _environmentViewModel?.Dispose();
         }
     }
+
 }

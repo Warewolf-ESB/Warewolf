@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Dev2.Common;
 using Dev2.Common.Common;
+using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Explorer;
@@ -13,10 +14,8 @@ using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Interfaces;
-using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Workspaces;
 using Newtonsoft.Json;
-
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
@@ -56,9 +55,13 @@ namespace Dev2.Runtime.ESB.Management.Services
             StringBuilder tmp;
             StringBuilder newResourceName;
             StringBuilder fixRefs;
+            StringBuilder isFolder;
+            StringBuilder lightExplorerItems;
             values.TryGetValue("ResourceID", out tmp);
             values.TryGetValue("NewResourceName", out newResourceName);
             values.TryGetValue("FixRefs", out fixRefs);
+            values.TryGetValue("lightExplorerItems", out lightExplorerItems);
+            values.TryGetValue("isFolder", out isFolder);
 
             if (tmp != null)
             {
@@ -67,23 +70,21 @@ namespace Dev2.Runtime.ESB.Management.Services
                 {
                     if (!string.IsNullOrEmpty(newResourceName?.ToString()))
                     {
-                        GetItemExplorer().Load(GlobalConstants.ServerWorkspaceID);
-                        var explorerItem = GetItemExplorer().Find(resourceId);
-                        var resource = GetResourceCatalog().GetResource(GlobalConstants.ServerWorkspaceID, resourceId);
-
+                        var items = lightExplorerItems?.ToString();
+                        var actualItems = serializer.Deserialize<List<LightExplorerItem>>(items);
                         try
                         {
-
-                            if (!explorerItem.IsFolder)
+                            var valueIsFolder = isFolder != null && bool.Parse(isFolder.ToString());
+                            if (!valueIsFolder)
                             {
                                 // ReSharper disable once UnusedVariable
                                 //SaveSingleResource(resource, newResourceName, explorerItem);
-                                SaveResource(resource, newResourceName);
+                                SaveResource(actualItems.Single(), newResourceName);
                             }
                             else
                             {
                                 // ReSharper disable once UnusedVariable
-                                SaveFolders(explorerItem, newResourceName);
+                                SaveFolders(actualItems, newResourceName);
                             }
                         }
                         catch (Exception x)
@@ -100,18 +101,18 @@ namespace Dev2.Runtime.ESB.Management.Services
             return serializer.SerializeToBuilder(success);
         }
 
-        private void SaveResource(IResource resource, StringBuilder newResourceName)
+        private void SaveResource(ILightExplorerItem lightResource, StringBuilder newResourceName, string resourcePath = null)
         {
-          
-        
-            StringBuilder result = GetResourceCatalog().GetResourceContents(GlobalConstants.ServerWorkspaceID, resource.ResourceID);
             
+            StringBuilder result = GetResourceCatalog().GetResourceContents(GlobalConstants.ServerWorkspaceID, lightResource.ResourceId);
+            var resource = GetResourceCatalog().GetResource(GlobalConstants.ServerWorkspaceID, lightResource.ResourceId);
             var xElement = result.ToXElement();
-            resource.ResourcePath = newResourceName.ToString();
+            resource.ResourcePath = resourcePath ?? newResourceName.ToString();
             resource.IsUpgraded = true;
-              var resourceID = Guid.NewGuid();
+            var resourceID = Guid.NewGuid();
             var resourceName = newResourceName.ToString().Split('\\').Last();
-            resource.ResourceName = resourceName;
+
+            resource.ResourceName = lightResource.ResourceName;
             resource.ResourceID = resourceID;
             var displayName = xElement.Element("DisplayName")?.Value;
             var category = xElement.Element("Category")?.Value;
@@ -119,71 +120,60 @@ namespace Dev2.Runtime.ESB.Management.Services
             xElement.SetElementValue("Category", category?.Replace(displayName ?? "", resourceName));
             xElement.SetElementValue("ID", resourceID.ToString());
             xElement.SetElementValue("Name", resourceName);
-            xElement.SetElementValue("ResourcePath", newResourceName.ToString());
+            xElement.SetElementValue("ResourcePath", resourcePath?? newResourceName.ToString());
             var fixedResource = xElement.ToStringBuilder();
             GetResourceCatalog().SaveResource(GlobalConstants.ServerWorkspaceID, resource, fixedResource);
-            
+
         }
 
 
-        private void SaveFolders(IExplorerItem explorerItem, StringBuilder newResourceName)
+        private void SaveFolders(IEnumerable<ILightExplorerItem> explorerItems, StringBuilder newResourceName)
         {
-            IEnumerable<IExplorerItem> explorerItems;
-            try
-            {
-                explorerItems = Common.Utilities.TraverseItems(explorerItem, item => item?.Children ?? new List<IExplorerItem>())
-                    .Where(item => item.ResourceId != explorerItem.ResourceId);
-            }
-            // ReSharper disable once UnusedVariable
-            catch (Exception ex)
-            {
-                explorerItems = explorerItem.Children;
-                Console.WriteLine(ex.Message);
-            }
+            
             var guidIds = new StringBuilder();
 
-            foreach (var guidId in explorerItems.Select(item => item.ResourceId))
+            var lightExplorerItems = explorerItems as ILightExplorerItem[] ?? explorerItems.ToArray();
+            foreach (var guidId in lightExplorerItems.Select(item => item.ResourceId))
             {
                 guidIds.Append(guidId + ",");
             }
             var resourceList = GetResourceCatalog().GetResourceList(GlobalConstants.ServerWorkspaceID, new Dictionary<string, string> { { "guidCsv", guidIds.ToString() } });
 
             var recourceClones = new List<IResource>(resourceList);
-            foreach (var recourceClone in recourceClones)
+            foreach (var recourceClone in lightExplorerItems)
             {
-                SaveResource(recourceClone, newResourceName);
+
+                SaveResource(recourceClone, GetResourceName(recourceClone, newResourceName, recourceClone.ResourcePath.Split('\\')));
             }
         }
 
-        private static void GetResourceName(IExplorerItem explorerItem, StringBuilder newResourceName, string[] folderName, StringBuilder fixedResourcename)
+        private static StringBuilder GetResourceName(ILightExplorerItem explorerItem, StringBuilder newResourceName, string[] folderName)
         {
+            StringBuilder fixedResourcename = new StringBuilder();
             for (int index = 0; index < folderName.Length; index++)
             {
                 var value = folderName[index];
                 var stringBuilder = newResourceName.ToString().Split('\\').Last();
                 if (index > 0)
                 {
-                    if (value.ToLower() == explorerItem.DisplayName.ToLower())
+                    if (string.Equals(value, explorerItem.ResourceName, StringComparison.CurrentCultureIgnoreCase))
                     {
                         fixedResourcename.Append("\\" + stringBuilder);
+                        break;
                     }
-                    else
-                    {
-                        fixedResourcename.Append("\\" + value);
-                    }
+                    fixedResourcename.Append("\\" + value);
                 }
                 else
                 {
-                    if (value.ToLower() == explorerItem.DisplayName.ToLower())
+                    if (string.Equals(value, explorerItem.ResourceName, StringComparison.CurrentCultureIgnoreCase))
                     {
                         fixedResourcename.Append("\\" + stringBuilder);
+                        break;
                     }
-                    else
-                    {
-                        fixedResourcename.Append(value);
-                    }
+                    fixedResourcename.Append(value);
                 }
             }
+            return fixedResourcename;
         }
 
         public string HandlesType()
