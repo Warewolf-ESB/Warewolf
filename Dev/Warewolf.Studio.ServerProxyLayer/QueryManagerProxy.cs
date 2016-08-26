@@ -495,7 +495,7 @@ namespace Warewolf.Studio.ServerProxyLayer
 
         public Task<List<string>> LoadDuplicates()
         {
-            var comsController = CommunicationControllerFactory.CreateController("FetchExplorerIDuplicates");
+            var comsController = CommunicationControllerFactory.CreateController("FetchResourceDuplicates");
             var result = comsController.ExecuteCompressedCommandAsync<List<string>>(Connection, GlobalConstants.ServerWorkspaceID);     
             return result;
         }
