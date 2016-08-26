@@ -113,7 +113,7 @@ namespace Warewolf.Studio.ViewModels
                 return ((ResourcePath?.GetHashCode() ?? 0) * 397) ^ ResourceId.GetHashCode();
             }
         }
-        
+
 
         public Action<IExplorerItemViewModel> SelectAction { get; set; }
         string _resourceName;
@@ -166,7 +166,7 @@ namespace Warewolf.Studio.ViewModels
             Parent = parent;
 
             _explorerItemViewModelCommandController = new ExplorerItemViewModelCommandController(_shellViewModel, _popupController);
-            
+
             _canShowVersions = true;
             Children = new ObservableCollection<IExplorerItemViewModel>();
 
@@ -185,7 +185,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 SetPermissions(Server.Permissions);
             }
-            
+
             _candrop = true;
             _canDrag = true;
             CanViewSwagger = false;
@@ -201,7 +201,7 @@ namespace Warewolf.Studio.ViewModels
                             _explorerItemViewModelCommandController.RollbackCommand(_explorerRepository, Parent, ResourceId, VersionNumber);
                         }
                     });
-            DeployCommand = new DelegateCommand<IExplorerItemViewModel>(a => ShellViewModel.AddDeploySurface(AsList().Union(new[] {this})));
+            DeployCommand = new DelegateCommand<IExplorerItemViewModel>(a => ShellViewModel.AddDeploySurface(AsList().Union(new[] { this })));
             LostFocus = new DelegateCommand(LostFocusCommand);
             OpenCommand = new DelegateCommand(() =>
             {
@@ -269,6 +269,7 @@ namespace Warewolf.Studio.ViewModels
             ShowDependenciesCommand = new DelegateCommand(ShowDependencies);
             ShowVersionHistory = new DelegateCommand(() => AreVersionsVisible = !AreVersionsVisible);
             DeleteCommand = new DelegateCommand(Delete);
+            DuplicateCommand = new DelegateCommand(DuplicateResource);
             OpenVersionCommand = new DelegateCommand(OpenVersion);
             VersionHeader = "Show Version History";
             Expand = new DelegateCommand<int?>(clickCount =>
@@ -284,6 +285,11 @@ namespace Warewolf.Studio.ViewModels
             });
             CreateFolderCommand = new DelegateCommand(CreateNewFolder);
             DeleteVersionCommand = new DelegateCommand(DeleteVersion);
+        }
+
+        private void DuplicateResource()
+        {
+            _explorerItemViewModelCommandController.DuplicateResource(this);
         }
 
         internal void ShowDependencies()
@@ -302,7 +308,7 @@ namespace Warewolf.Studio.ViewModels
 
         public string ActivityName => typeof(DsfActivity).AssemblyQualifiedName;
 
-        
+
 
         public IExplorerTreeItem Parent { get; set; }
 
@@ -485,7 +491,7 @@ namespace Warewolf.Studio.ViewModels
 
         public void Delete()
         {
-            _explorerItemViewModelCommandController.DeleteCommand(EnvironmentModel, Parent, _explorerRepository, this,_popupController,Server);            
+            _explorerItemViewModelCommandController.DeleteCommand(EnvironmentModel, Parent, _explorerRepository, this, _popupController, Server);
         }
 
         public void UpdatePermissions(PermissionsChangedArgs args)
@@ -550,7 +556,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 SetAdministratorPermissions();
             }
-            
+
         }
 
         private void SetAdministratorPermissions()
@@ -588,6 +594,7 @@ namespace Warewolf.Studio.ViewModels
 
         public ICommand CreateFolderCommand { get; set; }
         public ICommand DeleteCommand { get; set; }
+        public ICommand DuplicateCommand { get; set; }
         public ICommand ShowVersionHistory { get; set; }
         public ICommand RollbackCommand { get; set; }
         public bool IsRenaming
@@ -1146,8 +1153,8 @@ namespace Warewolf.Studio.ViewModels
                         return false;
                     }
                 }
-                
-                var moveResult = await _explorerRepository.Move(this, destination);              
+
+                var moveResult = await _explorerRepository.Move(this, destination);
                 if (!moveResult)
                 {
                     ShowErrorMessage(Resources.Languages.Core.ExplorerMoveFailedMessage, Resources.Languages.Core.ExplorerMoveFailedHeader);
@@ -1171,18 +1178,18 @@ namespace Warewolf.Studio.ViewModels
 
         private void UpdateResourcePaths(IExplorerTreeItem destination)
         {
-            if(destination.IsFolder)
+            if (destination.IsFolder)
             {
-                if(destination.Children.Any(a => a.ResourceName == ResourceName && a.IsFolder))
+                if (destination.Children.Any(a => a.ResourceName == ResourceName && a.IsFolder))
                 {
                     var destfolder = destination.Children.FirstOrDefault(a => a.ResourceName == ResourceName && a.IsFolder);
-                    if(destfolder != null)
+                    if (destfolder != null)
                     {
                         destfolder.ResourcePath = destination.ResourcePath + "\\" + destfolder.ResourceName;
                         destfolder.Parent = destination;
 
                         var resourcePath = destfolder.ResourcePath;
-                        foreach(var explorerItemViewModel in Children)
+                        foreach (var explorerItemViewModel in Children)
                         {
                             explorerItemViewModel.ResourcePath = resourcePath + "\\" + explorerItemViewModel.ResourceName;
                         }
@@ -1190,14 +1197,14 @@ namespace Warewolf.Studio.ViewModels
                 }
                 else
                 {
-                    foreach(var explorerItemViewModel in Children)
+                    foreach (var explorerItemViewModel in Children)
                     {
                         explorerItemViewModel.ResourcePath = destination.ResourcePath + "\\" + explorerItemViewModel.ResourceName;
                         explorerItemViewModel.Parent = destination;
                     }
                 }
             }
-            else if(destination.ResourceType == "ServerSource")
+            else if (destination.ResourceType == "ServerSource")
             {
                 ResourcePath = destination.ResourcePath + (destination.ResourcePath == string.Empty ? "" : "\\") + ResourceName;
                 Parent = destination;

@@ -216,6 +216,7 @@
     <Compile Include="IComPluginSource.cs" />
     <Compile Include="IComputerName.cs" />
     <Compile Include="IConnectControlViewModel.cs" />
+    <Compile Include="ICreateDuplicateResourceView.cs" />
     <Compile Include="IDeletedFileMetadata.cs" />
     <Compile Include="IDllListing.cs" />
     <Compile Include="IDropboxExecutor.cs" />
