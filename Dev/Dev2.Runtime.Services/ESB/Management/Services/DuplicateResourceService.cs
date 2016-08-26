@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Xml.Linq;
 using Dev2.Common;
+using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Data;
+using Dev2.Common.Interfaces.Explorer;
 using Dev2.Common.Interfaces.Infrastructure;
 using Dev2.Communication;
 using Dev2.DynamicServices;
@@ -30,12 +31,15 @@ namespace Dev2.Runtime.ESB.Management.Services
             _resourceCatalog = resourceCatalog;
             _resourceRepository = resourceRepository;
         }
-
+        /// <summary>
+        /// USED, 
+        /// </summary>
+        // ReSharper disable once UnusedParameter.Local
         public DuplicateResourceService()
         {
 
         }
-
+        
         private IResourceCatalog GetResourceCatalog()
         {
             return _resourceCatalog ?? (_resourceCatalog = ResourceCatalog.Instance);
@@ -72,52 +76,20 @@ namespace Dev2.Runtime.ESB.Management.Services
 
                             if (!explorerItem.IsFolder)
                             {
-                                var xElement = resource.ToXml();
-                                var newResourceXml = new XElement(xElement);
-                                //Allocate new ID
-                                var newGuid = Guid.NewGuid();
-                                var newResource = new Resource(newResourceXml)
-                                {
-                                    ResourceName = newResourceName.ToString(),
-                                    ResourceID = newGuid
-                                };
+                                // ReSharper disable once UnusedVariable
+                                SaveSingleResource(resource, newResourceName);
 
-                                GetResourceCatalog().CopyResource(newResource, GlobalConstants.ServerWorkspaceID);
                             }
                             else
                             {
-
-                                var explorerItems = explorerItem.Children;
-                                var folderResource = GetResourceCatalog().GetResource(GlobalConstants.ServerWorkspaceID, explorerItem.ResourceId);
-
-                                var newFolder = new Resource(folderResource)
-                                {
-                                    ResourceName = newResourceName.ToString(),
-                                    ResourceID = Guid.NewGuid()
-                                };
-                                GetResourceCatalog().CopyResource(newFolder, GlobalConstants.ServerWorkspaceID);
-                                var guidIds = new StringBuilder();
-
-                                foreach (var guidId in explorerItems.Select(item => item.ResourceId))
-                                {
-                                    guidIds.Append(guidId + ",");
-                                }
-                                var resourceList = GetResourceCatalog().GetResourceList(GlobalConstants.ServerWorkspaceID,
-                                    new Dictionary<string, string> { { "guidCsv", guidIds.ToString() } });
-                                var recourceClones = new List<IResource>(resourceList);
-                                foreach (var recourceClone in recourceClones)
-                                {
-                                    recourceClone.ResourceID = Guid.NewGuid();
-                                    GetResourceCatalog().SaveResource(GlobalConstants.ServerWorkspaceID, recourceClone);
-                                }
-
+                                // ReSharper disable once UnusedVariable
+                                SaveFolders(explorerItem, newResourceName);
                             }
-
                         }
                         catch (Exception x)
                         {
                             Dev2Logger.Error(x.Message + " DuplicateResourceService", x);
-                            var result = new ExecuteMessage { HasError = true };
+                            var result = new ExecuteMessage { HasError = true, Message = x.Message.ToStringBuilder() };
                             return serializer.SerializeToBuilder(result);
                         }
 
@@ -126,6 +98,91 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
             var success = new ExecuteMessage { HasError = false };
             return serializer.SerializeToBuilder(success);
+        }
+
+        private void SaveSingleResource(IResource resource, StringBuilder newResourceName)
+        {
+            var newResourceClone = new Resource(resource);
+            //Allocate new ID
+            var newGuid = Guid.NewGuid();
+            newResourceClone.ResourceName = newResourceName.ToString();
+            newResourceClone.ResourceID = newGuid;
+            newResourceClone.ResourcePath = string.Empty;
+            newResourceClone.VersionInfo = null;
+            GetResourceCatalog().SaveResource(GlobalConstants.ServerWorkspaceID, newResourceClone);
+        }
+
+        private static IEnumerable<T> TraverseItems<T>(T item, Func<T, IEnumerable<T>> childSelector)
+        {
+            var stack = new Stack<T>();
+            stack.Push(item);
+            while (stack.Any())
+            {
+                var next = stack.Pop();
+                yield return next;
+                foreach (var child in childSelector(next))
+                    stack.Push(child);
+            }
+        }
+        private void SaveFolders(IExplorerItem explorerItem, StringBuilder newResourceName)
+        {
+            IEnumerable<IExplorerItem> explorerItems;
+            try
+            {
+                explorerItems = TraverseItems(explorerItem, item => item?.Children ?? new List<IExplorerItem>())
+                    .Where(item => item.ResourceId != explorerItem.ResourceId);
+            }
+            // ReSharper disable once UnusedVariable
+            catch (Exception ex)
+            {
+                explorerItems = explorerItem.Children;
+                Console.WriteLine(ex.Message);
+            }
+            var guidIds = new StringBuilder();
+
+            foreach (var guidId in explorerItems.Select(item => item.ResourceId))
+            {
+                guidIds.Append(guidId + ",");
+            }
+            var resourceList = GetResourceCatalog().GetResourceList(GlobalConstants.ServerWorkspaceID, new Dictionary<string, string> { { "guidCsv", guidIds.ToString() } });
+            var recourceClones = new List<IResource>(resourceList);
+            foreach (var recourceClone in recourceClones)
+            {
+                StringBuilder fixedResourcename = new StringBuilder();
+                var folderName = recourceClone.ResourcePath.Split('\\');
+
+                for (int index = 0; index < folderName.Length; index++)
+                {
+                    var value = folderName[index];
+                    if (index > 0)
+                    {
+                        if (value.ToLower() == explorerItem.DisplayName.ToLower())
+                        {
+                            fixedResourcename.Append("\\" + newResourceName);
+                        }
+                        else
+                        {
+                            fixedResourcename.Append("\\" + value);
+                        }
+                    }
+                    else
+                    {
+                        if (value.ToLower() == explorerItem.DisplayName.ToLower())
+                        {
+                            fixedResourcename.Append("\\" + newResourceName);
+                        }
+                        else
+                        {
+                            fixedResourcename.Append(value);
+                        }
+                    }
+                }
+
+                recourceClone.ResourceID = Guid.NewGuid();
+                recourceClone.ResourcePath = fixedResourcename.ToString();
+                recourceClone.VersionInfo = null;
+                GetResourceCatalog().SaveResource(GlobalConstants.ServerWorkspaceID, recourceClone);
+            }
         }
 
         public string HandlesType()
