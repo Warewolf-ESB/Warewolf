@@ -944,19 +944,8 @@ namespace Warewolf.Studio.ViewModels
             }
         }
         
-        public bool CanDeploy
-        {
-            get
-            {
-                return _canDeploy;
-            }
-            set
-            {
-                _canDeploy = value;
-                IsResourceChecked = _canDeploy;   
-                IsResourceCheckedEnabled = _canDeploy;
-            } 
-        }     
+        public bool CanDeploy { get; set; }
+
         public IServer Server
         {
             get;
