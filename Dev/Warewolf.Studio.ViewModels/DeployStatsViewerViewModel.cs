@@ -161,8 +161,6 @@ namespace Warewolf.Studio.ViewModels
                             var perms = permission?.Permissions.ToString();
                             if(perms != null && !perms.Contains(Permissions.Contribute.ToString()))
                                 currentItem.CanDeploy = false;
-                            else
-                                currentItem.CanDeploy = true; //The item does not exist in the destination, you can send it
                         }                        
                     }
                 }

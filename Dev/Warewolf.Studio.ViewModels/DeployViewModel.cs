@@ -251,19 +251,6 @@ namespace Warewolf.Studio.ViewModels
             IsDeploying = false;
         }
 
-        //private bool CanDeploySelectedItems(IEnumerable<IExplorerTreeItem> selected)
-        //{
-        //    var copy = Source.SelectedItems;
-        //    foreach (var explorerTreeItem in selected)
-        //    {
-        //        var windowsGroupPermission = explorerTreeItem.Server.Permissions?
-        //            .FirstOrDefault(p => p.ResourceID == explorerTreeItem.ResourceId);
-        //        if (windowsGroupPermission?.Permissions == Permissions.View)
-        //            copy.Remove(explorerTreeItem);
-        //    }
-        //    return copy.Count > 0;
-        //}
-
         bool CheckResourceNameConflict()
         {
             var selected = Source.SelectedItems.Where(a => a.ResourceType != "Folder");
