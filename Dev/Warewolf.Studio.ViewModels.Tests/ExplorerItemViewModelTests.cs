@@ -617,11 +617,9 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual("New Folder", createdFolder.ResourceName);
             Assert.AreEqual("Folder", createdFolder.ResourceType);
             Assert.AreEqual(_target.AllowResourceCheck, createdFolder.AllowResourceCheck);
-            //Todo: See Pete about fixing this test
-            //Assert.AreEqual(_target.IsResourceChecked, createdFolder.IsResourceChecked);
-            //Assert.AreEqual(_target.IsResourceUnchecked, createdFolder.IsResourceUnchecked);
-            //Todo: IsFolderCheckd depends on whethere all items are checked or not
-            //Assert.AreEqual(_target.IsFolderChecked, createdFolder.IsFolderChecked);
+            Assert.AreEqual(_target.IsResourceChecked, createdFolder.IsResourceChecked);
+            Assert.AreEqual(_target.IsResourceUnchecked, createdFolder.IsResourceUnchecked);            
+            Assert.AreEqual(_target.IsFolderChecked, createdFolder.IsFolderChecked);
             Assert.AreEqual(_target.CanCreateFolder, createdFolder.CanCreateFolder);
             Assert.AreEqual(_target.CanCreateSource, createdFolder.CanCreateSource);
             Assert.AreEqual(_target.CanShowVersions, createdFolder.CanShowVersions);
@@ -1503,9 +1501,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual(_target.IsFolder, createdFolder.IsFolder);
             Assert.AreEqual(_target.AllowResourceCheck, createdFolder.AllowResourceCheck);
             Assert.AreEqual(_target.IsReservedService, createdFolder.IsReservedService);
-            //Todo: See Pete about fixing this test
-            //Assert.AreEqual(_target.IsResourceChecked, createdFolder.IsResourceChecked);
-            //Assert.AreEqual(_target.IsFolderChecked, createdFolder.IsFolderChecked);
+            Assert.AreEqual(_target.IsResourceChecked, createdFolder.IsResourceChecked);
+            Assert.AreEqual(_target.IsFolderChecked, createdFolder.IsFolderChecked);
             Assert.AreEqual(_target.CanCreateFolder, createdFolder.CanCreateFolder);
             Assert.AreEqual(_target.CanCreateSource, createdFolder.CanCreateSource);
             Assert.AreEqual(_target.CanShowVersions, createdFolder.CanShowVersions);
