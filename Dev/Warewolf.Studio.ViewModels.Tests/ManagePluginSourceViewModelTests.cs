@@ -1,11 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
-
 using Dev2;
+using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Help;
 using Dev2.Common.Interfaces.SaveDialog;
@@ -51,7 +52,6 @@ namespace Warewolf.Studio.ViewModels.Tests
 
         private List<string> _changedPropertiesRequestServiceNameViewModelAction;
         private ManagePluginSourceViewModel _targetRequestServiceNameViewModelAction;
-
         #endregion Fields
 
         #region Test initialize
@@ -200,7 +200,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         {
 
             //arrange
-            
+
             var selectedDllMock = new Mock<IDllListingModel>();
             _target.SelectedDll = selectedDllMock.Object;
             _target.AssemblyName = "someAssemblyName";
@@ -218,17 +218,23 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void TestOkCommandCanExecuteDll()
         {
             //arrange
+            string SomeassemblynameDll = EnvironmentVariables.WorkspacePath + @"\someAssemblyName.dll";
+            using (File.Create(SomeassemblynameDll))
+            {
+            }
             var selectedDllMock = new Mock<IDllListingModel>();
+            selectedDllMock.SetupGet(model => model.FullName).Returns(SomeassemblynameDll);
+            _target.AssemblyName = SomeassemblynameDll;
             _target.SelectedDll = selectedDllMock.Object;
-            _target.AssemblyName = "someAssemblyName.dll";
             var itemMock = new Mock<IPluginSource>();
             _target.Item = itemMock.Object;
 
             //act
             var result = _target.OkCommand.CanExecute(null);
-            
+
             //assert
             Assert.IsTrue(result);
+            File.Delete(SomeassemblynameDll);
         }
 
         [TestMethod]
@@ -323,8 +329,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             _targetPluginSource.OkCommand.Execute(null);
 
             //assert
-            _pluginSourceMock.VerifySet(it=>it.SelectedDll = It.IsAny<IFileListing>());
-            _updateManagerMock.Verify(it=>it.Save(_pluginSourceMock.Object));
+            _pluginSourceMock.VerifySet(it => it.SelectedDll = It.IsAny<IFileListing>());
+            _updateManagerMock.Verify(it => it.Save(_pluginSourceMock.Object));
             Assert.IsTrue(_changedPropertiesPluginSource.Contains("Header"));
             Assert.AreEqual(_selectedDllFullName, _targetPluginSource.AssemblyName);
             Assert.AreEqual(expectedId, _targetPluginSource.Item.Id);
@@ -349,7 +355,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //arrange
             var closeActionInvoked = false;
             _target.CloseAction = () =>
-                { closeActionInvoked = true; };
+            { closeActionInvoked = true; };
 
             //act
             _target.CancelCommand.Execute(null);
@@ -472,13 +478,13 @@ namespace Warewolf.Studio.ViewModels.Tests
             dllListingMock.SetupGet(it => it.Children)
                 .Returns(new ObservableCollection<IDllListingModel>() { dllListingChildreMock.Object });
             dllListingChildreMock.SetupGet(it => it.FullName).Returns(selectedDllFullName);
-            _targetPluginSource.DllListings = new List<IDllListingModel>() {dllListingMock.Object};
+            _targetPluginSource.DllListings = new List<IDllListingModel>() { dllListingMock.Object };
 
             //act
             _targetPluginSource.FromModel(pluginSourceMock.Object);
 
             //assert
-            dllListingMock.VerifySet(it=>it.IsExpanded = true);
+            dllListingMock.VerifySet(it => it.IsExpanded = true);
             dllListingChildreMock.VerifySet(it => it.IsSelected = true);
             Assert.AreSame(dllListingChildreMock.Object, _targetPluginSource.SelectedDll);
             Assert.AreEqual(expectedName, _targetPluginSource.Name);
@@ -562,7 +568,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _changedPropertiesRequestServiceNameViewModel.Clear();
             var gd = Guid.NewGuid();
             _targetRequestServiceNameViewModel.SelectedGuid = gd;
-            _updateManagerMock.Setup(a => a.Save(It.IsAny<IPluginSource>())).Callback((IPluginSource a) => { correctGuid = a.Id ==gd; });
+            _updateManagerMock.Setup(a => a.Save(It.IsAny<IPluginSource>())).Callback((IPluginSource a) => { correctGuid = a.Id == gd; });
             //act
             _targetRequestServiceNameViewModel.Save();
 
@@ -576,7 +582,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreSame(selectedDllMock.Object, _targetRequestServiceNameViewModel.Item.SelectedDll);
             Assert.AreEqual(_targetRequestServiceNameViewModel.HeaderText, _targetRequestServiceNameViewModel.ResourceName);
             Assert.AreEqual(_targetRequestServiceNameViewModel.Header, _targetRequestServiceNameViewModel.ResourceName);
-            _updateManagerMock.Verify(a=>a.Save(It.IsAny<IPluginSource>()));
+            _updateManagerMock.Verify(a => a.Save(It.IsAny<IPluginSource>()));
             Assert.IsTrue(correctGuid);
         }
 
@@ -657,8 +663,9 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void TestCanSaveDll()
         {
             //arrange
+            const string SomeassemblynameDll = "someAssemblyName.dll";
             var selectedDllMock = new Mock<IDllListingModel>();
-            _target.SelectedDll = selectedDllMock.Object;
+            selectedDllMock.Setup(model => model.FullName).Returns(SomeassemblynameDll);
             _target.AssemblyName = "someAssemblyName.dll";
             var itemMock = new Mock<IPluginSource>();
             _target.Item = itemMock.Object;
@@ -869,7 +876,9 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void TestAssemblyName()
         {
             //arrange
+            const string SomeassemblynameDll = "someAssemblyName.dll";
             var selectedDllMock = new Mock<IDllListingModel>();
+            selectedDllMock.SetupGet(model => model.FullName).Returns(SomeassemblynameDll);
             _target.SelectedDll = selectedDllMock.Object;
             var expectedValue = "someAssemblyName";
             _changedProperties.Clear();
@@ -889,20 +898,22 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void TestSelectedDll()
         {
             //arrange
-            var expectedAssemblyName = "someAssemblyName";
+            var expectedAssemblyName = EnvironmentVariables.WorkspacePath + @"\someAssemblyName.dll";
+            using (File.Create(expectedAssemblyName))
+            {
+            }
             var expectedValueMock = new Mock<IDllListingModel>();
             expectedValueMock.SetupGet(it => it.FullName).Returns(expectedAssemblyName);
             _changedProperties.Clear();
-
             //act
             _target.SelectedDll = expectedValueMock.Object;
             var value = _target.SelectedDll;
-
             //asert
             Assert.AreSame(expectedValueMock.Object, value);
             Assert.IsTrue(_changedProperties.Contains("SelectedDll"));
-            expectedValueMock.VerifySet(it=>it.IsExpanded = true);
+            expectedValueMock.VerifySet(it => it.IsExpanded = true);
             Assert.AreEqual(expectedAssemblyName, _target.AssemblyName);
+            File.Delete(expectedAssemblyName);
         }
 
         [TestMethod]
@@ -986,7 +997,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual(expectedValue, value);
             Assert.IsTrue(_changedProperties.Contains("DllListings"));
             Assert.IsTrue(_changedProperties.Contains("SearchTerm"));
-            listingMock.Verify(it=>it.Filter(expectedValue));
+            listingMock.Verify(it => it.Filter(expectedValue));
         }
 
         #endregion Test properties
