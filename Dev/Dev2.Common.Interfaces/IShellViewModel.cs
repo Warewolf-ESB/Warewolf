@@ -58,5 +58,7 @@ namespace Dev2.Common.Interfaces
         void OpenResource(Guid resourceId, Guid environmentId);
         void CloseResource(Guid resourceId, Guid environmentId);
         void UpdateCurrentDataListWithObjectFromJson(string parentObjectName,string json);
+        void ViewSwagger(Guid resourceId, IServer server);
+        void ViewApisJson(string resourcePath, Uri webServerUri);
     }
 }

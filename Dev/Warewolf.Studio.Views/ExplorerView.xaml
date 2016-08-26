@@ -269,7 +269,7 @@
                                                     </ig:XamMenuItem>
 
                                                     <ig:XamMenuSeparator Visibility="{Binding Path=Data.CanCreateSource, Converter={StaticResource BoolToVisibilityConverter}}" />
-
+                                                    
                                                     <ig:XamMenuItem Name="NewFolder"
                                                                     Command="{Binding Path=Data.CreateFolderCommand}"
                                                                     CommandParameter="Folder"
@@ -298,6 +298,20 @@
                                                                     Header="Server Version"
                                                                     Visibility="{Binding Path=Data.CanShowServerVersion,
                                                                                          Converter={StaticResource BoolToVisibilityConverter}}" />
+
+                                                    <ig:XamMenuItem Name="ViewApisJson"
+                                                                    Command="{Binding Path=Data.ViewApisJsonCommand}"
+                                                                    Header="View Apis.Json"
+                                                                    Visibility="{Binding Path=Data.CanViewApisJson,
+                                                                                         Converter={StaticResource BoolToVisibilityConverter}}" >
+                                                        <ig:XamMenuItem.Icon>
+                                                            <fa:FontAwesome Margin="0,2,0,0"
+                                                                            FontSize="12"
+                                                                            FontWeight="Light"
+                                                                            Icon="ExternalLink" />
+                                                            <!--<Image Style="{StaticResource ApisJsonIcon}"/>-->
+                                                        </ig:XamMenuItem.Icon>
+                                                    </ig:XamMenuItem>
 
                                                 </ig:XamContextMenu>
                                             </ig:ContextMenuManager.ContextMenu>
@@ -642,6 +656,34 @@
                                                                             FontSize="12"
                                                                             FontWeight="Light"
                                                                             Icon="Sitemap" />
+                                                        </ig:XamMenuItem.Icon>
+                                                    </ig:XamMenuItem>
+
+                                                    <ig:XamMenuItem Name="ViewSwagger"
+                                                                    Command="{Binding Path=Data.ViewSwaggerCommand}"
+                                                                    Header="View Swagger"
+                                                                    Visibility="{Binding Path=Data.CanViewSwagger,
+                                                                                         Converter={StaticResource BoolToVisibilityConverter}}" >
+                                                        <ig:XamMenuItem.Icon>
+                                                            <fa:FontAwesome Margin="0,2,0,0"
+                                                                            FontSize="12"
+                                                                            FontWeight="Light"
+                                                                            Icon="ExternalLink" />
+                                                            <!--<Image Style="{StaticResource SwaggerIcon}"/>-->
+                                                        </ig:XamMenuItem.Icon>
+                                                    </ig:XamMenuItem>
+
+                                                    <ig:XamMenuItem Name="ViewApisJson"
+                                                                    Command="{Binding Path=Data.ViewApisJsonCommand}"
+                                                                    Header="View Apis.Json"
+                                                                    Visibility="{Binding Path=Data.CanViewApisJson,
+                                                                                         Converter={StaticResource BoolToVisibilityConverter}}" >
+                                                        <ig:XamMenuItem.Icon>
+                                                            <fa:FontAwesome Margin="0,2,0,0"
+                                                                            FontSize="12"
+                                                                            FontWeight="Light"
+                                                                            Icon="ExternalLink" />
+                                                            <!--<Image Style="{StaticResource ApisJsonIcon}"/>-->
                                                         </ig:XamMenuItem.Icon>
                                                     </ig:XamMenuItem>
 

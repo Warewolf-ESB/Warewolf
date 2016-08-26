@@ -193,5 +193,15 @@ namespace Warewolf.Studio.ViewModels
             };
             return child;
         }
+
+        internal void ViewApisJsonCommand(string resourcePath, Uri webServerUri)
+        {
+            _shellViewModel.ViewApisJson(resourcePath, webServerUri);
+        }
+
+        public void ViewSwaggerCommand(Guid resourceId, IServer server)
+        {
+            _shellViewModel.ViewSwagger(resourceId, server);
+        }
     }
 }

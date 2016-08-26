@@ -16,6 +16,7 @@ namespace Dev2.Common.Interfaces
         bool CanView { get; set; }
         bool CanShowDependencies { get; set; }
         bool IsVersion { get; set; }
+        bool CanViewSwagger { get; set; }
 
         string VersionNumber { get; set; }
         string VersionHeader { get; set; }
@@ -25,6 +26,7 @@ namespace Dev2.Common.Interfaces
         string EditToolTip { get; }
         string ActivityName { get; }
 
+        ICommand ViewSwaggerCommand { get; set; }
         ICommand OpenCommand { get; set; }
         ICommand OpenVersionCommand { get; set; }
         ICommand DeleteVersionCommand { get; set; }

@@ -26,7 +26,6 @@ namespace Dev2.Activities.Designers2.Sequence
             InitializeComponent();
             Loaded += (sender, args) => SetProperties();
             ActivitiesPresenter.PreviewDrop += DoDrop;
-            ActivitiesPresenter.PreviewDragOver += DropPointOnDragEnter;
             _dropEnabledActivityDesignerUtils = new DropEnabledActivityDesignerUtils();
         }
 
@@ -34,25 +33,18 @@ namespace Dev2.Activities.Designers2.Sequence
 
         void DoDrop(object sender, DragEventArgs e)
         {
-            DropPointOnDragEnter(sender, e);
-            if(ViewModel.SetModelItemForServiceTypes(e.Data))
-            {
-                e.Handled = true;
-            }
-        }
-
-
-
-        void DropPointOnDragEnter(object sender, DragEventArgs e)
-        {
-            if(_dropEnabledActivityDesignerUtils != null)
+            if (_dropEnabledActivityDesignerUtils != null)
             {
                 var dropEnabled = _dropEnabledActivityDesignerUtils.LimitDragDropOptions(e.Data);
-                if(!dropEnabled)
+                if (!dropEnabled)
                 {
                     e.Effects = DragDropEffects.None;
                     e.Handled = true;
                 }
+            }
+            if (ViewModel.SetModelItemForServiceTypes(e.Data))
+            {
+                e.Handled = true;
             }
         }
 
