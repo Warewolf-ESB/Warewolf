@@ -304,7 +304,13 @@
                                                                     Header="View Apis.Json"
                                                                     Visibility="{Binding Path=Data.CanViewApisJson,
                                                                                          Converter={StaticResource BoolToVisibilityConverter}}" >
-                                                        
+                                                        <ig:XamMenuItem.Icon>
+                                                            <fa:FontAwesome Margin="0,2,0,0"
+                                                                            FontSize="12"
+                                                                            FontWeight="Light"
+                                                                            Icon="ExternalLink" />
+                                                            <!--<Image Style="{StaticResource ApisJsonIcon}"/>-->
+                                                        </ig:XamMenuItem.Icon>
                                                     </ig:XamMenuItem>
 
                                                 </ig:XamContextMenu>
@@ -658,7 +664,13 @@
                                                                     Header="View Swagger"
                                                                     Visibility="{Binding Path=Data.CanViewSwagger,
                                                                                          Converter={StaticResource BoolToVisibilityConverter}}" >
-                                                        
+                                                        <ig:XamMenuItem.Icon>
+                                                            <fa:FontAwesome Margin="0,2,0,0"
+                                                                            FontSize="12"
+                                                                            FontWeight="Light"
+                                                                            Icon="ExternalLink" />
+                                                            <!--<Image Style="{StaticResource SwaggerIcon}"/>-->
+                                                        </ig:XamMenuItem.Icon>
                                                     </ig:XamMenuItem>
 
                                                     <ig:XamMenuItem Name="ViewApisJson"
@@ -666,7 +678,13 @@
                                                                     Header="View Apis.Json"
                                                                     Visibility="{Binding Path=Data.CanViewApisJson,
                                                                                          Converter={StaticResource BoolToVisibilityConverter}}" >
-                                                        
+                                                        <ig:XamMenuItem.Icon>
+                                                            <fa:FontAwesome Margin="0,2,0,0"
+                                                                            FontSize="12"
+                                                                            FontWeight="Light"
+                                                                            Icon="ExternalLink" />
+                                                            <!--<Image Style="{StaticResource ApisJsonIcon}"/>-->
+                                                        </ig:XamMenuItem.Icon>
                                                     </ig:XamMenuItem>
 
                                                     <ig:XamMenuSeparator Visibility="{Binding Path=Data.CanShowVersions, Converter={StaticResource BoolToVisibilityConverter}}" />
