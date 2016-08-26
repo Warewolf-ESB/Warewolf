@@ -44,10 +44,8 @@ namespace Dev2.Runtime.Hosting
     /// Used to build up the resource catalog ;)
     /// </summary>
     public class ResourceCatalogBuilder
-    {
-        public IList<DuplicateResource> DuplicateResources { get; set; }
+    {        
         private readonly List<IResource> _resources = new List<IResource>();
-        private readonly List<IResource> _dupresources = new List<IResource>();
         private readonly HashSet<Guid> _addedResources = new HashSet<Guid>();
         private readonly IResourceUpgrader _resourceUpgrader;
         private readonly object _addLock = new object();
@@ -60,7 +58,6 @@ namespace Dev2.Runtime.Hosting
         public ResourceCatalogBuilder()
         {
             _resourceUpgrader = ResourceUpgraderFactory.GetUpgrader();
-            DuplicateResources = new List<DuplicateResource>();
         }
 
         public IList<IResource> ResourceList => _resources;
@@ -283,33 +280,20 @@ namespace Dev2.Runtime.Hosting
             }
             else
             {
-                _dupresources.Add(res);
                 var dupRes = _resources.Find(c => c.ResourceID == res.ResourceID);
                 if (dupRes != null)
                 {
                     Dev2Logger.Debug(
                         string.Format(ErrorResource.ResourceAlreadyLoaded,
                             res.ResourceName, filePath, dupRes.FilePath));
-                    AddToDuplicateResources(res.ResourceName, new List<string>{ filePath, dupRes.FilePath});
                 }
                 else
                 {
-                    Dev2Logger.Debug(
-                        string.Format(
+                    Dev2Logger.Debug(string.Format(
                             "Resource '{0}' from file '{1}' wasn't loaded because a resource with the same name has already been loaded but cannot find its location.",
                             res.ResourceName, filePath));
                 }
             }
-        }
-
-        private void AddToDuplicateResources(string resourceName, List<string> filePath)
-        {
-            DuplicateResources.Add(new DuplicateResource
-            {
-                ResourceName = resourceName
-                ,
-                ResourcePath = filePath
-            });
         }
     }
 }

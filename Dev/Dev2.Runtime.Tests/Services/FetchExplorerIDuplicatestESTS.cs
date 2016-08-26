@@ -25,30 +25,30 @@ using Moq;
 namespace Dev2.Tests.Runtime.Services
 {
     [TestClass]
-    public class FetchExplorerIDuplicatesTests
+    public class FetchResourceDuplicatesTests
     {
         [TestMethod]
         [Owner("Sanele Mthembu")]
-        [TestCategory("FetchExplorerIDuplicates_HandlesType")]
-        public void FetchExplorerIDuplicates_HandlesType_ExpectName()
+        [TestCategory("FetchResourceDuplicates_HandlesType")]
+        public void FetchResourceDuplicates_HandlesType_ExpectName()
         {
             //------------Setup for test--------------------------
-            var FetchExplorerIDuplicates = new FetchExplorerIDuplicates();
+            var FetchResourceDuplicates = new FetchResourceDuplicates();
             //------------Execute Test---------------------------
             //------------Assert Results-------------------------
-            Assert.AreEqual("FetchExplorerIDuplicates", FetchExplorerIDuplicates.HandlesType());
+            Assert.AreEqual("FetchResourceDuplicates", FetchResourceDuplicates.HandlesType());
         }
 
         [TestMethod]
         [Owner("Sanele Mthembu")]
-        [TestCategory("FetchExplorerIDuplicates_Execute")]
-        public void FetchExplorerIDuplicates_Execute_NullValuesParameter_ErrorResult()
+        [TestCategory("FetchResourceDuplicates_Execute")]
+        public void FetchResourceDuplicates_Execute_NullValuesParameter_ErrorResult()
         {
             //------------Setup for test--------------------------
-            var FetchExplorerIDuplicates = new FetchExplorerIDuplicates();
+            var FetchResourceDuplicates = new FetchResourceDuplicates();
             var serializer = new Dev2JsonSerializer();
             //------------Execute Test---------------------------
-            StringBuilder jsonResult = FetchExplorerIDuplicates.Execute(null, null);
+            StringBuilder jsonResult = FetchResourceDuplicates.Execute(null, null);
             IExplorerRepositoryResult result = serializer.Deserialize<IExplorerRepositoryResult>(jsonResult);
             //------------Assert Results-------------------------
             Assert.AreEqual(ExecStatus.Fail, result.Status);
@@ -56,11 +56,11 @@ namespace Dev2.Tests.Runtime.Services
 
         [TestMethod]
         [Owner("Sanele Mthembu")]
-        [TestCategory("FetchExplorerIDuplicates_HandlesType")]
-        public void FetchExplorerIDuplicates_Execute_ExpectName()
+        [TestCategory("FetchResourceDuplicates_HandlesType")]
+        public void FetchResourceDuplicates_Execute_ExpectName()
         {
             //------------Setup for test--------------------------
-            var fetchExplorerIDuplicates = new FetchExplorerIDuplicates();
+            var FetchResourceDuplicates = new FetchResourceDuplicates();
 
             var serverExplorerItem = new ServerExplorerItem("a", Guid.NewGuid(), "Folder", null, Permissions.DeployFrom, "", "", "");
             Assert.IsNotNull(serverExplorerItem);
@@ -68,22 +68,22 @@ namespace Dev2.Tests.Runtime.Services
             var ws = new Mock<IWorkspace>();
             repo.Setup(a => a.LoadDuplicate());
             ws.Setup(a => a.ID).Returns(Guid.Empty);
-            fetchExplorerIDuplicates.ServerExplorerRepo = repo.Object;
+            FetchResourceDuplicates.ServerExplorerRepo = repo.Object;
             //------------Execute Test---------------------------
-            fetchExplorerIDuplicates.Execute(new Dictionary<string, StringBuilder>(), ws.Object);
+            FetchResourceDuplicates.Execute(new Dictionary<string, StringBuilder>(), ws.Object);
             //------------Assert Results-------------------------
             repo.Verify(a => a.LoadDuplicate());
         }
 
         [TestMethod]
         [Owner("Sanele Mthembu")]
-        [TestCategory("FetchExplorerIDuplicates_HandlesType")]
-        public void FetchExplorerIDuplicates_CreateServiceEntry_ExpectProperlyFormedDynamicService()
+        [TestCategory("FetchResourceDuplicates_HandlesType")]
+        public void FetchResourceDuplicates_CreateServiceEntry_ExpectProperlyFormedDynamicService()
         {
             //------------Setup for test--------------------------
-            var FetchExplorerIDuplicates = new FetchExplorerIDuplicates();
+            var FetchResourceDuplicates = new FetchResourceDuplicates();
             //------------Execute Test---------------------------
-            var a = FetchExplorerIDuplicates.CreateServiceEntry();
+            var a = FetchResourceDuplicates.CreateServiceEntry();
             //------------Assert Results-------------------------
             var b = a.DataListSpecification.ToString();
             Assert.AreEqual("<DataList><ResourceType ColumnIODirection=\"Input\"/><Roles ColumnIODirection=\"Input\"/><ResourceName ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>", b);

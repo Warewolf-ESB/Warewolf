@@ -403,8 +403,6 @@ namespace Warewolf.Studio.ViewModels
                     ErrorMessage = StringResources.DestinationPermission_Error;
                     return false;
                 }
-                //if (!CanDeploySelectedItems(Source.SelectedItems))
-                //    return false;
                 ErrorMessage = string.Empty;
                 return true;
             }

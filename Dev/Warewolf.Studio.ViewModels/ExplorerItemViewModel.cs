@@ -133,6 +133,7 @@ namespace Warewolf.Studio.ViewModels
         ObservableCollection<IExplorerItemViewModel> _children;
         bool _isExpanded;
         bool _canCreateFolder;
+        bool _canDeploy;
         string _filter;
         private bool _isSelected;
         bool _canShowVersions;
@@ -535,7 +536,6 @@ namespace Warewolf.Studio.ViewModels
             }
             if (permission.View)
             {
-                CanDeploy = false;
                 CanView = !isDeploy;
             }
             if (permission.Execute)
@@ -834,6 +834,7 @@ namespace Warewolf.Studio.ViewModels
                 }
                 SelectAction?.Invoke(this);
                 OnPropertyChanged(() => IsResourceChecked);
+                OnPropertyChanged(() => CanDeploy);
             }
         }
 
@@ -850,6 +851,7 @@ namespace Warewolf.Studio.ViewModels
                 _isResourceCheckedEnabled = value;
                 OnPropertyChanged(() => IsResourceCheckedEnabled);
                 OnPropertyChanged(() => DeployResourceCheckboxTooltip);
+                OnPropertyChanged(() => CanDeploy);
             }
         }
 
@@ -941,7 +943,9 @@ namespace Warewolf.Studio.ViewModels
                 OnPropertyChanged(() => CanCreateFolder);
             }
         }
+        
         public bool CanDeploy { get; set; }
+
         public IServer Server
         {
             get;
