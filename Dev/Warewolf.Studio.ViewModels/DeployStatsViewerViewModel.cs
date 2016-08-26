@@ -146,7 +146,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        public void CheckPermissionPersmisions()
+        public void CheckDestinationPersmisions()
         {
             var destItems = _destination.SelectedEnvironment.AsList();
             if (destItems != null)
@@ -158,8 +158,9 @@ namespace Warewolf.Studio.ViewModels
                         if(currentItem != null)
                         {
                             var permission = explorerItemViewModel.Server.Permissions.FirstOrDefault(p => p.ResourceID == explorerItemViewModel.ResourceId);
-                            if(permission?.Permissions == Permissions.View)
-                                currentItem.CanDeploy = false;
+                            var perms = permission?.Permissions.ToString();
+                            if(perms != null && !perms.Contains(Permissions.Contribute.ToString()))
+                                currentItem.CanDeploy = false;                            
                         }
                     }
                 }
