@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Windows.Input;
 using System.Windows.Threading;
 using Dev2.Common.Interfaces;
@@ -60,6 +61,7 @@ namespace Warewolf.Studio.ViewModels
                 OnPropertyChanged("ServerVersion");
             }
         }
+        [ExcludeFromCodeCoverage]
         public string ServerInformationalVersion
         {
             get
@@ -72,7 +74,7 @@ namespace Warewolf.Studio.ViewModels
                 OnPropertyChanged("ServerInformationalVersion");
             }
         }
-
+        [ExcludeFromCodeCoverage]
         public string StudioVersion
         {
             get
@@ -85,6 +87,7 @@ namespace Warewolf.Studio.ViewModels
                 OnPropertyChanged("StudioVersion");
             }
         }
+        [ExcludeFromCodeCoverage]
         public string StudioInformationalVersion
         {
             get
@@ -104,7 +107,7 @@ namespace Warewolf.Studio.ViewModels
         public Uri CommunityUrl { get; set; }
         public Uri ExpertHelpUrl { get; set; }
         public string WarewolfCopyright { get; set; }
-
+        [ExcludeFromCodeCoverage]
         public void ShowServerVersion()
         {
             Dispatcher.CurrentDispatcher.Invoke(() =>
@@ -139,7 +142,7 @@ namespace Warewolf.Studio.ViewModels
                 }
             });
         }
-
+        [ExcludeFromCodeCoverage]
         static string GetInformalDate(DateTime d)
         {
             var sinceThen = DateTime.Now.Subtract(d);
