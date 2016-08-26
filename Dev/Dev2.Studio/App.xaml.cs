@@ -205,6 +205,10 @@ namespace Dev2.Studio
             CustomContainer.Register<IEventAggregator>(new EventAggregator());
             CustomContainer.Register<IPopupController>(new PopupController());
             CustomContainer.RegisterInstancePerRequestType<IRequestServiceNameView>(() => new RequestServiceNameView());
+            CustomContainer.RegisterInstancePerRequestType<ICreateDuplicateResourceView>(() => new CreateDuplicateResourceDialog());
+            
+            
+          
             var splashViewModel = new SplashViewModel(server, new ExternalProcessExecutor());
 
             var splashPage = new SplashPage { DataContext = splashViewModel };
