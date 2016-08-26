@@ -16,6 +16,7 @@ using Dev2.Runtime.ServiceModel.Data;
 
 
 using Dev2.Workspaces;
+// ReSharper disable UnusedMember.Global
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
@@ -54,10 +55,10 @@ namespace Dev2.Runtime.ESB.Management.Services
             values.TryGetValue("ResourceID", out tmp);
             values.TryGetValue("NewResourceName", out newResourceName);
             values.TryGetValue("FixRefs", out fixRefs);
-            var resourceId = Guid.Empty;
 
             if (tmp != null)
             {
+                Guid resourceId;
                 if (Guid.TryParse(tmp.ToString(), out resourceId))
                 {
                     if (!string.IsNullOrEmpty(newResourceName?.ToString()))
