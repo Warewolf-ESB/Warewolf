@@ -229,7 +229,14 @@ namespace Dev2.Utilities
 
             foreach(var ns in namespaces.Keys)
             {
-                vbSettings.ImportReferences.Add(new VisualBasicImportReference { Assembly = namespaces[ns].GetName().Name, Import = ns });
+                try
+                {
+                    vbSettings.ImportReferences.Add(new VisualBasicImportReference { Assembly = namespaces[ns].GetName().Name, Import = ns });
+                }
+                catch(Exception e)
+                {
+                    Dev2Logger.Error(e.Message,e);
+                }
             }
 
             VisualBasic.SetSettings(target, vbSettings);

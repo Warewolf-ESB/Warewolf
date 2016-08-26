@@ -45,11 +45,6 @@ namespace Warewolf.Studio.AntiCorruptionLayer
 
         public async Task<IExplorerItem> LoadExplorer(bool reloadCatalogue = false)
         {
-            //var fileList = await QueryManagerProxy.FetchResourceFileTree();
-            //if (fileList != null)
-            //{
-                
-            //}
             var explorerItems = await QueryManagerProxy.Load(reloadCatalogue);
             ExplorerItems = explorerItems;
             return explorerItems;

@@ -878,7 +878,6 @@ namespace Dev2.Activities.Specs.Composition
         [When(@"""(.*)"" is the active environment used to execute ""(.*)""")]
         public void WhenIsTheActiveEnvironmentUsedToExecute(string connectionName, string workflowName)
         {
-            // environment
             IEnvironmentModel environmentModel;
             IResourceRepository repository;
             IContextualResourceModel resourceModel;
@@ -960,9 +959,6 @@ namespace Dev2.Activities.Specs.Composition
 
             var toolSpecificDebug =
                 debugStates.Where(ds => ds.ParentID == workflowId && ds.DisplayName.Equals(toolName)).ToList();
-
-            // Data Merge breaks our debug scheme, it only ever has 1 value, not the expected 2 ;)
-            //bool isDataMergeDebug = toolSpecificDebug.Any(t => t.Name == "Data Merge");
             
             _commonSteps.ThenTheDebugInputsAs(table, toolSpecificDebug.Distinct()
                                                     .SelectMany(s => s.Inputs)
@@ -977,9 +973,7 @@ namespace Dev2.Activities.Specs.Composition
             TryGetValue("activityList", out activityList);
             TryGetValue("parentWorkflowName", out parentWorkflowName);
             var debugStates = Get<List<IDebugState>>("debugStates");
-
-            //var start = debugStates.First(wf => wf.Name.Equals("Start"));
-            //Assert.IsTrue(start.Duration.Ticks>0);
+            
             var end = debugStates.First(wf => wf.Name.Equals("End"));
             Assert.IsTrue(end.Duration.Ticks > 0);
         }
@@ -995,9 +989,6 @@ namespace Dev2.Activities.Specs.Composition
 
             var toolSpecificDebug =
                 debugStates.Where(ds => ds.DisplayName.Equals(toolName)).ToList();
-
-            // Data Merge breaks our debug scheme, it only ever has 1 value, not the expected 2 ;)
-            //bool isDataMergeDebug = toolSpecificDebug.Any(t => t.Name == "Data Merge");
             
             _commonSteps.ThenTheDebugInputsAs(table, toolSpecificDebug
                                                     .SelectMany(s => s.Inputs)
@@ -1325,7 +1316,6 @@ namespace Dev2.Activities.Specs.Composition
             _commonSteps.AddActivityToActivityList(parentName, activityName, len);
         }
 
-
         public void ExecuteWorkflow(IContextualResourceModel resourceModel)
         {
             if(resourceModel == null || resourceModel.Environment == null)
@@ -1346,6 +1336,7 @@ namespace Dev2.Activities.Specs.Composition
                 _resetEvt.WaitOne(120000);
             }
         }
+
         [When(@"workflow ""(.*)"" is saved ""(.*)"" time")]
         public void WhenWorkflowIsSavedTime(string workflowName, int count)
         {

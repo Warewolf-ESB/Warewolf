@@ -241,7 +241,7 @@ namespace Warewolf.Studio.ViewModels
                     DeploySuccessMessage = $"{notfolders.Count} Resource{(notfolders.Count == 1 ? "" : "s")} Deployed Successfully.";
                     _stats.Calculate(new List<IExplorerTreeItem>());
                     UpdateServerCompareChanged(this, Guid.Empty);
-                    Source.SelectedEnvironment.AsList().Apply(o => o.IsResourceUnchecked = false);
+                    Source.SelectedEnvironment.AsList().Where(model => model.IsResourceChecked == true).Apply(o => o.IsResourceUnchecked = false);
                 }
             }
             catch (Exception e)
@@ -250,19 +250,6 @@ namespace Warewolf.Studio.ViewModels
             }
             IsDeploying = false;
         }
-
-        //private bool CanDeploySelectedItems(IEnumerable<IExplorerTreeItem> selected)
-        //{
-        //    var copy = Source.SelectedItems;
-        //    foreach (var explorerTreeItem in selected)
-        //    {
-        //        var windowsGroupPermission = explorerTreeItem.Server.Permissions?
-        //            .FirstOrDefault(p => p.ResourceID == explorerTreeItem.ResourceId);
-        //        if (windowsGroupPermission?.Permissions == Permissions.View)
-        //            copy.Remove(explorerTreeItem);
-        //    }
-        //    return copy.Count > 0;
-        //}
 
         bool CheckResourceNameConflict()
         {

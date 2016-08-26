@@ -140,27 +140,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
                 throw;
             }
         }
-
-        //public IResource GetResource(string resourceName, Guid workspaceId)
-        //{
-        //    if (string.IsNullOrEmpty(resourceName))
-        //    {
-        //        return null;
-        //    }
-        //    var allResources = GetResources(workspaceId);
-        //    IResource foundResource = null;
-        //    if (allResources != null)
-        //    {
-        //        foundResource = allResources.FirstOrDefault(resource => resourceName.Equals(resource.ResourceName, StringComparison.OrdinalIgnoreCase));
-        //        if (foundResource == null && workspaceId != Guid.Empty)
-        //        {
-        //            allResources = GetResources(GlobalConstants.ServerWorkspaceID);
-        //            foundResource = allResources.FirstOrDefault(resource => resourceName.Equals(resource.ResourceName, StringComparison.OrdinalIgnoreCase));
-        //        }
-        //    }
-        //    return foundResource;
-        //}
-
+        
         /// <summary>
         /// Gets the contents of the resources with the given source type.
         /// </summary>
@@ -597,7 +577,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
                 var folders = Directory.EnumerateDirectories(workspacePath, "*", SearchOption.AllDirectories);
                 var allFolders = folders.ToList();
                 allFolders.Add(workspacePath);
-                userServices = LoadWorkspaceViaBuilder(workspacePath, allFolders.ToArray());
+                userServices = LoadWorkspaceViaBuilder(workspacePath, workspaceID == GlobalConstants.ServerWorkspaceID, allFolders.ToArray());
             }
             var result = userServices.Union(ManagementServices.Values);
             var resources = result.ToList();
@@ -605,16 +585,21 @@ namespace Dev2.Runtime.ResourceCatalogImpl
             return resources;
         }
 
-        private IList<IResource> LoadWorkspaceViaBuilder(string workspacePath, params string[] folders)
+        private IList<IResource> LoadWorkspaceViaBuilder(string workspacePath, bool getDuplicates, params string[] folders)
         {
             ResourceCatalogBuilder builder = new ResourceCatalogBuilder();
 
             builder.BuildCatalogFromWorkspace(workspacePath, folders);
-
-
+            if (getDuplicates)
+            {
+                DuplicateResources = builder.DuplicateResources;
+            }
             var resources = builder.ResourceList;
             return resources;
         }
+
+        public List<DuplicateResource> DuplicateResources { get; set; }
+
         private object GetWorkspaceLock(Guid workspaceID)
         {
             lock (_loadLock)
