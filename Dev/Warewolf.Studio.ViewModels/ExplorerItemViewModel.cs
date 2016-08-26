@@ -943,8 +943,21 @@ namespace Warewolf.Studio.ViewModels
                 OnPropertyChanged(() => CanCreateFolder);
             }
         }
-        
-        public bool CanDeploy { get; set; }
+
+        public bool CanDeploy
+        {
+            get
+            {
+                return _canDeploy;
+            }
+            set
+            {
+                _canDeploy = value;
+                if(!_canDeploy)
+                    IsResourceChecked = _canDeploy;
+                IsResourceCheckedEnabled = _canDeploy;
+            }
+        }
 
         public IServer Server
         {
