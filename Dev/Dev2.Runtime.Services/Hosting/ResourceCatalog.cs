@@ -16,14 +16,10 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Text;
 using System.Threading;
-using System.Transactions;
 using System.Xml.Linq;
-using ChinhDo.Transactions;
 using Dev2.Common;
-using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Infrastructure.SharedModels;
@@ -35,7 +31,6 @@ using Dev2.DynamicServices.Objects.Base;
 using Dev2.Runtime.ESB.Management;
 using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.ResourceCatalogImpl;
-using Dev2.Runtime.Security;
 using Dev2.Runtime.ServiceModel.Data;
 using Warewolf.ResourceManagement;
 
@@ -45,6 +40,10 @@ namespace Dev2.Runtime.Hosting
     public class ResourceCatalog : IResourceCatalog, IDisposable
     {
         readonly object _loadLock = new object();
+        List<DuplicateResource> _duplicates;
+        DuplicateResource _dupresource;
+        List<IResource> _resources = new List<IResource>();
+        HashSet<Guid> _addedResources = new HashSet<Guid>();
         ResourceCatalogBuilder Builder { get; set; }
 
         private readonly ResourceCatalogPluginContainer _catalogPluginContainer;
@@ -159,7 +158,6 @@ namespace Dev2.Runtime.Hosting
 
         List<IResource> LoadWorkspaceImpl(Guid workspaceID)
         {
-            
             var workspacePath = workspaceID == GlobalConstants.ServerWorkspaceID ? EnvironmentVariables.ResourcePath : EnvironmentVariables.GetWorkspacePath(workspaceID);
             IList<IResource> userServices = new List<IResource>();
             if (Directory.Exists(workspacePath))
@@ -262,56 +260,33 @@ namespace Dev2.Runtime.Hosting
 
         readonly string _workspacePath = EnvironmentVariables.ResourcePath;
         public IList<DuplicateResource> GetDuplicateResources()
-        {            
+        {
             _duplicates = new List<DuplicateResource>();
-            string[] enumerable;
-            var folders = GetResouceFolders(out enumerable);
-            IsWorkspaceValid(_workspacePath, folders, enumerable);
-            var resourceUpgrader = ResourceUpgraderFactory.GetUpgrader();
+            var resouceFolders = GetResouceFolders();
+            if (!IsWorkspaceValid(_workspacePath, resouceFolders))
+                return _duplicates;
             var streams = new List<ResourceBuilderTO>();
             try
             {
-                GetFileContent(enumerable, streams);
+                GetFileStreams(resouceFolders, streams);
                 streams.ForEach(currentItem =>
                 {
                     var xml = XElement.Load(currentItem.FileStream);
-                    
-                    var result = xml.ToStringBuilder();
-                    var isValid = HostSecurityProvider.Instance.VerifyXml(result);
-                    if (isValid)
-                    {
-                        var resource = new Resource(xml) { FilePath = currentItem.FilePath };
-                        if(resource.ResourcePath.ToUpper() == "UNASSIGNED")
-                            resource.ResourcePath = string.Empty;
-                        resourceUpgrader.UpgradeResource(xml, Assembly.GetExecutingAssembly().GetName().Version, a =>
-                        {
-                            var fileManager = new TxFileManager();
-                            using (TransactionScope tx = new TransactionScope())
-                            {
-                                StringBuilder updateXml = a.ToStringBuilder();
-                                    var signedXml = HostSecurityProvider.Instance.SignXml(updateXml);
-
-                                    signedXml.WriteToFile(currentItem.FilePath, Encoding.UTF8, fileManager);
-                                    tx.Complete();                                
-                            }
-                        });
-                        var added = CreateDupResource(resource, currentItem.FilePath);
-                        if (added != null)
-                            _duplicates.Add(added);
-                    }
+                    var resource = new Resource(xml) { FilePath = currentItem.FilePath };
+                    var added = CreateDupResource(resource, currentItem.FilePath);
+                    if (added != null)
+                        _duplicates.Add(added);
                 });
             }
             finally
             {
-                foreach (var stream in streams)
-                {
+                foreach(var stream in streams)
                     stream.FileStream.Close();
-                }
             }
             return _duplicates;
         }
 
-        private void GetFileContent(IEnumerable<string> enumerable, List<ResourceBuilderTO> streams)
+        private void GetFileStreams(IEnumerable<string> enumerable, List<ResourceBuilderTO> streams)
         {
             foreach(var path in enumerable.Where(f => !string.IsNullOrEmpty(f) && !f.EndsWith("VersionControl")).Select(f => Path.Combine(_workspacePath, f)))
             {
@@ -320,47 +295,33 @@ namespace Dev2.Runtime.Hosting
                 var files = Directory.GetFiles(path, "*.xml");
                 foreach(var file in files)
                 {
-                    FileAttributes fa = File.GetAttributes(file);
-
-                    if((fa & FileAttributes.ReadOnly) == FileAttributes.ReadOnly)
-                    {
-                        File.SetAttributes(file, FileAttributes.Normal);
-                    }
-                    // Use the FileStream class, which has an option that causes asynchronous I/O to occur at the operating system level.  
-                    // In many cases, this will avoid blocking a ThreadPool thread.  
-                    var sourceStream = new FileStream(file, FileMode.Open, FileAccess.Read, FileShare.ReadWrite, 4096, true);
+                    var sourceStream = new FileStream(file, FileMode.Open, FileAccess.Read);
                     streams.Add(new ResourceBuilderTO { FilePath = file, FileStream = sourceStream });
                 }
             }
         }
 
-        private IEnumerable<string> GetResouceFolders(out string[] enumerable)
+        private string[] GetResouceFolders()
         {
             var folders = Directory.EnumerateDirectories(_workspacePath, "*", SearchOption.AllDirectories);
             var resouceFolders = folders as string[] ?? folders.ToArray();
             var allFolders = resouceFolders.ToList();
             allFolders.Add(_workspacePath);
-            enumerable = folders as string[] ?? allFolders.ToArray();
-            return resouceFolders;
+            var enumerable = folders as string[] ?? allFolders.ToArray();
+            return enumerable;
         }
 
-        public bool IsWorkspaceValid(string workspacePath, IEnumerable<string> folders, string[] enumerable)
+        public bool IsWorkspaceValid(string workspacePath, string[] enumerable)
         {
             const string Workspacepath = "workspacePath";
-            const string FoldersString = "folders";
             if(string.IsNullOrEmpty(workspacePath))
                 throw new ArgumentNullException(Workspacepath);
-            if(folders == null)
-                throw new ArgumentNullException(FoldersString);
             if(enumerable.Length == 0 || !Directory.Exists(workspacePath))
                 return false;
             return true;
         }
 
-        List<DuplicateResource> _duplicates;
-        List<IResource> _resources = new List<IResource>();
-        DuplicateResource _dupresource;
-        HashSet<Guid> _addedResources = new HashSet<Guid>();
+       
 
         private DuplicateResource CreateDupResource(Resource resource, string filePath)
         {

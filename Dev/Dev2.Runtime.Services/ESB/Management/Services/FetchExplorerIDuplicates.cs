@@ -23,55 +23,29 @@ using Dev2.Workspaces;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
-    public class FetchExplorerIDuplicates : IEsbManagementEndpoint
+    public class FetchResourceDuplicates : IEsbManagementEndpoint
     {
         private IExplorerServerResourceRepository _serverExplorerRepository;
 
         public string HandlesType()
         {
-            return "FetchExplorerIDuplicates";
+            return "FetchResourceDuplicates";
         }
 
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
-            Dev2Logger.Info("Fetch Explorer Items");
-
+            Dev2Logger.Info("Fetch Duplicate ResourcesError");
             var serializer = new Dev2JsonSerializer();
             try
             {
-                if (values == null)
-                {
-                    throw new ArgumentNullException(nameof(values));
-                }
-                StringBuilder tmp;
-                values.TryGetValue("ReloadResourceCatalogue", out tmp);
-                string reloadResourceCatalogueString = "";
-                if (tmp != null)
-                {
-                    reloadResourceCatalogueString = tmp.ToString();
-                }
-                bool reloadResourceCatalogue = false;
-                if (!string.IsNullOrEmpty(reloadResourceCatalogueString))
-                {
-
-                    if (!bool.TryParse(reloadResourceCatalogueString, out reloadResourceCatalogue))
-                    {
-                        reloadResourceCatalogue = false;
-                    }
-                }
-                if (reloadResourceCatalogue)
-                {
-                    ResourceCatalog.Instance.Reload();
-                }
                 var item = ServerExplorerRepo.LoadDuplicate();
                 CompressedExecuteMessage message = new CompressedExecuteMessage();
                 message.SetMessage(serializer.Serialize(item));
                 return serializer.SerializeToBuilder(message);
-
             }
             catch (Exception e)
             {
-                Dev2Logger.Info("Fetch Explorer Items Error", e);
+                Dev2Logger.Info("Fetch Duplicate ResourcesError", e);
                 IExplorerRepositoryResult error = new ExplorerRepositoryResult(ExecStatus.Fail, e.Message);
                 return serializer.SerializeToBuilder(error);
             }
@@ -80,11 +54,8 @@ namespace Dev2.Runtime.ESB.Management.Services
         public DynamicService CreateServiceEntry()
         {
             var findServices = new DynamicService { Name = HandlesType(), DataListSpecification = new StringBuilder("<DataList><ResourceType ColumnIODirection=\"Input\"/><Roles ColumnIODirection=\"Input\"/><ResourceName ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>") };
-
-            var fetchItemsAction = new ServiceAction { Name = HandlesType(), ActionType = enActionType.InvokeManagementDynamicService, SourceMethod = HandlesType() };
-
-            findServices.Actions.Add(fetchItemsAction);
-
+            var action = new ServiceAction { Name = HandlesType(), ActionType = enActionType.InvokeManagementDynamicService, SourceMethod = HandlesType() };
+            findServices.Actions.Add(action);
             return findServices;
         }
 

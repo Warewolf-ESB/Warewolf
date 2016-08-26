@@ -3266,7 +3266,7 @@ namespace Dev2.Tests.Runtime.Hosting
             var catalog = new ResourceCatalog();
             Assert.IsNotNull(catalog);
             //------------Execute Test---------------------------
-            catalog.IsWorkspaceValid(string.Empty, null, null);
+            catalog.IsWorkspaceValid(string.Empty, null);
             //------------Assert Results-------------------------
         }
 
@@ -3280,22 +3280,9 @@ namespace Dev2.Tests.Runtime.Hosting
             var catalog = new ResourceCatalog();
             Assert.IsNotNull(catalog);
             //------------Execute Test---------------------------
-            var isWorkspaceValid = catalog.IsWorkspaceValid(resourcePath, new List<string>(), new string[0]);
+            var isWorkspaceValid = catalog.IsWorkspaceValid(resourcePath, new string[0]);
             //------------Assert Results-------------------------
             Assert.IsFalse(isWorkspaceValid);
-        }
-
-        [TestMethod]
-        [Owner("Sanele Mthembu")]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void ResourceCatalog_GivenEmptyDirectory_IsWorkspaceValid_ShouldThrowException()
-        {
-            //------------Setup for test--------------------------            
-            var catalog = new ResourceCatalog();
-            Assert.IsNotNull(catalog);
-            //------------Execute Test---------------------------
-            catalog.IsWorkspaceValid("SomeString", null, null);
-            //------------Assert Results-------------------------
         }
 
         private ExecuteMessage ConvertToMsg(string payload)
