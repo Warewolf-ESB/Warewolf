@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.IO.Pipes;
-using System.Text;
 using Newtonsoft.Json;
 // ReSharper disable InconsistentNaming
 
