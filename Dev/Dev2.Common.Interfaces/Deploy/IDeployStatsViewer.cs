@@ -48,6 +48,6 @@ namespace Dev2.Common.Interfaces.Deploy
         string RenameErrors { get; }
 
         void ReCalculate();
-        void CheckPermissionPersmisions();
+        void CheckDestinationPersmisions();
     }
 }

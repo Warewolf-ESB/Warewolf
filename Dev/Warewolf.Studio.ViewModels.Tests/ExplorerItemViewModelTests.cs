@@ -618,7 +618,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual("Folder", createdFolder.ResourceType);
             Assert.AreEqual(_target.AllowResourceCheck, createdFolder.AllowResourceCheck);
             Assert.AreEqual(_target.IsResourceChecked, createdFolder.IsResourceChecked);
-            Assert.AreEqual(_target.IsResourceUnchecked, createdFolder.IsResourceUnchecked);
+            Assert.AreEqual(_target.IsResourceUnchecked, createdFolder.IsResourceUnchecked);            
             Assert.AreEqual(_target.IsFolderChecked, createdFolder.IsFolderChecked);
             Assert.AreEqual(_target.CanCreateFolder, createdFolder.CanCreateFolder);
             Assert.AreEqual(_target.CanCreateSource, createdFolder.CanCreateSource);

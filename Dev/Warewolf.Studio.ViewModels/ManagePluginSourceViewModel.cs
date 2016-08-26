@@ -11,6 +11,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
@@ -46,7 +47,7 @@ namespace Warewolf.Studio.ViewModels
         Task<IRequestServiceNameViewModel> _requestServiceNameViewModel;
 
         /// <exception cref="Exception">A delegate callback throws an exception.</exception>
-        public ManagePluginSourceViewModel(IManagePluginSourceModel updateManager, IEventAggregator aggregator, IAsyncWorker asyncWorker)
+        public ManagePluginSourceViewModel(IManagePluginSourceModel updateManager, IEventAggregator aggregator,IAsyncWorker asyncWorker)
             : base("PluginSource")
         {
             VerifyArgument.IsNotNull("asyncWorker", asyncWorker);
@@ -60,11 +61,11 @@ namespace Warewolf.Studio.ViewModels
             CancelCommand = new DelegateCommand(() => CloseAction.Invoke());
             ClearSearchTextCommand = new DelegateCommand(() => SearchTerm = "");
             RefreshCommand = new DelegateCommand(() => PerformLoadAll());
-
+            
             _warewolfserverName = updateManager.ServerName;
-            if (Application.Current != null)
+            if(Application.Current != null)
             {
-                if (Application.Current.Dispatcher != null)
+                if(Application.Current.Dispatcher != null)
                 {
                     DispatcherAction = Application.Current.Dispatcher.Invoke;
                 }
@@ -85,11 +86,11 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        public Action<Action> DispatcherAction { get; set; }
-
-        void PerformLoadAll(Action actionToPerform = null)
+        public Action<Action> DispatcherAction { get; set; } 
+      
+        void PerformLoadAll(Action actionToPerform=null)
         {
-
+        
             AsyncWorker.Start(() =>
             {
                 IsLoading = true;
@@ -115,7 +116,7 @@ namespace Warewolf.Studio.ViewModels
                 //    exception = exception.InnerException;
                 //}
                 //TestMessage = exception.Message;
-            });
+            });            
         }
 
         public ICommand ClearSearchTextCommand { get; set; }
@@ -178,7 +179,7 @@ namespace Warewolf.Studio.ViewModels
         }
 
         /// <exception cref="Exception">A delegate callback throws an exception.</exception>
-        public ManagePluginSourceViewModel(IManagePluginSourceModel updateManager, Task<IRequestServiceNameViewModel> requestServiceNameViewModel, IEventAggregator aggregator, IAsyncWorker asyncWorker)
+        public ManagePluginSourceViewModel(IManagePluginSourceModel updateManager, Task<IRequestServiceNameViewModel> requestServiceNameViewModel, IEventAggregator aggregator,IAsyncWorker asyncWorker)
             : this(updateManager, aggregator, asyncWorker)
         {
             VerifyArgument.IsNotNull("requestServiceNameViewModel", requestServiceNameViewModel);
@@ -198,14 +199,14 @@ namespace Warewolf.Studio.ViewModels
         }
 
         /// <exception cref="Exception">A delegate callback throws an exception.</exception>
-        public ManagePluginSourceViewModel(IManagePluginSourceModel updateManager, IEventAggregator aggregator, IPluginSource pluginSource, IAsyncWorker asyncWorker)
-            : this(updateManager, aggregator, asyncWorker)
+        public ManagePluginSourceViewModel(IManagePluginSourceModel updateManager, IEventAggregator aggregator, IPluginSource pluginSource,IAsyncWorker asyncWorker)
+            : this(updateManager, aggregator,asyncWorker)
         {
             VerifyArgument.IsNotNull("pluginSource", pluginSource);
             _pluginSource = pluginSource;
             SetupHeaderTextFromExisting();
             PerformLoadAll(() => FromModel(_pluginSource));
-
+            
             ToItem();
         }
 
@@ -223,7 +224,7 @@ namespace Warewolf.Studio.ViewModels
 
         public ManagePluginSourceViewModel() : base("PluginSource")
         {
-
+          
         }
 
         public override void FromModel(IPluginSource pluginSource)
@@ -250,25 +251,25 @@ namespace Warewolf.Studio.ViewModels
                     var fileSystem = selectedDll.FullName.Split('\\');
                     var dllListingModels = dllListingModel.Children;
                     IDllListingModel itemToSelect = null;
-                    foreach (var dir in fileSystem)
+                    foreach(var dir in fileSystem)
                     {
                         var foundChild = ExpandChild(dir, dllListingModels);
-                        if (foundChild != null)
+                        if(foundChild != null)
                         {
                             dllListingModels = foundChild.Children;
                             itemToSelect = foundChild;
                         }
                     }
-                    if (itemToSelect != null)
+                    if(itemToSelect != null)
                     {
                         SelectedDll = itemToSelect;
                         SelectedDll.IsSelected = true;
                     }
-
+                    
                 }
             }
-            Name = _pluginSource.Name;
-            Path = _pluginSource.Path;
+                Name = _pluginSource.Name;
+                Path = _pluginSource.Path; 
         }
 
         public override string Name
@@ -286,7 +287,7 @@ namespace Warewolf.Studio.ViewModels
         IDllListingModel ExpandChild(string dir, ObservableCollection<IDllListingModel> children)
         {
             var dllListingModel = children.FirstOrDefault(model => model.Name.StartsWith(dir));
-            if (dllListingModel != null)
+            if(dllListingModel != null)
             {
                 dllListingModel.IsExpanded = true;
             }
@@ -304,10 +305,10 @@ namespace Warewolf.Studio.ViewModels
                 if (value == null) return;
                 _selectedDll = value;
                 OnPropertyChanged(() => SelectedDll);
-                if (SelectedDll != null)
+                if(SelectedDll != null)
                 {
-                    AssemblyName = SelectedDll.FullName;
                     SelectedDll.IsExpanded = true;
+                    AssemblyName = SelectedDll.FullName;                    
                 }
                 ViewModelUtils.RaiseCanExecuteChanged(OkCommand);
             }
@@ -322,14 +323,31 @@ namespace Warewolf.Studio.ViewModels
             set
             {
                 _assemblyName = value;
-                if (string.IsNullOrEmpty(_assemblyName))
+                if(!string.IsNullOrEmpty(_assemblyName))
                 {
-                    SelectedDll = null;
+                    if(!_assemblyName.StartsWith("GAC"))
+                    //    SelectedDll = null;
+                    //else
+                        SelectDllFromUsingAssemblyName();
                 }
+                else
+                    SelectedDll = null;
                 OnPropertyChanged(() => Header);
-                OnPropertyChanged(() => AssemblyName);
+                OnPropertyChanged(()=>AssemblyName);
                 ViewModelUtils.RaiseCanExecuteChanged(OkCommand);
             }
+        }
+
+        private void SelectDllFromUsingAssemblyName()
+        {
+            if(_selectedDll != null) return;
+            if (_assemblyName == null) return;
+            if(!_assemblyName.StartsWith("GAC"))
+                if(!File.Exists(_assemblyName)) return;
+            var dll = new FileInfo(_assemblyName);
+            if (dll.Extension != ".dll") return;
+            var fileListing = new FileListing { Name = dll.Name, FullName = dll.FullName };
+            _selectedDll = new DllListingModel(_updateManager, fileListing);
         }
 
         void SetupHeaderTextFromExisting()
@@ -349,7 +367,7 @@ namespace Warewolf.Studio.ViewModels
 
         public override bool CanSave()
         {
-            return _selectedDll != null && !string.IsNullOrEmpty(AssemblyName) && HasChanged && (AssemblyName.EndsWith(".dll") || AssemblyName.StartsWith("GAC:"));
+            return _selectedDll != null && !string.IsNullOrEmpty(AssemblyName) && HasChanged &&(AssemblyName.EndsWith(".dll") || AssemblyName.StartsWith("GAC:"));
         }
 
         public override void UpdateHelpDescriptor(string helpText)
@@ -410,9 +428,9 @@ namespace Warewolf.Studio.ViewModels
         {
             Item = new PluginSourceDefinition
             {
-                Id = _pluginSource.Id,
-                Name = _pluginSource.Name,
-                Path = _pluginSource.Path,
+                Id = _pluginSource.Id, 
+                Name = _pluginSource.Name, 
+                Path = _pluginSource.Path, 
                 SelectedDll = SelectedDll
             };
             AssemblyName = _pluginSource.SelectedDll.FullName;
@@ -426,7 +444,7 @@ namespace Warewolf.Studio.ViewModels
 
         public sealed override IPluginSource ToModel()
         {
-            if (_pluginSource == null)
+            if(_pluginSource == null)
             {
                 return new PluginSourceDefinition
                 {
@@ -443,10 +461,10 @@ namespace Warewolf.Studio.ViewModels
         {
             get
             {
-                if (_requestServiceNameViewModel != null)
+                if(_requestServiceNameViewModel != null)
                 {
                     _requestServiceNameViewModel.Wait();
-                    if (_requestServiceNameViewModel.Exception == null)
+                    if (_requestServiceNameViewModel.Exception==null)
                     {
                         return _requestServiceNameViewModel.Result;
                     }
@@ -458,7 +476,7 @@ namespace Warewolf.Studio.ViewModels
                 }
                 return null;
             }
-            set { _requestServiceNameViewModel = new Task<IRequestServiceNameViewModel>(() => value); _requestServiceNameViewModel.Start(); }
+            set { _requestServiceNameViewModel = new Task<IRequestServiceNameViewModel>(() => value); _requestServiceNameViewModel.Start();}
         }
 
         public ICommand OkCommand { get; set; }

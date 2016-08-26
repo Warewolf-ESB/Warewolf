@@ -260,7 +260,7 @@ namespace Dev2.Runtime.Hosting
 
         readonly string _workspacePath = EnvironmentVariables.ResourcePath;
         public IList<DuplicateResource> GetDuplicateResources()
-        {            
+        {
             _duplicates = new List<DuplicateResource>();
             var resouceFolders = GetResouceFolders();
             if (!IsWorkspaceValid(_workspacePath, resouceFolders))
