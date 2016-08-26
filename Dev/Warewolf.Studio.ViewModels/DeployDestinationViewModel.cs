@@ -72,7 +72,6 @@ namespace Warewolf.Studio.ViewModels
             if(StatsArea != null)
             {
                 StatsArea.ReCalculate();
-                StatsArea.CheckPermissionPersmisions();
             }
         }
 

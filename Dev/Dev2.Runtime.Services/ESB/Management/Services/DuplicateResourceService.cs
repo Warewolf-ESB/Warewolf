@@ -17,6 +17,7 @@ using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Workspaces;
 using Newtonsoft.Json;
 
+
 namespace Dev2.Runtime.ESB.Management.Services
 {
     public class DuplicateResourceService : IEsbManagementEndpoint

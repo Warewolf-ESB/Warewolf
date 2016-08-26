@@ -40,6 +40,7 @@ namespace Dev2.Runtime.Hosting
         internal FileStream FileStream;
     }
 
+    
     /// <summary>
     /// Used to build up the resource catalog ;)
     /// </summary>
@@ -48,6 +49,7 @@ namespace Dev2.Runtime.Hosting
         private readonly List<IResource> _resources = new List<IResource>();
         private readonly HashSet<Guid> _addedResources = new HashSet<Guid>();
         private readonly IResourceUpgrader _resourceUpgrader;
+        private readonly List<DuplicateResource> _duplicateResources = new List<DuplicateResource>();
         private readonly object _addLock = new object();
         
 
@@ -61,7 +63,8 @@ namespace Dev2.Runtime.Hosting
         }
 
         public IList<IResource> ResourceList => _resources;
-
+        public List<DuplicateResource> DuplicateResources => _duplicateResources;
+        
 
         public void BuildCatalogFromWorkspace(string workspacePath, params string[] folders)
         {
@@ -283,6 +286,7 @@ namespace Dev2.Runtime.Hosting
                 var dupRes = _resources.Find(c => c.ResourceID == res.ResourceID);
                 if (dupRes != null)
                 {
+                    CreateDupResource(dupRes,filePath);
                     Dev2Logger.Debug(
                         string.Format(ErrorResource.ResourceAlreadyLoaded,
                             res.ResourceName, filePath, dupRes.FilePath));
@@ -292,6 +296,38 @@ namespace Dev2.Runtime.Hosting
                     Dev2Logger.Debug(string.Format(
                             "Resource '{0}' from file '{1}' wasn't loaded because a resource with the same name has already been loaded but cannot find its location.",
                             res.ResourceName, filePath));
+                }
+            }
+        }
+
+        private void CreateDupResource(IResource resource, string filePath)
+        {
+
+            {
+                var dupRes = _resources.Find(c => c.ResourceID == resource.ResourceID);
+                if (dupRes != null)
+                {
+                    if (_duplicateResources.Any(p => p.ResourceId == dupRes.ResourceID))
+                    {
+                        var firstDup = _duplicateResources.First(p => p.ResourceId == dupRes.ResourceID);
+                        if (!firstDup.ResourcePath.Contains(filePath))
+                            firstDup.ResourcePath.Add(filePath);
+                    }
+                    var duplicatePaths = filePath == dupRes.FilePath ? string.Empty : filePath;
+                    var resourcePaths = new List<string> { dupRes.FilePath };
+                    if (!string.IsNullOrEmpty(duplicatePaths))
+                    {
+                        resourcePaths.Add(duplicatePaths);
+                        var dupresource = new DuplicateResource
+                        {
+                            ResourceId = resource.ResourceID
+                            ,
+                            ResourceName = resource.ResourceName
+                            ,
+                            ResourcePath = resourcePaths
+                        };
+                        _duplicateResources.Add(dupresource);
+                    }
                 }
             }
         }

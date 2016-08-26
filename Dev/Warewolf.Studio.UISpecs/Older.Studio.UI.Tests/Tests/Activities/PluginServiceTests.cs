@@ -45,7 +45,6 @@ namespace Dev2.Studio.UI.Tests.Tests.Activities
 
             using(DsfActivityUiMap activityUiMap = new DsfActivityUiMap(false) { Activity = service, TheTab = theTab })
             {
-
                 activityUiMap.ClickEdit();
                 //Wizard actions
                 PluginServiceWizardUIMap.ClickMappingTab();
