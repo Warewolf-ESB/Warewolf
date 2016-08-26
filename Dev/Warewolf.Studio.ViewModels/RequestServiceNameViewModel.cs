@@ -66,13 +66,13 @@ namespace Warewolf.Studio.ViewModels
 
         readonly IEnvironmentConnection _lazyCon = EnvironmentRepository.Instance.ActiveEnvironment?.Connection;
         readonly ICommunicationController _lazyComs = new CommunicationController { ServiceName = "DuplicateResourceService" };
-        
+
         private void CallDuplicateService()
         {
             try
             {
                 _lazyComs.AddPayloadArgument("ResourceID", _explorerItemViewModel.ResourceId.ToString());
-                _lazyComs.AddPayloadArgument("NewResourceName", Path + "\\" + Name);
+                _lazyComs.AddPayloadArgument("NewResourceName", string.IsNullOrEmpty(Path) ? Name : Path + "\\" + Name);
                 _lazyComs.AddPayloadArgument("FixRefs", FixReferences.ToString());
                 // ReSharper disable once UnusedVariable
                 var executeCommand = _lazyComs.ExecuteCommand<ExecuteMessage>(_lazyCon ?? EnvironmentRepository.Instance.ActiveEnvironment?.Connection, GlobalConstants.ServerWorkspaceID);
@@ -83,8 +83,8 @@ namespace Warewolf.Studio.ViewModels
                 //Always refresh the env after this service call
                 _environmentViewModel.Server.UpdateRepository.FireItemSaved(true);
             }
-          
-           
+
+
         }
 
         public bool FixReferences
@@ -187,7 +187,7 @@ namespace Warewolf.Studio.ViewModels
                 }
                 return "";
             }
-          
+
         }
         private IExplorerTreeItem _treeItem;
         private IExplorerTreeItem SelectedItem

@@ -14,9 +14,8 @@ using Dev2.DynamicServices.Objects;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.ServiceModel.Data;
-
-
 using Dev2.Workspaces;
+using Newtonsoft.Json;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
@@ -36,9 +35,10 @@ namespace Dev2.Runtime.ESB.Management.Services
         // ReSharper disable once UnusedParameter.Local
         public DuplicateResourceService()
         {
+            //
 
         }
-        
+
         private IResourceCatalog GetResourceCatalog()
         {
             return _resourceCatalog ?? (_resourceCatalog = ResourceCatalog.Instance);
@@ -76,8 +76,8 @@ namespace Dev2.Runtime.ESB.Management.Services
                             if (!explorerItem.IsFolder)
                             {
                                 // ReSharper disable once UnusedVariable
-                                SaveSingleResource(resource, newResourceName, explorerItem);
-
+                                //SaveSingleResource(resource, newResourceName, explorerItem);
+                                SaveResource(resource, newResourceName);
                             }
                             else
                             {
@@ -99,42 +99,38 @@ namespace Dev2.Runtime.ESB.Management.Services
             return serializer.SerializeToBuilder(success);
         }
 
-        private void SaveSingleResource(IResource resource, StringBuilder newResourceName, IExplorerItem explorerItem)
+        private void SaveResource(IResource resource, StringBuilder newResourceName)
         {
-            var newResourceClone = new Resource(resource);
-            newResourceClone.SetIsNew(newResourceClone.ToXml());
-            StringBuilder fixedResourcename = new StringBuilder();
-            var resourceContents = GetResourceCatalog().GetResourceContents(GlobalConstants.ServerWorkspaceID, resource.ResourceID);
-            GetResourceName(explorerItem, newResourceName, newResourceClone.ResourcePath.Split('\\'), fixedResourcename);
-            //Allocate new ID
-            var newGuid = Guid.NewGuid();
-            newResourceClone.ResourceName = newResourceName.ToString();
-            newResourceClone.ResourceID = newGuid;
-            newResourceClone.ResourcePath = fixedResourcename.ToString();
-            newResourceClone.VersionInfo = null;
+          
+        
+            StringBuilder result = GetResourceCatalog().GetResourceContents(GlobalConstants.ServerWorkspaceID, resource.ResourceID);
             
-            newResourceClone.DataList = resource.DataList;
-            GetResourceCatalog().SaveResource(GlobalConstants.ServerWorkspaceID, newResourceClone);
+            var xElement = result.ToXElement();
+            resource.ResourcePath = newResourceName.ToString();
+            resource.IsUpgraded = true;
+              var resourceID = Guid.NewGuid();
+            var resourceName = newResourceName.ToString().Split('\\').Last();
+            resource.ResourceName = resourceName;
+            resource.ResourceID = resourceID;
+            var displayName = xElement.Element("DisplayName")?.Value;
+            var category = xElement.Element("Category")?.Value;
+            xElement.SetElementValue("DisplayName", resourceName);
+            xElement.SetElementValue("Category", category?.Replace(displayName ?? "", resourceName));
+            xElement.SetElementValue("ID", resourceID.ToString());
+            xElement.SetElementValue("Name", resourceName);
+            xElement.SetElementValue("ResourcePath", newResourceName.ToString());
+            var fixedResource = xElement.ToStringBuilder();
+            GetResourceCatalog().SaveResource(GlobalConstants.ServerWorkspaceID, resource, fixedResource);
+            
         }
 
-        private static IEnumerable<T> TraverseItems<T>(T item, Func<T, IEnumerable<T>> childSelector)
-        {
-            var stack = new Stack<T>();
-            stack.Push(item);
-            while (stack.Any())
-            {
-                var next = stack.Pop();
-                yield return next;
-                foreach (var child in childSelector(next))
-                    stack.Push(child);
-            }
-        }
+
         private void SaveFolders(IExplorerItem explorerItem, StringBuilder newResourceName)
         {
             IEnumerable<IExplorerItem> explorerItems;
             try
             {
-                explorerItems = TraverseItems(explorerItem, item => item?.Children ?? new List<IExplorerItem>())
+                explorerItems = Common.Utilities.TraverseItems(explorerItem, item => item?.Children ?? new List<IExplorerItem>())
                     .Where(item => item.ResourceId != explorerItem.ResourceId);
             }
             // ReSharper disable once UnusedVariable
@@ -150,32 +146,25 @@ namespace Dev2.Runtime.ESB.Management.Services
                 guidIds.Append(guidId + ",");
             }
             var resourceList = GetResourceCatalog().GetResourceList(GlobalConstants.ServerWorkspaceID, new Dictionary<string, string> { { "guidCsv", guidIds.ToString() } });
-            
+
             var recourceClones = new List<IResource>(resourceList);
             foreach (var recourceClone in recourceClones)
             {
-                StringBuilder fixedResourcename = new StringBuilder();
-                var names = recourceClone.ResourcePath.Split('\\');
-                
-                GetResourceName(explorerItem, newResourceName, names, fixedResourcename);
-
-                recourceClone.ResourceID = Guid.NewGuid();
-                recourceClone.ResourcePath = fixedResourcename.ToString();
-                recourceClone.VersionInfo = null;
-                GetResourceCatalog().SaveResource(GlobalConstants.ServerWorkspaceID, recourceClone);
+                SaveResource(recourceClone, newResourceName);
             }
         }
 
         private static void GetResourceName(IExplorerItem explorerItem, StringBuilder newResourceName, string[] folderName, StringBuilder fixedResourcename)
         {
-            for(int index = 0; index < folderName.Length; index++)
+            for (int index = 0; index < folderName.Length; index++)
             {
                 var value = folderName[index];
-                if(index > 0)
+                var stringBuilder = newResourceName.ToString().Split('\\').Last();
+                if (index > 0)
                 {
-                    if(value.ToLower() == explorerItem.DisplayName.ToLower())
+                    if (value.ToLower() == explorerItem.DisplayName.ToLower())
                     {
-                        fixedResourcename.Append("\\" + newResourceName);
+                        fixedResourcename.Append("\\" + stringBuilder);
                     }
                     else
                     {
@@ -184,9 +173,9 @@ namespace Dev2.Runtime.ESB.Management.Services
                 }
                 else
                 {
-                    if(value.ToLower() == explorerItem.DisplayName.ToLower())
+                    if (value.ToLower() == explorerItem.DisplayName.ToLower())
                     {
-                        fixedResourcename.Append("\\" + newResourceName);
+                        fixedResourcename.Append("\\" + stringBuilder);
                     }
                     else
                     {
