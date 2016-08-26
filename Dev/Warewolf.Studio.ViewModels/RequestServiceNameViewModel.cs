@@ -12,6 +12,7 @@ using Dev2.Common.Interfaces.SaveDialog;
 using Dev2.Communication;
 using Dev2.Controller;
 using Dev2.Studio.Core;
+using Dev2.Studio.Core.Interfaces;
 using Microsoft.Practices.Prism.Commands;
 using Microsoft.Practices.Prism.Mvvm;
 using Warewolf.Resource.Errors;
@@ -63,17 +64,27 @@ namespace Warewolf.Studio.ViewModels
             return this;
         }
 
+        readonly IEnvironmentConnection _lazyCon = EnvironmentRepository.Instance.ActiveEnvironment?.Connection;
+        readonly ICommunicationController _lazyComs = new CommunicationController { ServiceName = "DuplicateResourceService" };
+        
         private void CallDuplicateService()
         {
-            var controller = new CommunicationController { ServiceName = "DuplicateResourceService" };
-            controller.AddPayloadArgument("ResourceID", _explorerItemViewModel.ResourceId.ToString());
-            controller.AddPayloadArgument("NewResourceName", Name);
-            controller.AddPayloadArgument("FixRefs", FixReferences.ToString());
-            var environmentConnection = EnvironmentRepository.Instance.ActiveEnvironment.Connection;
-            // ReSharper disable once UnusedVariable
-            var executeCommand = controller.ExecuteCommand<ExecuteMessage>(environmentConnection, GlobalConstants.ServerWorkspaceID);
-            CloseView();
-            _environmentViewModel.Server.UpdateRepository.FireItemSaved(true);
+            try
+            {
+                _lazyComs.AddPayloadArgument("ResourceID", _explorerItemViewModel.ResourceId.ToString());
+                _lazyComs.AddPayloadArgument("NewResourceName", Path + "\\" + Name);
+                _lazyComs.AddPayloadArgument("FixRefs", FixReferences.ToString());
+                // ReSharper disable once UnusedVariable
+                var executeCommand = _lazyComs.ExecuteCommand<ExecuteMessage>(_lazyCon ?? EnvironmentRepository.Instance.ActiveEnvironment?.Connection, GlobalConstants.ServerWorkspaceID);
+                CloseView();
+            }
+            finally
+            {
+                //Always refresh the env after this service call
+                _environmentViewModel.Server.UpdateRepository.FireItemSaved(true);
+            }
+          
+           
         }
 
         public bool FixReferences
@@ -82,6 +93,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 return _fixReferences;
             }
+            // ReSharper disable once UnusedMember.Global
             set
             {
                 _fixReferences = value;
@@ -131,7 +143,7 @@ namespace Warewolf.Studio.ViewModels
 
         private void SetServiceName()
         {
-            var path = GetPath();
+            var path = Path;
             if (!string.IsNullOrEmpty(path))
             {
                 path = path.TrimStart('\\') + "\\";
@@ -141,37 +153,56 @@ namespace Warewolf.Studio.ViewModels
             _view.RequestClose();
         }
 
-        private string GetPath()
+        private string Path
         {
-            var selectedItem = SingleEnvironmentExplorerViewModel.SelectedItem;
-            if (selectedItem != null)
+            get
             {
-                var parent = selectedItem.Parent;
-                var parentNames = new List<string>();
-                while (parent != null)
+                var selectedItem = SelectedItem;
+                if (selectedItem != null)
                 {
-                    if (parent.ResourceType != "ServerSource")
+                    var parent = selectedItem.Parent;
+                    var parentNames = new List<string>();
+                    while (parent != null)
                     {
-                        parentNames.Add(parent.ResourceName);
+                        if (parent.ResourceType != "ServerSource")
+                        {
+                            parentNames.Add(parent.ResourceName);
+                        }
+                        parent = parent.Parent;
                     }
-                    parent = parent.Parent;
-                }
-                var path = "";
-                if (parentNames.Count > 0)
-                {
-                    for (var index = parentNames.Count; index > 0; index--)
+                    var path = "";
+                    if (parentNames.Count > 0)
                     {
-                        var parentName = parentNames[index - 1];
-                        path = path + "\\" + parentName;
+                        for (var index = parentNames.Count; index > 0; index--)
+                        {
+                            var parentName = parentNames[index - 1];
+                            path = path + "\\" + parentName;
+                        }
                     }
+                    if (selectedItem.ResourceType == "Folder")
+                    {
+                        path = path + "\\" + selectedItem.ResourceName;
+                    }
+                    return path;
                 }
-                if (selectedItem.ResourceType == "Folder")
-                {
-                    path = path + "\\" + selectedItem.ResourceName;
-                }
-                return path;
+                return "";
             }
-            return "";
+          
+        }
+        private IExplorerTreeItem _treeItem;
+        private IExplorerTreeItem SelectedItem
+        {
+            get
+            {
+                _treeItem = SingleEnvironmentExplorerViewModel.SelectedItem;
+                return _treeItem;
+            }
+
+            // ReSharper disable once UnusedMember.Local
+            set
+            {
+                _treeItem = value;
+            }
         }
 
         private void RaiseCanExecuteChanged()

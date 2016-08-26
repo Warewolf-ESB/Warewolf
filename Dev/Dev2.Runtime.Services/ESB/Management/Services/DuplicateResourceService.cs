@@ -104,7 +104,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             var newResourceClone = new Resource(resource);
             newResourceClone.SetIsNew(newResourceClone.ToXml());
             StringBuilder fixedResourcename = new StringBuilder();
-
+            var resourceContents = GetResourceCatalog().GetResourceContents(GlobalConstants.ServerWorkspaceID, resource.ResourceID);
             GetResourceName(explorerItem, newResourceName, newResourceClone.ResourcePath.Split('\\'), fixedResourcename);
             //Allocate new ID
             var newGuid = Guid.NewGuid();
@@ -150,12 +150,13 @@ namespace Dev2.Runtime.ESB.Management.Services
                 guidIds.Append(guidId + ",");
             }
             var resourceList = GetResourceCatalog().GetResourceList(GlobalConstants.ServerWorkspaceID, new Dictionary<string, string> { { "guidCsv", guidIds.ToString() } });
+            
             var recourceClones = new List<IResource>(resourceList);
             foreach (var recourceClone in recourceClones)
             {
                 StringBuilder fixedResourcename = new StringBuilder();
                 var names = recourceClone.ResourcePath.Split('\\');
-
+                
                 GetResourceName(explorerItem, newResourceName, names, fixedResourcename);
 
                 recourceClone.ResourceID = Guid.NewGuid();
