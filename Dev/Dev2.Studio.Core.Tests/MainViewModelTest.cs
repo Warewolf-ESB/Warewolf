@@ -1677,8 +1677,42 @@ namespace Dev2.Core.Tests
 
         [TestMethod]
         [Owner("Pieter Terblanche")]
+        [TestCategory("MainViewModel_ViewSwagger")]
+        public void MainViewModel_ViewSwagger_Handle_Result()
+        {
+            //------------Setup for test--------------------------
+            CreateFullExportsAndVm();
+
+            var env = SetupEnvironment();
+
+            //------------Execute Test---------------------------
+            MainViewModel.ActiveEnvironment = env.Object;
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(MainViewModel.ActiveEnvironment);
+            Assert.IsTrue(MainViewModel.ActiveEnvironment.IsConnected);
+            Assert.IsTrue(MainViewModel.ActiveEnvironment.CanStudioExecute);
+
+            var source = new Mock<IExplorerItemViewModel>();
+            source.Setup(a => a.ResourceId).Returns(Guid.NewGuid);
+            source.Setup(a => a.ResourceName).Returns("TestResourceName");
+            source.Setup(a => a.ResourceType).Returns("WorkflowService");
+            source.Setup(a => a.IsService).Returns(true);
+            source.Setup(a => a.IsFolder).Returns(false);
+
+            var viewModel = new Mock<IShellViewModel>();
+            var server = new Mock<IServer>();
+            server.SetupGet(server1 => server1.IsConnected).Returns(true);
+            viewModel.SetupGet(model => model.ActiveServer).Returns(server.Object);
+            viewModel.SetupGet(model => model.LocalhostServer).Returns(server.Object);
+            viewModel.SetupGet(model => model.ActiveServer.EnvironmentID).Returns(Guid.NewGuid);
+
+            MainViewModel.ViewSwagger(source.Object.ResourceId, viewModel.Object.ActiveServer);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
         [TestCategory("MainViewModel_ViewViewApisJson")]
-        public void MainViewModel_ViewViewApisJson_Handle_Result()
+        public void MainViewModel_ViewViewApisJson_HandleFolder_Result()
         {
             //------------Setup for test--------------------------
             CreateFullExportsAndVm();
@@ -1696,8 +1730,35 @@ namespace Dev2.Core.Tests
             source.Setup(a => a.ResourceId).Returns(Guid.NewGuid);
             source.Setup(a => a.ResourceName).Returns("TestResourceFolder");
             source.Setup(a => a.ResourceType).Returns("Folder");
+            source.Setup(a => a.ResourcePath).Returns("Path");
             source.Setup(a => a.IsService).Returns(false);
             source.Setup(a => a.IsFolder).Returns(true);
+
+            MainViewModel.ViewApisJson(source.Object.ResourcePath, new Uri("http://localhost:3142"));
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("MainViewModel_ViewViewApisJson")]
+        public void MainViewModel_ViewViewApisJson_HandleServer_Result()
+        {
+            //------------Setup for test--------------------------
+            CreateFullExportsAndVm();
+
+            var env = SetupEnvironment();
+
+            //------------Execute Test---------------------------
+            MainViewModel.ActiveEnvironment = env.Object;
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(MainViewModel.ActiveEnvironment);
+            Assert.IsTrue(MainViewModel.ActiveEnvironment.IsConnected);
+            Assert.IsTrue(MainViewModel.ActiveEnvironment.CanStudioExecute);
+
+            var source = new Mock<IEnvironmentViewModel>();
+            source.Setup(a => a.ResourceId).Returns(Guid.NewGuid);
+            source.Setup(a => a.ResourceName).Returns("TestResourceFolder");
+            source.Setup(a => a.ResourceType).Returns("Server");
+            source.Setup(a => a.IsServer).Returns(true);
 
             MainViewModel.ViewApisJson(source.Object.ResourcePath, new Uri("http://localhost:3142"));
         }
