@@ -170,7 +170,6 @@ namespace Warewolf.Studio.ServerProxyLayer
                 Password = resource.Password,
                 Server = resource.Server,
                 UserName = resource.UserName,
-                ResourcePath = resource.Path,
                 ResourceName = resource.Name,
                 ResourceID = resource.Id
             };
