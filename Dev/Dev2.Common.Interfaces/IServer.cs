@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Explorer;
 using Dev2.Common.Interfaces.Infrastructure;
+using Dev2.Common.Interfaces.Security;
 using Dev2.Common.Interfaces.Toolbox;
 using Newtonsoft.Json;
 
@@ -45,6 +46,8 @@ namespace Dev2.Common.Interfaces
         string GetMinSupportedVersion();
 
         Task<List<string>> LoadExplorerDuplicates();
+
+        Permissions GetPermissions(Guid resourceID);
     }
 
     public delegate void PermissionsChanged(PermissionsChangedArgs args);
