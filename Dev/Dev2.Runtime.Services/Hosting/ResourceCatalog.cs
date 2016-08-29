@@ -129,6 +129,9 @@ namespace Dev2.Runtime.Hosting
         public IList<IResource> GetResourceList(Guid workspaceId) => _catalogPluginContainer.LoadProvider.GetResources(workspaceId);
         public IList<IResource> GetResourceList<T>(Guid workspaceId) where T : Resource, new() => _catalogPluginContainer.LoadProvider.GetResourceList<T>(workspaceId);
         public List<IResource> GetResourcesBasedOnType(string type, List<IResource> workspaceResources, Func<IResource, bool> func) => _catalogPluginContainer.LoadProvider.GetResourcesBasedOnType(type, workspaceResources, func);
+
+        
+
         public List<DynamicServiceObjectBase> GetDynamicObjects(IEnumerable<IResource> resources) => _catalogPluginContainer.LoadProvider.GetDynamicObjects(resources);
         #endregion
 
@@ -508,5 +511,11 @@ namespace Dev2.Runtime.Hosting
         {
             LoadWorkspace(GlobalConstants.ServerWorkspaceID);
         }
+
+        public IResource GetResourceBasedOnPath(string resourceName)
+        {
+            return _catalogPluginContainer.LoadProvider.GetResourceBasedOnPath(resourceName);
+        }
+
     }
 }

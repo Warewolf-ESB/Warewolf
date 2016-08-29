@@ -127,7 +127,12 @@ namespace Dev2.Runtime.ESB
 
                         if(theService == null)
                         {
-                            errors.AddError(string.Format(ErrorResource.ServiceNotFound,serviceName));
+                            theService = _serviceLocator.FindService(serviceName, GlobalConstants.ServerWorkspaceID);
+                            if (theService == null)
+                            {
+                                errors.AddError(string.Format(ErrorResource.ServiceNotFound, serviceName));
+                            }
+
                         }
                         else if(theService.Actions.Count <= 1)
                         {

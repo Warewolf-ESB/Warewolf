@@ -330,6 +330,41 @@ namespace Dev2.Runtime.ResourceCatalogImpl
             return GetResources(workspaceID).Count;
         }
 
+        public IResource GetResourceBasedOnPath(string resourceName)
+        {
+            if (string.IsNullOrEmpty(resourceName))
+            {
+                throw new ArgumentNullException(nameof(resourceName));
+            }
+            var resourceNameToSearchFor = resourceName.Replace("/", "\\");
+            var resourcePath = resourceNameToSearchFor;
+            var endOfResourcePath = resourceNameToSearchFor.LastIndexOf('\\');
+            var path = "";
+            if (endOfResourcePath >= 0)
+            {
+                path = resourceNameToSearchFor.Substring(0, endOfResourcePath);
+                resourceNameToSearchFor = resourceNameToSearchFor.Substring(endOfResourcePath + 1);
+            }
+            var workspacePath = EnvironmentVariables.ResourcePath;
+            if (Directory.Exists(workspacePath))
+            {
+                var folders = Directory.EnumerateDirectories(workspacePath, path+"*", SearchOption.AllDirectories);
+                var allFolders = folders.ToList();
+                allFolders.Add(workspacePath);
+                var resources = LoadWorkspaceViaBuilder(workspacePath, allFolders.ToArray());
+                var foundResource = resources.FirstOrDefault(r =>
+                {
+                    if (r == null)
+                    {
+                        return false;
+                    }
+                    return string.Equals(r.GetResourcePath(GlobalConstants.ServerWorkspaceID) ?? "", resourcePath, StringComparison.InvariantCultureIgnoreCase) && string.Equals(r.ResourceName, resourceNameToSearchFor, StringComparison.InvariantCultureIgnoreCase);
+                });
+                return foundResource;
+            }
+            return null;
+        }
+
         public IResource GetResource(Guid workspaceID, string resourceName, string resourceType = "Unknown", string version = null)
         {
             while (true)
@@ -361,14 +396,12 @@ namespace Dev2.Runtime.ResourceCatalogImpl
                         workspaceID = GlobalConstants.ServerWorkspaceID;
                         continue;
                     }
-                    else
-                    {
-                        
-                    }
+                   
                     return foundResource;
                 }
             }
         }
+        
 
         public IResource GetResource(Guid workspaceID, Guid resourceID)
         {
