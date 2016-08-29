@@ -4,6 +4,7 @@ using System.Linq;
 using Dev2;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Deploy;
+using Dev2.Common.Interfaces.Infrastructure;
 using Dev2.Common.Interfaces.Security;
 using Microsoft.Practices.Prism.Mvvm;
 
@@ -23,11 +24,12 @@ namespace Warewolf.Studio.ViewModels
         List<Conflict> _conflicts;
         IEnumerable<IExplorerTreeItem> _new;
         IList<IExplorerTreeItem> _items;
+        private ICollection<IExplorerItemViewModel> _destinationItems;
 
         public DeployStatsViewerViewModel(IExplorerViewModel destination)
         {
             VerifyArgument.IsNotNull(@"destination", destination);
-            _destination = destination;
+            _destination = destination;            
             Status = @"";
         }
 
@@ -144,27 +146,50 @@ namespace Warewolf.Studio.ViewModels
             {
                 Calculate(_items);
             }
-        }
-
+        }        
         public void CheckDestinationPersmisions()
         {
-            var destItems = _destination.SelectedEnvironment.AsList();
-            if (destItems != null)
+            _destinationItems = _destination.SelectedEnvironment?.AsList();
+            if (_destinationItems?.Count > 0 && _items?.Count > 0)
             {
-                foreach(var explorerItemViewModel in destItems)
+                foreach (var currentItem in _items)
                 {
-                    var currentItem = _items.FirstOrDefault(p=>p.ResourceId == explorerItemViewModel.ResourceId);
+                    var explorerItemViewModel = _destinationItems.FirstOrDefault(p => p.ResourceId == currentItem.ResourceId);
                     {
-                        if(currentItem != null)
+                        if (explorerItemViewModel != null)
                         {
-                            var permission = explorerItemViewModel.Server.Permissions.FirstOrDefault(p => p.ResourceID == explorerItemViewModel.ResourceId);
-                            var perms = permission?.Permissions.ToString();
-                            if(perms != null && !perms.Contains(Permissions.Contribute.ToString()))
-                                currentItem.CanDeploy = false;
-                        }                        
-                    }
+                            if (currentItem.Server.CanDeployFrom && explorerItemViewModel.Server.CanDeployTo)
+                            {
+                                if (IsSourceAndDestinatioSameServer(currentItem, explorerItemViewModel))
+                                {
+                                    var permission = explorerItemViewModel.Server.Permissions.FirstOrDefault(p => p.ResourceID == explorerItemViewModel.ResourceId);
+                                    SetItemCheckState(permission, currentItem);
+                                }
+                                else
+                                    currentItem.CanDeploy = true;
+                            }                            
+                        }
+                        else                        
+                            currentItem.CanDeploy = true;
+                    }                    
                 }
             }
+        }
+
+        private static bool IsSourceAndDestinatioSameServer(IExplorerTreeItem currentItem, IExplorerItemViewModel explorerItemViewModel)
+        {            
+            return currentItem.Server != explorerItemViewModel.Server;
+        }
+
+        private static void SetItemCheckState(IWindowsGroupPermission permission, IExplorerTreeItem currentItem)
+        {
+            var perms = permission?.Permissions.ToString();
+            if(perms == null)
+                currentItem.CanDeploy = false;
+            else if(!perms.Contains(Permissions.Contribute.ToString()))
+                currentItem.CanDeploy = false;
+            else
+                currentItem.CanDeploy = true;
         }
 
         public void Calculate(IList<IExplorerTreeItem> items)
@@ -195,7 +220,7 @@ namespace Warewolf.Studio.ViewModels
                     var explorerItemViewModels = _destination.SelectedEnvironment.AsList();
                     var conf = from b in explorerItemViewModels
                                join explorerTreeItem in items on new { b.ResourceId, b.ResourcePath } equals new { explorerTreeItem.ResourceId, explorerTreeItem.ResourcePath }
-                               where b.ResourceType != @"Folder" && explorerTreeItem.ResourceType != @"Folder"
+                               where b.ResourceType != @"Folder" && explorerTreeItem.ResourceType != @"Folder" && (explorerTreeItem.IsResourceChecked.HasValue && explorerTreeItem.IsResourceChecked.Value)
                                select new Conflict { SourceName = explorerTreeItem.ResourceName, DestinationName = b.ResourceName };
 
                     _conflicts = conf.ToList();
