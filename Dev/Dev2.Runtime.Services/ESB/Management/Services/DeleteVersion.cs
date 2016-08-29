@@ -67,7 +67,14 @@ namespace Dev2.Runtime.ESB.Management.Services
                     var guid = Guid.Parse(values["resourceId"].ToString());
                     var version = values["versionNumber"].ToString();
                     Dev2Logger.Info(String.Format("Delete Version. ResourceId:{0} VersionNumber{1}",guid,version));
-                    var res = ServerVersionRepo.DeleteVersion(guid,version);
+                    StringBuilder tmp;
+                    string resourcePath = null;
+                    values.TryGetValue("ResourcePath", out tmp);
+                    if (tmp != null)
+                    {
+                        resourcePath = tmp.ToString();
+                    }
+                    var res = ServerVersionRepo.DeleteVersion(guid,version, resourcePath);
                     execMessage.Message = serializer.SerializeToBuilder(res); 
                 }
                 catch (Exception e)

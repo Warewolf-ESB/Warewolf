@@ -85,13 +85,13 @@ namespace Warewolf.Studio.ServerProxyLayer
         /// <param name="resourceId">the resource</param>
         /// <param name="versionNumber">the version to delete</param>
         /// <returns></returns>
-        public IList<IExplorerItem> DeleteVersion(Guid resourceId, string versionNumber)
+        public IList<IExplorerItem> DeleteVersion(Guid resourceId, string versionNumber, string resourcePath)
         {
             var workSpaceId = Guid.NewGuid();
             var controller = CommunicationControllerFactory.CreateController("DeleteVersion");
             controller.AddPayloadArgument("resourceId", resourceId.ToString());
             controller.AddPayloadArgument("versionNumber", versionNumber);
-
+            controller.AddPayloadArgument("resourcePath", resourcePath);
             var result = controller.ExecuteCommand<ExecuteMessage>(_connection, workSpaceId);
 
             if (result == null || result.HasError)

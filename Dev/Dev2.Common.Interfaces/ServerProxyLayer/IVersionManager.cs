@@ -29,7 +29,7 @@ namespace Dev2.Common.Interfaces.ServerProxyLayer
         /// <param name="resourceId">the resource</param>
         /// <param name="versionNumber">the version to delete</param>
         /// <returns></returns>
-        IList<IExplorerItem> DeleteVersion(Guid resourceId, string versionNumber);
+        IList<IExplorerItem> DeleteVersion(Guid resourceId, string versionNumber, string resourcePath);
 
         StringBuilder GetVersion(IVersionInfo versionInfo, string resourcePath);
     }
