@@ -92,7 +92,7 @@ namespace Dev2.Studio.ViewModels
 
         void AddDeploySurface(IEnumerable<IExplorerTreeItem> items);
 
-        void OpenVersion(Guid resourceId, IVersionInfo versionInfo, string resourcePath);
+        void OpenVersion(Guid resourceId, IVersionInfo versionInfo);
 
         void NewEmailSource(string resourcePath);
 
@@ -422,9 +422,9 @@ namespace Dev2.Studio.ViewModels
             }
         }
 
-        public void OpenVersion(Guid resourceId, IVersionInfo versionInfo, string resourcePath)
+        public void OpenVersion(Guid resourceId, IVersionInfo versionInfo)
         {
-            var workflowXaml = ActiveServer?.ProxyLayer?.GetVersion(versionInfo, resourcePath);
+            var workflowXaml = ActiveServer?.ProxyLayer?.GetVersion(versionInfo,resourceId);
             if (workflowXaml != null)
             {
                 IResourceModel resourceModel =

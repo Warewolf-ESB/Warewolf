@@ -31,6 +31,6 @@ namespace Dev2.Common.Interfaces.ServerProxyLayer
         /// <returns></returns>
         IList<IExplorerItem> DeleteVersion(Guid resourceId, string versionNumber, string resourcePath);
 
-        StringBuilder GetVersion(IVersionInfo versionInfo, string resourcePath);
+        StringBuilder GetVersion(IVersionInfo versionInfo, Guid resourceId);
     }
 }

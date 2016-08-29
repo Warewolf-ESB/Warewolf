@@ -38,13 +38,13 @@ namespace Warewolf.Studio.ServerProxyLayer
         }
 
 
-        public StringBuilder GetVersion(IVersionInfo versionInfo, string resourcePath)
+        public StringBuilder GetVersion(IVersionInfo versionInfo, Guid resourceId)
         {
             var workSpaceId = Guid.NewGuid();
             var controller = CommunicationControllerFactory.CreateController("GetVersion");
             var serializer = new Dev2JsonSerializer();
             controller.AddPayloadArgument("versionInfo", serializer.SerializeToBuilder(versionInfo).ToString());
-            controller.AddPayloadArgument("resourcePath", resourcePath);
+            controller.AddPayloadArgument("resourceId", resourceId.ToString());
             var executeMessage = controller.ExecuteCommand<ExecuteMessage>(_connection, workSpaceId);
 
             if (executeMessage == null || executeMessage.HasError)

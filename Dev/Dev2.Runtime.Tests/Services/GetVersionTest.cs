@@ -94,7 +94,7 @@ namespace Dev2.Tests.Runtime.Services
             var serializer = new Dev2JsonSerializer();
             ws.Setup(a => a.ID).Returns(Guid.Empty);
             getVersions.ServerVersionRepo = servVer.Object;
-            getVersions.Resources = cat.Object;
+            getVersions.ResourceCatalog = cat.Object;
             Dev2JsonSerializer serialisr = new Dev2JsonSerializer();
             //------------Execute Test---------------------------
             var ax = getVersions.Execute(new Dictionary<string, StringBuilder> { { "versionInfo", serialisr.SerializeToBuilder(version) } }, ws.Object);
@@ -128,7 +128,7 @@ namespace Dev2.Tests.Runtime.Services
             var serializer = new Dev2JsonSerializer();
             ws.Setup(a => a.ID).Returns(Guid.Empty);
             getVersions.ServerVersionRepo = servVer.Object;
-            getVersions.Resources = cat.Object;
+            getVersions.ResourceCatalog = cat.Object;
             Dev2JsonSerializer serialisr = new Dev2JsonSerializer();
             //------------Execute Test---------------------------
             var ax = getVersions.Execute(new Dictionary<string, StringBuilder> { { "versionInfo", serialisr.SerializeToBuilder(version) } }, ws.Object);
