@@ -248,7 +248,6 @@ namespace Dev2.Tests.Runtime.ServiceModel
                 ResourceID = Guid.NewGuid(),
                 ResourceName = "DummyPluginService",
                 ResourceType = "ComPluginService",
-                ResourcePath = "Tests",
                 Namespace = "Namespace",
                 Method = method,
                 Source = source,
@@ -269,7 +268,6 @@ namespace Dev2.Tests.Runtime.ServiceModel
                 ResourceID = Guid.NewGuid(),
                 ResourceName = "Dummy",
                 ResourceType = "ComPluginSource",
-                ResourcePath = "Test",
                 ClsId = clsId
             };
         }

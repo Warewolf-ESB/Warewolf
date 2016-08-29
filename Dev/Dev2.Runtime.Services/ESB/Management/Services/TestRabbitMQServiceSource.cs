@@ -38,7 +38,6 @@ namespace Dev2.Runtime.ESB.Management.Services
                 {
                     ResourceID = rabbitMQServiceSourceDefinition.ResourceID,
                     ResourceName = rabbitMQServiceSourceDefinition.ResourceName,
-                    ResourcePath = rabbitMQServiceSourceDefinition.ResourcePath,
                     HostName = rabbitMQServiceSourceDefinition.HostName,
                     Port = rabbitMQServiceSourceDefinition.Port,
                     UserName = rabbitMQServiceSourceDefinition.UserName,

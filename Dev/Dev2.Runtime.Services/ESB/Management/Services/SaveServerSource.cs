@@ -60,13 +60,12 @@ namespace Dev2.Runtime.ESB.Management.Services
                 con.UserName = src.UserName;
                 con.Password = src.Password;
                 con.ResourceName = src.Name;
-                con.ResourcePath = src.ResourcePath;
                 con.ResourceID = src.ID;
                 con.WebServerPort = int.Parse(port);
                 Connections tester = new Connections();
                 var res = tester.CanConnectToServer(con);
                 if(res.IsValid)
-                ResourceCatalog.Instance.SaveResource(GlobalConstants.ServerWorkspaceID,con);
+                ResourceCatalog.Instance.SaveResource(GlobalConstants.ServerWorkspaceID,con, "", "", src.ResourcePath);
                 ServerExplorerRepo.UpdateItem(con);
                 msg.HasError = false;
                 msg.Message = new StringBuilder(res.IsValid ? "" : res.ErrorMessage);

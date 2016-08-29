@@ -93,7 +93,6 @@ namespace Dev2.Tests.Runtime.Util
                 IsNewResource = false,
                 DataList = new StringBuilder("abc"),
                 IsValid = true,
-                ResourcePath = "Category",
                 ResourceName = "Workflow",
                 ResourceType = "WorkflowService",
                 Errors = theErrors,

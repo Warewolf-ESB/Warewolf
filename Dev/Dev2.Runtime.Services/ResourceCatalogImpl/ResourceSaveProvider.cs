@@ -40,7 +40,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
 
         #region Implementation of IResourceSaveProvider
 
-        public ResourceCatalogResult SaveResource(Guid workspaceID, StringBuilder resourceXml, string reason = "", string user = "")
+        public ResourceCatalogResult SaveResource(Guid workspaceID, StringBuilder resourceXml, string reason = "", string user = "", string savedPath = "")
         {
             try
             {
@@ -63,7 +63,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
 
                     StringBuilder result = xml.ToStringBuilder();
 
-                    return CompileAndSave(workspaceID, resource, result);
+                    return CompileAndSave(workspaceID, resource, result, savedPath);
                 }
             }
             catch (Exception err)
@@ -73,7 +73,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
             }
         }
 
-        public ResourceCatalogResult SaveResource(Guid workspaceID, IResource resource, string reason = "", string user = "")
+        public ResourceCatalogResult SaveResource(Guid workspaceID, IResource resource, string reason = "", string user = "", string savedPath = "")
         {
             _serverVersionRepository.StoreVersion(resource, user, reason, workspaceID);
 
@@ -90,26 +90,26 @@ namespace Dev2.Runtime.ResourceCatalogImpl
                     resource.ResourceID = Guid.NewGuid();
                 }
                 GlobalConstants.InvalidateCache(resource.ResourceID);
-                resource.ResourcePath = Common.SanitizePath(resource.ResourcePath);
+                savedPath = Common.SanitizePath(savedPath);
                 var result = resource.ToStringBuilder();
-                return CompileAndSave(workspaceID, resource, result);
+                return CompileAndSave(workspaceID, resource, result, savedPath);
             }
         }
 
         public Action<IResource> ResourceSaved { get; set; }
         public Action<Guid, IList<ICompileMessageTO>> SendResourceMessages { get; set; }
 
-        internal ResourceCatalogResult SaveImpl(Guid workspaceID, IResource resource, StringBuilder contents, bool overwriteExisting)
+        internal ResourceCatalogResult SaveImpl(Guid workspaceID, IResource resource, StringBuilder contents, bool overwriteExisting, string savedPath = "")
         {
             ResourceCatalogResult saveResult = null;
-            Dev2.Common.Utilities.PerformActionInsideImpersonatedContext(Dev2.Common.Utilities.ServerUser, () => { PerfomSaveResult(out saveResult, workspaceID, resource, contents, overwriteExisting); });
+            Dev2.Common.Utilities.PerformActionInsideImpersonatedContext(Dev2.Common.Utilities.ServerUser, () => { PerfomSaveResult(out saveResult, workspaceID, resource, contents, overwriteExisting, savedPath); });
             return saveResult;
         }
 
         #endregion
 
         #region Private Methods
-        private ResourceCatalogResult CompileAndSave(Guid workspaceID, IResource resource, StringBuilder contents)
+        private ResourceCatalogResult CompileAndSave(Guid workspaceID, IResource resource, StringBuilder contents, string savedPath = "")
         {
             // Find the service before edits ;)
             DynamicService beforeService = _resourceCatalog.GetDynamicObjects<DynamicService>(workspaceID, resource.ResourceID).FirstOrDefault();
@@ -243,12 +243,6 @@ namespace Dev2.Runtime.ResourceCatalogImpl
 
             XElement xml = contents.ToXElement();
             xml = resource.UpgradeXml(xml, resource);
-            if (resource.ResourcePath != null && !resource.ResourcePath.EndsWith(resource.ResourceName))
-            {
-                var resourcePath = (resPath == "" ? "" : resource.ResourcePath + "\\") + resource.ResourceName;
-                resource.ResourcePath = resourcePath;
-                xml.SetElementValue("Category", resourcePath);
-            }
             StringBuilder result = xml.ToStringBuilder();
 
             var signedXml = HostSecurityProvider.Instance.SignXml(result);
@@ -300,19 +294,19 @@ namespace Dev2.Runtime.ResourceCatalogImpl
                         saveResult = ResourceCatalogResultBuilder.CreateDuplicateMatchResult(string.Format(ErrorResource.TypeConflict, conflicting.ResourceType));
                         return;
                     }
-                    if (resource.ResourcePath.EndsWith("\\"))
+                    if (savedPath.EndsWith("\\"))
                     {
-                        resource.ResourcePath = resource.ResourcePath.TrimEnd('\\');
+                        savedPath = savedPath.TrimEnd('\\');
                     }
                     var workspacePath = EnvironmentVariables.GetWorkspacePath(workspaceID);
-                    var originalRes = resource.ResourcePath ?? "";
+                    var originalRes = savedPath ?? "";
                     int indexOfName = originalRes.LastIndexOf(resource.ResourceName, StringComparison.Ordinal);
-                    var resPath = resource.ResourcePath;
+                    var resPath = savedPath;
                     if (indexOfName >= 0)
                     {
                         resPath = originalRes.Substring(0, originalRes.LastIndexOf(resource.ResourceName, StringComparison.Ordinal));
                     }
-                    var directoryName = Path.Combine(workspacePath, resPath ?? string.Empty);
+                    var directoryName = Path.Combine(workspacePath, resPath);
 
                     resource.FilePath = Path.Combine(directoryName, resource.ResourceName + ".xml");
 

@@ -37,7 +37,6 @@ namespace Dev2.Runtime.ServiceModel.Data
             ResourceID = copy.ResourceID;
             ResourceName = copy.ResourceName;
             ResourceType = copy.ResourceType;
-            ResourcePath = copy.ResourcePath;
             AuthorRoles = copy.AuthorRoles;
             FilePath = copy.FilePath;
         }
@@ -63,12 +62,6 @@ namespace Dev2.Runtime.ServiceModel.Data
                 ResourceType = "WorkflowService";
             }
             ResourceName = xml.AttributeSafe("Name");
-            ResourcePath = xml.ElementSafe("Category");
-            ResourcePath = ResourcePath.Replace("\\\\", "\\");
-            if (String.IsNullOrEmpty(ResourcePath))
-            {
-                ResourcePath = ResourceName;
-            }
             VersionInfo = String.IsNullOrEmpty( xml.ElementStringSafe("VersionInfo"))?null: new VersionInfo(xml.ElementStringSafe("VersionInfo"), ResourceID);
             AuthorRoles = xml.ElementSafe("AuthorRoles");
 
@@ -266,7 +259,6 @@ namespace Dev2.Runtime.ServiceModel.Data
                 new XAttribute("ResourceType", ResourceType),
                 new XAttribute("IsValid", IsValid),
                 new XElement("DisplayName", ResourceName ?? string.Empty),
-                new XElement("Category", ResourcePath ?? string.Empty),
                 new XElement("AuthorRoles", AuthorRoles ?? string.Empty),
                 // ReSharper disable ConstantNullCoalescingCondition
                 new XElement("ErrorMessages", WriteErrors() ?? null)
@@ -404,7 +396,6 @@ namespace Dev2.Runtime.ServiceModel.Data
                 xml.SetAttributeValue("ID", ResourceID);
                 xml.SetAttributeValue("Name", ResourceName ?? string.Empty);
                 xml.SetAttributeValue("ResourceType", ResourceType);
-                xml.SetAttributeValue("Category", ResourcePath);
             }
             if(!xml.Descendants("VersionInfo").Any() && resource.VersionInfo != null)
             {

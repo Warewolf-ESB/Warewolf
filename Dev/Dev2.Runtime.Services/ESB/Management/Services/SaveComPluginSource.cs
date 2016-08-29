@@ -43,10 +43,9 @@ namespace Dev2.Runtime.ESB.Management.Services
                     ClsId = src.ClsId,
                     Is32Bit = src.Is32Bit,
                     ComName = src.SelectedDll.Name,
-                    ResourceName = src.ResourceName,
-                    ResourcePath = src.ResourcePath
+                    ResourceName = src.ResourceName
                 };
-                ResourceCatalog.Instance.SaveResource(GlobalConstants.ServerWorkspaceID, res);
+                ResourceCatalog.Instance.SaveResource(GlobalConstants.ServerWorkspaceID, res, "", "", src.ResourcePath);
                 msg.HasError = false;
 
             }

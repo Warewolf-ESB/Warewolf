@@ -64,7 +64,6 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
   <DataList />
   <TypeOf>InvokeStoredProc</TypeOf>
   <DisplayName>TravsTestService</DisplayName>
-  <Category>WEBPART_WIZARDS</Category>
 </Service>";
             // ReSharper restore InconsistentNaming
             XElement testElm = XElement.Parse(xmlDataString);
@@ -73,7 +72,6 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             Assert.AreEqual("TravsTestService", dbService.ResourceName);
             Assert.AreEqual("DbService", dbService.ResourceType);
             Assert.AreEqual("af8d2d38-22b5-4599-8357-adce196beb83", dbService.ResourceID.ToString());
-            Assert.AreEqual("WEBPART_WIZARDS", dbService.ResourcePath);
         }
 
         [TestMethod]
