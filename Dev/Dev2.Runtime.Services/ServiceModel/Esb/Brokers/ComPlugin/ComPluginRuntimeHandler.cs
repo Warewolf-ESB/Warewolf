@@ -51,7 +51,6 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.ComPlugin
                 pluginResult = AdjustPluginResult(pluginResult);
                 return formater.Format(pluginResult).ToString();
             }
-            pluginResult = JsonConvert.SerializeObject(pluginResult);
             return pluginResult;
         }
         public IOutputDescription Test(ComPluginInvokeArgs setupInfo, out string jsonResult)
@@ -69,7 +68,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.ComPlugin
 
                 if (pluginResult != null)
                 {
-                    jsonResult = JsonConvert.SerializeObject(pluginResult);
+                    jsonResult = pluginResult.ToString();
                     pluginResult = AdjustPluginResult(pluginResult);
                     var tmpData = dataBrowser.Map(pluginResult);
                     dataSourceShape.Paths.AddRange(tmpData);

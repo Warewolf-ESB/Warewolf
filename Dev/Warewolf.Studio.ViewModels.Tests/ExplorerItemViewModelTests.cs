@@ -109,10 +109,229 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
+        public void TestNewServerCommand()
+        {
+            //arrange
+            _target.ResourceType = "ServerSource";
+            _target.ResourceId = Guid.NewGuid();
+            _serverMock.SetupGet(it => it.EnvironmentID).Returns(Guid.NewGuid());
+
+            //act
+            _target.NewServerCommand.Execute(null);
+            Assert.IsTrue(_target.NewServerCommand.CanExecute(null));
+
+            //assert
+            _shellViewModelMock.Verify(it => it.SetActiveEnvironment(_target.Server.EnvironmentID));
+            _shellViewModelMock.Verify(it => it.SetActiveServer(_target.Server));
+            _shellViewModelMock.Verify(it => it.NewServerSource(_target.ResourcePath));
+        }
+
+        [TestMethod]
+        public void TestNewDatabaseSourceCommand()
+        {
+            //arrange
+            _target.ResourceType = "DbSource";
+            _target.ResourceId = Guid.NewGuid();
+            _serverMock.SetupGet(it => it.EnvironmentID).Returns(Guid.NewGuid());
+
+            //act
+            _target.NewDatabaseSourceCommand.Execute(null);
+            Assert.IsTrue(_target.NewServerCommand.CanExecute(null));
+
+            //assert
+            _shellViewModelMock.Verify(it => it.SetActiveEnvironment(_target.Server.EnvironmentID));
+            _shellViewModelMock.Verify(it => it.SetActiveServer(_target.Server));
+            _shellViewModelMock.Verify(it => it.NewDatabaseSource(_target.ResourcePath));
+        }
+
+        [TestMethod]
+        public void TestNewPluginSourceCommand()
+        {
+            //arrange
+            _target.ResourceType = "PluginSource";
+            _target.ResourceId = Guid.NewGuid();
+            _serverMock.SetupGet(it => it.EnvironmentID).Returns(Guid.NewGuid());
+
+            //act
+            _target.NewPluginSourceCommand.Execute(null);
+            Assert.IsTrue(_target.NewServerCommand.CanExecute(null));
+
+            //assert
+            _shellViewModelMock.Verify(it => it.SetActiveEnvironment(_target.Server.EnvironmentID));
+            _shellViewModelMock.Verify(it => it.SetActiveServer(_target.Server));
+            _shellViewModelMock.Verify(it => it.NewPluginSource(_target.ResourcePath));
+        }
+
+        [TestMethod]
+        public void TestNewWebSourceCommand()
+        {
+            //arrange
+            _target.ResourceType = "WebSource";
+            _target.ResourceId = Guid.NewGuid();
+            _serverMock.SetupGet(it => it.EnvironmentID).Returns(Guid.NewGuid());
+
+            //act
+            _target.NewWebSourceSourceCommand.Execute(null);
+            Assert.IsTrue(_target.NewServerCommand.CanExecute(null));
+
+            //assert
+            _shellViewModelMock.Verify(it => it.SetActiveEnvironment(_target.Server.EnvironmentID));
+            _shellViewModelMock.Verify(it => it.SetActiveServer(_target.Server));
+            _shellViewModelMock.Verify(it => it.NewWebSource(_target.ResourcePath));
+        }
+
+        [TestMethod]
+        public void TestNewEmailSourceCommand()
+        {
+            //arrange
+            _target.ResourceType = "EmailSource";
+            _target.ResourceId = Guid.NewGuid();
+            _serverMock.SetupGet(it => it.EnvironmentID).Returns(Guid.NewGuid());
+
+            //act
+            _target.NewEmailSourceSourceCommand.Execute(null);
+            Assert.IsTrue(_target.NewServerCommand.CanExecute(null));
+
+            //assert
+            _shellViewModelMock.Verify(it => it.SetActiveEnvironment(_target.Server.EnvironmentID));
+            _shellViewModelMock.Verify(it => it.SetActiveServer(_target.Server));
+            _shellViewModelMock.Verify(it => it.NewEmailSource(_target.ResourcePath));
+        }
+
+        [TestMethod]
+        public void TestNewExchangeSourceCommand()
+        {
+            //arrange
+            _target.ResourceType = "ExchangeSource";
+            _target.ResourceId = Guid.NewGuid();
+            _serverMock.SetupGet(it => it.EnvironmentID).Returns(Guid.NewGuid());
+
+            //act
+            _target.NewExchangeSourceSourceCommand.Execute(null);
+            Assert.IsTrue(_target.NewServerCommand.CanExecute(null));
+
+            //assert
+            _shellViewModelMock.Verify(it => it.SetActiveEnvironment(_target.Server.EnvironmentID));
+            _shellViewModelMock.Verify(it => it.SetActiveServer(_target.Server));
+            _shellViewModelMock.Verify(it => it.NewExchangeSource(_target.ResourcePath));
+        }
+
+        [TestMethod]
+        public void TestNewRabbitMqSourceCommand()
+        {
+            //arrange
+            _target.ResourceType = "RabbitMqSource";
+            _target.ResourceId = Guid.NewGuid();
+            _serverMock.SetupGet(it => it.EnvironmentID).Returns(Guid.NewGuid());
+
+            //act
+            _target.NewRabbitMQSourceSourceCommand.Execute(null);
+            Assert.IsTrue(_target.NewServerCommand.CanExecute(null));
+
+            //assert
+            _shellViewModelMock.Verify(it => it.SetActiveEnvironment(_target.Server.EnvironmentID));
+            _shellViewModelMock.Verify(it => it.SetActiveServer(_target.Server));
+            _shellViewModelMock.Verify(it => it.NewRabbitMQSource(_target.ResourcePath));
+        }
+
+        [TestMethod]
+        public void TestNewSharepointSourceCommand()
+        {
+            //arrange
+            _target.ResourceType = "SharepointSource";
+            _target.ResourceId = Guid.NewGuid();
+            _serverMock.SetupGet(it => it.EnvironmentID).Returns(Guid.NewGuid());
+
+            //act
+            _target.NewSharepointSourceSourceCommand.Execute(null);
+            Assert.IsTrue(_target.NewServerCommand.CanExecute(null));
+
+            //assert
+            _shellViewModelMock.Verify(it => it.SetActiveEnvironment(_target.Server.EnvironmentID));
+            _shellViewModelMock.Verify(it => it.SetActiveServer(_target.Server));
+            _shellViewModelMock.Verify(it => it.NewSharepointSource(_target.ResourcePath));
+        }
+
+        [TestMethod]
+        public void TestNewDropboxSourceCommand()
+        {
+            //arrange
+            _target.ResourceType = "DropboxSource";
+            _target.ResourceId = Guid.NewGuid();
+            _serverMock.SetupGet(it => it.EnvironmentID).Returns(Guid.NewGuid());
+
+            //act
+            _target.NewDropboxSourceSourceCommand.Execute(null);
+            Assert.IsTrue(_target.NewServerCommand.CanExecute(null));
+
+            //assert
+            _shellViewModelMock.Verify(it => it.SetActiveEnvironment(_target.Server.EnvironmentID));
+            _shellViewModelMock.Verify(it => it.SetActiveServer(_target.Server));
+            _shellViewModelMock.Verify(it => it.NewDropboxSource(_target.ResourcePath));
+        }
+
+        [TestMethod]
+        public void TestNewServiceCommand()
+        {
+            //arrange
+            _target.ResourceType = "WorkflowService";
+            _target.ResourceId = Guid.NewGuid();
+            _serverMock.SetupGet(it => it.EnvironmentID).Returns(Guid.NewGuid());
+
+            //act
+            _target.NewServiceCommand.Execute(null);
+            Assert.IsTrue(_target.NewServerCommand.CanExecute(null));
+
+            //assert
+            _shellViewModelMock.Verify(it => it.SetActiveEnvironment(_target.Server.EnvironmentID));
+            _shellViewModelMock.Verify(it => it.SetActiveServer(_target.Server));
+            _shellViewModelMock.Verify(it => it.NewService(_target.ResourcePath));
+        }
+
+        [TestMethod]
+        public void TestViewSwaggerCommand()
+        {
+            //arrange
+            _target.ResourceType = "WorkflowService";
+            _target.ResourceId = Guid.NewGuid();
+            _serverMock.SetupGet(it => it.EnvironmentID).Returns(Guid.NewGuid());
+
+            //act
+            _target.ViewSwaggerCommand.Execute(null);
+            Assert.IsTrue(_target.NewServerCommand.CanExecute(null));
+
+            //assert
+            
+            _shellViewModelMock.Verify(it => it.ViewSwagger(_target.ResourceId, _target.Server));
+        }
+
+        [TestMethod]
+        public void TestApisJsonCommand()
+        {
+            //arrange
+            _target.ResourceType = "Folder";
+            _target.ResourceId = Guid.NewGuid();
+            _serverMock.SetupGet(it => it.EnvironmentID).Returns(Guid.NewGuid());
+            var connection = new Mock<IEnvironmentConnection>();
+            connection.SetupGet(it => it.ID).Returns(Guid.NewGuid());
+            //act
+            var mock = new Mock<IEnvironmentModel>();
+            mock.SetupGet(it => it.Connection).Returns(connection.Object);
+            mock.SetupGet(it => it.Connection.WebServerUri).Returns(new Uri("http://localhost:3142"));
+            _target.EnvironmentModel = mock.Object;
+            _target.ViewApisJsonCommand.Execute(null);
+            Assert.IsTrue(_target.NewServerCommand.CanExecute(null));
+
+            //assert
+
+            _shellViewModelMock.Verify(it => it.ViewApisJson(_target.ResourcePath, new Uri("http://localhost:3142")));
+        }
+
+        [TestMethod]
         public void TestOpenCommand()
         {
             //arrange
-            _target.ResourceType = "DbSource";//(ResourceType == ResourceType.DbService PluginService WebService)
+            _target.ResourceType = "DbSource";
             _target.ResourceId = Guid.NewGuid();
             _serverMock.SetupGet(it => it.EnvironmentID).Returns(Guid.NewGuid());
 
@@ -399,7 +618,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual("Folder", createdFolder.ResourceType);
             Assert.AreEqual(_target.AllowResourceCheck, createdFolder.AllowResourceCheck);
             Assert.AreEqual(_target.IsResourceChecked, createdFolder.IsResourceChecked);
-            Assert.AreEqual(_target.IsResourceUnchecked, createdFolder.IsResourceUnchecked);
+            Assert.AreEqual(_target.IsResourceUnchecked, createdFolder.IsResourceUnchecked);            
             Assert.AreEqual(_target.IsFolderChecked, createdFolder.IsFolderChecked);
             Assert.AreEqual(_target.CanCreateFolder, createdFolder.CanCreateFolder);
             Assert.AreEqual(_target.CanCreateSource, createdFolder.CanCreateSource);
@@ -636,7 +855,9 @@ namespace Warewolf.Studio.ViewModels.Tests
             var canCreateNewExchangeSourceSourceCommand = _target.NewExchangeSourceSourceCommand.CanExecute(null);
             var canCreateNewSharepointSourceSourceCommand = _target.NewSharepointSourceSourceCommand.CanExecute(null);
             var canCreateNewDropboxSourceSourceCommand = _target.NewDropboxSourceSourceCommand.CanExecute(null);
-            var canCreateNewRabbitMQSourceSourceCommand = _target.NewRabbitMQSourceSourceCommand.CanExecute(null);
+            var canCreateNewRabbitMqSourceSourceCommand = _target.NewRabbitMQSourceSourceCommand.CanExecute(null);
+            var canViewSwaggerCommand = _target.ViewSwaggerCommand.CanExecute(null);
+            var canViewApisJsonCommand = _target.ViewApisJsonCommand.CanExecute(null);
             
             //act
             
@@ -650,7 +871,9 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(canCreateNewExchangeSourceSourceCommand);
             Assert.IsTrue(canCreateNewSharepointSourceSourceCommand);
             Assert.IsTrue(canCreateNewDropboxSourceSourceCommand);
-            Assert.IsTrue(canCreateNewRabbitMQSourceSourceCommand);
+            Assert.IsTrue(canCreateNewRabbitMqSourceSourceCommand);
+            Assert.IsTrue(canViewSwaggerCommand);
+            Assert.IsTrue(canViewApisJsonCommand);
         }
 
         [TestMethod]
@@ -1460,6 +1683,65 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(_target.CanShowVersions);
             Assert.IsTrue(_target.CanCreateWorkflowService);
             Assert.IsTrue(_target.CanCreateSource);
+        }
+
+        [TestMethod]
+        public void TestCanViewSwaggerIsVisible()
+        {
+            //arrange
+            _target.ResourceType = "WorkflowService";
+            _target.IsService = true;
+            //act
+
+            //assert
+            Assert.IsTrue(_target.IsService);
+            Assert.IsTrue(_target.CanViewSwagger);
+            Assert.IsFalse(_target.CanViewApisJson);
+        }
+
+        [TestMethod]
+        public void TestCanViewSwaggerIsNotVisible()
+        {
+            //arrange
+            _target.ResourceType = "Folder";
+            _target.IsService = false;
+            _target.IsFolder = true;
+            //act
+
+            //assert
+            Assert.IsTrue(_target.IsFolder);
+            Assert.IsFalse(_target.CanViewSwagger);
+            Assert.IsTrue(_target.CanViewApisJson);
+        }
+
+        [TestMethod]
+        public void TestCanViewApisJsonIsVisible()
+        {
+            //arrange
+            _target.ResourceType = "Folder";
+            _target.IsService = false;
+            _target.IsFolder = true;
+            //act
+
+            //assert
+            Assert.IsTrue(_target.IsFolder);
+            Assert.IsFalse(_target.CanViewSwagger);
+            Assert.IsTrue(_target.CanViewApisJson);
+        }
+
+        [TestMethod]
+        public void TestCanViewApisJsonIsNotVisible()
+        {
+            //arrange
+            _target.ResourceType = "WorkflowService";
+            _target.IsService = true;
+            _target.IsFolder = false;
+            //act
+
+            //assert
+            Assert.IsTrue(_target.IsService);
+            Assert.IsTrue(_target.CanViewSwagger);
+            Assert.IsFalse(_target.CanViewApisJson);
         }
 
         [TestMethod]

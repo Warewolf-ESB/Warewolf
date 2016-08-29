@@ -34,6 +34,7 @@ namespace Dev2.Common.Interfaces
         void NewDropboxSource(string resourcePath);
         void NewWcfSource(string resourcePath);
         void NewComPluginSource(string resourcePath);
+        void DuplicateResource(IExplorerItemViewModel explorerItemViewModel);
     }
 
     public interface IShellViewModelOpen
@@ -59,5 +60,6 @@ namespace Dev2.Common.Interfaces
         void CloseResource(Guid resourceId, Guid environmentId);
         void UpdateCurrentDataListWithObjectFromJson(string parentObjectName,string json);
         void ViewSwagger(Guid resourceId, IServer server);
+        void ViewApisJson(string resourcePath, Uri webServerUri);
     }
 }

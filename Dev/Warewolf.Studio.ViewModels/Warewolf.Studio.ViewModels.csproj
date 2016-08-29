@@ -141,7 +141,6 @@
     <Compile Include="DeployDestinationViewModel.cs" />
     <Compile Include="DeployStatsViewerViewModel.cs" />
     <Compile Include="DeployViewModel.cs" />
-    <Compile Include="DuplicateResourceViewModel.cs" />
     <Compile Include="ExplorerItemViewModelCommandController.cs" />
     <Compile Include="IDuplicateResourceViewModel.cs" />
     <Compile Include="ManageComPluginServiceModel.cs" />

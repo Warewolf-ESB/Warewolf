@@ -155,7 +155,10 @@ namespace Dev2.Utilities
 
         public void SetProperties(ICollection<DynamicActivityProperty> properties)
         {
+            try
+            {
             if(properties == null)
+
             {
                 throw new ArgumentNullException(nameof(properties));
             }
@@ -165,6 +168,11 @@ namespace Dev2.Utilities
             properties.Add(new DynamicActivityProperty { Name = "AmbientDataList", Type = typeof(InOutArgument<List<string>>) });
             properties.Add(new DynamicActivityProperty { Name = "ParentWorkflowInstanceId", Type = typeof(InOutArgument<Guid>) });
             properties.Add(new DynamicActivityProperty { Name = "ParentServiceName", Type = typeof(InOutArgument<string>) });
+        }
+            catch(Exception e)
+            {
+                Dev2Logger.Error(e.Message,e);
+            }
         }
 
         #endregion
@@ -228,7 +236,14 @@ namespace Dev2.Utilities
 
             foreach(var ns in namespaces.Keys)
             {
-                vbSettings.ImportReferences.Add(new VisualBasicImportReference { Assembly = namespaces[ns].GetName().Name, Import = ns });
+                try
+                {
+                    vbSettings.ImportReferences.Add(new VisualBasicImportReference { Assembly = namespaces[ns].GetName().Name, Import = ns });
+                }
+                catch(Exception e)
+                {
+                    Dev2Logger.Error(e.Message,e);
+                }
             }
 
             VisualBasic.SetSettings(target, vbSettings);
