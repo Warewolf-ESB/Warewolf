@@ -13,5 +13,6 @@ namespace Dev2.Common.Interfaces
         string ResourceName { get; set; }
         string ResourcePath { get; set; }
         string ResourceType { get; set; }
+        string Category { get; set; }
     }
 }

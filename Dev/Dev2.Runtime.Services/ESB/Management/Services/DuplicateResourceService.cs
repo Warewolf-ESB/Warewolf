@@ -55,11 +55,13 @@ namespace Dev2.Runtime.ESB.Management.Services
             StringBuilder fixRefs;
             StringBuilder isFolder;
             StringBuilder lightExplorerItems;
+            StringBuilder category;
             values.TryGetValue("ResourceID", out tmp);
             values.TryGetValue("NewResourceName", out newResourceName);
             values.TryGetValue("FixRefs", out fixRefs);
             values.TryGetValue("lightExplorerItems", out lightExplorerItems);
             values.TryGetValue("isFolder", out isFolder);
+            values.TryGetValue("Category", out category);
 
             if (tmp != null)
             {
@@ -76,8 +78,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                             if (!valueIsFolder)
                             {
                                 // ReSharper disable once UnusedVariable
-                                //SaveSingleResource(resource, newResourceName, explorerItem);
-                                SaveResource(actualItems.Single(), newResourceName);
+                                SaveResource(actualItems.Single(), newResourceName, category?.ToString());
                             }
                             else
                             {
@@ -105,20 +106,20 @@ namespace Dev2.Runtime.ESB.Management.Services
             StringBuilder result = GetResourceCatalog().GetResourceContents(GlobalConstants.ServerWorkspaceID, lightResource.ResourceId);
             var resource = GetResourceCatalog().GetResource(GlobalConstants.ServerWorkspaceID, lightResource.ResourceId);
             var xElement = result.ToXElement();
-            resource.ResourcePath = resourcePath ?? newResourceName.ToString();
+
+            resource.ResourcePath = resourcePath;
             resource.IsUpgraded = true;
             var resourceID = Guid.NewGuid();
             var resourceName = newResourceName.ToString().Split('\\').Last();
-
+            resourcePath = string.IsNullOrEmpty(resourcePath) ? lightResource.Category : resourcePath;
+            resourcePath = lightResource.ResourcePath == lightResource.Category && lightResource.ResourceName == lightResource.ResourcePath ? "" : resourcePath;
+            resource.ResourcePath =    resourcePath;
             resource.ResourceName = lightResource.ResourceName != resourceName ? resourceName : lightResource.ResourceName;
             resource.ResourceID = resourceID;
-            var displayName = xElement.Element("DisplayName")?.Value;
-            var category = xElement.Element("Category")?.Value;
             xElement.SetElementValue("DisplayName", resourceName);
-            xElement.SetElementValue("Category", category?.Replace(displayName ?? "", resourceName));
             xElement.SetElementValue("ID", resourceID.ToString());
             xElement.SetElementValue("Name", resourceName);
-            xElement.SetElementValue("ResourcePath", resourcePath ?? newResourceName.ToString());
+            xElement.SetElementValue("Category", resourcePath);
             var fixedResource = xElement.ToStringBuilder();
             GetResourceCatalog().SaveResource(GlobalConstants.ServerWorkspaceID, resource, fixedResource);
 
@@ -140,10 +141,10 @@ namespace Dev2.Runtime.ESB.Management.Services
             foreach (var recourceClone in lightExplorerItems.Where(item => recourceClones.Any(resource => resource.ResourceID == item.ResourceId)))
             {
                 // ReSharper disable once RedundantToStringCall
-              /*  var indexOf = recourceClone.ResourcePath.IndexOf($"\\{newResourceName.ToString()}", StringComparison.CurrentCultureIgnoreCase);
-                var resourcePath = recourceClone.ResourcePath.Substring(indexOf - 1, recourceClone.ResourcePath.Length);
-                var stringBuilder = GetResourceName(recourceClone, newResourceName, recourceClone.ResourcePath.Split('\\'));*/
-                SaveResource(recourceClone, newResourceName, recourceClone.ResourcePath);
+                /*  var indexOf = recourceClone.ResourcePath.IndexOf($"\\{newResourceName.ToString()}", StringComparison.CurrentCultureIgnoreCase);
+                  var resourcePath = recourceClone.ResourcePath.Substring(indexOf - 1, recourceClone.ResourcePath.Length);
+                  var stringBuilder = GetResourceName(recourceClone, newResourceName, recourceClone.ResourcePath.Split('\\'));*/
+                SaveResource(recourceClone, newResourceName, recourceClone.Category);
             }
         }
 

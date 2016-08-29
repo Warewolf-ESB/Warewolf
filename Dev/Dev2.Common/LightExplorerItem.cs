@@ -15,5 +15,6 @@ namespace Dev2.Common
         public bool IsService { get; set; }
         public bool IsFolder { get; set; }
         public List<ILightExplorerItem> Children { get; set; }
+        public string Category { get; set; }
     }
 }
