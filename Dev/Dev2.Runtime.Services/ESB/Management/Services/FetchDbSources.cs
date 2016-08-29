@@ -40,7 +40,6 @@ namespace Dev2.Runtime.ESB.Management.Services
                         Id = res.ResourceID,
                         Name = res.ResourceName,
                         Password = res.Password,
-                        Path = res.ResourcePath,
                         ServerName = res.Server,
                         Type = res.ServerType,
                         UserName = res.UserID
@@ -49,7 +48,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 return null;
             }).ToList();
          
-            return serializer.SerializeToBuilder(new ExecuteMessage() { HasError = false, Message = serializer.SerializeToBuilder(list) });
+            return serializer.SerializeToBuilder(new ExecuteMessage { HasError = false, Message = serializer.SerializeToBuilder(list) });
             // ReSharper restore MaximumChainedReferences
         }
 

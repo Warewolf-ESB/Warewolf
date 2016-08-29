@@ -16,8 +16,8 @@ namespace Dev2.Common.Interfaces.Runtime
 {
     public interface IExplorerItemFactory
     {
-        IExplorerItem CreateRootExplorerItem(string workSpacePath, Guid workSpaceId);
-        IExplorerItem CreateRootExplorerItem(string type, string workSpacePath, Guid workSpaceId);
+        IExplorerItem CreateRootExplorerItem(string workSpacePath, Guid workSpaceId, string path);
+        IExplorerItem CreateRootExplorerItem(string type, string workSpacePath, Guid workSpaceId, string path);
         List<string> GetDuplicatedResourcesPaths();
     }
 }

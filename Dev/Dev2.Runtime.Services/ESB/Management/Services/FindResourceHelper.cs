@@ -51,7 +51,6 @@ namespace Dev2.Runtime.ESB.Management.Services
             {
                 Inputs = resource.Inputs,
                 Outputs = resource.Outputs,
-                ResourceCategory = resource.ResourcePath,
                 ResourceID = resource.ResourceID,
                 VersionInfo = resource.VersionInfo,
                 ResourceName = resource.ResourceName,
