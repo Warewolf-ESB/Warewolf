@@ -7,7 +7,7 @@ namespace Dev2.Runtime.Interfaces
 {
     public interface IResourceRenameProvider
     {
-        ResourceCatalogResult RenameResource(Guid workspaceID, Guid? resourceID, string newName);
+        ResourceCatalogResult RenameResource(Guid workspaceID, Guid? resourceID, string newName, string resourcePath);
         ResourceCatalogResult RenameCategory(Guid workspaceID, string oldCategory, string newCategory);
         ResourceCatalogResult RenameCategory(Guid workspaceID, string oldCategory, string newCategory, List<IResource> resourcesToUpdate);
     }

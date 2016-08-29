@@ -24,6 +24,7 @@ using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.Security;
 using Dev2.Runtime.ServiceModel.Data;
 using Warewolf.Resource.Errors;
+// ReSharper disable InconsistentNaming
 
 namespace Dev2.Runtime.ResourceCatalogImpl
 {
@@ -299,7 +300,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
                         savedPath = savedPath.TrimEnd('\\');
                     }
                     var workspacePath = EnvironmentVariables.GetWorkspacePath(workspaceID);
-                    var originalRes = savedPath ?? "";
+                    var originalRes = savedPath;
                     int indexOfName = originalRes.LastIndexOf(resource.ResourceName, StringComparison.Ordinal);
                     var resPath = savedPath;
                     if (indexOfName >= 0)
