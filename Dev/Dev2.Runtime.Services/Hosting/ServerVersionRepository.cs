@@ -61,14 +61,16 @@ namespace Dev2.Runtime.Hosting
 
         #region Implementation of IVersionRepository
 
-        public IList<IExplorerItem> GetVersions(Guid resourceId, string versionPath)
+        public IList<IExplorerItem> GetVersions(Guid resourceId)
         {
+            
             var resource = _catalogue.GetResource(Guid.Empty, resourceId);
 
             if (resource?.VersionInfo == null)
             {
                 return new List<IExplorerItem>();
             }
+            var versionPath = resource.GetResourcePath(GlobalConstants.ServerWorkspaceID);
             var path = GetVersionFolderFromResource(versionPath);
 
             // ReSharper disable ImplicitlyCapturedClosure
@@ -171,7 +173,7 @@ namespace Dev2.Runtime.Hosting
             _catalogue.SaveResource(Guid.Empty, xml.ToStringBuilder(), "Rollback", "WorkflowService");
             if (oldResource.ResourceName != res.ResourceName)
                 _catalogue.GetResource(Guid.Empty, res.ResourceID).ResourceName = oldResource.ResourceName;
-            return new RollbackResult { DisplayName = oldResource.ResourceName, VersionHistory = GetVersions(resourceId, resourcePath) };
+            return new RollbackResult { DisplayName = oldResource.ResourceName, VersionHistory = GetVersions(resourceId) };
         }
 
         static void UpdateVersionInfoIfNotExists(Guid resourceId, XElement xml, IResource res)
@@ -203,7 +205,7 @@ namespace Dev2.Runtime.Hosting
             var path = GetVersionFolderFromResource(resourcePath);
             var files = _directory.GetFiles(path).FirstOrDefault(a => a.Contains($"{resource.VersionInfo.VersionId.ToString()}_{versionNumber}_"));
             _file.Delete(files);
-            return GetVersions(resourceId, resourcePath);
+            return GetVersions(resourceId);
         }
 
         public void StoreVersion(IResource resource, string userName, string reason, Guid workSpaceId, string resourcePath)
@@ -218,7 +220,7 @@ namespace Dev2.Runtime.Hosting
                     var old = _catalogue.GetResource(Guid.Empty, resource.ResourceID);
                     if (old != null)
                     {
-                        var versions = GetVersions(resource.ResourceID, resourcePath).FirstOrDefault();
+                        var versions = GetVersions(resource.ResourceID).FirstOrDefault();
                         old.VersionInfo = _versionStrategy.GetCurrentVersion(resource, versions?.VersionInfo, userName, reason);
                         var folderPath = GetVersionFolderFromResource(resourcePath);
 

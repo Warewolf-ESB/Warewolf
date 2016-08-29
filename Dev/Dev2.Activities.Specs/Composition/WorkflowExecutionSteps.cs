@@ -1424,7 +1424,7 @@ namespace Dev2.Activities.Specs.Composition
             TryGetValue("environment", out environmentModel);
             TryGetValue("resourceRepo", out repository);
             var rep = new VersionManagerProxy(environmentModel.Connection, new CommunicationControllerFactory());
-            var versions = rep.GetVersions(id,environmentModel.Category);
+            var versions = rep.GetVersions(id);
             _scenarioContext["Versions"] = versions;
             Assert.AreEqual(numberOfVersions, versions.Count);
         }

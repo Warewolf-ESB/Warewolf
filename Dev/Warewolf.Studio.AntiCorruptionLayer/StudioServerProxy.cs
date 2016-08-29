@@ -182,9 +182,9 @@ namespace Warewolf.Studio.AntiCorruptionLayer
             return VersionManager.GetVersion(versionInfo, resourceId);
         }
 
-        public ICollection<IVersionInfo> GetVersions(Guid id, string resourcePath)
+        public ICollection<IVersionInfo> GetVersions(Guid id)
         {
-            return new List<IVersionInfo>(VersionManager.GetVersions(id, resourcePath).Select(a => a.VersionInfo));
+            return new List<IVersionInfo>(VersionManager.GetVersions(id).Select(a => a.VersionInfo));
         }
 
         public IRollbackResult Rollback(Guid resourceId, string version)

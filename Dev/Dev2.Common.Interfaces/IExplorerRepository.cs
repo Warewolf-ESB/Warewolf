@@ -15,7 +15,7 @@ namespace Dev2.Common.Interfaces
 
         IDeletedFileMetadata Delete(IExplorerItemViewModel explorerItemViewModel);
 
-        ICollection<IVersionInfo> GetVersions(Guid id, string resourcePath);
+        ICollection<IVersionInfo> GetVersions(Guid id);
 
         IRollbackResult Rollback(Guid resourceId, string version);
 
@@ -28,7 +28,7 @@ namespace Dev2.Common.Interfaces
         Task<IExplorerItem> LoadExplorer(bool reloadCatalogue = false);
 
         IExplorerItem FindItemByID(Guid id);
-        StringBuilder GetVersion(IVersionInfo versionInfo, Guid resourcePath);
+        StringBuilder GetVersion(IVersionInfo versionInfo, Guid resourceId);
 
         Task<List<string>> LoadExplorerDuplicates();
     }
