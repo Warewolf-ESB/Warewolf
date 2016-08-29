@@ -155,23 +155,22 @@ namespace Dev2.Utilities
 
         public void SetProperties(ICollection<DynamicActivityProperty> properties)
         {
-            try
-            {
-            if(properties == null)
 
+            if (properties == null)
             {
                 throw new ArgumentNullException(nameof(properties));
             }
-
-            properties.Clear();
-
-            properties.Add(new DynamicActivityProperty { Name = "AmbientDataList", Type = typeof(InOutArgument<List<string>>) });
-            properties.Add(new DynamicActivityProperty { Name = "ParentWorkflowInstanceId", Type = typeof(InOutArgument<Guid>) });
-            properties.Add(new DynamicActivityProperty { Name = "ParentServiceName", Type = typeof(InOutArgument<string>) });
-        }
-            catch(Exception e)
+            try
             {
-                Dev2Logger.Error(e.Message,e);
+                properties.Clear();
+
+                properties.Add(new DynamicActivityProperty { Name = "AmbientDataList", Type = typeof(InOutArgument<List<string>>) });
+                properties.Add(new DynamicActivityProperty { Name = "ParentWorkflowInstanceId", Type = typeof(InOutArgument<Guid>) });
+                properties.Add(new DynamicActivityProperty { Name = "ParentServiceName", Type = typeof(InOutArgument<string>) });
+            }
+            catch (Exception e)
+            {
+                Dev2Logger.Error(e.Message, e);
             }
         }
 
