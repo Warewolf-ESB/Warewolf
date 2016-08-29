@@ -21,6 +21,7 @@ using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.ServiceModel.Data;
 using ServiceStack.Common.Extensions;
 using Warewolf.Resource.Errors;
+// ReSharper disable InconsistentNaming
 
 namespace Dev2.Runtime.ResourceCatalogImpl
 {
@@ -140,26 +141,6 @@ namespace Dev2.Runtime.ResourceCatalogImpl
                 throw;
             }
         }
-
-        //public IResource GetResource(string resourceName, Guid workspaceId)
-        //{
-        //    if (string.IsNullOrEmpty(resourceName))
-        //    {
-        //        return null;
-        //    }
-        //    var allResources = GetResources(workspaceId);
-        //    IResource foundResource = null;
-        //    if (allResources != null)
-        //    {
-        //        foundResource = allResources.FirstOrDefault(resource => resourceName.Equals(resource.ResourceName, StringComparison.OrdinalIgnoreCase));
-        //        if (foundResource == null && workspaceId != Guid.Empty)
-        //        {
-        //            allResources = GetResources(GlobalConstants.ServerWorkspaceID);
-        //            foundResource = allResources.FirstOrDefault(resource => resourceName.Equals(resource.ResourceName, StringComparison.OrdinalIgnoreCase));
-        //        }
-        //    }
-        //    return foundResource;
-        //}
 
         /// <summary>
         /// Gets the contents of the resources with the given source type.

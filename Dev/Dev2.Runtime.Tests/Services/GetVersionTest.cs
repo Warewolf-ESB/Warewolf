@@ -86,7 +86,7 @@ namespace Dev2.Tests.Runtime.Services
             VersionInfo version = new VersionInfo(DateTime.Now,"bob","dave","2",resourceId,versionId);
             var mockRes = new Mock<IResource>();
             var servVer = new Mock<IServerVersionRepository>();
-            servVer.Setup(a => a.GetVersion(It.IsAny<VersionInfo>())).Returns(new StringBuilder(resourceOne));
+            servVer.Setup(a => a.GetVersion(It.IsAny<VersionInfo>(), It.IsAny<string>())).Returns(new StringBuilder(resourceOne));
             mockRes.Setup(a => a.ResourceType).Returns("DbSource");
 
             var cat = new Mock<IResourceCatalog>();
@@ -120,7 +120,7 @@ namespace Dev2.Tests.Runtime.Services
             VersionInfo version = new VersionInfo(DateTime.Now, "bob", "dave", "2", resourceId, versionId);
             var mockRes = new Mock<IResource>();
             var servVer = new Mock<IServerVersionRepository>();
-            servVer.Setup(a => a.GetVersion(It.IsAny<VersionInfo>())).Returns(new StringBuilder(resourceOne));
+            servVer.Setup(a => a.GetVersion(It.IsAny<VersionInfo>(), It.IsAny<string>())).Returns(new StringBuilder(resourceOne));
             mockRes.Setup(a => a.ResourceType).Returns("WorkflowService");
 
             var cat = new Mock<IResourceCatalog>();

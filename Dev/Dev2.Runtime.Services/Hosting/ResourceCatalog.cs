@@ -33,6 +33,7 @@ using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.ResourceCatalogImpl;
 using Dev2.Runtime.ServiceModel.Data;
 using Warewolf.ResourceManagement;
+// ReSharper disable InconsistentNaming
 
 namespace Dev2.Runtime.Hosting
 {
@@ -418,7 +419,7 @@ namespace Dev2.Runtime.Hosting
 
         #region Rename Resource
 
-        public ResourceCatalogResult RenameResource(Guid workspaceID, Guid? resourceID, string newName) => _catalogPluginContainer.RenameProvider.RenameResource(workspaceID, resourceID, newName);
+        public ResourceCatalogResult RenameResource(Guid workspaceID, Guid? resourceID, string newName, string resourcePath) => _catalogPluginContainer.RenameProvider.RenameResource(workspaceID, resourceID, newName, resourcePath);
 
         public ResourceCatalogResult RenameCategory(Guid workspaceID, string oldCategory, string newCategory) => _catalogPluginContainer.RenameProvider.RenameCategory(workspaceID, oldCategory, newCategory);
 

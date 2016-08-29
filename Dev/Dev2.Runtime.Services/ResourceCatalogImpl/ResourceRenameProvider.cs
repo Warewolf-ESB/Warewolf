@@ -33,7 +33,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
 
         #region Implementation of IResourceRenameProvider
 
-        public ResourceCatalogResult RenameResource(Guid workspaceID, Guid? resourceID, string newName)
+        public ResourceCatalogResult RenameResource(Guid workspaceID, Guid? resourceID, string newName, string resourcePath)
         {
             GlobalConstants.HandleEmptyParameters(resourceID, "resourceID");
             GlobalConstants.HandleEmptyParameters(newName, "newName");
@@ -47,9 +47,9 @@ namespace Dev2.Runtime.ResourceCatalogImpl
 
                 {
                     // ReSharper disable once PossibleInvalidOperationException
-                    _versionRepository.StoreVersion(_resourceCatalog.GetResource(Guid.Empty, resourceID.Value), "unknown", "Rename", workspaceID);
+                    _versionRepository.StoreVersion(_resourceCatalog.GetResource(Guid.Empty, resourceID.Value), "unknown", "Rename", workspaceID, resourcePath);
                     //rename and save to workspace
-                    var renameResult = UpdateResourceName(workspaceID, resourcesToUpdate[0], newName);
+                    var renameResult = UpdateResourceName(workspaceID, resourcesToUpdate[0], newName, resourcePath);
                     if (renameResult.Status != ExecStatus.Success)
                     {
                         return ResourceCatalogResultBuilder.CreateFailResult($"{ErrorResource.FailedToRenameResource} '{resourceID}' to '{newName}'");
@@ -123,39 +123,22 @@ namespace Dev2.Runtime.ResourceCatalogImpl
         ResourceCatalogResult UpdateResourcePath(Guid workspaceID, IResource resource, string oldCategory, string newCategory)
         {
             var resourceContents = _resourceCatalog.GetResourceContents(workspaceID, resource.ResourceID);
-            var oldPath = resource.ResourcePath;
+            var oldPath = oldCategory; // + ResourceName
             var cat = oldCategory.Replace("\\", "\\\\");
             var newPath = Regex.Replace(oldPath, cat, newCategory, RegexOptions.IgnoreCase);
-            resource.ResourcePath = newPath;
             var resourceElement = resourceContents.ToXElement();
-            var categoryElement = resourceElement.Element("Category");
-            if (categoryElement == null)
-            {
-                resourceElement.Add(new XElement("Category", newPath));
-            }
-            else
-            {
-                categoryElement.SetValue(newPath);
-            }
             var contents = resourceElement.ToStringBuilder();
-            var resourceCatalogResult = ((ResourceCatalog)_resourceCatalog).SaveImpl(workspaceID, resource, contents, false);
+            var resourceCatalogResult = ((ResourceCatalog)_resourceCatalog).SaveImpl(workspaceID, resource, contents, false, newPath);
             if (resourceCatalogResult.Status != ExecStatus.Success)
             {
-                resource.ResourcePath = oldPath;
+                // set error
             }
             return resourceCatalogResult;
         }
-        ResourceCatalogResult UpdateResourceName(Guid workspaceID, IResource resource, string newName)
+        ResourceCatalogResult UpdateResourceName(Guid workspaceID, IResource resource, string newName, string resourcePath)
         {
             //rename where used
-            var oldCategory = resource.ResourcePath;
-            string newCategory = "";
-            var indexOfCategory = resource.ResourcePath.LastIndexOf(resource.ResourceName, StringComparison.Ordinal);
-            if (indexOfCategory > 0)
-            {
-                newCategory = oldCategory.Substring(0, indexOfCategory) + newName;
-            }
-            RenameWhereUsed(_resourceCatalog.GetDependentsAsResourceForTrees(workspaceID, resource.ResourceID), workspaceID, resource.ResourcePath, newName);
+            RenameWhereUsed(_resourceCatalog.GetDependentsAsResourceForTrees(workspaceID, resource.ResourceID), workspaceID, resourcePath, newName);
 
             //rename resource
             var resourceContents = _resourceCatalog.GetResourceContents(workspaceID, resource.ResourceID);
@@ -179,15 +162,10 @@ namespace Dev2.Runtime.ResourceCatalogImpl
             xaml?.SetValue(xaml.Value
                 .Replace("x:Class=\"" + oldName, "x:Class=\"" + newName)
                 .Replace("ToolboxFriendlyName=\"" + oldName, "ToolboxFriendlyName=\"" + newName)
-                .Replace("DisplayName=\"" + oldName, "DisplayName=\"" + newName)
-                .Replace("Category=\"" + oldCategory, "Category=\"" + newCategory))
-                ;
+                .Replace("DisplayName=\"" + oldName, "DisplayName=\"" + newName));
             //xml display name element
             var displayNameElement = resourceElement.Element("DisplayName");
             displayNameElement?.SetValue(newName);
-            var categoryElement = resourceElement.Element("Category");
-            categoryElement?.SetValue(newCategory);
-            var resPath = CalcResPath(resource);
 
             //delete old resource in local workspace without updating dependants with compile messages
             lock (Common.GetFileLock(resource.FilePath))
@@ -201,7 +179,6 @@ namespace Dev2.Runtime.ResourceCatalogImpl
                 }
             }
 
-            resource.ResourcePath = resPath + newName;
             resource.ResourceName = newName;
             //update file path
             if (oldName != null)
@@ -211,20 +188,8 @@ namespace Dev2.Runtime.ResourceCatalogImpl
             //re-create, resign and save to file system the new resource
             StringBuilder contents = resourceElement.ToStringBuilder();
 
-            return ((ResourceCatalog)_resourceCatalog).SaveImpl(workspaceID, resource, contents);
+            return ((ResourceCatalog)_resourceCatalog).SaveImpl(workspaceID, resource, contents, true, resourcePath);
 
-        }
-
-        static string CalcResPath(IResource resource)
-        {
-            var originalRes = resource.ResourcePath ?? "";
-            int indexOfName = originalRes.LastIndexOf(resource.ResourceName, StringComparison.Ordinal);
-            var resPath = resource.ResourcePath;
-            if (indexOfName >= 0)
-            {
-                resPath = originalRes.Substring(0, originalRes.LastIndexOf(resource.ResourceName, StringComparison.Ordinal));
-            }
-            return resPath;
         }
 
         private void RenameWhereUsed(IEnumerable<ResourceForTree> dependants, Guid workspaceID, string oldName, string newName)

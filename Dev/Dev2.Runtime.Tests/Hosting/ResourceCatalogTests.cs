@@ -343,7 +343,7 @@ namespace Dev2.Tests.Runtime.Hosting
             //------------Execute Test---------------------------
             catalog.SaveResource(workspaceID, resource, "reason", "bob");
             //------------Assert Results-------------------------
-            version.Verify(a => a.StoreVersion(resource, "bob", "reason", workspaceID));
+            version.Verify(a => a.StoreVersion(resource, "bob", "reason", workspaceID, "bob"));
         }
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
@@ -362,7 +362,7 @@ namespace Dev2.Tests.Runtime.Hosting
 
 
             //------------Assert Results-------------------------
-            version.Verify(a => a.StoreVersion(It.IsAny<Resource>(), "bob", "reason", workspaceID));
+            version.Verify(a => a.StoreVersion(It.IsAny<Resource>(), "bob", "reason", workspaceID, "bob"));
 
 
         }
@@ -1799,7 +1799,7 @@ namespace Dev2.Tests.Runtime.Hosting
             Assert.AreEqual(2, result.Count);
             Assert.IsNotNull(oldResource);
             //------------Execute Test---------------------------
-            ResourceCatalogResult resourceCatalogResult = rc.RenameResource(workspaceID, oldResource.ResourceID, newName);
+            ResourceCatalogResult resourceCatalogResult = rc.RenameResource(workspaceID, oldResource.ResourceID, newName, newName);
             //------------Assert Results-------------------------
             Assert.AreEqual(ExecStatus.Success, resourceCatalogResult.Status);
             Assert.AreEqual("Renamed Resource 'ec636256-5f11-40ab-a044-10e731d87555' to '" + newName + "'", resourceCatalogResult.Message);
@@ -1850,7 +1850,7 @@ namespace Dev2.Tests.Runtime.Hosting
             Assert.AreEqual(1, result.Count);
             Assert.IsNotNull(oldResource);
             //------------Execute Test---------------------------
-            ResourceCatalogResult resourceCatalogResult = rc.RenameResource(workspaceID, Guid.Parse(resourceID), "TestName");
+            ResourceCatalogResult resourceCatalogResult = rc.RenameResource(workspaceID, Guid.Parse(resourceID), "TestName", "TestName");
             //------------Assert Results-------------------------
             Assert.AreEqual(ExecStatus.Success, resourceCatalogResult.Status);
             Assert.AreEqual("Renamed Resource '" + resourceID + "' to 'TestName'", resourceCatalogResult.Message);
@@ -1859,10 +1859,7 @@ namespace Dev2.Tests.Runtime.Hosting
             var element = xElement.Attribute("Name");
             Assert.IsNotNull(element);
             Assert.AreEqual("TestName", element.Value);
-            XElement elementCat = xElement.Element("Category");
-            Assert.IsNotNull(elementCat);
-            Assert.AreEqual("Bugs\\TestName", elementCat.Value);
-            serverVersionRepository.Verify(a => a.StoreVersion(It.IsAny<IResource>(), "unknown", "Rename", workspaceID));
+            serverVersionRepository.Verify(a => a.StoreVersion(It.IsAny<IResource>(), "unknown", "Rename", workspaceID, "TestName"));
             var actionElem = xElement.Element("Action");
             Assert.IsNotNull(actionElem);
             var xamlElem = actionElem.Element("XamlDefinition");
@@ -1893,7 +1890,7 @@ namespace Dev2.Tests.Runtime.Hosting
             Assert.AreEqual(1, result.Count);
             Assert.IsNotNull(oldResource);
             //------------Execute Test---------------------------
-            ResourceCatalogResult resourceCatalogResult = rc.RenameResource(workspaceID, oldResource.ResourceID, null);
+            ResourceCatalogResult resourceCatalogResult = rc.RenameResource(workspaceID, oldResource.ResourceID, null, null);
             //------------Assert Results-------------------------
             Assert.AreEqual(ExecStatus.Success, resourceCatalogResult.Status);
             Assert.AreEqual("<CompilerMessage>Updated Resource '50fef451-b41e-4bdf-92a1-4a41e254cde2' renamed to ''</CompilerMessage>", resourceCatalogResult.Message);
@@ -1926,7 +1923,7 @@ namespace Dev2.Tests.Runtime.Hosting
             Assert.AreEqual(1, result.Count);
             Assert.IsNotNull(oldResource);
             //------------Execute Test---------------------------
-            ResourceCatalogResult resourceCatalogResult = rc.RenameResource(workspaceID, oldResource.ResourceID, "");
+            ResourceCatalogResult resourceCatalogResult = rc.RenameResource(workspaceID, oldResource.ResourceID, "", "");
             //------------Assert Results-------------------------
             Assert.AreEqual(ExecStatus.Success, resourceCatalogResult.Status);
             Assert.AreEqual("<CompilerMessage>Updated Resource '50fef451-b41e-4bdf-92a1-4a41e254cde2' renamed to ''</CompilerMessage>", resourceCatalogResult.Message);
@@ -2269,7 +2266,7 @@ namespace Dev2.Tests.Runtime.Hosting
             SaveResources(path, null, false, false, new[] { "Bug6619", resourceName }, new[] { Guid.NewGuid(), Guid.NewGuid() });
 
             var serverVersionRepository = new Mock<IServerVersionRepository>();
-            serverVersionRepository.Setup(a => a.GetVersions(It.IsAny<Guid>())).Returns(new List<IExplorerItem> { new ServerExplorerItem("bob", Guid.NewGuid(), "Server", null, Permissions.Administrator, "", "", "") { VersionInfo = new VersionInfo(DateTime.Now, "reason", "", "1", Guid.NewGuid(), Guid.NewGuid()) } });
+            serverVersionRepository.Setup(a => a.GetVersions(It.IsAny<Guid>(), It.IsAny<string>())).Returns(new List<IExplorerItem> { new ServerExplorerItem("bob", Guid.NewGuid(), "Server", null, Permissions.Administrator, "", "", "") { VersionInfo = new VersionInfo(DateTime.Now, "reason", "", "1", Guid.NewGuid(), Guid.NewGuid()) } });
             var rc = new ResourceCatalog(null, serverVersionRepository.Object);
             rc.LoadWorkspace(workspaceID);
             var result = rc.GetResources(workspaceID);
@@ -2282,7 +2279,7 @@ namespace Dev2.Tests.Runtime.Hosting
             //------------Assert Results-------------------------        
             Assert.AreEqual(ExecStatus.Success, resourceCatalogResult.Status);
             var resourceToFind = result.FirstOrDefault(resource => resource.ResourceName == resourceName);
-            serverVersionRepository.Verify(a => a.DeleteVersion(It.IsAny<Guid>(), "1"), Times.Once());
+            serverVersionRepository.Verify(a => a.DeleteVersion(It.IsAny<Guid>(), "1", ""), Times.Once());
             Assert.IsNull(resourceToFind);
         }
 
@@ -2299,7 +2296,7 @@ namespace Dev2.Tests.Runtime.Hosting
             SaveResources(path, null, false, false, new[] { "Bug6619", resourceName }, new[] { Guid.NewGuid(), Guid.NewGuid() });
 
             var serverVersionRepository = new Mock<IServerVersionRepository>();
-            serverVersionRepository.Setup(a => a.GetVersions(It.IsAny<Guid>())).Returns(new List<IExplorerItem> { new ServerExplorerItem("bob", Guid.NewGuid(), "Server", null, Permissions.Administrator, "", "", "") { VersionInfo = new VersionInfo(DateTime.Now, "reason", "", "1", Guid.NewGuid(), Guid.NewGuid()) } });
+            serverVersionRepository.Setup(a => a.GetVersions(It.IsAny<Guid>(), It.IsAny<string>())).Returns(new List<IExplorerItem> { new ServerExplorerItem("bob", Guid.NewGuid(), "Server", null, Permissions.Administrator, "", "", "") { VersionInfo = new VersionInfo(DateTime.Now, "reason", "", "1", Guid.NewGuid(), Guid.NewGuid()) } });
             var rc = new ResourceCatalog(null, serverVersionRepository.Object);
             rc.LoadWorkspace(workspaceID);
             var result = rc.GetResources(workspaceID);
@@ -2312,7 +2309,7 @@ namespace Dev2.Tests.Runtime.Hosting
             //------------Assert Results-------------------------        
             Assert.AreEqual(ExecStatus.Success, resourceCatalogResult.Status);
             var resourceToFind = result.FirstOrDefault(resource => resource.ResourceName == resourceName);
-            serverVersionRepository.Verify(a => a.DeleteVersion(It.IsAny<Guid>(), "1"), Times.Never());
+            serverVersionRepository.Verify(a => a.DeleteVersion(It.IsAny<Guid>(), "1", ""), Times.Never());
             Assert.IsNull(resourceToFind);
         }
 

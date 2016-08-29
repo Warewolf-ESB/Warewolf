@@ -249,7 +249,7 @@ namespace Dev2.Tests.Runtime.Hosting
             factory.Setup(a => a.CreateRootExplorerItem(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<string>())).Returns(explorerItem);
             catalogue.Setup(a => a.GetResource(It.IsAny<Guid>(), guid)).Returns(res.Object);
 
-            catalogue.Setup(a => a.RenameResource(It.IsAny<Guid>(), guid, "dave")).Returns(new ResourceCatalogResult { Message = "moo", Status = ExecStatus.AccessViolation }).Verifiable();
+            catalogue.Setup(a => a.RenameResource(It.IsAny<Guid>(), guid, "dave", It.IsAny<string>())).Returns(new ResourceCatalogResult { Message = "moo", Status = ExecStatus.AccessViolation }).Verifiable();
             var sync = new Mock<IExplorerRepositorySync>();
             var serverExplorerRepository = new ServerExplorerRepository(catalogue.Object, factory.Object, dir.Object, sync.Object, new Mock<IServerVersionRepository>().Object, new FileWrapper());
             catalogue.Setup(a => a.GetResourceList(It.IsAny<Guid>())).Returns(new List<IResource> { res.Object });
@@ -259,7 +259,7 @@ namespace Dev2.Tests.Runtime.Hosting
             //------------Assert Results-------------------------
             Assert.AreEqual(result.Message, "moo");
             Assert.AreEqual(result.Status, ExecStatus.AccessViolation);
-            catalogue.Verify(a => a.RenameResource(It.IsAny<Guid>(), guid, "dave"));
+            catalogue.Verify(a => a.RenameResource(It.IsAny<Guid>(), guid, "dave", It.IsAny<string>()));
             catalogue.Verify(a => a.GetResourceList(It.IsAny<Guid>()));
         }
         [TestMethod]
@@ -283,7 +283,7 @@ namespace Dev2.Tests.Runtime.Hosting
             factory.Setup(a => a.CreateRootExplorerItem(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<string>())).Returns(explorerItem);
             catalogue.Setup(a => a.GetResource(It.IsAny<Guid>(), guid)).Returns(res.Object);
 
-            catalogue.Setup(a => a.RenameResource(It.IsAny<Guid>(), guid, "dave")).Returns(new ResourceCatalogResult { Message = "moo", Status = ExecStatus.AccessViolation }).Verifiable();
+            catalogue.Setup(a => a.RenameResource(It.IsAny<Guid>(), guid, "dave", It.IsAny<string>())).Returns(new ResourceCatalogResult { Message = "moo", Status = ExecStatus.AccessViolation }).Verifiable();
             var sync = new Mock<IExplorerRepositorySync>();
             var serverExplorerRepository = new ServerExplorerRepository(catalogue.Object, factory.Object, dir.Object, sync.Object, new Mock<IServerVersionRepository>().Object, new FileWrapper());
             catalogue.Setup(a => a.GetResourceList(It.IsAny<Guid>())).Returns(new List<IResource> { res.Object });
