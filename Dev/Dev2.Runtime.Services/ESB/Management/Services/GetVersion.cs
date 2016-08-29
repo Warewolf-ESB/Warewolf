@@ -68,7 +68,14 @@ namespace Dev2.Runtime.ESB.Management.Services
                
                 var version = serializer.Deserialize<IVersionInfo>(values["versionInfo"]);
                 Dev2Logger.Info("Get Version. " + version);
-                var result = ServerVersionRepo.GetVersion(version);
+                StringBuilder tmp;
+                string resourcePath = null;
+                values.TryGetValue("ResourcePath", out tmp);
+                if (tmp != null)
+                {
+                    resourcePath = tmp.ToString();
+                }
+                var result = ServerVersionRepo.GetVersion(version, resourcePath);
                 res.Message.Append(result);
                 Dev2XamlCleaner dev2XamlCleaner = new Dev2XamlCleaner();
                 res.Message = dev2XamlCleaner.StripNaughtyNamespaces(res.Message);

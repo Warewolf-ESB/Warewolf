@@ -52,7 +52,14 @@ namespace Dev2.Runtime.ESB.Management.Services
                 }
                 var id = Guid.Parse(values["resourceId"].ToString());
                 Dev2Logger.Info("Get Versions. " + id);
-                var item = ServerVersionRepo.GetVersions(id);
+                StringBuilder tmp;
+                string resourcePath = null;
+                values.TryGetValue("ResourcePath", out tmp);
+                if (tmp != null)
+                {
+                    resourcePath = tmp.ToString();
+                }
+                var item = ServerVersionRepo.GetVersions(id, resourcePath);
                 return serializer.SerializeToBuilder(item);
             }
             catch (Exception e)
