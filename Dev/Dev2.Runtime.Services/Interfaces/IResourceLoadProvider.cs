@@ -46,5 +46,6 @@ namespace Dev2.Runtime.Interfaces
         ConcurrentDictionary<Guid, ManagementServiceResource> ManagementServices { get; }
         ConcurrentDictionary<Guid, object> WorkspaceLocks { get; }
         List<IResource> GetResourcesBasedOnType(string type, List<IResource> workspaceResources, Func<IResource, bool> func);
+        IResource GetResourceBasedOnPath(string resourceName);
     }
 }
