@@ -250,6 +250,7 @@ namespace Warewolf.Studio.ViewModels
                 ErrorMessage = "Deploy error. " + e.Message;
             }
             IsDeploying = false;
+            _stats.ReCalculate();
         }
 
         bool CheckResourceNameConflict()
