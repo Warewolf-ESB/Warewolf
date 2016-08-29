@@ -317,7 +317,7 @@ namespace Dev2.Tests.Runtime.Hosting
 
             file.Setup(a => a.Copy(It.IsAny<string>(), It.IsAny<string>())).Verifiable();
             //------------Execute Test---------------------------
-            serverVersionRepostory.RollbackTo(resourceId, "2", "moot\\boot");
+            serverVersionRepostory.RollbackTo(resourceId, "2");
 
             //------------Assert Results-------------------------
 
@@ -354,7 +354,7 @@ namespace Dev2.Tests.Runtime.Hosting
             //------------Setup for test--------------------------
             var serverVersionRepostory = CreateServerVersionRepository(strat.Object, cat.Object, dir.Object, rootPath, file.Object);
             //------------Execute Test---------------------------
-            var res = serverVersionRepostory.RollbackTo(resourceId, "2", "moot\\boot");
+            var res = serverVersionRepostory.RollbackTo(resourceId, "2");
 
             //------------Assert Results-------------------------
             Assert.AreEqual(res.VersionHistory.Count, 1);
@@ -391,7 +391,7 @@ namespace Dev2.Tests.Runtime.Hosting
             //------------Setup for test--------------------------
             var serverVersionRepostory = CreateServerVersionRepository(strat.Object, cat.Object, dir.Object, rootPath, file.Object);
             //------------Execute Test---------------------------
-            var res = serverVersionRepostory.RollbackTo(resourceId, "2", "UnitTestResource");
+            var res = serverVersionRepostory.RollbackTo(resourceId, "2");
 
             //------------Assert Results-------------------------
             Assert.AreEqual(res.VersionHistory.Count, 1);
