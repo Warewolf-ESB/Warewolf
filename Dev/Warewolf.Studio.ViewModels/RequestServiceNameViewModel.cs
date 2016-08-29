@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -14,7 +13,6 @@ using Dev2.Communication;
 using Dev2.Controller;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Interfaces;
-using FontAwesome.WPF;
 using Microsoft.Practices.Prism.Commands;
 using Microsoft.Practices.Prism.Mvvm;
 using Warewolf.Resource.Errors;
@@ -67,41 +65,28 @@ namespace Warewolf.Studio.ViewModels
         }
 
         readonly IEnvironmentConnection _lazyCon = EnvironmentRepository.Instance.ActiveEnvironment?.Connection;
-        readonly ICommunicationController _lazyComs = new CommunicationController { ServiceName = "DuplicateResourceService" };
+        ICommunicationController _lazyComs = new CommunicationController { ServiceName = "DuplicateResourceService" };
 
         private void CallDuplicateService()
         {
             try
             {
 
-                var treeItems = Utilities.TraverseItems(_explorerItemViewModel, item => item.Children ?? new ObservableCollection<IExplorerItemViewModel>()).ToList();
-
-                var explorerTreeItem = treeItems.SingleOrDefault(item => item.IsFolder && item.ResourceId == _explorerItemViewModel.ResourceId);
-                treeItems.Remove(explorerTreeItem);
-                bool isFolder = _explorerItemViewModel.IsFolder;
-                List<LightExplorerItem> lightExplorerItems = treeItems.Select(item => new LightExplorerItem
+                if (_explorerItemViewModel.IsFolder)
                 {
-                    IsFolder = item.IsFolder,
-                    IsService = item.IsFolder,
-                    IsSource = item.IsSource,
-                    ResourceName = item.ResourceName,
-                    ResourcePath = item.ResourcePath,       //string.IsNullOrEmpty(Path) ? Name : Path + "\\" + Name,
-                    ResourceType = item.ResourceType,
-                    ResourceId = item.ResourceId
-                    ,
-                    Category = SelectedItem.ResourcePath
-                }).ToList();
+                    _lazyComs = new CommunicationController { ServiceName = "DuplicateFolderService" };
+                    _lazyComs.AddPayloadArgument("FixRefs", FixReferences.ToString());
+                }
 
-                Dev2JsonSerializer serializer = new Dev2JsonSerializer();
-                var serializeToBuilder = serializer.SerializeToBuilder(lightExplorerItems);
-                // explorerTreeItem.Children.Select(model => model.)
-                _lazyComs.AddPayloadArgument("ResourceID", _explorerItemViewModel.ResourceId.ToString());
-                _lazyComs.AddPayloadArgument("isFolder", isFolder.ToString());
-                _lazyComs.AddPayloadArgument("lightExplorerItems", serializeToBuilder);
+                if (!_explorerItemViewModel.IsFolder)
+                {
+                    _lazyComs.AddPayloadArgument("ResourceID", _explorerItemViewModel.ResourceId.ToString());
+                }
+                _lazyComs.AddPayloadArgument("sourcePath", _explorerItemViewModel.ResourcePath);
+                _lazyComs.AddPayloadArgument("destinatioPath", SelectedItem.ResourcePath);
                 _lazyComs.AddPayloadArgument("NewResourceName", Name);
-                _lazyComs.AddPayloadArgument("FixRefs", FixReferences.ToString());
-                var value = SelectedItem.ResourcePath.Contains('\\') ? SelectedItem.ResourcePath : "";
-                _lazyComs.AddPayloadArgument("Category", value);//DestinationPath
+
+
                 // ReSharper disable once UnusedVariable
                 var executeCommand = _lazyComs.ExecuteCommand<ExecuteMessage>(_lazyCon ?? EnvironmentRepository.Instance.ActiveEnvironment?.Connection, GlobalConstants.ServerWorkspaceID);
                 if (executeCommand?.HasError ?? false)

@@ -193,6 +193,7 @@
     <Compile Include="ESB\Management\Services\ComDllLoaderHandler.cs" />
     <Compile Include="ESB\Management\Services\DeleteItemService.cs" />
     <Compile Include="ESB\Management\Services\DeleteVersion.cs" />
+    <Compile Include="ESB\Management\Services\DuplicateFolderService.cs" />
     <Compile Include="ESB\Management\Services\DuplicateResourceService.cs" />
     <Compile Include="ESB\Management\Services\FetchComPluginActions.cs" />
     <Compile Include="ESB\Management\Services\FetchComPluginNameSpaces.cs" />
@@ -314,6 +315,7 @@
     <Compile Include="Interfaces\IResourceCatalog.cs" />
     <Compile Include="Interfaces\IResourceCopyProvider.cs" />
     <Compile Include="Interfaces\IResourceDeleteProvider.cs" />
+    <Compile Include="Interfaces\IResourceDuplicateProvider.cs" />
     <Compile Include="Interfaces\IResourceLoadProvider.cs" />
     <Compile Include="Interfaces\IResourceRenameProvider.cs" />
     <Compile Include="Interfaces\IResourceSaveProvider.cs" />
@@ -351,6 +353,7 @@
     <Compile Include="ResourceCatalogImpl\Common.cs" />
     <Compile Include="ResourceCatalogImpl\ResourceCopyProvider.cs" />
     <Compile Include="ResourceCatalogImpl\ResourceDeleteProvider.cs" />
+    <Compile Include="ResourceCatalogImpl\ResourceDuplicateProvider.cs" />
     <Compile Include="ResourceCatalogImpl\ResourceLoadProvider.cs" />
     <Compile Include="ResourceCatalogImpl\ResourceRenameProvider.cs" />
     <Compile Include="ResourceCatalogImpl\ResourceSaveProvider.cs" />
