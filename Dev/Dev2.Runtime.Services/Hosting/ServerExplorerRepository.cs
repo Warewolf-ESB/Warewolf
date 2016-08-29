@@ -95,8 +95,7 @@ namespace Dev2.Runtime.Hosting
         {
             if (_root == null || reload)
             {
-                _root = ExplorerItemFactory.CreateRootExplorerItem(EnvironmentVariables.GetWorkspacePath(workSpaceId),
-                    workSpaceId);
+                _root = ExplorerItemFactory.CreateRootExplorerItem(EnvironmentVariables.GetWorkspacePath(workSpaceId), workSpaceId);
             }
             return _root;
         }
@@ -395,7 +394,7 @@ namespace Dev2.Runtime.Hosting
 
         void MoveVersions(IExplorerItem itemToMove, string newPath)
         {
-            VersionRepository.MoveVersions(itemToMove.ResourceId, newPath);
+            VersionRepository.MoveVersions(itemToMove.ResourceId, newPath, itemToMove.ResourcePath);
         }
 
         public static string DirectoryStructureFromPath(string path)

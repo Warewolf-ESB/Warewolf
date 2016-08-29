@@ -15,7 +15,7 @@ namespace Dev2.Common.Interfaces.Versioning
 {
     public interface IServerVersionRepository : IVersionRepository
     {
-        void StoreVersion(IResource resource, string userName, string reason, Guid workSpaceId);
-        void MoveVersions(Guid resourceId, string newPath);
+        void StoreVersion(IResource resource, string userName, string reason, Guid workSpaceId, string resourcePath);
+        void MoveVersions(Guid resourceId, string newPath, string resourcePath);
     }
 }

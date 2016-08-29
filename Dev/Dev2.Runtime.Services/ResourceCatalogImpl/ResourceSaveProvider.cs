@@ -57,7 +57,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
                     var resource = new Resource(xml);
                     GlobalConstants.InvalidateCache(resource.ResourceID);
                     Dev2Logger.Info("Save Resource." + resource);
-                    _serverVersionRepository.StoreVersion(resource, user, reason, workspaceID);
+                    _serverVersionRepository.StoreVersion(resource, user, reason, workspaceID, savedPath);
 
                     resource.UpgradeXml(xml, resource);
 
@@ -75,7 +75,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
 
         public ResourceCatalogResult SaveResource(Guid workspaceID, IResource resource, string reason = "", string user = "", string savedPath = "")
         {
-            _serverVersionRepository.StoreVersion(resource, user, reason, workspaceID);
+            _serverVersionRepository.StoreVersion(resource, user, reason, workspaceID, savedPath);
 
             if (resource == null)
             {
@@ -288,7 +288,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
                 try
                 {
                     var resources = _resourceCatalog.GetResources(workspaceID);
-                    var conflicting = resources.FirstOrDefault(r => resource.ResourceID != r.ResourceID && r.ResourcePath != null && r.ResourcePath.Equals(resource.ResourcePath, StringComparison.InvariantCultureIgnoreCase) && r.ResourceName.Equals(resource.ResourceName, StringComparison.InvariantCultureIgnoreCase));
+                    var conflicting = resources.FirstOrDefault(r => resource.ResourceID != r.ResourceID && r.ResourcePath != null && r.ResourcePath.Equals(savedPath, StringComparison.InvariantCultureIgnoreCase) && r.ResourceName.Equals(resource.ResourceName, StringComparison.InvariantCultureIgnoreCase));
                     if (conflicting != null && !conflicting.IsNewResource || conflicting != null && !overwriteExisting)
                     {
                         saveResult = ResourceCatalogResultBuilder.CreateDuplicateMatchResult(string.Format(ErrorResource.TypeConflict, conflicting.ResourceType));
