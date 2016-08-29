@@ -627,6 +627,9 @@ namespace Dev2.Studio.ViewModels
                 case "ServerSource":
                     EditServer(resourceModel);
                     break;
+                default:
+                    AddWorkSurfaceContext(resourceModel);
+                    break;
             }
         }
 
