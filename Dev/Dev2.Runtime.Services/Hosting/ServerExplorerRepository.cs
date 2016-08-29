@@ -95,14 +95,14 @@ namespace Dev2.Runtime.Hosting
         {
             if (_root == null || reload)
             {
-                _root = ExplorerItemFactory.CreateRootExplorerItem(EnvironmentVariables.GetWorkspacePath(workSpaceId), workSpaceId,"");
+                _root = ExplorerItemFactory.CreateRootExplorerItem(EnvironmentVariables.GetWorkspacePath(workSpaceId), workSpaceId);
             }
             return _root;
         }
         
         public IExplorerItem Load(string type, Guid workSpaceId)
         {
-            return ExplorerItemFactory.CreateRootExplorerItem(type, EnvironmentVariables.GetWorkspacePath(workSpaceId), workSpaceId,"");
+            return ExplorerItemFactory.CreateRootExplorerItem(type, EnvironmentVariables.GetWorkspacePath(workSpaceId), workSpaceId);
         }
 
         public IExplorerRepositoryResult RenameItem(IExplorerItem itemToRename, string newName, Guid workSpaceId)
@@ -404,7 +404,7 @@ namespace Dev2.Runtime.Hosting
 
         public IExplorerItem Load(string type, string filter)
         {
-            return ExplorerItemFactory.CreateRootExplorerItem(type, Path.Combine(EnvironmentVariables.GetWorkspacePath(Guid.Empty), filter), Guid.Empty,"");
+            return ExplorerItemFactory.CreateRootExplorerItem(type, Path.Combine(EnvironmentVariables.GetWorkspacePath(Guid.Empty), filter), Guid.Empty);
         }
 
     }
