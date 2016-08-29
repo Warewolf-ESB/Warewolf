@@ -146,6 +146,27 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
+        public void CheckDestinationPersmisions()
+        {
+            var destItems = _destination.SelectedEnvironment.AsList();
+            if (destItems != null)
+            {
+                foreach(var explorerItemViewModel in destItems)
+                {
+                    var currentItem = _items.FirstOrDefault(p=>p.ResourceId == explorerItemViewModel.ResourceId);
+                    {
+                        if(currentItem != null)
+                        {
+                            var permission = explorerItemViewModel.Server.Permissions.FirstOrDefault(p => p.ResourceID == explorerItemViewModel.ResourceId);
+                            var perms = permission?.Permissions.ToString();
+                            if(perms != null && !perms.Contains(Permissions.Contribute.ToString()))
+                                currentItem.CanDeploy = false;
+                        }                        
+                    }
+                }
+            }
+        }
+
         public void Calculate(IList<IExplorerTreeItem> items)
         {
             _items = items;
@@ -221,6 +242,7 @@ namespace Warewolf.Studio.ViewModels
             OnPropertyChanged(() => Conflicts);
             OnPropertyChanged(() => New);
             CalculateAction?.Invoke();
+            CheckDestinationPersmisions();
         }
 
         public IList<Conflict> Conflicts => _conflicts.ToList();

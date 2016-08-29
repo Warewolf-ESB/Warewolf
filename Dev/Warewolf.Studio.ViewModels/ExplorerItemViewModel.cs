@@ -133,6 +133,7 @@ namespace Warewolf.Studio.ViewModels
         ObservableCollection<IExplorerItemViewModel> _children;
         bool _isExpanded;
         bool _canCreateFolder;
+        bool _canDeploy;
         string _filter;
         private bool _isSelected;
         bool _canShowVersions;
@@ -149,7 +150,9 @@ namespace Warewolf.Studio.ViewModels
         private bool _forcedRefresh;
         private bool _isResourceCheckedEnabled;
         private string _deployResourceCheckboxTooltip;
-
+        private bool _isService;
+        private bool _isFolder;
+        private bool _canDuplicate;
 
         public ExplorerItemViewModel(IServer server, IExplorerTreeItem parent, Action<IExplorerItemViewModel> selectAction, IShellViewModel shellViewModel, IPopupController popupController)
         {
@@ -185,6 +188,7 @@ namespace Warewolf.Studio.ViewModels
 
             _candrop = true;
             _canDrag = true;
+            CanViewSwagger = false;
         }
 
         private void SetupCommands()
@@ -207,7 +211,11 @@ namespace Warewolf.Studio.ViewModels
 
             ViewSwaggerCommand = new DelegateCommand(() =>
             {
-                _explorerItemViewModelCommandController.ViewSwaggerCommand(this, Server);
+                _explorerItemViewModelCommandController.ViewSwaggerCommand(ResourceId, Server);
+            });
+            ViewApisJsonCommand = new DelegateCommand(() =>
+            {
+                _explorerItemViewModelCommandController.ViewApisJsonCommand(ResourcePath, EnvironmentModel.Connection.WebServerUri);
             });
 
             NewServerCommand = new DelegateCommand(() =>
@@ -261,7 +269,7 @@ namespace Warewolf.Studio.ViewModels
             ShowDependenciesCommand = new DelegateCommand(ShowDependencies);
             ShowVersionHistory = new DelegateCommand(() => AreVersionsVisible = !AreVersionsVisible);
             DeleteCommand = new DelegateCommand(Delete);
-            DuplicateCommand = new DelegateCommand(DuplicateResource);
+            DuplicateCommand = new DelegateCommand(DuplicateResource, () => true);
             OpenVersionCommand = new DelegateCommand(OpenVersion);
             VersionHeader = "Show Version History";
             Expand = new DelegateCommand<int?>(clickCount =>
@@ -278,6 +286,8 @@ namespace Warewolf.Studio.ViewModels
             CreateFolderCommand = new DelegateCommand(CreateNewFolder);
             DeleteVersionCommand = new DelegateCommand(DeleteVersion);
         }
+
+      
 
         private void DuplicateResource()
         {
@@ -367,16 +377,27 @@ namespace Warewolf.Studio.ViewModels
             get;
             set;
         }
+
         public bool IsService
         {
-            get;
-            set;
+            get
+            {
+                CanViewSwagger = _isService;
+                return _isService; 
+            }
+            set { _isService = value; }
         }
+
         public bool IsFolder
         {
-            get;
-            set;
+            get
+            {
+                CanViewApisJson = _isFolder;
+                return _isFolder; 
+            }
+            set { _isFolder = value; }
         }
+
         public bool IsReservedService
         {
             get;
@@ -523,7 +544,6 @@ namespace Warewolf.Studio.ViewModels
             }
             if (permission.View)
             {
-                CanDeploy = false;
                 CanView = !isDeploy;
             }
             if (permission.Execute)
@@ -710,6 +730,7 @@ namespace Warewolf.Studio.ViewModels
             set;
         }
         public ICommand ViewSwaggerCommand { get; set; }
+        public ICommand ViewApisJsonCommand { get; set; }
 
         public ICommand DebugCommand => new DelegateCommand(() =>
         {
@@ -838,6 +859,7 @@ namespace Warewolf.Studio.ViewModels
                 _isResourceCheckedEnabled = value;
                 OnPropertyChanged(() => IsResourceCheckedEnabled);
                 OnPropertyChanged(() => DeployResourceCheckboxTooltip);
+                OnPropertyChanged(() => CanDeploy);
             }
         }
 
@@ -886,6 +908,8 @@ namespace Warewolf.Studio.ViewModels
 
         public ICommand RenameCommand { get; set; }
         public bool CanCreateSource { get; set; }
+        public bool CanViewSwagger { get; set; }
+        public bool CanViewApisJson { get; set; }
         // ReSharper disable MemberCanBePrivate.Global
         public bool CanCreateWorkflowService { get; set; }
         public bool ShowContextMenu { get; set; }
@@ -927,7 +951,22 @@ namespace Warewolf.Studio.ViewModels
                 OnPropertyChanged(() => CanCreateFolder);
             }
         }
-        public bool CanDeploy { get; set; }
+
+        public bool CanDeploy
+        {
+            get
+            {
+                return _canDeploy;
+            }
+            set
+            {
+                _canDeploy = value;
+                if(!_canDeploy)
+                    IsResourceChecked = _canDeploy;
+                IsResourceCheckedEnabled = _canDeploy;
+            }
+        }
+
         public IServer Server
         {
             get;

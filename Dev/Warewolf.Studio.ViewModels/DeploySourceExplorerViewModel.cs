@@ -70,6 +70,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 UpdateItemForDeploy(environmentViewModel.Server.EnvironmentID);
                 environmentViewModel.SelectAll = () => _statsArea.Calculate(environmentViewModel.AsList().Where(o => o.IsResourceChecked == true).Select(x => x as IExplorerTreeItem).ToList());
+
             }
             CheckPreselectedItems(environmentID);
             if(ConnectControlViewModel != null)
@@ -163,6 +164,7 @@ namespace Warewolf.Studio.ViewModels
                     ax.Parent.IsFolderChecked = ax.IsResourceChecked;
             }
             _statsArea.Calculate(SelectedItems.ToList());
+
         }
 
         public ICollection<IExplorerTreeItem> SelectedItems

@@ -90,11 +90,21 @@
                        Style="{StaticResource ErrorTextBlockStyle}"
                        Text="{Binding Path=ErrorMessage}"
                        TextAlignment="Right" />
+            <CheckBox Visibility="{Binding IsDuplicate, Converter={StaticResource BoolToVisibilityConverter}}" 
+                      Content="Fix References?" IsChecked="{Binding FixReferences}" Margin="{StaticResource ControlBorderBottomRight}"/>
+            <Button x:Name="DuplicateButton"
+                    Width="60"
+                    Command="{Binding Path=DuplicateCommand}"
+                    Margin="{StaticResource ControlBorderBottomRight}"
+                    Content="Duplicate"
+                    Visibility="{Binding IsDuplicate, Converter={StaticResource BoolToVisibilityConverter}}" 
+                    Style="{StaticResource ButtonStyle}" />
             <Button x:Name="OkButton"
                     Width="60"
                     Command="{Binding Path=OkCommand}"
                     Margin="{StaticResource ControlBorderBottomRight}"
                     Content="Save"
+                    Visibility="{Binding IsDuplicate, Converter={StaticResource BoolToVisibilityConverterNegative}}" 
                     Style="{StaticResource ButtonStyle}" />
             <Button x:Name="CancelButton"
                     Width="60"

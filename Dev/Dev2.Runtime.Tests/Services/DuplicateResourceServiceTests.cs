@@ -230,9 +230,13 @@ namespace Dev2.Tests.Runtime.Services
         public void SaveSingleResource_GivenResourceAndNewName_ShouldSaveCorrectly()
         {
             //---------------Set up test pack-------------------
-            IResource resource = new Resource();
-            var builder = new StringBuilder();
+            var xElement = XML.XmlResource.Fetch("PluginService");
+            IResource resource = new Resource(xElement);
+            var builder = new StringBuilder("NewNameForResource");
             var resourceCatalog = new Mock<IResourceCatalog>();
+            //, IExplorerItem explorerItem
+            var mock = new Mock<IExplorerItem>();
+            mock.Setup(item => item.DisplayName).Returns("");
             resourceCatalog.Setup(catalog => catalog.SaveResource(GlobalConstants.ServerWorkspaceID, It.IsAny<IResource>(), It.IsAny<string>(), It.IsAny<string>()))
                .Callback((Guid a, IResource b, string c, string d) =>
                {
@@ -246,7 +250,7 @@ namespace Dev2.Tests.Runtime.Services
             //---------------Assert Precondition----------------
             Assert.IsNotNull(resourceService);
             //---------------Execute Test ----------------------
-            privateObject.Invoke("SaveSingleResource", resource, builder);
+            privateObject.Invoke("SaveResource", resource, builder);
          
         }
 

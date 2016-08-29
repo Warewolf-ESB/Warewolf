@@ -16,14 +16,9 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Text;
 using System.Threading;
-using System.Transactions;
-using System.Xml.Linq;
-using ChinhDo.Transactions;
 using Dev2.Common;
-using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Infrastructure.SharedModels;
@@ -35,7 +30,6 @@ using Dev2.DynamicServices.Objects.Base;
 using Dev2.Runtime.ESB.Management;
 using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.ResourceCatalogImpl;
-using Dev2.Runtime.Security;
 using Dev2.Runtime.ServiceModel.Data;
 using Warewolf.ResourceManagement;
 
@@ -45,6 +39,9 @@ namespace Dev2.Runtime.Hosting
     public class ResourceCatalog : IResourceCatalog, IDisposable
     {
         readonly object _loadLock = new object();
+        //DuplicateResource _dupresource;
+        //List<IResource> _resources = new List<IResource>();
+        //HashSet<Guid> _addedResources = new HashSet<Guid>();
         ResourceCatalogBuilder Builder { get; set; }
 
         private readonly ResourceCatalogPluginContainer _catalogPluginContainer;
@@ -130,6 +127,19 @@ namespace Dev2.Runtime.Hosting
         public IList<IResource> GetResourceList<T>(Guid workspaceId) where T : Resource, new() => _catalogPluginContainer.LoadProvider.GetResourceList<T>(workspaceId);
         public List<IResource> GetResourcesBasedOnType(string type, List<IResource> workspaceResources, Func<IResource, bool> func) => _catalogPluginContainer.LoadProvider.GetResourcesBasedOnType(type, workspaceResources, func);
         public List<DynamicServiceObjectBase> GetDynamicObjects(IEnumerable<IResource> resources) => _catalogPluginContainer.LoadProvider.GetDynamicObjects(resources);
+
+        public List<DuplicateResource> DuplicateResources
+        {
+            get
+            {
+                return _catalogPluginContainer.LoadProvider.DuplicateResources;
+            }
+            set
+            {
+                _catalogPluginContainer.LoadProvider.DuplicateResources = value;
+            }
+        }
+
         #endregion
 
         #region LoadWorkspace
@@ -159,7 +169,6 @@ namespace Dev2.Runtime.Hosting
 
         List<IResource> LoadWorkspaceImpl(Guid workspaceID)
         {
-            
             var workspacePath = workspaceID == GlobalConstants.ServerWorkspaceID ? EnvironmentVariables.ResourcePath : EnvironmentVariables.GetWorkspacePath(workspaceID);
             IList<IResource> userServices = new List<IResource>();
             if (Directory.Exists(workspacePath))
@@ -167,7 +176,7 @@ namespace Dev2.Runtime.Hosting
                 var folders = Directory.EnumerateDirectories(workspacePath, "*", SearchOption.AllDirectories);
                 var allFolders = folders.ToList();
                 allFolders.Add(workspacePath);
-                userServices = LoadWorkspaceViaBuilder(workspacePath, allFolders.ToArray());
+                userServices = LoadWorkspaceViaBuilder(workspacePath,workspaceID==GlobalConstants.ServerWorkspaceID, allFolders.ToArray());
             }
             var result = userServices.Union(ManagementServices.Values);
             var resources = result.ToList();
@@ -239,167 +248,30 @@ namespace Dev2.Runtime.Hosting
 
         #region LoadWorkspaceAsync
 
-        // Travis.Frisinger - 02.05.2013 
-        // 
-        // Removed the Async operation with file stream as it would fail to use the correct stream from time to time
-        // causing the integration test suite to fail. By moving the operation into a Parallel.ForEach approach this 
-        // appears to have nearly the same impact with better stability.
-        // ResourceCatalogBuilder now contains the refactored async logic ;)
-
         /// <summary>
         /// Loads the workspace via builder.
         /// </summary>
         /// <param name="workspacePath">The workspace path.</param>
+        /// <param name="getDuplicates"></param>
         /// <param name="folders">The folders.</param>
         /// <returns></returns>
-        public IList<IResource> LoadWorkspaceViaBuilder(string workspacePath, params string[] folders)
+        public IList<IResource> LoadWorkspaceViaBuilder(string workspacePath, bool getDuplicates, params string[] folders)
         {
             Builder = new ResourceCatalogBuilder();
             Builder.BuildCatalogFromWorkspace(workspacePath, folders);
             var resources = Builder.ResourceList;
+            if (getDuplicates)
+            {
+                DuplicateResources = Builder.DuplicateResources;
+            }
             return resources;
         }
 
-        readonly string _workspacePath = EnvironmentVariables.ResourcePath;
         public IList<DuplicateResource> GetDuplicateResources()
-        {            
-            _duplicates = new List<DuplicateResource>();
-            string[] enumerable;
-            var folders = GetResouceFolders(out enumerable);
-            IsWorkspaceValid(_workspacePath, folders, enumerable);
-            var resourceUpgrader = ResourceUpgraderFactory.GetUpgrader();
-            var streams = new List<ResourceBuilderTO>();
-            try
-            {
-                GetFileContent(enumerable, streams);
-                streams.ForEach(currentItem =>
-                {
-                    var xml = XElement.Load(currentItem.FileStream);
-                    
-                    var result = xml.ToStringBuilder();
-                    var isValid = HostSecurityProvider.Instance.VerifyXml(result);
-                    if (isValid)
-                    {
-                        var resource = new Resource(xml) { FilePath = currentItem.FilePath };
-                        if(resource.ResourcePath.ToUpper() == "UNASSIGNED")
-                            resource.ResourcePath = string.Empty;
-                        resourceUpgrader.UpgradeResource(xml, Assembly.GetExecutingAssembly().GetName().Version, a =>
-                        {
-                            var fileManager = new TxFileManager();
-                            using (TransactionScope tx = new TransactionScope())
-                            {
-                                StringBuilder updateXml = a.ToStringBuilder();
-                                    var signedXml = HostSecurityProvider.Instance.SignXml(updateXml);
-
-                                    signedXml.WriteToFile(currentItem.FilePath, Encoding.UTF8, fileManager);
-                                    tx.Complete();                                
-                            }
-                        });
-                        var added = CreateDupResource(resource, currentItem.FilePath);
-                        if (added != null)
-                            _duplicates.Add(added);
-                    }
-                });
-            }
-            finally
-            {
-                foreach (var stream in streams)
-                {
-                    stream.FileStream.Close();
-                }
-            }
-            return _duplicates;
-        }
-
-        private void GetFileContent(IEnumerable<string> enumerable, List<ResourceBuilderTO> streams)
         {
-            foreach(var path in enumerable.Where(f => !string.IsNullOrEmpty(f) && !f.EndsWith("VersionControl")).Select(f => Path.Combine(_workspacePath, f)))
-            {
-                if(!Directory.Exists(path))
-                    continue;
-                var files = Directory.GetFiles(path, "*.xml");
-                foreach(var file in files)
-                {
-                    FileAttributes fa = File.GetAttributes(file);
-
-                    if((fa & FileAttributes.ReadOnly) == FileAttributes.ReadOnly)
-                    {
-                        File.SetAttributes(file, FileAttributes.Normal);
-                    }
-                    // Use the FileStream class, which has an option that causes asynchronous I/O to occur at the operating system level.  
-                    // In many cases, this will avoid blocking a ThreadPool thread.  
-                    var sourceStream = new FileStream(file, FileMode.Open, FileAccess.Read, FileShare.ReadWrite, 4096, true);
-                    streams.Add(new ResourceBuilderTO { FilePath = file, FileStream = sourceStream });
-                }
-            }
+            return DuplicateResources;
         }
-
-        private IEnumerable<string> GetResouceFolders(out string[] enumerable)
-        {
-            var folders = Directory.EnumerateDirectories(_workspacePath, "*", SearchOption.AllDirectories);
-            var resouceFolders = folders as string[] ?? folders.ToArray();
-            var allFolders = resouceFolders.ToList();
-            allFolders.Add(_workspacePath);
-            enumerable = folders as string[] ?? allFolders.ToArray();
-            return resouceFolders;
-        }
-
-        public bool IsWorkspaceValid(string workspacePath, IEnumerable<string> folders, string[] enumerable)
-        {
-            const string Workspacepath = "workspacePath";
-            const string FoldersString = "folders";
-            if(string.IsNullOrEmpty(workspacePath))
-                throw new ArgumentNullException(Workspacepath);
-            if(folders == null)
-                throw new ArgumentNullException(FoldersString);
-            if(enumerable.Length == 0 || !Directory.Exists(workspacePath))
-                return false;
-            return true;
-        }
-
-        List<DuplicateResource> _duplicates;
-        List<IResource> _resources = new List<IResource>();
-        DuplicateResource _dupresource;
-        HashSet<Guid> _addedResources = new HashSet<Guid>();
-
-        private DuplicateResource CreateDupResource(Resource resource, string filePath)
-        {
-            _dupresource = null;
-            if (!_addedResources.Contains(resource.ResourceID))
-            {
-                _resources.Add(resource);
-                _addedResources.Add(resource.ResourceID);
-            }
-            else
-            {
-                var dupRes = _resources.Find(c => c.ResourceID == resource.ResourceID);
-                if (dupRes != null)
-                {
-                    if (_duplicates.Any(p => p.ResourceId == dupRes.ResourceID))
-                    {
-                        var firstDup = _duplicates.First(p => p.ResourceId == dupRes.ResourceID);
-                        if (!firstDup.ResourcePath.Contains(filePath))
-                            firstDup.ResourcePath.Add(filePath);
-                        return null;
-                    }
-                    var duplicatePaths = filePath == dupRes.FilePath ? string.Empty : filePath;
-                    var resourcePaths = new List<string> { dupRes.FilePath };
-                    if (!string.IsNullOrEmpty(duplicatePaths))
-                    {
-                        resourcePaths.Add(duplicatePaths);
-                        _dupresource = new DuplicateResource
-                        {
-                            ResourceId = resource.ResourceID
-                            ,
-                            ResourceName = resource.ResourceName
-                            ,
-                            ResourcePath = resourcePaths
-                        };
-                    }
-                }                
-            }
-            return _dupresource;
-        }
+        
 
         #endregion
 
@@ -414,6 +286,7 @@ namespace Dev2.Runtime.Hosting
 
         public ResourceCatalogResult SaveResource(Guid workspaceID, StringBuilder resourceXml, string reason = "", string user = "") => _catalogPluginContainer.SaveProvider.SaveResource(workspaceID, resourceXml, reason, user);
         public ResourceCatalogResult SaveResource(Guid workspaceID, IResource resource, string reason = "", string user = "") => _catalogPluginContainer.SaveProvider.SaveResource(workspaceID, resource, reason, user);
+        public ResourceCatalogResult SaveResource(Guid workspaceID, IResource resource,StringBuilder contents, string reason = "", string user = "") => _catalogPluginContainer.SaveProvider.SaveResource(workspaceID, resource,contents, reason, user);
 
         public Action<IResource> ResourceSaved
         {

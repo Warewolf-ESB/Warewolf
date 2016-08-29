@@ -10,7 +10,6 @@ namespace Dev2.Common.Interfaces
         ICommand ContributorsCommand { get; set; }
         ICommand CommunityCommand { get; set; }
         ICommand ExpertHelpCommand { get; set; }
-        ICommand DevUrlCommand { get; }
         ICommand WarewolfUrlCommand { get; }
         string ServerVersion { get; set; }
         string StudioVersion { get; set; }

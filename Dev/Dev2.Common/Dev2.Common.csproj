@@ -130,6 +130,7 @@
     <Compile Include="ExternalProcessExecutor.cs" />
     <Compile Include="ExtMethods\BaseEnumExtensions.cs" />
     <Compile Include="ExtMethods\GuidExtensions.cs" />
+    <Compile Include="ExtMethods\ObjectExtensions.cs" />
     <Compile Include="ExtMethods\StringExtension.cs" />
     <Compile Include="ExtMethods\TypeExtensions.cs" />
     <Compile Include="FileResource.cs" />
@@ -144,6 +145,7 @@
     <Compile Include="Interfaces\IDatetimeParserHelper.cs" />
     <Compile Include="Interfaces\ITimeFormatPartBuilder.cs" />
     <Compile Include="Interfaces\ITimeZoneBuilder.cs" />
+    <Compile Include="LightExplorerItem.cs" />
     <Compile Include="Lookups\CompressionRatios.cs" />
     <Compile Include="MaintainerApi.cs" />
     <Compile Include="Patterns\SpookyAction.cs" />

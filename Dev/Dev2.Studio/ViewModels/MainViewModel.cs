@@ -61,7 +61,6 @@ using Warewolf.Studio.ViewModels;
 using Warewolf.Studio.Views;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Network;
-using Dev2.Studio.ViewModels.Workflow;
 
 // ReSharper disable CatchAllClause
 // ReSharper disable InconsistentNaming
@@ -597,22 +596,39 @@ namespace Dev2.Studio.ViewModels
         {
             ViewSwagger(resourceId, server.EnvironmentID);
         }
-        public void ViewSwagger(Guid resourceId, Guid environmentId)
+
+        private void ViewSwagger(Guid resourceId, Guid environmentId)
         {
             var environmentModel = EnvironmentRepository.Get(environmentId);
             if (environmentModel != null)
             {
                 var contextualResourceModel = environmentModel.ResourceRepository.LoadContextualResourceModel(resourceId);
 
-                var _workflowInputDataViewModel = WorkflowInputDataViewModel.Create(contextualResourceModel);
-                var buildWebPayLoad = _workflowInputDataViewModel.BuildWebPayLoad();
-                var workflowUri = WebServer.GetWorkflowUri(contextualResourceModel, buildWebPayLoad, UrlType.API);
+                var workflowUri = WebServer.GetWorkflowUri(contextualResourceModel, "", UrlType.API);
                 if (workflowUri != null)
                 {
                     BrowserPopupController.ShowPopup(workflowUri.ToString());
-
                 }
             }
+        }
+
+        public void ViewApisJson(string resourcePath, Uri webServerUri)
+        {
+            var relativeUrl = "";
+
+            if (!string.IsNullOrWhiteSpace(resourcePath))
+            {
+                relativeUrl = "/secure/" + resourcePath + "/apis.json";
+            }
+            else
+            {
+                relativeUrl += "/secure/apis.json";
+            }
+
+            Uri url;
+            Uri.TryCreate(webServerUri, relativeUrl, out url);
+
+            BrowserPopupController.ShowPopup(url.ToString());
         }
 
         public void CloseResource(Guid resourceId, Guid environmentId)
@@ -711,7 +727,10 @@ namespace Dev2.Studio.ViewModels
             var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(key, new SourceViewModel<IServerSource>(EventPublisher, new ManageNewServerViewModel(new ManageNewServerSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, ActiveEnvironment.Name), saveViewModel, new Microsoft.Practices.Prism.PubSubEvents.EventAggregator(), _asyncWorker, new ExternalProcessExecutor()) { SelectedGuid = key.ResourceID.Value }, PopupProvider, new ManageServerControl()));
             _worksurfaceContextManager.AddAndActivateWorkSurface(workSurfaceContextViewModel);
         }
-
+       public void DuplicateResource(ExplorerItemViewModel explorerItemViewModel)
+        {
+            _worksurfaceContextManager.DuplicateResource(explorerItemViewModel);
+        }
         public void NewDatabaseSource(string resourcePath)
         {
             _worksurfaceContextManager.NewDatabaseSource(resourcePath);
@@ -735,6 +754,11 @@ namespace Dev2.Studio.ViewModels
         public void NewComPluginSource(string resourcePath)
         {
             _worksurfaceContextManager.NewComPluginSource(resourcePath);
+        }
+
+        public void DuplicateResource(IExplorerItemViewModel explorerItemViewModel)
+        {
+            _worksurfaceContextManager.DuplicateResource(explorerItemViewModel);
         }
 
         public void NewDropboxSource(string resourcePath)

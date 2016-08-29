@@ -40,8 +40,6 @@ namespace Warewolf.Studio.ViewModels
         bool _fromActivityDrop;
         bool _allowDrag;
 
-        public IPopupController PopupController { get; set; }
-
         protected ExplorerViewModelBase()
         {            
             RefreshCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(()=>Refresh(true));
@@ -181,6 +179,11 @@ namespace Warewolf.Studio.ViewModels
         {
             IsRefreshing = true;
             Environments.ForEach(env=>RefreshEnvironment(env,refresh));
+            Environments = new List<IEnvironmentViewModel>(Environments);
+            foreach (var environment in Environments)
+            {
+                environment.Children = new ObservableCollection<IExplorerItemViewModel>(environment.Children.OrderByDescending(a => a.IsFolder).ThenBy(b => b.ResourceName).ToList());
+            }
             IsRefreshing = false;
             ConnectControlViewModel.LoadNewServers();
         }
