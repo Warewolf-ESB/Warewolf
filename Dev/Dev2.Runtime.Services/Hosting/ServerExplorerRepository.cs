@@ -129,7 +129,7 @@ namespace Dev2.Runtime.Hosting
                                  .Where(
                                      a =>
                                      (a.ResourceName == itemToRename.DisplayName.Trim()) &&
-                                     (a.ResourcePath == itemToRename.ResourcePath.Trim()));
+                                     (a.ResourceID == itemToRename.ResourceId));
             if (item.Any())
             {
                 return new ExplorerRepositoryResult(ExecStatus.Fail, ErrorResource.ItemAlreadyExistInPath);
@@ -373,17 +373,13 @@ namespace Dev2.Runtime.Hosting
             // ReSharper disable once RedundantIfElseBlock
             else
             {
-                IEnumerable<IResource> item = ResourceCatalogue.GetResourceList(workSpaceId)
-                    .Where(a => a.ResourcePath == newPath);
+                IEnumerable<IResource> item = ResourceCatalogue.GetResourceList(workSpaceId).Where(a => a.ResourcePath == newPath);
                 if (item.Any())
                 {
                     return new ExplorerRepositoryResult(ExecStatus.Fail, ErrorResource.ItemAlreadyExistInPath);
                 }
                 return MoveSingeItem(itemToMove, newPath, workSpaceId);
             }
-
-
-
         }
 
         IExplorerRepositoryResult MoveSingeItem(IExplorerItem itemToMove, string newPath, Guid workSpaceId)
