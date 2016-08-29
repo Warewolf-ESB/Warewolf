@@ -19,7 +19,7 @@ namespace Dev2.Common.Interfaces.Versioning
     {
         IList<IExplorerItem> GetVersions(Guid resourceId, string resourcePath);
         StringBuilder GetVersion(IVersionInfo version, string resourcePath);
-        IRollbackResult RollbackTo(Guid resourceId, string versionNumber, string resourcePath);
+        IRollbackResult RollbackTo(Guid resourceId, string versionNumber);
         IList<IExplorerItem> DeleteVersion(Guid resourceId, string versionNumber, string resourcePath);
     }
 

@@ -159,9 +159,10 @@ namespace Dev2.Runtime.Hosting
             return "";
         }
 
-        public IRollbackResult RollbackTo(Guid resourceId, string versionNumber, string resourcePath)
+        public IRollbackResult RollbackTo(Guid resourceId, string versionNumber)
         {
             var res = _catalogue.GetResource(Guid.Empty, resourceId);
+            var resourcePath = res.GetResourcePath(Guid.Empty);
             var xmlBuilder = GetVersion(new VersionInfo(DateTime.MinValue, "", "", versionNumber, resourceId, res.VersionInfo.VersionId), resourcePath);
             var xml = xmlBuilder.ToXElement();
             Resource oldResource = new Resource(xml);

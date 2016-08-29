@@ -86,7 +86,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 var enumerable = dependants.Select(a =>
                 {
                     var resource = ResourceCatalog.Instance.GetResource(GlobalConstants.ServerWorkspaceID,a) ?? ResourceCatalog.Instance.GetResource(wGuid,a);
-                    return resource==null?"": resource.ResourcePath;
+                    return resource==null?"": resource.GetResourcePath(wGuid);
                 });
                 var deps = enumerable.Distinct().ToList();
                 if(deps.Count > 0)
