@@ -408,9 +408,6 @@
       <DependentUpon>DependencyVisualiserView.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Views\Dialogs\WebLatestVersionDialog.xaml.cs">
-      <DependentUpon>WebLatestVersionDialog.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\Dialog\Dev2MessageBoxWithCustomButtons.xaml.cs">
       <DependentUpon>Dev2MessageBoxWithCustomButtons.xaml</DependentUpon>
     </Compile>
@@ -613,10 +610,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\DependencyVisualization\DependencyVisualiserView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\Dialogs\WebLatestVersionDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -934,7 +927,9 @@
       <Name>WarewolfParserInterop</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Views\Dialogs\" />
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup Condition="'$(BuildingInsideVisualStudio)'=='true'">
     <PostBuildEvent>

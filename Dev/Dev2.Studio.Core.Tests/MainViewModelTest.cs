@@ -1766,6 +1766,38 @@ namespace Dev2.Core.Tests
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory("MainViewModel_OpenResource")]
+        public void MainViewModel_OpenResource_HandleVersion_Result()
+        {
+            //------------Setup for test--------------------------
+            CreateFullExportsAndVm();
+
+            var env = SetupEnvironment();
+
+            //------------Execute Test---------------------------
+            MainViewModel.ActiveEnvironment = env.Object;
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(MainViewModel.ActiveEnvironment);
+            Assert.IsTrue(MainViewModel.ActiveEnvironment.IsConnected);
+            Assert.IsTrue(MainViewModel.ActiveEnvironment.CanStudioExecute);
+
+            var source = new Mock<IExplorerItemViewModel>();
+            source.Setup(a => a.ResourceId).Returns(Guid.NewGuid);
+            source.Setup(a => a.ResourceName).Returns("TestResourceName");
+            source.Setup(a => a.ResourceType).Returns("Version");
+
+            var viewModel = new Mock<IShellViewModel>();
+            var server = new Mock<IServer>();
+            server.SetupGet(server1 => server1.IsConnected).Returns(true);
+            viewModel.SetupGet(model => model.ActiveServer).Returns(server.Object);
+            viewModel.SetupGet(model => model.LocalhostServer).Returns(server.Object);
+            viewModel.SetupGet(model => model.ActiveServer.EnvironmentID).Returns(Guid.NewGuid);
+
+            MainViewModel.OpenResource(source.Object.ResourceId, viewModel.Object.ActiveServer);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("MainViewModel_OpenResource")]
         public void MainViewModel_OpenResource_Handle_Result()
         {
             //------------Setup for test--------------------------
@@ -2832,6 +2864,23 @@ namespace Dev2.Core.Tests
             //------------Assert Results-------------------------
             Assert.IsFalse(isDownloading);
         }
+
+        [TestMethod]
+        public void MainViewModel_HasNewVersion_ShouldCallBrowserPopupContollerToLatestVersionPage()
+        {
+            var popupController = new Mock<IBrowserPopupController>();
+            popupController.Setup(p => p.ShowPopup(It.IsAny<string>())).Verifiable();
+            CustomContainer.Register(new Mock<IWindowManager>().Object);
+            var envRepo = new Mock<IEnvironmentRepository>();
+            envRepo.Setup(e => e.All()).Returns(new List<IEnvironmentModel>());
+            envRepo.Setup(e => e.Source).Returns(new Mock<IEnvironmentModel>().Object);
+            var mockVersionChecker = new Mock<IVersionChecker>();
+            mockVersionChecker.Setup(checker => checker.GetNewerVersionAsync()).Returns(Task.FromResult(true));
+            var vm = new MainViewModel(new Mock<IEventAggregator>().Object, new Mock<IAsyncWorker>().Object, envRepo.Object, mockVersionChecker.Object, false, popupController.Object);
+            vm.DisplayDialogForNewVersion();
+
+            popupController.Verify(p => p.ShowPopup(Warewolf.Studio.Resources.Languages.Core.WarewolfLatestDownloadUrl));
+        }        
     }
 
     public class SchedulerViewModelForTesting : SchedulerViewModel
