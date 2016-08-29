@@ -34,6 +34,7 @@ if %errorLevel% == 0 (
 	
 REM ** Kill The Server **
 IF EXIST %windir%\nircmd.exe (nircmd elevate taskkill /im "Warewolf Server.exe" /T /F) else (taskkill /im "Warewolf Server.exe" /T /F)
+IF EXIST %windir%\nircmd.exe (nircmd elevate taskkill /im "Warewolf Server.vshost.exe" /T /F) else (taskkill /im "Warewolf Server.vshost.exe" /T /F)
 
 REM  Wait 5 seconds ;)
 ping -n 5 -w 1000 192.0.2.2 > nul
