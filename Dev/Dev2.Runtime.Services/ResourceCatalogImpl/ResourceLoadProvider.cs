@@ -338,7 +338,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
                 {
                     resourceName = string.Empty;
                 }
-                var resources = GetResourcesBasedOnType(type, workspaceResources, r => r.ResourcePath.Contains(resourceName));
+                var resources = GetResourcesBasedOnType(type, workspaceResources, r => r.ResourceName.Contains(resourceName));
                 return resources.Cast<Resource>().ToList();
 
             }

@@ -732,12 +732,10 @@ namespace Dev2.Tests.Runtime.Hosting
             var catalog = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
             foreach (var expected in resources)
             {
-                var actual = catalog.GetResource(workspaceID, String.IsNullOrEmpty(expected.ResourcePath) ? expected.ResourceName : expected.ResourcePath);
+                var actual = catalog.GetResource(workspaceID, expected.ResourceName);
                 Assert.IsNotNull(actual);
                 Assert.AreEqual(expected.ResourceID, actual.ResourceID);
                 Assert.AreEqual(expected.ResourceName, actual.ResourceName);
-                Assert.AreEqual(expected.ResourcePath, actual.ResourcePath);
-                Assert.AreEqual(expected.ResourcePath, actual.ResourcePath);
             }
         }
 
@@ -756,7 +754,7 @@ namespace Dev2.Tests.Runtime.Hosting
             var resource = new DbSource(xml) { ResourcePath = resourcePath };
             var resource1 = new DbSource(xml) { ResourcePath = resourcePath1 };
             var catalog = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
-            catalog.SaveResource(workspaceID, resource);
+            catalog.SaveResource(workspaceID, resource, resourcePath);
             catalog.SaveResource(workspaceID, resource1);
             //------------Execute Test---------------------------
             var retrievedResource = catalog.GetResource(workspaceID, "MyTest\\Folder2\\CitiesDatabase");

@@ -127,10 +127,6 @@ namespace Dev2.Runtime.ServiceModel.Data
         /// </summary>
         public string ResourceName { get; set; }
         /// <summary>
-        /// Gets or sets the category of the resource.
-        /// </summary>
-        public string ResourcePath { get; set; }
-        /// <summary>
         /// Gets or sets the file path of the resource.
         /// <remarks>
         /// Must only be used by the catalog!
