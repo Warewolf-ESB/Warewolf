@@ -2,6 +2,7 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+using System.Windows.Input;
 using Dev2.Common.Interfaces;
 using Infragistics.Controls.Menus;
 using Microsoft.Practices.Prism.Mvvm;
@@ -17,7 +18,7 @@ namespace Warewolf.Studio.Views
         public ManagePluginSourceControl()
         {
             InitializeComponent();
-
+            KeyboardNavigation.SetTabNavigation(ExplorerTree, KeyboardNavigationMode.Cycle);
         }
 
         public string GetHeaderText()
@@ -142,8 +143,6 @@ namespace Warewolf.Studio.Views
         void SelectNode(XamDataTreeNodesCollection nodes, string nodeKey)
         {
             
-        }
-
-        
+        }        
     }
 }
