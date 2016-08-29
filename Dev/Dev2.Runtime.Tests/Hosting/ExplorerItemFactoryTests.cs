@@ -99,7 +99,7 @@ namespace Dev2.Tests.Runtime.Hosting
             var explorerItemFactory = new ExplorerItemFactory(catalogue.Object, directory.Object, auth.Object);
 
             //------------Execute Test---------------------------
-            var item = explorerItemFactory.CreateRootExplorerItem(@"b:\bob", Guid.NewGuid(), "");
+            var item = explorerItemFactory.CreateRootExplorerItem(@"b:\bob", Guid.NewGuid());
             //------------Assert Results-------------------------
             Assert.AreEqual(Environment.MachineName, item.DisplayName);
             Assert.AreEqual(0, item.Children.Count);
@@ -129,7 +129,7 @@ namespace Dev2.Tests.Runtime.Hosting
             var explorerItemFactory = new ExplorerItemFactory(catalogue.Object, directory.Object, auth.Object);
 
             //------------Execute Test---------------------------
-            var item = explorerItemFactory.CreateRootExplorerItem(@"b:\bob", Guid.NewGuid(), "");
+            var item = explorerItemFactory.CreateRootExplorerItem(@"b:\bob", Guid.NewGuid());
             //------------Assert Results-------------------------
             Assert.AreEqual(Environment.MachineName, item.DisplayName);
             Assert.AreEqual(4, resources.Count);
@@ -161,7 +161,7 @@ namespace Dev2.Tests.Runtime.Hosting
             var explorerItemFactory = new ExplorerItemFactory(catalogue.Object, directory.Object, auth.Object);
 
             //------------Execute Test---------------------------
-            var item = explorerItemFactory.CreateRootExplorerItem(@"b:\bob", Guid.NewGuid(), "");
+            var item = explorerItemFactory.CreateRootExplorerItem(@"b:\bob", Guid.NewGuid());
             //------------Assert Results-------------------------
             Assert.AreEqual(Environment.MachineName, item.DisplayName);
             Assert.IsTrue(item.IsServer);
@@ -196,7 +196,7 @@ namespace Dev2.Tests.Runtime.Hosting
             var explorerItemFactory = new ExplorerItemFactory(catalogue.Object, directory.Object, auth.Object);
 
             //------------Execute Test---------------------------
-            var item = explorerItemFactory.CreateRootExplorerItem(@"b:\bob", Guid.NewGuid(), "");
+            var item = explorerItemFactory.CreateRootExplorerItem(@"b:\bob", Guid.NewGuid());
             //------------Assert Results-------------------------
             Assert.AreEqual(Environment.MachineName, item.DisplayName);
             Assert.AreEqual(3, item.Children.Count);
@@ -229,7 +229,7 @@ namespace Dev2.Tests.Runtime.Hosting
             var explorerItemFactory = new ExplorerItemFactory(catalogue.Object, directory.Object, auth.Object);
 
             //------------Execute Test---------------------------
-            var item = explorerItemFactory.CreateRootExplorerItem("EmailSource", @"b:\bob", Guid.NewGuid(), "");
+            var item = explorerItemFactory.CreateRootExplorerItem("EmailSource", @"b:\bob", Guid.NewGuid());
             //------------Assert Results-------------------------
             Assert.AreEqual(Environment.MachineName, item.DisplayName);
             Assert.AreEqual(1, item.Children.Count);
@@ -260,7 +260,7 @@ namespace Dev2.Tests.Runtime.Hosting
             var explorerItemFactory = new ExplorerItemFactory(catalogue.Object, directory.Object, auth.Object);
 
             //------------Execute Test---------------------------
-            var item = explorerItemFactory.CreateRootExplorerItem("EmailSource", @"b:\bob", Guid.NewGuid(), "");
+            var item = explorerItemFactory.CreateRootExplorerItem("EmailSource", @"b:\bob", Guid.NewGuid());
             //------------Assert Results-------------------------
             Assert.AreEqual(Environment.MachineName, item.DisplayName);
             Assert.AreEqual(1, item.Children.Count);
@@ -295,7 +295,7 @@ namespace Dev2.Tests.Runtime.Hosting
             var explorerItemFactory = new ExplorerItemFactory(catalogue.Object, directory.Object, auth.Object);
 
             //------------Execute Test---------------------------
-            var item = explorerItemFactory.CreateRootExplorerItem(@"b:\bob", Guid.NewGuid(), "");
+            var item = explorerItemFactory.CreateRootExplorerItem(@"b:\bob", Guid.NewGuid());
             //------------Assert Results-------------------------
             Assert.AreEqual(1, item.Children.Count);
             Assert.AreEqual(4, item.Children[0].Children.Count);
@@ -328,7 +328,7 @@ namespace Dev2.Tests.Runtime.Hosting
             var explorerItemFactory = new ExplorerItemFactory(catalogue.Object, directory.Object, auth.Object);
 
             //------------Execute Test---------------------------
-            var item = explorerItemFactory.CreateRootExplorerItem("EmailSource", @"b:\bob", Guid.NewGuid(), "");
+            var item = explorerItemFactory.CreateRootExplorerItem("EmailSource", @"b:\bob", Guid.NewGuid());
             //------------Assert Results-------------------------
             Assert.AreEqual(Environment.MachineName, item.DisplayName);
             Assert.AreEqual(4, item.Children.Count);
@@ -361,7 +361,7 @@ namespace Dev2.Tests.Runtime.Hosting
             var explorerItemFactory = new ExplorerItemFactory(catalogue.Object, directory.Object, auth.Object);
 
             //------------Execute Test---------------------------
-            var item = explorerItemFactory.CreateRootExplorerItem("Folder", @"b:\bob", Guid.NewGuid(), "");
+            var item = explorerItemFactory.CreateRootExplorerItem("Folder", @"b:\bob", Guid.NewGuid());
             //------------Assert Results-------------------------
             Assert.AreEqual(Environment.MachineName, item.DisplayName);
             Assert.AreEqual(2, item.Children.Count);
@@ -399,7 +399,7 @@ namespace Dev2.Tests.Runtime.Hosting
             var explorerItemFactory = new ExplorerItemFactory(catalogue.Object, directory.Object, auth.Object);
 
             //------------Execute Test---------------------------
-            var item = explorerItemFactory.CreateRootExplorerItem(@"b:\bob", Guid.NewGuid(), "");
+            var item = explorerItemFactory.CreateRootExplorerItem(@"b:\bob", Guid.NewGuid());
             //------------Assert Results-------------------------
             Assert.AreEqual(Environment.MachineName, item.DisplayName);
             Assert.AreEqual(4, item.Children.Count);
