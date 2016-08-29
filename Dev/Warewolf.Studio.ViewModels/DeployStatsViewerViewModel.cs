@@ -4,7 +4,6 @@ using System.Linq;
 using Dev2;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Deploy;
-using Dev2.Common.Interfaces.Infrastructure;
 using Dev2.Common.Interfaces.Security;
 using Microsoft.Practices.Prism.Mvvm;
 
@@ -170,10 +169,6 @@ namespace Warewolf.Studio.ViewModels
                                 if (!IsSourceAndDestinationSameServer(currentItem, explorerItemViewModel))
                                 {
                                     var permission = explorerItemViewModel.Server.GetPermissions(explorerItemViewModel.ResourceId);
-//                                    if (permission == null)
-//                                    {
-//                                        permission = explorerItemViewModel.Server.Permissions.FirstOrDefault(p => p.ResourceID == Guid.Empty && p.IsServer);
-//                                    }
                                     SetItemCheckState(permission, currentItem);
                                 }
                                 else
