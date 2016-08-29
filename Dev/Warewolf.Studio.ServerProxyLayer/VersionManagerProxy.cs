@@ -25,14 +25,12 @@ namespace Warewolf.Studio.ServerProxyLayer
         /// Get a list of versions of a resource
         /// </summary>
         /// <param name="resourceId">the resource</param>
-        /// <param name="resourcePath"></param>
         /// <returns>the resource versions. N configured versions are stored on a server</returns>
-        public IList<IExplorerItem> GetVersions(Guid resourceId, string resourcePath)
+        public IList<IExplorerItem> GetVersions(Guid resourceId)
         {
             var workSpaceId = Guid.NewGuid();
             var controller = CommunicationControllerFactory.CreateController("GetVersions");
             controller.AddPayloadArgument("resourceId", resourceId.ToString());
-            controller.AddPayloadArgument("resourcePath", resourcePath);
             var items = controller.ExecuteCommand<IList<IExplorerItem>>(_connection, workSpaceId);
             return items;
         }

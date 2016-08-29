@@ -46,7 +46,7 @@ namespace Dev2.Tests.Runtime.Hosting
 
 
             //------------Execute Test---------------------------
-            var items = serverVersionRepostory.GetVersions(resourceId, "bob");
+            var items = serverVersionRepostory.GetVersions(resourceId);
             //------------Assert Results-------------------------
             Assert.AreEqual(0, items.Count);
         }
@@ -69,7 +69,7 @@ namespace Dev2.Tests.Runtime.Hosting
 
 
             //------------Execute Test---------------------------
-            var items = serverVersionRepostory.GetVersions(resourceId, "bob");
+            var items = serverVersionRepostory.GetVersions(resourceId);
             //------------Assert Results-------------------------
             Assert.AreEqual(0, items.Count);
         }
@@ -92,7 +92,7 @@ namespace Dev2.Tests.Runtime.Hosting
 
 
             //------------Execute Test---------------------------
-            var items = serverVersionRepostory.GetVersions(resourceId, "bob");
+            var items = serverVersionRepostory.GetVersions(resourceId);
             //------------Assert Results-------------------------
             Assert.AreEqual(0, items.Count);
         }
@@ -114,7 +114,7 @@ namespace Dev2.Tests.Runtime.Hosting
 
 
             //------------Execute Test---------------------------
-            var items = serverVersionRepostory.GetVersions(resourceId, "");
+            var items = serverVersionRepostory.GetVersions(resourceId);
             //------------Assert Results-------------------------
             Assert.AreEqual(0, items.Count);
         }
@@ -137,7 +137,7 @@ namespace Dev2.Tests.Runtime.Hosting
 
 
             //------------Execute Test---------------------------
-            var items = serverVersionRepostory.GetVersions(resourceId, "bob");
+            var items = serverVersionRepostory.GetVersions(resourceId);
             //------------Assert Results-------------------------
             Assert.AreEqual(0, items.Count);
         }
@@ -167,7 +167,7 @@ namespace Dev2.Tests.Runtime.Hosting
             var serverVersionRepostory = CreateServerVersionRepository(strat.Object, cat.Object, dir.Object, rootPath, file.Object);
 
             //------------Execute Test---------------------------
-            var items = serverVersionRepostory.GetVersions(resourceId, "bob");
+            var items = serverVersionRepostory.GetVersions(resourceId);
             //------------Assert Results-------------------------
             Assert.AreEqual(0, items.Count);
 
@@ -192,7 +192,7 @@ namespace Dev2.Tests.Runtime.Hosting
             var serverVersionRepostory = CreateServerVersionRepository(strat.Object, cat.Object, dir.Object, rootPath, file.Object);
 
             //------------Execute Test---------------------------
-            var items = serverVersionRepostory.GetVersions(resourceId, "bob");
+            var items = serverVersionRepostory.GetVersions(resourceId);
             //------------Assert Results-------------------------
             Assert.AreEqual(0, items.Count);
         }
@@ -219,7 +219,7 @@ namespace Dev2.Tests.Runtime.Hosting
             var serverVersionRepostory = CreateServerVersionRepository(strat.Object, cat.Object, dir.Object, rootPath, file.Object);
 
             //------------Execute Test---------------------------
-            var items = serverVersionRepostory.GetVersions(resourceId, "moot\\boot");
+            var items = serverVersionRepostory.GetVersions(resourceId);
             //------------Assert Results-------------------------
             Assert.AreEqual(2, items.Count);
         }

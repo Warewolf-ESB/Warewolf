@@ -1052,7 +1052,7 @@ namespace Warewolf.Studio.ViewModels
                 VersionHeader = !value ? "Show Version History" : "Hide Version History";
                 if (value)
                 {
-                    _children = new ObservableCollection<IExplorerItemViewModel>(_explorerRepository.GetVersions(ResourceId, ResourcePath).Select(a => new VersionViewModel(Server, this, null, _shellViewModel, _popupController)
+                    _children = new ObservableCollection<IExplorerItemViewModel>(_explorerRepository.GetVersions(ResourceId).Select(a => new VersionViewModel(Server, this, null, _shellViewModel, _popupController)
                     {
                         ResourceName = "v." + a.VersionNumber + " " + a.DateTimeStamp.ToString(CultureInfo.InvariantCulture) + " " + a.Reason.Replace(".xml", ""),
                         VersionNumber = a.VersionNumber,

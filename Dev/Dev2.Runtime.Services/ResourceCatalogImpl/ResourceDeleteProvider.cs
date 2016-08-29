@@ -112,7 +112,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
             if (workspaceID == Guid.Empty && deleteVersions)
                 if (resource != null)
                 {
-                    var explorerItems = _serverVersionRepository.GetVersions(resource.ResourceID,resource.GetResourcePath(workspaceID));
+                    var explorerItems = _serverVersionRepository.GetVersions(resource.ResourceID);
                     explorerItems?.ForEach(a => _serverVersionRepository.DeleteVersion(resource.ResourceID, a.VersionInfo.VersionNumber, resource.GetResourcePath(workspaceID)));
                 }
 
