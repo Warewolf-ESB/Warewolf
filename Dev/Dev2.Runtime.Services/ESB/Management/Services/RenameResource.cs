@@ -56,7 +56,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 {
                     newName = tmp.ToString();
                 }
-                values.TryGetValue("ResourcePath", out tmp);
+                values.TryGetValue("resourcePath", out tmp);
                 if(tmp != null)
                 {
                     resourcePath = tmp.ToString();

@@ -84,6 +84,7 @@ namespace Warewolf.Studio.ServerProxyLayer
         /// </summary>
         /// <param name="resourceId">the resource</param>
         /// <param name="versionNumber">the version to delete</param>
+        /// <param name="resourcePath"></param>
         /// <returns></returns>
         public IList<IExplorerItem> DeleteVersion(Guid resourceId, string versionNumber, string resourcePath)
         {
