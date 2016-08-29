@@ -49,9 +49,10 @@ namespace Dev2.Runtime.ESB.Management.Services
 
                 values.TryGetValue("OAuthSource", out resourceDefinition);
 
+                StringBuilder savePath;
+                values.TryGetValue("savePath", out savePath);
+
                 var src = serializer.Deserialize<IOAuthSource>(resourceDefinition);
-                if (src.ResourcePath.EndsWith("\\"))
-                    src.ResourcePath = src.ResourcePath.Substring(0, src.ResourcePath.LastIndexOf("\\", StringComparison.Ordinal));
 
                 IResource res = null;
 
@@ -68,7 +69,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                         break;
                 }
 
-                ResourceCatalog.Instance.SaveResource(GlobalConstants.ServerWorkspaceID, res, "", "", src.ResourcePath);
+                ResourceCatalog.Instance.SaveResource(GlobalConstants.ServerWorkspaceID, res, "", "", savePath.ToString());
                 ServerExplorerRepo.UpdateItem(res);
                 msg.HasError = false;
 

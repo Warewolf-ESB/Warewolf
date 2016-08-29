@@ -206,7 +206,7 @@ namespace Dev2.Activities.Specs.Composition
                         connection = new ServerProxy(remoteServer.WebAddress, remoteServer.UserName, remoteServer.Password);
                     }
 
-                    var newEnvironment = new EnvironmentModel(remoteServer.ResourceID, connection) { Name = remoteServer.ResourceName, Category = remoteServer.ResourcePath };
+                    var newEnvironment = new EnvironmentModel(remoteServer.ResourceID, connection) { Name = remoteServer.ResourceName };
                     EnsureEnvironmentConnected(newEnvironment, EnvironmentConnectionTimeout);
                     newEnvironment.ForceLoadResources();
 
@@ -1424,7 +1424,7 @@ namespace Dev2.Activities.Specs.Composition
             TryGetValue("environment", out environmentModel);
             TryGetValue("resourceRepo", out repository);
             var rep = new VersionManagerProxy(environmentModel.Connection, new CommunicationControllerFactory());
-            var versions = rep.GetVersions(id);
+            var versions = rep.GetVersions(id,environmentModel.Category);
             _scenarioContext["Versions"] = versions;
             Assert.AreEqual(numberOfVersions, versions.Count);
         }

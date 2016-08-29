@@ -153,6 +153,12 @@ namespace Dev2.Runtime.ServiceModel.Data
         public abstract bool IsReservedService { get; }
         public abstract bool IsServer { get; }
         public abstract bool IsResourceVersion { get; }
+
+        public string GetResourcePath(Guid workspaceID)
+        {
+            return FilePath.Replace(EnvironmentVariables.GetWorkspacePath(workspaceID),"").Replace(".xml","");
+        }
+
         public IVersionInfo VersionInfo
         {
             get
