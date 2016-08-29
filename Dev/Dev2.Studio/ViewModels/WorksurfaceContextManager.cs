@@ -92,7 +92,7 @@ namespace Dev2.Studio.ViewModels
 
         void AddDeploySurface(IEnumerable<IExplorerTreeItem> items);
 
-        void OpenVersion(Guid resourceId, IVersionInfo versionInfo);
+        void OpenVersion(Guid resourceId, IVersionInfo versionInfo, string resourcePath);
 
         void NewEmailSource(string resourcePath);
 
@@ -422,9 +422,9 @@ namespace Dev2.Studio.ViewModels
             }
         }
 
-        public void OpenVersion(Guid resourceId, IVersionInfo versionInfo)
+        public void OpenVersion(Guid resourceId, IVersionInfo versionInfo, string resourcePath)
         {
-            var workflowXaml = ActiveServer?.ProxyLayer?.GetVersion(versionInfo);
+            var workflowXaml = ActiveServer?.ProxyLayer?.GetVersion(versionInfo, resourcePath);
             if (workflowXaml != null)
             {
                 IResourceModel resourceModel =
@@ -640,7 +640,6 @@ namespace Dev2.Studio.ViewModels
                 Id = db.ResourceID,
                 Name = db.ResourceName,
                 Password = db.Password,
-                Path = db.ResourcePath,
                 ServerName = db.Server,
                 Type = db.ServerType,
                 UserName = db.UserID
@@ -659,8 +658,7 @@ namespace Dev2.Studio.ViewModels
             {
                 SelectedDll = new DllListing { FullName = db.AssemblyLocation, Name = db.AssemblyName, Children = new Collection<IFileListing>(), IsDirectory = false },
                 Id = db.ResourceID,
-                Name = db.ResourceName,
-                Path = db.ResourcePath
+                Name = db.ResourceName
             };
             var workSurfaceKey = WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.PluginSource);
             workSurfaceKey.EnvironmentID = resourceModel.Environment.ID;
@@ -678,8 +676,7 @@ namespace Dev2.Studio.ViewModels
                 Id = db.ResourceID,
                 ClsId = db.ClsId,
                 Is32Bit = db.Is32Bit,
-                ResourceName = db.ResourceName,
-                ResourcePath = db.ResourcePath
+                ResourceName = db.ResourceName
             };
             var workSurfaceKey = WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.ComPluginSource);
             workSurfaceKey.EnvironmentID = resourceModel.Environment.ID;
@@ -698,7 +695,6 @@ namespace Dev2.Studio.ViewModels
                 Id = db.ResourceID,
                 Name = db.ResourceName,
                 Password = db.Password,
-                Path = db.ResourcePath,
                 HostName = db.Address,
 
                 UserName = db.UserName
@@ -720,7 +716,6 @@ namespace Dev2.Studio.ViewModels
                 Id = db.ResourceID,
                 Name = db.ResourceName,
                 Password = db.Password,
-                Path = db.ResourcePath,
                 UserName = db.UserName
             };
             var workSurfaceKey = WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.SharepointServerSource);
@@ -797,7 +792,6 @@ namespace Dev2.Studio.ViewModels
             {
                 ResourceID = source.ResourceID,
                 ResourceName = source.ResourceName,
-                ResourcePath = source.ResourcePath,
                 HostName = source.HostName,
                 Port = source.Port,
                 UserName = source.UserName,
@@ -848,8 +842,7 @@ namespace Dev2.Studio.ViewModels
                 UserName = connection.UserName,
                 Password = connection.Password,
                 ServerName = address,
-                Name = connection.ResourceName,
-                ResourcePath = connection.ResourcePath
+                Name = connection.ResourceName
             };
 
             EditServer(selectedServer);

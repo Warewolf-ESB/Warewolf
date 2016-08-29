@@ -25,12 +25,14 @@ namespace Dev2.Common.Interfaces
         /// </summary>
         /// <param name="id">resource id</param>
         void DeleteResource(Guid id);
+
         /// <summary>
         /// Rename a resource
         /// </summary>
         /// <param name="id">the resource id</param>
         /// <param name="newName">the new name</param>
-        void Rename(Guid id, string newName);
+        /// <param name="resourcePath"></param>
+        void Rename(Guid id, string newName, string resourcePath);
 
         /// <summary>
         /// Rename a folder

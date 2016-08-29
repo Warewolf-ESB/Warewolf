@@ -72,7 +72,7 @@ namespace Warewolf.Studio.AntiCorruptionLayer
             if (vm.ResourceType == "Folder")
                 UpdateManagerProxy.RenameFolder(vm.ResourcePath, newName, vm.ResourceId);
             else
-                UpdateManagerProxy.Rename(vm.ResourceId, newName);
+                UpdateManagerProxy.Rename(vm.ResourceId, newName, vm.ResourcePath);
             return true;
         }
 
@@ -177,14 +177,14 @@ namespace Warewolf.Studio.AntiCorruptionLayer
                 graph.Nodes.Remove(node);
         }
 
-        public StringBuilder GetVersion(IVersionInfo versionInfo)
+        public StringBuilder GetVersion(IVersionInfo versionInfo, string resourcePath)
         {
-            return VersionManager.GetVersion(versionInfo);
+            return VersionManager.GetVersion(versionInfo, resourcePath);
         }
 
-        public ICollection<IVersionInfo> GetVersions(Guid id)
+        public ICollection<IVersionInfo> GetVersions(Guid id, string resourcePath)
         {
-            return new List<IVersionInfo>(VersionManager.GetVersions(id).Select(a => a.VersionInfo));
+            return new List<IVersionInfo>(VersionManager.GetVersions(id, resourcePath).Select(a => a.VersionInfo));
         }
 
         public IRollbackResult Rollback(Guid resourceId, string version)
