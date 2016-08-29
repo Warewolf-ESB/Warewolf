@@ -401,7 +401,6 @@ namespace Warewolf.Studio.ViewModels
                         Password = environmentConnection.Password,
                         ServerName = environmentConnection.WebServerUri.Host,
                         Name = server.ResourceName,
-                        ResourcePath = server.ResourcePath
                     });
                 }
             }

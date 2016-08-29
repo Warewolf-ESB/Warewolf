@@ -69,12 +69,13 @@ namespace Dev2.Runtime.ESB.Management.Services
                 var version = serializer.Deserialize<IVersionInfo>(values["versionInfo"]);
                 Dev2Logger.Info("Get Version. " + version);
                 StringBuilder tmp;
-                string resourcePath = null;
-                values.TryGetValue("resourcePath", out tmp);
+                Guid resourceId = Guid.Empty;
+                values.TryGetValue("resourceId", out tmp);
                 if (tmp != null)
                 {
-                    resourcePath = tmp.ToString();
+                    resourceId = Guid.Parse(tmp.ToString());
                 }
+                var resourcePath = ResourceCatalog.GetResourcePath(theWorkspace.ID, resourceId);
                 var result = ServerVersionRepo.GetVersion(version, resourcePath);
                 res.Message.Append(result);
                 Dev2XamlCleaner dev2XamlCleaner = new Dev2XamlCleaner();
@@ -109,13 +110,13 @@ namespace Dev2.Runtime.ESB.Management.Services
         #endregion
         public IServerVersionRepository ServerVersionRepo
         {
-            get { return _serverExplorerRepository ?? new ServerVersionRepository(new VersionStrategy(), ResourceCatalog.Instance, new DirectoryWrapper(), EnvironmentVariables.GetWorkspacePath(GlobalConstants.ServerWorkspaceID), new FileWrapper()); }
+            get { return _serverExplorerRepository ?? new ServerVersionRepository(new VersionStrategy(), Hosting.ResourceCatalog.Instance, new DirectoryWrapper(), EnvironmentVariables.GetWorkspacePath(GlobalConstants.ServerWorkspaceID), new FileWrapper()); }
             set { _serverExplorerRepository = value; }
         }
 
-        public IResourceCatalog Resources
+        public IResourceCatalog ResourceCatalog
         {
-            get { return _resourceCatalog ?? ResourceCatalog.Instance; }
+            get { return _resourceCatalog ?? Hosting.ResourceCatalog.Instance; }
             set { _resourceCatalog = value; }
         }
     }
