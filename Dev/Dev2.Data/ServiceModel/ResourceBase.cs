@@ -156,7 +156,11 @@ namespace Dev2.Runtime.ServiceModel.Data
 
         public string GetResourcePath(Guid workspaceID)
         {
-            return FilePath.Replace(EnvironmentVariables.GetWorkspacePath(workspaceID),"").Replace(".xml","");
+            if (FilePath == null && IsReservedService)
+            {
+                return ResourceName;
+            }
+            return FilePath?.Replace(EnvironmentVariables.GetWorkspacePath(workspaceID),"").Replace(".xml","") ?? "";
         }
 
         public IVersionInfo VersionInfo

@@ -361,6 +361,10 @@ namespace Dev2.Runtime.ResourceCatalogImpl
                         workspaceID = GlobalConstants.ServerWorkspaceID;
                         continue;
                     }
+                    else
+                    {
+                        
+                    }
                     return foundResource;
                 }
             }
