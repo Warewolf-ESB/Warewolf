@@ -153,10 +153,10 @@ namespace Warewolf.Studio.ViewModels
         {
             if (ax.ResourceType == @"Folder")
             {
-                ax.Children.Apply(ay =>
-                {
-                    ay.IsResourceChecked = ax.IsResourceChecked;
-                });
+                //ax.Children.Apply(ay =>
+                //{
+                //    ay.IsResourceChecked = ax.IsResourceChecked;
+                //});
             }
             else
             {                

@@ -33,6 +33,12 @@ namespace Warewolf.Studio.ViewModels
             Status = @"";
         }
 
+        public DeployStatsViewerViewModel(IList<IExplorerTreeItem> items, IExplorerViewModel destination)
+        {
+            _items = items;
+            _destination = destination;
+        }
+
         #region Implementation of IDeployStatsViewerViewModel
 
         /// <summary>
@@ -146,7 +152,8 @@ namespace Warewolf.Studio.ViewModels
             {
                 Calculate(_items);
             }
-        }        
+        }
+
         public void CheckDestinationPersmisions()
         {
             _destinationItems = _destination.SelectedEnvironment?.AsList();
@@ -160,9 +167,13 @@ namespace Warewolf.Studio.ViewModels
                         {
                             if (currentItem.Server.CanDeployFrom && explorerItemViewModel.Server.CanDeployTo)
                             {
-                                if (IsSourceAndDestinatioSameServer(currentItem, explorerItemViewModel))
+                                if (!IsSourceAndDestinationSameServer(currentItem, explorerItemViewModel))
                                 {
-                                    var permission = explorerItemViewModel.Server.Permissions.FirstOrDefault(p => p.ResourceID == explorerItemViewModel.ResourceId);
+                                    var permission = explorerItemViewModel.Server.GetPermissions(explorerItemViewModel.ResourceId);
+//                                    if (permission == null)
+//                                    {
+//                                        permission = explorerItemViewModel.Server.Permissions.FirstOrDefault(p => p.ResourceID == Guid.Empty && p.IsServer);
+//                                    }
                                     SetItemCheckState(permission, currentItem);
                                 }
                                 else
@@ -176,17 +187,15 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        private static bool IsSourceAndDestinatioSameServer(IExplorerTreeItem currentItem, IExplorerItemViewModel explorerItemViewModel)
+        private static bool IsSourceAndDestinationSameServer(IExplorerTreeItem currentItem, IExplorerItemViewModel explorerItemViewModel)
         {            
-            return currentItem.Server != explorerItemViewModel.Server;
+            return currentItem.Server == explorerItemViewModel.Server;
         }
 
-        private static void SetItemCheckState(IWindowsGroupPermission permission, IExplorerTreeItem currentItem)
+        private static void SetItemCheckState(Permissions permission, IExplorerTreeItem currentItem)
         {
-            var perms = permission?.Permissions.ToString();
-            if(perms == null)
-                currentItem.CanDeploy = false;
-            else if(!perms.Contains(Permissions.Contribute.ToString()))
+            var perms = permission.ToString();            
+            if(!perms.Contains(Permissions.Contribute.ToString()))
                 currentItem.CanDeploy = false;
             else
                 currentItem.CanDeploy = true;
