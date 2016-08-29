@@ -286,7 +286,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
 
 
 
-        private void PerfomSaveResult(out ResourceCatalogResult saveResult, Guid workspaceID, IResource resource, StringBuilder contents, bool overwriteExisting)
+        private void PerfomSaveResult(out ResourceCatalogResult saveResult, Guid workspaceID, IResource resource, StringBuilder contents, bool overwriteExisting, string savedPath)
         {
             var fileManager = new TxFileManager();
             using (TransactionScope tx = new TransactionScope())

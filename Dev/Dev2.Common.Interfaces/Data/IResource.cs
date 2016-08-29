@@ -46,11 +46,6 @@ namespace Dev2.Common.Interfaces.Data
         string ResourceType { get; set; }
 
         /// <summary>
-        ///     Gets or sets the category of the resource.
-        /// </summary>
-        string ResourcePath { get; set; }
-
-        /// <summary>
         ///     Gets or sets the file path of the resource.
         ///     <remarks>
         ///         Must only be used by the catalog!

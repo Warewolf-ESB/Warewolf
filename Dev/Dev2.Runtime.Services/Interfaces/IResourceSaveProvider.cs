@@ -9,8 +9,8 @@ namespace Dev2.Runtime.Interfaces
 {
     public interface IResourceSaveProvider
     {
-        ResourceCatalogResult SaveResource(Guid workspaceID, StringBuilder resourceXml, string reason = "", string user = "");
-        ResourceCatalogResult SaveResource(Guid workspaceID, IResource resource, string reason = "", string user = "");
+        ResourceCatalogResult SaveResource(Guid workspaceID, StringBuilder resourceXml, string reason = "", string user = "", string savedPath = "");
+        ResourceCatalogResult SaveResource(Guid workspaceID, IResource resource, string reason = "", string user = "", string savedPath = "");
         Action<IResource> ResourceSaved { get; set; }
         Action<Guid, IList<ICompileMessageTO>> SendResourceMessages { get; set; }
     }
