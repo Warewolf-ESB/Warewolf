@@ -879,13 +879,13 @@ namespace Warewolf.Studio.ViewModels
                     {
                         _isResource = true;
                     }
-                    else if (Children.Any(a => !a.IsResourceChecked.HasValue || a.IsResourceChecked.Value))
+                    else if (Children.All(a => a.IsResourceChecked.HasValue && !a.IsResourceChecked.Value))
                     {
-                        _isResource = null;
+                        _isResource = false;
                     }
                     else
                     {
-                        _isResource = false;
+                        _isResource = null;
                     }
                     if (!_isResource.HasValue || _isResource.Value)
                     {
