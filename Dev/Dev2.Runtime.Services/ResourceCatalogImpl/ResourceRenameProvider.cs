@@ -16,6 +16,7 @@ using Dev2.Runtime.ServiceModel.Data;
 using Warewolf.Resource.Errors;
 // ReSharper disable PrivateMembersMustHaveComments
 // ReSharper disable PublicMembersMustHaveComments
+// ReSharper disable InconsistentNaming
 
 namespace Dev2.Runtime.ResourceCatalogImpl
 {
@@ -71,7 +72,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
             GlobalConstants.HandleEmptyParameters(newCategory, "newCategory");
             try
             {
-                var resourcesToUpdate = _resourceCatalog.GetResources(workspaceID).Where(resource => resource.ResourcePath.StartsWith(oldCategory + "\\", StringComparison.OrdinalIgnoreCase)).ToList();
+                var resourcesToUpdate = _resourceCatalog.GetResources(workspaceID).Where(resource => resource.GetResourcePath(workspaceID).StartsWith(oldCategory + "\\", StringComparison.OrdinalIgnoreCase)).ToList();
 
                 return RenameCategory(workspaceID, oldCategory, newCategory, resourcesToUpdate);
             }

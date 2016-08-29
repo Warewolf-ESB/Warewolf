@@ -289,7 +289,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
                 try
                 {
                     var resources = _resourceCatalog.GetResources(workspaceID);
-                    var conflicting = resources.FirstOrDefault(r => resource.ResourceID != r.ResourceID && r.ResourcePath != null && r.ResourcePath.Equals(savedPath, StringComparison.InvariantCultureIgnoreCase) && r.ResourceName.Equals(resource.ResourceName, StringComparison.InvariantCultureIgnoreCase));
+                    var conflicting = resources.FirstOrDefault(r => resource.ResourceID != r.ResourceID && r.GetResourcePath(workspaceID) != null && r.GetResourcePath(workspaceID).Equals(savedPath, StringComparison.InvariantCultureIgnoreCase) && r.ResourceName.Equals(resource.ResourceName, StringComparison.InvariantCultureIgnoreCase));
                     if (conflicting != null && !conflicting.IsNewResource || conflicting != null && !overwriteExisting)
                     {
                         saveResult = ResourceCatalogResultBuilder.CreateDuplicateMatchResult(string.Format(ErrorResource.TypeConflict, conflicting.ResourceType));
