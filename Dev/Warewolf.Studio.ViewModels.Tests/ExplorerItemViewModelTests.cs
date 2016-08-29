@@ -520,7 +520,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(_target.OpenVersionCommand.CanExecute(null));
 
             //assert
-            _shellViewModelMock.Verify(it => it.OpenVersion(_target.ResourceId, _target.VersionInfo));
+            _shellViewModelMock.Verify(it => it.OpenVersion(_target.Parent.ResourceId, _target.VersionInfo));
         }
 
 
