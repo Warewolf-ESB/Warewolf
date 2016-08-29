@@ -2832,6 +2832,40 @@ namespace Dev2.Core.Tests
             //------------Assert Results-------------------------
             Assert.IsFalse(isDownloading);
         }
+
+        [TestMethod]
+        public void MainViewModel_HasNewVersion_ShouldCallBrowserPopupContollerToLatestVersionPage()
+        {
+            var popupController = new Mock<IBrowserPopupController>();
+            popupController.Setup(p => p.ShowPopup(It.IsAny<string>())).Verifiable();
+            CustomContainer.Register(new Mock<IWindowManager>().Object);
+            var envRepo = new Mock<IEnvironmentRepository>();
+            envRepo.Setup(e => e.All()).Returns(new List<IEnvironmentModel>());
+            envRepo.Setup(e => e.Source).Returns(new Mock<IEnvironmentModel>().Object);
+            var mockVersionChecker = new Mock<IVersionChecker>();
+            mockVersionChecker.Setup(checker => checker.GetNewerVersionAsync()).Returns(Task.FromResult(true));
+            var vm = new MainViewModel(new Mock<IEventAggregator>().Object, new Mock<IAsyncWorker>().Object, envRepo.Object, mockVersionChecker.Object, false, popupController.Object);
+            vm.DisplayDialogForNewVersion();
+
+            popupController.Verify(p => p.ShowPopup(Warewolf.Studio.Resources.Languages.Core.WarewolfLatestDownloadUrl));
+        }
+
+        [TestMethod]
+        public void MainViewModel_NoNewVersion_ShouldNotCallBrowserPopupContollerToLatestVersionPage()
+        {
+            var popupController = new Mock<IBrowserPopupController>();
+            popupController.Setup(p => p.ShowPopup(It.IsAny<string>())).Verifiable();
+            CustomContainer.Register(new Mock<IWindowManager>().Object);
+            var envRepo = new Mock<IEnvironmentRepository>();
+            envRepo.Setup(e => e.All()).Returns(new List<IEnvironmentModel>());
+            envRepo.Setup(e => e.Source).Returns(new Mock<IEnvironmentModel>().Object);
+            var mockVersionChecker = new Mock<IVersionChecker>();
+            mockVersionChecker.Setup(checker => checker.GetNewerVersionAsync()).Returns(Task.FromResult(false));
+            var vm = new MainViewModel(new Mock<IEventAggregator>().Object, new Mock<IAsyncWorker>().Object, envRepo.Object, mockVersionChecker.Object, false, popupController.Object);
+            vm.DisplayDialogForNewVersion();
+
+            popupController.Verify(p => p.ShowPopup(Warewolf.Studio.Resources.Languages.Core.WarewolfLatestDownloadUrl),Times.Never);
+        }
     }
 
     public class SchedulerViewModelForTesting : SchedulerViewModel

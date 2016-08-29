@@ -898,6 +898,9 @@ The more information you can provide us with, the faster we can track the issue 
   <data name="WarewolfUrl" xml:space="preserve">
     <value>https://warewolf.io/</value>
   </data>
+  <data name="WarewolfLatestDownloadUrl" xml:space="preserve">
+    <value>https://warewolf.io/release-notes.php</value>
+  </data>
   <data name="ContributorsUrl" xml:space="preserve">
     <value>https://warewolf.io/contributors.php</value>
   </data>
