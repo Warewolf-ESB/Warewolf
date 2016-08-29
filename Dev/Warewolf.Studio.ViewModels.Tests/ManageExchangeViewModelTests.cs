@@ -6,6 +6,7 @@ using Dev2.Common.Interfaces.SaveDialog;
 using Microsoft.Practices.Prism.PubSubEvents;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+// ReSharper disable InconsistentNaming
 
 namespace Warewolf.Studio.ViewModels.Tests
 {

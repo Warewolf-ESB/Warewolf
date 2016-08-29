@@ -19,6 +19,7 @@ namespace Dev2.Common.Interfaces.Deploy
         /// root and all children of selected items
         /// </summary>
         ICollection<IExplorerTreeItem> SelectedItems { get; set; }
+        ICollection<IExplorerTreeItem> SourceLoadedItems { get; }
 
         IEnumerable<IExplorerTreeItem> Preselected { get; set; }
 

@@ -506,7 +506,7 @@ The more information you can provide us with, the faster we can track the issue 
     <value>Select this item to deploy.</value>
   </data>
   <data name="DeployResourceCheckboxViewPermissionError" xml:space="preserve">
-    <value>You only have view permission on this item, you cannot deploy it.</value>
+    <value>You do not have contribute permission on this item, you cannot deploy it.</value>
   </data>
   <data name="DecisionDropNotAllowedMessage" xml:space="preserve">
     <value>The Decision tool cannot be dropped onto this tool.</value>
@@ -897,6 +897,9 @@ The more information you can provide us with, the faster we can track the issue 
   </data>
   <data name="WarewolfUrl" xml:space="preserve">
     <value>https://warewolf.io/</value>
+  </data>
+  <data name="WarewolfLatestDownloadUrl" xml:space="preserve">
+    <value>https://warewolf.io/release-notes.php</value>
   </data>
   <data name="ContributorsUrl" xml:space="preserve">
     <value>https://warewolf.io/contributors.php</value>

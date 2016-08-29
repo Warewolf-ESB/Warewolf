@@ -40,9 +40,11 @@ namespace Warewolf.Studio.ViewModels
         bool _fromActivityDrop;
         bool _allowDrag;
 
+        public IPopupController PopupController { get; set; }
+
         protected ExplorerViewModelBase()
-        {            
-            RefreshCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(()=>Refresh(true));
+        {
+            RefreshCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(() => Refresh(true));
             ClearSearchTextCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(() => SearchText = "");
             CreateFolderCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(CreateFolder);
         }
@@ -172,18 +174,13 @@ namespace Warewolf.Studio.ViewModels
         {
             if (SelectedEnvironment != null)
             {
-                RefreshEnvironment(SelectedEnvironment,true);
+                RefreshEnvironment(SelectedEnvironment, true);
             }
         }
         protected virtual void Refresh(bool refresh)
         {
             IsRefreshing = true;
-            Environments.ForEach(env=>RefreshEnvironment(env,refresh));
-            Environments = new List<IEnvironmentViewModel>(Environments);
-            foreach (var environment in Environments)
-            {
-                environment.Children = new ObservableCollection<IExplorerItemViewModel>(environment.Children.OrderByDescending(a => a.IsFolder).ThenBy(b => b.ResourceName).ToList());
-            }
+            Environments.ForEach(env => RefreshEnvironment(env, refresh));
             IsRefreshing = false;
             ConnectControlViewModel.LoadNewServers();
         }
@@ -191,11 +188,11 @@ namespace Warewolf.Studio.ViewModels
         private async void RefreshEnvironment(IEnvironmentViewModel environmentViewModel, bool refresh)
         {
             IsRefreshing = true;
-            
+
             if (environmentViewModel.IsConnected)
             {
                 environmentViewModel.ForcedRefresh = true;
-                await environmentViewModel.Load(false,refresh);               
+                await environmentViewModel.Load(false, refresh);
                 if (!string.IsNullOrEmpty(SearchText))
                 {
                     Filter(SearchText);
@@ -338,7 +335,7 @@ namespace Warewolf.Studio.ViewModels
                 Application.Current.Dispatcher.Invoke(async () =>
                 {
                     IsLoading = true;
-                    
+
                     var existing = _environments.FirstOrDefault(a => a.ResourceId == server.EnvironmentID);
                     if (existing == null)
                     {
@@ -358,9 +355,9 @@ namespace Warewolf.Studio.ViewModels
             if (ConnectControlViewModel != null)
             {
                 ConnectControlViewModel.IsLoading = false;
-            }            
+            }
             var env = Environments.FirstOrDefault(a => a.ResourceId == environmentId);
-            if (env!=null && env.IsConnected)
+            if (env != null && env.IsConnected)
             {
                 env.SetPropertiesForDialogFromPermissions(env.Server.Permissions[0]);
             }

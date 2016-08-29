@@ -36,23 +36,23 @@ namespace Dev2.Runtime.ServiceModel.Data
 
             // Setup type include default port
             var attributeSafe = xml.AttributeSafe("ServerType");
-            switch(attributeSafe)
+            switch(attributeSafe.ToLowerInvariant())
             {
-                case "SqlDatabase":
+                case "sqldatabase":
                     ServerType = enSourceType.SqlDatabase;
                     Port = 1433;
                     break;
-                case "MySqlDatabase":
+                case "mysqldatabase":
                     ServerType = enSourceType.MySqlDatabase;
                     break;
-                case "Oracle":
+                case "oracle":
                     ServerType = enSourceType.Oracle;
                     Port = 1521;
                     break;
-                case "ODBC":
+                case "odbc":
                     ServerType = enSourceType.ODBC;
                     break;
-                case "PostgreSQL":
+                case "postgresql":
                     ServerType = enSourceType.PostgreSQL;
                     
                     break;

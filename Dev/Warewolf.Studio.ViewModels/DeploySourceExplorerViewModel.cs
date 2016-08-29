@@ -77,7 +77,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 ConnectControlViewModel.IsLoading = false;
             }
-
+            _statsArea?.Calculate(SourceLoadedItems.ToList());
         }
 
         void CheckPreselectedItems(Guid environmentID)
@@ -153,10 +153,10 @@ namespace Warewolf.Studio.ViewModels
         {
             if (ax.ResourceType == @"Folder")
             {
-                ax.Children.Apply(ay =>
-                {
-                    ay.IsResourceChecked = ax.IsResourceChecked;
-                });
+                //ax.Children.Apply(ay =>
+                //{
+                //    ay.IsResourceChecked = ax.IsResourceChecked;
+                //});
             }
             else
             {                
@@ -177,14 +177,24 @@ namespace Warewolf.Studio.ViewModels
                     .ToList() : new List<IExplorerTreeItem>();
             }
             set
-            {
-             
+            {             
                 foreach (var explorerTreeItem in value)
                 {
                     Select(explorerTreeItem);
                 }
             }
         }
+        public ICollection<IExplorerTreeItem> SourceLoadedItems
+        {
+            get
+            {
+                return SelectedEnvironment != null ? SelectedEnvironment.AsList()
+                    .Select(a => a as IExplorerTreeItem)
+                    .ToList() : new List<IExplorerTreeItem>();
+            }
+        }
+
+
         public IEnumerable<IExplorerTreeItem> Preselected       
         {
             get
@@ -230,7 +240,7 @@ namespace Warewolf.Studio.ViewModels
                 _environments.Add(environmentModel);
                 await environmentModel.Load(IsDeploy);
                 OnPropertyChanged(() => Environments);
-                AfterLoad(server.EnvironmentID);
+               AfterLoad(server.EnvironmentID);
             }
         }
 

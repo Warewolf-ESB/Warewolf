@@ -2028,7 +2028,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to You only have view permission on this item, you cannot deploy it..
+        ///   Looks up a localized string similar to You do not have contribute permission on this item, you cannot deploy it..
         /// </summary>
         public static string DeployResourceCheckboxViewPermissionError {
             get {
@@ -8991,6 +8991,15 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string WarewolfHelpURL {
             get {
                 return ResourceManager.GetString("WarewolfHelpURL", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to https://warewolf.io/release-notes.php.
+        /// </summary>
+        public static string WarewolfLatestDownloadUrl {
+            get {
+                return ResourceManager.GetString("WarewolfLatestDownloadUrl", resourceCulture);
             }
         }
         
