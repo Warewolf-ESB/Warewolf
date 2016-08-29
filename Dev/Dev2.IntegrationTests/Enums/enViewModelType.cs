@@ -38,7 +38,6 @@ namespace Dev2.Integration.Tests.Enums
         CreateResourceViewModel = 60,
         ResourceDesignerViewModel = 61,
         // User Interface Builders
-        LayoutGridViewModel = 70,
         LayoutObjectViewModel = 71,
         WebResourceViewModel = 72,
         WebsiteEditorViewModel = 73,

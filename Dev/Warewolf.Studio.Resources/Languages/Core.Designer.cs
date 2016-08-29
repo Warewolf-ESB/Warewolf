@@ -8986,6 +8986,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to https://warewolf.io/release-notes.php.
+        /// </summary>
+        public static string WarewolfLatestDownloadUrl {
+            get {
+                return ResourceManager.GetString("WarewolfLatestDownloadUrl", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to https://warewolf.io/.
         /// </summary>
         public static string WarewolfUrl {

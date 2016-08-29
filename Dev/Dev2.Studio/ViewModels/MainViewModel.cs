@@ -55,7 +55,6 @@ using Dev2.Studio.ViewModels.Help;
 using Dev2.Studio.ViewModels.WorkSurface;
 using Dev2.Threading;
 using Dev2.ViewModels;
-using Dev2.Views.Dialogs;
 using Dev2.Workspaces;
 using Warewolf.Studio.ViewModels;
 using Warewolf.Studio.Views;
@@ -1286,14 +1285,9 @@ namespace Dev2.Studio.ViewModels
             return hasNewVersion;
         }
 
-        public async void DisplayDialogForNewVersion()
+        public void DisplayDialogForNewVersion()
         {
-            var hasNewVersion = await CheckForNewVersion();
-            if (hasNewVersion)
-            {
-                var dialog = new WebLatestVersionDialog();
-                dialog.ShowDialog();
-            }
+            BrowserPopupController.ShowPopup(Warewolf.Studio.Resources.Languages.Core.WarewolfLatestDownloadUrl);
         }
 
 
