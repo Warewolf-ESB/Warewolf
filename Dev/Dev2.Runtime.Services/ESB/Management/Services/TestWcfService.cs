@@ -37,11 +37,10 @@ namespace Dev2.Runtime.ESB.Management.Services
                 var source = ResourceCatalog.Instance.GetResource<WcfSource>(GlobalConstants.ServerWorkspaceID, service.Source.Id);
                 var parameters = service.Inputs == null ? new List<MethodParameter>() : service.Inputs.Select(a => new MethodParameter() { EmptyToNull = a.EmptyIsNull, IsRequired = a.RequiredField, Name = a.Name, Value = a.Value, TypeName = a.TypeName }).ToList();
 
-                var res = new WcfService()
+                var res = new WcfService
                 {
                     Method = new ServiceMethod(service.Action.Method, service.Name, parameters, new OutputDescription(), new List<MethodOutput>(), service.Action.Method),
                     ResourceName = service.Name,
-                    ResourcePath = service.Path,
                     ResourceID = service.Id,
                     Source = source
                 };

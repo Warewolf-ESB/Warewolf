@@ -151,7 +151,6 @@ namespace Dev2.Tests.Runtime.Services
             {
                 ResourceID = Guid.NewGuid(),
                 ResourceName = "Dev2TestingDB",
-                ResourcePath = "Test",
                 DatabaseName = emptyDBName?"": "Dev2TestingDB",
                 Server = "RSAKLFSVRGENDEV",
                 AuthenticationType = AuthenticationType.User,

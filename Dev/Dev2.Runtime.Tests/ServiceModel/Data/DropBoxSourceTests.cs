@@ -101,7 +101,6 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
                 AppKey = "",
                 AccessToken = "",
                 ResourceName = "TestResource",
-                ResourcePath = @"host\Server",
                 ResourceType = "DropBoxSource"
             };
 

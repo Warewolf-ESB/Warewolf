@@ -58,18 +58,17 @@ namespace Dev2.Runtime.ESB.Management.Services
                 switch (src.GetType().Name)
                 {
                     case "DropBoxSource":
-                        res = new DropBoxSource()
+                        res = new DropBoxSource
                         {
                             ResourceID = src.ResourceID,
                             AppKey = src.AppKey,
                             AccessToken = src.AccessToken,
-                            ResourceName = src.ResourceName,
-                            ResourcePath = src.ResourcePath
+                            ResourceName = src.ResourceName
                         };
                         break;
                 }
 
-                ResourceCatalog.Instance.SaveResource(GlobalConstants.ServerWorkspaceID, res);
+                ResourceCatalog.Instance.SaveResource(GlobalConstants.ServerWorkspaceID, res, "", "", src.ResourcePath);
                 ServerExplorerRepo.UpdateItem(res);
                 msg.HasError = false;
 

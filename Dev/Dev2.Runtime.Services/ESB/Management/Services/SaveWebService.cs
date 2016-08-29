@@ -63,7 +63,6 @@ namespace Dev2.Runtime.ESB.Management.Services
                     Method = new ServiceMethod(),
                     RequestUrl = string.Concat(src.SourceUrl, src.RequestUrl),
                     ResourceName = src.Name,
-                    ResourcePath = src.Path,
                     ResourceID = src.Id,
                     RequestBody = src.PostData,
                     Recordsets = recordsetList,
@@ -77,7 +76,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 res.Method.Parameters = parameters;
                 res.Method.Outputs = output;
                 res.Method.OutputDescription = res.GetOutputDescription();
-                ResourceCatalog.Instance.SaveResource(GlobalConstants.ServerWorkspaceID, res);
+                ResourceCatalog.Instance.SaveResource(GlobalConstants.ServerWorkspaceID, res, "", "", src.Path);
                 ServerExplorerRepo.UpdateItem(res);
 
                 msg.HasError = false;

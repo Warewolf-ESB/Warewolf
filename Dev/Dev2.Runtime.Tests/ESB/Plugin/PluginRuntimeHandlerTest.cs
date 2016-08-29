@@ -369,7 +369,6 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
                 ResourceID = resourceID,
                 ResourceName = "Dummy",
                 ResourceType = "PluginSource",
-                ResourcePath = "Test",
                 AssemblyName = assembly.GetName().Name
             };
         }
@@ -392,7 +391,6 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
                 ResourceID = Guid.NewGuid(),
                 ResourceName = "DummyPluginService",
                 ResourceType = "PluginService",
-                ResourcePath = "Tests",
                 Namespace = type.FullName,
                 Method = method,
                 Source = source
