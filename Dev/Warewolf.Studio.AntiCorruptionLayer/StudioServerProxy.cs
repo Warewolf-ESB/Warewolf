@@ -102,7 +102,7 @@ namespace Warewolf.Studio.AntiCorruptionLayer
                     }
                     if (explorerItemViewModel.ResourceType == "Version")
                     {
-                        VersionManager.DeleteVersion(explorerItemViewModel.ResourceId, explorerItemViewModel.VersionNumber);
+                        VersionManager.DeleteVersion(explorerItemViewModel.ResourceId, explorerItemViewModel.VersionNumber,explorerItemViewModel.ResourcePath);
                     }
                     else if (explorerItemViewModel.ResourceType == "Folder")
                     {
@@ -177,9 +177,9 @@ namespace Warewolf.Studio.AntiCorruptionLayer
                 graph.Nodes.Remove(node);
         }
 
-        public StringBuilder GetVersion(IVersionInfo versionInfo, string resourcePath)
+        public StringBuilder GetVersion(IVersionInfo versionInfo, Guid resourceId)
         {
-            return VersionManager.GetVersion(versionInfo, resourcePath);
+            return VersionManager.GetVersion(versionInfo, resourceId);
         }
 
         public ICollection<IVersionInfo> GetVersions(Guid id, string resourcePath)
