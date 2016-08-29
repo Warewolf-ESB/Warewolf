@@ -1277,13 +1277,9 @@ namespace Dev2.Studio.ViewModels
             return hasNewVersion;
         }
 
-        public async void DisplayDialogForNewVersion()
+        public void DisplayDialogForNewVersion()
         {
-            var hasNewVersion = await CheckForNewVersion();
-            if (hasNewVersion)
-            {
-                BrowserPopupController.ShowPopup(Warewolf.Studio.Resources.Languages.Core.WarewolfLatestDownloadUrl);
-            }
+            BrowserPopupController.ShowPopup(Warewolf.Studio.Resources.Languages.Core.WarewolfLatestDownloadUrl);
         }
 
 
