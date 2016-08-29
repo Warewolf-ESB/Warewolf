@@ -419,5 +419,14 @@ namespace Dev2.Runtime.Hosting
         {
             LoadWorkspace(GlobalConstants.ServerWorkspaceID);
         }
+
+        #region Implementation of IResourceDuplicateProvider
+
+        public ResourceCatalogResult DuplicateResource(Guid resourceId, string sourcePath, string destinationPath) => _catalogPluginContainer.DuplicateProvider.DuplicateResource(resourceId, sourcePath, destinationPath);
+
+        public ResourceCatalogResult DuplicateFolder(string sourcePath, string destinationPath, string newName) => _catalogPluginContainer.DuplicateProvider.DuplicateFolder(sourcePath, destinationPath, newName);
+        
+
+        #endregion
     }
 }
