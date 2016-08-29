@@ -116,7 +116,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
         public string GetResourcePath(Guid workspaceID,Guid resourceId)
         {
             var resource = GetResource(workspaceID, resourceId);
-            return resource.ResourcePath;
+            return resource.GetResourcePath(workspaceID);
         }
 
         public List<IResource> GetResources(Guid workspaceID)
@@ -354,7 +354,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
                         {
                             return false;
                         }
-                        return string.Equals(r.ResourcePath ?? "", resourcePath, StringComparison.InvariantCultureIgnoreCase) && string.Equals(r.ResourceName, resourceNameToSearchFor, StringComparison.InvariantCultureIgnoreCase) && (resourceType == "Unknown" || r.ResourceType == resourceType.ToString());
+                        return string.Equals(r.GetResourcePath(workspaceID) ?? "", resourcePath, StringComparison.InvariantCultureIgnoreCase) && string.Equals(r.ResourceName, resourceNameToSearchFor, StringComparison.InvariantCultureIgnoreCase) && (resourceType == "Unknown" || r.ResourceType == resourceType.ToString());
                     });
                     if (foundResource == null && workspaceID != GlobalConstants.ServerWorkspaceID)
                     {
