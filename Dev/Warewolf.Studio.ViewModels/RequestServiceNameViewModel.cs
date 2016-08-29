@@ -72,10 +72,13 @@ namespace Warewolf.Studio.ViewModels
         {
             try
             {
-                var explorerTreeItems = Utilities.TraverseItems(SelectedItem, item => item.Children ?? new ObservableCollection<IExplorerItemViewModel>())
-                                                 .Where(item => item.ResourceId != SelectedItem.ResourceId);
+
+                var treeItems = Utilities.TraverseItems(_explorerItemViewModel, item => item.Children ?? new ObservableCollection<IExplorerItemViewModel>()).ToList();
+
+                var explorerTreeItem = treeItems.SingleOrDefault(item => item.IsFolder && item.ResourceId == SelectedItem.ResourceId);
+                treeItems.Remove(explorerTreeItem);
                 bool isFolder = SelectedItem.IsFolder;
-                List<LightExplorerItem> lightExplorerItems = explorerTreeItems.Select(item => new LightExplorerItem
+                List<LightExplorerItem> lightExplorerItems = treeItems.Select(item => new LightExplorerItem
                 {
                     IsFolder = item.IsFolder,
                     IsService = item.IsFolder,

@@ -7,7 +7,6 @@ using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Data;
-using Dev2.Common.Interfaces.Explorer;
 using Dev2.Common.Interfaces.Infrastructure;
 using Dev2.Communication;
 using Dev2.DynamicServices;
@@ -15,7 +14,6 @@ using Dev2.DynamicServices.Objects;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Interfaces;
 using Dev2.Workspaces;
-using Newtonsoft.Json;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
@@ -103,7 +101,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         private void SaveResource(ILightExplorerItem lightResource, StringBuilder newResourceName, string resourcePath = null)
         {
-            
+
             StringBuilder result = GetResourceCatalog().GetResourceContents(GlobalConstants.ServerWorkspaceID, lightResource.ResourceId);
             var resource = GetResourceCatalog().GetResource(GlobalConstants.ServerWorkspaceID, lightResource.ResourceId);
             var xElement = result.ToXElement();
@@ -112,7 +110,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             var resourceID = Guid.NewGuid();
             var resourceName = newResourceName.ToString().Split('\\').Last();
 
-            resource.ResourceName = lightResource.ResourceName;
+            resource.ResourceName = lightResource.ResourceName != resourceName ? resourceName : lightResource.ResourceName;
             resource.ResourceID = resourceID;
             var displayName = xElement.Element("DisplayName")?.Value;
             var category = xElement.Element("Category")?.Value;
@@ -120,7 +118,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             xElement.SetElementValue("Category", category?.Replace(displayName ?? "", resourceName));
             xElement.SetElementValue("ID", resourceID.ToString());
             xElement.SetElementValue("Name", resourceName);
-            xElement.SetElementValue("ResourcePath", resourcePath?? newResourceName.ToString());
+            xElement.SetElementValue("ResourcePath", resourcePath ?? newResourceName.ToString());
             var fixedResource = xElement.ToStringBuilder();
             GetResourceCatalog().SaveResource(GlobalConstants.ServerWorkspaceID, resource, fixedResource);
 
@@ -129,7 +127,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         private void SaveFolders(IEnumerable<ILightExplorerItem> explorerItems, StringBuilder newResourceName)
         {
-            
+
             var guidIds = new StringBuilder();
 
             var lightExplorerItems = explorerItems as ILightExplorerItem[] ?? explorerItems.ToArray();
@@ -138,12 +136,14 @@ namespace Dev2.Runtime.ESB.Management.Services
                 guidIds.Append(guidId + ",");
             }
             var resourceList = GetResourceCatalog().GetResourceList(GlobalConstants.ServerWorkspaceID, new Dictionary<string, string> { { "guidCsv", guidIds.ToString() } });
-
             var recourceClones = new List<IResource>(resourceList);
-            foreach (var recourceClone in lightExplorerItems)
+            foreach (var recourceClone in lightExplorerItems.Where(item => recourceClones.Any(resource => resource.ResourceID == item.ResourceId)))
             {
-
-                SaveResource(recourceClone, GetResourceName(recourceClone, newResourceName, recourceClone.ResourcePath.Split('\\')));
+                // ReSharper disable once RedundantToStringCall
+              /*  var indexOf = recourceClone.ResourcePath.IndexOf($"\\{newResourceName.ToString()}", StringComparison.CurrentCultureIgnoreCase);
+                var resourcePath = recourceClone.ResourcePath.Substring(indexOf - 1, recourceClone.ResourcePath.Length);
+                var stringBuilder = GetResourceName(recourceClone, newResourceName, recourceClone.ResourcePath.Split('\\'));*/
+                SaveResource(recourceClone, newResourceName, recourceClone.ResourcePath);
             }
         }
 
