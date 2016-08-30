@@ -419,7 +419,6 @@ namespace Warewolf.Studio.ViewModels.Tests
             //---------------Test Result -----------------------
             controller.Verify(communicationController => communicationController.AddPayloadArgument("ResourceID", It.IsAny<string>()));
             controller.Verify(communicationController => communicationController.AddPayloadArgument("NewResourceName", It.IsAny<string>()));
-            controller.Verify(communicationController => communicationController.AddPayloadArgument("FixRefs", It.IsAny<string>()));
             controller.Verify(communicationController => communicationController.ExecuteCommand<ExecuteMessage>(It.IsAny<IEnvironmentConnection>(), It.IsAny<Guid>()));
         }
 
