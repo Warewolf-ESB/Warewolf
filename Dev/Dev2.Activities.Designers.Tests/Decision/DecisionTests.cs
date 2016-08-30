@@ -229,6 +229,18 @@ namespace Dev2.Activities.Designers.Tests.Decision
 
         [TestMethod]
         [Owner("Pieter Terblanche")]
+        [TestCategory("DecisionTo_SearchCriteria")]
+        public void DecisionTo_SearchCriteria_Validate_IsFalse()
+        {
+            //------------Setup for test--------------------------
+            //------------Setup for test--------------------------
+            var decisionTO = new DecisionTO("xxxx", null, "Equals", 1);
+
+            Assert.IsNotNull(decisionTO.GetRuleSet("SearchCriteria", ""));
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
         [TestCategory("DecisionTo_CanAddOrRemove")]
         public void DecisionTo_CanAddOrRemove_Validate_IsTrue()
         {
