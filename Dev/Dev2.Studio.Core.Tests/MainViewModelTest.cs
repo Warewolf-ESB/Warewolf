@@ -1766,6 +1766,38 @@ namespace Dev2.Core.Tests
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory("MainViewModel_OpenResource")]
+        public void MainViewModel_OpenResource_HandleVersion_Result()
+        {
+            //------------Setup for test--------------------------
+            CreateFullExportsAndVm();
+
+            var env = SetupEnvironment();
+
+            //------------Execute Test---------------------------
+            MainViewModel.ActiveEnvironment = env.Object;
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(MainViewModel.ActiveEnvironment);
+            Assert.IsTrue(MainViewModel.ActiveEnvironment.IsConnected);
+            Assert.IsTrue(MainViewModel.ActiveEnvironment.CanStudioExecute);
+
+            var source = new Mock<IExplorerItemViewModel>();
+            source.Setup(a => a.ResourceId).Returns(Guid.NewGuid);
+            source.Setup(a => a.ResourceName).Returns("TestResourceName");
+            source.Setup(a => a.ResourceType).Returns("Version");
+
+            var viewModel = new Mock<IShellViewModel>();
+            var server = new Mock<IServer>();
+            server.SetupGet(server1 => server1.IsConnected).Returns(true);
+            viewModel.SetupGet(model => model.ActiveServer).Returns(server.Object);
+            viewModel.SetupGet(model => model.LocalhostServer).Returns(server.Object);
+            viewModel.SetupGet(model => model.ActiveServer.EnvironmentID).Returns(Guid.NewGuid);
+
+            MainViewModel.OpenResource(source.Object.ResourceId, viewModel.Object.ActiveServer);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("MainViewModel_OpenResource")]
         public void MainViewModel_OpenResource_Handle_Result()
         {
             //------------Setup for test--------------------------
