@@ -57,7 +57,7 @@ namespace Warewolf.Studio.ViewModels
 
         void DeploySourceExplorerViewModelSelectedEnvironmentChanged(object sender, Guid environmentId)
         {
-            UpdateItemForDeploy(environmentId);
+            UpdateItemForDeploy(environmentId);            
         }
 
         #region Overrides of ExplorerViewModel
@@ -209,7 +209,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        public virtual Version ServerVersion => Version.Parse( SelectedServer.GetServerVersion());
+        public virtual Version ServerVersion => Version.Parse( SelectedServer.GetServerVersion());        
 
         /// <summary>
         /// used to select a list of items from the explorer
