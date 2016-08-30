@@ -40,10 +40,9 @@ namespace Dev2.Runtime.ESB.Management.Services
                     ResourceID = src.Id,
                     AssemblyName = src.SelectedDll.Name,
                     AssemblyLocation = src.SelectedDll.FullName,
-                    ResourceName = src.Name,
-                    ResourcePath = src.Path
+                    ResourceName = src.Name
                 };
-                ResourceCatalog.Instance.SaveResource(GlobalConstants.ServerWorkspaceID, res);
+                ResourceCatalog.Instance.SaveResource(GlobalConstants.ServerWorkspaceID, res, "", "", src.Path);
                 ServerExplorerRepo.UpdateItem(res);
                 msg.HasError = false;
 

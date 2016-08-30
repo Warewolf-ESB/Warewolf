@@ -99,18 +99,18 @@ namespace Dev2.Tests.Runtime.Services
         public void DeleteVersion_Execute_Valid_ExpectServerCalled()
         {
             //------------Setup for test--------------------------
-            var DeleteVersion = new DeleteVersion();
+            var deleteVersion = new DeleteVersion();
             var serializer = new Dev2JsonSerializer();
             var ws = new Mock<IWorkspace>();
             var server = new Mock<IServerVersionRepository>();
             var res = Guid.NewGuid();
             //------------Execute Test---------------------------
-            DeleteVersion.ServerVersionRepo = server.Object;
-            var ax = DeleteVersion.Execute(new Dictionary<string, StringBuilder> { { "resourceId", new StringBuilder(res.ToString()) }, { "versionNumber", new StringBuilder("1") } }, ws.Object);
+            deleteVersion.ServerVersionRepo = server.Object;
+            var ax = deleteVersion.Execute(new Dictionary<string, StringBuilder> { { "resourceId", new StringBuilder(res.ToString()) }, { "versionNumber", new StringBuilder("1") } }, ws.Object);
 
             //------------Assert Results-------------------------
             serializer.Deserialize<ExecuteMessage>(ax);
-            server.Verify(a => a.DeleteVersion(res, "1"));
+            server.Verify(a => a.DeleteVersion(It.IsAny<Guid>(), "1", ""));
         }
     }
     // ReSharper restore InconsistentNaming

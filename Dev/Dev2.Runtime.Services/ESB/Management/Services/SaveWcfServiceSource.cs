@@ -34,17 +34,16 @@ namespace Dev2.Runtime.ESB.Management.Services
                 values.TryGetValue("WcfSource", out resourceDefinition);
 
                 var src = serializer.Deserialize<WcfServiceSourceDefinition>(resourceDefinition);
-                var con = new WcfSource()
+                var con = new WcfSource
                 {
                     EndpointUrl = src.EndpointUrl,
                     ResourceName = src.Name,
                     Name = src.Name,
-                    ResourcePath = src.Path,
                     ResourceID = src.Id,
                     Type = enSourceType.WcfSource,
                     ResourceType = "WcfSource"
                 };
-                ResourceCatalog.Instance.SaveResource(GlobalConstants.ServerWorkspaceID, con);
+                ResourceCatalog.Instance.SaveResource(GlobalConstants.ServerWorkspaceID, con, "", "", src.Path);
                 ServerExplorerRepo.UpdateItem(con);
 
                 msg.HasError = false;

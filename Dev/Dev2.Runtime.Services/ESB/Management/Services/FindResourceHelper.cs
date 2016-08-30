@@ -8,6 +8,7 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Dev2.Common;
@@ -27,8 +28,9 @@ namespace Dev2.Runtime.ESB.Management.Services
         /// Strips for ship.
         /// </summary>
         /// <param name="resource">The resource.</param>
+        /// <param name="workspaceID"></param>
         /// <returns></returns>
-        public SerializableResource SerializeResourceForStudio(IResource resource)
+        public SerializableResource SerializeResourceForStudio(IResource resource,Guid workspaceID)
         {
 
             // convert the fliping errors due to json issues in c# ;(
@@ -51,13 +53,13 @@ namespace Dev2.Runtime.ESB.Management.Services
             {
                 Inputs = resource.Inputs,
                 Outputs = resource.Outputs,
-                ResourceCategory = resource.ResourcePath,
                 ResourceID = resource.ResourceID,
                 VersionInfo = resource.VersionInfo,
                 ResourceName = resource.ResourceName,
                 IsSource = resource.IsSource,
                 IsServer = resource.IsServer,
                 IsService = resource.IsService,
+                ResourceCategory = resource.GetResourcePath(workspaceID),
                 IsReservedService = resource.IsReservedService,
                 IsResourceVersion = resource.IsResourceVersion,
                 IsFolder = resource.IsFolder,

@@ -32,6 +32,8 @@ using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.ResourceCatalogImpl;
 using Dev2.Runtime.ServiceModel.Data;
 using Warewolf.ResourceManagement;
+// ReSharper disable InconsistentNaming
+// ReSharper disable MemberCanBePrivate.Global
 
 namespace Dev2.Runtime.Hosting
 {
@@ -39,9 +41,6 @@ namespace Dev2.Runtime.Hosting
     public class ResourceCatalog : IResourceCatalog, IDisposable
     {
         readonly object _loadLock = new object();
-        //DuplicateResource _dupresource;
-        //List<IResource> _resources = new List<IResource>();
-        //HashSet<Guid> _addedResources = new HashSet<Guid>();
         ResourceCatalogBuilder Builder { get; set; }
 
         private readonly ResourceCatalogPluginContainer _catalogPluginContainer;
@@ -99,6 +98,17 @@ namespace Dev2.Runtime.Hosting
 
         public ConcurrentDictionary<Guid, ManagementServiceResource> ManagementServices => _catalogPluginContainer.LoadProvider.ManagementServices;
         public ConcurrentDictionary<Guid, object> WorkspaceLocks => _catalogPluginContainer.LoadProvider.WorkspaceLocks;
+        public List<DuplicateResource> DuplicateResources
+        {
+            get
+            {
+                return _catalogPluginContainer.LoadProvider.DuplicateResources;
+            }
+            set
+            {
+                _catalogPluginContainer.LoadProvider.DuplicateResources = value;
+            }
+        }
         public ConcurrentDictionary<Guid, List<IResource>> WorkspaceResources { get; private set; }
         #endregion
 
@@ -126,20 +136,10 @@ namespace Dev2.Runtime.Hosting
         public IList<IResource> GetResourceList(Guid workspaceId) => _catalogPluginContainer.LoadProvider.GetResources(workspaceId);
         public IList<IResource> GetResourceList<T>(Guid workspaceId) where T : Resource, new() => _catalogPluginContainer.LoadProvider.GetResourceList<T>(workspaceId);
         public List<IResource> GetResourcesBasedOnType(string type, List<IResource> workspaceResources, Func<IResource, bool> func) => _catalogPluginContainer.LoadProvider.GetResourcesBasedOnType(type, workspaceResources, func);
+
+        
+
         public List<DynamicServiceObjectBase> GetDynamicObjects(IEnumerable<IResource> resources) => _catalogPluginContainer.LoadProvider.GetDynamicObjects(resources);
-
-        public List<DuplicateResource> DuplicateResources
-        {
-            get
-            {
-                return _catalogPluginContainer.LoadProvider.DuplicateResources;
-            }
-            set
-            {
-                _catalogPluginContainer.LoadProvider.DuplicateResources = value;
-            }
-        }
-
         #endregion
 
         #region LoadWorkspace
@@ -176,7 +176,7 @@ namespace Dev2.Runtime.Hosting
                 var folders = Directory.EnumerateDirectories(workspacePath, "*", SearchOption.AllDirectories);
                 var allFolders = folders.ToList();
                 allFolders.Add(workspacePath);
-                userServices = LoadWorkspaceViaBuilder(workspacePath,workspaceID==GlobalConstants.ServerWorkspaceID, allFolders.ToArray());
+                userServices = LoadWorkspaceViaBuilder(workspacePath, workspaceID == GlobalConstants.ServerWorkspaceID, allFolders.ToArray());
             }
             var result = userServices.Union(ManagementServices.Values);
             var resources = result.ToList();
@@ -248,6 +248,13 @@ namespace Dev2.Runtime.Hosting
 
         #region LoadWorkspaceAsync
 
+        // Travis.Frisinger - 02.05.2013 
+        // 
+        // Removed the Async operation with file stream as it would fail to use the correct stream from time to time
+        // causing the integration test suite to fail. By moving the operation into a Parallel.ForEach approach this 
+        // appears to have nearly the same impact with better stability.
+        // ResourceCatalogBuilder now contains the refactored async logic ;)
+
         /// <summary>
         /// Loads the workspace via builder.
         /// </summary>
@@ -269,6 +276,7 @@ namespace Dev2.Runtime.Hosting
 
         public IList<DuplicateResource> GetDuplicateResources()
         {
+            
             return DuplicateResources;
         }
         
@@ -284,9 +292,9 @@ namespace Dev2.Runtime.Hosting
 
         #region SaveResource
 
-        public ResourceCatalogResult SaveResource(Guid workspaceID, StringBuilder resourceXml, string reason = "", string user = "") => _catalogPluginContainer.SaveProvider.SaveResource(workspaceID, resourceXml, reason, user);
-        public ResourceCatalogResult SaveResource(Guid workspaceID, IResource resource, string reason = "", string user = "") => _catalogPluginContainer.SaveProvider.SaveResource(workspaceID, resource, reason, user);
-        public ResourceCatalogResult SaveResource(Guid workspaceID, IResource resource,StringBuilder contents, string reason = "", string user = "") => _catalogPluginContainer.SaveProvider.SaveResource(workspaceID, resource,contents, reason, user);
+        public ResourceCatalogResult SaveResource(Guid workspaceID, StringBuilder resourceXml, string reason = "", string user = "", string savedPath = "") => _catalogPluginContainer.SaveProvider.SaveResource(workspaceID, resourceXml, reason, user, savedPath);
+        public ResourceCatalogResult SaveResource(Guid workspaceID, IResource resource, string reason = "", string user = "", string savedPath = "") => _catalogPluginContainer.SaveProvider.SaveResource(workspaceID, resource, reason, user, savedPath);
+        public ResourceCatalogResult SaveResource(Guid workspaceID, IResource resource,StringBuilder contents, string reason = "", string user = "", string savedPath = "") => _catalogPluginContainer.SaveProvider.SaveResource(workspaceID, resource,contents, reason, user,savedPath);
 
         public Action<IResource> ResourceSaved
         {
@@ -311,7 +319,7 @@ namespace Dev2.Runtime.Hosting
             }
         }
 
-        internal ResourceCatalogResult SaveImpl(Guid workspaceID, IResource resource, StringBuilder contents, bool overwriteExisting = true) => ((ResourceSaveProvider)_catalogPluginContainer.SaveProvider).SaveImpl(workspaceID, resource, contents, overwriteExisting);
+        internal ResourceCatalogResult SaveImpl(Guid workspaceID, IResource resource, StringBuilder contents, bool overwriteExisting = true, string savedPath = "") => ((ResourceSaveProvider)_catalogPluginContainer.SaveProvider).SaveImpl(workspaceID, resource, contents, overwriteExisting, savedPath);
 
         #endregion
 
@@ -330,7 +338,7 @@ namespace Dev2.Runtime.Hosting
 
         #region Rename Resource
 
-        public ResourceCatalogResult RenameResource(Guid workspaceID, Guid? resourceID, string newName) => _catalogPluginContainer.RenameProvider.RenameResource(workspaceID, resourceID, newName);
+        public ResourceCatalogResult RenameResource(Guid workspaceID, Guid? resourceID, string newName, string resourcePath) => _catalogPluginContainer.RenameProvider.RenameResource(workspaceID, resourceID, newName, resourcePath);
 
         public ResourceCatalogResult RenameCategory(Guid workspaceID, string oldCategory, string newCategory) => _catalogPluginContainer.RenameProvider.RenameCategory(workspaceID, oldCategory, newCategory);
 
@@ -420,13 +428,12 @@ namespace Dev2.Runtime.Hosting
             LoadWorkspace(GlobalConstants.ServerWorkspaceID);
         }
 
-        #region Implementation of IResourceDuplicateProvider
+        
 
         public ResourceCatalogResult DuplicateResource(Guid resourceId, string sourcePath, string destinationPath) => _catalogPluginContainer.DuplicateProvider.DuplicateResource(resourceId, sourcePath, destinationPath);
 
         public ResourceCatalogResult DuplicateFolder(string sourcePath, string destinationPath, string newName) => _catalogPluginContainer.DuplicateProvider.DuplicateFolder(sourcePath, destinationPath, newName);
         
 
-        #endregion
     }
 }

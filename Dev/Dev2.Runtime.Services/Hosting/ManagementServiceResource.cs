@@ -28,7 +28,6 @@ namespace Dev2.Runtime.Hosting
             ResourceID = service.ID == Guid.Empty ? Guid.NewGuid() : service.ID;
             ResourceName = service.Name;
             ResourceType = "ReservedService";
-            ResourcePath = service.Name;
             DataList = service.DataListSpecification;
         }
 
