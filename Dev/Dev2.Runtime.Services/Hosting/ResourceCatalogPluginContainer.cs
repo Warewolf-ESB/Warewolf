@@ -28,6 +28,7 @@ namespace Dev2.Runtime.Hosting
         public IResourceRenameProvider RenameProvider { get; private set; }
         public IResourceCopyProvider CopyProvider { get; private set; }
         public IResourceSaveProvider SaveProvider { get; private set; }
+        public IResourceDuplicateProvider DuplicateProvider { get; private set; }
 
         public void Build(IResourceCatalog resourceCatalog)
         {
@@ -37,6 +38,7 @@ namespace Dev2.Runtime.Hosting
             RenameProvider = new ResourceRenameProvider(resourceCatalog,_versionRepository);
             CopyProvider = new ResourceCopyProvider(resourceCatalog);
             SaveProvider = new ResourceSaveProvider(resourceCatalog,_versionRepository);
+            DuplicateProvider = new ResourceDuplicateProvider(resourceCatalog);
         }
     }
 }

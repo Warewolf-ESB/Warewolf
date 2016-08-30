@@ -8,6 +8,8 @@ namespace Dev2.Runtime.Interfaces
         , IResourceDeleteProvider
         , IResourceLoadProvider
         , IResourceSaveProvider
+        , IResourceDuplicateProvider
+
     {
        
     }
