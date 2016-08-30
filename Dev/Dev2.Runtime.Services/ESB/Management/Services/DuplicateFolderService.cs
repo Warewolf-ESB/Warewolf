@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Text;
 using Dev2.Common;
 using Dev2.Common.Common;
-using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces.Core.DynamicServices;
+using Dev2.Common.Interfaces.Hosting;
 using Dev2.Communication;
 using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
@@ -14,56 +14,51 @@ using Dev2.Workspaces;
 namespace Dev2.Runtime.ESB.Management.Services
 {
     // ReSharper disable once UnusedMember.Global
-    public class DuplicateResourceService : IEsbManagementEndpoint
+    public class DuplicateFolderService : IEsbManagementEndpoint
     {
-        
-
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
 
-            StringBuilder tmp;
             StringBuilder newResourceName;
+            StringBuilder fixRefs;
+            StringBuilder sourcePath;
             StringBuilder destinatioPath;
-            values.TryGetValue("ResourceID", out tmp);
             values.TryGetValue("NewResourceName", out newResourceName);
+            values.TryGetValue("FixRefs", out fixRefs);
+            values.TryGetValue("sourcePath", out sourcePath);
             values.TryGetValue("destinatioPath", out destinatioPath);
 
-            if (tmp != null)
+            if (!string.IsNullOrEmpty(newResourceName?.ToString()))
             {
-                Guid resourceId;
-                if (Guid.TryParse(tmp.ToString(), out resourceId))
+                try
                 {
-                    if (!string.IsNullOrEmpty(newResourceName?.ToString()))
+                    if (sourcePath == null || destinatioPath == null)
                     {
-                        try
-                        {
-                            if (destinatioPath == null)
-                            {
-                                throw new Exception("Destination Paths not specified");
-                            }
-                            var resourceCatalogResult = ResourceCatalog.Instance.DuplicateResource(resourceId.ToString().ToGuid(), destinatioPath.ToString(), newResourceName.ToString());
-                            Dev2Logger.Error("DuplicateResourceService success");
-                            var result = new ExecuteMessage { HasError = false, Message = resourceCatalogResult.Message.ToStringBuilder() };
-                            return serializer.SerializeToBuilder(result);
-                        }
-                        catch (Exception x)
-                        {
-                            Dev2Logger.Error(x.Message + " DuplicateResourceService", x);
-                            var result = new ExecuteMessage { HasError = true, Message = x.Message.ToStringBuilder() };
-                            return serializer.SerializeToBuilder(result);
-                        }
-
+                        throw new Exception("Source or Destination Paths not specified");
                     }
+                    var resourceCatalogResult = ResourceCatalog.Instance.DuplicateFolder(sourcePath.ToString(), destinatioPath.ToString(), newResourceName.ToString());
+                    Dev2Logger.Error(resourceCatalogResult.Message);
+                    var result = new ExecuteMessage { HasError = resourceCatalogResult.Status!= ExecStatus.Fail, Message = resourceCatalogResult.Message.ToStringBuilder() };
+                    return serializer.SerializeToBuilder(result);
+
                 }
+                catch (Exception x)
+                {
+                    Dev2Logger.Error(x.Message + " DuplicateResourceService", x);
+                    var result = new ExecuteMessage { HasError = true, Message = x.Message.ToStringBuilder() };
+                    return serializer.SerializeToBuilder(result);
+                }
+
             }
+
             var success = new ExecuteMessage { HasError = false };
             return serializer.SerializeToBuilder(success);
         }
 
         public string HandlesType()
         {
-            return "DuplicateResourceService";
+            return "DuplicateFolderService";
         }
 
         public DynamicService CreateServiceEntry()

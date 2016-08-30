@@ -29,8 +29,6 @@ namespace Warewolf.Studio.ViewModels
             CommunityUrl = comUri;
             Uri expUri = new Uri(Resources.Languages.Core.ExpertHelpUrl);
             ExpertHelpUrl = expUri;
-            Uri devUri = new Uri(Resources.Languages.Core.DevUrl);
-            DevUrl = devUri;
             Uri warewolfUri = new Uri(Resources.Languages.Core.WarewolfUrl);
             WarewolfUrl = warewolfUri;
             WarewolfCopyright = Resources.Languages.Core.WarewolfCopyright;
@@ -38,7 +36,6 @@ namespace Warewolf.Studio.ViewModels
             ContributorsCommand = new DelegateCommand(() => externalProcessExecutor.OpenInBrowser(ContributorsUrl));
             CommunityCommand = new DelegateCommand(() => externalProcessExecutor.OpenInBrowser(CommunityUrl));
             ExpertHelpCommand = new DelegateCommand(() => externalProcessExecutor.OpenInBrowser(ExpertHelpUrl));
-            DevUrlCommand = new DelegateCommand(() => externalProcessExecutor.OpenInBrowser(DevUrl));
             WarewolfUrlCommand = new DelegateCommand(() => externalProcessExecutor.OpenInBrowser(WarewolfUrl));            
         }
 
@@ -47,7 +44,6 @@ namespace Warewolf.Studio.ViewModels
         public ICommand ContributorsCommand { get; set; }
         public ICommand CommunityCommand { get; set; }
         public ICommand ExpertHelpCommand { get; set; }
-        public ICommand DevUrlCommand { get; set; }
         public ICommand WarewolfUrlCommand { get; set; }
         public string ServerVersion
         {
@@ -101,8 +97,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        public Uri DevUrl { get; set; }
-        public Uri WarewolfUrl { get; set; }
+       public Uri WarewolfUrl { get; set; }
         public Uri ContributorsUrl { get; set; }
         public Uri CommunityUrl { get; set; }
         public Uri ExpertHelpUrl { get; set; }

@@ -726,7 +726,10 @@ namespace Dev2.Studio.ViewModels
             var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(key, new SourceViewModel<IServerSource>(EventPublisher, new ManageNewServerViewModel(new ManageNewServerSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, ActiveEnvironment.Name), saveViewModel, new Microsoft.Practices.Prism.PubSubEvents.EventAggregator(), _asyncWorker, new ExternalProcessExecutor()) { SelectedGuid = key.ResourceID.Value }, PopupProvider, new ManageServerControl()));
             _worksurfaceContextManager.AddAndActivateWorkSurface(workSurfaceContextViewModel);
         }
-
+       public void DuplicateResource(ExplorerItemViewModel explorerItemViewModel)
+        {
+            _worksurfaceContextManager.DuplicateResource(explorerItemViewModel);
+        }
         public void NewDatabaseSource(string resourcePath)
         {
             _worksurfaceContextManager.NewDatabaseSource(resourcePath);
@@ -750,6 +753,11 @@ namespace Dev2.Studio.ViewModels
         public void NewComPluginSource(string resourcePath)
         {
             _worksurfaceContextManager.NewComPluginSource(resourcePath);
+        }
+
+        public void DuplicateResource(IExplorerItemViewModel explorerItemViewModel)
+        {
+            _worksurfaceContextManager.DuplicateResource(explorerItemViewModel);
         }
 
         public void NewDropboxSource(string resourcePath)
@@ -1277,13 +1285,9 @@ namespace Dev2.Studio.ViewModels
             return hasNewVersion;
         }
 
-        public async void DisplayDialogForNewVersion()
+        public void DisplayDialogForNewVersion()
         {
-            var hasNewVersion = await CheckForNewVersion();
-            if (hasNewVersion)
-            {
-                BrowserPopupController.ShowPopup(Warewolf.Studio.Resources.Languages.Core.WarewolfLatestDownloadUrl);
-            }
+            BrowserPopupController.ShowPopup(Warewolf.Studio.Resources.Languages.Core.WarewolfLatestDownloadUrl);
         }
 
 

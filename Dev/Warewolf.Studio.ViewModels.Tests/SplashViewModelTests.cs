@@ -119,26 +119,6 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        public void TestDevUrlCommandCanExecute()
-        {
-            //act
-            var result = _target.DevUrlCommand.CanExecute(null);
-
-            //assert
-            Assert.IsTrue(result);
-        }
-
-        [TestMethod]
-        public void TestDevUrlCommandExecute()
-        {
-            //act
-            _target.DevUrlCommand.Execute(null);
-
-            //assert
-            _externalProcessExecutorMock.Verify(it => it.OpenInBrowser(_target.DevUrl));
-        }
-
-        [TestMethod]
         public void TestWarewolfUrlCommandCanExecute()
         {
             //act
@@ -161,20 +141,6 @@ namespace Warewolf.Studio.ViewModels.Tests
         #endregion Test commands
 
         #region Test properties
-
-        [TestMethod]
-        public void TestDevUrl()
-        {
-            //arrange
-            var expectedValue = new Uri("http://localhost/");
-
-            //act
-            _target.DevUrl = expectedValue;
-            var value = _target.DevUrl;
-
-            //assert
-            Assert.AreEqual(expectedValue, value);
-        }
 
         [TestMethod]
         public void TestWarewolfUrl()
