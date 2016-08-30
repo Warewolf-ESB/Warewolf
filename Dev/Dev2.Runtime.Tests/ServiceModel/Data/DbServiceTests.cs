@@ -163,7 +163,6 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
   <DataList />
   <TypeOf>InvokeStoredProc</TypeOf>
   <DisplayName></DisplayName>
-  <Category></Category>
   <AuthorRoles></AuthorRoles>
   <ErrorMessages />
 </Service>";
@@ -209,7 +208,6 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
   <DataList />
   <TypeOf>InvokeStoredProc</TypeOf>
   <DisplayName>TravsTestService</DisplayName>
-  <Category>WEBPART_WIZARDS</Category>
   <AuthorRoles></AuthorRoles>
   <ErrorMessages />
 </Service>";

@@ -15,8 +15,6 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.Serialization;
 using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Xml.Linq;
 using Dev2.Activities;
 using Dev2.Collections;
@@ -222,65 +220,7 @@ namespace Dev2.Tests.Runtime.Hosting
         #endregion
 
         #region ParallelExecution
-
-        [TestMethod]
-        public void LoadInParallelExpectedBehavesConcurrently()
-        {
-            const int NumWorkspaces = 5;
-            const int NumThreadsPerWorkspace = 5;
-            //const int ExpectedWorkspaceCount = NumWorkspaces + 1; // add 1 for server workspace that is auto-loaded
-
-            var catalog = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
-
-            var threadArray = new Thread[NumWorkspaces * NumThreadsPerWorkspace];
-
-            #region Create threads
-
-            for (var i = 0; i < NumWorkspaces; i++)
-            {
-                var workspaceID = Guid.NewGuid();
-
-                List<IResource> resources;
-                SaveResources(workspaceID, out resources);
-
-                for (var j = 0; j < NumThreadsPerWorkspace; j++)
-                {
-                    var t = i * NumThreadsPerWorkspace + j;
-                    if (j == 0)
-                    {
-                        threadArray[t] = new Thread(() =>
-                        {
-                            catalog.LoadWorkspace(workspaceID); // Always loads from disk
-                            var actualCount = catalog.GetResourceCount(workspaceID); // Loads from disk if not in memory
-                            Assert.AreEqual(SaveResourceCount, actualCount);
-                        });
-                    }
-                    else
-                    {
-                        threadArray[t] = new Thread(() =>
-                        {
-                            var actualCount = catalog.GetResourceCount(workspaceID); // Loads from disk if not in memory
-                            Assert.AreEqual(SaveResourceCount, actualCount);
-                        });
-                    }
-                }
-            }
-
-            #endregion
-
-
-            //Start the threads.
-            Parallel.For(0, threadArray.Length, i => threadArray[i].Start());
-
-            //Wait until all the threads spawn out and finish.
-            foreach (var t in threadArray)
-            {
-                t.Join();
-            }
-
-            //Assert.AreEqual(ExpectedWorkspaceCount, catalog.get);
-        }
-
+        
         #endregion
 
         #region SaveResource
