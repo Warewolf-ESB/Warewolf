@@ -175,22 +175,29 @@ namespace Warewolf.Studio.Views
 
         private void ExplorerTree_OnNodeDraggingStart(object sender, DragDropStartEventArgs e)
         {
-            if (Mouse.LeftButton == MouseButtonState.Released)
+            var tree = sender as XamDataTree;
+            if (tree != null)
             {
-                ResetDragDropTemplate(e);
-                StopDragging();
-            }
-            else
-            {
-                var xamDataTreeNodeControl = e.DragSource as XamDataTreeNodeControl;
-                if (xamDataTreeNodeControl != null &&
-                    xamDataTreeNodeControl.Node.Data.GetType() == typeof(ExplorerItemViewModel))
+                if (tree.DataContext.GetType() == typeof (SingleEnvironmentExplorerViewModel) || Mouse.LeftButton == MouseButtonState.Released)
                 {
-                    DragSource dragSource = DragDropManager.GetDragSource(e.DragSource);
-                    dragSource.DragOver += DragSourceDragOver;
-                    dragSource.Drop += DragSourceDrop;
-                    dragSource.DragLeave += DragSourceDragLeave;
-                    dragSource.DragEnd += DragSourceDragEnd;
+                    ResetDragDropTemplate(e);
+                    StopDragging();
+                }
+                else
+                {
+                    if (tree.DataContext.GetType() == typeof (ExplorerViewModel))
+                    {
+                        var xamDataTreeNodeControl = e.DragSource as XamDataTreeNodeControl;
+                        if (xamDataTreeNodeControl != null &&
+                            xamDataTreeNodeControl.Node.Data.GetType() == typeof (ExplorerItemViewModel))
+                        {
+                            DragSource dragSource = DragDropManager.GetDragSource(e.DragSource);
+                            dragSource.DragOver += DragSourceDragOver;
+                            dragSource.Drop += DragSourceDrop;
+                            dragSource.DragLeave += DragSourceDragLeave;
+                            dragSource.DragEnd += DragSourceDragEnd;
+                        }
+                    }
                 }
             }
         }
