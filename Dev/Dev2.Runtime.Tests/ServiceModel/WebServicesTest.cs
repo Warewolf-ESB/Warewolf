@@ -578,11 +578,8 @@ namespace Dev2.Tests.Runtime.ServiceModel
                 ResourceID = Guid.NewGuid(),
 
                 ResourceName = "DummyWebService",
-                ResourceType = "WebService",
-                ResourcePath = "Tests"
-
+                ResourceType = "WebService"
             };
         }
-
     }
 }

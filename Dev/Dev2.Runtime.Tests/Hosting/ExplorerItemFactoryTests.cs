@@ -29,7 +29,7 @@ namespace Dev2.Tests.Runtime.Hosting
     {
         public static IEnumerable<Mock<T>> GenerateMockEnumerable<T>(int count) where T : class
         {
-            for(int i = 0; i < count; i++)
+            for (int i = 0; i < count; i++)
                 yield return new Mock<T>();
         }
 
@@ -60,7 +60,7 @@ namespace Dev2.Tests.Runtime.Hosting
             //------------Assert Results-------------------------
             Assert.AreEqual(catalogue.Object, explorerItemFactory.Catalogue);
         }
-        
+
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("ExplorerItemFactory_BuildRootNode")]
@@ -119,10 +119,10 @@ namespace Dev2.Tests.Runtime.Hosting
             var directory = new Mock<IDirectory>();
             var resources = MoqUtil.GenerateMockEnumerable<IResource>(4).ToList();
             var auth = new Mock<IAuthorizationService>();
-            for(int i = 0; i < resources.Count; i++)
+            for (int i = 0; i < resources.Count; i++)
             {
                 var resource = resources[i];
-                resource.Setup(a => a.ResourcePath).Returns("");
+                resource.Setup(a => a.GetResourcePath(It.IsAny<Guid>())).Returns("");
                 resource.Setup(a => a.ResourceName).Returns(i.ToString);
                 resource.Setup(a => a.ResourceID).Returns(Guid.NewGuid);
 
@@ -150,10 +150,10 @@ namespace Dev2.Tests.Runtime.Hosting
             var directory = new Mock<IDirectory>();
             var auth = new Mock<IAuthorizationService>();
             var resources = MoqUtil.GenerateMockEnumerable<IResource>(4).ToList();
-            for(int i = 0; i < resources.Count; i++)
+            for (int i = 0; i < resources.Count; i++)
             {
                 var resource = resources[i];
-                resource.Setup(a => a.ResourcePath).Returns("1\\" + i);
+                resource.Setup(a => a.GetResourcePath(It.IsAny<Guid>())).Returns("1\\" + i);
                 resource.Setup(a => a.ResourceName).Returns(i.ToString);
                 resource.Setup(a => a.ResourceID).Returns(Guid.NewGuid);
                 resource.Setup(a => a.IsService).Returns(true);
@@ -186,10 +186,10 @@ namespace Dev2.Tests.Runtime.Hosting
             var directory = new Mock<IDirectory>();
             var auth = new Mock<IAuthorizationService>();
             var resources = MoqUtil.GenerateMockEnumerable<IResource>(4).ToList();
-            for(int i = 0; i < resources.Count; i++)
+            for (int i = 0; i < resources.Count; i++)
             {
                 var resource = resources[i];
-                resource.Setup(a => a.ResourcePath).Returns(i % 2 == 0 ? i.ToString(CultureInfo.InvariantCulture) : "1\\" + i);
+                resource.Setup(a => a.GetResourcePath(It.IsAny<Guid>())).Returns(i % 2 == 0 ? i.ToString(CultureInfo.InvariantCulture) : "1\\" + i);
                 resource.Setup(a => a.ResourceName).Returns(i.ToString);
                 resource.Setup(a => a.ResourceID).Returns(Guid.NewGuid);
                 resource.Setup(a => a.IsSource).Returns(true);
@@ -221,10 +221,10 @@ namespace Dev2.Tests.Runtime.Hosting
             var directory = new Mock<IDirectory>();
             var auth = new Mock<IAuthorizationService>();
             var resources = MoqUtil.GenerateMockEnumerable<IResource>(4).ToList();
-            for(int i = 0; i < resources.Count; i++)
+            for (int i = 0; i < resources.Count; i++)
             {
                 var resource = resources[i];
-                resource.Setup(a => a.ResourcePath).Returns("" + i);
+                resource.Setup(a => a.GetResourcePath(It.IsAny<Guid>())).Returns("" + i);
                 resource.Setup(a => a.ResourceName).Returns(i.ToString);
                 resource.Setup(a => a.ResourceID).Returns(Guid.NewGuid);
 
@@ -253,10 +253,10 @@ namespace Dev2.Tests.Runtime.Hosting
             var catalogue = new Mock<IResourceCatalog>();
             var directory = new Mock<IDirectory>();
             var resources = MoqUtil.GenerateMockEnumerable<IResource>(4).ToList();
-            for(int i = 0; i < resources.Count; i++)
+            for (int i = 0; i < resources.Count; i++)
             {
                 var resource = resources[i];
-                resource.Setup(a => a.ResourcePath).Returns("1\\" + i);
+                resource.Setup(a => a.GetResourcePath(It.IsAny<Guid>())).Returns("1\\" + i);
                 resource.Setup(a => a.ResourceName).Returns(i.ToString);
                 resource.Setup(a => a.ResourceID).Returns(Guid.NewGuid);
                 resource.Setup(a => a.ResourceType).Returns("EmailSource");
@@ -284,16 +284,16 @@ namespace Dev2.Tests.Runtime.Hosting
             var catalogue = new Mock<IResourceCatalog>();
             var directory = new Mock<IDirectory>();
             var resources = MoqUtil.GenerateMockEnumerable<IResource>(4).ToList();
-            for(int i = 0; i < resources.Count; i++)
+            for (int i = 0; i < resources.Count; i++)
             {
                 var resource = resources[i];
-                resource.Setup(a => a.ResourcePath).Returns("1\\" + i);
+                resource.Setup(a => a.GetResourcePath(It.IsAny<Guid>())).Returns("1\\" + i);
                 resource.Setup(a => a.ResourceName).Returns(i.ToString);
                 resource.Setup(a => a.ResourceID).Returns(Guid.NewGuid);
                 resource.Setup(a => a.ResourceType).Returns("EmailSource");
             }
             var mockReserverService = new Mock<IResource>();
-            mockReserverService.Setup(a => a.ResourcePath).Returns("1");
+            mockReserverService.Setup(a => a.GetResourcePath(It.IsAny<Guid>())).Returns("1");
             mockReserverService.Setup(a => a.ResourceName).Returns("TestReservedService");
             mockReserverService.Setup(a => a.ResourceID).Returns(Guid.NewGuid);
             mockReserverService.Setup(a => a.ResourceType).Returns("ReservedService");
@@ -323,10 +323,10 @@ namespace Dev2.Tests.Runtime.Hosting
             var directory = new Mock<IDirectory>();
             var auth = new Mock<IAuthorizationService>();
             var resources = MoqUtil.GenerateMockEnumerable<IResource>(5).ToList();
-            for(int i = 0; i < resources.Count; i++)
+            for (int i = 0; i < resources.Count; i++)
             {
                 var resource = resources[i];
-                resource.Setup(a => a.ResourcePath).Returns(i % 2 == 0 ? "" + i : "1\\" + i);
+                resource.Setup(a => a.GetResourcePath(It.IsAny<Guid>())).Returns(i % 2 == 0 ? "" + i : "1\\" + i);
                 resource.Setup(a => a.ResourceName).Returns(i.ToString);
                 resource.Setup(a => a.ResourceID).Returns(Guid.NewGuid);
                 resource.Setup(a => a.ResourceType).Returns(i % 2 == 0 ? "EmailSource" : "DbSource");
@@ -358,10 +358,10 @@ namespace Dev2.Tests.Runtime.Hosting
             var resources = MoqUtil.GenerateMockEnumerable<IResource>(4).ToList();
             var auth = new Mock<IAuthorizationService>();
             auth.Setup(c => c.GetResourcePermissions(It.IsAny<Guid>())).Returns(Permissions.Contribute);
-            for(int i = 0; i < resources.Count; i++)
+            for (int i = 0; i < resources.Count; i++)
             {
                 var resource = resources[i];
-                resource.Setup(a => a.ResourcePath).Returns("1");
+                resource.Setup(a => a.GetResourcePath(It.IsAny<Guid>())).Returns("1");
                 resource.Setup(a => a.ResourceName).Returns(i.ToString);
                 resource.Setup(a => a.ResourceID).Returns(Guid.NewGuid);
                 resource.Setup(a => a.ResourceType).Returns("EmailSource");
@@ -393,10 +393,10 @@ namespace Dev2.Tests.Runtime.Hosting
             var auth = new Mock<IAuthorizationService>();
             var resources = MoqUtil.GenerateMockEnumerable<IResource>(4).ToList();
             var guid = new[] { Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid() };
-            for(int i = 0; i < resources.Count; i++)
+            for (int i = 0; i < resources.Count; i++)
             {
                 var resource = resources[i];
-                resource.Setup(a => a.ResourcePath).Returns("" + i);
+                resource.Setup(a => a.GetResourcePath(It.IsAny<Guid>())).Returns("" + i);
                 resource.Setup(a => a.ResourceName).Returns(i.ToString);
                 resource.Setup(a => a.ResourceID).Returns(guid[i]);
 

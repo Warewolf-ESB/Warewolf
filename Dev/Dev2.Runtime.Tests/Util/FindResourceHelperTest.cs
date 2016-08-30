@@ -38,7 +38,7 @@ namespace Dev2.Tests.Runtime.Util
 
             //------------Execute Test---------------------------
 
-            var result = new FindResourceHelper().SerializeResourceForStudio(res);
+            var result = new FindResourceHelper().SerializeResourceForStudio(res,Guid.Empty);
 
             //------------Assert Results-------------------------
 
@@ -57,7 +57,7 @@ namespace Dev2.Tests.Runtime.Util
 
             //------------Execute Test---------------------------
 
-            var result = new FindResourceHelper().SerializeResourceForStudio(res);
+            var result = new FindResourceHelper().SerializeResourceForStudio(res, Guid.Empty);
 
             //------------Assert Results-------------------------
 
@@ -93,7 +93,6 @@ namespace Dev2.Tests.Runtime.Util
                 IsNewResource = false,
                 DataList = new StringBuilder("abc"),
                 IsValid = true,
-                ResourcePath = "Category",
                 ResourceName = "Workflow",
                 ResourceType = "WorkflowService",
                 Errors = theErrors,
@@ -101,7 +100,7 @@ namespace Dev2.Tests.Runtime.Util
             };
 
             //------------Execute Test---------------------------
-            var result = new FindResourceHelper().SerializeResourceForStudio(res);
+            var result = new FindResourceHelper().SerializeResourceForStudio(res, Guid.Empty);
 
             //------------Assert Results-------------------------
 
@@ -114,7 +113,6 @@ namespace Dev2.Tests.Runtime.Util
 
             Assert.AreEqual(id, result.ResourceID);
             Assert.AreEqual("abc", result.DataList);
-            Assert.AreEqual("Category", result.ResourceCategory);
             Assert.AreEqual("Workflow", result.ResourceName);
             Assert.AreEqual("WorkflowService", result.ResourceType);
             Assert.AreEqual(errorString, resultErrorString);

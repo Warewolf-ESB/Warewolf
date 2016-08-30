@@ -42,10 +42,9 @@ namespace Dev2.Runtime.ESB.Management.Services
                     EnableSsl = src.EnableSsl,
                     Timeout = src.Timeout,
                     ResourceName = src.ResourceName,
-                    ResourcePath = src.Path,
                     ResourceID = src.Id
                 };
-                ResourceCatalog.Instance.SaveResource(GlobalConstants.ServerWorkspaceID, con);
+                ResourceCatalog.Instance.SaveResource(GlobalConstants.ServerWorkspaceID, con, "", "", src.Path);
                 ServerExplorerRepo.UpdateItem(con);
 
                 msg.HasError = false;

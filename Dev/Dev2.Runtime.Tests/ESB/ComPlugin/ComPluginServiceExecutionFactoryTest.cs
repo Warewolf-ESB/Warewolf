@@ -93,7 +93,6 @@ namespace Dev2.Tests.Runtime.ESB.ComPlugin
                 ResourceID = resourceID,
                 ResourceName = "Dummy",
                 ResourceType = "ComPluginSource",
-                ResourcePath = "Test",
                 Is32Bit =false
             };
         }
@@ -116,7 +115,6 @@ namespace Dev2.Tests.Runtime.ESB.ComPlugin
                 ResourceID = Guid.NewGuid(),
                 ResourceName = "DummyPluginService",
                 ResourceType = "PluginService",
-                ResourcePath = "Tests",
                 Namespace = type.FullName,
                 Method = method,
                 Source = source

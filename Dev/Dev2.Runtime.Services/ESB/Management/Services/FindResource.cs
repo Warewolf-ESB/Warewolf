@@ -69,7 +69,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 Dev2Logger.Info("Find Resource. ResourceName: " + resourceName);
 
 
-                IList<SerializableResource> resourceList = resources.Select(new FindResourceHelper().SerializeResourceForStudio).ToList();
+                IList<SerializableResource> resourceList = resources.Select(r=>new FindResourceHelper().SerializeResourceForStudio(r,theWorkspace.ID)).ToList();
 
                 var serializer = new Dev2JsonSerializer();
                 return serializer.SerializeToBuilder(resourceList);

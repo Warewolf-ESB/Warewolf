@@ -412,68 +412,9 @@ namespace BusinessDesignStudio.Unit.Tests
             _repo.Save(model.Object);
             _repo.Load();
             //Assert
-            Assert.IsTrue(_repo.All().Count.Equals(2));
+            Assert.AreEqual(1,_repo.All().Count);
         }
 
-
-        /// <summary>
-        /// Create resource with human Interface service type
-        /// </summary>
-        [TestMethod]
-        public void LoadMultipleResourceLoad_HumanInterfaceServiceType_Expected_AllResourcesReturned()
-        {
-            //Arrange
-            Setup();
-            var model = new Mock<IResourceModel>();
-            model.SetupGet(p => p.ResourceName).Returns("My WF");
-            model.SetupGet(p => p.Category).Returns("Root");
-
-            var conn = SetupConnection();
-
-            var resourceData = BuildResourceObjectFromGuids(new[] { _resourceGuid }, "Server");
-            var msg = new ExecuteMessage();
-            var payload = JsonConvert.SerializeObject(msg);
-            int callCnt = 0;
-            conn.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>()))
-                .Returns(() =>
-                {
-                    if (callCnt <= 1)
-                    {
-                        callCnt++;
-                        return new StringBuilder(payload);
-                    }
-
-                    return resourceData;
-                });
-
-            conn.Setup(c => c.ExecuteCommandAsync(It.IsAny<StringBuilder>(), It.IsAny<Guid>()))
-                .Returns(() =>
-                {
-                    if (callCnt <= 1)
-                    {
-                        callCnt++;
-                        return Task.FromResult(new StringBuilder(payload));
-                    }
-
-                    return Task.FromResult(resourceData);
-                });
-
-
-
-            _environmentModel.Setup(e => e.Connection).Returns(conn.Object);
-
-            //Act
-            var resourceModel = new Mock<IResourceModel>();
-            resourceModel.SetupGet(p => p.ResourceName).Returns("My WF1");
-            resourceModel.SetupGet(p => p.Category).Returns("Root");
-            resourceModel.Setup(p => p.ToServiceDefinition(It.IsAny<bool>())).Returns(new StringBuilder("SomeXaml"));
-            model.Setup(p => p.ToServiceDefinition(It.IsAny<bool>())).Returns(new StringBuilder("SomeXaml"));
-            _repo.Save(resourceModel.Object);
-            _repo.Save(model.Object);
-            _repo.Load();
-            //Assert
-            Assert.IsTrue(_repo.All().Count.Equals(2));
-        }
 
         /// <summary>
         /// Create resource with workflow service type
@@ -585,41 +526,7 @@ namespace BusinessDesignStudio.Unit.Tests
             IResourceModel[] setArray = set.ToArray();
             Assert.IsTrue(cnt == 1 && setArray[0].ResourceName == "NewName");
         }
-
-        //Create a resource with the same resource name
-        [TestMethod]
-        public void SameResourceName()
-        {
-            Setup();
-            Mock<IResourceModel> model2 = new Mock<IResourceModel>();
-            var model = new Mock<IResourceModel>();
-            model.Setup(c => c.DisplayName).Returns("result");
-            model.Setup(c => c.ResourceName).Returns("result");
-            model.Setup(c => c.Category).Returns("TestCat");
-            model2.Setup(c => c.DisplayName).Returns("result");
-            model2.Setup(c => c.ResourceName).Returns("result");
-            model2.Setup(c => c.Category).Returns("TestCat");
-
-            var conn = SetupConnection();
-
-            var msg = new ExecuteMessage();
-            var payload = JsonConvert.SerializeObject(msg);
-            conn.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>()))
-                .Returns(() => new StringBuilder(payload));
-
-            _environmentModel.Setup(e => e.Connection).Returns(conn.Object);
-            
-            model.Setup(p => p.ToServiceDefinition(It.IsAny<bool>())).Returns(new StringBuilder("SomeXaml"));
-            model2.Setup(p => p.ToServiceDefinition(It.IsAny<bool>())).Returns(new StringBuilder("SomeXaml"));
-
-            //Act
-            _repo.Save(model.Object);
-            _repo.Save(model2.Object);
-            _repo.Load();
-
-            Assert.IsTrue(_repo.All().Count.Equals(1));
-        }
-
+        
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("ResourceRepository_Save")]
