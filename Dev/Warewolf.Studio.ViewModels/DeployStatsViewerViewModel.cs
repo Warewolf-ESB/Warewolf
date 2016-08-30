@@ -290,7 +290,7 @@ namespace Warewolf.Studio.ViewModels
         {
             //return (res >= "DbSource" && res <= "ServerSource") || (res == "DropboxSource");
             // FIX?
-            return res.Contains(@"Source");
+            return res.Contains(@"Source") || res.Contains(@"Server");
         }
         #endregion
     }

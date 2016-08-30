@@ -12,7 +12,7 @@ open System.Reflection;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-// WARNING: Bamboo 5.8 Build Agents will execute PowerShell 3.0 scripts which over write this file with full version and year variables.
+// WARNING: Bamboo 5.12 Build Agents will execute PowerShell 3.0 scripts which over write this file with full version and year variables.
 
 [<assembly: AssemblyCompany("Warewolf")>]
 [<assembly: AssemblyProduct("Warewolf")>]

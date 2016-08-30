@@ -236,19 +236,17 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void TestIsFolderChecked()
         {
             //arrange
-            var isIsVisibleChanged = false;
-            _target.IsFolderChecked = false;
+            var isResourceChanged = false;
+            _target.IsResourceChecked = false;            
             _target.PropertyChanged += (s, e) =>
             {
-                isIsVisibleChanged = isIsVisibleChanged || e.PropertyName == "IsVisible";
-            };
-
+                isResourceChanged = isResourceChanged || e.PropertyName == "IsResourceChecked";
+            };            
             //act
             _target.IsFolderChecked = !_target.IsFolderChecked;
-
             //assert
-            Assert.IsTrue(_target.IsFolderChecked.HasValue && _target.IsFolderChecked.Value);
-            Assert.IsTrue(isIsVisibleChanged);
+            Assert.IsTrue(_target.IsFolderChecked.HasValue && !_target.IsFolderChecked.Value);
+            Assert.IsTrue(isResourceChanged);
         }
 
         [TestMethod]
