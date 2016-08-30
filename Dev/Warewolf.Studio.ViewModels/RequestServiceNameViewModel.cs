@@ -55,7 +55,7 @@ namespace Warewolf.Studio.ViewModels
             _header = header;
             _explorerItemViewModel = explorerItemViewModel;
             OkCommand = new DelegateCommand(SetServiceName, () => string.IsNullOrEmpty(ErrorMessage) && HasLoaded);
-            DuplicateCommand = new DelegateCommand(CallDuplicateService, () => explorerItemViewModel != null);
+            DuplicateCommand = new DelegateCommand(CallDuplicateService, () => explorerItemViewModel != null && string.IsNullOrEmpty(ErrorMessage) && HasLoaded);
             CancelCommand = new DelegateCommand(CloseView);
             Name = header;
             IsDuplicate = explorerItemViewModel != null;
@@ -82,7 +82,7 @@ namespace Warewolf.Studio.ViewModels
                 {
                     _lazyComs.AddPayloadArgument("ResourceID", _explorerItemViewModel.ResourceId.ToString());
                 }
-                if(_explorerItemViewModel is VersionViewModel)
+                if (_explorerItemViewModel is VersionViewModel)
                 {
                     var explorerItem = _environmentViewModel.Server.ExplorerRepository.ExplorerItems.Children.Single(item => item.ResourceId == _explorerItemViewModel.ResourceId);
                     var stringBuilder = _environmentViewModel.Server.ExplorerRepository.GetVersion(explorerItem.VersionInfo);
@@ -233,6 +233,8 @@ namespace Warewolf.Studio.ViewModels
         {
             var command = OkCommand as DelegateCommand;
             command?.RaiseCanExecuteChanged();
+            var dupCommad = DuplicateCommand as DelegateCommand;
+            dupCommad?.RaiseCanExecuteChanged();
         }
 
         public MessageBoxResult ShowSaveDialog()
