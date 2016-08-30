@@ -254,7 +254,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
         private void AddResourceIfNotExist(IResourceModel instanceObj)
         {
             Dev2Logger.Info($"Save Resource: {instanceObj.Category}  Environment:{_environmentModel.Name}");
-            var workflow = FindSingle(c => c.ResourceName.Equals(instanceObj.ResourceName, StringComparison.CurrentCultureIgnoreCase) && c.Category.Equals(instanceObj.Category, StringComparison.CurrentCultureIgnoreCase));
+            var workflow = FindSingle(c => c.ResourceName.Equals(instanceObj.ResourceName, StringComparison.CurrentCultureIgnoreCase));
 
             if(workflow == null)
             {
