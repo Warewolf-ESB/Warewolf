@@ -39,7 +39,7 @@ namespace Warewolf.Studio.ViewModels
         IList<IExplorerTreeItem> _newItems;
         string _errorMessage;
         string _deploySuccessMessage;
-
+        
         #region Implementation of IDeployViewModel
 
 
@@ -129,7 +129,6 @@ namespace Warewolf.Studio.ViewModels
             _stats.Calculate(_source?.SourceLoadedItems?.ToList());
             ServicesCount = _stats.Services.ToString();
             SourcesCount = _stats.Sources.ToString();
-
             NewResourcesCount = _stats.NewResources.ToString();
             OverridesCount = _stats.Overrides.ToString();
             ViewModelUtils.RaiseCanExecuteChanged(DeployCommand);
@@ -240,7 +239,7 @@ namespace Warewolf.Studio.ViewModels
                     DeploySuccessfull = true;
                     Destination.RefreshSelectedEnvironment();
                     DeploySuccessMessage = $"{notfolders.Count} Resource{(notfolders.Count == 1 ? "" : "s")} Deployed Successfully.";
-                    _stats.Calculate(new List<IExplorerTreeItem>());
+                    _stats.ReCalculate();
                     UpdateServerCompareChanged(this, Guid.Empty);
                     Source.SelectedEnvironment.AsList().Where(model => model.IsResourceChecked == true).Apply(o => o.IsResourceUnchecked = false);
                 }
@@ -250,7 +249,7 @@ namespace Warewolf.Studio.ViewModels
                 ErrorMessage = "Deploy error. " + e.Message;
             }
             IsDeploying = false;
-            _stats.ReCalculate();
+            
         }
 
         bool CheckResourceNameConflict()

@@ -77,7 +77,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 ConnectControlViewModel.IsLoading = false;
             }
-            _statsArea?.Calculate(SourceLoadedItems.ToList());
+            //_statsArea?.Calculate(SourceLoadedItems.ToList());
         }
 
         void CheckPreselectedItems(Guid environmentID)
