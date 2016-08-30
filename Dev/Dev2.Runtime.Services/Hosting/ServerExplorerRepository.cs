@@ -147,15 +147,6 @@ namespace Dev2.Runtime.Hosting
                     return new ExplorerRepositoryResult(ExecStatus.NoMatch, string.Format(ErrorResource.RequestedFolderDoesNotExistOnServer, path));
                 }
                 var resourceCatalogResult = ResourceCatalogue.RenameCategory(workSpaceId, path, newPath);
-                //if(_root != null)
-                //{
-                //    Apply(_root, a => a != null && a.ResourcePath.StartsWith(newPath + "\\"), b => {
-                //                                                                                       if(b != null)
-                //                                                                                       {
-                //                                                                                           b.ResourcePath = b.ResourcePath.Replace(path, newPath);
-                //                                                                                       }
-                //    });
-                //}
                 if (resourceCatalogResult.Status == ExecStatus.Success)
                 {
                     MoveVersionFolder(path, newPath);
@@ -261,13 +252,14 @@ namespace Dev2.Runtime.Hosting
             return new ExplorerRepositoryResult(result.Status, result.Message);
         }
 
+
         public IExplorerRepositoryResult DeleteFolder(string path, bool deleteContents, Guid workSpaceId)
         {
             if (!Directory.Exists(DirectoryStructureFromPath(path)))
             {
                 return new ExplorerRepositoryResult(ExecStatus.Fail, string.Format(ErrorResource.RequestedFolderDoesNotExistOnServer, path));
             }
-            if (!deleteContents && ResourceCatalogue.GetResourceList(workSpaceId).Count(a => a.FilePath.Replace(EnvironmentVariables.GetWorkspacePath(workSpaceId),"") == path) > 0)
+            if (!deleteContents && ResourceCatalogue.GetResourceList(workSpaceId).Count(a => a.GetResourcePath(workSpaceId) == path) > 0)
             {
                 return new ExplorerRepositoryResult(ExecStatus.Fail, string.Format(ErrorResource.RequestedFolderDoesNotExistOnServer, path));
             }
@@ -278,7 +270,7 @@ namespace Dev2.Runtime.Hosting
             try
             {
                 path = path + "\\";
-                var resources = ResourceCatalogue.GetResourceList(workSpaceId).Where(a => a.FilePath.Replace(EnvironmentVariables.GetWorkspacePath(workSpaceId), "").StartsWith(path)).ToList();
+                var resources = ResourceCatalogue.GetResourceList(workSpaceId).Where(a => a.GetResourcePath(workSpaceId).StartsWith(path)).ToList();
                 List<ResourceCatalogResult> deletedResources = resources.Select(a => ResourceCatalogue.DeleteResource(workSpaceId, a.ResourceName, a.ResourceType.ToString())).ToList();
                 if (deletedResources.Any(a => a.Status != ExecStatus.Success))
                 {
@@ -372,7 +364,7 @@ namespace Dev2.Runtime.Hosting
             // ReSharper disable once RedundantIfElseBlock
             else
             {
-                IEnumerable<IResource> item = ResourceCatalogue.GetResourceList(workSpaceId).Where(a => a.FilePath.Replace(EnvironmentVariables.GetWorkspacePath(workSpaceId), "") == newPath);
+                IEnumerable<IResource> item = ResourceCatalogue.GetResourceList(workSpaceId).Where(a => a.GetResourcePath(workSpaceId) == newPath);
                 if (item.Any())
                 {
                     return new ExplorerRepositoryResult(ExecStatus.Fail, ErrorResource.ItemAlreadyExistInPath);
