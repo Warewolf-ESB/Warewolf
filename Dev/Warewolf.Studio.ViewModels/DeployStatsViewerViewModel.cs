@@ -213,10 +213,13 @@ namespace Warewolf.Studio.ViewModels
 
 
                 Services = items.Count(a => !string.IsNullOrEmpty(a.ResourceType)
-                                        && a.ResourceType == @"WorkflowService");
+                                        && a.ResourceType == @"WorkflowService"
+                                        && a.IsResourceChecked == true);
 
                 Sources = items.Count(a => !string.IsNullOrEmpty(a.ResourceType)
-                                            && IsSource(a.ResourceType));
+                                            && IsSource(a.ResourceType)
+                                            && a.IsResourceChecked == true);
+
                 Unknown = items.Count(a => a.ResourceType == @"Unknown" || string.IsNullOrEmpty(a.ResourceType));
 
                 if (_destination.SelectedEnvironment != null)
@@ -228,7 +231,7 @@ namespace Warewolf.Studio.ViewModels
                                select new Conflict { SourceName = explorerTreeItem.ResourceName, DestinationName = b.ResourceName };
 
                     _conflicts = conf.ToList();
-                    _new = items.Except(explorerItemViewModels);
+                    _new = items.Where(p=>p.IsResourceChecked == true).Except(explorerItemViewModels);
                     var ren = from b in explorerItemViewModels
                               join explorerTreeItem in items on new { b.ResourcePath } equals new { explorerTreeItem.ResourcePath }
                               where (b.ResourceType != @"Folder" && explorerTreeItem.ResourceType != @"Folder")

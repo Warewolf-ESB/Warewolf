@@ -93,7 +93,7 @@ namespace Warewolf.Studio.ViewModels
                 _stats.Calculate(_source?.SourceLoadedItems?.ToList());
             }
             _stats.Calculate(_source?.SourceLoadedItems?.ToList());
-        }
+        }        
 
         private bool CanSelectDependencies => Source.SelectedItems.Count > 0;
 
@@ -126,12 +126,12 @@ namespace Warewolf.Studio.ViewModels
         void UpdateServerCompareChanged(object sender, Guid environmentid)
         {
             ShowConflicts = false;
-            _stats.Calculate(_source?.SourceLoadedItems?.ToList());
             ServicesCount = _stats.Services.ToString();
             SourcesCount = _stats.Sources.ToString();
             NewResourcesCount = _stats.NewResources.ToString();
             OverridesCount = _stats.Overrides.ToString();
             ViewModelUtils.RaiseCanExecuteChanged(DeployCommand);
+            _stats.Calculate(Source?.SourceLoadedItems?.ToList());
             OnPropertyChanged(() => CanDeploy);            
         }
 
@@ -239,8 +239,8 @@ namespace Warewolf.Studio.ViewModels
                     DeploySuccessfull = true;
                     Destination.RefreshSelectedEnvironment();
                     DeploySuccessMessage = $"{notfolders.Count} Resource{(notfolders.Count == 1 ? "" : "s")} Deployed Successfully.";
-                    _stats.ReCalculate();
                     UpdateServerCompareChanged(this, Guid.Empty);
+                    _stats.ReCalculate();
                     Source.SelectedEnvironment.AsList().Where(model => model.IsResourceChecked == true).Apply(o => o.IsResourceUnchecked = false);
                 }
             }
