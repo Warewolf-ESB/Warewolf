@@ -62,16 +62,13 @@ namespace Dev2.Runtime.ESB.Management.Services
                 {
                     Method = new ServiceMethod(serviceDef.Name, serviceDef.Name, parameters, null, output, serviceDef.Action.Method),
                     ResourceName = serviceDef.Name,
-                    ResourcePath = serviceDef.Path,
                     ResourceID = serviceDef.Id,
                     Source = source,
                     Recordsets = recset,
-                    Namespace = serviceDef.Action.FullName,
-
-
+                    Namespace = serviceDef.Action.FullName
                 };
 
-                ResourceCatalog.Instance.SaveResource(GlobalConstants.ServerWorkspaceID, res);
+                ResourceCatalog.Instance.SaveResource(GlobalConstants.ServerWorkspaceID, res, "", "", serviceDef.Path);
                 ServerExplorerRepo.UpdateItem(res);
 
                 msg.HasError = false;

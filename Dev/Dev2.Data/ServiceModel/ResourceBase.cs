@@ -37,7 +37,6 @@ namespace Dev2.Runtime.ServiceModel.Data
             ResourceID = copy.ResourceID;
             ResourceName = copy.ResourceName;
             ResourceType = copy.ResourceType;
-            ResourcePath = copy.ResourcePath;
             AuthorRoles = copy.AuthorRoles;
             FilePath = copy.FilePath;
         }
@@ -63,12 +62,6 @@ namespace Dev2.Runtime.ServiceModel.Data
                 ResourceType = "WorkflowService";
             }
             ResourceName = xml.AttributeSafe("Name");
-            ResourcePath = xml.ElementSafe("Category");
-            ResourcePath = ResourcePath.Replace("\\\\", "\\");
-            if (String.IsNullOrEmpty(ResourcePath))
-            {
-                ResourcePath = ResourceName;
-            }
             VersionInfo = String.IsNullOrEmpty( xml.ElementStringSafe("VersionInfo"))?null: new VersionInfo(xml.ElementStringSafe("VersionInfo"), ResourceID);
             AuthorRoles = xml.ElementSafe("AuthorRoles");
 
@@ -127,10 +120,6 @@ namespace Dev2.Runtime.ServiceModel.Data
         /// </summary>
         public string ResourceName { get; set; }
         /// <summary>
-        /// Gets or sets the category of the resource.
-        /// </summary>
-        public string ResourcePath { get; set; }
-        /// <summary>
         /// Gets or sets the file path of the resource.
         /// <remarks>
         /// Must only be used by the catalog!
@@ -164,6 +153,16 @@ namespace Dev2.Runtime.ServiceModel.Data
         public abstract bool IsReservedService { get; }
         public abstract bool IsServer { get; }
         public abstract bool IsResourceVersion { get; }
+
+        public string GetResourcePath(Guid workspaceID)
+        {
+            if (FilePath == null && IsReservedService)
+            {
+                return ResourceName;
+            }
+            return FilePath?.Replace(EnvironmentVariables.GetWorkspacePath(workspaceID)+"\\","").Replace(".xml","") ?? "";
+        }
+
         public IVersionInfo VersionInfo
         {
             get
@@ -270,7 +269,6 @@ namespace Dev2.Runtime.ServiceModel.Data
                 new XAttribute("ResourceType", ResourceType),
                 new XAttribute("IsValid", IsValid),
                 new XElement("DisplayName", ResourceName ?? string.Empty),
-                new XElement("Category", ResourcePath ?? string.Empty),
                 new XElement("AuthorRoles", AuthorRoles ?? string.Empty),
                 // ReSharper disable ConstantNullCoalescingCondition
                 new XElement("ErrorMessages", WriteErrors() ?? null)
@@ -408,7 +406,6 @@ namespace Dev2.Runtime.ServiceModel.Data
                 xml.SetAttributeValue("ID", ResourceID);
                 xml.SetAttributeValue("Name", ResourceName ?? string.Empty);
                 xml.SetAttributeValue("ResourceType", ResourceType);
-                xml.SetAttributeValue("Category", ResourcePath);
             }
             if(!xml.Descendants("VersionInfo").Any() && resource.VersionInfo != null)
             {

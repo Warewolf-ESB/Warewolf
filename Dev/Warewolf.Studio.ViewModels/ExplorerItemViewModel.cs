@@ -656,6 +656,7 @@ namespace Warewolf.Studio.ViewModels
                                 }
 
                                 _resourceName = newName;
+                                Server.UpdateRepository.FireItemSaved(true);
                             }
                         }
                     }
@@ -684,11 +685,10 @@ namespace Warewolf.Studio.ViewModels
             var hasDuplicate = Children.Any(model => model.ResourceName.ToLower() == requestedServiceName.ToLower() && model.ResourceType == "Folder");
             return hasDuplicate;
         }
+
         string NewName(string value)
         {
-            if (!ResourcePath.Contains("\\"))
-                return value;
-            return ResourcePath.Substring(0, 1 + ResourcePath.LastIndexOf('\\')) + value;
+            return value;
         }
 
         public ObservableCollection<IExplorerItemViewModel> Children
@@ -840,6 +840,14 @@ namespace Warewolf.Studio.ViewModels
                 {
                     IsResourceCheckedEnabled = CanDeploy;
                     _isResource = value.HasValue && !IsFolder && value.Value;
+                }
+                if (value != null && (bool)value)
+                {
+                    IsSelected = true;
+                }
+                else
+                {
+                    IsSelected = false;
                 }
                 SelectAction?.Invoke(this);
                 OnPropertyChanged(() => IsResourceChecked);

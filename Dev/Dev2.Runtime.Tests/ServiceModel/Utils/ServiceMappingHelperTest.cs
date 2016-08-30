@@ -169,7 +169,6 @@ namespace Dev2.Tests.Runtime.ServiceModel.Utils
                 ResourceID = Guid.NewGuid(),
                 ResourceName = "CountriesService",
                 ResourceType = "DbService",
-                ResourcePath = "Test",
                 Method = new ServiceMethod
                 {
                     Name = "dbo.spGetCountries",
@@ -188,7 +187,6 @@ namespace Dev2.Tests.Runtime.ServiceModel.Utils
                     ResourceID = Guid.NewGuid(),
                     ResourceName = "CitiesDB",
                     ResourceType = "DbSource",
-                    ResourcePath = "Test",
                     Server = "RSAKLFSVRGENDEV",
                     DatabaseName = "Cities",
                     AuthenticationType = AuthenticationType.Windows,

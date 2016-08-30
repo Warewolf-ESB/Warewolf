@@ -46,7 +46,6 @@ namespace Dev2.Runtime.ESB.Management.Services
                     return new WebServiceSourceDefinition
                     {
                         Name = res.ResourceName,
-                        Path = res.ResourcePath,
                         Id = res.ResourceID,
                         UserName = res.UserName,
                         Password = res.Password,
@@ -57,7 +56,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 }
                 return null;
             }).ToList();
-            return serializer.SerializeToBuilder(new ExecuteMessage() { HasError = false, Message = serializer.SerializeToBuilder(list) });
+            return serializer.SerializeToBuilder(new ExecuteMessage { HasError = false, Message = serializer.SerializeToBuilder(list) });
             // ReSharper restore MaximumChainedReferences
         }
 

@@ -352,7 +352,6 @@ namespace Dev2.Tests.Runtime.ServiceModel
                 ResourceID = Guid.NewGuid(),
                 ResourceName = "DummyPluginService",
                 ResourceType = "PluginService",
-                ResourcePath = "Tests",
                 Namespace = type.FullName,
                 Method = method,
                 Source = source
@@ -373,8 +372,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
                 AssemblyLocation = assembly.Location,
                 ResourceID = Guid.NewGuid(),
                 ResourceName = "Dummy",
-                ResourceType = "PluginSource",
-                ResourcePath = "Test",
+                ResourceType = "PluginSource"
             };
         }
 

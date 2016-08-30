@@ -63,21 +63,23 @@ namespace Dev2.Runtime.Hosting
 
         public IList<IExplorerItem> GetVersions(Guid resourceId)
         {
+            
             var resource = _catalogue.GetResource(Guid.Empty, resourceId);
 
             if (resource?.VersionInfo == null)
             {
                 return new List<IExplorerItem>();
             }
-            var path = GetVersionFolderFromResource(resource);
+            var versionPath = resource.GetResourcePath(GlobalConstants.ServerWorkspaceID);
+            var path = GetVersionFolderFromResource(versionPath);
 
             // ReSharper disable ImplicitlyCapturedClosure
             var files = _directory.GetFiles(path).Where(a => a.Contains(resource.VersionInfo.VersionId.ToString()));
             // ReSharper restore ImplicitlyCapturedClosure
-            return files.Select(a => CreateVersionFromFilePath(a, resource)).OrderByDescending(a => a.VersionInfo.DateTimeStamp).Take(GlobalConstants.VersionCount).ToList();
+            return files.Select(a => CreateVersionFromFilePath(a, resource, path)).OrderByDescending(a => a.VersionInfo.DateTimeStamp).Take(GlobalConstants.VersionCount).ToList();
         }
 
-        public void MoveVersions(Guid resourceId, string newPath)
+        public void MoveVersions(Guid resourceId, string newPath, string resourcePath)
         {
             var resource = _catalogue.GetResource(Guid.Empty, resourceId);
 
@@ -85,7 +87,7 @@ namespace Dev2.Runtime.Hosting
             {
                 return;
             }
-            var path = GetVersionFolderFromResource(resource);
+            var path = GetVersionFolderFromResource(resourcePath);
 
             // ReSharper disable ImplicitlyCapturedClosure
             var files = _directory.GetFiles(path).Where(a => a.Contains(resource.VersionInfo.VersionId.ToString()));
@@ -98,10 +100,10 @@ namespace Dev2.Runtime.Hosting
             enumerable.ForEach(a => _file.Move(a, Path.Combine(versionPath, Path.GetFileName(a))));
         }
 
-        public StringBuilder GetVersion(IVersionInfo version)
+        public StringBuilder GetVersion(IVersionInfo version, string resourcePath)
         {
             var resource = _catalogue.GetResource(Guid.Empty, version.ResourceId);
-            var path = GetVersionFolderFromResource(resource);
+            var path = GetVersionFolderFromResource(resourcePath);
             var files = _directory.GetFiles(path).FirstOrDefault(a => a.Contains(string.Format("{0}_{1}_", resource.VersionInfo.VersionId.ToString(), version.VersionNumber)));
             if (string.IsNullOrEmpty(files))
                 throw new VersionNotFoundException("Version Does not exist");
@@ -109,25 +111,25 @@ namespace Dev2.Runtime.Hosting
             return new StringBuilder(_file.ReadAllText(files));
         }
 
-        string GetVersionFolderFromResource(IResource resource)
+        string GetVersionFolderFromResource(string resourcePath)
         {
-            var path = Path.Combine(_rootPath, GetDirectoryFromResource(resource), GlobalConstants.VersionFolder);
+            var path = Path.Combine(_rootPath, GetDirectoryFromResource(resourcePath), GlobalConstants.VersionFolder);
             _directory.CreateIfNotExists(path);
             
             return path;
         }
 
-        string GetFolderFromResource(IResource resource)
+        string GetFolderFromResource(string resourcePath)
         {
-            var path = Path.Combine(_rootPath, GetDirectoryFromResource(resource));
+            var path = Path.Combine(_rootPath, GetDirectoryFromResource(resourcePath));
             _directory.CreateIfNotExists(path);
 
             return path;
         }
 
-        IExplorerItem CreateVersionFromFilePath(string path, IResource resource)
+        IExplorerItem CreateVersionFromFilePath(string path, IResource resource, string resourcePath)
         {
-            return new ServerExplorerItem(CreateNameFromPath(path), resource.ResourceID, "Version", new List<IExplorerItem>(), Permissions.View, resource.ResourcePath, "", "")
+            return new ServerExplorerItem(CreateNameFromPath(path), resource.ResourceID, "Version", new List<IExplorerItem>(), Permissions.View, resourcePath, "", "")
             {
                 VersionInfo = CreateVersionInfoFromFilePath(path, resource.ResourceID),
                 IsResourceVersion = true
@@ -152,21 +154,21 @@ namespace Dev2.Runtime.Hosting
             return $"v.{parts[1]}  {new DateTime(long.Parse(parts[2]))}  {parts[3].Replace(".xml", "")}";
         }
 
-        static string GetDirectoryFromResource(IResource resource)
+        static string GetDirectoryFromResource(string resourcePath)
         {
-            if (resource.ResourcePath.Contains("\\"))
-                return resource.ResourcePath.Substring(0, resource.ResourcePath.LastIndexOf('\\'));
+            if (resourcePath.Contains("\\"))
+                return resourcePath.Substring(0, resourcePath.LastIndexOf('\\'));
             return "";
         }
 
         public IRollbackResult RollbackTo(Guid resourceId, string versionNumber)
         {
             var res = _catalogue.GetResource(Guid.Empty, resourceId);
-            var xmlBuilder = GetVersion(new VersionInfo(DateTime.MinValue, "", "", versionNumber, resourceId, res.VersionInfo.VersionId));
+            var resourcePath = res.GetResourcePath(Guid.Empty);
+            var xmlBuilder = GetVersion(new VersionInfo(DateTime.MinValue, "", "", versionNumber, resourceId, res.VersionInfo.VersionId), resourcePath);
             var xml = xmlBuilder.ToXElement();
             Resource oldResource = new Resource(xml);
-            UpdateCategoryIfRenamed(res, oldResource, xml);
-            StoreAndDeleteCurrentIfRenamed(res, oldResource);
+            StoreAndDeleteCurrentIfRenamed(res, oldResource, resourcePath);
             UpdateVersionInfoIfNotExists(resourceId, xml, res);
             _catalogue.SaveResource(Guid.Empty, xml.ToStringBuilder(), "Rollback", "WorkflowService");
             if (oldResource.ResourceName != res.ResourceName)
@@ -188,39 +190,25 @@ namespace Dev2.Runtime.Hosting
             }
         }
 
-        void StoreAndDeleteCurrentIfRenamed(IResource res, Resource oldResource)
+        void StoreAndDeleteCurrentIfRenamed(IResource res, Resource oldResource, string resourcePath)
         {
             if (res.ResourceName != oldResource.ResourceName)
             {
-                StoreVersion(res, "unknown", "Rollback", Guid.Empty);
+                StoreVersion(res, "unknown", "Rollback", Guid.Empty, resourcePath);
                 _catalogue.DeleteResource(Guid.Empty, res.ResourceName, res.ResourceType, false);
             }
         }
 
-        static void UpdateCategoryIfRenamed(IResource res, Resource oldResource, XElement xml)
-        {
-            if (res.ResourcePath != null && res.ResourcePath != res.ResourceName) // we are not in the root folder
-            {
-                var oldPath = res.ResourcePath.Substring(0, 1 + res.ResourcePath.LastIndexOf("\\", StringComparison.Ordinal));
-                var newPath = oldResource.ResourcePath.Substring(0, 1 + res.ResourcePath.LastIndexOf("\\", StringComparison.Ordinal));
-                if (oldPath != newPath)
-                {
-                    oldResource.ResourcePath = newPath + oldResource.ResourceName;
-                    xml.SetAttributeValue("Category", newPath + oldResource.ResourceName);
-                }
-            }
-        }
-
-        public IList<IExplorerItem> DeleteVersion(Guid resourceId, string versionNumber)
+        public IList<IExplorerItem> DeleteVersion(Guid resourceId, string versionNumber, string resourcePath)
         {
             var resource = _catalogue.GetResource(Guid.Empty, resourceId);
-            var path = GetVersionFolderFromResource(resource);
+            var path = GetVersionFolderFromResource(resourcePath);
             var files = _directory.GetFiles(path).FirstOrDefault(a => a.Contains($"{resource.VersionInfo.VersionId.ToString()}_{versionNumber}_"));
             _file.Delete(files);
             return GetVersions(resourceId);
         }
 
-        public void StoreVersion(IResource resource, string userName, string reason, Guid workSpaceId)
+        public void StoreVersion(IResource resource, string userName, string reason, Guid workSpaceId, string resourcePath)
         {
             if (workSpaceId == Guid.Empty)
             {
@@ -234,12 +222,12 @@ namespace Dev2.Runtime.Hosting
                     {
                         var versions = GetVersions(resource.ResourceID).FirstOrDefault();
                         old.VersionInfo = _versionStrategy.GetCurrentVersion(resource, versions?.VersionInfo, userName, reason);
-                        var folderPath = GetVersionFolderFromResource(resource);
+                        var folderPath = GetVersionFolderFromResource(resource.GetResourcePath(workSpaceId));
 
                         var fileName = $"{old.VersionInfo.VersionId}_{old.VersionInfo.VersionNumber}_{GetDateString(old.VersionInfo.DateTimeStamp)}_{reason}.xml";
                         if (!_file.Exists(Path.Combine(folderPath, fileName))) //todo: remove this and stop save on workspace
                         {
-                            var sourceFile = Path.Combine(GetFolderFromResource(resource), old.ResourceName) + ".xml";
+                            var sourceFile = Path.Combine(GetFolderFromResource(resource.GetResourcePath(workSpaceId)), old.ResourceName) + ".xml";
                             if (_file.Exists(sourceFile))
                             {
                                 _file.Copy(sourceFile, Path.Combine(folderPath, fileName));

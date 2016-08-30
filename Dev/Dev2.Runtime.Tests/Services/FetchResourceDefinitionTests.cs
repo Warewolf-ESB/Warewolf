@@ -48,7 +48,6 @@ namespace Dev2.Tests.Runtime.Services
             {
                 ResourceID = resourceID,
                 ResourceName = "Dev2TestingDB",
-                ResourcePath = "Test",
                 DatabaseName = "Dev2TestingDB",
                 Server = "RSAKLFSVRGENDEV",
                 AuthenticationType = AuthenticationType.User,

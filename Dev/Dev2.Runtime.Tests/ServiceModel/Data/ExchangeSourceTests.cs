@@ -26,8 +26,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
                 Password = "testPassword",
                 Type = enSourceType.ExchangeSource,
                 ResourceID = Guid.NewGuid(),
-                ResourceName = "TestResourceIMadeUp",
-                ResourcePath = @"host\Server",
+                ResourceName = "TestResourceIMadeUp"
             };
         }
 

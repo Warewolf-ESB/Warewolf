@@ -28,7 +28,7 @@ namespace Dev2.Common.Interfaces
         Task<IExplorerItem> LoadExplorer(bool reloadCatalogue = false);
 
         IExplorerItem FindItemByID(Guid id);
-        StringBuilder GetVersion(IVersionInfo versionInfo);
+        StringBuilder GetVersion(IVersionInfo versionInfo, Guid resourceId);
 
         Task<List<string>> LoadExplorerDuplicates();
     }
