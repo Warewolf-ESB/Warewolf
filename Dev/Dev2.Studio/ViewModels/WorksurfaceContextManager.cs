@@ -53,89 +53,48 @@ namespace Dev2.Studio.ViewModels
     public interface IWorksurfaceContextManager
     {
         void Handle(RemoveResourceAndCloseTabMessage message);
-
         void EditServer(IServerSource selectedServer);
-
         void EditResource(IDbSource selectedSource, IWorkSurfaceKey workSurfaceKey = null);
-
         void EditResource(IPluginSource selectedSource, IWorkSurfaceKey workSurfaceKey = null);
-
         void EditResource(IComPluginSource selectedSource, IWorkSurfaceKey workSurfaceKey = null);
-
         void EditResource(IWebServiceSource selectedSource, IWorkSurfaceKey workSurfaceKey = null);
-
         void EditResource(IEmailServiceSource selectedSource, IWorkSurfaceKey workSurfaceKey = null);
-
         void EditResource(IExchangeSource selectedSource, IWorkSurfaceKey workSurfaceKey = null);
-
         void EditResource(IRabbitMQServiceSourceDefinition selectedSource, IWorkSurfaceKey workSurfaceKey = null);
-
         void EditResource(IWcfServerSource selectedSource, IWorkSurfaceKey workSurfaceKey = null);
-
         void NewService(string resourcePath);
-
         void NewDatabaseSource(string resourcePath);
-
+        void DuplicateResource(IExplorerItemViewModel explorerItemViewModel);
         void NewWebSource(string resourcePath);
-
         void NewPluginSource(string resourcePath);
-
         void NewComPluginSource(string resourcePath);
-
         void NewWcfSource(string resourcePath);
-
         void NewDropboxSource(string resourcePath);
-
         void NewRabbitMQSource(string resourcePath);
-
         void NewSharepointSource(string resourcePath);
-
         void AddDeploySurface(IEnumerable<IExplorerTreeItem> items);
-
         void OpenVersion(Guid resourceId, IVersionInfo versionInfo);
-
         void NewEmailSource(string resourcePath);
-
         void NewExchangeSource(string resourcePath);
-
         bool IsWorkFlowOpened(IContextualResourceModel resource);
-
         void AddWorkSurfaceContext(IContextualResourceModel resourceModel);
-
         void ShowDependencies(bool dependsOnMe, IContextualResourceModel model, IServer server);
-
         void DisplayResourceWizard(IContextualResourceModel resourceModel);
-
         void EditDbSource(IContextualResourceModel resourceModel);
-
         void EditPluginSource(IContextualResourceModel resourceModel);
-
         void EditComPluginSource(IContextualResourceModel resourceModel);
-
         void EditWebSource(IContextualResourceModel resourceModel);
-
         void EditSharePointSource(IContextualResourceModel resourceModel);
-
         void EditEmailSource(IContextualResourceModel resourceModel);
-
         void EditExchangeSource(IContextualResourceModel resourceModel);
-
         void EditDropBoxSource(IContextualResourceModel resourceModel);
-
         void EditRabbitMQSource(IContextualResourceModel resourceModel);
-
         void EditWcfSource(IContextualResourceModel resourceModel);
-
         void EditServer(IContextualResourceModel resourceModel);
-
         void EditResource(IOAuthSource selectedSource, IWorkSurfaceKey workSurfaceKey = null);
-
         void EditResource(ISharepointServerSource selectedSource, IWorkSurfaceKey workSurfaceKey = null);
-
-        Task<IRequestServiceNameViewModel> GetSaveViewModel(string resourcePath, string header);
-
+        Task<IRequestServiceNameViewModel> GetSaveViewModel(string resourcePath, string header, IExplorerItemViewModel explorerItemViewModel = null);
         void AddReverseDependencyVisualizerWorkSurface(IContextualResourceModel resource);
-
         void AddSettingsWorkSurface();
 
         void AddSchedulerWorkSurface();
@@ -342,6 +301,11 @@ namespace Dev2.Studio.ViewModels
             // ReSharper disable once PossibleInvalidOperationException
             var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(key, new SourceViewModel<IDbSource>(_mainViewModel.EventPublisher, new ManageDatabaseSourceViewModel(new ManageDatabaseSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, ActiveEnvironment.Name), saveViewModel, new Microsoft.Practices.Prism.PubSubEvents.EventAggregator(), _mainViewModel.AsyncWorker) { SelectedGuid = key.ResourceID.Value }, _mainViewModel.PopupProvider, new ManageDatabaseSourceControl()));
             AddAndActivateWorkSurface(workSurfaceContextViewModel);
+        }
+        public void DuplicateResource(IExplorerItemViewModel explorerItemViewModel)
+        {
+            Task<IRequestServiceNameViewModel> saveViewModel = GetSaveViewModel(explorerItemViewModel.ResourcePath, explorerItemViewModel.ResourceName, explorerItemViewModel);
+            var messageBoxResult = saveViewModel.Result.ShowSaveDialog();
         }
 
         public void NewWebSource(string resourcePath)
@@ -627,6 +591,9 @@ namespace Dev2.Studio.ViewModels
                 case "ServerSource":
                     EditServer(resourceModel);
                     break;
+                default:
+                    AddWorkSurfaceContext(resourceModel);
+                    break;
             }
         }
 
@@ -881,9 +848,9 @@ namespace Dev2.Studio.ViewModels
             AddAndActivateWorkSurface(workSurfaceContextViewModel);
         }
 
-        public async Task<IRequestServiceNameViewModel> GetSaveViewModel(string resourcePath, string header)
+        public async Task<IRequestServiceNameViewModel> GetSaveViewModel(string resourcePath, string header, IExplorerItemViewModel explorerItemViewModel = null)
         {
-            return await RequestServiceNameViewModel.CreateAsync(new EnvironmentViewModel(ActiveServer, _mainViewModel), resourcePath, header);
+            return await RequestServiceNameViewModel.CreateAsync(new EnvironmentViewModel(ActiveServer, _mainViewModel), resourcePath, header, explorerItemViewModel);
         }
 
         public void AddReverseDependencyVisualizerWorkSurface(IContextualResourceModel resource)

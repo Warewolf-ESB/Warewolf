@@ -13,5 +13,7 @@ namespace Dev2.Runtime.Interfaces
         ResourceCatalogResult SaveResource(Guid workspaceID, IResource resource, string reason = "", string user = "");
         Action<IResource> ResourceSaved { get; set; }
         Action<Guid, IList<ICompileMessageTO>> SendResourceMessages { get; set; }
+
+        ResourceCatalogResult SaveResource(Guid workspaceID, IResource resource,StringBuilder contents, string reason = "", string user = "");
     }
 }
