@@ -20,7 +20,6 @@ namespace Dev2.ViewModels
         public DeployWorksurfaceViewModel():base(new EventAggregator())
         {
             var dest = new DeployDestinationViewModel(CustomContainer.Get<IShellViewModel>(), CustomContainer.Get<Microsoft.Practices.Prism.PubSubEvents.IEventAggregator>());
-
             var stats = new DeployStatsViewerViewModel(dest);
             var source = new DeploySourceExplorerViewModel(CustomContainer.Get<IShellViewModel>(), CustomContainer.Get<Microsoft.Practices.Prism.PubSubEvents.IEventAggregator>(), stats);
             dest.StatsArea = stats;
