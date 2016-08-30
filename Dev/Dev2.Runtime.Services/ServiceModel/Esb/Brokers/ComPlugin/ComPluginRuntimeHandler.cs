@@ -51,7 +51,6 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.ComPlugin
                 pluginResult = AdjustPluginResult(pluginResult);
                 return formater.Format(pluginResult).ToString();
             }
-            pluginResult = JsonConvert.SerializeObject(pluginResult);
             return pluginResult;
         }
         public IOutputDescription Test(ComPluginInvokeArgs setupInfo, out string jsonResult)
@@ -139,7 +138,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.ComPlugin
             return null;
         }
 
-        private static object[] BuildValuedTypeParams(ComPluginInvokeArgs setupInfo)
+        private static IEnumerable<object> BuildValuedTypeParams(ComPluginInvokeArgs setupInfo)
         {
             var valuedTypeList = new object[setupInfo.Parameters.Count];
 

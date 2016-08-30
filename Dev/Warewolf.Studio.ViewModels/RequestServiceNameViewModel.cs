@@ -6,8 +6,13 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using Dev2;
+using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.SaveDialog;
+using Dev2.Communication;
+using Dev2.Controller;
+using Dev2.Studio.Core;
+using Dev2.Studio.Core.Interfaces;
 using Microsoft.Practices.Prism.Commands;
 using Microsoft.Practices.Prism.Mvvm;
 using Warewolf.Resource.Errors;
@@ -26,6 +31,9 @@ namespace Warewolf.Studio.ViewModels
         private bool _hasLoaded;
         string _header;
         private IEnvironmentViewModel _environmentViewModel;
+        IExplorerItemViewModel _explorerItemViewModel;
+        private bool _isDuplicate;
+        private bool _fixReferences;
         MessageBoxResult ViewResult { get; set; }
 
         // ReSharper disable once EmptyConstructor
@@ -37,7 +45,7 @@ namespace Warewolf.Studio.ViewModels
 
 #pragma warning disable 1998
 #pragma warning disable 1998
-        private async Task<IRequestServiceNameViewModel> InitializeAsync(IEnvironmentViewModel environmentViewModel,  string selectedPath, string header)
+        private async Task<IRequestServiceNameViewModel> InitializeAsync(IEnvironmentViewModel environmentViewModel, string selectedPath, string header, IExplorerItemViewModel explorerItemViewModel = null)
 #pragma warning restore 1998
 #pragma warning restore 1998
         {
@@ -45,13 +53,70 @@ namespace Warewolf.Studio.ViewModels
             _environmentViewModel.Connect();
             _selectedPath = selectedPath;
             _header = header;
-          
+            _explorerItemViewModel = explorerItemViewModel;
             OkCommand = new DelegateCommand(SetServiceName, () => string.IsNullOrEmpty(ErrorMessage) && HasLoaded);
+            DuplicateCommand = new DelegateCommand(CallDuplicateService, () => explorerItemViewModel != null);
             CancelCommand = new DelegateCommand(CloseView);
-            Name = "";
+            Name = header;
+            IsDuplicate = explorerItemViewModel != null;
             environmentViewModel.CanShowServerVersion = false;
             _environmentViewModel = environmentViewModel;
             return this;
+        }
+
+        readonly IEnvironmentConnection _lazyCon = EnvironmentRepository.Instance.ActiveEnvironment?.Connection;
+        ICommunicationController _lazyComs = new CommunicationController { ServiceName = "DuplicateResourceService" };
+
+        private void CallDuplicateService()
+        {
+            try
+            {
+
+                if (_explorerItemViewModel.IsFolder)
+                {
+                    _lazyComs = new CommunicationController { ServiceName = "DuplicateFolderService" };
+                    _lazyComs.AddPayloadArgument("FixRefs", FixReferences.ToString());
+                }
+
+                if (!_explorerItemViewModel.IsFolder)
+                {
+                    _lazyComs.AddPayloadArgument("ResourceID", _explorerItemViewModel.ResourceId.ToString());
+                }
+                _lazyComs.AddPayloadArgument("sourcePath", _explorerItemViewModel.ResourcePath);
+                _lazyComs.AddPayloadArgument("destinatioPath", SelectedItem.ResourcePath);
+                _lazyComs.AddPayloadArgument("NewResourceName", Name);
+
+
+                // ReSharper disable once UnusedVariable
+                var executeCommand = _lazyComs.ExecuteCommand<ExecuteMessage>(_lazyCon ?? EnvironmentRepository.Instance.ActiveEnvironment?.Connection, GlobalConstants.ServerWorkspaceID);
+                if (executeCommand?.HasError ?? false)
+                {
+                    //   var vm = new MessageBoxViewModel("Failed Duplicating", "Duplicate Failure", MessageBoxButton.OK, FontAwesomeIcon.AlignCenter, false, true, false, false,new List<string>());
+                    // SHow error dialog
+                }
+                CloseView();
+            }
+            finally
+            {
+                //Always refresh the env after this service call
+                _environmentViewModel.Server.UpdateRepository.FireItemSaved(true);
+            }
+
+
+        }
+
+        public bool FixReferences
+        {
+            get
+            {
+                return _fixReferences;
+            }
+            // ReSharper disable once UnusedMember.Global
+            set
+            {
+                _fixReferences = value;
+                OnPropertyChanged(() => FixReferences);
+            }
         }
 
         void SingleEnvironmentExplorerViewModelPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
@@ -60,7 +125,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 ValidateName();
             }
-        
+
         }
 
         bool HasLoaded
@@ -76,14 +141,14 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        public static Task<IRequestServiceNameViewModel> CreateAsync(IEnvironmentViewModel environmentViewModel, string selectedPath, string header)
+        public static Task<IRequestServiceNameViewModel> CreateAsync(IEnvironmentViewModel environmentViewModel, string selectedPath, string header, IExplorerItemViewModel explorerItemViewModel = null)
         {
             if (environmentViewModel == null)
-        {
+            {
                 throw new ArgumentNullException(nameof(environmentViewModel));
             }
             var ret = new RequestServiceNameViewModel();
-            return ret.InitializeAsync(environmentViewModel, selectedPath, header);
+            return ret.InitializeAsync(environmentViewModel, selectedPath, header, explorerItemViewModel);
         }
 
         public Guid IdToSave { get; set; }
@@ -96,7 +161,7 @@ namespace Warewolf.Studio.ViewModels
 
         private void SetServiceName()
         {
-            var path = GetPath();
+            var path = Path;
             if (!string.IsNullOrEmpty(path))
             {
                 path = path.TrimStart('\\') + "\\";
@@ -106,37 +171,56 @@ namespace Warewolf.Studio.ViewModels
             _view.RequestClose();
         }
 
-        private string GetPath()
+        private string Path
         {
-            var selectedItem = SingleEnvironmentExplorerViewModel.SelectedItem;
-            if (selectedItem != null)
+            get
             {
-                var parent = selectedItem.Parent;
-                var parentNames = new List<string>();
-                while (parent != null)
+                var selectedItem = SelectedItem;
+                if (selectedItem != null)
                 {
-                    if (parent.ResourceType != "ServerSource")
+                    var parent = selectedItem.Parent;
+                    var parentNames = new List<string>();
+                    while (parent != null)
                     {
-                        parentNames.Add(parent.ResourceName);
+                        if (parent.ResourceType != "ServerSource")
+                        {
+                            parentNames.Add(parent.ResourceName);
+                        }
+                        parent = parent.Parent;
                     }
-                    parent = parent.Parent;
-                }
-                var path = "";
-                if (parentNames.Count > 0)
-                {
-                    for (var index = parentNames.Count; index > 0; index--)
+                    var path = "";
+                    if (parentNames.Count > 0)
                     {
-                        var parentName = parentNames[index - 1];
-                        path = path + "\\" + parentName;
+                        for (var index = parentNames.Count; index > 0; index--)
+                        {
+                            var parentName = parentNames[index - 1];
+                            path = path + "\\" + parentName;
+                        }
                     }
+                    if (selectedItem.ResourceType == "Folder")
+                    {
+                        path = path + "\\" + selectedItem.ResourceName;
+                    }
+                    return path;
                 }
-                if (selectedItem.ResourceType == "Folder")
-                {
-                    path = path + "\\" + selectedItem.ResourceName;
-                }
-                return path;
+                return "";
             }
-            return "";
+
+        }
+        private IExplorerTreeItem _treeItem;
+        private IExplorerTreeItem SelectedItem
+        {
+            get
+            {
+                _treeItem = SingleEnvironmentExplorerViewModel.SelectedItem;
+                return _treeItem;
+            }
+
+            // ReSharper disable once UnusedMember.Local
+            set
+            {
+                _treeItem = value;
+            }
         }
 
         private void RaiseCanExecuteChanged()
@@ -160,7 +244,7 @@ namespace Warewolf.Studio.ViewModels
                 }
                 HasLoaded = a.Result;
                 ValidateName();
-            },TaskContinuationOptions.ExecuteSynchronously);
+            }, TaskContinuationOptions.ExecuteSynchronously);
             SingleEnvironmentExplorerViewModel = new SingleEnvironmentExplorerViewModel(_environmentViewModel, Guid.Empty, false);
             SingleEnvironmentExplorerViewModel.PropertyChanged += SingleEnvironmentExplorerViewModelPropertyChanged;
             _view.DataContext = this;
@@ -189,6 +273,18 @@ namespace Warewolf.Studio.ViewModels
             {
                 _header = value;
                 OnPropertyChanged(() => Header);
+            }
+        }
+        public bool IsDuplicate
+        {
+            get
+            {
+                return _isDuplicate;
+            }
+            set
+            {
+                _isDuplicate = value;
+                OnPropertyChanged(() => IsDuplicate);
             }
         }
 
@@ -251,6 +347,7 @@ namespace Warewolf.Studio.ViewModels
         }
 
         public ICommand OkCommand { get; set; }
+        public ICommand DuplicateCommand { get; set; }
 
         public ICommand CancelCommand { get; private set; }
 
@@ -263,4 +360,5 @@ namespace Warewolf.Studio.ViewModels
             _environmentViewModel?.Dispose();
         }
     }
+
 }
