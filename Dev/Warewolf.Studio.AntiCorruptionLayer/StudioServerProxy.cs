@@ -72,7 +72,7 @@ namespace Warewolf.Studio.AntiCorruptionLayer
             if (vm.ResourceType == "Folder")
                 UpdateManagerProxy.RenameFolder(vm.ResourcePath, newName, vm.ResourceId);
             else
-                UpdateManagerProxy.Rename(vm.ResourceId, newName, vm.ResourcePath);
+                UpdateManagerProxy.Rename(vm.ResourceId, newName);
             return true;
         }
 
