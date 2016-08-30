@@ -38,7 +38,7 @@ namespace Dev2.Tests.Runtime.Util
 
             //------------Execute Test---------------------------
 
-            var result = new FindResourceHelper().SerializeResourceForStudio(res);
+            var result = new FindResourceHelper().SerializeResourceForStudio(res,Guid.Empty);
 
             //------------Assert Results-------------------------
 
@@ -57,7 +57,7 @@ namespace Dev2.Tests.Runtime.Util
 
             //------------Execute Test---------------------------
 
-            var result = new FindResourceHelper().SerializeResourceForStudio(res);
+            var result = new FindResourceHelper().SerializeResourceForStudio(res, Guid.Empty);
 
             //------------Assert Results-------------------------
 
@@ -100,7 +100,7 @@ namespace Dev2.Tests.Runtime.Util
             };
 
             //------------Execute Test---------------------------
-            var result = new FindResourceHelper().SerializeResourceForStudio(res);
+            var result = new FindResourceHelper().SerializeResourceForStudio(res, Guid.Empty);
 
             //------------Assert Results-------------------------
 
