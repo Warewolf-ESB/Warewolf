@@ -82,11 +82,6 @@ namespace Warewolf.Studio.ViewModels
                 {
                     _lazyComs.AddPayloadArgument("ResourceID", _explorerItemViewModel.ResourceId.ToString());
                 }
-                if (_explorerItemViewModel is VersionViewModel)
-                {
-                    var explorerItem = _environmentViewModel.Server.ExplorerRepository.ExplorerItems.Children.Single(item => item.ResourceId == _explorerItemViewModel.ResourceId);
-                    var stringBuilder = _environmentViewModel.Server.ExplorerRepository.GetVersion(explorerItem.VersionInfo);
-                }
 
                 _lazyComs.AddPayloadArgument("sourcePath", _explorerItemViewModel.ResourcePath);
                 _lazyComs.AddPayloadArgument("destinatioPath", SelectedItem.ResourcePath);
@@ -101,6 +96,10 @@ namespace Warewolf.Studio.ViewModels
                     // SHow error dialog
                 }
                 CloseView();
+            }
+            catch (Exception)
+            {
+                //
             }
             finally
             {
