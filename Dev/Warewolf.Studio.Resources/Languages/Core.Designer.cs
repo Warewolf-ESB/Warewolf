@@ -2028,7 +2028,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to You do not have contribute permission on this item, you cannot deploy it..
+        ///   Looks up a localized string similar to You do not have contribute permission for this item on the destination server, you cannot deploy it..
         /// </summary>
         public static string DeployResourceCheckboxViewPermissionError {
             get {
