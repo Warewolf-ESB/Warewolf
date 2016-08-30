@@ -509,7 +509,7 @@ namespace Dev2.Tests.Runtime.Hosting
             //------------Setup for test--------------------------
             var workspaceID = Guid.NewGuid();
             var workspacePath = EnvironmentVariables.GetWorkspacePath(workspaceID);
-            const string resourcePath = "MyTest\\Folder1\\CitiesDatabase";
+            const string resourcePath = "MyTest\\Folder1";
             var path = Path.Combine(workspacePath, resourcePath);
             const string resourceName = "CitiesDatabase";
             var xml = XmlResource.Fetch(resourceName);
@@ -521,7 +521,7 @@ namespace Dev2.Tests.Runtime.Hosting
             var resourceCatalogResult = catalog.SaveResource(workspaceID, resource1, "", "", resourcePath);
             //------------Assert Results-------------------------
             Assert.AreEqual(ExecStatus.DuplicateMatch, resourceCatalogResult.Status);
-            xml = XElement.Load(path + ".xml");
+            xml = XElement.Load(path + "\\CitiesDatabase" + ".xml");
             Assert.IsNotNull(xml);
             var idAttr = xml.Attributes("ID").ToList();
             Assert.AreEqual(1, idAttr.Count);
