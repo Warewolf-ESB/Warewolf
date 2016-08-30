@@ -333,20 +333,10 @@ namespace Dev2.Runtime.Hosting
                 {
                     newPath = itemToMove.DisplayName;
                 }
-                if (itemToMove.Children == null || itemToMove.Children.Count == 0)
-                {
-                    var oldPath = itemToMove.ResourcePath;
-                    itemToMove.ResourcePath = newPath;
-                    AddItem(itemToMove, workSpaceId);
-                    DeleteFolder(oldPath, true, workSpaceId);
-                }
-                else
-                {
-                    foreach (var explorerItem in itemToMove.Children)
-                    {
-                        MoveItem(explorerItem, newPath, workSpaceId);
-                    }
-                }
+                var oldPath = itemToMove.ResourcePath;
+                Directory.Move(DirectoryStructureFromPath(oldPath), DirectoryStructureFromPath(newPath));
+                MoveVersionFolder(oldPath, newPath);
+                Load(workSpaceId, true);                
                 return new ExplorerRepositoryResult(ExecStatus.Success, "");
             }
             // ReSharper disable once RedundantIfElseBlock
@@ -366,7 +356,6 @@ namespace Dev2.Runtime.Hosting
             MoveVersions(itemToMove, newPath);
             ResourceCatalogResult result = ResourceCatalogue.RenameCategory(workSpaceId, itemToMove.ResourcePath, newPath, new List<IResource> { ResourceCatalogue.GetResource(workSpaceId, itemToMove.ResourceId) });
             _file.Delete(string.Format("{0}.xml", DirectoryStructureFromPath(itemToMove.ResourcePath)));
-            //Reload(workSpaceId);
             return new ExplorerRepositoryResult(result.Status, result.Message);
         }
 
