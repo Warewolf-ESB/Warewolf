@@ -8,7 +8,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 namespace Dev2.Integration.Tests.Test_utils
 {
     public enum ServerCommonDirectory

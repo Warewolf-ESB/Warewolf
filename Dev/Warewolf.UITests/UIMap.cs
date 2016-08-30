@@ -212,6 +212,7 @@ namespace Warewolf.UITests
             if (MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox.Text != string.Empty)
             {
                 Click_Clear_Toolbox_Filter_Clear_Button();
+                Click_Clear_Toolbox_Filter_Clear_Button();
             }
 #if DEBUG
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox.Text == string.Empty, "Toolbox filter textbox text value of " + MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox.Text + " is not empty after clicking clear filter button.");

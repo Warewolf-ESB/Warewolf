@@ -63,7 +63,7 @@ namespace Dev2.Activities.Designers2.Decision
             {
                 DisplayName = DisplayText;
             }
-            if (String.IsNullOrEmpty(DisplayName) || DisplayName == "Decision")
+            if (string.IsNullOrEmpty(DisplayName) || DisplayName == "Decision")
             {
                 DisplayName = "Decision";
                 DisplayText = DisplayName;
@@ -98,7 +98,6 @@ namespace Dev2.Activities.Designers2.Decision
         {
             get;
             set;
-
         }
         void ConfigureDecisionExpression(ModelItem mi)
         {
@@ -107,7 +106,7 @@ namespace Dev2.Activities.Designers2.Decision
             var expression = condition.Properties[GlobalConstants.ExpressionPropertyText];
             var ds = DataListConstants.DefaultStack;
 
-            if (expression != null && expression.Value != null)
+            if (expression?.Value != null)
             {
                 var eval = Dev2DecisionStack.ExtractModelFromWorkflowPersistedData(expression.Value.ToString());
 
@@ -123,7 +122,7 @@ namespace Dev2.Activities.Designers2.Decision
             }
 
             var displayName = mi.Properties[GlobalConstants.DisplayNamePropertyText];
-            if (displayName != null && displayName.Value != null)
+            if (displayName?.Value != null)
             {
                 ds.DisplayText = displayName.Value.ToString();
             }
@@ -175,7 +174,6 @@ namespace Dev2.Activities.Designers2.Decision
         }
         public ObservableCollection<IDev2TOFn> Tos
         {
-
             get
             {
                 return Collection;
@@ -192,22 +190,17 @@ namespace Dev2.Activities.Designers2.Decision
 
         ObservableCollection<IDev2TOFn> ToObservableCollection()
         {
-
-            if (!String.IsNullOrWhiteSpace(ExpressionText))
+            if (!string.IsNullOrWhiteSpace(ExpressionText))
             {
                 var val = new StringBuilder(ExpressionText);
                 var decisions = DataListUtil.ConvertFromJsonToModel<Dev2DecisionStack>(val);
-                if (decisions != null)
+                if (decisions?.TheStack != null)
                 {
-                    if (decisions.TheStack != null)
-                    {
-                        TrueArmText = decisions.TrueArmText;
-                        FalseArmText = decisions.FalseArmText;
-                        DisplayText = decisions.DisplayText;
-                        RequireAllDecisionsToBeTrue = decisions.Mode == Dev2DecisionMode.AND;
-                        return new ObservableCollection<IDev2TOFn>(decisions.TheStack.Select((a, i) => new DecisionTO(a, i + 1, UpdateDecisionDisplayName, DeleteRow)));
-                    }
-
+                    TrueArmText = decisions.TrueArmText;
+                    FalseArmText = decisions.FalseArmText;
+                    DisplayText = decisions.DisplayText;
+                    RequireAllDecisionsToBeTrue = decisions.Mode == Dev2DecisionMode.AND;
+                    return new ObservableCollection<IDev2TOFn>(decisions.TheStack.Select((a, i) => new DecisionTO(a, i + 1, UpdateDecisionDisplayName, DeleteRow)));
                 }
             }
             return new ObservableCollection<IDev2TOFn> { new DecisionTO() };
@@ -215,23 +208,22 @@ namespace Dev2.Activities.Designers2.Decision
 
         static Dev2DecisionStack SetupTos(IEnumerable<IDev2TOFn> valuecoll)
         {
-
             var val = new Dev2DecisionStack { TheStack = new List<Dev2Decision>() };
             var value = valuecoll.Select(a => a as DecisionTO);
-            foreach (var decisionTO in value.Where(a => !a.IsEmpty()))
+            foreach (var decisionTo in value.Where(a => !a.IsEmpty()))
             {
-                var dev2Decision = new Dev2Decision { Col1 = decisionTO.MatchValue };
-                if (!String.IsNullOrEmpty(decisionTO.SearchCriteria))
+                var dev2Decision = new Dev2Decision { Col1 = decisionTo.MatchValue };
+                if (!string.IsNullOrEmpty(decisionTo.SearchCriteria))
                 {
-                    dev2Decision.Col2 = decisionTO.SearchCriteria;
+                    dev2Decision.Col2 = decisionTo.SearchCriteria;
                 }
-                dev2Decision.EvaluationFn = DecisionDisplayHelper.GetValue(decisionTO.SearchType);
-                if (decisionTO.IsBetweenCriteriaVisible)
+                dev2Decision.EvaluationFn = DecisionDisplayHelper.GetValue(decisionTo.SearchType);
+                if (decisionTo.IsBetweenCriteriaVisible)
                 {
-                    dev2Decision.Col2 = decisionTO.From;
-                    dev2Decision.Col3 = decisionTO.To;
+                    dev2Decision.Col2 = decisionTo.From;
+                    dev2Decision.Col3 = decisionTo.To;
                 }
-                if (String.IsNullOrEmpty(dev2Decision.Col3))
+                if (string.IsNullOrEmpty(dev2Decision.Col3))
                 {
                     dev2Decision.Col3 = "";
                 }
@@ -255,7 +247,6 @@ namespace Dev2.Activities.Designers2.Decision
 
         void OnSearchTypeChanged(object indexObj)
         {
-
             var index = (int)indexObj;
             try
             {
@@ -280,18 +271,26 @@ namespace Dev2.Activities.Designers2.Decision
             catch (Exception e)
             {
                 Dev2Logger.Error(e.Message, e);
-
             }
-
         }
 
         void UpdateDecisionDisplayName(DecisionTO dec)
         {
-
-            if (dec != null && !_isInitializing && dec.IndexNumber == 1)
+            if (DisplayText.StartsWith("If ") || DisplayText == "Decision")
             {
-                DisplayName = String.Format("If {0} {3} {1} {2}", dec.MatchValue, dec.SearchType, dec.IsBetweenCriteriaVisible ? string.Format("{0} and {1}", dec.From, dec.To) : dec.SearchCriteria, dec.SearchType == null || dec.SearchType.ToLower().Contains("is") ? "" : "Is");
-                DisplayText = String.Format("If {0} {3} {1} {2}", dec.MatchValue, dec.SearchType, dec.IsBetweenCriteriaVisible ? string.Format("{0} and {1}", dec.From, dec.To) : dec.SearchCriteria, dec.SearchType == null || dec.SearchType.ToLower().Contains("is") ? "" : "Is");
+                if (dec != null && !_isInitializing && dec.IndexNumber == 1)
+                {
+                    DisplayName = string.Format("If {0} {3} {1} {2}", dec.MatchValue, dec.SearchType,
+                        dec.IsBetweenCriteriaVisible
+                            ? $"{dec.From} and {dec.To}"
+                            : dec.SearchCriteria,
+                        dec.SearchType == null || dec.SearchType.ToLower().Contains("is") ? "" : "Is");
+                    DisplayText = string.Format("If {0} {3} {1} {2}", dec.MatchValue, dec.SearchType,
+                        dec.IsBetweenCriteriaVisible
+                            ? $"{dec.From} and {dec.To}"
+                            : dec.SearchCriteria,
+                        dec.SearchType == null || dec.SearchType.ToLower().Contains("is") ? "" : "Is");
+                }
             }
         }
 
@@ -356,10 +355,7 @@ namespace Dev2.Activities.Designers2.Decision
         public override void UpdateHelpDescriptor(string helpText)
         {
             var mainViewModel = CustomContainer.Get<IMainViewModel>();
-            if (mainViewModel != null)
-            {
-                mainViewModel.HelpViewModel.UpdateHelpText(helpText);
-            }
+            mainViewModel?.HelpViewModel.UpdateHelpText(helpText);
         }
     }
 }

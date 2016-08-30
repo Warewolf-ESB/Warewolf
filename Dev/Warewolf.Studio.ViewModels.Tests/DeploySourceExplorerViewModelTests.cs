@@ -329,13 +329,13 @@ namespace Warewolf.Studio.ViewModels.Tests
             axMock.SetupGet(it => it.IsResourceChecked).Returns(true);
             axMock.SetupGet(it => it.ResourceType).Returns("Folder");
             axMock.Setup(it => it.Children)
-                .Returns(new ObservableCollection<IExplorerItemViewModel>() {childMock.Object});
+                .Returns(new ObservableCollection<IExplorerItemViewModel> {childMock.Object});
 
             //act
             _target.Environments.First().SelectAction(axMock.Object);
 
             //assert
-            childMock.VerifySet(it => it.IsResourceChecked = true);
+            
             _deployStatsViewerViewModel.Verify(
                 it => it.Calculate(It.Is<IList<IExplorerTreeItem>>(match => !match.Any())));
         }
