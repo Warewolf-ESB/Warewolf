@@ -216,6 +216,7 @@
     <Compile Include="IComPluginSource.cs" />
     <Compile Include="IComputerName.cs" />
     <Compile Include="IConnectControlViewModel.cs" />
+    <Compile Include="ICreateDuplicateResourceView.cs" />
     <Compile Include="IDeletedFileMetadata.cs" />
     <Compile Include="IDllListing.cs" />
     <Compile Include="IDropboxExecutor.cs" />
@@ -243,6 +244,7 @@
     <Compile Include="IIntellisenseStringResult.cs" />
     <Compile Include="IIntellisenseStringResultBuilder.cs" />
     <Compile Include="IJsonObjectsView.cs" />
+    <Compile Include="ILightExplorerItem.cs" />
     <Compile Include="ILocalPathManager.cs" />
     <Compile Include="IManageComPluginSourceModel.cs" />
     <Compile Include="IManageComPluginSourceViewModel.cs" />
