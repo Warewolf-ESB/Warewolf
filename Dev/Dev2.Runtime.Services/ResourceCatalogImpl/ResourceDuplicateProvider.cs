@@ -63,7 +63,6 @@ namespace Dev2.Runtime.ResourceCatalogImpl
             resource.ResourceID = resourceID;
             xElement.SetElementValue("DisplayName", resourceName);
             xElement.SetElementValue("ID", resourceID.ToString());
-            xElement.SetElementValue("Name", resourceName);
             xElement.SetElementValue("Category", resource.ResourcePath);
             var fixedResource = xElement.ToStringBuilder();
             _resourceCatalog.SaveResource(GlobalConstants.ServerWorkspaceID, resource, fixedResource);
@@ -92,7 +91,6 @@ namespace Dev2.Runtime.ResourceCatalogImpl
                     resource.ResourceID = resourceID;
                     xElement.SetElementValue("DisplayName", resourceName);
                     xElement.SetElementValue("ID", resourceID.ToString());
-                    xElement.SetElementValue("Name", resourceName);
                     xElement.SetElementValue("Category", resource.ResourcePath);
                     var fixedResource = xElement.ToStringBuilder();
                     _resourceCatalog.SaveResource(GlobalConstants.ServerWorkspaceID, resource, fixedResource);
