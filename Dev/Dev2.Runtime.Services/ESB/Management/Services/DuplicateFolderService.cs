@@ -37,9 +37,9 @@ namespace Dev2.Runtime.ESB.Management.Services
                     {
                         throw new Exception("Source or Destination Paths not specified");
                     }
-                    var resourceCatalogResult = ResourceCatalog.Instance.DuplicateFolder(sourcePath.ToString(), destinatioPath.ToString(), newResourceName.ToString());
+                    var resourceCatalogResult = ResourceCatalog.Instance.DuplicateFolder(sourcePath.ToString(), destinatioPath.ToString(), newResourceName.ToString(), bool.Parse(fixRefs?.ToString() ?? false.ToString()));
                     Dev2Logger.Error(resourceCatalogResult.Message);
-                    var result = new ExecuteMessage { HasError = resourceCatalogResult.Status!= ExecStatus.Fail, Message = resourceCatalogResult.Message.ToStringBuilder() };
+                    var result = new ExecuteMessage { HasError = resourceCatalogResult.Status != ExecStatus.Fail, Message = resourceCatalogResult.Message.ToStringBuilder() };
                     return serializer.SerializeToBuilder(result);
 
                 }
