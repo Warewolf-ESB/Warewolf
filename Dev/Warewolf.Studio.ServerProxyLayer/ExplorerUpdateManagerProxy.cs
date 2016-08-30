@@ -80,13 +80,11 @@ namespace Warewolf.Studio.ServerProxyLayer
         /// </summary>
         /// <param name="id">the resource id</param>
         /// <param name="newName">the new name</param>
-        /// <param name="resourcePath"></param>
-        public void Rename(Guid id, string newName, string resourcePath)
+        public void Rename(Guid id, string newName)
         {
             var controller = CommunicationControllerFactory.CreateController("RenameItemService");
             controller.AddPayloadArgument("itemToRename", id.ToString());
             controller.AddPayloadArgument("newName", newName);
-            controller.AddPayloadArgument("resourcePath", resourcePath);
             var result = controller.ExecuteCommand<IExplorerRepositoryResult>(Connection, GlobalConstants.ServerWorkspaceID);
             if (result.Status != ExecStatus.Success)
             {
