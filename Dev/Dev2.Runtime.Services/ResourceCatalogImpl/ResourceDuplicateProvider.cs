@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Activities.Statements;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -115,7 +114,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
 
                 try
                 {
-                    using (var tx = new System.Transactions.TransactionScope())
+                    using (var tx = new TransactionScope())
                     {
                         FixReferences();
                         tx.Complete();
@@ -134,25 +133,26 @@ namespace Dev2.Runtime.ResourceCatalogImpl
         private readonly List<KeyValuePair<Guid, Guid>> _resourceUpdateMap = new List<KeyValuePair<Guid, Guid>>();
         private void FixReferences()
         {
-            foreach (var keyValuePair in _resourceUpdateMap)
+            foreach (var updatedResource in _resourcesToUpdate)
             {
+                var keyValuePair = _resourceUpdateMap.Single(pair => pair.Key == updatedResource.ResourceID);
                 var resourceToFix = _resourceCatalog.GetResource(GlobalConstants.ServerWorkspaceID, keyValuePair.Value);
                 var contents = _resourceCatalog.GetResourceContents(GlobalConstants.ServerWorkspaceID, keyValuePair.Value);
-                //var resourceToFix = _resourceCatalog.GetResource(GlobalConstants.ServerWorkspaceID, keyValuePair.Value);
                 if (resourceToFix == null)
                 {
                     ResourceCatalog.Instance.Reload();
                     resourceToFix = _resourceCatalog.GetResource(GlobalConstants.ServerWorkspaceID, keyValuePair.Value);
+                    contents = _resourceCatalog.GetResourceContents(GlobalConstants.ServerWorkspaceID, keyValuePair.Value);
                 }
 
                 var resourceForTrees = resourceToFix.Dependencies;
                 foreach (var resourceForTree in resourceForTrees)
                 {
-                    var oldRefences = _resourceUpdateMap.Where(pair => pair.Value == resourceForTree.ResourceID);
+                    var oldRefences = _resourceUpdateMap.Where(pair => pair.Key.ToString().ToUpper() == keyValuePair.Key.ToString().ToUpper());
                     foreach (KeyValuePair<Guid, Guid> oldRefence in oldRefences)
                     {
                         resourceForTree.ResourceID = oldRefence.Value;//assign new ID 
-                        contents = contents.ToString().Replace(resourceForTree.ResourceID.ToString(), oldRefence.Value.ToString()).ToStringBuilder();
+                        contents = contents.ToString().Replace(keyValuePair.Key.ToString(), oldRefence.Value.ToString()).ToStringBuilder();
                     }
                 }
                 resourceToFix.Dependencies = resourceForTrees;
