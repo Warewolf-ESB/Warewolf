@@ -8,6 +8,7 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using System;
 using System.Activities.Presentation.Model;
 using System.Collections.Generic;
 using Dev2.Activities.Designers2.Decision;
@@ -225,6 +226,18 @@ namespace Dev2.Activities.Designers.Tests.Decision
             //------------Execute Test---------------------------
             //------------Assert Results-------------------------
             Assert.AreEqual("Testing", viewModel.DisplayText);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("DecisionTo_SearchCriteria")]
+        public void DecisionTo_SearchCriteria_Validate_IsFalse()
+        {
+            //------------Setup for test--------------------------
+            //------------Setup for test--------------------------
+            var decisionTO = new DecisionTO("xxxx", null, "Equals", 1);
+
+            Assert.IsNotNull(decisionTO.GetRuleSet("SearchCriteria", ""));
         }
 
         [TestMethod]
