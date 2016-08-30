@@ -18,7 +18,6 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
-using System.Xml.Linq;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Data;
@@ -34,6 +33,7 @@ using Dev2.Runtime.ResourceCatalogImpl;
 using Dev2.Runtime.ServiceModel.Data;
 using Warewolf.ResourceManagement;
 // ReSharper disable InconsistentNaming
+// ReSharper disable MemberCanBePrivate.Global
 
 namespace Dev2.Runtime.Hosting
 {
@@ -41,10 +41,6 @@ namespace Dev2.Runtime.Hosting
     public class ResourceCatalog : IResourceCatalog, IDisposable
     {
         readonly object _loadLock = new object();
-        List<DuplicateResource> _duplicates;
-        DuplicateResource _dupresource;
-        List<IResource> _resources = new List<IResource>();
-        HashSet<Guid> _addedResources = new HashSet<Guid>();
         ResourceCatalogBuilder Builder { get; set; }
 
         private readonly ResourceCatalogPluginContainer _catalogPluginContainer;
@@ -102,6 +98,17 @@ namespace Dev2.Runtime.Hosting
 
         public ConcurrentDictionary<Guid, ManagementServiceResource> ManagementServices => _catalogPluginContainer.LoadProvider.ManagementServices;
         public ConcurrentDictionary<Guid, object> WorkspaceLocks => _catalogPluginContainer.LoadProvider.WorkspaceLocks;
+        public List<DuplicateResource> DuplicateResources
+        {
+            get
+            {
+                return _catalogPluginContainer.LoadProvider.DuplicateResources;
+            }
+            set
+            {
+                _catalogPluginContainer.LoadProvider.DuplicateResources = value;
+            }
+        }
         public ConcurrentDictionary<Guid, List<IResource>> WorkspaceResources { get; private set; }
         #endregion
 
@@ -169,7 +176,7 @@ namespace Dev2.Runtime.Hosting
                 var folders = Directory.EnumerateDirectories(workspacePath, "*", SearchOption.AllDirectories);
                 var allFolders = folders.ToList();
                 allFolders.Add(workspacePath);
-                userServices = LoadWorkspaceViaBuilder(workspacePath, allFolders.ToArray());
+                userServices = LoadWorkspaceViaBuilder(workspacePath, workspaceID == GlobalConstants.ServerWorkspaceID, allFolders.ToArray());
             }
             var result = userServices.Union(ManagementServices.Values);
             var resources = result.ToList();
@@ -252,119 +259,27 @@ namespace Dev2.Runtime.Hosting
         /// Loads the workspace via builder.
         /// </summary>
         /// <param name="workspacePath">The workspace path.</param>
+        /// <param name="getDuplicates"></param>
         /// <param name="folders">The folders.</param>
         /// <returns></returns>
-        public IList<IResource> LoadWorkspaceViaBuilder(string workspacePath, params string[] folders)
+        public IList<IResource> LoadWorkspaceViaBuilder(string workspacePath, bool getDuplicates, params string[] folders)
         {
             Builder = new ResourceCatalogBuilder();
             Builder.BuildCatalogFromWorkspace(workspacePath, folders);
             var resources = Builder.ResourceList;
+            if (getDuplicates)
+            {
+                DuplicateResources = Builder.DuplicateResources;
+            }
             return resources;
         }
 
-        readonly string _workspacePath = EnvironmentVariables.ResourcePath;
         public IList<DuplicateResource> GetDuplicateResources()
         {
-            _duplicates = new List<DuplicateResource>();
-            var resouceFolders = GetResouceFolders();
-            if (!IsWorkspaceValid(_workspacePath, resouceFolders))
-                return _duplicates;
-            var streams = new List<ResourceBuilderTO>();
-            try
-            {
-                GetFileStreams(resouceFolders, streams);
-                streams.ForEach(currentItem =>
-                {
-                    var xml = XElement.Load(currentItem.FileStream);
-                    var resource = new Resource(xml) { FilePath = currentItem.FilePath };
-                    var added = CreateDupResource(resource, currentItem.FilePath);
-                    if (added != null)
-                        _duplicates.Add(added);
-                });
-            }
-            finally
-            {
-                foreach(var stream in streams)
-                    stream.FileStream.Close();
-            }
-            return _duplicates;
+            
+            return DuplicateResources;
         }
-
-        private void GetFileStreams(IEnumerable<string> enumerable, List<ResourceBuilderTO> streams)
-        {
-            foreach(var path in enumerable.Where(f => !string.IsNullOrEmpty(f) && !f.EndsWith("VersionControl")).Select(f => Path.Combine(_workspacePath, f)))
-            {
-                if(!Directory.Exists(path))
-                    continue;
-                var files = Directory.GetFiles(path, "*.xml");
-                foreach(var file in files)
-                {
-                    var sourceStream = new FileStream(file, FileMode.Open, FileAccess.Read);
-                    streams.Add(new ResourceBuilderTO { FilePath = file, FileStream = sourceStream });
-                }
-            }
-        }
-
-        private string[] GetResouceFolders()
-        {
-            var folders = Directory.EnumerateDirectories(_workspacePath, "*", SearchOption.AllDirectories);
-            var resouceFolders = folders as string[] ?? folders.ToArray();
-            var allFolders = resouceFolders.ToList();
-            allFolders.Add(_workspacePath);
-            var enumerable = folders as string[] ?? allFolders.ToArray();
-            return enumerable;
-        }
-
-        public bool IsWorkspaceValid(string workspacePath, string[] enumerable)
-        {
-            const string Workspacepath = "workspacePath";
-            if(string.IsNullOrEmpty(workspacePath))
-                throw new ArgumentNullException(Workspacepath);
-            if(enumerable.Length == 0 || !Directory.Exists(workspacePath))
-                return false;
-            return true;
-        }
-
-       
-
-        private DuplicateResource CreateDupResource(Resource resource, string filePath)
-        {
-            _dupresource = null;
-            if (!_addedResources.Contains(resource.ResourceID))
-            {
-                _resources.Add(resource);
-                _addedResources.Add(resource.ResourceID);
-            }
-            else
-            {
-                var dupRes = _resources.Find(c => c.ResourceID == resource.ResourceID);
-                if (dupRes != null)
-                {
-                    if (_duplicates.Any(p => p.ResourceId == dupRes.ResourceID))
-                    {
-                        var firstDup = _duplicates.First(p => p.ResourceId == dupRes.ResourceID);
-                        if (!firstDup.ResourcePath.Contains(filePath))
-                            firstDup.ResourcePath.Add(filePath);
-                        return null;
-                    }
-                    var duplicatePaths = filePath == dupRes.FilePath ? string.Empty : filePath;
-                    var resourcePaths = new List<string> { dupRes.FilePath };
-                    if (!string.IsNullOrEmpty(duplicatePaths))
-                    {
-                        resourcePaths.Add(duplicatePaths);
-                        _dupresource = new DuplicateResource
-                        {
-                            ResourceId = resource.ResourceID
-                            ,
-                            ResourceName = resource.ResourceName
-                            ,
-                            ResourcePath = resourcePaths
-                        };
-                    }
-                }                
-            }
-            return _dupresource;
-        }
+        
 
         #endregion
 
@@ -513,11 +428,7 @@ namespace Dev2.Runtime.Hosting
             LoadWorkspace(GlobalConstants.ServerWorkspaceID);
         }
 
-        public IResource GetResourceBasedOnPath(string resourceName)
-        {
-            return _catalogPluginContainer.LoadProvider.GetResourceBasedOnPath(resourceName);
-        }
-
+        
 
         public ResourceCatalogResult DuplicateResource(Guid resourceId, string sourcePath, string destinationPath) => _catalogPluginContainer.DuplicateProvider.DuplicateResource(resourceId, sourcePath, destinationPath);
 
