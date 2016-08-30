@@ -167,7 +167,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                 IResource resource = null;
                 if(!String.IsNullOrEmpty(dataObject.ServiceName))
                 {
-                    resource = ResourceCatalog.Instance.GetResource(dataObject.WorkspaceID, dataObject.ServiceName) ?? ResourceCatalog.Instance.GetResourceBasedOnPath(dataObject.ServiceName);
+                    resource = ResourceCatalog.Instance.GetResource(dataObject.WorkspaceID, dataObject.ServiceName);
                     if(resource != null)
                     {
                         dataObject.ResourceID = resource.ResourceID;

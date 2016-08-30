@@ -49,6 +49,5 @@ namespace Dev2.Runtime.Interfaces
         List<DuplicateResource> DuplicateResources { get; set; }
 
         List<IResource> GetResourcesBasedOnType(string type, List<IResource> workspaceResources, Func<IResource, bool> func);
-        IResource GetResourceBasedOnPath(string resourceName);
     }
 }
