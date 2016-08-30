@@ -553,6 +553,7 @@ namespace Warewolf.Studio.Views
             ResetDragEvents();
         }
 
+
         void ResetDragEvents()
         {
             CancelDrag = false;

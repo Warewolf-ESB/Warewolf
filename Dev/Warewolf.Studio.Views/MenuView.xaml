@@ -440,11 +440,6 @@
                     Command="{Binding OpenSettingsCommand}"
                     Style="{StaticResource SideMenuButtonStyle}"
                     ToolTip="{x:Static languages:Core.MenuSettingsToolTip}">
-                <i:Interaction.Triggers>
-                    <i:EventTrigger EventName="MouseDown">
-                        <i:InvokeCommandAction Command="{Binding CheckForNewVersionCommand}" />
-                    </i:EventTrigger>
-                </i:Interaction.Triggers>
                 <DockPanel Width="{Binding ButtonWidth}"
                            Height="35"
                            HorizontalAlignment="Stretch"
@@ -482,11 +477,6 @@
                     Command="{Binding SupportCommand}"
                     Style="{StaticResource SideMenuButtonStyle}"
                     ToolTip="{x:Static languages:Core.MenuHelpToolTip}">
-                <i:Interaction.Triggers>
-                    <i:EventTrigger EventName="MouseDown">
-                        <i:InvokeCommandAction Command="{Binding CheckForNewVersionCommand}" />
-                    </i:EventTrigger>
-                </i:Interaction.Triggers>
                 <DockPanel Width="{Binding ButtonWidth}"
                            Height="35"
                            HorizontalAlignment="Stretch"
@@ -516,15 +506,11 @@
                     Width="{Binding ButtonWidth}"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Bottom"
+                    Command="{Binding CheckForNewVersionCommand}"
                     Style="{StaticResource SideMenuPulseStyle}"
                     ToolTip="{x:Static languages:Core.MenuDownloadToolTip}"
                     Visibility="{Binding HasNewVersion,
                                          Converter={StaticResource BooleanToVisibilityConverter}}">
-                <i:Interaction.Triggers>
-                    <i:EventTrigger EventName="MouseDown">
-                        <i:InvokeCommandAction Command="{Binding CheckForNewVersionCommand}" />
-                    </i:EventTrigger>
-                </i:Interaction.Triggers>
                 <DockPanel Width="{Binding ButtonWidth}"
                            Height="35"
                            HorizontalAlignment="Stretch"

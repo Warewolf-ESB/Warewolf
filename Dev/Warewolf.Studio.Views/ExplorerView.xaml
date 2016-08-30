@@ -629,6 +629,14 @@
                                                         </ig:XamMenuItem.Icon>
                                                     </ig:XamMenuItem>
 
+                                                    <ig:XamMenuItem Name="Duplicate"
+                                                                    Command="{Binding Path=Data.DuplicateCommand}"
+                                                                    CommandParameter="{Binding Path=Data}"
+                                                                    Header="Duplicate"
+                                                                    Visibility="{Binding Path=Data.CanDuplicate,
+                                                                                         Converter={StaticResource BoolToVisibilityConverter}}">
+                                                    </ig:XamMenuItem>
+
                                                     <ig:XamMenuSeparator Visibility="{Binding Path=Data.CanDeploy, Converter={StaticResource BoolToVisibilityConverter}}" />
 
                                                     <ig:XamMenuItem Name="Deploy"

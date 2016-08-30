@@ -109,7 +109,7 @@ namespace Dev2.Tests.Runtime.Hosting
         {
             var rc = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
 
-            rc.LoadWorkspaceViaBuilder(null);
+            rc.LoadWorkspaceViaBuilder(null,false);
         }
 
         [TestMethod]
@@ -117,7 +117,7 @@ namespace Dev2.Tests.Runtime.Hosting
         {
             var rc = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
 
-            Assert.AreEqual(0, rc.LoadWorkspaceViaBuilder("xx").Count);
+            Assert.AreEqual(0, rc.LoadWorkspaceViaBuilder("xx", false).Count);
         }
 
 
@@ -1421,7 +1421,7 @@ namespace Dev2.Tests.Runtime.Hosting
             SaveResources(sourcesPath, null, false, false, new[] { "ServerConnection1", "ServerConnection2" }, new[] { Guid.NewGuid(), Guid.NewGuid() });
 
             var rc = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
-            var result = rc.LoadWorkspaceViaBuilder(workspacePath, "Sources", "Services");
+            var result = rc.LoadWorkspaceViaBuilder(workspacePath, false, "Sources", "Services");
 
             Assert.AreEqual(2, result.Count);
 
@@ -1615,7 +1615,7 @@ namespace Dev2.Tests.Runtime.Hosting
             SaveResources(sourcesPath, null, false, false, new[] { "EmailSource" }, new[] { Guid.NewGuid() });
 
             var rc = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
-            rc.LoadWorkspaceViaBuilder(workspacePath, "Sources", "Services");
+            rc.LoadWorkspaceViaBuilder(workspacePath, false, "Sources", "Services");
 
             var models = rc.GetModels(workspaceID, enSourceType.WebService);
 
@@ -1636,7 +1636,7 @@ namespace Dev2.Tests.Runtime.Hosting
             SaveResources(sourcesPath, null, false, false, new[] { "EmailSource" }, new[] { Guid.NewGuid() });
 
             var rc = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
-            rc.LoadWorkspaceViaBuilder(workspacePath, "Sources", "Services");
+            rc.LoadWorkspaceViaBuilder(workspacePath, false, "Sources", "Services");
 
             var models = rc.GetModels(workspaceID, enSourceType.DynamicService);
 
@@ -1657,7 +1657,7 @@ namespace Dev2.Tests.Runtime.Hosting
             SaveResources(sourcesPath, null, false, false, new[] { "EmailSource" }, new[] { Guid.NewGuid() });
 
             var rc = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
-            rc.LoadWorkspaceViaBuilder(workspacePath, "Sources", "Services");
+            rc.LoadWorkspaceViaBuilder(workspacePath, false, "Sources", "Services");
 
             var models = rc.GetModels(workspaceID, enSourceType.MySqlDatabase);
 
@@ -1678,7 +1678,7 @@ namespace Dev2.Tests.Runtime.Hosting
             SaveResources(sourcesPath, null, false, false, new[] { "EmailSource" }, new[] { Guid.NewGuid() });
 
             var rc = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
-            rc.LoadWorkspaceViaBuilder(workspacePath, "Sources", "Services");
+            rc.LoadWorkspaceViaBuilder(workspacePath, false, "Sources", "Services");
 
             var models = rc.GetModels(workspaceID, enSourceType.ManagementDynamicService);
 
@@ -1699,7 +1699,7 @@ namespace Dev2.Tests.Runtime.Hosting
             SaveResources(sourcesPath, null, false, false, new[] { "EmailSource" }, new[] { Guid.NewGuid() });
 
             var rc = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
-            rc.LoadWorkspaceViaBuilder(workspacePath, "Sources", "Services");
+            rc.LoadWorkspaceViaBuilder(workspacePath, false, "Sources", "Services");
 
             var models = rc.GetModels(workspaceID, enSourceType.Unknown);
 
@@ -2563,7 +2563,7 @@ namespace Dev2.Tests.Runtime.Hosting
             //------------Setup for test--------------------------
             var workspaceID = Guid.NewGuid();
             var rc = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
-            var result = rc.LoadWorkspaceViaBuilder("xx");
+            var result = rc.LoadWorkspaceViaBuilder("xx", false);
             //const string resourceName = "resource";
             //------------Assert Precondition-----------------
             Assert.AreEqual(0, result.Count);
@@ -2628,7 +2628,7 @@ namespace Dev2.Tests.Runtime.Hosting
             //------------Setup for test--------------------------
             var workspaceID = Guid.NewGuid();
             var rc = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
-            var result = rc.LoadWorkspaceViaBuilder("xx");
+            var result = rc.LoadWorkspaceViaBuilder("xx", false);
             //  const string resourceName = "resource";
             //------------Assert Precondition-----------------
             Assert.AreEqual(0, result.Count);
@@ -2743,7 +2743,7 @@ namespace Dev2.Tests.Runtime.Hosting
             SaveResources(path, null, false, false, new[] { "Bug6619", resourceName }, new[] { Guid.NewGuid(), Guid.NewGuid() });
 
             var rc = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
-            rc.LoadWorkspaceViaBuilder(workspacePath, "Services");
+            rc.LoadWorkspaceViaBuilder(workspacePath, false, "Services");
             //------------Execute Test---------------------------
             var filterParams = new Dictionary<string, string>()
             {
@@ -2771,7 +2771,7 @@ namespace Dev2.Tests.Runtime.Hosting
             SaveResources(path, null, false, false, new[] { "Bug6619", resourceName }, new[] { Guid.NewGuid(), Guid.NewGuid() });
 
             var rc = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
-            rc.LoadWorkspaceViaBuilder(workspacePath, "Bugs");
+            rc.LoadWorkspaceViaBuilder(workspacePath, false, "Bugs");
             //------------Execute Test---------------------------
             var filterParams = new Dictionary<string, string>()
             {
@@ -2799,7 +2799,7 @@ namespace Dev2.Tests.Runtime.Hosting
             var resources = SaveResources(workspacePath, null, false, false, new[] { "Bug6619", resourceName }, new[] { id1, id2 }).ToList();
 
             var rc = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
-            rc.LoadWorkspaceViaBuilder(workspacePath, "Workflows");
+            rc.LoadWorkspaceViaBuilder(workspacePath, false, "Workflows");
 
             var searchString = resources.Aggregate(string.Empty, (current, res) => current + (res.ResourceID + ","));
 
@@ -2836,7 +2836,7 @@ namespace Dev2.Tests.Runtime.Hosting
             var resources = SaveResources(path, null, false, false, new[] { "Bug6619", resourceName }, new[] { id1, id2 }).ToList();
 
             var rc = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
-            rc.LoadWorkspaceViaBuilder(workspacePath, "Workflows");
+            rc.LoadWorkspaceViaBuilder(workspacePath, false, "Workflows");
 
             var searchString = resources.Aggregate(string.Empty, (current, res) => current + (Guid.NewGuid() + ","));
 
@@ -2868,7 +2868,7 @@ namespace Dev2.Tests.Runtime.Hosting
             var resources = SaveResources(path, null, false, false, new[] { "Bug6619", resourceName }, new[] { id1, id2 }).ToList();
 
             var rc = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
-            rc.LoadWorkspaceViaBuilder(workspacePath, "Workflows");
+            rc.LoadWorkspaceViaBuilder(workspacePath, false, "Workflows");
 
             var searchString = resources.Aggregate(string.Empty, (current, res) => current + (Guid.NewGuid() + ","));
 
@@ -2898,7 +2898,7 @@ namespace Dev2.Tests.Runtime.Hosting
             SaveResources(path, null, false, false, new[] { "Bug6619", resourceName }, new[] { id1, id2 });
 
             var rc = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
-            rc.LoadWorkspaceViaBuilder(workspacePath, "Workflows");
+            rc.LoadWorkspaceViaBuilder(workspacePath, false, "Workflows");
 
             //------------Execute Test---------------------------
             var filterParams = new Dictionary<string, string>()
@@ -3002,7 +3002,7 @@ namespace Dev2.Tests.Runtime.Hosting
             SaveResources(path, null, false, false, new[] { "Bug6619", resourceName }, new[] { id1, id2 });
 
             var rc = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
-            rc.LoadWorkspaceViaBuilder(workspacePath, "Workflows");
+            rc.LoadWorkspaceViaBuilder(workspacePath, false, "Workflows");
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
             try
@@ -3031,7 +3031,7 @@ namespace Dev2.Tests.Runtime.Hosting
             SaveResources(path, null, false, false, new[] { "Bug6619", resourceName }, new[] { id1, id2 });
 
             var rc = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
-            rc.LoadWorkspaceViaBuilder(workspacePath, "Workflows");
+            rc.LoadWorkspaceViaBuilder(workspacePath, false, "Workflows");
             
             Dictionary<Guid, IResourceActivityCache> _parsers = new Dictionary<Guid, IResourceActivityCache>();
             var mock = new Mock<IResourceActivityCache>();
@@ -3081,8 +3081,12 @@ namespace Dev2.Tests.Runtime.Hosting
             }, new[]
             {
                 sameResourceId
-            });            
+            });
             //------------Execute Test---------------------------
+            var folders = Directory.EnumerateDirectories(path, "*", SearchOption.AllDirectories);
+            var allFolders = folders.ToList();
+            allFolders.Add(path);
+            catalog.LoadWorkspaceViaBuilder(path, true, allFolders.ToArray());
             var duplicateResources = catalog.GetDuplicateResources();
             //------------Assert Results-------------------------
             Assert.IsTrue(duplicateResources.Count > 0);
@@ -3090,34 +3094,6 @@ namespace Dev2.Tests.Runtime.Hosting
             Assert.IsTrue(duplicateResource.ResourcePath.Count == 2);
             Assert.IsTrue(duplicateResource.ResourcePath[0].Contains(resourcePath));
             Assert.IsTrue(duplicateResource.ResourcePath[1].Contains(resourcePath1));
-        }
-
-        [TestMethod]
-        [Owner("Sanele Mthembu")]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void ResourceCatalog_GivenEmptyWorkspace_IsWorkspaceValid_ShouldThrowException()
-        {
-            //------------Setup for test--------------------------            
-            var catalog = new ResourceCatalog();
-            Assert.IsNotNull(catalog);
-            //------------Execute Test---------------------------
-            catalog.IsWorkspaceValid(string.Empty, null);
-            //------------Assert Results-------------------------
-        }
-
-        [TestMethod]
-        [Owner("Sanele Mthembu")]
-        public void ResourceCatalog_GivenWorkspaceAndFolder_IsWorkspaceValid_ShouldBeFalse()
-        {
-            var path = EnvironmentVariables.ResourcePath;
-            var resourcePath = path + "\\MyTest\\Folder1";
-            //------------Setup for test--------------------------            
-            var catalog = new ResourceCatalog();
-            Assert.IsNotNull(catalog);
-            //------------Execute Test---------------------------
-            var isWorkspaceValid = catalog.IsWorkspaceValid(resourcePath, new string[0]);
-            //------------Assert Results-------------------------
-            Assert.IsFalse(isWorkspaceValid);
         }
 
         private ExecuteMessage ConvertToMsg(string payload)

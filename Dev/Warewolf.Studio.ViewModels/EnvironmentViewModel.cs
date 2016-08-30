@@ -19,6 +19,7 @@ using System.Windows.Threading;
 using Dev2.Studio.Core;
 using Warewolf.Studio.Core;
 // ReSharper disable InconsistentNaming
+// ReSharper disable ValueParameterNotUsed
 
 namespace Warewolf.Studio.ViewModels
 {
@@ -46,6 +47,7 @@ namespace Warewolf.Studio.ViewModels
         private bool _forcedRefresh;
         private bool _isResourceCheckedEnabled;
         private string _deployResourceCheckboxTooltip;
+        private bool? _isResource;
 
         public EnvironmentViewModel(IServer server, IShellViewModel shellViewModel, bool isDialog = false, Action<IExplorerItemViewModel> selectAction = null)
         {            
@@ -297,15 +299,23 @@ namespace Warewolf.Studio.ViewModels
         {
             get
             {
-                return _isResourceChecked;
+                return _isResource;
             }
             set
             {
-                if (value != null)
+                if (Children.Any() && Children.All(a => a.IsResourceChecked.HasValue && a.IsResourceChecked.Value))
                 {
-                    _isResourceChecked = (bool)value;
+                    _isResource = true;
                 }
-                OnPropertyChanged(() => IsVisible);
+                else if (Children.All(a => a.IsResourceChecked.HasValue && !a.IsResourceChecked.Value))
+                {
+                    _isResource = false;
+                }
+                else
+                {
+                    _isResource = null;
+                }                
+                OnPropertyChanged(() => IsResourceChecked);
             }
         }
 

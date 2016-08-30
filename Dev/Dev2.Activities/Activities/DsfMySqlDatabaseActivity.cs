@@ -1,4 +1,6 @@
 using System.ComponentModel;
+using System.Linq;
+using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.Toolbox;
 using Dev2.DataList.Contract;
 using Dev2.Interfaces;
@@ -36,7 +38,7 @@ namespace Dev2.Activities
             var databaseServiceExecution = ServiceExecution as DatabaseServiceExecution;
             if(databaseServiceExecution != null)
             {
-                databaseServiceExecution.Inputs = Inputs;
+                databaseServiceExecution.Inputs = Inputs.Select(a => new ServiceInput { EmptyIsNull = a.EmptyIsNull, Name = a.Name, RequiredField = a.RequiredField, Value = a.Value, TypeName = a.TypeName } as IServiceInput).ToList();
                 databaseServiceExecution.Outputs = Outputs;
             }
             ServiceExecution.Execute(out execErrors, update);
