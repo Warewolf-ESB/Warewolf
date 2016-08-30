@@ -214,10 +214,10 @@ namespace Dev2.Tests.Runtime.Hosting
             var resource = new Mock<IResource>();
             cat.Setup(a => a.GetResource(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(resource.Object);
             resource.Setup(a => a.VersionInfo).Returns(new VersionInfo(DateTime.Now, "mook", "usr", "1", resourceId, versionId));
+            resource.Setup(a => a.GetResourcePath(It.IsAny<Guid>())).Returns("");
             dir.Setup(a => a.GetFiles(It.IsAny<string>())).Returns(new[] { CreateFileName(versionId, 1), CreateFileName(versionId, 2) });
             //------------Setup for test--------------------------
             var serverVersionRepostory = CreateServerVersionRepository(strat.Object, cat.Object, dir.Object, rootPath, file.Object);
-
             //------------Execute Test---------------------------
             var items = serverVersionRepostory.GetVersions(resourceId);
             //------------Assert Results-------------------------
@@ -244,6 +244,7 @@ namespace Dev2.Tests.Runtime.Hosting
             resource.Setup(a => a.ToStringBuilder()).Returns(new StringBuilder("bob"));
             cat.Setup(a => a.GetResource(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(resource.Object);
             resource.Setup(a => a.VersionInfo).Returns(new VersionInfo(DateTime.Now, "mook", "usr", "12345", resourceId, versionId));
+            resource.Setup(a => a.GetResourcePath(It.IsAny<Guid>())).Returns("");
             dir.Setup(a => a.GetFiles(It.IsAny<string>())).Returns(new[] { CreateFileName(versionId, 1), CreateFileName(versionId, 2) });
             strat.Setup(a => a.GetNextVersion(resource.Object, resource.Object, "usr", "mook")).Returns(new VersionInfo(DateTime.Now, "mook", "usr", "123456", resourceId, versionId));
             strat.Setup(a => a.GetCurrentVersion(resource.Object, resource.Object, "usr", "mook")).Returns(new VersionInfo(DateTime.Now, "mook", "usr", "654321", resourceId, versionId));
@@ -275,6 +276,7 @@ namespace Dev2.Tests.Runtime.Hosting
             resource.Setup(a => a.ToStringBuilder()).Returns(new StringBuilder("bob"));
             cat.Setup(a => a.GetResource(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(resource.Object);
             resource.Setup(a => a.VersionInfo).Returns(new VersionInfo(DateTime.Now, "mook", "usr", "12345", resourceId, versionId));
+            resource.Setup(a => a.GetResourcePath(It.IsAny<Guid>())).Returns("");
             dir.Setup(a => a.GetFiles(It.IsAny<string>())).Returns(new[] { CreateFileName(versionId, 1), CreateFileName(versionId, 2) });
             strat.Setup(a => a.GetNextVersion(resource.Object, resource.Object, "usr", "mook")).Returns(new VersionInfo(DateTime.Now, "mook", "usr", "123456", resourceId, versionId));
             strat.Setup(a => a.GetCurrentVersion(resource.Object, resource.Object, "usr", "mook")).Returns(new VersionInfo(DateTime.Now, "mook", "usr", "654321", resourceId, versionId));
@@ -309,6 +311,7 @@ namespace Dev2.Tests.Runtime.Hosting
             resource.Setup(a => a.ToStringBuilder()).Returns(new StringBuilder("bob"));
             cat.Setup(a => a.GetResource(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(resource.Object);
             resource.Setup(a => a.VersionInfo).Returns(new VersionInfo(DateTime.Now, "mook", "usr", "12345", resourceId, versionId));
+            resource.Setup(a => a.GetResourcePath(It.IsAny<Guid>())).Returns("");
             dir.Setup(a => a.GetFiles(It.IsAny<string>())).Returns(new string[0]);
             strat.Setup(a => a.GetNextVersion(resource.Object, resource.Object, "usr", "mook")).Returns(new VersionInfo(DateTime.Now, "mook", "usr", "123456", resourceId, versionId));
             strat.Setup(a => a.GetCurrentVersion(resource.Object, resource.Object, "usr", "mook")).Returns(new VersionInfo(DateTime.Now, "mook", "usr", "654321", resourceId, versionId));
@@ -346,6 +349,7 @@ namespace Dev2.Tests.Runtime.Hosting
             cat.Setup(a => a.GetResource(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(resource.Object).Verifiable();
 
             resource.Setup(a => a.VersionInfo).Returns(new VersionInfo(DateTime.Now, "mook", "usr", "12345", resourceId, versionId));
+            resource.Setup(a => a.GetResourcePath(It.IsAny<Guid>())).Returns("");
             dir.Setup(a => a.GetFiles(It.IsAny<string>())).Returns(new[] { versionId + "_2_" + DateTime.Now.Ticks + "_jjj" });
             strat.Setup(a => a.GetNextVersion(resource.Object, resource.Object, "usr", "mook")).Returns(new VersionInfo(DateTime.Now, "mook", "usr", "123456", resourceId, versionId));
             strat.Setup(a => a.GetCurrentVersion(resource.Object, resource.Object, "usr", "mook")).Returns(new VersionInfo(DateTime.Now, "mook", "usr", "654321", resourceId, versionId));
@@ -383,6 +387,7 @@ namespace Dev2.Tests.Runtime.Hosting
             cat.Setup(a => a.GetResource(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(resource.Object).Verifiable();
 
             resource.Setup(a => a.VersionInfo).Returns(new VersionInfo(DateTime.Now, "mook", "usr", "12345", resourceId, versionId));
+            resource.Setup(a => a.GetResourcePath(It.IsAny<Guid>())).Returns("");
             dir.Setup(a => a.GetFiles(It.IsAny<string>())).Returns(new[] { versionId + "_2_" + DateTime.Now.Ticks + "_jjj" });
             strat.Setup(a => a.GetNextVersion(resource.Object, resource.Object, "usr", "mook")).Returns(new VersionInfo(DateTime.Now, "mook", "usr", "123456", resourceId, versionId));
             strat.Setup(a => a.GetCurrentVersion(resource.Object, resource.Object, "usr", "mook")).Returns(new VersionInfo(DateTime.Now, "mook", "usr", "654321", resourceId, versionId));
@@ -417,6 +422,7 @@ namespace Dev2.Tests.Runtime.Hosting
             resource.Setup(a => a.ToStringBuilder()).Returns(new StringBuilder("bob"));
             cat.Setup(a => a.GetResource(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(resource.Object).Verifiable();
             resource.Setup(a => a.VersionInfo).Returns(new VersionInfo(dt, "mook", "usr", "12345", resourceId, versionId));
+            resource.Setup(a => a.GetResourcePath(It.IsAny<Guid>())).Returns("");
             dir.Setup(a => a.GetFiles(It.IsAny<string>())).Returns(new[] { versionId + "_2_" + dt.Ticks + "_jjj" });
 
 
@@ -558,6 +564,7 @@ namespace Dev2.Tests.Runtime.Hosting
             resource.Setup(a => a.ToStringBuilder()).Returns(new StringBuilder("bob"));
             cat.Setup(a => a.GetResource(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(resource.Object).Verifiable();
             resource.Setup(a => a.VersionInfo).Returns(new VersionInfo(dt, "mook", "usr", "12345", resourceId, versionId));
+            resource.Setup(a => a.GetResourcePath(It.IsAny<Guid>())).Returns("");
             dir.Setup(a => a.GetFiles(It.IsAny<string>())).Returns(new string[0]);
 
 
