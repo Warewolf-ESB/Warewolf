@@ -97,29 +97,6 @@ namespace Dev2.Runtime.ResourceCatalogImpl
             }
         }
 
-        public ResourceCatalogResult SaveResource(Guid workspaceID, IResource resource,StringBuilder contents, string reason = "", string user = "")
-        {
-            _serverVersionRepository.StoreVersion(resource, user, reason, workspaceID);
-
-            if (resource == null)
-            {
-                throw new ArgumentNullException(nameof(resource));
-            }
-
-            var @lock = Common.GetWorkspaceLock(workspaceID);
-            lock (@lock)
-            {
-                if (resource.ResourceID == Guid.Empty)
-                {
-                    resource.ResourceID = Guid.NewGuid();
-                }
-                GlobalConstants.InvalidateCache(resource.ResourceID);
-                
-                resource.ResourcePath = Common.SanitizePath(resource.ResourcePath);
-                return CompileAndSave(workspaceID, resource, contents);
-            }
-        }
-
         public Action<IResource> ResourceSaved { get; set; }
         public Action<Guid, IList<ICompileMessageTO>> SendResourceMessages { get; set; }
 
