@@ -13,6 +13,7 @@ using System.Collections;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Text;
+using Dev2.Common;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Data;
 using Dev2.DynamicServices.Objects.Base;
@@ -45,6 +46,8 @@ namespace Dev2.Runtime.Interfaces
         List<TServiceType> GetDynamicObjects<TServiceType>(Guid workspaceID, Guid resourceID) where TServiceType : DynamicServiceObjectBase;
         ConcurrentDictionary<Guid, ManagementServiceResource> ManagementServices { get; }
         ConcurrentDictionary<Guid, object> WorkspaceLocks { get; }
+        List<DuplicateResource> DuplicateResources { get; set; }
+
         List<IResource> GetResourcesBasedOnType(string type, List<IResource> workspaceResources, Func<IResource, bool> func);
         IResource GetResourceBasedOnPath(string resourceName);
     }

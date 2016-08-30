@@ -81,13 +81,6 @@
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
-                <TextBlock x:Name="Dev" Grid.Column="0" Grid.Row="0" >
-                <Hyperlink Command="{Binding DevUrlCommand}" 
-                           IsEnabled="True" 
-                           NavigateUri="{Binding DevUrl}" >
-                    <TextBlock Text="{Binding DevUrl}" Style="{StaticResource HoverUnderlineStyle}"></TextBlock>
-                </Hyperlink>
-            </TextBlock>
                 <TextBlock x:Name="Warewolf" Grid.Column="0" Grid.Row="1" >
                 <Hyperlink Command="{Binding WarewolfUrlCommand}" 
                            IsEnabled="True" 

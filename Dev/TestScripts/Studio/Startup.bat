@@ -35,9 +35,9 @@ if %errorLevel% == 0 (
 REM ** Kill The Warewolf ;) **
 IF EXIST %windir%\nircmd.exe (nircmd elevate taskkill /im "Warewolf Studio.exe" /T /F) else (taskkill /im "Warewolf Studio.exe" /T /F)
 IF EXIST %windir%\nircmd.exe (nircmd elevate taskkill /im "Warewolf Server.exe" /T /F) else (taskkill /im "Warewolf Server.exe" /T /F)
-
-REM  Wait 5 seconds ;)
-ping -n 5 -w 1000 192.0.2.2 > nul
+IF EXIST %windir%\nircmd.exe (nircmd elevate taskkill /im "Warewolf Studio.vshost.exe" /T /F) else (taskkill /im "Warewolf Studio.vshost.exe" /T /F)
+IF EXIST %windir%\nircmd.exe (nircmd elevate taskkill /im "Warewolf Server.vshost.exe" /T /F) else (taskkill /im "Warewolf Server.vshost.exe" /T /F)
+IF EXIST %windir%\nircmd.exe (nircmd elevate taskkill /im "WarewolfCOMIPC.exe" /T /F) else (taskkill /im "WarewolfCOMIPC.exe" /T /F)
 
 REM ** Delete the Warewolf ProgramData folder
 IF EXIST %windir%\nircmd.exe (nircmd elevate cmd /c rd /S /Q "%PROGRAMDATA%\Warewolf\Resources") else (elevate rd /S /Q "%PROGRAMDATA%\Warewolf\Resources")
@@ -62,19 +62,6 @@ IF EXIST "%DeploymentDirectory%\ServerStarted" DEL "%DeploymentDirectory%\Server
 IF EXIST %windir%\nircmd.exe (nircmd elevate "%DeploymentDirectory%\Warewolf Server.exe") else (START "%DeploymentDirectory%\Warewolf Server.exe" /D "%DeploymentDirectory%" "Warewolf Server.exe")
 @echo Started "%DeploymentDirectory%\Warewolf Server.exe".
 
-rem using the "ping" command as make-shift wait or sleep command, wait for server started file to appear
-:WaitForServerStart
-set /a LoopCounter=0
-:MainLoopBody
-IF EXIST "%DeploymentDirectory%\ServerStarted" goto StartStudio
-set /a LoopCounter=LoopCounter+1
-IF %LoopCounter% EQU 30 echo Timed out waiting for the Warewolf server to start. &exit 1
-rem wait for 5 seconds before trying again
-@echo Waiting 5 seconds...
-ping -n 5 -w 1000 192.0.2.2 > nul
-goto MainLoopBody 
-
-:StartStudio
 REM Try use Default Workspace Layout
 IF EXIST "%DeploymentDirectory%\..\DefaultWorkspaceLayout.xml" COPY /Y "%DeploymentDirectory%\..\DefaultWorkspaceLayout.xml" "%LocalAppData%\Warewolf\UserInterfaceLayouts\WorkspaceLayout.xml"
 REM Init paths to Warewolf studio under test
@@ -82,8 +69,6 @@ IF NOT EXIST "%DeploymentDirectory%\..\Studio\Warewolf Studio.exe" IF EXIST "%~d
 IF EXIST "%DeploymentDirectory%\..\Studio\Warewolf Studio.exe" SET DeploymentDirectory=%DeploymentDirectory%\..\Studio
 REM ** Start Warewolf studio from deployed binaries **
 IF EXIST %windir%\nircmd.exe (nircmd elevate "%DeploymentDirectory%\Warewolf Studio.exe") else (START "%DeploymentDirectory%\Warewolf Studio.exe" /D "%DeploymentDirectory%" "Warewolf Studio.exe")
-
-REM  Wait 30 seconds ;)
-ping -n 30 -w 1000 192.0.2.2 > nul
+@echo Started "%DeploymentDirectory%\Warewolf Studio.exe".
 
 exit 0

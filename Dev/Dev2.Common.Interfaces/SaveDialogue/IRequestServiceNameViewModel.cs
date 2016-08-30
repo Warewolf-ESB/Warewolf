@@ -13,9 +13,12 @@ namespace Dev2.Common.Interfaces.SaveDialog
         string Name { get; set; }
         string ErrorMessage { get; set; }
         ICommand OkCommand { get; set; }
+        ICommand DuplicateCommand { get; set; }
         ICommand CancelCommand { get; }
         IExplorerViewModel SingleEnvironmentExplorerViewModel { get; }
         string Header { get; }
+        bool IsDuplicate { get; set; }
+        bool FixReferences { get; }
     }
 
     public class ResourceName

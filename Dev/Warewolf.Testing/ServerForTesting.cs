@@ -6,6 +6,7 @@ using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Explorer;
 using Dev2.Common.Interfaces.Infrastructure;
+using Dev2.Common.Interfaces.Security;
 using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Services.Security;
@@ -95,7 +96,12 @@ namespace Warewolf.Testing
         {
             return null;
         }
-        
+
+        public Permissions GetPermissions(Guid resourceID)
+        {
+            return Dev2.Common.Interfaces.Security.Permissions.None;
+        }
+
         public List<IResource> Load()
         {
             return CreateResources();

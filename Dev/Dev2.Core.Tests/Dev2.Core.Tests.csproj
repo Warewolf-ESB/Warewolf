@@ -153,6 +153,7 @@
     <Compile Include="Diagnostics\DebugStateTests.cs" />
     <Compile Include="Diagnostics\DebugItemTests.cs" />
     <Compile Include="DirectoryHelperTests.cs" />
+    <Compile Include="ExtMethods\ObjExtTests.cs" />
     <Compile Include="ExtMethods\StringExtensionTests.cs" />
     <Compile Include="GatherSystemInformationTOTests.cs" />
     <Compile Include="MathOperationTest\InfragisticsEvaluationTest.cs" />
