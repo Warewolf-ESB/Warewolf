@@ -229,14 +229,14 @@ namespace Warewolf.Studio.Views
 
         private static bool ValidateBeforeAndAfterState(DragDropMoveEventArgs e)
         {
-            Grid gridBefore = (Grid) Utilities.GetDescendantFromName((XamDataTreeNodeControl) e.DropTarget, "DropBeforeElem");
+            Grid gridBefore = (Grid)Utilities.GetDescendantFromName((XamDataTreeNodeControl)e.DropTarget, "DropBeforeElem");
             if (gridBefore?.Visibility == Visibility.Visible)
             {
                 SetDropNotAllowedStyle(e);
                 return true;
             }
 
-            Grid gridAfter = (Grid) Utilities.GetDescendantFromName((XamDataTreeNodeControl) e.DropTarget, "DropAfterElem");
+            Grid gridAfter = (Grid)Utilities.GetDescendantFromName((XamDataTreeNodeControl)e.DropTarget, "DropAfterElem");
             if (gridAfter?.Visibility == Visibility.Visible)
             {
                 SetDropNotAllowedStyle(e);
@@ -247,7 +247,7 @@ namespace Warewolf.Studio.Views
 
         private void ValidateWorksurfaceNode(DragDropMoveEventArgs e, XamDataTreeNodeControl dragSource)
         {
-            var dropActivity = Utilities.GetAncestorFromType(e.DropTarget, typeof (ContentControl), false) as ContentControl;
+            var dropActivity = Utilities.GetAncestorFromType(e.DropTarget, typeof(ContentControl), false) as ContentControl;
             if (dropActivity == null || dragSource == null)
             {
                 return;
@@ -347,7 +347,7 @@ namespace Warewolf.Studio.Views
             e.MoveCursorTemplate = DragDropManager.CurrentMoveCursorTemplate;
             e.OperationType = OperationType.Move;
 
-            Rectangle rect = (Rectangle) Utilities.GetDescendantFromName((XamDataTreeNodeControl) e.DropTarget, "DropOntoElem");
+            Rectangle rect = (Rectangle)Utilities.GetDescendantFromName((XamDataTreeNodeControl)e.DropTarget, "DropOntoElem");
             if (rect != null)
             {
                 rect.Stroke = Application.Current.TryFindResource("WareWolfButtonBrush") as SolidColorBrush;
@@ -391,7 +391,7 @@ namespace Warewolf.Studio.Views
                     {
                         var dropNodeData = dropTarget.Node.Data;
                         var sourceNodeData = dragSource.Node.Data;
-                        if (dropNodeData.GetType() == typeof (ExplorerItemViewModel))
+                        if (dropNodeData.GetType() == typeof(ExplorerItemViewModel))
                         {
                             var destination = dropNodeData as IExplorerItemViewModel;
                             var source = sourceNodeData as IExplorerItemViewModel;
@@ -410,7 +410,7 @@ namespace Warewolf.Studio.Views
                             }
                             ResetDragDropTemplate(e);
                         }
-                        else if (dropNodeData.GetType() == typeof (EnvironmentViewModel))
+                        else if (dropNodeData.GetType() == typeof(EnvironmentViewModel))
                         {
                             var destination = dropNodeData as IEnvironmentViewModel;
                             var source = sourceNodeData as IExplorerItemViewModel;
@@ -439,7 +439,7 @@ namespace Warewolf.Studio.Views
 
         private static void ShowDropNotAllowedError(DropEventArgs e)
         {
-            var dropActivity = Utilities.GetAncestorFromType(e.DropTarget, typeof (ContentControl), false) as ContentControl;
+            var dropActivity = Utilities.GetAncestorFromType(e.DropTarget, typeof(ContentControl), false) as ContentControl;
             var dragSource = e.DragSource as XamDataTreeNodeControl;
             if (dropActivity == null || dragSource == null)
             {
@@ -503,7 +503,7 @@ namespace Warewolf.Studio.Views
                 var sourceNodeData = dragSource.Node.Data;
                 if (dropNodeData != null)
                 {
-                    if (dropNodeData.GetType() == typeof (ExplorerItemViewModel))
+                    if (dropNodeData.GetType() == typeof(ExplorerItemViewModel))
                     {
                         var source = sourceNodeData as IExplorerItemViewModel;
                         if (source != null && _exceptionThrown)
@@ -535,17 +535,24 @@ namespace Warewolf.Studio.Views
 
         private static void ResetDragDropTemplate(DragDropEventArgs e)
         {
-            e.DropNotAllowedCursorTemplate = null;
-            e.CopyCursorTemplate = null;
-            e.MoveCursorTemplate = null;
-            Rectangle rect = (Rectangle)Utilities.GetDescendantFromName((XamDataTreeNodeControl)e.DropTarget, "DropOntoElem");
-            if (rect != null)
+            try
             {
-                rect.Stroke = Application.Current.TryFindResource("TransparentBrush") as SolidColorBrush;
-                rect.Opacity = 0.0;
+                e.DropNotAllowedCursorTemplate = null;
+                e.CopyCursorTemplate = null;
+                e.MoveCursorTemplate = null;
+                Rectangle rect = (Rectangle)Utilities.GetDescendantFromName((XamDataTreeNodeControl)e.DropTarget, "DropOntoElem");
+                if (rect != null)
+                {
+                    rect.Stroke = Application.Current.TryFindResource("TransparentBrush") as SolidColorBrush;
+                    rect.Opacity = 0.0;
+                }
+                e.DropTarget.AllowDrop = false;
+                _allowDrop = false;
             }
-            e.DropTarget.AllowDrop = false;
-            _allowDrop = false;
+            catch (Exception x) when(x is ArgumentNullException) 
+            {
+                //    Console.WriteLine(exception);
+            }
         }
 
         private void UIElement_OnMouseLeave(object sender, MouseEventArgs e)
