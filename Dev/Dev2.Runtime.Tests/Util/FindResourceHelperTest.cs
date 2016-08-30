@@ -113,7 +113,6 @@ namespace Dev2.Tests.Runtime.Util
 
             Assert.AreEqual(id, result.ResourceID);
             Assert.AreEqual("abc", result.DataList);
-            Assert.AreEqual("Category", result.ResourceCategory);
             Assert.AreEqual("Workflow", result.ResourceName);
             Assert.AreEqual("WorkflowService", result.ResourceType);
             Assert.AreEqual(errorString, resultErrorString);
