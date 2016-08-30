@@ -100,9 +100,12 @@ namespace Dev2.Runtime.ResourceCatalogImpl
         public Action<IResource> ResourceSaved { get; set; }
         public Action<Guid, IList<ICompileMessageTO>> SendResourceMessages { get; set; }
 
-        public ResourceCatalogResult SaveResource(Guid workspaceID, IResource resource, StringBuilder contents, string reason = "", string user = "")
+        public ResourceCatalogResult SaveResource(Guid workspaceID, IResource resource, StringBuilder contents, string reason = "", string user = "",string savedPath="")
         {
-            return null;
+            _serverVersionRepository.StoreVersion(resource, user, reason, workspaceID, savedPath);
+            ResourceCatalogResult saveResult = null;
+            Dev2.Common.Utilities.PerformActionInsideImpersonatedContext(Dev2.Common.Utilities.ServerUser, () => { PerfomSaveResult(out saveResult, workspaceID, resource, contents, true, savedPath); });
+            return saveResult;
         }
 
         internal ResourceCatalogResult SaveImpl(Guid workspaceID, IResource resource, StringBuilder contents, bool overwriteExisting, string savedPath = "")
@@ -126,7 +129,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
                 beforeAction = beforeService.Actions.FirstOrDefault();
             }
 
-            var result = ((ResourceCatalog)_resourceCatalog).SaveImpl(workspaceID, resource, contents);
+            var result = ((ResourceCatalog)_resourceCatalog).SaveImpl(workspaceID, resource, contents,true,savedPath);
 
             if (result.Status == ExecStatus.Success)
             {
@@ -290,7 +293,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
                 try
                 {
                     var resources = _resourceCatalog.GetResources(workspaceID);
-                    var conflicting = resources.FirstOrDefault(r => resource.ResourceID != r.ResourceID && r.GetResourcePath(workspaceID) != null && r.GetResourcePath(workspaceID).Equals(savedPath, StringComparison.InvariantCultureIgnoreCase) && r.ResourceName.Equals(resource.ResourceName, StringComparison.InvariantCultureIgnoreCase));
+                    var conflicting = resources.FirstOrDefault(r => resource.ResourceID != r.ResourceID && r.GetResourcePath(workspaceID) != null && r.GetResourcePath(workspaceID).Equals(savedPath+"\\"+resource.ResourceName, StringComparison.InvariantCultureIgnoreCase) && r.ResourceName.Equals(resource.ResourceName, StringComparison.InvariantCultureIgnoreCase));
                     if (conflicting != null && !conflicting.IsNewResource || conflicting != null && !overwriteExisting)
                     {
                         saveResult = ResourceCatalogResultBuilder.CreateDuplicateMatchResult(string.Format(ErrorResource.TypeConflict, conflicting.ResourceType));
