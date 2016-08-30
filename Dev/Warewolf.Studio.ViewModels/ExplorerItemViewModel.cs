@@ -841,6 +841,14 @@ namespace Warewolf.Studio.ViewModels
                     IsResourceCheckedEnabled = CanDeploy;
                     _isResource = value.HasValue && !IsFolder && value.Value;
                 }
+                if (value != null && (bool)value)
+                {
+                    IsSelected = true;
+                }
+                else
+                {
+                    IsSelected = false;
+                }
                 SelectAction?.Invoke(this);
                 OnPropertyChanged(() => IsResourceChecked);
             }
