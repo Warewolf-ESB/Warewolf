@@ -202,6 +202,33 @@ namespace Dev2.Activities.Designers.Tests.Decision
 
         [TestMethod]
         [Owner("Pieter Terblanche")]
+        [TestCategory("DecisionDesignerViewModel_Validate")]
+        public void DecisionDesignerViewModel_Validate_CustomizedDisplayText()
+        {
+            //------------Setup for test--------------------------
+            var viewModel = new DecisionDesignerViewModel(CreateModelItem("Decision"))
+            {
+                DisplayText = "",
+                TrueArmText = "",
+                FalseArmText = "",
+                ExpressionText = ""
+            };
+            viewModel.DisplayText = "Testing";
+            var dev2Decision = new Dev2Decision
+            {
+                Col1 = "[[val]]",
+                EvaluationFn = enDecisionType.IsEqual,
+                Col2 = "5"
+            };
+            var item = new DecisionTO(dev2Decision, 1);
+            viewModel.Collection.Insert(0, item);
+            //------------Execute Test---------------------------
+            //------------Assert Results-------------------------
+            Assert.AreEqual("Testing", viewModel.DisplayText);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
         [TestCategory("DecisionTo_CanAddOrRemove")]
         public void DecisionTo_CanAddOrRemove_Validate_IsTrue()
         {
