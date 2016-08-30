@@ -84,7 +84,10 @@ namespace Warewolf.Studio.ViewModels
                 }
 
                 _lazyComs.AddPayloadArgument("sourcePath", _explorerItemViewModel.ResourcePath);
-                _lazyComs.AddPayloadArgument("destinatioPath", SelectedItem.ResourcePath);
+                if (_explorerItemViewModel.IsFolder)
+                    _lazyComs.AddPayloadArgument("destinatioPath", SelectedItem.ResourcePath);
+                else
+                    _lazyComs.AddPayloadArgument("destinatioPath", SelectedItem.ResourcePath.Count(a => a == '\\') <= 1 && SelectedItem.ResourcePath.StartsWith("\\") ? SelectedItem.ResourcePath : "");
                 _lazyComs.AddPayloadArgument("NewResourceName", Name);
 
 

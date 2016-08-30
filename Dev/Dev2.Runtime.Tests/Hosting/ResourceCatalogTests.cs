@@ -2196,6 +2196,9 @@ namespace Dev2.Tests.Runtime.Hosting
             Assert.AreEqual("TestCategory", element.Value);
         }
 
+        
+
+
         [TestMethod]
         [Description("Needs valid arguments")]
         [Owner("Huggs")]
@@ -3219,7 +3222,36 @@ namespace Dev2.Tests.Runtime.Hosting
         }
         #endregion
 
+        #region Duplicate Functionality
 
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void ResourceCatalog_UnitTest_DuplicateResourceResourceWithNullDestination_ExpectArgumentNullException()
+        {
+            //------------Setup for test--------------------------
+            var workspaceID = GlobalConstants.ServerWorkspaceID;
+
+            var path = EnvironmentVariables.ResourcePath;
+            Directory.CreateDirectory(path);
+            const string resourceName = "Bug6619Dep";
+            SaveResources(path, null, false, false, new[] { "Bug6619", resourceName }, new[] { Guid.NewGuid(), Guid.NewGuid() });
+
+            var rc = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
+            rc.LoadWorkspace(workspaceID);
+            var result = rc.GetResources(workspaceID);
+            IResource oldResource = result.FirstOrDefault(resource => resource.ResourceName == resourceName);
+            //------------Assert Precondition-----------------
+            Assert.AreEqual(2, result.Count);
+            Assert.IsNotNull(oldResource);
+            //------------Execute Test---------------------------
+            ResourceCatalogResult resourceCatalogResult = rc.DuplicateResource(oldResource.ResourceID, oldResource.ResourcePath, null);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(ExecStatus.Fail, resourceCatalogResult.Status);
+            Assert.AreEqual("Duplicated Failure Object reference not set to an instance of an object.", resourceCatalogResult.Message);
+        }
+
+        #endregion
         [TestMethod]
         [Owner("Sanele Mthembu")]
         public void ResourceCatalog_GetResourceDuplicate_Give2SameFilesInDifferentFolders_ShouldReturnPaths()
