@@ -16,13 +16,11 @@ using System.Xml.Linq;
 using Dev2.Activities;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Core.DynamicServices;
-using Dev2.Common.Interfaces.Data;
 using Dev2.Runtime.ESB.Management;
 using Dev2.Runtime.ESB.Management.Services;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.Security;
-using Dev2.Tests.Runtime.Hosting;
 using Dev2.Tests.Runtime.XML;
 using Dev2.Workspaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -77,7 +75,7 @@ namespace Dev2.DynamicServices.Test
         {
             CustomContainer.Register<IActivityParser>(new ActivityParser());
             //Lock because of access to resourcatalog
-            lock(SyncRoot)
+            lock (SyncRoot)
             {
                 var workspaceItem = new Mock<IWorkspaceItem>();
                 workspaceItem.Setup(m => m.Action).Returns(WorkspaceItemAction.Edit);
@@ -102,7 +100,7 @@ namespace Dev2.DynamicServices.Test
         public void CanUpdateWorkItemWithCommitActionLocalSaveOnly()
         {
             //Lock because of access to resourcatalog
-            lock(SyncRoot)
+            lock (SyncRoot)
             {
                 XElement testWorkspaceItemXml = XmlResource.Fetch("WorkspaceItem");
 
@@ -132,7 +130,7 @@ namespace Dev2.DynamicServices.Test
         public void CanUpdateWorkspaceItemAndRespectIsLocalOption()
         {
             //Lock because of access to resourcatalog
-            lock(SyncRoot)
+            lock (SyncRoot)
             {
                 var workspaceItem = new Mock<IWorkspaceItem>();
                 workspaceItem.Setup(m => m.Action).Returns(WorkspaceItemAction.Commit);
@@ -339,9 +337,9 @@ namespace Dev2.DynamicServices.Test
         {
             var repo = new WorkspaceRepository();
             workspaceID = Guid.NewGuid();
-            List<IResource> resources;
-            ResourceCatalogTests.SaveResources(Guid.Empty, null, true, true, new string[0], new[] { "Calculate_RecordSet_Subtract" }, out resources, new Guid[0], new[] { Guid.NewGuid() });
-            ResourceCatalogTests.SaveResources(workspaceID, null, true, true, new string[0], new[] { "Calculate_RecordSet_Subtract" }, out resources, new Guid[0], new[] { Guid.NewGuid() });
+            // List<IResource> resources;
+            // ResourceCatalogTests.SaveResources(Guid.Empty, null, true, true, new string[0], new[] { "Calculate_RecordSet_Subtract" }, out resources, new Guid[0], new[] { Guid.NewGuid() });
+            // ResourceCatalogTests.SaveResources(workspaceID, null, true, true, new string[0], new[] { "Calculate_RecordSet_Subtract" }, out resources, new Guid[0], new[] { Guid.NewGuid() });
 
             // Force reload of server workspace from _currentTestDir
             ResourceCatalog.Instance.LoadWorkspace(GlobalConstants.ServerWorkspaceID);

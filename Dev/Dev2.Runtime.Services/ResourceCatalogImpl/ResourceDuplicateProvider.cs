@@ -55,18 +55,18 @@ namespace Dev2.Runtime.ResourceCatalogImpl
             var resource = _resourceCatalog.GetResource(GlobalConstants.ServerWorkspaceID, resourceId);
             var xElement = result.ToXElement();
 
-            resource.ResourcePath = newPath;
+            //resource.ResourcePath = newPath;
             resource.IsUpgraded = true;
             var resourceID = Guid.NewGuid();
             var resourceName = newResourceName.Split('\\').Last();
-            newPath = string.IsNullOrEmpty(newPath) ? resource.ResourcePath : newPath;
-            newPath = resource.ResourcePath == resource.FilePath && resource.ResourceName == resource.ResourcePath ? "" : newPath;
-            resource.ResourcePath = newPath + "\\" + newResourceName;
+            //newPath = string.IsNullOrEmpty(newPath) ? resource.ResourcePath : newPath;
+            //newPath = resource.ResourcePath == resource.FilePath && resource.ResourceName == resource.ResourcePath ? "" : newPath;
+            //resource.ResourcePath = newPath + "\\" + newResourceName;
             resource.ResourceName = resource.ResourceName != resourceName ? resourceName : resource.ResourceName;
             resource.ResourceID = resourceID;
             xElement.SetElementValue("DisplayName", resourceName);
             xElement.SetElementValue("ID", resourceID.ToString());
-            xElement.SetElementValue("Category", resource.ResourcePath);
+            //xElement.SetElementValue("Category", resource.ResourcePath);
             var fixedResource = xElement.ToStringBuilder();
             _resourceCatalog.SaveResource(GlobalConstants.ServerWorkspaceID, resource, fixedResource);
 
@@ -74,7 +74,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
         private void SaveFolders(string sourceLocation, string destination, string newName, bool fixRefences)
         {
             var resourceList = _resourceCatalog.GetResourceList(GlobalConstants.ServerWorkspaceID);
-            var resourceToMove = resourceList.Where(resource => resource.ResourcePath.ToUpper().StartsWith(sourceLocation.ToUpper()))
+            var resourceToMove = resourceList.Where(resource => resource.GetResourcePath(GlobalConstants.ServerWorkspaceID).ToUpper().StartsWith(sourceLocation.ToUpper()))
                                                 .Where(resource => !(resource is ManagementServiceResource))
                                                 .ToList();
             _resourcesToUpdate.AddRange(resourceToMove);
@@ -87,17 +87,17 @@ namespace Dev2.Runtime.ResourceCatalogImpl
                     var result = _resourceCatalog.GetResourceContents(GlobalConstants.ServerWorkspaceID, resource.ResourceID);
                     var xElement = result.ToXElement();
 
-                    resource.ResourcePath = newResourceName;
+                    //resource.ResourcePath = newResourceName;
                     resource.IsUpgraded = true;
                     var newResourceId = Guid.NewGuid();
                     var oldResourceId = resource.ResourceID;
                     var resourceName = resource.ResourceName;
-                    resource.ResourcePath = resource.ResourcePath;
+                    //resource.ResourcePath = resource.ResourcePath;
                     resource.ResourceName = resource.ResourceName;
                     resource.ResourceID = newResourceId;
                     xElement.SetElementValue("DisplayName", resourceName);
                     xElement.SetElementValue("ID", newResourceId.ToString());
-                    xElement.SetElementValue("Category", resource.ResourcePath);
+                    //xElement.SetElementValue("Category", resource.ResourcePath);
                     var fixedResource = xElement.ToStringBuilder();
                     _resourceCatalog.SaveResource(GlobalConstants.ServerWorkspaceID, resource, fixedResource);
                     _resourceUpdateMap.Add(oldResourceId, newResourceId);
