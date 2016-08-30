@@ -123,5 +123,7 @@ namespace Dev2.Common.Interfaces.Data
        bool IsReservedService { get; }
        bool IsServer { get; }
        bool IsResourceVersion { get; }
+
+        void LoadDependencies(XElement xml);
     }
 }

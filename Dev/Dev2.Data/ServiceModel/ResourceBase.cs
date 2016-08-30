@@ -437,7 +437,7 @@ namespace Dev2.Runtime.ServiceModel.Data
             return xml;
         }
 
-        private void LoadDependencies(XElement xml)
+        public void LoadDependencies(XElement xml)
         {
             if(xml == null)
             {

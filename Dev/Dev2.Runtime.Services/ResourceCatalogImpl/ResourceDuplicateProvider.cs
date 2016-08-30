@@ -100,12 +100,12 @@ namespace Dev2.Runtime.ResourceCatalogImpl
                     xElement.SetElementValue("Category", resource.ResourcePath);
                     var fixedResource = xElement.ToStringBuilder();
                     _resourceCatalog.SaveResource(GlobalConstants.ServerWorkspaceID, resource, fixedResource);
-                    _resourceUpdateMap.Add(new KeyValuePair<Guid, Guid>(newResourceId, oldResourceId));
+                    _resourceUpdateMap.Add(oldResourceId, newResourceId);
 
                 }
                 catch (Exception e)
                 {
-                    Console.WriteLine(e);
+                    Dev2Logger.Error(e.Message,e);
                     _resourcesToUpdate.Remove(resource);
                 }
             }
@@ -130,34 +130,20 @@ namespace Dev2.Runtime.ResourceCatalogImpl
         }
 
         private readonly List<IResource> _resourcesToUpdate = new List<IResource>();
-        private readonly List<KeyValuePair<Guid, Guid>> _resourceUpdateMap = new List<KeyValuePair<Guid, Guid>>();
+        private readonly Dictionary<Guid,Guid> _resourceUpdateMap = new Dictionary<Guid, Guid>();
         private void FixReferences()
         {
             foreach (var updatedResource in _resourcesToUpdate)
             {
-                var keyValuePair = _resourceUpdateMap.Single(pair => pair.Key == updatedResource.ResourceID);
-                var resourceToFix = _resourceCatalog.GetResource(GlobalConstants.ServerWorkspaceID, keyValuePair.Value);
-                var contents = _resourceCatalog.GetResourceContents(GlobalConstants.ServerWorkspaceID, keyValuePair.Value);
-                if (resourceToFix == null)
-                {
-                    ResourceCatalog.Instance.Reload();
-                    resourceToFix = _resourceCatalog.GetResource(GlobalConstants.ServerWorkspaceID, keyValuePair.Value);
-                    contents = _resourceCatalog.GetResourceContents(GlobalConstants.ServerWorkspaceID, keyValuePair.Value);
-                }
 
-                var resourceForTrees = resourceToFix.Dependencies;
-                foreach (var resourceForTree in resourceForTrees)
+                var contents = _resourceCatalog.GetResourceContents(GlobalConstants.ServerWorkspaceID, updatedResource.ResourceID);
+
+                foreach(var oldToNewUpdate in _resourceUpdateMap)
                 {
-                    var oldRefences = _resourceUpdateMap.Where(pair => pair.Key.ToString().ToUpper() == keyValuePair.Key.ToString().ToUpper());
-                    foreach (KeyValuePair<Guid, Guid> oldRefence in oldRefences)
-                    {
-                        resourceForTree.ResourceID = oldRefence.Value;//assign new ID 
-                        contents = contents.ToString().Replace(keyValuePair.Key.ToString(), oldRefence.Value.ToString()).ToStringBuilder();
-                    }
+                    contents.Replace(oldToNewUpdate.Key.ToString(), oldToNewUpdate.Value.ToString());
                 }
-                resourceToFix.Dependencies = resourceForTrees;
-                if (resourceToFix.Dependencies.Any())
-                    _resourceCatalog.SaveResource(GlobalConstants.ServerWorkspaceID, resourceToFix, contents);
+                _resourceCatalog.SaveResource(GlobalConstants.ServerWorkspaceID, updatedResource, contents);
+                updatedResource.LoadDependencies(contents.ToXElement());
             }
         }
     }
