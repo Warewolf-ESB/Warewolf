@@ -22,7 +22,6 @@
 *.log
 *.cer
 *.vssscc
-*.testsettings
 *.iml
 *.playlist
 *.sln.DotSettings
