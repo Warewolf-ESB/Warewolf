@@ -556,7 +556,7 @@ namespace Warewolf.Studio.Views
                 e.DropTarget.AllowDrop = false;
                 _allowDrop = false;
             }
-            catch (Exception x) when(x is ArgumentNullException) 
+            catch (Exception x) when(x is ArgumentNullException) //weird error when droptarget is null
             {
                 //    Console.WriteLine(exception);
             }
