@@ -46,22 +46,19 @@ namespace Dev2.Runtime.ResourceCatalogImpl
                     return ResourceCatalogResultBuilder.CreateFailResult($"{ErrorResource.FailedToFindResource} '{resourceID}' to '{newName}'");
                 }
 
+                // ReSharper disable once PossibleInvalidOperationException
+                _versionRepository.StoreVersion(_resourceCatalog.GetResource(Guid.Empty, resourceID.Value), "unknown", "Rename", workspaceID, resourcePath);
+                //rename and save to workspace
+                var renameResult = UpdateResourceName(workspaceID, resourcesToUpdate[0], newName, resourcePath);
+                if (renameResult.Status != ExecStatus.Success)
                 {
-                    // ReSharper disable once PossibleInvalidOperationException
-                    _versionRepository.StoreVersion(_resourceCatalog.GetResource(Guid.Empty, resourceID.Value), "unknown", "Rename", workspaceID, resourcePath);
-                    //rename and save to workspace
-                    var renameResult = UpdateResourceName(workspaceID, resourcesToUpdate[0], newName, resourcePath);
-                    if (renameResult.Status != ExecStatus.Success)
-                    {
-                        return ResourceCatalogResultBuilder.CreateFailResult($"{ErrorResource.FailedToRenameResource} '{resourceID}' to '{newName}'");
-                    }
+                    return ResourceCatalogResultBuilder.CreateFailResult($"{ErrorResource.FailedToRenameResource} '{resourceID}' to '{newName}'");
                 }
             }
             catch (Exception err)
             {
                 Dev2Logger.Error(err);
                 return ResourceCatalogResultBuilder.CreateFailResult($"{ErrorResource.FailedToRenameResource} '{resourceID}' to '{newName}'");
-
             }
             return ResourceCatalogResultBuilder.CreateSuccessResult($"{"Renamed Resource"} '{resourceID}' to '{newName}'");
         }
