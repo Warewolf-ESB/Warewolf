@@ -39,7 +39,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
 
             try
             {
-                SaveResource(resourceId, newName, newPath);
+                SaveResource(resourceId, newPath, newName);
                 return ResourceCatalogResultBuilder.CreateSuccessResult("Duplicated Success");
             }
             catch (Exception x)
@@ -48,7 +48,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
                 return ResourceCatalogResultBuilder.CreateFailResult("Duplicated Failure " + x.Message);
             }
         }
-        private void SaveResource(Guid resourceId, string newResourceName, string newPath = null)
+        private void SaveResource(Guid resourceId, string newPath, string newResourceName)
         {
 
             StringBuilder result = _resourceCatalog.GetResourceContents(GlobalConstants.ServerWorkspaceID, resourceId);
