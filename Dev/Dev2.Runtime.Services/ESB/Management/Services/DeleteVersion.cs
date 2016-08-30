@@ -68,7 +68,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                     var version = values["versionNumber"].ToString();
                     Dev2Logger.Info(String.Format("Delete Version. ResourceId:{0} VersionNumber{1}",guid,version));
                     StringBuilder tmp;
-                    string resourcePath = null;
+                    string resourcePath = "";
                     values.TryGetValue("resourcePath", out tmp);
                     if (tmp != null)
                     {
