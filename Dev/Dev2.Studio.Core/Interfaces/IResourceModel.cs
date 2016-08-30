@@ -67,5 +67,7 @@ namespace Dev2.Studio.Core.Interfaces
         void RemoveError(IErrorInfo error);
         void Commit();
         void Rollback();
+
+        string GetSavePath();
     }
 }

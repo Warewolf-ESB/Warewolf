@@ -722,6 +722,15 @@ namespace Dev2.Studio.Core.Models
 
         #endregion
 
+        public string GetSavePath()
+        {
+            if (!string.IsNullOrEmpty(Category))
+            {
+                return Category.Replace(ResourceName, "");
+            }
+            return "";
+        }
+
         protected override void OnDispose()
         {
             _validationService?.Dispose();
