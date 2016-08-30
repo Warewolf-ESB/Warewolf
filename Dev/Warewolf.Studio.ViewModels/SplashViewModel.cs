@@ -108,9 +108,9 @@ namespace Warewolf.Studio.ViewModels
             Dispatcher.CurrentDispatcher.Invoke(() =>
             {
                 var serverVersion = Server.GetServerVersion();
-                if (serverVersion.StartsWith("0.0."))
+                var splitServerVersion = serverVersion.Split('.');
+                if (int.Parse(splitServerVersion[2]) > 6000)
                 {
-                    var splitServerVersion = serverVersion.Split('.');
                     var totalDays = Convert.ToDouble(splitServerVersion[2]);
                     var totalSeconds = Convert.ToDouble(splitServerVersion[3])*2;
                     var cSharpEpoc = new DateTime(2000, 1, 1);
@@ -122,9 +122,9 @@ namespace Warewolf.Studio.ViewModels
                     ServerVersion = "Version " + serverVersion;
                 }
                 var studioVersion = Utils.FetchVersionInfo();
-                if (studioVersion.StartsWith("0.0."))
+                var splitStudioVersion = studioVersion.Split('.');
+                if (int.Parse(splitStudioVersion[2]) > 6000)
                 {
-                    var splitStudioVersion = studioVersion.Split('.');
                     var totalDays = Convert.ToDouble(splitStudioVersion[2]);
                     var totalSeconds = Convert.ToDouble(splitStudioVersion[3])*2;
                     var cSharpEpoc = new DateTime(2000, 1, 1);
