@@ -189,7 +189,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
             //re-create, resign and save to file system the new resource
             StringBuilder contents = resourceElement.ToStringBuilder();
 
-            return ((ResourceCatalog)_resourceCatalog).SaveImpl(workspaceID, resource, contents, true, resourcePath);
+            return ((ResourceCatalog)_resourceCatalog).SaveImpl(workspaceID, resource, contents, true, resource.GetResourcePath(workspaceID));
 
         }
 
