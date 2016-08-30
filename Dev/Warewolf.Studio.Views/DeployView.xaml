@@ -222,7 +222,7 @@
                                              HorizontalAlignment="Right" />
                             <TextBlock x:Name="StatusPass" 
                                        Text="{Binding DeploySuccessMessage}"
-                                       Foreground="{StaticResource WareWolfOrangeBrush}"
+                                       Foreground="{StaticResource WareWolfWhiteBrush}"
                                        TextWrapping="Wrap"
                                        AutomationProperties.AutomationId="UI_DeploySelectTB_AutoID"
                                        VerticalAlignment="Center" />
