@@ -58,7 +58,7 @@ namespace Dev2.Runtime.Hosting
         {
             var resourceList = Catalogue.GetResourceList(workSpaceId);
             var rootNode = BuildStructureFromFilePathRoot(Directory, workSpacePath, BuildRoot());
-            AddChildren(rootNode, resourceList);
+            AddChildren(rootNode, resourceList, workSpaceId);
             return rootNode;
         }
 
@@ -70,24 +70,24 @@ namespace Dev2.Runtime.Hosting
             {
                 return rootNode;
             }
-            AddChildren(rootNode, resourceList, type);
+            AddChildren(rootNode, resourceList, type, workSpaceId);
             return rootNode;
         }
-        private void AddChildren(IExplorerItem rootNode, IEnumerable<IResource> resourceList, string type)
+        private void AddChildren(IExplorerItem rootNode, IEnumerable<IResource> resourceList, string type, Guid workSpaceId)
         {
             // ReSharper disable PossibleMultipleEnumeration
 
-            var children = resourceList.Where(a => GetResourceParent(a.ResourcePath) == rootNode.ResourcePath && a.ResourceType == type.ToString());
+            var children = resourceList.Where(a => GetResourceParent(a.GetResourcePath(workSpaceId)) == rootNode.ResourcePath && a.ResourceType == type.ToString());
             // ReSharper restore PossibleMultipleEnumeration
             foreach (var node in rootNode.Children)
             {
                 // ReSharper disable PossibleMultipleEnumeration
-                AddChildren(node, resourceList, type);
+                AddChildren(node, resourceList, type, workSpaceId);
                 // ReSharper restore PossibleMultipleEnumeration
             }
             foreach (var resource in children)
             {
-                var childNode = CreateResourceItem(resource);
+                var childNode = CreateResourceItem(resource, workSpaceId);
                 rootNode.Children.Add(childNode);
             }
         }
@@ -101,15 +101,15 @@ namespace Dev2.Runtime.Hosting
             return resourcePath.Contains("\\") ? resourcePath.Substring(0, resourcePath.LastIndexOf("\\", StringComparison.Ordinal)) : "";
         }
 
-        private void AddChildren(IExplorerItem rootNode, IEnumerable<IResource> resourceList)
+        private void AddChildren(IExplorerItem rootNode, IEnumerable<IResource> resourceList, Guid workSpaceId)
         {
             // ReSharper disable PossibleMultipleEnumeration
-            var children = resourceList.Where(a => GetResourceParent(a.ResourcePath).Equals(rootNode.ResourcePath, StringComparison.InvariantCultureIgnoreCase));
+            var children = resourceList.Where(a => GetResourceParent(a.GetResourcePath(workSpaceId)).Equals(rootNode.ResourcePath, StringComparison.InvariantCultureIgnoreCase));
             // ReSharper restore PossibleMultipleEnumeration
             foreach (var node in rootNode.Children)
             {
                 // ReSharper disable PossibleMultipleEnumeration
-                AddChildren(node, resourceList);
+                AddChildren(node, resourceList, workSpaceId);
                 // ReSharper restore PossibleMultipleEnumeration
             }
             foreach (var resource in children)
@@ -118,15 +118,15 @@ namespace Dev2.Runtime.Hosting
                 {
                     continue;
                 }
-                var childNode = CreateResourceItem(resource);
+                var childNode = CreateResourceItem(resource, workSpaceId);
                 rootNode.Children.Add(childNode);
             }
         }
 
-        public ServerExplorerItem CreateResourceItem(IResource resource)
+        public ServerExplorerItem CreateResourceItem(IResource resource, Guid workSpaceId)
         {
             Guid resourceId = resource.ResourceID;
-            var childNode = new ServerExplorerItem(resource.ResourceName, resourceId, resource.ResourceType, null, _authService.GetResourcePermissions(resourceId), resource.ResourcePath, "", "")
+            var childNode = new ServerExplorerItem(resource.ResourceName, resourceId, resource.ResourceType, null, _authService.GetResourcePermissions(resourceId), resource.GetResourcePath(workSpaceId), "", "")
             {
                 IsReservedService = resource.IsReservedService,
                 IsService = resource.IsService,

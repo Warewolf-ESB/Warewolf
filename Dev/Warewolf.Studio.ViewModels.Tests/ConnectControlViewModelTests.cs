@@ -618,7 +618,6 @@ namespace Warewolf.Studio.ViewModels.Tests
             server2.EnvironmentConnection = mockEnvironmentConnection.Object;
             server.EnvironmentID = serverGuid;
             server.ResourceName = "mr_J_bravo";
-            server.ResourcePath = "";
             mockShellViewModel.Setup(a => a.ActiveServer).Returns(server);
             mockShellViewModel.Setup(model => model.LocalhostServer).Returns(server);
 

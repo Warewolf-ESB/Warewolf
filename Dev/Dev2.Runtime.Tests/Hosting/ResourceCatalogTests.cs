@@ -15,8 +15,6 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.Serialization;
 using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Xml.Linq;
 using Dev2.Activities;
 using Dev2.Collections;
@@ -222,65 +220,7 @@ namespace Dev2.Tests.Runtime.Hosting
         #endregion
 
         #region ParallelExecution
-
-        [TestMethod]
-        public void LoadInParallelExpectedBehavesConcurrently()
-        {
-            const int NumWorkspaces = 5;
-            const int NumThreadsPerWorkspace = 5;
-            //const int ExpectedWorkspaceCount = NumWorkspaces + 1; // add 1 for server workspace that is auto-loaded
-
-            var catalog = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
-
-            var threadArray = new Thread[NumWorkspaces * NumThreadsPerWorkspace];
-
-            #region Create threads
-
-            for (var i = 0; i < NumWorkspaces; i++)
-            {
-                var workspaceID = Guid.NewGuid();
-
-                List<IResource> resources;
-                SaveResources(workspaceID, out resources);
-
-                for (var j = 0; j < NumThreadsPerWorkspace; j++)
-                {
-                    var t = i * NumThreadsPerWorkspace + j;
-                    if (j == 0)
-                    {
-                        threadArray[t] = new Thread(() =>
-                        {
-                            catalog.LoadWorkspace(workspaceID); // Always loads from disk
-                            var actualCount = catalog.GetResourceCount(workspaceID); // Loads from disk if not in memory
-                            Assert.AreEqual(SaveResourceCount, actualCount);
-                        });
-                    }
-                    else
-                    {
-                        threadArray[t] = new Thread(() =>
-                        {
-                            var actualCount = catalog.GetResourceCount(workspaceID); // Loads from disk if not in memory
-                            Assert.AreEqual(SaveResourceCount, actualCount);
-                        });
-                    }
-                }
-            }
-
-            #endregion
-
-
-            //Start the threads.
-            Parallel.For(0, threadArray.Length, i => threadArray[i].Start());
-
-            //Wait until all the threads spawn out and finish.
-            foreach (var t in threadArray)
-            {
-                t.Join();
-            }
-
-            //Assert.AreEqual(ExpectedWorkspaceCount, catalog.get);
-        }
-
+        
         #endregion
 
         #region SaveResource
@@ -314,7 +254,7 @@ namespace Dev2.Tests.Runtime.Hosting
             var path = workspacePath;
             const string resourceName = "CitiesDatabase";
             var xml = XmlResource.Fetch(resourceName);
-            var resource = new DbSource(xml) { ResourcePath = "" };
+            var resource = new DbSource(xml);
             var catalog = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
             //------------Execute Test---------------------------
             catalog.SaveResource(workspaceID, resource);
@@ -337,13 +277,13 @@ namespace Dev2.Tests.Runtime.Hosting
             var workspaceID = Guid.NewGuid();
             const string resourceName = "CitiesDatabase";
             var xml = XmlResource.Fetch(resourceName);
-            var resource = new DbSource(xml) { ResourcePath = "" };
+            var resource = new DbSource(xml);
             var version = new Mock<IServerVersionRepository>();
             var catalog = new ResourceCatalog(null, version.Object);
             //------------Execute Test---------------------------
             catalog.SaveResource(workspaceID, resource, "reason", "bob");
             //------------Assert Results-------------------------
-            version.Verify(a => a.StoreVersion(resource, "bob", "reason", workspaceID));
+            version.Verify(a => a.StoreVersion(It.IsAny<IResource>(), "bob", "reason", workspaceID, ""));
         }
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
@@ -362,7 +302,7 @@ namespace Dev2.Tests.Runtime.Hosting
 
 
             //------------Assert Results-------------------------
-            version.Verify(a => a.StoreVersion(It.IsAny<Resource>(), "bob", "reason", workspaceID));
+            version.Verify(a => a.StoreVersion(It.IsAny<Resource>(), "bob", "reason", workspaceID, ""));
 
 
         }
@@ -408,7 +348,7 @@ namespace Dev2.Tests.Runtime.Hosting
             var workspaceID = Guid.Empty;
             const string resourceName = "CitiesDatabase";
             var xml = XmlResource.Fetch(resourceName);
-            var resource = new DbSource(xml) { ResourcePath = "" };
+            var resource = new DbSource(xml);
             var catalog = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
             var _called = false;
             IResource _resourceInEvent = null;
@@ -436,7 +376,7 @@ namespace Dev2.Tests.Runtime.Hosting
             var path = workspacePath;
             const string resourceName = "CitiesDatabase";
             var xml = XmlResource.Fetch(resourceName);
-            var resource = new DbSource(xml) { ResourcePath = null };
+            var resource = new DbSource(xml);
             var catalog = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
             //------------Execute Test---------------------------
             catalog.SaveResource(workspaceID, resource);
@@ -462,10 +402,10 @@ namespace Dev2.Tests.Runtime.Hosting
             var path = Path.Combine(workspacePath, resourcePath);
             const string resourceName = "CitiesDatabase";
             var xml = XmlResource.Fetch(resourceName);
-            var resource = new DbSource(xml) { ResourcePath = resourcePath };
+            var resource = new DbSource(xml);
             var catalog = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
             //------------Execute Test---------------------------
-            catalog.SaveResource(workspaceID, resource);
+            catalog.SaveResource(workspaceID, resource, "", "", resourcePath);
             //------------Assert Results-------------------------
             xml = XElement.Load(path + ".xml");
             Assert.IsNotNull(xml);
@@ -486,16 +426,16 @@ namespace Dev2.Tests.Runtime.Hosting
             const string resourcePath = "MyTest\\Folder1\\CitiesDatabase";
             const string resourceName = "CitiesDatabase";
             var xml = XmlResource.Fetch(resourceName);
-            var resource = new DbSource(xml) { ResourcePath = resourcePath };
+            var resource = new DbSource(xml);
             var catalog = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
             //------------Execute Test---------------------------
-            var resource2 = new DbSource(xml) { ResourcePath = "MyTest\\Folder1\\CitiesDatabase2", ResourceID = resource.ResourceID };
-            catalog.SaveResource(workspaceID, resource);
+            var resource2 = new DbSource(xml) { ResourceID = resource.ResourceID };
+            catalog.SaveResource(workspaceID, resource, "", "", resourcePath);
             var pathToDelete = resource.FilePath;
             resource2.FilePath = resource.FilePath.Replace("Folder1", "Foldler1");
             resource2.ResourceName = "CitiesDatabase2";
             Assert.IsTrue(File.Exists(pathToDelete));
-            catalog.SaveResource(workspaceID, resource2);
+            catalog.SaveResource(workspaceID, resource2, "", "", "MyTest\\Folder1\\CitiesDatabase2");
             //------------Assert Results-------------------------
             Assert.IsFalse(File.Exists(pathToDelete));
         }
@@ -510,16 +450,16 @@ namespace Dev2.Tests.Runtime.Hosting
             const string resourcePath = "MyTest\\Folder1\\CitiesDatabase";
             const string resourceName = "CitiesDatabase";
             var xml = XmlResource.Fetch(resourceName);
-            var resource = new DbSource(xml) { ResourcePath = resourcePath };
+            var resource = new DbSource(xml);
             var catalog = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
             //------------Execute Test---------------------------
-            var resource2 = new DbSource(xml) { ResourcePath = "MyTest\\FOLDER1\\CitiesDatabase", ResourceID = resource.ResourceID };
-            catalog.SaveResource(workspaceID, resource);
+            var resource2 = new DbSource(xml) { ResourceID = resource.ResourceID };
+            catalog.SaveResource(workspaceID, resource, "", "", resourcePath);
             var pathToDelete = resource.FilePath;
             resource2.FilePath = resource.FilePath.Replace("Folder1", "Foldler1");
             resource2.ResourceName = "CitiesDatabase";
             Assert.IsTrue(File.Exists(pathToDelete));
-            catalog.SaveResource(workspaceID, resource2);
+            catalog.SaveResource(workspaceID, resource2, "", "", "MyTest\\FOLDER1\\CitiesDatabase");
             //------------Assert Results-------------------------
             Assert.IsTrue(File.Exists(pathToDelete));
         }
@@ -537,12 +477,12 @@ namespace Dev2.Tests.Runtime.Hosting
             var path = Path.Combine(workspacePath, resourcePath);
             const string resourceName = "CitiesDatabase";
             var xml = XmlResource.Fetch(resourceName);
-            var resource = new DbSource(xml) { ResourcePath = resourcePath };
-            var resource1 = new DbSource(xml) { ResourcePath = resourcePath1 };
+            var resource = new DbSource(xml);
+            var resource1 = new DbSource(xml);
             var catalog = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
-            catalog.SaveResource(workspaceID, resource);
+            catalog.SaveResource(workspaceID, resource, "", "", resourcePath);
             //------------Execute Test---------------------------
-            catalog.SaveResource(workspaceID, resource1);
+            catalog.SaveResource(workspaceID, resource1, "", "", resourcePath1);
             //------------Assert Results-------------------------
             xml = XElement.Load(path + ".xml");
             Assert.IsNotNull(xml);
@@ -569,19 +509,19 @@ namespace Dev2.Tests.Runtime.Hosting
             //------------Setup for test--------------------------
             var workspaceID = Guid.NewGuid();
             var workspacePath = EnvironmentVariables.GetWorkspacePath(workspaceID);
-            const string resourcePath = "MyTest\\Folder1\\CitiesDatabase";
+            const string resourcePath = "MyTest\\Folder1";
             var path = Path.Combine(workspacePath, resourcePath);
             const string resourceName = "CitiesDatabase";
             var xml = XmlResource.Fetch(resourceName);
-            var resource = new DbSource(xml) { ResourcePath = resourcePath };
-            var resource1 = new DbSource(xml) { ResourcePath = resourcePath };
+            var resource = new DbSource(xml);
+            var resource1 = new DbSource(xml);
             var catalog = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
-            catalog.SaveResource(workspaceID, resource);
+            catalog.SaveResource(workspaceID, resource, "", "", resourcePath);
             //------------Execute Test---------------------------
-            var resourceCatalogResult = catalog.SaveResource(workspaceID, resource1);
+            var resourceCatalogResult = catalog.SaveResource(workspaceID, resource1, "", "", resourcePath);
             //------------Assert Results-------------------------
             Assert.AreEqual(ExecStatus.DuplicateMatch, resourceCatalogResult.Status);
-            xml = XElement.Load(path + ".xml");
+            xml = XElement.Load(path + "\\CitiesDatabase" + ".xml");
             Assert.IsNotNull(xml);
             var idAttr = xml.Attributes("ID").ToList();
             Assert.AreEqual(1, idAttr.Count);
@@ -604,7 +544,7 @@ namespace Dev2.Tests.Runtime.Hosting
             var catalog = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
             catalog.SaveResource(workspaceID, resource);
 
-            xml = XElement.Load(Path.Combine(path, resource.ResourcePath + ".xml"));
+            xml = XElement.Load(Path.Combine(path, "CitiesDatabase" + ".xml"));
             var attr = xml.Attributes("ID").ToList();
 
             Assert.AreEqual(1, attr.Count);
@@ -638,12 +578,12 @@ namespace Dev2.Tests.Runtime.Hosting
             var workspaceID = Guid.NewGuid();
             var workspacePath = EnvironmentVariables.GetWorkspacePath(workspaceID);
 
-            var resource1 = new DbSource { ResourceID = Guid.NewGuid(), ResourcePath = "TestSource", ResourceName = "TestSource", DatabaseName = "TestOldDb", Server = "TestOldServer", ServerType = enSourceType.SqlDatabase };
+            var resource1 = new DbSource { ResourceID = Guid.NewGuid(), ResourceName = "TestSource", DatabaseName = "TestOldDb", Server = "TestOldServer", ServerType = enSourceType.SqlDatabase };
 
             var catalog = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
-            catalog.SaveResource(workspaceID, resource1);
+            catalog.SaveResource(workspaceID, resource1, "", "", "TestSource");
 
-            var path = Path.Combine(workspacePath, (resource1.ResourcePath ?? string.Empty) + ".xml");
+            var path = Path.Combine(workspacePath, "TestSource" + ".xml");
             var attributes = File.GetAttributes(path);
             if ((attributes & FileAttributes.ReadOnly) != FileAttributes.ReadOnly)
             {
@@ -732,12 +672,10 @@ namespace Dev2.Tests.Runtime.Hosting
             var catalog = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
             foreach (var expected in resources)
             {
-                var actual = catalog.GetResource(workspaceID, String.IsNullOrEmpty(expected.ResourcePath) ? expected.ResourceName : expected.ResourcePath);
+                var actual = catalog.GetResource(workspaceID, expected.ResourceName);
                 Assert.IsNotNull(actual);
                 Assert.AreEqual(expected.ResourceID, actual.ResourceID);
                 Assert.AreEqual(expected.ResourceName, actual.ResourceName);
-                Assert.AreEqual(expected.ResourcePath, actual.ResourcePath);
-                Assert.AreEqual(expected.ResourcePath, actual.ResourcePath);
             }
         }
 
@@ -749,20 +687,20 @@ namespace Dev2.Tests.Runtime.Hosting
         {
             //------------Setup for test--------------------------
             var workspaceID = Guid.NewGuid();
-            const string resourcePath = "MyTest\\Folder1\\CitiesDatabase";
-            const string resourcePath1 = "MyTest\\Folder2\\CitiesDatabase";
+            const string resourcePath = "MyTest\\Folder1";
+            const string resourcePath1 = "MyTest\\Folder2";
             const string resourceName = "CitiesDatabase";
             var xml = XmlResource.Fetch(resourceName);
-            var resource = new DbSource(xml) { ResourcePath = resourcePath };
-            var resource1 = new DbSource(xml) { ResourcePath = resourcePath1 };
+            var resource = new DbSource(xml);
+            var resource1 = new DbSource(xml);
             var catalog = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
-            catalog.SaveResource(workspaceID, resource);
-            catalog.SaveResource(workspaceID, resource1);
+            catalog.SaveResource(workspaceID, resource, "", "", resourcePath);
+            catalog.SaveResource(workspaceID, resource1, "", "", resourcePath1);
             //------------Execute Test---------------------------
             var retrievedResource = catalog.GetResource(workspaceID, "MyTest\\Folder2\\CitiesDatabase");
             //------------Assert Results-------------------------
             Assert.IsNotNull(retrievedResource);
-            Assert.AreEqual(resourcePath1, retrievedResource.ResourcePath);
+            Assert.AreEqual(resourcePath1, "MyTest\\Folder2");
 
         }
 
@@ -772,18 +710,18 @@ namespace Dev2.Tests.Runtime.Hosting
         {
             //------------Setup for test--------------------------
             var workspaceID = Guid.NewGuid();
-            const string resourcePath = "MyTest\\Folder1\\CitiesDatabase";
+            const string resourcePath = "MyTest\\Folder1";
             const string resourceName = "CitiesDatabase";
             var xml = XmlResource.Fetch(resourceName);
-            var resource = new DbSource(xml) { ResourcePath = resourcePath };
+            var resource = new DbSource(xml);
             var catalog = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
-            var resourceCatalogResult = catalog.SaveResource(workspaceID, resource);
+            var resourceCatalogResult = catalog.SaveResource(workspaceID, resource, "", "", resourcePath);
             //------------Execute Test---------------------------
             Assert.IsTrue(resourceCatalogResult.Status == ExecStatus.Success);
             var retrievedResource = catalog.GetResourcePath(workspaceID, resource.ResourceID);
             //------------Assert Results-------------------------
             Assert.IsNotNull(retrievedResource);
-            Assert.AreEqual(resourcePath, retrievedResource);
+            Assert.AreEqual(resourcePath+"\\"+resourceName, retrievedResource);
 
         }
 
@@ -793,12 +731,12 @@ namespace Dev2.Tests.Runtime.Hosting
         {
             //------------Setup for test--------------------------
             var workspaceID = Guid.NewGuid();
-            const string resourcePath = "MyTest\\Folder1\\CitiesDatabase";
+            const string resourcePath = "MyTest\\Folder1";
             const string resourceName = "CitiesDatabase";
             var xml = XmlResource.Fetch(resourceName);
-            var resource = new DbSource(xml) { ResourcePath = resourcePath };
+            var resource = new DbSource(xml);
             var catalog = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
-            var resourceCatalogResult = catalog.SaveResource(workspaceID, resource);
+            var resourceCatalogResult = catalog.SaveResource(workspaceID, resource, "", "", resourcePath);
             //------------Execute Test---------------------------
             Assert.IsTrue(resourceCatalogResult.Status == ExecStatus.Success);
             var retrievedResource = catalog.GetResourceList(workspaceID);
@@ -814,12 +752,12 @@ namespace Dev2.Tests.Runtime.Hosting
         {
             //------------Setup for test--------------------------
             var workspaceID = Guid.NewGuid();
-            const string resourcePath = "MyTest\\Folder1\\CitiesDatabase";
+            const string resourcePath = "MyTest\\Folder1";
             const string resourceName = "CitiesDatabase";
             var xml = XmlResource.Fetch(resourceName);
-            var resource = new DbSource(xml) { ResourcePath = resourcePath };
+            var resource = new DbSource(xml);
             var catalog = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
-            var resourceCatalogResult = catalog.SaveResource(workspaceID, resource);
+            var resourceCatalogResult = catalog.SaveResource(workspaceID, resource, "", "", resourcePath);
             //------------Execute Test---------------------------
             Assert.IsTrue(resourceCatalogResult.Status == ExecStatus.Success);
             IList<IResource> retrievedResource = catalog.GetResourceList<DbSource>(workspaceID);
@@ -835,12 +773,12 @@ namespace Dev2.Tests.Runtime.Hosting
         {
             //------------Setup for test--------------------------
             var workspaceID = Guid.NewGuid();
-            const string resourcePath = "MyTest\\Folder1\\CitiesDatabase";
+            const string resourcePath = "MyTest\\Folder1";
             const string resourceName = "CitiesDatabase";
             var xml = XmlResource.Fetch(resourceName);
-            var resource = new DbSource(xml) { ResourcePath = resourcePath };
+            var resource = new DbSource(xml);
             var catalog = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
-            var resourceCatalogResult = catalog.SaveResource(workspaceID, resource);
+            var resourceCatalogResult = catalog.SaveResource(workspaceID, resource, "", "", resourcePath);
             //------------Execute Test---------------------------
             Assert.IsTrue(resourceCatalogResult.Status == ExecStatus.Success);
             IList<IResource> retrievedResource = catalog.GetResourceList<DropBoxSource>(workspaceID);
@@ -879,7 +817,7 @@ namespace Dev2.Tests.Runtime.Hosting
             //------------Setup for test--------------------------
             var workspaceID = Guid.NewGuid();
 
-            var path = EnvironmentVariables.GetWorkspacePath(workspaceID);
+            var path = EnvironmentVariables.GetWorkspacePath(workspaceID)+ "\\Bugs";
             Directory.CreateDirectory(path);
             const string resourceName = "Bug6619Dep";
             SaveResources(path, null, false, false, new[] { "Bug6619", resourceName }, new[] { Guid.NewGuid(), Guid.NewGuid() });
@@ -1775,60 +1713,7 @@ namespace Dev2.Tests.Runtime.Hosting
         // Static helpers
         //
 
-        #region UpdateResourceCatalog
-
-        [TestMethod]
-        [Description("Updates the Name of a resource and updates where used")]
-        [Owner("Ashley Lewis")]
-        public void ResourceCatalog_UnitTest_UpdateResourceNameValidArguments_ExpectFileContentsAndNameUpdatedBothResources()
-        {
-            //------------Setup for test-------------------------
-            const string newName = "RenamedResource";
-            var workspaceID = Guid.NewGuid();
-            var workspacePath = EnvironmentVariables.GetWorkspacePath(workspaceID);
-            var outPath = workspacePath;
-            var path = EnvironmentVariables.ResourcePath;
-            Directory.CreateDirectory(path);
-            const string resourceID = "ec636256-5f11-40ab-a044-10e731d87555";
-            const string depResourceID = "1736ca6e-b870-467f-8d25-262972d8c3e8";
-            SaveResources(workspacePath, null, true, false, new[] { "Bug6619Dep", "Bug6619" }, new[] { Guid.Parse(resourceID), Guid.Parse(depResourceID) });
-
-            var rc = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
-            rc.LoadWorkspace(workspaceID);
-            var result = rc.GetResources(workspaceID);
-            IResource oldResource = result.FirstOrDefault(resource => resource.ResourceID.ToString() == resourceID);
-            //------------Assert Precondition--------------------
-            Assert.AreEqual(2, result.Count);
-            Assert.IsNotNull(oldResource);
-            //------------Execute Test---------------------------
-            ResourceCatalogResult resourceCatalogResult = rc.RenameResource(workspaceID, oldResource.ResourceID, newName);
-            //------------Assert Results-------------------------
-            Assert.AreEqual(ExecStatus.Success, resourceCatalogResult.Status);
-            Assert.AreEqual("Renamed Resource 'ec636256-5f11-40ab-a044-10e731d87555' to '" + newName + "'", resourceCatalogResult.Message);
-
-            //assert resource renamed
-            string resourceContents = rc.GetResourceContents(workspaceID, oldResource.ResourceID).ToString();
-            XElement xElement = XElement.Load(new StringReader(resourceContents), LoadOptions.None);
-            XAttribute nameAttrib = xElement.Attribute("Name");
-            Assert.IsNotNull(nameAttrib);
-            Assert.AreEqual(newName, nameAttrib.Value);
-            Assert.IsTrue(File.Exists(outPath + "\\Bugs\\" + newName + ".xml"));
-
-            //assert rename where used
-            result = rc.GetResources(workspaceID);
-            IResource depResource = result.FirstOrDefault(resource => resource.ResourceID.ToString() == depResourceID);
-            Assert.IsNotNull(depResource);
-            resourceContents = rc.GetResourceContents(workspaceID, depResource.ResourceID).ToString();
-            xElement = XElement.Load(new StringReader(resourceContents), LoadOptions.None);
-            var actionElem = xElement.Element("Action");
-            Assert.IsNotNull(actionElem);
-            var xamlElem = actionElem.Element("XamlDefinition");
-            Assert.IsNotNull(xamlElem);
-            Assert.IsTrue(xamlElem.ToString().Contains("DisplayName=\"Bugs\\" + newName + "\""), "Resource not renamed where used.");
-            Assert.IsFalse(xamlElem.ToString().Contains("DisplayName=\"Bug6619Dep\""), "Resource not renamed where used.");
-
-            Assert.AreEqual(depResource.Dependencies[0].ResourceName, newName, "Resource not renamed where used");
-        }
+        #region UpdateResourceCatalog            
 
         [TestMethod]
         [Description("Requires Valid arguments")]
@@ -1852,7 +1737,7 @@ namespace Dev2.Tests.Runtime.Hosting
             Assert.AreEqual(1, result.Count);
             Assert.IsNotNull(oldResource);
             //------------Execute Test---------------------------
-            ResourceCatalogResult resourceCatalogResult = rc.RenameResource(workspaceID, Guid.Parse(resourceID), "TestName");
+            ResourceCatalogResult resourceCatalogResult = rc.RenameResource(workspaceID, Guid.Parse(resourceID), "TestName", "TestName");
             //------------Assert Results-------------------------
             Assert.AreEqual(ExecStatus.Success, resourceCatalogResult.Status);
             Assert.AreEqual("Renamed Resource '" + resourceID + "' to 'TestName'", resourceCatalogResult.Message);
@@ -1861,10 +1746,7 @@ namespace Dev2.Tests.Runtime.Hosting
             var element = xElement.Attribute("Name");
             Assert.IsNotNull(element);
             Assert.AreEqual("TestName", element.Value);
-            XElement elementCat = xElement.Element("Category");
-            Assert.IsNotNull(elementCat);
-            Assert.AreEqual("Bugs\\TestName", elementCat.Value);
-            serverVersionRepository.Verify(a => a.StoreVersion(It.IsAny<IResource>(), "unknown", "Rename", workspaceID));
+            serverVersionRepository.Verify(a => a.StoreVersion(It.IsAny<IResource>(), "unknown", "Rename", workspaceID, "TestName"));
             var actionElem = xElement.Element("Action");
             Assert.IsNotNull(actionElem);
             var xamlElem = actionElem.Element("XamlDefinition");
@@ -1895,7 +1777,7 @@ namespace Dev2.Tests.Runtime.Hosting
             Assert.AreEqual(1, result.Count);
             Assert.IsNotNull(oldResource);
             //------------Execute Test---------------------------
-            ResourceCatalogResult resourceCatalogResult = rc.RenameResource(workspaceID, oldResource.ResourceID, null);
+            ResourceCatalogResult resourceCatalogResult = rc.RenameResource(workspaceID, oldResource.ResourceID, null, null);
             //------------Assert Results-------------------------
             Assert.AreEqual(ExecStatus.Success, resourceCatalogResult.Status);
             Assert.AreEqual("<CompilerMessage>Updated Resource '50fef451-b41e-4bdf-92a1-4a41e254cde2' renamed to ''</CompilerMessage>", resourceCatalogResult.Message);
@@ -1928,7 +1810,7 @@ namespace Dev2.Tests.Runtime.Hosting
             Assert.AreEqual(1, result.Count);
             Assert.IsNotNull(oldResource);
             //------------Execute Test---------------------------
-            ResourceCatalogResult resourceCatalogResult = rc.RenameResource(workspaceID, oldResource.ResourceID, "");
+            ResourceCatalogResult resourceCatalogResult = rc.RenameResource(workspaceID, oldResource.ResourceID, "", "");
             //------------Assert Results-------------------------
             Assert.AreEqual(ExecStatus.Success, resourceCatalogResult.Status);
             Assert.AreEqual("<CompilerMessage>Updated Resource '50fef451-b41e-4bdf-92a1-4a41e254cde2' renamed to ''</CompilerMessage>", resourceCatalogResult.Message);
@@ -1950,7 +1832,7 @@ namespace Dev2.Tests.Runtime.Hosting
             //------------Setup for test--------------------------
             var workspaceID = Guid.NewGuid();
 
-            var path = EnvironmentVariables.GetWorkspacePath(workspaceID);
+            var path = EnvironmentVariables.GetWorkspacePath(workspaceID)+"\\Bugs";
             Directory.CreateDirectory(path);
             const string resourceName = "Bug6619Dep";
             SaveResources(path, null, false, false, new[] { "Bug6619", resourceName }, new[] { Guid.NewGuid(), Guid.NewGuid() });
@@ -1967,11 +1849,7 @@ namespace Dev2.Tests.Runtime.Hosting
             //------------Assert Results-------------------------
             Assert.AreEqual(ExecStatus.Success, resourceCatalogResult.Status);
             Assert.AreEqual("<CompilerMessage>Updated Category from 'Bugs' to 'TestCategory'</CompilerMessage>", resourceCatalogResult.Message);
-            string resourceContents = rc.GetResourceContents(workspaceID, oldResource.ResourceID).ToString();
-            XElement xElement = XElement.Load(new StringReader(resourceContents), LoadOptions.None);
-            XElement element = xElement.Element("Category");
-            Assert.IsNotNull(element);
-            Assert.AreEqual("TestCategory\\Bug6619Dep", element.Value);
+            Assert.AreEqual("TestCategory\\Bug6619Dep", oldResource.GetResourcePath(workspaceID));
         }
 
         [TestMethod]
@@ -1981,7 +1859,7 @@ namespace Dev2.Tests.Runtime.Hosting
             //---------------Set up test pack-------------------
             var workspaceID = Guid.NewGuid();
 
-            var path = EnvironmentVariables.GetWorkspacePath(workspaceID);
+            var path = EnvironmentVariables.GetWorkspacePath(workspaceID) + "\\Bugs";
             Directory.CreateDirectory(path);
             const string resourceName = "Bug6619Dep";
             SaveResources(path, null, false, false, new[] { "Bug6619", resourceName }, new[] { Guid.NewGuid(), Guid.NewGuid() });
@@ -2002,11 +1880,7 @@ namespace Dev2.Tests.Runtime.Hosting
             Assert.AreEqual(resourceCatalogResult.Status, ExecStatus.Success);
             foreach (var resource in result)
             {
-                string resourceContents = rc.GetResourceContents(workspaceID, resource.ResourceID).ToString();
-                XElement xElement = XElement.Load(new StringReader(resourceContents), LoadOptions.None);
-                XElement element = xElement.Element("Category");
-                Assert.IsNotNull(element);
-                Assert.AreEqual("TestCategory\\" + resource.ResourceName, element.Value);
+                Assert.AreEqual("TestCategory\\" + resource.ResourceName, resource.GetResourcePath(workspaceID));
             }
         }
 
@@ -2018,10 +1892,11 @@ namespace Dev2.Tests.Runtime.Hosting
             //------------Setup for test--------------------------
             var workspaceID = Guid.NewGuid();
 
-            var path = EnvironmentVariables.GetWorkspacePath(workspaceID);
-            Directory.CreateDirectory(path);
+            var path = EnvironmentVariables.GetWorkspacePath(workspaceID) + "\\Bugs";
+            var testPath = EnvironmentVariables.GetWorkspacePath(workspaceID) + "\\Testing";
             const string resourceName = "Bug6619Dup";
-            SaveResources(path, null, false, false, new[] { "Bug6619", resourceName }, new[] { Guid.NewGuid(), Guid.NewGuid() });
+            SaveResources(path, null, false, false, new[] { "Bug6619" }, new[] { Guid.NewGuid(), Guid.NewGuid() });
+            SaveResources(testPath, null, false, false, new[] { resourceName }, new[] { Guid.NewGuid(), Guid.NewGuid() });
 
             var rc = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
             rc.LoadWorkspace(workspaceID);
@@ -2071,7 +1946,7 @@ namespace Dev2.Tests.Runtime.Hosting
             //------------Setup for test--------------------------
             var workspaceID = Guid.NewGuid();
 
-            var path = EnvironmentVariables.GetWorkspacePath(workspaceID);
+            var path = EnvironmentVariables.GetWorkspacePath(workspaceID)+"\\Bugs";
             Directory.CreateDirectory(path);
             const string resourceName = "Bug6619Dep";
             SaveResources(path, null, false, false, new[] { "Bug6619", resourceName }, new[] { Guid.NewGuid(), Guid.NewGuid() });
@@ -2107,7 +1982,7 @@ namespace Dev2.Tests.Runtime.Hosting
             //------------Setup for test--------------------------
             var workspaceID = Guid.NewGuid();
 
-            var path = EnvironmentVariables.GetWorkspacePath(workspaceID);
+            var path = EnvironmentVariables.GetWorkspacePath(workspaceID)+"\\Bugs";
             Directory.CreateDirectory(path);
             const string resourceName = "Bug6619Dep";
             SaveResources(path, null, false, false, new[] { "Bug6619", resourceName }, new[] { Guid.NewGuid(), Guid.NewGuid() });
@@ -2123,110 +1998,8 @@ namespace Dev2.Tests.Runtime.Hosting
             ResourceCatalogResult resourceCatalogResult = rc.RenameCategory(workspaceID, "Bugs", "TestCategory");
             //------------Assert Results-------------------------
             Assert.AreEqual(ExecStatus.Success, resourceCatalogResult.Status);
-            string resourceContents = rc.GetResourceContents(workspaceID, oldResource.ResourceID).ToString();
-            XElement xElement = XElement.Load(new StringReader(resourceContents), LoadOptions.None);
-            XElement element = xElement.Element("Category");
-            Assert.IsNotNull(element);
-            Assert.AreEqual("TestCategory\\Bug6619Dep", element.Value);
-        }
-
-        [TestMethod]
-        [Description("Requires Valid arguments")]
-        [Owner("Huggs")]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void ResourceCatalog_UnitTest_UpdateResourceCategoryWithNullOldCategory_ExpectArgumentNullException()
-        {
-            //------------Setup for test--------------------------
-            var workspaceID = GlobalConstants.ServerWorkspaceID;
-
-            var path = EnvironmentVariables.ResourcePath;
-            Directory.CreateDirectory(path);
-            const string resourceName = "Bug6619Dep";
-            SaveResources(path, null, false, false, new[] { "Bug6619", resourceName }, new[] { Guid.NewGuid(), Guid.NewGuid() });
-
-            var rc = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
-            rc.LoadWorkspace(workspaceID);
-            var result = rc.GetResources(workspaceID);
-            IResource oldResource = result.FirstOrDefault(resource => resource.ResourceName == resourceName);
-            //------------Assert Precondition-----------------
-            Assert.AreEqual(2, result.Count);
-            Assert.IsNotNull(oldResource);
-            //------------Execute Test---------------------------
-            ResourceCatalogResult resourceCatalogResult = rc.RenameCategory(workspaceID, null, "TestCategory");
-            //------------Assert Results-------------------------
-            Assert.AreEqual(ExecStatus.Success, resourceCatalogResult.Status);
-            Assert.AreEqual("<CompilerMessage>Updated Category from 'Bugs' to 'TestCategory'</CompilerMessage>", resourceCatalogResult.Message);
-            string resourceContents = rc.GetResourceContents(workspaceID, oldResource.ResourceID).ToString();
-            XElement xElement = XElement.Load(new StringReader(resourceContents), LoadOptions.None);
-            XElement element = xElement.Element("Category");
-            Assert.IsNotNull(element);
-            Assert.AreEqual("TestCategory", element.Value);
-        }
-
-        [TestMethod]
-        [Description("Needs valid arguments")]
-        [Owner("Huggs")]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void ResourceCatalog_UnitTest_UpdateResourceCategoryWithNullNewCategory_ExpectArgumentNullException()
-        {
-            //------------Setup for test--------------------------
-            var workspaceID = GlobalConstants.ServerWorkspaceID;
-
-            var path = EnvironmentVariables.ResourcePath;
-            Directory.CreateDirectory(path);
-            const string resourceName = "Bug6619Dep";
-            SaveResources(path, null, false, false, new[] { "Bug6619", resourceName }, new[] { Guid.NewGuid(), Guid.NewGuid() });
-
-            var rc = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
-            rc.LoadWorkspace(workspaceID);
-            var result = rc.GetResources(workspaceID);
-            IResource oldResource = result.FirstOrDefault(resource => resource.ResourceName == resourceName);
-            //------------Assert Precondition-----------------
-            Assert.AreEqual(2, result.Count);
-            Assert.IsNotNull(oldResource);
-            //------------Execute Test---------------------------
-            ResourceCatalogResult resourceCatalogResult = rc.RenameCategory(workspaceID, oldResource.ResourcePath, null);
-            //------------Assert Results-------------------------
-            Assert.AreEqual(ExecStatus.Success, resourceCatalogResult.Status);
-            Assert.AreEqual("<CompilerMessage>Updated Category from 'Bugs' to 'TestCategory'</CompilerMessage>", resourceCatalogResult.Message);
-            string resourceContents = rc.GetResourceContents(workspaceID, oldResource.ResourceID).ToString();
-            XElement xElement = XElement.Load(new StringReader(resourceContents), LoadOptions.None);
-            XElement element = xElement.Element("Category");
-            Assert.IsNotNull(element);
-            Assert.AreEqual("TestCategory", element.Value);
-        }
-
-        [TestMethod]
-        [Description("Needs valid arguments")]
-        [Owner("Huggs")]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void ResourceCatalog_UnitTest_UpdateResourceCategoryWithEmptyNewCategory_ExpectArgumentNullException()
-        {
-            //------------Setup for test--------------------------
-            var workspaceID = GlobalConstants.ServerWorkspaceID;
-
-            var path = EnvironmentVariables.ResourcePath;
-            Directory.CreateDirectory(path);
-            const string resourceName = "Bug6619Dep";
-            SaveResources(path, null, false, false, new[] { "Bug6619", resourceName }, new[] { Guid.NewGuid(), Guid.NewGuid() });
-
-            var rc = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
-            rc.LoadWorkspace(workspaceID);
-            var result = rc.GetResources(workspaceID);
-            IResource oldResource = result.FirstOrDefault(resource => resource.ResourceName == resourceName);
-            //------------Assert Precondition-----------------
-            Assert.AreEqual(2, result.Count);
-            Assert.IsNotNull(oldResource);
-            //------------Execute Test---------------------------
-            ResourceCatalogResult resourceCatalogResult = rc.RenameCategory(workspaceID, oldResource.ResourcePath, "");
-            //------------Assert Results-------------------------
-            Assert.AreEqual(ExecStatus.Success, resourceCatalogResult.Status);
-            Assert.AreEqual("<CompilerMessage>Updated Category from 'Bugs' to 'TestCategory'</CompilerMessage>", resourceCatalogResult.Message);
-            string resourceContents = rc.GetResourceContents(workspaceID, oldResource.ResourceID).ToString();
-            XElement xElement = XElement.Load(new StringReader(resourceContents), LoadOptions.None);
-            XElement element = xElement.Element("Category");
-            Assert.IsNotNull(element);
-            Assert.AreEqual("TestCategory", element.Value);
+            
+            Assert.AreEqual("TestCategory\\Bug6619Dep", oldResource.GetResourcePath(workspaceID));
         }
 
         [TestMethod]
@@ -2383,7 +2156,7 @@ namespace Dev2.Tests.Runtime.Hosting
             //------------Assert Results-------------------------        
             Assert.AreEqual(ExecStatus.Success, resourceCatalogResult.Status);
             var resourceToFind = result.FirstOrDefault(resource => resource.ResourceName == resourceName);
-            serverVersionRepository.Verify(a => a.DeleteVersion(It.IsAny<Guid>(), "1"), Times.Once());
+            serverVersionRepository.Verify(a => a.DeleteVersion(It.IsAny<Guid>(), "1", "Bug6619Dep"), Times.Once());
             Assert.IsNull(resourceToFind);
         }
 
@@ -2413,7 +2186,7 @@ namespace Dev2.Tests.Runtime.Hosting
             //------------Assert Results-------------------------        
             Assert.AreEqual(ExecStatus.Success, resourceCatalogResult.Status);
             var resourceToFind = result.FirstOrDefault(resource => resource.ResourceName == resourceName);
-            serverVersionRepository.Verify(a => a.DeleteVersion(It.IsAny<Guid>(), "1"), Times.Never());
+            serverVersionRepository.Verify(a => a.DeleteVersion(It.IsAny<Guid>(), "1", ""), Times.Never());
             Assert.IsNull(resourceToFind);
         }
 
@@ -2546,8 +2319,8 @@ namespace Dev2.Tests.Runtime.Hosting
                         contents = HostSecurityProvider.Instance.SignXml(new StringBuilder(contents)).ToString();
                     }
                     var res = new Resource(xml);
-                    var resourceDirectory = Path.Combine(resourcesPath, res.ResourcePath);
-                    res.FilePath = resourceDirectory + (String.IsNullOrEmpty(res.ResourcePath) ? res.ResourceName : String.Empty) + ".xml";
+                    var resourceDirectory = resourcesPath+"\\";
+                    res.FilePath = resourceDirectory + res.ResourceName + ".xml";
                     FileInfo f = new FileInfo(res.FilePath);
                     if (f.Directory != null && !f.Directory.Exists)
                     {
@@ -2622,7 +2395,7 @@ namespace Dev2.Tests.Runtime.Hosting
             var resource = result.FirstOrDefault(r => r.ResourceName == resourceName);
             var depresource = result.FirstOrDefault(r => r.ResourceName == depResourceName);
             Assert.IsNotNull(resource);
-            var beforeService = rc.GetDynamicObjects<DynamicService>(workspaceID, resource.ResourcePath).FirstOrDefault();
+            var beforeService = rc.GetDynamicObjects<DynamicService>(workspaceID, resourceName).FirstOrDefault();
             Assert.IsNotNull(beforeService);
             ServiceAction beforeAction = beforeService.Actions.FirstOrDefault();
             var xElement = rc.GetResourceContents(resource).ToXElement();
@@ -2680,7 +2453,7 @@ namespace Dev2.Tests.Runtime.Hosting
             var resource = result.FirstOrDefault(r => r.ResourceName == "Bug6619Dep");
             var depresource = result.FirstOrDefault(r => r.ResourceName == "Bug6619");
             Assert.IsNotNull(resource);
-            var beforeService = rc.GetDynamicObjects<DynamicService>(workspaceID, resource.ResourcePath).FirstOrDefault();
+            var beforeService = rc.GetDynamicObjects<DynamicService>(workspaceID, resourceName).FirstOrDefault();
             Assert.IsNotNull(beforeService);
             ServiceAction beforeAction = beforeService.Actions.FirstOrDefault();
 
@@ -2845,7 +2618,6 @@ namespace Dev2.Tests.Runtime.Hosting
                 var actual = new Resource(actualGraph.ResourceDefinition.ToXElement());
                 Assert.AreEqual(expected.ResourceID, actual.ResourceID);
                 Assert.AreEqual(expected.ResourceType, actual.ResourceType);
-                Assert.AreEqual(expected.ResourcePath, actual.ResourcePath);
             }
         }
 

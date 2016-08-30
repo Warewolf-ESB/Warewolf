@@ -10,7 +10,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Text;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Core.DynamicServices;
@@ -22,6 +21,7 @@ using Dev2.DynamicServices.Objects;
 using Dev2.Runtime.Hosting;
 using Dev2.Workspaces;
 using Warewolf.Resource.Errors;
+// ReSharper disable MemberCanBePrivate.Global
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
@@ -63,18 +63,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 
                 var itemToMove = ServerExplorerRepo.Find(Guid.Parse(itemToBeRenamed.ToString())) ?? ServerExplorerRepo.Find(a => a.ResourcePath == itemToBeRenamedPath.ToString());
                 Dev2Logger.Info(String.Format("Move Item. Path:{0} NewPath:{1}", itemToBeRenamed, newPath));
-                item = ServerExplorerRepo.MoveItem(itemToMove, newPath.ToString(), GlobalConstants.ServerWorkspaceID);
-                if(item.Status==ExecStatus.Success && itemToMove.ResourceType=="Folder")
-                {
-                    if (itemToMove.Children != null && itemToMove.Children.Count > 0)
-                    {
-
-                        if (Directory.Exists(ServerExplorerRepository.DirectoryStructureFromPath(itemToMove.ResourcePath)))
-                            Directory.Delete(ServerExplorerRepository.DirectoryStructureFromPath(itemToMove.ResourcePath), true);
-                    }
-                }
-                ResourceCatalog.Instance.Reload();
-                ServerExplorerRepo.Load(GlobalConstants.ServerWorkspaceID, true);
+                item = ServerExplorerRepo.MoveItem(itemToMove, newPath.ToString(), GlobalConstants.ServerWorkspaceID);               
             }
             catch (Exception e)
             {

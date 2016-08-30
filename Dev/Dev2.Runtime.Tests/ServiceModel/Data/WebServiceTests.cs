@@ -54,7 +54,6 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
 			</Outputs>
 		</Action>
 	</Actions>
-	<Category>System</Category>
 </Service>";
             //------------Execute Test---------------------------
             var testElm = XElement.Parse(XmlDataString);
@@ -64,7 +63,6 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             Assert.AreEqual("WebService", webService.ResourceType);
             Assert.AreEqual("51a58300-7e9d-4927-a57b-e5d700b11b55", webService.ResourceID.ToString());
             Assert.AreEqual("$.apath", webService.JsonPath);
-            Assert.AreEqual("System", webService.ResourcePath);
             Assert.IsNotNull(webService.Source);
         }
         #endregion

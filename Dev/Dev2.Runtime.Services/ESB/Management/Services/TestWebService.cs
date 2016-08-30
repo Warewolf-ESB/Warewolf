@@ -48,7 +48,6 @@ namespace Dev2.Runtime.ESB.Management.Services
                     Method = new ServiceMethod(src.Name, src.Name, parameters, new OutputDescription(), new List<MethodOutput>(), "test"),
                     RequestUrl = string.Concat(src.RequestUrl, src.QueryString),
                     ResourceName = src.Name,
-                    ResourcePath = src.Path,
                     ResourceID = src.Id,
                     RequestBody = src.PostData,
                     Headers = src.Headers,

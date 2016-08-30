@@ -36,12 +36,13 @@ namespace Warewolf.Studio.ServerProxyLayer
         }
 
 
-        public StringBuilder GetVersion(IVersionInfo versionInfo)
+        public StringBuilder GetVersion(IVersionInfo versionInfo, Guid resourceId)
         {
             var workSpaceId = Guid.NewGuid();
             var controller = CommunicationControllerFactory.CreateController("GetVersion");
             var serializer = new Dev2JsonSerializer();
             controller.AddPayloadArgument("versionInfo", serializer.SerializeToBuilder(versionInfo).ToString());
+            controller.AddPayloadArgument("resourceId", resourceId.ToString());
             var executeMessage = controller.ExecuteCommand<ExecuteMessage>(_connection, workSpaceId);
 
             if (executeMessage == null || executeMessage.HasError)
@@ -81,14 +82,15 @@ namespace Warewolf.Studio.ServerProxyLayer
         /// </summary>
         /// <param name="resourceId">the resource</param>
         /// <param name="versionNumber">the version to delete</param>
+        /// <param name="resourcePath"></param>
         /// <returns></returns>
-        public IList<IExplorerItem> DeleteVersion(Guid resourceId, string versionNumber)
+        public IList<IExplorerItem> DeleteVersion(Guid resourceId, string versionNumber, string resourcePath)
         {
             var workSpaceId = Guid.NewGuid();
             var controller = CommunicationControllerFactory.CreateController("DeleteVersion");
             controller.AddPayloadArgument("resourceId", resourceId.ToString());
             controller.AddPayloadArgument("versionNumber", versionNumber);
-
+            controller.AddPayloadArgument("resourcePath", resourcePath);
             var result = controller.ExecuteCommand<ExecuteMessage>(_connection, workSpaceId);
 
             if (result == null || result.HasError)

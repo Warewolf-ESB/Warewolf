@@ -42,7 +42,12 @@ namespace Dev2.Runtime.ESB.Management.Services
                 StringBuilder resourceDefinition;
               
                 string workspaceIdString = string.Empty;
-
+                StringBuilder savePathValue;
+                values.TryGetValue("savePath", out savePathValue);
+                if (savePathValue == null)
+                {
+                    throw new InvalidDataContractException("SavePath is missing");
+                }
                 values.TryGetValue("ResourceXml", out resourceDefinition);
                 StringBuilder tmp;
                 values.TryGetValue("WorkspaceID", out tmp);
@@ -58,7 +63,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 
                 if (resourceDefinition == null || resourceDefinition.Length == 0)
                 {
-                    throw new InvalidDataContractException("Roles or ResourceXml is missing");
+                    throw new InvalidDataContractException("ResourceXml is missing");
                 }
                 Dev2JsonSerializer serializer = new Dev2JsonSerializer();
                 resourceDefinition = new StringBuilder( serializer.Deserialize<CompressedExecuteMessage>(resourceDefinition).GetDecompressedMessage());
@@ -103,7 +108,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 
                 if (compiledResources != null)
                 {
-                    var saveResult = ResourceCatalog.Instance.SaveResource(workspaceId, resourceDefinition, "Save");
+                    var saveResult = ResourceCatalog.Instance.SaveResource(workspaceId, resourceDefinition, "Save","", savePathValue.ToString());
                     res.SetMessage(saveResult.Message + " " + DateTime.Now);
                 }
 

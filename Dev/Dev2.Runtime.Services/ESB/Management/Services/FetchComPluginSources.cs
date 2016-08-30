@@ -33,11 +33,10 @@ namespace Dev2.Runtime.ESB.Management.Services
                 var res = a as ComPluginSource;
                 if (res != null)
                 {
-                    return new ComPluginSourceDefinition()
+                    return new ComPluginSourceDefinition
                     {
                         Id = res.ResourceID,
                         ResourceName = res.ResourceName,
-                        ResourcePath = res.ResourcePath,
                         ClsId = res.ClsId,
                         Is32Bit = res.Is32Bit,
                         SelectedDll = new DllListing
@@ -51,7 +50,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 }
                 return null;
             }).ToList();
-            return serializer.SerializeToBuilder(new ExecuteMessage() { HasError = false, Message = serializer.SerializeToBuilder(list) });
+            return serializer.SerializeToBuilder(new ExecuteMessage { HasError = false, Message = serializer.SerializeToBuilder(list) });
             // ReSharper restore MaximumChainedReferences
         }
 

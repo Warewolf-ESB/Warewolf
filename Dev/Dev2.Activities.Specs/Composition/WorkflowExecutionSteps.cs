@@ -206,7 +206,7 @@ namespace Dev2.Activities.Specs.Composition
                         connection = new ServerProxy(remoteServer.WebAddress, remoteServer.UserName, remoteServer.Password);
                     }
 
-                    var newEnvironment = new EnvironmentModel(remoteServer.ResourceID, connection) { Name = remoteServer.ResourceName, Category = remoteServer.ResourcePath };
+                    var newEnvironment = new EnvironmentModel(remoteServer.ResourceID, connection) { Name = remoteServer.ResourceName };
                     EnsureEnvironmentConnected(newEnvironment, EnvironmentConnectionTimeout);
                     newEnvironment.ForceLoadResources();
 
