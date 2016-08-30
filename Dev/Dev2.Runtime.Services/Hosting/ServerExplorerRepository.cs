@@ -134,7 +134,6 @@ namespace Dev2.Runtime.Hosting
                 return new ExplorerRepositoryResult(ExecStatus.Fail, ErrorResource.ItemAlreadyExistInPath);
             }
             ResourceCatalogResult result = ResourceCatalogue.RenameResource(workSpaceId, itemToRename.ResourceId, itemToRename.DisplayName, itemToRename.ResourcePath);
-            // Reload(workSpaceId);
             return new ExplorerRepositoryResult(result.Status, result.Message);
         }
 
@@ -146,29 +145,18 @@ namespace Dev2.Runtime.Hosting
                 {
                     return new ExplorerRepositoryResult(ExecStatus.NoMatch, string.Format(ErrorResource.RequestedFolderDoesNotExistOnServer, path));
                 }
-                var resourceCatalogResult = ResourceCatalogue.RenameCategory(workSpaceId, path, newPath);
-                if (resourceCatalogResult.Status == ExecStatus.Success)
-                {
-                    MoveVersionFolder(path, newPath);
-                    Directory.Delete(DirectoryStructureFromPath(path), true);
-                    // Reload(workSpaceId);
-                    return new ExplorerRepositoryResult(ExecStatus.Success, "");
-                }
-                if (resourceCatalogResult.Status == ExecStatus.NoMatch)
+                if (!Directory.Exists(newPath))
                 {
                     Directory.Move(DirectoryStructureFromPath(path), DirectoryStructureFromPath(newPath));
                     MoveVersionFolder(path, newPath);
-                    //UpdateFolderName(path, newPath);
-                    //Reload(workSpaceId);
-                    return new ExplorerRepositoryResult(ExecStatus.Success, "");
+                    Load(workSpaceId, true);
                 }
-                //    Reload(workSpaceId);
-                return new ExplorerRepositoryResult(ExecStatus.Fail, resourceCatalogResult.Message);
             }
             catch (Exception err)
             {
                 return new ExplorerRepositoryResult(ExecStatus.AccessViolation, err.Message);
             }
+            return new ExplorerRepositoryResult(ExecStatus.Success, "");
         }
 
 
