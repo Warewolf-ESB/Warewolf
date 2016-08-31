@@ -214,11 +214,10 @@ namespace Dev2.Tests.Runtime.Hosting
             var resource = new Mock<IResource>();
             cat.Setup(a => a.GetResource(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(resource.Object);
             resource.Setup(a => a.VersionInfo).Returns(new VersionInfo(DateTime.Now, "mook", "usr", "1", resourceId, versionId));
-            resource.Setup(a => a.ResourcePath).Returns("moot\\boot");
+            resource.Setup(a => a.GetResourcePath(It.IsAny<Guid>())).Returns("");
             dir.Setup(a => a.GetFiles(It.IsAny<string>())).Returns(new[] { CreateFileName(versionId, 1), CreateFileName(versionId, 2) });
             //------------Setup for test--------------------------
             var serverVersionRepostory = CreateServerVersionRepository(strat.Object, cat.Object, dir.Object, rootPath, file.Object);
-
             //------------Execute Test---------------------------
             var items = serverVersionRepostory.GetVersions(resourceId);
             //------------Assert Results-------------------------
@@ -245,7 +244,7 @@ namespace Dev2.Tests.Runtime.Hosting
             resource.Setup(a => a.ToStringBuilder()).Returns(new StringBuilder("bob"));
             cat.Setup(a => a.GetResource(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(resource.Object);
             resource.Setup(a => a.VersionInfo).Returns(new VersionInfo(DateTime.Now, "mook", "usr", "12345", resourceId, versionId));
-            resource.Setup(a => a.ResourcePath).Returns("moot\\boot");
+            resource.Setup(a => a.GetResourcePath(It.IsAny<Guid>())).Returns("");
             dir.Setup(a => a.GetFiles(It.IsAny<string>())).Returns(new[] { CreateFileName(versionId, 1), CreateFileName(versionId, 2) });
             strat.Setup(a => a.GetNextVersion(resource.Object, resource.Object, "usr", "mook")).Returns(new VersionInfo(DateTime.Now, "mook", "usr", "123456", resourceId, versionId));
             strat.Setup(a => a.GetCurrentVersion(resource.Object, resource.Object, "usr", "mook")).Returns(new VersionInfo(DateTime.Now, "mook", "usr", "654321", resourceId, versionId));
@@ -253,7 +252,7 @@ namespace Dev2.Tests.Runtime.Hosting
             file.Setup(a => a.Exists(It.IsAny<string>())).Returns(false).Callback(() => file.Setup(a => a.Exists(It.IsAny<string>())).Returns(true));
             var serverVersionRepostory = CreateServerVersionRepository(strat.Object, cat.Object, dir.Object, rootPath, file.Object);
             //------------Execute Test---------------------------
-            serverVersionRepostory.StoreVersion(resource.Object, "userName", "password", Guid.Empty);
+            serverVersionRepostory.StoreVersion(resource.Object, "userName", "password", Guid.Empty, "moot\\boot");
 
             //------------Assert Results-------------------------
             file.Verify(a => a.Copy(It.IsAny<string>(), It.IsAny<string>()));
@@ -277,7 +276,7 @@ namespace Dev2.Tests.Runtime.Hosting
             resource.Setup(a => a.ToStringBuilder()).Returns(new StringBuilder("bob"));
             cat.Setup(a => a.GetResource(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(resource.Object);
             resource.Setup(a => a.VersionInfo).Returns(new VersionInfo(DateTime.Now, "mook", "usr", "12345", resourceId, versionId));
-            resource.Setup(a => a.ResourcePath).Returns("moot\\boot");
+            resource.Setup(a => a.GetResourcePath(It.IsAny<Guid>())).Returns("");
             dir.Setup(a => a.GetFiles(It.IsAny<string>())).Returns(new[] { CreateFileName(versionId, 1), CreateFileName(versionId, 2) });
             strat.Setup(a => a.GetNextVersion(resource.Object, resource.Object, "usr", "mook")).Returns(new VersionInfo(DateTime.Now, "mook", "usr", "123456", resourceId, versionId));
             strat.Setup(a => a.GetCurrentVersion(resource.Object, resource.Object, "usr", "mook")).Returns(new VersionInfo(DateTime.Now, "mook", "usr", "654321", resourceId, versionId));
@@ -286,7 +285,7 @@ namespace Dev2.Tests.Runtime.Hosting
             file.Setup(a => a.Exists(It.IsAny<string>())).Returns(true);
             file.Setup(a => a.Copy(It.IsAny<string>(), It.IsAny<string>())).Verifiable();
             //------------Execute Test---------------------------
-            serverVersionRepostory.StoreVersion(resource.Object, "userName", "password", Guid.Empty);
+            serverVersionRepostory.StoreVersion(resource.Object, "userName", "password", Guid.Empty, "moot\\boot");
 
             //------------Assert Results-------------------------
             file.Verify(a => a.Copy(It.IsAny<string>(), It.IsAny<string>()), Times.Never());
@@ -312,7 +311,7 @@ namespace Dev2.Tests.Runtime.Hosting
             resource.Setup(a => a.ToStringBuilder()).Returns(new StringBuilder("bob"));
             cat.Setup(a => a.GetResource(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(resource.Object);
             resource.Setup(a => a.VersionInfo).Returns(new VersionInfo(DateTime.Now, "mook", "usr", "12345", resourceId, versionId));
-            resource.Setup(a => a.ResourcePath).Returns("moot\\boot");
+            resource.Setup(a => a.GetResourcePath(It.IsAny<Guid>())).Returns("");
             dir.Setup(a => a.GetFiles(It.IsAny<string>())).Returns(new string[0]);
             strat.Setup(a => a.GetNextVersion(resource.Object, resource.Object, "usr", "mook")).Returns(new VersionInfo(DateTime.Now, "mook", "usr", "123456", resourceId, versionId));
             strat.Setup(a => a.GetCurrentVersion(resource.Object, resource.Object, "usr", "mook")).Returns(new VersionInfo(DateTime.Now, "mook", "usr", "654321", resourceId, versionId));
@@ -350,11 +349,11 @@ namespace Dev2.Tests.Runtime.Hosting
             cat.Setup(a => a.GetResource(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(resource.Object).Verifiable();
 
             resource.Setup(a => a.VersionInfo).Returns(new VersionInfo(DateTime.Now, "mook", "usr", "12345", resourceId, versionId));
-            resource.Setup(a => a.ResourcePath).Returns("moot\\boot");
+            resource.Setup(a => a.GetResourcePath(It.IsAny<Guid>())).Returns("");
             dir.Setup(a => a.GetFiles(It.IsAny<string>())).Returns(new[] { versionId + "_2_" + DateTime.Now.Ticks + "_jjj" });
             strat.Setup(a => a.GetNextVersion(resource.Object, resource.Object, "usr", "mook")).Returns(new VersionInfo(DateTime.Now, "mook", "usr", "123456", resourceId, versionId));
             strat.Setup(a => a.GetCurrentVersion(resource.Object, resource.Object, "usr", "mook")).Returns(new VersionInfo(DateTime.Now, "mook", "usr", "654321", resourceId, versionId));
-            cat.Setup(a => a.SaveResource(Guid.Empty, It.IsAny<StringBuilder>(), It.IsAny<string>(), It.IsAny<string>()));
+            cat.Setup(a => a.SaveResource(Guid.Empty, It.IsAny<StringBuilder>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()));
 
             //------------Setup for test--------------------------
             var serverVersionRepostory = CreateServerVersionRepository(strat.Object, cat.Object, dir.Object, rootPath, file.Object);
@@ -363,7 +362,7 @@ namespace Dev2.Tests.Runtime.Hosting
 
             //------------Assert Results-------------------------
             Assert.AreEqual(res.VersionHistory.Count, 1);
-            cat.Verify(a => a.SaveResource(Guid.Empty, It.IsAny<StringBuilder>(), It.IsAny<string>(), It.IsAny<string>()));
+            cat.Verify(a => a.SaveResource(Guid.Empty, It.IsAny<StringBuilder>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()));
             cat.Verify(a => a.DeleteResource(Guid.Empty, "moon", "WorkflowService",  false));
         }
 
@@ -388,11 +387,11 @@ namespace Dev2.Tests.Runtime.Hosting
             cat.Setup(a => a.GetResource(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(resource.Object).Verifiable();
 
             resource.Setup(a => a.VersionInfo).Returns(new VersionInfo(DateTime.Now, "mook", "usr", "12345", resourceId, versionId));
-            resource.Setup(a => a.ResourcePath).Returns("UnitTestResource");
+            resource.Setup(a => a.GetResourcePath(It.IsAny<Guid>())).Returns("");
             dir.Setup(a => a.GetFiles(It.IsAny<string>())).Returns(new[] { versionId + "_2_" + DateTime.Now.Ticks + "_jjj" });
             strat.Setup(a => a.GetNextVersion(resource.Object, resource.Object, "usr", "mook")).Returns(new VersionInfo(DateTime.Now, "mook", "usr", "123456", resourceId, versionId));
             strat.Setup(a => a.GetCurrentVersion(resource.Object, resource.Object, "usr", "mook")).Returns(new VersionInfo(DateTime.Now, "mook", "usr", "654321", resourceId, versionId));
-            cat.Setup(a => a.SaveResource(Guid.Empty, It.IsAny<StringBuilder>(), It.IsAny<string>(), It.IsAny<string>()));
+            cat.Setup(a => a.SaveResource(Guid.Empty, It.IsAny<StringBuilder>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()));
 
             //------------Setup for test--------------------------
             var serverVersionRepostory = CreateServerVersionRepository(strat.Object, cat.Object, dir.Object, rootPath, file.Object);
@@ -401,7 +400,7 @@ namespace Dev2.Tests.Runtime.Hosting
 
             //------------Assert Results-------------------------
             Assert.AreEqual(res.VersionHistory.Count, 1);
-            cat.Verify(a => a.SaveResource(Guid.Empty, It.IsAny<StringBuilder>(), It.IsAny<string>(), It.IsAny<string>()));
+            cat.Verify(a => a.SaveResource(Guid.Empty, It.IsAny<StringBuilder>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()));
             cat.Verify(a => a.DeleteResource(Guid.Empty, "moon", "Unknown", false), Times.Never());
         }
         [TestMethod]
@@ -423,15 +422,15 @@ namespace Dev2.Tests.Runtime.Hosting
             resource.Setup(a => a.ToStringBuilder()).Returns(new StringBuilder("bob"));
             cat.Setup(a => a.GetResource(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(resource.Object).Verifiable();
             resource.Setup(a => a.VersionInfo).Returns(new VersionInfo(dt, "mook", "usr", "12345", resourceId, versionId));
-            resource.Setup(a => a.ResourcePath).Returns("moot\\boot");
+            resource.Setup(a => a.GetResourcePath(It.IsAny<Guid>())).Returns("");
             dir.Setup(a => a.GetFiles(It.IsAny<string>())).Returns(new[] { versionId + "_2_" + dt.Ticks + "_jjj" });
 
 
             //------------Setup for test--------------------------
             var serverVersionRepostory = CreateServerVersionRepository(strat.Object, cat.Object, dir.Object, rootPath, file.Object);
             //------------Execute Test---------------------------
-            var res = serverVersionRepostory.DeleteVersion(resourceId, "2");
-            var filedel = versionId.ToString() + "_2_" + dt.Ticks + "_jjj";
+            var res = serverVersionRepostory.DeleteVersion(resourceId, "2", "moot\\boot");
+            var filedel = versionId + "_2_" + dt.Ticks + "_jjj";
 
             //------------Assert Results-------------------------
             Assert.AreEqual(res.Count, 1);
@@ -459,7 +458,6 @@ namespace Dev2.Tests.Runtime.Hosting
             resource.Setup(a => a.ToStringBuilder()).Returns(new StringBuilder("bob"));
             cat.Setup(a => a.GetResource(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(resource.Object).Verifiable();
             resource.Setup(a => a.VersionInfo).Returns(new VersionInfo(dt, "mook", "usr", "12345", resourceId, versionId));
-            resource.Setup(a => a.ResourcePath).Returns("moot\\boot");
             dir.Setup(a => a.GetFiles(It.IsAny<string>())).Returns(new[] { versionId + "_2_" + dt.Ticks + "_jjj" });
             file.Setup(a => a.Move(It.IsAny<string>(), It.IsAny<string>())).Callback((string a, string b)=>
             {
@@ -470,7 +468,7 @@ namespace Dev2.Tests.Runtime.Hosting
             //------------Setup for test--------------------------
             var serverVersionRepostory = CreateServerVersionRepository(strat.Object, cat.Object, dir.Object, rootPath, file.Object);
             //------------Execute Test---------------------------
-            serverVersionRepostory.MoveVersions(resourceId, "222aaa");
+            serverVersionRepostory.MoveVersions(resourceId, "222aaa", "moot\\boot");
 
             file.Verify(a => a.Move(It.IsAny<string>(),It.IsAny<string>()));
             Assert.IsTrue(moov);
@@ -495,8 +493,6 @@ namespace Dev2.Tests.Runtime.Hosting
             resource.Setup(a => a.ResourceName).Returns("moon");
             resource.Setup(a => a.ToStringBuilder()).Returns(new StringBuilder("bob"));
             cat.Setup(a => a.GetResource(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(resource.Object).Verifiable();
-          
-            resource.Setup(a => a.ResourcePath).Returns("moot\\boot");
             dir.Setup(a => a.GetFiles(It.IsAny<string>())).Returns(new[] { versionId + "_2_" + dt.Ticks + "_jjj" });
             file.Setup(a => a.Move(It.IsAny<string>(), It.IsAny<string>())).Callback((string a, string b) =>
             {
@@ -507,7 +503,7 @@ namespace Dev2.Tests.Runtime.Hosting
             //------------Setup for test--------------------------
             var serverVersionRepostory = CreateServerVersionRepository(strat.Object, cat.Object, dir.Object, rootPath, file.Object);
             //------------Execute Test---------------------------
-            serverVersionRepostory.MoveVersions(resourceId, "222aaa");
+            serverVersionRepostory.MoveVersions(resourceId, "222aaa", "moot\\boot");
 
 
             Assert.IsFalse(moov);
@@ -533,7 +529,6 @@ namespace Dev2.Tests.Runtime.Hosting
             resource.Setup(a => a.ToStringBuilder()).Returns(new StringBuilder("bob"));
             cat.Setup(a => a.GetResource(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(resource.Object).Verifiable();
             resource.Setup(a => a.VersionInfo).Returns(new VersionInfo(dt, "mook", "usr", "12345", resourceId, versionId));
-            resource.Setup(a => a.ResourcePath).Returns("moot\\boot");
             dir.Setup(a => a.GetFiles(It.IsAny<string>())).Returns(new[] { versionId + "_2_" + dt.Ticks + "_jjj" });
             file.Setup(a => a.Move(It.IsAny<string>(), It.IsAny<string>())).Callback((string a, string b) =>
             {
@@ -544,7 +539,7 @@ namespace Dev2.Tests.Runtime.Hosting
             //------------Setup for test--------------------------
             var serverVersionRepostory = CreateServerVersionRepository(strat.Object, cat.Object, dir.Object, rootPath, file.Object);
             //------------Execute Test---------------------------
-            serverVersionRepostory.MoveVersions(resourceId, "222aaa");
+            serverVersionRepostory.MoveVersions(resourceId, "222aaa", "moot\\boot");
 
             file.Verify(a => a.Move(It.IsAny<string>(), It.IsAny<string>()));
             Assert.IsTrue(moov);
@@ -569,14 +564,14 @@ namespace Dev2.Tests.Runtime.Hosting
             resource.Setup(a => a.ToStringBuilder()).Returns(new StringBuilder("bob"));
             cat.Setup(a => a.GetResource(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(resource.Object).Verifiable();
             resource.Setup(a => a.VersionInfo).Returns(new VersionInfo(dt, "mook", "usr", "12345", resourceId, versionId));
-            resource.Setup(a => a.ResourcePath).Returns("moot\\boot");
+            resource.Setup(a => a.GetResourcePath(It.IsAny<Guid>())).Returns("");
             dir.Setup(a => a.GetFiles(It.IsAny<string>())).Returns(new string[0]);
 
 
             //------------Setup for test--------------------------
             var serverVersionRepostory = CreateServerVersionRepository(strat.Object, cat.Object, dir.Object, rootPath, file.Object);
             //------------Execute Test---------------------------
-            var res = serverVersionRepostory.DeleteVersion(resourceId, "2");
+            var res = serverVersionRepostory.DeleteVersion(resourceId, "2", "moot\\boot");
             var filedel = versionId.ToString() + "_2_" + dt.Ticks + "_jjj";
 
             //------------Assert Results-------------------------

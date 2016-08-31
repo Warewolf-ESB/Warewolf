@@ -162,7 +162,6 @@ namespace Dev2.Tests.Runtime.ServiceModel
                 DatabaseName = "someDatabaseNameIMadeUpToTest",
                 ResourceID = Guid.NewGuid(),
                 ResourceName = "TestResourceIMadeUp",
-                ResourcePath = @"host\Server",
                 ResourceType = "DbSource"
             };
 

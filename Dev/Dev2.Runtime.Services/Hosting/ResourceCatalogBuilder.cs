@@ -184,12 +184,6 @@ namespace Dev2.Runtime.Hosting
                             resource = new Resource(xml);
                         }
                         resource.FilePath = currentItem.FilePath;
-                        //2013.08.26: Prevent duplicate unassigned folder in save dialog and studio explorer tree by interpreting 'unassigned' as blank
-                        if (resource.ResourcePath.ToUpper() == "UNASSIGNED")
-                        {
-                            resource.ResourcePath = string.Empty;
-                            // DON'T FORCE A SAVE HERE - EVER!!!!
-                        }
                         xml = _resourceUpgrader.UpgradeResource(xml, Assembly.GetExecutingAssembly().GetName().Version, a =>
                         {
 

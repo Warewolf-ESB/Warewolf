@@ -42,7 +42,6 @@ namespace Dev2.Runtime.ESB.Management.Services
                 {
                     ResourceID = rabbitMQServiceSourceDefinition.ResourceID,
                     ResourceName = rabbitMQServiceSourceDefinition.ResourceName,
-                    ResourcePath = rabbitMQServiceSourceDefinition.ResourcePath,
                     HostName = rabbitMQServiceSourceDefinition.HostName,
                     Port = rabbitMQServiceSourceDefinition.Port,
                     UserName = rabbitMQServiceSourceDefinition.UserName,
@@ -50,7 +49,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                     VirtualHost = rabbitMQServiceSourceDefinition.VirtualHost
                 };
 
-                ResourceCatalog.Instance.SaveResource(GlobalConstants.ServerWorkspaceID, rabbitMQSource);
+                ResourceCatalog.Instance.SaveResource(GlobalConstants.ServerWorkspaceID, rabbitMQSource, "", "", rabbitMQServiceSourceDefinition.ResourcePath);
             }
             catch (Exception err)
             {

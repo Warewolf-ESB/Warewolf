@@ -34,7 +34,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 values.TryGetValue("ExchangeSource", out resourceDefinition);
 
                 var src = serializer.Deserialize<ExchangeSourceDefinition>(resourceDefinition);
-                var con = new ExchangeSource()
+                var con = new ExchangeSource
                 {
                     AutoDiscoverUrl = src.AutoDiscoverUrl,
                     UserName = src.UserName,
@@ -42,12 +42,11 @@ namespace Dev2.Runtime.ESB.Management.Services
                     Timeout = src.Timeout,
                     ResourceName = src.Name,
                     Name = src.Name,
-                    ResourcePath = src.Path,
                     ResourceID = src.Id,
                     Type = enSourceType.ExchangeSource,
                     ResourceType = "ExchangeSource"
                 };
-                ResourceCatalog.Instance.SaveResource(GlobalConstants.ServerWorkspaceID, con);
+                ResourceCatalog.Instance.SaveResource(GlobalConstants.ServerWorkspaceID, con, "", "", src.Path);
                 ServerExplorerRepo.UpdateItem(con);
 
                 msg.HasError = false;

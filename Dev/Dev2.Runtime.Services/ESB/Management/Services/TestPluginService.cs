@@ -57,11 +57,9 @@ namespace Dev2.Runtime.ESB.Management.Services
                 var pluginsrc = ResourceCatalog.Instance.GetResource<PluginSource>(GlobalConstants.ServerWorkspaceID, src.Source.Id);
                 var res = new PluginService
                 {
-                    Method = new ServiceMethod(src.Action.Method, src.Name, parameters, new OutputDescription(), new List<MethodOutput>(), "test")
-                    ,
+                    Method = new ServiceMethod(src.Action.Method, src.Name, parameters, new OutputDescription(), new List<MethodOutput>(), "test"),
                     Namespace = src.Action.FullName,
                     ResourceName = src.Name,
-                    ResourcePath = src.Path,
                     ResourceID = src.Id,
                     Source = pluginsrc
                 };

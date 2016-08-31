@@ -246,15 +246,15 @@ namespace Dev2.Studio.Core.AppResources.Repositories
         {
             AddResourceIfNotExist(instanceObj);
 
-            var executeMessage = SaveResource(_environmentModel, instanceObj.ToServiceDefinition(), _environmentModel.Connection.WorkspaceID);
+            var executeMessage = SaveResource(_environmentModel, instanceObj.ToServiceDefinition(), _environmentModel.Connection.WorkspaceID, instanceObj.GetSavePath());
             
             return executeMessage;
         }
 
         private void AddResourceIfNotExist(IResourceModel instanceObj)
         {
-            Dev2Logger.Info($"Save Resource: {instanceObj.Category}  Environment:{_environmentModel.Name}");
-            var workflow = FindSingle(c => c.ResourceName.Equals(instanceObj.ResourceName, StringComparison.CurrentCultureIgnoreCase) && c.Category.Equals(instanceObj.Category, StringComparison.CurrentCultureIgnoreCase));
+            Dev2Logger.Info($"Save Resource: {instanceObj.ResourceName}  Environment:{_environmentModel.Name}");
+            var workflow = FindSingle(c => c.ID == instanceObj.ID);
 
             if(workflow == null)
             {
@@ -265,7 +265,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
         public ExecuteMessage SaveToServer(IResourceModel instanceObj)
         {
             AddResourceIfNotExist(instanceObj);
-            var saveResource = SaveResource(_environmentModel, instanceObj.ToServiceDefinition(), GlobalConstants.ServerWorkspaceID);
+            var saveResource = SaveResource(_environmentModel, instanceObj.ToServiceDefinition(), GlobalConstants.ServerWorkspaceID, instanceObj.GetSavePath());
             if (saveResource != null && !saveResource.HasError)
             {
                 _environmentModel.FireWorkflowSaved();
@@ -535,12 +535,13 @@ namespace Dev2.Studio.Core.AppResources.Repositories
 
         public Func<string, ICommunicationController> GetCommunicationController = serviveName => new CommunicationController { ServiceName = serviveName };
 
-        private ExecuteMessage SaveResource(IEnvironmentModel targetEnvironment, StringBuilder resourceDefinition, Guid workspaceId)
+        private ExecuteMessage SaveResource(IEnvironmentModel targetEnvironment, StringBuilder resourceDefinition, Guid workspaceId, string savePath)
         {
             var comsController = GetCommunicationController("SaveResourceService");
             CompressedExecuteMessage message = new CompressedExecuteMessage();
             message.SetMessage(resourceDefinition.ToString());
             Dev2JsonSerializer ser = new Dev2JsonSerializer();
+            comsController.AddPayloadArgument("savePath", savePath);
             comsController.AddPayloadArgument("ResourceXml", ser.SerializeToBuilder(message));
             comsController.AddPayloadArgument("WorkspaceID", workspaceId.ToString());
 

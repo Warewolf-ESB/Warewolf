@@ -70,7 +70,7 @@ namespace Warewolf.Studio.AntiCorruptionLayer
         public bool Rename(IExplorerItemViewModel vm, string newName)
         {
             if (vm.ResourceType == "Folder")
-                UpdateManagerProxy.RenameFolder(vm.ResourcePath, newName, vm.ResourceId);
+                UpdateManagerProxy.RenameFolder(vm.ResourcePath, vm.ResourcePath.Replace(vm.ResourceName,newName));
             else
                 UpdateManagerProxy.Rename(vm.ResourceId, newName);
             return true;
@@ -102,7 +102,7 @@ namespace Warewolf.Studio.AntiCorruptionLayer
                     }
                     if (explorerItemViewModel.ResourceType == "Version")
                     {
-                        VersionManager.DeleteVersion(explorerItemViewModel.ResourceId, explorerItemViewModel.VersionNumber);
+                        VersionManager.DeleteVersion(explorerItemViewModel.ResourceId, explorerItemViewModel.VersionNumber,explorerItemViewModel.ResourcePath);
                     }
                     else if (explorerItemViewModel.ResourceType == "Folder")
                     {
@@ -177,9 +177,9 @@ namespace Warewolf.Studio.AntiCorruptionLayer
                 graph.Nodes.Remove(node);
         }
 
-        public StringBuilder GetVersion(IVersionInfo versionInfo)
+        public StringBuilder GetVersion(IVersionInfo versionInfo, Guid resourceId)
         {
-            return VersionManager.GetVersion(versionInfo);
+            return VersionManager.GetVersion(versionInfo, resourceId);
         }
 
         public ICollection<IVersionInfo> GetVersions(Guid id)

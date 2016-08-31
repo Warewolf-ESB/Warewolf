@@ -416,7 +416,6 @@ namespace Warewolf.Studio.ViewModels
                         src.ResourcePath = RequestServiceNameViewModel.Result.ResourceName.Path ?? RequestServiceNameViewModel.Result.ResourceName.Name;
                         Save(src);
 
-                        Save(src);
                         _oAuthSource = src;
                         Path = _oAuthSource.ResourcePath;
                         SetupHeaderTextFromExisting();

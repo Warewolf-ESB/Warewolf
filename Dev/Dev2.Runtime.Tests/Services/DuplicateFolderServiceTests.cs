@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using Dev2.Communication;
@@ -13,7 +13,7 @@ using Moq;
 namespace Dev2.Tests.Runtime.Services
 {
     [TestClass]
-    public class DuplicateResourceServiceTests
+    public class DuplicateFolderServiceTests
     {
 
         [TestMethod]
@@ -21,13 +21,13 @@ namespace Dev2.Tests.Runtime.Services
         public void HandlesType_GivenServiceIsCreated_ShouldHandleCorrectly()
         {
             //---------------Set up test pack-------------------
-            DuplicateResourceService resourceService = new DuplicateResourceService();
+            DuplicateFolderService resourceService = new DuplicateFolderService();
             //---------------Assert Precondition----------------
             Assert.IsNotNull(resourceService);
             //---------------Execute Test ----------------------
             var handlesType = resourceService.HandlesType();
             //---------------Test Result -----------------------
-            Assert.AreEqual("DuplicateResourceService", handlesType);
+            Assert.AreEqual("DuplicateFolderService", handlesType);
         }
 
         [TestMethod]
@@ -35,7 +35,7 @@ namespace Dev2.Tests.Runtime.Services
         public void CreateServiceEntry_GivenServiceIsCreated_ShouldCreateCorrectDynamicService()
         {
             //---------------Set up test pack-------------------
-            DuplicateResourceService resourceService = new DuplicateResourceService();
+            DuplicateFolderService resourceService = new DuplicateFolderService();
             //---------------Assert Precondition----------------
             Assert.IsNotNull(resourceService);
             //---------------Execute Test ----------------------
@@ -50,11 +50,11 @@ namespace Dev2.Tests.Runtime.Services
         {
             //---------------Set up test pack-------------------
             var resourceCatalog = new Mock<IResourceCatalog>();
-            resourceCatalog.Setup(catalog => catalog.DuplicateResource(It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<string>()))
+            resourceCatalog.Setup(catalog => catalog.DuplicateFolder(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<bool>()))
                 .Returns(new ResourceCatalogResult() { Message = "Hi" });
             var workScpace = new Mock<IWorkspace>();
             const string guid = "7B71D6B8-3E11-4726-A7A0-AC924977D6E5";
-            DuplicateResourceService resourceService = new DuplicateResourceService(resourceCatalog.Object);
+            DuplicateFolderService resourceService = new DuplicateFolderService(resourceCatalog.Object);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(resourceService);
             //---------------Execute Test ----------------------
@@ -63,10 +63,11 @@ namespace Dev2.Tests.Runtime.Services
             {
                 {"ResourceID", new StringBuilder(guid) },
                 {"NewResourceName", new StringBuilder("NewName") },
+                {"sourcePath", new StringBuilder("NewName") },
                 {"destinatioPath", new StringBuilder("NewName") },
             }, workScpace.Object);
             //---------------Test Result -----------------------
-            resourceCatalog.Verify(catalog => catalog.DuplicateResource(It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<string>()));
+            resourceCatalog.Verify(catalog => catalog.DuplicateFolder(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<bool>()));
             var serializer = new Dev2JsonSerializer();
             var executeMessage = serializer.Deserialize<ExecuteMessage>(stringBuilder);
             Assert.IsFalse(executeMessage.HasError);
@@ -79,10 +80,10 @@ namespace Dev2.Tests.Runtime.Services
         {
             //---------------Set up test pack-------------------
             var resourceCatalog = new Mock<IResourceCatalog>();
-            resourceCatalog.Setup(catalog => catalog.DuplicateResource(It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<string>()))
+            resourceCatalog.Setup(catalog => catalog.DuplicateFolder(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<bool>()))
                 .Returns(new ResourceCatalogResult() { Message = "Hi" });
             var workScpace = new Mock<IWorkspace>();
-            DuplicateResourceService resourceService = new DuplicateResourceService(resourceCatalog.Object);
+            DuplicateFolderService resourceService = new DuplicateFolderService(resourceCatalog.Object);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(resourceService);
             //---------------Execute Test ----------------------
@@ -90,14 +91,13 @@ namespace Dev2.Tests.Runtime.Services
             try
             {
                 stringBuilder = resourceService.Execute(new Dictionary<string, StringBuilder>
-                            {
-                                  {"ResourceID", new StringBuilder(Guid.NewGuid().ToString()) },
-                                {"NewResourceName", new StringBuilder("NewName") },
-                            }, workScpace.Object);
+                {
+                    {"ResourceID", new StringBuilder(Guid.NewGuid().ToString()) },
+                }, workScpace.Object);
             }
             catch (Exception ex)
             {
-                resourceCatalog.Verify(catalog => catalog.DuplicateResource(It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<string>()));
+                resourceCatalog.Verify(catalog => catalog.DuplicateFolder(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<bool>()));
                 var serializer = new Dev2JsonSerializer();
                 var executeMessage = serializer.Deserialize<ExecuteMessage>(stringBuilder);
                 Assert.IsTrue(executeMessage.HasError);
@@ -105,33 +105,7 @@ namespace Dev2.Tests.Runtime.Services
                 Assert.AreEqual("Destination Paths not specified", ex.Message);
             }
         }
-
-        [TestMethod]
-        [Owner("Nkosinathi Sangweni")]
-        public void Execute_GivenMissingResourceId_ShouldReturnFailure()
-        {
-            //---------------Set up test pack-------------------
-            var resourceCatalog = new Mock<IResourceCatalog>();
-            resourceCatalog.Setup(catalog => catalog.DuplicateResource(It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<string>()))
-                .Returns(new ResourceCatalogResult() { Message = "Hi" });
-            var workScpace = new Mock<IWorkspace>();
-            DuplicateResourceService resourceService = new DuplicateResourceService(resourceCatalog.Object);
-            //---------------Assert Precondition----------------
-            Assert.IsNotNull(resourceService);
-            //---------------Execute Test ----------------------
-
-            var stringBuilder = resourceService.Execute(new Dictionary<string, StringBuilder>
-            {
-                {"NewResourceName", new StringBuilder("NewName") },
-                {"destinatioPath", new StringBuilder("NewName") },
-            }, workScpace.Object);
-            //---------------Test Result -----------------------
-            resourceCatalog.Verify(catalog => catalog.DuplicateResource(It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<string>()), Times.Never);
-            var serializer = new Dev2JsonSerializer();
-            var executeMessage = serializer.Deserialize<ExecuteMessage>(stringBuilder);
-            Assert.IsTrue(executeMessage.HasError);
-            Assert.AreEqual("ResourceId is required", executeMessage.Message.ToString());
-        }
+       
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
@@ -139,11 +113,11 @@ namespace Dev2.Tests.Runtime.Services
         {
             //---------------Set up test pack-------------------
             var resourceCatalog = new Mock<IResourceCatalog>();
-            resourceCatalog.Setup(catalog => catalog.DuplicateResource(It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<string>()))
+            resourceCatalog.Setup(catalog => catalog.DuplicateFolder(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<bool>()))
                 .Throws(new Exception("Catalog Error"));
             var workScpace = new Mock<IWorkspace>();
             const string guid = "7B71D6B8-3E11-4726-A7A0-AC924977D6E5";
-            DuplicateResourceService resourceService = new DuplicateResourceService(resourceCatalog.Object);
+            DuplicateFolderService resourceService = new DuplicateFolderService(resourceCatalog.Object);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(resourceService);
             //---------------Execute Test ----------------------
@@ -151,19 +125,18 @@ namespace Dev2.Tests.Runtime.Services
             try
             {
                 stringBuilder = resourceService.Execute(new Dictionary<string, StringBuilder>
-                                                        {
-                                                            {"ResourceID", new StringBuilder(guid) },
-                                                            {"NewResourceName", new StringBuilder("NewName") },
-                                                            {"destinatioPath", new StringBuilder("NewName") },
-                                                        }, workScpace.Object);
+                {
+                    {"ResourceID", new StringBuilder(guid) },
+                    {"destinatioPath", new StringBuilder("NewName") },
+                }, workScpace.Object);
             }
             catch (Exception ex)
             {
-                resourceCatalog.Verify(catalog => catalog.DuplicateResource(It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<string>()));
+                resourceCatalog.Verify(catalog => catalog.DuplicateFolder(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<bool>()), Times.Never);
                 var serializer = new Dev2JsonSerializer();
                 var executeMessage = serializer.Deserialize<ExecuteMessage>(stringBuilder);
                 Assert.IsTrue(executeMessage.HasError);
-                Assert.AreEqual("ResourceId is required", executeMessage.Message);
+                Assert.AreEqual("NewResourceName required", executeMessage.Message);
                 Assert.AreEqual("Catalog Error", ex.Message);
             }
 
