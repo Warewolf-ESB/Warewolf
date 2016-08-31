@@ -19,7 +19,6 @@ namespace Warewolf.Studio.ViewModels
             ConnectControlViewModel.SelectedEnvironmentChanged += DeploySourceExplorerViewModelSelectedEnvironmentChanged;
             ConnectControlViewModel.ServerConnected+=ServerConnected;
             SelectedEnvironment = _environments.FirstOrDefault();
-
         }
 
         private void ServerConnected(object sender, IServer server)
@@ -32,10 +31,7 @@ namespace Warewolf.Studio.ViewModels
         {
             var environmentViewModel = _environments.FirstOrDefault(a => a.Server.EnvironmentID == environmentid);
             SelectedEnvironment = environmentViewModel;
-            if (StatsArea != null)
-            {
-                StatsArea.ReCalculate();
-            }
+            StatsArea?.ReCalculate();
         }
 
         #region Overrides of ExplorerViewModel
@@ -69,10 +65,7 @@ namespace Warewolf.Studio.ViewModels
                 }
                 ConnectControlViewModel.IsLoading = false;
             }
-            if(StatsArea != null)
-            {
-                StatsArea.ReCalculate();
-            }
+            StatsArea?.ReCalculate();
         }
 
         #endregion
