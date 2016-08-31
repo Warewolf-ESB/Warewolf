@@ -267,7 +267,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             {
                 isEnvironmentsChanged = isEnvironmentsChanged || e.PropertyName == "Environments";
             };
-            var list = new List<IEnvironmentViewModel>();
+            var list = new ObservableCollection<IEnvironmentViewModel>();
 
             //act
             _target.Environments = list;
@@ -334,7 +334,7 @@ namespace Warewolf.Studio.ViewModels.Tests
                 isSearchText = isSearchText || e.PropertyName == "SearchText";
                 isEnvironments = isEnvironments || e.PropertyName == "Environments";
             };
-            var list = new List<IEnvironmentViewModel>();
+            var list = new ObservableCollection<IEnvironmentViewModel>();
             _target.Environments = list;
 
             //act
@@ -494,7 +494,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             serverMock.SetupGet(it => it.EnvironmentID).Returns(envId);
             environmentViewModelMock.SetupGet(it => it.Server).Returns(serverMock.Object);
             environmentViewModelMock.SetupGet(it => it.IsConnected).Returns(true);
-            _target.Environments = new List<IEnvironmentViewModel>() {environmentViewModelMock.Object};
+            _target.Environments = new ObservableCollection<IEnvironmentViewModel>() {environmentViewModelMock.Object};
             _target.SearchText = "someText";
 
             //act
@@ -516,7 +516,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             serverMock.SetupGet(it => it.EnvironmentID).Returns(envId);
             environmentViewModelMock.SetupGet(it => it.Server).Returns(serverMock.Object);
             environmentViewModelMock.SetupGet(it => it.IsConnected).Returns(true);
-            _target.Environments = new List<IEnvironmentViewModel>() { environmentViewModelMock.Object };
+            _target.Environments = new ObservableCollection<IEnvironmentViewModel>() { environmentViewModelMock.Object };
             _target.SelectedEnvironment = environmentViewModelMock.Object;
 
             //act
@@ -532,7 +532,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         {
             //arrange
             var environmentViewModelMock = new Mock<IEnvironmentViewModel>();
-            _target.Environments = new List<IEnvironmentViewModel>() { environmentViewModelMock.Object };
+            _target.Environments = new ObservableCollection<IEnvironmentViewModel>() { environmentViewModelMock.Object };
             var isEnvironments = false;
             _target.PropertyChanged += (s, e) =>
             {
@@ -558,7 +558,7 @@ namespace Warewolf.Studio.ViewModels.Tests
                 .Returns(new ObservableCollection<IExplorerItemViewModel>());
             var explorerItemViewModelMock = new Mock<IExplorerItemViewModel>();
             explorerItemViewModelMock.SetupGet(it => it.Server).Returns(serverMock.Object);
-            _target.Environments = new List<IEnvironmentViewModel>() { environmentViewModelMock.Object };
+            _target.Environments = new ObservableCollection<IEnvironmentViewModel>() { environmentViewModelMock.Object };
             var isEnvironments = false;
             _target.PropertyChanged += (s, e) =>
             {
@@ -584,7 +584,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             explorerItemViewModelMock.SetupGet(it => it.Server).Returns(serverMock.Object);
             environmentViewModelMock.SetupGet(it => it.Children)
                 .Returns(new ObservableCollection<IExplorerItemViewModel>() { explorerItemViewModelMock.Object});
-            _target.Environments = new List<IEnvironmentViewModel>() { environmentViewModelMock.Object };
+            _target.Environments = new ObservableCollection<IEnvironmentViewModel>() { environmentViewModelMock.Object };
             var isEnvironments = false;
             _target.PropertyChanged += (s, e) =>
             {
@@ -629,7 +629,7 @@ namespace Warewolf.Studio.ViewModels.Tests
                 .Callback<Guid, Action<IExplorerItemViewModel>>((id, act) => act(explorerItemMock.Object));
             environmentViewModelMock.SetupSet(it => it.SelectAction = It.IsAny<Action<IExplorerItemViewModel>>())
                 .Callback<Action<IExplorerItemViewModel>>(a => propAction = a);
-             _target.Environments = new List<IEnvironmentViewModel>() { environmentViewModelMock.Object };
+             _target.Environments = new ObservableCollection<IEnvironmentViewModel>() { environmentViewModelMock.Object };
             
             //act
             _target.SelectItem(itemId);
@@ -657,7 +657,7 @@ namespace Warewolf.Studio.ViewModels.Tests
                 .Callback<string, Action<IExplorerItemViewModel>>((id, act) => act(explorerItemMock.Object));
             environmentViewModelMock.SetupSet(it => it.SelectAction = It.IsAny<Action<IExplorerItemViewModel>>())
                 .Callback<Action<IExplorerItemViewModel>>(a => propAction = a);
-            _target.Environments = new List<IEnvironmentViewModel>() { environmentViewModelMock.Object };
+            _target.Environments = new ObservableCollection<IEnvironmentViewModel>() { environmentViewModelMock.Object };
 
             //act
             _target.SelectItem(itemPath);
@@ -676,7 +676,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         {
             //arrange
             var environmentViewModelMock = new Mock<IEnvironmentViewModel>();
-            _target.Environments = new List<IEnvironmentViewModel>() { environmentViewModelMock.Object };
+            _target.Environments = new ObservableCollection<IEnvironmentViewModel>() { environmentViewModelMock.Object };
 
             //act
             _target.Dispose();

@@ -375,7 +375,8 @@ namespace Dev2.Activities.Designers2.Core
             {
                 if(ViewModel.ShowLarge)
                 {
-                    var imageSource = ImageAwesome.CreateImageSource(FontAwesomeIcon.Compress, Brushes.Black);
+                    
+                    var imageSource = ImageAwesome.CreateImageSource(  FontAwesomeIcon.Compress, Brushes.Black);
                     var icon = new Image { Source = imageSource, Height = 14, Width = 14 };
                     _showCollapseLargeView.Header = "Collapse Large View";
                     _showCollapseLargeView.Icon = icon;

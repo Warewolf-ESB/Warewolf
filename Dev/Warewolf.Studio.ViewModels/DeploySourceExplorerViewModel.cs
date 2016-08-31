@@ -109,7 +109,7 @@ namespace Warewolf.Studio.ViewModels
 
         #endregion
 
-        public override ICollection<IEnvironmentViewModel> Environments
+        public override ObservableCollection<IEnvironmentViewModel> Environments
         {
             get
             {
