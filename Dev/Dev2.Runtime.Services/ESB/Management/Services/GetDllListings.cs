@@ -55,7 +55,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 
             if (src == null)
             {
-                var drives = DriveInfo.GetDrives();
+                var drives = DriveInfo.GetDrives().Where(info => info.DriveType!=DriveType.CDRom && info.DriveType!=DriveType.Removable);
                 try
                 {
                     var listing = drives.Select(BuildDllListing);
@@ -85,20 +85,6 @@ namespace Dev2.Runtime.ESB.Management.Services
                     //  Create an assembly view model.
                     assemblyName = enumAssembly.GetNextAssembly();
                 }
-//                var gacList = new List<IFileListing>();
-//                while (GAC.GetNextAssembly(assemblyEnum, out assemblyName) == 0)
-//                {
-//                    try
-//                    {
-//                        var displayName = GAC.GetDisplayName(assemblyName, ASM_DISPLAY_FLAGS.VERSION | ASM_DISPLAY_FLAGS.CULTURE | ASM_DISPLAY_FLAGS.PUBLIC_KEY_TOKEN | ASM_DISPLAY_FLAGS.PROCESSORARCHITECTURE);
-//                        var name = GlobalConstants.GACPrefix+displayName;
-//                        gacList.Add(new DllListing { Name = displayName, FullName = name, IsDirectory = false });
-//                    }
-//                    catch (Exception e)
-//                    {
-//                        Dev2Logger.Error(e.Message);
-//                    }
-//                }
                 gacItem.Children = gacList;
 
                 completeList.Add(fileSystemParent);
