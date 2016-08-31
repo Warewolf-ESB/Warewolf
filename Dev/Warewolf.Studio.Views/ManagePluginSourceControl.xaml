@@ -130,7 +130,7 @@
                                         IsExpandedMemberPath="IsExpanded"
                                         EnsureNodeExpansion="True"
                                         Loaded="ExplorerTree_OnLoaded"
-                             
+                                        PreviewKeyDown="ExplorerTree_OnPreviewKeyDown"
                                         NodeLineVisibility="Hidden" >
                             <ig:XamDataTree.EditingSettings>
                                 <ig:TreeEditingSettings AllowDeletion="False"
