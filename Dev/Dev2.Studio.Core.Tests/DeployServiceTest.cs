@@ -69,7 +69,7 @@ namespace Dev2.Core.Tests
 
             var envMock = new Mock<IEnvironmentModel>();
             envMock.Setup(e => e.Connection).Returns(connection.Object);
-            envMock.Setup(e => e.ResourceRepository.DeployResource(It.IsAny<IResourceModel>())).Verifiable();
+            envMock.Setup(e => e.ResourceRepository.DeployResource(It.IsAny<IResourceModel>(), It.IsAny<string>())).Verifiable();
             envMock.Setup(e => e.IsConnected).Returns(true);
 
             var dtoMock = new Mock<IDeployDto>();
@@ -78,7 +78,7 @@ namespace Dev2.Core.Tests
             var ds = new DeployService();
             ds.Deploy(dtoMock.Object, envMock.Object);
 
-            envMock.Verify(e => e.ResourceRepository.DeployResource(It.IsAny<IResourceModel>()), Times.Exactly(_numModels));
+            envMock.Verify(e => e.ResourceRepository.DeployResource(It.IsAny<IResourceModel>(), It.IsAny<string>()), Times.Exactly(_numModels));
         }
 
         #endregion

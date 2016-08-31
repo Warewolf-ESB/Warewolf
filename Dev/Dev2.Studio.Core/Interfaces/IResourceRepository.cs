@@ -30,7 +30,7 @@ namespace Dev2.Studio.Core.Interfaces
     {
         List<IResourceModel> ReloadResource(Guid resourceId, ResourceType resourceType, IEqualityComparer<IResourceModel> equalityComparer, bool fetchXaml);
         void UpdateWorkspace();
-        void DeployResource(IResourceModel resource);
+        void DeployResource(IResourceModel resource, string savePath);
         ExecuteMessage DeleteResource(IResourceModel resource);
         [SuppressMessage("ReSharper", "UnusedMember.Global")]
         void Add(IResourceModel resource);
