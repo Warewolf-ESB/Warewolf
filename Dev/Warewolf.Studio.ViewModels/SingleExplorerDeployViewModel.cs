@@ -13,6 +13,7 @@ using Microsoft.Practices.Prism.Commands;
 using Microsoft.Practices.Prism.Mvvm;
 using Dev2.Studio.Core;
 // ReSharper disable ClassWithVirtualMembersNeverInherited.Global
+// ReSharper disable MemberCanBeProtected.Global
 
 namespace Warewolf.Studio.ViewModels
 {
@@ -33,7 +34,7 @@ namespace Warewolf.Studio.ViewModels
         bool _deploySuccessfull;
         string _conflictNewResourceText;
         readonly IShellViewModel _shell;
-        protected virtual IPopupController PopupController { get; set; }
+        public virtual IPopupController PopupController { get; set; }
         bool _showNewItemsList;
         bool _showConflictItemsList;
         IList<Conflict> _conflictItems;
