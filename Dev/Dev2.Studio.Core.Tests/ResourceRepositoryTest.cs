@@ -1753,7 +1753,7 @@ namespace BusinessDesignStudio.Unit.Tests
             mockEventAg.Setup(m => m.Publish(It.IsAny<object>()));
 
             //------------Execute Test---------------------------
-            _repo.DeployResource(theModel);
+            _repo.DeployResource(theModel, It.IsAny<string>());
             //------------Assert Results-------------------------
             _environmentConnection.Verify(connection => connection.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>()));
         }
@@ -1827,7 +1827,7 @@ namespace BusinessDesignStudio.Unit.Tests
 
             var repo = new ResourceRepository(repoEnv.Object);
 
-            repo.DeployResource(null);
+            repo.DeployResource(null, It.IsAny<string>());
         }
 
 
