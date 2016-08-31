@@ -6,6 +6,7 @@ using Caliburn.Micro;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Deploy;
 using Dev2.Common.Interfaces.Infrastructure;
+// ReSharper disable InconsistentNaming
 
 namespace Warewolf.Studio.ViewModels
 {
@@ -24,7 +25,7 @@ namespace Warewolf.Studio.ViewModels
         {
             if (shellViewModel == null)
             {
-                throw new ArgumentNullException("shellViewModel");
+                throw new ArgumentNullException(nameof(shellViewModel));
             }
             var localhostEnvironment = CreateEnvironmentFromServer(shellViewModel.LocalhostServer, shellViewModel);
             _shellViewModel = shellViewModel;
@@ -161,10 +162,10 @@ namespace Warewolf.Studio.ViewModels
         {
             get
             {
-                return SelectedEnvironment != null ? SelectedEnvironment.AsList()
+                return SelectedEnvironment?.AsList()
                     .Select(a => a as IExplorerTreeItem)
                     .Where(a => a.IsResourceChecked.HasValue && a.IsResourceChecked.Value)
-                    .ToList() : new List<IExplorerTreeItem>();
+                    .ToList() ?? new List<IExplorerTreeItem>();
             }
             set
             {             
@@ -178,9 +179,9 @@ namespace Warewolf.Studio.ViewModels
         {
             get
             {
-                return SelectedEnvironment != null ? SelectedEnvironment.AsList()
+                return SelectedEnvironment?.AsList()
                     .Select(a => a as IExplorerTreeItem)
-                    .ToList() : new List<IExplorerTreeItem>();
+                    .ToList() ?? new List<IExplorerTreeItem>();
             }
         }
 
@@ -201,7 +202,7 @@ namespace Warewolf.Studio.ViewModels
 
         void Select(IExplorerTreeItem explorerTreeItem)
         {
-            var item = SelectedEnvironment != null ? SelectedEnvironment.AsList().FirstOrDefault(a => a.ResourceId == explorerTreeItem.ResourceId) : null;
+            var item = SelectedEnvironment?.AsList().FirstOrDefault(a => a.ResourceId == explorerTreeItem.ResourceId);
             if (item != null)
             {               
                 item.IsSelected = true;
@@ -255,7 +256,7 @@ namespace Warewolf.Studio.ViewModels
 
         IEnvironmentViewModel CreateEnvironmentFromServer(IServer server, IShellViewModel shellViewModel)
         {
-            if (server != null && server.UpdateRepository != null)
+            if (server?.UpdateRepository != null)
             {
                 server.UpdateRepository.ItemSaved += Refresh;
             }
