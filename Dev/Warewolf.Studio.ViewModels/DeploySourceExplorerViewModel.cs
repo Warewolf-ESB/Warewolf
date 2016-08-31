@@ -77,7 +77,6 @@ namespace Warewolf.Studio.ViewModels
             {
                 ConnectControlViewModel.IsLoading = false;
             }
-            //_statsArea?.Calculate(SourceLoadedItems.ToList());
         }
 
         void CheckPreselectedItems(Guid environmentID)
@@ -231,7 +230,7 @@ namespace Warewolf.Studio.ViewModels
                 _environments.Add(environmentModel);
                 await environmentModel.Load(IsDeploy);
                 OnPropertyChanged(() => Environments);
-               AfterLoad(server.EnvironmentID);
+                AfterLoad(server.EnvironmentID);
             }
         }
 
@@ -245,7 +244,6 @@ namespace Warewolf.Studio.ViewModels
                 _environments.Remove(environmentModel);
             }
             OnPropertyChanged(() => Environments);
-            AfterLoad(server.EnvironmentID);            
         }
 
         protected virtual async void LoadEnvironment(IEnvironmentViewModel localhostEnvironment, bool isDeploy = false)
