@@ -462,8 +462,8 @@ namespace Dev2.Tests.Runtime.Hosting
             var result = serverExplorerRepository.RenameFolder("monkey", "moocowimpi", Guid.NewGuid());
 
             //------------Assert Results-------------------------
-            Assert.AreEqual(result.Message, "");
-            Assert.AreEqual(result.Status, ExecStatus.Success);
+            Assert.AreEqual(result.Message, "Error Renaming");
+            Assert.AreEqual(result.Status, ExecStatus.Fail);
         }
 
 
@@ -499,8 +499,8 @@ namespace Dev2.Tests.Runtime.Hosting
             var result = serverExplorerRepository.RenameFolder("monkey", "moocowimpi", Guid.NewGuid());
 
             //------------Assert Results-------------------------
-            Assert.AreEqual(result.Message, "");
-            Assert.AreEqual(result.Status, ExecStatus.Success);
+            Assert.AreEqual(result.Message, "Error Renaming");
+            Assert.AreEqual(result.Status, ExecStatus.Fail);
         }
 
         [TestMethod]
@@ -524,7 +524,7 @@ namespace Dev2.Tests.Runtime.Hosting
                 );
             factory.Setup(a => a.CreateRootExplorerItem(It.IsAny<string>(), It.IsAny<Guid>())).Returns(explorerItem);
 
-            dir.Setup(a => a.Exists(It.IsAny<string>())).Returns(true);
+            dir.Setup(a => a.Exists(It.IsAny<string>())).Returns(false);
             dir.Setup(a => a.Move(It.IsAny<string>(), It.IsAny<string>())).Verifiable();
             var sync = new Mock<IExplorerRepositorySync>();
             var serverExplorerRepository = new ServerExplorerRepository(catalogue.Object, factory.Object, dir.Object, sync.Object, new Mock<IServerVersionRepository>().Object, new FileWrapper());
@@ -535,8 +535,8 @@ namespace Dev2.Tests.Runtime.Hosting
             var result = serverExplorerRepository.RenameFolder("monkey", "moocowimpi", Guid.NewGuid());
 
             //------------Assert Results-------------------------
-            Assert.AreEqual(result.Message, "");
-            Assert.AreEqual(result.Status, ExecStatus.Success);
+            Assert.AreEqual(result.Message, "Requested folder does not exist on server. Folder: monkey");
+            Assert.AreEqual(result.Status, ExecStatus.NoMatch);
         }
 
 
@@ -562,7 +562,7 @@ namespace Dev2.Tests.Runtime.Hosting
                 );
             factory.Setup(a => a.CreateRootExplorerItem(It.IsAny<string>(), It.IsAny<Guid>())).Returns(explorerItem);
 
-            dir.Setup(a => a.Exists(It.IsAny<string>())).Returns(true);
+            dir.Setup(a => a.Exists(It.IsAny<string>())).Returns(false);
             dir.Setup(a => a.Move(It.IsAny<string>(), It.IsAny<string>())).Verifiable();
             var sync = new Mock<IExplorerRepositorySync>();
             var serverExplorerRepository = new ServerExplorerRepository(catalogue.Object, factory.Object, dir.Object, sync.Object, new Mock<IServerVersionRepository>().Object, new FileWrapper());
@@ -573,8 +573,8 @@ namespace Dev2.Tests.Runtime.Hosting
             var result = serverExplorerRepository.RenameFolder("monkey", "moocowimpi", Guid.NewGuid());
 
             //------------Assert Results-------------------------
-            Assert.AreEqual(result.Message, "");
-            Assert.AreEqual(result.Status, ExecStatus.Success);
+            Assert.AreEqual(result.Message, "Requested folder does not exist on server. Folder: monkey");
+            Assert.AreEqual(result.Status, ExecStatus.NoMatch);
         }
 
         [TestMethod]
@@ -609,7 +609,7 @@ namespace Dev2.Tests.Runtime.Hosting
             var result = serverExplorerRepository.RenameFolder("monkey", "moocowimpi", Guid.NewGuid());
 
             //------------Assert Results-------------------------
-            Assert.AreEqual(result.Message, "Error Renaming");
+            Assert.AreEqual("Error Renaming", result.Message);
             Assert.AreEqual(result.Status, ExecStatus.Fail);
         }
 
@@ -634,44 +634,7 @@ namespace Dev2.Tests.Runtime.Hosting
             Assert.AreEqual(result.Status, ExecStatus.NoMatch);
 
         }
-
-        [TestMethod]
-        [Owner("Leon Rajindrapersadh")]
-        [TestCategory("ServerExplorerRepository_RenameItem")]
-        public void ServerExplorerRepository_RenameFolder_FilesystemError_ExpectFailureMessage()
-        {
-            //------------Setup for test--------------------------
-            var catalogue = new Mock<IResourceCatalog>();
-            ResourceCatalogResult resourceCatalogResult = new ResourceCatalogResult { Status = ExecStatus.Success, Message = "" };
-            catalogue.Setup(catalog => catalog.RenameCategory(It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<string>())).Returns(resourceCatalogResult);
-            var factory = new Mock<IExplorerItemFactory>();
-            var dir = new Mock<IDirectory>();
-            var guid = Guid.NewGuid();
-
-            var explorerItem = new ServerExplorerItem(
-                "dave", guid,
-                "DbSource",
-                new List<IExplorerItem>()
-                , Permissions.Administrator, "bob", "", ""
-                );
-            factory.Setup(a => a.CreateRootExplorerItem(It.IsAny<string>(), It.IsAny<Guid>())).Returns(explorerItem);
-
-            dir.Setup(a => a.Exists(It.IsAny<string>())).Returns(true);
-            dir.Setup(a => a.Delete(It.IsAny<string>(), It.IsAny<bool>())).Throws(new FieldAccessException("bob has an error")).Verifiable();
-
-            var sync = new Mock<IExplorerRepositorySync>();
-            var serverExplorerRepository = new ServerExplorerRepository(catalogue.Object, factory.Object, dir.Object, sync.Object, new Mock<IServerVersionRepository>().Object, new FileWrapper());
-
-
-            //------------Execute Test---------------------------
-            var result = serverExplorerRepository.RenameFolder("monkey", "moocowimpi", Guid.NewGuid());
-            //------------Assert Results-------------------------
-            Assert.AreEqual(result.Message, "bob has an error");
-            Assert.AreEqual(result.Status, ExecStatus.AccessViolation);
-
-        }
-
-
+        
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("ServerExplorerRepository_RenameItem")]

@@ -184,7 +184,8 @@ namespace Warewolf.Studio.ViewModels
             Environments = new List<IEnvironmentViewModel>(Environments);
             foreach (var environment in Environments)
             {
-                environment.Children = new ObservableCollection<IExplorerItemViewModel>(environment.Children.OrderByDescending(a => a.IsFolder).ThenBy(b => b.ResourceName).ToList());
+                if(environment.Children != null)
+                    environment.Children = new ObservableCollection<IExplorerItemViewModel>(environment.Children.OrderByDescending(a => a.IsFolder).ThenBy(b => b.ResourceName).ToList());
             }
             IsRefreshing = false;
             ConnectControlViewModel.LoadNewServers();

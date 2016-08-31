@@ -151,6 +151,10 @@ namespace Dev2.Runtime.Hosting
                     MoveVersionFolder(path, newPath);
                     Load(workSpaceId, true);
                 }
+                else
+                {
+                    return new ExplorerRepositoryResult(ExecStatus.Fail, "Error Renaming");
+                }
             }
             catch (Exception err)
             {
