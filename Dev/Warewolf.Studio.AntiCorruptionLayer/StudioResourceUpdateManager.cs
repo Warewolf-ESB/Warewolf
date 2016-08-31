@@ -54,6 +54,7 @@ namespace Warewolf.Studio.AntiCorruptionLayer
         public void Save(IServerSource serverSource)
         {
             UpdateManagerProxy.SaveServerSource(serverSource, GlobalConstants.ServerWorkspaceID);
+            ServerSourceSaved?.Invoke(serverSource);
             ItemSaved?.Invoke(true);
             ServerSaved?.Invoke();
         }
@@ -197,6 +198,7 @@ namespace Warewolf.Studio.AntiCorruptionLayer
         public event Action<IWebServiceSource> WebServiceSourceSaved;
 
         public event Action<IDbSource> DatabaseServiceSourceSaved;
+        public event Action<IServerSource> ServerSourceSaved;
 
         public event Action<IPluginSource> PluginServiceSourceSaved;
         public event Action<IComPluginSource> ComPluginServiceSourceSaved;

@@ -8,11 +8,13 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using System;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using Caliburn.Micro;
+using Dev2.Common;
 using Dev2.Services.Events;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Helpers;
@@ -76,7 +78,14 @@ namespace Dev2.Studio.ViewModels.Help
             HelpViewWrapper = viewWrapper;
             if(!IsViewAvailable)
             {
-                await LoadBrowserUri(Uri);
+                try
+                {
+                    await LoadBrowserUri(Uri);
+                }
+                catch(Exception e)
+                {
+                    Dev2Logger.Error(e.Message,e);
+                }
             }
         }
 

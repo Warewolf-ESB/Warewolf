@@ -1161,14 +1161,14 @@ namespace Warewolf.Studio.ViewModels.Tests
             _target.ResourceName = "someResPath";
             _target.Children.Clear();
             _target.IsRenaming = true;
-            _explorerRepositoryMock.Setup(it => it.Rename(_target, It.IsAny<string>())).Returns(true);
+            _explorerRepositoryMock.Setup(it => it.Rename(It.IsAny<ExplorerItemViewModel>(), It.IsAny<string>())).Returns(true);
             //act
             _target.ResourceName = newName;
             //assert
             Assert.IsTrue(isResourceNameFired);
             Assert.IsFalse(_target.IsRenaming);
             Assert.AreEqual("Some\\SomeNewName", _target.ResourcePath);
-            _explorerRepositoryMock.Verify(it => it.Rename(_target, "Some\\SomeNewName"));
+            _explorerRepositoryMock.Verify(it => it.Rename(It.IsAny<ExplorerItemViewModel>(), It.IsAny<string>()));
         }
 
         [TestMethod]

@@ -31,7 +31,7 @@ namespace Warewolf.Studio.ViewModels
     public class ExplorerViewModelBase : BindableBase, IExplorerViewModel, IUpdatesHelp
     {
         // ReSharper disable once InconsistentNaming
-        protected ICollection<IEnvironmentViewModel> _environments;
+        protected ObservableCollection<IEnvironmentViewModel> _environments;
         // ReSharper disable once InconsistentNaming
         protected string _searchText;
         private bool _isRefreshing;
@@ -121,7 +121,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        public virtual ICollection<IEnvironmentViewModel> Environments
+        public virtual ObservableCollection<IEnvironmentViewModel> Environments
         {
             get
             {
@@ -181,10 +181,11 @@ namespace Warewolf.Studio.ViewModels
         {
             IsRefreshing = true;
             Environments.ForEach(env => RefreshEnvironment(env, refresh));
-            Environments = new List<IEnvironmentViewModel>(Environments);
+            Environments = new ObservableCollection<IEnvironmentViewModel>(Environments);
             foreach (var environment in Environments)
             {
-                environment.Children = new ObservableCollection<IExplorerItemViewModel>(environment.Children.OrderByDescending(a => a.IsFolder).ThenBy(b => b.ResourceName).ToList());
+                if(environment.Children != null)
+                    environment.Children = new ObservableCollection<IExplorerItemViewModel>(environment.Children.OrderByDescending(a => a.IsFolder).ThenBy(b => b.ResourceName).ToList());
             }
             IsRefreshing = false;
             ConnectControlViewModel.LoadNewServers();
@@ -329,7 +330,7 @@ namespace Warewolf.Studio.ViewModels
             IsLoading = true;
             var environmentModel = CreateEnvironmentFromServer(server, _shellViewModel);
             _environments.Add(environmentModel);
-            OnPropertyChanged(() => Environments);
+            Environments = _environments;
             var result = await LoadEnvironment(environmentModel, IsDeploy);
             IsLoading = result;
         }
@@ -421,7 +422,7 @@ namespace Warewolf.Studio.ViewModels
         {
             IsLoading = true;
             localhostEnvironment.Connect();
-            var result = await localhostEnvironment.Load(isDeploy);
+            var result = await localhostEnvironment.Load(isDeploy,true);
             AfterLoad(localhostEnvironment.Server.EnvironmentID);
             IsLoading = false;
             return result;
