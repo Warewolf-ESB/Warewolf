@@ -190,11 +190,8 @@ namespace Warewolf.Studio.ViewModels
 
         private static void SetItemCheckState(Permissions permission, IExplorerTreeItem currentItem)
         {
-            var perms = permission.ToString();            
-            if(!perms.Contains(Permissions.Contribute.ToString()))
-                currentItem.CanDeploy = false;
-            else
-                currentItem.CanDeploy = true;
+            var perms = permission.ToString();
+            currentItem.CanDeploy = perms.Contains(Permissions.Contribute.ToString());
         }
 
         public void Calculate(IList<IExplorerTreeItem> items)
@@ -202,16 +199,11 @@ namespace Warewolf.Studio.ViewModels
             _items = items;
             if (items != null)
             {
-                //Connectors = items.Count(a => a.ResourceType >= "DbService" && a.ResourceType <= "WebService");
-                // FIX?
-
                 Connectors = items.Count(a =>
                                         !string.IsNullOrEmpty(a.ResourceType)
                                         && a.ResourceType.Contains(@"Service")
                                         && a.ResourceType != @"WorkflowService"
                                         && a.ResourceType != @"ReservedService");
-
-
 
                 Services = items.Count(a => !string.IsNullOrEmpty(a.ResourceType)
                                         && a.ResourceType == @"WorkflowService"
@@ -240,13 +232,12 @@ namespace Warewolf.Studio.ViewModels
                     var errors = ren.Where(ax => ax.SourceId != ax.DestinationId).ToArray();
                     if (errors.Any())
                     {
-
-                        RenameErrors = @"The following resources have the same path and name on the source and destination server but different Ids";
+                        RenameErrors = Resources.Languages.Core.DeployResourcesSamePathAndName;
                         foreach (var error in errors)
                         {
                             RenameErrors += $"\n{error.SourceName}-->{error.DestinationName}";
                         }
-                        RenameErrors += $"\nPlease rename either the source or destination before continueing";
+                        RenameErrors += Environment.NewLine + Resources.Languages.Core.DeployRenameBeforeContinue;
                     }
                     else
                     {
@@ -292,8 +283,6 @@ namespace Warewolf.Studio.ViewModels
 
         bool IsSource(string res)
         {
-            //return (res >= "DbSource" && res <= "ServerSource") || (res == "DropboxSource");
-            // FIX?
             return res.Contains(@"Source") || res.Contains(@"Server");
         }
         #endregion
