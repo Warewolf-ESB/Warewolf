@@ -107,7 +107,7 @@
                         Command="{Binding ExpertHelpCommand}"
                         Style="{StaticResource PopupRoundedCornerBlueButtonStyle}">
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
-                            <fa:FontAwesome Margin="5,0,2,0" Foreground="#FFF3700D" Icon="LightningBolt" VerticalAlignment="Center" HorizontalAlignment="Center"></fa:FontAwesome>
+                            <fa:FontAwesome Margin="5,0,2,0" Foreground="#FFF3700D" Icon="Bolt" VerticalAlignment="Center" HorizontalAlignment="Center"></fa:FontAwesome>
                             <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">Expert Help</TextBlock>
                         </StackPanel>
                     </Button>
