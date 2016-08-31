@@ -13,7 +13,6 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading;
 using System.Xml.Linq;
-using Dev2.Activities;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Data;
@@ -72,29 +71,6 @@ namespace Dev2.DynamicServices.Test
             workspace.Update(null, false);
         }
 
-        [TestMethod]
-        public void UpdateWorkItemWithEditAction()
-        {
-            CustomContainer.Register<IActivityParser>(new ActivityParser());
-            //Lock because of access to resourcatalog
-            lock (SyncRoot)
-            {
-                var workspaceItem = new Mock<IWorkspaceItem>();
-                workspaceItem.Setup(m => m.Action).Returns(WorkspaceItemAction.Edit);
-                workspaceItem.Setup(m => m.ServiceName).Returns(ServiceName);
-                workspaceItem.Setup(m => m.ID).Returns(_serviceID);
-                workspaceItem.Setup(m => m.ServiceType).Returns(ServiceType.ToString);
-
-                Guid workspaceID;
-                var repositoryInstance = SetupRepo(out workspaceID);
-                var workspace = repositoryInstance.Get(workspaceID);
-
-                var previous = ResourceCatalog.Instance.GetResource(workspaceID, _serviceID);
-                workspace.Update(workspaceItem.Object, false, previous.AuthorRoles);
-                var next = ResourceCatalog.Instance.GetResource(workspaceID, _serviceID);
-                Assert.AreNotSame(previous, next);
-            }
-        }
 
 
 
@@ -146,7 +122,6 @@ namespace Dev2.DynamicServices.Test
                 var workspace = repositoryInstance.Get(GlobalConstants.ServerWorkspaceID);
 
                 var previous = ResourceCatalog.Instance.GetResource(GlobalConstants.ServerWorkspaceID, _serviceID);
-                workspace.Update(workspaceItem.Object, false, previous.AuthorRoles);
                 var next = ResourceCatalog.Instance.GetResource(GlobalConstants.ServerWorkspaceID, _serviceID);
                 Assert.AreSame(previous, next);
             }

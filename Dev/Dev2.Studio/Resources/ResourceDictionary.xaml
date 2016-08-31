@@ -283,7 +283,7 @@
                                 <ColumnDefinition Width="15" />
                                 <ColumnDefinition Width="*" />
                             </Grid.ColumnDefinitions>
-                            <fa:FontAwesome x:Name="arrow" Margin="-14,3,0,0" Icon="PlusSquareOutlined" Width="12" />
+                            <fa:FontAwesome x:Name="arrow" Margin="-14,3,0,0" Icon="PlusSquareOutline" Width="12" />
                             <ContentPresenter Grid.Column="1"
                                               HorizontalAlignment="Left"
                                               Margin="-10,-3,0,0"
@@ -302,21 +302,21 @@
                                 <Condition Property="IsChecked" Value="true" />
                                 <Condition Property="IsMouseOver" Value="false" />
                             </MultiTrigger.Conditions>
-                            <Setter Property="Icon" TargetName="arrow" Value="MinusSquareOutlined" />
+                            <Setter Property="Icon" TargetName="arrow" Value="MinusSquareOutline" />
                         </MultiTrigger>
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
                                 <Condition Property="IsChecked" Value="true" />
                                 <Condition Property="IsMouseOver" Value="true" />
                             </MultiTrigger.Conditions>
-                            <Setter Property="Icon" TargetName="arrow" Value="MinusSquareOutlined" />
+                            <Setter Property="Icon" TargetName="arrow" Value="MinusSquareOutline" />
                         </MultiTrigger>
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
                                 <Condition Property="IsChecked" Value="false" />
                                 <Condition Property="IsMouseOver" Value="true" />
                             </MultiTrigger.Conditions>
-                            <Setter Property="Icon" TargetName="arrow" Value="PlusSquareOutlined" />
+                            <Setter Property="Icon" TargetName="arrow" Value="PlusSquareOutline" />
                         </MultiTrigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>

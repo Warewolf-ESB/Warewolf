@@ -219,7 +219,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             var explorerItemViewModelMock = new Mock<IExplorerItemViewModel>();
             explorerItemViewModelMock.SetupGet(it => it.IsVisible).Returns(true);
             env.AddChild(explorerItemViewModelMock.Object);
-            _target.Environments = _target.Environments.Union(new[] {environmentViewModelMock.Object}).ToList();
+            var environmentViewModels = _target.Environments.Union(new[] { environmentViewModelMock.Object }).ToList();
+            _target.Environments = new ObservableCollection<IEnvironmentViewModel>(environmentViewModels );
 
             //act
             _target.ConnectControlViewModel.SelectedConnection = _serverMock.Object;

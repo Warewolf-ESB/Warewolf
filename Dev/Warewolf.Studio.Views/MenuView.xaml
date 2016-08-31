@@ -179,7 +179,7 @@
                                Style="{StaticResource MenuTextBlockStyle}">
                         <fa:FontAwesome FontSize="18"
                                         FontWeight="Light"
-                                        Icon="PaperPlaneOutlined" />
+                                        Icon="PaperPlaneOutline" />
                     </TextBlock>
                     <TextBlock Padding="15,8,0,5"
                                Style="{StaticResource MenuTextBlockStyle}"

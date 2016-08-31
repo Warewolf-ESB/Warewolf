@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows.Input;
 
@@ -11,7 +11,7 @@ namespace Dev2.Common.Interfaces
     public delegate void SelectedExplorerItemChanged(object sender, IExplorerTreeItem e);
 	public interface IExplorerViewModel:INotifyPropertyChanged,IDisposable
 	{
-		ICollection<IEnvironmentViewModel> Environments {get;set;}
+        ObservableCollection<IEnvironmentViewModel> Environments {get;set;}
         void Filter(string filter);
 	    event SelectedExplorerEnvironmentChanged SelectedEnvironmentChanged;
         event SelectedExplorerItemChanged SelectedItemChanged;
