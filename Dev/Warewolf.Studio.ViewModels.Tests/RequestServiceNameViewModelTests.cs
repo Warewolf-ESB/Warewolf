@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -350,7 +349,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var mockEnvironmentModel = new Mock<IEnvironmentViewModel>();
             var requestServiceNameViewModel = await RequestServiceNameViewModel.CreateAsync(mockEnvironmentModel.Object, "", "");
             requestServiceNameViewModel.ShowSaveDialog();
-            requestServiceNameViewModel.SingleEnvironmentExplorerViewModel.Environments = new List<IEnvironmentViewModel>();
+            requestServiceNameViewModel.SingleEnvironmentExplorerViewModel.Environments = new ObservableCollection<IEnvironmentViewModel>();
             //------------Execute Test---------------------------
             requestServiceNameViewModel.Name = "Test";
             //------------Assert Results-------------------------
