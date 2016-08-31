@@ -18,7 +18,6 @@ namespace Warewolf.Studio.Views
         public ManagePluginSourceControl()
         {
             InitializeComponent();
-            KeyboardNavigation.SetTabNavigation(ExplorerTree, KeyboardNavigationMode.Cycle);
         }
 
         public string GetHeaderText()
@@ -143,6 +142,20 @@ namespace Warewolf.Studio.Views
         void SelectNode(XamDataTreeNodesCollection nodes, string nodeKey)
         {
             
-        }        
+        }
+
+        private void ExplorerTree_OnPreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Tab)
+            {
+                AssemblyNameTextBox.Focus();
+                e.Handled = true;
+            }
+            if (e.KeyboardDevice.Modifiers == ModifierKeys.Shift && e.KeyboardDevice.IsKeyDown(Key.Tab))
+            {
+                RefreshButton.Focus();
+                e.Handled = true;
+            }
+        }
     }
 }
