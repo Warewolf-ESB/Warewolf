@@ -26,12 +26,12 @@ namespace Dev2.Runtime.ResourceCatalogImpl
             try
             {
                 SaveFolders(sourcePath, destinationPath, newName, fixRefences);
-                return ResourceCatalogResultBuilder.CreateSuccessResult("Duplicated Success");
+                return ResourceCatalogResultBuilder.CreateSuccessResult("Duplicated Successfully");
             }
             catch (Exception x)
             {
                 Dev2Logger.Error($"resource{sourcePath} ", x);
-                return ResourceCatalogResultBuilder.CreateFailResult("Duplicated Failure " + x.Message);
+                return ResourceCatalogResultBuilder.CreateFailResult("Duplicated Unsuccessfully" + x.Message);
             }
         }
 
@@ -41,7 +41,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
             try
             {
                 SaveResource(resourceId, newPath, newName);
-                return ResourceCatalogResultBuilder.CreateSuccessResult("Duplicated Success");
+                return ResourceCatalogResultBuilder.CreateSuccessResult("Duplicated Successfully");
             }
             catch (Exception x)
             {

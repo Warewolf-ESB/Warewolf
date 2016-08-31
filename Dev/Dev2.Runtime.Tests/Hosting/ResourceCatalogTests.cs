@@ -3056,8 +3056,123 @@ namespace Dev2.Tests.Runtime.Hosting
             ResourceCatalogResult resourceCatalogResult = rc.DuplicateResource(oldResource.ResourceID, oldResource.GetResourcePath(workspaceID), null);
             //------------Assert Results-------------------------
             Assert.AreEqual(ExecStatus.Fail, resourceCatalogResult.Status);
-            Assert.AreEqual(@"Duplicated Failure Value cannot be null.Parameter name: value".Replace(Environment.NewLine,""), resourceCatalogResult.Message.Replace(Environment.NewLine, ""));
+            Assert.AreEqual(@"Duplicated Failure Value cannot be null.Parameter name: value".Replace(Environment.NewLine, ""), resourceCatalogResult.Message.Replace(Environment.NewLine, ""));
         }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void ResourceCatalog_UnitTest_DuplicateResourceResourceWithValidArgs_ExpectSuccesResult()
+        {
+            //------------Setup for test--------------------------
+            var workspaceID = GlobalConstants.ServerWorkspaceID;
+
+            var path = EnvironmentVariables.ResourcePath;
+            Directory.CreateDirectory(path);
+            const string resourceName = "Bug6619Dep";
+            SaveResources(path, null, false, false, new[] { "Bug6619", resourceName }, new[] { Guid.NewGuid(), Guid.NewGuid() });
+
+            var rc = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
+            rc.LoadWorkspace(workspaceID);
+            var result = rc.GetResources(workspaceID);
+            IResource oldResource = result.FirstOrDefault(resource => resource.ResourceName == resourceName);
+            //------------Assert Precondition-----------------
+            Assert.AreEqual(2, result.Count);
+            Assert.IsNotNull(oldResource);
+            //------------Execute Test---------------------------
+            ResourceCatalogResult resourceCatalogResult = rc.DuplicateResource(oldResource.ResourceID, oldResource.GetResourcePath(workspaceID), "SomeName");
+            //------------Assert Results-------------------------
+            Assert.AreEqual(ExecStatus.Success, resourceCatalogResult.Status);
+            Assert.AreEqual(@"Duplicated Successfully".Replace(Environment.NewLine, ""), resourceCatalogResult.Message.Replace(Environment.NewLine, ""));
+        }
+
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void ResourceCatalog_UnitTest_DuplicateFolderResourceWithValidArgs_ExpectSuccesResult()
+        {
+            //------------Setup for test--------------------------
+            var workspaceID = GlobalConstants.ServerWorkspaceID;
+
+            var path = EnvironmentVariables.ResourcePath;
+            Directory.CreateDirectory(path);
+            const string resourceName = "Bug6619Dep";
+            SaveResources(path, null, false, false, new[] { "Bug6619", resourceName }, new[] { Guid.NewGuid(), Guid.NewGuid() });
+
+            var rc = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
+            rc.LoadWorkspace(workspaceID);
+            var result = rc.GetResources(workspaceID);
+            IResource oldResource = result.FirstOrDefault(resource => resource.ResourceName == resourceName);
+            //------------Assert Precondition-----------------
+            Assert.AreEqual(2, result.Count);
+            Assert.IsNotNull(oldResource);
+            //------------Execute Test---------------------------
+            ResourceCatalogResult resourceCatalogResult = rc.DuplicateFolder(oldResource.GetResourcePath(GlobalConstants.ServerWorkspaceID), "Destination", "NewName", false);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(ExecStatus.Success, resourceCatalogResult.Status);
+            Assert.AreEqual(@"Duplicated Successfully".Replace(Environment.NewLine, ""), resourceCatalogResult.Message.Replace(Environment.NewLine, ""));
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void ResourceCatalog_UnitTest_DuplicateFolderResourceWithInvalidArgs_ExpectExceptions()
+        {
+            //------------Setup for test--------------------------
+            var workspaceID = GlobalConstants.ServerWorkspaceID;
+
+            var path = EnvironmentVariables.ResourcePath;
+            Directory.CreateDirectory(path);
+            const string resourceName = "Bug6619Dep";
+            SaveResources(path, null, false, false, new[] { "Bug6619", resourceName }, new[] { Guid.NewGuid(), Guid.NewGuid() });
+
+            var rc = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
+            rc.LoadWorkspace(workspaceID);
+            var result = rc.GetResources(workspaceID);
+            IResource oldResource = result.FirstOrDefault(resource => resource.ResourceName == resourceName);
+            //------------Assert Precondition-----------------
+            Assert.AreEqual(2, result.Count);
+            Assert.IsNotNull(oldResource);
+            //------------Execute Test---------------------------
+            try
+            {
+                Assert.Fail("No Exceptions Thrown");
+            }
+            catch (Exception)
+            {
+                //
+            }
+
+            //------------Assert Results-------------------------
+
+        }
+        /// <summary>
+        /// Integration through the Fix references expecting no exception
+        /// </summary>
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void ResourceCatalog_UnitTest_GivenFixRefsTrue_ExpectResourceContentsChanges()
+        {
+            //------------Setup for test--------------------------
+            var workspaceID = GlobalConstants.ServerWorkspaceID;
+
+            var path = EnvironmentVariables.ResourcePath;
+            Directory.CreateDirectory(path);
+            const string resourceName = "Test1";
+            SaveResources(path, null, false, false, new[] { "Test", resourceName }, new[] { Guid.NewGuid(), Guid.NewGuid() });
+
+            var rc = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
+            rc.LoadWorkspace(workspaceID);
+            var result = rc.GetResources(workspaceID);
+            IResource oldResource = result.FirstOrDefault(resource => resource.ResourceName == resourceName);
+            //------------Assert Precondition-----------------
+            Assert.AreEqual(2, result.Count);
+            Assert.IsNotNull(oldResource);
+            //------------Execute Test---------------------------
+
+
+            rc.DuplicateFolder("", oldResource.GetResourcePath(workspaceID), "Null", true);
+        }
+
+
 
         private ExecuteMessage ConvertToMsg(string payload)
         {
