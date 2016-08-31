@@ -252,7 +252,7 @@ namespace Warewolf.Studio.ViewModels
             
         }
 
-        bool CheckResourceNameConflict()
+         bool CheckResourceNameConflict()
         {
             var selected = Source.SelectedItems.Where(a => a.ResourceType != "Folder");
 
@@ -275,7 +275,7 @@ namespace Warewolf.Studio.ViewModels
             return false;
         }
 
-        void CheckVersionConflict()
+         void CheckVersionConflict()
         {
             Version sourceVersionNumber = Source.ServerVersion;
 

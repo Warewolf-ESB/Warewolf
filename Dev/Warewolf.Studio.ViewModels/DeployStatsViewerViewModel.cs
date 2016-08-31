@@ -156,7 +156,6 @@ namespace Warewolf.Studio.ViewModels
 
         public void CheckDestinationPersmisions()
         {
-            var environmentViewModels = _destination.Environments;
             _destinationItems = _destination.SelectedEnvironment?.AsList();
             if (_destinationItems?.Count > 0 && _items?.Count > 0)
             {
@@ -175,7 +174,7 @@ namespace Warewolf.Studio.ViewModels
                                 }
                                 else
                                     currentItem.CanDeploy = true;
-                            }                            
+                            }
                         }
                         else                        
                             currentItem.CanDeploy = true;
