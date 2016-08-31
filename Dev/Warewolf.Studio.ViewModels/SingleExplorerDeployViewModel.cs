@@ -12,6 +12,7 @@ using Dev2.Interfaces;
 using Microsoft.Practices.Prism.Commands;
 using Microsoft.Practices.Prism.Mvvm;
 using Dev2.Studio.Core;
+// ReSharper disable ClassWithVirtualMembersNeverInherited.Global
 
 namespace Warewolf.Studio.ViewModels
 {
@@ -32,7 +33,7 @@ namespace Warewolf.Studio.ViewModels
         bool _deploySuccessfull;
         string _conflictNewResourceText;
         readonly IShellViewModel _shell;
-        public virtual IPopupController PopupController { get; set; }
+        protected virtual IPopupController PopupController { get; set; }
         bool _showNewItemsList;
         bool _showConflictItemsList;
         IList<Conflict> _conflictItems;
@@ -237,11 +238,11 @@ namespace Warewolf.Studio.ViewModels
                     var notfolders = selected.Select(a => a.ResourceId).ToList();
                     _shell.DeployResources(Source.Environments.First().Server.EnvironmentID, Destination.ConnectControlViewModel.SelectedConnection.EnvironmentID, notfolders);
                     DeploySuccessfull = true;
-                    Destination.RefreshSelectedEnvironment();
                     DeploySuccessMessage = $"{notfolders.Count} Resource{(notfolders.Count == 1 ? "" : "s")} Deployed Successfully.";
                     UpdateServerCompareChanged(this, Guid.Empty);
-                    _stats.ReCalculate();
                     Source.SelectedEnvironment.AsList().Where(model => model.IsResourceChecked == true).Apply(o => o.IsResourceUnchecked = false);
+                    Destination.RefreshSelectedEnvironment();
+                    _stats.ReCalculate();
                 }
             }
             catch (Exception e)
@@ -252,7 +253,7 @@ namespace Warewolf.Studio.ViewModels
             
         }
 
-         bool CheckResourceNameConflict()
+        void CheckResourceNameConflict()
         {
             var selected = Source.SelectedItems.Where(a => a.ResourceType != "Folder");
 
@@ -269,10 +270,8 @@ namespace Warewolf.Studio.ViewModels
                 if (msgResult == MessageBoxResult.OK)
                 {
                     IsDeploying = false;
-                    return true;
                 }
             }
-            return false;
         }
 
          void CheckVersionConflict()
