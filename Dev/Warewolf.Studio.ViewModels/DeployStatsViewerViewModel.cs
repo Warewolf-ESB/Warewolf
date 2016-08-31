@@ -11,7 +11,8 @@ namespace Warewolf.Studio.ViewModels
 {
     public class DeployStatsViewerViewModel : BindableBase, IDeployStatsViewerViewModel
     {
-        readonly IExplorerViewModel _destination;
+        readonly IDeployDestinationExplorerViewModel _destination;
+        //readonly IExplorerViewModel _destination;
         int _connectors;
         int _services;
         int _sources;
@@ -25,14 +26,14 @@ namespace Warewolf.Studio.ViewModels
         IList<IExplorerTreeItem> _items;
         private ICollection<IExplorerItemViewModel> _destinationItems;
 
-        public DeployStatsViewerViewModel(IExplorerViewModel destination)
+        public DeployStatsViewerViewModel(IDeployDestinationExplorerViewModel destination)
         {
             VerifyArgument.IsNotNull(@"destination", destination);
             _destination = destination;            
             Status = @"";
         }
 
-        public DeployStatsViewerViewModel(IList<IExplorerTreeItem> items, IExplorerViewModel destination)
+        public DeployStatsViewerViewModel(IList<IExplorerTreeItem> items, IDeployDestinationExplorerViewModel destination)
         {
             _items = items;
             _destination = destination;
@@ -155,6 +156,7 @@ namespace Warewolf.Studio.ViewModels
 
         public void CheckDestinationPersmisions()
         {
+            var environmentViewModels = _destination.Environments;
             _destinationItems = _destination.SelectedEnvironment?.AsList();
             if (_destinationItems?.Count > 0 && _items?.Count > 0)
             {
