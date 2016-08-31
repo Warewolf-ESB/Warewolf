@@ -77,18 +77,15 @@ namespace Warewolf.Studio.ViewModels
                     _lazyComs = new CommunicationController { ServiceName = "DuplicateFolderService" };
                     _lazyComs.AddPayloadArgument("FixRefs", FixReferences.ToString());
                 }
+                _lazyComs.AddPayloadArgument("NewResourceName", Name);
 
                 if (!_explorerItemViewModel.IsFolder)
                 {
                     _lazyComs.AddPayloadArgument("ResourceID", _explorerItemViewModel.ResourceId.ToString());
                 }
 
-                _lazyComs.AddPayloadArgument("sourcePath", _explorerItemViewModel.ResourcePath);
-                if (_explorerItemViewModel.IsFolder)
-                    _lazyComs.AddPayloadArgument("destinatioPath", SelectedItem.ResourcePath);
-                else
-                    _lazyComs.AddPayloadArgument("destinatioPath", SelectedItem.ResourcePath.Count(a => a == '\\') <= 1 && SelectedItem.ResourcePath.StartsWith("\\") ? SelectedItem.ResourcePath : "");
-                _lazyComs.AddPayloadArgument("NewResourceName", Name);
+                _lazyComs.AddPayloadArgument("sourcePath", _explorerItemViewModel.ResourcePath);                
+                _lazyComs.AddPayloadArgument("destinationPath", Path);
 
 
                 // ReSharper disable once UnusedVariable
@@ -106,8 +103,15 @@ namespace Warewolf.Studio.ViewModels
             }
             finally
             {
-                //Always refresh the env after this service call
-                _environmentViewModel.Server.UpdateRepository.FireItemSaved(true);
+                try
+                {
+                    //Always refresh the env after this service call
+                    _environmentViewModel.Server.UpdateRepository.FireItemSaved(true);
+                }
+                catch (Exception)
+                {
+                    //
+                }
             }
 
 

@@ -100,7 +100,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
         public Action<IResource> ResourceSaved { get; set; }
         public Action<Guid, IList<ICompileMessageTO>> SendResourceMessages { get; set; }
 
-        public ResourceCatalogResult SaveResource(Guid workspaceID, IResource resource, StringBuilder contents, string reason = "", string user = "",string savedPath="")
+        public ResourceCatalogResult SaveResource(Guid workspaceID, IResource resource, StringBuilder contents, string reason = "", string user = "", string savedPath = "")
         {
             _serverVersionRepository.StoreVersion(resource, user, reason, workspaceID, savedPath);
             ResourceCatalogResult saveResult = null;
@@ -129,7 +129,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
                 beforeAction = beforeService.Actions.FirstOrDefault();
             }
 
-            var result = ((ResourceCatalog)_resourceCatalog).SaveImpl(workspaceID, resource, contents,true,savedPath);
+            var result = ((ResourceCatalog)_resourceCatalog).SaveImpl(workspaceID, resource, contents, true, savedPath);
 
             if (result.Status == ExecStatus.Success)
             {
@@ -193,7 +193,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
                 }
                 if (affectedResource != null)
                 {
-                    Common.UpdateResourceXml(_resourceCatalog,workspaceID, affectedResource, messages);
+                    Common.UpdateResourceXml(_resourceCatalog, workspaceID, affectedResource, messages);
                 }
             }
             CompileMessageRepo.Instance.AddMessage(workspaceID, dependsMessageList);
@@ -233,7 +233,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
 
             CompileMessageRepo.Instance.AddMessage(workspaceID, savedResourceCompileMessage);
         }
-        private XElement SaveToDisk(IResource resource, StringBuilder contents, string directoryName, string resPath, TxFileManager fileManager)
+        private XElement SaveToDisk(IResource resource, StringBuilder contents, string directoryName, TxFileManager fileManager)
         {
             if (!Directory.Exists(directoryName))
             {
@@ -293,7 +293,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
                 try
                 {
                     var resources = _resourceCatalog.GetResources(workspaceID);
-                    var conflicting = resources.FirstOrDefault(r => resource.ResourceID != r.ResourceID && r.GetResourcePath(workspaceID) != null && r.GetResourcePath(workspaceID).Equals(savedPath+"\\"+resource.ResourceName, StringComparison.InvariantCultureIgnoreCase) && r.ResourceName.Equals(resource.ResourceName, StringComparison.InvariantCultureIgnoreCase));
+                    var conflicting = resources.FirstOrDefault(r => resource.ResourceID != r.ResourceID && r.GetResourcePath(workspaceID) != null && r.GetResourcePath(workspaceID).Equals(savedPath + "\\" + resource.ResourceName, StringComparison.InvariantCultureIgnoreCase) && r.ResourceName.Equals(resource.ResourceName, StringComparison.InvariantCultureIgnoreCase));
                     if (conflicting != null && !conflicting.IsNewResource || conflicting != null && !overwriteExisting)
                     {
                         saveResult = ResourceCatalogResultBuilder.CreateDuplicateMatchResult(string.Format(ErrorResource.TypeConflict, conflicting.ResourceType));
@@ -302,6 +302,10 @@ namespace Dev2.Runtime.ResourceCatalogImpl
                     if (savedPath.EndsWith("\\"))
                     {
                         savedPath = savedPath.TrimEnd('\\');
+                    }
+                    if (savedPath.StartsWith("\\"))
+                    {
+                        savedPath = savedPath.TrimStart('\\');
                     }
                     var workspacePath = EnvironmentVariables.GetWorkspacePath(workspaceID);
                     var originalRes = savedPath;
@@ -317,7 +321,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
 
                     #region Save to disk
 
-                    var xml = SaveToDisk(resource, contents, directoryName, resPath, fileManager);
+                    var xml = SaveToDisk(resource, contents, directoryName, fileManager);
 
                     #endregion
 
