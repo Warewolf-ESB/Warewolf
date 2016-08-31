@@ -159,7 +159,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
 
         private Connection SetupDefaultConnection()
         {
-            Connection testConnection = new Connection { Address = "http://someAddressIMadeUpToTest:7654/Server", AuthenticationType = AuthenticationType.Windows, Password = "secret", ResourceID = Guid.NewGuid(), ResourceName = "TestResourceIMadeUp", ResourcePath = @"host\Server", ResourceType = "Server", UserName = @"Domain\User", WebServerPort = 8080 };
+            Connection testConnection = new Connection { Address = "http://someAddressIMadeUpToTest:7654/Server", AuthenticationType = AuthenticationType.Windows, Password = "secret", ResourceID = Guid.NewGuid(), ResourceName = "TestResourceIMadeUp", ResourceType = "Server", UserName = @"Domain\User", WebServerPort = 8080 };
 
             return testConnection;
         }

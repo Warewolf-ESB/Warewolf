@@ -25,6 +25,7 @@ namespace Dev2.Common.Interfaces
         /// </summary>
         /// <param name="id">resource id</param>
         void DeleteResource(Guid id);
+
         /// <summary>
         /// Rename a resource
         /// </summary>
@@ -38,7 +39,7 @@ namespace Dev2.Common.Interfaces
         /// <param name="path">the folder path</param>
         /// <param name="newName">the new name</param>
         /// <param name="id"></param>
-        void RenameFolder(string path, string newName, Guid id);
+        void RenameFolder(string path, string newName);
 
         /// <summary>
         /// Move a resource to another folder

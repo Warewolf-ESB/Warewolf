@@ -9,6 +9,7 @@ using Dev2.Communication;
 using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
 using Dev2.Runtime.Hosting;
+using Dev2.Runtime.Interfaces;
 using Dev2.Workspaces;
 
 namespace Dev2.Runtime.ESB.Management.Services
@@ -16,8 +17,18 @@ namespace Dev2.Runtime.ESB.Management.Services
     // ReSharper disable once UnusedMember.Global
     public class DuplicateResourceService : IEsbManagementEndpoint
     {
-        
+        private readonly IResourceCatalog _catalog;
 
+        public DuplicateResourceService(IResourceCatalog catalog)
+        {
+            _catalog = catalog;
+        }
+
+        // ReSharper disable once MemberCanBeInternal
+        public DuplicateResourceService()
+        {
+
+        }
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
@@ -40,9 +51,11 @@ namespace Dev2.Runtime.ESB.Management.Services
                         {
                             if (destinatioPath == null)
                             {
-                                throw new Exception("Destination Paths not specified");
+                                var faliure = new ExecuteMessage { HasError = true, Message = new StringBuilder("Destination Paths not specified") };
+                                return serializer.SerializeToBuilder(faliure);
                             }
-                            var resourceCatalogResult = ResourceCatalog.Instance.DuplicateResource(resourceId.ToString().ToGuid(), destinatioPath.ToString(), newResourceName.ToString());
+                            var resourceCatalog = _catalog ?? ResourceCatalog.Instance;
+                            var resourceCatalogResult = resourceCatalog.DuplicateResource(resourceId.ToString().ToGuid(), destinatioPath.ToString(), newResourceName.ToString());
                             Dev2Logger.Error("DuplicateResourceService success");
                             var result = new ExecuteMessage { HasError = false, Message = resourceCatalogResult.Message.ToStringBuilder() };
                             return serializer.SerializeToBuilder(result);
@@ -57,7 +70,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                     }
                 }
             }
-            var success = new ExecuteMessage { HasError = false };
+            var success = new ExecuteMessage { HasError = true, Message = new StringBuilder("ResourceId is required")};
             return serializer.SerializeToBuilder(success);
         }
 

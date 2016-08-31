@@ -57,7 +57,6 @@ namespace Dev2.Runtime.ESB.Management.Services
                     ResourceID = src.Id,
                     DatabaseName = src.DbName,
                     ResourceName = src.Name,
-                    ResourcePath = src.Path,
                     ResourceType = src.Type.ToString()
                 };
                 var con = new DbSources();
@@ -65,7 +64,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 
                 if (result.IsValid)
                 {
-                    ResourceCatalog.Instance.SaveResource(GlobalConstants.ServerWorkspaceID, res);
+                    ResourceCatalog.Instance.SaveResource(GlobalConstants.ServerWorkspaceID, res, "", "", src.Path);
                     ServerExplorerRepo.UpdateItem(res);
 
                     msg.HasError = false;

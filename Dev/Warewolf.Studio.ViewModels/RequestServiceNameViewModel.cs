@@ -55,7 +55,7 @@ namespace Warewolf.Studio.ViewModels
             _header = header;
             _explorerItemViewModel = explorerItemViewModel;
             OkCommand = new DelegateCommand(SetServiceName, () => string.IsNullOrEmpty(ErrorMessage) && HasLoaded);
-            DuplicateCommand = new DelegateCommand(CallDuplicateService, () => explorerItemViewModel != null);
+            DuplicateCommand = new DelegateCommand(CallDuplicateService, () => explorerItemViewModel != null && string.IsNullOrEmpty(ErrorMessage) && HasLoaded);
             CancelCommand = new DelegateCommand(CloseView);
             Name = header;
             IsDuplicate = explorerItemViewModel != null;
@@ -82,8 +82,12 @@ namespace Warewolf.Studio.ViewModels
                 {
                     _lazyComs.AddPayloadArgument("ResourceID", _explorerItemViewModel.ResourceId.ToString());
                 }
+
                 _lazyComs.AddPayloadArgument("sourcePath", _explorerItemViewModel.ResourcePath);
-                _lazyComs.AddPayloadArgument("destinatioPath", SelectedItem.ResourcePath);
+                if (_explorerItemViewModel.IsFolder)
+                    _lazyComs.AddPayloadArgument("destinatioPath", SelectedItem.ResourcePath);
+                else
+                    _lazyComs.AddPayloadArgument("destinatioPath", SelectedItem.ResourcePath.Count(a => a == '\\') <= 1 && SelectedItem.ResourcePath.StartsWith("\\") ? SelectedItem.ResourcePath : "");
                 _lazyComs.AddPayloadArgument("NewResourceName", Name);
 
 
@@ -95,6 +99,10 @@ namespace Warewolf.Studio.ViewModels
                     // SHow error dialog
                 }
                 CloseView();
+            }
+            catch (Exception)
+            {
+                //
             }
             finally
             {
@@ -227,6 +235,8 @@ namespace Warewolf.Studio.ViewModels
         {
             var command = OkCommand as DelegateCommand;
             command?.RaiseCanExecuteChanged();
+            var dupCommad = DuplicateCommand as DelegateCommand;
+            dupCommad?.RaiseCanExecuteChanged();
         }
 
         public MessageBoxResult ShowSaveDialog()

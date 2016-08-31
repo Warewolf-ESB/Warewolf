@@ -95,8 +95,7 @@ namespace Dev2.Runtime.Hosting
         {
             if (_root == null || reload)
             {
-                _root = ExplorerItemFactory.CreateRootExplorerItem(EnvironmentVariables.GetWorkspacePath(workSpaceId),
-                    workSpaceId);
+                _root = ExplorerItemFactory.CreateRootExplorerItem(EnvironmentVariables.GetWorkspacePath(workSpaceId), workSpaceId);
             }
             return _root;
         }
@@ -129,13 +128,12 @@ namespace Dev2.Runtime.Hosting
                                  .Where(
                                      a =>
                                      (a.ResourceName == itemToRename.DisplayName.Trim()) &&
-                                     (a.ResourcePath == itemToRename.ResourcePath.Trim()));
+                                     (a.ResourceID == itemToRename.ResourceId));
             if (item.Any())
             {
                 return new ExplorerRepositoryResult(ExecStatus.Fail, ErrorResource.ItemAlreadyExistInPath);
             }
-            ResourceCatalogResult result = ResourceCatalogue.RenameResource(workSpaceId, itemToRename.ResourceId, itemToRename.DisplayName);
-            // Reload(workSpaceId);
+            ResourceCatalogResult result = ResourceCatalogue.RenameResource(workSpaceId, itemToRename.ResourceId, itemToRename.DisplayName, itemToRename.ResourcePath);
             return new ExplorerRepositoryResult(result.Status, result.Message);
         }
 
@@ -147,38 +145,18 @@ namespace Dev2.Runtime.Hosting
                 {
                     return new ExplorerRepositoryResult(ExecStatus.NoMatch, string.Format(ErrorResource.RequestedFolderDoesNotExistOnServer, path));
                 }
-                var resourceCatalogResult = ResourceCatalogue.RenameCategory(workSpaceId, path, newPath);
-                //if(_root != null)
-                //{
-                //    Apply(_root, a => a != null && a.ResourcePath.StartsWith(newPath + "\\"), b => {
-                //                                                                                       if(b != null)
-                //                                                                                       {
-                //                                                                                           b.ResourcePath = b.ResourcePath.Replace(path, newPath);
-                //                                                                                       }
-                //    });
-                //}
-                if (resourceCatalogResult.Status == ExecStatus.Success)
-                {
-                    MoveVersionFolder(path, newPath);
-                    Directory.Delete(DirectoryStructureFromPath(path), true);
-                    // Reload(workSpaceId);
-                    return new ExplorerRepositoryResult(ExecStatus.Success, "");
-                }
-                if (resourceCatalogResult.Status == ExecStatus.NoMatch)
+                if (!Directory.Exists(newPath))
                 {
                     Directory.Move(DirectoryStructureFromPath(path), DirectoryStructureFromPath(newPath));
                     MoveVersionFolder(path, newPath);
-                    //UpdateFolderName(path, newPath);
-                    //Reload(workSpaceId);
-                    return new ExplorerRepositoryResult(ExecStatus.Success, "");
+                    Load(workSpaceId, true);
                 }
-                //    Reload(workSpaceId);
-                return new ExplorerRepositoryResult(ExecStatus.Fail, resourceCatalogResult.Message);
             }
             catch (Exception err)
             {
                 return new ExplorerRepositoryResult(ExecStatus.AccessViolation, err.Message);
             }
+            return new ExplorerRepositoryResult(ExecStatus.Success, "");
         }
 
 
@@ -262,13 +240,14 @@ namespace Dev2.Runtime.Hosting
             return new ExplorerRepositoryResult(result.Status, result.Message);
         }
 
+
         public IExplorerRepositoryResult DeleteFolder(string path, bool deleteContents, Guid workSpaceId)
         {
             if (!Directory.Exists(DirectoryStructureFromPath(path)))
             {
                 return new ExplorerRepositoryResult(ExecStatus.Fail, string.Format(ErrorResource.RequestedFolderDoesNotExistOnServer, path));
             }
-            if (!deleteContents && ResourceCatalogue.GetResourceList(workSpaceId).Count(a => a.ResourcePath == path) > 0)
+            if (!deleteContents && ResourceCatalogue.GetResourceList(workSpaceId).Count(a => a.GetResourcePath(workSpaceId) == path) > 0)
             {
                 return new ExplorerRepositoryResult(ExecStatus.Fail, string.Format(ErrorResource.RequestedFolderDoesNotExistOnServer, path));
             }
@@ -279,7 +258,7 @@ namespace Dev2.Runtime.Hosting
             try
             {
                 path = path + "\\";
-                var resources = ResourceCatalogue.GetResourceList(workSpaceId).Where(a => a.ResourcePath.StartsWith(path)).ToList();
+                var resources = ResourceCatalogue.GetResourceList(workSpaceId).Where(a => a.GetResourcePath(workSpaceId).StartsWith(path)).ToList();
                 List<ResourceCatalogResult> deletedResources = resources.Select(a => ResourceCatalogue.DeleteResource(workSpaceId, a.ResourceName, a.ResourceType.ToString())).ToList();
                 if (deletedResources.Any(a => a.Status != ExecStatus.Success))
                 {
@@ -354,36 +333,22 @@ namespace Dev2.Runtime.Hosting
                 {
                     newPath = itemToMove.DisplayName;
                 }
-                if (itemToMove.Children == null || itemToMove.Children.Count == 0)
-                {
-                    var oldPath = itemToMove.ResourcePath;
-                    itemToMove.ResourcePath = newPath;
-                    AddItem(itemToMove, workSpaceId);
-                    DeleteFolder(oldPath, true, workSpaceId);
-                }
-                else
-                {
-                    foreach (var explorerItem in itemToMove.Children)
-                    {
-                        MoveItem(explorerItem, newPath, workSpaceId);
-                    }
-                }
+                var oldPath = itemToMove.ResourcePath;
+                Directory.Move(DirectoryStructureFromPath(oldPath), DirectoryStructureFromPath(newPath));
+                MoveVersionFolder(oldPath, newPath);
+                Load(workSpaceId, true);                
                 return new ExplorerRepositoryResult(ExecStatus.Success, "");
             }
             // ReSharper disable once RedundantIfElseBlock
             else
             {
-                IEnumerable<IResource> item = ResourceCatalogue.GetResourceList(workSpaceId)
-                    .Where(a => a.ResourcePath == newPath);
+                IEnumerable<IResource> item = ResourceCatalogue.GetResourceList(workSpaceId).Where(a => a.GetResourcePath(workSpaceId) == newPath);
                 if (item.Any())
                 {
                     return new ExplorerRepositoryResult(ExecStatus.Fail, ErrorResource.ItemAlreadyExistInPath);
                 }
                 return MoveSingeItem(itemToMove, newPath, workSpaceId);
             }
-
-
-
         }
 
         IExplorerRepositoryResult MoveSingeItem(IExplorerItem itemToMove, string newPath, Guid workSpaceId)
@@ -391,7 +356,6 @@ namespace Dev2.Runtime.Hosting
             MoveVersions(itemToMove, newPath);
             ResourceCatalogResult result = ResourceCatalogue.RenameCategory(workSpaceId, itemToMove.ResourcePath, newPath, new List<IResource> { ResourceCatalogue.GetResource(workSpaceId, itemToMove.ResourceId) });
             _file.Delete(string.Format("{0}.xml", DirectoryStructureFromPath(itemToMove.ResourcePath)));
-            //Reload(workSpaceId);
             return new ExplorerRepositoryResult(result.Status, result.Message);
         }
 
@@ -399,7 +363,7 @@ namespace Dev2.Runtime.Hosting
 
         void MoveVersions(IExplorerItem itemToMove, string newPath)
         {
-            VersionRepository.MoveVersions(itemToMove.ResourceId, newPath);
+            VersionRepository.MoveVersions(itemToMove.ResourceId, newPath, itemToMove.ResourcePath);
         }
 
         public static string DirectoryStructureFromPath(string path)

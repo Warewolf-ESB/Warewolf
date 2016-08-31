@@ -73,9 +73,9 @@ namespace Dev2.Tests.Runtime.WebServer
             mockAuthorizationService.Setup(service => service.IsAuthorized(AuthorizationContext.Execute, It.IsAny<string>())).Returns(true);
             var mockResourceCatalog = new Mock<IResourceCatalog>();
             var resources = new List<IResource>();
-            var resource1 = new Resource { ResourceName = "Execution Engine Test", ResourcePath = "Acceptance Testing Resources\\Execution Engine\\Execution Engine Test", ResourceType = "WorkflowService" };
-            var resource2 = new Resource { ResourceName = "Hello World", ResourcePath = "Hello World", ResourceType = "WorkflowService" };
-            var resource3 = new Resource { ResourceName = "9139Local", ResourcePath = "Acceptance Testing Resources\\9139Local", ResourceType = "WorkflowService" };
+            var resource1 = new Resource { ResourceName = "Execution Engine Test", FilePath = EnvironmentVariables.ResourcePath + "\\Acceptance Testing Resources\\Execution Engine\\Execution Engine Test.xml", ResourceType = "WorkflowService" };
+            var resource2 = new Resource { ResourceName = "Hello World", FilePath = EnvironmentVariables.ResourcePath + "\\Hello World.xml", ResourceType = "WorkflowService" };
+            var resource3 = new Resource { ResourceName = "9139Local", FilePath = EnvironmentVariables.ResourcePath + "\\Acceptance Testing Resources\\9139Local.xml", ResourceType = "WorkflowService" };
             
             resources.Add(resource1);
             resources.Add(resource2);
@@ -105,9 +105,9 @@ namespace Dev2.Tests.Runtime.WebServer
             mockAuthorizationService.Setup(service => service.IsAuthorized(AuthorizationContext.Execute, It.IsAny<string>())).Returns(true);
             var mockResourceCatalog = new Mock<IResourceCatalog>();
             var resources = new List<IResource>();
-            var resource1 = new Resource { ResourceName = "Execution Engine Test", ResourcePath = "Acceptance Testing Resources\\Execution Engine\\Execution Engine Test", ResourceType = "WorkflowService" };
-            var resource2 = new Resource { ResourceName = "Hello World", ResourcePath = "Hello World", ResourceType = "WorkflowService" };
-            var resource3 = new Resource { ResourceName = "9139Local", ResourcePath = "Acceptance Testing Resources\\9139Local", ResourceType = "WorkflowService" };
+            var resource1 = new Resource { ResourceName = "Execution Engine Test", FilePath = EnvironmentVariables.ResourcePath + "\\Acceptance Testing Resources\\Execution Engine\\Execution Engine Test.xml", ResourceType = "WorkflowService" };
+            var resource2 = new Resource { ResourceName = "Hello World", FilePath = EnvironmentVariables.ResourcePath + "\\Hello World.xml", ResourceType = "WorkflowService" };
+            var resource3 = new Resource { ResourceName = "9139Local", FilePath = EnvironmentVariables.ResourcePath + "\\Acceptance Testing Resources\\9139Local.xml", ResourceType = "WorkflowService" };
             
             resources.Add(resource1);
             resources.Add(resource2);
@@ -138,9 +138,9 @@ namespace Dev2.Tests.Runtime.WebServer
             mockAuthorizationService.Setup(service => service.IsAuthorized(AuthorizationContext.Execute, It.IsAny<string>())).Returns(true);
             var mockResourceCatalog = new Mock<IResourceCatalog>();
             var resources = new List<IResource>();
-            var resource1 = new Resource { ResourceName = "Execution Engine Test", ResourcePath = "Acceptance Testing Resources\\Execution Engine\\Execution Engine Test", ResourceType = "WorkflowService" };
-            var resource2 = new Resource { ResourceName = "Hello World", ResourcePath = "Hello World", ResourceType = "WorkflowService" };
-            var resource3 = new Resource { ResourceName = "9139Local", ResourcePath = "Acceptance Testing Resources\\9139Local", ResourceType = "WorkflowService" };
+            var resource1 = new Resource { ResourceName = "Execution Engine Test", FilePath = EnvironmentVariables.ResourcePath + "\\Acceptance Testing Resources\\Execution Engine\\Execution Engine Test.xml", ResourceType = "WorkflowService" };
+            var resource2 = new Resource { ResourceName = "Hello World", FilePath = EnvironmentVariables.ResourcePath + "\\Hello World.xml", ResourceType = "WorkflowService" };
+            var resource3 = new Resource { ResourceName = "9139Local", FilePath = EnvironmentVariables.ResourcePath + "\\Acceptance Testing Resources\\9139Local.xml", ResourceType = "WorkflowService" };
             
             resources.Add(resource1);
             resources.Add(resource2);
@@ -181,9 +181,9 @@ namespace Dev2.Tests.Runtime.WebServer
             mockAuthorizationService.Setup(service => service.IsAuthorized(AuthorizationContext.Execute, authorizedResource2.ToString())).Returns(true);
             var mockResourceCatalog = new Mock<IResourceCatalog>();
             var resources = new List<IResource>();
-            var resource1 = new Resource { ResourceID = unAuthortizedResourceID, ResourceName = "Execution Engine Test", ResourcePath = "Acceptance Testing Resources\\Execution Engine\\Execution Engine Test", ResourceType = "WorkflowService" };
-            var resource2 = new Resource { ResourceID = authorizedResource1, ResourceName = "Hello World", ResourcePath = "Hello World", ResourceType = "WorkflowService" };
-            var resource3 = new Resource { ResourceID = authorizedResource2, ResourceName = "9139Local", ResourcePath = "Acceptance Testing Resources\\9139Local", ResourceType = "WorkflowService" };
+            var resource1 = new Resource { ResourceID = unAuthortizedResourceID, ResourceName = "Execution Engine Test", FilePath = EnvironmentVariables.ResourcePath + "\\Acceptance Testing Resources\\Execution Engine\\Execution Engine Test.xml", ResourceType = "WorkflowService" };
+            var resource2 = new Resource { ResourceID = authorizedResource1, ResourceName = "Hello World", FilePath = EnvironmentVariables.ResourcePath + "\\Hello World.xml", ResourceType = "WorkflowService" };
+            var resource3 = new Resource { ResourceID = authorizedResource2, ResourceName = "9139Local", FilePath = EnvironmentVariables.ResourcePath + "\\Acceptance Testing Resources\\9139Local.xml", ResourceType = "WorkflowService" };
 
             resources.Add(resource1);
             resources.Add(resource2);
@@ -223,9 +223,9 @@ namespace Dev2.Tests.Runtime.WebServer
             mockAuthorizationService.Setup(service => service.IsAuthorized(GlobalConstants.GenericPrincipal, AuthorizationContext.Execute, publicAuthorizedResourceID.ToString())).Returns(true);
             var mockResourceCatalog = new Mock<IResourceCatalog>();
             var resources = new List<IResource>();
-            var resource1 = new Resource { ResourceID = publicAuthorizedResourceID, ResourceName = "Execution Engine Test", ResourcePath = "Acceptance Testing Resources\\Execution Engine\\Execution Engine Test", ResourceType = "WorkflowService" };
-            var resource2 = new Resource { ResourceID = authorizedResource1, ResourceName = "Hello World", ResourcePath = "Hello World", ResourceType = "WorkflowService" };
-            var resource3 = new Resource { ResourceID = authorizedResource2, ResourceName = "9139Local", ResourcePath = "Acceptance Testing Resources\\9139Local", ResourceType = "WorkflowService" };
+            var resource1 = new Resource { ResourceID = publicAuthorizedResourceID, ResourceName = "Execution Engine Test", FilePath = EnvironmentVariables.ResourcePath + "\\Acceptance Testing Resources\\Execution Engine\\Execution Engine Test.xml", ResourceType = "WorkflowService" };
+            var resource2 = new Resource { ResourceID = authorizedResource1, ResourceName = "Hello World", FilePath = EnvironmentVariables.ResourcePath + "\\Hello World.xml", ResourceType = "WorkflowService" };
+            var resource3 = new Resource { ResourceID = authorizedResource2, ResourceName = "9139Local", FilePath = EnvironmentVariables.ResourcePath + "\\Acceptance Testing Resources\\9139Local.xml", ResourceType = "WorkflowService" };
 
             resources.Add(resource1);
             resources.Add(resource2);

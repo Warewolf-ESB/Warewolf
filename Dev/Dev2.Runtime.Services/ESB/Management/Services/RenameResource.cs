@@ -39,6 +39,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 
                 string resourceId = null;
                 string newName = null;
+                string resourcePath = null;
                 if(values == null)
                 {
                     throw new InvalidDataContractException(ErrorResource.NoParameter);
@@ -55,6 +56,11 @@ namespace Dev2.Runtime.ESB.Management.Services
                 {
                     newName = tmp.ToString();
                 }
+                values.TryGetValue("resourcePath", out tmp);
+                if(tmp != null)
+                {
+                    resourcePath = tmp.ToString();
+                }
 
                 if(resourceId == null)
                 {
@@ -68,10 +74,10 @@ namespace Dev2.Runtime.ESB.Management.Services
                 Guid id;
                 Guid.TryParse(resourceId, out id);
                 Dev2Logger.Info(String.Format( "Rename Resource. ResourceId:{0} NewName:{1}",resourceId,newName));
-                var saveToWorkSpaceResult = ResourceCatalog.Instance.RenameResource(theWorkspace.ID, id, newName);
+                var saveToWorkSpaceResult = ResourceCatalog.Instance.RenameResource(theWorkspace.ID, id, newName, resourcePath);
                 if (saveToWorkSpaceResult.Status == ExecStatus.Success)
                 {
-                    var saveToLocalServerResult = ResourceCatalog.Instance.RenameResource(Guid.Empty, id, newName);
+                    var saveToLocalServerResult = ResourceCatalog.Instance.RenameResource(Guid.Empty, id, newName, resourcePath);
                     if (saveToLocalServerResult.Status == ExecStatus.Success)
                     {
                         res.SetMessage(saveToLocalServerResult.Message);

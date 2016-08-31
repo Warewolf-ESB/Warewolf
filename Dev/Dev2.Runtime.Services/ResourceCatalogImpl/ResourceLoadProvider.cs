@@ -21,6 +21,7 @@ using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.ServiceModel.Data;
 using ServiceStack.Common.Extensions;
 using Warewolf.Resource.Errors;
+// ReSharper disable InconsistentNaming
 
 namespace Dev2.Runtime.ResourceCatalogImpl
 {
@@ -30,6 +31,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
         private ConcurrentDictionary<string, List<DynamicServiceObjectBase>> FrequentlyUsedServices { get; } = new ConcurrentDictionary<string, List<DynamicServiceObjectBase>>();
         public ConcurrentDictionary<Guid, ManagementServiceResource> ManagementServices { get; } = new ConcurrentDictionary<Guid, ManagementServiceResource>();
         public ConcurrentDictionary<Guid, object> WorkspaceLocks { get; } = new ConcurrentDictionary<Guid, object>();
+        public List<DuplicateResource> DuplicateResources { get; set; }
         readonly object _loadLock = new object();
         readonly object _workspaceLock = new object();
         private readonly FileWrapper _dev2FileWrapper;
@@ -115,7 +117,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
         public string GetResourcePath(Guid workspaceID,Guid resourceId)
         {
             var resource = GetResource(workspaceID, resourceId);
-            return resource.ResourcePath;
+            return resource.GetResourcePath(workspaceID);
         }
 
         public List<IResource> GetResources(Guid workspaceID)
@@ -140,7 +142,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
                 throw;
             }
         }
-        
+
         /// <summary>
         /// Gets the contents of the resources with the given source type.
         /// </summary>
@@ -318,7 +320,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
                 {
                     resourceName = string.Empty;
                 }
-                var resources = GetResourcesBasedOnType(type, workspaceResources, r => r.ResourcePath.Contains(resourceName));
+                var resources = GetResourcesBasedOnType(type, workspaceResources, r => r.ResourceName.Contains(resourceName));
                 return resources.Cast<Resource>().ToList();
 
             }
@@ -328,7 +330,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
         {
             return GetResources(workspaceID).Count;
         }
-
+        
         public IResource GetResource(Guid workspaceID, string resourceName, string resourceType = "Unknown", string version = null)
         {
             while (true)
@@ -353,17 +355,19 @@ namespace Dev2.Runtime.ResourceCatalogImpl
                         {
                             return false;
                         }
-                        return string.Equals(r.ResourcePath ?? "", resourcePath, StringComparison.InvariantCultureIgnoreCase) && string.Equals(r.ResourceName, resourceNameToSearchFor, StringComparison.InvariantCultureIgnoreCase) && (resourceType == "Unknown" || r.ResourceType == resourceType.ToString());
+                        return string.Equals(r.GetResourcePath(workspaceID) ?? "", resourcePath, StringComparison.InvariantCultureIgnoreCase) && string.Equals(r.ResourceName, resourceNameToSearchFor, StringComparison.InvariantCultureIgnoreCase) && (resourceType == "Unknown" || r.ResourceType == resourceType.ToString());
                     });
                     if (foundResource == null && workspaceID != GlobalConstants.ServerWorkspaceID)
                     {
                         workspaceID = GlobalConstants.ServerWorkspaceID;
                         continue;
                     }
+                   
                     return foundResource;
                 }
             }
         }
+        
 
         public IResource GetResource(Guid workspaceID, Guid resourceID)
         {
@@ -594,12 +598,10 @@ namespace Dev2.Runtime.ResourceCatalogImpl
             {
                 DuplicateResources = builder.DuplicateResources;
             }
+
             var resources = builder.ResourceList;
             return resources;
         }
-
-        public List<DuplicateResource> DuplicateResources { get; set; }
-
         private object GetWorkspaceLock(Guid workspaceID)
         {
             lock (_loadLock)
