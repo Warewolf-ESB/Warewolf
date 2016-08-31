@@ -83,7 +83,7 @@ namespace Warewolf.AcceptanceTesting.Deploy
             return popup;
         }
 
-        static IDeployStatsViewerViewModel GetStatsVm(IExplorerViewModel dest)
+        static IDeployStatsViewerViewModel GetStatsVm(IDeployDestinationExplorerViewModel dest)
         {
             return new DeployStatsViewerViewModel(dest);
         }
@@ -284,6 +284,31 @@ namespace Warewolf.AcceptanceTesting.Deploy
         {
             Assert.AreEqual(GetView().CanSelectDependencies, p0);
         }
+
+        [Then(@"source have deployable resources in ""(.*)""")]
+        public void ThenSourceHaveDeployableResourcesIn(string p0)
+        {
+            var deployViewModel = (IDeployViewModel)FeatureContext.Current["vm"];
+            var explorerItemViewModel = deployViewModel.Source.SelectedEnvironment.AsList()
+                .FirstOrDefault(p => p.ResourcePath == p0);
+            if (explorerItemViewModel != null)
+                Assert.IsTrue(explorerItemViewModel.CanDeploy);
+        }
+
+        [Then(@"resources in ""(.*)"" are now unDeployable")]
+        public void ThenResourcesInAreNowUnDeployable(string p0)
+        {
+            var deployViewModel = (IDeployViewModel)FeatureContext.Current["vm"];
+            var explorerItemViewModel = deployViewModel.Source.SelectedEnvironment.AsList()
+                .FirstOrDefault(p => p.ResourcePath == p0);
+            if (explorerItemViewModel != null)
+            {
+                Assert.IsTrue(explorerItemViewModel.CanDeploy);
+                Assert.IsFalse(explorerItemViewModel.IsResourceChecked != null && explorerItemViewModel.IsResourceChecked.Value);
+                Assert.IsFalse(explorerItemViewModel.IsResourceCheckedEnabled);
+            }
+        }
+
 
         [Given(@"I select ""(.*)"" from Source Server")]
         [When(@"I select ""(.*)"" from Source Server")]

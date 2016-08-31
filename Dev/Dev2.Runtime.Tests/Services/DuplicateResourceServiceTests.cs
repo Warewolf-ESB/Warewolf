@@ -63,7 +63,7 @@ namespace Dev2.Tests.Runtime.Services
             {
                 {"ResourceID", new StringBuilder(guid) },
                 {"NewResourceName", new StringBuilder("NewName") },
-                {"destinatioPath", new StringBuilder("NewName") },
+                {"destinationPath", new StringBuilder("NewName") },
             }, workScpace.Object);
             //---------------Test Result -----------------------
             resourceCatalog.Verify(catalog => catalog.DuplicateResource(It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<string>()));
