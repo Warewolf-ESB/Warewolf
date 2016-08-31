@@ -289,7 +289,7 @@
                                                         <ig:XamMenuItem.Icon>
                                                             <fa:FontAwesome FontSize="12"
                                                                             FontWeight="Light"
-                                                                            Icon="PaperPlaneOutlined" />
+                                                                            Icon="PaperPlaneOutline" />
                                                         </ig:XamMenuItem.Icon>
                                                     </ig:XamMenuItem>
 
@@ -625,7 +625,7 @@
                                                             <fa:FontAwesome Margin="0,2,0,0"
                                                                             FontSize="12"
                                                                             FontWeight="Light"
-                                                                            Icon="TrashOutlined" />
+                                                                            Icon="TrashOutline" />
                                                         </ig:XamMenuItem.Icon>
                                                     </ig:XamMenuItem>
 
@@ -635,6 +635,12 @@
                                                                     Header="Duplicate"
                                                                     Visibility="{Binding Path=Data.CanDuplicate,
                                                                                          Converter={StaticResource BoolToVisibilityConverter}}">
+                                                        <ig:XamMenuItem.Icon>
+                                                            <fa:FontAwesome Margin="0,2,0,0"
+                                                                            FontSize="12"
+                                                                            FontWeight="Light"
+                                                                            Icon="Clone" />
+                                                        </ig:XamMenuItem.Icon>
                                                     </ig:XamMenuItem>
 
                                                     <ig:XamMenuSeparator Visibility="{Binding Path=Data.CanDeploy, Converter={StaticResource BoolToVisibilityConverter}}" />
@@ -650,7 +656,7 @@
                                                             <fa:FontAwesome Margin="0,2,0,0"
                                                                             FontSize="12"
                                                                             FontWeight="Light"
-                                                                            Icon="PaperPlaneOutlined" />
+                                                                            Icon="PaperPlaneOutline" />
                                                         </ig:XamMenuItem.Icon>
                                                     </ig:XamMenuItem>
                                                     <ig:XamMenuItem Name="Dependencies"

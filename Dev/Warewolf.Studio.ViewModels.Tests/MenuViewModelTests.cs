@@ -5,7 +5,6 @@ using System.Windows.Input;
 using Dev2.Common.Interfaces.Help;
 using Dev2.Security;
 using Dev2.Services.Security;
-using FontAwesome.WPF;
 using Dev2.Interfaces;
 using Microsoft.Practices.Prism.Commands;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -351,7 +350,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         [TestMethod]
         public void TestDebugIcon_Default()
         {
-            Assert.AreEqual(FontAwesomeIcon.Play, _target.DebugIcon);
+            Assert.AreEqual(FontAwesome.WPF.FontAwesomeIcon.Play, _target.DebugIcon);
         }
 
         [TestMethod]
@@ -361,11 +360,11 @@ namespace Warewolf.Studio.ViewModels.Tests
             _changedProperties.Clear();
 
             //act
-            _target.DebugIcon = FontAwesomeIcon.AddToShoppingCart;
+            _target.DebugIcon = FontAwesome.WPF.FontAwesomeIcon.ShoppingCart;
             var value = _target.DebugIcon;
 
             //assert
-            Assert.AreEqual(FontAwesomeIcon.AddToShoppingCart, value);
+            Assert.AreEqual(FontAwesome.WPF.FontAwesomeIcon.ShoppingCart, value);
             Assert.IsTrue(_changedProperties.Contains("DebugIcon"));
         }
 
@@ -784,7 +783,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(value);
             Assert.IsTrue(_changedProperties.Contains("DebugLabel"));
             Assert.IsTrue(_changedProperties.Contains("IsProcessing"));
-            Assert.AreEqual(FontAwesomeIcon.Stop, _target.DebugIcon);
+            Assert.AreEqual(FontAwesome.WPF.FontAwesomeIcon.Stop, _target.DebugIcon);
         }
 
         [TestMethod]
@@ -796,11 +795,10 @@ namespace Warewolf.Studio.ViewModels.Tests
             //act
             _target.IsProcessing = false;
             var value = _target.IsProcessing;
-
             //assert
             Assert.IsFalse(value);
             Assert.IsTrue(_changedProperties.Contains("DebugLabel"));
-            Assert.AreEqual(FontAwesomeIcon.Play, _target.DebugIcon);
+            Assert.AreEqual(FontAwesome.WPF.FontAwesomeIcon.Play, _target.DebugIcon);
         }
 
         [TestMethod]
