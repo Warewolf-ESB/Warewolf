@@ -11,7 +11,8 @@ namespace Warewolf.Studio.ViewModels
 {
     public class DeployStatsViewerViewModel : BindableBase, IDeployStatsViewerViewModel
     {
-        readonly IExplorerViewModel _destination;
+        readonly IDeployDestinationExplorerViewModel _destination;
+        //readonly IExplorerViewModel _destination;
         int _connectors;
         int _services;
         int _sources;
@@ -25,14 +26,14 @@ namespace Warewolf.Studio.ViewModels
         IList<IExplorerTreeItem> _items;
         private ICollection<IExplorerItemViewModel> _destinationItems;
 
-        public DeployStatsViewerViewModel(IExplorerViewModel destination)
+        public DeployStatsViewerViewModel(IDeployDestinationExplorerViewModel destination)
         {
             VerifyArgument.IsNotNull(@"destination", destination);
             _destination = destination;            
             Status = @"";
         }
 
-        public DeployStatsViewerViewModel(IList<IExplorerTreeItem> items, IExplorerViewModel destination)
+        public DeployStatsViewerViewModel(IList<IExplorerTreeItem> items, IDeployDestinationExplorerViewModel destination)
         {
             _items = items;
             _destination = destination;
@@ -173,7 +174,7 @@ namespace Warewolf.Studio.ViewModels
                                 }
                                 else
                                     currentItem.CanDeploy = true;
-                            }                            
+                            }
                         }
                         else                        
                             currentItem.CanDeploy = true;
@@ -213,10 +214,13 @@ namespace Warewolf.Studio.ViewModels
 
 
                 Services = items.Count(a => !string.IsNullOrEmpty(a.ResourceType)
-                                        && a.ResourceType == @"WorkflowService");
+                                        && a.ResourceType == @"WorkflowService"
+                                        && a.IsResourceChecked == true);
 
                 Sources = items.Count(a => !string.IsNullOrEmpty(a.ResourceType)
-                                            && IsSource(a.ResourceType));
+                                            && IsSource(a.ResourceType)
+                                            && a.IsResourceChecked == true);
+
                 Unknown = items.Count(a => a.ResourceType == @"Unknown" || string.IsNullOrEmpty(a.ResourceType));
 
                 if (_destination.SelectedEnvironment != null)
@@ -228,7 +232,7 @@ namespace Warewolf.Studio.ViewModels
                                select new Conflict { SourceName = explorerTreeItem.ResourceName, DestinationName = b.ResourceName };
 
                     _conflicts = conf.ToList();
-                    _new = items.Except(explorerItemViewModels);
+                    _new = items.Where(p=>p.IsResourceChecked == true).Except(explorerItemViewModels);
                     var ren = from b in explorerItemViewModels
                               join explorerTreeItem in items on new { b.ResourcePath } equals new { explorerTreeItem.ResourcePath }
                               where (b.ResourceType != @"Folder" && explorerTreeItem.ResourceType != @"Folder")
