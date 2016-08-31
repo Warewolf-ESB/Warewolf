@@ -71,7 +71,6 @@ IF EXIST %windir%\nircmd.exe (nircmd elevate sc config "Warewolf Server" binPath
 GOTO StartService
 
 :StartService
-
 REM ** Delete the Warewolf ProgramData folder
 IF EXIST %windir%\nircmd.exe (nircmd elevate cmd /c rd /S /Q "%PROGRAMDATA%\Warewolf\Resources") else (rd /S /Q "%PROGRAMDATA%\Warewolf\Resources")
 IF EXIST %windir%\nircmd.exe (nircmd elevate cmd /c rd /S /Q "%PROGRAMDATA%\Warewolf\Workspaces") else (rd /S /Q "%PROGRAMDATA%\Warewolf\Workspaces")
@@ -83,6 +82,12 @@ IF EXIST "%PROGRAMDATA%\Warewolf\Resources" exit 1
 IF EXIST "%PROGRAMDATA%\Warewolf\Workspaces" exit 1
 IF EXIST "%PROGRAMDATA%\Warewolf\Server Settings" exit 1
 
+REM ** Stop any existing Warewolf server processes
+IF EXIST %windir%\nircmd.exe (nircmd elevate taskkill /im "Warewolf Server.exe" /T /F) else (taskkill /im "Warewolf Server.exe" /T /F)
+IF EXIST %windir%\nircmd.exe (nircmd elevate taskkill /im "Warewolf Server.vshost.exe" /T /F) else (taskkill /im "Warewolf Server.vshost.exe" /T /F)
+IF EXIST %windir%\nircmd.exe (nircmd elevate taskkill /im "WarewolfCOMIPC.exe" /T /F) else (taskkill /im "WarewolfCOMIPC.exe" /T /F)
+
+REM ** Start the server service
 IF EXIST %windir%\nircmd.exe (nircmd elevate sc start "Warewolf Server") else (sc start "Warewolf Server")
 
 REM using the "ping" command as make-shift wait (or sleep) command, so now we wait for the server started file to appear - Ashley

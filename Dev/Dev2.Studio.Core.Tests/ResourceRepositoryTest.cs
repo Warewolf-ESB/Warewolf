@@ -415,64 +415,6 @@ namespace BusinessDesignStudio.Unit.Tests
             Assert.AreEqual(1,_repo.All().Count);
         }
 
-
-        /// <summary>
-        /// Create resource with workflow service type
-        /// </summary>
-        [TestMethod]
-        public void Load_MultipleResourceLoad_WorkflowServiceType_Expected_AllResourcesReturned()
-        {
-            //Arrange
-            Setup();
-            var model = new Mock<IResourceModel>();
-            model.SetupGet(p => p.ResourceName).Returns("My WF");
-            model.SetupGet(p => p.Category).Returns("Root");
-            model.Setup(c => c.ResourceType).Returns(Dev2.Studio.Core.AppResources.Enums.ResourceType.WorkflowService);
-
-            var conn = SetupConnection();
-
-            var resourceData = BuildResourceObjectFromGuids(new[] { _resourceGuid });
-            var msg = new ExecuteMessage();
-            var payload = JsonConvert.SerializeObject(msg);
-            int callCnt = 0;
-            conn.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>()))
-                .Returns(() =>
-                {
-                    if (callCnt <= 1)
-                    {
-                        callCnt++;
-                        return new StringBuilder(payload);
-                    }
-
-                    return resourceData;
-                });
-            conn.Setup(c => c.ExecuteCommandAsync(It.IsAny<StringBuilder>(), It.IsAny<Guid>()))
-                .Returns(() =>
-                {
-                    if (callCnt <= 1)
-                    {
-                        callCnt++;
-                        return Task.FromResult(new StringBuilder(payload));
-                    }
-
-                    return Task.FromResult(resourceData);
-                });
-
-            _environmentModel.Setup(e => e.Connection).Returns(conn.Object);
-
-            //Act
-            var resourceModel = new Mock<IResourceModel>();
-            resourceModel.SetupGet(p => p.ResourceName).Returns("My WF1");
-            resourceModel.SetupGet(p => p.Category).Returns("Root");
-            resourceModel.Setup(p => p.ToServiceDefinition(It.IsAny<bool>())).Returns(new StringBuilder("SomeXaml"));
-            model.Setup(p => p.ToServiceDefinition(It.IsAny<bool>())).Returns(new StringBuilder("SomeXaml"));
-            _repo.Save(resourceModel.Object);
-            _repo.Save(model.Object);
-            _repo.Load();
-            //Assert
-            Assert.IsTrue(_repo.All().Count.Equals(2));
-        }
-
         [TestMethod]
         [TestCategory("ResourceRepository_Load")]
         [Description("ResourceRepository Load must only do one server call to retrieve all resources")]
