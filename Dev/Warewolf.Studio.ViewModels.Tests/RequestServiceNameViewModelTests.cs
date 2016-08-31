@@ -390,6 +390,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             item.Setup(model => model.ResourceName).Returns("name");
             selectedItemMock.Setup(sitem => sitem.SelectedItem).Returns(item.Object);
             var viewModel = RequestServiceNameViewModel.CreateAsync(envModel.Object, "", "", itemObj.Object).Result;
+            
 
             controller.Setup(communicationController => communicationController.AddPayloadArgument("ResourceID", It.IsAny<string>()));
             controller.Setup(communicationController => communicationController.AddPayloadArgument("NewResourceName", It.IsAny<string>()));
