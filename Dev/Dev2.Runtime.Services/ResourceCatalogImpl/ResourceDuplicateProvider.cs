@@ -8,6 +8,7 @@ using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Interfaces;
+using ServiceStack.Common;
 
 namespace Dev2.Runtime.ResourceCatalogImpl
 {
@@ -54,21 +55,13 @@ namespace Dev2.Runtime.ResourceCatalogImpl
             StringBuilder result = _resourceCatalog.GetResourceContents(GlobalConstants.ServerWorkspaceID, resourceId);
             var resource = _resourceCatalog.GetResource(GlobalConstants.ServerWorkspaceID, resourceId);
             var xElement = result.ToXElement();
-
-            //resource.ResourcePath = newPath;
             resource.IsUpgraded = true;
             var resourceID = Guid.NewGuid();
-            var resourceName = newResourceName.Split('\\').Last();
-            //newPath = string.IsNullOrEmpty(newPath) ? resource.ResourcePath : newPath;
-            //newPath = resource.ResourcePath == resource.FilePath && resource.ResourceName == resource.ResourcePath ? "" : newPath;
-            //resource.ResourcePath = newPath + "\\" + newResourceName;
-            resource.ResourceName = resource.ResourceName != resourceName ? resourceName : resource.ResourceName;
+            resource.ResourceName = newResourceName;
             resource.ResourceID = resourceID;
-            xElement.SetElementValue("DisplayName", resourceName);
-            xElement.SetElementValue("ID", resourceID.ToString());
-            //xElement.SetElementValue("Category", resource.ResourcePath);
+            xElement.SetElementValue("DisplayName", newResourceName);
             var fixedResource = xElement.ToStringBuilder();
-            _resourceCatalog.SaveResource(GlobalConstants.ServerWorkspaceID, resource, fixedResource);
+            _resourceCatalog.SaveResource(GlobalConstants.ServerWorkspaceID, resource, fixedResource,"","",newPath);
 
         }
         private void SaveFolders(string sourceLocation, string destination, string newName, bool fixRefences)
@@ -82,30 +75,22 @@ namespace Dev2.Runtime.ResourceCatalogImpl
             {
                 try
                 {
-                    var newResourceName = destination + "\\" + newName;
-
                     var result = _resourceCatalog.GetResourceContents(GlobalConstants.ServerWorkspaceID, resource.ResourceID);
                     var xElement = result.ToXElement();
-
-                    //resource.ResourcePath = newResourceName;
                     resource.IsUpgraded = true;
                     var newResourceId = Guid.NewGuid();
                     var oldResourceId = resource.ResourceID;
-                    var resourceName = resource.ResourceName;
-                    //resource.ResourcePath = resource.ResourcePath;
-                    resource.ResourceName = resource.ResourceName;
                     resource.ResourceID = newResourceId;
-                    xElement.SetElementValue("DisplayName", resourceName);
-                    xElement.SetElementValue("ID", newResourceId.ToString());
-                    //xElement.SetElementValue("Category", resource.ResourcePath);
                     var fixedResource = xElement.ToStringBuilder();
-                    _resourceCatalog.SaveResource(GlobalConstants.ServerWorkspaceID, resource, fixedResource);
+                    var savePath = resource.GetResourcePath(GlobalConstants.ServerWorkspaceID).Replace(resource.ResourceName,"").TrimEnd('\\');
+                    savePath = savePath.ReplaceFirst(sourceLocation, destination + "\\" + newName);
+                    _resourceCatalog.SaveResource(GlobalConstants.ServerWorkspaceID, resource, fixedResource,"","", savePath);
                     _resourceUpdateMap.Add(oldResourceId, newResourceId);
 
                 }
                 catch (Exception e)
                 {
-                    Dev2Logger.Error(e.Message,e);
+                    Dev2Logger.Error(e.Message, e);
                     _resourcesToUpdate.Remove(resource);
                 }
             }
@@ -130,7 +115,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
         }
 
         private readonly List<IResource> _resourcesToUpdate = new List<IResource>();
-        private readonly Dictionary<Guid,Guid> _resourceUpdateMap = new Dictionary<Guid, Guid>();
+        private readonly Dictionary<Guid, Guid> _resourceUpdateMap = new Dictionary<Guid, Guid>();
         private void FixReferences()
         {
             foreach (var updatedResource in _resourcesToUpdate)
@@ -138,7 +123,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
 
                 var contents = _resourceCatalog.GetResourceContents(GlobalConstants.ServerWorkspaceID, updatedResource.ResourceID);
 
-                foreach(var oldToNewUpdate in _resourceUpdateMap)
+                foreach (var oldToNewUpdate in _resourceUpdateMap)
                 {
                     contents.Replace(oldToNewUpdate.Key.ToString(), oldToNewUpdate.Value.ToString());
                 }
