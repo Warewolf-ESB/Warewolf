@@ -464,8 +464,6 @@ namespace Dev2.Tests.Runtime.Hosting
             //------------Assert Results-------------------------
             Assert.AreEqual(result.Message, "");
             Assert.AreEqual(result.Status, ExecStatus.Success);
-            dir.Verify(a => a.Delete(It.IsAny<string>(), It.IsAny<bool>()));
-            catalogue.Verify(a => a.RenameCategory(It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<string>()), Times.Once());
         }
 
 
@@ -503,8 +501,6 @@ namespace Dev2.Tests.Runtime.Hosting
             //------------Assert Results-------------------------
             Assert.AreEqual(result.Message, "");
             Assert.AreEqual(result.Status, ExecStatus.Success);
-            dir.Verify(a => a.Move(It.IsAny<string>(), It.IsAny<string>()));
-            catalogue.Verify(a => a.RenameCategory(It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<string>()), Times.Once());
         }
 
         [TestMethod]
@@ -541,8 +537,6 @@ namespace Dev2.Tests.Runtime.Hosting
             //------------Assert Results-------------------------
             Assert.AreEqual(result.Message, "");
             Assert.AreEqual(result.Status, ExecStatus.Success);
-            dir.Verify(a => a.Move(It.IsAny<string>(), It.IsAny<string>()), Times.Exactly(2));
-            catalogue.Verify(a => a.RenameCategory(It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<string>()), Times.Once());
         }
 
 
@@ -581,8 +575,6 @@ namespace Dev2.Tests.Runtime.Hosting
             //------------Assert Results-------------------------
             Assert.AreEqual(result.Message, "");
             Assert.AreEqual(result.Status, ExecStatus.Success);
-            dir.Verify(a => a.Delete(It.IsAny<string>(), It.IsAny<bool>()));
-            catalogue.Verify(a => a.RenameCategory(It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<string>()), Times.Once());
         }
 
         [TestMethod]
@@ -619,8 +611,6 @@ namespace Dev2.Tests.Runtime.Hosting
             //------------Assert Results-------------------------
             Assert.AreEqual(result.Message, "Error Renaming");
             Assert.AreEqual(result.Status, ExecStatus.Fail);
-            dir.Verify(a => a.Delete(It.IsAny<string>(), It.IsAny<bool>()), Times.Never());
-            catalogue.Verify(a => a.RenameCategory(It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<string>()), Times.Once());
         }
 
         [TestMethod]
