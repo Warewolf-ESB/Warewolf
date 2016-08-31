@@ -3156,8 +3156,8 @@ namespace Dev2.Tests.Runtime.Hosting
 
             var path = EnvironmentVariables.ResourcePath;
             Directory.CreateDirectory(path);
-            const string resourceName = "Test1";
-            SaveResources(path, null, false, false, new[] { "Test", resourceName }, new[] { Guid.NewGuid(), Guid.NewGuid() });
+            const string resourceName = "Bug6619Dep";
+            SaveResources(path, null, false, false, new[] { "Bug6619", resourceName }, new[] { Guid.NewGuid(), Guid.NewGuid() });
 
             var rc = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
             rc.LoadWorkspace(workspaceID);
