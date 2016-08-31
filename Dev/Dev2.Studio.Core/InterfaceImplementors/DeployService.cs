@@ -28,7 +28,7 @@ namespace Dev2.Studio.Core.InterfaceImplementors
         public void Deploy(IDeployDto deployDto, IEnvironmentModel environmentModel)
         {
 
-            if(deployDto == null || deployDto.ResourceModels == null || environmentModel == null || environmentModel.ResourceRepository == null)
+            if(deployDto?.ResourceModels == null || environmentModel?.ResourceRepository == null)
             {
                 return;
             }
@@ -42,7 +42,7 @@ namespace Dev2.Studio.Core.InterfaceImplementors
             {
                 foreach(var resourceModel in deployDto.ResourceModels)
                 {
-                    environmentModel.ResourceRepository.DeployResource(resourceModel);
+                    environmentModel.ResourceRepository.DeployResource(resourceModel, resourceModel.GetSavePath());
                 }
             }
         }

@@ -2019,6 +2019,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Please rename either the source or destination before continueing.
+        /// </summary>
+        public static string DeployRenameBeforeContinue {
+            get {
+                return ResourceManager.GetString("DeployRenameBeforeContinue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Select this item to deploy..
         /// </summary>
         public static string DeployResourceCheckbox {
@@ -2033,6 +2042,15 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string DeployResourceCheckboxViewPermissionError {
             get {
                 return ResourceManager.GetString("DeployResourceCheckboxViewPermissionError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The following resources have the same path and name on the source and destination server but different Ids.
+        /// </summary>
+        public static string DeployResourcesSamePathAndName {
+            get {
+                return ResourceManager.GetString("DeployResourcesSamePathAndName", resourceCulture);
             }
         }
         

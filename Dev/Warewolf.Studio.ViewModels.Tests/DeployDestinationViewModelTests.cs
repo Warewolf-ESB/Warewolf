@@ -182,7 +182,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             env.AddChild(explorerItemViewModelMock.Object);
             var statsAreaMock = new Mock<IDeployStatsViewerViewModel>();
             _target.StatsArea = statsAreaMock.Object;
-            _target.Environments = _target.Environments.Union(new[] { environmentViewModelMock.Object }).ToList();
+            _target.Environments = new ObservableCollection<IEnvironmentViewModel>(_target.Environments.Union(new[] { environmentViewModelMock.Object }).ToList());
 
             //act
             _target.ConnectControlViewModel.SelectedConnection = serverMock.Object;
