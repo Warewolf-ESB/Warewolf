@@ -36,23 +36,23 @@ namespace Dev2.Runtime.ESB.Management.Services
             StringBuilder newResourceName;
             StringBuilder fixRefs;
             StringBuilder sourcePath;
-            StringBuilder destinatioPath;
+            StringBuilder destinationPath;
             values.TryGetValue("NewResourceName", out newResourceName);
             values.TryGetValue("FixRefs", out fixRefs);
             values.TryGetValue("sourcePath", out sourcePath);
-            values.TryGetValue("destinatioPath", out destinatioPath);
+            values.TryGetValue("destinationPath", out destinationPath);
 
             if (!string.IsNullOrEmpty(newResourceName?.ToString()))
             {
                 try
                 {
-                    if (sourcePath == null || destinatioPath == null)
+                    if (sourcePath == null || destinationPath == null)
                     {
                         throw new Exception("Source or Destination Paths not specified");
                     }
 
                     var resourceCatalog = _catalog ?? ResourceCatalog.Instance;
-                    var resourceCatalogResult = resourceCatalog.DuplicateFolder(sourcePath.ToString(), destinatioPath.ToString(), newResourceName.ToString(), bool.Parse(fixRefs?.ToString() ?? false.ToString()));
+                    var resourceCatalogResult = resourceCatalog.DuplicateFolder(sourcePath.ToString(), destinationPath.ToString(), newResourceName.ToString(), bool.Parse(fixRefs?.ToString() ?? false.ToString()));
                     Dev2Logger.Error(resourceCatalogResult.Message);
                     var result = new ExecuteMessage { HasError = resourceCatalogResult.Status != ExecStatus.Success, Message = resourceCatalogResult.Message.ToStringBuilder() };
                     return serializer.SerializeToBuilder(result);

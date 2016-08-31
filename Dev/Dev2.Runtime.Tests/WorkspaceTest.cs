@@ -16,11 +16,13 @@ using System.Xml.Linq;
 using Dev2.Activities;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Core.DynamicServices;
+using Dev2.Common.Interfaces.Data;
 using Dev2.Runtime.ESB.Management;
 using Dev2.Runtime.ESB.Management.Services;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.Security;
+using Dev2.Tests.Runtime.Hosting;
 using Dev2.Tests.Runtime.XML;
 using Dev2.Workspaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -337,9 +339,9 @@ namespace Dev2.DynamicServices.Test
         {
             var repo = new WorkspaceRepository();
             workspaceID = Guid.NewGuid();
-            // List<IResource> resources;
-            // ResourceCatalogTests.SaveResources(Guid.Empty, null, true, true, new string[0], new[] { "Calculate_RecordSet_Subtract" }, out resources, new Guid[0], new[] { Guid.NewGuid() });
-            // ResourceCatalogTests.SaveResources(workspaceID, null, true, true, new string[0], new[] { "Calculate_RecordSet_Subtract" }, out resources, new Guid[0], new[] { Guid.NewGuid() });
+             List<IResource> resources;
+             ResourceCatalogTests.SaveResources(Guid.Empty, null, true, true, new string[0], new[] { "Calculate_RecordSet_Subtract" }, out resources, new Guid[0], new[] { Guid.NewGuid() });
+             ResourceCatalogTests.SaveResources(workspaceID, null, true, true, new string[0], new[] { "Calculate_RecordSet_Subtract" }, out resources, new Guid[0], new[] { Guid.NewGuid() });
 
             // Force reload of server workspace from _currentTestDir
             ResourceCatalog.Instance.LoadWorkspace(GlobalConstants.ServerWorkspaceID);
