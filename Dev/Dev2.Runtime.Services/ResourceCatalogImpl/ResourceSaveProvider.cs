@@ -308,15 +308,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
                         savedPath = savedPath.TrimStart('\\');
                     }
                     var workspacePath = EnvironmentVariables.GetWorkspacePath(workspaceID);
-                    var originalRes = savedPath;
-                    int indexOfName = originalRes.LastIndexOf(resource.ResourceName, StringComparison.Ordinal);
-                    var resPath = savedPath;
-                    if (indexOfName >= 0)
-                    {
-                        resPath = originalRes.Substring(0, originalRes.LastIndexOf(resource.ResourceName, StringComparison.Ordinal));
-                    }
-                    var directoryName = Path.Combine(workspacePath, resPath);
-
+                    var directoryName = Path.Combine(workspacePath, savedPath);
                     resource.FilePath = Path.Combine(directoryName, resource.ResourceName + ".xml");
 
                     #region Save to disk

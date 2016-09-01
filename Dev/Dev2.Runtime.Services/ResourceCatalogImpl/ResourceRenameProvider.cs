@@ -177,16 +177,17 @@ namespace Dev2.Runtime.ResourceCatalogImpl
                 }
             }
 
-            resource.ResourceName = newName;
-            //update file path
-            if (oldName != null)
-            {
-                resource.FilePath = resource.FilePath.Replace(oldName, newName);
-            }
-            //re-create, resign and save to file system the new resource
-            StringBuilder contents = resourceElement.ToStringBuilder();
+            var resPath = resource.GetResourcePath(workspaceID);
 
-            return ((ResourceCatalog)_resourceCatalog).SaveImpl(workspaceID, resource, contents, true, resource.GetResourcePath(workspaceID));
+            var savePath = resPath;
+            var resourceNameIndex = resPath.LastIndexOf(resource.ResourceName, StringComparison.InvariantCultureIgnoreCase);
+            if (resourceNameIndex >= 0)
+            {
+                savePath = resPath.Substring(0, resourceNameIndex);
+            }
+            resource.ResourceName = newName;
+            StringBuilder contents = resourceElement.ToStringBuilder();
+            return ((ResourceCatalog)_resourceCatalog).SaveImpl(workspaceID, resource, contents, true, savePath);
 
         }
 

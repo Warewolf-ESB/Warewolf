@@ -726,7 +726,13 @@ namespace Dev2.Studio.Core.Models
         {
             if (!string.IsNullOrEmpty(Category))
             {
-                return Category.Replace(ResourceName, "");
+                var savePath = Category;
+                var resourceNameIndex = Category.LastIndexOf(ResourceName, StringComparison.InvariantCultureIgnoreCase);
+                if (resourceNameIndex >= 0)
+                {
+                    savePath = Category.Substring(0, resourceNameIndex);
+                }
+                return savePath;
             }
             return "";
         }
