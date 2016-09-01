@@ -13,6 +13,9 @@
                                xmlns:core1="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
                                xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
                                xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna;assembly=Warewolf.Studio.Themes.Luna"
+                               xmlns:attachedProperties1="clr-namespace:Dev2.Activities.AttachedProperties"
+                               xmlns:interfaceImplementors="clr-namespace:Dev2.Studio.InterfaceImplementors;assembly=Dev2.Intellisense"
+                               xmlns:provider="clr-namespace:Dev2.Intellisense.Provider;assembly=Dev2.Intellisense"
                                mc:Ignorable="d" 
                                MinWidth="250"
                                MinHeight="50"
@@ -32,23 +35,31 @@
     
     <Grid Margin="{StaticResource ElementBorder}">
         <ui:IntellisenseTextBox x:Name="InitialFocusElement"
-                                Text="{Binding Path=Text, UpdateSourceTrigger=PropertyChanged}"
-                                ScrollViewer.VerticalScrollBarVisibility="Auto"
+                                Grid.Column="0"
+                                Grid.Row="0" 
+                                VerticalAlignment="Stretch"
+                                VerticalContentAlignment="Top"
                                 AllowMultilinePaste="True"
                                 AcceptsReturn="True"
                                 AllowUserInsertLine="True"
-                                MinHeight="30px"
-                                MinWidth="18px"
-                                Height="Auto"
                                 TextWrapping="Wrap"
-                                VerticalContentAlignment="Stretch"
+                                Height="Auto"
+                                WrapInBrackets="False" 
+                                HorizontalScrollBarVisibility="Auto"
                                 ToolTip="{x:Static languages:Core.CommentToolTipComment}"
+                                Text="{Binding Path=ModelItem.Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Cmdtxt_AutoID}"
                                 attachedProperties:WizardEngineAttachedProperties.DontOpenWizard="True">
+            <ui:IntellisenseTextBox.IntellisenseProvider>
+                <interfaceImplementors:CompositeIntellisenseProvider>
+                    <interfaceImplementors:DefaultIntellisenseProvider />
+                </interfaceImplementors:CompositeIntellisenseProvider>
+            </ui:IntellisenseTextBox.IntellisenseProvider>
             <i:Interaction.Behaviors>
                 <core1:HelpSetter Text="{x:Static languages:Core.CommentHelpComment}" DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
-                                     SourcePropertyName="Path=ModelItem.Text"
-                                     SourcePropertyValue="{Binding  Path=ModelItem.Text, UpdateSourceTrigger=PropertyChanged}"
+                                     SourcePropertyName="ModelItem.Text"
+                                     SourcePropertyValue="{Binding  ModelItem.Text, UpdateSourceTrigger=PropertyChanged}"
                                      Target="{Binding}" />
             </i:Interaction.Behaviors>
         </ui:IntellisenseTextBox>
