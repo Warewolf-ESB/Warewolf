@@ -217,7 +217,7 @@ namespace Dev2.Settings.Security
             }
 
             permission.ResourceID = resourceModel.ResourceId;
-            permission.ResourceName = $"{resourceModel.ResourceType}\\{resourceModel.ResourcePath}\\{resourceModel.ResourceName}";
+            permission.ResourceName = resourceModel.ResourcePath;
         }
 
         IExplorerTreeItem PickResource(WindowsGroupPermission permission)

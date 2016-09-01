@@ -187,6 +187,7 @@ namespace Warewolf.Studio.ViewModels
                 CanShowVersions = explorerItem.CanShowVersions,
                 CanRename = explorerItem.CanRename,
                 CanDeploy = explorerItem.CanDeploy,
+                CanDuplicate = explorerItem.CanDuplicate,
                 CanShowDependencies = explorerItem.CanShowDependencies,
                 ResourcePath = explorerItem.ResourcePath + "\\" + name,
                 CanCreateWorkflowService = explorerItem.CanCreateWorkflowService,

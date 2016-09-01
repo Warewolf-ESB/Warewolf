@@ -384,6 +384,11 @@ namespace Warewolf.Studio.ViewModels
                 connection.Disconnect();
                 OnPropertyChanged(() => connection.IsConnected);
                 ServerDisconnected?.Invoke(this, connection);
+                foreach (var server in Servers)
+                {
+                    if (!server.IsConnected && server.EnvironmentID != Guid.Empty)
+                        server.DisplayName = SelectedConnection.DisplayName.Replace("(Connected)", "");
+                }
             }
         }
         

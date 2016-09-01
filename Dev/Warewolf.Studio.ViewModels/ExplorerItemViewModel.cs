@@ -182,10 +182,6 @@ namespace Warewolf.Studio.ViewModels
             SetupCommands();
 
             Server.PermissionsChanged += UpdatePermissions;
-            if (Server.Permissions != null)
-            {
-                SetPermissions(Server.Permissions);
-            }
 
             _candrop = true;
             _canDrag = true;
@@ -383,7 +379,7 @@ namespace Warewolf.Studio.ViewModels
         {
             get
             {
-                CanViewSwagger = _isService;
+                CanViewSwagger = _isService && _canView;
                 return _isService; 
             }
             set { _isService = value; }
