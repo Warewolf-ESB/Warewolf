@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using Dev2.Runtime.Interfaces;
+// ReSharper disable MemberCanBePrivate.Global
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
@@ -43,7 +44,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                     Type = enSourceType.WcfSource,
                     ResourceType = "WcfSource"
                 };
-                ResourceCatalog.Instance.SaveResource(GlobalConstants.ServerWorkspaceID, con, "", "", src.Path);
+                ResourceCatalog.Instance.SaveResource(GlobalConstants.ServerWorkspaceID, con, src.Path);
                 ServerExplorerRepo.UpdateItem(con);
 
                 msg.HasError = false;

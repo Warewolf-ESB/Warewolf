@@ -46,7 +46,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                     Type = enSourceType.ExchangeSource,
                     ResourceType = "ExchangeSource"
                 };
-                ResourceCatalog.Instance.SaveResource(GlobalConstants.ServerWorkspaceID, con, "", "", src.Path);
+                ResourceCatalog.Instance.SaveResource(GlobalConstants.ServerWorkspaceID, con, src.Path);
                 ServerExplorerRepo.UpdateItem(con);
 
                 msg.HasError = false;

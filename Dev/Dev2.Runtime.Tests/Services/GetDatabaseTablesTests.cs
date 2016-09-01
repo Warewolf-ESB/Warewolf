@@ -101,7 +101,7 @@ namespace Dev2.Tests.Runtime.Services
         {
             //------------Setup for test--------------------------
             var dbSource = CreateDev2TestingDbSource();
-            ResourceCatalog.Instance.SaveResource(Guid.Empty, dbSource);
+            ResourceCatalog.Instance.SaveResource(Guid.Empty, dbSource, "");
             string someJsonData = JsonConvert.SerializeObject(dbSource);
             var esb = new GetDatabaseTables();
             var mockWorkspace = new Mock<IWorkspace>();
@@ -130,7 +130,7 @@ namespace Dev2.Tests.Runtime.Services
         {
             //------------Setup for test--------------------------
             var dbSource = CreateDev2TestingDbSource(true);
-            ResourceCatalog.Instance.SaveResource(Guid.Empty, dbSource);
+            ResourceCatalog.Instance.SaveResource(Guid.Empty, dbSource, "");
             string someJsonData = JsonConvert.SerializeObject(dbSource);
             var esb = new GetDatabaseTables();
             var mockWorkspace = new Mock<IWorkspace>();

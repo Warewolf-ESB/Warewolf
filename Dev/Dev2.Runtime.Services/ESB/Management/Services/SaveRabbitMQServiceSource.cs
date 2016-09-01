@@ -49,7 +49,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                     VirtualHost = rabbitMQServiceSourceDefinition.VirtualHost
                 };
 
-                ResourceCatalog.Instance.SaveResource(GlobalConstants.ServerWorkspaceID, rabbitMQSource, "", "", rabbitMQServiceSourceDefinition.ResourcePath);
+                ResourceCatalog.Instance.SaveResource(GlobalConstants.ServerWorkspaceID, rabbitMQSource, rabbitMQServiceSourceDefinition.ResourcePath);
             }
             catch (Exception err)
             {
