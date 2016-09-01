@@ -166,6 +166,7 @@ namespace Warewolf.Studio.ViewModels
             var environmentViewModel = Environments.FirstOrDefault(model => model.Server.EnvironmentID == environmentId);
             if (environmentViewModel != null)
             {
+                
                 await RefreshEnvironment(environmentViewModel, true);
             }
         }
@@ -193,6 +194,8 @@ namespace Warewolf.Studio.ViewModels
 
         private async Task RefreshEnvironment(IEnvironmentViewModel environmentViewModel, bool refresh)
         {
+
+
             IsRefreshing = true;
 
             if (environmentViewModel.IsConnected)

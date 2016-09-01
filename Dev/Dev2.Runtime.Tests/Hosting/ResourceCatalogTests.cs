@@ -398,16 +398,16 @@ namespace Dev2.Tests.Runtime.Hosting
             //------------Setup for test--------------------------
             var workspaceID = Guid.NewGuid();
             var workspacePath = EnvironmentVariables.GetWorkspacePath(workspaceID);
-            const string resourcePath = "MyTest\\Folder1\\CitiesDatabase";
+            const string resourcePath = "MyTest\\Folder1";
             var path = Path.Combine(workspacePath, resourcePath);
             const string resourceName = "CitiesDatabase";
             var xml = XmlResource.Fetch(resourceName);
             var resource = new DbSource(xml);
             var catalog = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
             //------------Execute Test---------------------------
-            catalog.SaveResource(workspaceID, resource, resourcePath, "", "");
+            catalog.SaveResource(workspaceID, resource, resourcePath);
             //------------Assert Results-------------------------
-            xml = XElement.Load(path + ".xml");
+            xml = XElement.Load(path+"\\"+resourceName + ".xml");
             Assert.IsNotNull(xml);
             var idAttr = xml.Attributes("ID").ToList();
             Assert.AreEqual(1, idAttr.Count);
@@ -472,8 +472,8 @@ namespace Dev2.Tests.Runtime.Hosting
             //------------Setup for test--------------------------
             var workspaceID = Guid.NewGuid();
             var workspacePath = EnvironmentVariables.GetWorkspacePath(workspaceID);
-            const string resourcePath = "MyTest\\Folder1\\CitiesDatabase";
-            const string resourcePath1 = "MyTest\\Folder2\\CitiesDatabase";
+            const string resourcePath = "MyTest\\Folder1\\";
+            const string resourcePath1 = "MyTest\\Folder2\\";
             var path = Path.Combine(workspacePath, resourcePath);
             const string resourceName = "CitiesDatabase";
             var xml = XmlResource.Fetch(resourceName);
@@ -484,21 +484,14 @@ namespace Dev2.Tests.Runtime.Hosting
             //------------Execute Test---------------------------
             catalog.SaveResource(workspaceID, resource1, resourcePath1, "", "");
             //------------Assert Results-------------------------
-            xml = XElement.Load(path + ".xml");
+            xml = XElement.Load(path+"\\"+resourceName + ".xml");
             Assert.IsNotNull(xml);
             var idAttr = xml.Attributes("ID").ToList();
             Assert.AreEqual(1, idAttr.Count);
             var nameAttribute = xml.Attribute("Name");
             Assert.IsNotNull(nameAttribute);
             Assert.AreEqual(resourceName, nameAttribute.Value);
-
-            xml = XElement.Load(path + ".xml");
-            Assert.IsNotNull(xml);
-            idAttr = xml.Attributes("ID").ToList();
-            Assert.AreEqual(1, idAttr.Count);
-            nameAttribute = xml.Attribute("Name");
-            Assert.IsNotNull(nameAttribute);
-            Assert.AreEqual(resourceName, nameAttribute.Value);
+          
         }
 
         [TestMethod]
@@ -581,7 +574,7 @@ namespace Dev2.Tests.Runtime.Hosting
             var resource1 = new DbSource { ResourceID = Guid.NewGuid(), ResourceName = "TestSource", DatabaseName = "TestOldDb", Server = "TestOldServer", ServerType = enSourceType.SqlDatabase };
 
             var catalog = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
-            catalog.SaveResource(workspaceID, resource1, "TestSource", "", "");
+            catalog.SaveResource(workspaceID, resource1, "");
 
             var path = Path.Combine(workspacePath, "TestSource" + ".xml");
             var attributes = File.GetAttributes(path);
@@ -3056,7 +3049,7 @@ namespace Dev2.Tests.Runtime.Hosting
             ResourceCatalogResult resourceCatalogResult = rc.DuplicateResource(oldResource.ResourceID, oldResource.GetResourcePath(workspaceID), null);
             //------------Assert Results-------------------------
             Assert.AreEqual(ExecStatus.Fail, resourceCatalogResult.Status);
-            Assert.AreEqual(@"Duplicated Failure Value cannot be null.Parameter name: value".Replace(Environment.NewLine, ""), resourceCatalogResult.Message.Replace(Environment.NewLine, ""));
+            Assert.AreEqual(@"Duplicated Failure Value cannot be null.Parameter name: key".Replace(Environment.NewLine, ""), resourceCatalogResult.Message.Replace(Environment.NewLine, ""));
         }
 
         [TestMethod]
