@@ -205,7 +205,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         {
             var resourceID = Guid.NewGuid();
             var dbSource = new DbSource { ResourceName = resourceID.ToString(), ResourceID = resourceID };
-            ResourceCatalog.Instance.SaveResource(Guid.Empty, dbSource, "", "", "SQL Tests\\" + resourceID);
+            ResourceCatalog.Instance.SaveResource(Guid.Empty, dbSource, "SQL Tests\\" + resourceID, "", "");
             return dbSource;
         }
 

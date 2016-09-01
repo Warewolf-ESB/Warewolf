@@ -44,7 +44,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                     ResourceName = src.Name,
                     IsSharepointOnline = src.IsSharepointOnline,
                 };
-                ResourceCatalog.Instance.SaveResource(GlobalConstants.ServerWorkspaceID, res, "", "", src.Path);
+                ResourceCatalog.Instance.SaveResource(GlobalConstants.ServerWorkspaceID, res, src.Path);
                 msg.HasError = false;
             }
             catch (Exception err)

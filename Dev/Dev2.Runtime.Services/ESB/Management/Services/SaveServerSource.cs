@@ -25,7 +25,7 @@ namespace Dev2.Runtime.ESB.Management.Services
     {
         IExplorerServerResourceRepository _serverExplorerRepository;
 
-        public static int GETSpecifiedIndexOf(string str, char ch, int index)
+        private static int GETSpecifiedIndexOf(string str, char ch, int index)
         {
             int i = 0, o = 1;
             while ((i = str.IndexOf(ch, i)) != -1)
@@ -45,7 +45,6 @@ namespace Dev2.Runtime.ESB.Management.Services
 
                 Dev2Logger.Info("Save Resource Service");
                 StringBuilder resourceDefinition;
-                string workspaceIdString = string.Empty;
 
                 values.TryGetValue("ServerSource", out resourceDefinition);
 
@@ -65,7 +64,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 Connections tester = new Connections();
                 var res = tester.CanConnectToServer(con);
                 if(res.IsValid)
-                ResourceCatalog.Instance.SaveResource(GlobalConstants.ServerWorkspaceID,con, "", "", src.ResourcePath);
+                ResourceCatalog.Instance.SaveResource(GlobalConstants.ServerWorkspaceID,con, src.ResourcePath);
                 ServerExplorerRepo.UpdateItem(con);
                 msg.HasError = false;
                 msg.Message = new StringBuilder(res.IsValid ? "" : res.ErrorMessage);

@@ -25,6 +25,7 @@ using Dev2.Runtime.Hosting;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Workspaces;
 using Warewolf.Core;
+// ReSharper disable MemberCanBePrivate.Global
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
@@ -63,7 +64,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                     Source = source,
                     Recordset = recset
                 };
-                ResourceCatalog.Instance.SaveResource(GlobalConstants.ServerWorkspaceID, res, "", "", service.Path);
+                ResourceCatalog.Instance.SaveResource(GlobalConstants.ServerWorkspaceID, res, service.Path);
                 ServerExplorerRepo.UpdateItem(res);
 
                 msg.HasError = false;
