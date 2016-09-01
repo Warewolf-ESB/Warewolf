@@ -222,12 +222,12 @@ namespace Dev2.Runtime.Hosting
                     {
                         var versions = GetVersions(resource.ResourceID).FirstOrDefault();
                         old.VersionInfo = _versionStrategy.GetCurrentVersion(resource, versions?.VersionInfo, userName, reason);
-                        var folderPath = GetVersionFolderFromResource(resource.GetResourcePath(workSpaceId));
+                        var folderPath = GetVersionFolderFromResource(old.GetResourcePath(workSpaceId));
 
                         var fileName = $"{old.VersionInfo.VersionId}_{old.VersionInfo.VersionNumber}_{GetDateString(old.VersionInfo.DateTimeStamp)}_{reason}.xml";
                         if (!_file.Exists(Path.Combine(folderPath, fileName))) //todo: remove this and stop save on workspace
                         {
-                            var sourceFile = Path.Combine(GetFolderFromResource(resource.GetResourcePath(workSpaceId)), old.ResourceName) + ".xml";
+                            var sourceFile = Path.Combine(GetFolderFromResource(old.GetResourcePath(workSpaceId)), old.ResourceName) + ".xml";
                             if (_file.Exists(sourceFile))
                             {
                                 _file.Copy(sourceFile, Path.Combine(folderPath, fileName));
