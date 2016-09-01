@@ -8,7 +8,9 @@ using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Interfaces;
+using Dev2.Runtime.ServiceModel.Data;
 using ServiceStack.Common;
+// ReSharper disable ParameterTypeCanBeEnumerable.Local
 
 namespace Dev2.Runtime.ResourceCatalogImpl
 {
@@ -25,6 +27,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
         {
             try
             {
+               
                 SaveFolders(sourcePath, destinationPath, newName, fixRefences);
                 return ResourceCatalogResultBuilder.CreateSuccessResult("Duplicated Successfully");
             }
@@ -61,37 +64,40 @@ namespace Dev2.Runtime.ResourceCatalogImpl
             resource.ResourceID = resourceID;
             xElement.SetElementValue("DisplayName", newResourceName);
             var fixedResource = xElement.ToStringBuilder();
-            _resourceCatalog.SaveResource(GlobalConstants.ServerWorkspaceID, resource, fixedResource,"","",newPath);
+            _resourceCatalog.SaveResource(GlobalConstants.ServerWorkspaceID, resource, fixedResource,newPath);
 
         }
         private void SaveFolders(string sourceLocation, string destination, string newName, bool fixRefences)
         {
+            var resourcesToUpdate = new List<IResource>();
+            var resourceUpdateMap = new Dictionary<Guid, Guid>();
             var resourceList = _resourceCatalog.GetResourceList(GlobalConstants.ServerWorkspaceID);
-            var resourceToMove = resourceList.Where(resource => resource.GetResourcePath(GlobalConstants.ServerWorkspaceID).ToUpper().StartsWith(sourceLocation.ToUpper()))
-                                                .Where(resource => !(resource is ManagementServiceResource))
-                                                .ToList();
-            _resourcesToUpdate.AddRange(resourceToMove);
+            var resourceToMove = resourceList.Where(resource =>
+            {
+                var upper = resource.GetResourcePath(GlobalConstants.ServerWorkspaceID).ToUpper();
+                return upper.StartsWith(sourceLocation.ToUpper());
+            }).Where(resource => !(resource is ManagementServiceResource)).ToList();
+            
             foreach (var resource in resourceToMove)
             {
                 try
                 {
                     var result = _resourceCatalog.GetResourceContents(GlobalConstants.ServerWorkspaceID, resource.ResourceID);
                     var xElement = result.ToXElement();
-                    resource.IsUpgraded = true;
+                    var newResource = new Resource(xElement) { IsUpgraded = true };
                     var newResourceId = Guid.NewGuid();
                     var oldResourceId = resource.ResourceID;
-                    resource.ResourceID = newResourceId;
+                    newResource.ResourceID = newResourceId;
                     var fixedResource = xElement.ToStringBuilder();
                     var savePath = resource.GetResourcePath(GlobalConstants.ServerWorkspaceID).Replace(resource.ResourceName,"").TrimEnd('\\');
                     savePath = savePath.ReplaceFirst(sourceLocation, destination + "\\" + newName);
-                    _resourceCatalog.SaveResource(GlobalConstants.ServerWorkspaceID, resource, fixedResource,"","", savePath);
-                    _resourceUpdateMap.Add(oldResourceId, newResourceId);
-
+                    _resourceCatalog.SaveResource(GlobalConstants.ServerWorkspaceID, newResource, fixedResource, savePath);
+                    resourcesToUpdate.Add(newResource);
+                    resourceUpdateMap.Add(oldResourceId, newResourceId);
                 }
                 catch (Exception e)
                 {
                     Dev2Logger.Error(e.Message, e);
-                    _resourcesToUpdate.Remove(resource);
                 }
             }
             if (fixRefences)
@@ -101,7 +107,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
                 {
                     using (var tx = new TransactionScope())
                     {
-                        FixReferences();
+                        FixReferences(resourcesToUpdate, resourceUpdateMap);
                         tx.Complete();
                     }
 
@@ -114,20 +120,19 @@ namespace Dev2.Runtime.ResourceCatalogImpl
             }
         }
 
-        private readonly List<IResource> _resourcesToUpdate = new List<IResource>();
-        private readonly Dictionary<Guid, Guid> _resourceUpdateMap = new Dictionary<Guid, Guid>();
-        private void FixReferences()
+        private void FixReferences(List<IResource> resourcesToUpdate, Dictionary<Guid, Guid> oldToNewUpdates)
         {
-            foreach (var updatedResource in _resourcesToUpdate)
+            foreach (var updatedResource in resourcesToUpdate)
             {
 
                 var contents = _resourceCatalog.GetResourceContents(GlobalConstants.ServerWorkspaceID, updatedResource.ResourceID);
 
-                foreach (var oldToNewUpdate in _resourceUpdateMap)
+                // ReSharper disable once LoopCanBeConvertedToQuery
+                foreach (var oldToNewUpdate in oldToNewUpdates)
                 {
-                    contents.Replace(oldToNewUpdate.Key.ToString(), oldToNewUpdate.Value.ToString());
+                    contents = contents.Replace(oldToNewUpdate.Key.ToString().ToLowerInvariant(), oldToNewUpdate.Value.ToString().ToLowerInvariant());
                 }
-                _resourceCatalog.SaveResource(GlobalConstants.ServerWorkspaceID, updatedResource, contents);
+                _resourceCatalog.SaveResource(GlobalConstants.ServerWorkspaceID, updatedResource, contents,updatedResource.GetResourcePath(GlobalConstants.ServerWorkspaceID));
                 updatedResource.LoadDependencies(contents.ToXElement());
             }
         }

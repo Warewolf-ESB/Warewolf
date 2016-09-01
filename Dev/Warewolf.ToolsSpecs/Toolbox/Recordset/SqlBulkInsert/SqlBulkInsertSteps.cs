@@ -42,7 +42,7 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.SqlBulkInsert
         {
             var sqlBulkInsert = new DsfSqlBulkInsertActivity();
             var dbSource = SqlServerTestUtils.CreateDev2TestingDbSource();
-            ResourceCatalog.Instance.SaveResource(Guid.Empty, dbSource);
+            ResourceCatalog.Instance.SaveResource(Guid.Empty, dbSource,"");
             scenarioContext.Add("dbSource", dbSource);
             sqlBulkInsert.Database = dbSource;
             sqlBulkInsert.TableName = "SqlBulkInsertSpecFlowTestTable_for_" + scenarioContext.ScenarioInfo.Title.Replace(' ', '_');

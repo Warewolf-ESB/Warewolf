@@ -132,7 +132,7 @@ namespace Dev2.Tests.Runtime.Services
             //------------Setup for test--------------------------
             var dbSource = CreateDev2TestingDbSource();
             ResourceCatalog.Instance.ResourceSaved = resource => { };
-            ResourceCatalog.Instance.SaveResource(Guid.Empty, dbSource);
+            ResourceCatalog.Instance.SaveResource(Guid.Empty, dbSource, "");
             string someJsonData = JsonConvert.SerializeObject(dbSource, new JsonSerializerSettings
             {
                 TypeNameHandling = TypeNameHandling.Objects,
@@ -183,7 +183,7 @@ namespace Dev2.Tests.Runtime.Services
             //------------Setup for test--------------------------
             var dbSource = CreateDev2TestingDbSource();
             ResourceCatalog.Instance.ResourceSaved = resource => { };
-            ResourceCatalog.Instance.SaveResource(Guid.Empty, dbSource);
+            ResourceCatalog.Instance.SaveResource(Guid.Empty, dbSource, "");
             string someJsonData = JsonConvert.SerializeObject(dbSource,new JsonSerializerSettings
             {
                 TypeNameHandling = TypeNameHandling.Objects,
@@ -228,7 +228,7 @@ namespace Dev2.Tests.Runtime.Services
         {
             //------------Setup for test--------------------------
             var dbSource = CreateDev2TestingDbSource();
-            ResourceCatalog.Instance.SaveResource(Guid.Empty, dbSource);
+            ResourceCatalog.Instance.SaveResource(Guid.Empty, dbSource, "");
             string someJsonData = JsonConvert.SerializeObject(dbSource, new JsonSerializerSettings
             {
                 TypeNameHandling = TypeNameHandling.Objects,

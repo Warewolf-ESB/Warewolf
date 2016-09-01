@@ -44,7 +44,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                     ResourceName = src.ResourceName,
                     ResourceID = src.Id
                 };
-                ResourceCatalog.Instance.SaveResource(GlobalConstants.ServerWorkspaceID, con, "", "", src.Path);
+                ResourceCatalog.Instance.SaveResource(GlobalConstants.ServerWorkspaceID, con, src.Path);
                 ServerExplorerRepo.UpdateItem(con);
 
                 msg.HasError = false;

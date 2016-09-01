@@ -357,6 +357,10 @@ namespace Warewolf.Studio.ViewModels
                         {
                             await Connect(connection);
                         }
+                        else
+                        {
+                            ServerHasDisconnected.Invoke(this, connection);
+                        }
                     }
                     OnPropertyChanged(() => connection.IsConnected);
                     if (ServerConnected != null && connected)

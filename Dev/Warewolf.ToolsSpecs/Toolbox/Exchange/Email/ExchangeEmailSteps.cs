@@ -65,7 +65,7 @@ namespace Dev2.Activities.Specs.Toolbox.Exchange.Email
                 ResourceName = Guid.NewGuid().ToString(),
                 ResourceID = Guid.NewGuid()
             };
-            ResourceCatalog.Instance.SaveResource(Guid.Empty, selectedEmailSource);
+            ResourceCatalog.Instance.SaveResource(Guid.Empty, selectedEmailSource,"");
             var emailSender = new Mock<IDev2EmailSender>();
             // ReSharper disable once RedundantAssignment
             var eR = new ErrorResultTO();
@@ -136,7 +136,7 @@ namespace Dev2.Activities.Specs.Toolbox.Exchange.Email
                 ResourceName = Guid.NewGuid().ToString(),
                 ResourceID = Guid.NewGuid()
             };
-            ResourceCatalog.Instance.SaveResource(Guid.Empty, selectedEmailSource);
+            ResourceCatalog.Instance.SaveResource(Guid.Empty, selectedEmailSource,"");
             var emailSender = new Mock<IDev2EmailSender>();
             // ReSharper disable once RedundantAssignment
             var eR = new ErrorResultTO();

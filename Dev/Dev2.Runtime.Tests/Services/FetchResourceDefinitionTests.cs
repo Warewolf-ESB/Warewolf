@@ -25,7 +25,7 @@ namespace Dev2.Tests.Runtime.Services
             mockWorkspace.Setup(workspace => workspace.ID).Returns(Guid.Empty);
             var resourceID = Guid.NewGuid();
             var dbSource = CreateDev2TestingDbSource(resourceID);
-            ResourceCatalog.Instance.SaveResource(Guid.Empty, dbSource);
+            ResourceCatalog.Instance.SaveResource(Guid.Empty, dbSource, "");
             var fetchResourceDefinition = new FetchResourceDefinition();
             var values = new Dictionary<string, StringBuilder>
             {
