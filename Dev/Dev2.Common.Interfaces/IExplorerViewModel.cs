@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace Dev2.Common.Interfaces
@@ -36,6 +37,6 @@ namespace Dev2.Common.Interfaces
 
 	    void RefreshEnvironment(Guid environmentId);
 
-	    void RefreshSelectedEnvironment();
+	    Task RefreshSelectedEnvironment();
 	}
 }

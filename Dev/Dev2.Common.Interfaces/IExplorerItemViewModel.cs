@@ -17,6 +17,7 @@ namespace Dev2.Common.Interfaces
         bool CanShowDependencies { get; set; }
         bool IsVersion { get; set; }
         bool CanViewSwagger { get; set; }
+        bool CanDuplicate { get; set; }
 
         string VersionNumber { get; set; }
         string VersionHeader { get; set; }
