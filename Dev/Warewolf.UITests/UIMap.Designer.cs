@@ -2516,8 +2516,8 @@ namespace Warewolf.UITests
 
             // Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
             flowchart.EnsureClickable(new Point(306, 129));
-            Mouse.StartDragging(move, new Point(32, 4));
-            Mouse.StopDragging(flowchart, new Point(306, 129));
+            Mouse.StartDragging(move, new Point(14, 3));
+            Mouse.StopDragging(flowchart, new Point(305, 129));
 
             // Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
             Assert.AreEqual(this.Drag_Toolbox_Move_Onto_DesignSurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
@@ -5307,7 +5307,7 @@ namespace Warewolf.UITests
             Mouse.Click(namespaceComboBox, new Point(216, 7));
 
             // Click 'SystemRandom' list item
-            Mouse.Click(systemRandomListItem, new Point(137, 7));
+            Mouse.Click(systemRandomListItem, new Point(137, 5));
 
             // Verify that the 'SelectedItem' property of 'NamespaceComboBox' combo box equals 'System.Random'
             Assert.AreEqual(this.Select_SystemRandom_From_DotNet_DLL_Large_View_Namespace_ComboboxExpectedValues.NamespaceComboBoxSelectedItem, namespaceComboBox.SelectedItem, "System.Random is not selected in DotNet DLL tool large view namespace combobox.");
@@ -9564,7 +9564,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Type 'Read Folder' in 'SearchTextBox' text box
         /// </summary>
-        public string SearchTextBoxText = "Read Folder";
+        public string SearchTextBoxText = "Read Fol";
         
         /// <summary>
         /// Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
