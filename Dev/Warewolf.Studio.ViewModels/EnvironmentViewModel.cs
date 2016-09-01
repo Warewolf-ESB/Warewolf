@@ -751,7 +751,7 @@ namespace Warewolf.Studio.ViewModels
 
         public async Task<bool> Load(bool isDeploy = false,bool reloadCatalogue=false)
         {
-            if (!IsLoading)
+            if (!IsLoading || isDeploy)
             {
                 try
                 {

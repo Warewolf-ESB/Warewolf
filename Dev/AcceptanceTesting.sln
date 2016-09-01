@@ -293,6 +293,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		Studio.Run.bat = Studio.Run.bat
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Service", "Service", "{B9BA8A1C-4504-4662-8AB6-31BF4D271003}"
+	ProjectSection(SolutionItems) = preProject
+		TestScripts\Server\Service\Cleanup.bat = TestScripts\Server\Service\Cleanup.bat
+		TestScripts\Server\Service\Startup.bat = TestScripts\Server\Service\Startup.bat
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -653,6 +659,7 @@ Global
 		{378E1780-68B0-4DCF-882F-235BA0423D3C} = {C6750CCC-03BB-42BF-8EB7-0D9ACB927923}
 		{821BF055-C1EF-4E32-9854-96684CAFB617} = {C6750CCC-03BB-42BF-8EB7-0D9ACB927923}
 		{6A1B0257-1363-43A4-AAF2-4D151081DE6C} = {2B92A973-AA53-4E0C-9E2E-13F40A352C80}
+		{B9BA8A1C-4504-4662-8AB6-31BF4D271003} = {97031FE6-CCA7-4372-9370-01432C4D6439}
 	EndGlobalSection
 	GlobalSection(CodealikeProperties) = postSolution
 		SolutionGuid = 5a0c3994-6f1d-461d-8c94-696b3470e61c

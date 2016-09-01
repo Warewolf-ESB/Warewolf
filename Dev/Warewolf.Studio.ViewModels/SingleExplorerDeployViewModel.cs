@@ -12,6 +12,8 @@ using Dev2.Interfaces;
 using Microsoft.Practices.Prism.Commands;
 using Microsoft.Practices.Prism.Mvvm;
 using Dev2.Studio.Core;
+using Microsoft.Practices.Prism;
+
 // ReSharper disable ClassWithVirtualMembersNeverInherited.Global
 // ReSharper disable MemberCanBeProtected.Global
 
@@ -132,6 +134,8 @@ namespace Warewolf.Studio.ViewModels
             SourcesCount = _stats.Sources.ToString();
             NewResourcesCount = _stats.NewResources.ToString();
             OverridesCount = _stats.Overrides.ToString();
+            //if (Destination.SelectedEnvironment != null && Destination.SelectedEnvironment.IsConnected)
+            //    Destination.SelectedEnvironment.Children.AddRange(Source.SelectedEnvironment.Children.Where(a => a.IsResourceChecked == true));
             ViewModelUtils.RaiseCanExecuteChanged(DeployCommand);
             _stats.Calculate(Source?.SourceLoadedItems?.ToList());
             OnPropertyChanged(() => CanDeploy);            
@@ -205,7 +209,7 @@ namespace Warewolf.Studio.ViewModels
             ShowConflictItemsList = false;
         }
 
-        void Deploy()
+        async void Deploy()
         {
             IsDeploying = true;
 
@@ -240,10 +244,10 @@ namespace Warewolf.Studio.ViewModels
                     _shell.DeployResources(Source.Environments.First().Server.EnvironmentID, Destination.ConnectControlViewModel.SelectedConnection.EnvironmentID, notfolders);
                     DeploySuccessfull = true;
                     DeploySuccessMessage = $"{notfolders.Count} Resource{(notfolders.Count == 1 ? "" : "s")} Deployed Successfully.";
+                    await Destination.RefreshSelectedEnvironment();
                     UpdateServerCompareChanged(this, Guid.Empty);
-                    Source.SelectedEnvironment.AsList().Where(model => model.IsResourceChecked == true).Apply(o => o.IsResourceUnchecked = false);
-                    Destination.RefreshSelectedEnvironment();
                     _stats.ReCalculate();
+                    Source.SelectedEnvironment.AsList().Apply(o => o.IsResourceChecked = false);
                 }
             }
             catch (Exception e)
