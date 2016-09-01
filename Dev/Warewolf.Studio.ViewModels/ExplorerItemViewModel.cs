@@ -173,6 +173,7 @@ namespace Warewolf.Studio.ViewModels
             CanShowDependencies = true;
             AllowResourceCheck = false;
             IsResourceChecked = false;
+            CanDuplicate = false;
             IsVisible = true;
             IsVersion = false;
             CanShowServerVersion = false;
@@ -269,7 +270,7 @@ namespace Warewolf.Studio.ViewModels
             ShowDependenciesCommand = new DelegateCommand(ShowDependencies);
             ShowVersionHistory = new DelegateCommand(() => AreVersionsVisible = !AreVersionsVisible);
             DeleteCommand = new DelegateCommand(Delete);
-            DuplicateCommand = new DelegateCommand(DuplicateResource, () => true);
+            DuplicateCommand = new DelegateCommand(DuplicateResource, () => CanDuplicate);
             OpenVersionCommand = new DelegateCommand(OpenVersion);
             VersionHeader = "Show Version History";
             Expand = new DelegateCommand<int?>(clickCount =>
@@ -564,6 +565,7 @@ namespace Warewolf.Studio.ViewModels
         private void SetAdministratorPermissions()
         {
             CanRename = true;
+            CanDuplicate = true;
             CanDelete = true;
             CanCreateFolder = true;
             CanDeploy = true;
@@ -574,6 +576,7 @@ namespace Warewolf.Studio.ViewModels
         {
             CanEdit = !isDeploy;
             CanRename = true;
+            CanDuplicate = true;
             CanDelete = true;
             CanCreateFolder = true;
             CanCreateWorkflowService = true;
@@ -931,8 +934,20 @@ namespace Warewolf.Studio.ViewModels
             }
             set
             {
-                OnPropertyChanged(() => CanRename);
                 _canRename = value;
+                OnPropertyChanged(() => CanRename);
+            }
+        }
+        public bool CanDuplicate
+        {
+            get
+            {
+                return _canDuplicate;
+            }
+            set
+            {
+                _canDuplicate = value;
+                OnPropertyChanged(() => CanDuplicate);
             }
         }
         public bool CanDelete
@@ -943,8 +958,8 @@ namespace Warewolf.Studio.ViewModels
             }
             set
             {
-                OnPropertyChanged(() => CanDelete);
                 _canDelete = value;
+                OnPropertyChanged(() => CanDelete);
             }
         }
         public bool CanCreateFolder
