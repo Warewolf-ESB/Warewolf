@@ -8,7 +8,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.Serialization;
@@ -33,15 +32,21 @@ namespace Dev2.Runtime.ESB.Management.Services
         {
             StringBuilder resourceDefinition;
 
+            StringBuilder savePathValue;
+            values.TryGetValue("savePath", out savePathValue);
+            if (savePathValue == null)
+            {
+                throw new InvalidDataContractException("SavePath is missing");
+            }
             values.TryGetValue("ResourceDefinition", out resourceDefinition);
-            Dev2Logger.Info(String.Format("Deploy Resource."));
+            Dev2Logger.Info("Deploy Resource.");
             if(resourceDefinition == null || resourceDefinition.Length == 0)
             {
-                Dev2Logger.Info(String.Format("Roles or ResourceDefinition missing"));
+                Dev2Logger.Info("Roles or ResourceDefinition missing");
                 throw new InvalidDataContractException("Roles or ResourceDefinition missing");
             }
 
-            var msg = ResourceCatalog.Instance.SaveResource(WorkspaceRepository.ServerWorkspaceID, resourceDefinition,"Deploy","unknown");
+            var msg = ResourceCatalog.Instance.SaveResource(WorkspaceRepository.ServerWorkspaceID, resourceDefinition,"Deploy","unknown", savePathValue.ToString());
             WorkspaceRepository.Instance.RefreshWorkspaces();
 
             var result = new ExecuteMessage { HasError = false };

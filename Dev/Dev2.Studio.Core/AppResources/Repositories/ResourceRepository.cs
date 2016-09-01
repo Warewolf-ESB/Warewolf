@@ -273,7 +273,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             return saveResource;
         }
         
-        public void DeployResource(IResourceModel resource)
+        public void DeployResource(IResourceModel resource, string savePath)
         {
             if (resource == null)
             {
@@ -291,6 +291,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             ResourceModels.Add(theResource);
 
             var comsController = new CommunicationController { ServiceName = "DeployResourceService" };
+            comsController.AddPayloadArgument("savePath", savePath);
             comsController.AddPayloadArgument("ResourceDefinition", resource.ToServiceDefinition(true));
             comsController.AddPayloadArgument("Roles", "*");
 
