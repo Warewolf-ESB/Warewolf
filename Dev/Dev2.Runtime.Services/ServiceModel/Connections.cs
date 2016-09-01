@@ -13,6 +13,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
 using System.Net.Security;
 using System.Security.Cryptography.X509Certificates;
 using System.Security.Principal;
@@ -25,6 +26,8 @@ using Dev2.Communication;
 using Dev2.Runtime.Diagnostics;
 using Dev2.Runtime.ServiceModel.Data;
 using Microsoft.AspNet.SignalR.Client;
+// ReSharper disable ClassWithVirtualMembersNeverInherited.Global
+// ReSharper disable MemberCanBePrivate.Global
 
 // ReSharper disable InconsistentNaming
 namespace Dev2.Runtime.ServiceModel
@@ -42,13 +45,11 @@ namespace Dev2.Runtime.ServiceModel
 
         #region Constructor
 
-        // default constructor to be used in prod.
         public Connections()
             : this(() => GetComputerNames.ComputerNames)
         {
         }
 
-        // here for testing
         public Connections(Func<List<string>> fetchComputersFn)
         {
             _fetchComputers = fetchComputersFn;
@@ -164,31 +165,17 @@ namespace Dev2.Runtime.ServiceModel
 
                         client.Credentials = new NetworkCredential(connection.UserName, connection.Password);
                     }
-
-                    // Need to do hub connect here to get true permissions ;)
-                    HubConnection hub = null;
-                    try
+                    
+                    var hub = new HubConnection(connection.FetchTestConnectionAddress()) { Credentials = client.Credentials };
+                    hub.Error +=exception => {};
+                    ServicePointManager.ServerCertificateValidationCallback = ValidateServerCertificate;
+                    var proxy = hub.CreateHubProxy("esb");
+                    if (!hub.Start().Wait(GlobalConstants.NetworkTimeOut))
                     {
-                        // Credentials = client.Credentials 
-                        hub = new HubConnection(connection.FetchTestConnectionAddress()) { Credentials = client.Credentials };
-                        hub.Error +=exception => {};
-                        ServicePointManager.ServerCertificateValidationCallback = ValidateServerCertificate;
-#pragma warning disable 168
-                        var proxy = hub.CreateHubProxy("esb"); // this is the magic line that causes proper validation
-#pragma warning restore 168
-                        hub.Start().Wait();
-                        CheckServerVersion(proxy);
-                        Dev2Logger.Debug("Hub State : " + hub.State);
-                        return "Success";
+                        throw new HttpClientException(new HttpResponseMessage(HttpStatusCode.GatewayTimeout));
                     }
-                    finally
-                    {
-                        if(hub != null)
-                        {
-                            hub.Stop();
-                            hub.Dispose();
-                        }
-                    }
+                    CheckServerVersion(proxy);
+                    return "Success";
                 }
             }
             finally
