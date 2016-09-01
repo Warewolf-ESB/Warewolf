@@ -113,7 +113,7 @@ namespace Warewolf.AcceptanceTesting.Deploy
             var server = new Mock<IServer>();
             var qp = new Mock<IQueryManager>();
             qp.Setup(a => a.FetchDependenciesOnList(It.IsAny<IEnumerable<Guid>>())).Returns(new List<Guid> { Guid.Parse("5C8B5660-CE6E-4D22-84D8-5B77DC749F70") });
-            server.Setup(a => a.LoadExplorer(false)).Returns(new Task<IExplorerItem>(CreateExplorerSourceItems));
+            server.Setup(a => a.LoadExplorer(It.IsAny<bool>())).Returns(Task.FromResult(CreateExplorerSourceItems()));
             server.Setup(a => a.GetServerConnections()).Returns(GetServers());
             server.Setup(a => a.Permissions).Returns(new List<IWindowsGroupPermission>
             {
@@ -146,7 +146,7 @@ namespace Warewolf.AcceptanceTesting.Deploy
         static IList<IServer> GetServers()
         {
             var server = new Mock<IServer>();
-            server.Setup(a => a.LoadExplorer(false)).Returns(new Task<IExplorerItem>(CreateExplorerSourceItems));
+            server.Setup(a => a.LoadExplorer(It.IsAny<bool>())).Returns(Task.FromResult(CreateExplorerSourceItems()));
             server.Setup(a => a.DisplayName).Returns("Remote");
             server.Setup(a => a.ResourceName).Returns("Remote");
             server.Setup(a => a.CanDeployTo).Returns(true);
@@ -303,7 +303,7 @@ namespace Warewolf.AcceptanceTesting.Deploy
                 .FirstOrDefault(p => p.ResourcePath == p0);
             if (explorerItemViewModel != null)
             {
-                Assert.IsTrue(explorerItemViewModel.CanDeploy);
+                Assert.IsFalse(explorerItemViewModel.CanDeploy);
                 Assert.IsFalse(explorerItemViewModel.IsResourceChecked != null && explorerItemViewModel.IsResourceChecked.Value);
                 Assert.IsFalse(explorerItemViewModel.IsResourceCheckedEnabled);
             }
