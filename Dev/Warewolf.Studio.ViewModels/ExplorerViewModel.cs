@@ -161,26 +161,26 @@ namespace Warewolf.Studio.ViewModels
 
         public string RefreshToolTip => Resources.Languages.Core.ExplorerRefreshToolTip;
 
-        public void RefreshEnvironment(Guid environmentId)
+        public async void RefreshEnvironment(Guid environmentId)
         {
             var environmentViewModel = Environments.FirstOrDefault(model => model.Server.EnvironmentID == environmentId);
             if (environmentViewModel != null)
             {
-                RefreshEnvironment(environmentViewModel, true);
+                await RefreshEnvironment(environmentViewModel, true);
             }
         }
 
-        public void RefreshSelectedEnvironment()
+        public async Task RefreshSelectedEnvironment()
         {
             if (SelectedEnvironment != null)
             {
-                RefreshEnvironment(SelectedEnvironment, true);
+                await RefreshEnvironment(SelectedEnvironment, true);
             }
         }
         protected virtual void Refresh(bool refresh)
         {
             IsRefreshing = true;
-            Environments.ForEach(env => RefreshEnvironment(env, refresh));
+            Environments.ForEach(async env => await RefreshEnvironment(env, refresh));
             Environments = new ObservableCollection<IEnvironmentViewModel>(Environments);
             foreach (var environment in Environments)
             {
@@ -191,18 +191,23 @@ namespace Warewolf.Studio.ViewModels
             ConnectControlViewModel.LoadNewServers();
         }
 
-        private async void RefreshEnvironment(IEnvironmentViewModel environmentViewModel, bool refresh)
+        private async Task RefreshEnvironment(IEnvironmentViewModel environmentViewModel, bool refresh)
         {
             IsRefreshing = true;
 
             if (environmentViewModel.IsConnected)
             {
                 environmentViewModel.ForcedRefresh = true;
-                await environmentViewModel.Load(false, refresh);
+                await environmentViewModel.Load(true, refresh);
                 if (!string.IsNullOrEmpty(SearchText))
                 {
                     Filter(SearchText);
                 }
+            }
+            foreach (var environment in Environments)
+            {
+                if (environment.Children != null)
+                    environment.Children = new ObservableCollection<IExplorerItemViewModel>(environment.Children.OrderByDescending(a => a.IsFolder).ThenBy(b => b.ResourceName).ToList());
             }
             environmentViewModel.ForcedRefresh = false;
             IsRefreshing = false;
