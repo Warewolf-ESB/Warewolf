@@ -182,10 +182,10 @@ namespace Warewolf.Studio.ViewModels
             SetupCommands();
 
             Server.PermissionsChanged += UpdatePermissions;
-            if (Server.Permissions != null)
-            {
-                SetPermissions(Server.Permissions);
-            }
+//            if (Server.Permissions != null)
+//            {
+//                SetPermissions(Server.Permissions);
+//            }
 
             _candrop = true;
             _canDrag = true;

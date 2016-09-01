@@ -399,14 +399,14 @@
     </Style>
     <Style BasedOn="{StaticResource XamMenuItemStyle}" TargetType="igMenu:XamMenuItem" />
 
-    <Style TargetType="Image" x:Key="SwaggerIcon">
-        <Setter Property="Height" Value="12"/>
-        <Setter Property="Width" Value="12"/>
+    <Style TargetType="Image" x:Key="ViewSwaggerIcon">
+        <Setter Property="Height" Value="21"/>
+        <Setter Property="Width" Value="21"/>
         <Setter Property="Source" Value="{StaticResource SwaggerIcon}"/>
     </Style>
-    <Style TargetType="Image" x:Key="ApisJsonIcon">
-        <Setter Property="Height" Value="12"/>
-        <Setter Property="Width" Value="12"/>
+    <Style TargetType="Image" x:Key="ViewApisJsonIcon">
+        <Setter Property="Height" Value="15"/>
+        <Setter Property="Width" Value="15"/>
         <Setter Property="Source" Value="{StaticResource ApisJsonIcon}"/>
     </Style>
     <Style TargetType="Image" x:Key="NewDataBaseSourceIcon">

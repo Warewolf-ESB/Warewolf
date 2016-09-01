@@ -32,7 +32,7 @@
     
     <Grid Margin="{StaticResource ElementBorder}">
         <ui:IntellisenseTextBox x:Name="InitialFocusElement"
-                                Text="{Binding Path=ModelItem.Text, UpdateSourceTrigger=PropertyChanged}"
+                                Text="{Binding Path=Text, UpdateSourceTrigger=PropertyChanged}"
                                 ScrollViewer.VerticalScrollBarVisibility="Auto"
                                 AllowMultilinePaste="True"
                                 AcceptsReturn="True"
