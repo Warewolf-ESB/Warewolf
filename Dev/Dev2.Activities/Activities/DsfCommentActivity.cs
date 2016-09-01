@@ -26,13 +26,18 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
     [ToolDescriptorInfo("Utility-Comment", "Comment", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Utility", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Utility_Comment_Tags")]
     public class DsfCommentActivity : DsfActivityAbstract<string>
     {
+        private string _text;
 
         public DsfCommentActivity()
         {
             DisplayName = "Comment";
         }
-        public string Text { get; set; }
 
+        public string Text
+        {
+            get { return _text; }
+            set { _text = value; }
+        }
 
         #region Get Debug Inputs/Outputs
 
@@ -94,6 +99,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         protected override void ExecuteTool(IDSFDataObject dataObject, int update)
         {
+            InitializeDebug(dataObject);
+            DispatchDebugState(dataObject, StateType.Before, 0);
+
+            DispatchDebugState(dataObject, StateType.After, 0);
         }
 
         #endregion

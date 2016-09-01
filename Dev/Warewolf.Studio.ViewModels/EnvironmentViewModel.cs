@@ -176,6 +176,7 @@ namespace Warewolf.Studio.ViewModels
             SelectAll = () => { };
             CanDrag = false;
             CanDrop = false;
+            ResourceId = server.EnvironmentID;
             CanViewApisJson = true;
             if (ForcedRefresh)
                 ForcedRefresh = true;

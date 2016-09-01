@@ -93,25 +93,7 @@ Scenario: Deploying a connector with a source
 	 Then "sqlServers\DemoDB" from Source Server is "Selected"
 	 And I deploy 
 	 Then deploy is successfull
-	 And the Deploy validation message is "2 Resources Deployed Successfully."	 
-
-Scenario: Deploying a connector with a source should set deploy state
-     Given I have deploy tab opened
-	  And selected Source Server is "localhost"
-	 And source is connected
-	 When selected Destination Server is "Remote"
-	 And destination is connected
-	 Then New Resource is "0"
-	 And source have deployable resources in "sqlServers\DemoDB"
-	 When I select "DB Service\FetchPlayers" from Source Server
-	 Then "Deploy" is "Enabled" 
-	 And "Select All Dependencies" is "Enabled"
-	 When I Select All Dependecies
-	 Then "sqlServers\DemoDB" from Source Server is "Selected"
-	 And I deploy 
-	 Then deploy is successfull
 	 And the Deploy validation message is "2 Resources Deployed Successfully."
-	 And resources in "sqlServers\DemoDB" are now unDeployable
 
 Scenario: Filtering and clearing filter on source side
      Given I have deploy tab opened
