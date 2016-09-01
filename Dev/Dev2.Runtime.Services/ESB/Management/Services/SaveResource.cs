@@ -108,7 +108,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 
                 if (compiledResources != null)
                 {
-                    var saveResult = ResourceCatalog.Instance.SaveResource(workspaceId, resourceDefinition, "Save","", savePathValue.ToString());
+                    var saveResult = ResourceCatalog.Instance.SaveResource(workspaceId, resourceDefinition, savePathValue.ToString(), "Save");
                     res.SetMessage(saveResult.Message + " " + DateTime.Now);
                 }
 
