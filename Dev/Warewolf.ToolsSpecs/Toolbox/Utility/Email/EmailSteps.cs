@@ -75,7 +75,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.Email
                 ResourceName = Guid.NewGuid().ToString(),
                 ResourceID = Guid.NewGuid()
             };
-            ResourceCatalog.Instance.SaveResource(Guid.Empty, selectedEmailSource);
+            ResourceCatalog.Instance.SaveResource(Guid.Empty, selectedEmailSource,"");
             var sendEmail = new DsfSendEmailActivity
                 {
                     Result = ResultVariable,

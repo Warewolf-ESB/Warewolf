@@ -42,7 +42,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                     AssemblyLocation = src.SelectedDll.FullName,
                     ResourceName = src.Name
                 };
-                ResourceCatalog.Instance.SaveResource(GlobalConstants.ServerWorkspaceID, res, "", "", src.Path);
+                ResourceCatalog.Instance.SaveResource(GlobalConstants.ServerWorkspaceID, res, src.Path);
                 ServerExplorerRepo.UpdateItem(res);
                 msg.HasError = false;
 

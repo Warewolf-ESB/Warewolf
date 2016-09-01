@@ -68,7 +68,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                     Namespace = serviceDef.Action.FullName
                 };
 
-                ResourceCatalog.Instance.SaveResource(GlobalConstants.ServerWorkspaceID, res, "", "", serviceDef.Path);
+                ResourceCatalog.Instance.SaveResource(GlobalConstants.ServerWorkspaceID, res, serviceDef.Path);
                 ServerExplorerRepo.UpdateItem(res);
 
                 msg.HasError = false;

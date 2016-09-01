@@ -45,7 +45,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                     ComName = src.SelectedDll.Name,
                     ResourceName = src.ResourceName
                 };
-                ResourceCatalog.Instance.SaveResource(GlobalConstants.ServerWorkspaceID, res, "", "", src.ResourcePath);
+                ResourceCatalog.Instance.SaveResource(GlobalConstants.ServerWorkspaceID, res, src.ResourcePath);
                 msg.HasError = false;
 
             }
