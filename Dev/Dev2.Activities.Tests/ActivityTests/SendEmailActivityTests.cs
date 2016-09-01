@@ -369,7 +369,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                 ResourceName = Guid.NewGuid().ToString(),
                 ResourceID = Guid.NewGuid()
             };
-            ResourceCatalog.Instance.SaveResource(Guid.Empty, testSource);
+            ResourceCatalog.Instance.SaveResource(Guid.Empty, testSource, "");
             EmailSource sendSource = null;
             MailMessage sendMessage = null;
             var emailSender = new Mock<IEmailSender>();
@@ -537,7 +537,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                 UserName = "from.someone@amail.account",
                 Password = "TestPassword"
             };
-            ResourceCatalog.Instance.SaveResource(Guid.Empty, emailSourceForTesting);
+            ResourceCatalog.Instance.SaveResource(Guid.Empty, emailSourceForTesting, "");
             return emailSourceForTesting;
         }
     }

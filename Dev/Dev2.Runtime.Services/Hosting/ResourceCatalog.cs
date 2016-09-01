@@ -292,9 +292,9 @@ namespace Dev2.Runtime.Hosting
 
         #region SaveResource
 
-        public ResourceCatalogResult SaveResource(Guid workspaceID, StringBuilder resourceXml, string reason = "", string user = "", string savedPath = "") => _catalogPluginContainer.SaveProvider.SaveResource(workspaceID, resourceXml, reason, user, savedPath);
-        public ResourceCatalogResult SaveResource(Guid workspaceID, IResource resource, string reason = "", string user = "", string savedPath = "") => _catalogPluginContainer.SaveProvider.SaveResource(workspaceID, resource, reason, user, savedPath);
-        public ResourceCatalogResult SaveResource(Guid workspaceID, IResource resource,StringBuilder contents, string reason = "", string user = "", string savedPath = "") => _catalogPluginContainer.SaveProvider.SaveResource(workspaceID, resource,contents, reason, user,savedPath);
+        public ResourceCatalogResult SaveResource(Guid workspaceID, StringBuilder resourceXml, string savedPath, string reason = "", string user = "") => _catalogPluginContainer.SaveProvider.SaveResource(workspaceID, resourceXml, savedPath, reason, user);
+        public ResourceCatalogResult SaveResource(Guid workspaceID, IResource resource, string savedPath, string reason = "", string user = "") => _catalogPluginContainer.SaveProvider.SaveResource(workspaceID, resource, savedPath, reason, user);
+        public ResourceCatalogResult SaveResource(Guid workspaceID, IResource resource, StringBuilder contents, string savedPath, string reason = "", string user = "") => _catalogPluginContainer.SaveProvider.SaveResource(workspaceID, resource,contents,savedPath, reason, user);
 
         public Action<IResource> ResourceSaved
         {

@@ -76,7 +76,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 res.Method.Parameters = parameters;
                 res.Method.Outputs = output;
                 res.Method.OutputDescription = res.GetOutputDescription();
-                ResourceCatalog.Instance.SaveResource(GlobalConstants.ServerWorkspaceID, res, "", "", src.Path);
+                ResourceCatalog.Instance.SaveResource(GlobalConstants.ServerWorkspaceID, res, src.Path);
                 ServerExplorerRepo.UpdateItem(res);
 
                 msg.HasError = false;
