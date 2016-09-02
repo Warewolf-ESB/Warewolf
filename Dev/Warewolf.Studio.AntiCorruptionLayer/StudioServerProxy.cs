@@ -104,11 +104,14 @@ namespace Warewolf.Studio.AntiCorruptionLayer
                         // ReSharper disable once LoopCanBeConvertedToQuery
                         foreach (IExplorerItemViewModel itemViewModel in explorerItemViewModels)
                         {
-                            var dependants = QueryManagerProxy.FetchDependants(itemViewModel.ResourceId);
-                            if (dependants != null)
+                            if (itemViewModel.ResourceType != "Folder")
                             {
+                                var dependants = QueryManagerProxy.FetchDependants(itemViewModel.ResourceId);
+                                if (dependants != null)
+                                {
 
-                                return HasDependencies(itemViewModel, graphGenerator, dependants);                                
+                                    return HasDependencies(itemViewModel, graphGenerator, dependants);
+                                }
                             }
                         }
                         if (!string.IsNullOrWhiteSpace(explorerItemViewModel.ResourcePath))

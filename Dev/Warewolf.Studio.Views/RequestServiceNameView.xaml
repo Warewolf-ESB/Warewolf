@@ -94,7 +94,11 @@
             <CheckBox Visibility="{Binding IsDuplicate, Converter={StaticResource BoolToVisibilityConverter}}" 
                       Content="Update duplicated relationships?" IsChecked="{Binding FixReferences}" Margin="{StaticResource ControlBorderBottomRight}"
                       ToolTip="{x:Static languages:Core.DuplicateCheckBoxTooltip}"/>
-            
+            <views:CircularProgressBar     Width="25"
+                                           Height="25"
+                                           Padding="2.5"
+                                           Visibility="{Binding Path=IsDuplicating,
+                                                                Converter={StaticResource BoolToVisibilityConverter}}" />
             <Button x:Name="DuplicateButton"
                     Width="60"
                     Command="{Binding Path=DuplicateCommand}"
@@ -103,7 +107,7 @@
                     Visibility="{Binding IsDuplicate, Converter={StaticResource BoolToVisibilityConverter}}" 
                     Style="{StaticResource ButtonStyle}"
                     ToolTip="{x:Static languages:Core.DuplicateButtonTooltip}"/>
-            
+           
             <Button x:Name="OkButton"
                     Width="60"
                     Command="{Binding Path=OkCommand}"

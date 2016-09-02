@@ -45,8 +45,7 @@ namespace Warewolf.Studio.ServerProxyLayer
             comsController.AddPayloadArgument("ResourceId", resourceId.ToString());
             comsController.AddPayloadArgument("GetDependsOnMe", getDependsOnMe.ToString());
 
-            var workspaceId = Connection.WorkspaceID;
-            var payload = comsController.ExecuteCommand<ExecuteMessage>(Connection, workspaceId);
+            var payload = comsController.ExecuteCommand<ExecuteMessage>(Connection, GlobalConstants.ServerWorkspaceID);
 
             return payload;
         }
