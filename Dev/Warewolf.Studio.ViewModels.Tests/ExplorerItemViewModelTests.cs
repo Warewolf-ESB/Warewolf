@@ -1695,6 +1695,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //arrange
             _target.ResourceType = "WorkflowService";
             _target.IsService = true;
+            _target.CanView = true;
             //act
 
             //assert
@@ -1740,6 +1741,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _target.ResourceType = "WorkflowService";
             _target.IsService = true;
             _target.IsFolder = false;
+            _target.CanView = true;
             //act
 
             //assert
