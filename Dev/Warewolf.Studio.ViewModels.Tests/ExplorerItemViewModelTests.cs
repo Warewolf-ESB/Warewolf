@@ -459,7 +459,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //arrange
             var environmentModelMock = new Mock<IEnvironmentModel>();
             environmentModelMock.SetupGet(it => it.ID).Returns(Guid.NewGuid());
-            _explorerRepositoryMock.Setup(it => it.Delete(_target)).Returns(new DeletedFileMetadata() { IsDeleted = true });
+            _explorerRepositoryMock.Setup(it => it.Delete(_target)).Returns(new DeletedFileMetadata { IsDeleted = true });
             _target.EnvironmentModel = environmentModelMock.Object;
             _target.ResourceType = "ServerSource";
             _target.ResourceId = Guid.NewGuid();
@@ -485,12 +485,11 @@ namespace Warewolf.Studio.ViewModels.Tests
             //arrange
             var environmentModelMock = new Mock<IEnvironmentModel>();
             environmentModelMock.SetupGet(it => it.ID).Returns(Guid.NewGuid());
-            _explorerRepositoryMock.Setup(it => it.Delete(_target)).Returns(new DeletedFileMetadata() { IsDeleted = true });
+            _explorerRepositoryMock.Setup(it => it.Delete(_target)).Returns(new DeletedFileMetadata { IsDeleted = true });
             _target.EnvironmentModel = environmentModelMock.Object;
             _target.ResourceType = "Server";
             _target.IsServer = true;
             _target.ResourceId = Guid.NewGuid();
-            //if (_popupController.ShowDeleteVersionMessage(ResourceName) == MessageBoxResult.Yes)
             _popupControllerMock.Setup(it => it.Show(It.IsAny<IPopupMessage>())).Returns(MessageBoxResult.Yes);
             var studioManagerUpdateMock = new Mock<IStudioUpdateManager>();
             _serverMock.SetupGet(it => it.UpdateRepository).Returns(studioManagerUpdateMock.Object);
@@ -504,6 +503,32 @@ namespace Warewolf.Studio.ViewModels.Tests
             _explorerRepositoryMock.Verify(it => it.Delete(_target));
             _explorerTreeItemMock.Verify(it => it.RemoveChild(_target));
             studioManagerUpdateMock.Verify(it => it.FireServerSaved());
+        }
+
+        [TestMethod]
+        public void TestDeleteCommandResourceTypeServerDeleteSuccess_ShowDependencies()
+        {
+            //arrange
+            _shellViewModelMock.Setup(model => model.ShowDependencies(It.IsAny<Guid>(), It.IsAny<IServer>()));
+            var environmentModelMock = new Mock<IEnvironmentModel>();
+            environmentModelMock.SetupGet(it => it.ID).Returns(Guid.NewGuid());
+            _explorerRepositoryMock.Setup(it => it.Delete(_target)).Returns(new DeletedFileMetadata { IsDeleted = false,ShowDependencies = true});
+            _target.EnvironmentModel = environmentModelMock.Object;
+            _target.ResourceType = "Server";
+            _target.IsServer = true;
+            _target.ResourceId = Guid.NewGuid();
+            _popupControllerMock.Setup(it => it.Show(It.IsAny<IPopupMessage>())).Returns(MessageBoxResult.Yes);
+            var studioManagerUpdateMock = new Mock<IStudioUpdateManager>();
+            _serverMock.SetupGet(it => it.UpdateRepository).Returns(studioManagerUpdateMock.Object);
+
+            //act
+            _target.DeleteCommand.Execute(null);
+            Assert.IsTrue(_target.DeleteCommand.CanExecute(null));
+
+            //assert
+            _explorerRepositoryMock.Verify(it => it.Delete(_target),Times.Once);
+            _explorerTreeItemMock.Verify(it => it.RemoveChild(_target), Times.Never);
+            _shellViewModelMock.Verify(model => model.ShowDependencies(It.IsAny<Guid>(),It.IsAny<IServer>()),Times.Once());
         }
 
 
@@ -713,10 +738,10 @@ namespace Warewolf.Studio.ViewModels.Tests
 
             //assert
             _explorerRepositoryMock.Verify(it => it.Delete(_target));
-            _explorerTreeItemMock.Verify(it => it.RemoveChild(_target));
+            _explorerTreeItemMock.Verify(it => it.RemoveChild(_target),Times.Never());
 
             Assert.AreEqual(1, _target.ChildrenCount);
-            _explorerTreeItemMock.Verify(it => it.AddChild(_target));
+            _explorerTreeItemMock.Verify(it => it.AddChild(_target),Times.Never);
         }
 
         #endregion Test commands
