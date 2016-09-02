@@ -261,13 +261,13 @@ namespace Dev2.Runtime.Hosting
             }
             try
             {
-                path = path + "\\";
-                var resources = ResourceCatalogue.GetResourceList(workSpaceId).Where(a => a.GetResourcePath(workSpaceId).StartsWith(path)).ToList();
-                List<ResourceCatalogResult> deletedResources = resources.Select(a => ResourceCatalogue.DeleteResource(workSpaceId, a.ResourceName, a.ResourceType.ToString())).ToList();
-                if (deletedResources.Any(a => a.Status != ExecStatus.Success))
-                {
-                    return new ExplorerRepositoryResult(ExecStatus.Fail, ErrorResource.FailedToDeleteChildItems);
-                }
+//                path = path + "\\";
+//                var resources = ResourceCatalogue.GetResourceList(workSpaceId).Where(a => a.GetResourcePath(workSpaceId).StartsWith(path)).ToList();
+//                List<ResourceCatalogResult> deletedResources = resources.Select(a => ResourceCatalogue.DeleteResource(workSpaceId, a.ResourceName, a.ResourceType.ToString())).ToList();
+//                if (deletedResources.Any(a => a.Status != ExecStatus.Success))
+//                {
+//                    return new ExplorerRepositoryResult(ExecStatus.Fail, ErrorResource.FailedToDeleteChildItems);
+//                }
 
                 Directory.Delete(DirectoryStructureFromPath(path), true);
 

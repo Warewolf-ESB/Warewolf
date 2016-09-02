@@ -290,7 +290,7 @@ namespace Warewolf.Studio.ViewModels
             _explorerItemViewModelCommandController.DuplicateResource(this);
         }
 
-        internal void ShowDependencies()
+        public void ShowDependencies()
         {
             _explorerItemViewModelCommandController.ShowDependenciesCommand(ResourceId, Server);
         }

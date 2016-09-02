@@ -148,15 +148,7 @@ namespace Warewolf.Studio.ViewModels
                                 server.UpdateRepository.FireServerSaved();
                             }
                             parent?.RemoveChild(explorerItemViewModel);
-                        }
-                        else
-                        {
-                            explorerItemViewModel.ResourceId = deletedFileMetadata.ResourceId;
-                            if (deletedFileMetadata.ShowDependencies)
-                            {
-                                explorerItemViewModel.ShowDependencies();
-                            }
-                        }
+                        }                        
                     }
                 }
             }

@@ -47,5 +47,7 @@ namespace Dev2.Common.Interfaces
         void Filter(string filter);
         void Filter(Func<IExplorerItemViewModel, bool> filter);
         void ShowErrorMessage(string errorMessage, string header);
+
+        void ShowDependencies();
     }
 }
