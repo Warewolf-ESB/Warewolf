@@ -102,6 +102,11 @@ namespace Warewolf.Studio.AntiCorruptionLayer
                     {
                         var explorerItemViewModels = explorerItemViewModel.AsList();
                         // ReSharper disable once LoopCanBeConvertedToQuery
+                        var deleteFileMetaData = new DeletedFileMetadata
+                        {
+                            IsDeleted = true,
+                            ShowDependencies = false
+                        };
                         foreach (IExplorerItemViewModel itemViewModel in explorerItemViewModels)
                         {
                             if (itemViewModel.ResourceType != "Folder")
@@ -109,15 +114,25 @@ namespace Warewolf.Studio.AntiCorruptionLayer
                                 var dependants = QueryManagerProxy.FetchDependants(itemViewModel.ResourceId);
                                 if (dependants != null)
                                 {
-
-                                    return HasDependencies(itemViewModel, graphGenerator, dependants);
+                                    var deletedFileMetadata = HasDependencies(itemViewModel, graphGenerator, dependants);
+                                    
+                                    if (!deletedFileMetadata.IsDeleted)
+                                    {
+                                        deleteFileMetaData.IsDeleted = false;
+                                        deleteFileMetaData.ShowDependencies = true;
+                                        deleteFileMetaData.ResourceId = itemViewModel.ResourceId;
+                                    }
                                 }
                             }
                         }
-                        if (!string.IsNullOrWhiteSpace(explorerItemViewModel.ResourcePath))
+                        if (deleteFileMetaData.IsDeleted)
                         {
-                            UpdateManagerProxy.DeleteFolder(explorerItemViewModel.ResourcePath);
+                            if (!string.IsNullOrWhiteSpace(explorerItemViewModel.ResourcePath))
+                            {
+                                UpdateManagerProxy.DeleteFolder(explorerItemViewModel.ResourcePath);
+                            }
                         }
+                        return deleteFileMetaData;
                     }
                     else
                     {
@@ -157,6 +172,7 @@ namespace Warewolf.Studio.AntiCorruptionLayer
                         ShowDependencies = false
                     };
                 }
+                explorerItemViewModel.ShowDependencies();
                 return new DeletedFileMetadata
                 {
                     IsDeleted = false,
