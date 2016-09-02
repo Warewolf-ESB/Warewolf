@@ -285,7 +285,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to CancelButtonTooltip.
+        ///   Looks up a localized string similar to Cancel this action.
         /// </summary>
         public static string CancelButtonTooltip {
             get {
@@ -2328,7 +2328,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to DuplicateButtonTooltip.
+        ///   Looks up a localized string similar to Duplicate the Resource(s).
         /// </summary>
         public static string DuplicateButtonTooltip {
             get {
@@ -2337,7 +2337,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to DuplicateCheckBoxTooltip.
+        ///   Looks up a localized string similar to Duplicated items will reference each other (checked) or leave the dependancy on the origional item (unchecked).
         /// </summary>
         public static string DuplicateCheckBoxTooltip {
             get {
@@ -6226,7 +6226,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to SaveButtonTooltip.
+        ///   Looks up a localized string similar to Save the Resource.
         /// </summary>
         public static string SaveButtonTooltip {
             get {

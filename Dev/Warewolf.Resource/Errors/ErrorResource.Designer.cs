@@ -1618,6 +1618,15 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to You do not have permission to move this item. Contribute permission is required to move an item..
+        /// </summary>
+        public static string InvalidMovePermissionErrorMessage {
+            get {
+                return ResourceManager.GetString("InvalidMovePermissionErrorMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Invalid region detected: A close ]] without a related open [[.
         /// </summary>
         public static string InvalidOpenRegion {

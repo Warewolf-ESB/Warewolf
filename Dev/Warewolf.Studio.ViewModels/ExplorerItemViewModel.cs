@@ -20,7 +20,7 @@ using System.Windows.Input;
 using Caliburn.Micro;
 using Dev2;
 using Dev2.Common.Interfaces;
-using Dev2.Common.Interfaces.Infrastructure;
+using Dev2.Common.Interfaces.Security;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Common.Interfaces.Versioning;
 using Dev2.Studio.Core;
@@ -33,6 +33,8 @@ using Warewolf.Studio.Core.Popup;
 // ReSharper disable NonReadonlyMemberInGetHashCode
 // ReSharper disable NonLocalizedString
 // ReSharper disable InconsistentNaming
+// ReSharper disable MemberCanBePrivate.Global
+// ReSharper disable UnusedAutoPropertyAccessor.Global
 
 namespace Warewolf.Studio.ViewModels
 {
@@ -148,7 +150,6 @@ namespace Warewolf.Studio.ViewModels
         private IEnvironmentModel _environmentModel;
         private readonly ExplorerItemViewModelCommandController _explorerItemViewModelCommandController;
         private bool _forcedRefresh;
-        private bool _isResourceCheckedEnabled;
         private string _deployResourceCheckboxTooltip;
         private bool _isService;
         private bool _isFolder;
@@ -180,8 +181,6 @@ namespace Warewolf.Studio.ViewModels
             if (ForcedRefresh)
                 ForcedRefresh = true;
             SetupCommands();
-
-            Server.PermissionsChanged += UpdatePermissions;
 
             _candrop = true;
             _canDrag = true;
@@ -462,6 +461,8 @@ namespace Warewolf.Studio.ViewModels
             OnPropertyChanged(() => Children);
         }
 
+        public bool CanMove { get; private set; }
+
         public IEnumerable<IExplorerItemViewModel> AsList()
         {
             if (Children != null)
@@ -492,30 +493,12 @@ namespace Warewolf.Studio.ViewModels
         {
             _explorerItemViewModelCommandController.DeleteCommand(EnvironmentModel, Parent, _explorerRepository, this, _popupController, Server);
         }
+        
 
-        public void UpdatePermissions(PermissionsChangedArgs args)
+        public void SetPermissions(Permissions explorerItemPermissions, bool isDeploy = false)
         {
-            SetPermissions(args.WindowsGroupPermissions);
-        }
-
-        public void SetPermissions(List<IWindowsGroupPermission> permissions, bool isDeploy = false)
-        {
-            if (permissions != null)
-            {
-                var resourcePermission = permissions.FirstOrDefault(permission => permission.ResourceID == ResourceId);
-                var serverPermission = permissions.FirstOrDefault(permission => permission.IsServer && permission.ResourceID == Guid.Empty);
-                if (resourcePermission != null)
-                {
-                    SetPermission(resourcePermission, isDeploy);
-                }
-                else
-                {
-                    if (serverPermission != null)
-                    {
-                        SetPermission(serverPermission, isDeploy);
-                    }
-                }
-            }
+           
+            SetPermission(explorerItemPermissions, isDeploy);
             if (IsFolder)
             {
                 CanEdit = false;
@@ -533,25 +516,25 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        public void SetPermission(IWindowsGroupPermission permission, bool isDeploy = false)
+        public void SetPermission(Permissions permission, bool isDeploy = false)
         {
-            if (permission.DeployFrom)
+            if (permission.HasFlag(Permissions.DeployFrom))
             {
                 CanDeploy = true;
             }
-            if (permission.View)
+            if (permission.HasFlag(Permissions.View))
             {
                 CanView = !isDeploy;
             }
-            if (permission.Execute)
+            if (permission.HasFlag(Permissions.Execute))
             {
                 CanExecute = IsService && !isDeploy;
             }
-            if (permission.Contribute)
+            if (permission.HasFlag(Permissions.Contribute))
             {
                 SetContributePermissions(isDeploy);
             }
-            if (permission.Administrator)
+            if (permission.HasFlag(Permissions.Administrator))
             {
                 SetAdministratorPermissions();
             }
@@ -561,10 +544,17 @@ namespace Warewolf.Studio.ViewModels
         private void SetAdministratorPermissions()
         {
             CanRename = true;
+            CanEdit = true;
             CanDuplicate = true;
             CanDelete = true;
             CanCreateFolder = true;
             CanDeploy = true;
+            CanCreateWorkflowService = true;
+            CanCreateSource = true;
+            CanView = true;
+            CanViewApisJson = true;
+            CanMove = true;
+            CanViewSwagger = true;
             CanShowVersions = true;
         }
 
@@ -572,11 +562,16 @@ namespace Warewolf.Studio.ViewModels
         {
             CanEdit = !isDeploy;
             CanRename = true;
+            CanView = true;
             CanDuplicate = true;
             CanDelete = true;
             CanCreateFolder = true;
             CanCreateWorkflowService = true;
             CanCreateSource = true;
+            CanShowVersions = true;
+            CanMove = true;
+            CanViewApisJson = true;
+            CanViewSwagger = true;
             CanDeploy = true;
         }
 
@@ -716,11 +711,7 @@ namespace Warewolf.Studio.ViewModels
                 _resourceType = value;
                 IsVersion = _resourceType == "Version";
                 OnPropertyChanged(() => CanView);
-                OnPropertyChanged(() => CanShowVersions);
-                if (ResourceType != "Version")
-                {
-                    SetPermissions(Server.Permissions);
-                }
+                OnPropertyChanged(() => CanShowVersions);                
             }
         }
         public ICommand OpenCommand
@@ -863,7 +854,6 @@ namespace Warewolf.Studio.ViewModels
                 {
                     DeployResourceCheckboxTooltip = Resources.Languages.Core.DeployResourceCheckboxViewPermissionError;
                 }
-                _isResourceCheckedEnabled = value;
                 OnPropertyChanged(() => IsResourceCheckedEnabled);
                 OnPropertyChanged(() => DeployResourceCheckboxTooltip);
                 OnPropertyChanged(() => CanDeploy);
@@ -1357,7 +1347,6 @@ namespace Warewolf.Studio.ViewModels
 
         public void Dispose()
         {
-            if (Server != null) Server.PermissionsChanged -= UpdatePermissions;
             if (Children != null)
                 foreach (var explorerItemViewModel in Children)
                 {

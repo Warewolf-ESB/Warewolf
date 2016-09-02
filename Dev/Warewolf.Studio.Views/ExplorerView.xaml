@@ -387,7 +387,8 @@
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
-                                    <TextBox GotKeyboardFocus="UIElement_OnGotKeyboardFocus"
+                                    <TextBox MouseRightButtonDown="ExplorerTree_OnMouseRightButtonDown"
+                                             GotKeyboardFocus="UIElement_OnGotKeyboardFocus"
                                              Style="{StaticResource ExplorerEditTextBoxStyle}"
                                              Text="{Binding Data.ResourceName,
                                                             Mode=TwoWay,
@@ -467,8 +468,10 @@
                                     <!--  CONTEXT MENU FOR THE EXPLORER TREE  -->
                                     <ig:ContextMenuService.Manager>
                                         <ig:ContextMenuManager>
-                                            <ig:ContextMenuManager.ContextMenu>
-                                                <ig:XamContextMenu x:Name="ExplorerMenu" Visibility="{Binding Path=Data.ShowContextMenu, Converter={StaticResource BoolToVisibilityConverter}}">
+                                            <ig:ContextMenuManager.ContextMenu >
+                                                <ig:XamContextMenu  Opening="XamContextMenu_Opening"
+                                                                    x:Name="ExplorerMenu" 
+                                                                    Visibility="{Binding Path=Data.ShowContextMenu, Converter={StaticResource BoolToVisibilityConverter}}">
                                                     <ig:XamContextMenu.ItemsPanel>
                                                         <ItemsPanelTemplate>
                                                             <VirtualizingStackPanel Background="{StaticResource WareWolfWhiteBrush}" Orientation="Vertical" />
