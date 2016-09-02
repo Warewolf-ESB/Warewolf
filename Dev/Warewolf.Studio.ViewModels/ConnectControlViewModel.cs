@@ -265,7 +265,11 @@ namespace Warewolf.Studio.ViewModels
                     {
                         _selectedConnection = value;
                         AllowConnection = true;
-                        if (_selectedConnection.ResourceName.Equals(Resources.Languages.Core.LocalhostLabel))
+                        if (_selectedConnection.EnvironmentID == Guid.Empty && _selectedConnection.ResourceName.Equals(Resources.Languages.Core.LocalhostLabel))
+                        {
+                            AllowConnection = false;
+                        }
+                        if (_selectedConnection.EnvironmentID == Guid.Empty && _selectedConnection.ResourceName.Equals(Resources.Languages.Core.LocalhostConnectedLabel))
                         {
                             AllowConnection = false;
                         }
