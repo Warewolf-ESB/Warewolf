@@ -8,11 +8,11 @@
     <contentPane name="Help" location="DockedLeft" />
   </contentPanes>
   <panes>
-    <splitPane name="SplitPaneDockedRight" splitterOrientation="Horizontal" location="DockedRight" extent="300">
+    <splitPane name="SplitPaneDockedRight" splitterOrientation="Horizontal" location="DockedRight" extent="250">
       <contentPane name="Variables" />
       <contentPane name="OutputPane" />
     </splitPane>
-    <splitPane name="SplitPaneDockedLeft" splitterOrientation="Horizontal" location="DockedLeft" extent="300">
+    <splitPane name="SplitPaneDockedLeft" splitterOrientation="Horizontal" location="DockedLeft" extent="250">
       <contentPane name="Explorer" />
       <contentPane name="Toolbox" />
       <contentPane name="Help" />
