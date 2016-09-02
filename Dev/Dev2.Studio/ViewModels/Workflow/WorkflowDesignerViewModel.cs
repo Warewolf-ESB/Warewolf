@@ -421,10 +421,68 @@ namespace Dev2.Studio.ViewModels.Workflow
                 {
                     InitializeFlowStep(mi);
                 }
+                else
+                {
+                    AddSwitch(mi);
+                }
             }
             return addedItems;
         }
 
+        void AddSwitch(ModelItem mi)
+        // ReSharper restore ExcessiveIndentation
+        {
+            if (mi.Parent != null &&
+                   mi.Parent.Parent != null &&
+                   mi.Parent.Parent.Parent != null &&
+                   mi.Parent.Parent.Parent.ItemType == typeof(FlowSwitch<string>))
+            {
+                ModelProperty activityExpression = mi.Parent.Parent.Parent.Properties["Expression"];
+                if (activityExpression != null)
+                {
+                    var switchExpressionValue = SwitchExpressionValue(activityExpression);
+                    ModelProperty modelProperty = mi.Properties["Key"];
+                    if (modelProperty != null && ((modelProperty.Value != null) && modelProperty.Value.ToString().Contains("Case")))
+                    {
+                        FlowController.ConfigureSwitchCaseExpression(new ConfigureCaseExpressionMessage { ModelItem = mi, ExpressionText = switchExpressionValue, EnvironmentModel = _resourceModel.Environment });
+                    }
+                }
+            }
+        }
+
+        static string SwitchExpressionValue(ModelProperty activityExpression)
+        {
+            var tmpModelItem = activityExpression.Value;
+
+            var switchExpressionValue = string.Empty;
+
+            if (tmpModelItem != null)
+            {
+                var tmpProperty = tmpModelItem.Properties["ExpressionText"];
+
+                if (tmpProperty != null)
+                {
+                    if (tmpProperty.Value != null)
+                    {
+                        var tmp = tmpProperty.Value.ToString();
+
+                        if (!string.IsNullOrEmpty(tmp))
+                        {
+                            int start = tmp.IndexOf("(", StringComparison.Ordinal);
+                            int end = tmp.IndexOf(",", StringComparison.Ordinal);
+
+                            if (start < end && start >= 0)
+                            {
+                                start += 2;
+                                end -= 1;
+                                switchExpressionValue = tmp.Substring(start, (end - start));
+                            }
+                        }
+                    }
+                }
+            }
+            return switchExpressionValue;
+        }
         private void InitializeFlowStep(ModelItem mi)
         {
             // PBI 9135 - 2013.07.15 - TWR - Changed to "as" check so that database activity also flows through this

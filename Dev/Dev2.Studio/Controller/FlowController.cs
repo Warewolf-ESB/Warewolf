@@ -160,7 +160,7 @@ namespace Dev2.Studio.Controller
             return null;
         }
 
-        private static void ConfigureSwitchCaseExpression(ConfigureCaseExpressionMessage args)
+        public static void ConfigureSwitchCaseExpression(ConfigureCaseExpressionMessage args)
         {
             _callBackHandler = ShowSwitchDragDialog(args.ModelItem, args.ExpressionText);
             if (_callBackHandler != null)
