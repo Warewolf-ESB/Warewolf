@@ -34,6 +34,7 @@ namespace Warewolf.Studio.Views
         }
 
         #region ExplorerViewTestClass
+        // ReSharper disable once ConvertToAutoProperty
         public ExplorerViewTestClass ExplorerViewTestClass => _explorerViewTestClass;
 
         public IServer SelectedServer => ConnectControl.SelectedServer;
@@ -307,7 +308,7 @@ namespace Warewolf.Studio.Views
                     var checkExists = dropTarget.Node.Nodes.FirstOrDefault(o => Equals(o.Data, source));
                     if (checkExists != null)
                     {
-                        SetException(e);
+                        SetException(e, "The destination folder has a resource with the same name");
                     }
                 }
                 else
@@ -337,7 +338,11 @@ namespace Warewolf.Studio.Views
                     var checkExists = dropTarget.Node.Nodes.FirstOrDefault(o => Equals(o.Data, source));
                     if (checkExists != null)
                     {
-                        SetException(e);
+                        SetException(e, "The destination folder has a resource with the same name");
+                    }
+                    else if (!source.CanMove)
+                    {
+                        SetException(e, Warewolf.Resource.Errors.ErrorResource.InvalidMovePermissionErrorMessage);
                     }
                 }
                 else
@@ -466,11 +471,11 @@ namespace Warewolf.Studio.Views
             _exceptionThrown = false;
             _errorMessage = "";
         }
-        private void SetException(DragDropMoveEventArgs e)
+        private void SetException(DragDropMoveEventArgs e, string errorMessage)
         {
             e.OperationType = OperationType.DropNotAllowed;
             _exceptionThrown = true;
-            _errorMessage = "The destination folder has a resource with the same name";
+            _errorMessage = errorMessage;
         }
 
         private bool ValidateDragDrop(IExplorerItemViewModel source, IEnvironmentViewModel vmDestination)
