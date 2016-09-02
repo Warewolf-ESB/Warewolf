@@ -33,11 +33,11 @@ if %errorLevel% == 0 (
 @echo on
 
 REM ** Kill The Warewolf ;) **
-IF EXIST %windir%\nircmd.exe (nircmd elevate taskkill /im "Warewolf Studio.exe" /T /F) else (taskkill /f /im "Warewolf Studio.exe" /fi "STATUS eq RUNNING")
-IF EXIST %windir%\nircmd.exe (nircmd elevate taskkill /im "Warewolf Server.exe" /T /F) else (taskkill /f /im "Warewolf Server.exe" /fi "STATUS eq RUNNING")
-IF EXIST %windir%\nircmd.exe (nircmd elevate taskkill /im "Warewolf Studio.vshost.exe" /T /F) else (taskkill /f /im "Warewolf Studio.vshost.exe" /fi "STATUS eq RUNNING")
-IF EXIST %windir%\nircmd.exe (nircmd elevate taskkill /im "Warewolf Server.vshost.exe" /T /F) else (taskkill /f /im "Warewolf Server.vshost.exe" /fi "STATUS eq RUNNING")
-IF EXIST %windir%\nircmd.exe (nircmd elevate taskkill /im "WarewolfCOMIPC.exe" /T /F) else (taskkill /f /im WarewolfCOMIPC.exe /fi "STATUS eq RUNNING")
+IF EXIST %windir%\nircmd.exe (nircmd elevate taskkill /f /im "Warewolf Studio.exe" /fi "STATUS eq RUNNING") else (taskkill /f /im "Warewolf Studio.exe" /fi "STATUS eq RUNNING")
+IF EXIST %windir%\nircmd.exe (nircmd elevate taskkill /f /im "Warewolf Server.exe" /fi "STATUS eq RUNNING") else (taskkill /f /im "Warewolf Server.exe" /fi "STATUS eq RUNNING")
+IF EXIST %windir%\nircmd.exe (nircmd elevate taskkill /f /im "Warewolf Studio.vshost.exe" /fi "STATUS eq RUNNING") else (taskkill /f /im "Warewolf Studio.vshost.exe" /fi "STATUS eq RUNNING")
+IF EXIST %windir%\nircmd.exe (nircmd elevate taskkill /f /im "Warewolf Server.vshost.exe" /fi "STATUS eq RUNNING") else (taskkill /f /im "Warewolf Server.vshost.exe" /fi "STATUS eq RUNNING")
+IF EXIST %windir%\nircmd.exe (nircmd elevate taskkill /f /im WarewolfCOMIPC.exe /fi "STATUS eq RUNNING") else (taskkill /f /im WarewolfCOMIPC.exe /fi "STATUS eq RUNNING")
 
 REM ** Delete the Warewolf ProgramData folder
 IF EXIST %windir%\nircmd.exe (nircmd elevate cmd /c rd /S /Q "%PROGRAMDATA%\Warewolf\Resources") else (rd /S /Q "%PROGRAMDATA%\Warewolf\Resources")
