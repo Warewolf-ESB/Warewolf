@@ -3469,15 +3469,15 @@ If you put an = as the first character, it will turn into a calculation e.g. =[[
     <value>localhost (Connected)</value>
   </data>
   <data name="DuplicateButtonTooltip" xml:space="preserve">
-    <value>DuplicateButtonTooltip</value>
+    <value>Duplicate the Resource(s)</value>
   </data>
   <data name="DuplicateCheckBoxTooltip" xml:space="preserve">
-    <value>DuplicateCheckBoxTooltip</value>
+    <value>Duplicated items will reference each other (checked) or leave the dependancy on the origional item (unchecked)</value>
   </data>
   <data name="CancelButtonTooltip" xml:space="preserve">
-    <value>CancelButtonTooltip</value>
+    <value>Cancel this action</value>
   </data>
   <data name="SaveButtonTooltip" xml:space="preserve">
-    <value>SaveButtonTooltip</value>
+    <value>Save the Resource</value>
   </data>  
 </root>
