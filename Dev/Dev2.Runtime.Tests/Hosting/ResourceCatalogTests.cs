@@ -1352,50 +1352,7 @@ namespace Dev2.Tests.Runtime.Hosting
         }
 
         #endregion
-
-        /*   #region RemoveWorkspace
-
-           [TestMethod]
-           public void RemoveWorkspaceWithInvalidIDExpectedDoesNothing()
-           {
-               const int WorkspaceCount = 5;
-               const int ExpectedWorkspaceCount = WorkspaceCount + 1; // add 1 for server workspace that is auto-loaded
-
-               var catalog = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
-
-               var workspaces = new List<Guid>();
-               for (var i = 0; i < WorkspaceCount; i++)
-               {
-                   var id = Guid.NewGuid();
-                   catalog.LoadWorkspace(id);
-                   workspaces.Add(id);
-               }
-
-               Assert.AreEqual(ExpectedWorkspaceCount, catalog.WorkspaceCount);
-             //  catalog.RemoveWorkspace(Guid.NewGuid());
-               Assert.AreEqual(ExpectedWorkspaceCount, catalog.WorkspaceCount);
-           }
-
-           [TestMethod]
-           public void RemoveWorkspaceWithValidIDExpectedRemovesWorkspace()
-           {
-               const int WorkspaceCount = 5;
-               const int ExpectedWorkspaceCount = WorkspaceCount + 1; // add 1 for server workspace that is auto-loaded
-
-               var catalog = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
-
-               var workspaces = new List<Guid>();
-               for (var i = 0; i < WorkspaceCount; i++)
-               {
-                   var id = Guid.NewGuid();
-                   catalog.LoadWorkspace(id);
-                   workspaces.Add(id);
-               }
-               Assert.AreEqual(ExpectedWorkspaceCount, catalog.WorkspaceCount);
-              // catalog.RemoveWorkspace(workspaces[3]);
-               Assert.AreEqual(ExpectedWorkspaceCount - 1, catalog.WorkspaceCount);
-           }*/
-
+        
         #endregion
 
         #region GetModels

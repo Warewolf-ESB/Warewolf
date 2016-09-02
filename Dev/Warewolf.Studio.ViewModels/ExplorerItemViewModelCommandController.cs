@@ -136,12 +136,10 @@ namespace Warewolf.Studio.ViewModels
                 }
                 else
                 {
-                    if (environmentModel != null && popupController.Show(popupController.GetDeleteConfirmation(explorerItemViewModel.ResourceName)) == MessageBoxResult.Yes)
+                    var messageBoxResult = popupController.Show(popupController.GetDeleteConfirmation(explorerItemViewModel.ResourceName));
+                    if (environmentModel != null && messageBoxResult == MessageBoxResult.Yes)
                     {
                         _shellViewModel.CloseResource(explorerItemViewModel.ResourceId, environmentModel.ID);
-                        // Remove the item from the parent for studio change to show, then do the delete from the server.
-                        parent?.RemoveChild(explorerItemViewModel);
-                        //This Delete process is quite long and should happen after the studio change so that the user caqn continue without the studio hanging
                         var deletedFileMetadata = explorerRepository.Delete(explorerItemViewModel);
                         if (deletedFileMetadata.IsDeleted)
                         {
@@ -149,19 +147,21 @@ namespace Warewolf.Studio.ViewModels
                             {
                                 server.UpdateRepository.FireServerSaved();
                             }
+                            parent?.RemoveChild(explorerItemViewModel);
                         }
                         else
                         {
                             explorerItemViewModel.ResourceId = deletedFileMetadata.ResourceId;
-                            explorerItemViewModel.ShowDependencies();
+                            if (deletedFileMetadata.ShowDependencies)
+                            {
+                                explorerItemViewModel.ShowDependencies();
+                            }
                         }
                     }
                 }
             }
             catch (Exception ex)
             {
-                // If the delete did not happen, we need to add the item back to the original state for studio changes to re-occur
-                parent?.AddChild(explorerItemViewModel);
                 explorerItemViewModel.ShowErrorMessage(ex.Message, @"Delete not allowed");
             }
 
