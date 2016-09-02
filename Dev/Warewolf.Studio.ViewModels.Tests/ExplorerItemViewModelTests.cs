@@ -7,12 +7,14 @@ using Dev2;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Infrastructure;
 using Dev2.Common.Interfaces.PopupController;
+using Dev2.Common.Interfaces.Security;
 using Dev2.Common.Interfaces.Versioning;
 using Dev2.Studio.Core.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using IPopupController = Dev2.Common.Interfaces.Studio.Controller.IPopupController;
 // ReSharper disable PossibleUnintendedReferenceComparison
+// ReSharper disable InconsistentNaming
 
 namespace Warewolf.Studio.ViewModels.Tests
 {
@@ -457,7 +459,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //arrange
             var environmentModelMock = new Mock<IEnvironmentModel>();
             environmentModelMock.SetupGet(it => it.ID).Returns(Guid.NewGuid());
-            _explorerRepositoryMock.Setup(it => it.Delete(_target)).Returns(new DeletedFileMetadata() { IsDeleted = true });
+            _explorerRepositoryMock.Setup(it => it.Delete(_target)).Returns(new DeletedFileMetadata { IsDeleted = true });
             _target.EnvironmentModel = environmentModelMock.Object;
             _target.ResourceType = "ServerSource";
             _target.ResourceId = Guid.NewGuid();
@@ -483,12 +485,11 @@ namespace Warewolf.Studio.ViewModels.Tests
             //arrange
             var environmentModelMock = new Mock<IEnvironmentModel>();
             environmentModelMock.SetupGet(it => it.ID).Returns(Guid.NewGuid());
-            _explorerRepositoryMock.Setup(it => it.Delete(_target)).Returns(new DeletedFileMetadata() { IsDeleted = true });
+            _explorerRepositoryMock.Setup(it => it.Delete(_target)).Returns(new DeletedFileMetadata { IsDeleted = true });
             _target.EnvironmentModel = environmentModelMock.Object;
             _target.ResourceType = "Server";
             _target.IsServer = true;
             _target.ResourceId = Guid.NewGuid();
-            //if (_popupController.ShowDeleteVersionMessage(ResourceName) == MessageBoxResult.Yes)
             _popupControllerMock.Setup(it => it.Show(It.IsAny<IPopupMessage>())).Returns(MessageBoxResult.Yes);
             var studioManagerUpdateMock = new Mock<IStudioUpdateManager>();
             _serverMock.SetupGet(it => it.UpdateRepository).Returns(studioManagerUpdateMock.Object);
@@ -502,6 +503,32 @@ namespace Warewolf.Studio.ViewModels.Tests
             _explorerRepositoryMock.Verify(it => it.Delete(_target));
             _explorerTreeItemMock.Verify(it => it.RemoveChild(_target));
             studioManagerUpdateMock.Verify(it => it.FireServerSaved());
+        }
+
+        [TestMethod]
+        public void TestDeleteCommandResourceTypeServerDeleteSuccess_ShowDependencies()
+        {
+            //arrange
+            _shellViewModelMock.Setup(model => model.ShowDependencies(It.IsAny<Guid>(), It.IsAny<IServer>()));
+            var environmentModelMock = new Mock<IEnvironmentModel>();
+            environmentModelMock.SetupGet(it => it.ID).Returns(Guid.NewGuid());
+            _explorerRepositoryMock.Setup(it => it.Delete(_target)).Returns(new DeletedFileMetadata { IsDeleted = false,ShowDependencies = true});
+            _target.EnvironmentModel = environmentModelMock.Object;
+            _target.ResourceType = "Server";
+            _target.IsServer = true;
+            _target.ResourceId = Guid.NewGuid();
+            _popupControllerMock.Setup(it => it.Show(It.IsAny<IPopupMessage>())).Returns(MessageBoxResult.Yes);
+            var studioManagerUpdateMock = new Mock<IStudioUpdateManager>();
+            _serverMock.SetupGet(it => it.UpdateRepository).Returns(studioManagerUpdateMock.Object);
+
+            //act
+            _target.DeleteCommand.Execute(null);
+            Assert.IsTrue(_target.DeleteCommand.CanExecute(null));
+
+            //assert
+            _explorerRepositoryMock.Verify(it => it.Delete(_target),Times.Once);
+            _explorerTreeItemMock.Verify(it => it.RemoveChild(_target), Times.Never);
+            _shellViewModelMock.Verify(model => model.ShowDependencies(It.IsAny<Guid>(),It.IsAny<IServer>()),Times.Once());
         }
 
 
@@ -711,10 +738,10 @@ namespace Warewolf.Studio.ViewModels.Tests
 
             //assert
             _explorerRepositoryMock.Verify(it => it.Delete(_target));
-            _explorerTreeItemMock.Verify(it => it.RemoveChild(_target));
+            _explorerTreeItemMock.Verify(it => it.RemoveChild(_target),Times.Never());
 
             Assert.AreEqual(1, _target.ChildrenCount);
-            _explorerTreeItemMock.Verify(it => it.AddChild(_target));
+            _explorerTreeItemMock.Verify(it => it.AddChild(_target),Times.Never);
         }
 
         #endregion Test commands
@@ -1005,7 +1032,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             {
                 windowsGroupPermissionMock.Object
             });
-            _target.SetPermission(windowsGroupPermissionMock.Object);
+            _target.SetPermission(Permissions.DeployFrom);
             _target.IsFolder = false;
             _target.IsResourceChecked = false;
             //act
@@ -1026,7 +1053,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             {
                 windowsGroupPermissionMock.Object
             });
-            _target.SetPermission(windowsGroupPermissionMock.Object);
+            _target.SetPermission(Permissions.Administrator);
             _target.IsFolder = false;
             _target.IsResourceChecked = false;
             //act
@@ -1048,7 +1075,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             {
                 windowsGroupPermissionMock.Object
             });
-            _target.SetPermission(windowsGroupPermissionMock.Object);
+            _target.SetPermission(Permissions.Administrator);
             _target.IsFolder = false;
             _target.IsResourceChecked = false;
             //act
@@ -1523,7 +1550,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void TestCreateNewFolderResourceTypeFolderNewFolder1()
         {
             //arrange
-            var newFolderName = "New Folder";
+            const string newFolderName = "New Folder";
             var childMock = new Mock<IExplorerItemViewModel>();
             childMock.SetupGet(it => it.ResourceName).Returns(newFolderName);
             _target.IsExpanded = false;
@@ -1617,40 +1644,45 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsNotNull(result);
         }
 
-        [TestMethod]
-        public void TestUpdatePermissions()
-        {
-            //arrange
-            var grpPermissions = new List<IWindowsGroupPermission>();
-            var args = new PermissionsChangedArgs(grpPermissions);
-            //act
-            _target.UpdatePermissions(args);
-            //assert
-        }
 
         [TestMethod]
         public void TestSetPermissionsSameResource()
         {
             //arrange
-            var permisson = new Mock<IWindowsGroupPermission>();
-
             _target.ResourceId = Guid.NewGuid();
             _target.ResourceType = "WorkflowService";
-            _target.IsService = true;
-            permisson.SetupGet(it => it.ResourceID).Returns(_target.ResourceId);
-            var grpPermissions = new List<IWindowsGroupPermission>() { permisson.Object };
-            permisson.SetupGet(it => it.Contribute).Returns(true);
-            permisson.SetupGet(it => it.Execute).Returns(true);
-            permisson.SetupGet(it => it.View).Returns(true);
-            permisson.SetupGet(it => it.Administrator).Returns(true);
+            _target.IsService = true;           
             //act
-            _target.SetPermissions(grpPermissions);
+            _target.SetPermissions(Permissions.Administrator);
             //assert
             Assert.IsTrue(_target.CanEdit);
             Assert.IsTrue(_target.CanView);
             Assert.IsTrue(_target.CanRename);
             Assert.IsTrue(_target.CanDuplicate);
             Assert.IsTrue(_target.CanDelete);
+            Assert.IsTrue(_target.CanMove);
+            Assert.IsFalse(_target.CanCreateFolder);
+            Assert.IsTrue(_target.CanDeploy);
+            Assert.IsTrue(_target.CanShowVersions);
+            Assert.IsTrue(_target.CanCreateWorkflowService);
+            Assert.IsTrue(_target.CanCreateSource);
+        }
+
+        [TestMethod]
+        public void TestSetPermissions_ContributePermission_AllowsMove()
+        {
+            //arrange
+            _target.ResourceType = "WorkflowService";
+            _target.IsService = true;
+            //act
+            _target.SetPermissions(Permissions.Contribute);
+            //assert
+            Assert.IsTrue(_target.CanEdit);
+            Assert.IsTrue(_target.CanView);
+            Assert.IsTrue(_target.CanRename);
+            Assert.IsTrue(_target.CanDuplicate);
+            Assert.IsTrue(_target.CanDelete);
+            Assert.IsTrue(_target.CanMove);
             Assert.IsFalse(_target.CanCreateFolder);
             Assert.IsTrue(_target.CanDeploy);
             Assert.IsTrue(_target.CanShowVersions);
@@ -1662,24 +1694,17 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void TestSetPermissionsServerPermission()
         {
             //arrange
-            var permisson = new Mock<IWindowsGroupPermission>();
 
             _target.ResourceId = Guid.NewGuid();
             _target.ResourceType = "WorkflowService";
             _target.IsService = true;
-            permisson.SetupGet(it => it.ResourceID).Returns(Guid.Empty);
-            permisson.SetupGet(it => it.IsServer).Returns(true);
-            var grpPermissions = new List<IWindowsGroupPermission>() { permisson.Object };
-            permisson.SetupGet(it => it.Contribute).Returns(true);
-            permisson.SetupGet(it => it.Execute).Returns(true);
-            permisson.SetupGet(it => it.View).Returns(true);
-            permisson.SetupGet(it => it.Administrator).Returns(true);
             //act
-            _target.SetPermissions(grpPermissions);
+            _target.SetPermissions(Permissions.Administrator);
             //assert
             Assert.IsTrue(_target.CanEdit);
             Assert.IsTrue(_target.CanView);
             Assert.IsTrue(_target.CanRename);
+            Assert.IsTrue(_target.CanMove);
             Assert.IsTrue(_target.CanDuplicate);
             Assert.IsTrue(_target.CanDelete);
             Assert.IsFalse(_target.CanCreateFolder);
@@ -1758,7 +1783,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _target.ResourceType = "Folder";
             _target.IsFolder = true;
             //act
-            _target.SetPermissions(null);
+            _target.SetPermissions(Permissions.Administrator);
             //assert
             Assert.IsFalse(_target.CanEdit);
             Assert.IsFalse(_target.CanExecute);
@@ -1772,7 +1797,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _target.ResourceType = "WorkflowService";
 
             //act
-            _target.SetPermissions(null, true);
+            _target.SetPermissions(Permissions.DeployFrom, true);
             //assert
             Assert.IsFalse(_target.CanEdit);
             Assert.IsFalse(_target.CanExecute);

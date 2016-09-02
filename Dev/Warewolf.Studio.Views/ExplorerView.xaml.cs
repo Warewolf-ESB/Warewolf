@@ -33,7 +33,10 @@ namespace Warewolf.Studio.Views
             _explorerViewTestClass = new ExplorerViewTestClass(this);
         }
 
+
+
         #region ExplorerViewTestClass
+        // ReSharper disable once ConvertToAutoProperty
         public ExplorerViewTestClass ExplorerViewTestClass => _explorerViewTestClass;
 
         public IServer SelectedServer => ConnectControl.SelectedServer;
@@ -178,18 +181,18 @@ namespace Warewolf.Studio.Views
             var tree = sender as XamDataTree;
             if (tree != null)
             {
-                if (tree.DataContext.GetType() == typeof (SingleEnvironmentExplorerViewModel) || Mouse.LeftButton == MouseButtonState.Released)
+                if (tree.DataContext.GetType() == typeof(SingleEnvironmentExplorerViewModel) || Mouse.LeftButton == MouseButtonState.Released)
                 {
                     ResetDragDropTemplate(e);
                     StopDragging();
                 }
                 else
                 {
-                    if (tree.DataContext.GetType() == typeof (ExplorerViewModel))
+                    if (tree.DataContext.GetType() == typeof(ExplorerViewModel))
                     {
                         var xamDataTreeNodeControl = e.DragSource as XamDataTreeNodeControl;
                         if (xamDataTreeNodeControl != null &&
-                            xamDataTreeNodeControl.Node.Data.GetType() == typeof (ExplorerItemViewModel))
+                            xamDataTreeNodeControl.Node.Data.GetType() == typeof(ExplorerItemViewModel))
                         {
                             DragSource dragSource = DragDropManager.GetDragSource(e.DragSource);
                             dragSource.DragOver += DragSourceDragOver;
@@ -236,14 +239,14 @@ namespace Warewolf.Studio.Views
 
         private static bool ValidateBeforeAndAfterState(DragDropMoveEventArgs e)
         {
-            Grid gridBefore = (Grid) Infragistics.Windows.Utilities.GetDescendantFromName((XamDataTreeNodeControl) e.DropTarget, "DropBeforeElem");
+            Grid gridBefore = (Grid)Infragistics.Windows.Utilities.GetDescendantFromName((XamDataTreeNodeControl)e.DropTarget, "DropBeforeElem");
             if (gridBefore?.Visibility == Visibility.Visible)
             {
                 SetDropNotAllowedStyle(e);
                 return true;
             }
 
-            Grid gridAfter = (Grid) Infragistics.Windows.Utilities.GetDescendantFromName((XamDataTreeNodeControl) e.DropTarget, "DropAfterElem");
+            Grid gridAfter = (Grid)Infragistics.Windows.Utilities.GetDescendantFromName((XamDataTreeNodeControl)e.DropTarget, "DropAfterElem");
             if (gridAfter?.Visibility == Visibility.Visible)
             {
                 SetDropNotAllowedStyle(e);
@@ -254,7 +257,7 @@ namespace Warewolf.Studio.Views
 
         private void ValidateWorksurfaceNode(DragDropMoveEventArgs e, XamDataTreeNodeControl dragSource)
         {
-            var dropActivity = Infragistics.Windows.Utilities.GetAncestorFromType(e.DropTarget, typeof (ContentControl), false) as ContentControl;
+            var dropActivity = Infragistics.Windows.Utilities.GetAncestorFromType(e.DropTarget, typeof(ContentControl), false) as ContentControl;
             if (dropActivity == null || dragSource == null)
             {
                 return;
@@ -307,7 +310,7 @@ namespace Warewolf.Studio.Views
                     var checkExists = dropTarget.Node.Nodes.FirstOrDefault(o => Equals(o.Data, source));
                     if (checkExists != null)
                     {
-                        SetException(e);
+                        SetException(e, "The destination folder has a resource with the same name");
                     }
                 }
                 else
@@ -337,7 +340,11 @@ namespace Warewolf.Studio.Views
                     var checkExists = dropTarget.Node.Nodes.FirstOrDefault(o => Equals(o.Data, source));
                     if (checkExists != null)
                     {
-                        SetException(e);
+                        SetException(e, "The destination folder has a resource with the same name");
+                    }
+                    else if (!source.CanMove)
+                    {
+                        SetException(e, Warewolf.Resource.Errors.ErrorResource.InvalidMovePermissionErrorMessage);
                     }
                 }
                 else
@@ -354,7 +361,7 @@ namespace Warewolf.Studio.Views
             e.MoveCursorTemplate = DragDropManager.CurrentMoveCursorTemplate;
             e.OperationType = OperationType.Move;
 
-            Rectangle rect = (Rectangle) Infragistics.Windows.Utilities.GetDescendantFromName((XamDataTreeNodeControl) e.DropTarget, "DropOntoElem");
+            Rectangle rect = (Rectangle)Infragistics.Windows.Utilities.GetDescendantFromName((XamDataTreeNodeControl)e.DropTarget, "DropOntoElem");
             if (rect != null)
             {
                 rect.Stroke = Application.Current.TryFindResource("WareWolfButtonBrush") as SolidColorBrush;
@@ -446,7 +453,7 @@ namespace Warewolf.Studio.Views
 
         private static void ShowDropNotAllowedError(DropEventArgs e)
         {
-            var dropActivity = Infragistics.Windows.Utilities.GetAncestorFromType(e.DropTarget, typeof (ContentControl), false) as ContentControl;
+            var dropActivity = Infragistics.Windows.Utilities.GetAncestorFromType(e.DropTarget, typeof(ContentControl), false) as ContentControl;
             var dragSource = e.DragSource as XamDataTreeNodeControl;
             if (dropActivity == null || dragSource == null)
             {
@@ -466,11 +473,11 @@ namespace Warewolf.Studio.Views
             _exceptionThrown = false;
             _errorMessage = "";
         }
-        private void SetException(DragDropMoveEventArgs e)
+        private void SetException(DragDropMoveEventArgs e, string errorMessage)
         {
             e.OperationType = OperationType.DropNotAllowed;
             _exceptionThrown = true;
-            _errorMessage = "The destination folder has a resource with the same name";
+            _errorMessage = errorMessage;
         }
 
         private bool ValidateDragDrop(IExplorerItemViewModel source, IEnvironmentViewModel vmDestination)
@@ -556,9 +563,9 @@ namespace Warewolf.Studio.Views
                 e.DropTarget.AllowDrop = false;
                 _allowDrop = false;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                Dev2Logger.Error(ex.Message,ex);
+                Dev2Logger.Error(ex.Message, ex);
             }
         }
 
@@ -595,6 +602,39 @@ namespace Warewolf.Studio.Views
             {
                 //aaa
             }
+        }
+
+        private void ExplorerTree_OnMouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            XamDataTree dataTree = sender as XamDataTree;
+            var source = e.Source;
+            if (dataTree != null && source != null)
+            {
+                var activeNode = dataTree.ActiveNode;
+                var activeDataItem = dataTree.ActiveDataItem;
+                
+            }
+        }
+
+        private void XamContextMenu_Opening(object sender, OpeningEventArgs e)
+        {
+            var node = ((XamDataTreeNodeDataContext)((ContentPresenter)((FrameworkElement)sender).TemplatedParent).Content).Node;
+
+
+            if (node != null
+                && node.NodeLayout != null
+                && node.NodeLayout.Tree != null)
+            {
+                var clickedNode = node;
+
+                var selectedNodes = clickedNode.NodeLayout.Tree.SelectionSettings.SelectedNodes;
+                selectedNodes.Clear();
+                selectedNodes.Add(clickedNode);
+                clickedNode.IsActive = true;
+                clickedNode.IsSelected = true;
+                return;
+            }
+            e.Cancel = true;
         }
     }
 }

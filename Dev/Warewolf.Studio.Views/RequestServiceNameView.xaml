@@ -92,7 +92,7 @@
                        Text="{Binding Path=ErrorMessage}"
                        TextAlignment="Right" />
             <CheckBox Visibility="{Binding IsDuplicate, Converter={StaticResource BoolToVisibilityConverter}}" 
-                      Content="Fix References?" IsChecked="{Binding FixReferences}" Margin="{StaticResource ControlBorderBottomRight}"
+                      Content="Update duplicated relationships?" IsChecked="{Binding FixReferences}" Margin="{StaticResource ControlBorderBottomRight}"
                       ToolTip="{x:Static languages:Core.DuplicateCheckBoxTooltip}"/>
             
             <Button x:Name="DuplicateButton"

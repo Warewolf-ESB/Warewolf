@@ -37,6 +37,7 @@ namespace Dev2.Services.Security
 
         }
 
+
         public static bool CanDebug(this Permissions permissions)
         {
             return permissions.IsContributor() ||

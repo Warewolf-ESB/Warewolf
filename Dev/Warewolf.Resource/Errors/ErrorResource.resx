@@ -1262,4 +1262,7 @@ Please contact your Warewolf System Administrator.</value>
     <value>This task requires that the user account specified has 'Log On As Batch' job rights. 
 Please contact your Windows System Administrator.</value>
   </data>
+  <data name="InvalidMovePermissionErrorMessage" xml:space="preserve">
+    <value>You do not have permission to move this item. Contribute permission is required to move an item.</value>
+  </data>
 </root>
