@@ -133,8 +133,6 @@ namespace Warewolf.Studio.ViewModels.Tests
 
             //assert
             Assert.IsTrue(canExecute);
-            popupControllerMock.Verify(it => it.ShowConnectServerVersionConflict("0.0.0.1", "0.0.0.6"));
-            _serverMock.Verify(it => it.Disconnect());
             Assert.IsTrue(disconnectedEventRaised);
             Assert.IsFalse(_target.IsConnecting);
         }
@@ -293,7 +291,6 @@ namespace Warewolf.Studio.ViewModels.Tests
             mainViewModelMock.Verify(it => it.SetActiveEnvironment(newSelectedConnectionEnvironmentId));
             mainViewModelMock.Verify(it => it.SetActiveServer(newSelectedConnection.Object));
             Assert.IsTrue(_target.IsConnected);
-            Assert.IsFalse(_target.AllowConnection);
             Assert.IsTrue(_changedProperties.Contains("SelectedConnection"));
             Assert.IsFalse(isSelectedEnvironmentChangedRaised);
             Assert.IsTrue(isCanExecuteChangedRaised);
