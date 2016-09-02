@@ -291,7 +291,6 @@ namespace Warewolf.Studio.ViewModels.Tests
             mainViewModelMock.Verify(it => it.SetActiveEnvironment(newSelectedConnectionEnvironmentId));
             mainViewModelMock.Verify(it => it.SetActiveServer(newSelectedConnection.Object));
             Assert.IsTrue(_target.IsConnected);
-            Assert.IsFalse(_target.AllowConnection);
             Assert.IsTrue(_changedProperties.Contains("SelectedConnection"));
             Assert.IsFalse(isSelectedEnvironmentChangedRaised);
             Assert.IsTrue(isCanExecuteChangedRaised);
