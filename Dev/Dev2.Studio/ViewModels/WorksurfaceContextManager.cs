@@ -305,7 +305,7 @@ namespace Dev2.Studio.ViewModels
         public void DuplicateResource(IExplorerItemViewModel explorerItemViewModel)
         {
             Task<IRequestServiceNameViewModel> saveViewModel = GetSaveViewModel(explorerItemViewModel.ResourcePath, explorerItemViewModel.ResourceName, explorerItemViewModel);
-            var messageBoxResult = saveViewModel.Result.ShowSaveDialog();
+            var messageBoxResult = saveViewModel.Result.ShowSaveDialog();            
         }
 
         public void NewWebSource(string resourcePath)

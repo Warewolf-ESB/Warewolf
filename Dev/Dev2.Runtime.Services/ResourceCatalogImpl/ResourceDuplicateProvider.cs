@@ -89,7 +89,15 @@ namespace Dev2.Runtime.ResourceCatalogImpl
                     var oldResourceId = resource.ResourceID;
                     newResource.ResourceID = newResourceId;
                     var fixedResource = xElement.ToStringBuilder();
-                    var savePath = resource.GetResourcePath(GlobalConstants.ServerWorkspaceID).Replace(resource.ResourceName,"").TrimEnd('\\');
+                    
+                    var resourcePath = resource.GetResourcePath(GlobalConstants.ServerWorkspaceID);
+
+                    var savePath = resourcePath;
+                    var resourceNameIndex = resourcePath.LastIndexOf(resource.ResourceName,StringComparison.InvariantCultureIgnoreCase);
+                    if (resourceNameIndex >= 0)
+                    {
+                        savePath = resourcePath.Substring(0, resourceNameIndex);
+                    }
                     savePath = savePath.ReplaceFirst(sourceLocation, destination + "\\" + newName);
                     _resourceCatalog.SaveResource(GlobalConstants.ServerWorkspaceID, newResource, fixedResource, savePath);
                     resourcesToUpdate.Add(newResource);
