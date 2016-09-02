@@ -25,8 +25,8 @@ IF NOT EXIST "%PROGRAMDATA%\Warewolf\Resources" IF NOT EXIST "%PROGRAMDATA%\Ware
 
 REM Stop Server Service:
 IF EXIST %windir%\nircmd.exe (nircmd elevate sc stop "Warewolf Server") else (sc stop "Warewolf Server")
-IF EXIST %windir%\nircmd.exe (nircmd elevate taskkill /im "Warewolf Server.exe" /T /F) else (taskkill /f /im Warewolf Server.exe /fi "STATUS eq RUNNING")
-IF EXIST %windir%\nircmd.exe (nircmd elevate taskkill /im "Warewolf Server.vshost.exe" /T /F) else (taskkill /f /im Warewolf Server.vshost.exe /fi "STATUS eq RUNNING")
+IF EXIST %windir%\nircmd.exe (nircmd elevate taskkill /im "Warewolf Server.exe" /T /F) else (taskkill /f /im "Warewolf Server.exe" /fi "STATUS eq RUNNING")
+IF EXIST %windir%\nircmd.exe (nircmd elevate taskkill /im "Warewolf Server.vshost.exe" /T /F) else (taskkill /f /im "Warewolf Server.vshost.exe" /fi "STATUS eq RUNNING")
 IF EXIST %windir%\nircmd.exe (nircmd elevate taskkill /im "WarewolfCOMIPC.exe" /T /F) else (taskkill /f /im WarewolfCOMIPC.exe /fi "STATUS eq RUNNING")
 
 REM ** Delete the Warewolf ProgramData folder
