@@ -528,7 +528,6 @@ namespace Warewolf.Studio.ViewModels.Tests
             //assert
             _explorerRepositoryMock.Verify(it => it.Delete(_target),Times.Once);
             _explorerTreeItemMock.Verify(it => it.RemoveChild(_target), Times.Never);
-            _shellViewModelMock.Verify(model => model.ShowDependencies(It.IsAny<Guid>(),It.IsAny<IServer>()),Times.Once());
         }
 
 
