@@ -92,13 +92,7 @@ namespace Warewolf.Studio.AntiCorruptionLayer
                     if (explorerItemViewModel.ResourceType != "Version" && explorerItemViewModel.ResourceType != "Folder")
                     {
                         var dep = QueryManagerProxy.FetchDependants(explorerItemViewModel.ResourceId);
-
-                        if (!HasDependencies(explorerItemViewModel, graphGenerator, dep))
-                            return new DeletedFileMetadata
-                            {
-                                IsDeleted = false,
-                                ResourceId = explorerItemViewModel.ResourceId
-                            };
+                        return HasDependencies(explorerItemViewModel, graphGenerator, dep);                        
                     }
                     if (explorerItemViewModel.ResourceType == "Version")
                     {
@@ -113,14 +107,8 @@ namespace Warewolf.Studio.AntiCorruptionLayer
                             var dependants = QueryManagerProxy.FetchDependants(itemViewModel.ResourceId);
                             if (dependants != null)
                             {
-                                if (!HasDependencies(itemViewModel, graphGenerator, dependants))
-                                {
-                                    return new DeletedFileMetadata
-                                    {
-                                        IsDeleted = false,
-                                        ResourceId = itemViewModel.ResourceId
-                                    };
-                                }
+
+                                return HasDependencies(itemViewModel, graphGenerator, dependants);                                
                             }
                         }
                         if (!string.IsNullOrWhiteSpace(explorerItemViewModel.ResourcePath))
@@ -146,20 +134,39 @@ namespace Warewolf.Studio.AntiCorruptionLayer
                 };
             }
         }
-                
-        private bool HasDependencies(IExplorerItemViewModel explorerItemViewModel, DependencyGraphGenerator graphGenerator, IExecuteMessage dep)
+
+        private IDeletedFileMetadata HasDependencies(IExplorerItemViewModel explorerItemViewModel, DependencyGraphGenerator graphGenerator, IExecuteMessage dep)
         {
             var graph = graphGenerator.BuildGraph(dep.Message, "", 1000, 1000, 1);
             _popupController = CustomContainer.Get<IPopupController>();
             RemoveDeletedNodes(graph);
             if (graph.Nodes.Count > 1)
             {
-                _popupController.Show(string.Format(StringResources.Delete_Error, explorerItemViewModel.ResourceName),
+                var result = _popupController.Show(string.Format(StringResources.Delete_Error, explorerItemViewModel.ResourceName),
                     StringResources.Delete_Error_Title,
                     MessageBoxButton.OK, MessageBoxImage.Error, "false", true, true, false, false);
-                return false;
+                if (result == MessageBoxResult.OK)
+                {
+                    return new DeletedFileMetadata
+                    {
+                        IsDeleted = false,
+                        ResourceId = explorerItemViewModel.ResourceId,
+                        ShowDependencies = false
+                    };
+                }
+                return new DeletedFileMetadata
+                {
+                    IsDeleted = false,
+                    ResourceId = explorerItemViewModel.ResourceId,
+                    ShowDependencies = true
+                };
             }
-            return true;
+            return new DeletedFileMetadata
+            {
+                IsDeleted = true,
+                ResourceId = explorerItemViewModel.ResourceId,
+                ShowDependencies = false
+            };
         }
 
         private void RemoveDeletedNodes(Graph graph)
