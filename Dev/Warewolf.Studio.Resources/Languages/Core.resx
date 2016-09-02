@@ -3468,4 +3468,16 @@ If you put an = as the first character, it will turn into a calculation e.g. =[[
   <data name="LocalhostConnectedLabel" xml:space="preserve">
     <value>localhost (Connected)</value>
   </data>
+  <data name="DuplicateButtonTooltip" xml:space="preserve">
+    <value>DuplicateButtonTooltip</value>
+  </data>
+  <data name="DuplicateCheckBoxTooltip" xml:space="preserve">
+    <value>DuplicateCheckBoxTooltip</value>
+  </data>
+  <data name="CancelButtonTooltip" xml:space="preserve">
+    <value>CancelButtonTooltip</value>
+  </data>
+  <data name="SaveButtonTooltip" xml:space="preserve">
+    <value>SaveButtonTooltip</value>
+  </data>
 </root>
