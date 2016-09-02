@@ -915,7 +915,7 @@ namespace Warewolf.Studio.ViewModels
                 itemCreated.CanView = false;
                 itemCreated.CanEdit = false;
             }
-            itemCreated.SetPermissions(server.Permissions, isDeploy);
+            itemCreated.SetPermissions(explorerItem.Permissions, isDeploy);
             if (isDialog)
             {
                 SetPropertiesForDialog(itemCreated);
