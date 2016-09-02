@@ -40,9 +40,9 @@ IF EXIST %windir%\nircmd.exe (nircmd elevate taskkill /im "Warewolf Server.vshos
 IF EXIST %windir%\nircmd.exe (nircmd elevate taskkill /im "WarewolfCOMIPC.exe" /T /F) else (taskkill /f /im WarewolfCOMIPC.exe /fi "STATUS eq RUNNING")
 
 REM ** Delete the Warewolf ProgramData folder
-IF EXIST %windir%\nircmd.exe (nircmd elevate cmd /c rd /S /Q "%PROGRAMDATA%\Warewolf\Resources") else (elevate rd /S /Q "%PROGRAMDATA%\Warewolf\Resources")
-IF EXIST %windir%\nircmd.exe (nircmd elevate cmd /c rd /S /Q "%PROGRAMDATA%\Warewolf\Workspaces") else (elevate rd /S /Q "%PROGRAMDATA%\Warewolf\Workspaces")
-IF EXIST %windir%\nircmd.exe (nircmd elevate cmd /c rd /S /Q "%PROGRAMDATA%\Warewolf\Server Settings") else (elevate rd /S /Q "%PROGRAMDATA%\Warewolf\Server Settings")
+IF EXIST %windir%\nircmd.exe (nircmd elevate cmd /c rd /S /Q "%PROGRAMDATA%\Warewolf\Resources") else (rd /S /Q "%PROGRAMDATA%\Warewolf\Resources")
+IF EXIST %windir%\nircmd.exe (nircmd elevate cmd /c rd /S /Q "%PROGRAMDATA%\Warewolf\Workspaces") else (rd /S /Q "%PROGRAMDATA%\Warewolf\Workspaces")
+IF EXIST %windir%\nircmd.exe (nircmd elevate cmd /c rd /S /Q "%PROGRAMDATA%\Warewolf\Server Settings") else (rd /S /Q "%PROGRAMDATA%\Warewolf\Server Settings")
 IF EXIST "%PROGRAMDATA%\Warewolf\Resources" powershell.exe -nologo -noprofile -command "& { Remove-Item '%PROGRAMDATA%\Warewolf\Resources' -Recurse -Force }"
 IF EXIST "%PROGRAMDATA%\Warewolf\Workspaces" powershell.exe -nologo -noprofile -command "& { Remove-Item '%PROGRAMDATA%\Warewolf\Workspaces' -Recurse -Force }"
 IF EXIST "%PROGRAMDATA%\Warewolf\Server Settings" powershell.exe -nologo -noprofile -command "& { Remove-Item '%PROGRAMDATA%\Warewolf\Server Settings' -Recurse -Force }"
