@@ -149,9 +149,10 @@ namespace Dev2.Runtime.ResourceCatalogImpl
                     savePath = resPath.Substring(0, resourceNameIndex);
                 }
 
-                _resourceCatalog.SaveResource(GlobalConstants.ServerWorkspaceID, updatedResource, contents, savePath);
-                updatedResource.LoadDependencies(contents.ToXElement());
+                _resourceCatalog.SaveResource(GlobalConstants.ServerWorkspaceID, updatedResource, contents, savePath);               
+                updatedResource.LoadDependencies(contents.ToXElement());                
             }
+           
         }
     }
 }

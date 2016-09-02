@@ -906,7 +906,6 @@ namespace Warewolf.Studio.ViewModels
                 IsFolder = explorerItem.IsFolder,
                 IsSource = explorerItem.IsSource,
                 IsReservedService = explorerItem.IsReservedService,
-                IsResourceVersion = explorerItem.IsResourceVersion,
                 IsServer = explorerItem.IsServer
             };
             if (isDeploy)

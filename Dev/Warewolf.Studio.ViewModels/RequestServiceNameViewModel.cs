@@ -55,12 +55,21 @@ namespace Warewolf.Studio.ViewModels
             _header = header;
             _explorerItemViewModel = explorerItemViewModel;
             OkCommand = new DelegateCommand(SetServiceName, () => string.IsNullOrEmpty(ErrorMessage) && HasLoaded);
-            DuplicateCommand = new DelegateCommand(CallDuplicateService, () => explorerItemViewModel != null && string.IsNullOrEmpty(ErrorMessage) && HasLoaded);
-            CancelCommand = new DelegateCommand(CloseView);
+            DuplicateCommand = new DelegateCommand(CallDuplicateService, () => explorerItemViewModel != null && string.IsNullOrEmpty(ErrorMessage) && HasLoaded && !IsDuplicating);
+            CancelCommand = new DelegateCommand(CloseView,CanClose);
             Name = header;
             IsDuplicate = explorerItemViewModel != null;
             environmentViewModel.CanShowServerVersion = false;
             return this;
+        }
+
+        private bool CanClose()
+        {
+            if (IsDuplicate)
+            {
+                return !IsDuplicating;
+            }
+            return true;
         }
 
         readonly IEnvironmentConnection _lazyCon = EnvironmentRepository.Instance.ActiveEnvironment?.Connection;
@@ -70,6 +79,7 @@ namespace Warewolf.Studio.ViewModels
         {
             try
             {
+                IsDuplicating = true;
 
                 if (_explorerItemViewModel.IsFolder)
                 {
@@ -100,7 +110,10 @@ namespace Warewolf.Studio.ViewModels
             {
                 //
             }            
-
+            finally
+            {
+                IsDuplicating = false;
+            }
         }
 
         public bool FixReferences
@@ -205,6 +218,7 @@ namespace Warewolf.Studio.ViewModels
 
         }
         private IExplorerTreeItem _treeItem;
+        private bool _isDuplicating;
         private IExplorerTreeItem SelectedItem
         {
             get
@@ -351,7 +365,20 @@ namespace Warewolf.Studio.ViewModels
         public ICommand CancelCommand { get; private set; }
 
         public IExplorerViewModel SingleEnvironmentExplorerViewModel { get; set; }
-
+        public bool IsDuplicating
+        {
+            get
+            {
+                return _isDuplicating;
+            }
+            set
+            {
+                _isDuplicating = value;
+                OnPropertyChanged(()=>IsDuplicating);
+                ViewModelUtils.RaiseCanExecuteChanged(DuplicateCommand);
+                ViewModelUtils.RaiseCanExecuteChanged(CancelCommand);
+            }
+        }
 
         public void Dispose()
         {
