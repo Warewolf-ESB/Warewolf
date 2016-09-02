@@ -1618,7 +1618,7 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to You do not have Permissions to move this item. Contribute permission is required to move an item..
+        ///   Looks up a localized string similar to You do not have permission to move this item. Contribute permission is required to move an item..
         /// </summary>
         public static string InvalidMovePermissionErrorMessage {
             get {
