@@ -33,6 +33,8 @@ namespace Dev2.Common.Interfaces
         ICommand DeleteVersionCommand { get; set; }
         ICommand ShowDependenciesCommand { get; set; }
         ICommand LostFocus { get; set; }
+        bool CanMove { get; }
+        ICommand DuplicateCommand { get; set; }
 
         IEnumerable<IExplorerItemViewModel> AsList();
 
