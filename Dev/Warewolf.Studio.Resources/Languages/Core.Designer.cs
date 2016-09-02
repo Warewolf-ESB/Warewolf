@@ -3386,6 +3386,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to localhost (Connected).
+        /// </summary>
+        public static string LocalhostConnectedLabel {
+            get {
+                return ResourceManager.GetString("LocalhostConnectedLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to localhost.
         /// </summary>
         public static string LocalhostLabel {
