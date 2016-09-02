@@ -12,12 +12,21 @@ namespace Warewolf.Studio.Views
     {
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
-            var xamDataTreeNodeControl = values[0] as XamDataTreeNodeControl;
-            if(xamDataTreeNodeControl != null)
+
+            try
             {
-                return (double)values[1] - xamDataTreeNodeControl.Node.Manager.Level * 21 - 62;
+                var xamDataTreeNodeControl = values[0] as XamDataTreeNodeControl;
+                if(xamDataTreeNodeControl != null)
+                {
+                    return (double)values[1] - xamDataTreeNodeControl.Node.Manager.Level * 21 - 62;
+                }
+                return 22;
             }
-            return 22;
+            catch(Exception e)
+            {
+                return 22;
+            }
+            
         }
 
         public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)

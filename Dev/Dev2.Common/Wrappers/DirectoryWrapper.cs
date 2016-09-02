@@ -10,6 +10,7 @@
 
 using Dev2.Common.Interfaces.Wrappers;
 using System.IO;
+using Microsoft.VisualBasic.FileIO;
 
 namespace Dev2.Common.Wrappers
 { // not required for code coverage this is simply a pass through required for unit testing
@@ -57,7 +58,7 @@ namespace Dev2.Common.Wrappers
 
         public void Move(string directoryStructureFromPath, string directoryStructureToPath)
         {
-            Directory.Move(directoryStructureFromPath, directoryStructureToPath);
+            FileSystem.MoveDirectory(directoryStructureFromPath,directoryStructureToPath,true);
         }
 
         public void Delete(string directoryStructureFromPath, bool recursive)

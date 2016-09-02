@@ -12,6 +12,7 @@ namespace WarewolfCOMIPC.Test
     {
         [TestMethod]
         [Owner("Hagashen Naidu")]
+        [Ignore]
         [TestCategory("WarewolfCOMIPCClient_Execute")]
         public void WarewolfCOMIPCClient_Execute_GetType_ShouldReturnType()
         {

@@ -60,7 +60,6 @@ namespace Warewolf.Studio.ViewModels
             Name = header;
             IsDuplicate = explorerItemViewModel != null;
             environmentViewModel.CanShowServerVersion = false;
-            _environmentViewModel = environmentViewModel;
             return this;
         }
 
@@ -84,7 +83,7 @@ namespace Warewolf.Studio.ViewModels
                     _lazyComs.AddPayloadArgument("ResourceID", _explorerItemViewModel.ResourceId.ToString());
                 }
 
-                _lazyComs.AddPayloadArgument("sourcePath", _explorerItemViewModel.ResourcePath);                
+                _lazyComs.AddPayloadArgument("sourcePath", _explorerItemViewModel.ResourcePath);
                 _lazyComs.AddPayloadArgument("destinationPath", Path);
 
 
@@ -100,20 +99,7 @@ namespace Warewolf.Studio.ViewModels
             catch (Exception)
             {
                 //
-            }
-            finally
-            {
-                try
-                {
-                    //Always refresh the env after this service call
-                    _environmentViewModel.Server.UpdateRepository.FireItemSaved(true);
-                }
-                catch (Exception)
-                {
-                    //
-                }
-            }
-
+            }            
 
         }
 
@@ -163,7 +149,6 @@ namespace Warewolf.Studio.ViewModels
             return ret.InitializeAsync(environmentViewModel, selectedPath, header, explorerItemViewModel);
         }
 
-        public Guid IdToSave { get; set; }
 
         private void CloseView()
         {
