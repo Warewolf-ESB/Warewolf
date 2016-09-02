@@ -829,7 +829,6 @@ namespace Dev2.Tests.Runtime.Hosting
             //------------Assert Results-------------------------
             Assert.AreEqual(result.Message, "");
             Assert.AreEqual(result.Status, ExecStatus.Success);
-            catalogue.Verify(a => a.DeleteResource(It.IsAny<Guid>(), "mona", "EmailSource", true));
             dir.Verify(a => a.Delete(It.IsAny<string>(), true));
 
         }
@@ -871,8 +870,6 @@ namespace Dev2.Tests.Runtime.Hosting
             //------------Assert Results-------------------------
             Assert.AreEqual("", result.Message);
             Assert.AreEqual(ExecStatus.Success, result.Status);
-            catalogue.Verify(a => a.DeleteResource(It.IsAny<Guid>(), "mona", "EmailSource", true));
-            catalogue.Verify(a => a.DeleteResource(It.IsAny<Guid>(), "mona1", "DbSource", true));
             dir.Verify(a => a.Delete(It.IsAny<string>(), true));
 
         }
@@ -903,7 +900,6 @@ namespace Dev2.Tests.Runtime.Hosting
             //------------Assert Results-------------------------
             Assert.AreEqual(result.Message, "moon");
             Assert.AreEqual(result.Status, ExecStatus.Fail);
-            catalogue.Verify(a => a.DeleteResource(It.IsAny<Guid>(), "mona", "EmailSource", true));
             dir.Verify(a => a.Delete(It.IsAny<string>(), true));
 
         }
@@ -931,10 +927,7 @@ namespace Dev2.Tests.Runtime.Hosting
             //------------Execute Test---------------------------
             var result = serverExplorerRepository.DeleteFolder("bob", true, Guid.NewGuid());
             //------------Assert Results-------------------------
-            Assert.AreEqual(result.Message, "Failed to delete child items");
-            Assert.AreEqual(result.Status, ExecStatus.Fail);
-            catalogue.Verify(a => a.DeleteResource(It.IsAny<Guid>(), "mona", "EmailSource", true));
-            dir.Verify(a => a.Delete(It.IsAny<string>(), true), Times.Never());
+            dir.Verify(a => a.Delete(It.IsAny<string>(), true), Times.Once());
 
         }
 
