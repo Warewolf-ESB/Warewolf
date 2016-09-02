@@ -27,7 +27,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
         {
             try
             {
-               
+
                 SaveFolders(sourcePath, destinationPath, newName, fixRefences);
                 return ResourceCatalogResultBuilder.CreateSuccessResult("Duplicated Successfully");
             }
@@ -64,7 +64,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
             resource.ResourceID = resourceID;
             xElement.SetElementValue("DisplayName", newResourceName);
             var fixedResource = xElement.ToStringBuilder();
-            _resourceCatalog.SaveResource(GlobalConstants.ServerWorkspaceID, resource, fixedResource,newPath);
+            _resourceCatalog.SaveResource(GlobalConstants.ServerWorkspaceID, resource, fixedResource, newPath);
 
         }
         private void SaveFolders(string sourceLocation, string destination, string newName, bool fixRefences)
@@ -77,7 +77,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
                 var upper = resource.GetResourcePath(GlobalConstants.ServerWorkspaceID).ToUpper();
                 return upper.StartsWith(sourceLocation.ToUpper());
             }).Where(resource => !(resource is ManagementServiceResource)).ToList();
-            
+
             foreach (var resource in resourceToMove)
             {
                 try
@@ -89,11 +89,11 @@ namespace Dev2.Runtime.ResourceCatalogImpl
                     var oldResourceId = resource.ResourceID;
                     newResource.ResourceID = newResourceId;
                     var fixedResource = xElement.ToStringBuilder();
-                    
+
                     var resourcePath = resource.GetResourcePath(GlobalConstants.ServerWorkspaceID);
 
                     var savePath = resourcePath;
-                    var resourceNameIndex = resourcePath.LastIndexOf(resource.ResourceName,StringComparison.InvariantCultureIgnoreCase);
+                    var resourceNameIndex = resourcePath.LastIndexOf(resource.ResourceName, StringComparison.InvariantCultureIgnoreCase);
                     if (resourceNameIndex >= 0)
                     {
                         savePath = resourcePath.Substring(0, resourceNameIndex);
@@ -140,7 +140,16 @@ namespace Dev2.Runtime.ResourceCatalogImpl
                 {
                     contents = contents.Replace(oldToNewUpdate.Key.ToString().ToLowerInvariant(), oldToNewUpdate.Value.ToString().ToLowerInvariant());
                 }
-                _resourceCatalog.SaveResource(GlobalConstants.ServerWorkspaceID, updatedResource, contents,updatedResource.GetResourcePath(GlobalConstants.ServerWorkspaceID));
+                var resPath = updatedResource.GetResourcePath(GlobalConstants.ServerWorkspaceID);
+
+                var savePath = resPath;
+                var resourceNameIndex = resPath.LastIndexOf(updatedResource.ResourceName, StringComparison.InvariantCultureIgnoreCase);
+                if (resourceNameIndex >= 0)
+                {
+                    savePath = resPath.Substring(0, resourceNameIndex);
+                }
+
+                _resourceCatalog.SaveResource(GlobalConstants.ServerWorkspaceID, updatedResource, contents, savePath);
                 updatedResource.LoadDependencies(contents.ToXElement());
             }
         }
