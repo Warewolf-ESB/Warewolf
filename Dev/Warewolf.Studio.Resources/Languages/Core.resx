@@ -3465,4 +3465,7 @@ If you put an = as the first character, it will turn into a calculation e.g. =[[
   <data name="DebugCouldNotGetRemoteDebugItemsErrorHeader" xml:space="preserve">
     <value>Failed to retrieve remote debug items</value>
   </data>
+  <data name="LocalhostConnectedLabel" xml:space="preserve">
+    <value>localhost (Connected)</value>
+  </data>
 </root>
