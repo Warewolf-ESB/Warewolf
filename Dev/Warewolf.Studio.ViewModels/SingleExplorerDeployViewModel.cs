@@ -24,6 +24,7 @@ namespace Warewolf.Studio.ViewModels
         readonly IDeployStatsViewerViewModel _stats;
         IDeployDestinationExplorerViewModel _destination;
         IConnectControlViewModel _sourceconnectControlViewModel;
+
         IConnectControlViewModel _destinationConnectControlViewModel;
         string _sourcesCount;
         string _servicesCount;

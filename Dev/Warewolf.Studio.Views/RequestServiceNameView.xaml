@@ -6,6 +6,7 @@
         xmlns:saveDialog="clr-namespace:Dev2.Common.Interfaces.SaveDialog;assembly=Dev2.Common.Interfaces"
         xmlns:views="clr-namespace:Warewolf.Studio.Views"
         xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna;assembly=Warewolf.Studio.Themes.Luna"
+        xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
         Width="700"
         Height="420"
         Style="{StaticResource WindowBorderlessStyle}"
@@ -91,27 +92,34 @@
                        Text="{Binding Path=ErrorMessage}"
                        TextAlignment="Right" />
             <CheckBox Visibility="{Binding IsDuplicate, Converter={StaticResource BoolToVisibilityConverter}}" 
-                      Content="Fix References?" IsChecked="{Binding FixReferences}" Margin="{StaticResource ControlBorderBottomRight}"/>
+                      Content="Fix References?" IsChecked="{Binding FixReferences}" Margin="{StaticResource ControlBorderBottomRight}"
+                      ToolTip="{x:Static languages:Core.DuplicateCheckBoxTooltip}"/>
+            
             <Button x:Name="DuplicateButton"
                     Width="60"
                     Command="{Binding Path=DuplicateCommand}"
                     Margin="{StaticResource ControlBorderBottomRight}"
                     Content="Duplicate"
                     Visibility="{Binding IsDuplicate, Converter={StaticResource BoolToVisibilityConverter}}" 
-                    Style="{StaticResource ButtonStyle}" />
+                    Style="{StaticResource ButtonStyle}"
+                    ToolTip="{x:Static languages:Core.DuplicateButtonTooltip}"/>
+            
             <Button x:Name="OkButton"
                     Width="60"
                     Command="{Binding Path=OkCommand}"
                     Margin="{StaticResource ControlBorderBottomRight}"
                     Content="Save"
                     Visibility="{Binding IsDuplicate, Converter={StaticResource BoolToVisibilityConverterNegative}}" 
-                    Style="{StaticResource ButtonStyle}" />
+                    Style="{StaticResource ButtonStyle}"
+                    ToolTip="{x:Static languages:Core.SaveButtonTooltip}"/>
+            
             <Button x:Name="CancelButton"
                     Width="60"
                     Command="{Binding Path=CancelCommand}"
                     Content="Cancel"
                     Margin="{StaticResource ControlBorderBottomRight}"
-                    Style="{StaticResource ButtonStyle}" />
+                    Style="{StaticResource ButtonStyle}"
+                    ToolTip="{x:Static languages:Core.CancelButtonTooltip}"/>
         </DockPanel>
     </Grid>
 </Window>

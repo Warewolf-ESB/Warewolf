@@ -285,6 +285,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to CancelButtonTooltip.
+        /// </summary>
+        public static string CancelButtonTooltip {
+            get {
+                return ResourceManager.GetString("CancelButtonTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cancel Test.
         /// </summary>
         public static string CancelTest {
@@ -2315,6 +2324,24 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string DropBoxToolTipNewSource {
             get {
                 return ResourceManager.GetString("DropBoxToolTipNewSource", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to DuplicateButtonTooltip.
+        /// </summary>
+        public static string DuplicateButtonTooltip {
+            get {
+                return ResourceManager.GetString("DuplicateButtonTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to DuplicateCheckBoxTooltip.
+        /// </summary>
+        public static string DuplicateCheckBoxTooltip {
+            get {
+                return ResourceManager.GetString("DuplicateCheckBoxTooltip", resourceCulture);
             }
         }
         
@@ -6195,6 +6222,15 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string RollbackMessage {
             get {
                 return ResourceManager.GetString("RollbackMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SaveButtonTooltip.
+        /// </summary>
+        public static string SaveButtonTooltip {
+            get {
+                return ResourceManager.GetString("SaveButtonTooltip", resourceCulture);
             }
         }
         
