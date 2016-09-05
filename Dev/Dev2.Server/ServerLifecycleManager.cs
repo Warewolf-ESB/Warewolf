@@ -814,8 +814,8 @@ namespace Dev2
         /// <date>2013/03/13</date>
         ResourceCatalog LoadResourceCatalog()
         {
-            ValidateResourceFolder();
             MigrateOldResources();
+            ValidateResourceFolder();
             Write("Loading resource catalog...  ");
             var catalog = ResourceCatalog.Instance;
             ServerExplorerRepository.Instance.Load(GlobalConstants.ServerWorkspaceID);
