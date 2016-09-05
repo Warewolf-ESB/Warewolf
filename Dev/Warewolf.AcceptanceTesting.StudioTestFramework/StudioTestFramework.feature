@@ -40,6 +40,19 @@ Scenario: Create new test from Explorer opens a new window with correct test ico
 	And The test in the WorkflowTestBuilder is enabled
 
 
+Scenario: Create and Edit tests values sets the values for the test
+	Given I Change Test values on the WorkflowTestBuilder 
+	When I change the TestName to UnitTest1
+	Then the TestName is changed to UnitTest1
+	And The TestUrl is updated correctly
+	When The Workflow  UnitTest1 has "2" inputs
+	Then The Inputs variables are populated with "2" workflow inputs
+	When the Workflow has "1" OutPut 
+	Then the Outputs are populated with "1" inputs
+
+
+
+
 
 
 
