@@ -371,6 +371,7 @@ namespace Dev2
                 LoadPerformanceCounters();
                 LoadServerWorkspace();
                 LoadActivityCache(catalog);
+                SetStarted();
                 ServerLoop(interactiveMode);
             }
             catch(Exception e)
@@ -914,7 +915,7 @@ namespace Dev2
                         {
                             WriteLine($"Web server listening at {endpoint.Url}");
                         }
-                        SetStarted();
+                        
                     }
                     catch(Exception e)
                     {
