@@ -154,6 +154,8 @@ namespace Dev2.Runtime.ServiceModel.Data
         public abstract bool IsServer { get; }
         public abstract bool IsResourceVersion { get; }
 
+        public string ResourcePath { get; set; }
+
         public string GetResourcePath(Guid workspaceID)
         {
             if (FilePath == null && IsReservedService)

@@ -60,7 +60,6 @@ namespace Dev2.Data.ServiceModel
 
         public abstract string AppKey { get; set; }
         public abstract string AccessToken { get; set; }
-        public string ResourcePath { get; set; }
         #region Implementation of IEquatable<IOAuthSource>
 
         /// <summary>

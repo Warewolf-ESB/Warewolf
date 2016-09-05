@@ -361,6 +361,7 @@ namespace Dev2
                 SetWorkingDirectory();
                 LoadHostSecurityProvider();
                 InitializeServer();
+                PreloadReferences();
                 LoadSettingsProvider();
                 ConfigureLoggging();
                 _ipcClient = Client.IPCExecutor;
@@ -825,8 +826,7 @@ namespace Dev2
         }
 
         private static void LoadActivityCache(ResourceCatalog catalog)
-        {
-            PreloadReferences();
+        {            
             CustomContainer.Register<IActivityParser>(new ActivityParser());
             Write("Loading resource activity cache...  ");
             catalog.LoadResourceActivityCache(GlobalConstants.ServerWorkspaceID);
