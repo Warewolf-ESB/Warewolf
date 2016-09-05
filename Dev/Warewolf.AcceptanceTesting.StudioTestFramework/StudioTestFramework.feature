@@ -11,18 +11,40 @@ Scenario: Create new test from Explorer opens new window
 	When The ExplorerItem is a workflow service 
 	Then The WorkflowTestBuilder window is opened
 
-Scenario: Create new test from Explorer opens new window with default properties
-	Given I right click on the WorkflowService on the explorer		
-	Then The WorkflowTestBuilder window is opened
-	And The WorkflowTestBuilder has "test1" as a TestName
-	And The WorkflowTestBuilder has workflow Name plus Tests
-	And The WorkflowTestBuilder has a tests URL populated
-	And WorkflowTestBuilder has an empty UserName
-	And WorkflowTestBuilder has an empty Password
-	And WorkflowTestBuilder has empty Inputs
-	And WorkflowTestBuilder has empty Outputs
-	And WorkflowTestBuilder has no Error selected
-	And WorkflowTestBuilder has an empty debug output
+Scenario: Create New Test
+	Given the test builder is open with "Workflow 1"
+	When I click New Test
+	Then new test case is visible
+	And Test name starts with "Workflow 1_"
+	And username is blank
+	And password is blank
+	And save is disabled
+	And test status is pending
+	And test is enabled
+	And run test is disabled
+	And delete is enabled	
+	
+
+Scenario: Edit existing test
+	Given The WorkflowTestBuilder window is opened
+	And I select "test1"
+	Then Test name is "test1"
+	And test URL is "http://localhost:3142/secure/Examples/Workflow 1.tests/test1"
+	And UserName is empty
+	And Password is empty
+	And Inputs are empty
+	And Outputs are empty
+	And No Error selected
+	And debug output is empty
+	And Tab name is "Workflow 1 - Tests"
+	And save is disabled
+	When I change the test name to "test2"
+	Then save is enabled
+	And Tab name is "Worklow 1 - Tests *"
+	When I save the test
+	Then test URL is "http://localhost:3142/secure/Examples/Workflow 1.tests/test2"
+	And Tab name is "Workflow 1 - Tests"
+	And save is disabled
 
 Scenario: Create new test from Explorer opens a new window with correct button state
 	Given I right click on the ExplorerItem on the explorer
