@@ -1,13 +1,24 @@
 ﻿
+using Dev2.Common.Interfaces;
 using Microsoft.Practices.Prism.Commands;
+using Microsoft.Practices.Prism.Mvvm;
 
 namespace Warewolf.Studio.ViewModels
 {
-    public class TestFrameworkViewModel
+    public class TestFrameworkViewModel : BindableBase
     {
-        private bool _canCreateTest;
 
-        public TestFrameworkViewModel()
+        private bool _canCreateTest;
+        private bool _canStopTest;
+        private ITestFrameworkModel _testFrameworkModel;
+
+        public TestFrameworkViewModel(ITestFrameworkModel frameworkModel)
+            : this()
+        {
+            TestFrameworkModel = frameworkModel;
+        }
+
+        private TestFrameworkViewModel()
         {
             RenameCommand = new DelegateCommand(RenameAction, () => CanRename);
             SaveCommand = new DelegateCommand(SaveAction, () => CanSave);
@@ -31,6 +42,8 @@ namespace Warewolf.Studio.ViewModels
             set
             {
                 _canCreateTest = value;
+                OnPropertyChanged(() => CanCreateTest);
+
             }
         }
 
@@ -38,7 +51,18 @@ namespace Warewolf.Studio.ViewModels
         {
         }
 
-        public bool CanStopTest { get; set; }
+        public bool CanStopTest
+        {
+            get
+            {
+                return _canStopTest;
+            }
+            set
+            {
+                _canStopTest = value;
+                OnPropertyChanged(() => CanStopTest);
+            }
+        }
 
         private void StopTestAction()
         {
@@ -108,6 +132,19 @@ namespace Warewolf.Studio.ViewModels
         public DelegateCommand CreateTestCommand { get; set; }
 
         #endregion
+
+        public ITestFrameworkModel TestFrameworkModel
+        {
+            get
+            {
+                return _testFrameworkModel;
+            }
+            set
+            {
+                _testFrameworkModel = value;
+                OnPropertyChanged(() => TestFrameworkModel);
+            }
+        }
 
     }
 }
