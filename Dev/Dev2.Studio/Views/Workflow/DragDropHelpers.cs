@@ -11,8 +11,6 @@
 using System;
 using System.Linq;
 using System.Windows;
-using Dev2.Common.Interfaces.Security;
-using Dev2.Studio.Core;
 using Dev2.Studio.Core.ViewModels;
 using Warewolf.Studio.ViewModels;
 
@@ -86,9 +84,7 @@ namespace Dev2.Studio.Views.Workflow
                     {
                         return true;
                     }
-                    var env = EnvironmentRepository.Instance.FindSingle(model => model.ID == explorerItemViewModel.Server.EnvironmentID);
-                    var perms = env.AuthorizationService.GetResourcePermissions(explorerItemViewModel.ResourceId);
-                    if (perms >= Permissions.Execute && explorerItemViewModel.IsService && !explorerItemViewModel.IsSource)
+                    if (explorerItemViewModel.CanExecute && explorerItemViewModel.CanView && explorerItemViewModel.IsService && !explorerItemViewModel.IsSource)
                     {
                         return false;
                     }
