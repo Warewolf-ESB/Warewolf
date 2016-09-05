@@ -122,5 +122,7 @@ namespace Dev2.Common.Interfaces.Data
         void LoadDependencies(XElement xml);
 
         string GetResourcePath(Guid workspaceID);
+
+        string GetSavePath(Guid workspaceID);
     }
 }

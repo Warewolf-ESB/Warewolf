@@ -162,8 +162,19 @@ namespace Dev2.Runtime.ServiceModel.Data
             }
             return FilePath?.Replace(EnvironmentVariables.GetWorkspacePath(workspaceID)+"\\","").Replace(".xml","") ?? "";
         }
+        public string GetSavePath(Guid workspaceID)
+        {
+            var resPath = GetResourcePath(workspaceID);
 
-        public IVersionInfo VersionInfo
+            var savePath = resPath;
+            var resourceNameIndex = resPath.LastIndexOf(ResourceName, StringComparison.InvariantCultureIgnoreCase);
+            if (resourceNameIndex >= 0)
+            {
+                savePath = resPath.Substring(0, resourceNameIndex);
+            }
+            return savePath;
+        }
+    public IVersionInfo VersionInfo
         {
             get
             {
