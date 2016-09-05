@@ -5,6 +5,8 @@ namespace Warewolf.Studio.ViewModels
 {
     public class TestFrameworkViewModel
     {
+        private bool _canCreateTest;
+
         public TestFrameworkViewModel()
         {
             RenameCommand = new DelegateCommand(RenameAction, () => CanRename);
@@ -16,6 +18,24 @@ namespace Warewolf.Studio.ViewModels
             RunTestCommand = new DelegateCommand(RunTestAction, () => CanRunTest);
             WebRunTestCommand = new DelegateCommand(WebRunTestAction, () => CanWebRunTest);
             StopTestCommand = new DelegateCommand(StopTestAction, () => CanStopTest);
+            CreateTestCommand = new DelegateCommand(CreateTestAction, () => CanCreateTest);
+        }
+
+        public bool CanCreateTest
+        {
+            get
+            {
+                _canCreateTest = true;
+                return _canCreateTest;
+            }
+            set
+            {
+                _canCreateTest = value;
+            }
+        }
+
+        private void CreateTestAction()
+        {
         }
 
         public bool CanStopTest { get; set; }
@@ -85,6 +105,7 @@ namespace Warewolf.Studio.ViewModels
         public DelegateCommand RunTestCommand { get; set; }
         public DelegateCommand WebRunTestCommand { get; set; }
         public DelegateCommand StopTestCommand { get; set; }
+        public DelegateCommand CreateTestCommand { get; set; }
 
         #endregion
 
