@@ -123,7 +123,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void OnCreation_GivenIsNew_ShouldStopTestCommand()
+        public void OnCreation_GivenIsNew_ShouldHaveStopTestCommand()
         {
             //---------------Set up test pack-------------------
             var vm = new TestFrameworkViewModel();
@@ -133,6 +133,21 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsNotNull(vm.StopTestCommand);
             //---------------Test Result -----------------------
             Assert.IsFalse(vm.StopTestCommand.CanExecute());
+        }
+
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void OnCreation_GivenIsNew_ShouldHaveCreateTestCommand()
+        {
+            //---------------Set up test pack-------------------
+            var vm = new TestFrameworkViewModel();
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(vm);
+            //---------------Execute Test ----------------------
+            Assert.IsNotNull(vm.CreateTestCommand);
+            //---------------Test Result -----------------------
+            Assert.IsTrue(vm.CreateTestCommand.CanExecute());
         }
     }
 }
