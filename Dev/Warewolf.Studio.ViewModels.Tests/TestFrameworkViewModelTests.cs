@@ -108,21 +108,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //---------------Test Result -----------------------
             Assert.IsFalse(vm.RunTestCommand.CanExecute());
         }
-
-
-        [TestMethod]
-        [Owner("Nkosinathi Sangweni")]
-        public void OnCreation_GivenIsNew_ShouldHaveWebRunTestCommand()
-        {
-            //---------------Set up test pack-------------------
-            var vm = new TestFrameworkViewModel(getMockModel());
-            //---------------Assert Precondition----------------
-            Assert.IsNotNull(vm);
-            //---------------Execute Test ----------------------
-            Assert.IsNotNull(vm.WebRunTestCommand);
-            //---------------Test Result -----------------------
-            Assert.IsFalse(vm.WebRunTestCommand.CanExecute());
-        }
+        
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]

@@ -26,8 +26,10 @@ namespace Warewolf.Studio.ViewModels
             DisableTestCommand = new DelegateCommand(DisableTestAction, () => CanDisableTest);
             DeleteTestCommand = new DelegateCommand(DeleteTestAction, () => CanDeleteTest);
             DuplicateTestCommand = new DelegateCommand(DuplicateTestAction, () => CanDuplicateTest);
-            RunTestCommand = new DelegateCommand(RunTestAction, () => CanRunTest);
-            WebRunTestCommand = new DelegateCommand(WebRunTestAction, () => CanWebRunTest);
+            RunAllTestsInBrowserCommand = new DelegateCommand(RunAllTestsInBrowserAction, () => CanRunAllTestsInBrowser);
+            RunAllTestsCommand = new DelegateCommand(RunAllTestsCommandAction, () => CanRunAllTestsCommand);
+            RunSelectedTestInBrowserCommand = new DelegateCommand(RunSelectedTestInBrowserAction, () => CanRunSelectedTestInBrowser);
+            RunSelectedTestCommand = new DelegateCommand(RunSelectedTestAction, () => CanRunSelectedTest);
             StopTestCommand = new DelegateCommand(StopTestAction, () => CanStopTest);
             CreateTestCommand = new DelegateCommand(CreateTestAction, () => CanCreateTest);
         }
@@ -68,9 +70,26 @@ namespace Warewolf.Studio.ViewModels
         {
         }
 
-        public bool CanWebRunTest { get; set; }
+        public bool CanRunAllTestsInBrowser { get; set; }
 
-        private void WebRunTestAction()
+        private void RunAllTestsInBrowserAction()
+        {
+        }
+
+        public bool CanRunAllTestsCommand { get; set; }
+
+        private void RunAllTestsCommandAction()
+        {
+        }
+        public bool CanRunSelectedTestInBrowser { get; set; }
+
+        private void RunSelectedTestInBrowserAction()
+        {
+        }
+
+        public bool CanRunSelectedTest { get; set; }
+
+        private void RunSelectedTestAction()
         {
         }
 
@@ -127,7 +146,10 @@ namespace Warewolf.Studio.ViewModels
         public DelegateCommand DeleteTestCommand { get; set; }
         public DelegateCommand DuplicateTestCommand { get; set; }
         public DelegateCommand RunTestCommand { get; set; }
-        public DelegateCommand WebRunTestCommand { get; set; }
+        public DelegateCommand RunAllTestsInBrowserCommand { get; set; }
+        public DelegateCommand RunAllTestsCommand { get; set; }
+        public DelegateCommand RunSelectedTestInBrowserCommand { get; set; }
+        public DelegateCommand RunSelectedTestCommand { get; set; }
         public DelegateCommand StopTestCommand { get; set; }
         public DelegateCommand CreateTestCommand { get; set; }
 
