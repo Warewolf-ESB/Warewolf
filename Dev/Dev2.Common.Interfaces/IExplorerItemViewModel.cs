@@ -18,6 +18,7 @@ namespace Dev2.Common.Interfaces
         bool IsVersion { get; set; }
         bool CanViewSwagger { get; set; }
         bool CanDuplicate { get; set; }
+        bool CanCreateTest { get; set; }
 
         string VersionNumber { get; set; }
         string VersionHeader { get; set; }
@@ -35,6 +36,7 @@ namespace Dev2.Common.Interfaces
         ICommand LostFocus { get; set; }
         bool CanMove { get; }
         ICommand DuplicateCommand { get; set; }
+        ICommand CreateTestCommand { get; set; }
 
         IEnumerable<IExplorerItemViewModel> AsList();
 
