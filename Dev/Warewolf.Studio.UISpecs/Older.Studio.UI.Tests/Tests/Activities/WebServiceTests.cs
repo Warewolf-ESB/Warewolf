@@ -1,5 +1,4 @@
-﻿using Dev2.Studio.UI.Tests.Enums;
-using Dev2.Studio.UI.Tests.UIMaps.Activities;
+﻿using Dev2.Studio.UI.Tests.UIMaps.Activities;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
