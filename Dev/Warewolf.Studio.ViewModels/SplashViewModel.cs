@@ -109,7 +109,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 var serverVersion = Server.GetServerVersion();
                 var splitServerVersion = serverVersion.Split('.');
-                if (int.Parse(splitServerVersion[2]) > 6000)
+                if (splitServerVersion.Length > 2 && int.Parse(splitServerVersion[2]) > 6000)
                 {
                     var totalDays = Convert.ToDouble(splitServerVersion[2]);
                     var totalSeconds = Convert.ToDouble(splitServerVersion[3])*2;
