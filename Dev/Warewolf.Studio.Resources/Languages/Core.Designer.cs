@@ -6692,6 +6692,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Not Available..
+        /// </summary>
+        public static string ServerNotAvailable {
+            get {
+                return ResourceManager.GetString("ServerNotAvailable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to By default, you can connect to other Warewolf Servers over HTTP or HTTPS.&lt;br/&gt;.
         /// </summary>
         public static string ServerProtocolHelp {
