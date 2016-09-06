@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 namespace Dev2.Common.Interfaces
@@ -7,6 +8,7 @@ namespace Dev2.Common.Interfaces
         string TestName { get; set; }
         string UserName { get; set; }
         string Password { get; set; }
+        DateTime LastRunDate { get; set; }
         List<ITestInput> Inputs { get; set; }
         List<ITestOutput> OutPuts { get; set; }
         bool Error { get; set; }

@@ -156,7 +156,7 @@
                                 </Grid>
                                 <Grid HorizontalAlignment="Stretch" 
                                       VerticalAlignment="Stretch" 
-                                      Visibility="{Binding IsNewItem,Converter={StaticResource BoolToVisibilityConverterPositive}}" >
+                                      Visibility="{Binding IsNewTest,Converter={StaticResource BoolToVisibilityConverterPositive}}" >
                                     <Button Style="{StaticResource ButtonSchedulerTransparentStyle}" 
                                             HorizontalAlignment="Stretch" 
                                             VerticalAlignment="Stretch" 
@@ -192,7 +192,7 @@
 
                         <TextBlock Grid.Row="0">
                             <Hyperlink x:Name="RunSelectedTestUrl" 
-                                       Command="{Binding TestCommandHandler.RunSelectedTestInBrowserCommand}" 
+                                       Command="{Binding RunSelectedTestInBrowserCommand}" 
                                        ToolTip="{x:Static languages:Core.TestsRunSelectedTestInBrowserTooltip}"
                                        Style="{StaticResource HyperLinkStyle}"
                                        NavigateUri="{Binding RunSelectedTestUrl,UpdateSourceTrigger=PropertyChanged}" >
@@ -212,14 +212,14 @@
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
                             <TextBlock Grid.Row="0" Grid.Column="0" Text="Test Name"/>
-                            <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding SelectedTestName}"/>
+                            <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding TestName}"/>
 
                             <TextBlock Grid.Row="1" Grid.Column="0" Text="Run As User"/>
                             <TextBlock Grid.Row="1" Grid.Column="1" Text="(Leave blank to use executors Credentials)"/>
                             <CheckBox Grid.Row="1" Grid.Column="1" Content="Public" IsChecked="{Binding IsPublic}" HorizontalAlignment="Right"/>
 
-                            <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding SelectedTestUserName}"/>
-                            <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding SelectedUserPassword}" Margin="{StaticResource ControlBorderTop}"/>
+                            <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding UserName}"/>
+                            <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding Password}" Margin="{StaticResource ControlBorderTop}"/>
                         </Grid>
 
                         <Grid Grid.Row="2" Margin="{StaticResource ControlBorderTop}">
