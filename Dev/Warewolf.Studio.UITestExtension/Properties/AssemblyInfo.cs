@@ -1,4 +1,8 @@
 ﻿using System.Reflection;
+<<<<<<< Updated upstream
+=======
+using System.Runtime.CompilerServices;
+>>>>>>> Stashed changes
 using System.Runtime.InteropServices;
 
 // General Information about an assembly is controlled through the following 
