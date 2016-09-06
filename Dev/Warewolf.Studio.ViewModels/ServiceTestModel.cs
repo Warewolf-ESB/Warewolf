@@ -116,6 +116,7 @@ namespace Warewolf.Studio.ViewModels
                 OnPropertyChanged(() => TestPending);
             }
         }
+        public bool Enabled { get; set; }
 
         #endregion
     }
