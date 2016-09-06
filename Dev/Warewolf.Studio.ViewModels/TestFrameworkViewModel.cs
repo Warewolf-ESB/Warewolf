@@ -146,19 +146,19 @@ namespace Warewolf.Studio.ViewModels
 
 
 
-        public DelegateCommand RenameCommand { get; set; }
-        public DelegateCommand SaveCommand { get; set; }
-        public DelegateCommand EnableTestCommand { get; set; }
-        public DelegateCommand DisableTestCommand { get; set; }
-        public DelegateCommand DeleteTestCommand { get; set; }
-        public DelegateCommand DuplicateTestCommand { get; set; }
-        public DelegateCommand RunTestCommand { get; set; }
-        public DelegateCommand RunAllTestsInBrowserCommand { get; set; }
-        public DelegateCommand RunAllTestsCommand { get; set; }
-        public DelegateCommand RunSelectedTestInBrowserCommand { get; set; }
-        public DelegateCommand RunSelectedTestCommand { get; set; }
-        public DelegateCommand StopTestCommand { get; set; }
-        public DelegateCommand CreateTestCommand { get; set; }
+        public ICommand RenameCommand { get; set; }
+        public ICommand SaveCommand { get; set; }
+        public ICommand EnableTestCommand { get; set; }
+        public ICommand DisableTestCommand { get; set; }
+        public ICommand DeleteTestCommand { get; set; }
+        public ICommand DuplicateTestCommand { get; set; }
+        public ICommand RunTestCommand { get; set; }
+        public ICommand RunAllTestsInBrowserCommand { get; set; }
+        public ICommand RunAllTestsCommand { get; set; }
+        public ICommand RunSelectedTestInBrowserCommand { get; set; }
+        public ICommand RunSelectedTestCommand { get; set; }
+        public ICommand StopTestCommand { get; set; }
+        public ICommand CreateTestCommand { get; set; }
 
         #endregion
 
@@ -174,6 +174,6 @@ namespace Warewolf.Studio.ViewModels
                 OnPropertyChanged(() => TestFrameworkModel);
             }
         }
-
+        public ICommand WebRunTestCommand { get; set; }
     }
 }
