@@ -395,6 +395,8 @@
   <PropertyGroup>
     <PostBuildEvent>xcopy /Y /E /F /D "$(SolutionDir)Resources - Release" "$(TargetDir)"
 if "$(ConfigurationName)"=="Debug" xcopy /Y /E /F /D "$(SolutionDir)Resources - Debug" "$(TargetDir)"
+taskkill /f /im WarewolfCOMIPC.exe /fi "STATUS eq RUNNING"
+taskkill /f /im WarewolfCOMIPC.vshost.exe /fi "STATUS eq RUNNING"
 xcopy /Y "$(SolutionDir)WarewolfCOMIPC\bin\x86\$(ConfigurationName)\WarewolfCOMIPC.exe" "$(TargetDir)"</PostBuildEvent>
   </PropertyGroup>
   <PropertyGroup>

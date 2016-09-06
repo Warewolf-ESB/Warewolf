@@ -690,7 +690,7 @@ namespace Warewolf.UITests
             Mouse.Click(clearFilterButton, new Point(6, 8));
 
             // Verify that the 'Text' property of 'SearchTextBox' text box equals ''
-            Assert.AreEqual(this.Click_Explorer_Filter_Clear_ButtonParams.SearchTextBoxText, searchTextBox.Text, "Explorer Filter Textbox text is not blank afrter clicking the clear button.");
+            Assert.AreEqual(this.Click_Explorer_Filter_Clear_ButtonParams.SearchTextBoxText, searchTextBox.Text, "Explorer Filter Textbox text is not blank after clicking the clear button.");
         }
         
         /// <summary>
@@ -2397,6 +2397,9 @@ namespace Warewolf.UITests
             WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
             WpfCustom connector1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1;
             WpfCustom forEach1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ForEach;
+            WpfComboBox forEachTypeComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ForEach.SmallView.ForEachTypeComboBox;
+            WpfEdit textbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ForEach.SmallView.FromIntellisenseTextbox.Textbox;
+            WpfCustom dropActivityHere = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ForEach.SmallView.DropActivityHere;
             #endregion
 
             // Type 'ForEach' in 'SearchTextBox' text box
@@ -2412,6 +2415,15 @@ namespace Warewolf.UITests
 
             // Verify that the 'Exists' property of 'DsfForEachActivity' custom control equals 'True'
             Assert.AreEqual(this.Drag_Toolbox_For_Each_Onto_DesignSurfaceParams.ForEachExists, forEach1.Exists, "For Each tool on the design surface does not exist");
+
+            // Verify that the 'Exists' property of 'UI__ForEachType_AutoID' combo box equals 'True'
+            Assert.AreEqual(this.Drag_Toolbox_For_Each_Onto_DesignSurfaceParams.ForEachTypeComboBoxExists, forEachTypeComboBox.Exists, "Type dropdown does not exist on for each on the design surface.");
+
+            // Verify that the 'Exists' property of 'Text' text box equals 'True'
+            Assert.AreEqual(this.Drag_Toolbox_For_Each_Onto_DesignSurfaceParams.TextboxExists, textbox.Exists, "Start textbox in in range foreach on the design surface does not exist.");
+
+            // Verify that the 'Exists' property of 'Drop Activity Here' custom control equals 'True'
+            Assert.AreEqual(this.Drag_Toolbox_For_Each_Onto_DesignSurfaceParams.DropActivityHereExists, dropActivityHere.Exists, "Activity drop box does not exist on for each.");
         }
         
         /// <summary>
@@ -2516,8 +2528,8 @@ namespace Warewolf.UITests
 
             // Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
             flowchart.EnsureClickable(new Point(306, 129));
-            Mouse.StartDragging(move, new Point(14, 3));
-            Mouse.StopDragging(flowchart, new Point(305, 129));
+            Mouse.StartDragging(move, new Point(32, 4));
+            Mouse.StopDragging(flowchart, new Point(306, 129));
 
             // Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
             Assert.AreEqual(this.Drag_Toolbox_Move_Onto_DesignSurfaceParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
@@ -4881,11 +4893,24 @@ namespace Warewolf.UITests
         public void Select_Copy_FromContextMenu()
         {
             #region Variable Declarations
-            WpfMenuItem copy = this.MainStudioWindow.GenericContextMenu.Copy;
+            WpfMenuItem copy = this.MainStudioWindow.DesignSurfaceContextMenu.Copy;
             #endregion
 
             // Click 'Copy' menu item
             Mouse.Click(copy, new Point(27, 18));
+        }
+        
+        /// <summary>
+        /// Select_Delete_FromContextMenu
+        /// </summary>
+        public void Select_Delete_FromContextMenu()
+        {
+            #region Variable Declarations
+            WpfMenuItem delete = this.MainStudioWindow.DesignSurfaceContextMenu.Delete;
+            #endregion
+
+            // Click 'Delete' menu item
+            Mouse.Click(delete, new Point(27, 18));
         }
         
         /// <summary>
@@ -4894,7 +4919,7 @@ namespace Warewolf.UITests
         public void Select_CopyAsImage_FromContextMenu()
         {
             #region Variable Declarations
-            WpfMenuItem copyasImage = this.MainStudioWindow.GenericContextMenu.CopyasImage;
+            WpfMenuItem copyasImage = this.MainStudioWindow.DesignSurfaceContextMenu.CopyasImage;
             #endregion
 
             // Click 'Copy as Image' menu item
@@ -4907,7 +4932,7 @@ namespace Warewolf.UITests
         public void Select_Cut_FromContextMenu()
         {
             #region Variable Declarations
-            WpfMenuItem cut = this.MainStudioWindow.GenericContextMenu.Cut;
+            WpfMenuItem cut = this.MainStudioWindow.DesignSurfaceContextMenu.Cut;
             #endregion
 
             // Click 'Cut' menu item
@@ -4937,7 +4962,7 @@ namespace Warewolf.UITests
         public void Select_DeleteRow_FromContextMenu()
         {
             #region Variable Declarations
-            WpfMenuItem deleteRow = this.MainStudioWindow.GenericContextMenu.DeleteRow;
+            WpfMenuItem deleteRow = this.MainStudioWindow.DesignSurfaceContextMenu.DeleteRow;
             #endregion
 
             // Click 'Delete Row' menu item
@@ -5042,7 +5067,7 @@ namespace Warewolf.UITests
         public void Select_InsertRow_FromContextMenu()
         {
             #region Variable Declarations
-            WpfMenuItem insertRow = this.MainStudioWindow.GenericContextMenu.InsertRow;
+            WpfMenuItem insertRow = this.MainStudioWindow.DesignSurfaceContextMenu.InsertRow;
             #endregion
 
             // Click 'Insert Row' menu item
@@ -5217,7 +5242,7 @@ namespace Warewolf.UITests
         public void Select_Paste_FromContextMenu()
         {
             #region Variable Declarations
-            WpfMenuItem paste = this.MainStudioWindow.GenericContextMenu.Paste;
+            WpfMenuItem paste = this.MainStudioWindow.DesignSurfaceContextMenu.Paste;
             #endregion
 
             // Click 'Paste' menu item
@@ -5260,7 +5285,7 @@ namespace Warewolf.UITests
         public void Select_SaveAsImage_FromContextMenu()
         {
             #region Variable Declarations
-            WpfMenuItem saveasImage = this.MainStudioWindow.GenericContextMenu.SaveasImage;
+            WpfMenuItem saveasImage = this.MainStudioWindow.DesignSurfaceContextMenu.SaveasImage;
             #endregion
 
             // Click 'Save as Image' menu item
@@ -5273,7 +5298,7 @@ namespace Warewolf.UITests
         public void Select_SetAsStartNode_FromContextMenu()
         {
             #region Variable Declarations
-            WpfMenuItem setasStartNode = this.MainStudioWindow.GenericContextMenu.SetasStartNode;
+            WpfMenuItem setasStartNode = this.MainStudioWindow.DesignSurfaceContextMenu.SetasStartNode;
             #endregion
 
             // Click 'Set as Start Node' menu item
@@ -5286,7 +5311,7 @@ namespace Warewolf.UITests
         public void Select_ShowLargeView_FromContextMenu()
         {
             #region Variable Declarations
-            WpfMenuItem showLargeView = this.MainStudioWindow.GenericContextMenu.ShowLargeView;
+            WpfMenuItem showLargeView = this.MainStudioWindow.DesignSurfaceContextMenu.ShowLargeView;
             #endregion
 
             // Click 'Show Large View' menu item
@@ -5307,7 +5332,7 @@ namespace Warewolf.UITests
             Mouse.Click(namespaceComboBox, new Point(216, 7));
 
             // Click 'SystemRandom' list item
-            Mouse.Click(systemRandomListItem, new Point(137, 5));
+            Mouse.Click(systemRandomListItem, new Point(137, 7));
 
             // Verify that the 'SelectedItem' property of 'NamespaceComboBox' combo box equals 'System.Random'
             Assert.AreEqual(this.Select_SystemRandom_From_DotNet_DLL_Large_View_Namespace_ComboboxExpectedValues.NamespaceComboBoxSelectedItem, namespaceComboBox.SelectedItem, "System.Random is not selected in DotNet DLL tool large view namespace combobox.");
@@ -7426,6 +7451,18 @@ namespace Warewolf.UITests
                 return this.mSwitchCaseDialog;
             }
         }
+        
+        public UIWarewolfDEV2ASHLEYLEWindow UIWarewolfDEV2ASHLEYLEWindow
+        {
+            get
+            {
+                if ((this.mUIWarewolfDEV2ASHLEYLEWindow == null))
+                {
+                    this.mUIWarewolfDEV2ASHLEYLEWindow = new UIWarewolfDEV2ASHLEYLEWindow();
+                }
+                return this.mUIWarewolfDEV2ASHLEYLEWindow;
+            }
+        }
         #endregion
         
         #region Fields
@@ -7762,6 +7799,8 @@ namespace Warewolf.UITests
         private ServicePickerDialog mServicePickerDialog;
         
         private SwitchCaseDialog mSwitchCaseDialog;
+        
+        private UIWarewolfDEV2ASHLEYLEWindow mUIWarewolfDEV2ASHLEYLEWindow;
         #endregion
     }
     
@@ -9350,6 +9389,21 @@ namespace Warewolf.UITests
         /// Verify that the 'Exists' property of 'DsfForEachActivity' custom control equals 'True'
         /// </summary>
         public bool ForEachExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'UI__ForEachType_AutoID' combo box equals 'True'
+        /// </summary>
+        public bool ForEachTypeComboBoxExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Text' text box equals 'True'
+        /// </summary>
+        public bool TextboxExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Drop Activity Here' custom control equals 'True'
+        /// </summary>
+        public bool DropActivityHereExists = true;
         #endregion
     }
     
@@ -9564,7 +9618,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Type 'Read Folder' in 'SearchTextBox' text box
         /// </summary>
-        public string SearchTextBoxText = "Read Fol";
+        public string SearchTextBoxText = "Read Folder";
         
         /// <summary>
         /// Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
@@ -11126,15 +11180,15 @@ namespace Warewolf.UITests
             }
         }
         
-        public GenericContextMenu GenericContextMenu
+        public DesignSurfaceContextMenu DesignSurfaceContextMenu
         {
             get
             {
-                if ((this.mGenericContextMenu == null))
+                if ((this.mDesignSurfaceContextMenu == null))
                 {
-                    this.mGenericContextMenu = new GenericContextMenu(this);
+                    this.mDesignSurfaceContextMenu = new DesignSurfaceContextMenu(this);
                 }
-                return this.mGenericContextMenu;
+                return this.mDesignSurfaceContextMenu;
             }
         }
         
@@ -11581,7 +11635,7 @@ namespace Warewolf.UITests
         
         private ExplorerContextMenu mExplorerContextMenu;
         
-        private GenericContextMenu mGenericContextMenu;
+        private DesignSurfaceContextMenu mDesignSurfaceContextMenu;
         
         private ExitFullScreenF11Text mExitFullScreenF11Text;
         
@@ -11966,10 +12020,10 @@ namespace Warewolf.UITests
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class GenericContextMenu : WpfMenu
+    public class DesignSurfaceContextMenu : WpfMenu
     {
         
-        public GenericContextMenu(UITestControl searchLimitContainer) : 
+        public DesignSurfaceContextMenu(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -12024,6 +12078,22 @@ namespace Warewolf.UITests
                     #endregion
                 }
                 return this.mCopy;
+            }
+        }
+        
+        public WpfMenuItem Delete
+        {
+            get
+            {
+                if ((this.mDelete == null))
+                {
+                    this.mDelete = new WpfMenuItem(this);
+                    #region Search Criteria
+                    this.mDelete.SearchProperties[WpfMenuItem.PropertyNames.AutomationId] = "DeleteMenuItem";
+                    this.mDelete.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mDelete;
             }
         }
         
@@ -12130,6 +12200,8 @@ namespace Warewolf.UITests
         private WpfMenuItem mPaste;
         
         private WpfMenuItem mCopy;
+        
+        private WpfMenuItem mDelete;
         
         private WpfMenuItem mCopyasImage;
         
@@ -20434,18 +20506,13 @@ namespace Warewolf.UITests
             }
         }
         
-        public WpfCustom ForEach
+        public ForEach1 ForEach
         {
             get
             {
                 if ((this.mForEach == null))
                 {
-                    this.mForEach = new WpfCustom(this);
-                    #region Search Criteria
-                    this.mForEach.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ForeachDesigner";
-                    this.mForEach.SearchProperties[WpfControl.PropertyNames.AutomationId] = "For Each(ForeachDesigner)";
-                    this.mForEach.WindowTitles.Add("Warewolf");
-                    #endregion
+                    this.mForEach = new ForEach1(this);
                 }
                 return this.mForEach;
             }
@@ -21257,7 +21324,7 @@ namespace Warewolf.UITests
         
         private WpfCustom mDatabaseConnector;
         
-        private WpfCustom mForEach;
+        private ForEach1 mForEach;
         
         private WpfCustom mLength;
         
@@ -24557,6 +24624,195 @@ namespace Warewolf.UITests
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class ForEach1 : WpfCustom
+    {
+        
+        public ForEach1(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ForeachDesigner";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "For Each(ForeachDesigner)";
+            this.WindowTitles.Add("Warewolf");
+            #endregion
+        }
+        
+        #region Properties
+        public SmallView3 SmallView
+        {
+            get
+            {
+                if ((this.mSmallView == null))
+                {
+                    this.mSmallView = new SmallView3(this);
+                }
+                return this.mSmallView;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private SmallView3 mSmallView;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class SmallView3 : WpfCustom
+    {
+        
+        public SmallView3(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.Small";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "SmallViewContent";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfComboBox ForEachTypeComboBox
+        {
+            get
+            {
+                if ((this.mForEachTypeComboBox == null))
+                {
+                    this.mForEachTypeComboBox = new WpfComboBox(this);
+                    #region Search Criteria
+                    this.mForEachTypeComboBox.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "UI__ForEachType_AutoID";
+                    this.mForEachTypeComboBox.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mForEachTypeComboBox;
+            }
+        }
+        
+        public FromIntellisenseTextbox FromIntellisenseTextbox
+        {
+            get
+            {
+                if ((this.mFromIntellisenseTextbox == null))
+                {
+                    this.mFromIntellisenseTextbox = new FromIntellisenseTextbox(this);
+                }
+                return this.mFromIntellisenseTextbox;
+            }
+        }
+        
+        public ToIntellisenseTextbox ToIntellisenseTextbox
+        {
+            get
+            {
+                if ((this.mToIntellisenseTextbox == null))
+                {
+                    this.mToIntellisenseTextbox = new ToIntellisenseTextbox(this);
+                }
+                return this.mToIntellisenseTextbox;
+            }
+        }
+        
+        public WpfCustom DropActivityHere
+        {
+            get
+            {
+                if ((this.mDropActivityHere == null))
+                {
+                    this.mDropActivityHere = new WpfCustom(this);
+                    #region Search Criteria
+                    this.mDropActivityHere.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.WorkflowItemPresenter";
+                    this.mDropActivityHere.SearchProperties[WpfControl.PropertyNames.AutomationId] = "UI__DropPoint_AutoID";
+                    this.mDropActivityHere.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mDropActivityHere;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfComboBox mForEachTypeComboBox;
+        
+        private FromIntellisenseTextbox mFromIntellisenseTextbox;
+        
+        private ToIntellisenseTextbox mToIntellisenseTextbox;
+        
+        private WpfCustom mDropActivityHere;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class FromIntellisenseTextbox : WpfComboBox
+    {
+        
+        public FromIntellisenseTextbox(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "UI__ForEachFromTextbox_AutoID";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfEdit Textbox
+        {
+            get
+            {
+                if ((this.mTextbox == null))
+                {
+                    this.mTextbox = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mTextbox.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "Text";
+                    this.mTextbox.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mTextbox;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfEdit mTextbox;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class ToIntellisenseTextbox : WpfComboBox
+    {
+        
+        public ToIntellisenseTextbox(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "UI__ForEachToTextbox_AutoID";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfEdit Textbox
+        {
+            get
+            {
+                if ((this.mTextbox == null))
+                {
+                    this.mTextbox = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mTextbox.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "Text";
+                    this.mTextbox.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mTextbox;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfEdit mTextbox;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SqlBulkInsert1 : WpfCustom
     {
         
@@ -24673,13 +24929,13 @@ namespace Warewolf.UITests
             }
         }
         
-        public SmallView3 SmallView
+        public SmallView4 SmallView
         {
             get
             {
                 if ((this.mSmallView == null))
                 {
-                    this.mSmallView = new SmallView3(this);
+                    this.mSmallView = new SmallView4(this);
                 }
                 return this.mSmallView;
             }
@@ -24691,7 +24947,7 @@ namespace Warewolf.UITests
         
         private WpfButton mDoneButton;
         
-        private SmallView3 mSmallView;
+        private SmallView4 mSmallView;
         #endregion
     }
     
@@ -24766,10 +25022,10 @@ namespace Warewolf.UITests
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class SmallView3 : WpfCustom
+    public class SmallView4 : WpfCustom
     {
         
-        public SmallView3(UITestControl searchLimitContainer) : 
+        public SmallView4(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -25000,13 +25256,13 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public SmallView4 SmallView
+        public SmallView5 SmallView
         {
             get
             {
                 if ((this.mSmallView == null))
                 {
-                    this.mSmallView = new SmallView4(this);
+                    this.mSmallView = new SmallView5(this);
                 }
                 return this.mSmallView;
             }
@@ -25075,7 +25331,7 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private SmallView4 mSmallView;
+        private SmallView5 mSmallView;
         
         private LargeView6 mLargeView;
         
@@ -25088,10 +25344,10 @@ namespace Warewolf.UITests
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class SmallView4 : WpfCustom
+    public class SmallView5 : WpfCustom
     {
         
-        public SmallView4(UITestControl searchLimitContainer) : 
+        public SmallView5(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -34032,6 +34288,43 @@ namespace Warewolf.UITests
         
         #region Fields
         private WpfButton mDoneButton;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIWarewolfDEV2ASHLEYLEWindow : WpfWindow
+    {
+        
+        public UIWarewolfDEV2ASHLEYLEWindow()
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfWindow.PropertyNames.Name] = "Warewolf (DEV2\\ASHLEY.LEWIS)";
+            this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfCustom UIDsfForEachActivityCustom
+        {
+            get
+            {
+                if ((this.mUIDsfForEachActivityCustom == null))
+                {
+                    this.mUIDsfForEachActivityCustom = new WpfCustom(this);
+                    #region Search Criteria
+                    this.mUIDsfForEachActivityCustom.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ForeachDesigner";
+                    this.mUIDsfForEachActivityCustom.SearchProperties[WpfControl.PropertyNames.AutomationId] = "For Each(ForeachDesigner)";
+                    this.mUIDsfForEachActivityCustom.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mUIDsfForEachActivityCustom;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfCustom mUIDsfForEachActivityCustom;
         #endregion
     }
 }
