@@ -78,7 +78,7 @@ namespace Dev2.Activities.Specs.TestFramework
             ResourceModel resourceModel;
             if (ScenarioContext.TryGetValue(workflowName, out resourceModel))
             {
-                var testFramework = new TestFrameworkViewModel(resourceModel);
+                var testFramework = new TestViewModel(resourceModel);
                 Assert.IsNotNull(testFramework);
                 Assert.IsNotNull(testFramework.ResourceModel);
                 ScenarioContext.Add("testFramework",testFramework);
@@ -92,16 +92,16 @@ namespace Dev2.Activities.Specs.TestFramework
         [Given(@"there are no tests")]
         public void GivenThereAreNoTests()
         {
-            TestFrameworkViewModel testFramework = GetTestFrameworkFromContext();
-            Assert.AreEqual(0,testFramework.Tests.Count);
+            TestViewModel test = GetTestFrameworkFromContext();
+            Assert.AreEqual(0,test.Tests.Count);
         }
 
 
         [When(@"I click New Test")]
         public void WhenIClickNewTest()
         {
-            TestFrameworkViewModel testFramework = GetTestFrameworkFromContext();
-            testFramework.CreateTestCommand.Execute(null);
+            TestViewModel test = GetTestFrameworkFromContext();
+            test.CreateTestCommand.Execute(null);
             
         }
 
@@ -109,32 +109,32 @@ namespace Dev2.Activities.Specs.TestFramework
         [Then(@"a new test is added")]
         public void ThenANewTestIsAdded()
         {
-            TestFrameworkViewModel testFramework = GetTestFrameworkFromContext();
-            Assert.AreNotEqual(0, testFramework.Tests.Count);
+            TestViewModel test = GetTestFrameworkFromContext();
+            Assert.AreNotEqual(0, test.Tests.Count);
         }
 
 
         [Then(@"test name starts with ""(.*)""")]
         public void ThenTestNameStartsWith(string testName)
         {
-            TestFrameworkViewModel testFramework = GetTestFrameworkFromContext();
-            Assert.AreEqual(testName,testFramework.SelectedTest.Name);
+            TestViewModel test = GetTestFrameworkFromContext();
+            Assert.AreEqual(testName,test.SelectedTest.TestName);
         }
 
         [Then(@"username is blank")]
         public void ThenUsernameIsBlank()
         {
-            TestFrameworkViewModel testFramework = GetTestFrameworkFromContext();
-            Assert.AreEqual("", testFramework.SelectedTest.Username);
+            TestViewModel test = GetTestFrameworkFromContext();
+            Assert.AreEqual("", test.SelectedTest.UserName);
         }
 
 
-        TestFrameworkViewModel GetTestFrameworkFromContext()
+        TestViewModel GetTestFrameworkFromContext()
         {
-            TestFrameworkViewModel testFramework;
-            if (ScenarioContext.TryGetValue("testFramework", out testFramework))
+            TestViewModel test;
+            if (ScenarioContext.TryGetValue("test", out test))
             {
-                return testFramework;
+                return test;
             }
             Assert.Fail("Test Framework ViewModel not found");
             return null;

@@ -192,8 +192,9 @@
     <Compile Include="SingleEnvironmentExplorerViewModel.cs" />
     <Compile Include="SourceBaseImpl.cs" />
     <Compile Include="SplashViewModel.cs" />
-    <Compile Include="TestFrameworkModel.cs" />
-    <Compile Include="TestFrameworkViewModel.cs" />
+    <Compile Include="TestCommandHandlerModel.cs" />
+    <Compile Include="TestModel.cs" />
+    <Compile Include="TestViewModel.cs" />
     <Compile Include="ToolBox\ToolBoxCategoryViewModel.cs" />
     <Compile Include="ToolBox\ToolboxViewModel.cs" />
     <Compile Include="ToolBox\ToolDescriptorViewModel.cs" />

@@ -310,7 +310,9 @@
     <Compile Include="ISplashViewModel.cs" />
     <Compile Include="IStudioUpdateManager.cs" />
     <Compile Include="ISuggestionProvider.cs" />
-    <Compile Include="ITestFrameworkModel.cs" />
+    <Compile Include="ITestCommandHandler.cs" />
+    <Compile Include="ITestModel.cs" />
+    <Compile Include="ITestViewModel.cs" />
     <Compile Include="IToolboxView.cs" />
     <Compile Include="IUpdatesHelp.cs" />
     <Compile Include="ISharepointListTo.cs" />

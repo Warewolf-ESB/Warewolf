@@ -15,7 +15,7 @@
              d:DesignHeight="300"
              d:DesignWidth="300"
              mc:Ignorable="d"
-             d:DataContext="{d:DesignInstance interfaces:ITestFrameworkViewModel}"
+             d:DataContext="{d:DesignInstance interfaces:ITestViewModel}"
              AutomationProperties.AutomationId="UI_TestFrameworkView_AutoID">
     <UserControl.Resources>
         <ResourceDictionary>
@@ -45,7 +45,7 @@
 
             <TextBlock >
                 <Hyperlink x:Name="RunAllTestsUrl" 
-                           Command="{Binding TestFrameworkCommandHandler.RunAllTestsInBrowserCommand}" 
+                           Command="{Binding RunAllTestsInBrowserCommand}" 
                            ToolTip="{x:Static languages:Core.TestsRunAllTestsInBrowserTooltip}"
                            Style="{StaticResource HyperLinkStyle}"
                            NavigateUri="{Binding RunAllTestsUrl,UpdateSourceTrigger=PropertyChanged}" >
@@ -70,7 +70,7 @@
                 </Grid.ColumnDefinitions>
 
                 <ListBox Grid.Column="0" Style="{StaticResource ListBoxStyle}" BorderThickness="1,0,1,1"
-                         ItemsSource="{Binding TestsList}" SelectedItem="{Binding SelectedTest}" Name="Tests">
+                         ItemsSource="{Binding Tests}" SelectedItem="{Binding SelectedTest}" Name="Tests">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                             <Grid>
@@ -124,7 +124,7 @@
                                             Grid.RowSpan="2" 
                                             VerticalAlignment="Stretch" 
                                             HorizontalAlignment="Right" 
-                                            Command="{Binding ElementName=Tests, Path=TestFrameworkCommandHandler.RunTestCommand }" 
+                                            Command="{Binding ElementName=Tests, Path=RunTestCommand }" 
                                             CommandParameter="{Binding .}" 
                                             ToolTip="{x:Static languages:Core.TestsRunSelectedTestTooltip}"
                                             Style="{StaticResource ButtonRunTestTransparentStyle}" >
@@ -141,7 +141,7 @@
                                             Grid.RowSpan="2" 
                                             VerticalAlignment="Stretch" 
                                             HorizontalAlignment="Right" 
-                                            Command="{Binding ElementName=Tests, Path=TestFrameworkCommandHandler.DeleteTestCommand }" 
+                                            Command="{Binding ElementName=Tests, Path=DeleteTestCommand }" 
                                             CommandParameter="{Binding .}" 
                                             ToolTip="{x:Static languages:Core.TestsDeleteSelectedTestTooltip}"
                                             Style="{StaticResource ButtonDeleteTestTransparentStyle}" >
@@ -192,7 +192,7 @@
 
                         <TextBlock Grid.Row="0">
                             <Hyperlink x:Name="RunSelectedTestUrl" 
-                                       Command="{Binding TestFrameworkCommandHandler.RunSelectedTestInBrowserCommand}" 
+                                       Command="{Binding TestCommandHandler.RunSelectedTestInBrowserCommand}" 
                                        ToolTip="{x:Static languages:Core.TestsRunSelectedTestInBrowserTooltip}"
                                        Style="{StaticResource HyperLinkStyle}"
                                        NavigateUri="{Binding RunSelectedTestUrl,UpdateSourceTrigger=PropertyChanged}" >
