@@ -2,14 +2,16 @@
 using System;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
+using Dev2;
 using Dev2.Common.Interfaces;
+using Dev2.Interfaces;
 using Dev2.Studio.Core.Interfaces;
 using Microsoft.Practices.Prism.Commands;
 using Microsoft.Practices.Prism.Mvvm;
 
 namespace Warewolf.Studio.ViewModels
 {
-    public class TestViewModel : BindableBase, ITestViewModel
+    public class ServiceTestViewModel : BindableBase, ITestViewModel
     {
 
         
@@ -18,14 +20,13 @@ namespace Warewolf.Studio.ViewModels
         private string _testPassingResult;
         private ObservableCollection<ITestModel> _tests;
 
-        public TestViewModel(IResourceModel resourceModel)
+        public ServiceTestViewModel(IResourceModel resourceModel)
         {
             if (resourceModel == null)
                 throw new ArgumentNullException(nameof(resourceModel));
             ResourceModel = resourceModel;
             TestCommandHandler = new TestCommandHandlerModel();
 
-            SaveCommand = new DelegateCommand(TestCommandHandler.Save, () => CanSave);
             DeleteTestCommand = new DelegateCommand(TestCommandHandler.DeleteTest, () => CanDeleteTest);
             DuplicateTestCommand = new DelegateCommand(TestCommandHandler.DuplicateTest, () => CanDuplicateTest);
             RunAllTestsInBrowserCommand = new DelegateCommand(TestCommandHandler.RunAllTestsInBrowser, () => CanRunAllTestsInBrowser);
@@ -55,6 +56,11 @@ namespace Warewolf.Studio.ViewModels
         public bool CanDuplicateTest { get; set; }
         public bool CanDeleteTest { get; set; }
         public bool CanSave { get; set; }
+        public bool HasChanged { get; set; }
+        public void Save()
+        {
+            throw new NotImplementedException();
+        }
 
         public IResourceModel ResourceModel { get; set; }
 
@@ -112,5 +118,20 @@ namespace Warewolf.Studio.ViewModels
         public ICommand RunSelectedTestCommand { get; set; }
         public ICommand StopTestCommand { get; set; }
         public ICommand CreateTestCommand { get; set; }
+        public string DisplayName { get; set; }
+
+        public void Dispose()
+        {            
+        }
+
+        public void UpdateHelpDescriptor(string helpText)
+        {
+            var mainViewModel = CustomContainer.Get<IMainViewModel>();
+            if (mainViewModel != null)
+            {
+                mainViewModel.HelpViewModel.UpdateHelpText(helpText);
+            }
+
+        }
     }
 }

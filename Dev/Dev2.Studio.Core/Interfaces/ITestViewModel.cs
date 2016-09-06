@@ -1,10 +1,12 @@
+using System;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Windows.Input;
 using Dev2.Common.Interfaces;
 
 namespace Dev2.Studio.Core.Interfaces
 {
-    public interface ITestViewModel
+    public interface ITestViewModel : IDisposable,INotifyPropertyChanged, IUpdatesHelp
     {
         ITestModel SelectedTest { get; set; }
         ITestCommandHandler TestCommandHandler { get; set; }
@@ -12,7 +14,6 @@ namespace Dev2.Studio.Core.Interfaces
         string TestPassingResult { get; set; }
         ObservableCollection<ITestModel> Tests  { get; set; }
 
-        ICommand SaveCommand { get; set; }
         ICommand DeleteTestCommand { get; set; }
         ICommand DuplicateTestCommand { get; set; }
         ICommand RunAllTestsInBrowserCommand { get; set; }
@@ -21,5 +22,9 @@ namespace Dev2.Studio.Core.Interfaces
         ICommand RunSelectedTestCommand { get; set; }
         ICommand StopTestCommand { get; set; }
         ICommand CreateTestCommand { get; set; }
+        string DisplayName { get; set; }
+        bool CanSave { get; set; }
+        bool HasChanged { get; set; }
+        void Save();
     }
 }

@@ -237,6 +237,24 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
+        public void TestCreateNewTestCommand()
+        {
+            //arrange
+            _target.ResourceType = "WorkflowService";
+            _target.ResourceId = Guid.NewGuid();
+            _target.IsService = true;
+            _target.CanCreateTest = true;
+            _serverMock.SetupGet(it => it.EnvironmentID).Returns(Guid.NewGuid());
+
+            //act
+            _target.CreateTestCommand.Execute(null);
+            Assert.IsTrue(_target.CreateTestCommand.CanExecute(null));
+
+            //assert
+            _shellViewModelMock.Verify(it => it.CreateTest(_target.ResourceId));
+        }
+
+        [TestMethod]
         public void TestNewSharepointSourceCommand()
         {
             //arrange

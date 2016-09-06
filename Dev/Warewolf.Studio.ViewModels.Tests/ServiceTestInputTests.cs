@@ -6,7 +6,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Warewolf.Studio.ViewModels.Tests
 {
     [TestClass]
-    public class TestInputTests
+    public class ServiceTestInputTests
     {
         [TestMethod]
         [Owner("Hagashen Naidu")]
@@ -18,7 +18,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
 
             //------------Execute Test---------------------------
-            new TestInput(null, "someValue");
+            new ServiceTestInput(null, "someValue");
             //------------Assert Results-------------------------
         } 
 
@@ -30,7 +30,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //------------Setup for test--------------------------
 
             //------------Execute Test---------------------------
-            var input = new TestInput("someVar", "someValue");
+            var input = new ServiceTestInput("someVar", "someValue");
             //------------Assert Results-------------------------
             Assert.AreEqual("someVar",input.Variable);
             Assert.AreEqual("someValue",input.Value);
@@ -43,7 +43,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void TestInput_Variable_WhenSet_ShouldFirePropertyChange()
         {
             //------------Setup for test--------------------------
-            var input = new TestInput("someVar", "someValue");
+            var input = new ServiceTestInput("someVar", "someValue");
             var _wasCalled = false;
             input.PropertyChanged += (sender, args) =>
               {
@@ -64,7 +64,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void TestInput_Value_WhenSet_ShouldFirePropertyChange()
         {
             //------------Setup for test--------------------------
-            var input = new TestInput("someVar", "someValue");
+            var input = new ServiceTestInput("someVar", "someValue");
             var _wasCalled = false;
             input.PropertyChanged += (sender, args) =>
             {
@@ -85,7 +85,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void TestInput_EmptyIsNull_WhenSet_ShouldFirePropertyChange()
         {
             //------------Setup for test--------------------------
-            var input = new TestInput("someVar", "someValue");
+            var input = new ServiceTestInput("someVar", "someValue");
             var _wasCalled = false;
             input.PropertyChanged += (sender, args) =>
             {

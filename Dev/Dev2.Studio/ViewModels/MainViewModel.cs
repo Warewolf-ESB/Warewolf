@@ -632,7 +632,18 @@ namespace Dev2.Studio.ViewModels
 
         public void CreateTest(Guid resourceId)
         {
-            
+            var environmentModel = EnvironmentRepository.Get(ActiveEnvironment.ID);
+            if (environmentModel != null)
+            {
+                var contextualResourceModel = environmentModel.ResourceRepository.LoadContextualResourceModel(resourceId);
+
+                var workSurfaceKey = WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.ServiceTestsViewer);
+                workSurfaceKey.EnvironmentID = contextualResourceModel.Environment.ID;
+                workSurfaceKey.ResourceID = contextualResourceModel.ID;
+                workSurfaceKey.ServerID = contextualResourceModel.ServerID;
+
+                _worksurfaceContextManager.ViewTestsForService(contextualResourceModel, workSurfaceKey);
+            }
         }
 
         public void CloseResource(Guid resourceId, Guid environmentId)

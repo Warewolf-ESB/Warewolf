@@ -9,7 +9,7 @@ using Moq;
 namespace Warewolf.Studio.ViewModels.Tests
 {
     [TestClass]
-    public class TestCommandHandlerModelTests
+    public class ServiceTestCommandHandlerModelTests
     {
         [TestMethod]
         [Owner("Hagashen Naidu")]

@@ -12,6 +12,5 @@ namespace Dev2.Studio.Core.Interfaces
         void RunSelectedTest();
         void DuplicateTest();
         void DeleteTest();
-        void Save();
     }
 }

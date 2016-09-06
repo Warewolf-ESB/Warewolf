@@ -8,15 +8,16 @@ using Dev2.Studio.Core.Interfaces;
 using Dev2.UI;
 using Infragistics.Controls.Grids;
 using Infragistics.Controls.Grids.Primitives;
+using Microsoft.Practices.Prism.Mvvm;
 
 namespace Warewolf.Studio.Views
 {
     /// <summary>
-    /// Interaction logic for TestFrameworkView.xaml
+    /// Interaction logic for ServiceTestView.xaml
     /// </summary>
-    public partial class TestFrameworkView : UserControl
+    public partial class ServiceTestView : UserControl,IView
     {
-        public TestFrameworkView()
+        public ServiceTestView()
         {
             InitializeComponent();
         }
