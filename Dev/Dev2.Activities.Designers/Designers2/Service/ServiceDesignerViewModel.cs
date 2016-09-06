@@ -214,7 +214,7 @@ namespace Dev2.Activities.Designers2.Service
 
         private bool HasNoPermission()
         {
-            var hasNoPermission = _environment.AuthorizationService != null && _environment.AuthorizationService.GetResourcePermissions(ResourceID) == Permissions.None;
+            var hasNoPermission = ResourceModel!=null && ResourceModel.UserPermissions == Permissions.None;
             return hasNoPermission;
         }
 

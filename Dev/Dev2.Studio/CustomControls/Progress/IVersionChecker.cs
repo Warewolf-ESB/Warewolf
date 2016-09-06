@@ -19,7 +19,6 @@ namespace Dev2.Studio.Core.Helpers
     {
         Version Latest { get; }
         Version Current { get; }
-        string StartPageUri { get; }
         string CommunityPageUri { get;}
 
         Task<bool> GetNewerVersionAsync();

@@ -6809,6 +6809,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Unavailable..
+        /// </summary>
+        public static string ServerVersionUnavailable {
+            get {
+                return ResourceManager.GetString("ServerVersionUnavailable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Source was not found. This service will not execute..
         /// </summary>
         public static string ServiceDesignerSourceNotFound {

@@ -70,15 +70,6 @@ namespace Dev2.Studio.Core.Helpers
 
         #region StartPageUri
 
-        public string StartPageUri
-        {
-            get
-            {
-                Check();
-                return StringResources.Warewolf_Homepage_Start;
-            }
-        }
-       
         public string CommunityPageUri
         {
             get

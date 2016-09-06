@@ -524,15 +524,6 @@ namespace Dev2.Studio.Core {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to http://warewolf.io/start.html.
-        /// </summary>
-        public static string Warewolf_Homepage_Start {
-            get {
-                return ResourceManager.GetString("Warewolf_Homepage_Start", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
         ///&lt;xamDockManager version=&quot;12.1.20121.2107&quot;&gt;
         ///  &lt;contentPanes&gt;
