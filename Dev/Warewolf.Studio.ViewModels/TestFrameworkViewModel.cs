@@ -1,6 +1,8 @@
 ﻿
-using System.Collections.Generic;
+using System;
+using System.Windows.Input;
 using Dev2.Common.Interfaces;
+using Dev2.Studio.Core.Interfaces;
 using Microsoft.Practices.Prism.Commands;
 using Microsoft.Practices.Prism.Mvvm;
 
@@ -13,11 +15,15 @@ namespace Warewolf.Studio.ViewModels
         private bool _canStopTest;
         private ITestFrameworkModel _testFrameworkModel;
 
-        public TestFrameworkViewModel(ITestFrameworkModel frameworkModel)
+        public TestFrameworkViewModel(IResourceModel resourceModel)
             : this()
         {
-            TestFrameworkModel = frameworkModel;
+            if(resourceModel == null)
+                throw new ArgumentNullException(nameof(resourceModel));
+            ResourceModel = resourceModel;
         }
+
+        public IResourceModel ResourceModel { get; set; }
 
         private TestFrameworkViewModel()
         {
@@ -96,6 +102,10 @@ namespace Warewolf.Studio.ViewModels
 
         public bool CanRunTest { get; set; }
 
+        private void RunTestAction()
+        {
+        }
+
         public bool CanDuplicateTest { get; set; }
 
         private void DuplicateTestAction()
@@ -136,18 +146,19 @@ namespace Warewolf.Studio.ViewModels
 
 
 
-        public DelegateCommand RenameCommand { get; set; }
-        public DelegateCommand SaveCommand { get; set; }
-        public DelegateCommand EnableTestCommand { get; set; }
-        public DelegateCommand DisableTestCommand { get; set; }
-        public DelegateCommand DeleteTestCommand { get; set; }
-        public DelegateCommand DuplicateTestCommand { get; set; }
-        public DelegateCommand RunAllTestsInBrowserCommand { get; set; }
-        public DelegateCommand RunAllTestsCommand { get; set; }
-        public DelegateCommand RunSelectedTestInBrowserCommand { get; set; }
-        public DelegateCommand RunSelectedTestCommand { get; set; }
-        public DelegateCommand StopTestCommand { get; set; }
-        public DelegateCommand CreateTestCommand { get; set; }
+        public ICommand RenameCommand { get; set; }
+        public ICommand SaveCommand { get; set; }
+        public ICommand EnableTestCommand { get; set; }
+        public ICommand DisableTestCommand { get; set; }
+        public ICommand DeleteTestCommand { get; set; }
+        public ICommand DuplicateTestCommand { get; set; }
+        public ICommand RunTestCommand { get; set; }
+        public ICommand RunAllTestsInBrowserCommand { get; set; }
+        public ICommand RunAllTestsCommand { get; set; }
+        public ICommand RunSelectedTestInBrowserCommand { get; set; }
+        public ICommand RunSelectedTestCommand { get; set; }
+        public ICommand StopTestCommand { get; set; }
+        public ICommand CreateTestCommand { get; set; }
 
         #endregion
 
@@ -163,49 +174,6 @@ namespace Warewolf.Studio.ViewModels
                 OnPropertyChanged(() => TestFrameworkModel);
             }
         }
-        private string _runAllTestsUrl;
-        public string RunAllTestsUrl
-        {
-            get
-            {
-                return _runAllTestsUrl;
-            }
-             set
-            {
-                _runAllTestsUrl = value;
-                OnPropertyChanged(()=> RunAllTestsUrl);
-            }
-        }
-        private string _testPassingResult;
-        public string TestPassingResult
-        {
-            get
-            {
-                return _testPassingResult;
-            }
-            set
-            {
-                _testPassingResult = value;
-                OnPropertyChanged(() => TestPassingResult);
-
-            }
-        }
-
-        private List<string> _testList; 
-        public List<string> TestsList
-        {
-            get
-            {
-                return _testList;
-            }
-
-            set
-            {
-                _testList = value;
-                OnPropertyChanged(() => TestsList);
-
-            }
-        }
-
+        public ICommand WebRunTestCommand { get; set; }
     }
 }
