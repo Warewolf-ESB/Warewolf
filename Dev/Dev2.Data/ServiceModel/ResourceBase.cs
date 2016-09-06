@@ -154,8 +154,6 @@ namespace Dev2.Runtime.ServiceModel.Data
         public abstract bool IsServer { get; }
         public abstract bool IsResourceVersion { get; }
 
-        public string ResourcePath { get; set; }
-
         public string GetResourcePath(Guid workspaceID)
         {
             if (FilePath == null && IsReservedService)
@@ -164,19 +162,8 @@ namespace Dev2.Runtime.ServiceModel.Data
             }
             return FilePath?.Replace(EnvironmentVariables.GetWorkspacePath(workspaceID)+"\\","").Replace(".xml","") ?? "";
         }
-        public string GetSavePath(Guid workspaceID)
-        {
-            var resPath = GetResourcePath(workspaceID);
 
-            var savePath = resPath;
-            var resourceNameIndex = resPath.LastIndexOf(ResourceName, StringComparison.InvariantCultureIgnoreCase);
-            if (resourceNameIndex >= 0)
-            {
-                savePath = resPath.Substring(0, resourceNameIndex);
-            }
-            return savePath;
-        }
-    public IVersionInfo VersionInfo
+        public IVersionInfo VersionInfo
         {
             get
             {
