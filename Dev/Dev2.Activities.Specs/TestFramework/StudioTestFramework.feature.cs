@@ -117,7 +117,7 @@ this.FeatureBackground();
                         "Variable Name",
                         "Value"});
             table3.AddRow(new string[] {
-                        "[[a]]",
+                        "a",
                         ""});
 #line 23
  testRunner.And("inputs as", ((string)(null)), table3, "And ");
@@ -126,7 +126,7 @@ this.FeatureBackground();
                         "Variable Name",
                         "Value"});
             table4.AddRow(new string[] {
-                        "[[outputValue]]",
+                        "outputValue",
                         ""});
 #line 26
  testRunner.And("outputs as", ((string)(null)), table4, "And ");

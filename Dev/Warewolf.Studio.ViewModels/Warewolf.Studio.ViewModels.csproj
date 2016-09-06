@@ -195,6 +195,7 @@
     <Compile Include="TestCommandHandlerModel.cs" />
     <Compile Include="TestInput.cs" />
     <Compile Include="TestModel.cs" />
+    <Compile Include="TestOutput.cs" />
     <Compile Include="TestViewModel.cs" />
     <Compile Include="ToolBox\ToolBoxCategoryViewModel.cs" />
     <Compile Include="ToolBox\ToolboxViewModel.cs" />

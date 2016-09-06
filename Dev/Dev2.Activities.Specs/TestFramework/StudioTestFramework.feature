@@ -22,10 +22,10 @@ Scenario: Create New Test
 	And password is blank
 	And inputs as
 	| Variable Name | Value |
-	| [[a]]         |       |
+	| a             |       |
 	And outputs as
-	| Variable Name   | Value |
-	| [[outputValue]] |       |
+	| Variable Name | Value |
+	| outputValue   |       |
 	And save is disabled
 	And test status is pending
 	And test is enabled
