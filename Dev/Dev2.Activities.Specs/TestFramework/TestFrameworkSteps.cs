@@ -174,6 +174,29 @@ namespace Dev2.Activities.Specs.TestFramework
             }
         }
 
+        [Then(@"save is disabled")]
+        public void ThenSaveIsDisabled()
+        {
+            TestViewModel test = GetTestFrameworkFromContext();
+            Assert.IsFalse(test.CanSave);
+            Assert.IsFalse(test.SaveCommand.CanExecute(null));
+        }
+
+        [Then(@"test status is pending")]
+        public void ThenTestStatusIsPending()
+        {
+            TestViewModel test = GetTestFrameworkFromContext();
+            Assert.IsTrue(test.SelectedTest.TestPending);
+            
+        }
+
+        [Then(@"test is enabled")]
+        public void ThenTestIsEnabled()
+        {
+            TestViewModel test = GetTestFrameworkFromContext();
+            Assert.IsTrue(test.SelectedTest.Enabled);
+        }
+
 
         TestViewModel GetTestFrameworkFromContext()
         {

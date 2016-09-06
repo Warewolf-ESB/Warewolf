@@ -18,6 +18,7 @@ namespace Dev2.Common.Interfaces
         bool TestFailing { get; set; }
         bool TestInvalid { get; set; }
         bool TestPending { get; set; }
+        bool Enabled { get; set; }
     }
 
     public interface ITestInput
