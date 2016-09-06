@@ -154,6 +154,7 @@ namespace Warewolf.Studio.ViewModels
         private bool _isService;
         private bool _isFolder;
         private bool _canDuplicate;
+        private bool _canCreateTest;
 
         public ExplorerItemViewModel(IServer server, IExplorerTreeItem parent, Action<IExplorerItemViewModel> selectAction, IShellViewModel shellViewModel, IPopupController popupController)
         {
@@ -175,6 +176,7 @@ namespace Warewolf.Studio.ViewModels
             AllowResourceCheck = false;
             IsResourceChecked = false;
             CanDuplicate = false;
+            CanCreateTest = false;
             IsVisible = true;
             IsVersion = false;
             CanShowServerVersion = false;
@@ -266,6 +268,7 @@ namespace Warewolf.Studio.ViewModels
             ShowVersionHistory = new DelegateCommand(() => AreVersionsVisible = !AreVersionsVisible);
             DeleteCommand = new DelegateCommand(Delete);
             DuplicateCommand = new DelegateCommand(DuplicateResource, () => CanDuplicate);
+            CreateTestCommand = new DelegateCommand(CreateTest, () => CanCreateTest);
             OpenVersionCommand = new DelegateCommand(OpenVersion);
             VersionHeader = "Show Version History";
             Expand = new DelegateCommand<int?>(clickCount =>
@@ -288,6 +291,11 @@ namespace Warewolf.Studio.ViewModels
         private void DuplicateResource()
         {
             _explorerItemViewModelCommandController.DuplicateResource(this);
+        }
+
+        private void CreateTest()
+        {
+            _explorerItemViewModelCommandController.CreateTest(ResourceId);
         }
 
         public void ShowDependencies()
@@ -546,6 +554,7 @@ namespace Warewolf.Studio.ViewModels
             CanRename = true;
             CanEdit = true;
             CanDuplicate = true;
+            CanCreateTest = true;
             CanDelete = true;
             CanCreateFolder = true;
             CanDeploy = true;
@@ -564,6 +573,7 @@ namespace Warewolf.Studio.ViewModels
             CanRename = true;
             CanView = true;
             CanDuplicate = true;
+            CanCreateTest = true;
             CanDelete = true;
             CanCreateFolder = true;
             CanCreateWorkflowService = true;
@@ -591,6 +601,7 @@ namespace Warewolf.Studio.ViewModels
         public ICommand CreateFolderCommand { get; set; }
         public ICommand DeleteCommand { get; set; }
         public ICommand DuplicateCommand { get; set; }
+        public ICommand CreateTestCommand { get; set; }
         public ICommand ShowVersionHistory { get; set; }
         public ICommand RollbackCommand { get; set; }
         public bool IsRenaming
@@ -934,6 +945,18 @@ namespace Warewolf.Studio.ViewModels
             {
                 _canDuplicate = value;
                 OnPropertyChanged(() => CanDuplicate);
+            }
+        }
+        public bool CanCreateTest
+        {
+            get
+            {
+                return _canCreateTest && IsService;
+            }
+            set
+            {
+                _canCreateTest = value;
+                OnPropertyChanged(() => CanCreateTest);
             }
         }
         public bool CanDelete

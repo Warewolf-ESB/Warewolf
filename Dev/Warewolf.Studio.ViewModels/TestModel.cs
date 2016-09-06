@@ -13,6 +13,9 @@ namespace Warewolf.Studio.ViewModels
         private bool _testFailing;
         private bool _testPending;
         private bool _testInvalid;
+        private string _password;
+        private List<ITestInput> _inputs;
+        private List<ITestOutput> _outputs;
 
         #region Implementation of ITestModel
 
@@ -49,8 +52,27 @@ namespace Warewolf.Studio.ViewModels
             }
         }
         public DateTime LastRunDate { get; set; }
-        public List<ITestInput> Inputs { get; set; }
-        public List<ITestOutput> Outputs { get; set; }
+
+        public List<ITestInput> Inputs
+        {
+            get { return _inputs; }
+            set
+            {
+                _inputs = value; 
+                OnPropertyChanged(() => Inputs);
+            }
+        }
+
+        public List<ITestOutput> Outputs
+        {
+            get { return _outputs; }
+            set
+            {
+                _outputs = value;
+                OnPropertyChanged(() => Outputs);
+            }
+        }
+
         public bool Error { get; set; }
         public bool IsNewTest { get; set; }
         public bool IsTestSelected { get; set; }
