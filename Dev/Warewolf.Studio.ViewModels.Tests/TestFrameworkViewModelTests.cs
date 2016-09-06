@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Dev2.Studio.Core.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -125,7 +126,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //---------------Test Result -----------------------
             Assert.IsFalse(vm.DuplicateTestCommand.CanExecute(null));
         }
-       
+
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
@@ -203,7 +204,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //---------------Test Result -----------------------
             Assert.IsFalse(vm.RunSelectedTestCommand.CanExecute(null));
         }
-      
+
 
 
         [TestMethod]
@@ -246,7 +247,89 @@ namespace Warewolf.Studio.ViewModels.Tests
             //------------Execute Test---------------------------
             testFrameworkViewModel.CreateTestCommand.Execute(null);
             //------------Assert Results-------------------------
-            Assert.AreEqual(1,testFrameworkViewModel.Tests.Count);
+            Assert.AreEqual(1, testFrameworkViewModel.Tests.Count);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("TestFrameworkViewModel_CreateTestCommand")]
+        public void TestFrameworkViewModel_CreateTestCommand_Execute_ShouldAddANewTestWithDefaultName()
+        {
+            //------------Setup for test--------------------------
+            var testFrameworkViewModel = new TestFrameworkViewModel(CreateResourceModel());
+            //------------Assert Preconditions-------------------
+            Assert.IsNull(testFrameworkViewModel.Tests);
+            //------------Execute Test---------------------------
+            testFrameworkViewModel.CreateTestCommand.Execute(null);
+            //------------Assert Results-------------------------
+            var test = testFrameworkViewModel.Tests[0];
+            Assert.IsNotNull(test);
+            Assert.AreEqual("Test 1", test.Name);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("TestFrameworkViewModel_CreateTestCommand")]
+        public void TestFrameworkViewModel_CreateTestCommand_Executed_ShouldSetSelectedTestToNewlyCreatedTest()
+        {
+            //------------Setup for test--------------------------
+            var testFrameworkViewModel = new TestFrameworkViewModel(CreateResourceModel());
+            var testModel = new TestModel { Name = "Test 2" };
+            testFrameworkViewModel.Tests = new List<TestModel> { testModel };
+            testFrameworkViewModel.SelectedTest = testModel;
+            //------------Assert Preconditions-------------------
+            Assert.IsNotNull(testFrameworkViewModel.Tests);
+            Assert.IsNotNull(testFrameworkViewModel.SelectedTest);
+            Assert.AreEqual(1, testFrameworkViewModel.Tests.Count);
+            Assert.AreEqual(testModel, testFrameworkViewModel.SelectedTest);
+            //------------Execute Test---------------------------
+            testFrameworkViewModel.CreateTestCommand.Execute(null);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(2, testFrameworkViewModel.Tests.Count);
+            Assert.AreNotEqual(testModel, testFrameworkViewModel.SelectedTest);
+            Assert.AreEqual(testFrameworkViewModel.Tests[1], testFrameworkViewModel.SelectedTest);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("TestFrameworkViewModel_Tests")]
+        public void TestFrameworkViewModel_Tests_SetProperty_ShouldFireOnPropertyChanged()
+        {
+            //------------Setup for test--------------------------
+            var testFrameworkViewModel = new TestFrameworkViewModel(CreateResourceModel());
+            var _wasCalled = false;
+            testFrameworkViewModel.PropertyChanged += (sender, args) =>
+              {
+                  if (args.PropertyName == "Tests")
+                  {
+                      _wasCalled = true;
+                  }
+              };
+            //------------Execute Test---------------------------
+            testFrameworkViewModel.Tests = new List<TestModel>();
+            //------------Assert Results-------------------------
+            Assert.IsTrue(_wasCalled);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("TestFrameworkViewModel_Tests")]
+        public void TestFrameworkViewModel_SelectedTest_SetProperty_ShouldFireOnPropertyChanged()
+        {
+            //------------Setup for test--------------------------
+            var testFrameworkViewModel = new TestFrameworkViewModel(CreateResourceModel());
+            var _wasCalled = false;
+            testFrameworkViewModel.PropertyChanged += (sender, args) =>
+              {
+                  if (args.PropertyName == "SelectedTest")
+                  {
+                      _wasCalled = true;
+                  }
+              };
+            //------------Execute Test---------------------------
+            testFrameworkViewModel.SelectedTest = new TestModel();
+            //------------Assert Results-------------------------
+            Assert.IsTrue(_wasCalled);
         }
     }
 }
