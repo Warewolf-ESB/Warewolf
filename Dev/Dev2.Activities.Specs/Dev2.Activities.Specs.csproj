@@ -52,6 +52,12 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="TestFramework\StudioTestFramework.feature.cs">
+      <DependentUpon>StudioTestFramework.feature</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="TestFramework\TestFrameworkSteps.cs" />
     <Reference Include="AeroWizard, Version=2.1.7.0, Culture=neutral, PublicKeyToken=915e74f5d64b8f37, processorArchitecture=MSIL">
       <HintPath>..\packages\AeroWizard.2.1.7\lib\net40\AeroWizard.dll</HintPath>
       <Private>True</Private>
@@ -258,6 +264,10 @@
     <None Include="TestFramework\ServertestFramework.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>ServertestFramework.feature.cs</LastGenOutput>
+    </None>
+    <None Include="TestFramework\StudioTestFramework.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>StudioTestFramework.feature.cs</LastGenOutput>
     </None>
   </ItemGroup>
   <ItemGroup>
