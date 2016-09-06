@@ -1,4 +1,5 @@
 ﻿
+using System.Collections.Generic;
 using Dev2.Common.Interfaces;
 using Microsoft.Practices.Prism.Commands;
 using Microsoft.Practices.Prism.Mvvm;
@@ -95,10 +96,6 @@ namespace Warewolf.Studio.ViewModels
 
         public bool CanRunTest { get; set; }
 
-        private void RunTestAction()
-        {
-        }
-
         public bool CanDuplicateTest { get; set; }
 
         private void DuplicateTestAction()
@@ -145,7 +142,6 @@ namespace Warewolf.Studio.ViewModels
         public DelegateCommand DisableTestCommand { get; set; }
         public DelegateCommand DeleteTestCommand { get; set; }
         public DelegateCommand DuplicateTestCommand { get; set; }
-        public DelegateCommand RunTestCommand { get; set; }
         public DelegateCommand RunAllTestsInBrowserCommand { get; set; }
         public DelegateCommand RunAllTestsCommand { get; set; }
         public DelegateCommand RunSelectedTestInBrowserCommand { get; set; }
@@ -165,6 +161,49 @@ namespace Warewolf.Studio.ViewModels
             {
                 _testFrameworkModel = value;
                 OnPropertyChanged(() => TestFrameworkModel);
+            }
+        }
+        private string _runAllTestsUrl;
+        public string RunAllTestsUrl
+        {
+            get
+            {
+                return _runAllTestsUrl;
+            }
+             set
+            {
+                _runAllTestsUrl = value;
+                OnPropertyChanged(()=> RunAllTestsUrl);
+            }
+        }
+        private string _testPassingResult;
+        public string TestPassingResult
+        {
+            get
+            {
+                return _testPassingResult;
+            }
+            set
+            {
+                _testPassingResult = value;
+                OnPropertyChanged(() => TestPassingResult);
+
+            }
+        }
+
+        private List<string> _testList; 
+        public List<string> TestsList
+        {
+            get
+            {
+                return _testList;
+            }
+
+            set
+            {
+                _testList = value;
+                OnPropertyChanged(() => TestsList);
+
             }
         }
 
