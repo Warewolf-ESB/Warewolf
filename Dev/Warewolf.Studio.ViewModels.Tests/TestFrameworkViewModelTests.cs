@@ -28,7 +28,6 @@ namespace Warewolf.Studio.ViewModels.Tests
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("TestFrameworkViewModel_Constructor")]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void TestFrameworkViewModel_Constructor_NotNullResourceModel_ShouldSetResourceModel()
         {
             //------------Setup for test--------------------------
@@ -126,35 +125,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //---------------Test Result -----------------------
             Assert.IsFalse(vm.DuplicateTestCommand.CanExecute(null));
         }
-
-        [TestMethod]
-        [Owner("Nkosinathi Sangweni")]
-        public void OnCreation_GivenIsNew_ShouldHaveRunTestCommand()
-        {
-            //---------------Set up test pack-------------------
-            var vm = new TestFrameworkViewModel(CreateResourceModel());
-            //---------------Assert Precondition----------------
-            Assert.IsNotNull(vm);
-            //---------------Execute Test ----------------------
-            Assert.IsNotNull(vm.RunTestCommand);
-            //---------------Test Result -----------------------
-            Assert.IsFalse(vm.RunTestCommand.CanExecute(null));
-        }
-        
-
-        [TestMethod]
-        [Owner("Nkosinathi Sangweni")]
-        public void OnCreation_GivenIsNew_ShouldHaveWebRunTestCommand()
-        {
-            //---------------Set up test pack-------------------
-            var vm = new TestFrameworkViewModel(CreateResourceModel());
-            //---------------Assert Precondition----------------
-            Assert.IsNotNull(vm);
-            //---------------Execute Test ----------------------
-            Assert.IsNotNull(vm.WebRunTestCommand);
-            //---------------Test Result -----------------------
-            Assert.IsFalse(vm.WebRunTestCommand.CanExecute(null));
-        }
+       
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
@@ -202,6 +173,65 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsNotNull(vm.CreateTestCommand);
             //---------------Test Result -----------------------
             Assert.IsTrue(vm.CreateTestCommand.CanExecute(null));
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void OnCreation_GivenIsNew_ShouldHaveRunAllTestsCommand()
+        {
+            //---------------Set up test pack-------------------
+            var vm = new TestFrameworkViewModel(CreateResourceModel());
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(vm);
+            //---------------Execute Test ----------------------
+            Assert.IsNotNull(vm.RunAllTestsCommand);
+            //---------------Test Result -----------------------
+            Assert.IsFalse(vm.RunAllTestsCommand.CanExecute(null));
+        }
+
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void OnCreation_GivenIsNew_ShouldHaveRunSelectedTestCommand()
+        {
+            //---------------Set up test pack-------------------
+            var vm = new TestFrameworkViewModel(CreateResourceModel());
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(vm);
+            //---------------Execute Test ----------------------
+            Assert.IsNotNull(vm.RunSelectedTestCommand);
+            //---------------Test Result -----------------------
+            Assert.IsFalse(vm.RunSelectedTestCommand.CanExecute(null));
+        }
+      
+
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void OnCreation_GivenIsNew_ShouldHaveRunAllTestsInBrowserCommand()
+        {
+            //---------------Set up test pack-------------------
+            var vm = new TestFrameworkViewModel(CreateResourceModel());
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(vm);
+            //---------------Execute Test ----------------------
+            Assert.IsNotNull(vm.RunAllTestsInBrowserCommand);
+            //---------------Test Result -----------------------
+            Assert.IsFalse(vm.RunAllTestsInBrowserCommand.CanExecute(null));
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void OnCreation_GivenIsNew_ShouldHaveRunSelectedTestInBrowserCommand()
+        {
+            //---------------Set up test pack-------------------
+            var vm = new TestFrameworkViewModel(CreateResourceModel());
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(vm);
+            //---------------Execute Test ----------------------
+            Assert.IsNotNull(vm.RunSelectedTestInBrowserCommand);
+            //---------------Test Result -----------------------
+            Assert.IsFalse(vm.RunSelectedTestInBrowserCommand.CanExecute(null));
         }
     }
 }
