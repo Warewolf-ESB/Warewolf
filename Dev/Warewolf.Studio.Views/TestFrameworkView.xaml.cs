@@ -5,6 +5,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using Dev2.Common.Interfaces;
+using Dev2.Studio.Core.Interfaces;
 using Dev2.UI;
 using Infragistics.Controls.Grids;
 using Infragistics.Controls.Grids.Primitives;
