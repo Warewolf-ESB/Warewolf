@@ -15,6 +15,8 @@ namespace Warewolf.Studio.ViewModels
         private bool _canCreateTest;
         private bool _canStopTest;
         private ITestFrameworkModel _testFrameworkModel;
+        private TestModel _selectedTest;
+        private List<TestModel> _tests;
 
         public TestFrameworkViewModel(IResourceModel resourceModel)
             : this()
@@ -63,7 +65,12 @@ namespace Warewolf.Studio.ViewModels
             {
                 Tests = new List<TestModel>();
             }
-            Tests.Add(new TestModel());
+            var testModel = new TestModel
+            {
+                Name = "Test 1"
+            };
+            Tests.Add(testModel);
+            SelectedTest = testModel;
         }
 
         public bool CanStopTest
@@ -180,12 +187,59 @@ namespace Warewolf.Studio.ViewModels
             }
         }
         public ICommand WebRunTestCommand { get; set; }
-        public TestModel SelectedTest { get; set; }
-        public List<TestModel> Tests { get; set; }
+        public TestModel SelectedTest
+        {
+            get
+            {
+                return _selectedTest;
+            }
+            set
+            {
+                _selectedTest = value;
+                OnPropertyChanged(()=>SelectedTest);
+            }
+        }
+        public List<TestModel> Tests
+        {
+            get
+            {
+                return _tests;
+            }
+            set
+            {
+                _tests = value;
+                OnPropertyChanged(() => Tests);
+            }
+        }
     }
 
-    public class TestModel
+    public class TestModel : BindableBase
     {
-        public string Name { get; set; }
+        private string _name;
+        private string _username;
+        public string Name
+        {
+            get
+            {
+                return _name;
+            }
+            set
+            {
+                _name = value;
+                OnPropertyChanged(() => Name);
+            }
+        }
+        public string Username
+        {
+            get
+            {
+                return _username;
+            }
+            set
+            {
+                _username = value;
+                OnPropertyChanged(() => Username);
+            }
+        }
     }
 }

@@ -121,6 +121,14 @@ namespace Dev2.Activities.Specs.TestFramework
             Assert.AreEqual(testName,testFramework.SelectedTest.Name);
         }
 
+        [Then(@"username is blank")]
+        public void ThenUsernameIsBlank()
+        {
+            TestFrameworkViewModel testFramework = GetTestFrameworkFromContext();
+            Assert.AreEqual("", testFramework.SelectedTest.Username);
+        }
+
+
         TestFrameworkViewModel GetTestFrameworkFromContext()
         {
             TestFrameworkViewModel testFramework;
