@@ -151,6 +151,21 @@ namespace Dev2.Activities.Specs.TestFramework
 
         }
 
+        [Then(@"outputs as")]
+        public void ThenOutputsAs(Table table)
+        {
+            TestViewModel test = GetTestFrameworkFromContext();
+            var outputs = test.SelectedTest.OutPuts;
+            Assert.AreNotEqual(0, outputs.Count);
+            var i = 0;
+            foreach (var tableRow in table.Rows)
+            {
+                Assert.AreEqual(tableRow["Variable Name"], outputs[i].Variable);
+                Assert.AreEqual(tableRow["Value"], outputs[i].Value);
+                i++;
+            }
+        }
+
 
         TestViewModel GetTestFrameworkFromContext()
         {

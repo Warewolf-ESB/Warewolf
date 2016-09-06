@@ -317,12 +317,41 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual(null, test.Inputs[0].Value);
         }
 
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("TestFrameworkViewModel_CreateTestCommand")]
+        public void TestFrameworkViewModel_CreateTestCommand_Execute_ShouldAddOutputsFromResourceModel()
+        {
+            //------------Setup for test--------------------------
+            var testFrameworkViewModel = new TestViewModel(CreateResourceModelWithSingleScalarOutput());
+            //------------Assert Preconditions-------------------
+            //------------Execute Test---------------------------
+            testFrameworkViewModel.CreateTestCommand.Execute(null);
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(testFrameworkViewModel.Tests);
+            var test = testFrameworkViewModel.Tests[0];
+            Assert.IsNotNull(test);
+            Assert.AreEqual(1, test.OutPuts.Count);
+            Assert.AreEqual("msg", test.OutPuts[0].Variable);
+            Assert.AreEqual(null, test.OutPuts[0].Value);
+        }
+
         private IResourceModel CreateResourceModelWithSingleScalarInput()
         {
             var resourceModel = CreateResourceModel();
             var dataListViewModel = new DataListViewModel();
             dataListViewModel.InitializeDataListViewModel(resourceModel);
             dataListViewModel.ScalarCollection.Add(new ScalarItemModel("a", enDev2ColumnArgumentDirection.Input));
+            dataListViewModel.WriteToResourceModel();
+            return resourceModel;
+        }
+
+        private IResourceModel CreateResourceModelWithSingleScalarOutput()
+        {
+            var resourceModel = CreateResourceModel();
+            var dataListViewModel = new DataListViewModel();
+            dataListViewModel.InitializeDataListViewModel(resourceModel);
+            dataListViewModel.ScalarCollection.Add(new ScalarItemModel("msg", enDev2ColumnArgumentDirection.Output));
             dataListViewModel.WriteToResourceModel();
             return resourceModel;
         }

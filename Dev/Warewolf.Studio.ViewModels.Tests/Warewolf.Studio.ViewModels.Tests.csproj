@@ -154,6 +154,7 @@
     <Compile Include="TestFrameworkViewModelTests.cs" />
     <Compile Include="TestInputTests.cs" />
     <Compile Include="TestModelTests.cs" />
+    <Compile Include="TestOutputTests.cs" />
     <Compile Include="ToolBox\ToolBoxCategoryViewModelTests.cs" />
     <Compile Include="ToolBox\ToolboxViewModelTests.cs" />
     <Compile Include="ToolBox\ToolDescriptorViewModelTests.cs" />
