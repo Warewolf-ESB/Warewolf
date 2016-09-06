@@ -4,12 +4,12 @@ using Microsoft.Practices.Prism.Mvvm;
 
 namespace Warewolf.Studio.ViewModels
 {
-    public class ServiceTestOutput : BindableBase, ITestOutput
+    public class ServiceServiceTestOutput : BindableBase, IServiceTestOutput
     {
         private string _variable;
         private string _value;
 
-        public ServiceTestOutput(string variable, string value)
+        public ServiceServiceTestOutput(string variable, string value)
         {
             if(variable == null)
                 throw new ArgumentNullException(nameof(variable));

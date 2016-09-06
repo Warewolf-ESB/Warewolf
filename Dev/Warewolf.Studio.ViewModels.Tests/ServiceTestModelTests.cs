@@ -14,7 +14,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void TestModel_Name_WhenSet_ShouldFirePropertyChanged()
         {
             //------------Setup for test--------------------------
-            var testModel = new ServiceTestModel();
+            var testModel = new ServiceServiceTestModel();
             var _wasCalled = false;
             testModel.PropertyChanged += (sender, args) =>
               {
@@ -36,7 +36,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void TestModel_Username_WhenSet_ShouldFirePropertyChanged()
         {
             //------------Setup for test--------------------------
-            var testModel = new ServiceTestModel();
+            var testModel = new ServiceServiceTestModel();
             var _wasCalled = false;
             testModel.PropertyChanged += (sender, args) =>
             {
@@ -58,7 +58,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void TestModel_TestPassed_WhenSet_ShouldFirePropertyChanged()
         {
             //------------Setup for test--------------------------
-            var testModel = new ServiceTestModel();
+            var testModel = new ServiceServiceTestModel();
             var _wasCalled = false;
             testModel.PropertyChanged += (sender, args) =>
             {
@@ -80,7 +80,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void TestModel_TestFailing_WhenSet_ShouldFirePropertyChanged()
         {
             //------------Setup for test--------------------------
-            var testModel = new ServiceTestModel();
+            var testModel = new ServiceServiceTestModel();
             var _wasCalled = false;
             testModel.PropertyChanged += (sender, args) =>
             {
@@ -102,7 +102,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void TestModel_TestInvalid_WhenSet_ShouldFirePropertyChanged()
         {
             //------------Setup for test--------------------------
-            var testModel = new ServiceTestModel();
+            var testModel = new ServiceServiceTestModel();
             var _wasCalled = false;
             testModel.PropertyChanged += (sender, args) =>
             {
@@ -124,7 +124,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void TestModel_TestPending_WhenSet_ShouldFirePropertyChanged()
         {
             //------------Setup for test--------------------------
-            var testModel = new ServiceTestModel();
+            var testModel = new ServiceServiceTestModel();
             var _wasCalled = false;
             testModel.PropertyChanged += (sender, args) =>
             {
@@ -146,7 +146,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void TestModel_Inputs_WhenSet_ShouldFirePropertyChanged()
         {
             //------------Setup for test--------------------------
-            var testModel = new ServiceTestModel();
+            var testModel = new ServiceServiceTestModel();
             var _wasCalled = false;
             testModel.PropertyChanged += (sender, args) =>
             {
@@ -156,7 +156,7 @@ namespace Warewolf.Studio.ViewModels.Tests
                 }
             };
             //------------Execute Test---------------------------
-            testModel.Inputs = new List<ITestInput>();
+            testModel.Inputs = new List<IServiceTestInput>();
             //------------Assert Results-------------------------
             Assert.AreEqual(0, testModel.Inputs.Count);
             Assert.IsTrue(_wasCalled);
@@ -168,7 +168,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void TestModel_Outputs_WhenSet_ShouldFirePropertyChanged()
         {
             //------------Setup for test--------------------------
-            var testModel = new ServiceTestModel();
+            var testModel = new ServiceServiceTestModel();
             var _wasCalled = false;
             testModel.PropertyChanged += (sender, args) =>
             {
@@ -178,7 +178,7 @@ namespace Warewolf.Studio.ViewModels.Tests
                 }
             };
             //------------Execute Test---------------------------
-            testModel.Outputs = new List<ITestOutput>();
+            testModel.Outputs = new List<IServiceTestOutput>();
             //------------Assert Results-------------------------
             Assert.AreEqual(0, testModel.Outputs.Count);
             Assert.IsTrue(_wasCalled);

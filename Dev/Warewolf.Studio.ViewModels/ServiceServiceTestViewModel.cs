@@ -11,38 +11,40 @@ using Microsoft.Practices.Prism.Mvvm;
 
 namespace Warewolf.Studio.ViewModels
 {
-    public class ServiceTestViewModel : BindableBase, ITestViewModel
+    public class ServiceServiceTestViewModel : BindableBase, IServiceTestViewModel
     {
-
-        
-        private ITestModel _selectedTest;
+        private IServiceTestModel _selectedServiceTest;
         private string _runAllTestsUrl;
         private string _testPassingResult;
-        private ObservableCollection<ITestModel> _tests;
+        private ObservableCollection<IServiceTestModel> _tests;
+        private string _displayName;
+        private string _image;
 
-        public ServiceTestViewModel(IResourceModel resourceModel)
+        public ServiceServiceTestViewModel(IResourceModel resourceModel)
         {
             if (resourceModel == null)
                 throw new ArgumentNullException(nameof(resourceModel));
             ResourceModel = resourceModel;
-            TestCommandHandler = new TestCommandHandlerModel();
+            DisplayName = resourceModel.DisplayName + " - Tests";
+            Image = "ServiceTestsViewer";
+            ServiceTestCommandHandler = new ServiceTestCommandHandlerModel();
 
-            DeleteTestCommand = new DelegateCommand(TestCommandHandler.DeleteTest, () => CanDeleteTest);
-            DuplicateTestCommand = new DelegateCommand(TestCommandHandler.DuplicateTest, () => CanDuplicateTest);
-            RunAllTestsInBrowserCommand = new DelegateCommand(TestCommandHandler.RunAllTestsInBrowser, () => CanRunAllTestsInBrowser);
-            RunAllTestsCommand = new DelegateCommand(TestCommandHandler.RunAllTestsCommand, () => CanRunAllTestsCommand);
-            RunSelectedTestInBrowserCommand = new DelegateCommand(TestCommandHandler.RunSelectedTestInBrowser, () => CanRunSelectedTestInBrowser);
-            RunSelectedTestCommand = new DelegateCommand(TestCommandHandler.RunSelectedTest, () => CanRunSelectedTest);
-            StopTestCommand = new DelegateCommand(TestCommandHandler.StopTest, () => CanStopTest);
+            DeleteTestCommand = new DelegateCommand(ServiceTestCommandHandler.DeleteTest, () => CanDeleteTest);
+            DuplicateTestCommand = new DelegateCommand(ServiceTestCommandHandler.DuplicateTest, () => CanDuplicateTest);
+            RunAllTestsInBrowserCommand = new DelegateCommand(ServiceTestCommandHandler.RunAllTestsInBrowser, () => CanRunAllTestsInBrowser);
+            RunAllTestsCommand = new DelegateCommand(ServiceTestCommandHandler.RunAllTestsCommand, () => CanRunAllTestsCommand);
+            RunSelectedTestInBrowserCommand = new DelegateCommand(ServiceTestCommandHandler.RunSelectedTestInBrowser, () => CanRunSelectedTestInBrowser);
+            RunSelectedTestCommand = new DelegateCommand(ServiceTestCommandHandler.RunSelectedTest, () => CanRunSelectedTest);
+            StopTestCommand = new DelegateCommand(ServiceTestCommandHandler.StopTest, () => CanStopTest);
             CreateTestCommand = new DelegateCommand(() =>
             {
-                var testModel = TestCommandHandler.CreateTest(ResourceModel);
+                var testModel = ServiceTestCommandHandler.CreateTest(ResourceModel);
                 if (Tests == null)
                 {
-                    Tests = new ObservableCollection<ITestModel>();
+                    Tests = new ObservableCollection<IServiceTestModel>();
                 }
                 Tests.Add(testModel);
-                SelectedTest = testModel;
+                SelectedServiceTest = testModel;
 
             }, () => CanCreateTest);
         }
@@ -57,6 +59,17 @@ namespace Warewolf.Studio.ViewModels
         public bool CanDeleteTest { get; set; }
         public bool CanSave { get; set; }
         public bool HasChanged { get; set; }
+
+        public string Image
+        {
+            get { return _image; }
+            set
+            {
+                _image = value; 
+                OnPropertyChanged(() => Image);
+            }
+        }
+
         public void Save()
         {
             throw new NotImplementedException();
@@ -64,20 +77,20 @@ namespace Warewolf.Studio.ViewModels
 
         public IResourceModel ResourceModel { get; set; }
 
-        public ITestModel SelectedTest
+        public IServiceTestModel SelectedServiceTest
         {
             get
             {
-                return _selectedTest;
+                return _selectedServiceTest;
             }
             set
             {
-                _selectedTest = value;
-                OnPropertyChanged(() => SelectedTest);
+                _selectedServiceTest = value;
+                OnPropertyChanged(() => SelectedServiceTest);
             }
         }
 
-        public ITestCommandHandler TestCommandHandler { get; set; }
+        public IServiceTestCommandHandler ServiceTestCommandHandler { get; set; }
 
         public string RunAllTestsUrl
         {
@@ -99,7 +112,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        public ObservableCollection<ITestModel> Tests
+        public ObservableCollection<IServiceTestModel> Tests
         {
             get { return _tests; }
             set
@@ -118,7 +131,16 @@ namespace Warewolf.Studio.ViewModels
         public ICommand RunSelectedTestCommand { get; set; }
         public ICommand StopTestCommand { get; set; }
         public ICommand CreateTestCommand { get; set; }
-        public string DisplayName { get; set; }
+
+        public string DisplayName
+        {
+            get { return _displayName; }
+            set
+            {
+                _displayName = value; 
+                OnPropertyChanged(() => DisplayName);
+            }
+        }
 
         public void Dispose()
         {            
@@ -127,11 +149,7 @@ namespace Warewolf.Studio.ViewModels
         public void UpdateHelpDescriptor(string helpText)
         {
             var mainViewModel = CustomContainer.Get<IMainViewModel>();
-            if (mainViewModel != null)
-            {
-                mainViewModel.HelpViewModel.UpdateHelpText(helpText);
-            }
-
+            mainViewModel?.HelpViewModel.UpdateHelpText(helpText);
         }
     }
 }

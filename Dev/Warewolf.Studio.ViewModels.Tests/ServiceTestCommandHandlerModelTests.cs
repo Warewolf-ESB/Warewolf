@@ -17,7 +17,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void TestCommandHandlerModelTests_CreateTest_ExecuteNoInputs_ShouldCreateTestModel()
         {
             //------------Setup for test--------------------------
-            var testFrameworkViewModel = new TestCommandHandlerModel();
+            var testFrameworkViewModel = new ServiceTestCommandHandlerModel();
             //------------Assert Preconditions-------------------
             //------------Execute Test---------------------------
             var testModel = testFrameworkViewModel.CreateTest(CreateResourceModelWithNoInput());
@@ -32,7 +32,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void TestCommandHandlerModelTests_CreateTest_Execute_ShouldAddInputsFromResourceModel()
         {
             //------------Setup for test--------------------------
-            var testFrameworkViewModel = new TestCommandHandlerModel();
+            var testFrameworkViewModel = new ServiceTestCommandHandlerModel();
             //------------Assert Preconditions-------------------
             //------------Execute Test---------------------------
             var testModel = testFrameworkViewModel.CreateTest(CreateResourceModelWithSingleScalarInput());
@@ -49,7 +49,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void TestCommandHandlerModelTests_CreateTest_Execute_ShouldAddOutputsFromResourceModel()
         {
             //------------Setup for test--------------------------
-            var testFrameworkViewModel = new TestCommandHandlerModel();
+            var testFrameworkViewModel = new ServiceTestCommandHandlerModel();
             //------------Assert Preconditions-------------------
             //------------Execute Test---------------------------
             var testModel = testFrameworkViewModel.CreateTest(CreateResourceModelWithSingleScalarOutput());

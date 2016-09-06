@@ -280,8 +280,8 @@
     <Compile Include="Interfaces\IPartIsUsed.cs" />
     <Compile Include="Interfaces\IRecordsetHandler.cs" />
     <Compile Include="Interfaces\IScalarHandler.cs" />
-    <Compile Include="Interfaces\ITestCommandHandler.cs" />
-    <Compile Include="Interfaces\ITestViewModel.cs" />
+    <Compile Include="Interfaces\IServiceTestCommandHandler.cs" />
+    <Compile Include="Interfaces\IServiceTestViewModel.cs" />
     <Compile Include="Messages\DeleteFolderMessage.cs" />
     <Compile Include="Models\DataList\ComplexObjectItemModel.cs" />
     <Compile Include="Models\DataList\DataListHeaderItemModel.cs" />

@@ -2,9 +2,9 @@ using Dev2.Common.Interfaces;
 
 namespace Dev2.Studio.Core.Interfaces
 {
-    public interface ITestCommandHandler
+    public interface IServiceTestCommandHandler
     {
-        ITestModel CreateTest(IResourceModel resourceModel);
+        IServiceTestModel CreateTest(IResourceModel resourceModel);
         void StopTest();
         void RunAllTestsInBrowser();
         void RunAllTestsCommand();

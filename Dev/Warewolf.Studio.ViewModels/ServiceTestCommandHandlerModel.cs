@@ -6,11 +6,11 @@ using Dev2.Studio.Core.Interfaces;
 
 namespace Warewolf.Studio.ViewModels
 {
-    public sealed class TestCommandHandlerModel : ITestCommandHandler
+    public sealed class ServiceTestCommandHandlerModel : IServiceTestCommandHandler
     {
-        public ITestModel CreateTest(IResourceModel resourceModel)
+        public IServiceTestModel CreateTest(IResourceModel resourceModel)
         {
-            var testModel = new ServiceTestModel
+            var testModel = new ServiceServiceTestModel
             {
                 TestName = "Test 1"
             };
@@ -20,11 +20,11 @@ namespace Warewolf.Studio.ViewModels
                 dataListModel.CreateShape(resourceModel.DataList);
                 testModel.Inputs = dataListModel.ShapeScalars?
                                     .Where(scalar => scalar.IODirection == enDev2ColumnArgumentDirection.Input)
-                                    .Select(sca => new ServiceTestInput(sca.Name, sca.Value) as ITestInput).ToList();
+                                    .Select(sca => new ServiceServiceTestInput(sca.Name, sca.Value) as IServiceTestInput).ToList();
 
                 testModel.Outputs = dataListModel.ShapeScalars?
                                     .Where(scalar => scalar.IODirection == enDev2ColumnArgumentDirection.Output)
-                                    .Select(sca => new ServiceTestOutput(sca.Name, sca.Value) as ITestOutput).ToList();
+                                    .Select(sca => new ServiceServiceTestOutput(sca.Name, sca.Value) as IServiceTestOutput).ToList();
             }            
             return testModel;
        }

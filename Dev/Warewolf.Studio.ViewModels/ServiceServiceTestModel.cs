@@ -5,7 +5,7 @@ using Microsoft.Practices.Prism.Mvvm;
 
 namespace Warewolf.Studio.ViewModels
 {
-    public class ServiceTestModel : BindableBase, ITestModel
+    public class ServiceServiceTestModel : BindableBase, IServiceTestModel
     {
         private string _testName;
         private string _userName;
@@ -14,10 +14,10 @@ namespace Warewolf.Studio.ViewModels
         private bool _testPending;
         private bool _testInvalid;
         private string _password;
-        private List<ITestInput> _inputs;
-        private List<ITestOutput> _outputs;
+        private List<IServiceTestInput> _inputs;
+        private List<IServiceTestOutput> _outputs;
 
-        #region Implementation of ITestModel
+        #region Implementation of IServiceTestModel
 
         public string TestName
         {
@@ -53,7 +53,7 @@ namespace Warewolf.Studio.ViewModels
         }
         public DateTime LastRunDate { get; set; }
 
-        public List<ITestInput> Inputs
+        public List<IServiceTestInput> Inputs
         {
             get { return _inputs; }
             set
@@ -63,7 +63,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        public List<ITestOutput> Outputs
+        public List<IServiceTestOutput> Outputs
         {
             get { return _outputs; }
             set

@@ -196,7 +196,7 @@ namespace Dev2.Studio.ViewModels
 
         public void ViewTestsForService(IResourceModel resourceModel, IWorkSurfaceKey workSurfaceKey = null)
         {
-            var testViewModel = new ServiceTestViewModel(resourceModel);
+            var testViewModel = new ServiceServiceTestViewModel(resourceModel);
             var vm = new StudioTestViewModel(_mainViewModel.EventPublisher,testViewModel,_mainViewModel.PopupProvider,new ServiceTestView());
             workSurfaceKey = TryGetOrCreateWorkSurfaceKey(workSurfaceKey, WorkSurfaceContext.ServiceTestsViewer, resourceModel.ID);
             var key = workSurfaceKey as WorkSurfaceKey;
