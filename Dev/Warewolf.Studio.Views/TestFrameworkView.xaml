@@ -11,9 +11,11 @@
              xmlns:core1="clr-namespace:Dev2.Activities.Designers2.Core;assembly=Dev2.Activities.Designers"
              xmlns:errors="clr-namespace:Dev2.Activities.Designers2.Core.Errors;assembly=Dev2.Activities.Designers"
              xmlns:ui="clr-namespace:Dev2.UI;assembly=Dev2.Intellisense"
+             xmlns:viewModels="clr-namespace:Warewolf.Studio.ViewModels;assembly=Warewolf.Studio.ViewModels"
              d:DesignHeight="300"
              d:DesignWidth="300"
              mc:Ignorable="d"
+             d:DataContext="{d:DesignInstance viewModels:TestFrameworkViewModel}"
              AutomationProperties.AutomationId="UI_TestFrameworkView_AutoID">
     <UserControl.Resources>
         <ResourceDictionary>
@@ -44,14 +46,11 @@
             <TextBlock >
                 <Hyperlink x:Name="RunAllTestsUrl" 
                            Command="{Binding RunAllTestsInBrowserCommand}" 
-                           ToolTip=""
+                           ToolTip="{x:Static languages:Core.TestsRunAllTestsInBrowserTooltip}"
                            Style="{StaticResource HyperLinkStyle}"
                            NavigateUri="{Binding RunAllTestsUrl,UpdateSourceTrigger=PropertyChanged}" >
                     <TextBlock Text="{Binding RunAllTestsUrl,UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource HoverUnderlineStyle}"></TextBlock>
                 </Hyperlink>
-                <i:Interaction.Behaviors>
-                    <core:HelpSetter Text="" DataContext="{Binding}" />
-                </i:Interaction.Behaviors>
             </TextBlock>
 
             <TextBlock Grid.Row="0" Grid.Column="1" Text="Passing" HorizontalAlignment="Right" Margin="{StaticResource ControlBorderRight}"/>
@@ -94,17 +93,17 @@
                                     <!--Times-->
                                     <!--Question-->
                                     <!--Exclamation-->
-                                    
+
                                     <CheckBox Grid.Column="1" 
                                               Grid.Row="0" 
                                               Grid.RowSpan="2" 
                                               HorizontalAlignment="Left" Style="{StaticResource CheckBoxRoundedStyle}" 
                                               Margin="-2,0,0,0"
-                                              ToolTip=""
+                                              ToolTip="{x:Static languages:Core.TestsEnableRunSelectedTestTooltip}"
                                               IsChecked="{Binding TestSelected, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource SchedulerStatusToCheckedConverter}}">
                                         <i:Interaction.Behaviors>
-                                            <core:HelpSetter Text=""
-                                                         DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+                                            <core:HelpSetter Text="{x:Static languages:Core.TestsEnableRunSelectedTestHelpText}"
+                                                         DataContext="{Binding }" />
                                         </i:Interaction.Behaviors>
                                     </CheckBox>
                                     <TextBlock Grid.Column="2" 
@@ -127,13 +126,13 @@
                                             HorizontalAlignment="Right" 
                                             Command="{Binding ElementName=Tests, Path=DataContext.RunTestCommand }" 
                                             CommandParameter="{Binding .}" 
-                                            ToolTip=""
+                                            ToolTip="{x:Static languages:Core.TestsRunSelectedTestTooltip}"
                                             Style="{StaticResource ButtonRunTestTransparentStyle}" >
                                         <Button.Content>
-                                            <fa:FontAwesome Icon="Play" FontSize="18"></fa:FontAwesome>
+                                            <fa:FontAwesome Icon="Play" FontSize="18"/>
                                         </Button.Content>
                                         <i:Interaction.Behaviors>
-                                            <core:HelpSetter Text=""
+                                            <core:HelpSetter Text="{x:Static languages:Core.TestsRunSelectedTestHelpText}"
                                                              DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
                                         </i:Interaction.Behaviors>
                                     </Button>
@@ -144,13 +143,13 @@
                                             HorizontalAlignment="Right" 
                                             Command="{Binding ElementName=Tests, Path=DataContext.DeleteTestCommand }" 
                                             CommandParameter="{Binding .}" 
-                                            ToolTip=""
+                                            ToolTip="{x:Static languages:Core.TestsDeleteSelectedTestTooltip}"
                                             Style="{StaticResource ButtonDeleteTestTransparentStyle}" >
                                         <Button.Content>
-                                            <fa:FontAwesome Icon="Trash" FontSize="18"></fa:FontAwesome>
+                                            <fa:FontAwesome Icon="Trash" FontSize="18"/>
                                         </Button.Content>
                                         <i:Interaction.Behaviors>
-                                            <core:HelpSetter Text=""
+                                            <core:HelpSetter Text="{x:Static languages:Core.TestsDeleteSelectedTestHelpText}"
                                                              DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
                                         </i:Interaction.Behaviors>
                                     </Button>
@@ -161,7 +160,7 @@
                                     <Button Style="{StaticResource ButtonSchedulerTransparentStyle}" 
                                             HorizontalAlignment="Stretch" 
                                             VerticalAlignment="Stretch" 
-                                            ToolTip="">
+                                            ToolTip="{x:Static languages:Core.TestsNewTestTooltip}">
                                         <Button.Content>
                                             <Grid>
                                                 <Grid.ColumnDefinitions >
@@ -171,8 +170,8 @@
                                                 <Grid.RowDefinitions>
                                                     <RowDefinition Height="Auto"/>
                                                 </Grid.RowDefinitions>
-                                                <fa:FontAwesome Icon="Plus" FontSize="24" HorizontalAlignment="Left" VerticalAlignment="Center"></fa:FontAwesome>
-                                                <TextBlock Grid.Column="1" Text="Schedule a new task" FontSize="14"></TextBlock>
+                                                <fa:FontAwesome Icon="Plus" FontSize="24" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                                                <TextBlock Grid.Column="1" Text="Schedule a new task" FontSize="14"/>
                                             </Grid>
                                         </Button.Content>
                                     </Button>
@@ -182,7 +181,7 @@
                     </ListBox.ItemTemplate>
                 </ListBox>
 
-                <ContentControl Grid.Column="1" Visibility="{Binding SelectedTest, Converter={StaticResource NullToVisibilityConverterNullIsCollapsed}}">
+                <ContentControl Grid.Column="1" Visibility="{Binding SelectedTest}">
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
@@ -194,14 +193,11 @@
                         <TextBlock Grid.Row="0">
                             <Hyperlink x:Name="RunSelectedTestUrl" 
                                        Command="{Binding RunSelectedTestInBrowserCommand}" 
-                                       ToolTip=""
+                                       ToolTip="{x:Static languages:Core.TestsRunSelectedTestInBrowserTooltip}"
                                        Style="{StaticResource HyperLinkStyle}"
                                        NavigateUri="{Binding RunSelectedTestUrl,UpdateSourceTrigger=PropertyChanged}" >
                                 <TextBlock Text="{Binding RunSelectedTestUrl,UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource HoverUnderlineStyle}"></TextBlock>
                             </Hyperlink>
-                            <i:Interaction.Behaviors>
-                                <core:HelpSetter Text="" DataContext="{Binding}" />
-                            </i:Interaction.Behaviors>
                         </TextBlock>
 
                         <Grid Grid.Row="1" Margin="{StaticResource ControlBorderTop}">
@@ -257,13 +253,13 @@
                                                                TextTrimming="CharacterEllipsis"
                                                                VerticalAlignment="Center"
                                                                Padding="3,0"
-                                                               ToolTip="{Binding OutputColumn.ColumnName}">                               
-                                <AutomationProperties.AutomationId>
-                                    <MultiBinding StringFormat="UI_{0}_Row{1}_OutputColumnName_AutoID">
-                                        <Binding Path="DataContext.ModelItem.AutomationID" RelativeSource="{RelativeSource AncestorType=core1:ActivityDesignerTemplate}" />
-                                        <Binding Path="IndexNumber" />
-                                    </MultiBinding>
-                                </AutomationProperties.AutomationId>
+                                                               ToolTip="{Binding ColumnName}">
+                                                        <AutomationProperties.AutomationId>
+                                                            <MultiBinding StringFormat="UI_{0}_Row{1}_OutputColumnName_AutoID">
+                                                                <Binding Path="DataContext.ModelItem.AutomationID" RelativeSource="{RelativeSource AncestorType=core1:ActivityDesignerTemplate}" />
+                                                                <Binding Path="IndexNumber" />
+                                                            </MultiBinding>
+                                                        </AutomationProperties.AutomationId>
                                                     </TextBlock>
                                                 </Grid>
                                             </DataTemplate>
@@ -330,7 +326,7 @@
                             </controls:Dev2DataGrid>
 
                             <!-- Grid.Row="2" is in place for Assert - V3 -->
-                            
+
                             <TextBlock Grid.Row="3" Text="Outputs"/>
                             <controls:Dev2DataGrid x:Name="SelectedTestOutputsGrid"
                                                    Grid.Row="4"
@@ -411,31 +407,31 @@
                                 <TextBlock Grid.Row="0" Text="Error"/>
                                 <RadioButton x:Name="NoErrorRadioButton"
                                              Grid.Column="1"
-                                             ToolTip="" 
+                                             ToolTip="{x:Static languages:Core.TestsNoErrorExpectedTooltip}" 
                                              VerticalAlignment="Center" 
                                              HorizontalAlignment="Left" 
                                              IsChecked="{Binding Path=NoErrorExpected, Mode=TwoWay}"
                                              Content="No Error">
                                     <i:Interaction.Behaviors>
-                                        <core:HelpSetter Text="" DataContext="{Binding}" />
+                                        <core:HelpSetter Text="{x:Static languages:Core.TestsNoErrorExpectedHelpText}" DataContext="{Binding}" />
                                     </i:Interaction.Behaviors>
                                 </RadioButton>
                                 <RadioButton x:Name="ErrorRadioButton" 
                                              Grid.Column="1"
-                                             ToolTip="" 
+                                             ToolTip="{x:Static languages:Core.TestsErrorExpectedTooltip}" 
                                              VerticalAlignment="Center" 
                                              HorizontalAlignment="Left" 
                                              IsChecked="{Binding Path=ErrorExpected, Mode=TwoWay}" 
                                              Content="Error">
                                     <i:Interaction.Behaviors>
-                                        <core:HelpSetter Text="" DataContext="{Binding}" />
+                                        <core:HelpSetter Text="{x:Static languages:Core.TestsErrorExpectedHelpText}" DataContext="{Binding}" />
                                     </i:Interaction.Behaviors>
                                 </RadioButton>
                             </Grid>
                         </Grid>
 
                         <Grid Grid.Row="3">
-                            
+
                         </Grid>
                     </Grid>
                 </ContentControl>
