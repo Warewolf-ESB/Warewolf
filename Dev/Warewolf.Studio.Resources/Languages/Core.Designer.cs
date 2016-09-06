@@ -8036,6 +8036,124 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Delete this test.
+        /// </summary>
+        public static string TestsDeleteSelectedTestHelpText {
+            get {
+                return ResourceManager.GetString("TestsDeleteSelectedTestHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delete this test.
+        /// </summary>
+        public static string TestsDeleteSelectedTestTooltip {
+            get {
+                return ResourceManager.GetString("TestsDeleteSelectedTestTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Selecting this option will add the test to the test to the Run All command. 
+        ///If this option is not selected, the test will not run part of the Run All list of tests..
+        /// </summary>
+        public static string TestsEnableRunSelectedTestHelpText {
+            get {
+                return ResourceManager.GetString("TestsEnableRunSelectedTestHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select or De-Select to run the test.
+        /// </summary>
+        public static string TestsEnableRunSelectedTestTooltip {
+            get {
+                return ResourceManager.GetString("TestsEnableRunSelectedTestTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The test expects an error.
+        /// </summary>
+        public static string TestsErrorExpectedHelpText {
+            get {
+                return ResourceManager.GetString("TestsErrorExpectedHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The test expects an error.
+        /// </summary>
+        public static string TestsErrorExpectedTooltip {
+            get {
+                return ResourceManager.GetString("TestsErrorExpectedTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Create a new test.
+        /// </summary>
+        public static string TestsNewTestTooltip {
+            get {
+                return ResourceManager.GetString("TestsNewTestTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The test expects no error.
+        /// </summary>
+        public static string TestsNoErrorExpectedHelpText {
+            get {
+                return ResourceManager.GetString("TestsNoErrorExpectedHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The test expects no error.
+        /// </summary>
+        public static string TestsNoErrorExpectedTooltip {
+            get {
+                return ResourceManager.GetString("TestsNoErrorExpectedTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Open this URL in your default browser to view the tests for this workflow.
+        /// </summary>
+        public static string TestsRunAllTestsInBrowserTooltip {
+            get {
+                return ResourceManager.GetString("TestsRunAllTestsInBrowserTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Run this test.
+        /// </summary>
+        public static string TestsRunSelectedTestHelpText {
+            get {
+                return ResourceManager.GetString("TestsRunSelectedTestHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Open this URL in your default browser to view this test.
+        /// </summary>
+        public static string TestsRunSelectedTestInBrowserTooltip {
+            get {
+                return ResourceManager.GetString("TestsRunSelectedTestInBrowserTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Run this test.
+        /// </summary>
+        public static string TestsRunSelectedTestTooltip {
+            get {
+                return ResourceManager.GetString("TestsRunSelectedTestTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to json array declare setup variable set.
         /// </summary>
         public static string Tool_Data_Assign_Object_Tags {

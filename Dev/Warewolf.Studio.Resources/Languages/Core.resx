@@ -2649,6 +2649,46 @@ You can use File System, URI, SFTP, FTP or FTPS format.</value>
   <data name="ManageWebSourceViewInBrowserTooltip" xml:space="preserve">
     <value>Open this URL in your default browser</value>
   </data>
+  <data name="TestsRunAllTestsInBrowserTooltip" xml:space="preserve">
+    <value>Open this URL in your default browser to view the tests for this workflow</value>
+  </data>
+  <data name="TestsRunSelectedTestInBrowserTooltip" xml:space="preserve">
+    <value>Open this URL in your default browser to view this test</value>
+  </data>
+  <data name="TestsEnableRunSelectedTestTooltip" xml:space="preserve">
+    <value>Select or De-Select to run the test</value>
+  </data>
+  <data name="TestsEnableRunSelectedTestHelpText" xml:space="preserve">
+    <value>Selecting this option will add the test to the test to the Run All command. 
+If this option is not selected, the test will not run part of the Run All list of tests.</value>
+  </data>
+  <data name="TestsDeleteSelectedTestTooltip" xml:space="preserve">
+    <value>Delete this test</value>
+  </data>
+  <data name="TestsDeleteSelectedTestHelpText" xml:space="preserve">
+    <value>Delete this test</value>
+  </data>
+  <data name="TestsRunSelectedTestTooltip" xml:space="preserve">
+    <value>Run this test</value>
+  </data>
+  <data name="TestsRunSelectedTestHelpText" xml:space="preserve">
+    <value>Run this test</value>
+  </data>
+  <data name="TestsNewTestTooltip" xml:space="preserve">
+    <value>Create a new test</value>
+  </data>
+  <data name="TestsNoErrorExpectedTooltip" xml:space="preserve">
+    <value>The test expects no error</value>
+  </data>
+  <data name="TestsNoErrorExpectedHelpText" xml:space="preserve">
+    <value>The test expects no error</value>
+  </data>
+  <data name="TestsErrorExpectedTooltip" xml:space="preserve">
+    <value>The test expects an error</value>
+  </data>
+  <data name="TestsErrorExpectedHelpText" xml:space="preserve">
+    <value>The test expects an error</value>
+  </data>
   <data name="ManageWebSourceUserNameTooltip" xml:space="preserve">
     <value>The name of the account</value>
   </data>
