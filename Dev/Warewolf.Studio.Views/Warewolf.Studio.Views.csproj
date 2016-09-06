@@ -225,8 +225,8 @@
     <Compile Include="SplashPage.xaml.cs">
       <DependentUpon>SplashPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="TestFrameworkView.xaml.cs">
-      <DependentUpon>TestFrameworkView.xaml</DependentUpon>
+    <Compile Include="ServiceTestView.xaml.cs">
+      <DependentUpon>ServiceTestView.xaml</DependentUpon>
     </Compile>
     <Compile Include="ToolboxView.xaml.cs">
       <DependentUpon>ToolboxView.xaml</DependentUpon>
@@ -322,7 +322,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="TestFrameworkView.xaml">
+    <Page Include="ServiceTestView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

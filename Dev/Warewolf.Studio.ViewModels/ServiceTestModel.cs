@@ -5,7 +5,7 @@ using Microsoft.Practices.Prism.Mvvm;
 
 namespace Warewolf.Studio.ViewModels
 {
-    public class TestModel : BindableBase, ITestModel
+    public class ServiceTestModel : BindableBase, ITestModel
     {
         private string _testName;
         private string _userName;

@@ -150,11 +150,11 @@
     <Compile Include="SharepointServerSourceViewModelTests.cs" />
     <Compile Include="SingleEnvironmentExplorerViewModelTests.cs" />
     <Compile Include="SplashViewModelTests.cs" />
-    <Compile Include="TestCommandHandlerModelTests.cs" />
-    <Compile Include="TestFrameworkViewModelTests.cs" />
-    <Compile Include="TestInputTests.cs" />
-    <Compile Include="TestModelTests.cs" />
-    <Compile Include="TestOutputTests.cs" />
+    <Compile Include="ServiceTestCommandHandlerModelTests.cs" />
+    <Compile Include="ServiceTestViewModelTests.cs" />
+    <Compile Include="ServiceTestInputTests.cs" />
+    <Compile Include="ServiceTestModelTests.cs" />
+    <Compile Include="ServiceTestOutputTests.cs" />
     <Compile Include="ToolBox\ToolBoxCategoryViewModelTests.cs" />
     <Compile Include="ToolBox\ToolboxViewModelTests.cs" />
     <Compile Include="ToolBox\ToolDescriptorViewModelTests.cs" />

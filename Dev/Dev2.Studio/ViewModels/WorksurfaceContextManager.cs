@@ -115,6 +115,7 @@ namespace Dev2.Studio.ViewModels
         void AddWorkSurface(IWorkSurfaceObject obj);
 
         bool CloseWorkSurfaceContext(WorkSurfaceContextViewModel context, PaneClosingEventArgs e, bool dontPrompt = false);
+        void ViewTestsForService(IResourceModel resourceModel, IWorkSurfaceKey workSurfaceKey = null);
     }
 
     public class WorksurfaceContextManager : IWorksurfaceContextManager
@@ -191,6 +192,16 @@ namespace Dev2.Studio.ViewModels
                 workSurfaceKey.ServerID = ActiveServer.ServerID;
             }
             return workSurfaceKey;
+        }
+
+        public void ViewTestsForService(IResourceModel resourceModel, IWorkSurfaceKey workSurfaceKey = null)
+        {
+            var testViewModel = new ServiceTestViewModel(resourceModel);
+            var vm = new StudioTestViewModel(_mainViewModel.EventPublisher,testViewModel,_mainViewModel.PopupProvider,new ServiceTestView());
+            workSurfaceKey = TryGetOrCreateWorkSurfaceKey(workSurfaceKey, WorkSurfaceContext.ServiceTestsViewer, resourceModel.ID);
+            var key = workSurfaceKey as WorkSurfaceKey;
+            var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(key, vm);
+            AddAndActivateWorkSurface(workSurfaceContextViewModel);
         }
 
         public void EditResource(IPluginSource selectedSource, IWorkSurfaceKey workSurfaceKey = null)

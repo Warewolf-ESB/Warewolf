@@ -10,7 +10,7 @@ namespace Warewolf.Studio.ViewModels
     {
         public ITestModel CreateTest(IResourceModel resourceModel)
         {
-            var testModel = new TestModel
+            var testModel = new ServiceTestModel
             {
                 TestName = "Test 1"
             };
@@ -20,11 +20,11 @@ namespace Warewolf.Studio.ViewModels
                 dataListModel.CreateShape(resourceModel.DataList);
                 testModel.Inputs = dataListModel.ShapeScalars?
                                     .Where(scalar => scalar.IODirection == enDev2ColumnArgumentDirection.Input)
-                                    .Select(sca => new TestInput(sca.Name, sca.Value) as ITestInput).ToList();
+                                    .Select(sca => new ServiceTestInput(sca.Name, sca.Value) as ITestInput).ToList();
 
                 testModel.Outputs = dataListModel.ShapeScalars?
                                     .Where(scalar => scalar.IODirection == enDev2ColumnArgumentDirection.Output)
-                                    .Select(sca => new TestOutput(sca.Name, sca.Value) as ITestOutput).ToList();
+                                    .Select(sca => new ServiceTestOutput(sca.Name, sca.Value) as ITestOutput).ToList();
             }            
             return testModel;
        }
@@ -68,14 +68,7 @@ namespace Warewolf.Studio.ViewModels
 
         public void DeleteTest()
         {
-        }
-
-        
-
-        public void Save()
-        {
-        }
-        
+        }        
 
     }
 }
