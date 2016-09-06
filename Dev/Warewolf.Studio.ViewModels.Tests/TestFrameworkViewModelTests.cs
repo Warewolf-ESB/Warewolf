@@ -49,9 +49,9 @@ namespace Warewolf.Studio.ViewModels.Tests
             //---------------Assert Precondition----------------
             Assert.IsNotNull(vm);
             //---------------Execute Test ----------------------
-            Assert.IsNotNull(vm.RenameCommand);
+            Assert.IsNotNull(vm.TestFrameworkCommandHandler.RenameCommand);
             //---------------Test Result -----------------------
-            Assert.IsFalse(vm.RenameCommand.CanExecute(null));
+            Assert.IsFalse(vm.TestFrameworkCommandHandler.RenameCommand.CanExecute(null));
         }
 
         [TestMethod]
@@ -63,9 +63,9 @@ namespace Warewolf.Studio.ViewModels.Tests
             //---------------Assert Precondition----------------
             Assert.IsNotNull(vm);
             //---------------Execute Test ----------------------
-            Assert.IsNotNull(vm.SaveCommand);
+            Assert.IsNotNull(vm.TestFrameworkCommandHandler.SaveCommand);
             //---------------Test Result -----------------------
-            Assert.IsFalse(vm.SaveCommand.CanExecute(null));
+            Assert.IsFalse(vm.TestFrameworkCommandHandler.SaveCommand.CanExecute(null));
         }
 
 
@@ -78,9 +78,9 @@ namespace Warewolf.Studio.ViewModels.Tests
             //---------------Assert Precondition----------------
             Assert.IsNotNull(vm);
             //---------------Execute Test ----------------------
-            Assert.IsNotNull(vm.EnableTestCommand);
+            Assert.IsNotNull(vm.TestFrameworkCommandHandler.EnableTestCommand);
             //---------------Test Result -----------------------
-            Assert.IsFalse(vm.EnableTestCommand.CanExecute(null));
+            Assert.IsFalse(vm.TestFrameworkCommandHandler.EnableTestCommand.CanExecute(null));
         }
 
 
@@ -93,9 +93,9 @@ namespace Warewolf.Studio.ViewModels.Tests
             //---------------Assert Precondition----------------
             Assert.IsNotNull(vm);
             //---------------Execute Test ----------------------
-            Assert.IsNotNull(vm.DisableTestCommand);
+            Assert.IsNotNull(vm.TestFrameworkCommandHandler.DisableTestCommand);
             //---------------Test Result -----------------------
-            Assert.IsFalse(vm.DisableTestCommand.CanExecute(null));
+            Assert.IsFalse(vm.TestFrameworkCommandHandler.DisableTestCommand.CanExecute(null));
         }
 
         [TestMethod]
@@ -107,9 +107,9 @@ namespace Warewolf.Studio.ViewModels.Tests
             //---------------Assert Precondition----------------
             Assert.IsNotNull(vm);
             //---------------Execute Test ----------------------
-            Assert.IsNotNull(vm.DeleteTestCommand);
+            Assert.IsNotNull(vm.TestFrameworkCommandHandler.DeleteTestCommand);
             //---------------Test Result -----------------------
-            Assert.IsFalse(vm.DeleteTestCommand.CanExecute(null));
+            Assert.IsFalse(vm.TestFrameworkCommandHandler.DeleteTestCommand.CanExecute(null));
         }
 
         [TestMethod]
@@ -121,9 +121,9 @@ namespace Warewolf.Studio.ViewModels.Tests
             //---------------Assert Precondition----------------
             Assert.IsNotNull(vm);
             //---------------Execute Test ----------------------
-            Assert.IsNotNull(vm.DuplicateTestCommand);
+            Assert.IsNotNull(vm.TestFrameworkCommandHandler.DuplicateTestCommand);
             //---------------Test Result -----------------------
-            Assert.IsFalse(vm.DuplicateTestCommand.CanExecute(null));
+            Assert.IsFalse(vm.TestFrameworkCommandHandler.DuplicateTestCommand.CanExecute(null));
         }
        
 
@@ -136,9 +136,9 @@ namespace Warewolf.Studio.ViewModels.Tests
             //---------------Assert Precondition----------------
             Assert.IsNotNull(vm);
             //---------------Execute Test ----------------------
-            Assert.IsNotNull(vm.StopTestCommand);
+            Assert.IsNotNull(vm.TestFrameworkCommandHandler.StopTestCommand);
             //---------------Test Result -----------------------
-            Assert.IsFalse(vm.StopTestCommand.CanExecute(null));
+            Assert.IsFalse(vm.TestFrameworkCommandHandler.StopTestCommand.CanExecute(null));
         }
 
 
@@ -151,9 +151,9 @@ namespace Warewolf.Studio.ViewModels.Tests
             //---------------Assert Precondition----------------
             Assert.IsNotNull(vm);
             //---------------Execute Test ----------------------
-            Assert.IsNotNull(vm.CreateTestCommand);
+            Assert.IsNotNull(vm.TestFrameworkCommandHandler.CreateTestCommand);
             //---------------Test Result -----------------------
-            Assert.IsTrue(vm.CreateTestCommand.CanExecute(null));
+            Assert.IsTrue(vm.TestFrameworkCommandHandler.CreateTestCommand.CanExecute(null));
         }
         private IResourceModel CreateResourceModel()
         {
@@ -170,9 +170,9 @@ namespace Warewolf.Studio.ViewModels.Tests
             //---------------Assert Precondition----------------
             Assert.IsNotNull(vm);
             //---------------Execute Test ----------------------
-            Assert.IsNotNull(vm.CreateTestCommand);
+            Assert.IsNotNull(vm.TestFrameworkCommandHandler.CreateTestCommand);
             //---------------Test Result -----------------------
-            Assert.IsTrue(vm.CreateTestCommand.CanExecute(null));
+            Assert.IsTrue(vm.TestFrameworkCommandHandler.CreateTestCommand.CanExecute(null));
         }
 
         [TestMethod]
@@ -184,9 +184,9 @@ namespace Warewolf.Studio.ViewModels.Tests
             //---------------Assert Precondition----------------
             Assert.IsNotNull(vm);
             //---------------Execute Test ----------------------
-            Assert.IsNotNull(vm.RunAllTestsCommand);
+            Assert.IsNotNull(vm.TestFrameworkCommandHandler.RunAllTestsCommand);
             //---------------Test Result -----------------------
-            Assert.IsFalse(vm.RunAllTestsCommand.CanExecute(null));
+            Assert.IsFalse(vm.TestFrameworkCommandHandler.RunAllTestsCommand.CanExecute(null));
         }
 
 
@@ -199,9 +199,9 @@ namespace Warewolf.Studio.ViewModels.Tests
             //---------------Assert Precondition----------------
             Assert.IsNotNull(vm);
             //---------------Execute Test ----------------------
-            Assert.IsNotNull(vm.RunSelectedTestCommand);
+            Assert.IsNotNull(vm.TestFrameworkCommandHandler.RunSelectedTestCommand);
             //---------------Test Result -----------------------
-            Assert.IsFalse(vm.RunSelectedTestCommand.CanExecute(null));
+            Assert.IsFalse(vm.TestFrameworkCommandHandler.RunSelectedTestCommand.CanExecute(null));
         }
       
 
@@ -215,9 +215,9 @@ namespace Warewolf.Studio.ViewModels.Tests
             //---------------Assert Precondition----------------
             Assert.IsNotNull(vm);
             //---------------Execute Test ----------------------
-            Assert.IsNotNull(vm.RunAllTestsInBrowserCommand);
+            Assert.IsNotNull(vm.TestFrameworkCommandHandler.RunAllTestsInBrowserCommand);
             //---------------Test Result -----------------------
-            Assert.IsFalse(vm.RunAllTestsInBrowserCommand.CanExecute(null));
+            Assert.IsFalse(vm.TestFrameworkCommandHandler.RunAllTestsInBrowserCommand.CanExecute(null));
         }
 
         [TestMethod]
@@ -229,9 +229,9 @@ namespace Warewolf.Studio.ViewModels.Tests
             //---------------Assert Precondition----------------
             Assert.IsNotNull(vm);
             //---------------Execute Test ----------------------
-            Assert.IsNotNull(vm.RunSelectedTestInBrowserCommand);
+            Assert.IsNotNull(vm.TestFrameworkCommandHandler.RunSelectedTestInBrowserCommand);
             //---------------Test Result -----------------------
-            Assert.IsFalse(vm.RunSelectedTestInBrowserCommand.CanExecute(null));
+            Assert.IsFalse(vm.TestFrameworkCommandHandler.RunSelectedTestInBrowserCommand.CanExecute(null));
         }
     }
 }
