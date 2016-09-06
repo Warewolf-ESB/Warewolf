@@ -76,7 +76,7 @@ namespace Dev2.Activities.Specs.TestFramework
             ResourceModel resourceModel;
             if (ScenarioContext.TryGetValue(workflowName, out resourceModel))
             {
-                var testFramework = new ServiceTestViewModel(resourceModel);
+                var testFramework = new ServiceServiceTestViewModel(resourceModel);
                 Assert.IsNotNull(testFramework);
                 Assert.IsNotNull(testFramework.ResourceModel);
                 ScenarioContext.Add("testFramework",testFramework);
@@ -90,16 +90,16 @@ namespace Dev2.Activities.Specs.TestFramework
         [Given(@"there are no tests")]
         public void GivenThereAreNoTests()
         {
-            ServiceTestViewModel serviceTest = GetTestFrameworkFromContext();
-            Assert.IsNull(serviceTest.Tests);
+            ServiceServiceTestViewModel serviceServiceTest = GetTestFrameworkFromContext();
+            Assert.IsNull(serviceServiceTest.Tests);
         }
 
 
         [When(@"I click New Test")]
         public void WhenIClickNewTest()
         {
-            ServiceTestViewModel serviceTest = GetTestFrameworkFromContext();
-            serviceTest.CreateTestCommand.Execute(null);
+            ServiceServiceTestViewModel serviceServiceTest = GetTestFrameworkFromContext();
+            serviceServiceTest.CreateTestCommand.Execute(null);
             
         }
 
@@ -107,37 +107,37 @@ namespace Dev2.Activities.Specs.TestFramework
         [Then(@"a new test is added")]
         public void ThenANewTestIsAdded()
         {
-            ServiceTestViewModel serviceTest = GetTestFrameworkFromContext();
-            Assert.AreNotEqual(0, serviceTest.Tests.Count);
+            ServiceServiceTestViewModel serviceServiceTest = GetTestFrameworkFromContext();
+            Assert.AreNotEqual(0, serviceServiceTest.Tests.Count);
         }
 
 
         [Then(@"test name starts with ""(.*)""")]
         public void ThenTestNameStartsWith(string testName)
         {
-            ServiceTestViewModel serviceTest = GetTestFrameworkFromContext();
-            Assert.AreEqual(testName,serviceTest.SelectedTest.TestName);
+            ServiceServiceTestViewModel serviceServiceTest = GetTestFrameworkFromContext();
+            Assert.AreEqual(testName,serviceServiceTest.SelectedServiceTest.TestName);
         }
 
         [Then(@"username is blank")]
         public void ThenUsernameIsBlank()
         {
-            ServiceTestViewModel serviceTest = GetTestFrameworkFromContext();
-            Assert.AreEqual(null, serviceTest.SelectedTest.UserName);
+            ServiceServiceTestViewModel serviceServiceTest = GetTestFrameworkFromContext();
+            Assert.AreEqual(null, serviceServiceTest.SelectedServiceTest.UserName);
         }
 
         [Then(@"password is blank")]
         public void ThenPasswordIsBlank()
         {
-            ServiceTestViewModel serviceTest = GetTestFrameworkFromContext();
-            Assert.AreEqual(null, serviceTest.SelectedTest.Password);
+            ServiceServiceTestViewModel serviceServiceTest = GetTestFrameworkFromContext();
+            Assert.AreEqual(null, serviceServiceTest.SelectedServiceTest.Password);
         }
 
         [Then(@"inputs as")]
         public void ThenInputsAs(Table table)
         {
-            ServiceTestViewModel serviceTest = GetTestFrameworkFromContext();
-            var inputs = serviceTest.SelectedTest.Inputs;
+            ServiceServiceTestViewModel serviceServiceTest = GetTestFrameworkFromContext();
+            var inputs = serviceServiceTest.SelectedServiceTest.Inputs;
             Assert.AreNotEqual(0,inputs.Count);
             var i = 0;
             foreach(var tableRow in table.Rows)
@@ -157,8 +157,8 @@ namespace Dev2.Activities.Specs.TestFramework
         [Then(@"outputs as")]
         public void ThenOutputsAs(Table table)
         {
-            ServiceTestViewModel serviceTest = GetTestFrameworkFromContext();
-            var outputs = serviceTest.SelectedTest.Outputs;
+            ServiceServiceTestViewModel serviceServiceTest = GetTestFrameworkFromContext();
+            var outputs = serviceServiceTest.SelectedServiceTest.Outputs;
             Assert.AreNotEqual(0, outputs.Count);
             var i = 0;
             foreach (var tableRow in table.Rows)
@@ -177,33 +177,33 @@ namespace Dev2.Activities.Specs.TestFramework
         [Then(@"save is disabled")]
         public void ThenSaveIsDisabled()
         {
-            ServiceTestViewModel test = GetTestFrameworkFromContext();
-            Assert.IsFalse(test.CanSave);
-            Assert.IsFalse(test.SaveCommand.CanExecute(null));
+            ServiceServiceTestViewModel serviceTest = GetTestFrameworkFromContext();
+            Assert.IsFalse(serviceTest.CanSave);
+            Assert.IsFalse(serviceTest.SaveCommand.CanExecute(null));
         }
 
         [Then(@"test status is pending")]
         public void ThenTestStatusIsPending()
         {
-            ServiceTestViewModel test = GetTestFrameworkFromContext();
-            Assert.IsTrue(test.SelectedTest.TestPending);
+            ServiceServiceTestViewModel serviceTest = GetTestFrameworkFromContext();
+            Assert.IsTrue(serviceTest.SelectedServiceTest.TestPending);
             
         }
 
         [Then(@"test is enabled")]
         public void ThenTestIsEnabled()
         {
-            ServiceTestViewModel test = GetTestFrameworkFromContext();
-            Assert.IsTrue(test.SelectedTest.Enabled);
+            ServiceServiceTestViewModel serviceTest = GetTestFrameworkFromContext();
+            Assert.IsTrue(serviceTest.SelectedServiceTest.Enabled);
         }
 
 
-        ServiceTestViewModel GetTestFrameworkFromContext()
+        ServiceServiceTestViewModel GetTestFrameworkFromContext()
         {
-            ServiceTestViewModel serviceTest;
-            if (ScenarioContext.TryGetValue("testFramework", out serviceTest))
+            ServiceServiceTestViewModel serviceServiceTest;
+            if (ScenarioContext.TryGetValue("testFramework", out serviceServiceTest))
             {
-                return serviceTest;
+                return serviceServiceTest;
             }
             Assert.Fail("Test Framework ViewModel not found");
             return null;

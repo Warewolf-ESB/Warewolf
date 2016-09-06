@@ -93,8 +93,8 @@ namespace Warewolf.Studio.Views
             }
             if (e.KeyboardDevice.IsKeyDown(Key.Tab))
             {
-                var vm = DataContext as ITestViewModel;
-                //var itemToSelect = vm?.GetNextRow(TestInputs.ActiveItem as ITestModel);
+                var vm = DataContext as IServiceTestViewModel;
+                //var itemToSelect = vm?.GetNextRow(TestInputs.ActiveItem as IServiceTestModel);
                 //if (itemToSelect != null)
                 //{
                 //    TestInputs.ActiveItem = itemToSelect;

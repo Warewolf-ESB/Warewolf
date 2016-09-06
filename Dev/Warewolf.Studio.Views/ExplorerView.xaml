@@ -645,7 +645,7 @@
                                                     <ig:XamMenuItem Name="Test"
                                                                     Command="{Binding Path=Data.CreateTestCommand}"
                                                                     CommandParameter="{Binding Path=Data}"
-                                                                    Header="Duplicate"
+                                                                    Header="Create Test"
                                                                     Visibility="{Binding Path=Data.CanCreateTest,
                                                                                          Converter={StaticResource BoolToVisibilityConverter}}">
                                                         <ig:XamMenuItem.Icon>

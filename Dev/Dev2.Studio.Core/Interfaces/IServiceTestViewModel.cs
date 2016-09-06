@@ -6,13 +6,13 @@ using Dev2.Common.Interfaces;
 
 namespace Dev2.Studio.Core.Interfaces
 {
-    public interface ITestViewModel : IDisposable,INotifyPropertyChanged, IUpdatesHelp
+    public interface IServiceTestViewModel : IDisposable,INotifyPropertyChanged, IUpdatesHelp
     {
-        ITestModel SelectedTest { get; set; }
-        ITestCommandHandler TestCommandHandler { get; set; }
+        IServiceTestModel SelectedServiceTest { get; set; }
+        IServiceTestCommandHandler ServiceTestCommandHandler { get; set; }
         string RunAllTestsUrl { get; set; }
         string TestPassingResult { get; set; }
-        ObservableCollection<ITestModel> Tests  { get; set; }
+        ObservableCollection<IServiceTestModel> Tests  { get; set; }
 
         ICommand DeleteTestCommand { get; set; }
         ICommand DuplicateTestCommand { get; set; }
@@ -25,6 +25,7 @@ namespace Dev2.Studio.Core.Interfaces
         string DisplayName { get; set; }
         bool CanSave { get; set; }
         bool HasChanged { get; set; }
+        string Image { get; set; }
         void Save();
     }
 }

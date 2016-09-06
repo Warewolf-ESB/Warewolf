@@ -3,14 +3,14 @@ using System.Collections.Generic;
 
 namespace Dev2.Common.Interfaces
 {
-    public interface ITestModel
+    public interface IServiceTestModel
     {
         string TestName { get; set; }
         string UserName { get; set; }
         string Password { get; set; }
         DateTime LastRunDate { get; set; }
-        List<ITestInput> Inputs { get; set; }
-        List<ITestOutput> Outputs { get; set; }
+        List<IServiceTestInput> Inputs { get; set; }
+        List<IServiceTestOutput> Outputs { get; set; }
         bool Error { get; set; }
         bool IsNewTest { get; set; }
         bool IsTestSelected { get; set; }
@@ -21,14 +21,14 @@ namespace Dev2.Common.Interfaces
         bool Enabled { get; set; }
     }
 
-    public interface ITestInput
+    public interface IServiceTestInput
     {
         string Variable { get; set; }
         string Value { get; set; }
         bool EmptyIsNull { get; set; }
     }
 
-    public interface ITestOutput
+    public interface IServiceTestOutput
     {
         string Variable { get; set; }
         string Value { get; set; }

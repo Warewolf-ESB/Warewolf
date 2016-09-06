@@ -15,7 +15,7 @@
              d:DesignHeight="300"
              d:DesignWidth="300"
              mc:Ignorable="d"
-             d:DataContext="{d:DesignInstance interfaces1:ITestViewModel}"
+             d:DataContext="{d:DesignInstance interfaces1:IServiceTestViewModel}"
              AutomationProperties.AutomationId="UI_ServiceTestView_AutoID">
     <UserControl.Resources>
         <ResourceDictionary>
@@ -70,7 +70,7 @@
                 </Grid.ColumnDefinitions>
 
                 <ListBox Grid.Column="0" Style="{StaticResource ListBoxStyle}" BorderThickness="1,0,1,1"
-                         ItemsSource="{Binding Tests}" SelectedItem="{Binding SelectedTest}" Name="Tests">
+                         ItemsSource="{Binding Tests}" SelectedItem="{Binding SelectedServiceTest}" Name="Tests">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                             <Grid>
@@ -184,7 +184,7 @@
                     </ListBox.ItemTemplate>
                 </ListBox>
 
-                <ContentControl Grid.Column="1" Visibility="{Binding SelectedTest}">
+                <ContentControl Grid.Column="1" Visibility="{Binding SelectedServiceTest}">
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
@@ -236,7 +236,7 @@
                             </Grid.RowDefinitions>
 
                             <TextBlock Grid.Row="0" Text="Inputs"/>
-                            <ig:XamGrid ItemsSource="{Binding SelectedTest.Inputs, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                            <ig:XamGrid ItemsSource="{Binding SelectedServiceTest.Inputs, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                         Grid.Row="1"
                                         AutoGenerateColumns="False"
                                         Style="{StaticResource XamGridStyle}"
@@ -311,7 +311,7 @@
                             <!-- Grid.Row="2" is in place for Assert - V3 -->
 
                             <TextBlock Grid.Row="3" Text="Outputs"/>
-                            <ig:XamGrid ItemsSource="{Binding SelectedTest.Outputs, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                            <ig:XamGrid ItemsSource="{Binding SelectedServiceTest.Outputs, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                         Grid.Row="1"
                                         AutoGenerateColumns="False"
                                         Style="{StaticResource XamGridStyle}"

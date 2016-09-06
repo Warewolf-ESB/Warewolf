@@ -17,7 +17,7 @@ namespace Dev2.ViewModels
     {
         readonly IPopupController _popupController;
 
-        public StudioTestViewModel(IEventAggregator eventPublisher, ITestViewModel vm, IPopupController popupController,IView view)
+        public StudioTestViewModel(IEventAggregator eventPublisher, IServiceTestViewModel vm, IPopupController popupController,IView view)
             : base(eventPublisher)
         {
             ViewModel = vm;
@@ -37,7 +37,7 @@ namespace Dev2.ViewModels
         {
             _eventPublisher.Unsubscribe(this);
             base.OnDispose();
-            if (ViewModel != null) ViewModel.Dispose();
+            ViewModel?.Dispose();
         }
 
         public override object GetView(object context = null)
@@ -62,22 +62,23 @@ namespace Dev2.ViewModels
             }
         }
 
-
-
         [SuppressMessage("ReSharper", "UnusedMember.Global")]
         public string ResourceType
         {
             get
-            {               
+            {
+                if (ViewModel?.Image != null)
+                {
+                    return ViewModel.Image;
+                }
                 return "Unknown";
             }
         }
 
-
         #region Implementation of IHelpSource
 
         public string HelpText { get; set; }
-        public ITestViewModel ViewModel { get; set; }
+        public IServiceTestViewModel ViewModel { get; set; }
         public IView View { get; set; }
 
         #endregion
