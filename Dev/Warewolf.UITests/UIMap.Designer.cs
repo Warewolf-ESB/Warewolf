@@ -2400,6 +2400,7 @@ namespace Warewolf.UITests
             WpfComboBox forEachTypeComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ForEach.SmallView.ForEachTypeComboBox;
             WpfEdit textbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ForEach.SmallView.FromIntellisenseTextbox.Textbox;
             WpfCustom dropActivityHere = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ForEach.SmallView.DropActivityHere;
+            WpfEdit textbox1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ForEach.SmallView.ToIntellisenseTextbox.Textbox;
             #endregion
 
             // Type 'ForEach' in 'SearchTextBox' text box
@@ -2424,6 +2425,9 @@ namespace Warewolf.UITests
 
             // Verify that the 'Exists' property of 'Drop Activity Here' custom control equals 'True'
             Assert.AreEqual(this.Drag_Toolbox_For_Each_Onto_DesignSurfaceParams.DropActivityHereExists, dropActivityHere.Exists, "Activity drop box does not exist on for each.");
+
+            // Verify that the 'Exists' property of 'Text' text box equals 'True'
+            Assert.AreEqual(this.Drag_Toolbox_For_Each_Onto_DesignSurfaceParams.TextboxExists1, textbox1.Exists, "End textbox in in range foreach on the design surface does not exist.");
         }
         
         /// <summary>
@@ -4483,12 +4487,16 @@ namespace Warewolf.UITests
         {
             #region Variable Declarations
             WpfTreeItem firstItem = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem;
+            WpfMenuItem open = this.MainStudioWindow.ExplorerContextMenu.Open;
             WpfMenuItem showDependencies = this.MainStudioWindow.ExplorerContextMenu.ShowDependencies;
             WpfMenuItem delete = this.MainStudioWindow.ExplorerContextMenu.Delete;
             #endregion
 
             // Right-Click 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item
             Mouse.Click(firstItem, MouseButtons.Right, ModifierKeys.None, new Point(107, 9));
+
+            // Verify that the 'Exists' property of 'Open' menu item equals 'True'
+            Assert.AreEqual(this.RightClick_Explorer_Localhost_First_ItemParams.OpenExists, open.Exists, "Open does not exist in explorer context menu.");
 
             // Verify that the 'Exists' property of 'Show Dependencies' menu item equals 'True'
             Assert.AreEqual(this.RightClick_Explorer_Localhost_First_ItemParams.ShowDependenciesExists, showDependencies.Exists, "ShowDependencies does not exist in explorer context menu.");
@@ -4901,19 +4909,6 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
-        /// Select_Delete_FromContextMenu
-        /// </summary>
-        public void Select_Delete_FromContextMenu()
-        {
-            #region Variable Declarations
-            WpfMenuItem delete = this.MainStudioWindow.DesignSurfaceContextMenu.Delete;
-            #endregion
-
-            // Click 'Delete' menu item
-            Mouse.Click(delete, new Point(27, 18));
-        }
-        
-        /// <summary>
         /// Select_CopyAsImage_FromContextMenu
         /// </summary>
         public void Select_CopyAsImage_FromContextMenu()
@@ -4937,6 +4932,19 @@ namespace Warewolf.UITests
 
             // Click 'Cut' menu item
             Mouse.Click(cut, new Point(53, 16));
+        }
+        
+        /// <summary>
+        /// Select_Delete_FromContextMenu
+        /// </summary>
+        public void Select_Delete_FromContextMenu()
+        {
+            #region Variable Declarations
+            WpfMenuItem delete = this.MainStudioWindow.DesignSurfaceContextMenu.Delete;
+            #endregion
+
+            // Click 'Delete' menu item
+            Mouse.Click(delete, new Point(27, 18));
         }
         
         /// <summary>
@@ -5237,6 +5245,19 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
+        /// Select_Open_FromExplorerContextMenu
+        /// </summary>
+        public void Select_Open_FromExplorerContextMenu()
+        {
+            #region Variable Declarations
+            WpfMenuItem open = this.MainStudioWindow.ExplorerContextMenu.Open;
+            #endregion
+
+            // Click 'Open' menu item
+            Mouse.Click(open, new Point(30, 11));
+        }
+        
+        /// <summary>
         /// Select_Paste_FromContextMenu
         /// </summary>
         public void Select_Paste_FromContextMenu()
@@ -5445,6 +5466,26 @@ namespace Warewolf.UITests
             // Verify that the 'Enabled' property of 'Test Connection' button equals 'True'
             Assert.AreEqual(this.Type_TestSite_into_Web_Source_Wizard_Address_TextboxParams.TestConnectionButtonEnabled, testConnectionButton.Enabled, "New web source wizard test connection button is not enabled after entering a vali" +
                     "d web address.");
+        }
+        
+        /// <summary>
+        /// Open_Explorer_First_Item_With_Context_Menu - Use 'Open_Explorer_First_Item_With_Context_MenuParams' to pass parameters into this method.
+        /// </summary>
+        public void Open_Explorer_First_Item_With_Context_Menu()
+        {
+            #region Variable Declarations
+            WpfTreeItem firstItem = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem;
+            WpfMenuItem open = this.MainStudioWindow.ExplorerContextMenu.Open;
+            #endregion
+
+            // Right-Click 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item
+            Mouse.Click(firstItem, MouseButtons.Right, ModifierKeys.None, new Point(107, 9));
+
+            // Verify that the 'Exists' property of 'Open' menu item equals 'True'
+            Assert.AreEqual(this.Open_Explorer_First_Item_With_Context_MenuParams.OpenExists, open.Exists, "Open does not exist in explorer context menu.");
+
+            // Click 'Open' menu item
+            Mouse.Click(open, new Point(30, 11));
         }
         
         #region Properties
@@ -7356,6 +7397,18 @@ namespace Warewolf.UITests
             }
         }
         
+        public virtual Open_Explorer_First_Item_With_Context_MenuParams Open_Explorer_First_Item_With_Context_MenuParams
+        {
+            get
+            {
+                if ((this.mOpen_Explorer_First_Item_With_Context_MenuParams == null))
+                {
+                    this.mOpen_Explorer_First_Item_With_Context_MenuParams = new Open_Explorer_First_Item_With_Context_MenuParams();
+                }
+                return this.mOpen_Explorer_First_Item_With_Context_MenuParams;
+            }
+        }
+        
         public MainStudioWindow MainStudioWindow
         {
             get
@@ -7783,6 +7836,8 @@ namespace Warewolf.UITests
         private Type_rsaklfsvrgen_into_DB_Source_Wizard_Server_TextboxParams mType_rsaklfsvrgen_into_DB_Source_Wizard_Server_TextboxParams;
         
         private Type_TestSite_into_Web_Source_Wizard_Address_TextboxParams mType_TestSite_into_Web_Source_Wizard_Address_TextboxParams;
+        
+        private Open_Explorer_First_Item_With_Context_MenuParams mOpen_Explorer_First_Item_With_Context_MenuParams;
         
         private MainStudioWindow mMainStudioWindow;
         
@@ -9404,6 +9459,11 @@ namespace Warewolf.UITests
         /// Verify that the 'Exists' property of 'Drop Activity Here' custom control equals 'True'
         /// </summary>
         public bool DropActivityHereExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Text' text box equals 'True'
+        /// </summary>
+        public bool TextboxExists1 = true;
         #endregion
     }
     
@@ -10886,6 +10946,11 @@ namespace Warewolf.UITests
         
         #region Fields
         /// <summary>
+        /// Verify that the 'Exists' property of 'Open' menu item equals 'True'
+        /// </summary>
+        public bool OpenExists = true;
+        
+        /// <summary>
         /// Verify that the 'Exists' property of 'Show Dependencies' menu item equals 'True'
         /// </summary>
         public bool ShowDependenciesExists = true;
@@ -11139,6 +11204,21 @@ namespace Warewolf.UITests
         /// Verify that the 'Enabled' property of 'Test Connection' button equals 'True'
         /// </summary>
         public bool TestConnectionButtonEnabled = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Open_Explorer_First_Item_With_Context_Menu'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Open_Explorer_First_Item_With_Context_MenuParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Open' menu item equals 'True'
+        /// </summary>
+        public bool OpenExists = true;
         #endregion
     }
     
@@ -11763,6 +11843,22 @@ namespace Warewolf.UITests
         }
         
         #region Properties
+        public WpfMenuItem Open
+        {
+            get
+            {
+                if ((this.mOpen == null))
+                {
+                    this.mOpen = new WpfMenuItem(this);
+                    #region Search Criteria
+                    this.mOpen.SearchProperties[WpfMenuItem.PropertyNames.AutomationId] = "Open";
+                    this.mOpen.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mOpen;
+            }
+        }
+        
         public WpfMenuItem NewWorkflow
         {
             get
@@ -11989,6 +12085,8 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
+        private WpfMenuItem mOpen;
+        
         private WpfMenuItem mNewWorkflow;
         
         private WpfMenuItem mNewServerSource;

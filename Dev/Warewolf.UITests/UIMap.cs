@@ -508,7 +508,7 @@ namespace Warewolf.UITests
             }
         }
 
-        private void WaitForControlVisible(UITestControl control, int searchTimeout = 60000)
+        public void WaitForControlVisible(UITestControl control, int searchTimeout = 60000)
         {
             control.WaitForControlCondition((uicontrol) =>
             {
@@ -526,6 +526,11 @@ namespace Warewolf.UITests
                 TryClickMessageBoxOK();
                 return !uicontrol.TryGetClickablePoint(out point);
             }, searchTimeout * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString()));
+        }
+
+        public void WaitForSpinner(UITestControl control, int searchTimeout = 60000)
+        {
+            WaitForControlNotVisible(control, searchTimeout);
         }
 
         public void Enter_Service_Name_Into_Save_Dialog(string ServiceName)

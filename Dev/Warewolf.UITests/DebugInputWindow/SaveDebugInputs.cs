@@ -13,7 +13,8 @@ namespace Warewolf.UITests.DebugInputWindow
         public void SaveDebugInputsUITest()
         {
             Uimap.Enter_Text_Into_Explorer_Filter("Hello World");
-            Uimap.DoubleClick_Explorer_Localhost_First_Item();
+            Uimap.WaitForSpinner(Uimap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);
+            Uimap.Open_Explorer_First_Item_With_Context_Menu();
             Uimap.Click_Debug_Ribbon_Button();
             Uimap.MainStudioWindow.DebugInputDialog.RememberDebugInputCheckBox.Checked = true;
             Uimap.Enter_Text_Into_Debug_Input_Row1_Value_Textbox(InputDataText);
