@@ -1,5 +1,6 @@
 ﻿
 using System;
+using System.Collections.ObjectModel;
 using System.Windows.Input;
 using Dev2.Common.Interfaces;
 using Dev2.Studio.Core.Interfaces;
@@ -8,12 +9,15 @@ using Microsoft.Practices.Prism.Mvvm;
 
 namespace Warewolf.Studio.ViewModels
 {
-    public class TestFrameworkViewModel : BindableBase
+    public class TestFrameworkViewModel : BindableBase, ITestFrameworkViewModel
     {
 
         private bool _canCreateTest;
         private bool _canStopTest;
-        private ITestFrameworkModel _testFrameworkModel;
+        private ITestFrameworkModel _selectedTest;
+        private string _runAllTestsUrl;
+        private string _testPassingResult;
+        private ObservableCollection<ITestFrameworkModel> _testsList;
 
         public TestFrameworkViewModel(IResourceModel resourceModel)
             : this()
@@ -27,18 +31,18 @@ namespace Warewolf.Studio.ViewModels
 
         private TestFrameworkViewModel()
         {
-            RenameCommand = new DelegateCommand(RenameAction, () => CanRename);
-            SaveCommand = new DelegateCommand(SaveAction, () => CanSave);
-            EnableTestCommand = new DelegateCommand(EnableTestAction, () => CanEnableTest);
-            DisableTestCommand = new DelegateCommand(DisableTestAction, () => CanDisableTest);
-            DeleteTestCommand = new DelegateCommand(DeleteTestAction, () => CanDeleteTest);
-            DuplicateTestCommand = new DelegateCommand(DuplicateTestAction, () => CanDuplicateTest);
-            RunAllTestsInBrowserCommand = new DelegateCommand(RunAllTestsInBrowserAction, () => CanRunAllTestsInBrowser);
-            RunAllTestsCommand = new DelegateCommand(RunAllTestsCommandAction, () => CanRunAllTestsCommand);
-            RunSelectedTestInBrowserCommand = new DelegateCommand(RunSelectedTestInBrowserAction, () => CanRunSelectedTestInBrowser);
-            RunSelectedTestCommand = new DelegateCommand(RunSelectedTestAction, () => CanRunSelectedTest);
-            StopTestCommand = new DelegateCommand(StopTestAction, () => CanStopTest);
-            CreateTestCommand = new DelegateCommand(CreateTestAction, () => CanCreateTest);
+            TestFrameworkCommandHandler.RenameCommand = new DelegateCommand(RenameAction, () => CanRename);
+            TestFrameworkCommandHandler.SaveCommand = new DelegateCommand(SaveAction, () => CanSave);
+            TestFrameworkCommandHandler.EnableTestCommand = new DelegateCommand(EnableTestAction, () => CanEnableTest);
+            TestFrameworkCommandHandler.DisableTestCommand = new DelegateCommand(DisableTestAction, () => CanDisableTest);
+            TestFrameworkCommandHandler.DeleteTestCommand = new DelegateCommand(DeleteTestAction, () => CanDeleteTest);
+            TestFrameworkCommandHandler.DuplicateTestCommand = new DelegateCommand(DuplicateTestAction, () => CanDuplicateTest);
+            TestFrameworkCommandHandler.RunAllTestsInBrowserCommand = new DelegateCommand(RunAllTestsInBrowserAction, () => CanRunAllTestsInBrowser);
+            TestFrameworkCommandHandler.RunAllTestsCommand = new DelegateCommand(RunAllTestsCommandAction, () => CanRunAllTestsCommand);
+            TestFrameworkCommandHandler.RunSelectedTestInBrowserCommand = new DelegateCommand(RunSelectedTestInBrowserAction, () => CanRunSelectedTestInBrowser);
+            TestFrameworkCommandHandler.RunSelectedTestCommand = new DelegateCommand(RunSelectedTestAction, () => CanRunSelectedTest);
+            TestFrameworkCommandHandler.StopTestCommand = new DelegateCommand(StopTestAction, () => CanStopTest);
+            TestFrameworkCommandHandler.CreateTestCommand = new DelegateCommand(CreateTestAction, () => CanCreateTest);
         }
 
         public bool CanCreateTest
@@ -100,12 +104,6 @@ namespace Warewolf.Studio.ViewModels
         {
         }
 
-        public bool CanRunTest { get; set; }
-
-        private void RunTestAction()
-        {
-        }
-
         public bool CanDuplicateTest { get; set; }
 
         private void DuplicateTestAction()
@@ -144,35 +142,51 @@ namespace Warewolf.Studio.ViewModels
         {
         }
 
-
-
-        public ICommand RenameCommand { get; set; }
-        public ICommand SaveCommand { get; set; }
-        public ICommand EnableTestCommand { get; set; }
-        public ICommand DisableTestCommand { get; set; }
-        public ICommand DeleteTestCommand { get; set; }
-        public ICommand DuplicateTestCommand { get; set; }
-        public ICommand RunAllTestsInBrowserCommand { get; set; }
-        public ICommand RunAllTestsCommand { get; set; }
-        public ICommand RunSelectedTestInBrowserCommand { get; set; }
-        public ICommand RunSelectedTestCommand { get; set; }
-        public ICommand StopTestCommand { get; set; }
-        public ICommand CreateTestCommand { get; set; }
-
         #endregion
 
-        public ITestFrameworkModel TestFrameworkModel
+        public ITestFrameworkModel SelectedTest
         {
             get
             {
-                return _testFrameworkModel;
+                return _selectedTest;
             }
             set
             {
-                _testFrameworkModel = value;
-                OnPropertyChanged(() => TestFrameworkModel);
+                _selectedTest = value;
+                OnPropertyChanged(() => SelectedTest);
             }
         }
-        public ICommand WebRunTestCommand { get; set; }
+
+        public ITestFrameworkCommandHandler TestFrameworkCommandHandler { get; set; }
+
+        public string RunAllTestsUrl
+        {
+            get { return _runAllTestsUrl; }
+            set
+            {
+                _runAllTestsUrl = value;
+                OnPropertyChanged(() => RunAllTestsUrl);
+            }
+        }
+
+        public string TestPassingResult
+        {
+            get { return _testPassingResult; }
+            set
+            {
+                _testPassingResult = value; 
+                OnPropertyChanged(() => TestPassingResult);
+            }
+        }
+
+        public ObservableCollection<ITestFrameworkModel> TestsList
+        {
+            get { return _testsList; }
+            set
+            {
+                _testsList = value; 
+                OnPropertyChanged(() => TestsList);
+            }
+        }
     }
 }
