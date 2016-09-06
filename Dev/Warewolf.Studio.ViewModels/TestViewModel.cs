@@ -25,17 +25,17 @@ namespace Warewolf.Studio.ViewModels
             ResourceModel = resourceModel;
             TestCommandHandler = new TestCommandHandlerModel();
 
-            SaveCommand = new DelegateCommand(TestCommandHandler.SaveAction, () => CanSave);
-            DeleteTestCommand = new DelegateCommand(TestCommandHandler.DeleteTestAction, () => CanDeleteTest);
-            DuplicateTestCommand = new DelegateCommand(TestCommandHandler.DuplicateTestAction, () => CanDuplicateTest);
-            RunAllTestsInBrowserCommand = new DelegateCommand(TestCommandHandler.RunAllTestsInBrowserAction, () => CanRunAllTestsInBrowser);
-            RunAllTestsCommand = new DelegateCommand(TestCommandHandler.RunAllTestsCommandAction, () => CanRunAllTestsCommand);
-            RunSelectedTestInBrowserCommand = new DelegateCommand(TestCommandHandler.RunSelectedTestInBrowserAction, () => CanRunSelectedTestInBrowser);
-            RunSelectedTestCommand = new DelegateCommand(TestCommandHandler.RunSelectedTestAction, () => CanRunSelectedTest);
-            StopTestCommand = new DelegateCommand(TestCommandHandler.StopTestAction, () => CanStopTest);
+            SaveCommand = new DelegateCommand(TestCommandHandler.Save, () => CanSave);
+            DeleteTestCommand = new DelegateCommand(TestCommandHandler.DeleteTest, () => CanDeleteTest);
+            DuplicateTestCommand = new DelegateCommand(TestCommandHandler.DuplicateTest, () => CanDuplicateTest);
+            RunAllTestsInBrowserCommand = new DelegateCommand(TestCommandHandler.RunAllTestsInBrowser, () => CanRunAllTestsInBrowser);
+            RunAllTestsCommand = new DelegateCommand(TestCommandHandler.RunAllTestsCommand, () => CanRunAllTestsCommand);
+            RunSelectedTestInBrowserCommand = new DelegateCommand(TestCommandHandler.RunSelectedTestInBrowser, () => CanRunSelectedTestInBrowser);
+            RunSelectedTestCommand = new DelegateCommand(TestCommandHandler.RunSelectedTest, () => CanRunSelectedTest);
+            StopTestCommand = new DelegateCommand(TestCommandHandler.StopTest, () => CanStopTest);
             CreateTestCommand = new DelegateCommand(() =>
             {
-                var testModel = TestCommandHandler.CreateTestAction();
+                var testModel = TestCommandHandler.CreateTest(ResourceModel);
                 if (Tests == null)
                 {
                     Tests = new ObservableCollection<ITestModel>();

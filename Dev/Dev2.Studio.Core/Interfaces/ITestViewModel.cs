@@ -1,7 +1,8 @@
 using System.Collections.ObjectModel;
 using System.Windows.Input;
+using Dev2.Common.Interfaces;
 
-namespace Dev2.Common.Interfaces
+namespace Dev2.Studio.Core.Interfaces
 {
     public interface ITestViewModel
     {
