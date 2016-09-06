@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Dev2.Common.Interfaces;
 using Microsoft.Practices.Prism.Mvvm;
 
@@ -32,6 +33,7 @@ namespace Warewolf.Studio.ViewModels
         }
 
         public string Password { get; set; }
+        public DateTime LastRunDate { get; set; }
         public List<ITestInput> Inputs { get; set; }
         public List<ITestOutput> OutPuts { get; set; }
         public bool Error { get; set; }
