@@ -299,8 +299,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Service", "Service", "{B9BA
 		TestScripts\Server\Service\Startup.bat = TestScripts\Server\Service\Startup.bat
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.AcceptanceTesting.ServerTestFramework", "Warewolf.AcceptanceTesting.ServerTestFramework\Warewolf.AcceptanceTesting.ServerTestFramework.csproj", "{BF11C2CF-26D7-40F8-92D2-375FA4EBF24D}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.AcceptanceTesting.StudioTestFramework", "Warewolf.AcceptanceTesting.StudioTestFramework\Warewolf.AcceptanceTesting.StudioTestFramework.csproj", "{CB404A9C-12BC-4C77-8093-E12E070C0FB1}"
 EndProject
 Global
@@ -652,10 +650,6 @@ Global
 		{A4F1DAA7-9EAB-4E46-9E73-BAE87179F737}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A4F1DAA7-9EAB-4E46-9E73-BAE87179F737}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A4F1DAA7-9EAB-4E46-9E73-BAE87179F737}.Release|Any CPU.Build.0 = Release|Any CPU
-		{BF11C2CF-26D7-40F8-92D2-375FA4EBF24D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{BF11C2CF-26D7-40F8-92D2-375FA4EBF24D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{BF11C2CF-26D7-40F8-92D2-375FA4EBF24D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{BF11C2CF-26D7-40F8-92D2-375FA4EBF24D}.Release|Any CPU.Build.0 = Release|Any CPU
 		{CB404A9C-12BC-4C77-8093-E12E070C0FB1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{CB404A9C-12BC-4C77-8093-E12E070C0FB1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CB404A9C-12BC-4C77-8093-E12E070C0FB1}.Release|Any CPU.ActiveCfg = Release|Any CPU
