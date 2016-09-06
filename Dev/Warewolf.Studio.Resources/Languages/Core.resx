@@ -2689,6 +2689,9 @@ If this option is not selected, the test will not run part of the Run All list o
   <data name="TestsErrorExpectedHelpText" xml:space="preserve">
     <value>The test expects an error</value>
   </data>
+  <data name="TestsInputValueTooltip" xml:space="preserve">
+    <value>Input value to test against</value>
+  </data>
   <data name="ManageWebSourceUserNameTooltip" xml:space="preserve">
     <value>The name of the account</value>
   </data>
