@@ -22,9 +22,9 @@ namespace Warewolf.Studio.ViewModels.Tests
                   }
               };
             //------------Execute Test---------------------------
-            testModel.Name = "Test Name";
+            testModel.TestName = "Test Name";
             //------------Assert Results-------------------------
-            Assert.AreEqual("Test Name",testModel.Name);
+            Assert.AreEqual("Test Name",testModel.TestName);
             Assert.IsTrue(_wasCalled);
         }
 
@@ -44,9 +44,9 @@ namespace Warewolf.Studio.ViewModels.Tests
                 }
             };
             //------------Execute Test---------------------------
-            testModel.Username = "theUser";
+            testModel.UserName = "theUser";
             //------------Assert Results-------------------------
-            Assert.AreEqual("theUser", testModel.Username);
+            Assert.AreEqual("theUser", testModel.UserName);
             Assert.IsTrue(_wasCalled);
         }
     }

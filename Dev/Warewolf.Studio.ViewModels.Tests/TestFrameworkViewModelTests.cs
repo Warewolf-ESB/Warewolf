@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using Dev2.Common.Interfaces;
 using Dev2.Studio.Core.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -22,7 +24,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
 
             //------------Execute Test---------------------------
-            new TestFrameworkViewModel(null);
+            new TestViewModel(null);
             //------------Assert Results-------------------------
         }
 
@@ -35,82 +37,42 @@ namespace Warewolf.Studio.ViewModels.Tests
 
 
             //------------Execute Test---------------------------
-            var testVM = new TestFrameworkViewModel(new Mock<IResourceModel>().Object);
+            var testVM = new TestViewModel(new Mock<IResourceModel>().Object);
             //------------Assert Results-------------------------
             Assert.IsNotNull(testVM);
             Assert.IsNotNull(testVM.ResourceModel);
         }
 
-        [TestMethod]
-        [Owner("Nkosinathi Sangweni")]
-        public void OnCreation_GivenIsNew_ShouldHaveRenameCommand()
-        {
-            //---------------Set up test pack-------------------
-            var vm = new TestFrameworkViewModel(CreateResourceModel());
-            //---------------Assert Precondition----------------
-            Assert.IsNotNull(vm);
-            //---------------Execute Test ----------------------
-            Assert.IsNotNull(vm.TestFrameworkCommandHandler.RenameCommand);
-            //---------------Test Result -----------------------
-            Assert.IsFalse(vm.TestFrameworkCommandHandler.RenameCommand.CanExecute(null));
-        }
+   
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void OnCreation_GivenIsNew_ShouldHaveSaveCommand()
         {
             //---------------Set up test pack-------------------
-            var vm = new TestFrameworkViewModel(CreateResourceModel());
+            var vm = new TestViewModel(CreateResourceModel());
             //---------------Assert Precondition----------------
             Assert.IsNotNull(vm);
             //---------------Execute Test ----------------------
-            Assert.IsNotNull(vm.TestFrameworkCommandHandler.SaveCommand);
+            Assert.IsNotNull(vm.SaveCommand);
             //---------------Test Result -----------------------
-            Assert.IsFalse(vm.TestFrameworkCommandHandler.SaveCommand.CanExecute(null));
+            Assert.IsFalse(vm.SaveCommand.CanExecute(null));
         }
 
 
-        [TestMethod]
-        [Owner("Nkosinathi Sangweni")]
-        public void OnCreation_GivenIsNew_ShouldHaveEnableTestCommand()
-        {
-            //---------------Set up test pack-------------------
-            var vm = new TestFrameworkViewModel(CreateResourceModel());
-            //---------------Assert Precondition----------------
-            Assert.IsNotNull(vm);
-            //---------------Execute Test ----------------------
-            Assert.IsNotNull(vm.TestFrameworkCommandHandler.EnableTestCommand);
-            //---------------Test Result -----------------------
-            Assert.IsFalse(vm.TestFrameworkCommandHandler.EnableTestCommand.CanExecute(null));
-        }
-
-
-        [TestMethod]
-        [Owner("Nkosinathi Sangweni")]
-        public void OnCreation_GivenIsNew_ShouldHaveDisableTestCommand()
-        {
-            //---------------Set up test pack-------------------
-            var vm = new TestFrameworkViewModel(CreateResourceModel());
-            //---------------Assert Precondition----------------
-            Assert.IsNotNull(vm);
-            //---------------Execute Test ----------------------
-            Assert.IsNotNull(vm.TestFrameworkCommandHandler.DisableTestCommand);
-            //---------------Test Result -----------------------
-            Assert.IsFalse(vm.TestFrameworkCommandHandler.DisableTestCommand.CanExecute(null));
-        }
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void OnCreation_GivenIsNew_ShouldHaveDeleteTestCommand()
         {
             //---------------Set up test pack-------------------
-            var vm = new TestFrameworkViewModel(CreateResourceModel());
+            var vm = new TestViewModel(CreateResourceModel());
             //---------------Assert Precondition----------------
             Assert.IsNotNull(vm);
             //---------------Execute Test ----------------------
-            Assert.IsNotNull(vm.TestFrameworkCommandHandler.DeleteTestCommand);
+            Assert.IsNotNull(vm.DeleteTestCommand);
             //---------------Test Result -----------------------
-            Assert.IsFalse(vm.TestFrameworkCommandHandler.DeleteTestCommand.CanExecute(null));
+            Assert.IsFalse(vm.DeleteTestCommand.CanExecute(null));
         }
 
         [TestMethod]
@@ -118,13 +80,13 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void OnCreation_GivenIsNew_ShouldHaveDuplicateTestCommand()
         {
             //---------------Set up test pack-------------------
-            var vm = new TestFrameworkViewModel(CreateResourceModel());
+            var vm = new TestViewModel(CreateResourceModel());
             //---------------Assert Precondition----------------
             Assert.IsNotNull(vm);
             //---------------Execute Test ----------------------
-            Assert.IsNotNull(vm.TestFrameworkCommandHandler.DuplicateTestCommand);
+            Assert.IsNotNull(vm.DuplicateTestCommand);
             //---------------Test Result -----------------------
-            Assert.IsFalse(vm.TestFrameworkCommandHandler.DuplicateTestCommand.CanExecute(null));
+            Assert.IsFalse(vm.DuplicateTestCommand.CanExecute(null));
         }
 
 
@@ -133,13 +95,13 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void OnCreation_GivenIsNew_ShouldHaveStopTestCommand()
         {
             //---------------Set up test pack-------------------
-            var vm = new TestFrameworkViewModel(CreateResourceModel());
+            var vm = new TestViewModel(CreateResourceModel());
             //---------------Assert Precondition----------------
             Assert.IsNotNull(vm);
             //---------------Execute Test ----------------------
-            Assert.IsNotNull(vm.TestFrameworkCommandHandler.StopTestCommand);
+            Assert.IsNotNull(vm.StopTestCommand);
             //---------------Test Result -----------------------
-            Assert.IsFalse(vm.TestFrameworkCommandHandler.StopTestCommand.CanExecute(null));
+            Assert.IsFalse(vm.StopTestCommand.CanExecute(null));
         }
 
 
@@ -148,13 +110,13 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void OnCreation_GivenIsNew_ShouldHaveCreateTestCommand()
         {
             //---------------Set up test pack-------------------
-            var vm = new TestFrameworkViewModel(CreateResourceModel());
+            var vm = new TestViewModel(CreateResourceModel());
             //---------------Assert Precondition----------------
             Assert.IsNotNull(vm);
             //---------------Execute Test ----------------------
-            Assert.IsNotNull(vm.TestFrameworkCommandHandler.CreateTestCommand);
+            Assert.IsNotNull(vm.CreateTestCommand);
             //---------------Test Result -----------------------
-            Assert.IsTrue(vm.TestFrameworkCommandHandler.CreateTestCommand.CanExecute(null));
+            Assert.IsTrue(vm.CreateTestCommand.CanExecute(null));
         }
         private IResourceModel CreateResourceModel()
         {
@@ -167,13 +129,13 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void OnCreation_GivenIsNew_ShouldHaveModel()
         {
             //---------------Set up test pack-------------------
-            var vm = new TestFrameworkViewModel(CreateResourceModel());
+            var vm = new TestViewModel(CreateResourceModel());
             //---------------Assert Precondition----------------
             Assert.IsNotNull(vm);
             //---------------Execute Test ----------------------
-            Assert.IsNotNull(vm.TestFrameworkCommandHandler.CreateTestCommand);
+            Assert.IsNotNull(vm.CreateTestCommand);
             //---------------Test Result -----------------------
-            Assert.IsTrue(vm.TestFrameworkCommandHandler.CreateTestCommand.CanExecute(null));
+            Assert.IsTrue(vm.CreateTestCommand.CanExecute(null));
         }
 
         [TestMethod]
@@ -181,13 +143,13 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void OnCreation_GivenIsNew_ShouldHaveRunAllTestsCommand()
         {
             //---------------Set up test pack-------------------
-            var vm = new TestFrameworkViewModel(CreateResourceModel());
+            var vm = new TestViewModel(CreateResourceModel());
             //---------------Assert Precondition----------------
             Assert.IsNotNull(vm);
             //---------------Execute Test ----------------------
-            Assert.IsNotNull(vm.TestFrameworkCommandHandler.RunAllTestsCommand);
+            Assert.IsNotNull(vm.RunAllTestsCommand);
             //---------------Test Result -----------------------
-            Assert.IsFalse(vm.TestFrameworkCommandHandler.RunAllTestsCommand.CanExecute(null));
+            Assert.IsFalse(vm.RunAllTestsCommand.CanExecute(null));
         }
 
 
@@ -196,13 +158,13 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void OnCreation_GivenIsNew_ShouldHaveRunSelectedTestCommand()
         {
             //---------------Set up test pack-------------------
-            var vm = new TestFrameworkViewModel(CreateResourceModel());
+            var vm = new TestViewModel(CreateResourceModel());
             //---------------Assert Precondition----------------
             Assert.IsNotNull(vm);
             //---------------Execute Test ----------------------
-            Assert.IsNotNull(vm.TestFrameworkCommandHandler.RunSelectedTestCommand);
+            Assert.IsNotNull(vm.RunSelectedTestCommand);
             //---------------Test Result -----------------------
-            Assert.IsFalse(vm.TestFrameworkCommandHandler.RunSelectedTestCommand.CanExecute(null));
+            Assert.IsFalse(vm.RunSelectedTestCommand.CanExecute(null));
         }
 
 
@@ -212,13 +174,13 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void OnCreation_GivenIsNew_ShouldHaveRunAllTestsInBrowserCommand()
         {
             //---------------Set up test pack-------------------
-            var vm = new TestFrameworkViewModel(CreateResourceModel());
+            var vm = new TestViewModel(CreateResourceModel());
             //---------------Assert Precondition----------------
             Assert.IsNotNull(vm);
             //---------------Execute Test ----------------------
-            Assert.IsNotNull(vm.TestFrameworkCommandHandler.RunAllTestsInBrowserCommand);
+            Assert.IsNotNull(vm.RunAllTestsInBrowserCommand);
             //---------------Test Result -----------------------
-            Assert.IsFalse(vm.TestFrameworkCommandHandler.RunAllTestsInBrowserCommand.CanExecute(null));
+            Assert.IsFalse(vm.RunAllTestsInBrowserCommand.CanExecute(null));
         }
 
         [TestMethod]
@@ -226,13 +188,13 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void OnCreation_GivenIsNew_ShouldHaveRunSelectedTestInBrowserCommand()
         {
             //---------------Set up test pack-------------------
-            var vm = new TestFrameworkViewModel(CreateResourceModel());
+            var vm = new TestViewModel(CreateResourceModel());
             //---------------Assert Precondition----------------
             Assert.IsNotNull(vm);
             //---------------Execute Test ----------------------
-            Assert.IsNotNull(vm.TestFrameworkCommandHandler.RunSelectedTestInBrowserCommand);
+            Assert.IsNotNull(vm.RunSelectedTestInBrowserCommand);
             //---------------Test Result -----------------------
-            Assert.IsFalse(vm.TestFrameworkCommandHandler.RunSelectedTestInBrowserCommand.CanExecute(null));
+            Assert.IsFalse(vm.RunSelectedTestInBrowserCommand.CanExecute(null));
         }
 
         [TestMethod]
@@ -241,7 +203,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void TestFrameworkViewModel_CreateTestCommand_Execute_ShouldAddANewTest()
         {
             //------------Setup for test--------------------------
-            var testFrameworkViewModel = new TestFrameworkViewModel(CreateResourceModel());
+            var testFrameworkViewModel = new TestViewModel(CreateResourceModel());
             //------------Assert Preconditions-------------------
             Assert.IsNull(testFrameworkViewModel.Tests);
             //------------Execute Test---------------------------
@@ -256,7 +218,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void TestFrameworkViewModel_CreateTestCommand_Execute_ShouldAddANewTestWithDefaultName()
         {
             //------------Setup for test--------------------------
-            var testFrameworkViewModel = new TestFrameworkViewModel(CreateResourceModel());
+            var testFrameworkViewModel = new TestViewModel(CreateResourceModel());
             //------------Assert Preconditions-------------------
             Assert.IsNull(testFrameworkViewModel.Tests);
             //------------Execute Test---------------------------
@@ -264,7 +226,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //------------Assert Results-------------------------
             var test = testFrameworkViewModel.Tests[0];
             Assert.IsNotNull(test);
-            Assert.AreEqual("Test 1", test.Name);
+            Assert.AreEqual("Test 1", test.TestName);
         }
 
         [TestMethod]
@@ -273,9 +235,9 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void TestFrameworkViewModel_CreateTestCommand_Executed_ShouldSetSelectedTestToNewlyCreatedTest()
         {
             //------------Setup for test--------------------------
-            var testFrameworkViewModel = new TestFrameworkViewModel(CreateResourceModel());
-            var testModel = new TestModel { Name = "Test 2" };
-            testFrameworkViewModel.Tests = new List<TestModel> { testModel };
+            var testFrameworkViewModel = new TestViewModel(CreateResourceModel());
+            var testModel = new TestModel { TestName = "Test 2" };
+            testFrameworkViewModel.Tests = new ObservableCollection<ITestModel> { testModel };
             testFrameworkViewModel.SelectedTest = testModel;
             //------------Assert Preconditions-------------------
             Assert.IsNotNull(testFrameworkViewModel.Tests);
@@ -296,7 +258,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void TestFrameworkViewModel_Tests_SetProperty_ShouldFireOnPropertyChanged()
         {
             //------------Setup for test--------------------------
-            var testFrameworkViewModel = new TestFrameworkViewModel(CreateResourceModel());
+            var testFrameworkViewModel = new TestViewModel(CreateResourceModel());
             var _wasCalled = false;
             testFrameworkViewModel.PropertyChanged += (sender, args) =>
               {
@@ -306,7 +268,7 @@ namespace Warewolf.Studio.ViewModels.Tests
                   }
               };
             //------------Execute Test---------------------------
-            testFrameworkViewModel.Tests = new List<TestModel>();
+            testFrameworkViewModel.Tests = new ObservableCollection<ITestModel>();
             //------------Assert Results-------------------------
             Assert.IsTrue(_wasCalled);
         }
@@ -317,7 +279,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void TestFrameworkViewModel_SelectedTest_SetProperty_ShouldFireOnPropertyChanged()
         {
             //------------Setup for test--------------------------
-            var testFrameworkViewModel = new TestFrameworkViewModel(CreateResourceModel());
+            var testFrameworkViewModel = new TestViewModel(CreateResourceModel());
             var _wasCalled = false;
             testFrameworkViewModel.PropertyChanged += (sender, args) =>
               {
