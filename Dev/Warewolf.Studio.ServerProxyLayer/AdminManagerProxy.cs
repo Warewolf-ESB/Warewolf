@@ -21,7 +21,7 @@ namespace Warewolf.Studio.ServerProxyLayer
         {
             var controller = CommunicationControllerFactory.CreateController("GetServerVersion");
             var version = controller.ExecuteCommand<string>(Connection, Guid.Empty);
-            return string.IsNullOrEmpty(version) ? Resources.Languages.Core.ServerNotAvailable : version;
+            return string.IsNullOrEmpty(version) ? Resources.Languages.Core.ServerVersionUnavailable : version;
         }
 
         #endregion
