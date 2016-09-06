@@ -155,7 +155,7 @@ namespace Dev2.Activities.Specs.TestFramework
         public void ThenOutputsAs(Table table)
         {
             TestViewModel test = GetTestFrameworkFromContext();
-            var outputs = test.SelectedTest.OutPuts;
+            var outputs = test.SelectedTest.Outputs;
             Assert.AreNotEqual(0, outputs.Count);
             var i = 0;
             foreach (var tableRow in table.Rows)
