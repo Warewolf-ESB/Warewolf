@@ -118,12 +118,9 @@ namespace Dev2.Common.Interfaces.Data
        bool IsReservedService { get; }
        bool IsServer { get; }
        bool IsResourceVersion { get; }
-        string ResourcePath { get; set; }
 
         void LoadDependencies(XElement xml);
 
         string GetResourcePath(Guid workspaceID);
-
-        string GetSavePath(Guid workspaceID);
     }
 }
