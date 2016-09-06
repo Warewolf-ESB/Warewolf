@@ -630,6 +630,11 @@ namespace Dev2.Studio.ViewModels
             BrowserPopupController.ShowPopup(url.ToString());
         }
 
+        public void CreateTest(Guid resourceId)
+        {
+            
+        }
+
         public void CloseResource(Guid resourceId, Guid environmentId)
         {
             var environmentModel = EnvironmentRepository.Get(environmentId);
