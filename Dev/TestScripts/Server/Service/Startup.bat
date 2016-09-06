@@ -71,21 +71,8 @@ IF EXIST %windir%\nircmd.exe (nircmd elevate sc config "Warewolf Server" binPath
 GOTO StartService
 
 :StartService
-REM ** Delete the Warewolf ProgramData folder
-IF EXIST %windir%\nircmd.exe (nircmd elevate cmd /c rd /S /Q "%PROGRAMDATA%\Warewolf\Resources") else (rd /S /Q "%PROGRAMDATA%\Warewolf\Resources")
-IF EXIST %windir%\nircmd.exe (nircmd elevate cmd /c rd /S /Q "%PROGRAMDATA%\Warewolf\Workspaces") else (rd /S /Q "%PROGRAMDATA%\Warewolf\Workspaces")
-IF EXIST %windir%\nircmd.exe (nircmd elevate cmd /c rd /S /Q "%PROGRAMDATA%\Warewolf\Server Settings") else (rd /S /Q "%PROGRAMDATA%\Warewolf\Server Settings")
-IF EXIST "%PROGRAMDATA%\Warewolf\Resources" powershell.exe -nologo -noprofile -command "& { Remove-Item '%PROGRAMDATA%\Warewolf\Resources' -Recurse -Force }"
-IF EXIST "%PROGRAMDATA%\Warewolf\Workspaces" powershell.exe -nologo -noprofile -command "& { Remove-Item '%PROGRAMDATA%\Warewolf\Workspaces' -Recurse -Force }"
-IF EXIST "%PROGRAMDATA%\Warewolf\Server Settings" powershell.exe -nologo -noprofile -command "& { Remove-Item '%PROGRAMDATA%\Warewolf\Server Settings' -Recurse -Force }"
-IF EXIST "%PROGRAMDATA%\Warewolf\Resources" exit 1
-IF EXIST "%PROGRAMDATA%\Warewolf\Workspaces" exit 1
-IF EXIST "%PROGRAMDATA%\Warewolf\Server Settings" exit 1
-
-REM ** Stop any existing Warewolf server processes
-IF EXIST %windir%\nircmd.exe (nircmd elevate taskkill /f /im "Warewolf Server.exe" /fi "STATUS eq RUNNING") else (taskkill /f /im "Warewolf Server.exe" /fi "STATUS eq RUNNING")
-IF EXIST %windir%\nircmd.exe (nircmd elevate taskkill /f /im "Warewolf Server.vshost.exe" /fi "STATUS eq RUNNING") else (taskkill /f /im "Warewolf Server.vshost.exe" /fi "STATUS eq RUNNING")
-IF EXIST %windir%\nircmd.exe (nircmd elevate taskkill /f /im WarewolfCOMIPC.exe /fi "STATUS eq RUNNING") else (taskkill /f /im WarewolfCOMIPC.exe /fi "STATUS eq RUNNING")
+REM ** Try run cleanup script
+IF EXIST "%~dp0Cleanup.bat" "%~dp0Cleanup.bat"
 
 REM ** Start the server service
 IF EXIST %windir%\nircmd.exe (nircmd elevate sc start "Warewolf Server") else (sc start "Warewolf Server")
