@@ -4,20 +4,26 @@
 	I want to create, edit, delete and update tests in a test window
 
 
-Scenario: Create new test from Explorer opens new window
-	Given I right click on the ExplorerItem on the explorer
-	And The ExplorerItem is not a source
-	And The ExplorerItem is not a serverSource	
-	When The ExplorerItem is a workflow service 
-	Then The WorkflowTestBuilder window is opened
+Background: Setup for workflows for tests
+			Given I have "Workflow 1" with inputs as
+			| Input Var Name |
+			| [[a]]          |
+			And "Workflow 1" has outputs as
+			| Ouput Var Name  |
+			| [[outputValue]] |
 
 Scenario: Create New Test
 	Given the test builder is open with "Workflow 1"
 	When I click New Test
-	Then new test case is visible
-	And Test name starts with "Workflow 1_"
+	Then Test name starts with "Test 1"
 	And username is blank
 	And password is blank
+	And inputs as
+	| Variable Name | Value |
+	| [[a]]         |       |
+	And outputs as
+	| Variable Name   | Value |
+	| [[outputValue]] |       |
 	And save is disabled
 	And test status is pending
 	And test is enabled
@@ -26,7 +32,7 @@ Scenario: Create New Test
 	
 
 Scenario: Edit existing test
-	Given The WorkflowTestBuilder window is opened
+	Given test builder is open with "Workflow 1"
 	And I select "test1"
 	Then Test name is "test1"
 	And test URL is "http://localhost:3142/secure/Examples/Workflow 1.tests/test1"
