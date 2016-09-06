@@ -203,5 +203,20 @@ namespace Warewolf.Studio.ViewModels.Tests
             //---------------Test Result -----------------------
             Assert.IsTrue(vm.CreateTestCommand.CanExecute(null));
         }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("TestFrameworkViewModel_CreateTestCommand")]
+        public void TestFrameworkViewModel_CreateTestCommand_Execute_ShouldAddANewTest()
+        {
+            //------------Setup for test--------------------------
+            var testFrameworkViewModel = new TestFrameworkViewModel(CreateResourceModel());
+            //------------Assert Preconditions-------------------
+            Assert.IsNull(testFrameworkViewModel.Tests);
+            //------------Execute Test---------------------------
+            testFrameworkViewModel.CreateTestCommand.Execute(null);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(1,testFrameworkViewModel.Tests.Count);
+        }
     }
 }

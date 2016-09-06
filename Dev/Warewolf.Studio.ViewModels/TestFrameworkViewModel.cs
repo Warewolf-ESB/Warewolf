@@ -1,5 +1,6 @@
 ﻿
 using System;
+using System.Collections.Generic;
 using System.Windows.Input;
 using Dev2.Common.Interfaces;
 using Dev2.Studio.Core.Interfaces;
@@ -58,6 +59,11 @@ namespace Warewolf.Studio.ViewModels
 
         private void CreateTestAction()
         {
+            if (Tests == null)
+            {
+                Tests = new List<TestModel>();
+            }
+            Tests.Add(new TestModel());
         }
 
         public bool CanStopTest
@@ -175,5 +181,12 @@ namespace Warewolf.Studio.ViewModels
             }
         }
         public ICommand WebRunTestCommand { get; set; }
+        public TestModel SelectedTest { get; set; }
+        public List<TestModel> Tests { get; set; }
+    }
+
+    public class TestModel
+    {
+        public string Name { get; set; }
     }
 }

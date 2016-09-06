@@ -14,8 +14,10 @@ Background: Setup for workflows for tests
 
 Scenario: Create New Test
 	Given the test builder is open with "Workflow 1"
+	And there are no tests
 	When I click New Test
-	Then Test name starts with "Test 1"
+	Then a new test is added
+	And test name starts with "Test 1"
 	And username is blank
 	And password is blank
 	And inputs as
