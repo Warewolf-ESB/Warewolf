@@ -331,9 +331,9 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsNotNull(testFrameworkViewModel.Tests);
             var test = testFrameworkViewModel.Tests[0];
             Assert.IsNotNull(test);
-            Assert.AreEqual(1, test.OutPuts.Count);
-            Assert.AreEqual("msg", test.OutPuts[0].Variable);
-            Assert.AreEqual(null, test.OutPuts[0].Value);
+            Assert.AreEqual(1, test.Outputs.Count);
+            Assert.AreEqual("msg", test.Outputs[0].Variable);
+            Assert.AreEqual(null, test.Outputs[0].Value);
         }
 
         private IResourceModel CreateResourceModelWithSingleScalarInput()

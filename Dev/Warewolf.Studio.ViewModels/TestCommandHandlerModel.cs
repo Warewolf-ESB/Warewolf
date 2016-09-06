@@ -22,7 +22,7 @@ namespace Warewolf.Studio.ViewModels
                                     .Where(scalar => scalar.IODirection == enDev2ColumnArgumentDirection.Input)
                                     .Select(sca => new TestInput(sca.Name, sca.Value) as ITestInput).ToList();
 
-                testModel.OutPuts = dataListModel.ShapeScalars?
+                testModel.Outputs = dataListModel.ShapeScalars?
                                     .Where(scalar => scalar.IODirection == enDev2ColumnArgumentDirection.Output)
                                     .Select(sca => new TestOutput(sca.Name, sca.Value) as ITestOutput).ToList();
             }            

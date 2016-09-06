@@ -13,6 +13,7 @@ namespace Warewolf.Studio.ViewModels
         private bool _testFailing;
         private bool _testPending;
         private bool _testInvalid;
+        private string _password;
 
         #region Implementation of ITestModel
 
