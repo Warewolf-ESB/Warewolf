@@ -7,10 +7,10 @@
 Background: Setup for workflows for tests
 			Given I have "Workflow 1" with inputs as
 			| Input Var Name |
-			| [[a]]          |
+			| a              |
 			And "Workflow 1" has outputs as
-			| Ouput Var Name  |
-			| [[outputValue]] |
+			| Ouput Var Name |
+			| outputValue    |
 
 Scenario: Create New Test
 	Given the test builder is open with "Workflow 1"
@@ -22,10 +22,10 @@ Scenario: Create New Test
 	And password is blank
 	And inputs as
 	| Variable Name | Value |
-	| [[a]]         |       |
+	| a             |       |
 	And outputs as
-	| Variable Name   | Value |
-	| [[outputValue]] |       |
+	| Variable Name | Value |
+	| outputValue   |       |
 	And save is disabled
 	And test status is pending
 	And test is enabled
