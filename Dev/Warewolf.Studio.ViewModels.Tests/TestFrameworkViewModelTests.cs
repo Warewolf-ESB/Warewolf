@@ -140,7 +140,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //---------------Test Result -----------------------
             Assert.IsFalse(vm.RunTestCommand.CanExecute(null));
         }
-
+        
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
