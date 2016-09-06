@@ -128,6 +128,29 @@ namespace Dev2.Activities.Specs.TestFramework
             Assert.AreEqual("", test.SelectedTest.UserName);
         }
 
+        [Then(@"password is blank")]
+        public void ThenPasswordIsBlank()
+        {
+            TestViewModel test = GetTestFrameworkFromContext();
+            Assert.AreEqual("", test.SelectedTest.Password);
+        }
+
+        [Then(@"inputs as")]
+        public void ThenInputsAs(Table table)
+        {
+            TestViewModel test = GetTestFrameworkFromContext();
+            var inputs = test.SelectedTest.Inputs;
+            Assert.AreNotEqual(0,inputs.Count);
+            var i = 0;
+            foreach(var tableRow in table.Rows)
+            {
+                Assert.AreEqual(tableRow["Variable Name"],inputs[i].Variable);
+                Assert.AreEqual(tableRow["Value"],inputs[i].Value);
+                i++;
+            }
+
+        }
+
 
         TestViewModel GetTestFrameworkFromContext()
         {

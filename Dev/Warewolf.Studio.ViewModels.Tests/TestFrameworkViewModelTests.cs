@@ -1,8 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using Dev2.Common.Interfaces;
+using Dev2.Data.Binary_Objects;
 using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Core.Models.DataList;
+using Dev2.Studio.ViewModels.DataList;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 // ReSharper disable ObjectCreationAsStatement
@@ -43,7 +45,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsNotNull(testVM.ResourceModel);
         }
 
-   
+
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
@@ -118,9 +120,11 @@ namespace Warewolf.Studio.ViewModels.Tests
             //---------------Test Result -----------------------
             Assert.IsTrue(vm.CreateTestCommand.CanExecute(null));
         }
+
         private IResourceModel CreateResourceModel()
         {
             var moqModel = new Mock<IResourceModel>();
+            moqModel.SetupAllProperties();
             return moqModel.Object;
         }
 
@@ -292,6 +296,35 @@ namespace Warewolf.Studio.ViewModels.Tests
             testFrameworkViewModel.SelectedTest = new TestModel();
             //------------Assert Results-------------------------
             Assert.IsTrue(_wasCalled);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("TestFrameworkViewModel_CreateTestCommand")]
+        public void TestFrameworkViewModel_CreateTestCommand_Execute_ShouldAddInputsFromResourceModel()
+        {
+            //------------Setup for test--------------------------
+            var testFrameworkViewModel = new TestViewModel(CreateResourceModelWithSingleScalarInput());
+            //------------Assert Preconditions-------------------
+            //------------Execute Test---------------------------
+            testFrameworkViewModel.CreateTestCommand.Execute(null);
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(testFrameworkViewModel.Tests);
+            var test = testFrameworkViewModel.Tests[0];
+            Assert.IsNotNull(test);
+            Assert.AreEqual(1, test.Inputs.Count);
+            Assert.AreEqual("a", test.Inputs[0].Variable);
+            Assert.AreEqual(null, test.Inputs[0].Value);
+        }
+
+        private IResourceModel CreateResourceModelWithSingleScalarInput()
+        {
+            var resourceModel = CreateResourceModel();
+            var dataListViewModel = new DataListViewModel();
+            dataListViewModel.InitializeDataListViewModel(resourceModel);
+            dataListViewModel.ScalarCollection.Add(new ScalarItemModel("a", enDev2ColumnArgumentDirection.Input));
+            dataListViewModel.WriteToResourceModel();
+            return resourceModel;
         }
     }
 }

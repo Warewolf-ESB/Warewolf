@@ -9,6 +9,7 @@ namespace Warewolf.Studio.ViewModels
     {
         private string _testName;
         private string _userName;
+        private string _password;
 
         #region Implementation of ITestModel
 
@@ -32,7 +33,18 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        public string Password { get; set; }
+        public string Password
+        {
+            get
+            {
+                return _password;
+            }
+            set
+            {
+                _password = value;
+                OnPropertyChanged(()=>Password);
+            }
+        }
         public DateTime LastRunDate { get; set; }
         public List<ITestInput> Inputs { get; set; }
         public List<ITestOutput> OutPuts { get; set; }

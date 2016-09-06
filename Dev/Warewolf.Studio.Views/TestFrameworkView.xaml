@@ -12,10 +12,11 @@
              xmlns:errors="clr-namespace:Dev2.Activities.Designers2.Core.Errors;assembly=Dev2.Activities.Designers"
              xmlns:ui="clr-namespace:Dev2.UI;assembly=Dev2.Intellisense"
              xmlns:interfaces="clr-namespace:Dev2.Common.Interfaces;assembly=Dev2.Common.Interfaces"
+             xmlns:interfaces1="clr-namespace:Dev2.Studio.Core.Interfaces;assembly=Dev2.Studio.Core"
              d:DesignHeight="300"
              d:DesignWidth="300"
              mc:Ignorable="d"
-             d:DataContext="{d:DesignInstance interfaces:ITestViewModel}"
+             d:DataContext="{d:DesignInstance interfaces1:ITestViewModel}"
              AutomationProperties.AutomationId="UI_TestFrameworkView_AutoID">
     <UserControl.Resources>
         <ResourceDictionary>

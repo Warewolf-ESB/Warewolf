@@ -16,7 +16,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var _wasCalled = false;
             testModel.PropertyChanged += (sender, args) =>
               {
-                  if (args.PropertyName == "Name")
+                  if (args.PropertyName == "TestName")
                   {
                       _wasCalled = true;
                   }
@@ -38,7 +38,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var _wasCalled = false;
             testModel.PropertyChanged += (sender, args) =>
             {
-                if (args.PropertyName == "Username")
+                if (args.PropertyName == "UserName")
                 {
                     _wasCalled = true;
                 }
@@ -47,6 +47,28 @@ namespace Warewolf.Studio.ViewModels.Tests
             testModel.UserName = "theUser";
             //------------Assert Results-------------------------
             Assert.AreEqual("theUser", testModel.UserName);
+            Assert.IsTrue(_wasCalled);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("TestModel_Name")]
+        public void TestModel_Password_WhenSet_ShouldFirePropertyChanged()
+        {
+            //------------Setup for test--------------------------
+            var testModel = new TestModel();
+            var _wasCalled = false;
+            testModel.PropertyChanged += (sender, args) =>
+            {
+                if (args.PropertyName == "Password")
+                {
+                    _wasCalled = true;
+                }
+            };
+            //------------Execute Test---------------------------
+            testModel.Password = "thePassword";
+            //------------Assert Results-------------------------
+            Assert.AreEqual("thePassword", testModel.Password);
             Assert.IsTrue(_wasCalled);
         }
     }
