@@ -193,6 +193,7 @@
     <Compile Include="SourceBaseImpl.cs" />
     <Compile Include="SplashViewModel.cs" />
     <Compile Include="TestCommandHandlerModel.cs" />
+    <Compile Include="TestInput.cs" />
     <Compile Include="TestModel.cs" />
     <Compile Include="TestViewModel.cs" />
     <Compile Include="ToolBox\ToolBoxCategoryViewModel.cs" />

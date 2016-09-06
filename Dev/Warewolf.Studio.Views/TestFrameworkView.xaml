@@ -15,7 +15,7 @@
              d:DesignHeight="300"
              d:DesignWidth="300"
              mc:Ignorable="d"
-             d:DataContext="{d:DesignInstance interfaces:ITestViewModel}"
+             d:DataContext="{d:DesignInstance interfaces1:ITestViewModel}"
              AutomationProperties.AutomationId="UI_TestFrameworkView_AutoID">
     <UserControl.Resources>
         <ResourceDictionary>

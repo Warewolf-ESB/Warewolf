@@ -36,7 +36,18 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        public string Password { get; set; }
+        public string Password
+        {
+            get
+            {
+                return _password;
+            }
+            set
+            {
+                _password = value;
+                OnPropertyChanged(()=>Password);
+            }
+        }
         public DateTime LastRunDate { get; set; }
         public List<ITestInput> Inputs { get; set; }
         public List<ITestOutput> Outputs { get; set; }
