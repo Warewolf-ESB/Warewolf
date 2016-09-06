@@ -9,6 +9,8 @@ namespace Warewolf.Studio.ViewModels.Tests
     [TestClass]
     public class TestFrameworkViewModelTests
     {
+        #region Commands
+
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void OnCreation_GivenIsNew_ShouldHaveRenameCommand()
@@ -18,7 +20,6 @@ namespace Warewolf.Studio.ViewModels.Tests
             //---------------Assert Precondition----------------
             Assert.IsNotNull(vm);
             //---------------Execute Test ----------------------
-            Assert.IsNotNull(vm.RenameCommand);
             //---------------Test Result -----------------------
             Assert.IsFalse(vm.RenameCommand.CanExecute());
         }
@@ -97,18 +98,60 @@ namespace Warewolf.Studio.ViewModels.Tests
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void OnCreation_GivenIsNew_ShouldHaveRunTestCommand()
+        public void OnCreation_GivenIsNew_ShouldHaveRunSelectedTestCommand()
         {
             //---------------Set up test pack-------------------
             var vm = new TestFrameworkViewModel(getMockModel());
             //---------------Assert Precondition----------------
             Assert.IsNotNull(vm);
             //---------------Execute Test ----------------------
-            Assert.IsNotNull(vm.RunTestCommand);
+            Assert.IsNotNull(vm.RunSelectedTestCommand);
             //---------------Test Result -----------------------
-            Assert.IsFalse(vm.RunTestCommand.CanExecute());
+            Assert.IsFalse(vm.RunSelectedTestCommand.CanExecute());
         }
-        
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void OnCreation_GivenIsNew_ShouldHaveRunAllTestsCommand()
+        {
+            //---------------Set up test pack-------------------
+            var vm = new TestFrameworkViewModel(getMockModel());
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(vm);
+            //---------------Execute Test ----------------------
+            Assert.IsNotNull(vm.RunAllTestsCommand);
+            //---------------Test Result -----------------------
+            Assert.IsFalse(vm.RunAllTestsCommand.CanExecute());
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void OnCreation_GivenIsNew_ShouldHaveRunAllTestsInBrowserCommand()
+        {
+            //---------------Set up test pack-------------------
+            var vm = new TestFrameworkViewModel(getMockModel());
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(vm);
+            //---------------Execute Test ----------------------
+            Assert.IsNotNull(vm.RunAllTestsInBrowserCommand);
+            //---------------Test Result -----------------------
+            Assert.IsFalse(vm.RunAllTestsInBrowserCommand.CanExecute());
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void OnCreation_GivenIsNew_ShouldRunSelectedTestInBrowserCommand()
+        {
+            //---------------Set up test pack-------------------
+            var vm = new TestFrameworkViewModel(getMockModel());
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(vm);
+            //---------------Execute Test ----------------------
+            Assert.IsNotNull(vm.RunSelectedTestInBrowserCommand);
+            //---------------Test Result -----------------------
+            Assert.IsFalse(vm.RunSelectedTestInBrowserCommand.CanExecute());
+        }
+
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
@@ -138,6 +181,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //---------------Test Result -----------------------
             Assert.IsTrue(vm.CreateTestCommand.CanExecute());
         }
+
         private ITestFrameworkModel getMockModel()
         {
             var moqModel = new Mock<ITestFrameworkModel>();
@@ -157,5 +201,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             //---------------Test Result -----------------------
             Assert.IsTrue(vm.CreateTestCommand.CanExecute());
         }
+
+        #endregion
+
     }
 }

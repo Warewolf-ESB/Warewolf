@@ -11,9 +11,11 @@
              xmlns:core1="clr-namespace:Dev2.Activities.Designers2.Core;assembly=Dev2.Activities.Designers"
              xmlns:errors="clr-namespace:Dev2.Activities.Designers2.Core.Errors;assembly=Dev2.Activities.Designers"
              xmlns:ui="clr-namespace:Dev2.UI;assembly=Dev2.Intellisense"
+             xmlns:viewModels="clr-namespace:Warewolf.Studio.ViewModels;assembly=Warewolf.Studio.ViewModels"
              d:DesignHeight="300"
              d:DesignWidth="300"
              mc:Ignorable="d"
+                d:DataContext="{d:DesignInstance viewModels:TestFrameworkViewModel}"
              AutomationProperties.AutomationId="UI_TestFrameworkView_AutoID">
     <UserControl.Resources>
         <ResourceDictionary>
@@ -182,7 +184,7 @@
                     </ListBox.ItemTemplate>
                 </ListBox>
 
-                <ContentControl Grid.Column="1" Visibility="{Binding SelectedTest, Converter={StaticResource NullToVisibilityConverterNullIsCollapsed}}">
+                <ContentControl Grid.Column="1" Visibility="{Binding SelectedTest}">
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
