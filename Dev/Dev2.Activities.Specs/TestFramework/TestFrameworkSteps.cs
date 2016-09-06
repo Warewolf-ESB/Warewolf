@@ -89,19 +89,55 @@ namespace Dev2.Activities.Specs.TestFramework
             }
         }
 
+        [Given(@"there are no tests")]
+        public void GivenThereAreNoTests()
+        {
+            TestFrameworkViewModel testFramework = GetTestFrameworkFromContext();
+            Assert.AreEqual(0,testFramework.Tests.Count);
+        }
+
+
         [When(@"I click New Test")]
         public void WhenIClickNewTest()
         {
-            TestFrameworkViewModel testFramework;
-            if(ScenarioContext.TryGetValue("testFramework",out testFramework))
-            {
-                testFramework.CreateTestCommand.Execute(null);
-            }
-            else
-            {
-                Assert.Fail("Test Framework ViewModel not found");
-            }
+            TestFrameworkViewModel testFramework = GetTestFrameworkFromContext();
+            testFramework.CreateTestCommand.Execute(null);
+            
         }
 
+
+        [Then(@"a new test is added")]
+        public void ThenANewTestIsAdded()
+        {
+            TestFrameworkViewModel testFramework = GetTestFrameworkFromContext();
+            Assert.AreNotEqual(0, testFramework.Tests.Count);
+        }
+
+
+        [Then(@"test name starts with ""(.*)""")]
+        public void ThenTestNameStartsWith(string testName)
+        {
+            TestFrameworkViewModel testFramework = GetTestFrameworkFromContext();
+            Assert.AreEqual(testName,testFramework.SelectedTest.Name);
+        }
+
+        [Then(@"username is blank")]
+        public void ThenUsernameIsBlank()
+        {
+            TestFrameworkViewModel testFramework = GetTestFrameworkFromContext();
+            Assert.AreEqual("", testFramework.SelectedTest.Username);
+        }
+
+
+        TestFrameworkViewModel GetTestFrameworkFromContext()
+        {
+            TestFrameworkViewModel testFramework;
+            if (ScenarioContext.TryGetValue("testFramework", out testFramework))
+            {
+                return testFramework;
+            }
+            Assert.Fail("Test Framework ViewModel not found");
+            return null;
+        }
     }
 }
