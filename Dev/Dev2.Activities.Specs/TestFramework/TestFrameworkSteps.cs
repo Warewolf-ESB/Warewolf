@@ -58,8 +58,6 @@ namespace Dev2.Activities.Specs.TestFramework
                         dataListViewModel.ScalarCollection.Add(new ScalarItemModel(variablesRow[0], enDev2ColumnArgumentDirection.Output));
                     }
                     dataListViewModel.WriteToResourceModel();
-                    ScenarioContext.Add(workflowName, resourceModel);
-                    ScenarioContext.Add("dataListViewModel", dataListViewModel);
                 }
                 else
                 {
@@ -93,7 +91,7 @@ namespace Dev2.Activities.Specs.TestFramework
         public void GivenThereAreNoTests()
         {
             TestViewModel test = GetTestFrameworkFromContext();
-            Assert.AreEqual(0,test.Tests.Count);
+            Assert.IsNull(test.Tests);
         }
 
 
@@ -125,14 +123,14 @@ namespace Dev2.Activities.Specs.TestFramework
         public void ThenUsernameIsBlank()
         {
             TestViewModel test = GetTestFrameworkFromContext();
-            Assert.AreEqual("", test.SelectedTest.UserName);
+            Assert.AreEqual(null, test.SelectedTest.UserName);
         }
 
         [Then(@"password is blank")]
         public void ThenPasswordIsBlank()
         {
             TestViewModel test = GetTestFrameworkFromContext();
-            Assert.AreEqual("", test.SelectedTest.Password);
+            Assert.AreEqual(null, test.SelectedTest.Password);
         }
 
         [Then(@"inputs as")]
@@ -145,17 +143,42 @@ namespace Dev2.Activities.Specs.TestFramework
             foreach(var tableRow in table.Rows)
             {
                 Assert.AreEqual(tableRow["Variable Name"],inputs[i].Variable);
-                Assert.AreEqual(tableRow["Value"],inputs[i].Value);
+                var expected = tableRow["Value"];
+                if (string.IsNullOrEmpty(expected))
+                {
+                    expected = null;
+                }
+                Assert.AreEqual(expected,inputs[i].Value);
                 i++;
             }
 
+        }
+
+        [Then(@"outputs as")]
+        public void ThenOutputsAs(Table table)
+        {
+            TestViewModel test = GetTestFrameworkFromContext();
+            var outputs = test.SelectedTest.Outputs;
+            Assert.AreNotEqual(0, outputs.Count);
+            var i = 0;
+            foreach (var tableRow in table.Rows)
+            {
+                Assert.AreEqual(tableRow["Variable Name"], outputs[i].Variable);
+                var expected = tableRow["Value"];
+                if (string.IsNullOrEmpty(expected))
+                {
+                    expected = null;
+                }
+                Assert.AreEqual(expected, outputs[i].Value);
+                i++;
+            }
         }
 
 
         TestViewModel GetTestFrameworkFromContext()
         {
             TestViewModel test;
-            if (ScenarioContext.TryGetValue("test", out test))
+            if (ScenarioContext.TryGetValue("testFramework", out test))
             {
                 return test;
             }

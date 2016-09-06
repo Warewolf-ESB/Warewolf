@@ -75,14 +75,14 @@ namespace Dev2.Activities.Specs.TestFramework
             TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
                         "Input Var Name"});
             table1.AddRow(new string[] {
-                        "[[a]]"});
+                        "a"});
 #line 8
    testRunner.Given("I have \"Workflow 1\" with inputs as", ((string)(null)), table1, "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
                         "Ouput Var Name"});
             table2.AddRow(new string[] {
-                        "[[outputValue]]"});
+                        "outputValue"});
 #line 11
    testRunner.And("\"Workflow 1\" has outputs as", ((string)(null)), table2, "And ");
 #line hidden
@@ -117,7 +117,7 @@ this.FeatureBackground();
                         "Variable Name",
                         "Value"});
             table3.AddRow(new string[] {
-                        "[[a]]",
+                        "a",
                         ""});
 #line 23
  testRunner.And("inputs as", ((string)(null)), table3, "And ");
@@ -126,7 +126,7 @@ this.FeatureBackground();
                         "Variable Name",
                         "Value"});
             table4.AddRow(new string[] {
-                        "[[outputValue]]",
+                        "outputValue",
                         ""});
 #line 26
  testRunner.And("outputs as", ((string)(null)), table4, "And ");
