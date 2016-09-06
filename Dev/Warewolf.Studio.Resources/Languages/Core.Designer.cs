@@ -8091,6 +8091,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Input value to test against.
+        /// </summary>
+        public static string TestsInputValueTooltip {
+            get {
+                return ResourceManager.GetString("TestsInputValueTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Create a new test.
         /// </summary>
         public static string TestsNewTestTooltip {
