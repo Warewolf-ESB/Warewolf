@@ -7,10 +7,10 @@
 Background: Setup for workflows for tests
 			Given I have "Workflow 1" with inputs as
 			| Input Var Name |
-			| [[a]]          |
+			| a              |
 			And "Workflow 1" has outputs as
-			| Ouput Var Name  |
-			| [[outputValue]] |
+			| Ouput Var Name |
+			| outputValue    |
 
 Scenario: Create New Test
 	Given the test builder is open with "Workflow 1"
