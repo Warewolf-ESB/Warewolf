@@ -52,30 +52,27 @@ namespace Warewolf.Studio.ViewModels
             }
         }
         public DateTime LastRunDate { get; set; }
+
         public List<ITestInput> Inputs
         {
-            get
-            {
-                return _inputs;
-            }
+            get { return _inputs; }
             set
             {
-                _inputs = value;
-                OnPropertyChanged(()=>Inputs);
+                _inputs = value; 
+                OnPropertyChanged(() => Inputs);
             }
         }
+
         public List<ITestOutput> Outputs
         {
-            get
-            {
-                return _outputs;
-            }
+            get { return _outputs; }
             set
             {
                 _outputs = value;
                 OnPropertyChanged(() => Outputs);
             }
         }
+
         public bool Error { get; set; }
         public bool IsNewTest { get; set; }
         public bool IsTestSelected { get; set; }
