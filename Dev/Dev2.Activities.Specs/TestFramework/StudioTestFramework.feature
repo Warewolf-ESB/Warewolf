@@ -29,8 +29,6 @@ Scenario: Create New Test
 	And save is disabled
 	And test status is pending
 	And test is enabled
-	And run test is disabled
-	And delete is enabled	
 	
 #
 #Scenario: Edit existing test
