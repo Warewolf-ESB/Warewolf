@@ -65,6 +65,7 @@
     <Compile Include="Tools\Control Flow\Switch.cs" />
     <Compile Include="Tools\Control Flow\For Each.cs" />
     <Compile Include="Tools\Control Flow\Decision.cs" />
+    <Compile Include="Tools\Database\Create_SQL_Server_Source_From_Tool.cs" />
     <Compile Include="Tools\Database\SQL_Bulk_Insert.cs" />
     <Compile Include="Tools\Data\Base Convert.cs" />
     <Compile Include="Tools\Data\Case Convert.cs" />
