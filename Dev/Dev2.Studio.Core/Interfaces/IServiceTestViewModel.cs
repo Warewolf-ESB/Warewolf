@@ -24,7 +24,7 @@ namespace Dev2.Studio.Core.Interfaces
         ICommand CreateTestCommand { get; set; }
         string DisplayName { get; set; }
         bool CanSave { get; set; }
-        bool HasChanged { get; set; }
+        bool IsDirty { get; }
         void Save();
     }
 }
