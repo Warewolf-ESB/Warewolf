@@ -11,7 +11,8 @@ namespace Dev2.Common.Interfaces
         DateTime LastRunDate { get; set; }
         List<IServiceTestInput> Inputs { get; set; }
         List<IServiceTestOutput> Outputs { get; set; }
-        bool Error { get; set; }
+        bool NoErrorExpected { get; set; }
+        bool ErrorExpected { get; set; }
         bool IsNewTest { get; set; }
         bool IsTestSelected { get; set; }
         bool TestPassed { get; set; }
@@ -19,6 +20,8 @@ namespace Dev2.Common.Interfaces
         bool TestInvalid { get; set; }
         bool TestPending { get; set; }
         bool Enabled { get; set; }
+        string RunSelectedTestUrl { get; set; }
+        bool IsPublic { get; set; }
     }
 
     public interface IServiceTestInput
