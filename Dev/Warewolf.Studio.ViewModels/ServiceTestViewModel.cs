@@ -45,13 +45,14 @@ namespace Warewolf.Studio.ViewModels
         private void CreateTests()
         {
             var testModel = ServiceTestCommandHandler.CreateTest(ResourceModel);
-            if(Tests == null)
+            if (Tests == null)
             {
                 Tests = new ObservableCollection<IServiceTestModel>();
             }
             Tests.Add(testModel);
             SelectedServiceTest = testModel;
-                HasChanged = true;
+            HasChanged = true;
+        }
 
         private bool CanCreateTest
         {
