@@ -21,7 +21,7 @@ namespace Warewolf.Studio.ViewModels
         private string _image;
         private bool _hasChanged;
 
-        public ServiceTestViewModel(IResourceModel resourceModel)
+        public ServiceTestViewModel(IContextualResourceModel resourceModel)
         {
             if (resourceModel == null)
                 throw new ArgumentNullException(nameof(resourceModel));

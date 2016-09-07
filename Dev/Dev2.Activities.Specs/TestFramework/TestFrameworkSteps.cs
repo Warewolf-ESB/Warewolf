@@ -71,6 +71,8 @@ namespace Dev2.Activities.Specs.TestFramework
         }
 
         [Given(@"the test builder is open with ""(.*)""")]
+        [When(@"the test builder is open with ""(.*)""")]
+        [Then(@"the test builder is open with ""(.*)""")]
         public void GivenTheTestBuilderIsOpenWith(string workflowName)
         {
             ResourceModel resourceModel;
@@ -97,6 +99,8 @@ namespace Dev2.Activities.Specs.TestFramework
         }
 
         [Given(@"there are no tests")]
+        [When(@"there are no tests")]
+        [Then(@"there are no tests")]
         public void GivenThereAreNoTests()
         {
             ServiceTestViewModel serviceTest = GetTestFrameworkFromContext();
@@ -122,6 +126,12 @@ namespace Dev2.Activities.Specs.TestFramework
             Assert.AreNotEqual(0, serviceTest.Tests.Count);
         }
 
+        [Then(@"there are (.*) tests")]
+        public void ThenThereAreTests(int testCount)
+        {
+            ServiceTestViewModel serviceTest = GetTestFrameworkFromContext();
+            Assert.AreEqual(testCount, serviceTest.Tests.Count);
+        }
 
         [Then(@"test name starts with ""(.*)""")]
         public void ThenTestNameStartsWith(string testName)
@@ -129,6 +139,14 @@ namespace Dev2.Activities.Specs.TestFramework
             ServiceTestViewModel serviceTest = GetTestFrameworkFromContext();
             Assert.AreEqual(testName,serviceTest.SelectedServiceTest.TestName);
         }
+
+        [Then(@"""(.*)"" is selected")]
+        public void ThenIsSelected(string testName)
+        {
+            ServiceTestViewModel serviceTest = GetTestFrameworkFromContext();
+            Assert.AreEqual(testName, serviceTest.SelectedServiceTest.TestName);
+        }
+
 
         [Then(@"username is blank")]
         public void ThenUsernameIsBlank()
@@ -214,6 +232,12 @@ namespace Dev2.Activities.Specs.TestFramework
         {
             ServiceTestViewModel serviceTest = GetTestFrameworkFromContext();
             Assert.IsTrue(serviceTest.SelectedServiceTest.Enabled);
+        }
+        [When(@"I save")]
+        public void WhenISave()
+        {
+            ServiceTestViewModel serviceTest = GetTestFrameworkFromContext();
+            serviceTest.Save();
         }
 
 
