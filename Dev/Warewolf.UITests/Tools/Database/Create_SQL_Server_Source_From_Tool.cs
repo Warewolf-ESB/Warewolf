@@ -5,15 +5,20 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Warewolf.UITests.Tools
 {
     [CodedUITest]
-    public class SQL_Bulk_Insert
+    public class Create_SQL_Server_Source_From_Tool
     {
         [TestMethod]
         [TestCategory("Tools")]
-        public void SQLBulkInsertToolUITest()
+        public void SQLServerSourceFromTool()
         {
-            Uimap.Drag_Toolbox_SQL_Bulk_Insert_Onto_DesignSurface();
-            Uimap.Open_SQL_Bulk_Insert_Tool_Large_View();
-            Uimap.Open_SQL_Bulk_Insert_Tool_Qvi_Large_View();
+            Uimap.Drag_Toolbox_SQL_Server_Tool_Onto_DesignSurface();
+            Uimap.Open_Large_View_FromContextMenu();
+            Uimap.Select_NewDatabaseSource_FromSqlServerTool();
+            Uimap.Change_Selected_Database_ToMySql_DataBase();
+            Uimap.Change_Selected_Database_ToMicrosoftSqlServer_DataBase();
+            Uimap.Change_Selected_Database_ToODBC_DataBase();
+            Uimap.Change_Selected_Database_ToOracle_DataBase();
+            Uimap.Change_Selected_Database_ToPostgreSql_DataBase();
         }
 
         #region Additional test attributes
