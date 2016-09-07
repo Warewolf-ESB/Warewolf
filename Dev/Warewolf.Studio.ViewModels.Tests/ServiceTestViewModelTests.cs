@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using Dev2.Common.Interfaces;
 using Dev2.Data.Binary_Objects;
@@ -337,6 +338,23 @@ namespace Warewolf.Studio.ViewModels.Tests
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
+        [TestCategory("ServiceTestViewModel_Save")]
+        public void ServiceTestViewModel_Save_WithTests_ShouldCallSaveTestOnResourceModel()
+        {
+            //------------Setup for test--------------------------
+            var resourceModelMock = CreateResourceModelWithSingleScalarOutputMock();
+            resourceModelMock.Setup(model => model.SaveTests(It.IsAny<List<IServiceTestModel>>()));
+            var serviceTestViewModel = new ServiceTestViewModel(resourceModelMock.Object);
+            serviceTestViewModel.CreateTestCommand.Execute(null);
+            //------------Execute Test---------------------------
+            serviceTestViewModel.Save();
+            //------------Assert Results-------------------------
+            resourceModelMock.Verify(model => model.SaveTests(It.IsAny<List<IServiceTestModel>>()),Times.Once);
+        }
+
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
         [TestCategory("TestFrameworkViewModel_CreateTestCommand")]
         public void TestFrameworkViewModel_CreateTestCommand_Execute_ShouldSetHasChangedTrue()
         {
@@ -407,6 +425,19 @@ namespace Warewolf.Studio.ViewModels.Tests
             dataListViewModel.ScalarCollection.Add(new ScalarItemModel("msg", enDev2ColumnArgumentDirection.Output));
             dataListViewModel.WriteToResourceModel();
             return resourceModel;
+        }
+
+        private Mock<IContextualResourceModel> CreateResourceModelWithSingleScalarOutputMock()
+        {
+            var moqModel = new Mock<IContextualResourceModel>();
+            moqModel.SetupAllProperties();
+            moqModel.Setup(model => model.DisplayName).Returns("My WF");
+            var resourceModel = moqModel.Object;
+            var dataListViewModel = new DataListViewModel();
+            dataListViewModel.InitializeDataListViewModel(resourceModel);
+            dataListViewModel.ScalarCollection.Add(new ScalarItemModel("msg", enDev2ColumnArgumentDirection.Output));
+            dataListViewModel.WriteToResourceModel();
+            return moqModel;
         }
     }
 }

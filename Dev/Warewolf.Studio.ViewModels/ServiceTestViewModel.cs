@@ -118,10 +118,10 @@ namespace Warewolf.Studio.ViewModels
 
         public void Save()
         {
-            throw new NotImplementedException();
+            ResourceModel.SaveTests(Tests.ToList());
         }
 
-        public IResourceModel ResourceModel { get; set; }
+        public IContextualResourceModel ResourceModel { get; set; }
 
         public IServiceTestModel SelectedServiceTest
         {
