@@ -826,6 +826,15 @@ The more information you can provide us with, the faster we can track the issue 
   <data name="ServerTestConnectionHelp" xml:space="preserve">
     <value>Test the connection to the remote Warewolf Server.	Make sure the relevant ports (3142, 3143 by default) are open on any firewalls between this server and the remote server.</value>
   </data>
+  <data name="ServiceTestWindowsHelpText" xml:space="preserve">
+    <value>Uses the logged on windows account to authenticate on the remote server.</value>
+  </data>
+  <data name="ServiceTestUserHelpText" xml:space="preserve">
+    <value>Use a specific windows account to authenticate on the remote server.&lt;br/&gt;	&lt;br/&gt;	Use the domain if relevant e.g. DOMAIN\Username</value>
+  </data>
+  <data name="ServiceTestPublicHelpText" xml:space="preserve">
+    <value>Use the public account to authenticate on the remote server.&lt;br/&gt;	&lt;br/&gt;	If there are no resources on the remote server, there will be no Public authentication.</value>
+  </data>
   <data name="PasswordAuthenticationHelp" xml:space="preserve">
     <value>Enter the password for the account you want to use for authenticating.</value>
   </data>
@@ -2655,16 +2664,28 @@ You can use File System, URI, SFTP, FTP or FTPS format.</value>
   <data name="ManageWebSourceViewInBrowserTooltip" xml:space="preserve">
     <value>Open this URL in your default browser</value>
   </data>
-  <data name="TestsRunAllTestsInBrowserTooltip" xml:space="preserve">
+  <data name="ServiceTestRunAllTestsInBrowserTooltip" xml:space="preserve">
     <value>Open this URL in your default browser to view the tests for this workflow</value>
   </data>
-  <data name="TestsRunSelectedTestInBrowserTooltip" xml:space="preserve">
+  <data name="ServiceTestRunSelectedTestInBrowserTooltip" xml:space="preserve">
     <value>Open this URL in your default browser to view this test</value>
   </data>
-  <data name="TestsEnableRunSelectedTestTooltip" xml:space="preserve">
+  <data name="ServiceTestPassedTooltip" xml:space="preserve">
+    <value>Passed</value>
+  </data>
+  <data name="ServiceTestFailingTooltip" xml:space="preserve">
+    <value>Failing</value>
+  </data>
+  <data name="ServiceTestInvalidTooltip" xml:space="preserve">
+    <value>Invalid</value>
+  </data>
+  <data name="ServiceTestPendingTooltip" xml:space="preserve">
+    <value>Pending</value>
+  </data>
+  <data name="ServiceTestEnableRunSelectedTestTooltip" xml:space="preserve">
     <value>Select or De-Select to run the test</value>
   </data>
-  <data name="TestsEnableRunSelectedTestHelpText" xml:space="preserve">
+  <data name="ServiceTestEnableRunSelectedTestHelpText" xml:space="preserve">
     <value>Selecting this option will add the test to the test to the Run All command. 
 If this option is not selected, the test will not run part of the Run All list of tests.</value>
   </data>
@@ -2674,28 +2695,28 @@ If this option is not selected, the test will not run part of the Run All list o
   <data name="TestsDeleteSelectedTestHelpText" xml:space="preserve">
     <value>Delete this test</value>
   </data>
-  <data name="TestsRunSelectedTestTooltip" xml:space="preserve">
+  <data name="ServiceTestRunSelectedTestTooltip" xml:space="preserve">
     <value>Run this test</value>
   </data>
-  <data name="TestsRunSelectedTestHelpText" xml:space="preserve">
+  <data name="ServiceTestRunSelectedTestHelpText" xml:space="preserve">
     <value>Run this test</value>
   </data>
-  <data name="TestsNewTestTooltip" xml:space="preserve">
+  <data name="ServiceTestNewTestTooltip" xml:space="preserve">
     <value>Create a new test</value>
   </data>
-  <data name="TestsNoErrorExpectedTooltip" xml:space="preserve">
+  <data name="ServiceTestNoErrorExpectedTooltip" xml:space="preserve">
     <value>The test expects no error</value>
   </data>
-  <data name="TestsNoErrorExpectedHelpText" xml:space="preserve">
+  <data name="ServiceTestNoErrorExpectedHelpText" xml:space="preserve">
     <value>The test expects no error</value>
   </data>
-  <data name="TestsErrorExpectedTooltip" xml:space="preserve">
+  <data name="ServiceTestErrorExpectedTooltip" xml:space="preserve">
     <value>The test expects an error</value>
   </data>
-  <data name="TestsErrorExpectedHelpText" xml:space="preserve">
+  <data name="ServiceTestErrorExpectedHelpText" xml:space="preserve">
     <value>The test expects an error</value>
   </data>
-  <data name="TestsInputValueTooltip" xml:space="preserve">
+  <data name="ServiceTestInputValueTooltip" xml:space="preserve">
     <value>Input value to test against</value>
   </data>
   <data name="ManageWebSourceUserNameTooltip" xml:space="preserve">

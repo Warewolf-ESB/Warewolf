@@ -81,7 +81,7 @@ namespace Dev2.ViewModels
             if (showMessage)
             {
                 ViewModel.UpdateHelpDescriptor(string.Empty);
-                if (ViewModel.HasChanged)
+                if (ViewModel.IsDirty)
                 {
                     var result = _popupController.Show(string.Format(StringResources.ItemSource_NotSaved),
                         $"Save {ViewModel.DisplayName.Replace("*", "")}?",
