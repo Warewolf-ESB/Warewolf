@@ -299,7 +299,7 @@ namespace Warewolf.UITests
         {
             #region Variable Declarations
             WpfText variableTextbox = this.MainStudioWindow.DockManager.SplitPaneRight.DebugOutput.DebugOutputTree.Step1.VariableTextbox;
-            WpfButton uIAssign1Button = this.MainStudioWindow.DockManager.SplitPaneRight.DebugOutput.DebugOutputTree.Step1.UIAssign1Button;
+            WpfButton assign1Button = this.MainStudioWindow.DockManager.SplitPaneRight.DebugOutput.DebugOutputTree.Step1.Assign1Button;
             WpfCustom multiAssign = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign;
             #endregion
 
@@ -307,7 +307,7 @@ namespace Warewolf.UITests
             Assert.AreEqual(this.Click_Debug_Output_Assign_CellParams.VariableTextboxDisplayText, variableTextbox.DisplayText, "Wrong variable name in debug output");
 
             // Click 'Assign (1)' button
-            Mouse.Click(uIAssign1Button, new Point(21, 9));
+            Mouse.Click(assign1Button, new Point(21, 9));
 
             // Verify that the 'ItemStatus' property of 'DsfMultiAssignActivity' custom control equals 'IsPrimarySelection=True IsSelection=True IsCurrentLocation=null IsCurrentContext=null IsBreakpointEnabled=null IsBreakpointBounded=null ValidationState=Valid '
             Assert.AreEqual(this.Click_Debug_Output_Assign_CellParams.MultiAssignItemStatus, multiAssign.ItemStatus, "Multiassign small view is not selected.");
@@ -319,12 +319,12 @@ namespace Warewolf.UITests
         public void Click_Debug_Output_BaseConvert_Cell()
         {
             #region Variable Declarations
-            WpfButton uIBaseConversion1Button = this.MainStudioWindow.DockManager.SplitPaneRight.DebugOutput.DebugOutputTree.Step1.UIBaseConversion1Button;
+            WpfButton baseConversion1Button = this.MainStudioWindow.DockManager.SplitPaneRight.DebugOutput.DebugOutputTree.Step1.BaseConversion1Button;
             WpfCustom baseConvert = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.BaseConvert;
             #endregion
 
             // Click 'Base Conversion (1)' button
-            Mouse.Click(uIBaseConversion1Button, new Point(33, 7));
+            Mouse.Click(baseConversion1Button, new Point(33, 7));
 
             // Verify that the 'ItemStatus' property of 'DsfBaseConvertActivity' custom control equals 'IsPrimarySelection=True IsSelection=True IsCurrentLocation=null IsCurrentContext=null IsBreakpointEnabled=null IsBreakpointBounded=null ValidationState=Valid '
             Assert.AreEqual(this.Click_Debug_Output_BaseConvert_CellParams.BaseConvertItemStatus, baseConvert.ItemStatus, "Base conversion small view is not selected.");
@@ -336,12 +336,12 @@ namespace Warewolf.UITests
         public void Click_Debug_Output_Calculate_Cell()
         {
             #region Variable Declarations
-            WpfButton uICalculateButton = this.MainStudioWindow.DockManager.SplitPaneRight.DebugOutput.DebugOutputTree.Step1.UICalculateButton;
+            WpfButton calculateButton = this.MainStudioWindow.DockManager.SplitPaneRight.DebugOutput.DebugOutputTree.Step1.CalculateButton;
             WpfCustom calculate = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Calculate;
             #endregion
 
             // Click 'Calculate' button
-            Mouse.Click(uICalculateButton, new Point(24, 10));
+            Mouse.Click(calculateButton, new Point(24, 10));
 
             // Verify that the 'ItemStatus' property of 'DsfCalculateActivity' custom control equals 'IsPrimarySelection=True IsSelection=True IsCurrentLocation=null IsCurrentContext=null IsBreakpointEnabled=null IsBreakpointBounded=null ValidationState=Valid '
             Assert.AreEqual(this.Click_Debug_Output_Calculate_CellParams.CalculateItemStatus, calculate.ItemStatus, "Calculate tool small view is not selected.");
@@ -768,7 +768,8 @@ namespace Warewolf.UITests
             // Click 'Generate Outputs' button
             Mouse.Click(generateOutputsButton, new Point(7, 7));
 
-            // Verify that the 'Exists' property of 'Test' button equals 'True'
+            // Wait for 1 seconds for user delay between actions; Verify that the 'Exists' property of 'Test' button equals 'True'
+            Playback.Wait(500);
             Assert.AreEqual(this.Click_GET_Web_Large_View_Generate_OutputsExpectedValues.TestButtonExists, testButton.Exists, "Web GET large view generate outputs test button does not exist.");
 
             // Verify that the 'Exists' property of 'Done' button equals 'True'
@@ -1432,7 +1433,8 @@ namespace Warewolf.UITests
             // Click 'Configure settings' button
             Mouse.Click(configureSettingsButton, new Point(7, 2));
 
-            // Verify that the 'Exists' property of 'System.Windows.Controls.TabItem Header: Content:' tab equals 'True'
+            // Wait for 1 seconds for user delay between actions; Verify that the 'Exists' property of 'System.Windows.Controls.TabItem Header: Content:' tab equals 'True'
+            Playback.Wait(500);
             Assert.AreEqual(this.Click_Settings_Ribbon_ButtonParams.LoggingTabExists, loggingTab.Exists, "Logging tab does not exist in the settings window");
 
             // Verify that the 'Exists' property of 'System.Windows.Controls.TabItem Header: Content:' tab equals 'True'
@@ -8415,7 +8417,7 @@ namespace Warewolf.UITests
         
         #region Fields
         /// <summary>
-        /// Verify that the 'Exists' property of 'Test' button equals 'True'
+        /// Wait for 1 seconds for user delay between actions; Verify that the 'Exists' property of 'Test' button equals 'True'
         /// </summary>
         public bool TestButtonExists = true;
         
@@ -8720,7 +8722,7 @@ namespace Warewolf.UITests
         public bool ConfigureSettingsButtonExists = true;
         
         /// <summary>
-        /// Verify that the 'Exists' property of 'System.Windows.Controls.TabItem Header: Content:' tab equals 'True'
+        /// Wait for 1 seconds for user delay between actions; Verify that the 'Exists' property of 'System.Windows.Controls.TabItem Header: Content:' tab equals 'True'
         /// </summary>
         public bool LoggingTabExists = true;
         
@@ -22963,7 +22965,7 @@ namespace Warewolf.UITests
                 {
                     this.mSystemRandomListItem = new WpfListItem(this);
                     #region Search Criteria
-                    this.mSystemRandomListItem.SearchProperties[WpfListItem.PropertyNames.Name] = "System.Random";
+                    this.mSystemRandomListItem.SearchProperties.Add(new PropertyExpression(WpfListItem.PropertyNames.Name, "System.Random", PropertyExpressionOperator.Contains));
                     this.mSystemRandomListItem.WindowTitles.Add("Warewolf");
                     #endregion
                 }
@@ -32951,6 +32953,7 @@ namespace Warewolf.UITests
                     this.mVariableTextbox = new WpfText(this);
                     #region Search Criteria
                     this.mVariableTextbox.SearchProperties[WpfText.PropertyNames.AutomationId] = "UI_DebugOutputVariableTextBlock_AutoID";
+                    this.mVariableTextbox.SearchProperties[WpfText.PropertyNames.Instance] = "2";
                     this.mVariableTextbox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
                     this.mVariableTextbox.WindowTitles.Add("Warewolf");
                     #endregion
@@ -32959,54 +32962,54 @@ namespace Warewolf.UITests
             }
         }
         
-        public WpfButton UIAssign1Button
+        public WpfButton Assign1Button
         {
             get
             {
-                if ((this.mUIAssign1Button == null))
+                if ((this.mAssign1Button == null))
                 {
-                    this.mUIAssign1Button = new WpfButton(this);
+                    this.mAssign1Button = new WpfButton(this);
                     #region Search Criteria
-                    this.mUIAssign1Button.SearchProperties[WpfButton.PropertyNames.Name] = "Assign (1)";
-                    this.mUIAssign1Button.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mUIAssign1Button.WindowTitles.Add("Warewolf");
+                    this.mAssign1Button.SearchProperties[WpfButton.PropertyNames.Name] = "Assign (1)";
+                    this.mAssign1Button.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mAssign1Button.WindowTitles.Add("Warewolf");
                     #endregion
                 }
-                return this.mUIAssign1Button;
+                return this.mAssign1Button;
             }
         }
         
-        public WpfButton UIBaseConversion1Button
+        public WpfButton BaseConversion1Button
         {
             get
             {
-                if ((this.mUIBaseConversion1Button == null))
+                if ((this.mBaseConversion1Button == null))
                 {
-                    this.mUIBaseConversion1Button = new WpfButton(this);
+                    this.mBaseConversion1Button = new WpfButton(this);
                     #region Search Criteria
-                    this.mUIBaseConversion1Button.SearchProperties[WpfButton.PropertyNames.Name] = "Base Conversion (1)";
-                    this.mUIBaseConversion1Button.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mUIBaseConversion1Button.WindowTitles.Add("Warewolf");
+                    this.mBaseConversion1Button.SearchProperties[WpfButton.PropertyNames.Name] = "Base Conversion (1)";
+                    this.mBaseConversion1Button.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mBaseConversion1Button.WindowTitles.Add("Warewolf");
                     #endregion
                 }
-                return this.mUIBaseConversion1Button;
+                return this.mBaseConversion1Button;
             }
         }
         
-        public WpfButton UICalculateButton
+        public WpfButton CalculateButton
         {
             get
             {
-                if ((this.mUICalculateButton == null))
+                if ((this.mCalculateButton == null))
                 {
-                    this.mUICalculateButton = new WpfButton(this);
+                    this.mCalculateButton = new WpfButton(this);
                     #region Search Criteria
-                    this.mUICalculateButton.SearchProperties[WpfButton.PropertyNames.Name] = "Calculate";
-                    this.mUICalculateButton.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mUICalculateButton.WindowTitles.Add("Warewolf");
+                    this.mCalculateButton.SearchProperties[WpfButton.PropertyNames.Name] = "Calculate";
+                    this.mCalculateButton.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mCalculateButton.WindowTitles.Add("Warewolf");
                     #endregion
                 }
-                return this.mUICalculateButton;
+                return this.mCalculateButton;
             }
         }
         #endregion
@@ -33014,11 +33017,11 @@ namespace Warewolf.UITests
         #region Fields
         private WpfText mVariableTextbox;
         
-        private WpfButton mUIAssign1Button;
+        private WpfButton mAssign1Button;
         
-        private WpfButton mUIBaseConversion1Button;
+        private WpfButton mBaseConversion1Button;
         
-        private WpfButton mUICalculateButton;
+        private WpfButton mCalculateButton;
         #endregion
     }
     
