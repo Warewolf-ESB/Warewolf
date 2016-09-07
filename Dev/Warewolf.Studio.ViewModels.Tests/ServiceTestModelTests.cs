@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Dev2.Common.Interfaces;
+using Dev2.Runtime.ServiceModel.Data;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 // ReSharper disable InconsistentNaming
 
@@ -28,6 +29,31 @@ namespace Warewolf.Studio.ViewModels.Tests
             testModel.TestName = "Test Name";
             //------------Assert Results-------------------------
             Assert.AreEqual("Test Name", testModel.TestName);
+            Assert.AreEqual("Test Name", testModel.NameForDisplay);
+            Assert.IsTrue(_wasCalled);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("TestModel_TestName")]
+        public void TestModel_TestName_IsDirty_WhenSet_ShouldFirePropertyChanged()
+        {
+            //------------Setup for test--------------------------
+            var testModel = new ServiceTestModel();
+            var _wasCalled = false;
+            testModel.PropertyChanged += (sender, args) =>
+            {
+                if (args.PropertyName == "TestName")
+                {
+                    _wasCalled = true;
+                }
+            };
+            //------------Execute Test---------------------------
+            testModel.TestName = "Test Name";
+            testModel.IsDirty = true;
+            //------------Assert Results-------------------------
+            Assert.AreEqual("Test Name", testModel.TestName);
+            Assert.AreEqual("Test Name *", testModel.NameForDisplay);
             Assert.IsTrue(_wasCalled);
         }
 
@@ -278,23 +304,47 @@ namespace Warewolf.Studio.ViewModels.Tests
 
         [TestMethod]
         [Owner("Pieter Terblanche")]
-        [TestCategory("TestModel_IsPublic")]
-        public void TestModel_IsPublic_WhenSet_ShouldFirePropertyChanged()
+        [TestCategory("TestModel_AuthenticationType")]
+        public void TestModel_AuthenticationType_WhenSet_ShouldFirePropertyChanged()
         {
             //------------Setup for test--------------------------
             var testModel = new ServiceTestModel();
             var _wasCalled = false;
             testModel.PropertyChanged += (sender, args) =>
             {
-                if (args.PropertyName == "IsPublic")
+                if (args.PropertyName == "AuthenticationType")
                 {
                     _wasCalled = true;
                 }
             };
             //------------Execute Test---------------------------
-            testModel.IsPublic = true;
+            testModel.AuthenticationType = AuthenticationType.User;
             //------------Assert Results-------------------------
-            Assert.IsTrue(testModel.IsPublic);
+            Assert.AreEqual(AuthenticationType.User, testModel.AuthenticationType);
+            Assert.IsTrue(testModel.UserAuthenticationSelected);
+            Assert.IsTrue(_wasCalled);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("TestModel_UserAuthenticationSelected")]
+        public void TestModel_UserAuthenticationSelected_WhenSet_ShouldFirePropertyChanged()
+        {
+            //------------Setup for test--------------------------
+            var testModel = new ServiceTestModel();
+            var _wasCalled = false;
+            testModel.PropertyChanged += (sender, args) =>
+            {
+                if (args.PropertyName == "UserAuthenticationSelected")
+                {
+                    _wasCalled = true;
+                }
+            };
+            //------------Execute Test---------------------------
+            testModel.AuthenticationType = AuthenticationType.Windows;
+            //------------Assert Results-------------------------
+            Assert.AreEqual(AuthenticationType.Windows, testModel.AuthenticationType);
+            Assert.IsFalse(testModel.UserAuthenticationSelected);
             Assert.IsTrue(_wasCalled);
         }
 
@@ -385,6 +435,26 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(_wasCalled);
         }
 
-
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("TestModel_IsDirty")]
+        public void TestModel_IsDirty_WhenSet_ShouldFirePropertyChanged()
+        {
+            //------------Setup for test--------------------------
+            var testModel = new ServiceTestModel();
+            var _wasCalled = false;
+            testModel.PropertyChanged += (sender, args) =>
+            {
+                if (args.PropertyName == "IsDirty")
+                {
+                    _wasCalled = true;
+                }
+            };
+            //------------Execute Test---------------------------
+            testModel.IsDirty = true;
+            //------------Assert Results-------------------------
+            Assert.IsTrue(testModel.IsDirty);
+            Assert.IsTrue(_wasCalled);
+        }
     }
 }

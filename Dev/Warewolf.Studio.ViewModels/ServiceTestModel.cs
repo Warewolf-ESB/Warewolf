@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Dev2.Common.Interfaces;
+using Dev2.Runtime.ServiceModel.Data;
 using Microsoft.Practices.Prism.Mvvm;
 
 namespace Warewolf.Studio.ViewModels
@@ -20,10 +21,11 @@ namespace Warewolf.Studio.ViewModels
         private bool _errorExpected;
         private bool _isNewTest;
         private bool _isTestSelected;
-        private bool _isPublic;
         private DateTime _lastRunDate;
         private bool _enabled;
         private string _runSelectedTestUrl;
+        private bool _isDirty;
+        private AuthenticationType _authenticationType;
 
         #region Implementation of IServiceTestModel
 
@@ -34,6 +36,19 @@ namespace Warewolf.Studio.ViewModels
             {
                 _testName = value;
                 OnPropertyChanged(() => TestName);
+                OnPropertyChanged(() => NameForDisplay);
+            }
+        }
+
+        public string NameForDisplay
+        {
+            get
+            {
+                if (IsDirty)
+                {
+                    return TestName + " *";
+                }
+                return TestName;
             }
         }
 
@@ -204,18 +219,33 @@ namespace Warewolf.Studio.ViewModels
                 OnPropertyChanged(()=>RunSelectedTestUrl);
             }
         }
-        public bool IsPublic
+        public AuthenticationType AuthenticationType
         {
             get
             {
-                return _isPublic;
+                return _authenticationType;
             }
             set
             {
-                _isPublic = value;
-                OnPropertyChanged(() => IsPublic);
+                _authenticationType = value;
+                OnPropertyChanged(() => AuthenticationType);
+                OnPropertyChanged(() => UserAuthenticationSelected);
             }
         }
+        public bool IsDirty
+        {
+            get
+            {
+                return _isDirty;
+            }
+            set
+            {
+                _isDirty = value;
+                OnPropertyChanged(() => IsDirty);
+                OnPropertyChanged(() => NameForDisplay);
+            }
+        }
+        public bool UserAuthenticationSelected => AuthenticationType == AuthenticationType.User;
 
         #endregion
     }
