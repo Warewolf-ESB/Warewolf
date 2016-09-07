@@ -87,6 +87,13 @@ namespace Dev2.Activities.Specs.TestFramework
             }
         }
 
+        [Given(@"Tab Header is ""(.*)""")]
+        public void GivenTabHeaderIs(string expectedTabHeader)
+        {
+            ServiceTestViewModel serviceTest = GetTestFrameworkFromContext();
+            Assert.AreEqual(expectedTabHeader,serviceTest.DisplayName);
+        }
+
         [Given(@"there are no tests")]
         public void GivenThereAreNoTests()
         {
@@ -95,7 +102,9 @@ namespace Dev2.Activities.Specs.TestFramework
         }
 
 
+        [Given(@"I click New Test")]
         [When(@"I click New Test")]
+        [Then(@"I click New Test")]
         public void WhenIClickNewTest()
         {
             ServiceTestViewModel serviceTest = GetTestFrameworkFromContext();
@@ -181,6 +190,14 @@ namespace Dev2.Activities.Specs.TestFramework
             Assert.IsFalse(serviceTest.CanSave);
             Assert.IsFalse(serviceTest.SaveCommand.CanExecute(null));
         }
+        [Then(@"save is enabled")]
+        public void ThenSaveIsEnabled()
+        {
+            ServiceTestViewModel serviceTest = GetTestFrameworkFromContext();
+            Assert.IsTrue(serviceTest.CanSave);
+            Assert.IsTrue(serviceTest.SaveCommand.CanExecute(null));
+        }
+
 
         [Then(@"test status is pending")]
         public void ThenTestStatusIsPending()
