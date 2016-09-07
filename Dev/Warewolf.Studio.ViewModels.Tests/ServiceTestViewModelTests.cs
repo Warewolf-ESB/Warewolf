@@ -351,6 +351,23 @@ namespace Warewolf.Studio.ViewModels.Tests
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
+        [TestCategory("TestFrameworkViewModel_CreateTestCommand")]
+        public void TestFrameworkViewModel_CreateTestCommand_Execute_ShouldSetHasChangedTrue()
+        {
+            //------------Setup for test--------------------------
+            var testFrameworkViewModel = new ServiceTestViewModel(CreateResourceModelWithSingleScalarOutput());
+            //------------Assert Preconditions-------------------
+            //------------Execute Test---------------------------
+            testFrameworkViewModel.CreateTestCommand.Execute(null);
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(testFrameworkViewModel.Tests);
+            var test = testFrameworkViewModel.Tests[0];
+            Assert.IsNotNull(test);
+            Assert.IsTrue(testFrameworkViewModel.HasChanged);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
         [TestCategory("ServiceTestViewModel_HasChanged")]
         public void ServiceTestViewModel_HasChanged_WhenSetTrue_ShouldUpdateDisplayNameWithStar()
         {

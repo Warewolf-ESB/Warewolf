@@ -88,6 +88,8 @@ namespace Dev2.Activities.Specs.TestFramework
         }
 
         [Given(@"Tab Header is ""(.*)""")]
+        [When(@"Tab Header is ""(.*)""")]
+        [Then(@"Tab Header is ""(.*)""")]
         public void GivenTabHeaderIs(string expectedTabHeader)
         {
             ServiceTestViewModel serviceTest = GetTestFrameworkFromContext();

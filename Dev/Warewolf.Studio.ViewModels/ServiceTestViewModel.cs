@@ -45,6 +45,7 @@ namespace Warewolf.Studio.ViewModels
                 }
                 Tests.Add(testModel);
                 SelectedServiceTest = testModel;
+                HasChanged = true;
 
             }, () => CanCreateTest);
             CanSave = true;
