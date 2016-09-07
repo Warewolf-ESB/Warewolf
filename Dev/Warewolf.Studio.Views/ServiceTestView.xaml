@@ -12,6 +12,7 @@
              xmlns:interfaceImplementors="clr-namespace:Dev2.Studio.InterfaceImplementors;assembly=Dev2.Intellisense"
              xmlns:provider="clr-namespace:Dev2.Intellisense.Provider;assembly=Dev2.Intellisense"
              xmlns:interfaces1="clr-namespace:Dev2.Studio.Core.Interfaces;assembly=Dev2.Studio.Core"
+             xmlns:customControls="clr-namespace:Warewolf.Studio.CustomControls;assembly=Warewolf.Studio.CustomControls"
              d:DesignHeight="300"
              d:DesignWidth="300"
              mc:Ignorable="d"
@@ -41,6 +42,7 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
 
             <TextBlock >
@@ -53,10 +55,10 @@
                 </Hyperlink>
             </TextBlock>
 
-            <TextBlock Grid.Row="0" Grid.Column="1" Text="Passing" HorizontalAlignment="Right" Margin="{StaticResource ControlBorderRight}"/>
-            <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding TestPassingResult}" HorizontalAlignment="Right"/>
+            <TextBlock Grid.Row="0" Grid.Column="1" Text="Passing:" HorizontalAlignment="Right" />
+            <TextBlock Grid.Row="0" Grid.Column="2" Text="{Binding TestPassingResult}" HorizontalAlignment="Right"/>
 
-            <Button Grid.Row="1" Grid.Column="0" Content="Run All" HorizontalAlignment="Left"/>
+            <Button Grid.Row="1" Grid.Column="0" Content="Run All" Width="Auto" HorizontalAlignment="Left"/>
         </Grid>
 
         <Border Grid.Row="1"
@@ -88,7 +90,7 @@
                                         <RowDefinition Height="Auto"/>
                                         <RowDefinition Height="Auto"/>
                                     </Grid.RowDefinitions>
-                                    
+
                                     <StackPanel>
                                         <fa:FontAwesome Icon="Check" Foreground="Green" ToolTip="Passed" Visibility="{Binding TestPassed, Converter={StaticResource BoolToVisibilityConverter}}" />
                                         <fa:FontAwesome Icon="Times" Foreground="Red" ToolTip="Failing"  Visibility="{Binding TestFailing, Converter={StaticResource BoolToVisibilityConverter}}" />
@@ -107,7 +109,7 @@
                                             <core:HelpSetter Text="{x:Static languages:Core.TestsEnableRunSelectedTestHelpText}" DataContext="{Binding }" />
                                         </i:Interaction.Behaviors>
                                     </CheckBox>
-                                    
+
                                     <TextBlock Grid.Column="2" 
                                                Grid.Row="0" 
                                                Text="{Binding TestName}" 
@@ -116,13 +118,13 @@
                                                FontSize="12" 
                                                Margin="0,0,0,-4" 
                                                FontWeight="Bold" />
-                                    
+
                                     <TextBlock Grid.Column="2" 
                                                Grid.Row="1" 
                                                Text="{Binding LastRunDate}" 
                                                FontSize="11" 
                                                Margin="0,-4,0,0" />
-                                    
+
                                     <Button Grid.Column="3" 
                                             Grid.Row="0" 
                                             Grid.RowSpan="2" 
@@ -139,7 +141,7 @@
                                             <core:HelpSetter Text="{x:Static languages:Core.TestsRunSelectedTestHelpText}" DataContext="{Binding}" />
                                         </i:Interaction.Behaviors>
                                     </Button>
-                                    
+
                                     <Button Grid.Column="4" 
                                             Grid.Row="0" 
                                             Grid.RowSpan="2" 
@@ -217,12 +219,32 @@
                             <TextBlock Grid.Row="0" Grid.Column="0" Text="Test Name"/>
                             <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding TestName}"/>
 
-                            <TextBlock Grid.Row="1" Grid.Column="0" Text="Run As User"/>
+                            <TextBlock x:Name="RunAsUserTextBlock" Grid.Row="1" Grid.Column="0" Text="Run As User" FontWeight="Bold"/>
                             <TextBlock Grid.Row="1" Grid.Column="1" Text="(Leave blank to use executors Credentials)"/>
                             <CheckBox Grid.Row="1" Grid.Column="1" Content="Public" IsChecked="{Binding IsPublic}" HorizontalAlignment="Right"/>
 
-                            <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding UserName}"/>
+                            <TextBox Grid.Row="2" 
+                                     Grid.Column="1" 
+                                     Text="{Binding UserName}" 
+                                     ToolTip="{x:Static languages:Core.ServiceTestUserNameTooltip}"
+                                     customControls:WatermarkTextBox.Watermark="Username">
+                                <i:Interaction.Behaviors>
+                                    <core:HelpSetter Text="{x:Static languages:Core.ServiceTestUserNameHelpText}" DataContext="{Binding}" />
+                                </i:Interaction.Behaviors>
+                            </TextBox>
                             <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding Password}" Margin="{StaticResource ControlBorderTop}"/>
+                            <PasswordBox x:Name="PasswordTextBox" 
+                                         Grid.Row="3" 
+                                         Grid.Column="1"
+                                         Margin="{StaticResource ControlBorderTop}"
+                                         ToolTip="{x:Static languages:Core.ServiceTestPasswordTooltip}"
+                                         customControls:WatermarkTextBox.Watermark="Password"
+                                         customControls:PasswordBoxAssistant.BindPassword="true"
+                                         customControls:PasswordBoxAssistant.BoundPassword="{Binding Path=Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                <i:Interaction.Behaviors>
+                                    <core:HelpSetter Text="{x:Static languages:Core.ServiceTestPasswordHelpText}" DataContext="{Binding}" />
+                                </i:Interaction.Behaviors>
+                            </PasswordBox>
                         </Grid>
 
                         <Grid Grid.Row="2" Margin="{StaticResource ControlBorderTop}">
@@ -235,7 +257,7 @@
                                 <RowDefinition Height="Auto"/>
                             </Grid.RowDefinitions>
 
-                            <TextBlock Grid.Row="0" Text="Inputs"/>
+                            <TextBlock Grid.Row="0" Text="Inputs" FontWeight="Bold"/>
                             <ig:XamGrid ItemsSource="{Binding SelectedServiceTest.Inputs, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                         Grid.Row="1"
                                         AutoGenerateColumns="False"
@@ -310,7 +332,7 @@
 
                             <!-- Grid.Row="2" is in place for Assert - V3 -->
 
-                            <TextBlock Grid.Row="3" Text="Outputs"/>
+                            <TextBlock Grid.Row="3" Text="Outputs" FontWeight="Bold"/>
                             <ig:XamGrid ItemsSource="{Binding SelectedServiceTest.Outputs, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                         Grid.Row="1"
                                         AutoGenerateColumns="False"
@@ -370,12 +392,12 @@
 
                             <Grid Grid.Row="5">
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="{Binding ElementName=RunAsUserTextBlock, Path=ActualWidth}"/>
                                     <ColumnDefinition Width="Auto"/>
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
 
-                                <TextBlock Grid.Row="0" Text="Error"/>
+                                <TextBlock Grid.Row="0" Text="Error" FontWeight="Bold"/>
                                 <RadioButton x:Name="NoErrorRadioButton"
                                              Grid.Column="1"
                                              ToolTip="{x:Static languages:Core.TestsNoErrorExpectedTooltip}" 
