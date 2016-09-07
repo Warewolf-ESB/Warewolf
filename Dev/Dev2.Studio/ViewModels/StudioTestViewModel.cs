@@ -9,7 +9,6 @@ using Dev2.Studio.Core;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.ViewModels.WorkSurface;
 using Microsoft.Practices.Prism.Mvvm;
-using Warewolf.Studio.ViewModels;
 
 namespace Dev2.ViewModels
 {
