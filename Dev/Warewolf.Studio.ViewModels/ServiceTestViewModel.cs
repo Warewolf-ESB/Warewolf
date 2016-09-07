@@ -21,7 +21,7 @@ namespace Warewolf.Studio.ViewModels
         private string _displayName;
         private bool _hasChanged;
 
-        public ServiceTestViewModel(IResourceModel resourceModel)
+        public ServiceTestViewModel(IContextualResourceModel resourceModel)
         {
 
             if (resourceModel == null)
@@ -51,8 +51,7 @@ namespace Warewolf.Studio.ViewModels
             }
             Tests.Add(testModel);
             SelectedServiceTest = testModel;
-            SelectedServiceTest.TestPassed = true;
-        }
+                HasChanged = true;
 
         private bool CanCreateTest
         {

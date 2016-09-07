@@ -39,7 +39,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
 
             //------------Execute Test---------------------------
-            var testVM = new ServiceTestViewModel(new Mock<IResourceModel>().Object);
+            var testVM = new ServiceTestViewModel(new Mock<IContextualResourceModel>().Object);
             //------------Assert Results-------------------------
             Assert.IsNotNull(testVM);
             Assert.IsNotNull(testVM.ResourceModel);
@@ -51,7 +51,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void TestFrameworkViewModel_Constructor_NotNullResourceModel_ShouldSetDisplayNameIncludingResourceDisplayName()
         {
             //------------Setup for test--------------------------
-            var mockResourceModel = new Mock<IResourceModel>();
+            var mockResourceModel = new Mock<IContextualResourceModel>();
             mockResourceModel.Setup(model => model.DisplayName).Returns("Workflow Name");
             //------------Execute Test---------------------------
             var testVM = new ServiceTestViewModel(mockResourceModel.Object);
@@ -117,9 +117,9 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(vm.CreateTestCommand.CanExecute(null));
         }
 
-        private IResourceModel CreateResourceModel()
+        private IContextualResourceModel CreateResourceModel()
         {
-            var moqModel = new Mock<IResourceModel>();
+            var moqModel = new Mock<IContextualResourceModel>();
             moqModel.SetupAllProperties();
             moqModel.Setup(model => model.DisplayName).Returns("My WF");
             return moqModel.Object;
@@ -337,6 +337,25 @@ namespace Warewolf.Studio.ViewModels.Tests
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
+        [TestCategory("TestFrameworkViewModel_CreateTestCommand")]
+        public void TestFrameworkViewModel_CreateTestCommand_Execute_ShouldSetHasChangedTrue()
+        {
+            //------------Setup for test--------------------------
+            var testFrameworkViewModel = new ServiceTestViewModel(CreateResourceModelWithSingleScalarOutput());
+            //------------Assert Preconditions-------------------
+            //------------Execute Test---------------------------
+            testFrameworkViewModel.CreateTestCommand.Execute(null);
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(testFrameworkViewModel.Tests);
+            var test = testFrameworkViewModel.Tests[0];
+            Assert.IsNotNull(test);
+            Assert.IsTrue(testFrameworkViewModel.HasChanged);
+        }
+
+
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
         [TestCategory("ServiceTestViewModel_HasChanged")]
         public void ServiceTestViewModel_HasChanged_WhenSetTrue_ShouldUpdateDisplayNameWithStar()
         {
@@ -370,7 +389,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual("My WF - Tests *",testFrameworkViewModel.DisplayName);
         }
 
-        private IResourceModel CreateResourceModelWithSingleScalarInput()
+        private IContextualResourceModel CreateResourceModelWithSingleScalarInput()
         {
             var resourceModel = CreateResourceModel();
             var dataListViewModel = new DataListViewModel();
@@ -380,7 +399,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             return resourceModel;
         }
 
-        private IResourceModel CreateResourceModelWithSingleScalarOutput()
+        private IContextualResourceModel CreateResourceModelWithSingleScalarOutput()
         {
             var resourceModel = CreateResourceModel();
             var dataListViewModel = new DataListViewModel();
