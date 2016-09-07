@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Dev2.Runtime.ServiceModel.Data;
 
 namespace Dev2.Common.Interfaces
 {
@@ -21,7 +22,10 @@ namespace Dev2.Common.Interfaces
         bool TestPending { get; set; }
         bool Enabled { get; set; }
         string RunSelectedTestUrl { get; set; }
-        bool IsPublic { get; set; }
+        AuthenticationType AuthenticationType { get; set; }
+        string NameForDisplay { get; }
+        bool IsDirty { get; set; }
+        bool UserAuthenticationSelected { get; }
     }
 
     public interface IServiceTestInput
