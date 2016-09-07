@@ -246,6 +246,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
         public bool UserAuthenticationSelected => AuthenticationType == AuthenticationType.User;
+   
 
         #endregion
     }

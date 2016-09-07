@@ -118,6 +118,7 @@
     <Compile Include="DeployDestinationViewModelTests.cs" />
     <Compile Include="DeploySourceExplorerViewModelTests.cs" />
     <Compile Include="DeployViewModelTests.cs" />
+    <Compile Include="DummyServiceTestTests.cs" />
     <Compile Include="EmailAttachmentModelTests.cs" />
     <Compile Include="EmailAttachmentVmTests.cs" />
     <Compile Include="EnvironmentViewModelTests.cs" />

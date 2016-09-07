@@ -2,6 +2,7 @@
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Windows;
 using System.Windows.Input;
 using Dev2;
 using Dev2.Common.Interfaces;
@@ -19,7 +20,7 @@ namespace Warewolf.Studio.ViewModels
         private string _testPassingResult;
         private ObservableCollection<IServiceTestModel> _tests;
         private string _displayName;
-        private bool _hasChanged;
+        private bool _isDirty;
 
         public ServiceTestViewModel(IContextualResourceModel resourceModel)
         {
@@ -37,30 +38,32 @@ namespace Warewolf.Studio.ViewModels
             RunSelectedTestInBrowserCommand = new DelegateCommand(ServiceTestCommandHandler.RunSelectedTestInBrowser, () => CanRunSelectedTestInBrowser);
             RunSelectedTestCommand = new DelegateCommand(ServiceTestCommandHandler.RunSelectedTest, () => CanRunSelectedTest);
             StopTestCommand = new DelegateCommand(ServiceTestCommandHandler.StopTest, () => CanStopTest);
-            CreateTests();
-            CreateTestCommand = new DelegateCommand(CreateTests, () => CanCreateTest);
+            CreateTestCommand = new DelegateCommand(CreateTests);
             CanSave = true;
         }
 
         private void CreateTests()
         {
-            var testModel = ServiceTestCommandHandler.CreateTest(ResourceModel);
-            if (Tests == null)
+            if (IsDirty)
             {
-                Tests = new ObservableCollection<IServiceTestModel>();
+                var popupController = CustomContainer.Get<Dev2.Common.Interfaces.Studio.Controller.IPopupController>();
+                popupController?.Show(@"Please save currently edited Test(s) before creating a new one.", @"Save before continuing", MessageBoxButton.OK, MessageBoxImage.Error, null, false, true, false, false);
+                return;
             }
-            Tests.Add(testModel);
+
+            var testModel = ServiceTestCommandHandler.CreateTest(ResourceModel);
+            var index = Tests.Count - 1;
+            if (index >= 0)
+            {
+                Tests.Insert(index, testModel);
+            }
+            else
+            {
+                Tests.Add(testModel);
+            }
             SelectedServiceTest = testModel;
-            HasChanged = true;
         }
 
-        private bool CanCreateTest
-        {
-            get
-            {
-                return true;
-            }
-        }
         public bool CanStopTest { get; set; }
         public bool CanRunAllTestsInBrowser { get; set; }
         public bool CanRunAllTestsCommand { get; set; }
@@ -81,8 +84,9 @@ namespace Warewolf.Studio.ViewModels
                         return false;
                     }
                     var isDirty = Tests.Any(resource => resource.IsDirty);
-                    //var cnct = Server.IsConnected;
-                    return isDirty;
+                    var cnct = ResourceModel.Environment.Connection.IsConnected;
+
+                    return isDirty && cnct;
                 }
                 catch (Exception ex)
                 {
@@ -94,25 +98,6 @@ namespace Warewolf.Studio.ViewModels
                     //}
                 }
                 return false;
-            }
-        }
-
-        public bool HasChanged
-        {
-            get
-            {
-                return _hasChanged;
-            }
-            set
-            {
-                _hasChanged = value;
-                if (_hasChanged)
-                {
-                    if (!DisplayName.EndsWith(" *"))
-                    {
-                        DisplayName += " *";
-                    }
-                }
             }
         }
 
@@ -171,12 +156,28 @@ namespace Warewolf.Studio.ViewModels
 
         public ObservableCollection<IServiceTestModel> Tests
         {
-            get { return _tests; }
+            get
+            {
+                if (_tests == null)
+                {
+                    _tests = GetTests();
+                    var dummyTest = new DummyServiceTest(CreateTests) { TestName = "Create a new test."};
+                    _tests.Add(dummyTest);
+                    SelectedServiceTest = dummyTest;
+                }
+                return _tests;
+                
+            }
             set
             {
                 _tests = value;
                 OnPropertyChanged(() => Tests);
             }
+        }
+
+        private ObservableCollection<IServiceTestModel> GetTests()
+        {
+            return new ObservableCollection<IServiceTestModel>();
         }
 
         public ICommand DeleteTestCommand { get; set; }
@@ -190,7 +191,18 @@ namespace Warewolf.Studio.ViewModels
 
         public string DisplayName
         {
-            get { return _displayName; }
+            get
+            {
+                if (IsDirty)
+                {
+                    if (!_displayName.EndsWith(" *"))
+                    {
+                        _displayName += " *";
+                    }
+                    return _displayName;
+                }
+                return _displayName; 
+            }
             set
             {
                 _displayName = value; 
