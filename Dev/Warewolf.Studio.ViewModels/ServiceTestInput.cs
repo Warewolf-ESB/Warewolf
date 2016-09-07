@@ -4,18 +4,22 @@ using Microsoft.Practices.Prism.Mvvm;
 
 namespace Warewolf.Studio.ViewModels
 {
-    public class ServiceServiceTestOutput : BindableBase, IServiceTestOutput
+    public class ServiceTestInput: BindableBase,IServiceTestInput
     {
         private string _variable;
         private string _value;
+        private bool _emptyIsNull;
 
-        public ServiceServiceTestOutput(string variable, string value)
+        public ServiceTestInput(string variableName, string value)
         {
-            if(variable == null)
-                throw new ArgumentNullException(nameof(variable));
-            Variable = variable;
+            if(variableName == null)
+                throw new ArgumentNullException(nameof(variableName));
+            EmptyIsNull = true;
+            Variable = variableName;
             Value = value;
         }
+
+        #region Implementation of IServiceTestInput
 
         public string Variable
         {
@@ -41,5 +45,19 @@ namespace Warewolf.Studio.ViewModels
                 OnPropertyChanged(() => Value);
             }
         }
+        public bool EmptyIsNull
+        {
+            get
+            {
+                return _emptyIsNull;
+            }
+            set
+            {
+                _emptyIsNull = value;               
+                OnPropertyChanged(()=>EmptyIsNull);
+            }
+        }
+
+        #endregion
     }
 }

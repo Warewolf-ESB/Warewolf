@@ -193,9 +193,9 @@
     <Compile Include="SourceBaseImpl.cs" />
     <Compile Include="SplashViewModel.cs" />
     <Compile Include="ServiceTestCommandHandlerModel.cs" />
-    <Compile Include="ServiceServiceTestInput.cs" />
+    <Compile Include="ServiceTestInput.cs" />
     <Compile Include="ServiceTestModel.cs" />
-    <Compile Include="ServiceServiceTestOutput.cs" />
+    <Compile Include="ServiceTestOutput.cs" />
     <Compile Include="ServiceTestViewModel.cs" />
     <Compile Include="ToolBox\ToolBoxCategoryViewModel.cs" />
     <Compile Include="ToolBox\ToolboxViewModel.cs" />

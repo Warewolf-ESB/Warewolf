@@ -20,11 +20,11 @@ namespace Warewolf.Studio.ViewModels
                 dataListModel.CreateShape(resourceModel.DataList);
                 testModel.Inputs = dataListModel.ShapeScalars?
                                     .Where(scalar => scalar.IODirection == enDev2ColumnArgumentDirection.Input)
-                                    .Select(sca => new ServiceServiceTestInput(sca.Name, sca.Value) as IServiceTestInput).ToList();
+                                    .Select(sca => new ServiceTestInput(sca.Name, sca.Value) as IServiceTestInput).ToList();
 
                 testModel.Outputs = dataListModel.ShapeScalars?
                                     .Where(scalar => scalar.IODirection == enDev2ColumnArgumentDirection.Output)
-                                    .Select(sca => new ServiceServiceTestOutput(sca.Name, sca.Value) as IServiceTestOutput).ToList();
+                                    .Select(sca => new ServiceTestOutput(sca.Name, sca.Value) as IServiceTestOutput).ToList();
             }            
             return testModel;
        }
