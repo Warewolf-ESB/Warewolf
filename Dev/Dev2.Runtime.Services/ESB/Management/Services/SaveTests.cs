@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.IO;
 using System.Runtime.Serialization;
 using System.Text;
 using Dev2.Common;
@@ -90,6 +91,16 @@ namespace Dev2.Runtime.ESB.Management.Services
     {
         public void SaveTests(Guid resourceID, List<ServiceTestModelTO> serviceTestModelTos)
         {
+            var testPath = EnvironmentVariables.TestPath;
+            foreach(var serviceTestModelTo in serviceTestModelTos)
+            {
+                var filePath = Path.Combine(testPath, resourceID.ToString(), $"{serviceTestModelTo.TestName}.test");
+                Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+                var sw = new StreamWriter(filePath, false);
+                serializer.Serialize(sw, serviceTestModelTo);
+                sw.Flush();
+            }
+            
         }
     }
 
