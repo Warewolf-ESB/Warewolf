@@ -829,11 +829,17 @@ The more information you can provide us with, the faster we can track the issue 
   <data name="PasswordAuthenticationHelp" xml:space="preserve">
     <value>Enter the password for the account you want to use for authenticating.</value>
   </data>
+  <data name="ServiceTestPasswordHelpText" xml:space="preserve">
+    <value>Enter the password for the account you want to use for authenticating.</value>
+  </data>
   <data name="UserAuthenticationHelp" xml:space="preserve">
     <value>Connect with a specific user account.</value>
   </data>
   <data name="UserNameAuthenticationHelp" xml:space="preserve">
     <value>The full username of the account you want to use to connect to this resource.</value>
+  </data>
+  <data name="ServiceTestUserNameHelpText" xml:space="preserve">
+    <value>The full username of the account you want to use to run this test.</value>
   </data>
   <data name="WindowsAuthenticationHelp" xml:space="preserve">
     <value>Uses the Windows Authentication protocols to authenticate the executing account. </value>
@@ -2845,6 +2851,9 @@ If this option is not selected, the test will not run part of the Run All list o
   <data name="ManageDbSourceUserNameTooltip" xml:space="preserve">
     <value>Account Name</value>
   </data>
+  <data name="ServiceTestUserNameTooltip" xml:space="preserve">
+    <value>Username</value>
+  </data>
   <data name="ManageDbSourceTestTooltip" xml:space="preserve">
     <value>Test the connection to the database server</value>
   </data>
@@ -2856,6 +2865,9 @@ If this option is not selected, the test will not run part of the Run All list o
   </data>
   <data name="ManageDbSourcePasswordTooltip" xml:space="preserve">
     <value>Password for the account</value>
+  </data>
+  <data name="ServiceTestPasswordTooltip" xml:space="preserve">
+    <value>Password</value>
   </data>
   <data name="ManageDbSourceDatabaseTooltip" xml:space="preserve">
     <value>Select the database you want to use</value>
