@@ -25,7 +25,6 @@ namespace Dev2.Studio.Core.Interfaces
         string DisplayName { get; set; }
         bool CanSave { get; set; }
         bool HasChanged { get; set; }
-        string Image { get; set; }
         void Save();
     }
 }

@@ -371,6 +371,7 @@
                             <Grid Grid.Row="5">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
 
@@ -387,7 +388,7 @@
                                     </i:Interaction.Behaviors>
                                 </RadioButton>
                                 <RadioButton x:Name="ErrorRadioButton" 
-                                             Grid.Column="1"
+                                             Grid.Column="2"
                                              ToolTip="{x:Static languages:Core.TestsErrorExpectedTooltip}" 
                                              VerticalAlignment="Center" 
                                              HorizontalAlignment="Left" 

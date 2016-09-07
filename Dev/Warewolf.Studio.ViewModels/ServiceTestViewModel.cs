@@ -11,7 +11,7 @@ using Microsoft.Practices.Prism.Mvvm;
 
 namespace Warewolf.Studio.ViewModels
 {
-    public class ServiceServiceTestViewModel : BindableBase, IServiceTestViewModel
+    public class ServiceTestViewModel : BindableBase, IServiceTestViewModel
     {
         private IServiceTestModel _selectedServiceTest;
         private string _runAllTestsUrl;
@@ -20,13 +20,12 @@ namespace Warewolf.Studio.ViewModels
         private string _displayName;
         private string _image;
 
-        public ServiceServiceTestViewModel(IResourceModel resourceModel)
+        public ServiceTestViewModel(IResourceModel resourceModel)
         {
             if (resourceModel == null)
                 throw new ArgumentNullException(nameof(resourceModel));
             ResourceModel = resourceModel;
             DisplayName = resourceModel.DisplayName + " - Tests";
-            Image = "ServiceTestsViewer";
             ServiceTestCommandHandler = new ServiceTestCommandHandlerModel();
 
             DeleteTestCommand = new DelegateCommand(ServiceTestCommandHandler.DeleteTest, () => CanDeleteTest);
@@ -59,16 +58,6 @@ namespace Warewolf.Studio.ViewModels
         public bool CanDeleteTest { get; set; }
         public bool CanSave { get; set; }
         public bool HasChanged { get; set; }
-
-        public string Image
-        {
-            get { return _image; }
-            set
-            {
-                _image = value; 
-                OnPropertyChanged(() => Image);
-            }
-        }
 
         public void Save()
         {

@@ -63,17 +63,7 @@ namespace Dev2.ViewModels
         }
 
         [SuppressMessage("ReSharper", "UnusedMember.Global")]
-        public string ResourceType
-        {
-            get
-            {
-                if (ViewModel?.Image != null)
-                {
-                    return ViewModel.Image;
-                }
-                return "Unknown";
-            }
-        }
+        public string ResourceType => "ServiceTestsViewer";
 
         #region Implementation of IHelpSource
 

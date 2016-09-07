@@ -26,7 +26,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
 
             //------------Execute Test---------------------------
-            new ServiceServiceTestViewModel(null);
+            new ServiceTestViewModel(null);
             //------------Assert Results-------------------------
         }
 
@@ -39,7 +39,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
 
             //------------Execute Test---------------------------
-            var testVM = new ServiceServiceTestViewModel(new Mock<IResourceModel>().Object);
+            var testVM = new ServiceTestViewModel(new Mock<IResourceModel>().Object);
             //------------Assert Results-------------------------
             Assert.IsNotNull(testVM);
             Assert.IsNotNull(testVM.ResourceModel);
@@ -52,7 +52,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void OnCreation_GivenIsNew_ShouldHaveSaveCommand()
         {
             //---------------Set up test pack-------------------
-            var vm = new ServiceServiceTestViewModel(CreateResourceModel());
+            var vm = new ServiceTestViewModel(CreateResourceModel());
             //---------------Assert Precondition----------------
             Assert.IsNotNull(vm);
             //---------------Execute Test ----------------------
@@ -68,7 +68,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void OnCreation_GivenIsNew_ShouldHaveDeleteTestCommand()
         {
             //---------------Set up test pack-------------------
-            var vm = new ServiceServiceTestViewModel(CreateResourceModel());
+            var vm = new ServiceTestViewModel(CreateResourceModel());
             //---------------Assert Precondition----------------
             Assert.IsNotNull(vm);
             //---------------Execute Test ----------------------
@@ -82,7 +82,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void OnCreation_GivenIsNew_ShouldHaveDuplicateTestCommand()
         {
             //---------------Set up test pack-------------------
-            var vm = new ServiceServiceTestViewModel(CreateResourceModel());
+            var vm = new ServiceTestViewModel(CreateResourceModel());
             //---------------Assert Precondition----------------
             Assert.IsNotNull(vm);
             //---------------Execute Test ----------------------
@@ -97,7 +97,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void OnCreation_GivenIsNew_ShouldHaveStopTestCommand()
         {
             //---------------Set up test pack-------------------
-            var vm = new ServiceServiceTestViewModel(CreateResourceModel());
+            var vm = new ServiceTestViewModel(CreateResourceModel());
             //---------------Assert Precondition----------------
             Assert.IsNotNull(vm);
             //---------------Execute Test ----------------------
@@ -112,7 +112,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void OnCreation_GivenIsNew_ShouldHaveCreateTestCommand()
         {
             //---------------Set up test pack-------------------
-            var vm = new ServiceServiceTestViewModel(CreateResourceModel());
+            var vm = new ServiceTestViewModel(CreateResourceModel());
             //---------------Assert Precondition----------------
             Assert.IsNotNull(vm);
             //---------------Execute Test ----------------------
@@ -133,7 +133,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void OnCreation_GivenIsNew_ShouldHaveModel()
         {
             //---------------Set up test pack-------------------
-            var vm = new ServiceServiceTestViewModel(CreateResourceModel());
+            var vm = new ServiceTestViewModel(CreateResourceModel());
             //---------------Assert Precondition----------------
             Assert.IsNotNull(vm);
             //---------------Execute Test ----------------------
@@ -147,7 +147,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void OnCreation_GivenIsNew_ShouldHaveRunAllTestsCommand()
         {
             //---------------Set up test pack-------------------
-            var vm = new ServiceServiceTestViewModel(CreateResourceModel());
+            var vm = new ServiceTestViewModel(CreateResourceModel());
             //---------------Assert Precondition----------------
             Assert.IsNotNull(vm);
             //---------------Execute Test ----------------------
@@ -162,7 +162,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void OnCreation_GivenIsNew_ShouldHaveRunSelectedTestCommand()
         {
             //---------------Set up test pack-------------------
-            var vm = new ServiceServiceTestViewModel(CreateResourceModel());
+            var vm = new ServiceTestViewModel(CreateResourceModel());
             //---------------Assert Precondition----------------
             Assert.IsNotNull(vm);
             //---------------Execute Test ----------------------
@@ -178,7 +178,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void OnCreation_GivenIsNew_ShouldHaveRunAllTestsInBrowserCommand()
         {
             //---------------Set up test pack-------------------
-            var vm = new ServiceServiceTestViewModel(CreateResourceModel());
+            var vm = new ServiceTestViewModel(CreateResourceModel());
             //---------------Assert Precondition----------------
             Assert.IsNotNull(vm);
             //---------------Execute Test ----------------------
@@ -192,7 +192,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void OnCreation_GivenIsNew_ShouldHaveRunSelectedTestInBrowserCommand()
         {
             //---------------Set up test pack-------------------
-            var vm = new ServiceServiceTestViewModel(CreateResourceModel());
+            var vm = new ServiceTestViewModel(CreateResourceModel());
             //---------------Assert Precondition----------------
             Assert.IsNotNull(vm);
             //---------------Execute Test ----------------------
@@ -207,7 +207,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void TestFrameworkViewModel_CreateTestCommand_Execute_ShouldAddANewTest()
         {
             //------------Setup for test--------------------------
-            var testFrameworkViewModel = new ServiceServiceTestViewModel(CreateResourceModel());
+            var testFrameworkViewModel = new ServiceTestViewModel(CreateResourceModel());
             //------------Assert Preconditions-------------------
             Assert.IsNull(testFrameworkViewModel.Tests);
             //------------Execute Test---------------------------
@@ -222,7 +222,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void TestFrameworkViewModel_CreateTestCommand_Execute_ShouldAddANewTestWithDefaultName()
         {
             //------------Setup for test--------------------------
-            var testFrameworkViewModel = new ServiceServiceTestViewModel(CreateResourceModel());
+            var testFrameworkViewModel = new ServiceTestViewModel(CreateResourceModel());
             //------------Assert Preconditions-------------------
             Assert.IsNull(testFrameworkViewModel.Tests);
             //------------Execute Test---------------------------
@@ -239,7 +239,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void TestFrameworkViewModel_CreateTestCommand_Executed_ShouldSetSelectedTestToNewlyCreatedTest()
         {
             //------------Setup for test--------------------------
-            var testFrameworkViewModel = new ServiceServiceTestViewModel(CreateResourceModel());
+            var testFrameworkViewModel = new ServiceTestViewModel(CreateResourceModel());
             var testModel = new ServiceServiceTestModel { TestName = "Test 2" };
             testFrameworkViewModel.Tests = new ObservableCollection<IServiceTestModel> { testModel };
             testFrameworkViewModel.SelectedServiceTest = testModel;
@@ -262,7 +262,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void TestFrameworkViewModel_Tests_SetProperty_ShouldFireOnPropertyChanged()
         {
             //------------Setup for test--------------------------
-            var testFrameworkViewModel = new ServiceServiceTestViewModel(CreateResourceModel());
+            var testFrameworkViewModel = new ServiceTestViewModel(CreateResourceModel());
             var _wasCalled = false;
             testFrameworkViewModel.PropertyChanged += (sender, args) =>
               {
@@ -283,7 +283,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void TestFrameworkViewModel_SelectedTest_SetProperty_ShouldFireOnPropertyChanged()
         {
             //------------Setup for test--------------------------
-            var testFrameworkViewModel = new ServiceServiceTestViewModel(CreateResourceModel());
+            var testFrameworkViewModel = new ServiceTestViewModel(CreateResourceModel());
             var _wasCalled = false;
             testFrameworkViewModel.PropertyChanged += (sender, args) =>
               {
@@ -304,7 +304,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void TestFrameworkViewModel_CreateTestCommand_Execute_ShouldAddInputsFromResourceModel()
         {
             //------------Setup for test--------------------------
-            var testFrameworkViewModel = new ServiceServiceTestViewModel(CreateResourceModelWithSingleScalarInput());
+            var testFrameworkViewModel = new ServiceTestViewModel(CreateResourceModelWithSingleScalarInput());
             //------------Assert Preconditions-------------------
             //------------Execute Test---------------------------
             testFrameworkViewModel.CreateTestCommand.Execute(null);
@@ -323,7 +323,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void TestFrameworkViewModel_CreateTestCommand_Execute_ShouldAddOutputsFromResourceModel()
         {
             //------------Setup for test--------------------------
-            var testFrameworkViewModel = new ServiceServiceTestViewModel(CreateResourceModelWithSingleScalarOutput());
+            var testFrameworkViewModel = new ServiceTestViewModel(CreateResourceModelWithSingleScalarOutput());
             //------------Assert Preconditions-------------------
             //------------Execute Test---------------------------
             testFrameworkViewModel.CreateTestCommand.Execute(null);
