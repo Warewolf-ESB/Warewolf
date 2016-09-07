@@ -1,6 +1,7 @@
 ﻿
 using System;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Windows.Input;
 using Dev2;
 using Dev2.Common.Interfaces;
@@ -18,11 +19,11 @@ namespace Warewolf.Studio.ViewModels
         private string _testPassingResult;
         private ObservableCollection<IServiceTestModel> _tests;
         private string _displayName;
-        private string _image;
         private bool _hasChanged;
 
         public ServiceTestViewModel(IResourceModel resourceModel)
         {
+
             if (resourceModel == null)
                 throw new ArgumentNullException(nameof(resourceModel));
             ResourceModel = resourceModel;
@@ -36,21 +37,30 @@ namespace Warewolf.Studio.ViewModels
             RunSelectedTestInBrowserCommand = new DelegateCommand(ServiceTestCommandHandler.RunSelectedTestInBrowser, () => CanRunSelectedTestInBrowser);
             RunSelectedTestCommand = new DelegateCommand(ServiceTestCommandHandler.RunSelectedTest, () => CanRunSelectedTest);
             StopTestCommand = new DelegateCommand(ServiceTestCommandHandler.StopTest, () => CanStopTest);
-            CreateTestCommand = new DelegateCommand(() =>
-            {
-                var testModel = ServiceTestCommandHandler.CreateTest(ResourceModel);
-                if (Tests == null)
-                {
-                    Tests = new ObservableCollection<IServiceTestModel>();
-                }
-                Tests.Add(testModel);
-                SelectedServiceTest = testModel;
-
-            }, () => CanCreateTest);
+            CreateTests();
+            CreateTestCommand = new DelegateCommand(CreateTests, () => CanCreateTest);
             CanSave = true;
         }
 
-        public bool CanCreateTest { get; set; }
+        private void CreateTests()
+        {
+            var testModel = ServiceTestCommandHandler.CreateTest(ResourceModel);
+            if(Tests == null)
+            {
+                Tests = new ObservableCollection<IServiceTestModel>();
+            }
+            Tests.Add(testModel);
+            SelectedServiceTest = testModel;
+            SelectedServiceTest.TestPassed = true;
+        }
+
+        private bool CanCreateTest
+        {
+            get
+            {
+                return true;
+            }
+        }
         public bool CanStopTest { get; set; }
         public bool CanRunAllTestsInBrowser { get; set; }
         public bool CanRunAllTestsCommand { get; set; }
@@ -59,6 +69,34 @@ namespace Warewolf.Studio.ViewModels
         public bool CanDuplicateTest { get; set; }
         public bool CanDeleteTest { get; set; }
         public bool CanSave { get; set; }
+
+        public bool IsDirty
+        {
+            get
+            {
+                try
+                {
+                    if (Tests == null || Tests.Count == 0)
+                    {
+                        return false;
+                    }
+                    var isDirty = Tests.Any(resource => resource.IsDirty);
+                    //var cnct = Server.IsConnected;
+                    return isDirty;
+                }
+                catch (Exception ex)
+                {
+                    //if (!_errorShown)
+                    //{
+                    //    _popupController.ShowCorruptTaskResult(ex.Message);
+                    //    Dev2Logger.Error(ex);
+                    //    _errorShown = true;
+                    //}
+                }
+                return false;
+            }
+        }
+
         public bool HasChanged
         {
             get
@@ -93,7 +131,18 @@ namespace Warewolf.Studio.ViewModels
             }
             set
             {
+                if (value == null)
+                {
+                    _selectedServiceTest = null;
+                    OnPropertyChanged(() => SelectedServiceTest);
+                    return;
+                }
+                if (Equals(_selectedServiceTest, value) || value.IsNewTest)
+                {
+                    return;
+                }
                 _selectedServiceTest = value;
+
                 OnPropertyChanged(() => SelectedServiceTest);
             }
         }
@@ -130,7 +179,6 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        public ICommand SaveCommand { get; set; }
         public ICommand DeleteTestCommand { get; set; }
         public ICommand DuplicateTestCommand { get; set; }
         public ICommand RunAllTestsInBrowserCommand { get; set; }
