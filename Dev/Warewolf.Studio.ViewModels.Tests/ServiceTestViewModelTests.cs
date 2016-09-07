@@ -61,22 +61,6 @@ namespace Warewolf.Studio.ViewModels.Tests
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void OnCreation_GivenIsNew_ShouldHaveSaveCommand()
-        {
-            //---------------Set up test pack-------------------
-            var vm = new ServiceTestViewModel(CreateResourceModel());
-            //---------------Assert Precondition----------------
-            Assert.IsNotNull(vm);
-            //---------------Execute Test ----------------------
-            Assert.IsNotNull(vm.SaveCommand);
-            //---------------Test Result -----------------------
-            Assert.IsFalse(vm.SaveCommand.CanExecute(null));
-        }
-
-
-
-        [TestMethod]
-        [Owner("Nkosinathi Sangweni")]
         public void OnCreation_GivenIsNew_ShouldHaveDeleteTestCommand()
         {
             //---------------Set up test pack-------------------

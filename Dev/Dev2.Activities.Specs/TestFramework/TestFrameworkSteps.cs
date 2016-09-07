@@ -188,14 +188,12 @@ namespace Dev2.Activities.Specs.TestFramework
         {
             ServiceTestViewModel serviceTest = GetTestFrameworkFromContext();
             Assert.IsFalse(serviceTest.CanSave);
-            Assert.IsFalse(serviceTest.SaveCommand.CanExecute(null));
         }
         [Then(@"save is enabled")]
         public void ThenSaveIsEnabled()
         {
             ServiceTestViewModel serviceTest = GetTestFrameworkFromContext();
             Assert.IsTrue(serviceTest.CanSave);
-            Assert.IsTrue(serviceTest.SaveCommand.CanExecute(null));
         }
 
 

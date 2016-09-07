@@ -13,6 +13,9 @@
              xmlns:provider="clr-namespace:Dev2.Intellisense.Provider;assembly=Dev2.Intellisense"
              xmlns:interfaces1="clr-namespace:Dev2.Studio.Core.Interfaces;assembly=Dev2.Studio.Core"
              xmlns:customControls="clr-namespace:Warewolf.Studio.CustomControls;assembly=Warewolf.Studio.CustomControls"
+             xmlns:converters1="clr-namespace:Dev2.Studio.Core.AppResources.Converters;assembly=Dev2.Studio.Core"
+             xmlns:serviceModel="clr-namespace:Dev2.Runtime.ServiceModel.Data;assembly=Dev2.Common.Interfaces"
+             xmlns:converters="clr-namespace:Dev2.AppResources.Converters;assembly=Dev2.Studio.Core"
              d:DesignHeight="300"
              d:DesignWidth="300"
              mc:Ignorable="d"
@@ -23,6 +26,8 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Theme.xaml"/>
             </ResourceDictionary.MergedDictionaries>
+            <converters1:NullToVisibilityConverter x:Key="NullToVisibilityConverterNullIsCollapsed" NotNullVisibilityValue="Visible" NullVisibilityValue="Collapsed"/>
+            <converters:SimpleEnumToBoolConverter x:Key="EnumToBoolConverter"/>
         </ResourceDictionary>
     </UserControl.Resources>
     <Grid Margin="{StaticResource ElementBorder}">
@@ -72,7 +77,7 @@
                 </Grid.ColumnDefinitions>
 
                 <ListBox Grid.Column="0" Style="{StaticResource ListBoxStyle}" BorderThickness="1,0,1,1"
-                         ItemsSource="{Binding Tests}" SelectedItem="{Binding SelectedServiceTest}" Name="Tests">
+                         ItemsSource="{Binding Tests}" SelectedItem="{Binding SelectedServiceTest}" x:Name="TestsListbox">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                             <Grid>
@@ -91,11 +96,11 @@
                                         <RowDefinition Height="Auto"/>
                                     </Grid.RowDefinitions>
 
-                                    <StackPanel>
-                                        <fa:FontAwesome Icon="Check" Foreground="Green" ToolTip="Passed" Visibility="{Binding TestPassed, Converter={StaticResource BoolToVisibilityConverter}}" />
-                                        <fa:FontAwesome Icon="Times" Foreground="Red" ToolTip="Failing"  Visibility="{Binding TestFailing, Converter={StaticResource BoolToVisibilityConverter}}" />
-                                        <fa:FontAwesome Icon="Exclamation" Foreground="OrangeRed" ToolTip="Invalid"  Visibility="{Binding TestInvalid, Converter={StaticResource BoolToVisibilityConverter}}" />
-                                        <fa:FontAwesome Icon="Question" Foreground="Black" ToolTip="Pending" Visibility="{Binding TestPending, Converter={StaticResource BoolToVisibilityConverter}}" />
+                                    <StackPanel VerticalAlignment="Center" HorizontalAlignment="Left" Margin="0,5,0,0">
+                                        <fa:FontAwesome Icon="Check" Foreground="Green" ToolTip="Passed" FontSize="16" Visibility="{Binding TestPassed, Converter={StaticResource BoolToVisibilityConverter}}" />
+                                        <fa:FontAwesome Icon="Times" Foreground="Red" ToolTip="Failing" FontSize="16"  Visibility="{Binding TestFailing, Converter={StaticResource BoolToVisibilityConverter}}" />
+                                        <fa:FontAwesome Icon="Exclamation" Foreground="OrangeRed" ToolTip="Invalid" FontSize="16"  Visibility="{Binding TestInvalid, Converter={StaticResource BoolToVisibilityConverter}}" />
+                                        <fa:FontAwesome Icon="Question" Foreground="Black" ToolTip="Pending" FontSize="16" Visibility="{Binding TestPending, Converter={StaticResource BoolToVisibilityConverter}}" />
                                     </StackPanel>
 
                                     <CheckBox Grid.Column="1" 
@@ -104,7 +109,7 @@
                                               HorizontalAlignment="Left" Style="{StaticResource CheckBoxRoundedStyle}" 
                                               Margin="-2,0,0,0"
                                               ToolTip="{x:Static languages:Core.TestsEnableRunSelectedTestTooltip}"
-                                              IsChecked="{Binding IsTestSelected, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource SchedulerStatusToCheckedConverter}}">
+                                              IsChecked="{Binding Enabled}">
                                         <i:Interaction.Behaviors>
                                             <core:HelpSetter Text="{x:Static languages:Core.TestsEnableRunSelectedTestHelpText}" DataContext="{Binding }" />
                                         </i:Interaction.Behaviors>
@@ -112,7 +117,7 @@
 
                                     <TextBlock Grid.Column="2" 
                                                Grid.Row="0" 
-                                               Text="{Binding TestName}" 
+                                               Text="{Binding NameForDisplay}" 
                                                TextTrimming="CharacterEllipsis"
                                                MaxWidth="200" 
                                                FontSize="12" 
@@ -130,7 +135,7 @@
                                             Grid.RowSpan="2" 
                                             VerticalAlignment="Stretch" 
                                             HorizontalAlignment="Right" 
-                                            Command="{Binding ElementName=Tests, Path=RunTestCommand }" 
+                                            Command="{Binding ElementName=TestsListbox, Path=DataContext.RunSelectedTestCommand }" 
                                             CommandParameter="{Binding .}" 
                                             ToolTip="{x:Static languages:Core.TestsRunSelectedTestTooltip}"
                                             Style="{StaticResource ButtonRunTestTransparentStyle}" >
@@ -147,7 +152,7 @@
                                             Grid.RowSpan="2" 
                                             VerticalAlignment="Stretch" 
                                             HorizontalAlignment="Right" 
-                                            Command="{Binding ElementName=Tests, Path=DeleteTestCommand }" 
+                                            Command="{Binding ElementName=TestsListbox, Path=DataContext.DeleteTestCommand }" 
                                             CommandParameter="{Binding .}" 
                                             ToolTip="{x:Static languages:Core.TestsDeleteSelectedTestTooltip}"
                                             Style="{StaticResource ButtonDeleteTestTransparentStyle}" >
@@ -165,6 +170,7 @@
                                     <Button Style="{StaticResource ButtonSchedulerTransparentStyle}" 
                                             HorizontalAlignment="Stretch" 
                                             VerticalAlignment="Stretch" 
+                                            Command="{Binding ElementName=TestsListbox, Path=DataContext.CreateTestCommand }"
                                             ToolTip="{x:Static languages:Core.TestsNewTestTooltip}">
                                         <Button.Content>
                                             <Grid>
@@ -176,7 +182,7 @@
                                                     <RowDefinition Height="Auto"/>
                                                 </Grid.RowDefinitions>
                                                 <fa:FontAwesome Icon="Plus" FontSize="24" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-                                                <TextBlock Grid.Column="1" Text="Schedule a new task" FontSize="14"/>
+                                                <TextBlock Grid.Column="1" Text="Create a new Test" FontSize="14"/>
                                             </Grid>
                                         </Button.Content>
                                     </Button>
@@ -186,7 +192,7 @@
                     </ListBox.ItemTemplate>
                 </ListBox>
 
-                <ContentControl Grid.Column="1" Visibility="{Binding SelectedServiceTest}">
+                <ContentControl Grid.Column="1" Visibility="{Binding SelectedServiceTest, Converter={StaticResource NullToVisibilityConverterNullIsCollapsed}}">
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
@@ -220,31 +226,88 @@
                             <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding SelectedServiceTest.TestName}"/>
 
                             <TextBlock x:Name="RunAsUserTextBlock" Grid.Row="1" Grid.Column="0" Text="Run As User" FontWeight="Bold"/>
-                            <TextBlock Grid.Row="1" Grid.Column="1" Text="(Leave blank to use executors Credentials)"/>
-                            <CheckBox Grid.Row="1" Grid.Column="1" Content="Public" IsChecked="{Binding SelectedServiceTest.IsPublic}" HorizontalAlignment="Right"/>
-
-                            <TextBox Grid.Row="2" 
-                                     Grid.Column="1" 
-                                     Text="{Binding UserName}" 
-                                     ToolTip="{x:Static languages:Core.ServiceTestUserNameTooltip}"
-                                     customControls:WatermarkTextBox.Watermark="Username">
-                                <i:Interaction.Behaviors>
-                                    <core:HelpSetter Text="{x:Static languages:Core.ServiceTestUserNameHelpText}" DataContext="{Binding}" />
-                                </i:Interaction.Behaviors>
-                            </TextBox>
-                            <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding SelectedServiceTest.Password}" Margin="{StaticResource ControlBorderTop}"/>
-                            <PasswordBox x:Name="PasswordTextBox" 
-                                         Grid.Row="3" 
-                                         Grid.Column="1"
-                                         Margin="{StaticResource ControlBorderTop}"
-                                         ToolTip="{x:Static languages:Core.ServiceTestPasswordTooltip}"
-                                         customControls:WatermarkTextBox.Watermark="Password"
-                                         customControls:PasswordBoxAssistant.BindPassword="true"
-                                         customControls:PasswordBoxAssistant.BoundPassword="{Binding SelectedServiceTest.Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-                                <i:Interaction.Behaviors>
-                                    <core:HelpSetter Text="{x:Static languages:Core.ServiceTestPasswordHelpText}" DataContext="{Binding}" />
-                                </i:Interaction.Behaviors>
-                            </PasswordBox>
+                            <Grid Grid.Column="1"  Grid.Row="2" Margin="0,-3,0,0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <RadioButton ToolTip="{x:Static languages:Core.WindowsAuthenticationToolTip}" 
+                                             Padding="0,0,5,0" 
+                                             x:Name="WindowsRadioButton" 
+                                             VerticalAlignment="Center" 
+                                             HorizontalAlignment="Left" 
+                                             Margin="{StaticResource ControlBorderRight}"
+                                             IsChecked="{Binding SelectedServiceTest.AuthenticationType, Mode=TwoWay, Converter={StaticResource EnumToBoolConverter}, 
+                                    ConverterParameter={x:Static serviceModel:AuthenticationType.Windows}}">Windows
+                                    <i:Interaction.Behaviors>
+                                        <core:HelpSetter Text="{x:Static languages:Core.ServerSelectWindowsHelp}" DataContext="{Binding}" />
+                                    </i:Interaction.Behaviors>
+                                </RadioButton>
+                                <RadioButton Grid.Column="1" 
+                                             x:Name="UserRadioButton" 
+                                             ToolTip="{x:Static languages:Core.UserAuthenticationToolTip}" 
+                                             Padding="0,0,5,0" 
+                                             VerticalAlignment="Center" 
+                                             HorizontalAlignment="Left" 
+                                             Margin="{StaticResource ControlBorderRight}"
+                                             IsChecked="{Binding SelectedServiceTest.AuthenticationType, Mode=TwoWay, Converter={StaticResource EnumToBoolConverter}, 
+                                        ConverterParameter={x:Static serviceModel:AuthenticationType.User}}">User
+                                    <i:Interaction.Behaviors>
+                                        <core:HelpSetter Text="{x:Static languages:Core.ServerSelectUserHelp}" DataContext="{Binding}" />
+                                    </i:Interaction.Behaviors>
+                                </RadioButton>
+                                <RadioButton Grid.Column="2" 
+                                             x:Name="PublicRadioButton" 
+                                             ToolTip="{x:Static languages:Core.ServerSourceDialogPublicToolTip}" 
+                                             Padding="0,0,5,0" 
+                                             VerticalAlignment="Center" 
+                                             HorizontalAlignment="Left" 
+                                             IsChecked="{Binding SelectedServiceTest.AuthenticationType, Mode=TwoWay, Converter={StaticResource EnumToBoolConverter}, 
+                                        ConverterParameter={x:Static serviceModel:AuthenticationType.Public}}">Public
+                                    <i:Interaction.Behaviors>
+                                        <core:HelpSetter Text="{x:Static languages:Core.ServerSelectPublicHelp}" DataContext="{Binding}" />
+                                    </i:Interaction.Behaviors>
+                                </RadioButton>
+                            </Grid>
+                            <Grid Grid.Column="1" Grid.Row="3" 
+                                  x:Name="UserNamePasswordContainer"
+                                  Margin="0,-3,0,0"
+                                  Visibility="{Binding SelectedServiceTest.UserAuthenticationSelected,Converter={StaticResource BoolToVisibilityConverter}}">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="{Binding ElementName=RunAsUserTextBlock, Path=ActualWidth}"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="{x:Static languages:Core.UserNameLabel}" ></TextBlock>
+                                <TextBox Grid.Row="0" 
+                                         Grid.Column="1" 
+                                         x:Name="UsernameTextBox"
+                                         Text="{Binding SelectedServiceTest.UserName}" 
+                                         ToolTip="{x:Static languages:Core.UserNameToolTip}" >
+                                    <i:Interaction.Behaviors>
+                                        <core:HelpSetter Text="{x:Static languages:Core.UserNameAuthenticationHelp}" DataContext="{Binding}" />
+                                    </i:Interaction.Behaviors>
+                                </TextBox>
+                                <TextBlock Grid.Row="1" 
+                                           Grid.Column="0" 
+                                           Margin="{StaticResource ControlBorderTop}"
+                                           Text="{x:Static languages:Core.PasswordLabel}" ></TextBlock>
+                                <PasswordBox x:Name="PasswordTextBox" 
+                                             Grid.Row="1" 
+                                             Grid.Column="1"
+                                             Margin="{StaticResource ControlBorderTop}"
+                                             ToolTip="{x:Static languages:Core.PasswordToolTip}"
+                                             customControls:PasswordBoxAssistant.BindPassword="true"
+                                             customControls:PasswordBoxAssistant.BoundPassword="{Binding SelectedServiceTest.Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                    <i:Interaction.Behaviors>
+                                        <core:HelpSetter Text="{x:Static languages:Core.PasswordAuthenticationHelp}" DataContext="{Binding}" />
+                                    </i:Interaction.Behaviors>
+                                </PasswordBox>
+                            </Grid>
                         </Grid>
 
                         <Grid Grid.Row="2" Margin="{StaticResource ControlBorderTop}">
@@ -400,6 +463,7 @@
                                 <TextBlock Grid.Row="0" Text="Error" FontWeight="Bold"/>
                                 <RadioButton x:Name="NoErrorRadioButton"
                                              Grid.Column="1"
+                                             Padding="0,0,5,0" 
                                              ToolTip="{x:Static languages:Core.TestsNoErrorExpectedTooltip}" 
                                              VerticalAlignment="Center" 
                                              HorizontalAlignment="Left" 
