@@ -6899,6 +6899,42 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Enter the password for the account you want to use for authenticating..
+        /// </summary>
+        public static string ServiceTestPasswordHelpText {
+            get {
+                return ResourceManager.GetString("ServiceTestPasswordHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Password.
+        /// </summary>
+        public static string ServiceTestPasswordTooltip {
+            get {
+                return ResourceManager.GetString("ServiceTestPasswordTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The full username of the account you want to use to run this test..
+        /// </summary>
+        public static string ServiceTestUserNameHelpText {
+            get {
+                return ResourceManager.GetString("ServiceTestUserNameHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Username.
+        /// </summary>
+        public static string ServiceTestUserNameTooltip {
+            get {
+                return ResourceManager.GetString("ServiceTestUserNameTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Removes the performance counters for this specific resource.
         /// </summary>
         public static string SettingsPerfCounterRemoveResourceHelpText {
