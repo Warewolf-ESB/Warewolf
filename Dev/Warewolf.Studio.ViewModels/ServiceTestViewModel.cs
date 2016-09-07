@@ -1,6 +1,7 @@
 ﻿
 using System;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Windows.Input;
 using Dev2;
 using Dev2.Common.Interfaces;
@@ -18,7 +19,6 @@ namespace Warewolf.Studio.ViewModels
         private string _testPassingResult;
         private ObservableCollection<IServiceTestModel> _tests;
         private string _displayName;
-        private string _image;
         private bool _hasChanged;
 
         public ServiceTestViewModel(IContextualResourceModel resourceModel)
@@ -81,10 +81,10 @@ namespace Warewolf.Studio.ViewModels
 
         public void Save()
         {
-            throw new NotImplementedException();
+            ResourceModel.SaveTests(Tests.ToList());
         }
 
-        public IResourceModel ResourceModel { get; set; }
+        public IContextualResourceModel ResourceModel { get; set; }
 
         public IServiceTestModel SelectedServiceTest
         {
