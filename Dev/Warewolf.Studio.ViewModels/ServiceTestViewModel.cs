@@ -19,6 +19,7 @@ namespace Warewolf.Studio.ViewModels
         private ObservableCollection<IServiceTestModel> _tests;
         private string _displayName;
         private string _image;
+        private bool _hasChanged;
 
         public ServiceTestViewModel(IResourceModel resourceModel)
         {
@@ -46,6 +47,7 @@ namespace Warewolf.Studio.ViewModels
                 SelectedServiceTest = testModel;
 
             }, () => CanCreateTest);
+            CanSave = true;
         }
 
         public bool CanCreateTest { get; set; }
@@ -57,7 +59,24 @@ namespace Warewolf.Studio.ViewModels
         public bool CanDuplicateTest { get; set; }
         public bool CanDeleteTest { get; set; }
         public bool CanSave { get; set; }
-        public bool HasChanged { get; set; }
+        public bool HasChanged
+        {
+            get
+            {
+                return _hasChanged;
+            }
+            set
+            {
+                _hasChanged = value;
+                if (_hasChanged)
+                {
+                    if (!DisplayName.EndsWith(" *"))
+                    {
+                        DisplayName += " *";
+                    }
+                }
+            }
+        }
 
         public void Save()
         {

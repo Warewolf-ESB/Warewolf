@@ -45,7 +45,19 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsNotNull(testVM.ResourceModel);
         }
 
-
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("TestFrameworkViewModel_Constructor")]
+        public void TestFrameworkViewModel_Constructor_NotNullResourceModel_ShouldSetDisplayNameIncludingResourceDisplayName()
+        {
+            //------------Setup for test--------------------------
+            var mockResourceModel = new Mock<IResourceModel>();
+            mockResourceModel.Setup(model => model.DisplayName).Returns("Workflow Name");
+            //------------Execute Test---------------------------
+            var testVM = new ServiceTestViewModel(mockResourceModel.Object);
+            //------------Assert Results-------------------------
+            Assert.AreEqual("Workflow Name - Tests", testVM.DisplayName);
+        }
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
@@ -125,6 +137,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         {
             var moqModel = new Mock<IResourceModel>();
             moqModel.SetupAllProperties();
+            moqModel.Setup(model => model.DisplayName).Returns("My WF");
             return moqModel.Object;
         }
 
@@ -334,6 +347,41 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual(1, test.Outputs.Count);
             Assert.AreEqual("msg", test.Outputs[0].Variable);
             Assert.AreEqual(null, test.Outputs[0].Value);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("ServiceTestViewModel_HasChanged")]
+        public void ServiceTestViewModel_HasChanged_WhenSetTrue_ShouldUpdateDisplayNameWithStar()
+        {
+            //------------Setup for test--------------------------
+            var testFrameworkViewModel = new ServiceTestViewModel(CreateResourceModelWithSingleScalarOutput());
+            //------------Assert Preconditions-------------------
+            Assert.IsFalse(testFrameworkViewModel.HasChanged);
+            Assert.AreEqual("My WF - Tests",testFrameworkViewModel.DisplayName);
+            //------------Execute Test---------------------------
+            testFrameworkViewModel.HasChanged = true;
+            //------------Assert Results-------------------------
+            Assert.IsTrue(testFrameworkViewModel.HasChanged);
+            Assert.AreEqual("My WF - Tests *",testFrameworkViewModel.DisplayName);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("ServiceTestViewModel_HasChanged")]
+        public void ServiceTestViewModel_HasChanged_WhenSetTrueTwice_ShouldUpdateDisplayNameWithOneStarOnly()
+        {
+            //------------Setup for test--------------------------
+            var testFrameworkViewModel = new ServiceTestViewModel(CreateResourceModelWithSingleScalarOutput());
+            //------------Assert Preconditions-------------------
+            Assert.IsFalse(testFrameworkViewModel.HasChanged);
+            Assert.AreEqual("My WF - Tests",testFrameworkViewModel.DisplayName);
+            //------------Execute Test---------------------------
+            testFrameworkViewModel.HasChanged = true;
+            testFrameworkViewModel.HasChanged = true;
+            //------------Assert Results-------------------------
+            Assert.IsTrue(testFrameworkViewModel.HasChanged);
+            Assert.AreEqual("My WF - Tests *",testFrameworkViewModel.DisplayName);
         }
 
         private IResourceModel CreateResourceModelWithSingleScalarInput()
