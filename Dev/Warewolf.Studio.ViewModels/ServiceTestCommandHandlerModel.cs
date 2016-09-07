@@ -12,7 +12,8 @@ namespace Warewolf.Studio.ViewModels
         {
             var testModel = new ServiceTestModel
             {
-                TestName = "Test 1"
+                TestName = "Test 1",
+                IsDirty = true
             };
             if (!string.IsNullOrEmpty(resourceModel.DataList))
             {
@@ -25,7 +26,7 @@ namespace Warewolf.Studio.ViewModels
                 testModel.Outputs = dataListModel.ShapeScalars?
                                     .Where(scalar => scalar.IODirection == enDev2ColumnArgumentDirection.Output)
                                     .Select(sca => new ServiceTestOutput(sca.Name, sca.Value) as IServiceTestOutput).ToList();
-            }            
+            }
             return testModel;
        }
 

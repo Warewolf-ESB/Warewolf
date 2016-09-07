@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using Dev2;
 using Dev2.Common.Interfaces;
+using Dev2.Common.Interfaces.Help;
 using Dev2.Data.Binary_Objects;
+using Dev2.Interfaces;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Models.DataList;
 using Dev2.Studio.ViewModels.DataList;
@@ -123,6 +126,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var moqModel = new Mock<IContextualResourceModel>();
             moqModel.SetupAllProperties();
             moqModel.Setup(model => model.DisplayName).Returns("My WF");
+            moqModel.Setup(model => model.Environment.Connection.IsConnected).Returns(true);
             return moqModel.Object;
         }
 
@@ -207,12 +211,11 @@ namespace Warewolf.Studio.ViewModels.Tests
             //------------Setup for test--------------------------
             var testFrameworkViewModel = new ServiceTestViewModel(CreateResourceModel());
             //------------Assert Preconditions-------------------
-            Assert.IsNull(testFrameworkViewModel.Tests);
             //------------Execute Test---------------------------
             testFrameworkViewModel.CreateTestCommand.Execute(null);
             //------------Assert Results-------------------------
             Assert.IsNotNull(testFrameworkViewModel.Tests);
-            Assert.AreEqual(1, testFrameworkViewModel.Tests.Count);
+            Assert.AreEqual(2, testFrameworkViewModel.Tests.Count);
         }
 
         [TestMethod]
@@ -223,7 +226,6 @@ namespace Warewolf.Studio.ViewModels.Tests
             //------------Setup for test--------------------------
             var testFrameworkViewModel = new ServiceTestViewModel(CreateResourceModel());
             //------------Assert Preconditions-------------------
-            Assert.IsNull(testFrameworkViewModel.Tests);
             //------------Execute Test---------------------------
             testFrameworkViewModel.CreateTestCommand.Execute(null);
             //------------Assert Results-------------------------
@@ -253,7 +255,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //------------Assert Results-------------------------
             Assert.AreEqual(2, testFrameworkViewModel.Tests.Count);
             Assert.AreNotEqual(testModel, testFrameworkViewModel.SelectedServiceTest);
-            Assert.AreEqual(testFrameworkViewModel.Tests[1], testFrameworkViewModel.SelectedServiceTest);
+            Assert.AreEqual(testFrameworkViewModel.Tests[0], testFrameworkViewModel.SelectedServiceTest);
         }
 
         [TestMethod]
@@ -371,43 +373,55 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsNotNull(testFrameworkViewModel.Tests);
             var test = testFrameworkViewModel.Tests[0];
             Assert.IsNotNull(test);
-            Assert.IsTrue(testFrameworkViewModel.HasChanged);
+            Assert.IsTrue(testFrameworkViewModel.IsDirty);
         }
 
+        [TestMethod]
+        public void TestUpdateHelpDescriptor()
+        {
+            //arrange
+            var mainViewModelMock = new Mock<IMainViewModel>();
+            var helpViewModelMock = new Mock<IHelpWindowViewModel>();
+            mainViewModelMock.SetupGet(it => it.HelpViewModel).Returns(helpViewModelMock.Object);
+            CustomContainer.Register(mainViewModelMock.Object);
+            var helpText = "someText";
 
+            var testFrameworkViewModel = new ServiceTestViewModel(CreateResourceModelWithSingleScalarOutput());
+
+            //act
+            testFrameworkViewModel.UpdateHelpDescriptor(helpText);
+
+            //assert
+            helpViewModelMock.Verify(it => it.UpdateHelpText(helpText));
+        }
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory("ServiceTestViewModel_HasChanged")]
-        public void ServiceTestViewModel_HasChanged_WhenSetTrue_ShouldUpdateDisplayNameWithStar()
+        [TestCategory("ServiceTestViewModel_IsDirty")]
+        public void ServiceTestViewModel_IsDirty_WhenSetTrue_ShouldUpdateDisplayNameWithStar()
         {
             //------------Setup for test--------------------------
             var testFrameworkViewModel = new ServiceTestViewModel(CreateResourceModelWithSingleScalarOutput());
             //------------Assert Preconditions-------------------
-            Assert.IsFalse(testFrameworkViewModel.HasChanged);
-            Assert.AreEqual("My WF - Tests",testFrameworkViewModel.DisplayName);
             //------------Execute Test---------------------------
-            testFrameworkViewModel.HasChanged = true;
+            testFrameworkViewModel.CreateTestCommand.Execute(null);
             //------------Assert Results-------------------------
-            Assert.IsTrue(testFrameworkViewModel.HasChanged);
+            Assert.IsTrue(testFrameworkViewModel.IsDirty);
             Assert.AreEqual("My WF - Tests *",testFrameworkViewModel.DisplayName);
         }
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory("ServiceTestViewModel_HasChanged")]
-        public void ServiceTestViewModel_HasChanged_WhenSetTrueTwice_ShouldUpdateDisplayNameWithOneStarOnly()
+        [TestCategory("ServiceTestViewModel_IsDirty")]
+        public void ServiceTestViewModel_IsDirty_WhenSetTrueTwice_ShouldUpdateDisplayNameWithOneStarOnly()
         {
             //------------Setup for test--------------------------
             var testFrameworkViewModel = new ServiceTestViewModel(CreateResourceModelWithSingleScalarOutput());
             //------------Assert Preconditions-------------------
-            Assert.IsFalse(testFrameworkViewModel.HasChanged);
-            Assert.AreEqual("My WF - Tests",testFrameworkViewModel.DisplayName);
             //------------Execute Test---------------------------
-            testFrameworkViewModel.HasChanged = true;
-            testFrameworkViewModel.HasChanged = true;
+            testFrameworkViewModel.CreateTestCommand.Execute(null);
             //------------Assert Results-------------------------
-            Assert.IsTrue(testFrameworkViewModel.HasChanged);
+            Assert.IsTrue(testFrameworkViewModel.IsDirty);
             Assert.AreEqual("My WF - Tests *",testFrameworkViewModel.DisplayName);
         }
 

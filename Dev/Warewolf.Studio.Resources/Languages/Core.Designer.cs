@@ -6890,11 +6890,111 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Selecting this option will add the test to the test to the Run All command. 
+        ///If this option is not selected, the test will not run part of the Run All list of tests..
+        /// </summary>
+        public static string ServiceTestEnableRunSelectedTestHelpText {
+            get {
+                return ResourceManager.GetString("ServiceTestEnableRunSelectedTestHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select or De-Select to run the test.
+        /// </summary>
+        public static string ServiceTestEnableRunSelectedTestTooltip {
+            get {
+                return ResourceManager.GetString("ServiceTestEnableRunSelectedTestTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The test expects an error.
+        /// </summary>
+        public static string ServiceTestErrorExpectedHelpText {
+            get {
+                return ResourceManager.GetString("ServiceTestErrorExpectedHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The test expects an error.
+        /// </summary>
+        public static string ServiceTestErrorExpectedTooltip {
+            get {
+                return ResourceManager.GetString("ServiceTestErrorExpectedTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Failing.
+        /// </summary>
+        public static string ServiceTestFailingTooltip {
+            get {
+                return ResourceManager.GetString("ServiceTestFailingTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Test the execution of this resource..
         /// </summary>
         public static string ServiceTestHelp {
             get {
                 return ResourceManager.GetString("ServiceTestHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Input value to test against.
+        /// </summary>
+        public static string ServiceTestInputValueTooltip {
+            get {
+                return ResourceManager.GetString("ServiceTestInputValueTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid.
+        /// </summary>
+        public static string ServiceTestInvalidTooltip {
+            get {
+                return ResourceManager.GetString("ServiceTestInvalidTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Create a new test.
+        /// </summary>
+        public static string ServiceTestNewTestTooltip {
+            get {
+                return ResourceManager.GetString("ServiceTestNewTestTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The test expects no error.
+        /// </summary>
+        public static string ServiceTestNoErrorExpectedHelpText {
+            get {
+                return ResourceManager.GetString("ServiceTestNoErrorExpectedHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The test expects no error.
+        /// </summary>
+        public static string ServiceTestNoErrorExpectedTooltip {
+            get {
+                return ResourceManager.GetString("ServiceTestNoErrorExpectedTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Passed.
+        /// </summary>
+        public static string ServiceTestPassedTooltip {
+            get {
+                return ResourceManager.GetString("ServiceTestPassedTooltip", resourceCulture);
             }
         }
         
@@ -6917,6 +7017,69 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Pending.
+        /// </summary>
+        public static string ServiceTestPendingTooltip {
+            get {
+                return ResourceManager.GetString("ServiceTestPendingTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Use the public account to authenticate on the remote server.&lt;br/&gt;	&lt;br/&gt;	If there are no resources on the remote server, there will be no Public authentication..
+        /// </summary>
+        public static string ServiceTestPublicHelpText {
+            get {
+                return ResourceManager.GetString("ServiceTestPublicHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Open this URL in your default browser to view the tests for this workflow.
+        /// </summary>
+        public static string ServiceTestRunAllTestsInBrowserTooltip {
+            get {
+                return ResourceManager.GetString("ServiceTestRunAllTestsInBrowserTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Run this test.
+        /// </summary>
+        public static string ServiceTestRunSelectedTestHelpText {
+            get {
+                return ResourceManager.GetString("ServiceTestRunSelectedTestHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Open this URL in your default browser to view this test.
+        /// </summary>
+        public static string ServiceTestRunSelectedTestInBrowserTooltip {
+            get {
+                return ResourceManager.GetString("ServiceTestRunSelectedTestInBrowserTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Run this test.
+        /// </summary>
+        public static string ServiceTestRunSelectedTestTooltip {
+            get {
+                return ResourceManager.GetString("ServiceTestRunSelectedTestTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Use a specific windows account to authenticate on the remote server.&lt;br/&gt;	&lt;br/&gt;	Use the domain if relevant e.g. DOMAIN\Username.
+        /// </summary>
+        public static string ServiceTestUserHelpText {
+            get {
+                return ResourceManager.GetString("ServiceTestUserHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The full username of the account you want to use to run this test..
         /// </summary>
         public static string ServiceTestUserNameHelpText {
@@ -6931,6 +7094,15 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string ServiceTestUserNameTooltip {
             get {
                 return ResourceManager.GetString("ServiceTestUserNameTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Uses the logged on windows account to authenticate on the remote server..
+        /// </summary>
+        public static string ServiceTestWindowsHelpText {
+            get {
+                return ResourceManager.GetString("ServiceTestWindowsHelpText", resourceCulture);
             }
         }
         
@@ -8086,115 +8258,6 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string TestsDeleteSelectedTestTooltip {
             get {
                 return ResourceManager.GetString("TestsDeleteSelectedTestTooltip", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Selecting this option will add the test to the test to the Run All command. 
-        ///If this option is not selected, the test will not run part of the Run All list of tests..
-        /// </summary>
-        public static string TestsEnableRunSelectedTestHelpText {
-            get {
-                return ResourceManager.GetString("TestsEnableRunSelectedTestHelpText", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Select or De-Select to run the test.
-        /// </summary>
-        public static string TestsEnableRunSelectedTestTooltip {
-            get {
-                return ResourceManager.GetString("TestsEnableRunSelectedTestTooltip", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The test expects an error.
-        /// </summary>
-        public static string TestsErrorExpectedHelpText {
-            get {
-                return ResourceManager.GetString("TestsErrorExpectedHelpText", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The test expects an error.
-        /// </summary>
-        public static string TestsErrorExpectedTooltip {
-            get {
-                return ResourceManager.GetString("TestsErrorExpectedTooltip", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Input value to test against.
-        /// </summary>
-        public static string TestsInputValueTooltip {
-            get {
-                return ResourceManager.GetString("TestsInputValueTooltip", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Create a new test.
-        /// </summary>
-        public static string TestsNewTestTooltip {
-            get {
-                return ResourceManager.GetString("TestsNewTestTooltip", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The test expects no error.
-        /// </summary>
-        public static string TestsNoErrorExpectedHelpText {
-            get {
-                return ResourceManager.GetString("TestsNoErrorExpectedHelpText", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The test expects no error.
-        /// </summary>
-        public static string TestsNoErrorExpectedTooltip {
-            get {
-                return ResourceManager.GetString("TestsNoErrorExpectedTooltip", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Open this URL in your default browser to view the tests for this workflow.
-        /// </summary>
-        public static string TestsRunAllTestsInBrowserTooltip {
-            get {
-                return ResourceManager.GetString("TestsRunAllTestsInBrowserTooltip", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Run this test.
-        /// </summary>
-        public static string TestsRunSelectedTestHelpText {
-            get {
-                return ResourceManager.GetString("TestsRunSelectedTestHelpText", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Open this URL in your default browser to view this test.
-        /// </summary>
-        public static string TestsRunSelectedTestInBrowserTooltip {
-            get {
-                return ResourceManager.GetString("TestsRunSelectedTestInBrowserTooltip", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Run this test.
-        /// </summary>
-        public static string TestsRunSelectedTestTooltip {
-            get {
-                return ResourceManager.GetString("TestsRunSelectedTestTooltip", resourceCulture);
             }
         }
         
