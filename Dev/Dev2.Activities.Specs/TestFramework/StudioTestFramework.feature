@@ -13,10 +13,12 @@ Background: Setup for workflows for tests
 			| outputValue    |
 
 Scenario: Create New Test
-	Given the test builder is open with "Workflow 1"
+	Given the test builder is open with "Workflow 1"	
+	And Tab Header is "Workflow 1 - Tests"
 	And there are no tests
 	When I click New Test
 	Then a new test is added
+	And Tab Header is "Workflow 1 - Tests *"
 	And test name starts with "Test 1"
 	And username is blank
 	And password is blank
@@ -26,10 +28,25 @@ Scenario: Create New Test
 	And outputs as
 	| Variable Name | Value |
 	| outputValue   |       |
-	And save is disabled
+	And save is enabled
 	And test status is pending
 	And test is enabled
-	
+
+Scenario: Save a New Test
+	Given the test builder is open with "Workflow 1"
+	And there are no tests
+	And I click New Test
+	Then a new test is added
+	And test name starts with "Test 1"
+	And inputs as
+	| Variable Name | Value |
+	| a             |       |
+	And outputs as
+	| Variable Name | Value |
+	| outputValue   |       |
+	And save is enabled
+
+
 #
 #Scenario: Edit existing test
 #	Given test builder is open with "Workflow 1"
