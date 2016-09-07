@@ -1433,7 +1433,8 @@ namespace Warewolf.UITests
             // Click 'Configure settings' button
             Mouse.Click(configureSettingsButton, new Point(7, 2));
 
-            // Verify that the 'Exists' property of 'System.Windows.Controls.TabItem Header: Content:' tab equals 'True'
+            // Wait for 1 seconds for user delay between actions; Verify that the 'Exists' property of 'System.Windows.Controls.TabItem Header: Content:' tab equals 'True'
+            Playback.Wait(500);
             Assert.AreEqual(this.Click_Settings_Ribbon_ButtonParams.LoggingTabExists, loggingTab.Exists, "Logging tab does not exist in the settings window");
 
             // Verify that the 'Exists' property of 'System.Windows.Controls.TabItem Header: Content:' tab equals 'True'
@@ -8647,7 +8648,7 @@ namespace Warewolf.UITests
         public bool ConfigureSettingsButtonExists = true;
         
         /// <summary>
-        /// Verify that the 'Exists' property of 'System.Windows.Controls.TabItem Header: Content:' tab equals 'True'
+        /// Wait for 1 seconds for user delay between actions; Verify that the 'Exists' property of 'System.Windows.Controls.TabItem Header: Content:' tab equals 'True'
         /// </summary>
         public bool LoggingTabExists = true;
         
