@@ -34,9 +34,11 @@ Scenario: Create New Test
 
 Scenario: Save a New Test
 	Given the test builder is open with "Workflow 1"
+	And Tab Header is "Workflow 1 - Tests"
 	And there are no tests
 	And I click New Test
 	Then a new test is added
+	And Tab Header is "Workflow 1 - Tests *"
 	And test name starts with "Test 1"
 	And inputs as
 	| Variable Name | Value |
@@ -45,6 +47,9 @@ Scenario: Save a New Test
 	| Variable Name | Value |
 	| outputValue   |       |
 	And save is enabled
+	When I save
+	Then Tab Header is "Workflow 1 - Tests"
+
 
 
 #
