@@ -21,6 +21,7 @@ using Caliburn.Micro;
 using Dev2.Collections;
 using Dev2.Common;
 using Dev2.Common.Common;
+using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core.Collections;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.Common.Interfaces.Security;
@@ -41,7 +42,6 @@ namespace Dev2.Studio.Core.Models
     {
         #region Class Members
 
-        private readonly List<string> _tagList;
         private bool _allowCategoryEditing = true;
         private string _category;
         private string _comment;
@@ -83,7 +83,7 @@ namespace Dev2.Studio.Core.Models
         {
             VerifyArgument.IsNotNull("eventPublisher", eventPublisher);
 
-            _tagList = new List<string>();
+            TagList = new List<string>();
             Environment = environment;
 
             if (environment?.Connection != null)
@@ -140,7 +140,6 @@ namespace Dev2.Studio.Core.Models
                 {
                     _validationService = new DesignValidationService(_environment.Connection.ServerEvents);
 
-                    // BUG 9634 - 2013.07.17 - TWR : added
                     _validationService.Subscribe(_environment.ID, ReceiveEnvironmentValidation);
                 }
                 NotifyOfPropertyChange(nameof(Environment));
@@ -272,7 +271,7 @@ namespace Dev2.Studio.Core.Models
             }
         }
 
-        public List<string> TagList => _tagList;
+        public List<string> TagList { get; }
 
         public string DataList
         {
@@ -440,8 +439,10 @@ namespace Dev2.Studio.Core.Models
             NotifyOfPropertyChange(() => IsValid);
         }
 
+        public void SaveTests(List<IServiceTestModel> tests)
+        {
+        }
 
-        // BUG 9634 - 2013.07.17 - TWR : added
         void ReceiveEnvironmentValidation(DesignValidationMemo memo)
         {
             foreach (var error in memo.Errors)
@@ -542,7 +543,6 @@ namespace Dev2.Studio.Core.Models
                 if (xaml != null && xaml.Length != 0)
                 {
                     var service = CreateWorkflowXElement(xaml);
-                    // save to the string builder ;)
                     XmlWriterSettings xws = new XmlWriterSettings { OmitXmlDeclaration = true };
                     using (XmlWriter xwriter = XmlWriter.Create(result, xws))
                     {

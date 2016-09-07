@@ -9,7 +9,9 @@
 */
 
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
+using Dev2.Common.Interfaces;
 
 // ReSharper disable InconsistentNaming
 
@@ -25,5 +27,7 @@ namespace Dev2.Studio.Core.Interfaces
         event Action OnDataListChanged;
 
         void ClearErrors();
+
+        void SaveTests(List<IServiceTestModel> tests);
     }
 }
