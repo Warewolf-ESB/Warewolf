@@ -49,15 +49,6 @@ namespace Dev2.Controller
         T ExecuteCommand<T>(IEnvironmentConnection connection, Guid workspaceId);
 
         /// <summary>
-        /// Executes the command.
-        /// </summary>
-        /// <param name="connection">The connection.</param>
-        /// <param name="workspaceId">The workspace unique identifier.</param>
-        /// <param name="dataListId"></param>
-        /// <returns></returns>
-        T ExecuteCommand<T>(IEnvironmentConnection connection, Guid workspaceId, Guid dataListId);
-
-        /// <summary>
         /// Executes the command async.
         /// </summary>
         /// <param name="connection">The connection.</param>

@@ -23,6 +23,7 @@ using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Infrastructure.SharedModels;
 using Dev2.Communication;
 using Dev2.Controller;
+using Dev2.Data;
 using Dev2.Data.ServiceModel;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Services.Security;
@@ -46,7 +47,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
     {
         readonly HashSet<Guid> _cachedServices;
         readonly IEnvironmentModel _environmentModel;
-        protected readonly List<IResourceModel> ResourceModels;
+        private readonly List<IResourceModel> ResourceModels;
         bool _isLoaded;
         readonly IDeployService _deployService = new DeployService();
         readonly object _updatingPermissions = new object();
@@ -549,6 +550,44 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             var con = targetEnvironment.Connection;
             var result = comsController.ExecuteCommand<ExecuteMessage>(con, GlobalConstants.ServerWorkspaceID);
 
+            return result;
+        }
+
+        public ExecuteMessage SaveTests(Guid resourceId, List<IServiceTestModel> tests)
+        {
+            var comsController = GetCommunicationController("SaveTests");
+            var testDefinitions = new List<ServiceTestModelTO>(tests.Select(model =>
+            {
+                var serviceTestModelTo = new ServiceTestModelTO
+                {
+                    TestName = model.TestName,
+                    AuthenticationType = model.AuthenticationType,
+                    Enabled = model.Enabled,
+                    ErrorExpected = model.ErrorExpected,
+                    NoErrorExpected = model.NoErrorExpected,
+                    UserName = model.UserName,
+                    Password = model.Password,
+                    Inputs = model.Inputs.Select(input => new ServiceTestInputTO
+                    {
+                        Variable = input.Variable,
+                        Value = input.Value,
+                        EmptyIsNull = input.EmptyIsNull
+                    } as IServiceTestInput).ToList(),
+                    Outputs = model.Outputs.Select(output => new ServiceTestOutputTO
+                    {
+                        Variable = output.Variable,
+                        Value = output.Value
+                    } as IServiceTestOutput).ToList()
+                };
+                return serviceTestModelTo;
+            }));
+            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+            CompressedExecuteMessage message = new CompressedExecuteMessage();
+            message.SetMessage(serializer.Serialize(testDefinitions));
+            comsController.AddPayloadArgument("resourceID", resourceId.ToString());
+            comsController.AddPayloadArgument("testDefinitions", serializer.SerializeToBuilder(message));
+
+            var result = comsController.ExecuteCommand<ExecuteMessage>(_environmentModel.Connection, GlobalConstants.ServerWorkspaceID);
             return result;
         }
 

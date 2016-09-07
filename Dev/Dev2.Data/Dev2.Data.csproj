@@ -155,6 +155,9 @@
     <Compile Include="ServiceModel\EmailSource.cs" />
     <Compile Include="ServiceModel\Resource.cs" />
     <Compile Include="ServiceModel\ResourceForTree.cs" />
+    <Compile Include="ServiceTestInputTO.cs" />
+    <Compile Include="ServiceTestModelTO.cs" />
+    <Compile Include="ServiceTestOutputTO.cs" />
     <Compile Include="Settings\Settings.cs" />
     <Compile Include="Builders\DataListIntellisenseBuilder.cs" />
     <Compile Include="Builders\DefinitionBuilder.cs" />

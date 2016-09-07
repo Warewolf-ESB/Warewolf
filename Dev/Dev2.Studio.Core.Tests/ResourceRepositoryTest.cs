@@ -18,6 +18,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using Caliburn.Micro;
+using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.Common.Interfaces.Security;
@@ -26,6 +27,7 @@ using Dev2.Controller;
 using Dev2.Core.Tests;
 using Dev2.Core.Tests.Environments;
 using Dev2.Core.Tests.XML;
+using Dev2.Data;
 using Dev2.Data.ServiceModel;
 using Dev2.Providers.Errors;
 using Dev2.Providers.Events;
@@ -41,6 +43,7 @@ using Dev2.Util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Newtonsoft.Json;
+using Warewolf.Studio.ViewModels;
 
 // ReSharper disable InconsistentNaming
 // ReSharper disable CheckNamespace
@@ -585,6 +588,54 @@ namespace BusinessDesignStudio.Unit.Tests
             Assert.AreEqual(exp, mockEnvironmentModel.Object.ResourceRepository.All().Count);
             var retMsg = JsonConvert.DeserializeObject<ExecuteMessage>(retVal.ToString());
             Assert.IsNotNull(retMsg);
+        }
+
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("ResourceModel_SaveTests")]
+        public void ResourceModel_Save_ExecuteMessageIsSuccessful_NoException()
+        {
+            //------------Setup for test--------------------------
+            var serviceTestModel = new ServiceTestModel
+            {
+                TestName = "Test Input",
+                AuthenticationType = AuthenticationType.Public,
+                Enabled = true,
+                ErrorExpected = false,
+                NoErrorExpected = true,
+                Inputs = new List<IServiceTestInput> { new ServiceTestInput("var","val")},
+                Outputs = new List<IServiceTestOutput> { new ServiceTestOutput("var","val")}                
+            };
+            var retVal = new StringBuilder();
+            Mock<IEnvironmentModel> mockEnvironmentModel = new Mock<IEnvironmentModel>();
+            Mock<IEnvironmentConnection> conn = new Mock<IEnvironmentConnection>();
+            conn.Setup(c => c.IsConnected).Returns(true);
+            conn.Setup(c => c.ServerEvents).Returns(new EventPublisher());
+            conn.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Callback((StringBuilder o, Guid workspaceID) =>
+            {
+                retVal = o;
+            });
+
+            mockEnvironmentModel.Setup(e => e.Connection).Returns(conn.Object);
+
+            var resourceRepository = new ResourceRepository(mockEnvironmentModel.Object);
+            var resourceId = Guid.NewGuid();
+            //------------Execute Test---------------------------            
+            resourceRepository.SaveTests(resourceId,new List<IServiceTestModel> { serviceTestModel });
+            //------------Assert Results-------------------------
+            var ser = new Dev2JsonSerializer();
+            var retMsg = ser.Deserialize<EsbExecuteRequest>(retVal.ToString());
+            Assert.IsNotNull(retMsg);
+            Assert.AreEqual("SaveTests",retMsg.ServiceName);
+            Assert.AreEqual(2,retMsg.Args.Count);
+            Assert.AreEqual(resourceId.ToString(),retMsg.Args["resourceID"].ToString());
+            var compressedMessage = ser.Deserialize<CompressedExecuteMessage>(retMsg.Args["testDefinitions"].ToString());
+            Assert.IsNotNull(compressedMessage);
+            var serviceTestModelTos = ser.Deserialize<List<ServiceTestModelTO>>(compressedMessage.GetDecompressedMessage());
+            Assert.IsNotNull(serviceTestModelTos);
+            Assert.AreEqual(1,serviceTestModelTos.Count);
+            Assert.AreEqual(serviceTestModel.TestName, serviceTestModelTos[0].TestName);
         }
 
 
