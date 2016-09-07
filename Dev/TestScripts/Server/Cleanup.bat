@@ -47,3 +47,4 @@ set errorlevel=0
 goto RetryClean
 
 :StopRetrying
+IF NOT "%1"=="" exit 0
