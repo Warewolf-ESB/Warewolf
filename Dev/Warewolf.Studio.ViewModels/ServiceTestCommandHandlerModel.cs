@@ -10,7 +10,7 @@ namespace Warewolf.Studio.ViewModels
     {
         public IServiceTestModel CreateTest(IResourceModel resourceModel)
         {
-            var testModel = new ServiceServiceTestModel
+            var testModel = new ServiceTestModel
             {
                 TestName = "Test 1"
             };

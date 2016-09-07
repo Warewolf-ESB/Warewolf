@@ -226,6 +226,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //------------Execute Test---------------------------
             testFrameworkViewModel.CreateTestCommand.Execute(null);
             //------------Assert Results-------------------------
+            Assert.IsNotNull(testFrameworkViewModel.Tests);
             Assert.AreEqual(1, testFrameworkViewModel.Tests.Count);
         }
 
@@ -241,6 +242,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //------------Execute Test---------------------------
             testFrameworkViewModel.CreateTestCommand.Execute(null);
             //------------Assert Results-------------------------
+            Assert.IsNotNull(testFrameworkViewModel.Tests);
             var test = testFrameworkViewModel.Tests[0];
             Assert.IsNotNull(test);
             Assert.AreEqual("Test 1", test.TestName);
@@ -253,7 +255,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         {
             //------------Setup for test--------------------------
             var testFrameworkViewModel = new ServiceTestViewModel(CreateResourceModel());
-            var testModel = new ServiceServiceTestModel { TestName = "Test 2" };
+            var testModel = new ServiceTestModel { TestName = "Test 2" };
             testFrameworkViewModel.Tests = new ObservableCollection<IServiceTestModel> { testModel };
             testFrameworkViewModel.SelectedServiceTest = testModel;
             //------------Assert Preconditions-------------------
@@ -306,7 +308,7 @@ namespace Warewolf.Studio.ViewModels.Tests
                   }
               };
             //------------Execute Test---------------------------
-            testFrameworkViewModel.SelectedServiceTest = new ServiceServiceTestModel();
+            testFrameworkViewModel.SelectedServiceTest = new ServiceTestModel();
             //------------Assert Results-------------------------
             Assert.IsTrue(_wasCalled);
         }
