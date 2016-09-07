@@ -49,7 +49,20 @@ Scenario: Save a New Test
 	And save is enabled
 	When I save
 	Then Tab Header is "Workflow 1 - Tests"
-
+	And I close the test builder
+	When the test builder is open with "Workflow 1"
+	Then Tab Header is "Workflow 1 - Tests"
+	And there are 1 tests
+	And "Test 1" is selected
+	And test name starts with "Test 1"
+	And inputs as
+	| Variable Name | Value |
+	| a             |       |
+	And outputs as
+	| Variable Name | Value |
+	| outputValue   |       |
+	And save is disabled
+    
 
 
 #
