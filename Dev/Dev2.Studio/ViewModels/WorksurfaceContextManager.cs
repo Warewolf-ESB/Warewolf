@@ -115,7 +115,7 @@ namespace Dev2.Studio.ViewModels
         void AddWorkSurface(IWorkSurfaceObject obj);
 
         bool CloseWorkSurfaceContext(WorkSurfaceContextViewModel context, PaneClosingEventArgs e, bool dontPrompt = false);
-        void ViewTestsForService(IResourceModel resourceModel, IWorkSurfaceKey workSurfaceKey = null);
+        void ViewTestsForService(IContextualResourceModel resourceModel, IWorkSurfaceKey workSurfaceKey = null);
     }
 
     public class WorksurfaceContextManager : IWorksurfaceContextManager
@@ -194,7 +194,7 @@ namespace Dev2.Studio.ViewModels
             return workSurfaceKey;
         }
 
-        public void ViewTestsForService(IResourceModel resourceModel, IWorkSurfaceKey workSurfaceKey = null)
+        public void ViewTestsForService(IContextualResourceModel resourceModel, IWorkSurfaceKey workSurfaceKey = null)
         {
             var testViewModel = new ServiceTestViewModel(resourceModel);
             var vm = new StudioTestViewModel(_mainViewModel.EventPublisher,testViewModel,_mainViewModel.PopupProvider,new ServiceTestView());
