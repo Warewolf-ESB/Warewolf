@@ -187,7 +187,9 @@
                     </ListBox.ItemTemplate>
                 </ListBox>
 
-                <ContentControl Grid.Column="1" Visibility="{Binding SelectedServiceTest, Converter={StaticResource NullToVisibilityConverterNullIsCollapsed}}">
+                <ContentControl Grid.Column="1" 
+                                Margin="{StaticResource ElementBorderLeft}" 
+                                Visibility="{Binding SelectedServiceTest, Converter={StaticResource NullToVisibilityConverterNullIsCollapsed}}">
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
@@ -316,8 +318,8 @@
                             </Grid.RowDefinitions>
 
                             <TextBlock Grid.Row="0" Text="Inputs" FontWeight="Bold"/>
-                            <ig:XamGrid ItemsSource="{Binding SelectedServiceTest.Inputs, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-                                        Grid.Row="1"
+                            <Border Grid.Row="1" BorderBrush="{StaticResource XamGridBorderBrush}" BorderThickness="1">
+                                <ig:XamGrid ItemsSource="{Binding SelectedServiceTest.Inputs, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                         AutoGenerateColumns="False"
                                         Style="{StaticResource XamGridStyle}"
                                         BorderThickness="0"       
@@ -325,24 +327,24 @@
                                         KeyboardNavigation="CurrentLayout"
                                         Loaded="TestInputs_OnLoaded"
                                         x:Name="TestInputs">
-                                <ig:XamGrid.Columns>
-                                    <ig:TemplateColumn Key="Variable" Width="1*" IsReadOnly="True" HorizontalContentAlignment="Stretch">
-                                        <ig:TemplateColumn.ItemTemplate>
-                                            <DataTemplate>
-                                                <Grid PreviewKeyDown="GridPreviewKeyDown" Background="Transparent" HorizontalAlignment="Stretch">
-                                                    <TextBlock KeyboardNavigation.IsTabStop="False" 
+                                    <ig:XamGrid.Columns>
+                                        <ig:TemplateColumn Key="Variable" Width="1*" IsReadOnly="True" HorizontalContentAlignment="Stretch">
+                                            <ig:TemplateColumn.ItemTemplate>
+                                                <DataTemplate>
+                                                    <Grid PreviewKeyDown="GridPreviewKeyDown" Background="Transparent" HorizontalAlignment="Stretch">
+                                                        <TextBlock KeyboardNavigation.IsTabStop="False" 
                                                                Focusable="True" 
                                                                ToolTip="{Binding Path=Variable}" 
                                                                Text="{Binding Path=Variable, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" />
-                                                </Grid>
-                                            </DataTemplate>
-                                        </ig:TemplateColumn.ItemTemplate>
-                                    </ig:TemplateColumn>
-                                    <ig:TemplateColumn Key="Value" Width="1*" IsReadOnly="False" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
-                                        <ig:TemplateColumn.ItemTemplate>
-                                            <DataTemplate>
-                                                <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                                                    <ui:IntellisenseTextBox x:Name="txtValue" 
+                                                    </Grid>
+                                                </DataTemplate>
+                                            </ig:TemplateColumn.ItemTemplate>
+                                        </ig:TemplateColumn>
+                                        <ig:TemplateColumn Key="Value" Width="1*" IsReadOnly="False" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
+                                            <ig:TemplateColumn.ItemTemplate>
+                                                <DataTemplate>
+                                                    <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                                                        <ui:IntellisenseTextBox x:Name="txtValue" 
                                                                             FilterType="All" 
                                                                             WrapInBrackets="False" 
                                                                             Text="{Binding Path=Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
@@ -355,44 +357,44 @@
                                                                             ToolTip="{x:Static languages:Core.ServiceTestInputValueTooltip}"
                                                                             AllowUserInsertLine="True"
                                                                             SelectAllOnGotFocus="True">
-                                                        <AutomationProperties.AutomationId>
-                                                            <MultiBinding StringFormat="UI_{0}txt_AutoID">
-                                                                <Binding Path="Value"/>
-                                                            </MultiBinding>
-                                                        </AutomationProperties.AutomationId>
-                                                        <ui:IntellisenseTextBox.IntellisenseProvider>
-                                                            <interfaceImplementors:CompositeIntellisenseProvider>
-                                                                <provider:BlankIntellisenseProvider />
-                                                            </interfaceImplementors:CompositeIntellisenseProvider>
-                                                        </ui:IntellisenseTextBox.IntellisenseProvider>
-                                                    </ui:IntellisenseTextBox>
-                                                </Grid>
-                                            </DataTemplate>
-                                        </ig:TemplateColumn.ItemTemplate>
-                                    </ig:TemplateColumn>
-                                    <ig:TemplateColumn Key="EmptyIsNull" Width="1*" IsReadOnly="True" HorizontalContentAlignment="Stretch">
-                                        <ig:TemplateColumn.ItemTemplate>
-                                            <DataTemplate>
-                                                <Grid PreviewKeyDown="GridPreviewKeyDown" Background="Transparent" HorizontalAlignment="Stretch">
-                                                    <CheckBox IsChecked="{Binding Path=EmptyIsNull}" 
+                                                            <AutomationProperties.AutomationId>
+                                                                <MultiBinding StringFormat="UI_{0}txt_AutoID">
+                                                                    <Binding Path="Value"/>
+                                                                </MultiBinding>
+                                                            </AutomationProperties.AutomationId>
+                                                            <ui:IntellisenseTextBox.IntellisenseProvider>
+                                                                <interfaceImplementors:CompositeIntellisenseProvider>
+                                                                    <provider:BlankIntellisenseProvider />
+                                                                </interfaceImplementors:CompositeIntellisenseProvider>
+                                                            </ui:IntellisenseTextBox.IntellisenseProvider>
+                                                        </ui:IntellisenseTextBox>
+                                                    </Grid>
+                                                </DataTemplate>
+                                            </ig:TemplateColumn.ItemTemplate>
+                                        </ig:TemplateColumn>
+                                        <ig:TemplateColumn Key="EmptyIsNull" Width="1*" IsReadOnly="True" HorizontalContentAlignment="Stretch">
+                                            <ig:TemplateColumn.ItemTemplate>
+                                                <DataTemplate>
+                                                    <Grid PreviewKeyDown="GridPreviewKeyDown" Background="Transparent" HorizontalAlignment="Stretch">
+                                                        <CheckBox IsChecked="{Binding Path=EmptyIsNull}" 
                                                               HorizontalAlignment="Center"
                                                               ToolTip="{x:Static languages:Core.InputEmptyIsNullToolTip}">
-                                                        <i:Interaction.Behaviors>
-                                                            <core:HelpSetter Text="{x:Static languages:Core.InputEmptyIsNullDefaultValueHelp}" DataContext="{Binding}" />
-                                                        </i:Interaction.Behaviors>
-                                                    </CheckBox>
-                                                </Grid>
-                                            </DataTemplate>
-                                        </ig:TemplateColumn.ItemTemplate>
-                                    </ig:TemplateColumn>
-                                </ig:XamGrid.Columns>
-                            </ig:XamGrid>
-
+                                                            <i:Interaction.Behaviors>
+                                                                <core:HelpSetter Text="{x:Static languages:Core.InputEmptyIsNullDefaultValueHelp}" DataContext="{Binding}" />
+                                                            </i:Interaction.Behaviors>
+                                                        </CheckBox>
+                                                    </Grid>
+                                                </DataTemplate>
+                                            </ig:TemplateColumn.ItemTemplate>
+                                        </ig:TemplateColumn>
+                                    </ig:XamGrid.Columns>
+                                </ig:XamGrid>
+                            </Border>
                             <!-- Grid.Row="2" is in place for Assert - V3 -->
 
                             <TextBlock Grid.Row="3" Text="Outputs" FontWeight="Bold"/>
-                            <ig:XamGrid ItemsSource="{Binding SelectedServiceTest.Outputs, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-                                        Grid.Row="1"
+                            <Border Grid.Row="4" BorderBrush="{StaticResource XamGridBorderBrush}" BorderThickness="1">
+                                <ig:XamGrid ItemsSource="{Binding SelectedServiceTest.Outputs, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                         AutoGenerateColumns="False"
                                         Style="{StaticResource XamGridStyle}"
                                         BorderThickness="0"       
@@ -400,24 +402,24 @@
                                         KeyboardNavigation="CurrentLayout"
                                         Loaded="TestInputs_OnLoaded"
                                         x:Name="TestOutputsGrid">
-                                <ig:XamGrid.Columns>
-                                    <ig:TemplateColumn Key="Variable" Width="1*" IsReadOnly="True" HorizontalContentAlignment="Stretch">
-                                        <ig:TemplateColumn.ItemTemplate>
-                                            <DataTemplate>
-                                                <Grid PreviewKeyDown="GridPreviewKeyDown" Background="Transparent" HorizontalAlignment="Stretch">
-                                                    <TextBlock KeyboardNavigation.IsTabStop="False" 
+                                    <ig:XamGrid.Columns>
+                                        <ig:TemplateColumn Key="Variable" Width="1*" IsReadOnly="True" HorizontalContentAlignment="Stretch">
+                                            <ig:TemplateColumn.ItemTemplate>
+                                                <DataTemplate>
+                                                    <Grid PreviewKeyDown="GridPreviewKeyDown" Background="Transparent" HorizontalAlignment="Stretch">
+                                                        <TextBlock KeyboardNavigation.IsTabStop="False" 
                                                                Focusable="True" 
                                                                ToolTip="{Binding Path=Variable}" 
                                                                Text="{Binding Path=Variable, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" />
-                                                </Grid>
-                                            </DataTemplate>
-                                        </ig:TemplateColumn.ItemTemplate>
-                                    </ig:TemplateColumn>
-                                    <ig:TemplateColumn Key="Value" Width="1*" IsReadOnly="False" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
-                                        <ig:TemplateColumn.ItemTemplate>
-                                            <DataTemplate>
-                                                <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                                                    <ui:IntellisenseTextBox x:Name="txtValue" 
+                                                    </Grid>
+                                                </DataTemplate>
+                                            </ig:TemplateColumn.ItemTemplate>
+                                        </ig:TemplateColumn>
+                                        <ig:TemplateColumn Key="Value" Width="1*" IsReadOnly="False" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
+                                            <ig:TemplateColumn.ItemTemplate>
+                                                <DataTemplate>
+                                                    <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                                                        <ui:IntellisenseTextBox x:Name="txtValue" 
                                                                             FilterType="All" 
                                                                             WrapInBrackets="False" 
                                                                             Text="{Binding Path=Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
@@ -430,23 +432,24 @@
                                                                             ToolTip="{x:Static languages:Core.ServiceTestInputValueTooltip}"
                                                                             AllowUserInsertLine="True"
                                                                             SelectAllOnGotFocus="True">
-                                                        <AutomationProperties.AutomationId>
-                                                            <MultiBinding StringFormat="UI_{0}txt_AutoID">
-                                                                <Binding Path="Value"/>
-                                                            </MultiBinding>
-                                                        </AutomationProperties.AutomationId>
-                                                        <ui:IntellisenseTextBox.IntellisenseProvider>
-                                                            <interfaceImplementors:CompositeIntellisenseProvider>
-                                                                <provider:BlankIntellisenseProvider />
-                                                            </interfaceImplementors:CompositeIntellisenseProvider>
-                                                        </ui:IntellisenseTextBox.IntellisenseProvider>
-                                                    </ui:IntellisenseTextBox>
-                                                </Grid>
-                                            </DataTemplate>
-                                        </ig:TemplateColumn.ItemTemplate>
-                                    </ig:TemplateColumn>
-                                </ig:XamGrid.Columns>
-                            </ig:XamGrid>
+                                                            <AutomationProperties.AutomationId>
+                                                                <MultiBinding StringFormat="UI_{0}txt_AutoID">
+                                                                    <Binding Path="Value"/>
+                                                                </MultiBinding>
+                                                            </AutomationProperties.AutomationId>
+                                                            <ui:IntellisenseTextBox.IntellisenseProvider>
+                                                                <interfaceImplementors:CompositeIntellisenseProvider>
+                                                                    <provider:BlankIntellisenseProvider />
+                                                                </interfaceImplementors:CompositeIntellisenseProvider>
+                                                            </ui:IntellisenseTextBox.IntellisenseProvider>
+                                                        </ui:IntellisenseTextBox>
+                                                    </Grid>
+                                                </DataTemplate>
+                                            </ig:TemplateColumn.ItemTemplate>
+                                        </ig:TemplateColumn>
+                                    </ig:XamGrid.Columns>
+                                </ig:XamGrid>
+                            </Border>
 
                             <Grid Grid.Row="5">
                                 <Grid.ColumnDefinitions>
