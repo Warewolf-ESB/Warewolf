@@ -3107,6 +3107,7 @@ namespace Warewolf.UITests
             #region Variable Declarations
             WpfEdit searchTextbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DeployTab.WorkSurfaceContext.SourceServerExplorer.SearchTextbox;
             WpfTreeItem firstExplorerTreeItem = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DeployTab.WorkSurfaceContext.SourceServerExplorer.ExplorerTree.SourceServerName.FirstExplorerTreeItem;
+            WpfCheckBox checkBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DeployTab.WorkSurfaceContext.SourceServerExplorer.ExplorerTree.SourceServerName.FirstExplorerTreeItem.CheckBox;
             #endregion
 
             // Type 'DeployViewOnly' in 'SearchTextBox' text box
@@ -3114,6 +3115,9 @@ namespace Warewolf.UITests
 
             // Verify that the 'Exists' property of 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item equals 'True'
             Assert.AreEqual(this.Enter_DeployViewOnly_Into_Deploy_Source_FilterParams.FirstExplorerTreeItemExists, firstExplorerTreeItem.Exists, "First deploy tab source explorer item does not exist after filter is applied.");
+
+            // Verify that the 'Exists' property of 'ResourceNameCheckBox' check box equals 'True'
+            Assert.AreEqual(this.Enter_DeployViewOnly_Into_Deploy_Source_FilterParams.CheckBoxExists, checkBox.Exists, "Deploy source server explorer tree first item checkbox does not exist.");
         }
         
         /// <summary>
@@ -7508,6 +7512,18 @@ namespace Warewolf.UITests
                 return this.mSwitchCaseDialog;
             }
         }
+        
+        public UIWarewolfDEV2ASHLEYLEWindow UIWarewolfDEV2ASHLEYLEWindow
+        {
+            get
+            {
+                if ((this.mUIWarewolfDEV2ASHLEYLEWindow == null))
+                {
+                    this.mUIWarewolfDEV2ASHLEYLEWindow = new UIWarewolfDEV2ASHLEYLEWindow();
+                }
+                return this.mUIWarewolfDEV2ASHLEYLEWindow;
+            }
+        }
         #endregion
         
         #region Fields
@@ -7850,6 +7866,8 @@ namespace Warewolf.UITests
         private ServicePickerDialog mServicePickerDialog;
         
         private SwitchCaseDialog mSwitchCaseDialog;
+        
+        private UIWarewolfDEV2ASHLEYLEWindow mUIWarewolfDEV2ASHLEYLEWindow;
         #endregion
     }
     
@@ -10033,6 +10051,11 @@ namespace Warewolf.UITests
         /// Verify that the 'Exists' property of 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item equals 'True'
         /// </summary>
         public bool FirstExplorerTreeItemExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'ResourceNameCheckBox' check box equals 'True'
+        /// </summary>
+        public bool CheckBoxExists = true;
         #endregion
     }
     
@@ -18362,18 +18385,13 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public WpfTreeItem FirstExplorerTreeItem
+        public FirstExplorerTreeItem FirstExplorerTreeItem
         {
             get
             {
                 if ((this.mFirstExplorerTreeItem == null))
                 {
-                    this.mFirstExplorerTreeItem = new WpfTreeItem(this);
-                    #region Search Criteria
-                    this.mFirstExplorerTreeItem.SearchProperties[WpfTreeItem.PropertyNames.Name] = "Infragistics.Controls.Menus.XamDataTreeNodeDataContext";
-                    this.mFirstExplorerTreeItem.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mFirstExplorerTreeItem.WindowTitles.Add("Warewolf");
-                    #endregion
+                    this.mFirstExplorerTreeItem = new FirstExplorerTreeItem(this);
                 }
                 return this.mFirstExplorerTreeItem;
             }
@@ -18381,7 +18399,46 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private WpfTreeItem mFirstExplorerTreeItem;
+        private FirstExplorerTreeItem mFirstExplorerTreeItem;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class FirstExplorerTreeItem : WpfTreeItem
+    {
+        
+        public FirstExplorerTreeItem(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfTreeItem.PropertyNames.Name] = "Infragistics.Controls.Menus.XamDataTreeNodeDataContext";
+            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+            this.SearchConfigurations.Add(SearchConfiguration.DisambiguateChild);
+            this.WindowTitles.Add("Warewolf");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfCheckBox CheckBox
+        {
+            get
+            {
+                if ((this.mCheckBox == null))
+                {
+                    this.mCheckBox = new WpfCheckBox(this);
+                    #region Search Criteria
+                    this.mCheckBox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "ResourceNameCheckBox";
+                    this.mCheckBox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mCheckBox.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mCheckBox;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfCheckBox mCheckBox;
         #endregion
     }
     
@@ -34678,6 +34735,139 @@ namespace Warewolf.UITests
         
         #region Fields
         private WpfButton mDoneButton;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIWarewolfDEV2ASHLEYLEWindow : WpfWindow
+    {
+        
+        public UIWarewolfDEV2ASHLEYLEWindow()
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfWindow.PropertyNames.Name] = "Warewolf (DEV2\\ASHLEY.LEWIS)";
+            this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public UIUI_SplitPane_AutoIDCustom UIUI_SplitPane_AutoIDCustom
+        {
+            get
+            {
+                if ((this.mUIUI_SplitPane_AutoIDCustom == null))
+                {
+                    this.mUIUI_SplitPane_AutoIDCustom = new UIUI_SplitPane_AutoIDCustom(this);
+                }
+                return this.mUIUI_SplitPane_AutoIDCustom;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIUI_SplitPane_AutoIDCustom mUIUI_SplitPane_AutoIDCustom;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIUI_SplitPane_AutoIDCustom : WpfCustom
+    {
+        
+        public UIUI_SplitPane_AutoIDCustom(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.SplitPane";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "UI_SplitPane_AutoID";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public UIUI_TabManager_AutoIDTabList UIUI_TabManager_AutoIDTabList
+        {
+            get
+            {
+                if ((this.mUIUI_TabManager_AutoIDTabList == null))
+                {
+                    this.mUIUI_TabManager_AutoIDTabList = new UIUI_TabManager_AutoIDTabList(this);
+                }
+                return this.mUIUI_TabManager_AutoIDTabList;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIUI_TabManager_AutoIDTabList mUIUI_TabManager_AutoIDTabList;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIUI_TabManager_AutoIDTabList : WpfTabList
+    {
+        
+        public UIUI_TabManager_AutoIDTabList(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfTabList.PropertyNames.AutomationId] = "UI_TabManager_AutoID";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public UIDev2ViewModelsDeployTabPage UIDev2ViewModelsDeployTabPage
+        {
+            get
+            {
+                if ((this.mUIDev2ViewModelsDeployTabPage == null))
+                {
+                    this.mUIDev2ViewModelsDeployTabPage = new UIDev2ViewModelsDeployTabPage(this);
+                }
+                return this.mUIDev2ViewModelsDeployTabPage;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIDev2ViewModelsDeployTabPage mUIDev2ViewModelsDeployTabPage;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIDev2ViewModelsDeployTabPage : WpfTabPage
+    {
+        
+        public UIDev2ViewModelsDeployTabPage(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfTabPage.PropertyNames.Name] = "Dev2.ViewModels.DeployWorksurfaceViewModel";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfTreeItem UIInfragisticsControlsTreeItem
+        {
+            get
+            {
+                if ((this.mUIInfragisticsControlsTreeItem == null))
+                {
+                    this.mUIInfragisticsControlsTreeItem = new WpfTreeItem(this);
+                    #region Search Criteria
+                    this.mUIInfragisticsControlsTreeItem.SearchProperties[WpfTreeItem.PropertyNames.Name] = "Infragistics.Controls.Menus.XamDataTreeNodeDataContext";
+                    this.mUIInfragisticsControlsTreeItem.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mUIInfragisticsControlsTreeItem;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfTreeItem mUIInfragisticsControlsTreeItem;
         #endregion
     }
 }
