@@ -5275,6 +5275,93 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
+        /// Select_RemoteConnectionIntegration_From_Deploy_Tab_Source_Server_Combobox - Use 'Select_RemoteConnectionIntegration_From_Deploy_Tab_Source_Server_ComboboxParams' to pass parameters into this method.
+        /// </summary>
+        public void Select_RemoteConnectionIntegration_From_Deploy_Tab_Source_Server_Combobox()
+        {
+            #region Variable Declarations
+            WpfButton toggleButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DeployTab.WorkSurfaceContext.SourceServerConectControl.Combobox.ToggleButton;
+            WpfCustom comboboxListItemAsNewRemoteServer = this.MainStudioWindow.ComboboxListItemAsNewRemoteServer;
+            WpfCustom comboboxListItemAsRemoteConnectionIntegration = this.MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegration;
+            WpfText remoteConnectionIntegrationText = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DeployTab.WorkSurfaceContext.SourceServerConectControl.Combobox.RemoteConnectionIntegrationText;
+            #endregion
+
+            // Click 'ToggleButton' button
+            Mouse.Click(toggleButton, new Point(230, 9));
+
+            // Verify that the 'Exists' property of 'New Remote Server...' custom control equals 'True'
+            Assert.AreEqual(this.Select_RemoteConnectionIntegration_From_Deploy_Tab_Source_Server_ComboboxParams.ComboboxListItemAsNewRemoteServerExists, comboboxListItemAsNewRemoteServer.Exists, "New Remote Server... option does not exist in Destination server combobox.");
+
+            // Verify that the 'Exists' property of 'Remote Connection Integration' custom control equals 'True'
+            Assert.AreEqual(this.Select_RemoteConnectionIntegration_From_Deploy_Tab_Source_Server_ComboboxParams.ComboboxListItemAsRemoteConnectionIntegrationExists, comboboxListItemAsRemoteConnectionIntegration.Exists, "Remote Connection Integration option does not exist in Destination server combobo" +
+                    "x.");
+
+            // Click 'Remote Connection Integration' custom control
+            Mouse.Click(comboboxListItemAsRemoteConnectionIntegration, new Point(226, 13));
+
+            // Verify that the 'DisplayText' property of 'Remote Connection Integration' label equals 'Remote Connection Integration'
+            Assert.AreEqual(this.Select_RemoteConnectionIntegration_From_Deploy_Tab_Source_Server_ComboboxParams.RemoteConnectionIntegrationTextDisplayText, remoteConnectionIntegrationText.DisplayText, "Selected source server in deploy is not Remote Connection Integration.");
+        }
+        
+        /// <summary>
+        /// Select_LocalhostConnected_From_Deploy_Tab_Destination_Server_Combobox - Use 'Select_LocalhostConnected_From_Deploy_Tab_Destination_Server_ComboboxParams' to pass parameters into this method.
+        /// </summary>
+        public void Select_LocalhostConnected_From_Deploy_Tab_Destination_Server_Combobox()
+        {
+            #region Variable Declarations
+            WpfButton toggleButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DeployTab.WorkSurfaceContext.DestinationServerConectControl.Combobox.ToggleButton;
+            WpfCustom comboboxListItemAsNewRemoteServer = this.MainStudioWindow.ComboboxListItemAsNewRemoteServer;
+            WpfCustom comboboxListItemAsLocalhostConnected = this.MainStudioWindow.ComboboxListItemAsLocalhostConnected;
+            WpfText remoteConnectionIntegrationText = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DeployTab.WorkSurfaceContext.SourceServerConectControl.Combobox.RemoteConnectionIntegrationText;
+            #endregion
+
+            // Click 'ToggleButton' button
+            Mouse.Click(toggleButton, new Point(230, 9));
+
+            // Verify that the 'Exists' property of 'New Remote Server...' custom control equals 'True'
+            Assert.AreEqual(this.Select_LocalhostConnected_From_Deploy_Tab_Destination_Server_ComboboxParams.ComboboxListItemAsNewRemoteServerExists, comboboxListItemAsNewRemoteServer.Exists, "New Remote Server... option does not exist in Destination server combobox.");
+
+            // Verify that the 'Exists' property of 'localhost (Connected)' custom control equals 'True'
+            Assert.AreEqual(this.Select_LocalhostConnected_From_Deploy_Tab_Destination_Server_ComboboxParams.ComboboxListItemAsLocalhostConnectedExists, comboboxListItemAsLocalhostConnected.Exists, "Remote Connection Integration option does not exist in Destination server combobo" +
+                    "x.");
+
+            // Click 'localhost (Connected)' custom control
+            Mouse.Click(comboboxListItemAsLocalhostConnected, new Point(226, 13));
+
+            // Verify that the 'DisplayText' property of 'Remote Connection Integration' label equals 'Remote Connection Integration'
+            Assert.AreEqual(this.Select_LocalhostConnected_From_Deploy_Tab_Destination_Server_ComboboxParams.RemoteConnectionIntegrationTextDisplayText, remoteConnectionIntegrationText.DisplayText, "Selected source server in deploy is not Remote Connection Integration.");
+        }
+        
+        /// <summary>
+        /// Select_RemoteConnectionIntegrationConnected_From_Deploy_Tab_Source_Server_Combobox - Use 'Select_RemoteConnectionIntegrationConnected_From_Deploy_Tab_Source_Server_ComboboxParams' to pass parameters into this method.
+        /// </summary>
+        public void Select_RemoteConnectionIntegrationConnected_From_Deploy_Tab_Source_Server_Combobox()
+        {
+            #region Variable Declarations
+            WpfButton toggleButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DeployTab.WorkSurfaceContext.SourceServerConectControl.Combobox.ToggleButton;
+            WpfCustom comboboxListItemAsNewRemoteServer = this.MainStudioWindow.ComboboxListItemAsNewRemoteServer;
+            WpfCustom comboboxListItemAsRemoteConnectionIntegrationConnected = this.MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegrationConnected;
+            WpfText remoteConnectionIntegrationText = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DeployTab.WorkSurfaceContext.SourceServerConectControl.Combobox.RemoteConnectionIntegrationText;
+            #endregion
+
+            // Click 'ToggleButton' button
+            Mouse.Click(toggleButton, new Point(230, 9));
+
+            // Verify that the 'Exists' property of 'New Remote Server...' custom control equals 'True'
+            Assert.AreEqual(this.Select_RemoteConnectionIntegrationConnected_From_Deploy_Tab_Source_Server_ComboboxParams.ComboboxListItemAsNewRemoteServerExists, comboboxListItemAsNewRemoteServer.Exists, "New Remote Server... option does not exist in Destination server combobox.");
+
+            // Verify that the 'Exists' property of 'Remote Connection Integration (Connected)' custom control equals 'True'
+            Assert.AreEqual(this.Select_RemoteConnectionIntegrationConnected_From_Deploy_Tab_Source_Server_ComboboxParams.ComboboxListItemAsRemoteConnectionIntegrationConnectedExists, comboboxListItemAsRemoteConnectionIntegrationConnected.Exists, "Remote Connection Integration option does not exist in Destination server combobo" +
+                    "x.");
+
+            // Click 'Remote Connection Integration (Connected)' custom control
+            Mouse.Click(comboboxListItemAsRemoteConnectionIntegrationConnected, new Point(226, 13));
+
+            // Verify that the 'DisplayText' property of 'Remote Connection Integration' label equals 'Remote Connection Integration'
+            Assert.AreEqual(this.Select_RemoteConnectionIntegrationConnected_From_Deploy_Tab_Source_Server_ComboboxParams.RemoteConnectionIntegrationTextDisplayText, remoteConnectionIntegrationText.DisplayText, "Selected source server in deploy is not Remote Connection Integration.");
+        }
+        
+        /// <summary>
         /// Select_Rename_FromExplorerContextMenu
         /// </summary>
         public void Select_Rename_FromExplorerContextMenu()
@@ -7321,6 +7408,42 @@ namespace Warewolf.UITests
             }
         }
         
+        public virtual Select_RemoteConnectionIntegration_From_Deploy_Tab_Source_Server_ComboboxParams Select_RemoteConnectionIntegration_From_Deploy_Tab_Source_Server_ComboboxParams
+        {
+            get
+            {
+                if ((this.mSelect_RemoteConnectionIntegration_From_Deploy_Tab_Source_Server_ComboboxParams == null))
+                {
+                    this.mSelect_RemoteConnectionIntegration_From_Deploy_Tab_Source_Server_ComboboxParams = new Select_RemoteConnectionIntegration_From_Deploy_Tab_Source_Server_ComboboxParams();
+                }
+                return this.mSelect_RemoteConnectionIntegration_From_Deploy_Tab_Source_Server_ComboboxParams;
+            }
+        }
+        
+        public virtual Select_LocalhostConnected_From_Deploy_Tab_Destination_Server_ComboboxParams Select_LocalhostConnected_From_Deploy_Tab_Destination_Server_ComboboxParams
+        {
+            get
+            {
+                if ((this.mSelect_LocalhostConnected_From_Deploy_Tab_Destination_Server_ComboboxParams == null))
+                {
+                    this.mSelect_LocalhostConnected_From_Deploy_Tab_Destination_Server_ComboboxParams = new Select_LocalhostConnected_From_Deploy_Tab_Destination_Server_ComboboxParams();
+                }
+                return this.mSelect_LocalhostConnected_From_Deploy_Tab_Destination_Server_ComboboxParams;
+            }
+        }
+        
+        public virtual Select_RemoteConnectionIntegrationConnected_From_Deploy_Tab_Source_Server_ComboboxParams Select_RemoteConnectionIntegrationConnected_From_Deploy_Tab_Source_Server_ComboboxParams
+        {
+            get
+            {
+                if ((this.mSelect_RemoteConnectionIntegrationConnected_From_Deploy_Tab_Source_Server_ComboboxParams == null))
+                {
+                    this.mSelect_RemoteConnectionIntegrationConnected_From_Deploy_Tab_Source_Server_ComboboxParams = new Select_RemoteConnectionIntegrationConnected_From_Deploy_Tab_Source_Server_ComboboxParams();
+                }
+                return this.mSelect_RemoteConnectionIntegrationConnected_From_Deploy_Tab_Source_Server_ComboboxParams;
+            }
+        }
+        
         public virtual Select_RSAKLFSVRGENDEV_From_Server_Source_Wizard_DropdownlistExpectedValues Select_RSAKLFSVRGENDEV_From_Server_Source_Wizard_DropdownlistExpectedValues
         {
             get
@@ -7834,6 +7957,12 @@ namespace Warewolf.UITests
         private Select_Next_From_DotNet_DLL_Large_View_Action_ComboboxExpectedValues mSelect_Next_From_DotNet_DLL_Large_View_Action_ComboboxExpectedValues;
         
         private Select_RemoteConnectionIntegration_From_Deploy_Tab_Destination_Server_ComboboxParams mSelect_RemoteConnectionIntegration_From_Deploy_Tab_Destination_Server_ComboboxParams;
+        
+        private Select_RemoteConnectionIntegration_From_Deploy_Tab_Source_Server_ComboboxParams mSelect_RemoteConnectionIntegration_From_Deploy_Tab_Source_Server_ComboboxParams;
+        
+        private Select_LocalhostConnected_From_Deploy_Tab_Destination_Server_ComboboxParams mSelect_LocalhostConnected_From_Deploy_Tab_Destination_Server_ComboboxParams;
+        
+        private Select_RemoteConnectionIntegrationConnected_From_Deploy_Tab_Source_Server_ComboboxParams mSelect_RemoteConnectionIntegrationConnected_From_Deploy_Tab_Source_Server_ComboboxParams;
         
         private Select_RSAKLFSVRGENDEV_From_Server_Source_Wizard_DropdownlistExpectedValues mSelect_RSAKLFSVRGENDEV_From_Server_Source_Wizard_DropdownlistExpectedValues;
         
@@ -11010,6 +11139,81 @@ namespace Warewolf.UITests
     }
     
     /// <summary>
+    /// Parameters to be passed into 'Select_RemoteConnectionIntegration_From_Deploy_Tab_Source_Server_Combobox'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Select_RemoteConnectionIntegration_From_Deploy_Tab_Source_Server_ComboboxParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'New Remote Server...' custom control equals 'True'
+        /// </summary>
+        public bool ComboboxListItemAsNewRemoteServerExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Remote Connection Integration' custom control equals 'True'
+        /// </summary>
+        public bool ComboboxListItemAsRemoteConnectionIntegrationExists = true;
+        
+        /// <summary>
+        /// Verify that the 'DisplayText' property of 'Remote Connection Integration' label equals 'Remote Connection Integration'
+        /// </summary>
+        public string RemoteConnectionIntegrationTextDisplayText = "Remote Connection Integration";
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Select_LocalhostConnected_From_Deploy_Tab_Destination_Server_Combobox'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Select_LocalhostConnected_From_Deploy_Tab_Destination_Server_ComboboxParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'New Remote Server...' custom control equals 'True'
+        /// </summary>
+        public bool ComboboxListItemAsNewRemoteServerExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'localhost (Connected)' custom control equals 'True'
+        /// </summary>
+        public bool ComboboxListItemAsLocalhostConnectedExists = true;
+        
+        /// <summary>
+        /// Verify that the 'DisplayText' property of 'Remote Connection Integration' label equals 'Remote Connection Integration'
+        /// </summary>
+        public string RemoteConnectionIntegrationTextDisplayText = "Remote Connection Integration";
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Select_RemoteConnectionIntegrationConnected_From_Deploy_Tab_Source_Server_Combobox'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Select_RemoteConnectionIntegrationConnected_From_Deploy_Tab_Source_Server_ComboboxParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'New Remote Server...' custom control equals 'True'
+        /// </summary>
+        public bool ComboboxListItemAsNewRemoteServerExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Remote Connection Integration (Connected)' custom control equals 'True'
+        /// </summary>
+        public bool ComboboxListItemAsRemoteConnectionIntegrationConnectedExists = true;
+        
+        /// <summary>
+        /// Verify that the 'DisplayText' property of 'Remote Connection Integration' label equals 'Remote Connection Integration'
+        /// </summary>
+        public string RemoteConnectionIntegrationTextDisplayText = "Remote Connection Integration";
+        #endregion
+    }
+    
+    /// <summary>
     /// Parameters to be passed into 'Select_RSAKLFSVRGENDEV_From_Server_Source_Wizard_Dropdownlist'
     /// </summary>
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
@@ -11392,22 +11596,6 @@ namespace Warewolf.UITests
             }
         }
         
-        public WpfText ComboboxListItemAsLocalhostConnected
-        {
-            get
-            {
-                if ((this.mComboboxListItemAsLocalhostConnected == null))
-                {
-                    this.mComboboxListItemAsLocalhostConnected = new WpfText(this);
-                    #region Search Criteria
-                    this.mComboboxListItemAsLocalhostConnected.SearchProperties[WpfText.PropertyNames.Name] = "localhost (Connected)";
-                    this.mComboboxListItemAsLocalhostConnected.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mComboboxListItemAsLocalhostConnected;
-            }
-        }
-        
         public WpfCustom ComboboxListItemAsRemoteConnectionIntegration
         {
             get
@@ -11418,10 +11606,44 @@ namespace Warewolf.UITests
                     #region Search Criteria
                     this.mComboboxListItemAsRemoteConnectionIntegration.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ComboEditorItemControl";
                     this.mComboboxListItemAsRemoteConnectionIntegration.SearchProperties[WpfControl.PropertyNames.Name] = "Remote Connection Integration";
-                    this.mComboboxListItemAsRemoteConnectionIntegration.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    this.mComboboxListItemAsRemoteConnectionIntegration.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mComboboxListItemAsRemoteConnectionIntegration;
+            }
+        }
+        
+        public WpfCustom ComboboxListItemAsLocalhostConnected
+        {
+            get
+            {
+                if ((this.mComboboxListItemAsLocalhostConnected == null))
+                {
+                    this.mComboboxListItemAsLocalhostConnected = new WpfCustom(this);
+                    #region Search Criteria
+                    this.mComboboxListItemAsLocalhostConnected.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ComboEditorItemControl";
+                    this.mComboboxListItemAsLocalhostConnected.SearchProperties[WpfControl.PropertyNames.Name] = "localhost (Connected)";
+                    this.mComboboxListItemAsLocalhostConnected.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mComboboxListItemAsLocalhostConnected;
+            }
+        }
+        
+        public WpfCustom ComboboxListItemAsRemoteConnectionIntegrationConnected
+        {
+            get
+            {
+                if ((this.mComboboxListItemAsRemoteConnectionIntegrationConnected == null))
+                {
+                    this.mComboboxListItemAsRemoteConnectionIntegrationConnected = new WpfCustom(this);
+                    #region Search Criteria
+                    this.mComboboxListItemAsRemoteConnectionIntegrationConnected.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ComboEditorItemControl";
+                    this.mComboboxListItemAsRemoteConnectionIntegrationConnected.SearchProperties[WpfControl.PropertyNames.Name] = "Remote Connection Integration (Connected)";
+                    this.mComboboxListItemAsRemoteConnectionIntegrationConnected.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mComboboxListItemAsRemoteConnectionIntegrationConnected;
             }
         }
         
@@ -11745,9 +11967,11 @@ namespace Warewolf.UITests
         
         private WpfText mComboboxListItemAsLocalhost;
         
-        private WpfText mComboboxListItemAsLocalhostConnected;
-        
         private WpfCustom mComboboxListItemAsRemoteConnectionIntegration;
+        
+        private WpfCustom mComboboxListItemAsLocalhostConnected;
+        
+        private WpfCustom mComboboxListItemAsRemoteConnectionIntegrationConnected;
         
         private WpfCustom mComboboxListItemAsHttp;
         
@@ -17907,19 +18131,19 @@ namespace Warewolf.UITests
             }
         }
         
-        public WpfText SuccessMessageText
+        public WpfText DeployButtonMessageText
         {
             get
             {
-                if ((this.mSuccessMessageText == null))
+                if ((this.mDeployButtonMessageText == null))
                 {
-                    this.mSuccessMessageText = new WpfText(this);
+                    this.mDeployButtonMessageText = new WpfText(this);
                     #region Search Criteria
-                    this.mSuccessMessageText.SearchProperties[WpfText.PropertyNames.AutomationId] = "UI_DeploySelectTB_AutoID";
-                    this.mSuccessMessageText.WindowTitles.Add("Warewolf");
+                    this.mDeployButtonMessageText.SearchProperties[WpfText.PropertyNames.AutomationId] = "UI_DeploySelectTB_AutoID";
+                    this.mDeployButtonMessageText.WindowTitles.Add("Warewolf");
                     #endregion
                 }
-                return this.mSuccessMessageText;
+                return this.mDeployButtonMessageText;
             }
         }
         
@@ -17991,7 +18215,7 @@ namespace Warewolf.UITests
         
         private DeployButton mDeployButton;
         
-        private WpfText mSuccessMessageText;
+        private WpfText mDeployButtonMessageText;
         
         private DestinationServerConectControl mDestinationServerConectControl;
         
@@ -18148,7 +18372,7 @@ namespace Warewolf.UITests
                     this.mRemoteConnectionIntegrationText = new WpfText(this);
                     #region Search Criteria
                     this.mRemoteConnectionIntegrationText.SearchProperties[WpfText.PropertyNames.Name] = "Remote Connection Integration";
-                    this.mRemoteConnectionIntegrationText.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    this.mRemoteConnectionIntegrationText.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mRemoteConnectionIntegrationText;
@@ -18263,10 +18487,28 @@ namespace Warewolf.UITests
                 return this.mToggleButton;
             }
         }
+        
+        public WpfText RemoteConnectionIntegrationText
+        {
+            get
+            {
+                if ((this.mRemoteConnectionIntegrationText == null))
+                {
+                    this.mRemoteConnectionIntegrationText = new WpfText(this);
+                    #region Search Criteria
+                    this.mRemoteConnectionIntegrationText.SearchProperties[WpfText.PropertyNames.Name] = "Remote Connection Integration";
+                    this.mRemoteConnectionIntegrationText.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mRemoteConnectionIntegrationText;
+            }
+        }
         #endregion
         
         #region Fields
         private WpfButton mToggleButton;
+        
+        private WpfText mRemoteConnectionIntegrationText;
         #endregion
     }
     
@@ -18348,7 +18590,7 @@ namespace Warewolf.UITests
         {
             #region Search Criteria
             this.SearchProperties[WpfTree.PropertyNames.AutomationId] = "ExplorerTree";
-            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            this.WindowTitles.Add("Warewolf");
             #endregion
         }
         
@@ -18429,7 +18671,7 @@ namespace Warewolf.UITests
                     #region Search Criteria
                     this.mCheckBox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "ResourceNameCheckBox";
                     this.mCheckBox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mCheckBox.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    this.mCheckBox.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mCheckBox;
@@ -22607,7 +22849,7 @@ namespace Warewolf.UITests
                     this.mDoneButton = new WpfButton(this);
                     #region Search Criteria
                     this.mDoneButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "DoneButton";
-                    this.mDoneButton.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    this.mDoneButton.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mDoneButton;
@@ -22624,7 +22866,7 @@ namespace Warewolf.UITests
                     #region Search Criteria
                     this.mSmallView.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.Small";
                     this.mSmallView.SearchProperties[WpfControl.PropertyNames.AutomationId] = "SmallViewContent";
-                    this.mSmallView.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    this.mSmallView.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mSmallView;
@@ -22733,7 +22975,7 @@ namespace Warewolf.UITests
                     this.mDoneButton = new WpfButton(this);
                     #region Search Criteria
                     this.mDoneButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "GenerateOutputsDoneButton";
-                    this.mDoneButton.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    this.mDoneButton.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mDoneButton;
@@ -22749,7 +22991,7 @@ namespace Warewolf.UITests
                     this.mTestButton = new WpfButton(this);
                     #region Search Criteria
                     this.mTestButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "TestActionButton";
-                    this.mTestButton.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    this.mTestButton.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mTestButton;
@@ -24926,7 +25168,7 @@ namespace Warewolf.UITests
             #region Search Criteria
             this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.Small";
             this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "SmallViewContent";
-            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            this.WindowTitles.Add("Warewolf");
             #endregion
         }
         
@@ -24940,7 +25182,7 @@ namespace Warewolf.UITests
                     this.mForEachTypeComboBox = new WpfComboBox(this);
                     #region Search Criteria
                     this.mForEachTypeComboBox.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "UI__ForEachType_AutoID";
-                    this.mForEachTypeComboBox.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    this.mForEachTypeComboBox.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mForEachTypeComboBox;
@@ -24981,7 +25223,7 @@ namespace Warewolf.UITests
                     #region Search Criteria
                     this.mDropActivityHere.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.WorkflowItemPresenter";
                     this.mDropActivityHere.SearchProperties[WpfControl.PropertyNames.AutomationId] = "UI__DropPoint_AutoID";
-                    this.mDropActivityHere.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    this.mDropActivityHere.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mDropActivityHere;
@@ -25009,7 +25251,7 @@ namespace Warewolf.UITests
         {
             #region Search Criteria
             this.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "UI__ForEachFromTextbox_AutoID";
-            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            this.WindowTitles.Add("Warewolf");
             #endregion
         }
         
@@ -25023,7 +25265,7 @@ namespace Warewolf.UITests
                     this.mTextbox = new WpfEdit(this);
                     #region Search Criteria
                     this.mTextbox.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "Text";
-                    this.mTextbox.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    this.mTextbox.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mTextbox;
@@ -25045,7 +25287,7 @@ namespace Warewolf.UITests
         {
             #region Search Criteria
             this.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "UI__ForEachToTextbox_AutoID";
-            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            this.WindowTitles.Add("Warewolf");
             #endregion
         }
         
@@ -25059,7 +25301,7 @@ namespace Warewolf.UITests
                     this.mTextbox = new WpfEdit(this);
                     #region Search Criteria
                     this.mTextbox.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "Text";
-                    this.mTextbox.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    this.mTextbox.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mTextbox;
@@ -26071,7 +26313,7 @@ namespace Warewolf.UITests
             #region Search Criteria
             this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.WebServiceGetDesigner";
             this.SearchProperties.Add(new PropertyExpression(WpfControl.PropertyNames.AutomationId, "GET Web Method", PropertyExpressionOperator.Contains));
-            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            this.WindowTitles.Add("Warewolf");
             #endregion
         }
         
@@ -26097,7 +26339,7 @@ namespace Warewolf.UITests
                     this.mDoneButton = new WpfButton(this);
                     #region Search Criteria
                     this.mDoneButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "DoneButton";
-                    this.mDoneButton.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    this.mDoneButton.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mDoneButton;
@@ -26114,7 +26356,7 @@ namespace Warewolf.UITests
                     #region Search Criteria
                     this.mSmallView.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.Small";
                     this.mSmallView.SearchProperties[WpfControl.PropertyNames.AutomationId] = "SmallViewContent";
-                    this.mSmallView.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    this.mSmallView.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mSmallView;
@@ -26141,7 +26383,7 @@ namespace Warewolf.UITests
             #region Search Criteria
             this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.Large";
             this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "LargeViewContent";
-            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            this.WindowTitles.Add("Warewolf");
             #endregion
         }
         
@@ -26155,7 +26397,7 @@ namespace Warewolf.UITests
                     this.mGenerateOutputsButton = new WpfButton(this);
                     #region Search Criteria
                     this.mGenerateOutputsButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "TestInputButton";
-                    this.mGenerateOutputsButton.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    this.mGenerateOutputsButton.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mGenerateOutputsButton;
@@ -26171,7 +26413,7 @@ namespace Warewolf.UITests
                     this.mDoneButton = new WpfButton(this);
                     #region Search Criteria
                     this.mDoneButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "GenerateOutputsDoneButton";
-                    this.mDoneButton.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    this.mDoneButton.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mDoneButton;
@@ -26187,7 +26429,7 @@ namespace Warewolf.UITests
                     this.mTestButton = new WpfButton(this);
                     #region Search Criteria
                     this.mTestButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "TestActionButton";
-                    this.mTestButton.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    this.mTestButton.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mTestButton;
@@ -26203,7 +26445,7 @@ namespace Warewolf.UITests
                     this.mSourcesComboBox = new WpfComboBox(this);
                     #region Search Criteria
                     this.mSourcesComboBox.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "SourcesComboBox";
-                    this.mSourcesComboBox.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    this.mSourcesComboBox.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mSourcesComboBox;
@@ -27480,7 +27722,7 @@ namespace Warewolf.UITests
                     this.mFileSystemTreeItem = new WpfTreeItem(this);
                     #region Search Criteria
                     this.mFileSystemTreeItem.SearchProperties[WpfTreeItem.PropertyNames.Name] = "File System";
-                    this.mFileSystemTreeItem.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    this.mFileSystemTreeItem.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mFileSystemTreeItem;
@@ -27503,7 +27745,7 @@ namespace Warewolf.UITests
             #region Search Criteria
             this.SearchProperties[WpfTabPage.PropertyNames.Name] = "Dev2.ViewModels.SourceViewModel`1[Dev2.Common.Interfaces.ServerProxyLayer.IWebSer" +
                 "viceSource]";
-            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            this.WindowTitles.Add("Warewolf");
             #endregion
         }
         
@@ -27529,7 +27771,7 @@ namespace Warewolf.UITests
                     this.mCloseButton = new WpfButton(this);
                     #region Search Criteria
                     this.mCloseButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "closeBtn";
-                    this.mCloseButton.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    this.mCloseButton.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mCloseButton;
@@ -27554,7 +27796,7 @@ namespace Warewolf.UITests
             #region Search Criteria
             this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ContentPane";
             this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Dev2.Studio.ViewModels.WorkSurface.WorkSurfaceContextViewModel";
-            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            this.WindowTitles.Add("Warewolf");
             #endregion
         }
         
@@ -27568,7 +27810,7 @@ namespace Warewolf.UITests
                     this.mAddressTextbox = new WpfEdit(this);
                     #region Search Criteria
                     this.mAddressTextbox.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "ServerTextBox";
-                    this.mAddressTextbox.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    this.mAddressTextbox.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mAddressTextbox;
@@ -27584,7 +27826,7 @@ namespace Warewolf.UITests
                     this.mTestConnectionButton = new WpfButton(this);
                     #region Search Criteria
                     this.mTestConnectionButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "TestConnectionButton";
-                    this.mTestConnectionButton.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    this.mTestConnectionButton.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mTestConnectionButton;
@@ -33383,7 +33625,7 @@ namespace Warewolf.UITests
             #region Search Criteria
             this.SearchProperties[WpfPane.PropertyNames.ClassName] = "Uia.CellsPanel";
             this.SearchProperties[WpfPane.PropertyNames.Name] = "0";
-            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            this.WindowTitles.Add("Warewolf");
             #endregion
         }
         
@@ -33416,7 +33658,7 @@ namespace Warewolf.UITests
             #region Search Criteria
             this.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = null;
             this.SearchProperties[WpfCell.PropertyNames.Instance] = "2";
-            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            this.WindowTitles.Add("Warewolf");
             #endregion
         }
         
@@ -33448,7 +33690,7 @@ namespace Warewolf.UITests
         {
             #region Search Criteria
             this.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "UI_Nametxt_AutoID";
-            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            this.WindowTitles.Add("Warewolf");
             #endregion
         }
         
@@ -33462,7 +33704,7 @@ namespace Warewolf.UITests
                     this.mTextbox = new WpfEdit(this);
                     #region Search Criteria
                     this.mTextbox.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "Text";
-                    this.mTextbox.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    this.mTextbox.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mTextbox;
@@ -34747,7 +34989,7 @@ namespace Warewolf.UITests
             #region Search Criteria
             this.SearchProperties[WpfWindow.PropertyNames.Name] = "Warewolf (DEV2\\ASHLEY.LEWIS)";
             this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
-            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            this.WindowTitles.Add("Warewolf");
             #endregion
         }
         
@@ -34780,7 +35022,7 @@ namespace Warewolf.UITests
             #region Search Criteria
             this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.SplitPane";
             this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "UI_SplitPane_AutoID";
-            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            this.WindowTitles.Add("Warewolf");
             #endregion
         }
         
@@ -34812,7 +35054,7 @@ namespace Warewolf.UITests
         {
             #region Search Criteria
             this.SearchProperties[WpfTabList.PropertyNames.AutomationId] = "UI_TabManager_AutoID";
-            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            this.WindowTitles.Add("Warewolf");
             #endregion
         }
         
@@ -34844,7 +35086,7 @@ namespace Warewolf.UITests
         {
             #region Search Criteria
             this.SearchProperties[WpfTabPage.PropertyNames.Name] = "Dev2.ViewModels.DeployWorksurfaceViewModel";
-            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            this.WindowTitles.Add("Warewolf");
             #endregion
         }
         
@@ -34858,7 +35100,7 @@ namespace Warewolf.UITests
                     this.mUIInfragisticsControlsTreeItem = new WpfTreeItem(this);
                     #region Search Criteria
                     this.mUIInfragisticsControlsTreeItem.SearchProperties[WpfTreeItem.PropertyNames.Name] = "Infragistics.Controls.Menus.XamDataTreeNodeDataContext";
-                    this.mUIInfragisticsControlsTreeItem.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    this.mUIInfragisticsControlsTreeItem.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mUIInfragisticsControlsTreeItem;
