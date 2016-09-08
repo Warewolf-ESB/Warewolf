@@ -13,13 +13,13 @@ namespace Warewolf.UITests.Deploy
         [TestMethod]
         public void DeployViewOnlyServiceUITest()
         {
-            //Uimap.Click_New_Workflow_Ribbon_Button();
-            //Uimap.Save_With_Ribbon_Button_And_Dialog(WorkflowName);
-            //Uimap.Click_Close_Workflow_Tab_Button();
-            //Uimap.SetResourcePermissions(WorkflowName, GroupName, true);
-            //Uimap.Click_Deploy_Ribbon_Button();
-            //Uimap.Select_RemoteConnectionIntegration_From_Deploy_Tab_Destination_Server_Combobox();
-            //Uimap.Click_Deploy_Tab_Destination_Server_Connect_Button();
+            Uimap.Click_New_Workflow_Ribbon_Button();
+            Uimap.Save_With_Ribbon_Button_And_Dialog(WorkflowName);
+            Uimap.Click_Close_Workflow_Tab_Button();
+            Uimap.SetResourcePermissions(WorkflowName, GroupName, true);
+            Uimap.Click_Deploy_Ribbon_Button();
+            Uimap.Select_RemoteConnectionIntegration_From_Deploy_Tab_Destination_Server_Combobox();
+            Uimap.Click_Deploy_Tab_Destination_Server_Connect_Button();
             Uimap.Enter_DeployViewOnly_Into_Deploy_Source_Filter();
             Uimap.Select_Deploy_First_Source_Item();
             Uimap.Click_Deploy_Tab_Deploy_Button();
