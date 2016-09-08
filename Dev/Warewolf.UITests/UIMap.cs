@@ -993,5 +993,14 @@ namespace Warewolf.UITests
                 Console.WriteLine("TryClose method failed to close Deploy tab.\n" + e.Message);
             }
         }
+
+        /// <summary>
+        /// Click_SaveDialog_Save_Button
+        /// </summary>
+        public void Click_SaveDialog_Save_Button()
+        {
+            Mouse.Click(SaveDialogWindow.SaveButton, new Point(25, 4));
+            WaitForControlNotVisible(SaveDialogWindow);
+        }
     }
 }

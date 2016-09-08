@@ -1100,19 +1100,6 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
-        /// Click_SaveDialog_Save_Button
-        /// </summary>
-        public void Click_SaveDialog_Save_Button()
-        {
-            #region Variable Declarations
-            WpfButton saveButton = this.SaveDialogWindow.SaveButton;
-            #endregion
-
-            // Click 'Save' button
-            Mouse.Click(saveButton, new Point(25, 4));
-        }
-        
-        /// <summary>
         /// Click_Scheduler_Create_New_Task_Ribbon_Button
         /// </summary>
         public void Click_Scheduler_Create_New_Task_Ribbon_Button()
@@ -18384,7 +18371,6 @@ namespace Warewolf.UITests
                     this.mFirstExplorerTreeItem = new WpfTreeItem(this);
                     #region Search Criteria
                     this.mFirstExplorerTreeItem.SearchProperties[WpfTreeItem.PropertyNames.Name] = "Infragistics.Controls.Menus.XamDataTreeNodeDataContext";
-                    this.mFirstExplorerTreeItem.SearchProperties[WpfTreeItem.PropertyNames.Instance] = "2";
                     this.mFirstExplorerTreeItem.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
                     this.mFirstExplorerTreeItem.WindowTitles.Add("Warewolf");
                     #endregion
