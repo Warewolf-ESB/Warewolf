@@ -42,6 +42,10 @@ namespace Warewolf.Studio.ViewModels
             set
             {
                 _value = value;
+                if (!string.IsNullOrEmpty(_value))
+                {
+                    AddNewAction?.Invoke();
+                }
                 OnPropertyChanged(() => Value);
             }
         }
@@ -57,6 +61,7 @@ namespace Warewolf.Studio.ViewModels
                 OnPropertyChanged(()=>EmptyIsNull);
             }
         }
+        public Action AddNewAction { get; set; }
 
         #endregion
     }

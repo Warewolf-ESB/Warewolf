@@ -478,6 +478,18 @@ The more information you can provide us with, the faster we can track the issue 
   <data name="DatabaseSourceServerNewHeaderLabel" xml:space="preserve">
     <value>New Database Source</value>
   </data>
+  <data name="ServiceTestSaveEditedTestsMessage" xml:space="preserve">
+    <value>Please save currently edited Test(s) before creating a new one.</value>
+  </data>
+  <data name="ServiceTestSaveEditedTestsHeader" xml:space="preserve">
+    <value>Save before continuing</value>
+  </data>
+  <data name="ServiceTestRunAllUnsavedTestsMessage" xml:space="preserve">
+    <value>Please save currently edited Test(s) before running the tests.</value>
+  </data>
+  <data name="ServiceTestRunAllUnsavedTestsHeader" xml:space="preserve">
+    <value>Save before continuing</value>
+  </data>
   <data name="ExplorerMoveFailedMessage" xml:space="preserve">
     <value>An unexpected error occured which prevented the resource from being moved.</value>
   </data>
@@ -2689,7 +2701,10 @@ You can use File System, URI, SFTP, FTP or FTPS format.</value>
     <value>Selecting this option will add the test to the test to the Run All command. 
 If this option is not selected, the test will not run part of the Run All list of tests.</value>
   </data>
-  <data name="TestsDeleteSelectedTestTooltip" xml:space="preserve">
+  <data name="TestsDeleteSelectedTestDisabledTooltip" xml:space="preserve">
+    <value>Cannot delete a disabled test</value>
+  </data>
+  <data name="TestsDeleteSelectedTestEnabledTooltip" xml:space="preserve">
     <value>Delete this test</value>
   </data>
   <data name="TestsDeleteSelectedTestHelpText" xml:space="preserve">
