@@ -18,6 +18,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using Caliburn.Micro;
+using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
@@ -1399,6 +1400,62 @@ namespace BusinessDesignStudio.Unit.Tests
 
             //------------Assert Results-------------------------
             Assert.AreEqual(string.Empty, result.Message.ToString());
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        [TestCategory("ResourceRepository_LoadResourceTests")]
+        public void ResourceRepository_LoadResourceTests_WhenNoTestsToFetch_ExpectNothing()
+        {
+            //------------Setup for test--------------------------
+            Mock<IEnvironmentModel> env = new Mock<IEnvironmentModel>();
+            Mock<IEnvironmentConnection> con = new Mock<IEnvironmentConnection>();
+            con.Setup(c => c.IsConnected).Returns(true);
+            env.Setup(e => e.Connection).Returns(con.Object);
+
+
+            con.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Returns(new StringBuilder());
+
+            //------------Execute Test---------------------------
+            var result = new ResourceRepository(env.Object);
+            var serviceTestModels = result.LoadResourceTests(env.Object, Guid.NewGuid());
+            //------------Assert Results-------------------------
+            Assert.IsTrue( string.IsNullOrEmpty(serviceTestModels.ToString()));
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        [TestCategory("ResourceRepository_LoadResourceTests")]
+        public void ResourceRepository_LoadResourceTests_WhenTestFound_ExpectTestsBack()
+        {
+            //------------Setup for test--------------------------
+            Mock<IEnvironmentModel> env = new Mock<IEnvironmentModel>();
+            Mock<IEnvironmentConnection> con = new Mock<IEnvironmentConnection>();
+            con.Setup(c => c.IsConnected).Returns(true);
+            env.Setup(e => e.Connection).Returns(con.Object);
+
+            var serviceTestModel = new List<ServiceTestModel>()
+            {
+                new ServiceTestModel()
+                {
+                    TestName = "Test 1",
+                    AuthenticationType = AuthenticationType.Windows,
+                    Inputs = new List<IServiceTestInput>(),
+                    Outputs = new List<IServiceTestOutput>(),
+                    UserName = "nathi",
+                    Password = "pass.word1"
+                }
+            };
+            var payload = JsonConvert.SerializeObject(serviceTestModel);
+            ExecuteMessage message = new ExecuteMessage { Message = payload.ToStringBuilder() };
+            var msgResult = JsonConvert.SerializeObject(message);
+            con.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Returns(msgResult.ToStringBuilder);
+
+            //------------Execute Test---------------------------
+            var result = new ResourceRepository(env.Object);
+            var serviceTestModels = result.LoadResourceTests(env.Object,Guid.NewGuid());
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(serviceTestModels.ToString());
         }
 
         #endregion
