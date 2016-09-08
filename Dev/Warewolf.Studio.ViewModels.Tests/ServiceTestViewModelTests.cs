@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Windows;
 using Dev2;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Help;
-using Dev2.Common.Interfaces.PopupController;
 using Dev2.Data.Binary_Objects;
 using Dev2.Interfaces;
 using Dev2.Studio.Core.Interfaces;
@@ -367,7 +365,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsNotNull(test);
             Assert.AreEqual(1, test.Inputs.Count);
             Assert.AreEqual("a", test.Inputs[0].Variable);
-            Assert.AreEqual(null, test.Inputs[0].Value);
+            Assert.AreEqual("", test.Inputs[0].Value);
         }
 
         [TestMethod]
@@ -386,7 +384,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsNotNull(test);
             Assert.AreEqual(1, test.Outputs.Count);
             Assert.AreEqual("msg", test.Outputs[0].Variable);
-            Assert.AreEqual(null, test.Outputs[0].Value);
+            Assert.AreEqual("", test.Outputs[0].Value);
         }
 
         [TestMethod]

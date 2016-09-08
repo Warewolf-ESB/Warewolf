@@ -1,8 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Dev2.Common.Interfaces;
+using Dev2.Data;
+using Dev2.Data.Binary_Objects;
+using Dev2.Data.Util;
 using Dev2.Runtime.ServiceModel.Data;
 using Microsoft.Practices.Prism.Mvvm;
+// ReSharper disable ParameterTypeCanBeEnumerable.Local
 
 namespace Warewolf.Studio.ViewModels
 {
@@ -246,8 +251,64 @@ namespace Warewolf.Studio.ViewModels
             }
         }
         public bool UserAuthenticationSelected => AuthenticationType == AuthenticationType.User;
-   
+
 
         #endregion
+
+
+        public void AddRow(IServiceTestInput itemToAdd, IDataListModel dataList)
+        {
+            if (itemToAdd != null && DataListUtil.IsValueRecordset(itemToAdd.Variable))
+            {
+                var recordsetNameFromValue = DataListUtil.ExtractRecordsetNameFromValue(itemToAdd.Variable);
+                IRecordSet recordset = dataList.ShapeRecordSets.FirstOrDefault(set => set.Name == recordsetNameFromValue);
+                if (recordset != null)
+                {
+                    var recsetCols = new List<IScalar>();
+                    foreach (var column in recordset.Columns)
+                    {
+                        var cols = column.Value.Where(scalar => scalar.IODirection == enDev2ColumnArgumentDirection.Input || scalar.IODirection == enDev2ColumnArgumentDirection.Both);
+                        recsetCols.AddRange(cols);
+                    }
+
+                    var numberOfRows = Inputs.Where(c => DataListUtil.ExtractRecordsetNameFromValue(c.Variable) == recordsetNameFromValue);
+                    IEnumerable<IServiceTestInput> dataListItems = numberOfRows as IServiceTestInput[] ?? numberOfRows.ToArray();
+                    var lastItem = dataListItems.Last();
+                    var indexToInsertAt = Inputs.IndexOf(lastItem);
+                    var indexString = DataListUtil.ExtractIndexRegionFromRecordset(lastItem.Variable);
+                    var indexNum = Convert.ToInt32(indexString) + 1;
+                    var lastRow = dataListItems.Where(c => DataListUtil.ExtractIndexRegionFromRecordset(c.Variable) == indexString);
+                    var addRow = false;
+                    foreach (var item in lastRow)
+                    {
+                        if (item.Value != string.Empty)
+                        {
+                            addRow = true;
+                        }
+                    }
+                    if (addRow)
+                    {
+                        AddBlankRowToRecordset(itemToAdd, recsetCols, indexToInsertAt, indexNum);
+                    }
+                }
+            }
+        }
+
+        private void AddBlankRowToRecordset(IServiceTestInput dlItem, IList<IScalar> columns, int indexToInsertAt, int indexNum)
+        {
+            IList<IScalar> recsetCols = columns.Distinct(Scalar.Comparer).ToList();
+            string colName = null;
+            foreach(var col in recsetCols.Distinct(new ScalarNameComparer()))
+            {
+                if(string.IsNullOrEmpty(colName) || !colName.Equals(col.Name))
+                {
+                    var recSetName = DataListUtil.ExtractRecordsetNameFromValue(dlItem.Variable);
+                    var varName = string.Concat(recSetName, @"(", indexNum, @").", col.Name);
+                    Inputs.Insert(indexToInsertAt + 1, new ServiceTestInput(varName, string.Empty));
+                    indexToInsertAt++;
+                }
+                colName = col.Name;
+            }
+        }
     }
 }
