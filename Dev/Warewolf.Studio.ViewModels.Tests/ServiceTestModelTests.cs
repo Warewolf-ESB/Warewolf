@@ -18,7 +18,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void TestModel_Name_WhenSet_ShouldFirePropertyChanged()
         {
             //------------Setup for test--------------------------
-            var testModel = new ServiceTestModel();
+            var testModel = new ServiceTestModel(Guid.NewGuid());
             var _wasCalled = false;
             testModel.PropertyChanged += (sender, args) =>
               {
@@ -41,7 +41,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void TestModel_TestName_IsDirty_WhenSet_ShouldFirePropertyChanged()
         {
             //------------Setup for test--------------------------
-            var testModel = new ServiceTestModel();
+            var testModel = new ServiceTestModel(Guid.NewGuid());
             var _wasCalled = false;
             testModel.PropertyChanged += (sender, args) =>
             {
@@ -65,7 +65,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void TestModel_Username_WhenSet_ShouldFirePropertyChanged()
         {
             //------------Setup for test--------------------------
-            var testModel = new ServiceTestModel();
+            var testModel = new ServiceTestModel(Guid.NewGuid());
             var _wasCalled = false;
             testModel.PropertyChanged += (sender, args) =>
             {
@@ -87,7 +87,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void TestModel_Password_WhenSet_ShouldFirePropertyChanged()
         {
             //------------Setup for test--------------------------
-            var testModel = new ServiceTestModel();
+            var testModel = new ServiceTestModel(Guid.NewGuid());
             var _wasCalled = false;
             testModel.PropertyChanged += (sender, args) =>
             {
@@ -109,7 +109,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void TestModel_RunSelectedTestUrl_WhenSet_ShouldFirePropertyChanged()
         {
             //------------Setup for test--------------------------
-            var testModel = new ServiceTestModel();
+            var testModel = new ServiceTestModel(Guid.NewGuid());
             var _wasCalled = false;
             testModel.PropertyChanged += (sender, args) =>
             {
@@ -131,7 +131,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void TestModel_Enabled_WhenSet_ShouldFirePropertyChanged()
         {
             //------------Setup for test--------------------------
-            var testModel = new ServiceTestModel();
+            var testModel = new ServiceTestModel(Guid.NewGuid());
             var _wasCalled = false;
             testModel.PropertyChanged += (sender, args) =>
             {
@@ -153,7 +153,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void TestModel_LastRunDate_WhenSet_ShouldFirePropertyChanged()
         {
             //------------Setup for test--------------------------
-            var testModel = new ServiceTestModel();
+            var testModel = new ServiceTestModel(Guid.NewGuid());
             var _wasCalled = false;
             testModel.PropertyChanged += (sender, args) =>
             {
@@ -177,7 +177,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void TestModel_TestPassed_WhenSet_ShouldFirePropertyChanged()
         {
             //------------Setup for test--------------------------
-            var testModel = new ServiceTestModel();
+            var testModel = new ServiceTestModel(Guid.NewGuid());
             var _wasCalled = false;
             testModel.PropertyChanged += (sender, args) =>
             {
@@ -199,7 +199,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void TestModel_TestFailing_WhenSet_ShouldFirePropertyChanged()
         {
             //------------Setup for test--------------------------
-            var testModel = new ServiceTestModel();
+            var testModel = new ServiceTestModel(Guid.NewGuid());
             var _wasCalled = false;
             testModel.PropertyChanged += (sender, args) =>
             {
@@ -221,7 +221,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void TestModel_TestInvalid_WhenSet_ShouldFirePropertyChanged()
         {
             //------------Setup for test--------------------------
-            var testModel = new ServiceTestModel();
+            var testModel = new ServiceTestModel(Guid.NewGuid());
             var _wasCalled = false;
             testModel.PropertyChanged += (sender, args) =>
             {
@@ -243,7 +243,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void TestModel_TestPending_WhenSet_ShouldFirePropertyChanged()
         {
             //------------Setup for test--------------------------
-            var testModel = new ServiceTestModel();
+            var testModel = new ServiceTestModel(Guid.NewGuid());
             var _wasCalled = false;
             testModel.PropertyChanged += (sender, args) =>
             {
@@ -265,7 +265,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void TestModel_Inputs_WhenSet_ShouldFirePropertyChanged()
         {
             //------------Setup for test--------------------------
-            var testModel = new ServiceTestModel();
+            var testModel = new ServiceTestModel(Guid.NewGuid());
             var _wasCalled = false;
             testModel.PropertyChanged += (sender, args) =>
             {
@@ -287,7 +287,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void TestModel_Outputs_WhenSet_ShouldFirePropertyChanged()
         {
             //------------Setup for test--------------------------
-            var testModel = new ServiceTestModel();
+            var testModel = new ServiceTestModel(Guid.NewGuid());
             var _wasCalled = false;
             testModel.PropertyChanged += (sender, args) =>
             {
@@ -310,7 +310,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void TestModel_AuthenticationType_WhenSet_ShouldFirePropertyChanged()
         {
             //------------Setup for test--------------------------
-            var testModel = new ServiceTestModel();
+            var testModel = new ServiceTestModel(Guid.NewGuid());
             var _wasCalled = false;
             testModel.PropertyChanged += (sender, args) =>
             {
@@ -333,7 +333,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void TestModel_UserAuthenticationSelected_WhenSet_ShouldFirePropertyChanged()
         {
             //------------Setup for test--------------------------
-            var testModel = new ServiceTestModel();
+            var testModel = new ServiceTestModel(Guid.NewGuid());
             var _wasCalled = false;
             testModel.PropertyChanged += (sender, args) =>
             {
@@ -356,7 +356,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void TestModel_IsTestSelected_WhenSet_ShouldFirePropertyChanged()
         {
             //------------Setup for test--------------------------
-            var testModel = new ServiceTestModel();
+            var testModel = new ServiceTestModel(Guid.NewGuid());
             var _wasCalled = false;
             testModel.PropertyChanged += (sender, args) =>
             {
@@ -378,7 +378,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void TestModel_IsNewTest_WhenSet_ShouldFirePropertyChanged()
         {
             //------------Setup for test--------------------------
-            var testModel = new ServiceTestModel();
+            var testModel = new ServiceTestModel(Guid.NewGuid());
             var _wasCalled = false;
             testModel.PropertyChanged += (sender, args) =>
             {
@@ -399,7 +399,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void TestModel_ErrorExpected_WhenSet_ShouldFirePropertyChanged()
         {
             //------------Setup for test--------------------------
-            var testModel = new ServiceTestModel();
+            var testModel = new ServiceTestModel(Guid.NewGuid());
             var _wasCalled = false;
             testModel.PropertyChanged += (sender, args) =>
             {
@@ -421,7 +421,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void TestModel_NoErrorExpected_WhenSet_ShouldFirePropertyChanged()
         {
             //------------Setup for test--------------------------
-            var testModel = new ServiceTestModel();
+            var testModel = new ServiceTestModel(Guid.NewGuid());
             var _wasCalled = false;
             testModel.PropertyChanged += (sender, args) =>
             {
@@ -443,7 +443,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void TestModel_IsDirty_WhenSet_ShouldFirePropertyChanged()
         {
             //------------Setup for test--------------------------
-            var testModel = new ServiceTestModel();
+            var testModel = new ServiceTestModel(Guid.NewGuid());
             var _wasCalled = false;
             testModel.PropertyChanged += (sender, args) =>
             {
@@ -465,7 +465,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void ServiceTestModel_AddRow_WhenRecordsetValueUpdated_ShouldAddNewRow()
         {
             //------------Setup for test--------------------------
-            var serviceTestModel = new ServiceTestModel();
+            var serviceTestModel = new ServiceTestModel(Guid.NewGuid());
             var serviceTestInput = new ServiceTestInput("rec(1).a","val");
             serviceTestModel.Inputs = new List<IServiceTestInput>
             {
@@ -494,6 +494,49 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual(2,serviceTestModel.Inputs.Count);
             Assert.AreEqual("rec(2).a",serviceTestModel.Inputs[1].Variable );
             Assert.AreEqual("",serviceTestModel.Inputs[1].Value );
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void OnCreation_GivenIsNew_ShouldHaveDeleteTestCommand()
+        {
+            //---------------Set up test pack-------------------
+            var vm = new ServiceTestModel(Guid.NewGuid());
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(vm);
+            //---------------Execute Test ----------------------
+            Assert.IsNotNull(vm.DeleteTestCommand);
+            //---------------Test Result -----------------------
+            Assert.IsTrue(vm.DeleteTestCommand.CanExecute(null));
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        public void OnCreation_GivenIsDisabled_DeleteTestCommandShouldBeEnabled()
+        {
+            //---------------Set up test pack-------------------
+            var vm = new ServiceTestModel(Guid.NewGuid());
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(vm);
+            //---------------Execute Test ----------------------
+            Assert.IsNotNull(vm.DeleteTestCommand);
+            //---------------Test Result -----------------------
+            Assert.IsTrue(vm.DeleteTestCommand.CanExecute(null));
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        public void OnCreation_GivenIsEnabled_DeleteTestCommandShouldBeDisabled()
+        {
+            //---------------Set up test pack-------------------
+            var vm = new ServiceTestModel(Guid.NewGuid());
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(vm);
+            //---------------Execute Test ----------------------
+            vm.Enabled = true;
+            Assert.IsNotNull(vm.DeleteTestCommand);
+            //---------------Test Result -----------------------
+            Assert.IsFalse(vm.DeleteTestCommand.CanExecute(null));
         }
     }
 }

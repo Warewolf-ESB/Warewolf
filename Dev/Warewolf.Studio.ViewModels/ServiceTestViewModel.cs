@@ -33,7 +33,6 @@ namespace Warewolf.Studio.ViewModels
             DisplayName = resourceModel.DisplayName + " - Tests";
             ServiceTestCommandHandler = new ServiceTestCommandHandlerModel();
 
-            DeleteTestCommand = new DelegateCommand(() => ServiceTestCommandHandler.DeleteTest(SelectedServiceTest), () => CanDeleteTest);
             DuplicateTestCommand = new DelegateCommand(ServiceTestCommandHandler.DuplicateTest, () => CanDuplicateTest);
             RunAllTestsInBrowserCommand = new DelegateCommand(() => ServiceTestCommandHandler.RunAllTestsInBrowser(IsDirty));
             RunAllTestsCommand = new DelegateCommand(() => ServiceTestCommandHandler.RunAllTestsCommand(IsDirty));
@@ -45,8 +44,6 @@ namespace Warewolf.Studio.ViewModels
 
             RunAllTestsUrl = WebServer.GetWorkflowUri(resourceModel, "", UrlType.Tests)?.ToString();
         }
-
-      
 
         private void CreateTests()
         {
@@ -75,7 +72,6 @@ namespace Warewolf.Studio.ViewModels
         private bool CanRunSelectedTestInBrowser => SelectedServiceTest != null && !SelectedServiceTest.IsDirty;
         private bool CanRunSelectedTest => GetPermissions();
         public bool CanDuplicateTest => GetPermissions();
-        private bool CanDeleteTest => GetPermissions() && SelectedServiceTest != null && !SelectedServiceTest.Enabled;
 
         public bool CanSave { get; set; }
 
@@ -222,7 +218,6 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        public ICommand DeleteTestCommand { get; set; }
         public ICommand DuplicateTestCommand { get; set; }
         public ICommand RunAllTestsInBrowserCommand { get; set; }
         public ICommand RunAllTestsCommand { get; set; }

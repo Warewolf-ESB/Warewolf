@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Windows.Input;
 using Dev2.Common.Interfaces;
 using Dev2.Data;
 using Dev2.Data.Binary_Objects;
 using Dev2.Data.Util;
 using Dev2.Runtime.ServiceModel.Data;
+using Dev2.Studio.Core.Interfaces;
+using Microsoft.Practices.Prism.Commands;
 using Microsoft.Practices.Prism.Mvvm;
 // ReSharper disable ParameterTypeCanBeEnumerable.Local
 
@@ -31,8 +34,33 @@ namespace Warewolf.Studio.ViewModels
         private string _runSelectedTestUrl;
         private bool _isDirty;
         private AuthenticationType _authenticationType;
+        private Guid _parentId;
+
+        public ServiceTestModel(Guid resourceId)
+        {
+            ParentId = resourceId;
+            ServiceTestCommandHandler = new ServiceTestCommandHandlerModel();
+            DeleteTestCommand = new DelegateCommand(() => ServiceTestCommandHandler.DeleteTest(this), () => CanDeleteTest);
+        }
+
+        private bool CanDeleteTest => GetPermissions() && !Enabled;
+
+        private bool GetPermissions()
+        {
+            return true;
+        }
 
         #region Implementation of IServiceTestModel
+
+        public Guid ParentId
+        {
+            get { return _parentId; }
+            set
+            {
+                _parentId = value; 
+                OnPropertyChanged(() => ParentId);
+            }
+        }
 
         public string TestName
         {
@@ -251,7 +279,8 @@ namespace Warewolf.Studio.ViewModels
             }
         }
         public bool UserAuthenticationSelected => AuthenticationType == AuthenticationType.User;
-
+        public ICommand DeleteTestCommand { get; set; }
+        public IServiceTestCommandHandler ServiceTestCommandHandler { get; set; }
 
         #endregion
 
