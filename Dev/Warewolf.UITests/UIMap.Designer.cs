@@ -3113,6 +3113,23 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
+        /// Enter_DeployViewOnly_Into_Deploy_Source_Filter - Use 'Enter_DeployViewOnly_Into_Deploy_Source_FilterParams' to pass parameters into this method.
+        /// </summary>
+        public void Enter_DeployViewOnly_Into_Deploy_Source_Filter()
+        {
+            #region Variable Declarations
+            WpfEdit searchTextbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DeployTab.WorkSurfaceContext.SourceServerExplorer.SearchTextbox;
+            WpfTreeItem firstExplorerTreeItem = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DeployTab.WorkSurfaceContext.SourceServerExplorer.ExplorerTree.SourceServerName.FirstExplorerTreeItem;
+            #endregion
+
+            // Type 'DeployViewOnly' in 'SearchTextBox' text box
+            searchTextbox.Text = this.Enter_DeployViewOnly_Into_Deploy_Source_FilterParams.SearchTextboxText;
+
+            // Verify that the 'Exists' property of 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item equals 'True'
+            Assert.AreEqual(this.Enter_DeployViewOnly_Into_Deploy_Source_FilterParams.FirstExplorerTreeItemExists, firstExplorerTreeItem.Exists, "First deploy tab source explorer item does not exist after filter is applied.");
+        }
+        
+        /// <summary>
         /// Enter_SomeVariable_Into_Base_Convert_Large_View_Row1_Value_Textbox - Use 'Enter_SomeVariable_Into_Base_Convert_Large_View_Row1_Value_TextboxParams' to pass parameters into this method.
         /// </summary>
         public void Enter_SomeVariable_Into_Base_Convert_Large_View_Row1_Value_Textbox()
@@ -3210,23 +3227,6 @@ namespace Warewolf.UITests
             // Verify that the 'Text' property of 'UI_TextBox_AutoID' text box equals '[[SomeVariable]]'
             Assert.AreEqual(this.Enter_Text_Into_Assign_Small_View_Row1_Value_Textbox_As_SomeVariable_UsingIntellisenseParams.TextboxText, textbox.Text, "Multiassign small view row 1 variable textbox text does not equal \"[[SomeVariable" +
                     "]]\".");
-        }
-        
-        /// <summary>
-        /// Enter_Text_Into_Deploy_Source_Filter - Use 'Enter_Text_Into_Deploy_Source_FilterParams' to pass parameters into this method.
-        /// </summary>
-        public void Enter_Text_Into_Deploy_Source_Filter()
-        {
-            #region Variable Declarations
-            WpfEdit searchTextbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DeployTab.WorkSurfaceContext.SourceServerExplorer.SearchTextbox;
-            WpfTreeItem firstExplorerTreeItem = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DeployTab.WorkSurfaceContext.SourceServerExplorer.ExplorerTree.SourceServerName.FirstExplorerTreeItem;
-            #endregion
-
-            // Type 'DeployViewOnly' in 'SearchTextBox' text box
-            searchTextbox.Text = this.Enter_Text_Into_Deploy_Source_FilterParams.SearchTextboxText;
-
-            // Verify that the 'Exists' property of 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item equals 'True'
-            Assert.AreEqual(this.Enter_Text_Into_Deploy_Source_FilterParams.FirstExplorerTreeItemExists, firstExplorerTreeItem.Exists, "First deploy tab source explorer item does not exist after filter is applied.");
         }
         
         /// <summary>
@@ -4112,6 +4112,45 @@ namespace Warewolf.UITests
 
             // Type '{F11}' in 'Warewolf' window
             Keyboard.SendKeys(mainStudioWindow, this.PressF11_EnterFullScreenParams.MainStudioWindowSendKeys, ModifierKeys.None);
+        }
+        
+        /// <summary>
+        /// RecordedMethod1
+        /// </summary>
+        public void RecordedMethod1()
+        {
+            #region Variable Declarations
+            WpfText mySqlDatabaseText = this.MainStudioWindow.ComboboxListItemMySqlDatabase.MySqlDatabaseText;
+            #endregion
+
+            // Click 'MySql Database' label
+            Mouse.Click(mySqlDatabaseText, new Point(48, 6));
+        }
+        
+        /// <summary>
+        /// RecordedMethod2
+        /// </summary>
+        public void RecordedMethod2()
+        {
+            #region Variable Declarations
+            WpfText postgreSQLDatabaseText = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DBSourceWizardTab.WorkSurfaceContext.NewDBSourceWizard.ServerTypeComboBox.PostgreSQLDatabaseText;
+            #endregion
+
+            // Click 'PostgreSQL Database' label
+            Mouse.Click(postgreSQLDatabaseText, new Point(100, 8));
+        }
+        
+        /// <summary>
+        /// RecordedMethod3
+        /// </summary>
+        public void RecordedMethod3()
+        {
+            #region Variable Declarations
+            WpfText oDBCDatabaseText = this.MainStudioWindow.ComboboxListItemODBCDatabase.ODBCDatabaseText;
+            #endregion
+
+            // Click 'ODBC Database' label
+            Mouse.Click(oDBCDatabaseText, new Point(42, 10));
         }
         
         /// <summary>
@@ -5442,45 +5481,6 @@ namespace Warewolf.UITests
                     "d web address.");
         }
         
-        /// <summary>
-        /// RecordedMethod1
-        /// </summary>
-        public void RecordedMethod1()
-        {
-            #region Variable Declarations
-            WpfText mySqlDatabaseText = this.MainStudioWindow.ComboboxListItemMySqlDatabase.MySqlDatabaseText;
-            #endregion
-
-            // Click 'MySql Database' label
-            Mouse.Click(mySqlDatabaseText, new Point(48, 6));
-        }
-        
-        /// <summary>
-        /// RecordedMethod2
-        /// </summary>
-        public void RecordedMethod2()
-        {
-            #region Variable Declarations
-            WpfText postgreSQLDatabaseText = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DBSourceWizardTab.WorkSurfaceContext.NewDBSourceWizard.ServerTypeComboBox.PostgreSQLDatabaseText;
-            #endregion
-
-            // Click 'PostgreSQL Database' label
-            Mouse.Click(postgreSQLDatabaseText, new Point(100, 8));
-        }
-        
-        /// <summary>
-        /// RecordedMethod3
-        /// </summary>
-        public void RecordedMethod3()
-        {
-            #region Variable Declarations
-            WpfText oDBCDatabaseText = this.MainStudioWindow.ComboboxListItemODBCDatabase.ODBCDatabaseText;
-            #endregion
-
-            // Click 'ODBC Database' label
-            Mouse.Click(oDBCDatabaseText, new Point(42, 10));
-        }
-        
         #region Properties
         public virtual Click_Assign_Tool_Large_View_Done_ButtonParams Click_Assign_Tool_Large_View_Done_ButtonParams
         {
@@ -6682,6 +6682,18 @@ namespace Warewolf.UITests
             }
         }
         
+        public virtual Enter_DeployViewOnly_Into_Deploy_Source_FilterParams Enter_DeployViewOnly_Into_Deploy_Source_FilterParams
+        {
+            get
+            {
+                if ((this.mEnter_DeployViewOnly_Into_Deploy_Source_FilterParams == null))
+                {
+                    this.mEnter_DeployViewOnly_Into_Deploy_Source_FilterParams = new Enter_DeployViewOnly_Into_Deploy_Source_FilterParams();
+                }
+                return this.mEnter_DeployViewOnly_Into_Deploy_Source_FilterParams;
+            }
+        }
+        
         public virtual Enter_SomeVariable_Into_Base_Convert_Large_View_Row1_Value_TextboxParams Enter_SomeVariable_Into_Base_Convert_Large_View_Row1_Value_TextboxParams
         {
             get
@@ -6751,18 +6763,6 @@ namespace Warewolf.UITests
                     this.mEnter_Text_Into_Assign_Small_View_Row1_Value_Textbox_As_SomeVariable_UsingIntellisenseParams = new Enter_Text_Into_Assign_Small_View_Row1_Value_Textbox_As_SomeVariable_UsingIntellisenseParams();
                 }
                 return this.mEnter_Text_Into_Assign_Small_View_Row1_Value_Textbox_As_SomeVariable_UsingIntellisenseParams;
-            }
-        }
-        
-        public virtual Enter_Text_Into_Deploy_Source_FilterParams Enter_Text_Into_Deploy_Source_FilterParams
-        {
-            get
-            {
-                if ((this.mEnter_Text_Into_Deploy_Source_FilterParams == null))
-                {
-                    this.mEnter_Text_Into_Deploy_Source_FilterParams = new Enter_Text_Into_Deploy_Source_FilterParams();
-                }
-                return this.mEnter_Text_Into_Deploy_Source_FilterParams;
             }
         }
         
@@ -7724,6 +7724,8 @@ namespace Warewolf.UITests
         
         private Drag_Toolbox_Zip_Onto_DesignSurfaceParams mDrag_Toolbox_Zip_Onto_DesignSurfaceParams;
         
+        private Enter_DeployViewOnly_Into_Deploy_Source_FilterParams mEnter_DeployViewOnly_Into_Deploy_Source_FilterParams;
+        
         private Enter_SomeVariable_Into_Base_Convert_Large_View_Row1_Value_TextboxParams mEnter_SomeVariable_Into_Base_Convert_Large_View_Row1_Value_TextboxParams;
         
         private Enter_SomeVariable_Into_Calculate_Large_View_Function_TextboxParams mEnter_SomeVariable_Into_Calculate_Large_View_Function_TextboxParams;
@@ -7735,8 +7737,6 @@ namespace Warewolf.UITests
         private Enter_Text_Into_Assign_Small_View_Row1_Value_Textbox_As_SomeVariable_Using_Click_Intellisense_SuggestionParams mEnter_Text_Into_Assign_Small_View_Row1_Value_Textbox_As_SomeVariable_Using_Click_Intellisense_SuggestionParams;
         
         private Enter_Text_Into_Assign_Small_View_Row1_Value_Textbox_As_SomeVariable_UsingIntellisenseParams mEnter_Text_Into_Assign_Small_View_Row1_Value_Textbox_As_SomeVariable_UsingIntellisenseParams;
-        
-        private Enter_Text_Into_Deploy_Source_FilterParams mEnter_Text_Into_Deploy_Source_FilterParams;
         
         private Open_Assign_Tool_Large_ViewParams mOpen_Assign_Tool_Large_ViewParams;
         
@@ -10030,6 +10030,26 @@ namespace Warewolf.UITests
     }
     
     /// <summary>
+    /// Parameters to be passed into 'Enter_DeployViewOnly_Into_Deploy_Source_Filter'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Enter_DeployViewOnly_Into_Deploy_Source_FilterParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Type 'DeployViewOnly' in 'SearchTextBox' text box
+        /// </summary>
+        public string SearchTextboxText = "DeployViewOnly";
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item equals 'True'
+        /// </summary>
+        public bool FirstExplorerTreeItemExists = true;
+        #endregion
+    }
+    
+    /// <summary>
     /// Parameters to be passed into 'Enter_SomeVariable_Into_Base_Convert_Large_View_Row1_Value_Textbox'
     /// </summary>
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
@@ -10141,26 +10161,6 @@ namespace Warewolf.UITests
         /// Verify that the 'Text' property of 'UI_TextBox_AutoID' text box equals '[[SomeVariable]]'
         /// </summary>
         public string TextboxText = "[[SomeVariable]]";
-        #endregion
-    }
-    
-    /// <summary>
-    /// Parameters to be passed into 'Enter_Text_Into_Deploy_Source_Filter'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Enter_Text_Into_Deploy_Source_FilterParams
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Type 'DeployViewOnly' in 'SearchTextBox' text box
-        /// </summary>
-        public string SearchTextboxText = "DeployViewOnly";
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item equals 'True'
-        /// </summary>
-        public bool FirstExplorerTreeItemExists = true;
         #endregion
     }
     

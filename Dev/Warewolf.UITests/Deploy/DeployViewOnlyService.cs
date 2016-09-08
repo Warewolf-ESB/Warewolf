@@ -20,7 +20,7 @@ namespace Warewolf.UITests.Deploy
             Uimap.Click_Deploy_Ribbon_Button();
             Uimap.Select_RemoteConnectionIntegration_From_Deploy_Tab_Destination_Server_Combobox();
             Uimap.Click_Deploy_Tab_Destination_Server_Connect_Button();
-            Uimap.Enter_Text_Into_Deploy_Source_Filter();
+            Uimap.Enter_DeployViewOnly_Into_Deploy_Source_Filter();
             Uimap.Select_Deploy_First_Source_Item();
             Uimap.Click_Deploy_Tab_Deploy_Button();
             Uimap.Click_Deploy_Tab_Source_Server_Combobox();
