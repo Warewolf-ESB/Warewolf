@@ -16,6 +16,7 @@ using System.Xml;
 using Caliburn.Micro;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Help;
+using Dev2.Data;
 using Dev2.Data.Binary_Objects;
 using Dev2.Data.Interfaces;
 using Dev2.Interfaces;

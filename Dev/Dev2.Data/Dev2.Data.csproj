@@ -105,6 +105,7 @@
     <Compile Include="..\AssemblyCommonInfo.cs">
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
+    <Compile Include="DataListConversionUtils.cs" />
     <Compile Include="DataListItem.cs" />
     <Compile Include="DataListModel.cs" />
     <Compile Include="DataListTO.cs" />
@@ -132,6 +133,7 @@
     <Compile Include="Interfaces\IParserHelper.cs" />
     <Compile Include="ListIndexIterator.cs" />
     <Compile Include="ListOfIndex.cs" />
+    <Compile Include="OptomizedObservableCollection.cs" />
     <Compile Include="Parsers\XPathParser.cs" />
     <Compile Include="PathOperations\Enums\WriteType.cs" />
     <Compile Include="PathOperations\Enums\ReadTypes.cs" />
@@ -142,6 +144,7 @@
     <Compile Include="RecordSet.cs" />
     <Compile Include="ReverseIndexIterator.cs" />
     <Compile Include="Scalar.cs" />
+    <Compile Include="ScalarNameComparer.cs" />
     <Compile Include="ServiceModel\ComPluginSource.cs" />
     <Compile Include="ServiceModel\Connection.cs" />
     <Compile Include="ServiceModel\RabbitMQSource.cs" />
