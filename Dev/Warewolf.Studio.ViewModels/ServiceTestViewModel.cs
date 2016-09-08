@@ -63,10 +63,11 @@ namespace Warewolf.Studio.ViewModels
                 Tests.Add(testModel);
             }
             SelectedServiceTest = testModel;
+            SelectedServiceTest.RunSelectedTestUrl = WebServer.GetWorkflowUri(ResourceModel, "", UrlType.Tests) + "/" + SelectedServiceTest.TestName;
         }
 
         public bool CanStopTest { get; set; }
-        public bool CanRunSelectedTestInBrowser { get; set; }
+        private bool CanRunSelectedTestInBrowser => SelectedServiceTest != null && !SelectedServiceTest.IsDirty;
         private bool CanRunSelectedTest => GetPermissions();
         public bool CanDuplicateTest => GetPermissions();
         private bool CanDeleteTest => GetPermissions() && SelectedServiceTest != null && !SelectedServiceTest.Enabled;
@@ -84,7 +85,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 try
                 {
-                    if (Tests == null || Tests.Count == 0)
+                    if (Tests == null || Tests.Count <= 1)
                     {
                         return false;
                     }
