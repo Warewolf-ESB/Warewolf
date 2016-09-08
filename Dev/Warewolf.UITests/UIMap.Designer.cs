@@ -32,6 +32,32 @@ namespace Warewolf.UITests
     {
         
         /// <summary>
+        /// Assert_CancelConnectionButton_Exists - Use 'Assert_CancelConnectionButton_ExistsExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void Assert_CancelConnectionButton_Exists()
+        {
+            #region Variable Declarations
+            WpfButton cancelTestButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DBSourceWizardTab.WorkSurfaceContext.CancelTestButton;
+            #endregion
+
+            // Verify that the 'Exists' property of 'Cancel Test' button equals 'True'
+            Assert.AreEqual(this.Assert_CancelConnectionButton_ExistsExpectedValues.CancelTestButtonExists, cancelTestButton.Exists, "Cancel Button does not exist");
+        }
+        
+        /// <summary>
+        /// Assert_Connection_Passed - Use 'Assert_Connection_PassedExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void Assert_Connection_Passed()
+        {
+            #region Variable Declarations
+            WpfImage connectionPassedImage = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DBSourceWizardTab.WorkSurfaceContext.ConnectionPassedImage;
+            #endregion
+
+            // Verify that the 'Exists' property of first image next to 'Dev2.Studio.ViewModels.WorkSurface.WorkSurfaceCont...' custom control equals 'True'
+            Assert.AreEqual(this.Assert_Connection_PassedExpectedValues.ConnectionPassedImageExists, connectionPassedImage.Exists, "Test connection failed");
+        }
+        
+        /// <summary>
         /// Click_Assign_Tool_Large_View_Done_Button - Use 'Click_Assign_Tool_Large_View_Done_ButtonParams' to pass parameters into this method.
         /// </summary>
         public void Click_Assign_Tool_Large_View_Done_Button()
@@ -293,19 +319,6 @@ namespace Warewolf.UITests
 
             // Click 'ToggleButton' button
             Mouse.Click(serverListComboBox, new Point(217, 8));
-        }
-        
-        /// <summary>
-        /// Click_DB_Source_Wizard_Test_Connection_Button
-        /// </summary>
-        public void Click_DB_Source_Wizard_Test_Connection_Button()
-        {
-            #region Variable Declarations
-            WpfButton testConnectionButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DBSourceWizardTab.WorkSurfaceContext.TestConnectionButton;
-            #endregion
-
-            // Click 'Test Connection' button
-            Mouse.Click(testConnectionButton, new Point(21, 16));
         }
         
         /// <summary>
@@ -5413,46 +5426,31 @@ namespace Warewolf.UITests
                     "d web address.");
         }
         
-        /// <summary>
-        /// RecordedMethod1
-        /// </summary>
-        public void RecordedMethod1()
-        {
-            #region Variable Declarations
-            WpfText mySqlDatabaseText = this.MainStudioWindow.ComboboxListItemMySqlDatabase.MySqlDatabaseText;
-            #endregion
-
-            // Click 'MySql Database' label
-            Mouse.Click(mySqlDatabaseText, new Point(48, 6));
-        }
-        
-        /// <summary>
-        /// RecordedMethod2
-        /// </summary>
-        public void RecordedMethod2()
-        {
-            #region Variable Declarations
-            WpfText postgreSQLDatabaseText = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DBSourceWizardTab.WorkSurfaceContext.NewDBSourceWizard.ServerTypeComboBox.PostgreSQLDatabaseText;
-            #endregion
-
-            // Click 'PostgreSQL Database' label
-            Mouse.Click(postgreSQLDatabaseText, new Point(100, 8));
-        }
-        
-        /// <summary>
-        /// RecordedMethod3
-        /// </summary>
-        public void RecordedMethod3()
-        {
-            #region Variable Declarations
-            WpfText oDBCDatabaseText = this.MainStudioWindow.ComboboxListItemODBCDatabase.ODBCDatabaseText;
-            #endregion
-
-            // Click 'ODBC Database' label
-            Mouse.Click(oDBCDatabaseText, new Point(42, 10));
-        }
-        
         #region Properties
+        public virtual Assert_CancelConnectionButton_ExistsExpectedValues Assert_CancelConnectionButton_ExistsExpectedValues
+        {
+            get
+            {
+                if ((this.mAssert_CancelConnectionButton_ExistsExpectedValues == null))
+                {
+                    this.mAssert_CancelConnectionButton_ExistsExpectedValues = new Assert_CancelConnectionButton_ExistsExpectedValues();
+                }
+                return this.mAssert_CancelConnectionButton_ExistsExpectedValues;
+            }
+        }
+        
+        public virtual Assert_Connection_PassedExpectedValues Assert_Connection_PassedExpectedValues
+        {
+            get
+            {
+                if ((this.mAssert_Connection_PassedExpectedValues == null))
+                {
+                    this.mAssert_Connection_PassedExpectedValues = new Assert_Connection_PassedExpectedValues();
+                }
+                return this.mAssert_Connection_PassedExpectedValues;
+            }
+        }
+        
         public virtual Click_Assign_Tool_Large_View_Done_ButtonParams Click_Assign_Tool_Large_View_Done_ButtonParams
         {
             get
@@ -7480,9 +7478,37 @@ namespace Warewolf.UITests
                 return this.mSwitchCaseDialog;
             }
         }
+        
+        public UIWarewolfDEV2ASHLEYLEWindow UIWarewolfDEV2ASHLEYLEWindow
+        {
+            get
+            {
+                if ((this.mUIWarewolfDEV2ASHLEYLEWindow == null))
+                {
+                    this.mUIWarewolfDEV2ASHLEYLEWindow = new UIWarewolfDEV2ASHLEYLEWindow();
+                }
+                return this.mUIWarewolfDEV2ASHLEYLEWindow;
+            }
+        }
+        
+        public UIWarewolfDEV2SANELEMTWindow UIWarewolfDEV2SANELEMTWindow
+        {
+            get
+            {
+                if ((this.mUIWarewolfDEV2SANELEMTWindow == null))
+                {
+                    this.mUIWarewolfDEV2SANELEMTWindow = new UIWarewolfDEV2SANELEMTWindow();
+                }
+                return this.mUIWarewolfDEV2SANELEMTWindow;
+            }
+        }
         #endregion
         
         #region Fields
+        private Assert_CancelConnectionButton_ExistsExpectedValues mAssert_CancelConnectionButton_ExistsExpectedValues;
+        
+        private Assert_Connection_PassedExpectedValues mAssert_Connection_PassedExpectedValues;
+        
         private Click_Assign_Tool_Large_View_Done_ButtonParams mClick_Assign_Tool_Large_View_Done_ButtonParams;
         
         private Click_Assign_Tool_Large_View_Done_Button_With_Row1_Variable_Textbox_As_SomeInvalidVariableNameParams mClick_Assign_Tool_Large_View_Done_Button_With_Row1_Variable_Textbox_As_SomeInvalidVariableNameParams;
@@ -7820,6 +7846,40 @@ namespace Warewolf.UITests
         private ServicePickerDialog mServicePickerDialog;
         
         private SwitchCaseDialog mSwitchCaseDialog;
+        
+        private UIWarewolfDEV2ASHLEYLEWindow mUIWarewolfDEV2ASHLEYLEWindow;
+        
+        private UIWarewolfDEV2SANELEMTWindow mUIWarewolfDEV2SANELEMTWindow;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Assert_CancelConnectionButton_Exists'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Assert_CancelConnectionButton_ExistsExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Cancel Test' button equals 'True'
+        /// </summary>
+        public bool CancelTestButtonExists = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Assert_Connection_Passed'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Assert_Connection_PassedExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of first image next to 'Dev2.Studio.ViewModels.WorkSurface.WorkSurfaceCont...' custom control equals 'True'
+        /// </summary>
+        public bool ConnectionPassedImageExists = true;
         #endregion
     }
     
@@ -11615,6 +11675,23 @@ namespace Warewolf.UITests
                 return this.mComboboxListItemMySqlDatabase;
             }
         }
+        
+        public WpfCustom DatabaseComboxBox
+        {
+            get
+            {
+                if ((this.mDatabaseComboxBox == null))
+                {
+                    this.mDatabaseComboxBox = new WpfCustom(this);
+                    #region Search Criteria
+                    this.mDatabaseComboxBox.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.XamComboEditor";
+                    this.mDatabaseComboxBox.SearchProperties[WpfControl.PropertyNames.AutomationId] = "DatabaseComboxBox";
+                    this.mDatabaseComboxBox.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mDatabaseComboxBox;
+            }
+        }
         #endregion
         
         #region Fields
@@ -11687,6 +11764,8 @@ namespace Warewolf.UITests
         private ComboboxListItemODBCDatabase mComboboxListItemODBCDatabase;
         
         private ComboboxListItemMySqlDatabase mComboboxListItemMySqlDatabase;
+        
+        private WpfCustom mDatabaseComboxBox;
         #endregion
     }
     
@@ -26296,6 +26375,38 @@ namespace Warewolf.UITests
                 return this.mWindowsRadioButton;
             }
         }
+        
+        public WpfButton CancelTestButton
+        {
+            get
+            {
+                if ((this.mCancelTestButton == null))
+                {
+                    this.mCancelTestButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mCancelTestButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "CancelTestButton";
+                    this.mCancelTestButton.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mCancelTestButton;
+            }
+        }
+        
+        public WpfImage ConnectionPassedImage
+        {
+            get
+            {
+                if ((this.mConnectionPassedImage == null))
+                {
+                    this.mConnectionPassedImage = new WpfImage(this);
+                    #region Search Criteria
+                    this.mConnectionPassedImage.SearchConfigurations.Add(SearchConfiguration.NextSibling);
+                    this.mConnectionPassedImage.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mConnectionPassedImage;
+            }
+        }
         #endregion
         
         #region Fields
@@ -26314,6 +26425,10 @@ namespace Warewolf.UITests
         private WpfRadioButton mUserRadioButton;
         
         private WpfRadioButton mWindowsRadioButton;
+        
+        private WpfButton mCancelTestButton;
+        
+        private WpfImage mConnectionPassedImage;
         #endregion
     }
     
@@ -26366,6 +26481,22 @@ namespace Warewolf.UITests
                 return this.mUIDatabaseComboxBoxCustom;
             }
         }
+        
+        public WpfButton TestConnectionButton
+        {
+            get
+            {
+                if ((this.mTestConnectionButton == null))
+                {
+                    this.mTestConnectionButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mTestConnectionButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "TestConnectionButton";
+                    this.mTestConnectionButton.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mTestConnectionButton;
+            }
+        }
         #endregion
         
         #region Fields
@@ -26374,6 +26505,8 @@ namespace Warewolf.UITests
         private ServerComboBox1 mServerComboBox;
         
         private UIDatabaseComboxBoxCustom mUIDatabaseComboxBoxCustom;
+        
+        private WpfButton mTestConnectionButton;
         #endregion
     }
     
@@ -34675,6 +34808,141 @@ namespace Warewolf.UITests
         
         #region Fields
         private WpfCustom mUISourceNavigationViewCustom;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIWarewolfDEV2SANELEMTWindow : WpfWindow
+    {
+        
+        public UIWarewolfDEV2SANELEMTWindow()
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfWindow.PropertyNames.Name] = "Warewolf (DEV2\\SANELE.MTHEMBU)";
+            this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public UIUI_SplitPane_AutoIDCustom UIUI_SplitPane_AutoIDCustom
+        {
+            get
+            {
+                if ((this.mUIUI_SplitPane_AutoIDCustom == null))
+                {
+                    this.mUIUI_SplitPane_AutoIDCustom = new UIUI_SplitPane_AutoIDCustom(this);
+                }
+                return this.mUIUI_SplitPane_AutoIDCustom;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIUI_SplitPane_AutoIDCustom mUIUI_SplitPane_AutoIDCustom;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIUI_SplitPane_AutoIDCustom : WpfCustom
+    {
+        
+        public UIUI_SplitPane_AutoIDCustom(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.SplitPane";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "UI_SplitPane_AutoID";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public UIUI_TabManager_AutoIDTabList UIUI_TabManager_AutoIDTabList
+        {
+            get
+            {
+                if ((this.mUIUI_TabManager_AutoIDTabList == null))
+                {
+                    this.mUIUI_TabManager_AutoIDTabList = new UIUI_TabManager_AutoIDTabList(this);
+                }
+                return this.mUIUI_TabManager_AutoIDTabList;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIUI_TabManager_AutoIDTabList mUIUI_TabManager_AutoIDTabList;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIUI_TabManager_AutoIDTabList : WpfTabList
+    {
+        
+        public UIUI_TabManager_AutoIDTabList(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfTabList.PropertyNames.AutomationId] = "UI_TabManager_AutoID";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public UIDev2ViewModelsSourceTabPage UIDev2ViewModelsSourceTabPage
+        {
+            get
+            {
+                if ((this.mUIDev2ViewModelsSourceTabPage == null))
+                {
+                    this.mUIDev2ViewModelsSourceTabPage = new UIDev2ViewModelsSourceTabPage(this);
+                }
+                return this.mUIDev2ViewModelsSourceTabPage;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIDev2ViewModelsSourceTabPage mUIDev2ViewModelsSourceTabPage;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIDev2ViewModelsSourceTabPage : WpfTabPage
+    {
+        
+        public UIDev2ViewModelsSourceTabPage(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfTabPage.PropertyNames.Name] = "Dev2.ViewModels.SourceViewModel`1[Dev2.Common.Interfaces.ServerProxyLayer.IDbSour" +
+                "ce]";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfCustom UIDev2StudioViewModelsCustom
+        {
+            get
+            {
+                if ((this.mUIDev2StudioViewModelsCustom == null))
+                {
+                    this.mUIDev2StudioViewModelsCustom = new WpfCustom(this);
+                    #region Search Criteria
+                    this.mUIDev2StudioViewModelsCustom.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ContentPane";
+                    this.mUIDev2StudioViewModelsCustom.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Dev2.Studio.ViewModels.WorkSurface.WorkSurfaceContextViewModel";
+                    this.mUIDev2StudioViewModelsCustom.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mUIDev2StudioViewModelsCustom;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfCustom mUIDev2StudioViewModelsCustom;
         #endregion
     }
 }

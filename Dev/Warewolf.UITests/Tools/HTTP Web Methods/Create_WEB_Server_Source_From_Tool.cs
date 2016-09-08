@@ -5,22 +5,30 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Warewolf.UITests.Tools
 {
     [CodedUITest]
-    public class Create_SQL_Server_Source_From_Tool
+    public class Create_WEB_Server_Source_From_Tool
     {
         [TestMethod]
         [TestCategory("Tools")]
-        public void SQLServerSourceFromTool()
+        public void WEBServerSourceFromTool()
         {
-            Uimap.Drag_Toolbox_SQL_Server_Tool_Onto_DesignSurface();
+            Uimap.Drag_Toolbox_Web_Request_Onto_DesignSurface();
             Uimap.Open_Large_View_FromContextMenu();
             Uimap.Select_NewDatabaseSource_FromSqlServerTool();
-            Uimap.Change_Selected_Database_ToMySql_DataBase();
-            Uimap.Change_Selected_Database_ToPostgreSql_DataBase();
-            Uimap.Change_Selected_Database_ToOracle_DataBase();
-            Uimap.Change_Selected_Database_ToODBC_DataBase();
 
-            Uimap.Click_DB_Source_Wizard_Test_Connection_Button();
-
+            //Uimap.Type_TestSite_into_Web_Source_Wizard_Address_Textbox();
+            //Uimap.Click_New_Web_Source_Test_Connection_Button();
+            //Uimap.Save_With_Ribbon_Button_And_Dialog(WebSourceName);
+            //Uimap.Click_Close_Web_Source_Wizard_Tab_Button();
+            //Uimap.Drag_GET_Web_Connector_Onto_DesignSurface();
+            //Uimap.TryClearToolboxFilter();
+            //Uimap.Open_GET_Web_Connector_Tool_Large_View();
+            //Uimap.Select_Last_Source_From_GET_Web_Large_View_Source_Combobox();
+            //Uimap.Click_GET_Web_Large_View_Generate_Outputs();
+            //Uimap.Click_GET_Web_Large_View_Test_Inputs_Button();
+            //Uimap.Click_GET_Web_Large_View_Test_Inputs_Done_Button();
+            //Uimap.Click_GET_Web_Large_View_Done_Button();
+            //Uimap.Click_Debug_Ribbon_Button();
+            //Uimap.Click_DebugInput_Debug_Button();
         }
 
         #region Additional test attributes

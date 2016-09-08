@@ -866,6 +866,9 @@ namespace Warewolf.UITests
             var point = new Point();
             Assert.IsTrue(!MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DBSourceWizardTab.WorkSurfaceContext.UserNameTextBox.TryGetClickablePoint(out point), "Username textbox is visible in db source wizard.");
             Assert.IsTrue(!MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DBSourceWizardTab.WorkSurfaceContext.PasswordTextBox.TryGetClickablePoint(out point), "Password textbox is visible in db source wizard.");
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DBSourceWizardTab.WorkSurfaceContext.UserRadioButton.Selected = true;
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DBSourceWizardTab.WorkSurfaceContext.UserNameTextBox.TryGetClickablePoint(out point), "Username textbox is visible in db source wizard.");
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DBSourceWizardTab.WorkSurfaceContext.PasswordTextBox.TryGetClickablePoint(out point), "Password textbox is visible in db source wizard.");
         }
 
         /// <summary>
@@ -992,6 +995,21 @@ namespace Warewolf.UITests
             {
                 Console.WriteLine("TryClose method failed to close Deploy tab.\n" + e.Message);
             }
+        }
+                
+        /// <summary>
+        /// Click_DB_Source_Wizard_Test_Connection_Button
+        /// </summary>
+        public void Click_DB_Source_Wizard_Test_Connection_Button()
+        {
+            #region Variable Declarations
+            WpfButton testConnectionButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DBSourceWizardTab.WorkSurfaceContext.TestConnectionButton;
+            #endregion
+            var point = new Point();
+            Assert.IsTrue(!MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DBSourceWizardTab.WorkSurfaceContext.DatabaseCombobox.TryGetClickablePoint(out point), "Database Combobox does not exist");
+            // Click 'Test Connection' button
+            Mouse.Click(testConnectionButton, new Point(21, 16));            
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DBSourceWizardTab.WorkSurfaceContext.DatabaseCombobox.TryGetClickablePoint(out point), "Database Combobox does not exist");
         }
     }
 }
