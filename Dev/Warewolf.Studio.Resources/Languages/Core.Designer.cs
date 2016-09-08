@@ -8244,20 +8244,29 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Delete this test.
+        ///   Looks up a localized string similar to Cannot delete a disabled test.
         /// </summary>
-        public static string TestsDeleteSelectedTestHelpText {
+        public static string TestsDeleteSelectedTestDisabledTooltip {
             get {
-                return ResourceManager.GetString("TestsDeleteSelectedTestHelpText", resourceCulture);
+                return ResourceManager.GetString("TestsDeleteSelectedTestDisabledTooltip", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Delete this test.
         /// </summary>
-        public static string TestsDeleteSelectedTestTooltip {
+        public static string TestsDeleteSelectedTestEnabledTooltip {
             get {
-                return ResourceManager.GetString("TestsDeleteSelectedTestTooltip", resourceCulture);
+                return ResourceManager.GetString("TestsDeleteSelectedTestEnabledTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delete this test.
+        /// </summary>
+        public static string TestsDeleteSelectedTestHelpText {
+            get {
+                return ResourceManager.GetString("TestsDeleteSelectedTestHelpText", resourceCulture);
             }
         }
         

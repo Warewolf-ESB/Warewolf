@@ -96,11 +96,11 @@
                                         <RowDefinition Height="Auto"/>
                                     </Grid.RowDefinitions>
 
-                                    <StackPanel VerticalAlignment="Center" HorizontalAlignment="Left" Margin="0,5,0,0">
-                                        <fa:FontAwesome Icon="Check" Foreground="Green" ToolTip="{x:Static languages:Core.ServiceTestPassedTooltip}" FontSize="16" Visibility="{Binding TestPassed, Converter={StaticResource BoolToVisibilityConverter}}" />
-                                        <fa:FontAwesome Icon="Times" Foreground="Red" ToolTip="{x:Static languages:Core.ServiceTestFailingTooltip}" FontSize="16"  Visibility="{Binding TestFailing, Converter={StaticResource BoolToVisibilityConverter}}" />
-                                        <fa:FontAwesome Icon="Exclamation" Foreground="OrangeRed" ToolTip="{x:Static languages:Core.ServiceTestInvalidTooltip}" FontSize="16"  Visibility="{Binding TestInvalid, Converter={StaticResource BoolToVisibilityConverter}}" />
-                                        <fa:FontAwesome Icon="Question" Foreground="Black" ToolTip="{x:Static languages:Core.ServiceTestPendingTooltip}" FontSize="16" Visibility="{Binding TestPending, Converter={StaticResource BoolToVisibilityConverter}}" />
+                                    <StackPanel VerticalAlignment="Center" HorizontalAlignment="Left" Grid.Row="0" Grid.RowSpan="2">
+                                        <fa:FontAwesome Icon="Check" Foreground="Green" ToolTip="{x:Static languages:Core.ServiceTestPassedTooltip}" FontSize="20" Visibility="{Binding TestPassed, Converter={StaticResource BoolToVisibilityConverter}}" />
+                                        <fa:FontAwesome Icon="Times" Foreground="Red" ToolTip="{x:Static languages:Core.ServiceTestFailingTooltip}" FontSize="20"  Visibility="{Binding TestFailing, Converter={StaticResource BoolToVisibilityConverter}}" />
+                                        <fa:FontAwesome Icon="Exclamation" Foreground="OrangeRed" ToolTip="{x:Static languages:Core.ServiceTestInvalidTooltip}" FontSize="20"  Visibility="{Binding TestInvalid, Converter={StaticResource BoolToVisibilityConverter}}" />
+                                        <fa:FontAwesome Icon="Question" Foreground="Black" ToolTip="{x:Static languages:Core.ServiceTestPendingTooltip}" FontSize="20" Visibility="{Binding TestPending, Converter={StaticResource BoolToVisibilityConverter}}" />
                                     </StackPanel>
 
                                     <CheckBox Grid.Column="1" 
@@ -133,11 +133,8 @@
                                     <Button Grid.Column="3" 
                                             Grid.Row="0" 
                                             Grid.RowSpan="2" 
-                                            VerticalAlignment="Stretch" 
-                                            HorizontalAlignment="Right" 
                                             Command="{Binding ElementName=TestsListbox, Path=DataContext.RunSelectedTestCommand }" 
                                             CommandParameter="{Binding .}" 
-                                            ToolTip="{x:Static languages:Core.ServiceTestRunSelectedTestTooltip}"
                                             Style="{StaticResource ButtonRunTestTransparentStyle}" >
                                         <Button.Content>
                                             <fa:FontAwesome Icon="Play" FontSize="18"/>
@@ -150,11 +147,9 @@
                                     <Button Grid.Column="4" 
                                             Grid.Row="0" 
                                             Grid.RowSpan="2" 
-                                            VerticalAlignment="Stretch" 
-                                            HorizontalAlignment="Right" 
                                             Command="{Binding ElementName=TestsListbox, Path=DataContext.DeleteTestCommand }" 
                                             CommandParameter="{Binding .}" 
-                                            ToolTip="{x:Static languages:Core.TestsDeleteSelectedTestTooltip}"
+                                            IsEnabled="{Binding Enabled, Converter={StaticResource InverseBooleanConverter}}"
                                             Style="{StaticResource ButtonDeleteTestTransparentStyle}" >
                                         <Button.Content>
                                             <fa:FontAwesome Icon="Trash" FontSize="18"/>

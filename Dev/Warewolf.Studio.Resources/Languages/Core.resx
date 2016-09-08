@@ -2689,7 +2689,10 @@ You can use File System, URI, SFTP, FTP or FTPS format.</value>
     <value>Selecting this option will add the test to the test to the Run All command. 
 If this option is not selected, the test will not run part of the Run All list of tests.</value>
   </data>
-  <data name="TestsDeleteSelectedTestTooltip" xml:space="preserve">
+  <data name="TestsDeleteSelectedTestDisabledTooltip" xml:space="preserve">
+    <value>Cannot delete a disabled test</value>
+  </data>
+  <data name="TestsDeleteSelectedTestEnabledTooltip" xml:space="preserve">
     <value>Delete this test</value>
   </data>
   <data name="TestsDeleteSelectedTestHelpText" xml:space="preserve">
