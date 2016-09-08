@@ -88,7 +88,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             vm.CreateTestCommand.Execute(null);
             Assert.IsNotNull(vm.DeleteTestCommand);
             //---------------Test Result -----------------------
-            Assert.IsTrue(vm.DeleteTestCommand.CanExecute(null));
+            Assert.IsFalse(vm.DeleteTestCommand.CanExecute(null));
         }
 
         [TestMethod]
@@ -103,7 +103,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             vm.CreateTestCommand.Execute(null);
             Assert.IsNotNull(vm.DeleteTestCommand);
             //---------------Test Result -----------------------
-            Assert.IsTrue(vm.DeleteTestCommand.CanExecute(null));
+            Assert.IsFalse(vm.DeleteTestCommand.CanExecute(null));
         }
 
         [TestMethod]
