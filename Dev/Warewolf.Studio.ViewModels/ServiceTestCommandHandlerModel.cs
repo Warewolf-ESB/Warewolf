@@ -77,8 +77,13 @@ namespace Warewolf.Studio.ViewModels
         {
         }
 
-        public void DeleteTest()
+        public void DeleteTest(IServiceTestModel selectedServiceTest)
         {
+            var popupController = CustomContainer.Get<Dev2.Common.Interfaces.Studio.Controller.IPopupController>();
+            if (popupController.ShowDeleteConfirmation(selectedServiceTest.NameForDisplay.Replace("*", "").TrimEnd(' ')) == MessageBoxResult.Yes)
+            {
+                //Delete the test
+            }
         }
     }
 }

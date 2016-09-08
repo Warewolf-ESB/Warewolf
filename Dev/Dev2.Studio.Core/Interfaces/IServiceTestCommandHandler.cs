@@ -11,6 +11,6 @@ namespace Dev2.Studio.Core.Interfaces
         void RunSelectedTestInBrowser();
         void RunSelectedTest();
         void DuplicateTest();
-        void DeleteTest();
+        void DeleteTest(IServiceTestModel selectedServiceTest);
     }
 }

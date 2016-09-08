@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using Dev2;
+using Dev2.Common.Interfaces;
 using Dev2.Data.Binary_Objects;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Models.DataList;
@@ -105,6 +106,25 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual(1, testModel.Outputs.Count);
             Assert.AreEqual("res", testModel.Outputs[0].Variable);
             Assert.AreEqual(null, testModel.Outputs[0].Value);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("TestCommandHandlerModelTests_DeleteTest")]
+        public void TestCommandHandlerModelTests_DeleteTest_Execute_ShouldThrowError()
+        {
+            //------------Setup for test--------------------------
+            var testFrameworkViewModel = new ServiceTestCommandHandlerModel();
+            var mockServiceModel = new Mock<IServiceTestModel>();
+            mockServiceModel.Setup(a => a.NameForDisplay).Returns("TestName");
+            mockServiceModel.Setup(a => a.Enabled).Returns(false);
+            //------------Assert Preconditions-------------------
+            //------------Execute Test---------------------------
+            var popupController = new Mock<Dev2.Common.Interfaces.Studio.Controller.IPopupController>();
+            CustomContainer.Register(popupController.Object);
+            testFrameworkViewModel.DeleteTest(mockServiceModel.Object);
+            //------------Assert Results-------------------------
+            popupController.Verify(controller => controller.ShowDeleteConfirmation(It.IsAny<string>()), Times.Once);
         }
 
         [TestMethod]
