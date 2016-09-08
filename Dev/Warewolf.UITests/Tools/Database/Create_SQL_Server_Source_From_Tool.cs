@@ -15,10 +15,9 @@ namespace Warewolf.UITests.Tools
             Uimap.Open_Large_View_FromContextMenu();
             Uimap.Select_NewDatabaseSource_FromSqlServerTool();
             Uimap.Change_Selected_Database_ToMySql_DataBase();
-            Uimap.Change_Selected_Database_ToMicrosoftSqlServer_DataBase();
-            Uimap.Change_Selected_Database_ToODBC_DataBase();
-            Uimap.Change_Selected_Database_ToOracle_DataBase();
             Uimap.Change_Selected_Database_ToPostgreSql_DataBase();
+            Uimap.Change_Selected_Database_ToOracle_DataBase();
+            Uimap.Change_Selected_Database_ToODBC_DataBase();
         }
 
         #region Additional test attributes

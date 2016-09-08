@@ -5536,6 +5536,45 @@ namespace Warewolf.UITests
                     "d web address.");
         }
         
+        /// <summary>
+        /// RecordedMethod1
+        /// </summary>
+        public void RecordedMethod1()
+        {
+            #region Variable Declarations
+            WpfText mySqlDatabaseText = this.MainStudioWindow.ComboboxListItemMySqlDatabase.MySqlDatabaseText;
+            #endregion
+
+            // Click 'MySql Database' label
+            Mouse.Click(mySqlDatabaseText, new Point(48, 6));
+        }
+        
+        /// <summary>
+        /// RecordedMethod2
+        /// </summary>
+        public void RecordedMethod2()
+        {
+            #region Variable Declarations
+            WpfText postgreSQLDatabaseText = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DBSourceWizardTab.WorkSurfaceContext.NewDBSourceWizard.ServerTypeComboBox.PostgreSQLDatabaseText;
+            #endregion
+
+            // Click 'PostgreSQL Database' label
+            Mouse.Click(postgreSQLDatabaseText, new Point(100, 8));
+        }
+        
+        /// <summary>
+        /// RecordedMethod3
+        /// </summary>
+        public void RecordedMethod3()
+        {
+            #region Variable Declarations
+            WpfText oDBCDatabaseText = this.MainStudioWindow.ComboboxListItemODBCDatabase.ODBCDatabaseText;
+            #endregion
+
+            // Click 'ODBC Database' label
+            Mouse.Click(oDBCDatabaseText, new Point(42, 10));
+        }
+        
         #region Properties
         public virtual Click_Assign_Tool_Large_View_Done_ButtonParams Click_Assign_Tool_Large_View_Done_ButtonParams
         {
@@ -7576,18 +7615,6 @@ namespace Warewolf.UITests
                 return this.mSwitchCaseDialog;
             }
         }
-        
-        public UIWarewolfDEV2SANELEMTWindow UIWarewolfDEV2SANELEMTWindow
-        {
-            get
-            {
-                if ((this.mUIWarewolfDEV2SANELEMTWindow == null))
-                {
-                    this.mUIWarewolfDEV2SANELEMTWindow = new UIWarewolfDEV2SANELEMTWindow();
-                }
-                return this.mUIWarewolfDEV2SANELEMTWindow;
-            }
-        }
         #endregion
         
         #region Fields
@@ -7930,8 +7957,6 @@ namespace Warewolf.UITests
         private ServicePickerDialog mServicePickerDialog;
         
         private SwitchCaseDialog mSwitchCaseDialog;
-        
-        private UIWarewolfDEV2SANELEMTWindow mUIWarewolfDEV2SANELEMTWindow;
         #endregion
     }
     
@@ -11825,18 +11850,6 @@ namespace Warewolf.UITests
             }
         }
         
-        public ComboboxListItemMySqlDatabase ComboboxListItemMySqlDatabase
-        {
-            get
-            {
-                if ((this.mComboboxListItemMySqlDatabase == null))
-                {
-                    this.mComboboxListItemMySqlDatabase = new ComboboxListItemMySqlDatabase(this);
-                }
-                return this.mComboboxListItemMySqlDatabase;
-            }
-        }
-        
         public ComboboxListItemPostgreSqlDatabase ComboboxListItemPostgreSqlDatabase
         {
             get
@@ -11846,6 +11859,23 @@ namespace Warewolf.UITests
                     this.mComboboxListItemPostgreSqlDatabase = new ComboboxListItemPostgreSqlDatabase(this);
                 }
                 return this.mComboboxListItemPostgreSqlDatabase;
+            }
+        }
+        
+        public WpfCustom ComboboxListItemOracleDatabase
+        {
+            get
+            {
+                if ((this.mComboboxListItemOracleDatabase == null))
+                {
+                    this.mComboboxListItemOracleDatabase = new WpfCustom(this);
+                    #region Search Criteria
+                    this.mComboboxListItemOracleDatabase.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ComboEditorItemControl";
+                    this.mComboboxListItemOracleDatabase.SearchProperties[WpfControl.PropertyNames.Name] = "Oracle Database";
+                    this.mComboboxListItemOracleDatabase.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mComboboxListItemOracleDatabase;
             }
         }
         
@@ -11861,15 +11891,15 @@ namespace Warewolf.UITests
             }
         }
         
-        public ComboboxListItemOracleDatabase ComboboxListItemOracleDatabase
+        public ComboboxListItemMySqlDatabase ComboboxListItemMySqlDatabase
         {
             get
             {
-                if ((this.mComboboxListItemOracleDatabase == null))
+                if ((this.mComboboxListItemMySqlDatabase == null))
                 {
-                    this.mComboboxListItemOracleDatabase = new ComboboxListItemOracleDatabase(this);
+                    this.mComboboxListItemMySqlDatabase = new ComboboxListItemMySqlDatabase(this);
                 }
-                return this.mComboboxListItemOracleDatabase;
+                return this.mComboboxListItemMySqlDatabase;
             }
         }
         #endregion
@@ -11937,13 +11967,13 @@ namespace Warewolf.UITests
         
         private WpfCustom mComboboxListItemAsWarewolfStore;
         
-        private ComboboxListItemMySqlDatabase mComboboxListItemMySqlDatabase;
-        
         private ComboboxListItemPostgreSqlDatabase mComboboxListItemPostgreSqlDatabase;
+        
+        private WpfCustom mComboboxListItemOracleDatabase;
         
         private ComboboxListItemODBCDatabase mComboboxListItemODBCDatabase;
         
-        private ComboboxListItemOracleDatabase mComboboxListItemOracleDatabase;
+        private ComboboxListItemMySqlDatabase mComboboxListItemMySqlDatabase;
         #endregion
     }
     
@@ -26668,12 +26698,84 @@ namespace Warewolf.UITests
                 return this.mMicrosoftSQLServer;
             }
         }
+        
+        public WpfText OracleDatabase
+        {
+            get
+            {
+                if ((this.mOracleDatabase == null))
+                {
+                    this.mOracleDatabase = new WpfText(this);
+                    #region Search Criteria
+                    this.mOracleDatabase.SearchProperties[WpfText.PropertyNames.Name] = "Oracle Database";
+                    this.mOracleDatabase.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mOracleDatabase;
+            }
+        }
+        
+        public WpfText ODBCDatabase
+        {
+            get
+            {
+                if ((this.mODBCDatabase == null))
+                {
+                    this.mODBCDatabase = new WpfText(this);
+                    #region Search Criteria
+                    this.mODBCDatabase.SearchProperties[WpfText.PropertyNames.Name] = "ODBC Database";
+                    this.mODBCDatabase.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mODBCDatabase;
+            }
+        }
+        
+        public WpfText MySqlDatabase
+        {
+            get
+            {
+                if ((this.mMySqlDatabase == null))
+                {
+                    this.mMySqlDatabase = new WpfText(this);
+                    #region Search Criteria
+                    this.mMySqlDatabase.SearchProperties[WpfText.PropertyNames.Name] = "MySql Database";
+                    this.mMySqlDatabase.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mMySqlDatabase;
+            }
+        }
+        
+        public WpfText PostgreSQLDatabaseText
+        {
+            get
+            {
+                if ((this.mPostgreSQLDatabaseText == null))
+                {
+                    this.mPostgreSQLDatabaseText = new WpfText(this);
+                    #region Search Criteria
+                    this.mPostgreSQLDatabaseText.SearchProperties[WpfText.PropertyNames.Name] = "PostgreSQL Database";
+                    this.mPostgreSQLDatabaseText.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mPostgreSQLDatabaseText;
+            }
+        }
         #endregion
         
         #region Fields
         private WpfButton mToggleButton;
         
         private WpfText mMicrosoftSQLServer;
+        
+        private WpfText mOracleDatabase;
+        
+        private WpfText mODBCDatabase;
+        
+        private WpfText mMySqlDatabase;
+        
+        private WpfText mPostgreSQLDatabaseText;
         #endregion
     }
     
@@ -33650,43 +33752,6 @@ namespace Warewolf.UITests
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class ComboboxListItemMySqlDatabase : WpfCustom
-    {
-        
-        public ComboboxListItemMySqlDatabase(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ComboEditorItemControl";
-            this.SearchProperties[WpfControl.PropertyNames.Name] = "MySql Database";
-            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
-            #endregion
-        }
-        
-        #region Properties
-        public WpfText MySqlDatabaseText
-        {
-            get
-            {
-                if ((this.mMySqlDatabaseText == null))
-                {
-                    this.mMySqlDatabaseText = new WpfText(this);
-                    #region Search Criteria
-                    this.mMySqlDatabaseText.SearchProperties[WpfText.PropertyNames.Name] = "MySql Database";
-                    this.mMySqlDatabaseText.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
-                    #endregion
-                }
-                return this.mMySqlDatabaseText;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfText mMySqlDatabaseText;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ComboboxListItemPostgreSqlDatabase : WpfCustom
     {
         
@@ -33701,25 +33766,25 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public WpfText PostgreSQLDatabaseText
+        public WpfText PostgreSQLDatabase
         {
             get
             {
-                if ((this.mPostgreSQLDatabaseText == null))
+                if ((this.mPostgreSQLDatabase == null))
                 {
-                    this.mPostgreSQLDatabaseText = new WpfText(this);
+                    this.mPostgreSQLDatabase = new WpfText(this);
                     #region Search Criteria
-                    this.mPostgreSQLDatabaseText.SearchProperties[WpfText.PropertyNames.Name] = "PostgreSQL Database";
-                    this.mPostgreSQLDatabaseText.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    this.mPostgreSQLDatabase.SearchProperties[WpfText.PropertyNames.Name] = "PostgreSQL Database";
+                    this.mPostgreSQLDatabase.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
                     #endregion
                 }
-                return this.mPostgreSQLDatabaseText;
+                return this.mPostgreSQLDatabase;
             }
         }
         #endregion
         
         #region Fields
-        private WpfText mPostgreSQLDatabaseText;
+        private WpfText mPostgreSQLDatabase;
         #endregion
     }
     
@@ -33761,39 +33826,39 @@ namespace Warewolf.UITests
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class ComboboxListItemOracleDatabase : WpfCustom
+    public class ComboboxListItemMySqlDatabase : WpfCustom
     {
         
-        public ComboboxListItemOracleDatabase(UITestControl searchLimitContainer) : 
+        public ComboboxListItemMySqlDatabase(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
             this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ComboEditorItemControl";
-            this.SearchProperties[WpfControl.PropertyNames.Name] = "Oracle Database";
+            this.SearchProperties[WpfControl.PropertyNames.Name] = "MySql Database";
             this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
             #endregion
         }
         
         #region Properties
-        public WpfText OracleDatabaseText
+        public WpfText MySqlDatabaseText
         {
             get
             {
-                if ((this.mOracleDatabaseText == null))
+                if ((this.mMySqlDatabaseText == null))
                 {
-                    this.mOracleDatabaseText = new WpfText(this);
+                    this.mMySqlDatabaseText = new WpfText(this);
                     #region Search Criteria
-                    this.mOracleDatabaseText.SearchProperties[WpfText.PropertyNames.Name] = "Oracle Database";
-                    this.mOracleDatabaseText.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    this.mMySqlDatabaseText.SearchProperties[WpfText.PropertyNames.Name] = "MySql Database";
+                    this.mMySqlDatabaseText.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
                     #endregion
                 }
-                return this.mOracleDatabaseText;
+                return this.mMySqlDatabaseText;
             }
         }
         #endregion
         
         #region Fields
-        private WpfText mOracleDatabaseText;
+        private WpfText mMySqlDatabaseText;
         #endregion
     }
     
@@ -34797,158 +34862,6 @@ namespace Warewolf.UITests
         
         #region Fields
         private WpfButton mDoneButton;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class UIWarewolfDEV2SANELEMTWindow : WpfWindow
-    {
-        
-        public UIWarewolfDEV2SANELEMTWindow()
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfWindow.PropertyNames.Name] = "Warewolf (DEV2\\SANELE.MTHEMBU)";
-            this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
-            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
-            #endregion
-        }
-        
-        #region Properties
-        public UIItemCustom UIItemCustom
-        {
-            get
-            {
-                if ((this.mUIItemCustom == null))
-                {
-                    this.mUIItemCustom = new UIItemCustom(this);
-                }
-                return this.mUIItemCustom;
-            }
-        }
-        
-        public UIMySqlDatabaseCustom UIMySqlDatabaseCustom
-        {
-            get
-            {
-                if ((this.mUIMySqlDatabaseCustom == null))
-                {
-                    this.mUIMySqlDatabaseCustom = new UIMySqlDatabaseCustom(this);
-                }
-                return this.mUIMySqlDatabaseCustom;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private UIItemCustom mUIItemCustom;
-        
-        private UIMySqlDatabaseCustom mUIMySqlDatabaseCustom;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class UIItemCustom : WpfCustom
-    {
-        
-        public UIItemCustom(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ManageDatabaseSourceControl";
-            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
-            #endregion
-        }
-        
-        #region Properties
-        public UIServerTypeComboBoxCustom UIServerTypeComboBoxCustom
-        {
-            get
-            {
-                if ((this.mUIServerTypeComboBoxCustom == null))
-                {
-                    this.mUIServerTypeComboBoxCustom = new UIServerTypeComboBoxCustom(this);
-                }
-                return this.mUIServerTypeComboBoxCustom;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private UIServerTypeComboBoxCustom mUIServerTypeComboBoxCustom;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class UIServerTypeComboBoxCustom : WpfCustom
-    {
-        
-        public UIServerTypeComboBoxCustom(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.XamComboEditor";
-            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "ServerTypeComboBox";
-            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
-            #endregion
-        }
-        
-        #region Properties
-        public WpfButton UIToggleButtonButton
-        {
-            get
-            {
-                if ((this.mUIToggleButtonButton == null))
-                {
-                    this.mUIToggleButtonButton = new WpfButton(this);
-                    #region Search Criteria
-                    this.mUIToggleButtonButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "ToggleButton";
-                    this.mUIToggleButtonButton.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
-                    #endregion
-                }
-                return this.mUIToggleButtonButton;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfButton mUIToggleButtonButton;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class UIMySqlDatabaseCustom : WpfCustom
-    {
-        
-        public UIMySqlDatabaseCustom(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ComboEditorItemControl";
-            this.SearchProperties[WpfControl.PropertyNames.Name] = "MySql Database";
-            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
-            #endregion
-        }
-        
-        #region Properties
-        public WpfText UIMySqlDatabaseText
-        {
-            get
-            {
-                if ((this.mUIMySqlDatabaseText == null))
-                {
-                    this.mUIMySqlDatabaseText = new WpfText(this);
-                    #region Search Criteria
-                    this.mUIMySqlDatabaseText.SearchProperties[WpfText.PropertyNames.Name] = "MySql Database";
-                    this.mUIMySqlDatabaseText.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
-                    #endregion
-                }
-                return this.mUIMySqlDatabaseText;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfText mUIMySqlDatabaseText;
         #endregion
     }
 }
