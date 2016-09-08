@@ -1,11 +1,14 @@
 ﻿
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 using Dev2;
+using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
+using Dev2.Communication;
 using Dev2.Interfaces;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Network;
@@ -42,6 +45,8 @@ namespace Warewolf.Studio.ViewModels
 
             RunAllTestsUrl = WebServer.GetWorkflowUri(resourceModel, "", UrlType.Tests)?.ToString();
         }
+
+      
 
         private void CreateTests()
         {
@@ -95,6 +100,7 @@ namespace Warewolf.Studio.ViewModels
 
                     return isDirty && isConnected;
                 }
+                // ReSharper disable once UnusedVariable
                 catch (Exception ex)
                 {
                     //if (!_errorShown)
@@ -110,15 +116,26 @@ namespace Warewolf.Studio.ViewModels
 
         public void Save()
         {
-            var serviceTestModels = Tests.Where(model => model.GetType() != typeof(DummyServiceTest)).ToList();
-            var executeMessage = ResourceModel.Environment.ResourceRepository.SaveTests(ResourceModel.ID, serviceTestModels);
-            foreach(var model in Tests)
+            try
             {
-                model.IsDirty = false;
+                var serviceTestModels = Tests.Where(model => model.GetType() != typeof(DummyServiceTest)).ToList();
+                ResourceModel.Environment.ResourceRepository.SaveTests(ResourceModel.ID, serviceTestModels);
+                MarkTestsAsDirty(false);
             }
+            catch (Exception)
+            {
+                // MarkTestsAsDirty(true);
+            }
+
         }
 
-      
+        private void MarkTestsAsDirty(bool isDirty)
+        {
+            foreach (var model in Tests) //This is based on the fact that the save will do a bulk save all the time
+            {
+                model.IsDirty = isDirty;
+            }
+        }
 
         public IContextualResourceModel ResourceModel { get; }
 
@@ -191,7 +208,18 @@ namespace Warewolf.Studio.ViewModels
 
         private ObservableCollection<IServiceTestModel> GetTests()
         {
-            return new ObservableCollection<IServiceTestModel>();
+            try
+            {
+                var loadResourceTests = ResourceModel.Environment.ResourceRepository.LoadResourceTests(ResourceModel.Environment, ResourceModel.ID);
+                Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+                var serviceTestModels = serializer.Deserialize<List<ServiceTestModel>>(loadResourceTests);
+                return serviceTestModels.ToObservableCollection<IServiceTestModel>();
+            }
+            catch (Exception)
+            {
+                
+                return new ObservableCollection<IServiceTestModel>();
+            }
         }
 
         public ICommand DeleteTestCommand { get; set; }
@@ -215,7 +243,7 @@ namespace Warewolf.Studio.ViewModels
                     }
                     return _displayName;
                 }
-                var displayName = _displayName.Replace("*","").TrimEnd(' ');
+                var displayName = _displayName.Replace("*", "").TrimEnd(' ');
                 return displayName;
             }
             set

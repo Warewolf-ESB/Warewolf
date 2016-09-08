@@ -3,6 +3,7 @@ using System.Linq;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Infrastructure.Events;
 using Dev2.Data.Binary_Objects;
+using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Data.Util;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Models;
@@ -31,18 +32,20 @@ namespace Dev2.Activities.Specs.TestFramework
         [Given(@"I have ""(.*)"" with inputs as")]
         public void GivenIHaveWithInputsAs(string workflowName, Table inputVariables)
         {
+            ScenarioContext.Current.Clear();
+            ScenarioContext.Clear();
             var mockCon = new Mock<IEnvironmentConnection>();
             mockCon.Setup(connection => connection.IsConnected).Returns(true);
             mockCon.Setup(connection => connection.ServerEvents).Returns(new Mock<IEventPublisher>().Object);
-            IEnvironmentModel model = new EnvironmentModel(GlobalConstants.ServerWorkspaceID,mockCon.Object);
-            
+            IEnvironmentModel model = new EnvironmentModel(GlobalConstants.ServerWorkspaceID, mockCon.Object);
+
             var resourceModel = new ResourceModel(model)
             {
                 ResourceName = workflowName,
                 DisplayName = workflowName,
                 DataList = ""
             };
-            
+
             var datalistViewModel = new DataListViewModel();
             datalistViewModel.InitializeDataListViewModel(resourceModel);
             foreach(var variablesRow in inputVariables.Rows)
@@ -93,7 +96,7 @@ namespace Dev2.Activities.Specs.TestFramework
         public void GivenHasOutputsAs(string workflowName, Table outputVariables)
         {
             ResourceModel resourceModel;
-            if(ScenarioContext.TryGetValue(workflowName,out resourceModel))
+            if (ScenarioContext.TryGetValue(workflowName, out resourceModel))
             {
                 DataListViewModel dataListViewModel;
                 if(ScenarioContext.TryGetValue($"{workflowName}dataListViewModel",out dataListViewModel))
@@ -126,7 +129,7 @@ namespace Dev2.Activities.Specs.TestFramework
                 var testFramework = new ServiceTestViewModel(resourceModel);
                 Assert.IsNotNull(testFramework);
                 Assert.IsNotNull(testFramework.ResourceModel);
-                ScenarioContext.Add("testFramework",testFramework);
+                ScenarioContext.Add("testFramework", testFramework);
             }
             else
             {
@@ -140,7 +143,7 @@ namespace Dev2.Activities.Specs.TestFramework
         public void GivenTabHeaderIs(string expectedTabHeader)
         {
             ServiceTestViewModel serviceTest = GetTestFrameworkFromContext();
-            Assert.AreEqual(expectedTabHeader,serviceTest.DisplayName);
+            Assert.AreEqual(expectedTabHeader, serviceTest.DisplayName);
         }
 
         [Given(@"there are no tests")]
@@ -161,7 +164,7 @@ namespace Dev2.Activities.Specs.TestFramework
         {
             ServiceTestViewModel serviceTest = GetTestFrameworkFromContext();
             serviceTest.CreateTestCommand.Execute(null);
-            
+
         }
 
 
@@ -183,7 +186,7 @@ namespace Dev2.Activities.Specs.TestFramework
         public void ThenTestNameStartsWith(string testName)
         {
             ServiceTestViewModel serviceTest = GetTestFrameworkFromContext();
-            Assert.AreEqual(testName,serviceTest.SelectedServiceTest.TestName);
+            Assert.AreEqual(testName, serviceTest.SelectedServiceTest.TestName);
         }
 
         [Then(@"""(.*)"" is selected")]
@@ -213,11 +216,11 @@ namespace Dev2.Activities.Specs.TestFramework
         {
             ServiceTestViewModel serviceTest = GetTestFrameworkFromContext();
             var inputs = serviceTest.SelectedServiceTest.Inputs;
-            Assert.AreNotEqual(0,inputs.Count);
+            Assert.AreNotEqual(0, inputs.Count);
             var i = 0;
-            foreach(var tableRow in table.Rows)
+            foreach (var tableRow in table.Rows)
             {
-                Assert.AreEqual(tableRow["Variable Name"],inputs[i].Variable);
+                Assert.AreEqual(tableRow["Variable Name"], inputs[i].Variable);
                 var expected = tableRow["Value"];
 //                if (string.IsNullOrEmpty(expected))
 //                {
@@ -270,7 +273,7 @@ namespace Dev2.Activities.Specs.TestFramework
                 i++;
             }
         }
-
+        [Given(@"save is enabled")]
         [Then(@"save is disabled")]
         public void ThenSaveIsDisabled()
         {
@@ -278,19 +281,19 @@ namespace Dev2.Activities.Specs.TestFramework
             Assert.IsFalse(serviceTest.CanSave);
         }
         [Then(@"save is enabled")]
+        [When(@"save is enabled")]
         public void ThenSaveIsEnabled()
         {
             ServiceTestViewModel serviceTest = GetTestFrameworkFromContext();
             Assert.IsTrue(serviceTest.CanSave);
         }
 
-
         [Then(@"test status is pending")]
         public void ThenTestStatusIsPending()
         {
             ServiceTestViewModel serviceTest = GetTestFrameworkFromContext();
             Assert.IsTrue(serviceTest.SelectedServiceTest.TestPending);
-            
+
         }
 
         [Then(@"test is enabled")]
@@ -314,6 +317,123 @@ namespace Dev2.Activities.Specs.TestFramework
         }
 
 
+        [Then(@"Inputs are empty")]
+        public void ThenInputsAreEmpty()
+        {
+            ServiceTestViewModel serviceTest = GetTestFrameworkFromContext();
+            var hasNoInputs = serviceTest.SelectedServiceTest.Inputs == null;
+            Assert.IsTrue(hasNoInputs);
+        }
+
+        [Then(@"Outputs are empty")]
+        public void ThenOutputsAreEmpty()
+        {
+            ServiceTestViewModel serviceTest = GetTestFrameworkFromContext();
+            var hasNoOutputs = serviceTest.SelectedServiceTest.Outputs == null;
+            Assert.IsTrue(hasNoOutputs);
+        }
+
+        [Then(@"No Error selected")]
+        public void ThenNoErrorSelected()
+        {
+            ServiceTestViewModel serviceTest = GetTestFrameworkFromContext();
+            var noErrorExpected = serviceTest.SelectedServiceTest.NoErrorExpected;
+            Assert.IsTrue(noErrorExpected);
+        }
+
+        [When(@"I change the test name to ""(.*)""")]
+        public void WhenIChangeTheTestNameTo(string testName)
+        {
+            ServiceTestViewModel serviceTest = GetTestFrameworkFromContext();
+            serviceTest.SelectedServiceTest.TestName = testName;
+        }
+
+        [Then(@"test URL is ""(.*)""")]
+        public void ThenTestURLIs(string testUrl)
+        {
+            ServiceTestViewModel serviceTest = GetTestFrameworkFromContext();
+            serviceTest.SelectedServiceTest.RunSelectedTestUrl = testUrl;
+        }
+
+        [Then(@"Test name is ""(.*)""")]
+        public void ThenTestNameIs(string testName)
+        {
+            ServiceTestViewModel serviceTest = GetTestFrameworkFromContext();
+            Assert.AreEqual(testName, serviceTest.SelectedServiceTest.TestName);
+        }
+
+        [Given(@"I select ""(.*)""")]
+        public void GivenISelect(string testName)
+        {
+            ServiceTestViewModel serviceTest = GetTestFrameworkFromContext();
+            var serviceTestModel = serviceTest.Tests.Single(model => model.TestName == testName);
+            serviceTest.SelectedServiceTest = serviceTestModel;
+        }
+
+        [Given(@"I set Test Values as")]
+        [When(@"I set Test Values as")]
+        public void GivenISetTestValuesAs(Table table)
+        {
+            ServiceTestViewModel serviceTest = GetTestFrameworkFromContext();
+            foreach (var tableRow in table.Rows)
+            {
+                var testName = tableRow["TestName"];
+                var authenticationType = tableRow["AuthenticationType"];
+                AuthenticationType authent;
+                Enum.TryParse(authenticationType, true, out authent);
+                var error = tableRow["Error"];
+                serviceTest.SelectedServiceTest.TestName = testName;
+                serviceTest.SelectedServiceTest.ErrorExpected = bool.Parse(error);
+                serviceTest.SelectedServiceTest.AuthenticationType = authent;
+
+            }
+        }
+        [Then(@"NoErrorExpected is ""(.*)""")]
+        public void ThenNoErrorExpectedIs(string error)
+        {
+            var hasError = bool.Parse(error);
+            ServiceTestViewModel serviceTest = GetTestFrameworkFromContext();
+            Assert.AreEqual(hasError,serviceTest.SelectedServiceTest.NoErrorExpected);
+            
+        }
+
+
+        [Given(@"I set inputs as")]
+        [When(@"I set inputs as")]
+        [Then(@"I set inputs as")]
+        public void GivenISetInputsAs(Table table)
+        {
+            ServiceTestViewModel serviceTest = GetTestFrameworkFromContext();
+            
+            foreach (var tableRow in table.Rows)
+            {
+                var vname = tableRow["Variable Name"];
+                var value = tableRow["Value"];
+                serviceTest.SelectedServiceTest.Inputs.Add
+                    (
+                            new ServiceTestInput(vname, value)
+                    );
+            }
+        }
+
+        [Given(@"I set outputs as")]
+        [When(@"I set outputs as")]
+        [Then(@"I set outputs as")]
+        public void GivenISetOutputsAs(Table table)
+        {
+            ServiceTestViewModel serviceTest = GetTestFrameworkFromContext();
+
+            foreach (var tableRow in table.Rows)
+            {
+                var vname = tableRow["Variable Name"];
+                var value = tableRow["Value"];
+                serviceTest.SelectedServiceTest.Outputs.Add
+                    (
+                       new ServiceTestOutput(vname, value)
+                    );
+            }
+        }
+
 
         ServiceTestViewModel GetTestFrameworkFromContext()
         {
@@ -325,6 +445,6 @@ namespace Dev2.Activities.Specs.TestFramework
             Assert.Fail("Test Framework ViewModel not found");
             return null;
         }
-       
+
     }
 }

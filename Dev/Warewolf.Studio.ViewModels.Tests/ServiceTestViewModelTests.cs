@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using Dev2;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Help;
@@ -179,6 +180,16 @@ namespace Warewolf.Studio.ViewModels.Tests
             return moqModel.Object;
         }
 
+        private IContextualResourceModel CreateResourceModelWithMoreSave()
+        {
+            var moqModel = new Mock<IContextualResourceModel>();
+            moqModel.SetupAllProperties();
+            moqModel.Setup(model => model.DisplayName).Returns("My WF");
+            moqModel.Setup(model => model.Environment.Connection.IsConnected).Returns(true);
+            moqModel.Setup(model => model.Environment.ResourceRepository.SaveTests(It.IsAny<Guid>(), It.IsAny<List<IServiceTestModel>>()));
+            return moqModel.Object;
+        }
+
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void OnCreation_GivenIsNew_ShouldHaveModel()
@@ -250,6 +261,22 @@ namespace Warewolf.Studio.ViewModels.Tests
             //---------------Test Result -----------------------
             Assert.IsFalse(vm.RunSelectedTestInBrowserCommand.CanExecute(null));
         }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void Save_GivenThrowsNoException_ShouldMarkAllTestsAsNotDirty()
+        {
+            //---------------Set up test pack-------------------
+            var vm = new ServiceTestViewModel(CreateResourceModelWithMoreSave());
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(vm);
+            //---------------Execute Test ----------------------
+            vm.CreateTestCommand.Execute(null);
+            vm.Save();
+            //---------------Test Result -----------------------
+            Assert.IsTrue(vm.Tests.All(model => !model.IsDirty));
+        }
+
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
@@ -468,7 +495,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             testFrameworkViewModel.CreateTestCommand.Execute(null);
             //------------Assert Results-------------------------
             Assert.IsTrue(testFrameworkViewModel.IsDirty);
-            Assert.AreEqual("My WF - Tests *",testFrameworkViewModel.DisplayName);
+            Assert.AreEqual("My WF - Tests *", testFrameworkViewModel.DisplayName);
         }
 
         [TestMethod]
@@ -483,7 +510,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             testFrameworkViewModel.CreateTestCommand.Execute(null);
             //------------Assert Results-------------------------
             Assert.IsTrue(testFrameworkViewModel.IsDirty);
-            Assert.AreEqual("My WF - Tests *",testFrameworkViewModel.DisplayName);
+            Assert.AreEqual("My WF - Tests *", testFrameworkViewModel.DisplayName);
         }
 
         private IContextualResourceModel CreateResourceModelWithSingleScalarInput()
