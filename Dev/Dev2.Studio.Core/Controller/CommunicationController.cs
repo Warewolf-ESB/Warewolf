@@ -144,7 +144,7 @@ namespace Dev2.Controller
 
                 ServicePayload.ServiceName = ServiceName;
                 StringBuilder toSend = serializer.SerializeToBuilder(ServicePayload);
-                var payload = connection.ExecuteCommand(toSend, workspaceId);
+                StringBuilder payload = connection.ExecuteCommand(toSend, workspaceId);
                 if (payload == null || payload.Length == 0)
                 {
                     var popupController = CustomContainer.Get<IPopupController>();

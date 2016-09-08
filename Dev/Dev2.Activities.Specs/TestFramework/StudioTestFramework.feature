@@ -93,32 +93,69 @@ Scenario: Save a New Test
 	And outputs as
 	| Variable Name | Value |
 	| outputValue   |       |
+	And save is disabled   
+
+
+
+Scenario: Edit existing test
+	Given the test builder is open with "Workflow 1"
+	And I select "test1"
+	Then Test name is "test1"
+	And test URL is "http://localhost:3142/secure/Examples/Workflow 1.tests/test1"
+	And username is blank
+	And password is blank
+	And Inputs are empty
+	And Outputs are empty
+	And No Error selected
+	And debug output is empty
+	And Tab Header is "Workflow 1 - Tests"
 	And save is disabled
-    
+	When I change the test name to "test2"
+	Then save is enabled
+	And Tab Header is "Worklow 1 - Tests *"
+	When I save
+	Then test URL is "http://localhost:3142/secure/Examples/Workflow 1.tests/test2"
+	And Tab Header is "Workflow 1 - Tests"
+	And save is disabled
+
+Scenario: Loading exisiting Tests
+    Given I have "Workflow 2" with inputs as
+			| Input Var Name |
+			| A              |
+			| B              |
+			| C              |
+			And "Workflow 2" has outputs as
+			| Ouput Var Name |
+			| message    |		
+	And the test builder is open with "Workflow 2"
+	And Tab Header is "Workflow 2 - Tests"
+	And there are no tests
+	And I click New Test
+	And I set Test Values as
+	| TestName | AuthenticationType | Error   |
+	| Test1    | Windows            | true |
+	Then NoErrorExpected is "false"	
+	And save is enabled
+	When I save
+	Then Tab Header is "Workflow 2 - Tests"
+	When I click New Test
+	And I set Test Values as
+	| TestName | AuthenticationType | Error   |
+	| Test2    | Windows            | true |
+	And save is enabled
+	When I save
+	Then Tab Header is "Workflow 2 - Tests"
+	And I close the test builder
+	When the test builder is open with "Workflow 2"
+	Then there are 2 tests
+
+	
 
 
 
-#
-#Scenario: Edit existing test
-#	Given test builder is open with "Workflow 1"
-#	And I select "test1"
-#	Then Test name is "test1"
-#	And test URL is "http://localhost:3142/secure/Examples/Workflow 1.tests/test1"
-#	And UserName is empty
-#	And Password is empty
-#	And Inputs are empty
-#	And Outputs are empty
-#	And No Error selected
-#	And debug output is empty
-#	And Tab name is "Workflow 1 - Tests"
-#	And save is disabled
-#	When I change the test name to "test2"
-#	Then save is enabled
-#	And Tab name is "Worklow 1 - Tests *"
-#	When I save the test
-#	Then test URL is "http://localhost:3142/secure/Examples/Workflow 1.tests/test2"
-#	And Tab name is "Workflow 1 - Tests"
-#	And save is disabled
+	
+
+
 #
 #Scenario: Create new test from Explorer opens a new window with correct button state
 #	Given I right click on the ExplorerItem on the explorer
