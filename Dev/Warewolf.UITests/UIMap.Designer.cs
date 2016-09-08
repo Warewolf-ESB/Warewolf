@@ -144,6 +144,22 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
+        /// Click_Close_Deploy_Tab_Button - Use 'Click_Close_Deploy_Tab_ButtonParams' to pass parameters into this method.
+        /// </summary>
+        public void Click_Close_Deploy_Tab_Button()
+        {
+            #region Variable Declarations
+            WpfButton tabCloseButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DeployTab.TabCloseButton;
+            #endregion
+
+            // Verify that the 'Exists' property of '' button equals 'True'
+            Assert.AreEqual(this.Click_Close_Deploy_Tab_ButtonParams.TabCloseButtonExists, tabCloseButton.Exists, "Settings close tab button does not exist.");
+
+            // Click '' button
+            Mouse.Click(tabCloseButton, new Point(16, 6));
+        }
+        
+        /// <summary>
         /// Click_Close_FullScreen
         /// </summary>
         public void Click_Close_FullScreen()
@@ -196,22 +212,6 @@ namespace Warewolf.UITests
 
             // Click '' button
             Mouse.Click(closeButton, new Point(16, 6));
-        }
-        
-        /// <summary>
-        /// Click_Close_Deploy_Tab_Button - Use 'Click_Close_Deploy_Tab_ButtonParams' to pass parameters into this method.
-        /// </summary>
-        public void Click_Close_Deploy_Tab_Button()
-        {
-            #region Variable Declarations
-            WpfButton tabCloseButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DeployTab.TabCloseButton;
-            #endregion
-
-            // Verify that the 'Exists' property of '' button equals 'True'
-            Assert.AreEqual(this.Click_Close_Deploy_Tab_ButtonParams.TabCloseButtonExists, tabCloseButton.Exists, "Settings close tab button does not exist.");
-
-            // Click '' button
-            Mouse.Click(tabCloseButton, new Point(16, 6));
         }
         
         /// <summary>
@@ -5416,18 +5416,6 @@ namespace Warewolf.UITests
             }
         }
         
-        public virtual Click_Close_Settings_Tab_ButtonParams Click_Close_Settings_Tab_ButtonParams
-        {
-            get
-            {
-                if ((this.mClick_Close_Settings_Tab_ButtonParams == null))
-                {
-                    this.mClick_Close_Settings_Tab_ButtonParams = new Click_Close_Settings_Tab_ButtonParams();
-                }
-                return this.mClick_Close_Settings_Tab_ButtonParams;
-            }
-        }
-        
         public virtual Click_Close_Deploy_Tab_ButtonParams Click_Close_Deploy_Tab_ButtonParams
         {
             get
@@ -5437,6 +5425,18 @@ namespace Warewolf.UITests
                     this.mClick_Close_Deploy_Tab_ButtonParams = new Click_Close_Deploy_Tab_ButtonParams();
                 }
                 return this.mClick_Close_Deploy_Tab_ButtonParams;
+            }
+        }
+        
+        public virtual Click_Close_Settings_Tab_ButtonParams Click_Close_Settings_Tab_ButtonParams
+        {
+            get
+            {
+                if ((this.mClick_Close_Settings_Tab_ButtonParams == null))
+                {
+                    this.mClick_Close_Settings_Tab_ButtonParams = new Click_Close_Settings_Tab_ButtonParams();
+                }
+                return this.mClick_Close_Settings_Tab_ButtonParams;
             }
         }
         
@@ -7394,9 +7394,9 @@ namespace Warewolf.UITests
         
         private Click_Calculate_Large_View_Done_ButtonParams mClick_Calculate_Large_View_Done_ButtonParams;
         
-        private Click_Close_Settings_Tab_ButtonParams mClick_Close_Settings_Tab_ButtonParams;
-        
         private Click_Close_Deploy_Tab_ButtonParams mClick_Close_Deploy_Tab_ButtonParams;
+        
+        private Click_Close_Settings_Tab_ButtonParams mClick_Close_Settings_Tab_ButtonParams;
         
         private Click_Close_Workflow_Tab_ButtonParams mClick_Close_Workflow_Tab_ButtonParams;
         
@@ -7805,21 +7805,6 @@ namespace Warewolf.UITests
     }
     
     /// <summary>
-    /// Parameters to be passed into 'Click_Close_Settings_Tab_Button'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Click_Close_Settings_Tab_ButtonParams
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Verify that the 'Exists' property of '' button equals 'True'
-        /// </summary>
-        public bool CloseButtonExists = true;
-        #endregion
-    }
-    
-    /// <summary>
     /// Parameters to be passed into 'Click_Close_Deploy_Tab_Button'
     /// </summary>
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
@@ -7831,6 +7816,21 @@ namespace Warewolf.UITests
         /// Verify that the 'Exists' property of '' button equals 'True'
         /// </summary>
         public bool TabCloseButtonExists = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Click_Close_Settings_Tab_Button'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Click_Close_Settings_Tab_ButtonParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of '' button equals 'True'
+        /// </summary>
+        public bool CloseButtonExists = true;
         #endregion
     }
     
@@ -18079,6 +18079,7 @@ namespace Warewolf.UITests
                     this.mFirstExplorerTreeItem = new WpfTreeItem(this);
                     #region Search Criteria
                     this.mFirstExplorerTreeItem.SearchProperties[WpfTreeItem.PropertyNames.Name] = "Infragistics.Controls.Menus.XamDataTreeNodeDataContext";
+                    this.mFirstExplorerTreeItem.SearchProperties[WpfTreeItem.PropertyNames.Instance] = "2";
                     this.mFirstExplorerTreeItem.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
                     this.mFirstExplorerTreeItem.WindowTitles.Add("Warewolf");
                     #endregion
