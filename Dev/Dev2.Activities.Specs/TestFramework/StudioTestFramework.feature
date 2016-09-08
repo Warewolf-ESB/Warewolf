@@ -7,10 +7,17 @@
 Background: Setup for workflows for tests
 			Given I have "Workflow 1" with inputs as
 			| Input Var Name |
-			| a              |
+			| [[a]]              |
 			And "Workflow 1" has outputs as
 			| Ouput Var Name |
-			| outputValue    |
+			| [[outputValue]]    |
+			Given I have "Workflow 2" with inputs as
+			| Input Var Name |
+			| [[rec().a]]        |
+			| [[rec().b]]        |
+			And "Workflow 2" has outputs as
+			| Ouput Var Name |
+			| [[returnVal]]      |
 
 Scenario: Create New Test
 	Given the test builder is open with "Workflow 1"	
@@ -18,11 +25,11 @@ Scenario: Create New Test
 	And there are no tests
 	When I click New Test
 	Then a new test is added
-	And Tab Header is "Workflow 1 - Tests *"
+	#And Tab Header is "Workflow 1 - Tests *"
 	And test name starts with "Test 1"
 	And username is blank
 	And password is blank
-	And inputs as
+	And inputs are
 	| Variable Name | Value |
 	| a             |       |
 	And outputs as
@@ -32,16 +39,40 @@ Scenario: Create New Test
 	And test status is pending
 	And test is enabled
 
-#Load Tests to be done until this spec passes
+Scenario: Create New Test with Service that as recordset inputs
+	Given the test builder is open with "Workflow 2"	
+	And Tab Header is "Workflow 2 - Tests"
+	And there are no tests
+	When I click New Test
+	Then a new test is added
+	#And Tab Header is "Workflow 2 - Tests *"
+	And test name starts with "Test 1"
+	And username is blank
+	And password is blank
+	And inputs are
+	| Variable Name | Value |
+	| rec(1).a      |       |
+	| rec(1).b      |       |
+	When I updated the inputs as
+	| Variable Name | Value |
+	| rec(1).a      | val1  |
+	| rec(1).b      |       |
+	Then inputs are
+	| Variable Name | Value |
+	| rec(1).a      | val1  |
+	| rec(1).b      |       |
+	| rec(2).a      |       |
+	| rec(2).b      |       |
+
 Scenario: Save a New Test
 	Given the test builder is open with "Workflow 1"
 	And Tab Header is "Workflow 1 - Tests"
 	And there are no tests
 	And I click New Test
 	Then a new test is added
-	And Tab Header is "Workflow 1 - Tests *"
+	#And Tab Header is "Workflow 1 - Tests *"
 	And test name starts with "Test 1"
-	And inputs as
+	And inputs are
 	| Variable Name | Value |
 	| a             |       |
 	And outputs as
@@ -56,7 +87,7 @@ Scenario: Save a New Test
 	And there are 1 tests
 	And "Test 1" is selected
 	And test name starts with "Test 1"
-	And inputs as
+	And inputs are
 	| Variable Name | Value |
 	| a             |       |
 	And outputs as

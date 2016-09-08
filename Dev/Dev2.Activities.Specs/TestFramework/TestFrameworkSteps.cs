@@ -4,6 +4,7 @@ using Dev2.Common;
 using Dev2.Common.Interfaces.Infrastructure.Events;
 using Dev2.Data.Binary_Objects;
 using Dev2.Runtime.ServiceModel.Data;
+using Dev2.Data.Util;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Models;
 using Dev2.Studio.Core.Models.DataList;
@@ -47,13 +48,48 @@ namespace Dev2.Activities.Specs.TestFramework
 
             var datalistViewModel = new DataListViewModel();
             datalistViewModel.InitializeDataListViewModel(resourceModel);
-            foreach (var variablesRow in inputVariables.Rows)
+            foreach(var variablesRow in inputVariables.Rows)
             {
-                datalistViewModel.ScalarCollection.Add(new ScalarItemModel(variablesRow[0], enDev2ColumnArgumentDirection.Input));
+                AddVariables(variablesRow["Input Var Name"], datalistViewModel, enDev2ColumnArgumentDirection.Input);
             }
             datalistViewModel.WriteToResourceModel();
-            ScenarioContext.Add(workflowName, resourceModel);
-            ScenarioContext.Add("dataListViewModel", datalistViewModel);
+            ScenarioContext.Add(workflowName,resourceModel);
+            ScenarioContext.Add($"{workflowName}dataListViewModel",datalistViewModel);
+        }
+
+        private static void AddVariables(string variableName, DataListViewModel datalistViewModel, enDev2ColumnArgumentDirection ioDirection)
+        {
+            
+            if(DataListUtil.IsValueScalar(variableName))
+            {
+                var scalarName = DataListUtil.RemoveLanguageBrackets(variableName);
+                var scalarItemModel = new ScalarItemModel(scalarName, ioDirection);
+                if(!scalarItemModel.HasError)
+                {
+                    datalistViewModel.ScalarCollection.Add(scalarItemModel);
+                }
+            }
+            if(DataListUtil.IsValueRecordsetWithFields(variableName))
+            {
+                var rsName = DataListUtil.ExtractRecordsetNameFromValue(variableName);
+                var fieldName = DataListUtil.ExtractFieldNameOnlyFromValue(variableName);
+                var rs = datalistViewModel.RecsetCollection.FirstOrDefault(model => model.Name == rsName);
+                if(rs == null)
+                {
+                    var recordSetItemModel = new RecordSetItemModel(rsName);
+                    datalistViewModel.RecsetCollection.Add(recordSetItemModel);
+                    recordSetItemModel.Children.Add(new RecordSetFieldItemModel(fieldName,
+                        recordSetItemModel, ioDirection));
+                }
+                else
+                {
+                    var recordSetFieldItemModel = rs.Children.FirstOrDefault(model => model.Name == fieldName);
+                    if(recordSetFieldItemModel == null)
+                    {
+                        rs.Children.Add(new RecordSetFieldItemModel(fieldName, rs, ioDirection));
+                    }
+                }
+            }
         }
 
         [Given(@"""(.*)"" has outputs as")]
@@ -63,11 +99,11 @@ namespace Dev2.Activities.Specs.TestFramework
             if (ScenarioContext.TryGetValue(workflowName, out resourceModel))
             {
                 DataListViewModel dataListViewModel;
-                if (ScenarioContext.TryGetValue("dataListViewModel", out dataListViewModel))
+                if(ScenarioContext.TryGetValue($"{workflowName}dataListViewModel",out dataListViewModel))
                 {
                     foreach (var variablesRow in outputVariables.Rows)
                     {
-                        dataListViewModel.ScalarCollection.Add(new ScalarItemModel(variablesRow[0], enDev2ColumnArgumentDirection.Output));
+                        AddVariables(variablesRow["Ouput Var Name"], dataListViewModel, enDev2ColumnArgumentDirection.Output);
                     }
                     dataListViewModel.WriteToResourceModel();
                 }
@@ -175,7 +211,7 @@ namespace Dev2.Activities.Specs.TestFramework
             Assert.AreEqual(null, serviceTest.SelectedServiceTest.Password);
         }
 
-        [Then(@"inputs as")]
+        [Then(@"inputs are")]
         public void ThenInputsAs(Table table)
         {
             ServiceTestViewModel serviceTest = GetTestFrameworkFromContext();
@@ -186,15 +222,37 @@ namespace Dev2.Activities.Specs.TestFramework
             {
                 Assert.AreEqual(tableRow["Variable Name"], inputs[i].Variable);
                 var expected = tableRow["Value"];
-                if (string.IsNullOrEmpty(expected))
-                {
-                    expected = null;
-                }
-                Assert.AreEqual(expected, inputs[i].Value);
+//                if (string.IsNullOrEmpty(expected))
+//                {
+//                    expected = null;
+//                }
+                Assert.AreEqual(expected,inputs[i].Value);
                 i++;
             }
 
         }
+
+        [When(@"I updated the inputs as")]
+        public void WhenIUpdatedTheInputsAs(Table table)
+        {
+            ServiceTestViewModel serviceTest = GetTestFrameworkFromContext();
+            var inputs = serviceTest.SelectedServiceTest.Inputs;
+            foreach (var tableRow in table.Rows)
+            {
+                var valueToSet = tableRow["Value"];
+                if (!string.IsNullOrEmpty(valueToSet))
+                {
+                    var varName = tableRow["Variable Name"];
+                    var foundInput = inputs.FirstOrDefault(input => input.Variable == varName);
+                    if (foundInput != null)
+                    {
+                        foundInput.Value = valueToSet;
+                    }
+                }
+
+            }
+        }
+
 
         [Then(@"outputs as")]
         public void ThenOutputsAs(Table table)
@@ -207,10 +265,10 @@ namespace Dev2.Activities.Specs.TestFramework
             {
                 Assert.AreEqual(tableRow["Variable Name"], outputs[i].Variable);
                 var expected = tableRow["Value"];
-                if (string.IsNullOrEmpty(expected))
-                {
-                    expected = null;
-                }
+//                if (string.IsNullOrEmpty(expected))
+//                {
+//                    expected = null;
+//                }
                 Assert.AreEqual(expected, outputs[i].Value);
                 i++;
             }

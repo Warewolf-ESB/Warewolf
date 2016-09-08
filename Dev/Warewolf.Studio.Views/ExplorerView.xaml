@@ -645,12 +645,11 @@
                                                     <ig:XamMenuItem Name="Test"
                                                                     Command="{Binding Path=Data.CreateTestCommand}"
                                                                     CommandParameter="{Binding Path=Data}"
-                                                                    Header="Create Test"
+                                                                    Header="Tests"
                                                                     Visibility="{Binding Path=Data.CanCreateTest,
                                                                                          Converter={StaticResource BoolToVisibilityConverter}}">
                                                         <ig:XamMenuItem.Icon>
-                                                            <fa:FontAwesome Margin="0,2,0,0"
-                                                                            FontSize="14"
+                                                            <fa:FontAwesome FontSize="14"
                                                                             FontWeight="Light"
                                                                             Icon="Flask" />
                                                         </ig:XamMenuItem.Icon>

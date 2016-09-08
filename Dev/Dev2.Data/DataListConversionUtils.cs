@@ -11,44 +11,46 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Dev2.Data;
 using Dev2.Data.Binary_Objects;
 using Dev2.Data.Interfaces;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract.Binary_Objects;
-using Dev2.Studio.Core;
 
-namespace Dev2.ViewModels.Workflow
+namespace Dev2.Data
 {
     public class DataListConversionUtils
     {
         public OptomizedObservableCollection<IDataListItem> CreateListToBindTo(IDataListModel dataList)
         {
+            return GetInputs(dataList);
+        }
+
+        private OptomizedObservableCollection<IDataListItem> Get(IDataListModel dataList, enDev2ColumnArgumentDirection directionToGet)
+        {
             var result = new OptomizedObservableCollection<IDataListItem>();
 
-            if(dataList != null)
+            if (dataList != null)
             {
                 var listOfScalars = dataList.Scalars;
 
                 // process scalars ;)
                 foreach (var entry in listOfScalars
-                    .Where(e => e.IODirection == enDev2ColumnArgumentDirection.Input ||
+                    .Where(e => e.IODirection == directionToGet ||
                                 e.IODirection == enDev2ColumnArgumentDirection.Both))
                 {
                     result.AddRange(ConvertToIDataListItem(entry));
                 }
 
-                // now process recordsets ;)
                 var listOfRecordSets = dataList.RecordSets;
                 foreach (var entry in listOfRecordSets)
                 {
-                    result.AddRange(ConvertToIDataListItem(entry));
+                    result.AddRange(ConvertToIDataListItem(entry, directionToGet));
                 }
 
                 var listOfComplexObject = dataList.ComplexObjects;
-                foreach(var complexObject in listOfComplexObject)
+                foreach (var complexObject in listOfComplexObject)
                 {
-                    if (complexObject.IODirection == enDev2ColumnArgumentDirection.Both || complexObject.IODirection == enDev2ColumnArgumentDirection.Input)
+                    if (complexObject.IODirection == enDev2ColumnArgumentDirection.Both || complexObject.IODirection == directionToGet)
                     {
                         result.Add(ConvertToIDataListItem(complexObject));
                     }
@@ -56,6 +58,16 @@ namespace Dev2.ViewModels.Workflow
             }
 
             return result;
+        }
+
+        public OptomizedObservableCollection<IDataListItem> GetInputs(IDataListModel dataList)
+        {
+            return Get(dataList, enDev2ColumnArgumentDirection.Input);
+        }
+
+        public OptomizedObservableCollection<IDataListItem> GetOutputs(IDataListModel dataList)
+        {
+            return Get(dataList, enDev2ColumnArgumentDirection.Output);
         }
 
         IList<IDataListItem> ConvertToIDataListItem(IScalar scalar)
@@ -83,14 +95,14 @@ namespace Dev2.ViewModels.Workflow
             return result;
         }
 
-        IList<IDataListItem> ConvertToIDataListItem(IRecordSet recordSet)
+        IList<IDataListItem> ConvertToIDataListItem(IRecordSet recordSet, enDev2ColumnArgumentDirection directionToGet)
         {
             IList<IDataListItem> result = new List<IDataListItem>();
             var dataListEntry = recordSet;
             
             foreach(var column in dataListEntry.Columns)
             {
-                var fields = column.Value.Where(c => c.IODirection == enDev2ColumnArgumentDirection.Both || c.IODirection == enDev2ColumnArgumentDirection.Input).ToList();
+                var fields = column.Value.Where(c => c.IODirection == enDev2ColumnArgumentDirection.Both || c.IODirection == directionToGet).ToList();
                 foreach (var col in fields)
                 {
                     IDataListItem singleRes = new DataListItem();
