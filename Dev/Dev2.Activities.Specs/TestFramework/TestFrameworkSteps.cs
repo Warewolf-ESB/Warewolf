@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Linq;
+using Dev2.Common;
+using Dev2.Common.Interfaces.Infrastructure.Events;
 using Dev2.Data.Binary_Objects;
 using Dev2.Data.Util;
 using Dev2.Studio.Core.Interfaces;
@@ -20,7 +22,7 @@ namespace Dev2.Activities.Specs.TestFramework
     {
         public StudioTestFrameworkSteps(ScenarioContext scenarioContext)
         {
-            if (scenarioContext == null) throw new ArgumentNullException("scenarioContext");
+            if (scenarioContext == null) throw new ArgumentNullException(nameof(scenarioContext));
             ScenarioContext = scenarioContext;
         }
 
@@ -29,12 +31,18 @@ namespace Dev2.Activities.Specs.TestFramework
         [Given(@"I have ""(.*)"" with inputs as")]
         public void GivenIHaveWithInputsAs(string workflowName, Table inputVariables)
         {
-            var resourceModel = new ResourceModel(new Mock<IEnvironmentModel>().Object)
+            var mockCon = new Mock<IEnvironmentConnection>();
+            mockCon.Setup(connection => connection.IsConnected).Returns(true);
+            mockCon.Setup(connection => connection.ServerEvents).Returns(new Mock<IEventPublisher>().Object);
+            IEnvironmentModel model = new EnvironmentModel(GlobalConstants.ServerWorkspaceID,mockCon.Object);
+            
+            var resourceModel = new ResourceModel(model)
             {
                 ResourceName = workflowName,
                 DisplayName = workflowName,
                 DataList = ""
             };
+            
             var datalistViewModel = new DataListViewModel();
             datalistViewModel.InitializeDataListViewModel(resourceModel);
             foreach(var variablesRow in inputVariables.Rows)
@@ -141,8 +149,8 @@ namespace Dev2.Activities.Specs.TestFramework
         public void GivenThereAreNoTests()
         {
             ServiceTestViewModel serviceTest = GetTestFrameworkFromContext();
-            Assert.AreEqual(1,serviceTest.Tests.Count);
-            Assert.AreEqual("Create a new test.", serviceTest.Tests[0].TestName);
+            var testsAreDummy = serviceTest.Tests.All(model => model.GetType() == typeof(DummyServiceTest));
+            Assert.IsTrue(testsAreDummy);
         }
 
 
@@ -291,12 +299,20 @@ namespace Dev2.Activities.Specs.TestFramework
             ServiceTestViewModel serviceTest = GetTestFrameworkFromContext();
             Assert.IsTrue(serviceTest.SelectedServiceTest.Enabled);
         }
+
         [When(@"I save")]
         public void WhenISave()
         {
             ServiceTestViewModel serviceTest = GetTestFrameworkFromContext();
             serviceTest.Save();
         }
+
+        [Then(@"I close the test builder")]
+        public void ThenICloseTheTestBuilder()
+        {
+            ScenarioContext.Current.Remove("testFramework");
+        }
+
 
 
         ServiceTestViewModel GetTestFrameworkFromContext()
@@ -309,5 +325,6 @@ namespace Dev2.Activities.Specs.TestFramework
             Assert.Fail("Test Framework ViewModel not found");
             return null;
         }
+       
     }
 }

@@ -8,6 +8,7 @@ using Dev2;
 using Dev2.Common.Interfaces;
 using Dev2.Interfaces;
 using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Core.Network;
 using Microsoft.Practices.Prism.Commands;
 using Microsoft.Practices.Prism.Mvvm;
 
@@ -20,11 +21,9 @@ namespace Warewolf.Studio.ViewModels
         private string _testPassingResult;
         private ObservableCollection<IServiceTestModel> _tests;
         private string _displayName;
-        private bool _isDirty;
 
         public ServiceTestViewModel(IContextualResourceModel resourceModel)
         {
-
             if (resourceModel == null)
                 throw new ArgumentNullException(nameof(resourceModel));
             ResourceModel = resourceModel;
@@ -33,13 +32,15 @@ namespace Warewolf.Studio.ViewModels
 
             DeleteTestCommand = new DelegateCommand(ServiceTestCommandHandler.DeleteTest, () => CanDeleteTest);
             DuplicateTestCommand = new DelegateCommand(ServiceTestCommandHandler.DuplicateTest, () => CanDuplicateTest);
-            RunAllTestsInBrowserCommand = new DelegateCommand(ServiceTestCommandHandler.RunAllTestsInBrowser, () => CanRunAllTestsInBrowser);
-            RunAllTestsCommand = new DelegateCommand(ServiceTestCommandHandler.RunAllTestsCommand, () => CanRunAllTestsCommand);
+            RunAllTestsInBrowserCommand = new DelegateCommand(() => ServiceTestCommandHandler.RunAllTestsInBrowser(IsDirty));
+            RunAllTestsCommand = new DelegateCommand(() => ServiceTestCommandHandler.RunAllTestsCommand(IsDirty));
             RunSelectedTestInBrowserCommand = new DelegateCommand(ServiceTestCommandHandler.RunSelectedTestInBrowser, () => CanRunSelectedTestInBrowser);
             RunSelectedTestCommand = new DelegateCommand(ServiceTestCommandHandler.RunSelectedTest, () => CanRunSelectedTest);
             StopTestCommand = new DelegateCommand(ServiceTestCommandHandler.StopTest, () => CanStopTest);
             CreateTestCommand = new DelegateCommand(CreateTests);
             CanSave = true;
+
+            RunAllTestsUrl = WebServer.GetWorkflowUri(resourceModel, "", UrlType.Tests).ToString();
         }
 
         private void CreateTests()
@@ -47,7 +48,7 @@ namespace Warewolf.Studio.ViewModels
             if (IsDirty)
             {
                 var popupController = CustomContainer.Get<Dev2.Common.Interfaces.Studio.Controller.IPopupController>();
-                popupController?.Show(@"Please save currently edited Test(s) before creating a new one.", @"Save before continuing", MessageBoxButton.OK, MessageBoxImage.Error, null, false, true, false, false);
+                popupController?.Show(Resources.Languages.Core.ServiceTestSaveEditedTestsMessage, Resources.Languages.Core.ServiceTestSaveEditedTestsHeader, MessageBoxButton.OK, MessageBoxImage.Error, null, false, true, false, false);
                 return;
             }
 
@@ -62,16 +63,21 @@ namespace Warewolf.Studio.ViewModels
                 Tests.Add(testModel);
             }
             SelectedServiceTest = testModel;
+            SelectedServiceTest.RunSelectedTestUrl = WebServer.GetWorkflowUri(ResourceModel, "", UrlType.Tests) + "/" + SelectedServiceTest.TestName;
         }
 
         public bool CanStopTest { get; set; }
-        public bool CanRunAllTestsInBrowser { get; set; }
-        public bool CanRunAllTestsCommand { get; set; }
-        public bool CanRunSelectedTestInBrowser { get; set; }
-        public bool CanRunSelectedTest { get; set; }
-        public bool CanDuplicateTest { get; set; }
-        public bool CanDeleteTest { get; set; }
+        private bool CanRunSelectedTestInBrowser => SelectedServiceTest != null && !SelectedServiceTest.IsDirty;
+        private bool CanRunSelectedTest => GetPermissions();
+        public bool CanDuplicateTest => GetPermissions();
+        private bool CanDeleteTest => GetPermissions() && SelectedServiceTest != null && !SelectedServiceTest.Enabled;
+
         public bool CanSave { get; set; }
+
+        private bool GetPermissions()
+        {
+            return true;
+        }
 
         public bool IsDirty
         {
@@ -79,14 +85,15 @@ namespace Warewolf.Studio.ViewModels
             {
                 try
                 {
-                    if (Tests == null || Tests.Count == 0)
+                    if (Tests == null || Tests.Count <= 1)
                     {
                         return false;
                     }
                     var isDirty = Tests.Any(resource => resource.IsDirty);
-                    var cnct = ResourceModel.Environment.Connection.IsConnected;
 
-                    return isDirty && cnct;
+                    var isConnected = ResourceModel.Environment.Connection.IsConnected;
+
+                    return isDirty && isConnected;
                 }
                 catch (Exception ex)
                 {
@@ -103,8 +110,15 @@ namespace Warewolf.Studio.ViewModels
 
         public void Save()
         {
-            ResourceModel.Environment.ResourceRepository.SaveTests(ResourceModel.ID,Tests.ToList());
+            var serviceTestModels = Tests.Where(model => model.GetType() != typeof(DummyServiceTest)).ToList();
+            var executeMessage = ResourceModel.Environment.ResourceRepository.SaveTests(ResourceModel.ID, serviceTestModels);
+            foreach(var model in Tests)
+            {
+                model.IsDirty = false;
+            }
         }
+
+      
 
         public IContextualResourceModel ResourceModel { get; }
 
@@ -161,12 +175,12 @@ namespace Warewolf.Studio.ViewModels
                 if (_tests == null)
                 {
                     _tests = GetTests();
-                    var dummyTest = new DummyServiceTest(CreateTests) { TestName = "Create a new test."};
+                    var dummyTest = new DummyServiceTest(CreateTests) { TestName = "Create a new test." };
                     _tests.Add(dummyTest);
                     SelectedServiceTest = dummyTest;
                 }
                 return _tests;
-                
+
             }
             set
             {
@@ -201,17 +215,18 @@ namespace Warewolf.Studio.ViewModels
                     }
                     return _displayName;
                 }
-                return _displayName; 
+                var displayName = _displayName.Replace("*","").TrimEnd(' ');
+                return displayName;
             }
             set
             {
-                _displayName = value; 
+                _displayName = value;
                 OnPropertyChanged(() => DisplayName);
             }
         }
 
         public void Dispose()
-        {            
+        {
         }
 
         public void UpdateHelpDescriptor(string helpText)
