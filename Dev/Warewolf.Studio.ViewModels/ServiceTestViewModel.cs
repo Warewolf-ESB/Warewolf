@@ -1,11 +1,14 @@
 ﻿
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 using Dev2;
+using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
+using Dev2.Communication;
 using Dev2.Interfaces;
 using Dev2.Studio.Core.Interfaces;
 using Microsoft.Practices.Prism.Commands;
@@ -29,7 +32,6 @@ namespace Warewolf.Studio.ViewModels
             ResourceModel = resourceModel;
             DisplayName = resourceModel.DisplayName + " - Tests";
             ServiceTestCommandHandler = new ServiceTestCommandHandlerModel();
-
             DeleteTestCommand = new DelegateCommand(ServiceTestCommandHandler.DeleteTest, () => CanDeleteTest);
             DuplicateTestCommand = new DelegateCommand(ServiceTestCommandHandler.DuplicateTest, () => CanDuplicateTest);
             RunAllTestsInBrowserCommand = new DelegateCommand(ServiceTestCommandHandler.RunAllTestsInBrowser, () => CanRunAllTestsInBrowser);
@@ -39,7 +41,10 @@ namespace Warewolf.Studio.ViewModels
             StopTestCommand = new DelegateCommand(ServiceTestCommandHandler.StopTest, () => CanStopTest);
             CreateTestCommand = new DelegateCommand(CreateTests);
             CanSave = true;
+
         }
+
+      
 
         private void CreateTests()
         {
@@ -117,7 +122,7 @@ namespace Warewolf.Studio.ViewModels
             }
             catch (Exception)
             {
-              // MarkTestsAsDirty(true);
+                // MarkTestsAsDirty(true);
             }
 
         }
@@ -201,7 +206,18 @@ namespace Warewolf.Studio.ViewModels
 
         private ObservableCollection<IServiceTestModel> GetTests()
         {
-            return new ObservableCollection<IServiceTestModel>();
+            try
+            {
+                var loadResourceTests = ResourceModel.Environment.ResourceRepository.LoadResourceTests(ResourceModel.Environment, ResourceModel.ID);
+                Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+                var serviceTestModels = serializer.Deserialize<List<ServiceTestModel>>(loadResourceTests);
+                return serviceTestModels.ToObservableCollection<IServiceTestModel>();
+            }
+            catch (Exception)
+            {
+                
+                return new ObservableCollection<IServiceTestModel>();
+            }
         }
 
         public ICommand DeleteTestCommand { get; set; }

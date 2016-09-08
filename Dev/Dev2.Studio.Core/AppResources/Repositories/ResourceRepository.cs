@@ -591,6 +591,14 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             return result;
         }
 
+        public StringBuilder LoadResourceTests(IEnvironmentModel targetEnv, Guid resourceId)
+        {
+            var comsController = GetCommunicationController("FetchTests");
+            comsController.AddPayloadArgument("resourceID", resourceId.ToString());
+            var executeCommand = comsController.ExecuteCommand<ExecuteMessage>(targetEnv.Connection, GlobalConstants.ServerWorkspaceID);
+            return executeCommand?.Message ?? new StringBuilder();
+        }
+
         /// <summary>
         /// Stops the execution.
         /// </summary>
