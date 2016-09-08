@@ -81,6 +81,42 @@ namespace Warewolf.Studio.ViewModels.Tests
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
+        [TestCategory("TestInput_Value")]
+        public void TestInput_Value_WhenSetNonEmpty_ShouldInvokeAddRowAction()
+        {
+            //------------Setup for test--------------------------
+            var input = new ServiceTestInput("someVar", "someValue");
+            var _wasCalled = false;
+            input.AddNewAction += () =>
+            {                
+               _wasCalled = true;                
+            };
+            //------------Execute Test---------------------------
+            input.Value = "val";
+            //------------Assert Results-------------------------
+            Assert.IsTrue(_wasCalled);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("TestInput_Value")]
+        public void TestInput_Value_WhenSetEmpty_ShouldNotInvokeAddRowAction()
+        {
+            //------------Setup for test--------------------------
+            var input = new ServiceTestInput("someVar", "someValue");
+            var _wasCalled = false;
+            input.AddNewAction += () =>
+            {
+                _wasCalled = true;
+            };
+            //------------Execute Test---------------------------
+            input.Value = "";
+            //------------Assert Results-------------------------
+            Assert.IsFalse(_wasCalled);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
         [TestCategory("TestInput_Constructor")]
         public void TestInput_EmptyIsNull_WhenSet_ShouldFirePropertyChange()
         {

@@ -9,6 +9,7 @@
 */
 
 using System;
+using Dev2.Data;
 using Dev2.Data.Binary_Objects;
 using Dev2.Studio.Core.Interfaces.DataList;
 using Dev2.Studio.Core.Models.DataList;

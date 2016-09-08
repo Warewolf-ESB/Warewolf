@@ -1,6 +1,6 @@
 using System.Diagnostics.CodeAnalysis;
+using Dev2.Data;
 using Dev2.Data.Binary_Objects;
-using Dev2.Studio.Core;
 using Dev2.Studio.Core.Interfaces.DataList;
 using Dev2.Studio.Core.Models.DataList;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
