@@ -12,7 +12,6 @@ namespace Warewolf.UITests
         string DLLPath = @"C:\Windows\Microsoft.NET\Framework64\v4.0.30319\mscorlib.dll";
 
         [TestMethod]
-        [Ignore]//Causing ComIPC.exe crash interupting the ui test run int he environment
         public void BigPluginConnectorUITest()
         {
             Uimap.Click_New_Workflow_Ribbon_Button();
