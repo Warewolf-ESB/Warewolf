@@ -32,8 +32,8 @@ namespace Warewolf.Studio.ViewModels
 
             DeleteTestCommand = new DelegateCommand(ServiceTestCommandHandler.DeleteTest, () => CanDeleteTest);
             DuplicateTestCommand = new DelegateCommand(ServiceTestCommandHandler.DuplicateTest, () => CanDuplicateTest);
-            RunAllTestsInBrowserCommand = new DelegateCommand(ServiceTestCommandHandler.RunAllTestsInBrowser, () => CanRunAllTestsInBrowser);
-            RunAllTestsCommand = new DelegateCommand(ServiceTestCommandHandler.RunAllTestsCommand, () => CanRunAllTestsCommand);
+            RunAllTestsInBrowserCommand = new DelegateCommand(() => ServiceTestCommandHandler.RunAllTestsInBrowser(IsDirty));
+            RunAllTestsCommand = new DelegateCommand(() => ServiceTestCommandHandler.RunAllTestsCommand(IsDirty));
             RunSelectedTestInBrowserCommand = new DelegateCommand(ServiceTestCommandHandler.RunSelectedTestInBrowser, () => CanRunSelectedTestInBrowser);
             RunSelectedTestCommand = new DelegateCommand(ServiceTestCommandHandler.RunSelectedTest, () => CanRunSelectedTest);
             StopTestCommand = new DelegateCommand(ServiceTestCommandHandler.StopTest, () => CanStopTest);
@@ -48,7 +48,7 @@ namespace Warewolf.Studio.ViewModels
             if (IsDirty)
             {
                 var popupController = CustomContainer.Get<Dev2.Common.Interfaces.Studio.Controller.IPopupController>();
-                popupController?.Show(@"Please save currently edited Test(s) before creating a new one.", @"Save before continuing", MessageBoxButton.OK, MessageBoxImage.Error, null, false, true, false, false);
+                popupController?.Show(Resources.Languages.Core.ServiceTestSaveEditedTestsMessage, Resources.Languages.Core.ServiceTestSaveEditedTestsHeader, MessageBoxButton.OK, MessageBoxImage.Error, null, false, true, false, false);
                 return;
             }
 
@@ -66,12 +66,11 @@ namespace Warewolf.Studio.ViewModels
         }
 
         public bool CanStopTest { get; set; }
-        public bool CanRunAllTestsInBrowser { get; set; }
-        public bool CanRunAllTestsCommand { get; set; }
         public bool CanRunSelectedTestInBrowser { get; set; }
         private bool CanRunSelectedTest => GetPermissions();
         public bool CanDuplicateTest => GetPermissions();
-        private bool CanDeleteTest => GetPermissions() && !SelectedServiceTest.Enabled;
+        private bool CanDeleteTest => GetPermissions() && SelectedServiceTest != null && !SelectedServiceTest.Enabled;
+
         public bool CanSave { get; set; }
 
         private bool GetPermissions()

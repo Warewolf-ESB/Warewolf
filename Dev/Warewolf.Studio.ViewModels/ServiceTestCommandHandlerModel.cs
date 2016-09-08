@@ -1,4 +1,6 @@
 using System.Linq;
+using System.Windows;
+using Dev2;
 using Dev2.Common.Interfaces;
 using Dev2.Data;
 using Dev2.Data.Binary_Objects;
@@ -29,48 +31,54 @@ namespace Warewolf.Studio.ViewModels
                                     .Select(sca => new ServiceTestOutput(sca.Name, sca.Value) as IServiceTestOutput).ToList();
             }
             return testModel;
-       }
-
-        
+        }
 
         public void StopTest()
         {
         }
 
-      
-
-        public void RunAllTestsInBrowser()
+        public void RunAllTestsInBrowser(bool isDirty)
         {
+            if (isDirty)
+            {
+                ShowRunAllUnsavedError();
+                //return;
+            }
+            //Run all tests
         }
 
-        
-
-        public void RunAllTestsCommand()
+        public void RunAllTestsCommand(bool isDirty)
         {
+            if (isDirty)
+            {
+                ShowRunAllUnsavedError();
+                //return;
+            }
+            //Run all tests
         }
-        
+
+        private static void ShowRunAllUnsavedError()
+        {
+            var popupController = CustomContainer.Get<Dev2.Common.Interfaces.Studio.Controller.IPopupController>();
+            popupController?.Show(Resources.Languages.Core.ServiceTestRunAllUnsavedTestsMessage,
+                Resources.Languages.Core.ServiceTestRunAllUnsavedTestsHeader, MessageBoxButton.OK, MessageBoxImage.Error, null,
+                false, true, false, false);
+        }
 
         public void RunSelectedTestInBrowser()
         {
         }
 
-        
-
         public void RunSelectedTest()
         {
         }
-
-        
 
         public void DuplicateTest()
         {
         }
 
-       
-
         public void DeleteTest()
         {
-        }        
-
+        }
     }
 }
