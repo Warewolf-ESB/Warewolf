@@ -345,13 +345,17 @@ namespace Warewolf.Studio.ViewModels.Tests
         {
             //------------Setup for test--------------------------
             var resourceModelMock = CreateResourceModelWithSingleScalarOutputMock();
-            resourceModelMock.Setup(model => model.SaveTests(It.IsAny<List<IServiceTestModel>>()));
+            var mockEnvironmentModel = new Mock<IEnvironmentModel>();
+            var mockResourceRepo = new Mock<IResourceRepository>();
+            mockResourceRepo.Setup(repository => repository.SaveTests(It.IsAny<Guid>(), It.IsAny<List<IServiceTestModel>>()));
+            mockEnvironmentModel.Setup(model => model.ResourceRepository).Returns(mockResourceRepo.Object);
+            resourceModelMock.Setup(model => model.Environment).Returns(mockEnvironmentModel.Object);
             var serviceTestViewModel = new ServiceTestViewModel(resourceModelMock.Object);
             serviceTestViewModel.CreateTestCommand.Execute(null);
             //------------Execute Test---------------------------
             serviceTestViewModel.Save();
             //------------Assert Results-------------------------
-            resourceModelMock.Verify(model => model.SaveTests(It.IsAny<List<IServiceTestModel>>()),Times.Once);
+            mockResourceRepo.Verify(repository => repository.SaveTests(It.IsAny<Guid>(), It.IsAny<List<IServiceTestModel>>()), Times.Once);
         }
 
 

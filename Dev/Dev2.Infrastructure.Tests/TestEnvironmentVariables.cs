@@ -71,6 +71,19 @@ namespace Dev2.Infrastructure.Tests
             //------------Assert Results-------------------------
             StringAssert.Contains(folderPath, folderPart);
         }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("EnvironmentVariables_GetTestPath")]
+        public void EnvironmentVariables_GetTestPath_ShouldReturnTestFolderInProgramData()
+        {
+            //------------Setup for test--------------------------
+            const string folderPart = "ProgramData\\Warewolf\\Tests";
+            //------------Execute Test---------------------------
+            var folderPath = EnvironmentVariables.TestPath;
+            //------------Assert Results-------------------------
+            StringAssert.Contains(folderPath, folderPart);
+        }
         
         [TestMethod]
         [Owner("Hagashen Naidu")]
