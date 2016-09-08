@@ -54,7 +54,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DebugInputWindow\SaveDebugInputs.cs" />
-    <Compile Include="Deploy\DeployViewOnlyService.cs" />
     <Compile Include="Explorer\WebConnector.cs" />
     <Compile Include="Explorer\PluginConnector.cs" />
     <Compile Include="Explorer\DBConnector.cs" />
