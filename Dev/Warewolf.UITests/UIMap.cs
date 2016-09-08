@@ -25,9 +25,9 @@ namespace Warewolf.UITests
 {
     public partial class UIMap
     {
-        const int _lenientSearchTimeout = 3000;
+        const int _lenientSearchTimeout = 5000;
         const int _lenientMaximumRetryCount = 3;
-        const int _strictSearchTimeout = 1250;
+        const int _strictSearchTimeout = 1000;
         const int _strictMaximumRetryCount = 1;
 
         public void SetGlobalPlaybackSettings()
