@@ -5170,6 +5170,31 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
+        /// Select_RemoteConnectionIntegration_From_Deploy_Tab_Destination_Server_Combobox - Use 'Select_RemoteConnectionIntegration_From_Deploy_Tab_Destination_Server_ComboboxParams' to pass parameters into this method.
+        /// </summary>
+        public void Select_RemoteConnectionIntegration_From_Deploy_Tab_Destination_Server_Combobox()
+        {
+            #region Variable Declarations
+            WpfButton toggleButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DeployTab.WorkSurfaceContext.DestinationServerConectControl.Combobox.ToggleButton;
+            WpfCustom comboboxListItemAsNewRemoteServer = this.MainStudioWindow.ComboboxListItemAsNewRemoteServer;
+            WpfCustom comboboxListIntemAsRemoteConnectionIntegration = this.MainStudioWindow.ComboboxListIntemAsRemoteConnectionIntegration;
+            #endregion
+
+            // Click 'ToggleButton' button
+            Mouse.Click(toggleButton, new Point(230, 9));
+
+            // Verify that the 'Exists' property of 'New Remote Server...' custom control equals 'True'
+            Assert.AreEqual(this.Select_RemoteConnectionIntegration_From_Deploy_Tab_Destination_Server_ComboboxParams.ComboboxListItemAsNewRemoteServerExists, comboboxListItemAsNewRemoteServer.Exists, "New Remote Server... option does not exist in Destination server combobox.");
+
+            // Verify that the 'Exists' property of 'Remote Connection Integration' custom control equals 'True'
+            Assert.AreEqual(this.Select_RemoteConnectionIntegration_From_Deploy_Tab_Destination_Server_ComboboxParams.ComboboxListIntemAsRemoteConnectionIntegrationExists, comboboxListIntemAsRemoteConnectionIntegration.Exists, "Remote Connection Integration option does not exist in Destination server combobo" +
+                    "x.");
+
+            // Click 'Remote Connection Integration' custom control
+            Mouse.Click(comboboxListIntemAsRemoteConnectionIntegration, new Point(226, 13));
+        }
+        
+        /// <summary>
         /// Select_Rename_FromExplorerContextMenu
         /// </summary>
         public void Select_Rename_FromExplorerContextMenu()
@@ -5365,6 +5390,19 @@ namespace Warewolf.UITests
             // Verify that the 'Enabled' property of 'Test Connection' button equals 'True'
             Assert.AreEqual(this.Type_TestSite_into_Web_Source_Wizard_Address_TextboxParams.TestConnectionButtonEnabled, testConnectionButton.Enabled, "New web source wizard test connection button is not enabled after entering a vali" +
                     "d web address.");
+        }
+        
+        /// <summary>
+        /// Assert_For_Select_RemoteConnectionIntegration_From_Deploy_Tab_Destination_Server_Combobox - Use 'Assert_For_Select_RemoteConnectionIntegration_From_Deploy_Tab_Destination_Server_ComboboxExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void Assert_For_Select_RemoteConnectionIntegration_From_Deploy_Tab_Destination_Server_Combobox()
+        {
+            #region Variable Declarations
+            WpfText uIRemoteConnectionInteText = this.UIWarewolfDEV2ASHLEYLEWindow.UIDestinationConnectCoCustom.UITheServerComboBoxCustom.UIRemoteConnectionInteText;
+            #endregion
+
+            // Verify that the 'DisplayText' property of 'Remote Connection Integration' label equals 'Remote Connection Integration'
+            Assert.AreEqual(this.Assert_For_Select_RemoteConnectionIntegration_From_Deploy_Tab_Destination_Server_ComboboxExpectedValues.UIRemoteConnectionInteTextDisplayText, uIRemoteConnectionInteText.DisplayText, "Selected destination server in deploy is not Remote Connection Integration.");
         }
         
         #region Properties
@@ -7180,6 +7218,18 @@ namespace Warewolf.UITests
             }
         }
         
+        public virtual Select_RemoteConnectionIntegration_From_Deploy_Tab_Destination_Server_ComboboxParams Select_RemoteConnectionIntegration_From_Deploy_Tab_Destination_Server_ComboboxParams
+        {
+            get
+            {
+                if ((this.mSelect_RemoteConnectionIntegration_From_Deploy_Tab_Destination_Server_ComboboxParams == null))
+                {
+                    this.mSelect_RemoteConnectionIntegration_From_Deploy_Tab_Destination_Server_ComboboxParams = new Select_RemoteConnectionIntegration_From_Deploy_Tab_Destination_Server_ComboboxParams();
+                }
+                return this.mSelect_RemoteConnectionIntegration_From_Deploy_Tab_Destination_Server_ComboboxParams;
+            }
+        }
+        
         public virtual Select_RSAKLFSVRGENDEV_From_Server_Source_Wizard_DropdownlistExpectedValues Select_RSAKLFSVRGENDEV_From_Server_Source_Wizard_DropdownlistExpectedValues
         {
             get
@@ -7273,6 +7323,18 @@ namespace Warewolf.UITests
                     this.mType_TestSite_into_Web_Source_Wizard_Address_TextboxParams = new Type_TestSite_into_Web_Source_Wizard_Address_TextboxParams();
                 }
                 return this.mType_TestSite_into_Web_Source_Wizard_Address_TextboxParams;
+            }
+        }
+        
+        public virtual Assert_For_Select_RemoteConnectionIntegration_From_Deploy_Tab_Destination_Server_ComboboxExpectedValues Assert_For_Select_RemoteConnectionIntegration_From_Deploy_Tab_Destination_Server_ComboboxExpectedValues
+        {
+            get
+            {
+                if ((this.mAssert_For_Select_RemoteConnectionIntegration_From_Deploy_Tab_Destination_Server_ComboboxExpectedValues == null))
+                {
+                    this.mAssert_For_Select_RemoteConnectionIntegration_From_Deploy_Tab_Destination_Server_ComboboxExpectedValues = new Assert_For_Select_RemoteConnectionIntegration_From_Deploy_Tab_Destination_Server_ComboboxExpectedValues();
+                }
+                return this.mAssert_For_Select_RemoteConnectionIntegration_From_Deploy_Tab_Destination_Server_ComboboxExpectedValues;
             }
         }
         
@@ -7688,6 +7750,8 @@ namespace Warewolf.UITests
         
         private Select_Next_From_DotNet_DLL_Large_View_Action_ComboboxExpectedValues mSelect_Next_From_DotNet_DLL_Large_View_Action_ComboboxExpectedValues;
         
+        private Select_RemoteConnectionIntegration_From_Deploy_Tab_Destination_Server_ComboboxParams mSelect_RemoteConnectionIntegration_From_Deploy_Tab_Destination_Server_ComboboxParams;
+        
         private Select_RSAKLFSVRGENDEV_From_Server_Source_Wizard_DropdownlistExpectedValues mSelect_RSAKLFSVRGENDEV_From_Server_Source_Wizard_DropdownlistExpectedValues;
         
         private Select_SystemRandom_From_DotNet_DLL_Large_View_Namespace_ComboboxExpectedValues mSelect_SystemRandom_From_DotNet_DLL_Large_View_Namespace_ComboboxExpectedValues;
@@ -7703,6 +7767,8 @@ namespace Warewolf.UITests
         private Type_rsaklfsvrgen_into_DB_Source_Wizard_Server_TextboxParams mType_rsaklfsvrgen_into_DB_Source_Wizard_Server_TextboxParams;
         
         private Type_TestSite_into_Web_Source_Wizard_Address_TextboxParams mType_TestSite_into_Web_Source_Wizard_Address_TextboxParams;
+        
+        private Assert_For_Select_RemoteConnectionIntegration_From_Deploy_Tab_Destination_Server_ComboboxExpectedValues mAssert_For_Select_RemoteConnectionIntegration_From_Deploy_Tab_Destination_Server_ComboboxExpectedValues;
         
         private MainStudioWindow mMainStudioWindow;
         
@@ -10793,6 +10859,26 @@ namespace Warewolf.UITests
     }
     
     /// <summary>
+    /// Parameters to be passed into 'Select_RemoteConnectionIntegration_From_Deploy_Tab_Destination_Server_Combobox'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Select_RemoteConnectionIntegration_From_Deploy_Tab_Destination_Server_ComboboxParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'New Remote Server...' custom control equals 'True'
+        /// </summary>
+        public bool ComboboxListItemAsNewRemoteServerExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Remote Connection Integration' custom control equals 'True'
+        /// </summary>
+        public bool ComboboxListIntemAsRemoteConnectionIntegrationExists = true;
+        #endregion
+    }
+    
+    /// <summary>
     /// Parameters to be passed into 'Select_RSAKLFSVRGENDEV_From_Server_Source_Wizard_Dropdownlist'
     /// </summary>
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
@@ -10934,6 +11020,21 @@ namespace Warewolf.UITests
         /// Verify that the 'Enabled' property of 'Test Connection' button equals 'True'
         /// </summary>
         public bool TestConnectionButtonEnabled = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Assert_For_Select_RemoteConnectionIntegration_From_Deploy_Tab_Destination_Server_Combobox'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Assert_For_Select_RemoteConnectionIntegration_From_Deploy_Tab_Destination_Server_ComboboxExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'DisplayText' property of 'Remote Connection Integration' label equals 'Remote Connection Integration'
+        /// </summary>
+        public string UIRemoteConnectionInteTextDisplayText = "Remote Connection Integration";
         #endregion
     }
     
@@ -11423,6 +11524,23 @@ namespace Warewolf.UITests
                 return this.mComboboxListItemAsWarewolfStore;
             }
         }
+        
+        public WpfCustom ComboboxListIntemAsRemoteConnectionIntegration
+        {
+            get
+            {
+                if ((this.mComboboxListIntemAsRemoteConnectionIntegration == null))
+                {
+                    this.mComboboxListIntemAsRemoteConnectionIntegration = new WpfCustom(this);
+                    #region Search Criteria
+                    this.mComboboxListIntemAsRemoteConnectionIntegration.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ComboEditorItemControl";
+                    this.mComboboxListIntemAsRemoteConnectionIntegration.SearchProperties[WpfControl.PropertyNames.Name] = "Remote Connection Integration";
+                    this.mComboboxListIntemAsRemoteConnectionIntegration.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mComboboxListIntemAsRemoteConnectionIntegration;
+            }
+        }
         #endregion
         
         #region Fields
@@ -11487,6 +11605,8 @@ namespace Warewolf.UITests
         private WpfListItem mWebServerSourceComboboxListItem9;
         
         private WpfCustom mComboboxListItemAsWarewolfStore;
+        
+        private WpfCustom mComboboxListIntemAsRemoteConnectionIntegration;
         #endregion
     }
     
@@ -34131,77 +34251,91 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public WpfCustom UIDsfForEachActivityCustom
+        public UIDestinationConnectCoCustom UIDestinationConnectCoCustom
         {
             get
             {
-                if ((this.mUIDsfForEachActivityCustom == null))
+                if ((this.mUIDestinationConnectCoCustom == null))
                 {
-                    this.mUIDsfForEachActivityCustom = new WpfCustom(this);
-                    #region Search Criteria
-                    this.mUIDsfForEachActivityCustom.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ForeachDesigner";
-                    this.mUIDsfForEachActivityCustom.SearchProperties[WpfControl.PropertyNames.AutomationId] = "For Each(ForeachDesigner)";
-                    this.mUIDsfForEachActivityCustom.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
-                    #endregion
+                    this.mUIDestinationConnectCoCustom = new UIDestinationConnectCoCustom(this);
                 }
-                return this.mUIDsfForEachActivityCustom;
-            }
-        }
-        
-        public UIItemCustom UIItemCustom
-        {
-            get
-            {
-                if ((this.mUIItemCustom == null))
-                {
-                    this.mUIItemCustom = new UIItemCustom(this);
-                }
-                return this.mUIItemCustom;
+                return this.mUIDestinationConnectCoCustom;
             }
         }
         #endregion
         
         #region Fields
-        private WpfCustom mUIDsfForEachActivityCustom;
-        
-        private UIItemCustom mUIItemCustom;
+        private UIDestinationConnectCoCustom mUIDestinationConnectCoCustom;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class UIItemCustom : WpfCustom
+    public class UIDestinationConnectCoCustom : WpfCustom
     {
         
-        public UIItemCustom(UITestControl searchLimitContainer) : 
+        public UIDestinationConnectCoCustom(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
-            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.DeployView";
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ConnectControl";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "DestinationConnectControl";
             this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
             #endregion
         }
         
         #region Properties
-        public WpfCustom UISourceNavigationViewCustom
+        public UITheServerComboBoxCustom UITheServerComboBoxCustom
         {
             get
             {
-                if ((this.mUISourceNavigationViewCustom == null))
+                if ((this.mUITheServerComboBoxCustom == null))
                 {
-                    this.mUISourceNavigationViewCustom = new WpfCustom(this);
-                    #region Search Criteria
-                    this.mUISourceNavigationViewCustom.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ExplorerView";
-                    this.mUISourceNavigationViewCustom.SearchProperties[WpfControl.PropertyNames.AutomationId] = "SourceNavigationView";
-                    this.mUISourceNavigationViewCustom.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
-                    #endregion
+                    this.mUITheServerComboBoxCustom = new UITheServerComboBoxCustom(this);
                 }
-                return this.mUISourceNavigationViewCustom;
+                return this.mUITheServerComboBoxCustom;
             }
         }
         #endregion
         
         #region Fields
-        private WpfCustom mUISourceNavigationViewCustom;
+        private UITheServerComboBoxCustom mUITheServerComboBoxCustom;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UITheServerComboBoxCustom : WpfCustom
+    {
+        
+        public UITheServerComboBoxCustom(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.XamComboEditor";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "TheServerComboBox";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfText UIRemoteConnectionInteText
+        {
+            get
+            {
+                if ((this.mUIRemoteConnectionInteText == null))
+                {
+                    this.mUIRemoteConnectionInteText = new WpfText(this);
+                    #region Search Criteria
+                    this.mUIRemoteConnectionInteText.SearchProperties[WpfText.PropertyNames.Name] = "Remote Connection Integration";
+                    this.mUIRemoteConnectionInteText.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mUIRemoteConnectionInteText;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfText mUIRemoteConnectionInteText;
         #endregion
     }
 }
