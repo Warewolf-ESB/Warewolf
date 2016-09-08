@@ -29,33 +29,33 @@ namespace Dev2.Runtime.ESB.Management.Services
             {
                 Dev2Logger.Info("Save Tests Service");
                 StringBuilder testDefinitionMessage;
-              
+
                 StringBuilder resourceIdString;
                 values.TryGetValue("resourceID", out resourceIdString);
-                if (resourceIdString==null)
+                if (resourceIdString == null)
                 {
                     throw new InvalidDataContractException("resourceID is missing");
                 }
                 Guid resourceId;
-                if(!Guid.TryParse(resourceIdString.ToString(),out resourceId))
+                if (!Guid.TryParse(resourceIdString.ToString(), out resourceId))
                 {
                     throw new InvalidDataContractException("resourceID is not a valid GUID.");
                 }
-                values.TryGetValue("testDefinitions", out testDefinitionMessage);                
+                values.TryGetValue("testDefinitions", out testDefinitionMessage);
                 if (testDefinitionMessage == null || testDefinitionMessage.Length == 0)
                 {
                     throw new InvalidDataContractException("testDefinition is missing");
                 }
-               
+
                 var serviceTestModelTos = serializer.Deserialize<List<ServiceTestModelTO>>(serializer.Deserialize<CompressedExecuteMessage>(testDefinitionMessage).GetDecompressedMessage());
-                var res = new ExecuteMessage { HasError = false };
-                TestCatalog.SaveTests(resourceId,serviceTestModelTos);
+                var res = new ExecuteMessage { HasError = false, Message = serializer.SerializeToBuilder(serviceTestModelTos) };
+                TestCatalog.SaveTests(resourceId, serviceTestModelTos);
                 return serializer.SerializeToBuilder(res);
             }
             catch (Exception err)
             {
                 Dev2Logger.Error(err);
-                var res = new ExecuteMessage { HasError = true, Message = new StringBuilder(err.Message)};
+                var res = new ExecuteMessage { HasError = true, Message = new StringBuilder(err.Message) };
                 return serializer.SerializeToBuilder(res);
             }
         }
@@ -92,7 +92,7 @@ namespace Dev2.Runtime.ESB.Management.Services
         public void SaveTests(Guid resourceID, List<ServiceTestModelTO> serviceTestModelTos)
         {
             var testPath = EnvironmentVariables.TestPath;
-            foreach(var serviceTestModelTo in serviceTestModelTos)
+            foreach (var serviceTestModelTo in serviceTestModelTos)
             {
                 var filePath = Path.Combine(testPath, resourceID.ToString(), $"{serviceTestModelTo.TestName}.test");
                 Dev2JsonSerializer serializer = new Dev2JsonSerializer();
@@ -100,7 +100,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 serializer.Serialize(sw, serviceTestModelTo);
                 sw.Flush();
             }
-            
+
         }
     }
 
