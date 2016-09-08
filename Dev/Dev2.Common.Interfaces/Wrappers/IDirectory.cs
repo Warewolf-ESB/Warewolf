@@ -14,7 +14,7 @@ namespace Dev2.Common.Interfaces.Wrappers
     public interface IDirectory
     {
         string[] GetFiles(string path);
-        string CreateIfNotExists(string debugOutputPath);
+        string CreateIfNotExists(string path);
         string[] GetLogicalDrives();
         bool Exists(string path);
         string[] GetFileSystemEntries(string path);

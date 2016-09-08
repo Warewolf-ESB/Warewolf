@@ -8,6 +8,7 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using System;
 using Dev2.Common.Interfaces.Wrappers;
 using System.IO;
 using Microsoft.VisualBasic.FileIO;
@@ -21,14 +22,14 @@ namespace Dev2.Common.Wrappers
             return Directory.GetFiles(path);
         }
 
-        public string CreateIfNotExists(string debugOutputPath)
+        public string CreateIfNotExists(string path)
         {
-            if (!Directory.Exists(debugOutputPath))
+            if (!Directory.Exists(path))
             {
-                return Directory.CreateDirectory(debugOutputPath).Name;
+                return Directory.CreateDirectory(path).Name;
             }
 
-            return debugOutputPath;
+            return path;
         }
 
         public string[] GetLogicalDrives()
@@ -54,6 +55,17 @@ namespace Dev2.Common.Wrappers
         public string[] GetDirectories(string path)
         {
             return Directory.GetDirectories(path);
+        }
+
+        public string GetDirectoryName(string path)
+        {
+            var validPath = path.TrimEnd('\\');
+            var index = validPath.LastIndexOf("\\",StringComparison.InvariantCultureIgnoreCase);
+            if (index != -1)
+            {
+                return path.Substring(index+1);
+            }
+            return path;
         }
 
         public void Move(string directoryStructureFromPath, string directoryStructureToPath)
