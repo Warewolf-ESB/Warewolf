@@ -304,6 +304,7 @@
     <Compile Include="IResourceSource.cs" />
     <Compile Include="IServer.cs" />
     <Compile Include="IServerSource.cs" />
+    <Compile Include="IServiceTestModelTO.cs" />
     <Compile Include="ISharepointServerSource.cs" />
     <Compile Include="IShellViewModel.cs" />
     <Compile Include="ISplashView.cs" />

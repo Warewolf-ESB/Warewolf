@@ -46,7 +46,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                     throw new InvalidDataContractException("testDefinition is missing");
                 }
 
-                var serviceTestModelTos = serializer.Deserialize<List<IServiceTestModel>>(serializer.Deserialize<CompressedExecuteMessage>(testDefinitionMessage).GetDecompressedMessage());
+                var serviceTestModelTos = serializer.Deserialize<List<IServiceTestModelTO>>(serializer.Deserialize<CompressedExecuteMessage>(testDefinitionMessage).GetDecompressedMessage());
                 var res = new ExecuteMessage { HasError = false, Message = serializer.SerializeToBuilder(serviceTestModelTos) };
                 TestCatalog.SaveTests(resourceId, serviceTestModelTos);
                 return serializer.SerializeToBuilder(res);
