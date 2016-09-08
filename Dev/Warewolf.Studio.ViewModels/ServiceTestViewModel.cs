@@ -68,10 +68,15 @@ namespace Warewolf.Studio.ViewModels
         public bool CanRunAllTestsInBrowser { get; set; }
         public bool CanRunAllTestsCommand { get; set; }
         public bool CanRunSelectedTestInBrowser { get; set; }
-        public bool CanRunSelectedTest { get; set; }
-        public bool CanDuplicateTest { get; set; }
-        public bool CanDeleteTest { get; set; }
+        private bool CanRunSelectedTest => GetPermissions();
+        public bool CanDuplicateTest => GetPermissions();
+        private bool CanDeleteTest => GetPermissions();
         public bool CanSave { get; set; }
+
+        private bool GetPermissions()
+        {
+            return true;
+        }
 
         public bool IsDirty
         {
@@ -84,9 +89,9 @@ namespace Warewolf.Studio.ViewModels
                         return false;
                     }
                     var isDirty = Tests.Any(resource => resource.IsDirty);
-                    var cnct = ResourceModel.Environment.Connection.IsConnected;
+                    var isConnected = ResourceModel.Environment.Connection.IsConnected;
 
-                    return isDirty && cnct;
+                    return isDirty && isConnected;
                 }
                 catch (Exception ex)
                 {
