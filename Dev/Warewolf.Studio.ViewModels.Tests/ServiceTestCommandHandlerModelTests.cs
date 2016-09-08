@@ -74,6 +74,21 @@ namespace Warewolf.Studio.ViewModels.Tests
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("TestCommandHandlerModelTests_CreateTest")]
+        public void TestCommandHandlerModelTests_CreateTest_ShouldSetEnabled()
+        {
+            //------------Setup for test--------------------------
+            var testFrameworkViewModel = new ServiceTestCommandHandlerModel();
+            //------------Assert Preconditions-------------------
+            //------------Execute Test---------------------------
+            var testModel = testFrameworkViewModel.CreateTest(CreateResourceModelWithNoInput());
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(testModel);
+            Assert.IsTrue(testModel.Enabled);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("TestCommandHandlerModelTests_CreateTest")]
         public void TestCommandHandlerModelTests_CreateTest_Execute_ShouldAddInputsFromResourceModel()
         {
             //------------Setup for test--------------------------
