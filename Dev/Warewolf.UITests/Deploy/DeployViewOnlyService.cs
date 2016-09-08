@@ -9,8 +9,6 @@ namespace Warewolf.UITests.Deploy
     {
         private const string WorkflowName = "DeployViewOnly";
         private const string GroupName = "Public";
-        private const string RemoteServerAddress = "TST-CI-REMOTE";
-        private const string RemoteServerSourceName = "CIREMOTE";
 
         [TestMethod]
         public void DeployViewOnlyServiceUITest()
@@ -20,13 +18,9 @@ namespace Warewolf.UITests.Deploy
             Uimap.Click_Close_Workflow_Tab_Button();
             Uimap.SetResourcePermissions(WorkflowName, GroupName, true);
             Uimap.Click_Deploy_Ribbon_Button();
-            Uimap.Click_Deploy_Tab_Destination_Server_Combobox();
-            Uimap.Click_Deploy_Tab_Destination_Server_New_Remote_Server_Item();
-            Uimap.CreateRemoteServerSource(RemoteServerSourceName, RemoteServerAddress, true);
-            Uimap.Click_Deploy_Tab_Destination_Server_Combobox();
-            Uimap.Click_Deploy_Tab_WarewolfStore_Item();
+            Uimap.Select_RemoteConnectionIntegration_From_Deploy_Tab_Destination_Server_Combobox();
             Uimap.Click_Deploy_Tab_Destination_Server_Connect_Button();
-            Uimap.Enter_Text_Into_Deploy_Source_Filter();
+            Uimap.Enter_DeployViewOnly_Into_Deploy_Source_Filter();
             Uimap.Select_Deploy_First_Source_Item();
             Uimap.Click_Deploy_Tab_Deploy_Button();
             Uimap.Click_Deploy_Tab_Source_Server_Combobox();
@@ -49,9 +43,9 @@ namespace Warewolf.UITests.Deploy
         public void MyTestCleanup()
         {
             Playback.PlaybackError -= Uimap.OnError;
-            Uimap.TryCloseWorkflowTab();
-            Uimap.TryCloseSettingsTab();
             Uimap.TryCloseDeployTab();
+            Uimap.TryCloseSettingsTab();
+            Uimap.TryCloseWorkflowTab();
         }
 
         public TestContext TestContext
