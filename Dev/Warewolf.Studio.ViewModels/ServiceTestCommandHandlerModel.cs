@@ -21,7 +21,7 @@ namespace Warewolf.Studio.ViewModels
 
         public IServiceTestModel CreateTest(IResourceModel resourceModel)
         {
-            var testModel = new ServiceTestModel
+            var testModel = new ServiceTestModel(resourceModel.ID)
             {
                 TestName = "Test 1",
                 IsDirty = true,

@@ -40,6 +40,7 @@ namespace Warewolf.Studio.ViewModels
 
         #region Implementation of IServiceTestModel
 
+        public Guid ParentId { get; set; }
         public string TestName { get; set; }
         public string UserName { get; set; }
         public string Password { get; set; }
@@ -70,6 +71,7 @@ namespace Warewolf.Studio.ViewModels
         public string NameForDisplay { get; }
         public bool IsDirty { get; set; }
         public bool UserAuthenticationSelected { get; set; }
+        public ICommand DeleteTestCommand { get; set; }
 
         #endregion
     }

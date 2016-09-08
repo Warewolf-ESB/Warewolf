@@ -79,52 +79,6 @@ namespace Warewolf.Studio.ViewModels.Tests
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void OnCreation_GivenIsNew_ShouldHaveDeleteTestCommand()
-        {
-            //---------------Set up test pack-------------------
-            var vm = new ServiceTestViewModel(CreateResourceModel());
-            //---------------Assert Precondition----------------
-            Assert.IsNotNull(vm);
-            //---------------Execute Test ----------------------
-            vm.CreateTestCommand.Execute(null);
-            Assert.IsNotNull(vm.DeleteTestCommand);
-            //---------------Test Result -----------------------
-            Assert.IsFalse(vm.DeleteTestCommand.CanExecute(null));
-        }
-
-        [TestMethod]
-        [Owner("Pieter Terblanche")]
-        public void OnCreation_GivenIsDisabled_DeleteTestCommandShouldBeEnabled()
-        {
-            //---------------Set up test pack-------------------
-            var vm = new ServiceTestViewModel(CreateResourceModel());
-            //---------------Assert Precondition----------------
-            Assert.IsNotNull(vm);
-            //---------------Execute Test ----------------------
-            vm.CreateTestCommand.Execute(null);
-            Assert.IsNotNull(vm.DeleteTestCommand);
-            //---------------Test Result -----------------------
-            Assert.IsFalse(vm.DeleteTestCommand.CanExecute(null));
-        }
-
-        [TestMethod]
-        [Owner("Pieter Terblanche")]
-        public void OnCreation_GivenIsEnabled_DeleteTestCommandShouldBeDisabled()
-        {
-            //---------------Set up test pack-------------------
-            var vm = new ServiceTestViewModel(CreateResourceModel());
-            //---------------Assert Precondition----------------
-            Assert.IsNotNull(vm);
-            //---------------Execute Test ----------------------
-            vm.CreateTestCommand.Execute(null);
-            vm.SelectedServiceTest.Enabled = true;
-            Assert.IsNotNull(vm.DeleteTestCommand);
-            //---------------Test Result -----------------------
-            Assert.IsFalse(vm.DeleteTestCommand.CanExecute(null));
-        }
-
-        [TestMethod]
-        [Owner("Nkosinathi Sangweni")]
         public void OnCreation_GivenIsNew_ShouldHaveDuplicateTestCommand()
         {
             //---------------Set up test pack-------------------
@@ -317,7 +271,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         {
             //------------Setup for test--------------------------
             var testFrameworkViewModel = new ServiceTestViewModel(CreateResourceModel());
-            var testModel = new ServiceTestModel { TestName = "Test 2" };
+            var testModel = new ServiceTestModel(Guid.NewGuid()) { TestName = "Test 2" };
             testFrameworkViewModel.Tests = new ObservableCollection<IServiceTestModel> { testModel };
             testFrameworkViewModel.SelectedServiceTest = testModel;
             //------------Assert Preconditions-------------------
@@ -371,7 +325,7 @@ namespace Warewolf.Studio.ViewModels.Tests
                   }
               };
             //------------Execute Test---------------------------
-            testFrameworkViewModel.SelectedServiceTest = new ServiceTestModel();
+            testFrameworkViewModel.SelectedServiceTest = new ServiceTestModel(Guid.NewGuid());
             //------------Assert Results-------------------------
             Assert.IsTrue(_wasCalled);
         }
