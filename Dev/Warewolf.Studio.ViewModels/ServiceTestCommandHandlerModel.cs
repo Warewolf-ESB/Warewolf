@@ -13,7 +13,8 @@ namespace Warewolf.Studio.ViewModels
             var testModel = new ServiceTestModel
             {
                 TestName = "Test 1",
-                IsDirty = true
+                IsDirty = true,
+                TestPending = true
             };
             if (!string.IsNullOrEmpty(resourceModel.DataList))
             {
