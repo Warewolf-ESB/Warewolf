@@ -103,6 +103,9 @@ goto RetryClean
 
 :StopRetryingClean
 
+REM ** Try refresh server bin resources
+IF NOT EXIST "%DeploymentDirectory%\Resources" IF EXIST "%~dp0..\..\..\Resources - Debug\Resources" echo d | xcopy /S /Y "%~dp0..\..\..\Resources - Debug\Resources" "%DeploymentDirectory%\Resources"
+
 REM ** Start the server service
 IF EXIST %windir%\nircmd.exe (nircmd elevate sc start "Warewolf Server") else (sc start "Warewolf Server")
 

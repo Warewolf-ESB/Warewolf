@@ -71,6 +71,9 @@ IF "%DeploymentDirectory%"=="" IF EXIST "%~dp0..\..\Dev2.Server\bin\Debug\Warewo
 IF "%DeploymentDirectory%"=="" IF EXIST "%~dp0Server\Warewolf Server.exe" SET DeploymentDirectory=%~dp0Server\
 IF EXIST "%DeploymentDirectory%\Server\Warewolf Server.exe" SET DeploymentDirectory=%DeploymentDirectory%\Server
 
+REM ** Try refresh server bin resources
+IF NOT EXIST "%DeploymentDirectory%\Resources" IF EXIST "%~dp0..\..\Resources - Debug\Resources" echo d | xcopy /S /Y "%~dp0..\..\Resources - Debug\Resources" "%DeploymentDirectory%\Resources"
+
 REM ** Start Warewolf server from deployed binaries **
 IF EXIST "%DeploymentDirectory%\ServerStarted" DEL "%DeploymentDirectory%\ServerStarted"
 IF EXIST %windir%\nircmd.exe (nircmd elevate "%DeploymentDirectory%\Warewolf Server.exe") else (START "%DeploymentDirectory%\Warewolf Server.exe" /D "%DeploymentDirectory%" "Warewolf Server.exe")
