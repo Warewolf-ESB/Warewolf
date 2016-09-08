@@ -8,6 +8,7 @@ using Dev2;
 using Dev2.Common.Interfaces;
 using Dev2.Interfaces;
 using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Core.Network;
 using Microsoft.Practices.Prism.Commands;
 using Microsoft.Practices.Prism.Mvvm;
 
@@ -20,11 +21,9 @@ namespace Warewolf.Studio.ViewModels
         private string _testPassingResult;
         private ObservableCollection<IServiceTestModel> _tests;
         private string _displayName;
-        private bool _isDirty;
 
         public ServiceTestViewModel(IContextualResourceModel resourceModel)
         {
-
             if (resourceModel == null)
                 throw new ArgumentNullException(nameof(resourceModel));
             ResourceModel = resourceModel;
@@ -40,6 +39,8 @@ namespace Warewolf.Studio.ViewModels
             StopTestCommand = new DelegateCommand(ServiceTestCommandHandler.StopTest, () => CanStopTest);
             CreateTestCommand = new DelegateCommand(CreateTests);
             CanSave = true;
+
+            RunAllTestsUrl = WebServer.GetWorkflowUri(resourceModel, "", UrlType.Tests).ToString();
         }
 
         private void CreateTests()
@@ -70,7 +71,7 @@ namespace Warewolf.Studio.ViewModels
         public bool CanRunSelectedTestInBrowser { get; set; }
         private bool CanRunSelectedTest => GetPermissions();
         public bool CanDuplicateTest => GetPermissions();
-        private bool CanDeleteTest => GetPermissions();
+        private bool CanDeleteTest => GetPermissions() && !SelectedServiceTest.Enabled;
         public bool CanSave { get; set; }
 
         private bool GetPermissions()
