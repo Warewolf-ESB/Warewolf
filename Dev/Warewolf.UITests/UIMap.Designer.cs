@@ -3510,7 +3510,7 @@ namespace Warewolf.UITests
             #region Variable Declarations
             WpfCustom dotNetDll = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll;
             WpfCustom largeView = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView;
-            WpfComboBox namespaceComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.NamespaceComboBox;
+            WpfComboBox classNameComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ClassNameComboBox;
             WpfComboBox actionsComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ActionsComboBox;
             WpfButton generateOutputsButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.GenerateOutputsButton;
             WpfTable inputsTable = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.InputsTable;
@@ -3523,7 +3523,7 @@ namespace Warewolf.UITests
             Assert.AreEqual(this.Open_DotNet_DLL_Connector_Tool_Large_ViewParams.LargeViewExists, largeView.Exists, "DotNet DLL tool large view does not exist on the design surface");
 
             // Verify that the 'Exists' property of 'NamespaceComboBox' combo box equals 'True'
-            Assert.AreEqual(this.Open_DotNet_DLL_Connector_Tool_Large_ViewParams.NamespaceComboBoxExists, namespaceComboBox.Exists, "DotNet DLL tool large view namespace combobox does not exist.");
+            Assert.AreEqual(this.Open_DotNet_DLL_Connector_Tool_Large_ViewParams.ClassNameComboBoxExists, classNameComboBox.Exists, "DotNet DLL tool large view namespace combobox does not exist.");
 
             // Verify that the 'Exists' property of 'ActionsComboBox' combo box equals 'True'
             Assert.AreEqual(this.Open_DotNet_DLL_Connector_Tool_Large_ViewParams.ActionsComboBoxExists, actionsComboBox.Exists, "DotNet DLL tool large view action combobox does not exist.");
@@ -5033,6 +5033,35 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
+        /// Select_LocalhostConnected_From_Deploy_Tab_Destination_Server_Combobox - Use 'Select_LocalhostConnected_From_Deploy_Tab_Destination_Server_ComboboxParams' to pass parameters into this method.
+        /// </summary>
+        public void Select_LocalhostConnected_From_Deploy_Tab_Destination_Server_Combobox()
+        {
+            #region Variable Declarations
+            WpfButton toggleButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DeployTab.WorkSurfaceContext.DestinationServerConectControl.Combobox.ToggleButton;
+            WpfCustom comboboxListItemAsNewRemoteServer = this.MainStudioWindow.ComboboxListItemAsNewRemoteServer;
+            WpfCustom comboboxListItemAsLocalhostConnected = this.MainStudioWindow.ComboboxListItemAsLocalhostConnected;
+            WpfText remoteConnectionIntegrationText = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DeployTab.WorkSurfaceContext.SourceServerConectControl.Combobox.RemoteConnectionIntegrationText;
+            #endregion
+
+            // Click 'ToggleButton' button
+            Mouse.Click(toggleButton, new Point(230, 9));
+
+            // Verify that the 'Exists' property of 'New Remote Server...' custom control equals 'True'
+            Assert.AreEqual(this.Select_LocalhostConnected_From_Deploy_Tab_Destination_Server_ComboboxParams.ComboboxListItemAsNewRemoteServerExists, comboboxListItemAsNewRemoteServer.Exists, "New Remote Server... option does not exist in Destination server combobox.");
+
+            // Verify that the 'Exists' property of 'localhost (Connected)' custom control equals 'True'
+            Assert.AreEqual(this.Select_LocalhostConnected_From_Deploy_Tab_Destination_Server_ComboboxParams.ComboboxListItemAsLocalhostConnectedExists, comboboxListItemAsLocalhostConnected.Exists, "Remote Connection Integration option does not exist in Destination server combobo" +
+                    "x.");
+
+            // Click 'localhost (Connected)' custom control
+            Mouse.Click(comboboxListItemAsLocalhostConnected, new Point(226, 13));
+
+            // Verify that the 'DisplayText' property of 'Remote Connection Integration' label equals 'Remote Connection Integration'
+            Assert.AreEqual(this.Select_LocalhostConnected_From_Deploy_Tab_Destination_Server_ComboboxParams.RemoteConnectionIntegrationTextDisplayText, remoteConnectionIntegrationText.DisplayText, "Selected source server in deploy is not Remote Connection Integration.");
+        }
+        
+        /// <summary>
         /// Select_MSSQLSERVER_From_DB_Source_Wizard_Address_Protocol_Dropdown - Use 'Select_MSSQLSERVER_From_DB_Source_Wizard_Address_Protocol_DropdownParams' to pass parameters into this method.
         /// </summary>
         public void Select_MSSQLSERVER_From_DB_Source_Wizard_Address_Protocol_Dropdown()
@@ -5304,35 +5333,6 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
-        /// Select_LocalhostConnected_From_Deploy_Tab_Destination_Server_Combobox - Use 'Select_LocalhostConnected_From_Deploy_Tab_Destination_Server_ComboboxParams' to pass parameters into this method.
-        /// </summary>
-        public void Select_LocalhostConnected_From_Deploy_Tab_Destination_Server_Combobox()
-        {
-            #region Variable Declarations
-            WpfButton toggleButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DeployTab.WorkSurfaceContext.DestinationServerConectControl.Combobox.ToggleButton;
-            WpfCustom comboboxListItemAsNewRemoteServer = this.MainStudioWindow.ComboboxListItemAsNewRemoteServer;
-            WpfCustom comboboxListItemAsLocalhostConnected = this.MainStudioWindow.ComboboxListItemAsLocalhostConnected;
-            WpfText remoteConnectionIntegrationText = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DeployTab.WorkSurfaceContext.SourceServerConectControl.Combobox.RemoteConnectionIntegrationText;
-            #endregion
-
-            // Click 'ToggleButton' button
-            Mouse.Click(toggleButton, new Point(230, 9));
-
-            // Verify that the 'Exists' property of 'New Remote Server...' custom control equals 'True'
-            Assert.AreEqual(this.Select_LocalhostConnected_From_Deploy_Tab_Destination_Server_ComboboxParams.ComboboxListItemAsNewRemoteServerExists, comboboxListItemAsNewRemoteServer.Exists, "New Remote Server... option does not exist in Destination server combobox.");
-
-            // Verify that the 'Exists' property of 'localhost (Connected)' custom control equals 'True'
-            Assert.AreEqual(this.Select_LocalhostConnected_From_Deploy_Tab_Destination_Server_ComboboxParams.ComboboxListItemAsLocalhostConnectedExists, comboboxListItemAsLocalhostConnected.Exists, "Remote Connection Integration option does not exist in Destination server combobo" +
-                    "x.");
-
-            // Click 'localhost (Connected)' custom control
-            Mouse.Click(comboboxListItemAsLocalhostConnected, new Point(226, 13));
-
-            // Verify that the 'DisplayText' property of 'Remote Connection Integration' label equals 'Remote Connection Integration'
-            Assert.AreEqual(this.Select_LocalhostConnected_From_Deploy_Tab_Destination_Server_ComboboxParams.RemoteConnectionIntegrationTextDisplayText, remoteConnectionIntegrationText.DisplayText, "Selected source server in deploy is not Remote Connection Integration.");
-        }
-        
-        /// <summary>
         /// Select_RemoteConnectionIntegrationConnected_From_Deploy_Tab_Source_Server_Combobox - Use 'Select_RemoteConnectionIntegrationConnected_From_Deploy_Tab_Source_Server_ComboboxParams' to pass parameters into this method.
         /// </summary>
         public void Select_RemoteConnectionIntegrationConnected_From_Deploy_Tab_Source_Server_Combobox()
@@ -5436,18 +5436,18 @@ namespace Warewolf.UITests
         public void Select_SystemRandom_From_DotNet_DLL_Large_View_Namespace_Combobox()
         {
             #region Variable Declarations
-            WpfComboBox namespaceComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.NamespaceComboBox;
-            WpfListItem systemRandomListItem = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.NamespaceComboBox.SystemRandomListItem;
+            WpfComboBox classNameComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ClassNameComboBox;
+            WpfListItem systemRandomListItem = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ClassNameComboBox.SystemRandomListItem;
             #endregion
 
             // Click 'NamespaceComboBox' combo box
-            Mouse.Click(namespaceComboBox, new Point(216, 7));
+            Mouse.Click(classNameComboBox, new Point(216, 7));
 
             // Click 'SystemRandom' list item
             Mouse.Click(systemRandomListItem, new Point(137, 7));
 
             // Verify that the 'SelectedItem' property of 'NamespaceComboBox' combo box equals 'System.Random'
-            Assert.AreEqual(this.Select_SystemRandom_From_DotNet_DLL_Large_View_Namespace_ComboboxExpectedValues.NamespaceComboBoxSelectedItem, namespaceComboBox.SelectedItem, "System.Random is not selected in DotNet DLL tool large view namespace combobox.");
+            Assert.AreEqual(this.Select_SystemRandom_From_DotNet_DLL_Large_View_Namespace_ComboboxExpectedValues.ClassNameComboBoxSelectedItem, classNameComboBox.SelectedItem, "System.Random is not selected in DotNet DLL tool large view namespace combobox.");
         }
         
         /// <summary>
@@ -7360,6 +7360,18 @@ namespace Warewolf.UITests
             }
         }
         
+        public virtual Select_LocalhostConnected_From_Deploy_Tab_Destination_Server_ComboboxParams Select_LocalhostConnected_From_Deploy_Tab_Destination_Server_ComboboxParams
+        {
+            get
+            {
+                if ((this.mSelect_LocalhostConnected_From_Deploy_Tab_Destination_Server_ComboboxParams == null))
+                {
+                    this.mSelect_LocalhostConnected_From_Deploy_Tab_Destination_Server_ComboboxParams = new Select_LocalhostConnected_From_Deploy_Tab_Destination_Server_ComboboxParams();
+                }
+                return this.mSelect_LocalhostConnected_From_Deploy_Tab_Destination_Server_ComboboxParams;
+            }
+        }
+        
         public virtual Select_MSSQLSERVER_From_DB_Source_Wizard_Address_Protocol_DropdownParams Select_MSSQLSERVER_From_DB_Source_Wizard_Address_Protocol_DropdownParams
         {
             get
@@ -7417,18 +7429,6 @@ namespace Warewolf.UITests
                     this.mSelect_RemoteConnectionIntegration_From_Deploy_Tab_Source_Server_ComboboxParams = new Select_RemoteConnectionIntegration_From_Deploy_Tab_Source_Server_ComboboxParams();
                 }
                 return this.mSelect_RemoteConnectionIntegration_From_Deploy_Tab_Source_Server_ComboboxParams;
-            }
-        }
-        
-        public virtual Select_LocalhostConnected_From_Deploy_Tab_Destination_Server_ComboboxParams Select_LocalhostConnected_From_Deploy_Tab_Destination_Server_ComboboxParams
-        {
-            get
-            {
-                if ((this.mSelect_LocalhostConnected_From_Deploy_Tab_Destination_Server_ComboboxParams == null))
-                {
-                    this.mSelect_LocalhostConnected_From_Deploy_Tab_Destination_Server_ComboboxParams = new Select_LocalhostConnected_From_Deploy_Tab_Destination_Server_ComboboxParams();
-                }
-                return this.mSelect_LocalhostConnected_From_Deploy_Tab_Destination_Server_ComboboxParams;
             }
         }
         
@@ -7950,6 +7950,8 @@ namespace Warewolf.UITests
         
         private Select_http_From_Server_Source_Wizard_Address_Protocol_DropdownParams mSelect_http_From_Server_Source_Wizard_Address_Protocol_DropdownParams;
         
+        private Select_LocalhostConnected_From_Deploy_Tab_Destination_Server_ComboboxParams mSelect_LocalhostConnected_From_Deploy_Tab_Destination_Server_ComboboxParams;
+        
         private Select_MSSQLSERVER_From_DB_Source_Wizard_Address_Protocol_DropdownParams mSelect_MSSQLSERVER_From_DB_Source_Wizard_Address_Protocol_DropdownParams;
         
         private Select_NewDatabaseSource_FromSqlServerToolParams mSelect_NewDatabaseSource_FromSqlServerToolParams;
@@ -7959,8 +7961,6 @@ namespace Warewolf.UITests
         private Select_RemoteConnectionIntegration_From_Deploy_Tab_Destination_Server_ComboboxParams mSelect_RemoteConnectionIntegration_From_Deploy_Tab_Destination_Server_ComboboxParams;
         
         private Select_RemoteConnectionIntegration_From_Deploy_Tab_Source_Server_ComboboxParams mSelect_RemoteConnectionIntegration_From_Deploy_Tab_Source_Server_ComboboxParams;
-        
-        private Select_LocalhostConnected_From_Deploy_Tab_Destination_Server_ComboboxParams mSelect_LocalhostConnected_From_Deploy_Tab_Destination_Server_ComboboxParams;
         
         private Select_RemoteConnectionIntegrationConnected_From_Deploy_Tab_Source_Server_ComboboxParams mSelect_RemoteConnectionIntegrationConnected_From_Deploy_Tab_Source_Server_ComboboxParams;
         
@@ -10569,7 +10569,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Verify that the 'Exists' property of 'NamespaceComboBox' combo box equals 'True'
         /// </summary>
-        public bool NamespaceComboBoxExists = true;
+        public bool ClassNameComboBoxExists = true;
         
         /// <summary>
         /// Verify that the 'Exists' property of 'ActionsComboBox' combo box equals 'True'
@@ -11054,6 +11054,31 @@ namespace Warewolf.UITests
     }
     
     /// <summary>
+    /// Parameters to be passed into 'Select_LocalhostConnected_From_Deploy_Tab_Destination_Server_Combobox'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Select_LocalhostConnected_From_Deploy_Tab_Destination_Server_ComboboxParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'New Remote Server...' custom control equals 'True'
+        /// </summary>
+        public bool ComboboxListItemAsNewRemoteServerExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'localhost (Connected)' custom control equals 'True'
+        /// </summary>
+        public bool ComboboxListItemAsLocalhostConnectedExists = true;
+        
+        /// <summary>
+        /// Verify that the 'DisplayText' property of 'Remote Connection Integration' label equals 'Remote Connection Integration'
+        /// </summary>
+        public string RemoteConnectionIntegrationTextDisplayText = "Remote Connection Integration";
+        #endregion
+    }
+    
+    /// <summary>
     /// Parameters to be passed into 'Select_MSSQLSERVER_From_DB_Source_Wizard_Address_Protocol_Dropdown'
     /// </summary>
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
@@ -11164,31 +11189,6 @@ namespace Warewolf.UITests
     }
     
     /// <summary>
-    /// Parameters to be passed into 'Select_LocalhostConnected_From_Deploy_Tab_Destination_Server_Combobox'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Select_LocalhostConnected_From_Deploy_Tab_Destination_Server_ComboboxParams
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Verify that the 'Exists' property of 'New Remote Server...' custom control equals 'True'
-        /// </summary>
-        public bool ComboboxListItemAsNewRemoteServerExists = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'localhost (Connected)' custom control equals 'True'
-        /// </summary>
-        public bool ComboboxListItemAsLocalhostConnectedExists = true;
-        
-        /// <summary>
-        /// Verify that the 'DisplayText' property of 'Remote Connection Integration' label equals 'Remote Connection Integration'
-        /// </summary>
-        public string RemoteConnectionIntegrationTextDisplayText = "Remote Connection Integration";
-        #endregion
-    }
-    
-    /// <summary>
     /// Parameters to be passed into 'Select_RemoteConnectionIntegrationConnected_From_Deploy_Tab_Source_Server_Combobox'
     /// </summary>
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
@@ -11239,7 +11239,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Verify that the 'SelectedItem' property of 'NamespaceComboBox' combo box equals 'System.Random'
         /// </summary>
-        public string NamespaceComboBoxSelectedItem = "System.Random";
+        public string ClassNameComboBoxSelectedItem = "System.Random";
         #endregion
     }
     
@@ -22954,15 +22954,15 @@ namespace Warewolf.UITests
             }
         }
         
-        public NamespaceComboBox NamespaceComboBox
+        public ClassNameComboBox ClassNameComboBox
         {
             get
             {
-                if ((this.mNamespaceComboBox == null))
+                if ((this.mClassNameComboBox == null))
                 {
-                    this.mNamespaceComboBox = new NamespaceComboBox(this);
+                    this.mClassNameComboBox = new ClassNameComboBox(this);
                 }
-                return this.mNamespaceComboBox;
+                return this.mClassNameComboBox;
             }
         }
         
@@ -23008,7 +23008,7 @@ namespace Warewolf.UITests
         
         private WpfTable mInputsTable;
         
-        private NamespaceComboBox mNamespaceComboBox;
+        private ClassNameComboBox mClassNameComboBox;
         
         private WpfButton mDoneButton;
         
@@ -23089,10 +23089,10 @@ namespace Warewolf.UITests
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class NamespaceComboBox : WpfComboBox
+    public class ClassNameComboBox : WpfComboBox
     {
         
-        public NamespaceComboBox(UITestControl searchLimitContainer) : 
+        public ClassNameComboBox(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
