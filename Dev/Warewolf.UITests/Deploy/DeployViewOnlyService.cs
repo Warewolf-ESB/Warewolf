@@ -9,8 +9,8 @@ namespace Warewolf.UITests.Deploy
     {
         private const string WorkflowName = "DeployViewOnly";
         private const string GroupName = "Public";
-        private const string RemoteServerAddress = "store.warewolf.io";
-        private const string RemoteServerSourceName = "WarewolfStore";
+        private const string RemoteServerAddress = "TST-CI-REMOTE";
+        private const string RemoteServerSourceName = "CIREMOTE";
 
         [TestMethod]
         public void DeployViewOnlyServiceUITest()
@@ -51,6 +51,7 @@ namespace Warewolf.UITests.Deploy
             Playback.PlaybackError -= Uimap.OnError;
             Uimap.TryCloseWorkflowTab();
             Uimap.TryCloseSettingsTab();
+            Uimap.TryCloseDeployTab();
         }
 
         public TestContext TestContext

@@ -144,6 +144,22 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
+        /// Click_Close_Deploy_Tab_Button - Use 'Click_Close_Deploy_Tab_ButtonParams' to pass parameters into this method.
+        /// </summary>
+        public void Click_Close_Deploy_Tab_Button()
+        {
+            #region Variable Declarations
+            WpfButton tabCloseButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DeployTab.TabCloseButton;
+            #endregion
+
+            // Verify that the 'Exists' property of '' button equals 'True'
+            Assert.AreEqual(this.Click_Close_Deploy_Tab_ButtonParams.TabCloseButtonExists, tabCloseButton.Exists, "Settings close tab button does not exist.");
+
+            // Click '' button
+            Mouse.Click(tabCloseButton, new Point(16, 6));
+        }
+        
+        /// <summary>
         /// Click_Close_FullScreen
         /// </summary>
         public void Click_Close_FullScreen()
@@ -432,98 +448,6 @@ namespace Warewolf.UITests
 
             // Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
             Assert.AreEqual(this.Click_Decision_Dialog_Done_ButtonParams.Connector1Exists, connector1.Exists, "No connectors exist on design surface.");
-        }
-        
-        /// <summary>
-        /// Click_Deploy_Ribbon_Button - Use 'Click_Deploy_Ribbon_ButtonParams' to pass parameters into this method.
-        /// </summary>
-        public void Click_Deploy_Ribbon_Button()
-        {
-            #region Variable Declarations
-            WpfButton deployButton = this.MainStudioWindow.SideMenuBar.DeployButton;
-            WpfTreeItem sourceServerName = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DeployTab.SourceServerName;
-            WpfButton refreshSourceServerButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DeployTab.WorkSurfaceContext.RefreshSourceServerButton;
-            WpfText filterText = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DeployTab.WorkSurfaceContext.FilterText;
-            WpfHyperlink overrideHyperlink = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DeployTab.WorkSurfaceContext.OverrideHyperlink;
-            WpfHyperlink newResourceHyperlink = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DeployTab.WorkSurfaceContext.NewResourceHyperlink;
-            WpfButton editSourceButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DeployTab.WorkSurfaceContext.EditSourceButton;
-            WpfButton sourceConnectButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DeployTab.WorkSurfaceContext.SourceConnectButton;
-            WpfButton editDestinationButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DeployTab.WorkSurfaceContext.EditDestinationButton;
-            WpfButton connectDestinationButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DeployTab.WorkSurfaceContext.DestinationServerConectControl.ConnectDestinationButton;
-            WpfCustom sourceConnectControl = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DeployTab.WorkSurfaceContext.SourceConnectControl;
-            WpfButton showDependenciesButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DeployTab.WorkSurfaceContext.ShowDependenciesButton;
-            WpfText servicesText = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DeployTab.WorkSurfaceContext.ServicesText;
-            WpfText serviceCountText = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DeployTab.WorkSurfaceContext.ServiceCountText;
-            WpfText sourcesText = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DeployTab.WorkSurfaceContext.SourcesText;
-            WpfText sourceCountText = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DeployTab.WorkSurfaceContext.SourceCountText;
-            WpfText newResourcesText = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DeployTab.WorkSurfaceContext.NewResourcesText;
-            WpfText overrideText = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DeployTab.WorkSurfaceContext.OverrideText;
-            WpfButton deployButton1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DeployTab.WorkSurfaceContext.DeployButton;
-            WpfText successMessageText = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DeployTab.WorkSurfaceContext.SuccessMessageText;
-            #endregion
-
-            // Verify that the 'Exists' property of 'Move resources between Warewolf servers' button equals 'True'
-            Assert.AreEqual(this.Click_Deploy_Ribbon_ButtonParams.DeployButtonExists, deployButton.Exists, "Deploy ribbon button does not exist");
-
-            // Click 'Move resources between Warewolf servers' button
-            Mouse.Click(deployButton, new Point(16, 11));
-
-            // Verify that the 'Exists' property of 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item equals 'True'
-            Assert.AreEqual(this.Click_Deploy_Ribbon_ButtonParams.SourceServerNameExists, sourceServerName.Exists, "Source server name in deploy window does not exist");
-
-            // Verify that the 'Exists' property of '' button equals 'True'
-            Assert.AreEqual(this.Click_Deploy_Ribbon_ButtonParams.RefreshSourceServerButtonExists, refreshSourceServerButton.Exists, "Refresh button source server does not exist in the deploy window");
-
-            // Verify that the 'Exists' property of 'Filter' label equals 'True'
-            Assert.AreEqual(this.Click_Deploy_Ribbon_ButtonParams.FilterTextExists, filterText.Exists, "Filter source server does not exist in the deploy window");
-
-            // Verify that the 'Exists' property of link equals 'True'
-            Assert.AreEqual(this.Click_Deploy_Ribbon_ButtonParams.OverrideHyperlinkExists, overrideHyperlink.Exists, "Override count in destination server does not exist in the deploy window");
-
-            // Verify that the 'Exists' property of link equals 'True'
-            Assert.AreEqual(this.Click_Deploy_Ribbon_ButtonParams.NewResourceHyperlinkExists, newResourceHyperlink.Exists, "New Resource count in destination server does not exist in the deploy window");
-
-            // Verify that the 'Exists' property of '...' button equals 'True'
-            Assert.AreEqual(this.Click_Deploy_Ribbon_ButtonParams.EditSourceButtonExists, editSourceButton.Exists, "Edit source server button does not exist in the deploy window");
-
-            // Verify that the 'Exists' property of 'UI_SourceConnectServerbtn_AutoID' button equals 'True'
-            Assert.AreEqual(this.Click_Deploy_Ribbon_ButtonParams.SourceConnectButtonExists, sourceConnectButton.Exists, "Connect button in the Source server does not exist");
-
-            // Verify that the 'Exists' property of '...' button equals 'True'
-            Assert.AreEqual(this.Click_Deploy_Ribbon_ButtonParams.EditDestinationButtonExists, editDestinationButton.Exists, "Edit Destination Server button does not exist");
-
-            // Verify that the 'Exists' property of 'UI_DestinationServerConnectbtn_AutoID' button equals 'True'
-            Assert.AreEqual(this.Click_Deploy_Ribbon_ButtonParams.ConnectDestinationButtonExists, connectDestinationButton.Exists, "Connect Button in Destination server does not exist in the deploy window");
-
-            // Verify that the 'Exists' property of 'SourceConnectControl' custom control equals 'True'
-            Assert.AreEqual(this.Click_Deploy_Ribbon_ButtonParams.SourceConnectControlExists, sourceConnectControl.Exists, "Source Server connect control does not exist in the deploy window");
-
-            // Verify that the 'Exists' property of 'Select All Dependencies' button equals 'True'
-            Assert.AreEqual(this.Click_Deploy_Ribbon_ButtonParams.ShowDependenciesButtonExists, showDependenciesButton.Exists, "Select All Dependencies button Destination Server does not exist");
-
-            // Verify that the 'Exists' property of 'Services' label equals 'True'
-            Assert.AreEqual(this.Click_Deploy_Ribbon_ButtonParams.ServicesTextExists, servicesText.Exists, "Services Label in destination server does not exist in the deploy window");
-
-            // Verify that the 'Exists' property of '0' label equals 'True'
-            Assert.AreEqual(this.Click_Deploy_Ribbon_ButtonParams.ServiceCountTextExists, serviceCountText.Exists, "Service Count value in destination server does not exist in the deploy window");
-
-            // Verify that the 'Exists' property of 'Sources' label equals 'True'
-            Assert.AreEqual(this.Click_Deploy_Ribbon_ButtonParams.SourcesTextExists, sourcesText.Exists, "Source label in destination server does not exist in the deploy window");
-
-            // Verify that the 'Exists' property of '0' label equals 'True'
-            Assert.AreEqual(this.Click_Deploy_Ribbon_ButtonParams.SourceCountTextExists, sourceCountText.Exists, "Source Count value in the destination server does not exist in the deploy window");
-
-            // Verify that the 'Exists' property of 'New Resources' label equals 'True'
-            Assert.AreEqual(this.Click_Deploy_Ribbon_ButtonParams.NewResourcesTextExists, newResourcesText.Exists, "New Resource Label in the destination server does not exist in the deploy window");
-
-            // Verify that the 'Exists' property of 'Override' label equals 'True'
-            Assert.AreEqual(this.Click_Deploy_Ribbon_ButtonParams.OverrideTextExists, overrideText.Exists, "Override label on Destination Server does not exist in the deploy window");
-
-            // Verify that the 'Exists' property of 'Deploy' button equals 'True'
-            Assert.AreEqual(this.Click_Deploy_Ribbon_ButtonParams.DeployButtonExists1, deployButton1.Exists, "Deploy button in Destination server does not exist in the deploy window");
-
-            // Verify that the 'Exists' property of '1 Resource Deployed Successfully.' label equals 'True'
-            Assert.AreEqual(this.Click_Deploy_Ribbon_ButtonParams.SuccessMessageTextExists, successMessageText.Exists, "Success message label does not exist in destination server of the deploy window");
         }
         
         /// <summary>
@@ -1410,53 +1334,6 @@ namespace Warewolf.UITests
 
             // Verify that the 'Exists' property of 'ServicePickerDialog' window equals 'False'
             Assert.AreEqual(this.Click_Service_Picker_Dialog_OKParams.ServicePickerDialogExists, servicePickerDialog.Exists, "Service picker dialog does exist");
-        }
-        
-        /// <summary>
-        /// Click_Settings_Ribbon_Button - Use 'Click_Settings_Ribbon_ButtonParams' to pass parameters into this method.
-        /// </summary>
-        public void Click_Settings_Ribbon_Button()
-        {
-            #region Variable Declarations
-            WpfButton configureSettingsButton = this.MainStudioWindow.SideMenuBar.ConfigureSettingsButton;
-            WpfTabPage loggingTab = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.LoggingTab;
-            WpfTabPage securityTab = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab;
-            WpfTable resourcePermissions = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions;
-            WpfTable serverPermissions = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions;
-            WpfButton deleteButton = this.MainStudioWindow.DockManager.SplitPaneRight.Variables.VariablesControl.DeleteButton;
-            WpfPane row1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1;
-            #endregion
-
-            // Verify that the 'Exists' property of 'Configure settings' button equals 'True'
-            Assert.AreEqual(this.Click_Settings_Ribbon_ButtonParams.ConfigureSettingsButtonExists, configureSettingsButton.Exists, "Settings ribbon does not exist.");
-
-            // Click 'Configure settings' button
-            Mouse.Click(configureSettingsButton, new Point(7, 2));
-
-            // Wait for 1 seconds for user delay between actions; Verify that the 'Exists' property of 'System.Windows.Controls.TabItem Header: Content:' tab equals 'True'
-            Playback.Wait(500);
-            Assert.AreEqual(this.Click_Settings_Ribbon_ButtonParams.LoggingTabExists, loggingTab.Exists, "Logging tab does not exist in the settings window");
-
-            // Verify that the 'Exists' property of 'System.Windows.Controls.TabItem Header: Content:' tab equals 'True'
-            Assert.AreEqual(this.Click_Settings_Ribbon_ButtonParams.SecurityTabExists, securityTab.Exists, "Security tab does not exist in the settings window");
-
-            // Verify that the 'Exists' property of 'System.Windows.Controls.TabItem Header: Content:' tab equals 'True'
-            Assert.AreEqual(this.Click_Settings_Ribbon_ButtonParams.LoggingTabExists1, loggingTab.Exists, "Logging tab does not exist in the settings window");
-
-            // Verify that the 'Exists' property of 'ResourcePermissionsDataGrid' table equals 'True'
-            Assert.AreEqual(this.Click_Settings_Ribbon_ButtonParams.ResourcePermissionsExists, resourcePermissions.Exists, "Resource Permissions does not exist in the settings window");
-
-            // Verify that the 'Exists' property of 'ServerPermissionsDataGrid' table equals 'True'
-            Assert.AreEqual(this.Click_Settings_Ribbon_ButtonParams.ServerPermissionsExists, serverPermissions.Exists, "Server Permissions does not exist in the settings window");
-
-            // Verify that the 'Exists' property of 'System.Windows.Controls.TabItem Header: Content:' tab equals 'True'
-            Assert.AreEqual(this.Click_Settings_Ribbon_ButtonParams.SecurityTabExists1, securityTab.Exists, "Security tab does not exist in the settings window");
-
-            // Verify that the 'Exists' property of '' button equals 'True'
-            Assert.AreEqual(this.Click_Settings_Ribbon_ButtonParams.DeleteButtonExists, deleteButton.Exists, "Variable list delete button does not exist");
-
-            // Verify that the 'Exists' property of 'Row1' pane equals 'True'
-            Assert.AreEqual(this.Click_Settings_Ribbon_ButtonParams.Row1Exists, row1.Exists, "Settings security tab resource permissions row1 does not exist");
         }
         
         /// <summary>
@@ -3342,13 +3219,13 @@ namespace Warewolf.UITests
         {
             #region Variable Declarations
             WpfEdit searchTextbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DeployTab.WorkSurfaceContext.SourceServerExplorer.SearchTextbox;
-            WpfTreeItem firstExplorerTreeItem = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DeployTab.FirstExplorerTreeItem;
+            WpfTreeItem firstExplorerTreeItem = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DeployTab.WorkSurfaceContext.SourceServerExplorer.ExplorerTree.SourceServerName.FirstExplorerTreeItem;
             #endregion
 
             // Type 'DeployViewOnly' in 'SearchTextBox' text box
             searchTextbox.Text = this.Enter_Text_Into_Deploy_Source_FilterParams.SearchTextboxText;
 
-            // Verify that the 'Exists' property of 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item equals 'True'
+            // Verify that the 'Exists' property of 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item equals 'True'
             Assert.AreEqual(this.Enter_Text_Into_Deploy_Source_FilterParams.FirstExplorerTreeItemExists, firstExplorerTreeItem.Exists, "First deploy tab source explorer item does not exist after filter is applied.");
         }
         
@@ -5624,6 +5501,18 @@ namespace Warewolf.UITests
             }
         }
         
+        public virtual Click_Close_Deploy_Tab_ButtonParams Click_Close_Deploy_Tab_ButtonParams
+        {
+            get
+            {
+                if ((this.mClick_Close_Deploy_Tab_ButtonParams == null))
+                {
+                    this.mClick_Close_Deploy_Tab_ButtonParams = new Click_Close_Deploy_Tab_ButtonParams();
+                }
+                return this.mClick_Close_Deploy_Tab_ButtonParams;
+            }
+        }
+        
         public virtual Click_Close_Settings_Tab_ButtonParams Click_Close_Settings_Tab_ButtonParams
         {
             get
@@ -5717,18 +5606,6 @@ namespace Warewolf.UITests
                     this.mClick_Decision_Dialog_Done_ButtonParams = new Click_Decision_Dialog_Done_ButtonParams();
                 }
                 return this.mClick_Decision_Dialog_Done_ButtonParams;
-            }
-        }
-        
-        public virtual Click_Deploy_Ribbon_ButtonParams Click_Deploy_Ribbon_ButtonParams
-        {
-            get
-            {
-                if ((this.mClick_Deploy_Ribbon_ButtonParams == null))
-                {
-                    this.mClick_Deploy_Ribbon_ButtonParams = new Click_Deploy_Ribbon_ButtonParams();
-                }
-                return this.mClick_Deploy_Ribbon_ButtonParams;
             }
         }
         
@@ -6005,18 +5882,6 @@ namespace Warewolf.UITests
                     this.mClick_Service_Picker_Dialog_OKParams = new Click_Service_Picker_Dialog_OKParams();
                 }
                 return this.mClick_Service_Picker_Dialog_OKParams;
-            }
-        }
-        
-        public virtual Click_Settings_Ribbon_ButtonParams Click_Settings_Ribbon_ButtonParams
-        {
-            get
-            {
-                if ((this.mClick_Settings_Ribbon_ButtonParams == null))
-                {
-                    this.mClick_Settings_Ribbon_ButtonParams = new Click_Settings_Ribbon_ButtonParams();
-                }
-                return this.mClick_Settings_Ribbon_ButtonParams;
             }
         }
         
@@ -7626,6 +7491,8 @@ namespace Warewolf.UITests
         
         private Click_Calculate_Large_View_Done_ButtonParams mClick_Calculate_Large_View_Done_ButtonParams;
         
+        private Click_Close_Deploy_Tab_ButtonParams mClick_Close_Deploy_Tab_ButtonParams;
+        
         private Click_Close_Settings_Tab_ButtonParams mClick_Close_Settings_Tab_ButtonParams;
         
         private Click_Close_Workflow_Tab_ButtonParams mClick_Close_Workflow_Tab_ButtonParams;
@@ -7641,8 +7508,6 @@ namespace Warewolf.UITests
         private Click_DebugInput_Debug_ButtonParams mClick_DebugInput_Debug_ButtonParams;
         
         private Click_Decision_Dialog_Done_ButtonParams mClick_Decision_Dialog_Done_ButtonParams;
-        
-        private Click_Deploy_Ribbon_ButtonParams mClick_Deploy_Ribbon_ButtonParams;
         
         private Click_Deploy_Tab_Destination_Server_ComboboxParams mClick_Deploy_Tab_Destination_Server_ComboboxParams;
         
@@ -7689,8 +7554,6 @@ namespace Warewolf.UITests
         private Click_Server_Source_Wizard_Test_Connection_ButtonParams mClick_Server_Source_Wizard_Test_Connection_ButtonParams;
         
         private Click_Service_Picker_Dialog_OKParams mClick_Service_Picker_Dialog_OKParams;
-        
-        private Click_Settings_Ribbon_ButtonParams mClick_Settings_Ribbon_ButtonParams;
         
         private Click_Show_Dependencies_In_Explorer_Context_MenuParams mClick_Show_Dependencies_In_Explorer_Context_MenuParams;
         
@@ -8041,6 +7904,21 @@ namespace Warewolf.UITests
     }
     
     /// <summary>
+    /// Parameters to be passed into 'Click_Close_Deploy_Tab_Button'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Click_Close_Deploy_Tab_ButtonParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of '' button equals 'True'
+        /// </summary>
+        public bool TabCloseButtonExists = true;
+        #endregion
+    }
+    
+    /// <summary>
     /// Parameters to be passed into 'Click_Close_Settings_Tab_Button'
     /// </summary>
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
@@ -8195,116 +8073,6 @@ namespace Warewolf.UITests
         /// Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
         /// </summary>
         public bool Connector1Exists = true;
-        #endregion
-    }
-    
-    /// <summary>
-    /// Parameters to be passed into 'Click_Deploy_Ribbon_Button'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Click_Deploy_Ribbon_ButtonParams
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Verify that the 'Exists' property of 'Move resources between Warewolf servers' button equals 'True'
-        /// </summary>
-        public bool DeployButtonExists = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item equals 'True'
-        /// </summary>
-        public bool SourceServerNameExists = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of '' button equals 'True'
-        /// </summary>
-        public bool RefreshSourceServerButtonExists = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'Filter' label equals 'True'
-        /// </summary>
-        public bool FilterTextExists = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of link equals 'True'
-        /// </summary>
-        public bool OverrideHyperlinkExists = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of link equals 'True'
-        /// </summary>
-        public bool NewResourceHyperlinkExists = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of '...' button equals 'True'
-        /// </summary>
-        public bool EditSourceButtonExists = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'UI_SourceConnectServerbtn_AutoID' button equals 'True'
-        /// </summary>
-        public bool SourceConnectButtonExists = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of '...' button equals 'True'
-        /// </summary>
-        public bool EditDestinationButtonExists = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'UI_DestinationServerConnectbtn_AutoID' button equals 'True'
-        /// </summary>
-        public bool ConnectDestinationButtonExists = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'SourceConnectControl' custom control equals 'True'
-        /// </summary>
-        public bool SourceConnectControlExists = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'Select All Dependencies' button equals 'True'
-        /// </summary>
-        public bool ShowDependenciesButtonExists = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'Services' label equals 'True'
-        /// </summary>
-        public bool ServicesTextExists = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of '0' label equals 'True'
-        /// </summary>
-        public bool ServiceCountTextExists = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'Sources' label equals 'True'
-        /// </summary>
-        public bool SourcesTextExists = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of '0' label equals 'True'
-        /// </summary>
-        public bool SourceCountTextExists = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'New Resources' label equals 'True'
-        /// </summary>
-        public bool NewResourcesTextExists = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'Override' label equals 'True'
-        /// </summary>
-        public bool OverrideTextExists = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'Deploy' button equals 'True'
-        /// </summary>
-        public bool DeployButtonExists1 = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of '1 Resource Deployed Successfully.' label equals 'True'
-        /// </summary>
-        public bool SuccessMessageTextExists = true;
         #endregion
     }
     
@@ -8730,61 +8498,6 @@ namespace Warewolf.UITests
         /// Verify that the 'Exists' property of 'ServicePickerDialog' window equals 'False'
         /// </summary>
         public bool ServicePickerDialogExists = false;
-        #endregion
-    }
-    
-    /// <summary>
-    /// Parameters to be passed into 'Click_Settings_Ribbon_Button'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Click_Settings_Ribbon_ButtonParams
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Verify that the 'Exists' property of 'Configure settings' button equals 'True'
-        /// </summary>
-        public bool ConfigureSettingsButtonExists = true;
-        
-        /// <summary>
-        /// Wait for 1 seconds for user delay between actions; Verify that the 'Exists' property of 'System.Windows.Controls.TabItem Header: Content:' tab equals 'True'
-        /// </summary>
-        public bool LoggingTabExists = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'System.Windows.Controls.TabItem Header: Content:' tab equals 'True'
-        /// </summary>
-        public bool SecurityTabExists = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'System.Windows.Controls.TabItem Header: Content:' tab equals 'True'
-        /// </summary>
-        public bool LoggingTabExists1 = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'ResourcePermissionsDataGrid' table equals 'True'
-        /// </summary>
-        public bool ResourcePermissionsExists = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'ServerPermissionsDataGrid' table equals 'True'
-        /// </summary>
-        public bool ServerPermissionsExists = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'System.Windows.Controls.TabItem Header: Content:' tab equals 'True'
-        /// </summary>
-        public bool SecurityTabExists1 = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of '' button equals 'True'
-        /// </summary>
-        public bool DeleteButtonExists = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'Row1' pane equals 'True'
-        /// </summary>
-        public bool Row1Exists = true;
         #endregion
     }
     
@@ -10402,7 +10115,7 @@ namespace Warewolf.UITests
         public string SearchTextboxText = "DeployViewOnly";
         
         /// <summary>
-        /// Verify that the 'Exists' property of 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item equals 'True'
+        /// Verify that the 'Exists' property of 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item equals 'True'
         /// </summary>
         public bool FirstExplorerTreeItemExists = true;
         #endregion
@@ -17821,22 +17534,6 @@ namespace Warewolf.UITests
             }
         }
         
-        public WpfTreeItem SourceServerName
-        {
-            get
-            {
-                if ((this.mSourceServerName == null))
-                {
-                    this.mSourceServerName = new WpfTreeItem(this);
-                    #region Search Criteria
-                    this.mSourceServerName.SearchProperties[WpfTreeItem.PropertyNames.Name] = "Infragistics.Controls.Menus.XamDataTreeNodeDataContext";
-                    this.mSourceServerName.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mSourceServerName;
-            }
-        }
-        
         public WpfButton TabCloseButton
         {
             get
@@ -17852,32 +17549,12 @@ namespace Warewolf.UITests
                 return this.mTabCloseButton;
             }
         }
-        
-        public WpfTreeItem FirstExplorerTreeItem
-        {
-            get
-            {
-                if ((this.mFirstExplorerTreeItem == null))
-                {
-                    this.mFirstExplorerTreeItem = new WpfTreeItem(this);
-                    #region Search Criteria
-                    this.mFirstExplorerTreeItem.SearchProperties[WpfTreeItem.PropertyNames.Name] = "Infragistics.Controls.Menus.XamDataTreeNodeDataContext";
-                    this.mFirstExplorerTreeItem.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mFirstExplorerTreeItem;
-            }
-        }
         #endregion
         
         #region Fields
         private WorkSurfaceContext1 mWorkSurfaceContext;
         
-        private WpfTreeItem mSourceServerName;
-        
         private WpfButton mTabCloseButton;
-        
-        private WpfTreeItem mFirstExplorerTreeItem;
         #endregion
     }
     
@@ -17909,22 +17586,6 @@ namespace Warewolf.UITests
                     #endregion
                 }
                 return this.mRefreshSourceServerButton;
-            }
-        }
-        
-        public WpfText FilterText
-        {
-            get
-            {
-                if ((this.mFilterText == null))
-                {
-                    this.mFilterText = new WpfText(this);
-                    #region Search Criteria
-                    this.mFilterText.SearchProperties[WpfText.PropertyNames.AutomationId] = "LabelText";
-                    this.mFilterText.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mFilterText;
             }
         }
         
@@ -18205,8 +17866,6 @@ namespace Warewolf.UITests
         #region Fields
         private WpfButton mRefreshSourceServerButton;
         
-        private WpfText mFilterText;
-        
         private WpfHyperlink mOverrideHyperlink;
         
         private WpfHyperlink mNewResourceHyperlink;
@@ -18325,36 +17984,20 @@ namespace Warewolf.UITests
             }
         }
         
-        public WpfCustom UIUI_IndicatorConnectiCustom
+        public WpfCustom Spinner
         {
             get
             {
-                if ((this.mUIUI_IndicatorConnectiCustom == null))
+                if ((this.mSpinner == null))
                 {
-                    this.mUIUI_IndicatorConnectiCustom = new WpfCustom(this);
+                    this.mSpinner = new WpfCustom(this);
                     #region Search Criteria
-                    this.mUIUI_IndicatorConnectiCustom.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.CircularProgressBar";
-                    this.mUIUI_IndicatorConnectiCustom.SearchProperties[WpfControl.PropertyNames.AutomationId] = "UI_IndicatorConnecting_AutoID";
-                    this.mUIUI_IndicatorConnectiCustom.WindowTitles.Add("Warewolf");
+                    this.mSpinner.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.CircularProgressBar";
+                    this.mSpinner.SearchProperties[WpfControl.PropertyNames.AutomationId] = "UI_IndicatorConnecting_AutoID";
+                    this.mSpinner.WindowTitles.Add("Warewolf");
                     #endregion
                 }
-                return this.mUIUI_IndicatorConnectiCustom;
-            }
-        }
-        
-        public WpfButton UIUI_DestinationServerButton
-        {
-            get
-            {
-                if ((this.mUIUI_DestinationServerButton == null))
-                {
-                    this.mUIUI_DestinationServerButton = new WpfButton(this);
-                    #region Search Criteria
-                    this.mUIUI_DestinationServerButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "UI_DestinationServerConnectbtn_AutoID";
-                    this.mUIUI_DestinationServerButton.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mUIUI_DestinationServerButton;
+                return this.mSpinner;
             }
         }
         #endregion
@@ -18364,9 +18007,7 @@ namespace Warewolf.UITests
         
         private WpfButton mConnectDestinationButton;
         
-        private WpfCustom mUIUI_IndicatorConnectiCustom;
-        
-        private WpfButton mUIUI_DestinationServerButton;
+        private WpfCustom mSpinner;
         #endregion
     }
     
@@ -18450,36 +18091,20 @@ namespace Warewolf.UITests
             }
         }
         
-        public WpfCustom UIUI_IndicatorConnectiCustom
+        public WpfCustom Spinner
         {
             get
             {
-                if ((this.mUIUI_IndicatorConnectiCustom == null))
+                if ((this.mSpinner == null))
                 {
-                    this.mUIUI_IndicatorConnectiCustom = new WpfCustom(this);
+                    this.mSpinner = new WpfCustom(this);
                     #region Search Criteria
-                    this.mUIUI_IndicatorConnectiCustom.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.CircularProgressBar";
-                    this.mUIUI_IndicatorConnectiCustom.SearchProperties[WpfControl.PropertyNames.AutomationId] = "UI_IndicatorConnecting_AutoID";
-                    this.mUIUI_IndicatorConnectiCustom.WindowTitles.Add("Warewolf");
+                    this.mSpinner.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.CircularProgressBar";
+                    this.mSpinner.SearchProperties[WpfControl.PropertyNames.AutomationId] = "UI_IndicatorConnecting_AutoID";
+                    this.mSpinner.WindowTitles.Add("Warewolf");
                     #endregion
                 }
-                return this.mUIUI_IndicatorConnectiCustom;
-            }
-        }
-        
-        public WpfButton UIUI_SourceServerButton
-        {
-            get
-            {
-                if ((this.mUIUI_SourceServerButton == null))
-                {
-                    this.mUIUI_SourceServerButton = new WpfButton(this);
-                    #region Search Criteria
-                    this.mUIUI_SourceServerButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "UI_SourceServerConnectbtn_AutoID";
-                    this.mUIUI_SourceServerButton.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mUIUI_SourceServerButton;
+                return this.mSpinner;
             }
         }
         #endregion
@@ -18489,9 +18114,7 @@ namespace Warewolf.UITests
         
         private WpfButton mConnectSourceButton;
         
-        private WpfCustom mUIUI_IndicatorConnectiCustom;
-        
-        private WpfButton mUIUI_SourceServerButton;
+        private WpfCustom mSpinner;
         #endregion
     }
     
@@ -18562,10 +18185,112 @@ namespace Warewolf.UITests
                 return this.mSearchTextbox;
             }
         }
+        
+        public ExplorerTree1 ExplorerTree
+        {
+            get
+            {
+                if ((this.mExplorerTree == null))
+                {
+                    this.mExplorerTree = new ExplorerTree1(this);
+                }
+                return this.mExplorerTree;
+            }
+        }
+        
+        public WpfText FilterText
+        {
+            get
+            {
+                if ((this.mFilterText == null))
+                {
+                    this.mFilterText = new WpfText(this);
+                    #region Search Criteria
+                    this.mFilterText.SearchProperties[WpfText.PropertyNames.AutomationId] = "LabelText";
+                    this.mFilterText.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mFilterText;
+            }
+        }
         #endregion
         
         #region Fields
         private WpfEdit mSearchTextbox;
+        
+        private ExplorerTree1 mExplorerTree;
+        
+        private WpfText mFilterText;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class ExplorerTree1 : WpfTree
+    {
+        
+        public ExplorerTree1(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfTree.PropertyNames.AutomationId] = "ExplorerTree";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public SourceServerName SourceServerName
+        {
+            get
+            {
+                if ((this.mSourceServerName == null))
+                {
+                    this.mSourceServerName = new SourceServerName(this);
+                }
+                return this.mSourceServerName;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private SourceServerName mSourceServerName;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class SourceServerName : WpfTreeItem
+    {
+        
+        public SourceServerName(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfTreeItem.PropertyNames.Name] = "Infragistics.Controls.Menus.XamDataTreeNodeDataContext";
+            this.WindowTitles.Add("Warewolf");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfTreeItem FirstExplorerTreeItem
+        {
+            get
+            {
+                if ((this.mFirstExplorerTreeItem == null))
+                {
+                    this.mFirstExplorerTreeItem = new WpfTreeItem(this);
+                    #region Search Criteria
+                    this.mFirstExplorerTreeItem.SearchProperties[WpfTreeItem.PropertyNames.Name] = "Infragistics.Controls.Menus.XamDataTreeNodeDataContext";
+                    this.mFirstExplorerTreeItem.SearchProperties[WpfTreeItem.PropertyNames.Instance] = "2";
+                    this.mFirstExplorerTreeItem.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mFirstExplorerTreeItem.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mFirstExplorerTreeItem;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfTreeItem mFirstExplorerTreeItem;
         #endregion
     }
     
@@ -34217,13 +33942,13 @@ namespace Warewolf.UITests
             }
         }
         
-        public ExplorerTree1 ExplorerTree
+        public ExplorerTree2 ExplorerTree
         {
             get
             {
                 if ((this.mExplorerTree == null))
                 {
-                    this.mExplorerTree = new ExplorerTree1(this);
+                    this.mExplorerTree = new ExplorerTree2(this);
                 }
                 return this.mExplorerTree;
             }
@@ -34235,15 +33960,15 @@ namespace Warewolf.UITests
         
         private WpfButton mRefreshButton;
         
-        private ExplorerTree1 mExplorerTree;
+        private ExplorerTree2 mExplorerTree;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class ExplorerTree1 : WpfTree
+    public class ExplorerTree2 : WpfTree
     {
         
-        public ExplorerTree1(UITestControl searchLimitContainer) : 
+        public ExplorerTree2(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -34737,13 +34462,13 @@ namespace Warewolf.UITests
             }
         }
         
-        public ExplorerTree2 ExplorerTree
+        public ExplorerTree3 ExplorerTree
         {
             get
             {
                 if ((this.mExplorerTree == null))
                 {
-                    this.mExplorerTree = new ExplorerTree2(this);
+                    this.mExplorerTree = new ExplorerTree3(this);
                 }
                 return this.mExplorerTree;
             }
@@ -34755,15 +34480,15 @@ namespace Warewolf.UITests
         
         private WpfButton mRefresh;
         
-        private ExplorerTree2 mExplorerTree;
+        private ExplorerTree3 mExplorerTree;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class ExplorerTree2 : WpfTree
+    public class ExplorerTree3 : WpfTree
     {
         
-        public ExplorerTree2(UITestControl searchLimitContainer) : 
+        public ExplorerTree3(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -34862,6 +34587,94 @@ namespace Warewolf.UITests
         
         #region Fields
         private WpfButton mDoneButton;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIWarewolfDEV2ASHLEYLEWindow : WpfWindow
+    {
+        
+        public UIWarewolfDEV2ASHLEYLEWindow()
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfWindow.PropertyNames.Name] = "Warewolf (DEV2\\ASHLEY.LEWIS)";
+            this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfCustom UIDsfForEachActivityCustom
+        {
+            get
+            {
+                if ((this.mUIDsfForEachActivityCustom == null))
+                {
+                    this.mUIDsfForEachActivityCustom = new WpfCustom(this);
+                    #region Search Criteria
+                    this.mUIDsfForEachActivityCustom.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ForeachDesigner";
+                    this.mUIDsfForEachActivityCustom.SearchProperties[WpfControl.PropertyNames.AutomationId] = "For Each(ForeachDesigner)";
+                    this.mUIDsfForEachActivityCustom.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mUIDsfForEachActivityCustom;
+            }
+        }
+        
+        public UIItemCustom UIItemCustom
+        {
+            get
+            {
+                if ((this.mUIItemCustom == null))
+                {
+                    this.mUIItemCustom = new UIItemCustom(this);
+                }
+                return this.mUIItemCustom;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfCustom mUIDsfForEachActivityCustom;
+        
+        private UIItemCustom mUIItemCustom;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIItemCustom : WpfCustom
+    {
+        
+        public UIItemCustom(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.DeployView";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfCustom UISourceNavigationViewCustom
+        {
+            get
+            {
+                if ((this.mUISourceNavigationViewCustom == null))
+                {
+                    this.mUISourceNavigationViewCustom = new WpfCustom(this);
+                    #region Search Criteria
+                    this.mUISourceNavigationViewCustom.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ExplorerView";
+                    this.mUISourceNavigationViewCustom.SearchProperties[WpfControl.PropertyNames.AutomationId] = "SourceNavigationView";
+                    this.mUISourceNavigationViewCustom.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mUISourceNavigationViewCustom;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfCustom mUISourceNavigationViewCustom;
         #endregion
     }
 }
