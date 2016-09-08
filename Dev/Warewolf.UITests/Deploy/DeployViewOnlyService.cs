@@ -51,6 +51,7 @@ namespace Warewolf.UITests.Deploy
             Playback.PlaybackError -= Uimap.OnError;
             Uimap.TryCloseWorkflowTab();
             Uimap.TryCloseSettingsTab();
+            Uimap.TryCloseDeployTab();
         }
 
         public TestContext TestContext
