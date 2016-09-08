@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Windows;
 using Dev2;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Help;
+using Dev2.Common.Interfaces.PopupController;
 using Dev2.Data.Binary_Objects;
 using Dev2.Interfaces;
 using Dev2.Studio.Core.Interfaces;
@@ -64,6 +66,19 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
+        [Owner("Pieter Terblanche")]
+        public void OnCreation_GivenIsNew_ShouldHaveRunAllTestsUrl()
+        {
+            //---------------Set up test pack-------------------
+            var vm = new ServiceTestViewModel(CreateResourceModel());
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(vm);
+            //---------------Execute Test ----------------------
+            //---------------Test Result -----------------------
+            Assert.AreEqual("http://rsaklf/secure/My WF.tests", vm.RunAllTestsUrl);
+        }
+
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void OnCreation_GivenIsNew_ShouldHaveDeleteTestCommand()
         {
@@ -72,6 +87,38 @@ namespace Warewolf.Studio.ViewModels.Tests
             //---------------Assert Precondition----------------
             Assert.IsNotNull(vm);
             //---------------Execute Test ----------------------
+            vm.CreateTestCommand.Execute(null);
+            Assert.IsNotNull(vm.DeleteTestCommand);
+            //---------------Test Result -----------------------
+            Assert.IsTrue(vm.DeleteTestCommand.CanExecute(null));
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        public void OnCreation_GivenIsDisabled_DeleteTestCommandShouldBeEnabled()
+        {
+            //---------------Set up test pack-------------------
+            var vm = new ServiceTestViewModel(CreateResourceModel());
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(vm);
+            //---------------Execute Test ----------------------
+            vm.CreateTestCommand.Execute(null);
+            Assert.IsNotNull(vm.DeleteTestCommand);
+            //---------------Test Result -----------------------
+            Assert.IsTrue(vm.DeleteTestCommand.CanExecute(null));
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        public void OnCreation_GivenIsEnabled_DeleteTestCommandShouldBeDisabled()
+        {
+            //---------------Set up test pack-------------------
+            var vm = new ServiceTestViewModel(CreateResourceModel());
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(vm);
+            //---------------Execute Test ----------------------
+            vm.CreateTestCommand.Execute(null);
+            vm.SelectedServiceTest.Enabled = true;
             Assert.IsNotNull(vm.DeleteTestCommand);
             //---------------Test Result -----------------------
             Assert.IsFalse(vm.DeleteTestCommand.CanExecute(null));
@@ -88,7 +135,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //---------------Execute Test ----------------------
             Assert.IsNotNull(vm.DuplicateTestCommand);
             //---------------Test Result -----------------------
-            Assert.IsFalse(vm.DuplicateTestCommand.CanExecute(null));
+            Assert.IsTrue(vm.DuplicateTestCommand.CanExecute(null));
         }
 
 
@@ -127,6 +174,10 @@ namespace Warewolf.Studio.ViewModels.Tests
             moqModel.SetupAllProperties();
             moqModel.Setup(model => model.DisplayName).Returns("My WF");
             moqModel.Setup(model => model.Environment.Connection.IsConnected).Returns(true);
+            moqModel.Setup(model => model.Environment.IsConnected).Returns(true);
+            moqModel.Setup(model => model.Environment.Connection.WebServerUri).Returns(new Uri("http://rsaklf/bob"));
+            moqModel.Setup(model => model.Category).Returns("My WF");
+            moqModel.Setup(model => model.ResourceName).Returns("My WF");
             return moqModel.Object;
         }
 
@@ -155,9 +206,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             //---------------Execute Test ----------------------
             Assert.IsNotNull(vm.RunAllTestsCommand);
             //---------------Test Result -----------------------
-            Assert.IsFalse(vm.RunAllTestsCommand.CanExecute(null));
+            Assert.IsTrue(vm.RunAllTestsCommand.CanExecute(null));
         }
-
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
@@ -170,7 +220,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //---------------Execute Test ----------------------
             Assert.IsNotNull(vm.RunSelectedTestCommand);
             //---------------Test Result -----------------------
-            Assert.IsFalse(vm.RunSelectedTestCommand.CanExecute(null));
+            Assert.IsTrue(vm.RunSelectedTestCommand.CanExecute(null));
         }
 
 
@@ -186,7 +236,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //---------------Execute Test ----------------------
             Assert.IsNotNull(vm.RunAllTestsInBrowserCommand);
             //---------------Test Result -----------------------
-            Assert.IsFalse(vm.RunAllTestsInBrowserCommand.CanExecute(null));
+            Assert.IsTrue(vm.RunAllTestsInBrowserCommand.CanExecute(null));
         }
 
         [TestMethod]
@@ -256,6 +306,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual(2, testFrameworkViewModel.Tests.Count);
             Assert.AreNotEqual(testModel, testFrameworkViewModel.SelectedServiceTest);
             Assert.AreEqual(testFrameworkViewModel.Tests[0], testFrameworkViewModel.SelectedServiceTest);
+            Assert.AreEqual("http://rsaklf/secure/My WF.tests/Test 1", testFrameworkViewModel.SelectedServiceTest.RunSelectedTestUrl);
         }
 
         [TestMethod]
@@ -358,6 +409,18 @@ namespace Warewolf.Studio.ViewModels.Tests
             mockResourceRepo.Verify(repository => repository.SaveTests(It.IsAny<Guid>(), It.IsAny<List<IServiceTestModel>>()), Times.Once);
         }
 
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("TestFrameworkViewModel_Constructor")]
+        public void TestFrameworkViewModel_Constructor_IsDirty_IsFalse()
+        {
+            //------------Setup for test--------------------------
+            var testFrameworkViewModel = new ServiceTestViewModel(CreateResourceModel());
+            //------------Assert Preconditions-------------------
+            //------------Execute Test---------------------------
+            //------------Assert Results-------------------------
+            Assert.IsFalse(testFrameworkViewModel.IsDirty);
+        }
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
