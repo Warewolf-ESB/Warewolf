@@ -7044,6 +7044,24 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Save before continuing.
+        /// </summary>
+        public static string ServiceTestRunAllUnsavedTestsHeader {
+            get {
+                return ResourceManager.GetString("ServiceTestRunAllUnsavedTestsHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please save currently edited Test(s) before running the tests..
+        /// </summary>
+        public static string ServiceTestRunAllUnsavedTestsMessage {
+            get {
+                return ResourceManager.GetString("ServiceTestRunAllUnsavedTestsMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Run this test.
         /// </summary>
         public static string ServiceTestRunSelectedTestHelpText {
@@ -7067,6 +7085,24 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string ServiceTestRunSelectedTestTooltip {
             get {
                 return ResourceManager.GetString("ServiceTestRunSelectedTestTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Save before continuing.
+        /// </summary>
+        public static string ServiceTestSaveEditedTestsHeader {
+            get {
+                return ResourceManager.GetString("ServiceTestSaveEditedTestsHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please save currently edited Test(s) before creating a new one..
+        /// </summary>
+        public static string ServiceTestSaveEditedTestsMessage {
+            get {
+                return ResourceManager.GetString("ServiceTestSaveEditedTestsMessage", resourceCulture);
             }
         }
         

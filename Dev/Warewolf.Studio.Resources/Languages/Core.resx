@@ -478,6 +478,18 @@ The more information you can provide us with, the faster we can track the issue 
   <data name="DatabaseSourceServerNewHeaderLabel" xml:space="preserve">
     <value>New Database Source</value>
   </data>
+  <data name="ServiceTestSaveEditedTestsMessage" xml:space="preserve">
+    <value>Please save currently edited Test(s) before creating a new one.</value>
+  </data>
+  <data name="ServiceTestSaveEditedTestsHeader" xml:space="preserve">
+    <value>Save before continuing</value>
+  </data>
+  <data name="ServiceTestRunAllUnsavedTestsMessage" xml:space="preserve">
+    <value>Please save currently edited Test(s) before running the tests.</value>
+  </data>
+  <data name="ServiceTestRunAllUnsavedTestsHeader" xml:space="preserve">
+    <value>Save before continuing</value>
+  </data>
   <data name="ExplorerMoveFailedMessage" xml:space="preserve">
     <value>An unexpected error occured which prevented the resource from being moved.</value>
   </data>

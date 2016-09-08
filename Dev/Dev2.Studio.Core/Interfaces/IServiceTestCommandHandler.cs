@@ -6,8 +6,8 @@ namespace Dev2.Studio.Core.Interfaces
     {
         IServiceTestModel CreateTest(IResourceModel resourceModel);
         void StopTest();
-        void RunAllTestsInBrowser();
-        void RunAllTestsCommand();
+        void RunAllTestsInBrowser(bool isDirty);
+        void RunAllTestsCommand(bool isDirty);
         void RunSelectedTestInBrowser();
         void RunSelectedTest();
         void DuplicateTest();

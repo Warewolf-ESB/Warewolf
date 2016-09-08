@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Windows;
 using Dev2;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Help;
+using Dev2.Common.Interfaces.PopupController;
 using Dev2.Data.Binary_Objects;
 using Dev2.Interfaces;
 using Dev2.Studio.Core.Interfaces;
@@ -191,9 +193,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             //---------------Execute Test ----------------------
             Assert.IsNotNull(vm.RunAllTestsCommand);
             //---------------Test Result -----------------------
-            Assert.IsFalse(vm.RunAllTestsCommand.CanExecute(null));
+            Assert.IsTrue(vm.RunAllTestsCommand.CanExecute(null));
         }
-
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
@@ -222,7 +223,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //---------------Execute Test ----------------------
             Assert.IsNotNull(vm.RunAllTestsInBrowserCommand);
             //---------------Test Result -----------------------
-            Assert.IsFalse(vm.RunAllTestsInBrowserCommand.CanExecute(null));
+            Assert.IsTrue(vm.RunAllTestsInBrowserCommand.CanExecute(null));
         }
 
         [TestMethod]

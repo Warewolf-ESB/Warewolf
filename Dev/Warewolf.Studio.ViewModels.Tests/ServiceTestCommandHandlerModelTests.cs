@@ -1,4 +1,6 @@
-﻿using Dev2.Data.Binary_Objects;
+﻿using System.Windows;
+using Dev2;
+using Dev2.Data.Binary_Objects;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Models.DataList;
 using Dev2.Studio.ViewModels.DataList;
@@ -103,6 +105,38 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual(1, testModel.Outputs.Count);
             Assert.AreEqual("res", testModel.Outputs[0].Variable);
             Assert.AreEqual(null, testModel.Outputs[0].Value);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("TestCommandHandlerModelTests_RunAllTests")]
+        public void TestCommandHandlerModelTests_RunAllTests_Execute_ShouldThrowError()
+        {
+            //------------Setup for test--------------------------
+            var testFrameworkViewModel = new ServiceTestCommandHandlerModel();
+            //------------Assert Preconditions-------------------
+            //------------Execute Test---------------------------
+            var popupController = new Mock<Dev2.Common.Interfaces.Studio.Controller.IPopupController>();
+            CustomContainer.Register(popupController.Object);
+            testFrameworkViewModel.RunAllTestsCommand(true);
+            //------------Assert Results-------------------------
+            popupController.Verify(controller => controller.Show(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<MessageBoxButton>(), MessageBoxImage.Error, null, false, true, false, false), Times.Once);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("TestCommandHandlerModelTests_RunAllTests")]
+        public void TestCommandHandlerModelTests_RunAllTestsInBrowser_Execute_ShouldThrowError()
+        {
+            //------------Setup for test--------------------------
+            var testFrameworkViewModel = new ServiceTestCommandHandlerModel();
+            //------------Assert Preconditions-------------------
+            //------------Execute Test---------------------------
+            var popupController = new Mock<Dev2.Common.Interfaces.Studio.Controller.IPopupController>();
+            CustomContainer.Register(popupController.Object);
+            testFrameworkViewModel.RunAllTestsInBrowser(true);
+            //------------Assert Results-------------------------
+            popupController.Verify(controller => controller.Show(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<MessageBoxButton>(), MessageBoxImage.Error, null, false, true, false, false), Times.Once);
         }
 
         private IResourceModel CreateResourceModelWithSingleScalarInput()
