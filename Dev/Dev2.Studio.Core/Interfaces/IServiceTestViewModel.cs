@@ -14,7 +14,7 @@ namespace Dev2.Studio.Core.Interfaces
         string TestPassingResult { get; set; }
         ObservableCollection<IServiceTestModel> Tests  { get; set; }
 
-        ICommand DeleteTestCommand { get; set; }
+        
         ICommand DuplicateTestCommand { get; set; }
         ICommand RunAllTestsInBrowserCommand { get; set; }
         ICommand RunAllTestsCommand { get; set; }

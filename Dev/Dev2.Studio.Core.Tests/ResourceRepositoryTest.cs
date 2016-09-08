@@ -598,7 +598,7 @@ namespace BusinessDesignStudio.Unit.Tests
         public void ResourceModel_Save_ExecuteMessageIsSuccessful_NoException()
         {
             //------------Setup for test--------------------------
-            var serviceTestModel = new ServiceTestModel
+            var serviceTestModel = new ServiceTestModel(Guid.NewGuid())
             {
                 TestName = "Test Input",
                 AuthenticationType = AuthenticationType.Public,
@@ -1436,7 +1436,7 @@ namespace BusinessDesignStudio.Unit.Tests
 
             var serviceTestModel = new List<ServiceTestModel>()
             {
-                new ServiceTestModel()
+                new ServiceTestModel(Guid.NewGuid())
                 {
                     TestName = "Test 1",
                     AuthenticationType = AuthenticationType.Windows,
