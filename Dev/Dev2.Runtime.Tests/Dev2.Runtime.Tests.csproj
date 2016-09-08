@@ -296,6 +296,7 @@
     <Compile Include="Services\RenameItemsTest.cs" />
     <Compile Include="Services\RollBackToTest.cs" />
     <Compile Include="Services\SaveScheduledResourceTest.cs" />
+    <Compile Include="Services\SaveTestsTest.cs" />
     <Compile Include="Services\SchedulerTestBase.cs" />
     <Compile Include="Services\SecurityReadTests.cs" />
     <Compile Include="Services\SecurityWriteTests.cs" />

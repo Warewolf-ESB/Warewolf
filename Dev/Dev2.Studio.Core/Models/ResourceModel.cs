@@ -21,7 +21,6 @@ using Caliburn.Micro;
 using Dev2.Collections;
 using Dev2.Common;
 using Dev2.Common.Common;
-using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core.Collections;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.Common.Interfaces.Security;
@@ -437,11 +436,7 @@ namespace Dev2.Studio.Core.Models
             _errors.Clear();
             NotifyOfPropertyChange(() => Errors);
             NotifyOfPropertyChange(() => IsValid);
-        }
-
-        public void SaveTests(List<IServiceTestModel> tests)
-        {
-        }
+        }      
 
         void ReceiveEnvironmentValidation(DesignValidationMemo memo)
         {

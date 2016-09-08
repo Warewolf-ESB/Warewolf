@@ -64,6 +64,16 @@ namespace Dev2.Common
                 return resourcePath;
             }
         }
+
+        public static string TestPath
+        {
+            get
+            {
+                var resourcePath = Path.Combine(AppDataPath, "Tests");
+                return resourcePath;
+            }
+        }
+
         public static string AppDataPath
         {
             get

@@ -108,10 +108,10 @@ namespace Warewolf.Studio.ViewModels
 
         public void Save()
         {
-            ResourceModel.SaveTests(Tests.ToList());
+            ResourceModel.Environment.ResourceRepository.SaveTests(ResourceModel.ID,Tests.ToList());
         }
 
-        public IContextualResourceModel ResourceModel { get; set; }
+        public IContextualResourceModel ResourceModel { get; }
 
         public IServiceTestModel SelectedServiceTest
         {
