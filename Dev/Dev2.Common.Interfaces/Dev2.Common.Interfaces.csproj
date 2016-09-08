@@ -311,6 +311,7 @@
     <Compile Include="IStudioUpdateManager.cs" />
     <Compile Include="ISuggestionProvider.cs" />
     <Compile Include="IServiceTestModel.cs" />
+    <Compile Include="ITestCatalog.cs" />
     <Compile Include="IToolboxView.cs" />
     <Compile Include="IUpdatesHelp.cs" />
     <Compile Include="ISharepointListTo.cs" />
