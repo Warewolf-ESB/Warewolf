@@ -40,7 +40,7 @@ namespace Warewolf.Studio.ViewModels
             CreateTestCommand = new DelegateCommand(CreateTests);
             CanSave = true;
 
-            RunAllTestsUrl = WebServer.GetWorkflowUri(resourceModel, "", UrlType.Tests).ToString();
+            RunAllTestsUrl = WebServer.GetWorkflowUri(resourceModel, "", UrlType.Tests)?.ToString();
         }
 
         private void CreateTests()
