@@ -1,5 +1,7 @@
-﻿using Dev2.Data.Binary_Objects;
+﻿using System.Collections.ObjectModel;
+using Dev2.Data.Binary_Objects;
 using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Core.Interfaces.DataList;
 using Dev2.Studio.Core.Models.DataList;
 using Dev2.Studio.ViewModels.DataList;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -70,7 +72,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsNotNull(testModel);
             Assert.AreEqual(1, testModel.Inputs.Count);
             Assert.AreEqual("a", testModel.Inputs[0].Variable);
-            Assert.AreEqual(null, testModel.Inputs[0].Value);
+            Assert.AreEqual("", testModel.Inputs[0].Value);
         }
 
         [TestMethod]
@@ -87,8 +89,33 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsNotNull(testModel);
             Assert.AreEqual(1, testModel.Outputs.Count);
             Assert.AreEqual("res", testModel.Outputs[0].Variable);
-            Assert.AreEqual(null, testModel.Outputs[0].Value);
+            Assert.AreEqual("", testModel.Outputs[0].Value);
         }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("TestCommandHandlerModelTests_CreateTest")]
+        public void TestCommandHandlerModelTests_CreateTest_Execute_ShouldHaveActionToAddRowForRecordset()
+        {
+            //------------Setup for test--------------------------
+            var testFrameworkViewModel = new ServiceTestCommandHandlerModel();
+            var testModel = testFrameworkViewModel.CreateTest(CreateResourceModelWithSingleScalarInputAndRecordSetInput());
+            //------------Assert Preconditions-------------------
+            Assert.IsNotNull(testModel);
+            Assert.AreEqual(2, testModel.Inputs.Count);
+            Assert.AreEqual("a", testModel.Inputs[0].Variable);
+            Assert.AreEqual("", testModel.Inputs[0].Value);
+            Assert.AreEqual("rec(1).field", testModel.Inputs[1].Variable);
+            Assert.AreEqual("", testModel.Inputs[1].Value);
+            //------------Execute Test---------------------------
+            testModel.Inputs[1].Value = "value1";
+            //------------Assert Results-------------------------
+            Assert.AreEqual("value1", testModel.Inputs[1].Value);
+            Assert.AreEqual("rec(2).field", testModel.Inputs[2].Variable);
+            Assert.AreEqual("", testModel.Inputs[2].Value);
+
+        }
+
 
         private IResourceModel CreateResourceModelWithSingleScalarInput()
         {
@@ -98,6 +125,23 @@ namespace Warewolf.Studio.ViewModels.Tests
             var dataListViewModel = new DataListViewModel();
             dataListViewModel.InitializeDataListViewModel(resourceModel);
             dataListViewModel.ScalarCollection.Add(new ScalarItemModel("a", enDev2ColumnArgumentDirection.Input));
+            dataListViewModel.WriteToResourceModel();
+            return resourceModel;
+        }
+
+        private IResourceModel CreateResourceModelWithSingleScalarInputAndRecordSetInput()
+        {
+            var moqModel = new Mock<IResourceModel>();
+            moqModel.SetupAllProperties();
+            var resourceModel = moqModel.Object;
+            var dataListViewModel = new DataListViewModel();
+            dataListViewModel.InitializeDataListViewModel(resourceModel);
+            dataListViewModel.ScalarCollection.Add(new ScalarItemModel("a", enDev2ColumnArgumentDirection.Input));
+            var recordSetItemModel = new RecordSetItemModel("rec", enDev2ColumnArgumentDirection.Input);
+            var recordSetFieldItemModels = new ObservableCollection<IRecordSetFieldItemModel>();
+            recordSetFieldItemModels.Add(new RecordSetFieldItemModel("field",recordSetItemModel,enDev2ColumnArgumentDirection.Input));
+            recordSetItemModel.Children = recordSetFieldItemModels;
+            dataListViewModel.RecsetCollection.Add(recordSetItemModel);
             dataListViewModel.WriteToResourceModel();
             return resourceModel;
         }

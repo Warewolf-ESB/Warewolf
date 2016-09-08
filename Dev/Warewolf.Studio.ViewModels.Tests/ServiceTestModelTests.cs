@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using Dev2.Common.Interfaces;
+using Dev2.Data;
+using Dev2.Data.Binary_Objects;
 using Dev2.Runtime.ServiceModel.Data;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 // ReSharper disable InconsistentNaming
@@ -455,6 +457,43 @@ namespace Warewolf.Studio.ViewModels.Tests
             //------------Assert Results-------------------------
             Assert.IsTrue(testModel.IsDirty);
             Assert.IsTrue(_wasCalled);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("ServiceTestModel_AddRow")]
+        public void ServiceTestModel_AddRow_WhenRecordsetValueUpdated_ShouldAddNewRow()
+        {
+            //------------Setup for test--------------------------
+            var serviceTestModel = new ServiceTestModel();
+            var serviceTestInput = new ServiceTestInput("rec(1).a","val");
+            serviceTestModel.Inputs = new List<IServiceTestInput>
+            {
+                serviceTestInput
+            };
+            //------------Execute Test---------------------------
+            var dataListModel = new DataListModel();
+            var shapeRecordSets = new List<IRecordSet>();
+            var recordSet = new RecordSet();
+            recordSet.IODirection = enDev2ColumnArgumentDirection.Input;
+            recordSet.Name = "rec";
+            var recordSetColumns = new Dictionary<int, List<IScalar>>();
+            recordSetColumns.Add(1,new List<IScalar>
+            {
+                new Scalar
+                {
+                    Name = "a",
+                    IODirection = enDev2ColumnArgumentDirection.Input
+                }
+            });
+            recordSet.Columns = recordSetColumns;
+            shapeRecordSets.Add(recordSet);
+            dataListModel.ShapeRecordSets = shapeRecordSets;
+            serviceTestModel.AddRow(serviceTestInput,dataListModel);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(2,serviceTestModel.Inputs.Count);
+            Assert.AreEqual("rec(2).a",serviceTestModel.Inputs[1].Variable );
+            Assert.AreEqual("",serviceTestModel.Inputs[1].Value );
         }
     }
 }

@@ -13,8 +13,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 
-// ReSharper disable once CheckNamespace
-namespace Dev2.Studio.Core
+namespace Dev2.Data
 {
 
     /// <summary>

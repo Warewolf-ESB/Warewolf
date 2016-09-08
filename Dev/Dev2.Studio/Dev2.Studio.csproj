@@ -402,7 +402,6 @@
     <Compile Include="ViewModels\Help\HelpViewWrapper.cs" />
     <Compile Include="ViewModels\SourceViewModel.cs" />
     <Compile Include="ViewModels\StudioTestViewModel.cs" />
-    <Compile Include="ViewModels\Workflow\DataListConversionUtils.cs" />
     <Compile Include="ViewModels\Workflow\WorkflowDesignerDataPartUtils.cs" />
     <Compile Include="ViewModels\WorksurfaceContextManager.cs" />
     <Compile Include="ViewModels\WorkSurface\IWorkSurfaceContextViewModel.cs" />
