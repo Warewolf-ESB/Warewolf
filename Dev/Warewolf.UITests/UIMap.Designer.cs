@@ -1413,53 +1413,6 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
-        /// Click_Settings_Ribbon_Button - Use 'Click_Settings_Ribbon_ButtonParams' to pass parameters into this method.
-        /// </summary>
-        public void Click_Settings_Ribbon_Button()
-        {
-            #region Variable Declarations
-            WpfButton configureSettingsButton = this.MainStudioWindow.SideMenuBar.ConfigureSettingsButton;
-            WpfTabPage loggingTab = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.LoggingTab;
-            WpfTabPage securityTab = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab;
-            WpfTable resourcePermissions = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions;
-            WpfTable serverPermissions = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions;
-            WpfButton deleteButton = this.MainStudioWindow.DockManager.SplitPaneRight.Variables.VariablesControl.DeleteButton;
-            WpfPane row1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1;
-            #endregion
-
-            // Verify that the 'Exists' property of 'Configure settings' button equals 'True'
-            Assert.AreEqual(this.Click_Settings_Ribbon_ButtonParams.ConfigureSettingsButtonExists, configureSettingsButton.Exists, "Settings ribbon does not exist.");
-
-            // Click 'Configure settings' button
-            Mouse.Click(configureSettingsButton, new Point(7, 2));
-
-            // Wait for 1 seconds for user delay between actions; Verify that the 'Exists' property of 'System.Windows.Controls.TabItem Header: Content:' tab equals 'True'
-            Playback.Wait(500);
-            Assert.AreEqual(this.Click_Settings_Ribbon_ButtonParams.LoggingTabExists, loggingTab.Exists, "Logging tab does not exist in the settings window");
-
-            // Verify that the 'Exists' property of 'System.Windows.Controls.TabItem Header: Content:' tab equals 'True'
-            Assert.AreEqual(this.Click_Settings_Ribbon_ButtonParams.SecurityTabExists, securityTab.Exists, "Security tab does not exist in the settings window");
-
-            // Verify that the 'Exists' property of 'System.Windows.Controls.TabItem Header: Content:' tab equals 'True'
-            Assert.AreEqual(this.Click_Settings_Ribbon_ButtonParams.LoggingTabExists1, loggingTab.Exists, "Logging tab does not exist in the settings window");
-
-            // Verify that the 'Exists' property of 'ResourcePermissionsDataGrid' table equals 'True'
-            Assert.AreEqual(this.Click_Settings_Ribbon_ButtonParams.ResourcePermissionsExists, resourcePermissions.Exists, "Resource Permissions does not exist in the settings window");
-
-            // Verify that the 'Exists' property of 'ServerPermissionsDataGrid' table equals 'True'
-            Assert.AreEqual(this.Click_Settings_Ribbon_ButtonParams.ServerPermissionsExists, serverPermissions.Exists, "Server Permissions does not exist in the settings window");
-
-            // Verify that the 'Exists' property of 'System.Windows.Controls.TabItem Header: Content:' tab equals 'True'
-            Assert.AreEqual(this.Click_Settings_Ribbon_ButtonParams.SecurityTabExists1, securityTab.Exists, "Security tab does not exist in the settings window");
-
-            // Verify that the 'Exists' property of '' button equals 'True'
-            Assert.AreEqual(this.Click_Settings_Ribbon_ButtonParams.DeleteButtonExists, deleteButton.Exists, "Variable list delete button does not exist");
-
-            // Verify that the 'Exists' property of 'Row1' pane equals 'True'
-            Assert.AreEqual(this.Click_Settings_Ribbon_ButtonParams.Row1Exists, row1.Exists, "Settings security tab resource permissions row1 does not exist");
-        }
-        
-        /// <summary>
         /// Click_Settings_Security_Resource_Permissions_Add_Resource_Button
         /// </summary>
         public void Click_Settings_Security_Resource_Permissions_Add_Resource_Button()
@@ -5923,18 +5876,6 @@ namespace Warewolf.UITests
             }
         }
         
-        public virtual Click_Settings_Ribbon_ButtonParams Click_Settings_Ribbon_ButtonParams
-        {
-            get
-            {
-                if ((this.mClick_Settings_Ribbon_ButtonParams == null))
-                {
-                    this.mClick_Settings_Ribbon_ButtonParams = new Click_Settings_Ribbon_ButtonParams();
-                }
-                return this.mClick_Settings_Ribbon_ButtonParams;
-            }
-        }
-        
         public virtual Click_Show_Dependencies_In_Explorer_Context_MenuParams Click_Show_Dependencies_In_Explorer_Context_MenuParams
         {
             get
@@ -7593,8 +7534,6 @@ namespace Warewolf.UITests
         
         private Click_Service_Picker_Dialog_OKParams mClick_Service_Picker_Dialog_OKParams;
         
-        private Click_Settings_Ribbon_ButtonParams mClick_Settings_Ribbon_ButtonParams;
-        
         private Click_Show_Dependencies_In_Explorer_Context_MenuParams mClick_Show_Dependencies_In_Explorer_Context_MenuParams;
         
         private Click_SQL_Server_Large_View_Done_ButtonExpectedValues mClick_SQL_Server_Large_View_Done_ButtonExpectedValues;
@@ -8631,61 +8570,6 @@ namespace Warewolf.UITests
         /// Verify that the 'Exists' property of 'ServicePickerDialog' window equals 'False'
         /// </summary>
         public bool ServicePickerDialogExists = false;
-        #endregion
-    }
-    
-    /// <summary>
-    /// Parameters to be passed into 'Click_Settings_Ribbon_Button'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Click_Settings_Ribbon_ButtonParams
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Verify that the 'Exists' property of 'Configure settings' button equals 'True'
-        /// </summary>
-        public bool ConfigureSettingsButtonExists = true;
-        
-        /// <summary>
-        /// Wait for 1 seconds for user delay between actions; Verify that the 'Exists' property of 'System.Windows.Controls.TabItem Header: Content:' tab equals 'True'
-        /// </summary>
-        public bool LoggingTabExists = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'System.Windows.Controls.TabItem Header: Content:' tab equals 'True'
-        /// </summary>
-        public bool SecurityTabExists = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'System.Windows.Controls.TabItem Header: Content:' tab equals 'True'
-        /// </summary>
-        public bool LoggingTabExists1 = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'ResourcePermissionsDataGrid' table equals 'True'
-        /// </summary>
-        public bool ResourcePermissionsExists = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'ServerPermissionsDataGrid' table equals 'True'
-        /// </summary>
-        public bool ServerPermissionsExists = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'System.Windows.Controls.TabItem Header: Content:' tab equals 'True'
-        /// </summary>
-        public bool SecurityTabExists1 = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of '' button equals 'True'
-        /// </summary>
-        public bool DeleteButtonExists = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'Row1' pane equals 'True'
-        /// </summary>
-        public bool Row1Exists = true;
         #endregion
     }
     
