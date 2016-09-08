@@ -90,6 +90,7 @@ namespace Warewolf.Studio.ViewModels
                         return false;
                     }
                     var isDirty = Tests.Any(resource => resource.IsDirty);
+
                     var isConnected = ResourceModel.Environment.Connection.IsConnected;
 
                     return isDirty && isConnected;
@@ -109,8 +110,15 @@ namespace Warewolf.Studio.ViewModels
 
         public void Save()
         {
-            ResourceModel.Environment.ResourceRepository.SaveTests(ResourceModel.ID,Tests.ToList());
+            var serviceTestModels = Tests.Where(model => model.GetType() != typeof(DummyServiceTest)).ToList();
+            var executeMessage = ResourceModel.Environment.ResourceRepository.SaveTests(ResourceModel.ID, serviceTestModels);
+            foreach(var model in Tests)
+            {
+                model.IsDirty = false;
+            }
         }
+
+      
 
         public IContextualResourceModel ResourceModel { get; }
 
@@ -167,12 +175,12 @@ namespace Warewolf.Studio.ViewModels
                 if (_tests == null)
                 {
                     _tests = GetTests();
-                    var dummyTest = new DummyServiceTest(CreateTests) { TestName = "Create a new test."};
+                    var dummyTest = new DummyServiceTest(CreateTests) { TestName = "Create a new test." };
                     _tests.Add(dummyTest);
                     SelectedServiceTest = dummyTest;
                 }
                 return _tests;
-                
+
             }
             set
             {
@@ -207,17 +215,18 @@ namespace Warewolf.Studio.ViewModels
                     }
                     return _displayName;
                 }
-                return _displayName; 
+                var displayName = _displayName.Replace("*","").TrimEnd(' ');
+                return displayName;
             }
             set
             {
-                _displayName = value; 
+                _displayName = value;
                 OnPropertyChanged(() => DisplayName);
             }
         }
 
         public void Dispose()
-        {            
+        {
         }
 
         public void UpdateHelpDescriptor(string helpText)
