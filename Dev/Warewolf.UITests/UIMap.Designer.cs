@@ -435,98 +435,6 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
-        /// Click_Deploy_Ribbon_Button - Use 'Click_Deploy_Ribbon_ButtonParams' to pass parameters into this method.
-        /// </summary>
-        public void Click_Deploy_Ribbon_Button()
-        {
-            #region Variable Declarations
-            WpfButton deployButton = this.MainStudioWindow.SideMenuBar.DeployButton;
-            WpfTreeItem sourceServerName = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DeployTab.SourceServerName;
-            WpfButton refreshSourceServerButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DeployTab.WorkSurfaceContext.RefreshSourceServerButton;
-            WpfText filterText = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DeployTab.WorkSurfaceContext.FilterText;
-            WpfHyperlink overrideHyperlink = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DeployTab.WorkSurfaceContext.OverrideHyperlink;
-            WpfHyperlink newResourceHyperlink = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DeployTab.WorkSurfaceContext.NewResourceHyperlink;
-            WpfButton editSourceButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DeployTab.WorkSurfaceContext.EditSourceButton;
-            WpfButton sourceConnectButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DeployTab.WorkSurfaceContext.SourceConnectButton;
-            WpfButton editDestinationButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DeployTab.WorkSurfaceContext.EditDestinationButton;
-            WpfButton connectDestinationButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DeployTab.WorkSurfaceContext.DestinationServerConectControl.ConnectDestinationButton;
-            WpfCustom sourceConnectControl = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DeployTab.WorkSurfaceContext.SourceConnectControl;
-            WpfButton showDependenciesButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DeployTab.WorkSurfaceContext.ShowDependenciesButton;
-            WpfText servicesText = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DeployTab.WorkSurfaceContext.ServicesText;
-            WpfText serviceCountText = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DeployTab.WorkSurfaceContext.ServiceCountText;
-            WpfText sourcesText = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DeployTab.WorkSurfaceContext.SourcesText;
-            WpfText sourceCountText = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DeployTab.WorkSurfaceContext.SourceCountText;
-            WpfText newResourcesText = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DeployTab.WorkSurfaceContext.NewResourcesText;
-            WpfText overrideText = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DeployTab.WorkSurfaceContext.OverrideText;
-            WpfButton deployButton1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DeployTab.WorkSurfaceContext.DeployButton;
-            WpfText successMessageText = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DeployTab.WorkSurfaceContext.SuccessMessageText;
-            #endregion
-
-            // Verify that the 'Exists' property of 'Move resources between Warewolf servers' button equals 'True'
-            Assert.AreEqual(this.Click_Deploy_Ribbon_ButtonParams.DeployButtonExists, deployButton.Exists, "Deploy ribbon button does not exist");
-
-            // Click 'Move resources between Warewolf servers' button
-            Mouse.Click(deployButton, new Point(16, 11));
-
-            // Verify that the 'Exists' property of 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item equals 'True'
-            Assert.AreEqual(this.Click_Deploy_Ribbon_ButtonParams.SourceServerNameExists, sourceServerName.Exists, "Source server name in deploy window does not exist");
-
-            // Verify that the 'Exists' property of '' button equals 'True'
-            Assert.AreEqual(this.Click_Deploy_Ribbon_ButtonParams.RefreshSourceServerButtonExists, refreshSourceServerButton.Exists, "Refresh button source server does not exist in the deploy window");
-
-            // Verify that the 'Exists' property of 'Filter' label equals 'True'
-            Assert.AreEqual(this.Click_Deploy_Ribbon_ButtonParams.FilterTextExists, filterText.Exists, "Filter source server does not exist in the deploy window");
-
-            // Verify that the 'Exists' property of link equals 'True'
-            Assert.AreEqual(this.Click_Deploy_Ribbon_ButtonParams.OverrideHyperlinkExists, overrideHyperlink.Exists, "Override count in destination server does not exist in the deploy window");
-
-            // Verify that the 'Exists' property of link equals 'True'
-            Assert.AreEqual(this.Click_Deploy_Ribbon_ButtonParams.NewResourceHyperlinkExists, newResourceHyperlink.Exists, "New Resource count in destination server does not exist in the deploy window");
-
-            // Verify that the 'Exists' property of '...' button equals 'True'
-            Assert.AreEqual(this.Click_Deploy_Ribbon_ButtonParams.EditSourceButtonExists, editSourceButton.Exists, "Edit source server button does not exist in the deploy window");
-
-            // Verify that the 'Exists' property of 'UI_SourceConnectServerbtn_AutoID' button equals 'True'
-            Assert.AreEqual(this.Click_Deploy_Ribbon_ButtonParams.SourceConnectButtonExists, sourceConnectButton.Exists, "Connect button in the Source server does not exist");
-
-            // Verify that the 'Exists' property of '...' button equals 'True'
-            Assert.AreEqual(this.Click_Deploy_Ribbon_ButtonParams.EditDestinationButtonExists, editDestinationButton.Exists, "Edit Destination Server button does not exist");
-
-            // Verify that the 'Exists' property of 'UI_DestinationServerConnectbtn_AutoID' button equals 'True'
-            Assert.AreEqual(this.Click_Deploy_Ribbon_ButtonParams.ConnectDestinationButtonExists, connectDestinationButton.Exists, "Connect Button in Destination server does not exist in the deploy window");
-
-            // Verify that the 'Exists' property of 'SourceConnectControl' custom control equals 'True'
-            Assert.AreEqual(this.Click_Deploy_Ribbon_ButtonParams.SourceConnectControlExists, sourceConnectControl.Exists, "Source Server connect control does not exist in the deploy window");
-
-            // Verify that the 'Exists' property of 'Select All Dependencies' button equals 'True'
-            Assert.AreEqual(this.Click_Deploy_Ribbon_ButtonParams.ShowDependenciesButtonExists, showDependenciesButton.Exists, "Select All Dependencies button Destination Server does not exist");
-
-            // Verify that the 'Exists' property of 'Services' label equals 'True'
-            Assert.AreEqual(this.Click_Deploy_Ribbon_ButtonParams.ServicesTextExists, servicesText.Exists, "Services Label in destination server does not exist in the deploy window");
-
-            // Verify that the 'Exists' property of '0' label equals 'True'
-            Assert.AreEqual(this.Click_Deploy_Ribbon_ButtonParams.ServiceCountTextExists, serviceCountText.Exists, "Service Count value in destination server does not exist in the deploy window");
-
-            // Verify that the 'Exists' property of 'Sources' label equals 'True'
-            Assert.AreEqual(this.Click_Deploy_Ribbon_ButtonParams.SourcesTextExists, sourcesText.Exists, "Source label in destination server does not exist in the deploy window");
-
-            // Verify that the 'Exists' property of '0' label equals 'True'
-            Assert.AreEqual(this.Click_Deploy_Ribbon_ButtonParams.SourceCountTextExists, sourceCountText.Exists, "Source Count value in the destination server does not exist in the deploy window");
-
-            // Verify that the 'Exists' property of 'New Resources' label equals 'True'
-            Assert.AreEqual(this.Click_Deploy_Ribbon_ButtonParams.NewResourcesTextExists, newResourcesText.Exists, "New Resource Label in the destination server does not exist in the deploy window");
-
-            // Verify that the 'Exists' property of 'Override' label equals 'True'
-            Assert.AreEqual(this.Click_Deploy_Ribbon_ButtonParams.OverrideTextExists, overrideText.Exists, "Override label on Destination Server does not exist in the deploy window");
-
-            // Verify that the 'Exists' property of 'Deploy' button equals 'True'
-            Assert.AreEqual(this.Click_Deploy_Ribbon_ButtonParams.DeployButtonExists1, deployButton1.Exists, "Deploy button in Destination server does not exist in the deploy window");
-
-            // Verify that the 'Exists' property of '1 Resource Deployed Successfully.' label equals 'True'
-            Assert.AreEqual(this.Click_Deploy_Ribbon_ButtonParams.SuccessMessageTextExists, successMessageText.Exists, "Success message label does not exist in destination server of the deploy window");
-        }
-        
-        /// <summary>
         /// Click_Deploy_Tab_Destination_Server_Combobox - Use 'Click_Deploy_Tab_Destination_Server_ComboboxParams' to pass parameters into this method.
         /// </summary>
         public void Click_Deploy_Tab_Destination_Server_Combobox()
@@ -5588,18 +5496,6 @@ namespace Warewolf.UITests
             }
         }
         
-        public virtual Click_Deploy_Ribbon_ButtonParams Click_Deploy_Ribbon_ButtonParams
-        {
-            get
-            {
-                if ((this.mClick_Deploy_Ribbon_ButtonParams == null))
-                {
-                    this.mClick_Deploy_Ribbon_ButtonParams = new Click_Deploy_Ribbon_ButtonParams();
-                }
-                return this.mClick_Deploy_Ribbon_ButtonParams;
-            }
-        }
-        
         public virtual Click_Deploy_Tab_Destination_Server_ComboboxParams Click_Deploy_Tab_Destination_Server_ComboboxParams
         {
             get
@@ -7486,8 +7382,6 @@ namespace Warewolf.UITests
         
         private Click_Decision_Dialog_Done_ButtonParams mClick_Decision_Dialog_Done_ButtonParams;
         
-        private Click_Deploy_Ribbon_ButtonParams mClick_Deploy_Ribbon_ButtonParams;
-        
         private Click_Deploy_Tab_Destination_Server_ComboboxParams mClick_Deploy_Tab_Destination_Server_ComboboxParams;
         
         private Click_Deploy_Tab_Source_Server_ComboboxParams mClick_Deploy_Tab_Source_Server_ComboboxParams;
@@ -8035,116 +7929,6 @@ namespace Warewolf.UITests
         /// Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
         /// </summary>
         public bool Connector1Exists = true;
-        #endregion
-    }
-    
-    /// <summary>
-    /// Parameters to be passed into 'Click_Deploy_Ribbon_Button'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Click_Deploy_Ribbon_ButtonParams
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Verify that the 'Exists' property of 'Move resources between Warewolf servers' button equals 'True'
-        /// </summary>
-        public bool DeployButtonExists = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item equals 'True'
-        /// </summary>
-        public bool SourceServerNameExists = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of '' button equals 'True'
-        /// </summary>
-        public bool RefreshSourceServerButtonExists = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'Filter' label equals 'True'
-        /// </summary>
-        public bool FilterTextExists = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of link equals 'True'
-        /// </summary>
-        public bool OverrideHyperlinkExists = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of link equals 'True'
-        /// </summary>
-        public bool NewResourceHyperlinkExists = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of '...' button equals 'True'
-        /// </summary>
-        public bool EditSourceButtonExists = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'UI_SourceConnectServerbtn_AutoID' button equals 'True'
-        /// </summary>
-        public bool SourceConnectButtonExists = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of '...' button equals 'True'
-        /// </summary>
-        public bool EditDestinationButtonExists = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'UI_DestinationServerConnectbtn_AutoID' button equals 'True'
-        /// </summary>
-        public bool ConnectDestinationButtonExists = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'SourceConnectControl' custom control equals 'True'
-        /// </summary>
-        public bool SourceConnectControlExists = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'Select All Dependencies' button equals 'True'
-        /// </summary>
-        public bool ShowDependenciesButtonExists = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'Services' label equals 'True'
-        /// </summary>
-        public bool ServicesTextExists = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of '0' label equals 'True'
-        /// </summary>
-        public bool ServiceCountTextExists = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'Sources' label equals 'True'
-        /// </summary>
-        public bool SourcesTextExists = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of '0' label equals 'True'
-        /// </summary>
-        public bool SourceCountTextExists = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'New Resources' label equals 'True'
-        /// </summary>
-        public bool NewResourcesTextExists = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'Override' label equals 'True'
-        /// </summary>
-        public bool OverrideTextExists = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'Deploy' button equals 'True'
-        /// </summary>
-        public bool DeployButtonExists1 = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of '1 Resource Deployed Successfully.' label equals 'True'
-        /// </summary>
-        public bool SuccessMessageTextExists = true;
         #endregion
     }
     
