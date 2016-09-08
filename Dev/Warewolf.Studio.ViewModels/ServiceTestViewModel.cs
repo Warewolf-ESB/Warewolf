@@ -20,7 +20,6 @@ namespace Warewolf.Studio.ViewModels
         private string _testPassingResult;
         private ObservableCollection<IServiceTestModel> _tests;
         private string _displayName;
-        private bool _isDirty;
 
         public ServiceTestViewModel(IContextualResourceModel resourceModel)
         {
@@ -94,6 +93,7 @@ namespace Warewolf.Studio.ViewModels
 
                     return isDirty && isConnected;
                 }
+                // ReSharper disable once UnusedVariable
                 catch (Exception ex)
                 {
                     //if (!_errorShown)
@@ -109,15 +109,26 @@ namespace Warewolf.Studio.ViewModels
 
         public void Save()
         {
-            var serviceTestModels = Tests.Where(model => model.GetType() != typeof(DummyServiceTest)).ToList();
-            var executeMessage = ResourceModel.Environment.ResourceRepository.SaveTests(ResourceModel.ID, serviceTestModels);
-            foreach(var model in Tests)
+            try
             {
-                model.IsDirty = false;
+                var serviceTestModels = Tests.Where(model => model.GetType() != typeof(DummyServiceTest)).ToList();
+                ResourceModel.Environment.ResourceRepository.SaveTests(ResourceModel.ID, serviceTestModels);
+                MarkTestsAsDirty(false);
             }
+            catch (Exception)
+            {
+              // MarkTestsAsDirty(true);
+            }
+
         }
 
-      
+        private void MarkTestsAsDirty(bool isDirty)
+        {
+            foreach (var model in Tests) //This is based on the fact that the save will do a bulk save all the time
+            {
+                model.IsDirty = isDirty;
+            }
+        }
 
         public IContextualResourceModel ResourceModel { get; }
 
@@ -214,7 +225,7 @@ namespace Warewolf.Studio.ViewModels
                     }
                     return _displayName;
                 }
-                var displayName = _displayName.Replace("*","").TrimEnd(' ');
+                var displayName = _displayName.Replace("*", "").TrimEnd(' ');
                 return displayName;
             }
             set

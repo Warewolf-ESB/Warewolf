@@ -14,7 +14,8 @@ namespace Warewolf.Studio.ViewModels
             {
                 TestName = "Test 1",
                 IsDirty = true,
-                TestPending = true
+                TestPending = true,
+                Enabled = true
             };
             if (!string.IsNullOrEmpty(resourceModel.DataList))
             {
