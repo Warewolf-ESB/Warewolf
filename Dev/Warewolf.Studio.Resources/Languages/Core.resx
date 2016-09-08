@@ -3481,6 +3481,6 @@ If you put an = as the first character, it will turn into a calculation e.g. =[[
     <value>Save the Resource</value>
   </data>
   <data name="ServerVersionUnavailable" xml:space="preserve">
-    <value>Unavailable.</value>
+    <value>Unavailable</value>
   </data>
 </root>

@@ -6809,7 +6809,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Unavailable..
+        ///   Looks up a localized string similar to Unavailable.
         /// </summary>
         public static string ServerVersionUnavailable {
             get {
