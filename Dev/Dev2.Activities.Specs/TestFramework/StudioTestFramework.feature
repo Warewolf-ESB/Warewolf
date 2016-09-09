@@ -7,17 +7,25 @@
 Background: Setup for workflows for tests
 			Given I have "Workflow 1" with inputs as
 			| Input Var Name |
-			| [[a]]              |
+			| [[a]]          |
 			And "Workflow 1" has outputs as
-			| Ouput Var Name |
-			| [[outputValue]]    |
+			| Ouput Var Name  |
+			| [[outputValue]] |
 			Given I have "Workflow 2" with inputs as
 			| Input Var Name |
-			| [[rec().a]]        |
-			| [[rec().b]]        |
+			| [[rec().a]]    |
+			| [[rec().b]]    |
 			And "Workflow 2" has outputs as
 			| Ouput Var Name |
-			| [[returnVal]]      |
+			| [[returnVal]]  |
+			 Given I have "Workflow 3" with inputs as
+			| Input Var Name |
+			| [[A]]              |
+			| [[B]]              |
+			| [[C]]              |
+			And "Workflow 3" has outputs as
+			| Ouput Var Name |
+			| [[message]]    |
 
 Scenario: Create New Test
 	Given the test builder is open with "Workflow 1"	
@@ -119,17 +127,9 @@ Scenario: Edit existing test
 	And save is disabled
 
 
-Scenario: Loading exisiting Tests
-    Given I have "Workflow 2" with inputs as
-			| Input Var Name |
-			| A              |
-			| B              |
-			| C              |
-			And "Workflow 2" has outputs as
-			| Ouput Var Name |
-			| message    |		
-	And the test builder is open with "Workflow 2"
-	And Tab Header is "Workflow 2 - Tests"
+Scenario: Loading exisiting Tests  |	
+	And the test builder is open with "Workflow 3"
+	And Tab Header is "Workflow 3 - Tests"
 	And there are no tests
 	And I click New Test
 	And I set Test Values as
@@ -138,22 +138,22 @@ Scenario: Loading exisiting Tests
 	Then NoErrorExpected is "false"	
 	And save is enabled
 	When I save
-	Then Tab Header is "Workflow 2 - Tests"
+	Then Tab Header is "Workflow 3 - Tests"
 	When I click New Test
 	And I set Test Values as
 	| TestName | AuthenticationType | Error |
 	| Test2    | Windows            | true  |
 	And save is enabled
 	When I save
-	Then Tab Header is "Workflow 2 - Tests"
+	Then Tab Header is "Workflow 3 - Tests"
 	And I close the test builder
-	When the test builder is open with "Workflow 2"
+	When the test builder is open with "Workflow 3"
 	Then there are 2 tests
 
 
 Scenario: Delete an existing test with correct permissions
-	Given the test builder is open with "Workflow 1"
-	And Tab Header is "Workflow 2 - Tests"
+	Given the test builder is open with "Workflow 3"
+	And Tab Header is "Workflow 3 - Tests"
 	And there are no tests
 	And I click New Test
 		And I set Test Values as
@@ -162,7 +162,7 @@ Scenario: Delete an existing test with correct permissions
 	Then NoErrorExpected is "false"	
 	And save is enabled
 	When I save
-	Then Tab Header is "Workflow 2 - Tests"
+	Then Tab Header is "Workflow 3 - Tests"
 	And there are 1 tests
 	And Delete is enabled
 	And Run is enabled
@@ -182,8 +182,8 @@ Scenario: Delete an existing test with correct permissions
 
 
 Scenario: Delete test not enabled when test disabled
-	Given the test builder is open with "Workflow 1"
-	And Tab Header is "Workflow 2 - Tests"
+	Given the test builder is open with "Workflow 3"
+	And Tab Header is "Workflow 3 - Tests"
 	And there are no tests
 	And I click New Test
 		And I set Test Values as
@@ -192,7 +192,7 @@ Scenario: Delete test not enabled when test disabled
 	Then NoErrorExpected is "false"	
 	And save is enabled
 	When I save
-	Then Tab Header is "Workflow 2 - Tests"
+	Then Tab Header is "Workflow 3 - Tests"
 	And there are 1 tests
 	When test is disabled 
 	Then Delete is disabled
@@ -212,11 +212,32 @@ Scenario: Delete test not enabled when test disabled
 	And run is disabled
 	And add new test is enabled
 
-
-
-
-
-
+#Scenario: Duplicate a test
+#	Given the test builder is open with "Workflow 1"
+#	And Tab Header is "Workflow 1 - Tests"
+#	And there are no tests
+#	And I click New Test
+#	Then a new test is added
+#	#And Tab Header is "Workflow 1 - Tests *"
+#	And test name starts with "Test 1"
+#	And inputs are
+#	| Variable Name | Value |
+#	| a             |       |
+#	And outputs as
+#	| Variable Name | Value |
+#	| outputValue   |       |
+#	And save is enabled
+#	When I save
+#	Then Tab Header is "Workflow 1 - Tests"
+#	When I right click "Test 1"
+#	Then Duplicate Test
+#
+#
+#
+#
+#	
+#
+#	
 
 
 
@@ -224,39 +245,6 @@ Scenario: Delete test not enabled when test disabled
 
 
 
-	
-
-
-#
-#Scenario: Create new test from Explorer opens a new window with correct button state
-#	Given I right click on the ExplorerItem on the explorer
-#	Then The WorkflowTestBuilder window is opened
-#	And The WorkflowTestBuilder has RunAll buttons disabled
-#	And The WorkflowTestBuilder has Delete button disabled
-#	And The WorkflowTestBuilder has Run button enabled
-#
-#
-#Scenario: Create new test from Explorer opens a new window with correct test icon and state
-#	Given I right click on the ExplorerItem on the explorer
-#	Then The WorkflowTestBuilder window is opened
-#	And The WorkflowTestBuilder has a pending status
-#	And The WorkflowTestBuilder has a pending icon
-#	And The test in the WorkflowTestBuilder is enabled
-#
-#
-#Scenario: Create and Edit tests values sets the values for the test
-#	Given I Change Test values on the WorkflowTestBuilder 
-#	When I change the TestName to UnitTest1
-#	Then the TestName is changed to UnitTest1
-#	And The TestUrl is updated correctly
-#	When The Workflow  UnitTest1 has "2" inputs
-#	Then The Inputs variables are populated with "2" workflow inputs
-#	When the Workflow has "1" OutPut 
-#	Then the Outputs are populated with "1" inputs
-#
-#
-#
-#
 
 
 
