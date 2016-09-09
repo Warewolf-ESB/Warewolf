@@ -33,8 +33,6 @@ namespace Dev2.Activities.Specs.TestFramework
         [Given(@"I have ""(.*)"" with inputs as")]
         public void GivenIHaveWithInputsAs(string workflowName, Table inputVariables)
         {
-            ScenarioContext.Current.Clear();
-            ScenarioContext.Clear();
             var mockCon = new Mock<IEnvironmentConnection>();
             mockCon.Setup(connection => connection.IsConnected).Returns(true);
             mockCon.Setup(connection => connection.ServerEvents).Returns(new Mock<IEventPublisher>().Object);
@@ -49,37 +47,43 @@ namespace Dev2.Activities.Specs.TestFramework
 
             var datalistViewModel = new DataListViewModel();
             datalistViewModel.InitializeDataListViewModel(resourceModel);
-            foreach(var variablesRow in inputVariables.Rows)
+            foreach (var variablesRow in inputVariables.Rows)
             {
                 AddVariables(variablesRow["Input Var Name"], datalistViewModel, enDev2ColumnArgumentDirection.Input);
             }
             datalistViewModel.WriteToResourceModel();
-            ScenarioContext.Add(workflowName,resourceModel);
-            ScenarioContext.Add($"{workflowName}dataListViewModel",datalistViewModel);
+            ScenarioContext.Add(workflowName, resourceModel);
+            ScenarioContext.Add($"{workflowName}dataListViewModel", datalistViewModel);
             var popupController = new Mock<Common.Interfaces.Studio.Controller.IPopupController>();
             popupController.Setup(controller => controller.Show(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<MessageBoxButton>(), It.IsAny<MessageBoxImage>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>()));
             CustomContainer.Register(popupController.Object);
-            ScenarioContext.Add("popupController", popupController);
+
+            var containsKey = ScenarioContext.Current.ContainsKey("popupController");
+            if (!containsKey)
+            {
+                ScenarioContext.Current.Add("popupController", popupController);
+            }
+
         }
 
         private static void AddVariables(string variableName, DataListViewModel datalistViewModel, enDev2ColumnArgumentDirection ioDirection)
         {
-            
-            if(DataListUtil.IsValueScalar(variableName))
+
+            if (DataListUtil.IsValueScalar(variableName))
             {
                 var scalarName = DataListUtil.RemoveLanguageBrackets(variableName);
                 var scalarItemModel = new ScalarItemModel(scalarName, ioDirection);
-                if(!scalarItemModel.HasError)
+                if (!scalarItemModel.HasError)
                 {
                     datalistViewModel.ScalarCollection.Add(scalarItemModel);
                 }
             }
-            if(DataListUtil.IsValueRecordsetWithFields(variableName))
+            if (DataListUtil.IsValueRecordsetWithFields(variableName))
             {
                 var rsName = DataListUtil.ExtractRecordsetNameFromValue(variableName);
                 var fieldName = DataListUtil.ExtractFieldNameOnlyFromValue(variableName);
                 var rs = datalistViewModel.RecsetCollection.FirstOrDefault(model => model.Name == rsName);
-                if(rs == null)
+                if (rs == null)
                 {
                     var recordSetItemModel = new RecordSetItemModel(rsName);
                     datalistViewModel.RecsetCollection.Add(recordSetItemModel);
@@ -89,7 +93,7 @@ namespace Dev2.Activities.Specs.TestFramework
                 else
                 {
                     var recordSetFieldItemModel = rs.Children.FirstOrDefault(model => model.Name == fieldName);
-                    if(recordSetFieldItemModel == null)
+                    if (recordSetFieldItemModel == null)
                     {
                         rs.Children.Add(new RecordSetFieldItemModel(fieldName, rs, ioDirection));
                     }
@@ -104,7 +108,7 @@ namespace Dev2.Activities.Specs.TestFramework
             if (ScenarioContext.TryGetValue(workflowName, out resourceModel))
             {
                 DataListViewModel dataListViewModel;
-                if(ScenarioContext.TryGetValue($"{workflowName}dataListViewModel",out dataListViewModel))
+                if (ScenarioContext.TryGetValue($"{workflowName}dataListViewModel", out dataListViewModel))
                 {
                     foreach (var variablesRow in outputVariables.Rows)
                     {
@@ -227,11 +231,11 @@ namespace Dev2.Activities.Specs.TestFramework
             {
                 Assert.AreEqual(tableRow["Variable Name"], inputs[i].Variable);
                 var expected = tableRow["Value"];
-//                if (string.IsNullOrEmpty(expected))
-//                {
-//                    expected = null;
-//                }
-                Assert.AreEqual(expected,inputs[i].Value);
+                //                if (string.IsNullOrEmpty(expected))
+                //                {
+                //                    expected = null;
+                //                }
+                Assert.AreEqual(expected, inputs[i].Value);
                 i++;
             }
 
@@ -270,10 +274,10 @@ namespace Dev2.Activities.Specs.TestFramework
             {
                 Assert.AreEqual(tableRow["Variable Name"], outputs[i].Variable);
                 var expected = tableRow["Value"];
-//                if (string.IsNullOrEmpty(expected))
-//                {
-//                    expected = null;
-//                }
+                //                if (string.IsNullOrEmpty(expected))
+                //                {
+                //                    expected = null;
+                //                }
                 Assert.AreEqual(expected, outputs[i].Value);
                 i++;
             }
@@ -398,8 +402,8 @@ namespace Dev2.Activities.Specs.TestFramework
         {
             var hasError = bool.Parse(error);
             ServiceTestViewModel serviceTest = GetTestFrameworkFromContext();
-            Assert.AreEqual(hasError,serviceTest.SelectedServiceTest.NoErrorExpected);
-            
+            Assert.AreEqual(hasError, serviceTest.SelectedServiceTest.NoErrorExpected);
+
         }
 
 
@@ -409,7 +413,7 @@ namespace Dev2.Activities.Specs.TestFramework
         public void GivenISetInputsAs(Table table)
         {
             ServiceTestViewModel serviceTest = GetTestFrameworkFromContext();
-            
+
             foreach (var tableRow in table.Rows)
             {
                 var vname = tableRow["Variable Name"];
@@ -460,7 +464,7 @@ namespace Dev2.Activities.Specs.TestFramework
         {
             ServiceTestViewModel serviceTest = GetTestFrameworkFromContext();
             //serviceTest.DeleteTestCommand.Execute(null);
-           
+
         }
 
         [Then(@"The Confirmation popup is shown")]

@@ -16,6 +16,7 @@ namespace Dev2.Studio.Core.Interfaces
 
         
         ICommand DuplicateTestCommand { get; set; }
+        ICommand DeleteTestCommand { get; set; }
         ICommand RunAllTestsInBrowserCommand { get; set; }
         ICommand RunAllTestsCommand { get; set; }
         ICommand RunSelectedTestInBrowserCommand { get; set; }

@@ -39,15 +39,6 @@ namespace Warewolf.Studio.ViewModels
         public ServiceTestModel(Guid resourceId)
         {
             ParentId = resourceId;
-            ServiceTestCommandHandler = new ServiceTestCommandHandlerModel();
-            DeleteTestCommand = new DelegateCommand(() => ServiceTestCommandHandler.DeleteTest(this), () => CanDeleteTest);
-        }
-
-        private bool CanDeleteTest => GetPermissions() && !Enabled;
-
-        private bool GetPermissions()
-        {
-            return true;
         }
 
         #region Implementation of IServiceTestModel
@@ -279,11 +270,8 @@ namespace Warewolf.Studio.ViewModels
             }
         }
         public bool UserAuthenticationSelected => AuthenticationType == AuthenticationType.User;
-        public ICommand DeleteTestCommand { get; set; }
-        public IServiceTestCommandHandler ServiceTestCommandHandler { get; set; }
 
         #endregion
-
 
         public void AddRow(IServiceTestInput itemToAdd, IDataListModel dataList)
         {
