@@ -2,9 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
-using Dev2.Common;
 using Dev2.Common.Interfaces;
-using Dev2.Common.Interfaces.Infrastructure.Events;
 using Dev2.Data.Binary_Objects;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Data.Util;
