@@ -299,12 +299,10 @@ this.FeatureBackground();
 #line 93
  testRunner.When("the test builder is open with \"Workflow 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 94
- testRunner.Then("Tab Header is \"Workflow 1 - Tests\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("there are 2 tests", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 95
- testRunner.And("there are 2 tests", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 96
  testRunner.And("\"Test 1\" is selected", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 97
+#line 96
  testRunner.And("test name starts with \"Test 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table14 = new TechTalk.SpecFlow.Table(new string[] {
@@ -313,7 +311,7 @@ this.FeatureBackground();
             table14.AddRow(new string[] {
                         "a",
                         ""});
-#line 98
+#line 97
  testRunner.And("inputs are", ((string)(null)), table14, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table15 = new TechTalk.SpecFlow.Table(new string[] {
@@ -322,10 +320,10 @@ this.FeatureBackground();
             table15.AddRow(new string[] {
                         "outputValue",
                         ""});
-#line 101
+#line 100
  testRunner.And("outputs as", ((string)(null)), table15, "And ");
-#line 104
- testRunner.And("save is disabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 103
+ testRunner.And("save is enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -336,69 +334,17 @@ this.FeatureBackground();
         public virtual void EditExistingTest()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Edit existing test", ((string[])(null)));
+#line 107
+this.ScenarioSetup(scenarioInfo);
+#line 7
+this.FeatureBackground();
 #line 108
-this.ScenarioSetup(scenarioInfo);
-#line 7
-this.FeatureBackground();
+ testRunner.Given("the test builder is open with \"Workflow 3\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 109
- testRunner.Given("the test builder is open with \"Workflow 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 110
- testRunner.And("I select \"test1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 111
- testRunner.Then("Test name is \"test1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 112
- testRunner.And("test URL is \"http://localhost:3142/secure/Examples/Workflow 1.tests/test1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 113
- testRunner.And("username is blank", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 114
- testRunner.And("password is blank", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 115
- testRunner.And("Inputs are empty", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 116
- testRunner.And("Outputs are empty", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 117
- testRunner.And("No Error selected", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 118
- testRunner.And("debug output is empty", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 119
- testRunner.And("Tab Header is \"Workflow 1 - Tests\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 120
- testRunner.And("save is disabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 121
- testRunner.When("I change the test name to \"test2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 122
- testRunner.Then("save is enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 123
- testRunner.And("Tab Header is \"Worklow 1 - Tests *\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 124
- testRunner.When("I save", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 125
- testRunner.Then("test URL is \"http://localhost:3142/secure/Examples/Workflow 1.tests/test2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 126
- testRunner.And("Tab Header is \"Workflow 1 - Tests\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 127
- testRunner.And("save is disabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Loading exisiting Tests  |")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "StudioTestFramework")]
-        public virtual void LoadingExisitingTests()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Loading exisiting Tests  |", ((string[])(null)));
-#line 130
-this.ScenarioSetup(scenarioInfo);
-#line 7
-this.FeatureBackground();
-#line 131
- testRunner.And("the test builder is open with \"Workflow 3\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 132
  testRunner.And("Tab Header is \"Workflow 3 - Tests\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 133
+#line 110
  testRunner.And("there are no tests", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 134
+#line 111
  testRunner.And("I click New Test", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table16 = new TechTalk.SpecFlow.Table(new string[] {
@@ -409,17 +355,17 @@ this.FeatureBackground();
                         "Test1",
                         "Windows",
                         "true"});
-#line 135
+#line 112
  testRunner.And("I set Test Values as", ((string)(null)), table16, "And ");
-#line 138
+#line 115
  testRunner.Then("NoErrorExpected is \"false\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 139
+#line 116
  testRunner.And("save is enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 140
+#line 117
  testRunner.When("I save", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 141
+#line 118
  testRunner.Then("Tab Header is \"Workflow 3 - Tests\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 142
+#line 119
  testRunner.When("I click New Test", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             TechTalk.SpecFlow.Table table17 = new TechTalk.SpecFlow.Table(new string[] {
@@ -430,114 +376,70 @@ this.FeatureBackground();
                         "Test2",
                         "Windows",
                         "true"});
-#line 143
+#line 120
  testRunner.And("I set Test Values as", ((string)(null)), table17, "And ");
-#line 146
+#line 123
  testRunner.And("save is enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 147
+#line 124
  testRunner.When("I save", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 148
+#line 125
  testRunner.Then("Tab Header is \"Workflow 3 - Tests\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 149
+#line 126
  testRunner.And("I close the test builder", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 150
+#line 127
  testRunner.When("the test builder is open with \"Workflow 3\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 151
- testRunner.Then("there are 2 tests", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Delete an existing test with correct permissions")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "StudioTestFramework")]
-        public virtual void DeleteAnExistingTestWithCorrectPermissions()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Delete an existing test with correct permissions", ((string[])(null)));
-#line 154
-this.ScenarioSetup(scenarioInfo);
-#line 7
-this.FeatureBackground();
-#line 155
- testRunner.Given("the test builder is open with \"Workflow 3\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 156
- testRunner.And("Tab Header is \"Workflow 3 - Tests\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 157
- testRunner.And("there are no tests", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 158
- testRunner.And("I click New Test", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 128
+ testRunner.Then("there are 3 tests", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 129
+ testRunner.And("I select \"Test2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table18 = new TechTalk.SpecFlow.Table(new string[] {
                         "TestName",
                         "AuthenticationType",
                         "Error"});
             table18.AddRow(new string[] {
-                        "Test1",
-                        "Windows",
+                        "Test2",
+                        "Public",
                         "true"});
-#line 159
-  testRunner.And("I set Test Values as", ((string)(null)), table18, "And ");
-#line 162
- testRunner.Then("NoErrorExpected is \"false\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 163
- testRunner.And("save is enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 164
+#line 130
+ testRunner.And("I set Test Values as", ((string)(null)), table18, "And ");
+#line 133
  testRunner.When("I save", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 165
+#line 134
  testRunner.Then("Tab Header is \"Workflow 3 - Tests\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 166
- testRunner.And("there are 1 tests", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 167
- testRunner.And("Delete is enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 168
- testRunner.And("Run is enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 169
- testRunner.When("I delete selected Test", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 170
- testRunner.Then("The Confirmation popup is shown", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 171
- testRunner.When("I click cancel", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 172
- testRunner.Then("there are 1 tests", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 173
- testRunner.And("Delete is enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 174
- testRunner.And("Run is enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 175
- testRunner.When("I delete selected test", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 176
- testRunner.Then("The Confirmation popup is shown", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 177
- testRunner.When("I click Ok", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 178
- testRunner.Then("there are no tests", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 179
- testRunner.And("Delete is disabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 180
- testRunner.And("run is disabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 181
- testRunner.And("add new test is enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 135
+ testRunner.And("I close the test builder", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 136
+ testRunner.When("the test builder is open with \"Workflow 2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 137
+ testRunner.Then("there are 3 tests", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 138
+ testRunner.And("I select \"Test2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 139
+ testRunner.And("Test name is \"Test2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 140
+ testRunner.And("Authentication is Public", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Delete test not enabled when test disabled")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Loading exisiting Tests")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "StudioTestFramework")]
-        public virtual void DeleteTestNotEnabledWhenTestDisabled()
+        public virtual void LoadingExisitingTests()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Delete test not enabled when test disabled", ((string[])(null)));
-#line 184
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Loading exisiting Tests", ((string[])(null)));
+#line 142
 this.ScenarioSetup(scenarioInfo);
 #line 7
 this.FeatureBackground();
-#line 185
+#line 143
  testRunner.Given("the test builder is open with \"Workflow 3\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 186
+#line 144
  testRunner.And("Tab Header is \"Workflow 3 - Tests\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 187
+#line 145
  testRunner.And("there are no tests", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 188
+#line 146
  testRunner.And("I click New Test", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table19 = new TechTalk.SpecFlow.Table(new string[] {
@@ -548,52 +450,172 @@ this.FeatureBackground();
                         "Test1",
                         "Windows",
                         "true"});
-#line 189
-  testRunner.And("I set Test Values as", ((string)(null)), table19, "And ");
-#line 192
+#line 147
+ testRunner.And("I set Test Values as", ((string)(null)), table19, "And ");
+#line 150
  testRunner.Then("NoErrorExpected is \"false\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 193
+#line 151
  testRunner.And("save is enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 194
+#line 152
  testRunner.When("I save", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 195
+#line 153
  testRunner.Then("Tab Header is \"Workflow 3 - Tests\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 196
+#line 154
+ testRunner.When("I click New Test", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+            TechTalk.SpecFlow.Table table20 = new TechTalk.SpecFlow.Table(new string[] {
+                        "TestName",
+                        "AuthenticationType",
+                        "Error"});
+            table20.AddRow(new string[] {
+                        "Test2",
+                        "Windows",
+                        "true"});
+#line 155
+ testRunner.And("I set Test Values as", ((string)(null)), table20, "And ");
+#line 158
+ testRunner.And("save is enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 159
+ testRunner.When("I save", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 160
+ testRunner.Then("Tab Header is \"Workflow 3 - Tests\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 161
+ testRunner.And("I close the test builder", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 162
+ testRunner.When("the test builder is open with \"Workflow 3\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 163
+ testRunner.Then("there are 3 tests", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Delete an Enabled Test")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "StudioTestFramework")]
+        public virtual void DeleteAnEnabledTest()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Delete an Enabled Test", ((string[])(null)));
+#line 166
+this.ScenarioSetup(scenarioInfo);
+#line 7
+this.FeatureBackground();
+#line 167
+ testRunner.Given("the test builder is open with \"Workflow 3\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 168
+ testRunner.And("Tab Header is \"Workflow 3 - Tests\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 169
+ testRunner.And("there are no tests", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 170
+ testRunner.And("I click New Test", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table21 = new TechTalk.SpecFlow.Table(new string[] {
+                        "TestName",
+                        "AuthenticationType",
+                        "Error"});
+            table21.AddRow(new string[] {
+                        "Test1",
+                        "Windows",
+                        "true"});
+#line 171
+ testRunner.And("I set Test Values as", ((string)(null)), table21, "And ");
+#line 174
+ testRunner.Then("NoErrorExpected is \"false\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 175
+ testRunner.And("save is enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 176
+ testRunner.When("I save", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 177
+ testRunner.Then("Tab Header is \"Workflow 3 - Tests\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 178
  testRunner.And("there are 1 tests", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 197
- testRunner.When("test is disabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 198
- testRunner.Then("Delete is disabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 199
- testRunner.When("test is enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 200
- testRunner.Then("Delete is enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 201
- testRunner.When("I delete selected Test", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 202
- testRunner.Then("The Confirmation popup is shown", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 203
- testRunner.When("I click cancel", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 204
- testRunner.Then("there are 1 tests", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 205
- testRunner.And("Delete is enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 206
- testRunner.And("Run is enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 207
- testRunner.When("I delete selected test", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 208
- testRunner.Then("The Confirmation popup is shown", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 209
- testRunner.When("I click Ok", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 210
+#line 179
+ testRunner.When("I disable \"Test1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 180
+ testRunner.Then("Delete is disabled for \"Test1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 181
+ testRunner.When("I enable \"Test1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 182
+ testRunner.Then("Delete is enabled for \"Test1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 183
+ testRunner.When("I delete \"Test1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 184
+ testRunner.When("The Confirmation popup is shown I click Ok", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 185
  testRunner.Then("there are no tests", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 211
- testRunner.And("Delete is disabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 212
- testRunner.And("run is disabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 213
- testRunner.And("add new test is enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 186
+ testRunner.And("I close the test builder", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 187
+ testRunner.When("the test builder is open with \"Workflow 3\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 188
+ testRunner.Then("there are no tests", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Duplicate a test")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "StudioTestFramework")]
+        public virtual void DuplicateATest()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Duplicate a test", ((string[])(null)));
+#line 214
+this.ScenarioSetup(scenarioInfo);
+#line 7
+this.FeatureBackground();
+#line 215
+ testRunner.Given("the test builder is open with \"Workflow 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 216
+ testRunner.And("Tab Header is \"Workflow 1 - Tests\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 217
+ testRunner.And("there are no tests", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 218
+ testRunner.And("I click New Test", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 219
+ testRunner.Then("a new test is added", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 220
+ testRunner.And("Tab Header is \"Workflow 1 - Tests *\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 221
+ testRunner.And("test name starts with \"Test 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table20 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Variable Name",
+                        "Value"});
+            table20.AddRow(new string[] {
+                        "a",
+                        ""});
+#line 222
+ testRunner.And("inputs are", ((string)(null)), table20, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table21 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Variable Name",
+                        "Value"});
+            table21.AddRow(new string[] {
+                        "outputValue",
+                        ""});
+#line 225
+ testRunner.And("outputs as", ((string)(null)), table21, "And ");
+#line 228
+ testRunner.And("save is enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 229
+ testRunner.When("I save", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 230
+ testRunner.Then("Tab Header is \"Workflow 1 - Tests\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 231
+ testRunner.And("there are 1 tests", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 232
+ testRunner.When("I right click \"Test 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 233
+ testRunner.Then("Duplicate Test is visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 234
+ testRunner.When("I click duplicate", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 235
+ testRunner.Then("there are 2 tests", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 236
+ testRunner.And("the duplicated tests is \"Test 1_dup\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 237
+ testRunner.When("I right click \"Test 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 238
+ testRunner.Then("Duplicate Test in not Visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }

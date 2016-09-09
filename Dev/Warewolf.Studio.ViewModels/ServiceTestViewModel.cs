@@ -28,6 +28,7 @@ namespace Warewolf.Studio.ViewModels
         private ObservableCollection<IServiceTestModel> _tests;
         private string _displayName;
         public IPopupController PopupController { get; }
+        private bool _canSave;
 
         public ServiceTestViewModel(IContextualResourceModel resourceModel,IAsyncWorker asyncWorker)
         {
@@ -39,14 +40,18 @@ namespace Warewolf.Studio.ViewModels
             ServiceTestCommandHandler = new ServiceTestCommandHandlerModel();
             PopupController = CustomContainer.Get<IPopupController>();
 
-            DuplicateTestCommand = new DelegateCommand(ServiceTestCommandHandler.DuplicateTest, () => CanDuplicateTest);
             RunAllTestsInBrowserCommand = new DelegateCommand(() => ServiceTestCommandHandler.RunAllTestsInBrowser(IsDirty));
             RunAllTestsCommand = new DelegateCommand(() => ServiceTestCommandHandler.RunAllTestsCommand(IsDirty));
             RunSelectedTestInBrowserCommand = new DelegateCommand(ServiceTestCommandHandler.RunSelectedTestInBrowser, () => CanRunSelectedTestInBrowser);
             RunSelectedTestCommand = new DelegateCommand(ServiceTestCommandHandler.RunSelectedTest, () => CanRunSelectedTest);
             StopTestCommand = new DelegateCommand(ServiceTestCommandHandler.StopTest, () => CanStopTest);
             CreateTestCommand = new DelegateCommand(CreateTests);
-            DeleteTestCommand = new DelegateCommand(() => ServiceTestCommandHandler.DeleteTest(SelectedServiceTest), () => CanDeleteTest);
+            DeleteTestCommand = new DelegateCommand<IServiceTestModel>(x => ServiceTestCommandHandler.DeleteTest(x), CanDeleteTest);
+            DuplicateTestCommand = new DelegateCommand(() =>
+            {
+                var duplicateTest = ServiceTestCommandHandler.DuplicateTest(SelectedServiceTest);
+                AddAndSelectTest(duplicateTest);
+            }, () => CanDuplicateTest);
             CanSave = true;
             RunAllTestsUrl = WebServer.GetWorkflowUri(resourceModel, "", UrlType.Tests)?.ToString();
             IsLoading = true;
@@ -60,6 +65,10 @@ namespace Warewolf.Studio.ViewModels
             });
         }
 
+        private bool CanDeleteTest(IServiceTestModel x)
+        {
+          return GetPermissions() && x != null && !x.Enabled;
+        } 
         public bool IsLoading { get; set; }
 
         public IAsyncWorker AsyncWorker { get; set; }
@@ -74,13 +83,11 @@ namespace Warewolf.Studio.ViewModels
                 return;
             }
 
-            var testModel = ServiceTestCommandHandler.CreateTest(ResourceModel);
-            AddTest(testModel);
-            SelectedServiceTest = testModel;
-            SetSelectedTestUrl();
+            var testModel = ServiceTestCommandHandler.CreateTest(ResourceModel, RealTests().Count());
+            AddAndSelectTest(testModel);
         }
 
-        private void AddTest(IServiceTestModel testModel)
+        private void AddAndSelectTest(IServiceTestModel testModel)
         {
             var index = _tests.Count - 1;
             if(index >= 0)
@@ -98,9 +105,20 @@ namespace Warewolf.Studio.ViewModels
         public bool CanStopTest { get; set; }
         private bool CanRunSelectedTestInBrowser => SelectedServiceTest != null && !SelectedServiceTest.IsDirty;
         private bool CanRunSelectedTest => GetPermissions();
-        public bool CanDuplicateTest => GetPermissions();
+        public bool CanDuplicateTest => GetPermissions() && !IsDirty && SelectedServiceTest != null;
 
-        public bool CanSave { get; set; }
+        public bool CanSave
+        {
+            get
+            {
+                _canSave = IsDirty;
+                return _canSave;
+            }
+            set
+            {
+                //_canSave = value;
+            }
+        }
 
         private bool GetPermissions()
         {
@@ -141,6 +159,8 @@ namespace Warewolf.Studio.ViewModels
         {
             try
             {
+                var serviceTestModels = RealTests().ToList();
+                var duplicateTests = RealTests().GroupBy(x => x.TestName).Where(group => group.Count() > 1).Select(group => group.Key);
                 var serviceTestModels = _tests.Where(model => model.GetType() != typeof(DummyServiceTest) && model.IsDirty).ToList();
                 var duplicateTests = _tests.Where(model => model.GetType() != typeof(DummyServiceTest)).ToList().GroupBy(x => x.TestName).Where(group => group.Count() > 1).Select(group => group.Key);
                 if (duplicateTests.Any())
@@ -235,6 +255,7 @@ namespace Warewolf.Studio.ViewModels
                 OnPropertyChanged(() => TestPassingResult);
             }
         }
+        private IEnumerable<IServiceTestModel> RealTests() => Tests.Where(model => model.GetType() != typeof(DummyServiceTest)).ToObservableCollection();
 
         public ObservableCollection<IServiceTestModel> Tests
         {
@@ -282,6 +303,7 @@ namespace Warewolf.Studio.ViewModels
             }
             catch (Exception)
             {
+
                 return new ObservableCollection<IServiceTestModel>();
             }
         }

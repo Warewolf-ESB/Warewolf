@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
+using Dev2.Common.Interfaces;
 using Dev2.Data.Binary_Objects;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Data.Util;
@@ -53,13 +55,13 @@ namespace Dev2.Activities.Specs.TestFramework
             ScenarioContext.Add(workflowName, resourceModel);
             ScenarioContext.Add($"{workflowName}dataListViewModel", datalistViewModel);
             var popupController = new Mock<Common.Interfaces.Studio.Controller.IPopupController>();
-            popupController.Setup(controller => controller.Show(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<MessageBoxButton>(), It.IsAny<MessageBoxImage>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>()));
+            
             CustomContainer.Register(popupController.Object);
 
-            var containsKey = ScenarioContext.Current.ContainsKey("popupController");
+            var containsKey = ScenarioContext.ContainsKey("popupController");
             if (!containsKey)
             {
-                ScenarioContext.Current.Add("popupController", popupController);
+                ScenarioContext.Add("popupController", popupController);
             }
 
         }
@@ -158,9 +160,15 @@ namespace Dev2.Activities.Specs.TestFramework
         [Then(@"there are no tests")]
         public void GivenThereAreNoTests()
         {
-            ServiceTestViewModel serviceTest = GetTestFrameworkFromContext();
-            var testsAreDummy = serviceTest.Tests.All(model => model.GetType() == typeof(DummyServiceTest));
-            Assert.IsTrue(testsAreDummy);
+            var currentTests = GetTestForCurrentTestFramework();
+            Assert.IsFalse(currentTests.Any());
+        }
+
+        [When(@"The Confirmation popup is shown I click Ok")]
+        public void WhenTheConfirmationPopupIsShownIClickOk()
+        {
+            Mock<Common.Interfaces.Studio.Controller.IPopupController> popupController = ScenarioContext.Get<Mock<Common.Interfaces.Studio.Controller.IPopupController>>("popupController");
+            popupController.Setup(controller => controller.Show(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<MessageBoxButton>(), It.IsAny<MessageBoxImage>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>())).Returns(MessageBoxResult.Yes);
         }
 
 
@@ -178,15 +186,15 @@ namespace Dev2.Activities.Specs.TestFramework
         [Then(@"a new test is added")]
         public void ThenANewTestIsAdded()
         {
-            ServiceTestViewModel serviceTest = GetTestFrameworkFromContext();
-            Assert.AreNotEqual(0, serviceTest.Tests.Count);
+            var currentTests = GetTestForCurrentTestFramework();
+            Assert.AreNotEqual(0, currentTests.Count());
         }
 
         [Then(@"there are (.*) tests")]
         public void ThenThereAreTests(int testCount)
         {
-            ServiceTestViewModel serviceTest = GetTestFrameworkFromContext();
-            Assert.AreEqual(testCount, serviceTest.Tests.Count);
+            var currentTests = GetTestForCurrentTestFramework();
+            Assert.AreEqual(testCount, currentTests.Count());
         }
 
         [Then(@"test name starts with ""(.*)""")]
@@ -370,15 +378,18 @@ namespace Dev2.Activities.Specs.TestFramework
         }
 
         [Given(@"I select ""(.*)""")]
+        [When(@"I select ""(.*)""")]
+        [Then(@"I select ""(.*)""")]
         public void GivenISelect(string testName)
         {
             ServiceTestViewModel serviceTest = GetTestFrameworkFromContext();
-            var serviceTestModel = serviceTest.Tests.Single(model => model.TestName == testName);
+            var serviceTestModel = serviceTest.Tests.Single(model => string.Equals(model.TestName, testName, StringComparison.InvariantCultureIgnoreCase));
             serviceTest.SelectedServiceTest = serviceTestModel;
         }
 
         [Given(@"I set Test Values as")]
         [When(@"I set Test Values as")]
+        [Then(@"I set Test Values as")]
         public void GivenISetTestValuesAs(Table table)
         {
             ServiceTestViewModel serviceTest = GetTestFrameworkFromContext();
@@ -402,6 +413,48 @@ namespace Dev2.Activities.Specs.TestFramework
             ServiceTestViewModel serviceTest = GetTestFrameworkFromContext();
             Assert.AreEqual(hasError, serviceTest.SelectedServiceTest.NoErrorExpected);
 
+        }
+
+        [Then(@"Authentication is Public")]
+        public void ThenAuthenticationIsPublic()
+        {
+            ServiceTestViewModel serviceTest = GetTestFrameworkFromContext();
+            Assert.AreEqual(AuthenticationType.Public, serviceTest.SelectedServiceTest.AuthenticationType);
+        }
+
+        [When(@"I disable ""(.*)""")]
+        public void WhenIDisable(string testName)
+        {
+            ServiceTestViewModel serviceTest = GetTestFrameworkFromContext();
+            var serviceTestModel = serviceTest.Tests.Single(model => string.Equals(model.TestName, testName, StringComparison.InvariantCultureIgnoreCase));
+            serviceTestModel.Enabled = false;
+        }
+
+        [When(@"I enable ""(.*)""")]
+        public void WhenIEnable(string testName)
+        {
+            ServiceTestViewModel serviceTest = GetTestFrameworkFromContext();
+            var serviceTestModel = serviceTest.Tests.Single(model => string.Equals(model.TestName, testName, StringComparison.InvariantCultureIgnoreCase));
+            serviceTestModel.Enabled = true;
+        }
+
+
+        [Then(@"Delete is disabled for ""(.*)""")]
+        public void ThenDeleteIsDisabledFor(string testName)
+        {
+            ServiceTestViewModel serviceTest = GetTestFrameworkFromContext();
+            var serviceTestModel = serviceTest.Tests.Single(model => string.Equals(model.TestName, testName, StringComparison.InvariantCultureIgnoreCase));
+            var canDelete = serviceTest.DeleteTestCommand.CanExecute(serviceTestModel);
+            Assert.IsFalse(canDelete);
+        }
+
+        [Then(@"Delete is enabled for ""(.*)""")]
+        public void ThenDeleteIsEnabledFor(string testName)
+        {
+            ServiceTestViewModel serviceTest = GetTestFrameworkFromContext();
+            var serviceTestModel = serviceTest.Tests.Single(model => string.Equals(model.TestName, testName, StringComparison.InvariantCultureIgnoreCase));
+            var canDelete = serviceTest.DeleteTestCommand.CanExecute(serviceTestModel);
+            Assert.IsTrue(canDelete);
         }
 
 
@@ -445,8 +498,8 @@ namespace Dev2.Activities.Specs.TestFramework
         public void ThenDeleteIsEnabled()
         {
             ServiceTestViewModel serviceTest = GetTestFrameworkFromContext();
-            //var canDelete = serviceTest.DeleteTestCommand.CanExecute(null);
-            //Assert.IsTrue(canDelete);
+            var canDelete = serviceTest.DeleteTestCommand.CanExecute(null);
+            Assert.IsTrue(canDelete);
         }
 
         [Then(@"Run is enabled")]
@@ -457,11 +510,19 @@ namespace Dev2.Activities.Specs.TestFramework
             Assert.IsTrue(canDelete);
         }
 
+        [When(@"I delete ""(.*)""")]
+        public void WhenIDelete(string testName)
+        {
+            ServiceTestViewModel serviceTest = GetTestFrameworkFromContext();
+            var serviceTestModel = serviceTest.Tests.Single(model => string.Equals(model.TestName, testName, StringComparison.InvariantCultureIgnoreCase));
+            serviceTest.DeleteTestCommand.Execute(serviceTestModel);
+        }
+
         [When(@"I delete selected Test")]
         public void WhenIDeleteSelectedTest()
         {
             ServiceTestViewModel serviceTest = GetTestFrameworkFromContext();
-            //serviceTest.DeleteTestCommand.Execute(null);
+            serviceTest.DeleteTestCommand.Execute(null);
 
         }
 
@@ -476,9 +537,56 @@ namespace Dev2.Activities.Specs.TestFramework
         [When(@"test is disabled")]
         public void WhenTestIsDisabled()
         {
-            ScenarioContext.Current.Pending();
+            ServiceTestViewModel serviceTest = GetTestFrameworkFromContext();
+            var enabled = serviceTest.SelectedServiceTest.Enabled;
+            Assert.IsFalse(enabled);
         }
 
+        [When(@"I right click ""(.*)""")]
+        public void WhenIRightClick(string testName)
+        {
+            ServiceTestViewModel serviceTest = GetTestFrameworkFromContext();
+            var serviceTestModel = serviceTest.Tests.Single(model => model.TestName == testName);
+            serviceTest.SelectedServiceTest = serviceTestModel;
+        }
+
+        [Then(@"Duplicate Test is visible")]
+        public void ThenDuplicateTestIsVisible()
+        {
+            ServiceTestViewModel serviceTest = GetTestFrameworkFromContext();
+            var canExecute = serviceTest.DuplicateTestCommand.CanExecute(null);
+            Assert.IsTrue(canExecute);
+        }
+
+        [When(@"I click duplicate")]
+        public void WhenIClickDuplicate()
+        {
+            ServiceTestViewModel serviceTest = GetTestFrameworkFromContext();
+            serviceTest.DuplicateTestCommand.Execute(null);
+        }
+
+        [Then(@"the duplicated tests is ""(.*)""")]
+        public void ThenTheDuplicatedTestsIs(string dupTestName)
+        {
+            ServiceTestViewModel serviceTest = GetTestFrameworkFromContext();
+            var hasDupTest = serviceTest.Tests.Any(model => model.TestName == dupTestName);
+            Assert.IsTrue(hasDupTest);
+        }
+        [Then(@"Duplicate Test in not Visible")]
+        public void ThenDuplicateTestInNotVisible()
+        {
+            ServiceTestViewModel serviceTest = GetTestFrameworkFromContext();
+            var canExecute = serviceTest.DuplicateTestCommand.CanExecute(null);
+            Assert.IsFalse(canExecute);
+        }
+
+
+        private IEnumerable<IServiceTestModel> GetTestForCurrentTestFramework()
+        {
+            var testFrameworkFromContext = GetTestFrameworkFromContext();
+            var serviceTestModels = testFrameworkFromContext.Tests.Where(model => model.GetType() != typeof(DummyServiceTest));
+            return serviceTestModels;
+        }
 
         ServiceTestViewModel GetTestFrameworkFromContext()
         {
