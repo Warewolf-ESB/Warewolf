@@ -561,6 +561,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
                 var serviceTestModelTo = new ServiceTestModelTO
                 {
                     TestName = model.TestName,
+                    OldTestName = model.OldTestName,
                     AuthenticationType = model.AuthenticationType,
                     Enabled = model.Enabled,
                     ErrorExpected = model.ErrorExpected,
