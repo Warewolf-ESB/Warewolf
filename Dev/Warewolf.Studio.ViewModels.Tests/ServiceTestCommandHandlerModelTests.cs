@@ -31,7 +31,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             var testModel = testFrameworkViewModel.CreateTest(CreateResourceModelWithNoInput(), 1);
             //------------Assert Results-------------------------
             Assert.IsNotNull(testModel);
-            Assert.IsNull(testModel.Inputs);
+            Assert.IsNotNull(testModel.Inputs);
+            Assert.AreEqual(0, testModel.Inputs.Count);
         }
 
         [TestMethod]
@@ -137,6 +138,13 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual(1, testModel.Inputs.Count);
             Assert.AreEqual("a", testModel.Inputs[0].Variable);
             Assert.AreEqual("", testModel.Inputs[0].Value);
+
+            var testModel1 = testFrameworkViewModel.CreateTest(CreateResourceModelWithSingleScalarInput(), 1);
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(testModel1);
+            Assert.AreEqual(1, testModel1.Inputs.Count);
+            Assert.AreEqual("a", testModel1.Inputs[0].Variable);
+            Assert.AreEqual("", testModel1.Inputs[0].Value);
         }
 
         [TestMethod]

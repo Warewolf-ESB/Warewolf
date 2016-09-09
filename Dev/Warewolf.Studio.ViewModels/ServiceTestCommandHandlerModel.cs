@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using Dev2;
@@ -26,11 +27,13 @@ namespace Warewolf.Studio.ViewModels
                 TestName = "Test " + (testNumber == 0 ? 1 : testNumber),
                 IsDirty = true,
                 TestPending = true,
-                Enabled = true
+                Enabled = true,
+                Inputs = new List<IServiceTestInput>(),
+                Outputs = new List<IServiceTestOutput>()
             };
             if (!string.IsNullOrEmpty(resourceModel.DataList))
             {
-
+                DataList = new DataListModel();
                 DataList.Create(resourceModel.DataList, resourceModel.DataList);
                 var inputList = _dataListConversionUtils.GetInputs(DataList);
                 var outputList = _dataListConversionUtils.GetOutputs(DataList);
