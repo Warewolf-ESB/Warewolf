@@ -71,6 +71,19 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
+        /// Assert_variable_filter_textbox_exist - Use 'Assert_variable_filter_textbox_existExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void Assert_variable_filter_textbox_exist()
+        {
+            #region Variable Declarations
+            WpfText filterText = this.MainStudioWindow.DockManager.SplitPaneRight.Variables.VariablesControl.VariableSearchTextBoxEdit.FilterText;
+            #endregion
+
+            // Verify that the 'Exists' property of 'Filter' label equals 'True'
+            Assert.AreEqual(this.Assert_variable_filter_textbox_existExpectedValues.FilterTextExists, filterText.Exists, "Variable filter textbox does not exist");
+        }
+        
+        /// <summary>
         /// Assign_Value_To_Variable - Use 'Assign_Value_To_VariableParams' to pass parameters into this method.
         /// </summary>
         public void Assign_Value_To_Variable()
@@ -159,6 +172,8 @@ namespace Warewolf.UITests
             WpfCustom multiAssign = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign;
             WpfMenuItem showLargeView = this.MainStudioWindow.DesignSurfaceContextMenu.ShowLargeView;
             WpfEdit textbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.LargeView.DataGrid.Row1.VariableCell.Listbox.Textbox;
+            WpfEdit variableSearchTextBoxEdit = this.MainStudioWindow.DockManager.SplitPaneRight.Variables.VariablesControl.VariableSearchTextBoxEdit;
+            WpfButton clearSearchButton = this.MainStudioWindow.DockManager.SplitPaneRight.Variables.VariablesControl.VariableSearchTextBoxEdit.ClearSearchButton;
             WpfButton deleteButton = this.MainStudioWindow.DockManager.SplitPaneRight.Variables.VariablesControl.XtgDataPresenter.Table.VariableDataItem.List.ListItem.Table.DataItem1.VariableNameCell.ValueEditor.TextBox.DeleteButton;
             #endregion
 
@@ -184,6 +199,18 @@ namespace Warewolf.UITests
             // Verify that the 'Exists' property of 'UI__Row1_FieldName_AutoID' text box equals 'True'
             Assert.AreEqual(this.Click_Assign_Tool_Remove_Variable_From_ToolParams.TextboxExists, textbox.Exists, "Assign large view row 1 variable textbox does not exist");
 
+            // Verify that the 'Exists' property of 'SearchTextBox' text box equals 'True'
+            Assert.AreEqual(this.Click_Assign_Tool_Remove_Variable_From_ToolParams.VariableSearchTextBoxEditExists, variableSearchTextBoxEdit.Exists, "Variable filter textbox does not exist");
+
+            // Type 'Other' in 'SearchTextBox' text box
+            variableSearchTextBoxEdit.Text = this.Click_Assign_Tool_Remove_Variable_From_ToolParams.VariableSearchTextBoxEditText;
+
+            // Verify that the 'Exists' property of 'ClearSearchButton' button equals 'True'
+            Assert.AreEqual(this.Click_Assign_Tool_Remove_Variable_From_ToolParams.ClearSearchButtonExists, clearSearchButton.Exists, "Variable clear filter button does not exist");
+
+            // Click 'ClearSearchButton' button
+            Mouse.Click(clearSearchButton, new Point(8, 13));
+
             // Verify that the 'Exists' property of 'DeleteButton' button equals 'True'
             Assert.AreEqual(this.Click_Assign_Tool_Remove_Variable_From_ToolParams.DeleteButtonExists, deleteButton.Exists, "Variable delete does not exist");
 
@@ -195,60 +222,6 @@ namespace Warewolf.UITests
         /// Click_Assign_Tool_url
         /// </summary>
         public void Click_Assign_Tool_url()
-        {
-            #region Variable Declarations
-            WpfHyperlink httprsaklfsanele3142Hyperlink = this.MainStudioWindow.Httprsaklfsanele3142Hyperlink;
-            #endregion
-
-            // Click 'http://rsaklfsanele:3142/secure/Unassigned/Unsaved...' link
-            Mouse.Click(httprsaklfsanele3142Hyperlink, new Point(201, 10));
-        }
-        
-        /// <summary>
-        /// Click_Assign_Tool_Remove_Variable_From_Tool1 - Use 'Click_Assign_Tool_Remove_Variable_From_Tool1Params' to pass parameters into this method.
-        /// </summary>
-        public void Click_Assign_Tool_Remove_Variable_From_Tool1()
-        {
-            #region Variable Declarations
-            WpfCustom multiAssign = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign;
-            WpfMenuItem showLargeView = this.MainStudioWindow.DesignSurfaceContextMenu.ShowLargeView;
-            WpfEdit textbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.LargeView.DataGrid.Row1.VariableCell.Listbox.Textbox;
-            WpfButton deleteButton = this.MainStudioWindow.DockManager.SplitPaneRight.Variables.VariablesControl.XtgDataPresenter.Table.VariableDataItem.List.ListItem.Table.DataItem1.VariableNameCell.ValueEditor.TextBox.DeleteButton;
-            #endregion
-
-            // Right-Click 'DsfMultiAssignActivity' custom control
-            Mouse.Click(multiAssign, MouseButtons.Right, ModifierKeys.None, new Point(134, 7));
-
-            // Click 'Show Large View' menu item
-            Mouse.Click(showLargeView, new Point(43, 15));
-
-            // Verify that the 'Exists' property of 'DsfMultiAssignActivity' custom control equals 'True'
-            Assert.AreEqual(this.Click_Assign_Tool_Remove_Variable_From_Tool1Params.MultiAssignExists, multiAssign.Exists, "Assign tool large view on the design surface does not exist");
-
-            // Type '[[SomeOtherVariable]]' in 'UI__Row1_FieldName_AutoID' text box
-            textbox.Text = this.Click_Assign_Tool_Remove_Variable_From_Tool1Params.TextboxText;
-
-            // Type '{Right}{Tab}' in 'UI__Row1_FieldName_AutoID' text box
-            Keyboard.SendKeys(textbox, this.Click_Assign_Tool_Remove_Variable_From_Tool1Params.TextboxSendKeys, ModifierKeys.None);
-
-            // Verify that the 'Text' property of 'UI__Row1_FieldName_AutoID' text box equals '[[SomeOtherVariable]]'
-            Assert.AreEqual(this.Click_Assign_Tool_Remove_Variable_From_Tool1Params.TextboxText1, textbox.Text, "Multiassign small view row 1 variable textbox text does not equal \"[[Some$Invalid" +
-                    "%Variable]]\".");
-
-            // Verify that the 'Exists' property of 'UI__Row1_FieldName_AutoID' text box equals 'True'
-            Assert.AreEqual(this.Click_Assign_Tool_Remove_Variable_From_Tool1Params.TextboxExists, textbox.Exists, "Assign large view row 1 variable textbox does not exist");
-
-            // Verify that the 'Exists' property of 'DeleteButton' button equals 'True'
-            Assert.AreEqual(this.Click_Assign_Tool_Remove_Variable_From_Tool1Params.DeleteButtonExists, deleteButton.Exists, "Variable delete does not exist");
-
-            // Click 'DeleteButton' button
-            Mouse.Click(deleteButton, new Point(9, 8));
-        }
-        
-        /// <summary>
-        /// Click_Assign_Tool_url1
-        /// </summary>
-        public void Click_Assign_Tool_url1()
         {
             #region Variable Declarations
             WpfHyperlink httprsaklfsanele3142Hyperlink = this.MainStudioWindow.Httprsaklfsanele3142Hyperlink;
@@ -3388,6 +3361,26 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
+        /// Filter_variables - Use 'Filter_variablesParams' to pass parameters into this method.
+        /// </summary>
+        public void Filter_variables()
+        {
+            #region Variable Declarations
+            WpfText filterText = this.MainStudioWindow.DockManager.SplitPaneRight.Variables.VariablesControl.VariableSearchTextBoxEdit.FilterText;
+            WpfEdit variableSearchTextBoxEdit = this.MainStudioWindow.DockManager.SplitPaneRight.Variables.VariablesControl.VariableSearchTextBoxEdit;
+            #endregion
+
+            // Verify that the 'Exists' property of 'Filter' label equals 'True'
+            Assert.AreEqual(this.Filter_variablesParams.FilterTextExists, filterText.Exists, "Variable filter textbox does not exist");
+
+            // Click 'SearchTextBox' text box
+            Mouse.Click(variableSearchTextBoxEdit, new Point(89, 7));
+
+            // Type 'Other' in 'SearchTextBox' text box
+            variableSearchTextBoxEdit.Text = this.Filter_variablesParams.VariableSearchTextBoxEditText;
+        }
+        
+        /// <summary>
         /// Open_Assign_Tool_Large_View - Use 'Open_Assign_Tool_Large_ViewParams' to pass parameters into this method.
         /// </summary>
         public void Open_Assign_Tool_Large_View()
@@ -5724,6 +5717,18 @@ namespace Warewolf.UITests
             }
         }
         
+        public virtual Assert_variable_filter_textbox_existExpectedValues Assert_variable_filter_textbox_existExpectedValues
+        {
+            get
+            {
+                if ((this.mAssert_variable_filter_textbox_existExpectedValues == null))
+                {
+                    this.mAssert_variable_filter_textbox_existExpectedValues = new Assert_variable_filter_textbox_existExpectedValues();
+                }
+                return this.mAssert_variable_filter_textbox_existExpectedValues;
+            }
+        }
+        
         public virtual Assign_Value_To_VariableParams Assign_Value_To_VariableParams
         {
             get
@@ -5781,18 +5786,6 @@ namespace Warewolf.UITests
                     this.mClick_Assign_Tool_Remove_Variable_From_ToolParams = new Click_Assign_Tool_Remove_Variable_From_ToolParams();
                 }
                 return this.mClick_Assign_Tool_Remove_Variable_From_ToolParams;
-            }
-        }
-        
-        public virtual Click_Assign_Tool_Remove_Variable_From_Tool1Params Click_Assign_Tool_Remove_Variable_From_Tool1Params
-        {
-            get
-            {
-                if ((this.mClick_Assign_Tool_Remove_Variable_From_Tool1Params == null))
-                {
-                    this.mClick_Assign_Tool_Remove_Variable_From_Tool1Params = new Click_Assign_Tool_Remove_Variable_From_Tool1Params();
-                }
-                return this.mClick_Assign_Tool_Remove_Variable_From_Tool1Params;
             }
         }
         
@@ -7056,6 +7049,18 @@ namespace Warewolf.UITests
             }
         }
         
+        public virtual Filter_variablesParams Filter_variablesParams
+        {
+            get
+            {
+                if ((this.mFilter_variablesParams == null))
+                {
+                    this.mFilter_variablesParams = new Filter_variablesParams();
+                }
+                return this.mFilter_variablesParams;
+            }
+        }
+        
         public virtual Open_Assign_Tool_Large_ViewParams Open_Assign_Tool_Large_ViewParams
         {
             get
@@ -7856,6 +7861,8 @@ namespace Warewolf.UITests
         
         private Assert_URL_existExpectedValues mAssert_URL_existExpectedValues;
         
+        private Assert_variable_filter_textbox_existExpectedValues mAssert_variable_filter_textbox_existExpectedValues;
+        
         private Assign_Value_To_VariableParams mAssign_Value_To_VariableParams;
         
         private Click_Assign_Tool_ExpandAllParams mClick_Assign_Tool_ExpandAllParams;
@@ -7865,8 +7872,6 @@ namespace Warewolf.UITests
         private Click_Assign_Tool_Large_View_Done_Button_With_Row1_Variable_Textbox_As_SomeInvalidVariableNameParams mClick_Assign_Tool_Large_View_Done_Button_With_Row1_Variable_Textbox_As_SomeInvalidVariableNameParams;
         
         private Click_Assign_Tool_Remove_Variable_From_ToolParams mClick_Assign_Tool_Remove_Variable_From_ToolParams;
-        
-        private Click_Assign_Tool_Remove_Variable_From_Tool1Params mClick_Assign_Tool_Remove_Variable_From_Tool1Params;
         
         private Click_Base_Convert_Large_View_Done_ButtonParams mClick_Base_Convert_Large_View_Done_ButtonParams;
         
@@ -8078,6 +8083,8 @@ namespace Warewolf.UITests
         
         private Enter_Text_Into_Assign_Small_View_Row1_Value_Textbox_As_SomeVariable_UsingIntellisenseParams mEnter_Text_Into_Assign_Small_View_Row1_Value_Textbox_As_SomeVariable_UsingIntellisenseParams;
         
+        private Filter_variablesParams mFilter_variablesParams;
+        
         private Open_Assign_Tool_Large_ViewParams mOpen_Assign_Tool_Large_ViewParams;
         
         private Open_Assign_Tool_Qvi_Large_ViewParams mOpen_Assign_Tool_Qvi_Large_ViewParams;
@@ -8258,6 +8265,21 @@ namespace Warewolf.UITests
     }
     
     /// <summary>
+    /// Parameters to be passed into 'Assert_variable_filter_textbox_exist'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Assert_variable_filter_textbox_existExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Filter' label equals 'True'
+        /// </summary>
+        public bool FilterTextExists = true;
+        #endregion
+    }
+    
+    /// <summary>
     /// Parameters to be passed into 'Assign_Value_To_Variable'
     /// </summary>
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
@@ -8371,44 +8393,19 @@ namespace Warewolf.UITests
         public bool TextboxExists = true;
         
         /// <summary>
-        /// Verify that the 'Exists' property of 'DeleteButton' button equals 'True'
+        /// Verify that the 'Exists' property of 'SearchTextBox' text box equals 'True'
         /// </summary>
-        public bool DeleteButtonExists = true;
-        #endregion
-    }
-    
-    /// <summary>
-    /// Parameters to be passed into 'Click_Assign_Tool_Remove_Variable_From_Tool1'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Click_Assign_Tool_Remove_Variable_From_Tool1Params
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Verify that the 'Exists' property of 'DsfMultiAssignActivity' custom control equals 'True'
-        /// </summary>
-        public bool MultiAssignExists = true;
+        public bool VariableSearchTextBoxEditExists = true;
         
         /// <summary>
-        /// Type '[[SomeOtherVariable]]' in 'UI__Row1_FieldName_AutoID' text box
+        /// Type 'Other' in 'SearchTextBox' text box
         /// </summary>
-        public string TextboxText = "[[SomeOtherVariable]]";
+        public string VariableSearchTextBoxEditText = "Other";
         
         /// <summary>
-        /// Type '{Right}{Tab}' in 'UI__Row1_FieldName_AutoID' text box
+        /// Verify that the 'Exists' property of 'ClearSearchButton' button equals 'True'
         /// </summary>
-        public string TextboxSendKeys = "{Right}{Tab}";
-        
-        /// <summary>
-        /// Verify that the 'Text' property of 'UI__Row1_FieldName_AutoID' text box equals '[[SomeOtherVariable]]'
-        /// </summary>
-        public string TextboxText1 = "[[SomeOtherVariable]]";
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'UI__Row1_FieldName_AutoID' text box equals 'True'
-        /// </summary>
-        public bool TextboxExists = true;
+        public bool ClearSearchButtonExists = true;
         
         /// <summary>
         /// Verify that the 'Exists' property of 'DeleteButton' button equals 'True'
@@ -10672,6 +10669,26 @@ namespace Warewolf.UITests
         /// Verify that the 'Text' property of 'UI_TextBox_AutoID' text box equals '[[SomeVariable]]'
         /// </summary>
         public string TextboxText = "[[SomeVariable]]";
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Filter_variables'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Filter_variablesParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Filter' label equals 'True'
+        /// </summary>
+        public bool FilterTextExists = true;
+        
+        /// <summary>
+        /// Type 'Other' in 'SearchTextBox' text box
+        /// </summary>
+        public string VariableSearchTextBoxEditText = "Other";
         #endregion
     }
     
@@ -28595,6 +28612,18 @@ namespace Warewolf.UITests
                 return this.mXtgDataPresenter;
             }
         }
+        
+        public VariableSearchTextBoxEdit VariableSearchTextBoxEdit
+        {
+            get
+            {
+                if ((this.mVariableSearchTextBoxEdit == null))
+                {
+                    this.mVariableSearchTextBoxEdit = new VariableSearchTextBoxEdit(this);
+                }
+                return this.mVariableSearchTextBoxEdit;
+            }
+        }
         #endregion
         
         #region Fields
@@ -28603,6 +28632,8 @@ namespace Warewolf.UITests
         private WpfButton mSortButton;
         
         private XtgDataPresenter mXtgDataPresenter;
+        
+        private VariableSearchTextBoxEdit mVariableSearchTextBoxEdit;
         #endregion
     }
     
@@ -33562,6 +33593,60 @@ namespace Warewolf.UITests
         private WpfCustom mValueEditor;
         
         private WpfToggleButton mExpanderToggleButton;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class VariableSearchTextBoxEdit : WpfEdit
+    {
+        
+        public VariableSearchTextBoxEdit(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "SearchTextBox";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfText FilterText
+        {
+            get
+            {
+                if ((this.mFilterText == null))
+                {
+                    this.mFilterText = new WpfText(this);
+                    #region Search Criteria
+                    this.mFilterText.SearchProperties[WpfText.PropertyNames.AutomationId] = "LabelText";
+                    this.mFilterText.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mFilterText;
+            }
+        }
+        
+        public WpfButton ClearSearchButton
+        {
+            get
+            {
+                if ((this.mClearSearchButton == null))
+                {
+                    this.mClearSearchButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mClearSearchButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "ClearSearchButton";
+                    this.mClearSearchButton.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mClearSearchButton;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfText mFilterText;
+        
+        private WpfButton mClearSearchButton;
         #endregion
     }
     
