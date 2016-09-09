@@ -71,6 +71,19 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
+        /// Assert_variable_filter_textbox_exist - Use 'Assert_variable_filter_textbox_existExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void Assert_variable_filter_textbox_exist()
+        {
+            #region Variable Declarations
+            WpfText filterText = this.MainStudioWindow.DockManager.SplitPaneRight.Variables.VariablesControl.VariableSearchTextBoxEdit.FilterText;
+            #endregion
+
+            // Verify that the 'Exists' property of 'Filter' label equals 'True'
+            Assert.AreEqual(this.Assert_variable_filter_textbox_existExpectedValues.FilterTextExists, filterText.Exists, "Variable filter textbox does not exist");
+        }
+        
+        /// <summary>
         /// Assign_Value_To_Variable - Use 'Assign_Value_To_VariableParams' to pass parameters into this method.
         /// </summary>
         public void Assign_Value_To_Variable()
@@ -3348,6 +3361,26 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
+        /// Filter_variables - Use 'Filter_variablesParams' to pass parameters into this method.
+        /// </summary>
+        public void Filter_variables()
+        {
+            #region Variable Declarations
+            WpfText filterText = this.MainStudioWindow.DockManager.SplitPaneRight.Variables.VariablesControl.VariableSearchTextBoxEdit.FilterText;
+            WpfEdit variableSearchTextBoxEdit = this.MainStudioWindow.DockManager.SplitPaneRight.Variables.VariablesControl.VariableSearchTextBoxEdit;
+            #endregion
+
+            // Verify that the 'Exists' property of 'Filter' label equals 'True'
+            Assert.AreEqual(this.Filter_variablesParams.FilterTextExists, filterText.Exists, "Variable filter textbox does not exist");
+
+            // Click 'SearchTextBox' text box
+            Mouse.Click(variableSearchTextBoxEdit, new Point(89, 7));
+
+            // Type 'Other' in 'SearchTextBox' text box
+            variableSearchTextBoxEdit.Text = this.Filter_variablesParams.VariableSearchTextBoxEditText;
+        }
+        
+        /// <summary>
         /// Open_Assign_Tool_Large_View - Use 'Open_Assign_Tool_Large_ViewParams' to pass parameters into this method.
         /// </summary>
         public void Open_Assign_Tool_Large_View()
@@ -5647,78 +5680,6 @@ namespace Warewolf.UITests
                     "d web address.");
         }
         
-        /// <summary>
-        /// Assert_variable_filter_textbox_exist - Use 'Assert_variable_filter_textbox_existExpectedValues' to pass parameters into this method.
-        /// </summary>
-        public void Assert_variable_filter_textbox_exist()
-        {
-            #region Variable Declarations
-            WpfText filterText = this.MainStudioWindow.DockManager.SplitPaneRight.Variables.VariablesControl.VariableSearchTextBoxEdit.FilterText;
-            #endregion
-
-            // Verify that the 'Exists' property of 'Filter' label equals 'True'
-            Assert.AreEqual(this.Assert_variable_filter_textbox_existExpectedValues.FilterTextExists, filterText.Exists, "Variable filter textbox does not exist");
-        }
-        
-        /// <summary>
-        /// Filter_variables - Use 'Filter_variablesParams' to pass parameters into this method.
-        /// </summary>
-        public void Filter_variables()
-        {
-            #region Variable Declarations
-            WpfText filterText = this.MainStudioWindow.DockManager.SplitPaneRight.Variables.VariablesControl.VariableSearchTextBoxEdit.FilterText;
-            WpfEdit variableSearchTextBoxEdit = this.MainStudioWindow.DockManager.SplitPaneRight.Variables.VariablesControl.VariableSearchTextBoxEdit;
-            #endregion
-
-            // Verify that the 'Exists' property of 'Filter' label equals 'True'
-            Assert.AreEqual(this.Filter_variablesParams.FilterTextExists, filterText.Exists, "Variable filter textbox does not exist");
-
-            // Click 'SearchTextBox' text box
-            Mouse.Click(variableSearchTextBoxEdit, new Point(89, 7));
-
-            // Type 'Other' in 'SearchTextBox' text box
-            variableSearchTextBoxEdit.Text = this.Filter_variablesParams.VariableSearchTextBoxEditText;
-        }
-        
-        /// <summary>
-        /// RecordedMethod1 - Use 'RecordedMethod1Params' to pass parameters into this method.
-        /// </summary>
-        public void RecordedMethod1()
-        {
-            #region Variable Declarations
-            WpfEdit uISearchTextBoxEdit = this.UIWarewolfDEV2SANELEMTWindow.UIVARIABLESCustom.UIUI_VariablesControl_Custom.UISearchTextBoxEdit;
-            #endregion
-
-            // Type 'something' in 'SearchTextBox' text box
-            uISearchTextBoxEdit.Text = this.RecordedMethod1Params.UISearchTextBoxEditText;
-        }
-        
-        /// <summary>
-        /// RecordedMethod2
-        /// </summary>
-        public void RecordedMethod2()
-        {
-            #region Variable Declarations
-            WpfButton clearSearchButton = this.MainStudioWindow.DockManager.SplitPaneRight.Variables.VariablesControl.VariableSearchTextBoxEdit.ClearSearchButton;
-            #endregion
-
-            // Click 'ClearSearchButton' button
-            Mouse.Click(clearSearchButton, new Point(8, 13));
-        }
-        
-        /// <summary>
-        /// AssertMethod1 - Use 'AssertMethod1ExpectedValues' to pass parameters into this method.
-        /// </summary>
-        public void AssertMethod1()
-        {
-            #region Variable Declarations
-            WpfButton clearSearchButton = this.MainStudioWindow.DockManager.SplitPaneRight.Variables.VariablesControl.VariableSearchTextBoxEdit.ClearSearchButton;
-            #endregion
-
-            // Verify that the 'Exists' property of 'ClearSearchButton' button equals 'True'
-            Assert.AreEqual(this.AssertMethod1ExpectedValues.ClearSearchButtonExists, clearSearchButton.Exists, "Clear filter enabled does not exist");
-        }
-        
         #region Properties
         public virtual Assert_CancelConnectionButton_ExistsExpectedValues Assert_CancelConnectionButton_ExistsExpectedValues
         {
@@ -5753,6 +5714,18 @@ namespace Warewolf.UITests
                     this.mAssert_URL_existExpectedValues = new Assert_URL_existExpectedValues();
                 }
                 return this.mAssert_URL_existExpectedValues;
+            }
+        }
+        
+        public virtual Assert_variable_filter_textbox_existExpectedValues Assert_variable_filter_textbox_existExpectedValues
+        {
+            get
+            {
+                if ((this.mAssert_variable_filter_textbox_existExpectedValues == null))
+                {
+                    this.mAssert_variable_filter_textbox_existExpectedValues = new Assert_variable_filter_textbox_existExpectedValues();
+                }
+                return this.mAssert_variable_filter_textbox_existExpectedValues;
             }
         }
         
@@ -7076,6 +7049,18 @@ namespace Warewolf.UITests
             }
         }
         
+        public virtual Filter_variablesParams Filter_variablesParams
+        {
+            get
+            {
+                if ((this.mFilter_variablesParams == null))
+                {
+                    this.mFilter_variablesParams = new Filter_variablesParams();
+                }
+                return this.mFilter_variablesParams;
+            }
+        }
+        
         public virtual Open_Assign_Tool_Large_ViewParams Open_Assign_Tool_Large_ViewParams
         {
             get
@@ -7772,54 +7757,6 @@ namespace Warewolf.UITests
             }
         }
         
-        public virtual Assert_variable_filter_textbox_existExpectedValues Assert_variable_filter_textbox_existExpectedValues
-        {
-            get
-            {
-                if ((this.mAssert_variable_filter_textbox_existExpectedValues == null))
-                {
-                    this.mAssert_variable_filter_textbox_existExpectedValues = new Assert_variable_filter_textbox_existExpectedValues();
-                }
-                return this.mAssert_variable_filter_textbox_existExpectedValues;
-            }
-        }
-        
-        public virtual Filter_variablesParams Filter_variablesParams
-        {
-            get
-            {
-                if ((this.mFilter_variablesParams == null))
-                {
-                    this.mFilter_variablesParams = new Filter_variablesParams();
-                }
-                return this.mFilter_variablesParams;
-            }
-        }
-        
-        public virtual RecordedMethod1Params RecordedMethod1Params
-        {
-            get
-            {
-                if ((this.mRecordedMethod1Params == null))
-                {
-                    this.mRecordedMethod1Params = new RecordedMethod1Params();
-                }
-                return this.mRecordedMethod1Params;
-            }
-        }
-        
-        public virtual AssertMethod1ExpectedValues AssertMethod1ExpectedValues
-        {
-            get
-            {
-                if ((this.mAssertMethod1ExpectedValues == null))
-                {
-                    this.mAssertMethod1ExpectedValues = new AssertMethod1ExpectedValues();
-                }
-                return this.mAssertMethod1ExpectedValues;
-            }
-        }
-        
         public MainStudioWindow MainStudioWindow
         {
             get
@@ -7915,18 +7852,6 @@ namespace Warewolf.UITests
                 return this.mSwitchCaseDialog;
             }
         }
-        
-        public UIWarewolfDEV2SANELEMTWindow UIWarewolfDEV2SANELEMTWindow
-        {
-            get
-            {
-                if ((this.mUIWarewolfDEV2SANELEMTWindow == null))
-                {
-                    this.mUIWarewolfDEV2SANELEMTWindow = new UIWarewolfDEV2SANELEMTWindow();
-                }
-                return this.mUIWarewolfDEV2SANELEMTWindow;
-            }
-        }
         #endregion
         
         #region Fields
@@ -7935,6 +7860,8 @@ namespace Warewolf.UITests
         private Assert_Connection_PassedExpectedValues mAssert_Connection_PassedExpectedValues;
         
         private Assert_URL_existExpectedValues mAssert_URL_existExpectedValues;
+        
+        private Assert_variable_filter_textbox_existExpectedValues mAssert_variable_filter_textbox_existExpectedValues;
         
         private Assign_Value_To_VariableParams mAssign_Value_To_VariableParams;
         
@@ -8156,6 +8083,8 @@ namespace Warewolf.UITests
         
         private Enter_Text_Into_Assign_Small_View_Row1_Value_Textbox_As_SomeVariable_UsingIntellisenseParams mEnter_Text_Into_Assign_Small_View_Row1_Value_Textbox_As_SomeVariable_UsingIntellisenseParams;
         
+        private Filter_variablesParams mFilter_variablesParams;
+        
         private Open_Assign_Tool_Large_ViewParams mOpen_Assign_Tool_Large_ViewParams;
         
         private Open_Assign_Tool_Qvi_Large_ViewParams mOpen_Assign_Tool_Qvi_Large_ViewParams;
@@ -8272,14 +8201,6 @@ namespace Warewolf.UITests
         
         private Type_TestSite_into_Web_Source_Wizard_Address_TextboxParams mType_TestSite_into_Web_Source_Wizard_Address_TextboxParams;
         
-        private Assert_variable_filter_textbox_existExpectedValues mAssert_variable_filter_textbox_existExpectedValues;
-        
-        private Filter_variablesParams mFilter_variablesParams;
-        
-        private RecordedMethod1Params mRecordedMethod1Params;
-        
-        private AssertMethod1ExpectedValues mAssertMethod1ExpectedValues;
-        
         private MainStudioWindow mMainStudioWindow;
         
         private MessageBoxWindow mMessageBoxWindow;
@@ -8295,8 +8216,6 @@ namespace Warewolf.UITests
         private ServicePickerDialog mServicePickerDialog;
         
         private SwitchCaseDialog mSwitchCaseDialog;
-        
-        private UIWarewolfDEV2SANELEMTWindow mUIWarewolfDEV2SANELEMTWindow;
         #endregion
     }
     
@@ -8342,6 +8261,21 @@ namespace Warewolf.UITests
         /// Verify that the 'Exists' property of 'http://rsaklfsanele:3142/secure/Unassigned/Unsaved...' link equals 'True'
         /// </summary>
         public bool Httprsaklfsanele3142HyperlinkExists = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Assert_variable_filter_textbox_exist'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Assert_variable_filter_textbox_existExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Filter' label equals 'True'
+        /// </summary>
+        public bool FilterTextExists = true;
         #endregion
     }
     
@@ -10739,6 +10673,26 @@ namespace Warewolf.UITests
     }
     
     /// <summary>
+    /// Parameters to be passed into 'Filter_variables'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Filter_variablesParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Filter' label equals 'True'
+        /// </summary>
+        public bool FilterTextExists = true;
+        
+        /// <summary>
+        /// Type 'Other' in 'SearchTextBox' text box
+        /// </summary>
+        public string VariableSearchTextBoxEditText = "Other";
+        #endregion
+    }
+    
+    /// <summary>
     /// Parameters to be passed into 'Open_Assign_Tool_Large_View'
     /// </summary>
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
@@ -11792,71 +11746,6 @@ namespace Warewolf.UITests
         /// Verify that the 'Enabled' property of 'Test Connection' button equals 'True'
         /// </summary>
         public bool TestConnectionButtonEnabled = true;
-        #endregion
-    }
-    
-    /// <summary>
-    /// Parameters to be passed into 'Assert_variable_filter_textbox_exist'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Assert_variable_filter_textbox_existExpectedValues
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Verify that the 'Exists' property of 'Filter' label equals 'True'
-        /// </summary>
-        public bool FilterTextExists = true;
-        #endregion
-    }
-    
-    /// <summary>
-    /// Parameters to be passed into 'Filter_variables'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Filter_variablesParams
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Verify that the 'Exists' property of 'Filter' label equals 'True'
-        /// </summary>
-        public bool FilterTextExists = true;
-        
-        /// <summary>
-        /// Type 'Other' in 'SearchTextBox' text box
-        /// </summary>
-        public string VariableSearchTextBoxEditText = "Other";
-        #endregion
-    }
-    
-    /// <summary>
-    /// Parameters to be passed into 'RecordedMethod1'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class RecordedMethod1Params
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Type 'something' in 'SearchTextBox' text box
-        /// </summary>
-        public string UISearchTextBoxEditText = "something";
-        #endregion
-    }
-    
-    /// <summary>
-    /// Parameters to be passed into 'AssertMethod1'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class AssertMethod1ExpectedValues
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Verify that the 'Exists' property of 'ClearSearchButton' button equals 'True'
-        /// </summary>
-        public bool ClearSearchButtonExists = true;
         #endregion
     }
     
@@ -35771,191 +35660,6 @@ namespace Warewolf.UITests
         
         #region Fields
         private WpfButton mDoneButton;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class UIWarewolfDEV2SANELEMTWindow : WpfWindow
-    {
-        
-        public UIWarewolfDEV2SANELEMTWindow()
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfWindow.PropertyNames.Name] = "Warewolf (DEV2\\SANELE.MTHEMBU)";
-            this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
-            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
-            #endregion
-        }
-        
-        #region Properties
-        public UIUI_VariablesControl_Custom UIUI_VariablesControl_Custom
-        {
-            get
-            {
-                if ((this.mUIUI_VariablesControl_Custom == null))
-                {
-                    this.mUIUI_VariablesControl_Custom = new UIUI_VariablesControl_Custom(this);
-                }
-                return this.mUIUI_VariablesControl_Custom;
-            }
-        }
-        
-        public UIVARIABLESCustom UIVARIABLESCustom
-        {
-            get
-            {
-                if ((this.mUIVARIABLESCustom == null))
-                {
-                    this.mUIVARIABLESCustom = new UIVARIABLESCustom(this);
-                }
-                return this.mUIVARIABLESCustom;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private UIUI_VariablesControl_Custom mUIUI_VariablesControl_Custom;
-        
-        private UIVARIABLESCustom mUIVARIABLESCustom;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class UIUI_VariablesControl_Custom : WpfCustom
-    {
-        
-        public UIUI_VariablesControl_Custom(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.DataListView";
-            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "UI_VariablesControl_AutoID";
-            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
-            #endregion
-        }
-        
-        #region Properties
-        public UISearchTextBoxEdit UISearchTextBoxEdit
-        {
-            get
-            {
-                if ((this.mUISearchTextBoxEdit == null))
-                {
-                    this.mUISearchTextBoxEdit = new UISearchTextBoxEdit(this);
-                }
-                return this.mUISearchTextBoxEdit;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private UISearchTextBoxEdit mUISearchTextBoxEdit;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class UISearchTextBoxEdit : WpfEdit
-    {
-        
-        public UISearchTextBoxEdit(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "SearchTextBox";
-            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
-            #endregion
-        }
-        
-        #region Properties
-        public WpfText UIFilterText
-        {
-            get
-            {
-                if ((this.mUIFilterText == null))
-                {
-                    this.mUIFilterText = new WpfText(this);
-                    #region Search Criteria
-                    this.mUIFilterText.SearchProperties[WpfText.PropertyNames.AutomationId] = "LabelText";
-                    this.mUIFilterText.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
-                    #endregion
-                }
-                return this.mUIFilterText;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfText mUIFilterText;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class UIVARIABLESCustom : WpfCustom
-    {
-        
-        public UIVARIABLESCustom(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ContentPane";
-            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Variables";
-            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
-            #endregion
-        }
-        
-        #region Properties
-        public UIUI_VariablesControl_Custom1 UIUI_VariablesControl_Custom
-        {
-            get
-            {
-                if ((this.mUIUI_VariablesControl_Custom == null))
-                {
-                    this.mUIUI_VariablesControl_Custom = new UIUI_VariablesControl_Custom1(this);
-                }
-                return this.mUIUI_VariablesControl_Custom;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private UIUI_VariablesControl_Custom1 mUIUI_VariablesControl_Custom;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class UIUI_VariablesControl_Custom1 : WpfCustom
-    {
-        
-        public UIUI_VariablesControl_Custom1(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.DataListView";
-            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "UI_VariablesControl_AutoID";
-            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
-            #endregion
-        }
-        
-        #region Properties
-        public WpfEdit UISearchTextBoxEdit
-        {
-            get
-            {
-                if ((this.mUISearchTextBoxEdit == null))
-                {
-                    this.mUISearchTextBoxEdit = new WpfEdit(this);
-                    #region Search Criteria
-                    this.mUISearchTextBoxEdit.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "SearchTextBox";
-                    this.mUISearchTextBoxEdit.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
-                    #endregion
-                }
-                return this.mUISearchTextBoxEdit;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfEdit mUISearchTextBoxEdit;
         #endregion
     }
 }
