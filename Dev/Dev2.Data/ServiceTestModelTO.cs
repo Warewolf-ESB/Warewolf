@@ -21,6 +21,7 @@ namespace Dev2.Data
         public bool TestInvalid { get; set; }
         public bool TestPending { get; set; }
         public bool Enabled { get; set; }
+        public bool IsDirty { get; set; }
         public AuthenticationType AuthenticationType { get; set; }
     }
 }

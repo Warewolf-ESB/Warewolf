@@ -102,7 +102,7 @@ Scenario: Save a New Test
 	And outputs as
 	| Variable Name | Value |
 	| outputValue   |       |
-	And save is enabled
+	And save is disabled
 
 
 
@@ -174,6 +174,24 @@ Scenario: Rename existing test
 	Then there are 2 tests
 	And I select "testing2"
 	And Test name is "testing2"
+
+Scenario: Loading exisiting Tests has correct Name for display
+	Given the test builder is open with "Workflow 3"
+	And Tab Header is "Workflow 3 - Tests"
+	And there are no tests
+	And I click New Test
+	And I set Test Values as
+	| TestName | AuthenticationType | Error |
+	| Test1    | Windows            | true  |
+	Then NoErrorExpected is "false"	
+	And save is enabled
+	When I save
+	Then Tab Header is "Workflow 3 - Tests"
+	And I close the test builder
+	When the test builder is open with "Workflow 3"
+	Then there are 1 tests
+	And I select "Test1"
+	And Name for display is "Test1"
 
 Scenario: Loading exisiting Tests  	
 	Given the test builder is open with "Workflow 3"

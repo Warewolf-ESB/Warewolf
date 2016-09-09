@@ -286,6 +286,7 @@ namespace Warewolf.Studio.ViewModels
                         NoErrorExpected = to.NoErrorExpected,
                         LastRunDate = to.LastRunDate,
                         TestPending = to.TestPending,
+                        IsDirty = to.IsDirty,
                         TestFailing = to.TestFailing,
                         TestPassed = to.TestPassed,
                         Password = to.Password,
