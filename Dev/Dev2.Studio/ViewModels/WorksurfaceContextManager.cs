@@ -39,6 +39,7 @@ using Dev2.Studio.Factory;
 using Dev2.Studio.ViewModels.DependencyVisualization;
 using Dev2.Studio.ViewModels.WorkSurface;
 using Dev2.Studio.Views.DependencyVisualization;
+using Dev2.Threading;
 using Dev2.Utils;
 using Dev2.ViewModels;
 using Infragistics.Windows.DockManager.Events;
@@ -196,7 +197,7 @@ namespace Dev2.Studio.ViewModels
 
         public void ViewTestsForService(IContextualResourceModel resourceModel, IWorkSurfaceKey workSurfaceKey = null)
         {
-            var testViewModel = new ServiceTestViewModel(resourceModel);
+            var testViewModel = new ServiceTestViewModel(resourceModel, new AsyncWorker());
             var vm = new StudioTestViewModel(_mainViewModel.EventPublisher,testViewModel,_mainViewModel.PopupProvider,new ServiceTestView());
             workSurfaceKey = TryGetOrCreateWorkSurfaceKey(workSurfaceKey, WorkSurfaceContext.ServiceTestsViewer, resourceModel.ID);
             var key = workSurfaceKey as WorkSurfaceKey;
