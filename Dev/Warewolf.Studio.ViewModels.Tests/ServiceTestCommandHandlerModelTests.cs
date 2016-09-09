@@ -28,7 +28,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var testFrameworkViewModel = new ServiceTestCommandHandlerModel();
             //------------Assert Preconditions-------------------
             //------------Execute Test---------------------------
-            var testModel = testFrameworkViewModel.CreateTest(CreateResourceModelWithNoInput());
+            var testModel = testFrameworkViewModel.CreateTest(CreateResourceModelWithNoInput(), 1);
             //------------Assert Results-------------------------
             Assert.IsNotNull(testModel);
             Assert.IsNull(testModel.Inputs);
@@ -43,7 +43,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var testFrameworkViewModel = new ServiceTestCommandHandlerModel();
             //------------Assert Preconditions-------------------
             //------------Execute Test---------------------------
-            var testModel = testFrameworkViewModel.CreateTest(CreateResourceModelWithNoInput());
+            var testModel = testFrameworkViewModel.CreateTest(CreateResourceModelWithNoInput(), 1);
             //------------Assert Results-------------------------
             Assert.IsNotNull(testModel);
             Assert.AreEqual("Test 1", testModel.TestName);
@@ -58,7 +58,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var testFrameworkViewModel = new ServiceTestCommandHandlerModel();
             //------------Assert Preconditions-------------------
             //------------Execute Test---------------------------
-            var testModel = testFrameworkViewModel.CreateTest(CreateResourceModelWithNoInput());
+            var testModel = testFrameworkViewModel.CreateTest(CreateResourceModelWithNoInput(), 1);
             //------------Assert Results-------------------------
             Assert.IsNotNull(testModel);
             Assert.IsTrue(testModel.IsDirty);
@@ -73,7 +73,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var testFrameworkViewModel = new ServiceTestCommandHandlerModel();
             //------------Assert Preconditions-------------------
             //------------Execute Test---------------------------
-            var testModel = testFrameworkViewModel.CreateTest(CreateResourceModelWithNoInput());
+            var testModel = testFrameworkViewModel.CreateTest(CreateResourceModelWithNoInput(), 1);
             //------------Assert Results-------------------------
             Assert.IsNotNull(testModel);
             Assert.IsTrue(testModel.TestPending);
@@ -88,10 +88,23 @@ namespace Warewolf.Studio.ViewModels.Tests
             var testFrameworkViewModel = new ServiceTestCommandHandlerModel();
             //------------Assert Preconditions-------------------
             //------------Execute Test---------------------------
-            var testModel = testFrameworkViewModel.CreateTest(CreateResourceModelWithNoInput());
+            var testModel = testFrameworkViewModel.CreateTest(CreateResourceModelWithNoInput(), 1);
             //------------Assert Results-------------------------
             Assert.IsNotNull(testModel);
             Assert.IsTrue(testModel.Enabled);
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void CreateTest_GivenTestNumber2_ShouldSetTestNameToTest_2()
+        {
+            //---------------Set up test pack-------------------
+            var testFrameworkViewModel = new ServiceTestCommandHandlerModel();
+            //---------------Assert Precondition----------------
+
+            //---------------Execute Test ----------------------
+            var testModel = testFrameworkViewModel.CreateTest(CreateResourceModelWithSingleScalarInput(),2);
+            //---------------Test Result -----------------------
         }
 
         [TestMethod]
@@ -103,7 +116,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var testFrameworkViewModel = new ServiceTestCommandHandlerModel();
             //------------Assert Preconditions-------------------
             //------------Execute Test---------------------------
-            var testModel = testFrameworkViewModel.CreateTest(CreateResourceModelWithSingleScalarInput());
+            var testModel = testFrameworkViewModel.CreateTest(CreateResourceModelWithSingleScalarInput(), 1);
             //------------Assert Results-------------------------
             Assert.IsNotNull(testModel);
             Assert.AreEqual(1, testModel.Inputs.Count);
@@ -120,7 +133,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var testFrameworkViewModel = new ServiceTestCommandHandlerModel();
             //------------Assert Preconditions-------------------
             //------------Execute Test---------------------------
-            var testModel = testFrameworkViewModel.CreateTest(CreateResourceModelWithSingleScalarOutput());
+            var testModel = testFrameworkViewModel.CreateTest(CreateResourceModelWithSingleScalarOutput(), 1);
             //------------Assert Results-------------------------
             Assert.IsNotNull(testModel);
             Assert.AreEqual(1, testModel.Outputs.Count);
@@ -135,7 +148,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         {
             //------------Setup for test--------------------------
             var testFrameworkViewModel = new ServiceTestCommandHandlerModel();
-            var testModel = testFrameworkViewModel.CreateTest(CreateResourceModelWithSingleScalarInputAndRecordSetInput());
+            var testModel = testFrameworkViewModel.CreateTest(CreateResourceModelWithSingleScalarInputAndRecordSetInput(), 1);
             //------------Assert Preconditions-------------------
             Assert.IsNotNull(testModel);
             Assert.AreEqual(2, testModel.Inputs.Count);

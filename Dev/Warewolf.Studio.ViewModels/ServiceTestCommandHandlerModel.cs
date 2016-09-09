@@ -19,11 +19,11 @@ namespace Warewolf.Studio.ViewModels
 
         public DataListModel DataList { get; set; }
 
-        public IServiceTestModel CreateTest(IResourceModel resourceModel)
+        public IServiceTestModel CreateTest(IResourceModel resourceModel, int testNumber)
         {
             var testModel = new ServiceTestModel(resourceModel.ID)
             {
-                TestName = "Test 1",
+                TestName = "Test " + testNumber,
                 IsDirty = true,
                 TestPending = true,
                 Enabled = true
