@@ -1418,7 +1418,7 @@ namespace BusinessDesignStudio.Unit.Tests
 
             //------------Execute Test---------------------------
             var result = new ResourceRepository(env.Object);
-            var serviceTestModels = result.LoadResourceTests(env.Object, Guid.NewGuid());
+            var serviceTestModels = result.LoadResourceTests(Guid.NewGuid());
             //------------Assert Results-------------------------
             Assert.IsTrue( string.IsNullOrEmpty(serviceTestModels.ToString()));
         }
@@ -1434,9 +1434,9 @@ namespace BusinessDesignStudio.Unit.Tests
             con.Setup(c => c.IsConnected).Returns(true);
             env.Setup(e => e.Connection).Returns(con.Object);
 
-            var serviceTestModel = new List<ServiceTestModel>()
+            var serviceTestModel = new List<IServiceTestModelTO>
             {
-                new ServiceTestModel(Guid.NewGuid())
+                new ServiceTestModelTO
                 {
                     TestName = "Test 1",
                     AuthenticationType = AuthenticationType.Windows,
@@ -1446,16 +1446,50 @@ namespace BusinessDesignStudio.Unit.Tests
                     Password = "pass.word1"
                 }
             };
-            var payload = JsonConvert.SerializeObject(serviceTestModel);
-            ExecuteMessage message = new ExecuteMessage { Message = payload.ToStringBuilder() };
-            var msgResult = JsonConvert.SerializeObject(message);
+            Dev2JsonSerializer jsonSerializer = new Dev2JsonSerializer();
+            var payload = jsonSerializer.Serialize(serviceTestModel);
+            CompressedExecuteMessage message = new CompressedExecuteMessage();
+            message.SetMessage(payload);
+            var msgResult = jsonSerializer.Serialize(message);
             con.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Returns(msgResult.ToStringBuilder);
 
             //------------Execute Test---------------------------
             var result = new ResourceRepository(env.Object);
-            var serviceTestModels = result.LoadResourceTests(env.Object,Guid.NewGuid());
+            var serviceTestModels = result.LoadResourceTests(Guid.NewGuid());
             //------------Assert Results-------------------------
             Assert.IsNotNull(serviceTestModels.ToString());
+        }
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        [TestCategory("ResourceRepository_LoadResourceTests")]
+        public void ResourceRepository_LoadResourceTests_WhenError_ExpectException()
+        {
+            //------------Setup for test--------------------------
+            Mock<IEnvironmentModel> env = new Mock<IEnvironmentModel>();
+            Mock<IEnvironmentConnection> con = new Mock<IEnvironmentConnection>();
+            con.Setup(c => c.IsConnected).Returns(true);
+            env.Setup(e => e.Connection).Returns(con.Object);
+            
+            Dev2JsonSerializer jsonSerializer = new Dev2JsonSerializer();
+            CompressedExecuteMessage message = new CompressedExecuteMessage();
+            message.HasError = true;
+            var stringBuilder = new StringBuilder("An error occured");
+            message.SetMessage(jsonSerializer.Serialize(stringBuilder));
+            var msgResult = jsonSerializer.Serialize(message);
+            con.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Returns(msgResult.ToStringBuilder);
+
+            //------------Execute Test---------------------------
+            var result = new ResourceRepository(env.Object);
+            try
+            {
+                result.LoadResourceTests(Guid.NewGuid());
+            }
+            catch(Exception ex)
+            {
+                //------------Assert Results-------------------------
+                Assert.AreEqual("An error occured",ex.Message);
+            }
+
         }
 
         #endregion

@@ -17,7 +17,7 @@ namespace Dev2.Runtime.ESB.Management.Services
     /// Adds a resource
     /// </summary>
     [SuppressMessage("ReSharper", "UnusedMember.Global")]
-    public class SaveTests : IEsbManagementEndpoint
+    public class FetchTests : IEsbManagementEndpoint
     {
         private ITestCatalog _testCatalog;
 
@@ -26,8 +26,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
             try
             {
-                Dev2Logger.Info("Save Tests Service");
-                StringBuilder testDefinitionMessage;
+                Dev2Logger.Info("Fetch Tests Service");
 
                 StringBuilder resourceIdString;
                 values.TryGetValue("resourceID", out resourceIdString);
@@ -40,21 +39,18 @@ namespace Dev2.Runtime.ESB.Management.Services
                 {
                     throw new InvalidDataContractException("resourceID is not a valid GUID.");
                 }
-                values.TryGetValue("testDefinitions", out testDefinitionMessage);
-                if (testDefinitionMessage == null || testDefinitionMessage.Length == 0)
-                {
-                    throw new InvalidDataContractException("testDefinition is missing");
-                }
 
-                var serviceTestModelTos = serializer.Deserialize<List<IServiceTestModelTO>>(serializer.Deserialize<CompressedExecuteMessage>(testDefinitionMessage).GetDecompressedMessage());
-                var res = new ExecuteMessage { HasError = false, Message = serializer.SerializeToBuilder(serviceTestModelTos) };
-                TestCatalog.SaveTests(resourceId, serviceTestModelTos);
-                return serializer.SerializeToBuilder(res);
+                var tests = TestCatalog.Fetch(resourceId);
+                CompressedExecuteMessage message = new CompressedExecuteMessage();
+                message.SetMessage(serializer.Serialize(tests));
+                message.HasError = false;
+                
+                return serializer.SerializeToBuilder(message);
             }
             catch (Exception err)
             {
                 Dev2Logger.Error(err);
-                var res = new ExecuteMessage { HasError = true, Message = new StringBuilder(err.Message) };
+                var res = new CompressedExecuteMessage { HasError = true, Message = new StringBuilder(err.Message) };
                 return serializer.SerializeToBuilder(res);
             }
         }
@@ -82,7 +78,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         public string HandlesType()
         {
-            return "SaveTests";
+            return "FetchTests";
         }
     }
 }

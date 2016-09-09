@@ -2,6 +2,7 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Wrappers;
@@ -12,7 +13,21 @@ namespace Dev2.Runtime
     public class TestCatalog : ITestCatalog
     {
         private readonly DirectoryWrapper _directoryWrapper;
-        private Dev2JsonSerializer _serializer;
+        private readonly Dev2JsonSerializer _serializer;
+
+        #region Singleton Instance
+        private static readonly Lazy<TestCatalog> LazyCat = new Lazy<TestCatalog>(() =>
+        {
+            var c = new TestCatalog();
+            return c;
+        }, LazyThreadSafetyMode.PublicationOnly);
+
+        /// <summary>
+        /// Gets the instance.
+        /// </summary>
+        public static TestCatalog Instance => LazyCat.Value;
+
+        #endregion
 
         public TestCatalog()
         {
@@ -40,6 +55,8 @@ namespace Dev2.Runtime
                     var sw = new StreamWriter(filePath, false);
                     _serializer.Serialize(sw, serviceTestModelTo);
                 }
+                var dir = Path.Combine(EnvironmentVariables.TestPath, resourceID.ToString());
+                Tests.AddOrUpdate(resourceID, GetTestList(dir), (id, list) => GetTestList(dir));
             }
         }
 
@@ -69,6 +86,15 @@ namespace Dev2.Runtime
                 serviceTestModelTos.Add(testModel);
             }
             return serviceTestModelTos;
+        }
+
+        public List<IServiceTestModelTO> Fetch(Guid resourceId)
+        {
+            return Tests.GetOrAdd(resourceId, guid =>
+             {
+                 var dir = Path.Combine(EnvironmentVariables.TestPath, guid.ToString());
+                 return GetTestList(dir);
+             });
         }
     }
 }
