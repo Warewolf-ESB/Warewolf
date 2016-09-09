@@ -393,6 +393,30 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(testModel.IsNewTest);
             Assert.IsTrue(_wasCalled);
         }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("TestModel_ParentId")]
+        public void TestModel_ParentId_WhenSet_ShouldFirePropertyChanged()
+        {
+            //------------Setup for test--------------------------
+            var testModel = new ServiceTestModel(Guid.NewGuid());
+            var _wasCalled = false;
+            testModel.PropertyChanged += (sender, args) =>
+            {
+                if (args.PropertyName == "ParentId")
+                {
+                    _wasCalled = true;
+                }
+            };
+            //------------Execute Test---------------------------
+            var guid = Guid.NewGuid();
+            testModel.ParentId = guid;
+            //------------Assert Results-------------------------
+            Assert.AreEqual(guid, testModel.ParentId);
+            Assert.IsTrue(_wasCalled);
+        }
+
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory("TestModel_ErrorExpected")]
@@ -494,49 +518,6 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual(2,serviceTestModel.Inputs.Count);
             Assert.AreEqual("rec(2).a",serviceTestModel.Inputs[1].Variable );
             Assert.AreEqual("",serviceTestModel.Inputs[1].Value );
-        }
-
-        [TestMethod]
-        [Owner("Nkosinathi Sangweni")]
-        public void OnCreation_GivenIsNew_ShouldHaveDeleteTestCommand()
-        {
-            //---------------Set up test pack-------------------
-            var vm = new ServiceTestModel(Guid.NewGuid());
-            //---------------Assert Precondition----------------
-            Assert.IsNotNull(vm);
-            //---------------Execute Test ----------------------
-            Assert.IsNotNull(vm.DeleteTestCommand);
-            //---------------Test Result -----------------------
-            Assert.IsTrue(vm.DeleteTestCommand.CanExecute(null));
-        }
-
-        [TestMethod]
-        [Owner("Pieter Terblanche")]
-        public void OnCreation_GivenIsDisabled_DeleteTestCommandShouldBeEnabled()
-        {
-            //---------------Set up test pack-------------------
-            var vm = new ServiceTestModel(Guid.NewGuid());
-            //---------------Assert Precondition----------------
-            Assert.IsNotNull(vm);
-            //---------------Execute Test ----------------------
-            Assert.IsNotNull(vm.DeleteTestCommand);
-            //---------------Test Result -----------------------
-            Assert.IsTrue(vm.DeleteTestCommand.CanExecute(null));
-        }
-
-        [TestMethod]
-        [Owner("Pieter Terblanche")]
-        public void OnCreation_GivenIsEnabled_DeleteTestCommandShouldBeDisabled()
-        {
-            //---------------Set up test pack-------------------
-            var vm = new ServiceTestModel(Guid.NewGuid());
-            //---------------Assert Precondition----------------
-            Assert.IsNotNull(vm);
-            //---------------Execute Test ----------------------
-            vm.Enabled = true;
-            Assert.IsNotNull(vm.DeleteTestCommand);
-            //---------------Test Result -----------------------
-            Assert.IsFalse(vm.DeleteTestCommand.CanExecute(null));
         }
     }
 }
