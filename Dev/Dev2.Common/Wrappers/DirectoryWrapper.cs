@@ -19,6 +19,10 @@ namespace Dev2.Common.Wrappers
     {
         public string[] GetFiles(string path)
         {
+            if (!Directory.Exists(path))
+            {
+                return new string[0];
+            }
             return Directory.GetFiles(path);
         }
 

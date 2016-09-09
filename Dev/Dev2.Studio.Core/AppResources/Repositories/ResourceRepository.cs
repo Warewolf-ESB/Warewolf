@@ -47,7 +47,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
     {
         readonly HashSet<Guid> _cachedServices;
         readonly IEnvironmentModel _environmentModel;
-        private readonly List<IResourceModel> ResourceModels;
+        private readonly List<IResourceModel> _resourceModels;
         bool _isLoaded;
         readonly IDeployService _deployService = new DeployService();
         readonly object _updatingPermissions = new object();
@@ -88,7 +88,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             IsLoaded = true;
             try
             {
-                ResourceModels.Clear();
+                _resourceModels.Clear();
                 LoadResources();
             }
             catch
@@ -132,7 +132,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             foreach (var serializableResource in toReloadResources)
             {
                 IResourceModel resource = HydrateResourceModel(serializableResource, _environmentModel.Connection.ServerID, true, fetchXaml);
-                var resourceToUpdate = ResourceModels.FirstOrDefault(r => equalityComparer.Equals(r, resource));
+                var resourceToUpdate = _resourceModels.FirstOrDefault(r => equalityComparer.Equals(r, resource));
 
                 if (resourceToUpdate != null)
                 {
@@ -142,7 +142,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
                 else
                 {
                     effectedResources.Add(resource);
-                    ResourceModels.Add(resource);
+                    _resourceModels.Add(resource);
                 }
             }
             return effectedResources;
@@ -161,7 +161,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             foreach (var serializableResource in toReloadResources)
             {
                 var resource = HydrateResourceModel(serializableResource, _environmentModel.Connection.ServerID, true);
-                var resourceToUpdate = ResourceModels.FirstOrDefault(r => ResourceModelEqualityComparer.Current.Equals(r, resource));
+                var resourceToUpdate = _resourceModels.FirstOrDefault(r => ResourceModelEqualityComparer.Current.Equals(r, resource));
 
                 if (resourceToUpdate != null)
                 {
@@ -169,14 +169,14 @@ namespace Dev2.Studio.Core.AppResources.Repositories
                 }
                 else
                 {
-                    ResourceModels.Add(resource);
+                    _resourceModels.Add(resource);
                 }
             }
         }    
        
         public ICollection<IResourceModel> All()
         {
-            return ResourceModels;
+            return _resourceModels;
         }
 
         public ICollection<IResourceModel> Find(Expression<Func<IResourceModel, bool>> expression)
@@ -187,7 +187,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             }
 
             Func<IResourceModel, bool> func = expression.Compile();
-            return ResourceModels.FindAll(func.Invoke);
+            return _resourceModels.FindAll(func.Invoke);
         }
 
         public IContextualResourceModel LoadContextualResourceModel(Guid resourceId)
@@ -227,7 +227,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             var func = expression?.Compile();
             if (func?.Method != null)
             {
-                var result = ResourceModels.Find(func.Invoke);
+                var result = _resourceModels.Find(func.Invoke);
 
                 if (result != null && ((result.ResourceType == ResourceType.Service && result.WorkflowXaml != null && result.WorkflowXaml.Length > 0) || fetchPayload))
                 {
@@ -259,7 +259,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
 
             if(workflow == null)
             {
-                ResourceModels.Add(instanceObj);
+                _resourceModels.Add(instanceObj);
             }
         }
 
@@ -285,11 +285,11 @@ namespace Dev2.Studio.Core.AppResources.Repositories
 
             if (theResource != null)
             {
-                ResourceModels.Remove(theResource);
+                _resourceModels.Remove(theResource);
             }
             theResource = new ResourceModel(_environmentModel);
             theResource.Update(resource);
-            ResourceModels.Add(theResource);
+            _resourceModels.Add(theResource);
 
             var comsController = new CommunicationController { ServiceName = "DeployResourceService" };
             comsController.AddPayloadArgument("savePath", savePath);
@@ -304,7 +304,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
         public ExecuteMessage DeleteResource(IResourceModel resource)
         {
             Dev2Logger.Info($"DeleteResource Resource: {resource.DisplayName}  Environment:{_environmentModel.Name}");
-            IResourceModel res = ResourceModels.FirstOrDefault(c => c.ID == resource.ID);
+            IResourceModel res = _resourceModels.FirstOrDefault(c => c.ID == resource.ID);
 
             if (res == null)
             {
@@ -313,11 +313,11 @@ namespace Dev2.Studio.Core.AppResources.Repositories
                 return msg;
             }
 
-            int index = ResourceModels.IndexOf(res);
+            int index = _resourceModels.IndexOf(res);
 
             if (index != -1)
             {
-                ResourceModels.RemoveAt(index);
+                _resourceModels.RemoveAt(index);
             }
             else
             {
@@ -363,7 +363,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
                 return deleteResourceFromWorkspace;
             }
 
-            var res = ResourceModels.FirstOrDefault(c => c.ID == resource.ID);
+            var res = _resourceModels.FirstOrDefault(c => c.ID == resource.ID);
 
             if (res == null)
             {
@@ -379,7 +379,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
 
         public void Add(IResourceModel instanceObj)
         {
-            ResourceModels.Insert(ResourceModels.Count, instanceObj);
+            _resourceModels.Insert(_resourceModels.Count, instanceObj);
         }
 
         public void ForceLoad()
@@ -448,7 +448,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
                     IResourceModel resource = HydrateResourceModel(item, serverId);
                     if (resource != null)
                     {
-                        ResourceModels.Add(resource);
+                        _resourceModels.Add(resource);
                     }
                 }
                 catch
@@ -591,12 +591,24 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             return result;
         }
 
-        public StringBuilder LoadResourceTests(IEnvironmentModel targetEnv, Guid resourceId)
+        public List<IServiceTestModelTO> LoadResourceTests(Guid resourceId)
         {
             var comsController = GetCommunicationController("FetchTests");
             comsController.AddPayloadArgument("resourceID", resourceId.ToString());
-            var executeCommand = comsController.ExecuteCommand<ExecuteMessage>(targetEnv.Connection, GlobalConstants.ServerWorkspaceID);
-            return executeCommand?.Message ?? new StringBuilder();
+            var executeCommand = comsController.ExecuteCommand<CompressedExecuteMessage>(_environmentModel.Connection, GlobalConstants.ServerWorkspaceID);
+            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+            var message = executeCommand.GetDecompressedMessage();
+            if (executeCommand.HasError)
+            {
+                var msg = serializer.Deserialize<StringBuilder>(message);
+                throw new Exception(msg.ToString());
+            }
+            var testsTO = serializer.Deserialize<List<IServiceTestModelTO>>(message);
+            if (testsTO != null)
+            {
+                return testsTO;
+            }
+            return new List<IServiceTestModelTO>();
         }
 
         /// <summary>
@@ -775,7 +787,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
 
         public bool DoesResourceExistInRepo(IResourceModel resource)
         {
-            int index = ResourceModels.IndexOf(resource);
+            int index = _resourceModels.IndexOf(resource);
             if (index != -1)
             {
                 return true;
@@ -885,7 +897,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
                     _environmentModel.Connection.PermissionsModified += AuthorizationServiceOnPermissionsModified;
                 }
             };
-            ResourceModels = new List<IResourceModel>();
+            _resourceModels = new List<IResourceModel>();
             _cachedServices = new HashSet<Guid>();
         }
 
@@ -907,7 +919,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
         {
             var serverPermissions = _environmentModel.AuthorizationService.GetResourcePermissions(Guid.Empty);
 
-            ResourceModels.ForEach(model =>
+            _resourceModels.ForEach(model =>
             {
                 model.UserPermissions = serverPermissions;
             });

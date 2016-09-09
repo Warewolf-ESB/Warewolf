@@ -2,11 +2,15 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Windows;
 using Dev2;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Help;
+using Dev2.Common.Interfaces.Studio.Controller;
+using Dev2.Data;
 using Dev2.Data.Binary_Objects;
 using Dev2.Interfaces;
+using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Models.DataList;
 using Dev2.Studio.ViewModels.DataList;
@@ -231,6 +235,20 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(vm.Tests.All(model => !model.IsDirty));
         }
 
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("TestFrameworkViewModel_SelectedServiceTest")]
+        public void TestFrameworkViewModel_SelectedServiceTest_CheckIsNull()
+        {
+            //------------Setup for test--------------------------
+            var testFrameworkViewModel = new ServiceTestViewModel(CreateResourceModel());
+            //------------Assert Preconditions-------------------
+            //------------Execute Test---------------------------
+            testFrameworkViewModel.CreateTestCommand.Execute(null);
+            testFrameworkViewModel.SelectedServiceTest = null;
+            //------------Assert Results-------------------------
+            Assert.IsNull(testFrameworkViewModel.SelectedServiceTest);
+        }
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
@@ -245,6 +263,24 @@ namespace Warewolf.Studio.ViewModels.Tests
             //------------Assert Results-------------------------
             Assert.IsNotNull(testFrameworkViewModel.Tests);
             Assert.AreEqual(2, testFrameworkViewModel.Tests.Count);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("TestFrameworkViewModel_CreateTestCommand")]
+        public void TestFrameworkViewModel_CreateTestCommand_Execute_ShouldShowError()
+        {
+            //------------Setup for test--------------------------
+            var popupController = new Mock<IPopupController>();
+            CustomContainer.Register(popupController.Object);
+            var testFrameworkViewModel = new ServiceTestViewModel(CreateResourceModel());
+            //------------Assert Preconditions-------------------
+            //------------Execute Test---------------------------
+            testFrameworkViewModel.CreateTestCommand.Execute(null);
+            testFrameworkViewModel.CreateTestCommand.Execute(null);
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(testFrameworkViewModel.PopupController);
+            popupController.Verify(controller => controller.Show(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<MessageBoxButton>(), MessageBoxImage.Error, null, false, true, false, false), Times.Once);
         }
 
         [TestMethod]
@@ -430,9 +466,41 @@ namespace Warewolf.Studio.ViewModels.Tests
             var serviceTestViewModel = new ServiceTestViewModel(resourceModelMock.Object);
             serviceTestViewModel.CreateTestCommand.Execute(null);
             //------------Execute Test---------------------------
+            Assert.IsTrue(serviceTestViewModel.CanSave);
             serviceTestViewModel.Save();
             //------------Assert Results-------------------------
             mockResourceRepo.Verify(repository => repository.SaveTests(It.IsAny<Guid>(), It.IsAny<List<IServiceTestModel>>()), Times.Once);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("ServiceTestViewModel_Save")]
+        public void ServiceTestViewModel_Save_DuplicateName_ShouldShowPopupError()
+        {
+            //------------Setup for test--------------------------
+            var resourceModelMock = CreateResourceModelWithSingleScalarOutputMock();
+            var mockEnvironmentModel = new Mock<IEnvironmentModel>();
+            var mockResourceRepo = new Mock<IResourceRepository>();
+            mockResourceRepo.Setup(repository => repository.SaveTests(It.IsAny<Guid>(), It.IsAny<List<IServiceTestModel>>()));
+            mockEnvironmentModel.Setup(model => model.ResourceRepository).Returns(mockResourceRepo.Object);
+            resourceModelMock.Setup(model => model.Environment).Returns(mockEnvironmentModel.Object);
+
+            var popupController = new Mock<IPopupController>();
+            CustomContainer.Register(popupController.Object);
+
+            //------------Execute Test---------------------------
+            var serviceTestViewModel = new ServiceTestViewModel(resourceModelMock.Object);
+            serviceTestViewModel.CreateTestCommand.Execute(null);
+            Assert.IsTrue(serviceTestViewModel.CanSave);
+            serviceTestViewModel.Save();
+
+            serviceTestViewModel.CreateTestCommand.Execute(null);
+            Assert.IsTrue(serviceTestViewModel.CanSave);
+            serviceTestViewModel.Save();
+
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(serviceTestViewModel.PopupController);
+            popupController.Verify(controller => controller.Show(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<MessageBoxButton>(), MessageBoxImage.Error, null, false, true, false, false), Times.Once);
         }
 
         [TestMethod]
@@ -513,6 +581,81 @@ namespace Warewolf.Studio.ViewModels.Tests
             //------------Assert Results-------------------------
             Assert.IsTrue(testFrameworkViewModel.IsDirty);
             Assert.AreEqual("My WF - Tests *", testFrameworkViewModel.DisplayName);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("ServiceTestViewModel_Tests")]
+        public void ServiceTestViewModel_Tests_GetWhenNullTests_ShouldHaveDummyTest()
+        {
+            //------------Setup for test--------------------------
+            var resourceMock = CreateResourceModelWithSingleScalarOutputMock();
+            var mockEnvironment = new Mock<IEnvironmentModel>();
+            var mockRepo = new Mock<IResourceRepository>();
+            mockRepo.Setup(repository => repository.LoadResourceTests(It.IsAny<Guid>())).Returns((List<IServiceTestModelTO>)null);
+            mockEnvironment.Setup(model => model.ResourceRepository).Returns(mockRepo.Object);
+            resourceMock.Setup(model => model.Environment).Returns(mockEnvironment.Object);
+            var serviceTestViewModel = new ServiceTestViewModel(resourceMock.Object);
+
+            //------------Execute Test---------------------------
+            var tests = serviceTestViewModel.Tests;
+            //------------Assert Results-------------------------
+            Assert.AreEqual(1,tests.Count);
+            Assert.AreEqual("Create a new test.",tests[0].TestName);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("ServiceTestViewModel_Tests")]
+        public void ServiceTestViewModel_Tests_GetWhenEmptyTests_ShouldHaveDummyTest()
+        {
+            //------------Setup for test--------------------------
+            var resourceMock = CreateResourceModelWithSingleScalarOutputMock();
+            var mockEnvironment = new Mock<IEnvironmentModel>();
+            var mockRepo = new Mock<IResourceRepository>();
+            mockRepo.Setup(repository => repository.LoadResourceTests(It.IsAny<Guid>())).Returns(new List<IServiceTestModelTO>());
+            mockEnvironment.Setup(model => model.ResourceRepository).Returns(mockRepo.Object);
+            resourceMock.Setup(model => model.Environment).Returns(mockEnvironment.Object);
+            var serviceTestViewModel = new ServiceTestViewModel(resourceMock.Object);
+
+            //------------Execute Test---------------------------
+            var tests = serviceTestViewModel.Tests;
+            //------------Assert Results-------------------------
+            Assert.AreEqual(1,tests.Count);
+            Assert.AreEqual("Create a new test.",tests[0].TestName);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("ServiceTestViewModel_Tests")]
+        public void ServiceTestViewModel_Tests_GetWhenTests_ShouldHaveTestsAndDummyAtBottom()
+        {
+            //------------Setup for test--------------------------
+            var resourceMock = CreateResourceModelWithSingleScalarOutputMock();
+            var mockEnvironment = new Mock<IEnvironmentModel>();
+            var mockRepo = new Mock<IResourceRepository>();
+            mockRepo.Setup(repository => repository.LoadResourceTests(It.IsAny<Guid>())).Returns(new List<IServiceTestModelTO>
+            {
+                new ServiceTestModelTO
+                {
+                    AuthenticationType = AuthenticationType.Public,
+                    Enabled = true,
+                    TestName = "Test From Server"
+                }
+            });
+            mockEnvironment.Setup(model => model.ResourceRepository).Returns(mockRepo.Object);
+            resourceMock.Setup(model => model.Environment).Returns(mockEnvironment.Object);
+            var serviceTestViewModel = new ServiceTestViewModel(resourceMock.Object);
+
+            //------------Execute Test---------------------------
+            var tests = serviceTestViewModel.Tests;
+            //------------Assert Results-------------------------
+            Assert.AreEqual(2,tests.Count);
+            Assert.AreEqual("Test From Server", tests[0].TestName);
+            Assert.AreEqual(AuthenticationType.Public, tests[0].AuthenticationType);
+            Assert.IsTrue(tests[0].Enabled);
+            Assert.AreEqual("Create a new test.",tests[1].TestName);
+            Assert.AreEqual(tests[0],serviceTestViewModel.SelectedServiceTest);
         }
 
         [TestMethod]

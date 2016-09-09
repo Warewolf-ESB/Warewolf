@@ -32,6 +32,7 @@ namespace Warewolf.Studio.ViewModels
         private bool _isDirty;
         private AuthenticationType _authenticationType;
         private Guid _parentId;
+        private string _oldTestName;
 
         public ServiceTestModel(Guid resourceId)
         {
@@ -51,11 +52,29 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
+        public string OldTestName
+        {
+            get { return _oldTestName; }
+            set
+            {
+                _oldTestName = value; 
+                OnPropertyChanged(()=> OldTestName);
+                if (!IsDirty)
+                {
+                    OnPropertyChanged(() => NameForDisplay);
+                }
+            }
+        }
+
         public string TestName
         {
             get { return _testName; }
             set
             {
+                if (NameForDisplay != value)
+                {
+                    IsDirty = true;
+                }
                 _testName = value;
                 OnPropertyChanged(() => TestName);
                 OnPropertyChanged(() => NameForDisplay);

@@ -1,6 +1,5 @@
 ﻿
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
@@ -9,7 +8,7 @@ using System.Windows.Input;
 using Dev2;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
-using Dev2.Communication;
+using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Interfaces;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Network;
@@ -25,6 +24,7 @@ namespace Warewolf.Studio.ViewModels
         private string _testPassingResult;
         private ObservableCollection<IServiceTestModel> _tests;
         private string _displayName;
+        public IPopupController PopupController { get; }
         private bool _canSave;
 
         public ServiceTestViewModel(IContextualResourceModel resourceModel)
@@ -34,6 +34,9 @@ namespace Warewolf.Studio.ViewModels
             ResourceModel = resourceModel;
             DisplayName = resourceModel.DisplayName + " - Tests";
             ServiceTestCommandHandler = new ServiceTestCommandHandlerModel();
+            PopupController = CustomContainer.Get<IPopupController>();
+
+            DuplicateTestCommand = new DelegateCommand(ServiceTestCommandHandler.DuplicateTest, () => CanDuplicateTest);
             RunAllTestsInBrowserCommand = new DelegateCommand(() => ServiceTestCommandHandler.RunAllTestsInBrowser(IsDirty));
             RunAllTestsCommand = new DelegateCommand(() => ServiceTestCommandHandler.RunAllTestsCommand(IsDirty));
             RunSelectedTestInBrowserCommand = new DelegateCommand(ServiceTestCommandHandler.RunSelectedTestInBrowser, () => CanRunSelectedTestInBrowser);
@@ -57,8 +60,7 @@ namespace Warewolf.Studio.ViewModels
         {
             if (IsDirty)
             {
-                var popupController = CustomContainer.Get<Dev2.Common.Interfaces.Studio.Controller.IPopupController>();
-                popupController?.Show(Resources.Languages.Core.ServiceTestSaveEditedTestsMessage, Resources.Languages.Core.ServiceTestSaveEditedTestsHeader, MessageBoxButton.OK, MessageBoxImage.Error, null, false, true, false, false);
+                PopupController?.Show(Resources.Languages.Core.ServiceTestSaveEditedTestsMessage, Resources.Languages.Core.ServiceTestSaveEditedTestsHeader, MessageBoxButton.OK, MessageBoxImage.Error, null, false, true, false, false);
                 return;
             }
 
@@ -78,7 +80,7 @@ namespace Warewolf.Studio.ViewModels
                 Tests.Add(testModel);
             }
             SelectedServiceTest = testModel;
-            SelectedServiceTest.RunSelectedTestUrl = WebServer.GetWorkflowUri(ResourceModel, "", UrlType.Tests) + "/" + SelectedServiceTest.TestName;
+            SetSelectedTestUrl();
         }
 
         public bool CanStopTest { get; set; }
@@ -139,14 +141,26 @@ namespace Warewolf.Studio.ViewModels
             try
             {
                 var serviceTestModels = Tests.Where(model => model.GetType() != typeof(DummyServiceTest)).ToList();
+                var duplicateTests = serviceTestModels.GroupBy(x => x.TestName).Where(group => group.Count() > 1).Select(group => group.Key);
+                if (duplicateTests.Any())
+                {
+                    PopupController?.Show(Resources.Languages.Core.ServiceTestDuplicateTestNameMessage, Resources.Languages.Core.ServiceTestDuplicateTestNameHeader, MessageBoxButton.OK, MessageBoxImage.Error, null, false, true, false, false);
+                    return;
+                }
                 ResourceModel.Environment.ResourceRepository.SaveTests(ResourceModel.ID, serviceTestModels);
                 MarkTestsAsDirty(false);
+                SetSelectedTestUrl();
             }
             catch (Exception)
             {
                 // MarkTestsAsDirty(true);
             }
+        }
 
+        private void SetSelectedTestUrl()
+        {
+            SelectedServiceTest.RunSelectedTestUrl = WebServer.GetWorkflowUri(ResourceModel, "", UrlType.Tests) + "/" +
+                                                     SelectedServiceTest.TestName;
         }
 
         private void MarkTestsAsDirty(bool isDirty)
@@ -192,6 +206,10 @@ namespace Warewolf.Studio.ViewModels
             {
                 ViewModelUtils.RaiseCanExecuteChanged(DeleteTestCommand);
             }
+            if (e.PropertyName == "RunSelectedTestUrl")
+            {
+                ViewModelUtils.RaiseCanExecuteChanged(RunSelectedTestInBrowserCommand);
+            }
         }
 
         public IServiceTestCommandHandler ServiceTestCommandHandler { get; set; }
@@ -225,7 +243,11 @@ namespace Warewolf.Studio.ViewModels
                     _tests = GetTests();
                     var dummyTest = new DummyServiceTest(CreateTests) { TestName = "Create a new test." };
                     _tests.Add(dummyTest);
-                    SelectedServiceTest = dummyTest;
+                    if (_tests.Count > 1)
+                    {
+                        SelectedServiceTest = _tests[0];
+                    }
+                    
                 }
                 return _tests;
 
@@ -241,16 +263,35 @@ namespace Warewolf.Studio.ViewModels
         {
             try
             {
-                var loadResourceTests = ResourceModel.Environment.ResourceRepository.LoadResourceTests(ResourceModel.Environment, ResourceModel.ID);
-                Dev2JsonSerializer serializer = new Dev2JsonSerializer();
-                var serviceTestModels = serializer.Deserialize<List<ServiceTestModel>>(loadResourceTests);
-                return serviceTestModels.ToObservableCollection<IServiceTestModel>();
+                var loadResourceTests = ResourceModel.Environment.ResourceRepository.LoadResourceTests(ResourceModel.ID);
+                if (loadResourceTests != null)
+                {
+                    var serviceTestModels = loadResourceTests.Select(to => new ServiceTestModel(ResourceModel.ID)
+                    {
+                        TestName = to.TestName,
+                        UserName = to.UserName,
+                        AuthenticationType = to.AuthenticationType,
+                        Enabled = to.Enabled,
+                        ErrorExpected = to.ErrorExpected,
+                        NoErrorExpected = to.NoErrorExpected,
+                        LastRunDate = to.LastRunDate,
+                        TestPending = to.TestPending,
+                        TestFailing = to.TestFailing,
+                        TestPassed = to.TestPassed,
+                        Password = to.Password,
+                        TestInvalid = to.TestInvalid,
+                        Inputs = to.Inputs?.Select(input => new ServiceTestInput(input.Variable, input.Value) as IServiceTestInput).ToList(),
+                        Outputs = to.Outputs?.Select(output => new ServiceTestOutput(output.Variable, output.Value) as IServiceTestOutput).ToList()
+                    });
+                    return serviceTestModels.ToObservableCollection<IServiceTestModel>();
+                }
             }
             catch (Exception)
             {
 
                 return new ObservableCollection<IServiceTestModel>();
             }
+            return new ObservableCollection<IServiceTestModel>();
         }
 
         public ICommand DeleteTestCommand { get; set; }

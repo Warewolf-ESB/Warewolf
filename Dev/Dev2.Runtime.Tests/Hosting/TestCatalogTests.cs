@@ -41,7 +41,6 @@ namespace Dev2.Tests.Runtime.Hosting
             Assert.IsTrue(Directory.Exists(EnvironmentVariables.TestPath));
         }
 
-
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("TestCatalog_SaveTests")]
@@ -78,17 +77,19 @@ namespace Dev2.Tests.Runtime.Hosting
             //------------Setup for test--------------------------
             var testCatalog = new TestCatalog();
             var resourceID = Guid.NewGuid();
-            var serviceTestModelTos = new List<IServiceTestModelTO>();
-            serviceTestModelTos.Add(new ServiceTestModelTO
+            var serviceTestModelTos = new List<IServiceTestModelTO>
             {
-                Enabled = true,
-                TestName = "Test 1"
-            });
-            serviceTestModelTos.Add(new ServiceTestModelTO
-            {
-                Enabled = false,
-                TestName = "Test 2"
-            });
+                new ServiceTestModelTO
+                {
+                    Enabled = true,
+                    TestName = "Test 1"
+                },
+                new ServiceTestModelTO
+                {
+                    Enabled = false,
+                    TestName = "Test 2"
+                }
+            };
             //------------Execute Test---------------------------
             testCatalog.SaveTests(resourceID,serviceTestModelTos);
             //------------Assert Results-------------------------
@@ -121,30 +122,34 @@ namespace Dev2.Tests.Runtime.Hosting
             var testCatalog = new TestCatalog();
             var resourceID = Guid.NewGuid();
             var resourceID2 = Guid.NewGuid();
-            var serviceTestModelTos = new List<IServiceTestModelTO>();
-            serviceTestModelTos.Add(new ServiceTestModelTO
+            var serviceTestModelTos = new List<IServiceTestModelTO>
             {
-                Enabled = true,
-                TestName = "Test 1"
-            });
-            serviceTestModelTos.Add(new ServiceTestModelTO
-            {
-                Enabled = false,
-                TestName = "Test 2"
-            });
+                new ServiceTestModelTO
+                {
+                    Enabled = true,
+                    TestName = "Test 1"
+                },
+                new ServiceTestModelTO
+                {
+                    Enabled = false,
+                    TestName = "Test 2"
+                }
+            };
 
 
-            var res2ServiceTestModelTos = new List<IServiceTestModelTO>();
-            res2ServiceTestModelTos.Add(new ServiceTestModelTO
+            var res2ServiceTestModelTos = new List<IServiceTestModelTO>
             {
-                Enabled = true,
-                TestName = "Test 21"
-            });
-            res2ServiceTestModelTos.Add(new ServiceTestModelTO
-            {
-                Enabled = false,
-                TestName = "Test 22"
-            });
+                new ServiceTestModelTO
+                {
+                    Enabled = true,
+                    TestName = "Test 21"
+                },
+                new ServiceTestModelTO
+                {
+                    Enabled = false,
+                    TestName = "Test 22"
+                }
+            };
             testCatalog.SaveTests(resourceID, serviceTestModelTos);
             testCatalog.SaveTests(resourceID2, res2ServiceTestModelTos);
             //------------Execute Test---------------------------
@@ -159,6 +164,149 @@ namespace Dev2.Tests.Runtime.Hosting
             Assert.AreEqual(2, res2Tests.Count);
             Assert.AreEqual("Test 21", res2Tests[0].TestName);
             Assert.AreEqual("Test 22", res2Tests[1].TestName);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("TestCatalog_Fetch")]
+        public void TestCatalog_Fetch_WhenResourceIdValid_ShouldReturnListOfTestsForResourceId()
+        {
+            //------------Setup for test--------------------------
+            var testCatalog = new TestCatalog();
+            var resourceID = Guid.NewGuid();
+            var resourceID2 = Guid.NewGuid();
+            var serviceTestModelTos = new List<IServiceTestModelTO>
+            {
+                new ServiceTestModelTO
+                {
+                    Enabled = true,
+                    TestName = "Test 1"
+                },
+                new ServiceTestModelTO
+                {
+                    Enabled = false,
+                    TestName = "Test 2"
+                }
+            };
+
+
+            var res2ServiceTestModelTos = new List<IServiceTestModelTO>
+            {
+                new ServiceTestModelTO
+                {
+                    Enabled = true,
+                    TestName = "Test 21"
+                },
+                new ServiceTestModelTO
+                {
+                    Enabled = false,
+                    TestName = "Test 22"
+                }
+            };
+            testCatalog.SaveTests(resourceID, serviceTestModelTos);
+            testCatalog.SaveTests(resourceID2, res2ServiceTestModelTos);
+            testCatalog.Load();
+            //------------Execute Test---------------------------
+            var tests = testCatalog.Fetch(resourceID2);
+            //------------Assert Results-------------------------
+            var res2Tests = tests;
+            Assert.AreEqual(2, res2Tests.Count);
+            Assert.AreEqual("Test 21", res2Tests[0].TestName);
+            Assert.AreEqual("Test 22", res2Tests[1].TestName);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("TestCatalog_Fetch")]
+        public void TestCatalog_Fetch_WhenResourceIdNotLoaded_ShouldReturnListOfTestsForResourceId()
+        {
+            //------------Setup for test--------------------------
+            var testCatalog = new TestCatalog();
+            var resourceID = Guid.NewGuid();
+            var resourceID2 = Guid.NewGuid();
+            var serviceTestModelTos = new List<IServiceTestModelTO>
+            {
+                new ServiceTestModelTO
+                {
+                    Enabled = true,
+                    TestName = "Test 1"
+                },
+                new ServiceTestModelTO
+                {
+                    Enabled = false,
+                    TestName = "Test 2"
+                }
+            };
+
+
+            var res2ServiceTestModelTos = new List<IServiceTestModelTO>
+            {
+                new ServiceTestModelTO
+                {
+                    Enabled = true,
+                    TestName = "Test 21"
+                },
+                new ServiceTestModelTO
+                {
+                    Enabled = false,
+                    TestName = "Test 22"
+                }
+            };
+            testCatalog.SaveTests(resourceID, serviceTestModelTos);
+            testCatalog.SaveTests(resourceID2, res2ServiceTestModelTos);
+            //------------Execute Test---------------------------
+            var tests = testCatalog.Fetch(resourceID2);
+            //------------Assert Results-------------------------
+            var res2Tests = tests;
+            Assert.AreEqual(2, res2Tests.Count);
+            Assert.AreEqual("Test 21", res2Tests[0].TestName);
+            Assert.AreEqual("Test 22", res2Tests[1].TestName);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("TestCatalog_Fetch")]
+        public void TestCatalog_Fetch_WhenResourceIdNotValid_ShouldReturnListOfTestsForResourceId()
+        {
+            //------------Setup for test--------------------------
+            var testCatalog = new TestCatalog();
+            var resourceID = Guid.NewGuid();
+            var resourceID2 = Guid.NewGuid();
+            var serviceTestModelTos = new List<IServiceTestModelTO>
+            {
+                new ServiceTestModelTO
+                {
+                    Enabled = true,
+                    TestName = "Test 1"
+                },
+                new ServiceTestModelTO
+                {
+                    Enabled = false,
+                    TestName = "Test 2"
+                }
+            };
+
+
+            var res2ServiceTestModelTos = new List<IServiceTestModelTO>
+            {
+                new ServiceTestModelTO
+                {
+                    Enabled = true,
+                    TestName = "Test 21"
+                },
+                new ServiceTestModelTO
+                {
+                    Enabled = false,
+                    TestName = "Test 22"
+                }
+            };
+            testCatalog.SaveTests(resourceID, serviceTestModelTos);
+            testCatalog.SaveTests(resourceID2, res2ServiceTestModelTos);
+            //------------Execute Test---------------------------
+            var tests = testCatalog.Fetch(Guid.NewGuid());
+            //------------Assert Results-------------------------
+            var res2Tests = tests;
+            Assert.AreEqual(0, res2Tests.Count);
         }
     }
 }
