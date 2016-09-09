@@ -177,9 +177,9 @@ Scenario: Delete an Enabled Test
 	Then Tab Header is "Workflow 3 - Tests"
 	And there are 1 tests
 	When I disable "Test1"
-	Then Delete is disabled for "Test1"
-	When I enable "Test1"
 	Then Delete is enabled for "Test1"
+	When I enable "Test1"
+	Then Delete is disabled for "Test1"
 	When I delete "Test1"
 	When The Confirmation popup is shown I click Ok
 	Then there are no tests

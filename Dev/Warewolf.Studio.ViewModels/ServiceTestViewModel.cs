@@ -7,6 +7,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 using Dev2;
+using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Studio.Controller;
@@ -43,7 +44,13 @@ namespace Warewolf.Studio.ViewModels
             RunSelectedTestCommand = new DelegateCommand(ServiceTestCommandHandler.RunSelectedTest, () => CanRunSelectedTest);
             StopTestCommand = new DelegateCommand(ServiceTestCommandHandler.StopTest, () => CanStopTest);
             CreateTestCommand = new DelegateCommand(CreateTests);
-            DeleteTestCommand = new DelegateCommand<IServiceTestModel>(x => ServiceTestCommandHandler.DeleteTest(x), CanDeleteTest);
+            DeleteTestCommand = new DelegateCommand<IServiceTestModel>(selectedServiceTest =>
+            {
+                var serviceTestModel = DeleteTest(selectedServiceTest);
+                var testToRemove = Tests.SingleOrDefault(model => model.ParentId == serviceTestModel?.ParentId && model.TestName == serviceTestModel.TestName);
+                Tests.Remove(testToRemove);//test
+                OnPropertyChanged(() => Tests);//test
+            }, CanDeleteTest);
             DuplicateTestCommand = new DelegateCommand(() =>
             {
                 var duplicateTest = ServiceTestCommandHandler.DuplicateTest(SelectedServiceTest);
@@ -54,10 +61,10 @@ namespace Warewolf.Studio.ViewModels
             RunAllTestsUrl = WebServer.GetWorkflowUri(resourceModel, "", UrlType.Tests)?.ToString();
         }
 
-        private bool CanDeleteTest(IServiceTestModel x)
+        private bool CanDeleteTest(IServiceTestModel selectedTestModel)
         {
-          return GetPermissions() && x != null && !x.Enabled;
-        } 
+            return GetPermissions() && selectedTestModel != null && !selectedTestModel.Enabled;
+        }
 
         private void CreateTests()
         {
@@ -263,6 +270,27 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
+        private IServiceTestModel DeleteTest(IServiceTestModel model)
+        {
+            if(model == null) return default(ServiceTestModel);
+            var nameOfItemBeingDeleted = model.NameForDisplay.Replace("*", "").TrimEnd(' ');
+            if (PopupController.ShowDeleteConfirmation(nameOfItemBeingDeleted) == MessageBoxResult.Yes)
+            {
+                try
+                {
+                    var serviceTestModelTO = ResourceModel.Environment.ResourceRepository.DeleteResourceTest(ResourceModel.ID, model.TestName);
+                    IServiceTestModel serviceTestModel = new ServiceTestModel(ResourceModel.ID) { TestName = serviceTestModelTO.TestName };
+                    return serviceTestModel;
+                }
+                catch (Exception ex)
+                {
+                    Dev2Logger.Error("IServiceTestModelTO DeleteTest(IServiceTestModel model)", ex);
+                    return default(ServiceTestModel);
+                }
+            }
+            return default(ServiceTestModel);
+        }
+
         private ObservableCollection<IServiceTestModel> GetTests()
         {
             try
@@ -292,7 +320,6 @@ namespace Warewolf.Studio.ViewModels
             }
             catch (Exception)
             {
-
                 return new ObservableCollection<IServiceTestModel>();
             }
             return new ObservableCollection<IServiceTestModel>();

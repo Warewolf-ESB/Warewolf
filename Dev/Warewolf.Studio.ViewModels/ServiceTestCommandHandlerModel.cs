@@ -39,7 +39,7 @@ namespace Warewolf.Studio.ViewModels
                     {
                         var serviceTestInput = new ServiceTestInput(sca.DisplayValue, sca.Value);
                         serviceTestInput.AddNewAction = () => testModel.AddRow(serviceTestInput, DataList);
-                        return serviceTestInput as IServiceTestInput;
+                        return (IServiceTestInput)serviceTestInput;
                     }).ToList();
 
                 testModel.Outputs = outputList
@@ -107,15 +107,6 @@ namespace Warewolf.Studio.ViewModels
                 UserName = selectedTest.UserName,
             };
             return testClone;
-        }
-
-        public void DeleteTest(IServiceTestModel selectedServiceTest)
-        {
-            var popupController = CustomContainer.Get<Dev2.Common.Interfaces.Studio.Controller.IPopupController>();
-            if (popupController.ShowDeleteConfirmation(selectedServiceTest.NameForDisplay.Replace("*", "").TrimEnd(' ')) == MessageBoxResult.Yes)
-            {
-                //Delete the test
-            }
         }
     }
 }
