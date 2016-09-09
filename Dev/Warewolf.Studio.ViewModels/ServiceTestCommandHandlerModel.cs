@@ -23,7 +23,7 @@ namespace Warewolf.Studio.ViewModels
         {
             var testModel = new ServiceTestModel(resourceModel.ID)
             {
-                TestName = "Test " + testNumber,
+                TestName = "Test " + (testNumber == 0 ? 1 : testNumber),
                 IsDirty = true,
                 TestPending = true,
                 Enabled = true

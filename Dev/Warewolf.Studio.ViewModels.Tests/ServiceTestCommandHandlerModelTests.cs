@@ -105,6 +105,21 @@ namespace Warewolf.Studio.ViewModels.Tests
             //---------------Execute Test ----------------------
             var testModel = testFrameworkViewModel.CreateTest(CreateResourceModelWithSingleScalarInput(),2);
             //---------------Test Result -----------------------
+            Assert.AreEqual("Test 2", testModel.TestName);
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void CreateTest_GivenTestNumber0_ShouldSetTestNameToTest_1()
+        {
+            //---------------Set up test pack-------------------
+            var testFrameworkViewModel = new ServiceTestCommandHandlerModel();
+            //---------------Assert Precondition----------------
+
+            //---------------Execute Test ----------------------
+            var testModel = testFrameworkViewModel.CreateTest(CreateResourceModelWithSingleScalarInput(),0);
+            //---------------Test Result -----------------------
+            Assert.AreEqual("Test 1", testModel.TestName);
         }
 
         [TestMethod]
