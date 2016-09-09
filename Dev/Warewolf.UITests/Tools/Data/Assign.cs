@@ -31,6 +31,9 @@ namespace Warewolf.UITests.Tools.Data
             Uimap.Click_DebugInput_Debug_Button();
             Uimap.WaitForControlNotVisible(Uimap.MainStudioWindow.DockManager.SplitPaneRight.DebugOutput.StatusBar.Spinner);
             Uimap.Click_Debug_Output_Assign_Cell();
+            Uimap.Assert_URL_exist();
+            Uimap.Click_Assign_Tool_url();
+            Uimap.Click_Assign_Tool_ExpandAll();
         }
 
         #region Additional test attributes
