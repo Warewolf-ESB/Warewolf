@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using Dev2.Common.Interfaces;
 using Dev2.Runtime.ServiceModel.Data;
@@ -74,6 +76,13 @@ namespace Warewolf.Studio.ViewModels
         public ICommand DeleteTestCommand { get; set; }
 
         #endregion
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
     }
 
     internal interface INewServiceResource
