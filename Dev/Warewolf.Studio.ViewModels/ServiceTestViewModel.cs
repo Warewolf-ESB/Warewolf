@@ -1,5 +1,6 @@
 ﻿
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
@@ -63,14 +64,14 @@ namespace Warewolf.Studio.ViewModels
                 return;
             }
 
-            var testModel = ServiceTestCommandHandler.CreateTest(ResourceModel);
+            var testModel = ServiceTestCommandHandler.CreateTest(ResourceModel, RealTests().Count());
             AddAndSelectTest(testModel);
         }
 
         private void AddAndSelectTest(IServiceTestModel testModel)
         {
             var index = Tests.Count - 1;
-            if(index >= 0)
+            if (index >= 0)
             {
                 Tests.Insert(index, testModel);
             }
@@ -139,8 +140,8 @@ namespace Warewolf.Studio.ViewModels
         {
             try
             {
-                var serviceTestModels = Tests.Where(model => model.GetType() != typeof(DummyServiceTest)).ToList();
-                var duplicateTests = serviceTestModels.GroupBy(x => x.TestName).Where(group => group.Count() > 1).Select(group => group.Key);
+                var serviceTestModels = RealTests().ToList();
+                var duplicateTests = RealTests().GroupBy(x => x.TestName).Where(group => group.Count() > 1).Select(group => group.Key);
                 if (duplicateTests.Any())
                 {
                     PopupController?.Show(Resources.Languages.Core.ServiceTestDuplicateTestNameMessage, Resources.Languages.Core.ServiceTestDuplicateTestNameHeader, MessageBoxButton.OK, MessageBoxImage.Error, null, false, true, false, false);
@@ -232,6 +233,7 @@ namespace Warewolf.Studio.ViewModels
                 OnPropertyChanged(() => TestPassingResult);
             }
         }
+        private IEnumerable<IServiceTestModel> RealTests() => Tests.Where(model => model.GetType() != typeof(DummyServiceTest)).ToObservableCollection();
 
         public ObservableCollection<IServiceTestModel> Tests
         {
@@ -246,7 +248,7 @@ namespace Warewolf.Studio.ViewModels
                     {
                         SelectedServiceTest = _tests[0];
                     }
-                    
+
                 }
                 return _tests;
 

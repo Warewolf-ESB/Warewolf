@@ -297,7 +297,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsNotNull(testFrameworkViewModel.Tests);
             var test = testFrameworkViewModel.Tests[0];
             Assert.IsNotNull(test);
-            Assert.AreEqual("Test 1", test.TestName);
+            Assert.AreEqual("Test 0", test.TestName);
         }
 
         [TestMethod]
@@ -459,9 +459,12 @@ namespace Warewolf.Studio.ViewModels.Tests
             //------------Setup for test--------------------------
             var resourceModelMock = CreateResourceModelWithSingleScalarOutputMock();
             var mockEnvironmentModel = new Mock<IEnvironmentModel>();
+            var con = new Mock<IEnvironmentConnection>();
+            con.Setup(connection => connection.IsConnected).Returns(true);
             var mockResourceRepo = new Mock<IResourceRepository>();
             mockResourceRepo.Setup(repository => repository.SaveTests(It.IsAny<Guid>(), It.IsAny<List<IServiceTestModel>>()));
             mockEnvironmentModel.Setup(model => model.ResourceRepository).Returns(mockResourceRepo.Object);
+            mockEnvironmentModel.Setup(model => model.Connection).Returns(con.Object);
             resourceModelMock.Setup(model => model.Environment).Returns(mockEnvironmentModel.Object);
             var serviceTestViewModel = new ServiceTestViewModel(resourceModelMock.Object);
             serviceTestViewModel.CreateTestCommand.Execute(null);
@@ -484,6 +487,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             mockResourceRepo.Setup(repository => repository.SaveTests(It.IsAny<Guid>(), It.IsAny<List<IServiceTestModel>>()));
             mockEnvironmentModel.Setup(model => model.ResourceRepository).Returns(mockResourceRepo.Object);
             resourceModelMock.Setup(model => model.Environment).Returns(mockEnvironmentModel.Object);
+            resourceModelMock.Setup(model => model.Environment.Connection.IsConnected).Returns(true);
 
             var popupController = new Mock<IPopupController>();
             CustomContainer.Register(popupController.Object);
