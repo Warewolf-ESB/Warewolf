@@ -624,7 +624,7 @@ namespace Warewolf.UITests
             Click_Save_Ribbon_Button_to_Open_Save_Dialog();
             WaitForControlNotVisible(SaveDialogWindow.ExplorerView.ExplorerTree.localhost.Checkbox.Spinner);
             Enter_Service_Name_Into_Save_Dialog(Name);
-            Click_SaveDialog_Save_Button();
+            //Click_SaveDialog_Save_Button();
             Enter_Text_Into_Explorer_Filter(Name);
             Click_Explorer_Refresh_Button();
             WaitForControlNotVisible(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);
@@ -840,7 +840,9 @@ namespace Warewolf.UITests
 
         public void Select_Deploy_First_Source_Item()
         {
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DeployTab.WorkSurfaceContext.SourceServerExplorer.ExplorerTree.SourceServerName.FirstExplorerTreeItem.CheckBox.Checked = true;
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DeployTab.WorkSurfaceContext.SourceServerExplorer.ExplorerTree.SourceServerName.FirstExplorerTreeItem.DrawHighlight();
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DeployTab.WorkSurfaceContext.SourceServerExplorer.ExplorerTree.SourceServerName.FirstExplorerTreeItem.Selected = true;
+            //MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DeployTab.WorkSurfaceContext.SourceServerExplorer.ExplorerTree.SourceServerName.FirstExplorerTreeItem.CheckBox.Checked = true;
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DeployTab.WorkSurfaceContext.DeployButton.Enabled,
                 "Deploy button is not enable after valid server and resource are selected.");
         }
@@ -864,6 +866,9 @@ namespace Warewolf.UITests
             var point = new Point();
             Assert.IsTrue(!MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DBSourceWizardTab.WorkSurfaceContext.UserNameTextBox.TryGetClickablePoint(out point), "Username textbox is visible in db source wizard.");
             Assert.IsTrue(!MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DBSourceWizardTab.WorkSurfaceContext.PasswordTextBox.TryGetClickablePoint(out point), "Password textbox is visible in db source wizard.");
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DBSourceWizardTab.WorkSurfaceContext.UserRadioButton.Selected = true;
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DBSourceWizardTab.WorkSurfaceContext.UserNameTextBox.TryGetClickablePoint(out point), "Username textbox is visible in db source wizard.");
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DBSourceWizardTab.WorkSurfaceContext.PasswordTextBox.TryGetClickablePoint(out point), "Password textbox is visible in db source wizard.");
         }
         
         public void Change_Selected_Database_ToMicrosoftSqlServer_DataBase()
@@ -980,11 +985,20 @@ namespace Warewolf.UITests
                 Console.WriteLine("TryClose method failed to close Deploy tab.\n" + e.Message);
             }
         }
-        
-        public void Click_SaveDialog_Save_Button()
+
+        /// <summary>
+        /// Click_DB_Source_Wizard_Test_Connection_Button
+        /// </summary>
+        public void Click_DB_Source_Wizard_Test_Connection_Button()
         {
-            Mouse.Click(SaveDialogWindow.SaveButton, new Point(25, 4));
-            WaitForControlNotVisible(SaveDialogWindow);
+            #region Variable Declarations
+            WpfButton testConnectionButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DBSourceWizardTab.WorkSurfaceContext.TestConnectionButton;
+            #endregion
+            var point = new Point();
+            Assert.IsTrue(!MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DBSourceWizardTab.WorkSurfaceContext.DatabaseCombobox.TryGetClickablePoint(out point), "Database Combobox does not exist");
+            // Click 'Test Connection' button
+            Mouse.Click(testConnectionButton, new Point(21, 16));
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DBSourceWizardTab.WorkSurfaceContext.DatabaseCombobox.TryGetClickablePoint(out point), "Database Combobox does not exist");
         }
 
         public void Deploy_Service_From_Deploy_View(string ServiceName)

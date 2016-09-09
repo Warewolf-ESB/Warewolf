@@ -41,40 +41,6 @@
   </Configuration>
   <InitializeActions />
   <ExecuteActions>
-    <AssertAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DBSourceWizardTab.WorkSurfaceContext.CancelTestButton">
-      <ParameterName />
-      <PropertyName>Exists</PropertyName>
-      <ExpectedValue>True</ExpectedValue>
-      <MessageOnValidationFailure>Cancel Button does not exist</MessageOnValidationFailure>
-      <Type>String</Type>
-      <PropertyCondition>AreEqual</PropertyCondition>
-    </AssertAction>
-    <TestStepMarkerAction Comment="" MarkerInformation="Assert_CancelConnectionButton_Exists">
-      <ParameterName />
-      <StepId>-1</StepId>
-      <Direction>Start</Direction>
-      <Outcome />
-      <Disabled>false</Disabled>
-      <WorkItemId>0</WorkItemId>
-      <MarkerRegionType>Assertion</MarkerRegionType>
-    </TestStepMarkerAction>
-    <AssertAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DBSourceWizardTab.WorkSurfaceContext.ConnectionPassedImage">
-      <ParameterName />
-      <PropertyName>Exists</PropertyName>
-      <ExpectedValue>True</ExpectedValue>
-      <MessageOnValidationFailure>Test connection failed</MessageOnValidationFailure>
-      <Type>String</Type>
-      <PropertyCondition>AreEqual</PropertyCondition>
-    </AssertAction>
-    <TestStepMarkerAction Comment="" MarkerInformation="Assert_Connection_Passed">
-      <ParameterName />
-      <StepId>-1</StepId>
-      <Direction>Start</Direction>
-      <Outcome />
-      <Disabled>false</Disabled>
-      <WorkItemId>0</WorkItemId>
-      <MarkerRegionType>Assertion</MarkerRegionType>
-    </TestStepMarkerAction>
     <MouseAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.DoneButton">
       <ParameterName />
       <ModifierKeys>None</ModifierKeys>
@@ -461,6 +427,24 @@
       <MouseButton>Left</MouseButton>
     </MouseAction>
     <TestStepMarkerAction Comment="" MarkerInformation="Click_Connect_Control_InExplorer">
+      <ParameterName />
+      <StepId>-1</StepId>
+      <Direction>Start</Direction>
+      <Outcome />
+      <Disabled>false</Disabled>
+      <WorkItemId>0</WorkItemId>
+      <MarkerRegionType>Action</MarkerRegionType>
+    </TestStepMarkerAction>
+    <MouseAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DBSourceWizardTab.WorkSurfaceContext.TestConnectionButton">
+      <ParameterName />
+      <ModifierKeys>None</ModifierKeys>
+      <IsGlobalHotkey>false</IsGlobalHotkey>
+      <Location X="21" Y="16" />
+      <WheelDirection>0</WheelDirection>
+      <ActionType>Click</ActionType>
+      <MouseButton>Left</MouseButton>
+    </MouseAction>
+    <TestStepMarkerAction Comment="" MarkerInformation="Click_DB_Source_Wizard_Test_Connection_Button">
       <ParameterName />
       <StepId>-1</StepId>
       <Direction>Start</Direction>
@@ -1646,6 +1630,24 @@
       <MouseButton>Left</MouseButton>
     </MouseAction>
     <TestStepMarkerAction Comment="" MarkerInformation="Click_SaveDialog_CancelButton">
+      <ParameterName />
+      <StepId>-1</StepId>
+      <Direction>Start</Direction>
+      <Outcome />
+      <Disabled>false</Disabled>
+      <WorkItemId>0</WorkItemId>
+      <MarkerRegionType>Action</MarkerRegionType>
+    </TestStepMarkerAction>
+    <MouseAction UIObjectName="UIMap.SaveDialogWindow.SaveButton">
+      <ParameterName />
+      <ModifierKeys>None</ModifierKeys>
+      <IsGlobalHotkey>false</IsGlobalHotkey>
+      <Location X="25" Y="4" />
+      <WheelDirection>0</WheelDirection>
+      <ActionType>Click</ActionType>
+      <MouseButton>Left</MouseButton>
+    </MouseAction>
+    <TestStepMarkerAction Comment="" MarkerInformation="Click_SaveDialog_Save_Button">
       <ParameterName />
       <StepId>-1</StepId>
       <Direction>Start</Direction>
@@ -4434,36 +4436,6 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
-    <SetValueAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DeployTab.WorkSurfaceContext.SourceServerExplorer.SearchTextbox">
-      <ParameterName />
-      <Value Encoded="false">DeployViewOnly</Value>
-      <Type>String</Type>
-    </SetValueAction>
-    <AssertAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DeployTab.WorkSurfaceContext.SourceServerExplorer.ExplorerTree.SourceServerName.FirstExplorerTreeItem">
-      <ParameterName />
-      <PropertyName>Exists</PropertyName>
-      <ExpectedValue>True</ExpectedValue>
-      <MessageOnValidationFailure>First deploy tab source explorer item does not exist after filter is applied.</MessageOnValidationFailure>
-      <Type>String</Type>
-      <PropertyCondition>AreEqual</PropertyCondition>
-    </AssertAction>
-    <AssertAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DeployTab.WorkSurfaceContext.SourceServerExplorer.ExplorerTree.SourceServerName.FirstExplorerTreeItem.CheckBox">
-      <ParameterName />
-      <PropertyName>Exists</PropertyName>
-      <ExpectedValue>True</ExpectedValue>
-      <MessageOnValidationFailure>Deploy source server explorer tree first item checkbox does not exist.</MessageOnValidationFailure>
-      <Type>String</Type>
-      <PropertyCondition>AreEqual</PropertyCondition>
-    </AssertAction>
-    <TestStepMarkerAction Comment="" MarkerInformation="Enter_DeployViewOnly_Into_Deploy_Source_Filter">
-      <ParameterName />
-      <StepId>-1</StepId>
-      <Direction>Start</Direction>
-      <Outcome />
-      <Disabled>false</Disabled>
-      <WorkItemId>0</WorkItemId>
-      <MarkerRegionType>Action</MarkerRegionType>
-    </TestStepMarkerAction>
     <SetValueAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.BaseConvert.LargeView.DataGrid.Row1.Cell.Listbox.ValueTextbox">
       <ParameterName />
       <Value Encoded="false">[[SomeVariable]]</Value>
@@ -4593,6 +4565,28 @@
       <PropertyCondition>AreEqual</PropertyCondition>
     </AssertAction>
     <TestStepMarkerAction Comment="" MarkerInformation="Enter_Text_Into_Assign_Small_View_Row1_Value_Textbox_As_SomeVariable_UsingIntellisense">
+      <ParameterName />
+      <StepId>-1</StepId>
+      <Direction>Start</Direction>
+      <Outcome />
+      <Disabled>false</Disabled>
+      <WorkItemId>0</WorkItemId>
+      <MarkerRegionType>Action</MarkerRegionType>
+    </TestStepMarkerAction>
+    <SetValueAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DeployTab.WorkSurfaceContext.SourceServerExplorer.SearchTextbox">
+      <ParameterName />
+      <Value Encoded="false">DeployViewOnly</Value>
+      <Type>String</Type>
+    </SetValueAction>
+    <AssertAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DeployTab.WorkSurfaceContext.SourceServerExplorer.ExplorerTree.SourceServerName.FirstExplorerTreeItem">
+      <ParameterName />
+      <PropertyName>Exists</PropertyName>
+      <ExpectedValue>True</ExpectedValue>
+      <MessageOnValidationFailure>First deploy tab source explorer item does not exist after filter is applied.</MessageOnValidationFailure>
+      <Type>String</Type>
+      <PropertyCondition>AreEqual</PropertyCondition>
+    </AssertAction>
+    <TestStepMarkerAction Comment="" MarkerInformation="Enter_Text_Into_Deploy_Source_Filter">
       <ParameterName />
       <StepId>-1</StepId>
       <Direction>Start</Direction>
@@ -5035,7 +5029,7 @@
       <Type>String</Type>
       <PropertyCondition>AreEqual</PropertyCondition>
     </AssertAction>
-    <AssertAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ClassNameComboBox">
+    <AssertAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.NamespaceComboBox">
       <ParameterName />
       <PropertyName>Exists</PropertyName>
       <ExpectedValue>True</ExpectedValue>
@@ -7179,57 +7173,6 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
-    <MouseAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DeployTab.WorkSurfaceContext.DestinationServerConectControl.Combobox.ToggleButton">
-      <ParameterName />
-      <ModifierKeys>None</ModifierKeys>
-      <IsGlobalHotkey>false</IsGlobalHotkey>
-      <Location X="230" Y="9" />
-      <WheelDirection>0</WheelDirection>
-      <ActionType>Click</ActionType>
-      <MouseButton>Left</MouseButton>
-    </MouseAction>
-    <AssertAction UIObjectName="UIMap.MainStudioWindow.ComboboxListItemAsNewRemoteServer">
-      <ParameterName />
-      <PropertyName>Exists</PropertyName>
-      <ExpectedValue>True</ExpectedValue>
-      <MessageOnValidationFailure>New Remote Server... option does not exist in Destination server combobox.</MessageOnValidationFailure>
-      <Type>String</Type>
-      <PropertyCondition>AreEqual</PropertyCondition>
-    </AssertAction>
-    <AssertAction UIObjectName="UIMap.MainStudioWindow.ComboboxListItemAsLocalhostConnected">
-      <ParameterName />
-      <PropertyName>Exists</PropertyName>
-      <ExpectedValue>True</ExpectedValue>
-      <MessageOnValidationFailure>Remote Connection Integration option does not exist in Destination server combobox.</MessageOnValidationFailure>
-      <Type>String</Type>
-      <PropertyCondition>AreEqual</PropertyCondition>
-    </AssertAction>
-    <MouseAction UIObjectName="UIMap.MainStudioWindow.ComboboxListItemAsLocalhostConnected">
-      <ParameterName />
-      <ModifierKeys>None</ModifierKeys>
-      <IsGlobalHotkey>false</IsGlobalHotkey>
-      <Location X="226" Y="13" />
-      <WheelDirection>0</WheelDirection>
-      <ActionType>Click</ActionType>
-      <MouseButton>Left</MouseButton>
-    </MouseAction>
-    <AssertAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DeployTab.WorkSurfaceContext.SourceServerConectControl.Combobox.RemoteConnectionIntegrationText">
-      <ParameterName />
-      <PropertyName>DisplayText</PropertyName>
-      <ExpectedValue>Remote Connection Integration</ExpectedValue>
-      <MessageOnValidationFailure>Selected source server in deploy is not Remote Connection Integration.</MessageOnValidationFailure>
-      <Type>String</Type>
-      <PropertyCondition>AreEqual</PropertyCondition>
-    </AssertAction>
-    <TestStepMarkerAction Comment="" MarkerInformation="Select_LocalhostConnected_From_Deploy_Tab_Destination_Server_Combobox">
-      <ParameterName />
-      <StepId>-1</StepId>
-      <Direction>Start</Direction>
-      <Outcome />
-      <Disabled>false</Disabled>
-      <WorkItemId>0</WorkItemId>
-      <MarkerRegionType>Action</MarkerRegionType>
-    </TestStepMarkerAction>
     <MouseAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DBSourceWizardTab.WorkSurfaceContext.NewDBSourceWizard.ServerTypeComboBox.ToggleButton">
       <ParameterName />
       <ModifierKeys>None</ModifierKeys>
@@ -7548,159 +7491,6 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
-    <MouseAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DeployTab.WorkSurfaceContext.DestinationServerConectControl.Combobox.ToggleButton">
-      <ParameterName />
-      <ModifierKeys>None</ModifierKeys>
-      <IsGlobalHotkey>false</IsGlobalHotkey>
-      <Location X="230" Y="9" />
-      <WheelDirection>0</WheelDirection>
-      <ActionType>Click</ActionType>
-      <MouseButton>Left</MouseButton>
-    </MouseAction>
-    <AssertAction UIObjectName="UIMap.MainStudioWindow.ComboboxListItemAsNewRemoteServer">
-      <ParameterName />
-      <PropertyName>Exists</PropertyName>
-      <ExpectedValue>True</ExpectedValue>
-      <MessageOnValidationFailure>New Remote Server... option does not exist in Destination server combobox.</MessageOnValidationFailure>
-      <Type>String</Type>
-      <PropertyCondition>AreEqual</PropertyCondition>
-    </AssertAction>
-    <AssertAction UIObjectName="UIMap.MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegration">
-      <ParameterName />
-      <PropertyName>Exists</PropertyName>
-      <ExpectedValue>True</ExpectedValue>
-      <MessageOnValidationFailure>Remote Connection Integration option does not exist in Destination server combobox.</MessageOnValidationFailure>
-      <Type>String</Type>
-      <PropertyCondition>AreEqual</PropertyCondition>
-    </AssertAction>
-    <MouseAction UIObjectName="UIMap.MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegration">
-      <ParameterName />
-      <ModifierKeys>None</ModifierKeys>
-      <IsGlobalHotkey>false</IsGlobalHotkey>
-      <Location X="226" Y="13" />
-      <WheelDirection>0</WheelDirection>
-      <ActionType>Click</ActionType>
-      <MouseButton>Left</MouseButton>
-    </MouseAction>
-    <AssertAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DeployTab.WorkSurfaceContext.DestinationServerConectControl.Combobox.RemoteConnectionIntegrationText">
-      <ParameterName />
-      <PropertyName>DisplayText</PropertyName>
-      <ExpectedValue>Remote Connection Integration</ExpectedValue>
-      <MessageOnValidationFailure>Selected destination server in deploy is not Remote Connection Integration.</MessageOnValidationFailure>
-      <Type>String</Type>
-      <PropertyCondition>AreEqual</PropertyCondition>
-    </AssertAction>
-    <TestStepMarkerAction Comment="" MarkerInformation="Select_RemoteConnectionIntegration_From_Deploy_Tab_Destination_Server_Combobox">
-      <ParameterName />
-      <StepId>-1</StepId>
-      <Direction>Start</Direction>
-      <Outcome />
-      <Disabled>false</Disabled>
-      <WorkItemId>0</WorkItemId>
-      <MarkerRegionType>Action</MarkerRegionType>
-    </TestStepMarkerAction>
-    <MouseAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DeployTab.WorkSurfaceContext.SourceServerConectControl.Combobox.ToggleButton">
-      <ParameterName />
-      <ModifierKeys>None</ModifierKeys>
-      <IsGlobalHotkey>false</IsGlobalHotkey>
-      <Location X="230" Y="9" />
-      <WheelDirection>0</WheelDirection>
-      <ActionType>Click</ActionType>
-      <MouseButton>Left</MouseButton>
-    </MouseAction>
-    <AssertAction UIObjectName="UIMap.MainStudioWindow.ComboboxListItemAsNewRemoteServer">
-      <ParameterName />
-      <PropertyName>Exists</PropertyName>
-      <ExpectedValue>True</ExpectedValue>
-      <MessageOnValidationFailure>New Remote Server... option does not exist in Destination server combobox.</MessageOnValidationFailure>
-      <Type>String</Type>
-      <PropertyCondition>AreEqual</PropertyCondition>
-    </AssertAction>
-    <AssertAction UIObjectName="UIMap.MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegration">
-      <ParameterName />
-      <PropertyName>Exists</PropertyName>
-      <ExpectedValue>True</ExpectedValue>
-      <MessageOnValidationFailure>Remote Connection Integration option does not exist in Destination server combobox.</MessageOnValidationFailure>
-      <Type>String</Type>
-      <PropertyCondition>AreEqual</PropertyCondition>
-    </AssertAction>
-    <MouseAction UIObjectName="UIMap.MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegration">
-      <ParameterName />
-      <ModifierKeys>None</ModifierKeys>
-      <IsGlobalHotkey>false</IsGlobalHotkey>
-      <Location X="226" Y="13" />
-      <WheelDirection>0</WheelDirection>
-      <ActionType>Click</ActionType>
-      <MouseButton>Left</MouseButton>
-    </MouseAction>
-    <AssertAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DeployTab.WorkSurfaceContext.SourceServerConectControl.Combobox.RemoteConnectionIntegrationText">
-      <ParameterName />
-      <PropertyName>DisplayText</PropertyName>
-      <ExpectedValue>Remote Connection Integration</ExpectedValue>
-      <MessageOnValidationFailure>Selected source server in deploy is not Remote Connection Integration.</MessageOnValidationFailure>
-      <Type>String</Type>
-      <PropertyCondition>AreEqual</PropertyCondition>
-    </AssertAction>
-    <TestStepMarkerAction Comment="" MarkerInformation="Select_RemoteConnectionIntegration_From_Deploy_Tab_Source_Server_Combobox">
-      <ParameterName />
-      <StepId>-1</StepId>
-      <Direction>Start</Direction>
-      <Outcome />
-      <Disabled>false</Disabled>
-      <WorkItemId>0</WorkItemId>
-      <MarkerRegionType>Action</MarkerRegionType>
-    </TestStepMarkerAction>
-    <MouseAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DeployTab.WorkSurfaceContext.SourceServerConectControl.Combobox.ToggleButton">
-      <ParameterName />
-      <ModifierKeys>None</ModifierKeys>
-      <IsGlobalHotkey>false</IsGlobalHotkey>
-      <Location X="230" Y="9" />
-      <WheelDirection>0</WheelDirection>
-      <ActionType>Click</ActionType>
-      <MouseButton>Left</MouseButton>
-    </MouseAction>
-    <AssertAction UIObjectName="UIMap.MainStudioWindow.ComboboxListItemAsNewRemoteServer">
-      <ParameterName />
-      <PropertyName>Exists</PropertyName>
-      <ExpectedValue>True</ExpectedValue>
-      <MessageOnValidationFailure>New Remote Server... option does not exist in Destination server combobox.</MessageOnValidationFailure>
-      <Type>String</Type>
-      <PropertyCondition>AreEqual</PropertyCondition>
-    </AssertAction>
-    <AssertAction UIObjectName="UIMap.MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegrationConnected">
-      <ParameterName />
-      <PropertyName>Exists</PropertyName>
-      <ExpectedValue>True</ExpectedValue>
-      <MessageOnValidationFailure>Remote Connection Integration option does not exist in Destination server combobox.</MessageOnValidationFailure>
-      <Type>String</Type>
-      <PropertyCondition>AreEqual</PropertyCondition>
-    </AssertAction>
-    <MouseAction UIObjectName="UIMap.MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegrationConnected">
-      <ParameterName />
-      <ModifierKeys>None</ModifierKeys>
-      <IsGlobalHotkey>false</IsGlobalHotkey>
-      <Location X="226" Y="13" />
-      <WheelDirection>0</WheelDirection>
-      <ActionType>Click</ActionType>
-      <MouseButton>Left</MouseButton>
-    </MouseAction>
-    <AssertAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DeployTab.WorkSurfaceContext.SourceServerConectControl.Combobox.RemoteConnectionIntegrationText">
-      <ParameterName />
-      <PropertyName>DisplayText</PropertyName>
-      <ExpectedValue>Remote Connection Integration</ExpectedValue>
-      <MessageOnValidationFailure>Selected source server in deploy is not Remote Connection Integration.</MessageOnValidationFailure>
-      <Type>String</Type>
-      <PropertyCondition>AreEqual</PropertyCondition>
-    </AssertAction>
-    <TestStepMarkerAction Comment="" MarkerInformation="Select_RemoteConnectionIntegrationConnected_From_Deploy_Tab_Source_Server_Combobox">
-      <ParameterName />
-      <StepId>-1</StepId>
-      <Direction>Start</Direction>
-      <Outcome />
-      <Disabled>false</Disabled>
-      <WorkItemId>0</WorkItemId>
-      <MarkerRegionType>Action</MarkerRegionType>
-    </TestStepMarkerAction>
     <MouseAction UIObjectName="UIMap.MainStudioWindow.ExplorerContextMenu.Rename">
       <ParameterName />
       <ModifierKeys>None</ModifierKeys>
@@ -7799,7 +7589,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
-    <MouseAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ClassNameComboBox">
+    <MouseAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.NamespaceComboBox">
       <ParameterName />
       <ModifierKeys>None</ModifierKeys>
       <IsGlobalHotkey>false</IsGlobalHotkey>
@@ -7808,7 +7598,7 @@
       <ActionType>Click</ActionType>
       <MouseButton>Left</MouseButton>
     </MouseAction>
-    <MouseAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ClassNameComboBox.SystemRandomListItem">
+    <MouseAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.NamespaceComboBox.SystemRandomListItem">
       <ParameterName />
       <ModifierKeys>None</ModifierKeys>
       <IsGlobalHotkey>false</IsGlobalHotkey>
@@ -7817,7 +7607,7 @@
       <ActionType>Click</ActionType>
       <MouseButton>Left</MouseButton>
     </MouseAction>
-    <AssertAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ClassNameComboBox">
+    <AssertAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.NamespaceComboBox">
       <ParameterName />
       <PropertyName>SelectedItem</PropertyName>
       <ExpectedValue>System.Random</ExpectedValue>
@@ -7992,33 +7782,16 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
-    <AssertAction UIObjectName="UIMap.UIWarewolfDEV2SANELEMTWindow.UIUI_WorkflowDesigner_Custom.UIHttprsaklfsanele3142Text.UIHttprsaklfsanele3142Hyperlink">
-      <ParameterName />
-      <PropertyName>Exists</PropertyName>
-      <ExpectedValue>True</ExpectedValue>
-      <MessageOnValidationFailure>url does not exist</MessageOnValidationFailure>
-      <Type>String</Type>
-      <PropertyCondition>AreEqual</PropertyCondition>
-    </AssertAction>
-    <TestStepMarkerAction Comment="" MarkerInformation="Assert_URL_exist">
-      <ParameterName />
-      <StepId>-1</StepId>
-      <Direction>Start</Direction>
-      <Outcome />
-      <Disabled>false</Disabled>
-      <WorkItemId>0</WorkItemId>
-      <MarkerRegionType>Assertion</MarkerRegionType>
-    </TestStepMarkerAction>
-    <MouseAction UIObjectName="UIMap.UIWarewolfDEV2SANELEMTWindow.UIUI_WorkflowDesigner_Custom.UIHttprsaklfsanele3142Text.UIHttprsaklfsanele3142Hyperlink">
+    <MouseAction UIObjectName="UIMap.MainStudioWindow.ComboboxListItemMySqlDatabase.MySqlDatabaseText">
       <ParameterName />
       <ModifierKeys>None</ModifierKeys>
       <IsGlobalHotkey>false</IsGlobalHotkey>
-      <Location X="201" Y="10" />
+      <Location X="48" Y="6" />
       <WheelDirection>0</WheelDirection>
       <ActionType>Click</ActionType>
       <MouseButton>Left</MouseButton>
     </MouseAction>
-    <TestStepMarkerAction Comment="" MarkerInformation="Click_Assign_Tool_url">
+    <TestStepMarkerAction Comment="" MarkerInformation="RecordedMethod1">
       <ParameterName />
       <StepId>-1</StepId>
       <Direction>Start</Direction>
@@ -8027,11 +7800,52 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
-    <SetStateAction UIObjectName="UIMap.UIWarewolfDEV2SANELEMTWindow.UIUI_WorkflowDesigner_Custom.UIUserControl_1Custom.UIExpandAllToggleButton">
+    <MouseAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DBSourceWizardTab.WorkSurfaceContext.NewDBSourceWizard.ServerTypeComboBox.PostgreSQLDatabaseText">
       <ParameterName />
-      <State>Pressed</State>
-    </SetStateAction>
-    <TestStepMarkerAction Comment="" MarkerInformation="Click_Assign_Tool_ExpandAll">
+      <ModifierKeys>None</ModifierKeys>
+      <IsGlobalHotkey>false</IsGlobalHotkey>
+      <Location X="100" Y="8" />
+      <WheelDirection>0</WheelDirection>
+      <ActionType>Click</ActionType>
+      <MouseButton>Left</MouseButton>
+    </MouseAction>
+    <TestStepMarkerAction Comment="" MarkerInformation="RecordedMethod2">
+      <ParameterName />
+      <StepId>-1</StepId>
+      <Direction>Start</Direction>
+      <Outcome />
+      <Disabled>false</Disabled>
+      <WorkItemId>0</WorkItemId>
+      <MarkerRegionType>Action</MarkerRegionType>
+    </TestStepMarkerAction>
+    <MouseAction UIObjectName="UIMap.MainStudioWindow.ComboboxListItemODBCDatabase.ODBCDatabaseText">
+      <ParameterName />
+      <ModifierKeys>None</ModifierKeys>
+      <IsGlobalHotkey>false</IsGlobalHotkey>
+      <Location X="42" Y="10" />
+      <WheelDirection>0</WheelDirection>
+      <ActionType>Click</ActionType>
+      <MouseButton>Left</MouseButton>
+    </MouseAction>
+    <TestStepMarkerAction Comment="" MarkerInformation="RecordedMethod3">
+      <ParameterName />
+      <StepId>-1</StepId>
+      <Direction>Start</Direction>
+      <Outcome />
+      <Disabled>false</Disabled>
+      <WorkItemId>0</WorkItemId>
+      <MarkerRegionType>Action</MarkerRegionType>
+    </TestStepMarkerAction>
+    <MouseAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DBSourceWizardTab.WorkSurfaceContext.NewDBSourceWizard.TestConnectionButton">
+      <ParameterName />
+      <ModifierKeys>None</ModifierKeys>
+      <IsGlobalHotkey>false</IsGlobalHotkey>
+      <Location X="47" Y="22" />
+      <WheelDirection>0</WheelDirection>
+      <ActionType>Click</ActionType>
+      <MouseButton>Left</MouseButton>
+    </MouseAction>
+    <TestStepMarkerAction Comment="" MarkerInformation="RecordedMethod4">
       <ParameterName />
       <StepId>-1</StepId>
       <Direction>Start</Direction>
@@ -11675,7 +11489,7 @@
                                     </UIObject>
                                   </Descendants>
                                 </UIObject>
-                                <UIObject ControlType="Text" Id="DeployButtonMessageText" FriendlyName="1 Resource Deployed Successfully." SpecialControlType="None">
+                                <UIObject ControlType="Text" Id="SuccessMessageText" FriendlyName="1 Resource Deployed Successfully." SpecialControlType="None">
                                   <TechnologyName>UIA</TechnologyName>
                                   <WindowTitles>
                                     <WindowTitle>Warewolf</WindowTitle>
@@ -11723,19 +11537,6 @@
                                             <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                             <PropertyCondition Name="ControlType">Button</PropertyCondition>
                                             <PropertyCondition Name="AutomationId">ToggleButton</PropertyCondition>
-                                          </AndCondition>
-                                          <SupportLevel>0</SupportLevel>
-                                          <Descendants />
-                                        </UIObject>
-                                        <UIObject ControlType="Text" Id="RemoteConnectionIntegrationText" FriendlyName="Remote Connection Integration" SpecialControlType="None">
-                                          <TechnologyName>UIA</TechnologyName>
-                                          <WindowTitles>
-                                            <WindowTitle>Warewolf</WindowTitle>
-                                          </WindowTitles>
-                                          <AndCondition>
-                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                            <PropertyCondition Name="ControlType">Text</PropertyCondition>
-                                            <PropertyCondition Name="Name">Remote Connection Integration</PropertyCondition>
                                           </AndCondition>
                                           <SupportLevel>0</SupportLevel>
                                           <Descendants />
@@ -11810,19 +11611,6 @@
                                           <SupportLevel>0</SupportLevel>
                                           <Descendants />
                                         </UIObject>
-                                        <UIObject ControlType="Text" Id="RemoteConnectionIntegrationText" FriendlyName="Remote Connection Integration" SpecialControlType="None">
-                                          <TechnologyName>UIA</TechnologyName>
-                                          <WindowTitles>
-                                            <WindowTitle>Warewolf</WindowTitle>
-                                          </WindowTitles>
-                                          <AndCondition>
-                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                            <PropertyCondition Name="ControlType">Text</PropertyCondition>
-                                            <PropertyCondition Name="Name">Remote Connection Integration</PropertyCondition>
-                                          </AndCondition>
-                                          <SupportLevel>0</SupportLevel>
-                                          <Descendants />
-                                        </UIObject>
                                       </Descendants>
                                     </UIObject>
                                     <UIObject ControlType="Button" Id="ConnectSourceButton" FriendlyName="UI_SourceServerConnectbtn_AutoID" SpecialControlType="None">
@@ -11883,7 +11671,7 @@
                                     <UIObject ControlType="Tree" Id="ExplorerTree" FriendlyName="ExplorerTree" SpecialControlType="None">
                                       <TechnologyName>UIA</TechnologyName>
                                       <WindowTitles>
-                                        <WindowTitle>Warewolf</WindowTitle>
+                                        <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
                                       </WindowTitles>
                                       <AndCondition>
                                         <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
@@ -11914,29 +11702,15 @@
                                               </WindowTitles>
                                               <SearchConfigurations>
                                                 <SearchConfiguration>Expand</SearchConfiguration>
-                                                <SearchConfiguration>Distinct</SearchConfiguration>
                                               </SearchConfigurations>
                                               <AndCondition>
                                                 <PropertyCondition Name="ControlType">TreeItem</PropertyCondition>
                                                 <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                                 <PropertyCondition Name="Name">Infragistics.Controls.Menus.XamDataTreeNodeDataContext</PropertyCondition>
+                                                <PropertyCondition Name="Instance">2</PropertyCondition>
                                               </AndCondition>
                                               <SupportLevel>0</SupportLevel>
-                                              <Descendants>
-                                                <UIObject ControlType="CheckBox" Id="CheckBox" FriendlyName="ResourceNameCheckBox" SpecialControlType="None">
-                                                  <TechnologyName>UIA</TechnologyName>
-                                                  <WindowTitles>
-                                                    <WindowTitle>Warewolf</WindowTitle>
-                                                  </WindowTitles>
-                                                  <AndCondition>
-                                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                                    <PropertyCondition Name="ControlType">CheckBox</PropertyCondition>
-                                                    <PropertyCondition Name="AutomationId">ResourceNameCheckBox</PropertyCondition>
-                                                  </AndCondition>
-                                                  <SupportLevel>0</SupportLevel>
-                                                  <Descendants />
-                                                </UIObject>
-                                              </Descendants>
+                                              <Descendants />
                                             </UIObject>
                                           </Descendants>
                                         </UIObject>
@@ -13831,7 +13605,7 @@
                                                                   <SupportLevel>0</SupportLevel>
                                                                   <Descendants />
                                                                 </UIObject>
-                                                                <UIObject ControlType="ComboBox" Id="ClassNameComboBox" FriendlyName="NamespaceComboBox" SpecialControlType="None">
+                                                                <UIObject ControlType="ComboBox" Id="NamespaceComboBox" FriendlyName="NamespaceComboBox" SpecialControlType="None">
                                                                   <TechnologyName>UIA</TechnologyName>
                                                                   <WindowTitles>
                                                                     <WindowTitle>Warewolf</WindowTitle>
@@ -13861,7 +13635,7 @@
                                                                 <UIObject ControlType="Button" Id="DoneButton" FriendlyName="Done" SpecialControlType="None">
                                                                   <TechnologyName>UIA</TechnologyName>
                                                                   <WindowTitles>
-                                                                    <WindowTitle>Warewolf</WindowTitle>
+                                                                    <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
                                                                   </WindowTitles>
                                                                   <AndCondition>
                                                                     <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
@@ -13874,7 +13648,7 @@
                                                                 <UIObject ControlType="Button" Id="TestButton" FriendlyName="Test" SpecialControlType="None">
                                                                   <TechnologyName>UIA</TechnologyName>
                                                                   <WindowTitles>
-                                                                    <WindowTitle>Warewolf</WindowTitle>
+                                                                    <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
                                                                   </WindowTitles>
                                                                   <AndCondition>
                                                                     <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
@@ -13889,7 +13663,7 @@
                                                             <UIObject ControlType="Button" Id="DoneButton" FriendlyName="Done" SpecialControlType="None">
                                                               <TechnologyName>UIA</TechnologyName>
                                                               <WindowTitles>
-                                                                <WindowTitle>Warewolf</WindowTitle>
+                                                                <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
                                                               </WindowTitles>
                                                               <AndCondition>
                                                                 <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
@@ -13902,7 +13676,7 @@
                                                             <UIObject ControlType="Custom" Id="SmallView" FriendlyName="SmallViewContent" SpecialControlType="None">
                                                               <TechnologyName>UIA</TechnologyName>
                                                               <WindowTitles>
-                                                                <WindowTitle>Warewolf</WindowTitle>
+                                                                <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
                                                               </WindowTitles>
                                                               <AndCondition>
                                                                 <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
@@ -15121,7 +14895,7 @@
                                                             <UIObject ControlType="Custom" Id="SmallView" FriendlyName="SmallViewContent" SpecialControlType="None">
                                                               <TechnologyName>UIA</TechnologyName>
                                                               <WindowTitles>
-                                                                <WindowTitle>Warewolf</WindowTitle>
+                                                                <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
                                                               </WindowTitles>
                                                               <AndCondition>
                                                                 <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
@@ -15134,7 +14908,7 @@
                                                                 <UIObject ControlType="ComboBox" Id="ForEachTypeComboBox" FriendlyName="UI__ForEachType_AutoID" SpecialControlType="None">
                                                                   <TechnologyName>UIA</TechnologyName>
                                                                   <WindowTitles>
-                                                                    <WindowTitle>Warewolf</WindowTitle>
+                                                                    <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
                                                                   </WindowTitles>
                                                                   <AndCondition>
                                                                     <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
@@ -15147,7 +14921,7 @@
                                                                 <UIObject ControlType="ComboBox" Id="FromIntellisenseTextbox" FriendlyName="UI__ForEachFromTextbox_AutoID" SpecialControlType="None">
                                                                   <TechnologyName>UIA</TechnologyName>
                                                                   <WindowTitles>
-                                                                    <WindowTitle>Warewolf</WindowTitle>
+                                                                    <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
                                                                   </WindowTitles>
                                                                   <AndCondition>
                                                                     <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
@@ -15159,7 +14933,7 @@
                                                                     <UIObject ControlType="Edit" Id="Textbox" FriendlyName="Text" SpecialControlType="None">
                                                                       <TechnologyName>UIA</TechnologyName>
                                                                       <WindowTitles>
-                                                                        <WindowTitle>Warewolf</WindowTitle>
+                                                                        <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
                                                                       </WindowTitles>
                                                                       <AndCondition>
                                                                         <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
@@ -15174,7 +14948,7 @@
                                                                 <UIObject ControlType="ComboBox" Id="ToIntellisenseTextbox" FriendlyName="UI__ForEachToTextbox_AutoID" SpecialControlType="None">
                                                                   <TechnologyName>UIA</TechnologyName>
                                                                   <WindowTitles>
-                                                                    <WindowTitle>Warewolf</WindowTitle>
+                                                                    <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
                                                                   </WindowTitles>
                                                                   <AndCondition>
                                                                     <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
@@ -15186,7 +14960,7 @@
                                                                     <UIObject ControlType="Edit" Id="Textbox" FriendlyName="Text" SpecialControlType="None">
                                                                       <TechnologyName>UIA</TechnologyName>
                                                                       <WindowTitles>
-                                                                        <WindowTitle>Warewolf</WindowTitle>
+                                                                        <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
                                                                       </WindowTitles>
                                                                       <AndCondition>
                                                                         <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
@@ -15201,7 +14975,7 @@
                                                                 <UIObject ControlType="Custom" Id="DropActivityHere" FriendlyName="Drop Activity Here" SpecialControlType="None">
                                                                   <TechnologyName>UIA</TechnologyName>
                                                                   <WindowTitles>
-                                                                    <WindowTitle>Warewolf</WindowTitle>
+                                                                    <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
                                                                   </WindowTitles>
                                                                   <AndCondition>
                                                                     <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
@@ -16347,7 +16121,7 @@
                                                         <UIObject ControlType="Custom" Id="WebGet" FriendlyName="DsfWebGetActivity" SpecialControlType="None">
                                                           <TechnologyName>UIA</TechnologyName>
                                                           <WindowTitles>
-                                                            <WindowTitle>Warewolf</WindowTitle>
+                                                            <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
                                                           </WindowTitles>
                                                           <AndCondition>
                                                             <PropertyCondition Name="ControlType">Custom</PropertyCondition>
@@ -16360,7 +16134,7 @@
                                                             <UIObject ControlType="Custom" Id="LargeView" FriendlyName="LargeViewContent" SpecialControlType="None">
                                                               <TechnologyName>UIA</TechnologyName>
                                                               <WindowTitles>
-                                                                <WindowTitle>Warewolf</WindowTitle>
+                                                                <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
                                                               </WindowTitles>
                                                               <AndCondition>
                                                                 <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
@@ -16373,7 +16147,7 @@
                                                                 <UIObject ControlType="Button" Id="GenerateOutputsButton" FriendlyName="Generate Outputs" SpecialControlType="None">
                                                                   <TechnologyName>UIA</TechnologyName>
                                                                   <WindowTitles>
-                                                                    <WindowTitle>Warewolf</WindowTitle>
+                                                                    <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
                                                                   </WindowTitles>
                                                                   <AndCondition>
                                                                     <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
@@ -16386,7 +16160,7 @@
                                                                 <UIObject ControlType="Button" Id="DoneButton" FriendlyName="Done" SpecialControlType="None">
                                                                   <TechnologyName>UIA</TechnologyName>
                                                                   <WindowTitles>
-                                                                    <WindowTitle>Warewolf</WindowTitle>
+                                                                    <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
                                                                   </WindowTitles>
                                                                   <AndCondition>
                                                                     <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
@@ -16399,7 +16173,7 @@
                                                                 <UIObject ControlType="Button" Id="TestButton" FriendlyName="Test" SpecialControlType="None">
                                                                   <TechnologyName>UIA</TechnologyName>
                                                                   <WindowTitles>
-                                                                    <WindowTitle>Warewolf</WindowTitle>
+                                                                    <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
                                                                   </WindowTitles>
                                                                   <AndCondition>
                                                                     <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
@@ -16412,7 +16186,7 @@
                                                                 <UIObject ControlType="ComboBox" Id="SourcesComboBox" FriendlyName="SourcesComboBox" SpecialControlType="None">
                                                                   <TechnologyName>UIA</TechnologyName>
                                                                   <WindowTitles>
-                                                                    <WindowTitle>Warewolf</WindowTitle>
+                                                                    <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
                                                                   </WindowTitles>
                                                                   <AndCondition>
                                                                     <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
@@ -16427,7 +16201,7 @@
                                                             <UIObject ControlType="Button" Id="DoneButton" FriendlyName="Done" SpecialControlType="None">
                                                               <TechnologyName>UIA</TechnologyName>
                                                               <WindowTitles>
-                                                                <WindowTitle>Warewolf</WindowTitle>
+                                                                <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
                                                               </WindowTitles>
                                                               <AndCondition>
                                                                 <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
@@ -16440,7 +16214,7 @@
                                                             <UIObject ControlType="Custom" Id="SmallView" FriendlyName="SmallViewContent" SpecialControlType="None">
                                                               <TechnologyName>UIA</TechnologyName>
                                                               <WindowTitles>
-                                                                <WindowTitle>Warewolf</WindowTitle>
+                                                                <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
                                                               </WindowTitles>
                                                               <AndCondition>
                                                                 <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
@@ -16750,35 +16524,7 @@
                                     <PropertyCondition Name="AutomationId">DatabaseComboxBox</PropertyCondition>
                                   </AndCondition>
                                   <SupportLevel>0</SupportLevel>
-                                  <Descendants>
-                                    <UIObject ControlType="Custom" Id="DatabaseComboxBoxMsAccess" FriendlyName="DatabaseComboxBox" SpecialControlType="None">
-                                      <TechnologyName>UIA</TechnologyName>
-                                      <WindowTitles>
-                                        <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
-                                      </WindowTitles>
-                                      <AndCondition>
-                                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                        <PropertyCondition Name="ControlType">Custom</PropertyCondition>
-                                        <PropertyCondition Name="ClassName">Uia.XamComboEditor</PropertyCondition>
-                                        <PropertyCondition Name="AutomationId">DatabaseComboxBox</PropertyCondition>
-                                      </AndCondition>
-                                      <SupportLevel>0</SupportLevel>
-                                      <Descendants />
-                                    </UIObject>
-                                    <UIObject ControlType="Text" Id="MSAccessDatabaseText" FriendlyName="MS Access Database" SpecialControlType="None">
-                                      <TechnologyName>UIA</TechnologyName>
-                                      <WindowTitles>
-                                        <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
-                                      </WindowTitles>
-                                      <AndCondition>
-                                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                        <PropertyCondition Name="ControlType">Text</PropertyCondition>
-                                        <PropertyCondition Name="Name">MS Access Database</PropertyCondition>
-                                      </AndCondition>
-                                      <SupportLevel>0</SupportLevel>
-                                      <Descendants />
-                                    </UIObject>
-                                  </Descendants>
+                                  <Descendants />
                                 </UIObject>
                                 <UIObject ControlType="Edit" Id="PasswordTextBox" FriendlyName="PasswordTextBox" SpecialControlType="None">
                                   <TechnologyName>UIA</TechnologyName>
@@ -16828,34 +16574,6 @@
                                     <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                     <PropertyCondition Name="ControlType">RadioButton</PropertyCondition>
                                     <PropertyCondition Name="AutomationId">WindowsRadioButton</PropertyCondition>
-                                  </AndCondition>
-                                  <SupportLevel>0</SupportLevel>
-                                  <Descendants />
-                                </UIObject>
-                                <UIObject ControlType="Button" Id="CancelTestButton" FriendlyName="Cancel Test" SpecialControlType="None">
-                                  <TechnologyName>UIA</TechnologyName>
-                                  <WindowTitles>
-                                    <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
-                                  </WindowTitles>
-                                  <AndCondition>
-                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                    <PropertyCondition Name="ControlType">Button</PropertyCondition>
-                                    <PropertyCondition Name="AutomationId">CancelTestButton</PropertyCondition>
-                                  </AndCondition>
-                                  <SupportLevel>0</SupportLevel>
-                                  <Descendants />
-                                </UIObject>
-                                <UIObject ControlType="Image" Id="ConnectionPassedImage" FriendlyName="" SpecialControlType="None">
-                                  <TechnologyName>UIA</TechnologyName>
-                                  <WindowTitles>
-                                    <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
-                                  </WindowTitles>
-                                  <SearchConfigurations>
-                                    <SearchConfiguration>NextTo</SearchConfiguration>
-                                  </SearchConfigurations>
-                                  <AndCondition>
-                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                    <PropertyCondition Name="ControlType">Image</PropertyCondition>
                                   </AndCondition>
                                   <SupportLevel>0</SupportLevel>
                                   <Descendants />
@@ -17280,7 +16998,7 @@
                                             <UIObject ControlType="TreeItem" Id="FileSystemTreeItem" FriendlyName="File System" SpecialControlType="None">
                                               <TechnologyName>UIA</TechnologyName>
                                               <WindowTitles>
-                                                <WindowTitle>Warewolf</WindowTitle>
+                                                <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
                                               </WindowTitles>
                                               <SearchConfigurations>
                                                 <SearchConfiguration>Expand</SearchConfiguration>
@@ -17332,7 +17050,7 @@
                         <UIObject ControlType="TabPage" Id="WebSourceWizardTab" FriendlyName="Dev2.ViewModels.SourceViewModel`1[Dev2.Common.Inte..." SpecialControlType="None">
                           <TechnologyName>UIA</TechnologyName>
                           <WindowTitles>
-                            <WindowTitle>Warewolf</WindowTitle>
+                            <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
                           </WindowTitles>
                           <AndCondition>
                             <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
@@ -17344,7 +17062,7 @@
                             <UIObject ControlType="Custom" Id="WorkSurfaceContext" FriendlyName="Dev2.Studio.ViewModels.WorkSurface.WorkSurfaceCont..." SpecialControlType="None">
                               <TechnologyName>UIA</TechnologyName>
                               <WindowTitles>
-                                <WindowTitle>Warewolf</WindowTitle>
+                                <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
                               </WindowTitles>
                               <AndCondition>
                                 <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
@@ -17357,7 +17075,7 @@
                                 <UIObject ControlType="Edit" Id="AddressTextbox" FriendlyName="ServerTextBox" SpecialControlType="None">
                                   <TechnologyName>UIA</TechnologyName>
                                   <WindowTitles>
-                                    <WindowTitle>Warewolf</WindowTitle>
+                                    <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
                                   </WindowTitles>
                                   <AndCondition>
                                     <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
@@ -17370,7 +17088,7 @@
                                 <UIObject ControlType="Button" Id="TestConnectionButton" FriendlyName="Test Connection" SpecialControlType="None">
                                   <TechnologyName>UIA</TechnologyName>
                                   <WindowTitles>
-                                    <WindowTitle>Warewolf</WindowTitle>
+                                    <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
                                   </WindowTitles>
                                   <AndCondition>
                                     <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
@@ -17385,7 +17103,7 @@
                             <UIObject ControlType="Button" Id="CloseButton" FriendlyName="" SpecialControlType="None">
                               <TechnologyName>UIA</TechnologyName>
                               <WindowTitles>
-                                <WindowTitle>Warewolf</WindowTitle>
+                                <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
                               </WindowTitles>
                               <AndCondition>
                                 <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
@@ -20470,7 +20188,7 @@
                             <UIObject ControlType="Pane" Id="Row1" FriendlyName="Row1" SpecialControlType="None">
                               <TechnologyName>UIA</TechnologyName>
                               <WindowTitles>
-                                <WindowTitle>Warewolf</WindowTitle>
+                                <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
                               </WindowTitles>
                               <AndCondition>
                                 <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
@@ -20483,7 +20201,7 @@
                                 <UIObject ControlType="Cell" Id="Cell" FriendlyName="A Coded UI Test" SpecialControlType="None">
                                   <TechnologyName>UIA</TechnologyName>
                                   <WindowTitles>
-                                    <WindowTitle>Warewolf</WindowTitle>
+                                    <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
                                   </WindowTitles>
                                   <AndCondition>
                                     <PropertyCondition Name="ControlType">Cell</PropertyCondition>
@@ -20496,7 +20214,7 @@
                                     <UIObject ControlType="ComboBox" Id="ComboBox" FriendlyName="UI_Nametxt_AutoID" SpecialControlType="None">
                                       <TechnologyName>UIA</TechnologyName>
                                       <WindowTitles>
-                                        <WindowTitle>Warewolf</WindowTitle>
+                                        <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
                                       </WindowTitles>
                                       <AndCondition>
                                         <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
@@ -20508,7 +20226,7 @@
                                         <UIObject ControlType="Edit" Id="Textbox" FriendlyName="Text" SpecialControlType="None">
                                           <TechnologyName>UIA</TechnologyName>
                                           <WindowTitles>
-                                            <WindowTitle>Warewolf</WindowTitle>
+                                            <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
                                           </WindowTitles>
                                           <AndCondition>
                                             <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
@@ -20708,44 +20426,15 @@
               <SupportLevel>0</SupportLevel>
               <Descendants />
             </UIObject>
-            <UIObject ControlType="Custom" Id="ComboboxListItemAsRemoteConnectionIntegration" FriendlyName="Remote Connection Integration" SpecialControlType="None">
+            <UIObject ControlType="Text" Id="ComboboxListItemAsLocalhostConnected" FriendlyName="localhost (Connected)" SpecialControlType="None">
               <TechnologyName>UIA</TechnologyName>
               <WindowTitles>
                 <WindowTitle>Warewolf</WindowTitle>
               </WindowTitles>
               <AndCondition>
                 <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                <PropertyCondition Name="ControlType">Custom</PropertyCondition>
-                <PropertyCondition Name="ClassName">Uia.ComboEditorItemControl</PropertyCondition>
-                <PropertyCondition Name="Name">Remote Connection Integration</PropertyCondition>
-              </AndCondition>
-              <SupportLevel>0</SupportLevel>
-              <Descendants />
-            </UIObject>
-            <UIObject ControlType="Custom" Id="ComboboxListItemAsLocalhostConnected" FriendlyName="localhost (Connected)" SpecialControlType="None">
-              <TechnologyName>UIA</TechnologyName>
-              <WindowTitles>
-                <WindowTitle>Warewolf</WindowTitle>
-              </WindowTitles>
-              <AndCondition>
-                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                <PropertyCondition Name="ControlType">Custom</PropertyCondition>
-                <PropertyCondition Name="ClassName">Uia.ComboEditorItemControl</PropertyCondition>
+                <PropertyCondition Name="ControlType">Text</PropertyCondition>
                 <PropertyCondition Name="Name">localhost (Connected)</PropertyCondition>
-              </AndCondition>
-              <SupportLevel>0</SupportLevel>
-              <Descendants />
-            </UIObject>
-            <UIObject ControlType="Custom" Id="ComboboxListItemAsRemoteConnectionIntegrationConnected" FriendlyName="Remote Connection Integration (Connected)" SpecialControlType="None">
-              <TechnologyName>UIA</TechnologyName>
-              <WindowTitles>
-                <WindowTitle>Warewolf</WindowTitle>
-              </WindowTitles>
-              <AndCondition>
-                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                <PropertyCondition Name="ControlType">Custom</PropertyCondition>
-                <PropertyCondition Name="ClassName">Uia.ComboEditorItemControl</PropertyCondition>
-                <PropertyCondition Name="Name">Remote Connection Integration (Connected)</PropertyCondition>
               </AndCondition>
               <SupportLevel>0</SupportLevel>
               <Descendants />
@@ -21711,6 +21400,63 @@
             </UIObject>
           </Descendants>
         </TopLevelWindow>
+        <TopLevelWindow ControlType="Window" Id="UIWarewolfDEV2ASHLEYLEWindow" FriendlyName="Warewolf (DEV2\ASHLEY.LEWIS)" SpecialControlType="None" SessionId="461662">
+          <TechnologyName>UIA</TechnologyName>
+          <WindowTitles>
+            <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
+          </WindowTitles>
+          <AndCondition>
+            <PropertyCondition Name="ControlType">Window</PropertyCondition>
+            <PropertyCondition Name="Name">Warewolf (DEV2\ASHLEY.LEWIS)</PropertyCondition>
+            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+            <PropertyCondition Name="ClassName" Operator="Contains">HwndWrapper</PropertyCondition>
+          </AndCondition>
+          <SupportLevel>0</SupportLevel>
+          <Descendants>
+            <UIObject ControlType="Custom" Id="UIDsfForEachActivityCustom" FriendlyName="DsfForEachActivity" SpecialControlType="None">
+              <TechnologyName>UIA</TechnologyName>
+              <WindowTitles>
+                <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
+              </WindowTitles>
+              <AndCondition>
+                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                <PropertyCondition Name="ControlType">Custom</PropertyCondition>
+                <PropertyCondition Name="ClassName">Uia.ForeachDesigner</PropertyCondition>
+                <PropertyCondition Name="AutomationId">For Each(ForeachDesigner)</PropertyCondition>
+              </AndCondition>
+              <SupportLevel>0</SupportLevel>
+              <Descendants />
+            </UIObject>
+            <UIObject ControlType="Custom" Id="UIItemCustom" FriendlyName="" SpecialControlType="None">
+              <TechnologyName>UIA</TechnologyName>
+              <WindowTitles>
+                <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
+              </WindowTitles>
+              <AndCondition>
+                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                <PropertyCondition Name="ControlType">Custom</PropertyCondition>
+                <PropertyCondition Name="ClassName">Uia.DeployView</PropertyCondition>
+              </AndCondition>
+              <SupportLevel>0</SupportLevel>
+              <Descendants>
+                <UIObject ControlType="Custom" Id="UISourceNavigationViewCustom" FriendlyName="SourceNavigationView" SpecialControlType="None">
+                  <TechnologyName>UIA</TechnologyName>
+                  <WindowTitles>
+                    <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
+                  </WindowTitles>
+                  <AndCondition>
+                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                    <PropertyCondition Name="ControlType">Custom</PropertyCondition>
+                    <PropertyCondition Name="ClassName">Uia.ExplorerView</PropertyCondition>
+                    <PropertyCondition Name="AutomationId">SourceNavigationView</PropertyCondition>
+                  </AndCondition>
+                  <SupportLevel>0</SupportLevel>
+                  <Descendants />
+                </UIObject>
+              </Descendants>
+            </UIObject>
+          </Descendants>
+        </TopLevelWindow>
         <TopLevelWindow ControlType="Window" Id="UIWarewolfDEV2SANELEMTWindow" FriendlyName="Warewolf (DEV2\SANELE.MTHEMBU)" SpecialControlType="None" SessionId="32770102">
           <TechnologyName>UIA</TechnologyName>
           <WindowTitles>
@@ -21724,71 +21470,58 @@
           </AndCondition>
           <SupportLevel>0</SupportLevel>
           <Descendants>
-            <UIObject ControlType="Custom" Id="UIUI_WorkflowDesigner_Custom" FriendlyName="UI_WorkflowDesigner_AutoID" SpecialControlType="None">
+            <UIObject ControlType="Custom" Id="UIUI_SplitPane_AutoIDCustom" FriendlyName="UI_SplitPane_AutoID" SpecialControlType="None">
               <TechnologyName>UIA</TechnologyName>
               <WindowTitles>
-                <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
+                <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
               </WindowTitles>
               <AndCondition>
                 <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                 <PropertyCondition Name="ControlType">Custom</PropertyCondition>
-                <PropertyCondition Name="ClassName">Uia.WorkflowDesignerView</PropertyCondition>
-                <PropertyCondition Name="AutomationId">UI_WorkflowDesigner_AutoID</PropertyCondition>
+                <PropertyCondition Name="ClassName">Uia.SplitPane</PropertyCondition>
+                <PropertyCondition Name="AutomationId">UI_SplitPane_AutoID</PropertyCondition>
               </AndCondition>
               <SupportLevel>0</SupportLevel>
               <Descendants>
-                <UIObject ControlType="Text" Id="UIHttprsaklfsanele3142Text" FriendlyName="http://rsaklfsanele:3142/secure/Unassigned/Unsaved..." SpecialControlType="None">
+                <UIObject ControlType="TabList" Id="UIUI_TabManager_AutoIDTabList" FriendlyName="UI_TabManager_AutoID" SpecialControlType="None">
                   <TechnologyName>UIA</TechnologyName>
                   <WindowTitles>
                     <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
                   </WindowTitles>
                   <AndCondition>
                     <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                    <PropertyCondition Name="ControlType">Text</PropertyCondition>
-                    <PropertyCondition Name="Name">http://rsaklfsanele:3142/secure/Unassigned/Unsaved 1.json?&lt;DataList&gt;&lt;/DataList&gt;</PropertyCondition>
+                    <PropertyCondition Name="ControlType">TabList</PropertyCondition>
+                    <PropertyCondition Name="AutomationId">UI_TabManager_AutoID</PropertyCondition>
                   </AndCondition>
                   <SupportLevel>0</SupportLevel>
                   <Descendants>
-                    <UIObject ControlType="Hyperlink" Id="UIHttprsaklfsanele3142Hyperlink" FriendlyName="http://rsaklfsanele:3142/secure/Unassigned/Unsaved..." SpecialControlType="None">
+                    <UIObject ControlType="TabPage" Id="UIDev2ViewModelsSourceTabPage" FriendlyName="Dev2.ViewModels.SourceViewModel`1[Dev2.Common.Inte..." SpecialControlType="None">
                       <TechnologyName>UIA</TechnologyName>
                       <WindowTitles>
                         <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
                       </WindowTitles>
                       <AndCondition>
                         <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                        <PropertyCondition Name="ControlType">Hyperlink</PropertyCondition>
-                        <PropertyCondition Name="Name">http://rsaklfsanele:3142/secure/Unassigned/Unsaved 1.json?&lt;DataList&gt;&lt;/DataList&gt;</PropertyCondition>
+                        <PropertyCondition Name="ControlType">TabPage</PropertyCondition>
+                        <PropertyCondition Name="Name">Dev2.ViewModels.SourceViewModel`1[Dev2.Common.Interfaces.ServerProxyLayer.IDbSource]</PropertyCondition>
                       </AndCondition>
                       <SupportLevel>0</SupportLevel>
-                      <Descendants />
-                    </UIObject>
-                  </Descendants>
-                </UIObject>
-                <UIObject ControlType="Custom" Id="UIUserControl_1Custom" FriendlyName="UserControl_1" SpecialControlType="None">
-                  <TechnologyName>UIA</TechnologyName>
-                  <WindowTitles>
-                    <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
-                  </WindowTitles>
-                  <AndCondition>
-                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                    <PropertyCondition Name="ControlType">Custom</PropertyCondition>
-                    <PropertyCondition Name="ClassName">Uia.DesignerView</PropertyCondition>
-                    <PropertyCondition Name="AutomationId">UserControl_1</PropertyCondition>
-                  </AndCondition>
-                  <SupportLevel>0</SupportLevel>
-                  <Descendants>
-                    <UIObject ControlType="ToggleButton" Id="UIExpandAllToggleButton" FriendlyName="ExpandAll" SpecialControlType="None">
-                      <TechnologyName>UIA</TechnologyName>
-                      <WindowTitles>
-                        <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
-                      </WindowTitles>
-                      <AndCondition>
-                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                        <PropertyCondition Name="ControlType">ToggleButton</PropertyCondition>
-                        <PropertyCondition Name="AutomationId">expandAllButton</PropertyCondition>
-                      </AndCondition>
-                      <SupportLevel>0</SupportLevel>
-                      <Descendants />
+                      <Descendants>
+                        <UIObject ControlType="Custom" Id="UIDev2StudioViewModelsCustom" FriendlyName="Dev2.Studio.ViewModels.WorkSurface.WorkSurfaceCont..." SpecialControlType="None">
+                          <TechnologyName>UIA</TechnologyName>
+                          <WindowTitles>
+                            <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                          </WindowTitles>
+                          <AndCondition>
+                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                            <PropertyCondition Name="ControlType">Custom</PropertyCondition>
+                            <PropertyCondition Name="ClassName">Uia.ContentPane</PropertyCondition>
+                            <PropertyCondition Name="AutomationId">Dev2.Studio.ViewModels.WorkSurface.WorkSurfaceContextViewModel</PropertyCondition>
+                          </AndCondition>
+                          <SupportLevel>0</SupportLevel>
+                          <Descendants />
+                        </UIObject>
+                      </Descendants>
                     </UIObject>
                   </Descendants>
                 </UIObject>
