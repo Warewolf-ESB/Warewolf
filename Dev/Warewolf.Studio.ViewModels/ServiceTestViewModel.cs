@@ -24,7 +24,7 @@ namespace Warewolf.Studio.ViewModels
         private string _testPassingResult;
         private ObservableCollection<IServiceTestModel> _tests;
         private string _displayName;
-        public IPopupController PopupController { get; set; }
+        public IPopupController PopupController { get; }
 
         public ServiceTestViewModel(IContextualResourceModel resourceModel)
         {
