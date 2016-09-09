@@ -10,7 +10,7 @@ namespace Dev2.Studio.Core.Interfaces
         void RunAllTestsCommand(bool isDirty);
         void RunSelectedTestInBrowser();
         void RunSelectedTest();
-        void DuplicateTest();
+        IServiceTestModel DuplicateTest(IServiceTestModel selectedTests);
         void DeleteTest(IServiceTestModel selectedServiceTest);
     }
 }

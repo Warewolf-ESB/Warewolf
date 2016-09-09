@@ -88,7 +88,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //---------------Execute Test ----------------------
             Assert.IsNotNull(vm.DuplicateTestCommand);
             //---------------Test Result -----------------------
-            Assert.IsTrue(vm.DuplicateTestCommand.CanExecute(null));
+            Assert.IsFalse(vm.DuplicateTestCommand.CanExecute(null));
         }
 
 
@@ -466,6 +466,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
+        [Owner("Pieter Terblanche")]
         public void TestUpdateHelpDescriptor()
         {
             //arrange
@@ -514,6 +515,101 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual("My WF - Tests *", testFrameworkViewModel.DisplayName);
         }
 
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void DuplicateCommand_GivenIsDirty_ShouldSetCanExecuteFalse()
+        {
+            //---------------Set up test pack-------------------
+            var testFrameworkViewModel = new ServiceTestViewModel(CreateResourceModelWithSingleScalarOutput());
+            testFrameworkViewModel.CreateTestCommand.Execute(null);
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(testFrameworkViewModel.DuplicateTestCommand);
+            Assert.IsTrue(testFrameworkViewModel.IsDirty);
+            //---------------Execute Test ----------------------
+            var canDuplicate = testFrameworkViewModel.DuplicateTestCommand.CanExecute(null);
+            //---------------Test Result -----------------------
+            Assert.IsFalse(canDuplicate);
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void DuplicateCommand_GivenIsDirtyFalseAndSelectedIsNotNull_ShouldSetCanExecuteTrue()
+        {
+            //---------------Set up test pack-------------------
+            var testFrameworkViewModel = new ServiceTestViewModel(CreateResourceModelWithSingleScalarOutput());
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(testFrameworkViewModel.DuplicateTestCommand);
+            Assert.IsFalse(testFrameworkViewModel.IsDirty);
+            testFrameworkViewModel.SelectedServiceTest = new ServiceTestModel(Guid.NewGuid());
+            //---------------Execute Test ----------------------
+            var canDuplicate = testFrameworkViewModel.DuplicateTestCommand.CanExecute(null);
+            //---------------Test Result -----------------------
+            Assert.IsTrue(canDuplicate);
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void CanSave_GivenIsDirty_ShouldSetCanSaveFalse()
+        {
+            //---------------Set up test pack-------------------
+            var testFrameworkViewModel = new ServiceTestViewModel(CreateResourceModelWithSingleScalarOutput());
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(testFrameworkViewModel.DuplicateTestCommand);
+            Assert.IsFalse(testFrameworkViewModel.IsDirty);
+            //---------------Execute Test ----------------------
+            var canSave = testFrameworkViewModel.CanSave;
+            //---------------Test Result -----------------------
+            Assert.IsFalse(canSave);
+        }
+
+        private List<IServiceTestModel> GetTests([NotNull]IServiceTestViewModel viewModel)
+        {
+            return viewModel.Tests.Where(model => model.GetType() != typeof(DummyServiceTest)).ToList();
+        }
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void DuplicateTestCommand_GivenSelectedTesIsNotNull_ShouldAddNewTestToTestCollection()
+        {
+            //---------------Set up test pack-------------------
+            var testFrameworkViewModel = new ServiceTestViewModel(CreateMockResourceModelWithSingleScalarOutput());
+            testFrameworkViewModel.CreateTestCommand.Execute(null);
+            testFrameworkViewModel.SelectedServiceTest.TestName = "NewTestSaved";
+            testFrameworkViewModel.Save();
+            //---------------Assert Precondition----------------
+            Assert.IsFalse(testFrameworkViewModel.IsDirty);
+            var testCount = GetTests(testFrameworkViewModel).Count;
+            Assert.AreEqual(1, testCount);
+            var selectedServiceTest = testFrameworkViewModel.SelectedServiceTest;
+            Assert.IsNotNull(selectedServiceTest);
+            //---------------Execute Test ----------------------
+            testFrameworkViewModel.DuplicateTestCommand.Execute(null);
+            Assert.IsTrue(testFrameworkViewModel.SelectedServiceTest.TestName.Contains("_dup"));
+            //---------------Test Result -----------------------
+            Assert.AreEqual(2, GetTests(testFrameworkViewModel).Count);
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void DuplicateTestCommand_GivenSelectedTesIsNotNull_ShouldSetSelectedTestToNewlyDuplicatedTest()
+        {
+            //---------------Set up test pack-------------------
+            var testFrameworkViewModel = new ServiceTestViewModel(CreateMockResourceModelWithSingleScalarOutput());
+            testFrameworkViewModel.CreateTestCommand.Execute(null);
+            testFrameworkViewModel.SelectedServiceTest.TestName = "NewTestSaved";
+            testFrameworkViewModel.Save();
+            //---------------Assert Precondition----------------
+            Assert.IsFalse(testFrameworkViewModel.IsDirty);
+            var testCount = GetTests(testFrameworkViewModel).Count;
+            Assert.AreEqual(1, testCount);
+            var selectedServiceTest = testFrameworkViewModel.SelectedServiceTest;
+            Assert.IsNotNull(selectedServiceTest);
+            //---------------Execute Test ----------------------
+            testFrameworkViewModel.DuplicateTestCommand.Execute(null);
+
+            //---------------Test Result -----------------------
+            Assert.IsTrue(testFrameworkViewModel.SelectedServiceTest.TestName.Contains("_dup"));
+        }
+
         private IContextualResourceModel CreateResourceModelWithSingleScalarInput()
         {
             var resourceModel = CreateResourceModel();
@@ -545,6 +641,20 @@ namespace Warewolf.Studio.ViewModels.Tests
             dataListViewModel.ScalarCollection.Add(new ScalarItemModel("msg", enDev2ColumnArgumentDirection.Output));
             dataListViewModel.WriteToResourceModel();
             return moqModel;
+        }
+
+        private IContextualResourceModel CreateMockResourceModelWithSingleScalarOutput()
+        {
+            var moqModel = new Mock<IContextualResourceModel>();
+            moqModel.SetupAllProperties();
+            moqModel.Setup(model => model.DisplayName).Returns("My WF");
+            var resourceModel = moqModel.Object;
+            var dataListViewModel = new DataListViewModel();
+            dataListViewModel.InitializeDataListViewModel(resourceModel);
+            dataListViewModel.ScalarCollection.Add(new ScalarItemModel("msg", enDev2ColumnArgumentDirection.Output));
+            dataListViewModel.WriteToResourceModel();
+            moqModel.Setup(model => model.Environment.ResourceRepository.SaveTests(It.IsAny<Guid>(), It.IsAny<List<IServiceTestModel>>()));
+            return moqModel.Object;
         }
     }
 }

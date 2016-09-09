@@ -25,6 +25,7 @@ namespace Warewolf.Studio.ViewModels
         private string _testPassingResult;
         private ObservableCollection<IServiceTestModel> _tests;
         private string _displayName;
+        private bool _canSave;
 
         public ServiceTestViewModel(IContextualResourceModel resourceModel)
         {
@@ -33,8 +34,6 @@ namespace Warewolf.Studio.ViewModels
             ResourceModel = resourceModel;
             DisplayName = resourceModel.DisplayName + " - Tests";
             ServiceTestCommandHandler = new ServiceTestCommandHandlerModel();
-
-            DuplicateTestCommand = new DelegateCommand(ServiceTestCommandHandler.DuplicateTest, () => CanDuplicateTest);
             RunAllTestsInBrowserCommand = new DelegateCommand(() => ServiceTestCommandHandler.RunAllTestsInBrowser(IsDirty));
             RunAllTestsCommand = new DelegateCommand(() => ServiceTestCommandHandler.RunAllTestsCommand(IsDirty));
             RunSelectedTestInBrowserCommand = new DelegateCommand(ServiceTestCommandHandler.RunSelectedTestInBrowser, () => CanRunSelectedTestInBrowser);
@@ -42,6 +41,11 @@ namespace Warewolf.Studio.ViewModels
             StopTestCommand = new DelegateCommand(ServiceTestCommandHandler.StopTest, () => CanStopTest);
             CreateTestCommand = new DelegateCommand(CreateTests);
             DeleteTestCommand = new DelegateCommand(() => ServiceTestCommandHandler.DeleteTest(SelectedServiceTest), () => CanDeleteTest);
+            DuplicateTestCommand = new DelegateCommand(() =>
+            {
+                var duplicateTest = ServiceTestCommandHandler.DuplicateTest(SelectedServiceTest);
+                AddAndSelectTest(duplicateTest);
+            }, () => CanDuplicateTest);
             CanSave = true;
 
             RunAllTestsUrl = WebServer.GetWorkflowUri(resourceModel, "", UrlType.Tests)?.ToString();
@@ -59,8 +63,13 @@ namespace Warewolf.Studio.ViewModels
             }
 
             var testModel = ServiceTestCommandHandler.CreateTest(ResourceModel);
+            AddAndSelectTest(testModel);
+        }
+
+        private void AddAndSelectTest(IServiceTestModel testModel)
+        {
             var index = Tests.Count - 1;
-            if (index >= 0)
+            if(index >= 0)
             {
                 Tests.Insert(index, testModel);
             }
@@ -75,9 +84,20 @@ namespace Warewolf.Studio.ViewModels
         public bool CanStopTest { get; set; }
         private bool CanRunSelectedTestInBrowser => SelectedServiceTest != null && !SelectedServiceTest.IsDirty;
         private bool CanRunSelectedTest => GetPermissions();
-        public bool CanDuplicateTest => GetPermissions();
+        public bool CanDuplicateTest => GetPermissions() && !IsDirty && SelectedServiceTest != null;
 
-        public bool CanSave { get; set; }
+        public bool CanSave
+        {
+            get
+            {
+                _canSave = IsDirty;
+                return _canSave;
+            }
+            set
+            {
+                //_canSave = value;
+            }
+        }
 
         private bool GetPermissions()
         {
@@ -228,7 +248,7 @@ namespace Warewolf.Studio.ViewModels
             }
             catch (Exception)
             {
-                
+
                 return new ObservableCollection<IServiceTestModel>();
             }
         }
