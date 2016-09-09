@@ -71,19 +71,6 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
-        /// Assert_URL_exist - Use 'Assert_URL_existExpectedValues' to pass parameters into this method.
-        /// </summary>
-        public void Assert_URL_exist()
-        {
-            #region Variable Declarations
-            WpfHyperlink httprsaklfsanele3142Hyperlink = this.MainStudioWindow.Httprsaklfsanele3142Hyperlink;
-            #endregion
-
-            // Verify that the 'Exists' property of 'http://rsaklfsanele:3142/secure/Unassigned/Unsaved...' link equals 'True'
-            Assert.AreEqual(this.Assert_URL_existExpectedValues.Httprsaklfsanele3142HyperlinkExists, httprsaklfsanele3142Hyperlink.Exists, "url does not exist");
-        }
-        
-        /// <summary>
         /// Assert_variable_filter_textbox_exist - Use 'Assert_variable_filter_textbox_existExpectedValues' to pass parameters into this method.
         /// </summary>
         public void Assert_variable_filter_textbox_exist()
@@ -232,16 +219,30 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
-        /// Click_Assign_Tool_url
+        /// Click_Assign_Tool_url - Use 'Click_Assign_Tool_urlParams' to pass parameters into this method.
         /// </summary>
         public void Click_Assign_Tool_url()
         {
             #region Variable Declarations
-            WpfHyperlink httprsaklfsanele3142Hyperlink = this.MainStudioWindow.Httprsaklfsanele3142Hyperlink;
+            WpfHyperlink httprsaklfsanele3142Hyperlink = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.TopScrollViewerPane.Httprsaklfsanele3142Text.Httprsaklfsanele3142Hyperlink;
+            WpfWindow messageBoxWindow = this.MessageBoxWindow;
+            WpfButton oKButton = this.MessageBoxWindow.OKButton;
             #endregion
+
+            // Verify that the 'Exists' property of 'http://rsaklfsanele:3142/secure/Unassigned/Unsaved...' link equals 'True'
+            Assert.AreEqual(this.Click_Assign_Tool_urlParams.Httprsaklfsanele3142HyperlinkExists, httprsaklfsanele3142Hyperlink.Exists, "Url hyperlink does not exist");
 
             // Click 'http://rsaklfsanele:3142/secure/Unassigned/Unsaved...' link
             Mouse.Click(httprsaklfsanele3142Hyperlink, new Point(201, 10));
+
+            // Verify that the 'Exists' property of 'WarewolfMessageBox' window equals 'True'
+            Assert.AreEqual(this.Click_Assign_Tool_urlParams.MessageBoxWindowExists, messageBoxWindow.Exists, "Did you know popup does not exis");
+
+            // Verify that the 'Exists' property of 'OK' button equals 'True'
+            Assert.AreEqual(this.Click_Assign_Tool_urlParams.OKButtonExists, oKButton.Exists, "Ok button does not exist on the DidYouKnow button");
+
+            // Click 'OK' button
+            Mouse.Click(oKButton, new Point(38, 12));
         }
         
         /// <summary>
@@ -5730,18 +5731,6 @@ namespace Warewolf.UITests
             }
         }
         
-        public virtual Assert_URL_existExpectedValues Assert_URL_existExpectedValues
-        {
-            get
-            {
-                if ((this.mAssert_URL_existExpectedValues == null))
-                {
-                    this.mAssert_URL_existExpectedValues = new Assert_URL_existExpectedValues();
-                }
-                return this.mAssert_URL_existExpectedValues;
-            }
-        }
-        
         public virtual Assert_variable_filter_textbox_existExpectedValues Assert_variable_filter_textbox_existExpectedValues
         {
             get
@@ -5811,6 +5800,18 @@ namespace Warewolf.UITests
                     this.mClick_Assign_Tool_Remove_Variable_From_ToolParams = new Click_Assign_Tool_Remove_Variable_From_ToolParams();
                 }
                 return this.mClick_Assign_Tool_Remove_Variable_From_ToolParams;
+            }
+        }
+        
+        public virtual Click_Assign_Tool_urlParams Click_Assign_Tool_urlParams
+        {
+            get
+            {
+                if ((this.mClick_Assign_Tool_urlParams == null))
+                {
+                    this.mClick_Assign_Tool_urlParams = new Click_Assign_Tool_urlParams();
+                }
+                return this.mClick_Assign_Tool_urlParams;
             }
         }
         
@@ -7877,18 +7878,6 @@ namespace Warewolf.UITests
                 return this.mSwitchCaseDialog;
             }
         }
-        
-        public UIWarewolfDEV2SANELEMTWindow UIWarewolfDEV2SANELEMTWindow
-        {
-            get
-            {
-                if ((this.mUIWarewolfDEV2SANELEMTWindow == null))
-                {
-                    this.mUIWarewolfDEV2SANELEMTWindow = new UIWarewolfDEV2SANELEMTWindow();
-                }
-                return this.mUIWarewolfDEV2SANELEMTWindow;
-            }
-        }
         #endregion
         
         #region Fields
@@ -7897,8 +7886,6 @@ namespace Warewolf.UITests
         private Assert_Connection_PassedExpectedValues mAssert_Connection_PassedExpectedValues;
         
         private Assert_Expand_All_Button_ExistExpectedValues mAssert_Expand_All_Button_ExistExpectedValues;
-        
-        private Assert_URL_existExpectedValues mAssert_URL_existExpectedValues;
         
         private Assert_variable_filter_textbox_existExpectedValues mAssert_variable_filter_textbox_existExpectedValues;
         
@@ -7911,6 +7898,8 @@ namespace Warewolf.UITests
         private Click_Assign_Tool_Large_View_Done_Button_With_Row1_Variable_Textbox_As_SomeInvalidVariableNameParams mClick_Assign_Tool_Large_View_Done_Button_With_Row1_Variable_Textbox_As_SomeInvalidVariableNameParams;
         
         private Click_Assign_Tool_Remove_Variable_From_ToolParams mClick_Assign_Tool_Remove_Variable_From_ToolParams;
+        
+        private Click_Assign_Tool_urlParams mClick_Assign_Tool_urlParams;
         
         private Click_Base_Convert_Large_View_Done_ButtonParams mClick_Base_Convert_Large_View_Done_ButtonParams;
         
@@ -8255,8 +8244,6 @@ namespace Warewolf.UITests
         private ServicePickerDialog mServicePickerDialog;
         
         private SwitchCaseDialog mSwitchCaseDialog;
-        
-        private UIWarewolfDEV2SANELEMTWindow mUIWarewolfDEV2SANELEMTWindow;
         #endregion
     }
     
@@ -8302,21 +8289,6 @@ namespace Warewolf.UITests
         /// Verify that the 'Exists' property of 'ExpandAll' toggle button equals 'True'
         /// </summary>
         public bool ExpandAllToggleButtonExists = true;
-        #endregion
-    }
-    
-    /// <summary>
-    /// Parameters to be passed into 'Assert_URL_exist'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Assert_URL_existExpectedValues
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Verify that the 'Exists' property of 'http://rsaklfsanele:3142/secure/Unassigned/Unsaved...' link equals 'True'
-        /// </summary>
-        public bool Httprsaklfsanele3142HyperlinkExists = true;
         #endregion
     }
     
@@ -8467,6 +8439,31 @@ namespace Warewolf.UITests
         /// Verify that the 'Exists' property of 'DeleteButton' button equals 'True'
         /// </summary>
         public bool DeleteButtonExists = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Click_Assign_Tool_url'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Click_Assign_Tool_urlParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'http://rsaklfsanele:3142/secure/Unassigned/Unsaved...' link equals 'True'
+        /// </summary>
+        public bool Httprsaklfsanele3142HyperlinkExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'WarewolfMessageBox' window equals 'True'
+        /// </summary>
+        public bool MessageBoxWindowExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'OK' button equals 'True'
+        /// </summary>
+        public bool OKButtonExists = true;
         #endregion
     }
     
@@ -35835,75 +35832,6 @@ namespace Warewolf.UITests
         
         #region Fields
         private WpfButton mDoneButton;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class UIWarewolfDEV2SANELEMTWindow : WpfWindow
-    {
-        
-        public UIWarewolfDEV2SANELEMTWindow()
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfWindow.PropertyNames.Name] = "Warewolf (DEV2\\SANELE.MTHEMBU)";
-            this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
-            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
-            #endregion
-        }
-        
-        #region Properties
-        public UIUI_WorkflowDesigner_Custom UIUI_WorkflowDesigner_Custom
-        {
-            get
-            {
-                if ((this.mUIUI_WorkflowDesigner_Custom == null))
-                {
-                    this.mUIUI_WorkflowDesigner_Custom = new UIUI_WorkflowDesigner_Custom(this);
-                }
-                return this.mUIUI_WorkflowDesigner_Custom;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private UIUI_WorkflowDesigner_Custom mUIUI_WorkflowDesigner_Custom;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class UIUI_WorkflowDesigner_Custom : WpfCustom
-    {
-        
-        public UIUI_WorkflowDesigner_Custom(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.WorkflowDesignerView";
-            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "UI_WorkflowDesigner_AutoID";
-            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
-            #endregion
-        }
-        
-        #region Properties
-        public WpfText UIHttprsaklfsanele3142Text
-        {
-            get
-            {
-                if ((this.mUIHttprsaklfsanele3142Text == null))
-                {
-                    this.mUIHttprsaklfsanele3142Text = new WpfText(this);
-                    #region Search Criteria
-                    this.mUIHttprsaklfsanele3142Text.SearchProperties[WpfText.PropertyNames.Name] = "http://rsaklfsanele:3142/secure/Unassigned/Unsaved 1.json?<DataList></DataList>";
-                    this.mUIHttprsaklfsanele3142Text.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
-                    #endregion
-                }
-                return this.mUIHttprsaklfsanele3142Text;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfText mUIHttprsaklfsanele3142Text;
         #endregion
     }
 }

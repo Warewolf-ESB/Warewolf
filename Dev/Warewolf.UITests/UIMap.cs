@@ -624,7 +624,7 @@ namespace Warewolf.UITests
             Click_Save_Ribbon_Button_to_Open_Save_Dialog();
             WaitForControlNotVisible(SaveDialogWindow.ExplorerView.ExplorerTree.localhost.Checkbox.Spinner);
             Enter_Service_Name_Into_Save_Dialog(Name);
-            Click_SaveDialog_Save_Button();
+            //Click_SaveDialog_Save_Button();
             Enter_Text_Into_Explorer_Filter(Name);
             Click_Explorer_Refresh_Button();
             WaitForControlNotVisible(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);
