@@ -42,13 +42,16 @@ namespace Warewolf.Studio.ViewModels
             RunSelectedTestCommand = new DelegateCommand(ServiceTestCommandHandler.RunSelectedTest, () => CanRunSelectedTest);
             StopTestCommand = new DelegateCommand(ServiceTestCommandHandler.StopTest, () => CanStopTest);
             CreateTestCommand = new DelegateCommand(CreateTests);
-            DeleteTestCommand = new DelegateCommand(() => ServiceTestCommandHandler.DeleteTest(SelectedServiceTest), () => CanDeleteTest);
+            DeleteTestCommand = new DelegateCommand<IServiceTestModel>(x => ServiceTestCommandHandler.DeleteTest(x), CanDeleteTest);
             CanSave = true;
 
             RunAllTestsUrl = WebServer.GetWorkflowUri(resourceModel, "", UrlType.Tests)?.ToString();
         }
 
-        private bool CanDeleteTest => GetPermissions() && SelectedServiceTest != null && !SelectedServiceTest.Enabled;
+        private bool CanDeleteTest(IServiceTestModel x)
+        {
+          return GetPermissions() && x != null && !x.Enabled;
+        } 
 
         private void CreateTests()
         {
