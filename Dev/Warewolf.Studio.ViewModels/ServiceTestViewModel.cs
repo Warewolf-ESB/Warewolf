@@ -73,8 +73,6 @@ namespace Warewolf.Studio.ViewModels
 
         public IAsyncWorker AsyncWorker { get; set; }
 
-        private bool CanDeleteTest => GetPermissions() && SelectedServiceTest != null && !SelectedServiceTest.Enabled;
-
         private void CreateTests()
         {
             if (IsDirty)
@@ -159,10 +157,8 @@ namespace Warewolf.Studio.ViewModels
         {
             try
             {
-                var serviceTestModels = RealTests().ToList();
-                var duplicateTests = RealTests().GroupBy(x => x.TestName).Where(group => group.Count() > 1).Select(group => group.Key);
-                var serviceTestModels = _tests.Where(model => model.GetType() != typeof(DummyServiceTest) && model.IsDirty).ToList();
-                var duplicateTests = _tests.Where(model => model.GetType() != typeof(DummyServiceTest)).ToList().GroupBy(x => x.TestName).Where(group => group.Count() > 1).Select(group => group.Key);
+                var serviceTestModels = RealTests().Where(a => a.IsDirty).ToList();
+                var duplicateTests = RealTests().ToList().GroupBy(x => x.TestName).Where(group => group.Count() > 1).Select(group => group.Key);
                 if (duplicateTests.Any())
                 {
                     PopupController?.Show(Resources.Languages.Core.ServiceTestDuplicateTestNameMessage, Resources.Languages.Core.ServiceTestDuplicateTestNameHeader, MessageBoxButton.OK, MessageBoxImage.Error, null, false, true, false, false);
@@ -255,7 +251,7 @@ namespace Warewolf.Studio.ViewModels
                 OnPropertyChanged(() => TestPassingResult);
             }
         }
-        private IEnumerable<IServiceTestModel> RealTests() => Tests.Where(model => model.GetType() != typeof(DummyServiceTest)).ToObservableCollection();
+        private IEnumerable<IServiceTestModel> RealTests() => _tests.Where(model => model.GetType() != typeof(DummyServiceTest)).ToObservableCollection();
 
         public ObservableCollection<IServiceTestModel> Tests
         {
