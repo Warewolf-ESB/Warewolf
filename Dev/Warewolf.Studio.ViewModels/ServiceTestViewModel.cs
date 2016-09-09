@@ -69,7 +69,7 @@ namespace Warewolf.Studio.ViewModels
                 Tests.Add(testModel);
             }
             SelectedServiceTest = testModel;
-            SelectedServiceTest.RunSelectedTestUrl = WebServer.GetWorkflowUri(ResourceModel, "", UrlType.Tests) + "/" + SelectedServiceTest.TestName;
+            SetSelectedTestUrl();
         }
 
         public bool CanStopTest { get; set; }
@@ -127,12 +127,18 @@ namespace Warewolf.Studio.ViewModels
                 }
                 ResourceModel.Environment.ResourceRepository.SaveTests(ResourceModel.ID, serviceTestModels);
                 MarkTestsAsDirty(false);
+                SetSelectedTestUrl();
             }
             catch (Exception)
             {
                 // MarkTestsAsDirty(true);
             }
+        }
 
+        private void SetSelectedTestUrl()
+        {
+            SelectedServiceTest.RunSelectedTestUrl = WebServer.GetWorkflowUri(ResourceModel, "", UrlType.Tests) + "/" +
+                                                     SelectedServiceTest.TestName;
         }
 
         private void MarkTestsAsDirty(bool isDirty)
@@ -177,6 +183,10 @@ namespace Warewolf.Studio.ViewModels
             if (e.PropertyName == "Enabled")
             {
                 ViewModelUtils.RaiseCanExecuteChanged(DeleteTestCommand);
+            }
+            if (e.PropertyName == "RunSelectedTestUrl")
+            {
+                ViewModelUtils.RaiseCanExecuteChanged(RunSelectedTestInBrowserCommand);
             }
         }
 
@@ -230,6 +240,7 @@ namespace Warewolf.Studio.ViewModels
                 var loadResourceTests = ResourceModel.Environment.ResourceRepository.LoadResourceTests(ResourceModel.Environment, ResourceModel.ID);
                 var serviceTestModels = loadResourceTests.Select(to => new ServiceTestModel(ResourceModel.ID)
                 {
+                    OldTestName = to.TestName,
                     TestName = to.TestName,
                     UserName = to.UserName,
                     AuthenticationType = to.AuthenticationType,
