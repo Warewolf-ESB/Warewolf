@@ -298,7 +298,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsNotNull(testFrameworkViewModel.Tests);
             var test = testFrameworkViewModel.Tests[0];
             Assert.IsNotNull(test);
-            Assert.AreEqual("Test 0", test.TestName);
+            Assert.AreEqual("Test 1", test.TestName);
         }
 
         [TestMethod]
@@ -514,16 +514,11 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void ServiceTestViewModel_Save_Rename_ShouldRename()
         {
             //------------Setup for test--------------------------
-            var resourceModelMock = CreateResourceModelWithSingleScalarOutputMock();
-            var mockEnvironmentModel = new Mock<IEnvironmentModel>();
-            var mockResourceRepo = new Mock<IResourceRepository>();
-            mockResourceRepo.Setup(repository => repository.SaveTests(It.IsAny<Guid>(), It.IsAny<List<IServiceTestModel>>()));
-            mockEnvironmentModel.Setup(model => model.ResourceRepository).Returns(mockResourceRepo.Object);
-            resourceModelMock.Setup(model => model.Environment).Returns(mockEnvironmentModel.Object);
 
             //------------Execute Test---------------------------
-            var serviceTestViewModel = new ServiceTestViewModel(resourceModelMock.Object, new SynchronousAsyncWorker());
+            var serviceTestViewModel = new ServiceTestViewModel(CreateResourceModel(), new SynchronousAsyncWorker());
             serviceTestViewModel.CreateTestCommand.Execute(null);
+            Assert.IsTrue(serviceTestViewModel.IsDirty);
             Assert.IsTrue(serviceTestViewModel.CanSave);
             serviceTestViewModel.Save();
 
@@ -531,7 +526,6 @@ namespace Warewolf.Studio.ViewModels.Tests
             serviceTestViewModel.Save();
 
             //------------Assert Results-------------------------
-            Assert.IsNotNull(serviceTestViewModel.PopupController);
             Assert.AreEqual("NewName", serviceTestViewModel.SelectedServiceTest.TestName);
             Assert.AreEqual(2, serviceTestViewModel.Tests.Count);
         }
@@ -688,7 +682,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual(AuthenticationType.Public, tests[0].AuthenticationType);
             Assert.IsTrue(tests[0].Enabled);
             Assert.AreEqual("Create a new test.",tests[1].TestName);
-            Assert.AreEqual(tests[0],serviceTestViewModel.SelectedServiceTest);
+            Assert.IsNull(serviceTestViewModel.SelectedServiceTest);
         }
 
         [TestMethod]
