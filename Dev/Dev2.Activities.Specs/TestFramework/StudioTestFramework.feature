@@ -104,30 +104,8 @@ Scenario: Save a New Test
 
 
 
-Scenario: Edit existing test
-	Given the test builder is open with "Workflow 1"
-	And I select "test1"
-	Then Test name is "test1"
-	And test URL is "http://localhost:3142/secure/Examples/Workflow 1.tests/test1"
-	And username is blank
-	And password is blank
-	And Inputs are empty
-	And Outputs are empty
-	And No Error selected
-	And debug output is empty
-	And Tab Header is "Workflow 1 - Tests"
-	And save is disabled
-	When I change the test name to "test2"
-	Then save is enabled
-	And Tab Header is "Worklow 1 - Tests *"
-	When I save
-	Then test URL is "http://localhost:3142/secure/Examples/Workflow 1.tests/test2"
-	And Tab Header is "Workflow 1 - Tests"
-	And save is disabled
-
-
-Scenario: Loading exisiting Tests  |	
-	And the test builder is open with "Workflow 3"
+Scenario: Edit existing test  	
+	Given the test builder is open with "Workflow 3"
 	And Tab Header is "Workflow 3 - Tests"
 	And there are no tests
 	And I click New Test
@@ -147,15 +125,50 @@ Scenario: Loading exisiting Tests  |
 	Then Tab Header is "Workflow 3 - Tests"
 	And I close the test builder
 	When the test builder is open with "Workflow 3"
-	Then there are 2 tests
+	Then there are 3 tests
+	And I select "Test2"
+	And I set Test Values as
+	| TestName | AuthenticationType | Error |
+	| Test2    | Public            | true  |
+	When I save
+	Then Tab Header is "Workflow 3 - Tests"
+	And I close the test builder
+	When the test builder is open with "Workflow 2"
+	Then there are 3 tests
+	And I select "Test2"
+	And Test name is "Test2"
+	And Authentication is Public
 
-
-Scenario: Delete an existing test with correct permissions
+Scenario: Loading exisiting Tests  	
 	Given the test builder is open with "Workflow 3"
 	And Tab Header is "Workflow 3 - Tests"
 	And there are no tests
 	And I click New Test
-		And I set Test Values as
+	And I set Test Values as
+	| TestName | AuthenticationType | Error |
+	| Test1    | Windows            | true  |
+	Then NoErrorExpected is "false"	
+	And save is enabled
+	When I save
+	Then Tab Header is "Workflow 3 - Tests"
+	When I click New Test
+	And I set Test Values as
+	| TestName | AuthenticationType | Error |
+	| Test2    | Windows            | true  |
+	And save is enabled
+	When I save
+	Then Tab Header is "Workflow 3 - Tests"
+	And I close the test builder
+	When the test builder is open with "Workflow 3"
+	Then there are 3 tests
+
+
+Scenario: Delete an Enabled Test
+	Given the test builder is open with "Workflow 3"
+	And Tab Header is "Workflow 3 - Tests"
+	And there are no tests
+	And I click New Test
+	And I set Test Values as
 	| TestName | AuthenticationType | Error |
 	| Test1    | Windows            | true  |
 	Then NoErrorExpected is "false"	
@@ -163,53 +176,16 @@ Scenario: Delete an existing test with correct permissions
 	When I save
 	Then Tab Header is "Workflow 3 - Tests"
 	And there are 1 tests
-	And Delete is enabled
-	And Run is enabled
-	When I delete selected Test
-	Then The Confirmation popup is shown
-	When I click cancel
-	Then there are 1 tests
-	And Delete is enabled
-	And Run is enabled
-	When I delete selected test
-	Then The Confirmation popup is shown
-	When I click Ok
+	When I disable "Test1"
+	Then Delete is disabled for "Test1"
+	When I enable "Test1"
+	Then Delete is enabled for "Test1"
+	When I delete "Test1"
+	When The Confirmation popup is shown I click Ok
 	Then there are no tests
-	And Delete is disabled
-	And run is disabled
-	And add new test is enabled
-
-
-Scenario: Delete test not enabled when test disabled
-	Given the test builder is open with "Workflow 3"
-	And Tab Header is "Workflow 3 - Tests"
-	And there are no tests
-	And I click New Test
-		And I set Test Values as
-	| TestName | AuthenticationType | Error |
-	| Test1    | Windows            | true  |
-	Then NoErrorExpected is "false"	
-	And save is enabled
-	When I save
-	Then Tab Header is "Workflow 3 - Tests"
-	And there are 1 tests
-	When test is disabled 
-	Then Delete is disabled
-	When test is enabled
-	Then Delete is enabled
-	When I delete selected Test
-	Then The Confirmation popup is shown
-	When I click cancel
-	Then there are 1 tests
-	And Delete is enabled
-	And Run is enabled
-	When I delete selected test
-	Then The Confirmation popup is shown
-	When I click Ok
+	And I close the test builder
+	When the test builder is open with "Workflow 3"
 	Then there are no tests
-	And Delete is disabled
-	And run is disabled
-	And add new test is enabled
 
 #Scenario: Duplicate a test
 #	Given the test builder is open with "Workflow 1"
