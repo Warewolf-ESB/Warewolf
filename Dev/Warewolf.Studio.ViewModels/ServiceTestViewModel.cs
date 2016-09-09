@@ -6,7 +6,6 @@ using System.ComponentModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
-using System.Windows.Threading;
 using Dev2;
 using Dev2.Common;
 using Dev2.Common.Common;
@@ -74,7 +73,7 @@ namespace Warewolf.Studio.ViewModels
 
         private bool CanDeleteTest(IServiceTestModel selectedTestModel)
         {
-          return GetPermissions() && x != null && !x.Enabled;
+          return GetPermissions() && selectedTestModel != null && !selectedTestModel.Enabled;
         } 
         public bool IsLoading { get; set; }
 
