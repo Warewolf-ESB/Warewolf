@@ -785,7 +785,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void DeleteCommand_GivenSelectedTestIsDisabled_ShouldSetCanDeleteTrue()
         {
             //---------------Set up test pack-------------------
-            var testFrameworkViewModel = new ServiceTestViewModel(CreateMockResourceModelWithSingleScalarOutput());
+            var testFrameworkViewModel = new ServiceTestViewModel(CreateMockResourceModelWithSingleScalarOutput(), new SynchronousAsyncWorker());
             testFrameworkViewModel.CreateTestCommand.Execute(null);
             testFrameworkViewModel.Save();
             //---------------Assert Precondition----------------
@@ -805,7 +805,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //------------Setup for test--------------------------
             var popupController = new Mock<IPopupController>();
             CustomContainer.Register(popupController.Object);
-            var testFrameworkViewModel = new ServiceTestViewModel(CreateMockResourceModelWithSingleScalarOutput());
+            var testFrameworkViewModel = new ServiceTestViewModel(CreateMockResourceModelWithSingleScalarOutput(), new SynchronousAsyncWorker());
             var mockServiceModel = new Mock<IServiceTestModel>();
             mockServiceModel.Setup(a => a.NameForDisplay).Returns("TestName");
             mockServiceModel.Setup(a => a.Enabled).Returns(false);
@@ -824,7 +824,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //------------Setup for test--------------------------
             var popupController = new Mock<IPopupController>();
             CustomContainer.Register(popupController.Object);
-            var testFrameworkViewModel = new ServiceTestViewModel(CreateMockResourceModelWithSingleScalarOutput());
+            var testFrameworkViewModel = new ServiceTestViewModel(CreateMockResourceModelWithSingleScalarOutput(), new SynchronousAsyncWorker());
             var mockServiceModel = new Mock<IServiceTestModel>();
             mockServiceModel.Setup(a => a.NameForDisplay).Returns("TestName");
             mockServiceModel.Setup(a => a.Enabled).Returns(false);
@@ -849,7 +849,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             const string testname = "TestName";
             mockResourceModel.Setup(model => model.Environment.ResourceRepository.DeleteResourceTest(It.IsAny<Guid>(), It.IsAny<string>())).Returns(new ServiceTestModelTO { TestName = testname });
             mockResourceModel.Setup(model => model.ID).Returns(resourceId);
-            var testFrameworkViewModel = new ServiceTestViewModel(mockResourceModel.Object);
+            var testFrameworkViewModel = new ServiceTestViewModel(mockResourceModel.Object, new SynchronousAsyncWorker());
             var mockServiceModel = new Mock<IServiceTestModel>();
 
             mockServiceModel.Setup(a => a.NameForDisplay).Returns(testname);
@@ -877,7 +877,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             const string testname = "TestName";
             mockResourceModel.Setup(model => model.Environment.ResourceRepository.DeleteResourceTest(It.IsAny<Guid>(), It.IsAny<string>())).Returns(new ServiceTestModelTO { TestName = testname });
             mockResourceModel.Setup(model => model.ID).Returns(resourceId);
-            var testFrameworkViewModel = new ServiceTestViewModel(mockResourceModel.Object);
+            var testFrameworkViewModel = new ServiceTestViewModel(mockResourceModel.Object, new SynchronousAsyncWorker());
             var mockServiceModel = new Mock<IServiceTestModel>();
             bool wasCalled = false;
             testFrameworkViewModel.PropertyChanged += (sender, args) =>
