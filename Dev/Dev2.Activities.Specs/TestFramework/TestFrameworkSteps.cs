@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Windows;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Infrastructure.Events;
 using Dev2.Data.Binary_Objects;
@@ -55,6 +56,10 @@ namespace Dev2.Activities.Specs.TestFramework
             datalistViewModel.WriteToResourceModel();
             ScenarioContext.Add(workflowName,resourceModel);
             ScenarioContext.Add($"{workflowName}dataListViewModel",datalistViewModel);
+            var popupController = new Mock<Common.Interfaces.Studio.Controller.IPopupController>();
+            popupController.Setup(controller => controller.Show(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<MessageBoxButton>(), It.IsAny<MessageBoxImage>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>()));
+            CustomContainer.Register(popupController.Object);
+            ScenarioContext.Add("popupController", popupController);
         }
 
         private static void AddVariables(string variableName, DataListViewModel datalistViewModel, enDev2ColumnArgumentDirection ioDirection)
@@ -432,6 +437,44 @@ namespace Dev2.Activities.Specs.TestFramework
                        new ServiceTestOutput(vname, value)
                     );
             }
+        }
+
+        [Then(@"Delete is enabled")]
+        public void ThenDeleteIsEnabled()
+        {
+            ServiceTestViewModel serviceTest = GetTestFrameworkFromContext();
+            //var canDelete = serviceTest.DeleteTestCommand.CanExecute(null);
+            //Assert.IsTrue(canDelete);
+        }
+
+        [Then(@"Run is enabled")]
+        public void ThenRunIsEnabled()
+        {
+            ServiceTestViewModel serviceTest = GetTestFrameworkFromContext();
+            var canDelete = serviceTest.RunSelectedTestCommand.CanExecute(null);
+            Assert.IsTrue(canDelete);
+        }
+
+        [When(@"I delete selected Test")]
+        public void WhenIDeleteSelectedTest()
+        {
+            ServiceTestViewModel serviceTest = GetTestFrameworkFromContext();
+            //serviceTest.DeleteTestCommand.Execute(null);
+           
+        }
+
+        [Then(@"The Confirmation popup is shown")]
+        public void ThenTheConfirmationPopupIsShown()
+        {
+            var mock = ScenarioContext.Current["popupController"] as Mock<Dev2.Common.Interfaces.Studio.Controller.IPopupController>;
+            // ReSharper disable once PossibleNullReferenceException
+            mock.VerifyAll();
+        }
+
+        [When(@"test is disabled")]
+        public void WhenTestIsDisabled()
+        {
+            ScenarioContext.Current.Pending();
         }
 
 

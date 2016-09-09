@@ -5,7 +5,7 @@ using Dev2.Runtime.ServiceModel.Data;
 
 namespace Dev2.Data
 {
-    public class ServiceTestModelTO
+    public class ServiceTestModelTO : IServiceTestModelTO
     {
         public string TestName { get; set; }
         public string UserName { get; set; }
