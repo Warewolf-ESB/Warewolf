@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
-using System.Windows.Input;
+using System.ComponentModel;
 using Dev2.Runtime.ServiceModel.Data;
 
 namespace Dev2.Common.Interfaces
 {
-    public interface IServiceTestModel
+    public interface IServiceTestModel: INotifyPropertyChanged
     {
         Guid ParentId { get; set; }
         string TestName { get; set; }
@@ -28,7 +28,7 @@ namespace Dev2.Common.Interfaces
         string NameForDisplay { get; }
         bool IsDirty { get; set; }
         bool UserAuthenticationSelected { get; }
-        ICommand DeleteTestCommand { get; set; }
+        
     }
 
     public interface IServiceTestInput

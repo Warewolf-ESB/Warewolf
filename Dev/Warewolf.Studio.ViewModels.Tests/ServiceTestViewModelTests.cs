@@ -369,6 +369,53 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void OnCreation_GivenIsNew_ShouldHaveDeleteTestCommand()
+        {
+            //---------------Set up test pack-------------------
+            var vm = new ServiceTestViewModel(CreateResourceModel());
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(vm);
+            //---------------Execute Test ----------------------
+            vm.CreateTestCommand.Execute(null);
+            Assert.IsNotNull(vm.DeleteTestCommand);
+            //---------------Test Result -----------------------
+            Assert.IsFalse(vm.DeleteTestCommand.CanExecute(null));
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        public void OnCreation_GivenIsDisabled_DeleteTestCommandShouldBeEnabled()
+        {
+            //---------------Set up test pack-------------------
+            var vm = new ServiceTestViewModel(CreateResourceModel());
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(vm);
+            //---------------Execute Test ----------------------
+            vm.CreateTestCommand.Execute(null);
+            Assert.IsNotNull(vm.DeleteTestCommand);
+            //---------------Test Result -----------------------
+            Assert.IsFalse(vm.DeleteTestCommand.CanExecute(null));
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        public void OnCreation_GivenIsEnabled_DeleteTestCommandShouldBeDisabled()
+        {
+            //---------------Set up test pack-------------------
+            var vm = new ServiceTestViewModel(CreateResourceModel());
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(vm);
+            //---------------Execute Test ----------------------
+            vm.CreateTestCommand.Execute(null);
+            vm.SelectedServiceTest.Enabled = true;
+            Assert.IsNotNull(vm.DeleteTestCommand);
+            //---------------Test Result -----------------------
+            Assert.IsFalse(vm.DeleteTestCommand.CanExecute(null));
+        }
+
+
+        [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("ServiceTestViewModel_Save")]
         public void ServiceTestViewModel_Save_WithTests_ShouldCallSaveTestOnResourceModel()

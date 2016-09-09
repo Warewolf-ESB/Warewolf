@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
@@ -40,10 +41,13 @@ namespace Warewolf.Studio.ViewModels
             RunSelectedTestCommand = new DelegateCommand(ServiceTestCommandHandler.RunSelectedTest, () => CanRunSelectedTest);
             StopTestCommand = new DelegateCommand(ServiceTestCommandHandler.StopTest, () => CanStopTest);
             CreateTestCommand = new DelegateCommand(CreateTests);
+            DeleteTestCommand = new DelegateCommand(() => ServiceTestCommandHandler.DeleteTest(SelectedServiceTest), () => CanDeleteTest);
             CanSave = true;
 
             RunAllTestsUrl = WebServer.GetWorkflowUri(resourceModel, "", UrlType.Tests)?.ToString();
         }
+
+        private bool CanDeleteTest => GetPermissions() && SelectedServiceTest != null && !SelectedServiceTest.Enabled;
 
         private void CreateTests()
         {
@@ -145,6 +149,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 if (value == null)
                 {
+                    _selectedServiceTest.PropertyChanged -= ActionsForPropChanges;
                     _selectedServiceTest = null;
                     OnPropertyChanged(() => SelectedServiceTest);
                     return;
@@ -153,9 +158,19 @@ namespace Warewolf.Studio.ViewModels
                 {
                     return;
                 }
+                if (_selectedServiceTest != null)
+                    _selectedServiceTest.PropertyChanged -= ActionsForPropChanges;
                 _selectedServiceTest = value;
-
+                _selectedServiceTest.PropertyChanged += ActionsForPropChanges;
                 OnPropertyChanged(() => SelectedServiceTest);
+            }
+        }
+
+        private void ActionsForPropChanges(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == "Enabled")
+            {
+                ViewModelUtils.RaiseCanExecuteChanged(DeleteTestCommand);
             }
         }
 
@@ -218,6 +233,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
+        public ICommand DeleteTestCommand { get; set; }
         public ICommand DuplicateTestCommand { get; set; }
         public ICommand RunAllTestsInBrowserCommand { get; set; }
         public ICommand RunAllTestsCommand { get; set; }
