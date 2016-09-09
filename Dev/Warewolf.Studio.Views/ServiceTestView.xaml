@@ -147,7 +147,7 @@
                                     <Button Grid.Column="4" 
                                             Grid.Row="0" 
                                             Grid.RowSpan="2" 
-                                            Command="{Binding ElementName=TestsListbox, Path=DeleteTestCommand }" 
+                                            Command="{Binding ElementName=TestsListbox, Path=DataContext.DeleteTestCommand }" 
                                             CommandParameter="{Binding .}" 
                                             IsEnabled="{Binding Enabled, Converter={StaticResource InverseBooleanConverter}}"
                                             Style="{StaticResource ButtonDeleteTestTransparentStyle}" >
