@@ -43,6 +43,7 @@ namespace Warewolf.Studio.ViewModels
         #region Implementation of IServiceTestModel
 
         public Guid ParentId { get; set; }
+        public string OldTestName { get; set; }
         public string TestName { get; set; }
         public string UserName { get; set; }
         public string Password { get; set; }
