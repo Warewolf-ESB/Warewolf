@@ -212,32 +212,40 @@ Scenario: Delete test not enabled when test disabled
 	And run is disabled
 	And add new test is enabled
 
-#Scenario: Duplicate a test
-#	Given the test builder is open with "Workflow 1"
-#	And Tab Header is "Workflow 1 - Tests"
-#	And there are no tests
-#	And I click New Test
-#	Then a new test is added
-#	#And Tab Header is "Workflow 1 - Tests *"
-#	And test name starts with "Test 1"
-#	And inputs are
-#	| Variable Name | Value |
-#	| a             |       |
-#	And outputs as
-#	| Variable Name | Value |
-#	| outputValue   |       |
-#	And save is enabled
-#	When I save
-#	Then Tab Header is "Workflow 1 - Tests"
-#	When I right click "Test 1"
-#	Then Duplicate Test
-#
-#
-#
-#
-#	
-#
-#	
+Scenario: Duplicate a test
+	Given the test builder is open with "Workflow 1"
+	And Tab Header is "Workflow 1 - Tests"
+	And there are no tests
+	And I click New Test
+	Then a new test is added
+	And Tab Header is "Workflow 1 - Tests *"
+	And test name starts with "Test 1"
+	And inputs are
+	| Variable Name | Value |
+	| a             |       |
+	And outputs as
+	| Variable Name | Value |
+	| outputValue   |       |
+	And save is enabled
+	When I save
+	Then Tab Header is "Workflow 1 - Tests"
+	And there are 1 tests
+	When I right click "Test 1"
+	Then Duplicate Test is visible
+	When I click duplicate 
+	Then there are 2 tests
+	And the duplicated tests is "Test 1_dup"
+	When I right click "Test 1"
+	Then Duplicate Test in not Visible
+
+	 
+
+
+
+
+	
+
+	
 
 
 
