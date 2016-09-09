@@ -1,14 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Windows.Input;
 using Dev2.Common.Interfaces;
 using Dev2.Data;
 using Dev2.Data.Binary_Objects;
 using Dev2.Data.Util;
 using Dev2.Runtime.ServiceModel.Data;
-using Dev2.Studio.Core.Interfaces;
-using Microsoft.Practices.Prism.Commands;
 using Microsoft.Practices.Prism.Mvvm;
 // ReSharper disable ParameterTypeCanBeEnumerable.Local
 

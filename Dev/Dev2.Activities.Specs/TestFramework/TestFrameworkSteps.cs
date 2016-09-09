@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Linq;
 using System.Windows;
-using Dev2.Common;
-using Dev2.Common.Interfaces.Infrastructure.Events;
 using Dev2.Data.Binary_Objects;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Data.Util;
-using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Core;
 using Dev2.Studio.Core.Models;
 using Dev2.Studio.Core.Models.DataList;
 using Dev2.Studio.ViewModels.DataList;
@@ -33,16 +31,15 @@ namespace Dev2.Activities.Specs.TestFramework
         [Given(@"I have ""(.*)"" with inputs as")]
         public void GivenIHaveWithInputsAs(string workflowName, Table inputVariables)
         {
-            var mockCon = new Mock<IEnvironmentConnection>();
-            mockCon.Setup(connection => connection.IsConnected).Returns(true);
-            mockCon.Setup(connection => connection.ServerEvents).Returns(new Mock<IEventPublisher>().Object);
-            IEnvironmentModel model = new EnvironmentModel(GlobalConstants.ServerWorkspaceID, mockCon.Object);
-
-            var resourceModel = new ResourceModel(model)
+            var environmentModel = EnvironmentRepository.Instance.Source;
+            environmentModel.Connect();
+            var resourceModel = new ResourceModel(environmentModel)
             {
                 ResourceName = workflowName,
                 DisplayName = workflowName,
-                DataList = ""
+                DataList = "",
+                ID = Guid.NewGuid()
+                
             };
 
             var datalistViewModel = new DataListViewModel();
