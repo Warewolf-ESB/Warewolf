@@ -20,7 +20,6 @@ namespace Warewolf.UITests.Tools
             Uimap.Change_Selected_Database_ToODBC_DataBase();
 
             Uimap.Click_DB_Source_Wizard_Test_Connection_Button();
-
         }
 
         #region Additional test attributes
