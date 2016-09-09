@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Windows;
 using Dev2;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Help;
@@ -231,6 +232,20 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(vm.Tests.All(model => !model.IsDirty));
         }
 
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("TestFrameworkViewModel_SelectedServiceTest")]
+        public void TestFrameworkViewModel_SelectedServiceTest_CheckIsNull()
+        {
+            //------------Setup for test--------------------------
+            var testFrameworkViewModel = new ServiceTestViewModel(CreateResourceModel());
+            //------------Assert Preconditions-------------------
+            //------------Execute Test---------------------------
+            testFrameworkViewModel.CreateTestCommand.Execute(null);
+            testFrameworkViewModel.SelectedServiceTest = null;
+            //------------Assert Results-------------------------
+            Assert.IsNull(testFrameworkViewModel.SelectedServiceTest);
+        }
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
@@ -433,6 +448,36 @@ namespace Warewolf.Studio.ViewModels.Tests
             serviceTestViewModel.Save();
             //------------Assert Results-------------------------
             mockResourceRepo.Verify(repository => repository.SaveTests(It.IsAny<Guid>(), It.IsAny<List<IServiceTestModel>>()), Times.Once);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("ServiceTestViewModel_Save")]
+        public void ServiceTestViewModel_Save_DuplicateName_ShouldShowPopupError()
+        {
+            //------------Setup for test--------------------------
+            var resourceModelMock = CreateResourceModelWithSingleScalarOutputMock();
+            var mockEnvironmentModel = new Mock<IEnvironmentModel>();
+            var mockResourceRepo = new Mock<IResourceRepository>();
+            mockResourceRepo.Setup(repository => repository.SaveTests(It.IsAny<Guid>(), It.IsAny<List<IServiceTestModel>>()));
+            mockEnvironmentModel.Setup(model => model.ResourceRepository).Returns(mockResourceRepo.Object);
+            resourceModelMock.Setup(model => model.Environment).Returns(mockEnvironmentModel.Object);
+
+            var popupController = new Mock<Dev2.Common.Interfaces.Studio.Controller.IPopupController>();
+            CustomContainer.Register(popupController.Object);
+
+            var serviceTestViewModel = new ServiceTestViewModel(resourceModelMock.Object);
+            serviceTestViewModel.CreateTestCommand.Execute(null);
+
+            var serviceTestViewModel1 = new ServiceTestViewModel(resourceModelMock.Object);
+            serviceTestViewModel1.CreateTestCommand.Execute(null);
+            //------------Execute Test---------------------------
+
+            serviceTestViewModel.Save();
+            serviceTestViewModel1.Save();
+
+            //------------Assert Results-------------------------
+            popupController.Verify(controller => controller.Show(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<MessageBoxButton>(), MessageBoxImage.Error, null, false, true, false, false), Times.Once);
         }
 
         [TestMethod]

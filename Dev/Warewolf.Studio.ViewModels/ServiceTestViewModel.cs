@@ -9,6 +9,7 @@ using System.Windows.Input;
 using Dev2;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
+using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Communication;
 using Dev2.Interfaces;
 using Dev2.Studio.Core.Interfaces;
@@ -25,6 +26,7 @@ namespace Warewolf.Studio.ViewModels
         private string _testPassingResult;
         private ObservableCollection<IServiceTestModel> _tests;
         private string _displayName;
+        public IPopupController PopupController { get; set; }
 
         public ServiceTestViewModel(IContextualResourceModel resourceModel)
         {
@@ -33,6 +35,7 @@ namespace Warewolf.Studio.ViewModels
             ResourceModel = resourceModel;
             DisplayName = resourceModel.DisplayName + " - Tests";
             ServiceTestCommandHandler = new ServiceTestCommandHandlerModel();
+            PopupController = CustomContainer.Get<IPopupController>();
 
             DuplicateTestCommand = new DelegateCommand(ServiceTestCommandHandler.DuplicateTest, () => CanDuplicateTest);
             RunAllTestsInBrowserCommand = new DelegateCommand(() => ServiceTestCommandHandler.RunAllTestsInBrowser(IsDirty));
@@ -53,8 +56,7 @@ namespace Warewolf.Studio.ViewModels
         {
             if (IsDirty)
             {
-                var popupController = CustomContainer.Get<Dev2.Common.Interfaces.Studio.Controller.IPopupController>();
-                popupController?.Show(Resources.Languages.Core.ServiceTestSaveEditedTestsMessage, Resources.Languages.Core.ServiceTestSaveEditedTestsHeader, MessageBoxButton.OK, MessageBoxImage.Error, null, false, true, false, false);
+                PopupController?.Show(Resources.Languages.Core.ServiceTestSaveEditedTestsMessage, Resources.Languages.Core.ServiceTestSaveEditedTestsHeader, MessageBoxButton.OK, MessageBoxImage.Error, null, false, true, false, false);
                 return;
             }
 
@@ -119,6 +121,12 @@ namespace Warewolf.Studio.ViewModels
             try
             {
                 var serviceTestModels = Tests.Where(model => model.GetType() != typeof(DummyServiceTest)).ToList();
+                var duplicateTests = serviceTestModels.GroupBy(x => x.TestName).Where(group => group.Count() > 1).Select(group => group.Key);
+                if (duplicateTests.Any())
+                {
+                    PopupController?.Show(Resources.Languages.Core.ServiceTestDuplicateTestNameMessage, Resources.Languages.Core.ServiceTestDuplicateTestNameHeader, MessageBoxButton.OK, MessageBoxImage.Error, null, false, true, false, false);
+                    return;
+                }
                 ResourceModel.Environment.ResourceRepository.SaveTests(ResourceModel.ID, serviceTestModels);
                 MarkTestsAsDirty(false);
             }

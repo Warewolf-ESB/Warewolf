@@ -6890,6 +6890,24 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Duplicate name error.
+        /// </summary>
+        public static string ServiceTestDuplicateTestNameHeader {
+            get {
+                return ResourceManager.GetString("ServiceTestDuplicateTestNameHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The name already exists. Please choose a different name..
+        /// </summary>
+        public static string ServiceTestDuplicateTestNameMessage {
+            get {
+                return ResourceManager.GetString("ServiceTestDuplicateTestNameMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Selecting this option will add the test to the test to the Run All command. 
         ///If this option is not selected, the test will not run part of the Run All list of tests..
         /// </summary>
