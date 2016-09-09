@@ -75,6 +75,8 @@ namespace Warewolf.Studio.ViewModels
             {
                 Tests.Add(testModel);
             }
+            SelectedServiceTest = testModel;
+            SetSelectedTestUrl();
         }
 
         public bool CanStopTest { get; set; }
@@ -132,12 +134,18 @@ namespace Warewolf.Studio.ViewModels
                 }
                 ResourceModel.Environment.ResourceRepository.SaveTests(ResourceModel.ID, serviceTestModels);
                 MarkTestsAsDirty(false);
+                SetSelectedTestUrl();
             }
             catch (Exception)
             {
                 // MarkTestsAsDirty(true);
             }
+        }
 
+        private void SetSelectedTestUrl()
+        {
+            SelectedServiceTest.RunSelectedTestUrl = WebServer.GetWorkflowUri(ResourceModel, "", UrlType.Tests) + "/" +
+                                                     SelectedServiceTest.TestName;
         }
 
         private void MarkTestsAsDirty(bool isDirty)
@@ -182,6 +190,10 @@ namespace Warewolf.Studio.ViewModels
             if (e.PropertyName == "Enabled")
             {
                 ViewModelUtils.RaiseCanExecuteChanged(DeleteTestCommand);
+            }
+            if (e.PropertyName == "RunSelectedTestUrl")
+            {
+                ViewModelUtils.RaiseCanExecuteChanged(RunSelectedTestInBrowserCommand);
             }
         }
 

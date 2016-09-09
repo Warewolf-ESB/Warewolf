@@ -8,6 +8,7 @@ namespace Dev2.Common.Interfaces
     public interface IServiceTestModel: INotifyPropertyChanged
     {
         Guid ParentId { get; set; }
+        string OldTestName { get; set; }
         string TestName { get; set; }
         string UserName { get; set; }
         string Password { get; set; }
