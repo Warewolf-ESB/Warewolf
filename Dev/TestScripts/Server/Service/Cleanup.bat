@@ -23,8 +23,39 @@ set /a LoopCounter=0
 :RetryClean
 IF NOT EXIST "%PROGRAMDATA%\Warewolf\Resources" IF NOT EXIST "%PROGRAMDATA%\Warewolf\Workspaces" IF NOT EXIST "%PROGRAMDATA%\Warewolf\Server Settings" GOTO StopRetrying
 
+:InterrogateService
+sc interrogate "Warewolf Server"
+if %ERRORLEVEL% EQU 1060 GOTO NotInstalled
+if %ERRORLEVEL% EQU 1061 GOTO NotReady
+if %ERRORLEVEL% EQU 1062 GOTO NotStarted
+if %ERRORLEVEL% EQU 0 GOTO Running
+
+:NotInstalled
+GOTO StopProcess
+
+:NotStarted
+GOTO StopProcess
+
+:Running
+GOTO StopService
+
+:NotReady
+set /a LoopCounter=0
+:WaitForServiceReadyLoopBody
+IF NOT %ERRORLEVEL% EQU 1061 GOTO Running
+set /a LoopCounter=LoopCounter+1
+IF %LoopCounter% EQU 60 exit 1
+rem wait for 10 seconds before trying again
+@echo %ComputerName% is attempting number %LoopCounter% out of 60: Waiting 10 more seconds for server service to be ready...
+ping -n 10 -w 1000 192.0.2.2 > nul
+IF EXIST %windir%\nircmd.exe (nircmd elevate taskkill /f /im "Warewolf Server.exe" /fi "STATUS eq RUNNING") else (taskkill /f /im "Warewolf Server.exe" /fi "STATUS eq RUNNING")
+sc interrogate "Warewolf Server"
+goto WaitForServiceReadyLoopBody
+
+:StopService
 REM Stop Server Service:
 IF EXIST %windir%\nircmd.exe (nircmd elevate sc stop "Warewolf Server") else (sc stop "Warewolf Server")
+:StopProcess
 IF EXIST %windir%\nircmd.exe (nircmd elevate taskkill /f /im "Warewolf Server.exe" /fi "STATUS eq RUNNING") else (taskkill /f /im "Warewolf Server.exe" /fi "STATUS eq RUNNING")
 IF EXIST %windir%\nircmd.exe (nircmd elevate taskkill /f /im "Warewolf Server.vshost.exe" /fi "STATUS eq RUNNING") else (taskkill /f /im "Warewolf Server.vshost.exe" /fi "STATUS eq RUNNING")
 IF EXIST %windir%\nircmd.exe (nircmd elevate taskkill /f /im WarewolfCOMIPC.exe /fi "STATUS eq RUNNING") else (taskkill /f /im WarewolfCOMIPC.exe /fi "STATUS eq RUNNING")
