@@ -384,6 +384,13 @@ namespace Dev2.Activities.Specs.TestFramework
             Assert.AreEqual(testName, serviceTest.SelectedServiceTest.TestName);
         }
 
+        [Then(@"Name for display is ""(.*)""")]
+        public void ThenNameForDisplayIs(string nameForDisplay)
+        {
+            ServiceTestViewModel serviceTest = GetTestFrameworkFromContext();
+            Assert.AreEqual(nameForDisplay, serviceTest.SelectedServiceTest.NameForDisplay);
+        }
+
         [Given(@"I select ""(.*)""")]
         [When(@"I select ""(.*)""")]
         [Then(@"I select ""(.*)""")]

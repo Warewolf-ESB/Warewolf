@@ -20,6 +20,7 @@ namespace Dev2.Common.Interfaces
         bool TestInvalid { get; set; }
         bool TestPending { get; set; }
         bool Enabled { get; set; }
+        bool IsDirty { get; set; }
         AuthenticationType AuthenticationType { get; set; }
     }
 }
