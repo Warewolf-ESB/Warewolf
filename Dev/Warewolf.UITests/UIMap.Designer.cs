@@ -58,6 +58,32 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
+        /// Assert_URL_exist - Use 'Assert_URL_existExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void Assert_URL_exist()
+        {
+            #region Variable Declarations
+            WpfHyperlink uIHttprsaklfsanele3142Hyperlink = this.UIWarewolfDEV2SANELEMTWindow.UIUI_WorkflowDesigner_Custom.UIHttprsaklfsanele3142Text.UIHttprsaklfsanele3142Hyperlink;
+            #endregion
+
+            // Verify that the 'Exists' property of 'http://rsaklfsanele:3142/secure/Unassigned/Unsaved...' link equals 'True'
+            Assert.AreEqual(this.Assert_URL_existExpectedValues.UIHttprsaklfsanele3142HyperlinkExists, uIHttprsaklfsanele3142Hyperlink.Exists, "url does not exist");
+        }
+        
+        /// <summary>
+        /// Click_Assign_Tool_ExpandAll - Use 'Click_Assign_Tool_ExpandAllParams' to pass parameters into this method.
+        /// </summary>
+        public void Click_Assign_Tool_ExpandAll()
+        {
+            #region Variable Declarations
+            WpfToggleButton uIExpandAllToggleButton = this.UIWarewolfDEV2SANELEMTWindow.UIUI_WorkflowDesigner_Custom.UIUserControl_1Custom.UIExpandAllToggleButton;
+            #endregion
+
+            // Set to 'Pressed' state 'ExpandAll' toggle button
+            uIExpandAllToggleButton.Pressed = this.Click_Assign_Tool_ExpandAllParams.UIExpandAllToggleButtonPressed;
+        }
+        
+        /// <summary>
         /// Click_Assign_Tool_Large_View_Done_Button - Use 'Click_Assign_Tool_Large_View_Done_ButtonParams' to pass parameters into this method.
         /// </summary>
         public void Click_Assign_Tool_Large_View_Done_Button()
@@ -102,6 +128,19 @@ namespace Warewolf.UITests
 
             // Verify that the 'Text' property of 'UI_NameTextBox_AutoID' text box equals ''
             Assert.AreEqual(this.Click_Assign_Tool_Large_View_Done_Button_With_Row1_Variable_Textbox_As_SomeInvalidVariableNameParams.TextBoxText, textBox.Text, "Variable list scalar row 1 textbox text is not blank with invalid variable.");
+        }
+        
+        /// <summary>
+        /// Click_Assign_Tool_url
+        /// </summary>
+        public void Click_Assign_Tool_url()
+        {
+            #region Variable Declarations
+            WpfHyperlink uIHttprsaklfsanele3142Hyperlink = this.UIWarewolfDEV2SANELEMTWindow.UIUI_WorkflowDesigner_Custom.UIHttprsaklfsanele3142Text.UIHttprsaklfsanele3142Hyperlink;
+            #endregion
+
+            // Click 'http://rsaklfsanele:3142/secure/Unassigned/Unsaved...' link
+            Mouse.Click(uIHttprsaklfsanele3142Hyperlink, new Point(201, 10));
         }
         
         /// <summary>
@@ -5420,7 +5459,7 @@ namespace Warewolf.UITests
             // Click 'SystemRandom' list item
             Mouse.Click(systemRandomListItem, new Point(137, 7));
 
-            // Verify that the 'SelectedItem' property of 'NamespaceComboBox' combo box equals 'System.Random'
+            // Verify that the 'SelectedItem' property of 'NamespaceComboBox' combo box equals '{"AssemblyLocation":"C:\\Windows\\Microsoft.NET\\Framework64\\v4.0.30319\\mscorlib.dll","AssemblyName":"mscorlib.dll","FullName":"System.Random","MethodName":null}'
             Assert.AreEqual(this.Select_SystemRandom_From_DotNet_DLL_Large_View_Namespace_ComboboxExpectedValues.ClassNameComboBoxSelectedItem, classNameComboBox.SelectedItem, "System.Random is not selected in DotNet DLL tool large view namespace combobox.");
         }
         
@@ -5533,45 +5572,6 @@ namespace Warewolf.UITests
                     "d web address.");
         }
         
-        /// <summary>
-        /// Assert_URL_exist - Use 'Assert_URL_existExpectedValues' to pass parameters into this method.
-        /// </summary>
-        public void Assert_URL_exist()
-        {
-            #region Variable Declarations
-            WpfHyperlink uIHttprsaklfsanele3142Hyperlink = this.UIWarewolfDEV2SANELEMTWindow.UIUI_WorkflowDesigner_Custom.UIHttprsaklfsanele3142Text.UIHttprsaklfsanele3142Hyperlink;
-            #endregion
-
-            // Verify that the 'Exists' property of 'http://rsaklfsanele:3142/secure/Unassigned/Unsaved...' link equals 'True'
-            Assert.AreEqual(this.Assert_URL_existExpectedValues.UIHttprsaklfsanele3142HyperlinkExists, uIHttprsaklfsanele3142Hyperlink.Exists, "url does not exist");
-        }
-        
-        /// <summary>
-        /// Click_Assign_Tool_url
-        /// </summary>
-        public void Click_Assign_Tool_url()
-        {
-            #region Variable Declarations
-            WpfHyperlink uIHttprsaklfsanele3142Hyperlink = this.UIWarewolfDEV2SANELEMTWindow.UIUI_WorkflowDesigner_Custom.UIHttprsaklfsanele3142Text.UIHttprsaklfsanele3142Hyperlink;
-            #endregion
-
-            // Click 'http://rsaklfsanele:3142/secure/Unassigned/Unsaved...' link
-            Mouse.Click(uIHttprsaklfsanele3142Hyperlink, new Point(201, 10));
-        }
-        
-        /// <summary>
-        /// Click_Assign_Tool_ExpandAll - Use 'Click_Assign_Tool_ExpandAllParams' to pass parameters into this method.
-        /// </summary>
-        public void Click_Assign_Tool_ExpandAll()
-        {
-            #region Variable Declarations
-            WpfToggleButton uIExpandAllToggleButton = this.UIWarewolfDEV2SANELEMTWindow.UIUI_WorkflowDesigner_Custom.UIUserControl_1Custom.UIExpandAllToggleButton;
-            #endregion
-
-            // Set to 'Pressed' state 'ExpandAll' toggle button
-            uIExpandAllToggleButton.Pressed = this.Click_Assign_Tool_ExpandAllParams.UIExpandAllToggleButtonPressed;
-        }
-        
         #region Properties
         public virtual Assert_CancelConnectionButton_ExistsExpectedValues Assert_CancelConnectionButton_ExistsExpectedValues
         {
@@ -5594,6 +5594,30 @@ namespace Warewolf.UITests
                     this.mAssert_Connection_PassedExpectedValues = new Assert_Connection_PassedExpectedValues();
                 }
                 return this.mAssert_Connection_PassedExpectedValues;
+            }
+        }
+        
+        public virtual Assert_URL_existExpectedValues Assert_URL_existExpectedValues
+        {
+            get
+            {
+                if ((this.mAssert_URL_existExpectedValues == null))
+                {
+                    this.mAssert_URL_existExpectedValues = new Assert_URL_existExpectedValues();
+                }
+                return this.mAssert_URL_existExpectedValues;
+            }
+        }
+        
+        public virtual Click_Assign_Tool_ExpandAllParams Click_Assign_Tool_ExpandAllParams
+        {
+            get
+            {
+                if ((this.mClick_Assign_Tool_ExpandAllParams == null))
+                {
+                    this.mClick_Assign_Tool_ExpandAllParams = new Click_Assign_Tool_ExpandAllParams();
+                }
+                return this.mClick_Assign_Tool_ExpandAllParams;
             }
         }
         
@@ -7577,30 +7601,6 @@ namespace Warewolf.UITests
             }
         }
         
-        public virtual Assert_URL_existExpectedValues Assert_URL_existExpectedValues
-        {
-            get
-            {
-                if ((this.mAssert_URL_existExpectedValues == null))
-                {
-                    this.mAssert_URL_existExpectedValues = new Assert_URL_existExpectedValues();
-                }
-                return this.mAssert_URL_existExpectedValues;
-            }
-        }
-        
-        public virtual Click_Assign_Tool_ExpandAllParams Click_Assign_Tool_ExpandAllParams
-        {
-            get
-            {
-                if ((this.mClick_Assign_Tool_ExpandAllParams == null))
-                {
-                    this.mClick_Assign_Tool_ExpandAllParams = new Click_Assign_Tool_ExpandAllParams();
-                }
-                return this.mClick_Assign_Tool_ExpandAllParams;
-            }
-        }
-        
         public MainStudioWindow MainStudioWindow
         {
             get
@@ -7714,6 +7714,10 @@ namespace Warewolf.UITests
         private Assert_CancelConnectionButton_ExistsExpectedValues mAssert_CancelConnectionButton_ExistsExpectedValues;
         
         private Assert_Connection_PassedExpectedValues mAssert_Connection_PassedExpectedValues;
+        
+        private Assert_URL_existExpectedValues mAssert_URL_existExpectedValues;
+        
+        private Click_Assign_Tool_ExpandAllParams mClick_Assign_Tool_ExpandAllParams;
         
         private Click_Assign_Tool_Large_View_Done_ButtonParams mClick_Assign_Tool_Large_View_Done_ButtonParams;
         
@@ -8045,10 +8049,6 @@ namespace Warewolf.UITests
         
         private Type_TestSite_into_Web_Source_Wizard_Address_TextboxParams mType_TestSite_into_Web_Source_Wizard_Address_TextboxParams;
         
-        private Assert_URL_existExpectedValues mAssert_URL_existExpectedValues;
-        
-        private Click_Assign_Tool_ExpandAllParams mClick_Assign_Tool_ExpandAllParams;
-        
         private MainStudioWindow mMainStudioWindow;
         
         private MessageBoxWindow mMessageBoxWindow;
@@ -8096,6 +8096,36 @@ namespace Warewolf.UITests
         /// Verify that the 'Exists' property of first image next to 'Dev2.Studio.ViewModels.WorkSurface.WorkSurfaceCont...' custom control equals 'True'
         /// </summary>
         public bool ConnectionPassedImageExists = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Assert_URL_exist'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Assert_URL_existExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'http://rsaklfsanele:3142/secure/Unassigned/Unsaved...' link equals 'True'
+        /// </summary>
+        public bool UIHttprsaklfsanele3142HyperlinkExists = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Click_Assign_Tool_ExpandAll'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Click_Assign_Tool_ExpandAllParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Set to 'Pressed' state 'ExpandAll' toggle button
+        /// </summary>
+        public bool UIExpandAllToggleButtonPressed = true;
         #endregion
     }
     
@@ -11336,9 +11366,11 @@ namespace Warewolf.UITests
         
         #region Fields
         /// <summary>
-        /// Verify that the 'SelectedItem' property of 'NamespaceComboBox' combo box equals 'System.Random'
+        /// Verify that the 'SelectedItem' property of 'NamespaceComboBox' combo box equals '{"AssemblyLocation":"C:\\Windows\\Microsoft.NET\\Framework64\\v4.0.30319\\mscorlib.dll","AssemblyName":"mscorlib.dll","FullName":"System.Random","MethodName":null}'
         /// </summary>
-        public string ClassNameComboBoxSelectedItem = "System.Random";
+        public string ClassNameComboBoxSelectedItem = "{\"AssemblyLocation\":\"C:\\\\Windows\\\\Microsoft.NET\\\\Framework64\\\\v4.0.30319\\\\mscorli" +
+            "b.dll\",\"AssemblyName\":\"mscorlib.dll\",\"FullName\":\"System.Random\",\"MethodName\":nul" +
+            "l}";
         #endregion
     }
     
@@ -11454,36 +11486,6 @@ namespace Warewolf.UITests
         /// Verify that the 'Enabled' property of 'Test Connection' button equals 'True'
         /// </summary>
         public bool TestConnectionButtonEnabled = true;
-        #endregion
-    }
-    
-    /// <summary>
-    /// Parameters to be passed into 'Assert_URL_exist'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Assert_URL_existExpectedValues
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Verify that the 'Exists' property of 'http://rsaklfsanele:3142/secure/Unassigned/Unsaved...' link equals 'True'
-        /// </summary>
-        public bool UIHttprsaklfsanele3142HyperlinkExists = true;
-        #endregion
-    }
-    
-    /// <summary>
-    /// Parameters to be passed into 'Click_Assign_Tool_ExpandAll'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Click_Assign_Tool_ExpandAllParams
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Set to 'Pressed' state 'ExpandAll' toggle button
-        /// </summary>
-        public bool UIExpandAllToggleButtonPressed = true;
         #endregion
     }
     
@@ -35254,8 +35256,8 @@ namespace Warewolf.UITests
                 base(searchLimitContainer)
         {
             #region Search Criteria
-            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.SplitPane";
-            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "UI_SplitPane_AutoID";
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.WorkflowDesignerView";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "UI_WorkflowDesigner_AutoID";
             this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
             #endregion
         }
@@ -35301,8 +35303,8 @@ namespace Warewolf.UITests
                 base(searchLimitContainer)
         {
             #region Search Criteria
-            this.SearchProperties[WpfTabList.PropertyNames.AutomationId] = "UI_TabManager_AutoID";
-            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            this.SearchProperties[WpfText.PropertyNames.Name] = "http://rsaklfsanele:3142/secure/Unassigned/Unsaved 1.json?<DataList></DataList>";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
             #endregion
         }
         
@@ -35337,8 +35339,9 @@ namespace Warewolf.UITests
                 base(searchLimitContainer)
         {
             #region Search Criteria
-            this.SearchProperties[WpfTabPage.PropertyNames.Name] = "Dev2.ViewModels.DeployWorksurfaceViewModel";
-            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.DesignerView";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "UserControl_1";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
             #endregion
         }
         
@@ -35351,8 +35354,8 @@ namespace Warewolf.UITests
                 {
                     this.mUIExpandAllToggleButton = new WpfToggleButton(this);
                     #region Search Criteria
-                    this.mUIInfragisticsControlsTreeItem.SearchProperties[WpfTreeItem.PropertyNames.Name] = "Infragistics.Controls.Menus.XamDataTreeNodeDataContext";
-                    this.mUIInfragisticsControlsTreeItem.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    this.mUIExpandAllToggleButton.SearchProperties[WpfToggleButton.PropertyNames.AutomationId] = "expandAllButton";
+                    this.mUIExpandAllToggleButton.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
                     #endregion
                 }
                 return this.mUIExpandAllToggleButton;
