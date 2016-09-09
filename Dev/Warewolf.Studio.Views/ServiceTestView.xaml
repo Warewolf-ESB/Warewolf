@@ -220,7 +220,7 @@
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
                             <TextBlock Grid.Row="0" Grid.Column="0" Text="Test Name"/>
-                            <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding SelectedServiceTest.TestName}"/>
+                            <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding SelectedServiceTest.TestName, UpdateSourceTrigger=PropertyChanged}"/>
 
                             <TextBlock x:Name="RunAsUserTextBlock" Grid.Row="1" Grid.Column="0" Text="Run As User" FontWeight="Bold"/>
                             <Grid Grid.Column="1"  Grid.Row="2" Margin="0,-3,0,0">
