@@ -49,6 +49,7 @@ rem wait for 10 seconds before trying again
 @echo %ComputerName% is attempting number %LoopCounter% out of 60: Waiting 10 more seconds for server service to be ready...
 ping -n 10 -w 1000 192.0.2.2 > nul
 IF EXIST %windir%\nircmd.exe (nircmd elevate taskkill /f /im "Warewolf Server.exe" /fi "STATUS eq RUNNING") else (taskkill /f /im "Warewolf Server.exe" /fi "STATUS eq RUNNING")
+IF EXIST %windir%\nircmd.exe (nircmd elevate taskkill /f /im WarewolfCOMIPC.exe /fi "STATUS eq RUNNING") else (taskkill /f /im WarewolfCOMIPC.exe /fi "STATUS eq RUNNING")
 sc interrogate "Warewolf Server"
 goto WaitForServiceReadyLoopBody
 
