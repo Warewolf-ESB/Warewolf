@@ -6,8 +6,10 @@ using System.Windows;
 using Dev2;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Help;
+using Dev2.Data;
 using Dev2.Data.Binary_Objects;
 using Dev2.Interfaces;
+using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Models.DataList;
 using Dev2.Studio.ViewModels.DataList;
@@ -558,6 +560,81 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(testFrameworkViewModel.IsDirty);
             Assert.AreEqual("My WF - Tests *", testFrameworkViewModel.DisplayName);
         }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("ServiceTestViewModel_Tests")]
+        public void ServiceTestViewModel_Tests_GetWhenNullTests_ShouldHaveDummyTest()
+        {
+            //------------Setup for test--------------------------
+            var resourceMock = CreateResourceModelWithSingleScalarOutputMock();
+            var mockEnvironment = new Mock<IEnvironmentModel>();
+            var mockRepo = new Mock<IResourceRepository>();
+            mockRepo.Setup(repository => repository.LoadResourceTests(It.IsAny<Guid>())).Returns((List<IServiceTestModelTO>)null);
+            mockEnvironment.Setup(model => model.ResourceRepository).Returns(mockRepo.Object);
+            resourceMock.Setup(model => model.Environment).Returns(mockEnvironment.Object);
+            var serviceTestViewModel = new ServiceTestViewModel(resourceMock.Object);
+
+            //------------Execute Test---------------------------
+            var tests = serviceTestViewModel.Tests;
+            //------------Assert Results-------------------------
+            Assert.AreEqual(1,tests.Count);
+            Assert.AreEqual("Create a new test.",tests[0].TestName);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("ServiceTestViewModel_Tests")]
+        public void ServiceTestViewModel_Tests_GetWhenEmptyTests_ShouldHaveDummyTest()
+        {
+            //------------Setup for test--------------------------
+            var resourceMock = CreateResourceModelWithSingleScalarOutputMock();
+            var mockEnvironment = new Mock<IEnvironmentModel>();
+            var mockRepo = new Mock<IResourceRepository>();
+            mockRepo.Setup(repository => repository.LoadResourceTests(It.IsAny<Guid>())).Returns(new List<IServiceTestModelTO>());
+            mockEnvironment.Setup(model => model.ResourceRepository).Returns(mockRepo.Object);
+            resourceMock.Setup(model => model.Environment).Returns(mockEnvironment.Object);
+            var serviceTestViewModel = new ServiceTestViewModel(resourceMock.Object);
+
+            //------------Execute Test---------------------------
+            var tests = serviceTestViewModel.Tests;
+            //------------Assert Results-------------------------
+            Assert.AreEqual(1,tests.Count);
+            Assert.AreEqual("Create a new test.",tests[0].TestName);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("ServiceTestViewModel_Tests")]
+        public void ServiceTestViewModel_Tests_GetWhenTests_ShouldHaveTestsAndDummyAtBottom()
+        {
+            //------------Setup for test--------------------------
+            var resourceMock = CreateResourceModelWithSingleScalarOutputMock();
+            var mockEnvironment = new Mock<IEnvironmentModel>();
+            var mockRepo = new Mock<IResourceRepository>();
+            mockRepo.Setup(repository => repository.LoadResourceTests(It.IsAny<Guid>())).Returns(new List<IServiceTestModelTO>
+            {
+                new ServiceTestModelTO
+                {
+                    AuthenticationType = AuthenticationType.Public,
+                    Enabled = true,
+                    TestName = "Test From Server"
+                }
+            });
+            mockEnvironment.Setup(model => model.ResourceRepository).Returns(mockRepo.Object);
+            resourceMock.Setup(model => model.Environment).Returns(mockEnvironment.Object);
+            var serviceTestViewModel = new ServiceTestViewModel(resourceMock.Object);
+
+            //------------Execute Test---------------------------
+            var tests = serviceTestViewModel.Tests;
+            //------------Assert Results-------------------------
+            Assert.AreEqual(2,tests.Count);
+            Assert.AreEqual("Test From Server", tests[0].TestName);
+            Assert.AreEqual(AuthenticationType.Public, tests[0].AuthenticationType);
+            Assert.IsTrue(tests[0].Enabled);
+            Assert.AreEqual("Create a new test.",tests[1].TestName);
+        }
+
 
         private IContextualResourceModel CreateResourceModelWithSingleScalarInput()
         {
