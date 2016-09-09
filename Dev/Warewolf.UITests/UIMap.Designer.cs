@@ -205,6 +205,60 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
+        /// Click_Assign_Tool_Remove_Variable_From_Tool1 - Use 'Click_Assign_Tool_Remove_Variable_From_Tool1Params' to pass parameters into this method.
+        /// </summary>
+        public void Click_Assign_Tool_Remove_Variable_From_Tool1()
+        {
+            #region Variable Declarations
+            WpfCustom multiAssign = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign;
+            WpfMenuItem showLargeView = this.MainStudioWindow.DesignSurfaceContextMenu.ShowLargeView;
+            WpfEdit textbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.LargeView.DataGrid.Row1.VariableCell.Listbox.Textbox;
+            WpfButton deleteButton = this.MainStudioWindow.DockManager.SplitPaneRight.Variables.VariablesControl.XtgDataPresenter.Table.VariableDataItem.List.ListItem.Table.DataItem1.VariableNameCell.ValueEditor.TextBox.DeleteButton;
+            #endregion
+
+            // Right-Click 'DsfMultiAssignActivity' custom control
+            Mouse.Click(multiAssign, MouseButtons.Right, ModifierKeys.None, new Point(134, 7));
+
+            // Click 'Show Large View' menu item
+            Mouse.Click(showLargeView, new Point(43, 15));
+
+            // Verify that the 'Exists' property of 'DsfMultiAssignActivity' custom control equals 'True'
+            Assert.AreEqual(this.Click_Assign_Tool_Remove_Variable_From_Tool1Params.MultiAssignExists, multiAssign.Exists, "Assign tool large view on the design surface does not exist");
+
+            // Type '[[SomeOtherVariable]]' in 'UI__Row1_FieldName_AutoID' text box
+            textbox.Text = this.Click_Assign_Tool_Remove_Variable_From_Tool1Params.TextboxText;
+
+            // Type '{Right}{Tab}' in 'UI__Row1_FieldName_AutoID' text box
+            Keyboard.SendKeys(textbox, this.Click_Assign_Tool_Remove_Variable_From_Tool1Params.TextboxSendKeys, ModifierKeys.None);
+
+            // Verify that the 'Text' property of 'UI__Row1_FieldName_AutoID' text box equals '[[SomeOtherVariable]]'
+            Assert.AreEqual(this.Click_Assign_Tool_Remove_Variable_From_Tool1Params.TextboxText1, textbox.Text, "Multiassign small view row 1 variable textbox text does not equal \"[[Some$Invalid" +
+                    "%Variable]]\".");
+
+            // Verify that the 'Exists' property of 'UI__Row1_FieldName_AutoID' text box equals 'True'
+            Assert.AreEqual(this.Click_Assign_Tool_Remove_Variable_From_Tool1Params.TextboxExists, textbox.Exists, "Assign large view row 1 variable textbox does not exist");
+
+            // Verify that the 'Exists' property of 'DeleteButton' button equals 'True'
+            Assert.AreEqual(this.Click_Assign_Tool_Remove_Variable_From_Tool1Params.DeleteButtonExists, deleteButton.Exists, "Variable delete does not exist");
+
+            // Click 'DeleteButton' button
+            Mouse.Click(deleteButton, new Point(9, 8));
+        }
+        
+        /// <summary>
+        /// Click_Assign_Tool_url1
+        /// </summary>
+        public void Click_Assign_Tool_url1()
+        {
+            #region Variable Declarations
+            WpfHyperlink httprsaklfsanele3142Hyperlink = this.MainStudioWindow.Httprsaklfsanele3142Hyperlink;
+            #endregion
+
+            // Click 'http://rsaklfsanele:3142/secure/Unassigned/Unsaved...' link
+            Mouse.Click(httprsaklfsanele3142Hyperlink, new Point(201, 10));
+        }
+        
+        /// <summary>
         /// Click_Base_Convert_Large_View_Done_Button - Use 'Click_Base_Convert_Large_View_Done_ButtonParams' to pass parameters into this method.
         /// </summary>
         public void Click_Base_Convert_Large_View_Done_Button()
@@ -5520,7 +5574,7 @@ namespace Warewolf.UITests
             // Click 'SystemRandom' list item
             Mouse.Click(systemRandomListItem, new Point(137, 7));
 
-            // Verify that the 'SelectedItem' property of 'NamespaceComboBox' combo box equals 'System.Random'
+            // Verify that the 'SelectedItem' property of 'NamespaceComboBox' combo box equals '{"AssemblyLocation":"C:\\Windows\\Microsoft.NET\\Framework64\\v4.0.30319\\mscorlib.dll","AssemblyName":"mscorlib.dll","FullName":"System.Random","MethodName":null}'
             Assert.AreEqual(this.Select_SystemRandom_From_DotNet_DLL_Large_View_Namespace_ComboboxExpectedValues.ClassNameComboBoxSelectedItem, classNameComboBox.SelectedItem, "System.Random is not selected in DotNet DLL tool large view namespace combobox.");
         }
         
@@ -5727,6 +5781,18 @@ namespace Warewolf.UITests
                     this.mClick_Assign_Tool_Remove_Variable_From_ToolParams = new Click_Assign_Tool_Remove_Variable_From_ToolParams();
                 }
                 return this.mClick_Assign_Tool_Remove_Variable_From_ToolParams;
+            }
+        }
+        
+        public virtual Click_Assign_Tool_Remove_Variable_From_Tool1Params Click_Assign_Tool_Remove_Variable_From_Tool1Params
+        {
+            get
+            {
+                if ((this.mClick_Assign_Tool_Remove_Variable_From_Tool1Params == null))
+                {
+                    this.mClick_Assign_Tool_Remove_Variable_From_Tool1Params = new Click_Assign_Tool_Remove_Variable_From_Tool1Params();
+                }
+                return this.mClick_Assign_Tool_Remove_Variable_From_Tool1Params;
             }
         }
         
@@ -7800,6 +7866,8 @@ namespace Warewolf.UITests
         
         private Click_Assign_Tool_Remove_Variable_From_ToolParams mClick_Assign_Tool_Remove_Variable_From_ToolParams;
         
+        private Click_Assign_Tool_Remove_Variable_From_Tool1Params mClick_Assign_Tool_Remove_Variable_From_Tool1Params;
+        
         private Click_Base_Convert_Large_View_Done_ButtonParams mClick_Base_Convert_Large_View_Done_ButtonParams;
         
         private Click_Calculate_Large_View_Done_ButtonParams mClick_Calculate_Large_View_Done_ButtonParams;
@@ -8274,6 +8342,46 @@ namespace Warewolf.UITests
     /// </summary>
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Click_Assign_Tool_Remove_Variable_From_ToolParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'DsfMultiAssignActivity' custom control equals 'True'
+        /// </summary>
+        public bool MultiAssignExists = true;
+        
+        /// <summary>
+        /// Type '[[SomeOtherVariable]]' in 'UI__Row1_FieldName_AutoID' text box
+        /// </summary>
+        public string TextboxText = "[[SomeOtherVariable]]";
+        
+        /// <summary>
+        /// Type '{Right}{Tab}' in 'UI__Row1_FieldName_AutoID' text box
+        /// </summary>
+        public string TextboxSendKeys = "{Right}{Tab}";
+        
+        /// <summary>
+        /// Verify that the 'Text' property of 'UI__Row1_FieldName_AutoID' text box equals '[[SomeOtherVariable]]'
+        /// </summary>
+        public string TextboxText1 = "[[SomeOtherVariable]]";
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'UI__Row1_FieldName_AutoID' text box equals 'True'
+        /// </summary>
+        public bool TextboxExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'DeleteButton' button equals 'True'
+        /// </summary>
+        public bool DeleteButtonExists = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Click_Assign_Tool_Remove_Variable_From_Tool1'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Click_Assign_Tool_Remove_Variable_From_Tool1Params
     {
         
         #region Fields
@@ -11501,9 +11609,11 @@ namespace Warewolf.UITests
         
         #region Fields
         /// <summary>
-        /// Verify that the 'SelectedItem' property of 'NamespaceComboBox' combo box equals 'System.Random'
+        /// Verify that the 'SelectedItem' property of 'NamespaceComboBox' combo box equals '{"AssemblyLocation":"C:\\Windows\\Microsoft.NET\\Framework64\\v4.0.30319\\mscorlib.dll","AssemblyName":"mscorlib.dll","FullName":"System.Random","MethodName":null}'
         /// </summary>
-        public string ClassNameComboBoxSelectedItem = "System.Random";
+        public string ClassNameComboBoxSelectedItem = "{\"AssemblyLocation\":\"C:\\\\Windows\\\\Microsoft.NET\\\\Framework64\\\\v4.0.30319\\\\mscorli" +
+            "b.dll\",\"AssemblyName\":\"mscorlib.dll\",\"FullName\":\"System.Random\",\"MethodName\":nul" +
+            "l}";
         #endregion
     }
     
