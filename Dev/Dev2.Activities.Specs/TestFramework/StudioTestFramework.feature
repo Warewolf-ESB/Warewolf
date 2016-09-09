@@ -91,8 +91,7 @@ Scenario: Save a New Test
 	Then Tab Header is "Workflow 1 - Tests"
 	And I close the test builder
 	When the test builder is open with "Workflow 1"
-	Then Tab Header is "Workflow 1 - Tests"
-	And there are 2 tests
+	Then there are 2 tests
 	And "Test 1" is selected
 	And test name starts with "Test 1"
 	And inputs are
@@ -101,7 +100,7 @@ Scenario: Save a New Test
 	And outputs as
 	| Variable Name | Value |
 	| outputValue   |       |
-	And save is disabled   
+	And save is enabled
 
 
 

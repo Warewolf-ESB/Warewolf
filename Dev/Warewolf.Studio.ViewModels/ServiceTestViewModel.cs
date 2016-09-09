@@ -228,7 +228,11 @@ namespace Warewolf.Studio.ViewModels
                     _tests = GetTests();
                     var dummyTest = new DummyServiceTest(CreateTests) { TestName = "Create a new test." };
                     _tests.Add(dummyTest);
-                    SelectedServiceTest = dummyTest;
+                    if (_tests.Count > 1)
+                    {
+                        SelectedServiceTest = _tests[0];
+                    }
+                    
                 }
                 return _tests;
 
