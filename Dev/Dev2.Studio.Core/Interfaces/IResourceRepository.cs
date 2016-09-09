@@ -12,7 +12,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq.Expressions;
-using System.Text;
 using System.Threading.Tasks;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core.DynamicServices;
@@ -67,6 +66,6 @@ namespace Dev2.Studio.Core.Interfaces
         Task<IContextualResourceModel> LoadContextualResourceModelAsync(Guid resourceId);
 
         ExecuteMessage SaveTests(Guid resourceId, List<IServiceTestModel> tests);
-        StringBuilder LoadResourceTests(IEnvironmentModel model,Guid resourceId);
+        List<IServiceTestModelTO> LoadResourceTests(IEnvironmentModel model,Guid resourceId);
     }
 }
