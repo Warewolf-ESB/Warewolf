@@ -143,5 +143,18 @@ namespace Dev2.Communication
                 }
             }
         }
+
+        public T Deserialize<T>(StreamReader streamWriter)
+        {
+            using (streamWriter)
+            {
+                var jsonSerializer = new JsonSerializer { TypeNameHandling = _serializerSettings.TypeNameHandling, TypeNameAssemblyFormat = _serializerSettings.TypeNameAssemblyFormat };
+                using (var reader = new JsonTextReader(streamWriter))
+                {
+                    var result = jsonSerializer.Deserialize<T>(reader);
+                    return result;
+                }
+            }
+        }
     }
 }

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Dev2.Common.Interfaces;
 using Dev2.Communication;
 using Dev2.Data;
 using Dev2.Runtime.ESB.Management.Services;
@@ -126,11 +127,11 @@ namespace Dev2.Tests.Runtime.Services
                     TestName = "Test MyWF"
                 }
             };
-            var testModels = new List<ServiceTestModelTO>();
+            var testModels = new List<IServiceTestModelTO>();
             var repo = new Mock<ITestCatalog>();
             var ws = new Mock<IWorkspace>();
             var resID = Guid.Empty;
-            repo.Setup(a => a.SaveTests(It.IsAny<Guid>(), It.IsAny<List<ServiceTestModelTO>>())).Callback((Guid id,List<ServiceTestModelTO> testModelTos)=>
+            repo.Setup(a => a.SaveTests(It.IsAny<Guid>(), It.IsAny<List<IServiceTestModelTO>>())).Callback((Guid id,List<IServiceTestModelTO> testModelTos)=>
             {
                 resID = id;
                 testModels = testModelTos;
@@ -147,7 +148,7 @@ namespace Dev2.Tests.Runtime.Services
             //------------Execute Test---------------------------
             saveTests.Execute(inputs, ws.Object);
             //------------Assert Results-------------------------
-            repo.Verify(a => a.SaveTests(It.IsAny<Guid>(), It.IsAny<List<ServiceTestModelTO>>()));
+            repo.Verify(a => a.SaveTests(It.IsAny<Guid>(), It.IsAny<List<IServiceTestModelTO>>()));
             Assert.AreEqual(listOfTests.Count,testModels.Count);
             Assert.AreEqual(listOfTests[0].TestName,testModels[0].TestName);
             Assert.AreEqual(resourceID,resID);

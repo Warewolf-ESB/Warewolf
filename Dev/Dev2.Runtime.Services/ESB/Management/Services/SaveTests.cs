@@ -1,13 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.IO;
 using System.Runtime.Serialization;
 using System.Text;
 using Dev2.Common;
+using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Communication;
-using Dev2.Data;
 using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
 using Dev2.Workspaces;
@@ -47,7 +46,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                     throw new InvalidDataContractException("testDefinition is missing");
                 }
 
-                var serviceTestModelTos = serializer.Deserialize<List<ServiceTestModelTO>>(serializer.Deserialize<CompressedExecuteMessage>(testDefinitionMessage).GetDecompressedMessage());
+                var serviceTestModelTos = serializer.Deserialize<List<IServiceTestModelTO>>(serializer.Deserialize<CompressedExecuteMessage>(testDefinitionMessage).GetDecompressedMessage());
                 var res = new ExecuteMessage { HasError = false, Message = serializer.SerializeToBuilder(serviceTestModelTos) };
                 TestCatalog.SaveTests(resourceId, serviceTestModelTos);
                 return serializer.SerializeToBuilder(res);
@@ -85,27 +84,5 @@ namespace Dev2.Runtime.ESB.Management.Services
         {
             return "SaveTests";
         }
-    }
-
-    public class TestCatalog : ITestCatalog
-    {
-        public void SaveTests(Guid resourceID, List<ServiceTestModelTO> serviceTestModelTos)
-        {
-            var testPath = EnvironmentVariables.TestPath;
-            foreach (var serviceTestModelTo in serviceTestModelTos)
-            {
-                var filePath = Path.Combine(testPath, resourceID.ToString(), $"{serviceTestModelTo.TestName}.test");
-                Dev2JsonSerializer serializer = new Dev2JsonSerializer();
-                var sw = new StreamWriter(filePath, false);
-                serializer.Serialize(sw, serviceTestModelTo);
-                sw.Flush();
-            }
-
-        }
-    }
-
-    public interface ITestCatalog
-    {
-        void SaveTests(Guid resourceID, List<ServiceTestModelTO> serviceTestModelTos);
     }
 }

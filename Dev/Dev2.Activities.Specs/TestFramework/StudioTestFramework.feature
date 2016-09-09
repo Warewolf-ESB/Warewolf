@@ -118,6 +118,7 @@ Scenario: Edit existing test
 	And Tab Header is "Workflow 1 - Tests"
 	And save is disabled
 
+
 Scenario: Loading exisiting Tests
     Given I have "Workflow 2" with inputs as
 			| Input Var Name |
@@ -132,22 +133,92 @@ Scenario: Loading exisiting Tests
 	And there are no tests
 	And I click New Test
 	And I set Test Values as
-	| TestName | AuthenticationType | Error   |
-	| Test1    | Windows            | true |
+	| TestName | AuthenticationType | Error |
+	| Test1    | Windows            | true  |
 	Then NoErrorExpected is "false"	
 	And save is enabled
 	When I save
 	Then Tab Header is "Workflow 2 - Tests"
 	When I click New Test
 	And I set Test Values as
-	| TestName | AuthenticationType | Error   |
-	| Test2    | Windows            | true |
+	| TestName | AuthenticationType | Error |
+	| Test2    | Windows            | true  |
 	And save is enabled
 	When I save
 	Then Tab Header is "Workflow 2 - Tests"
 	And I close the test builder
 	When the test builder is open with "Workflow 2"
 	Then there are 2 tests
+
+
+Scenario: Delete an existing test with correct permissions
+	Given the test builder is open with "Workflow 1"
+	And Tab Header is "Workflow 2 - Tests"
+	And there are no tests
+	And I click New Test
+		And I set Test Values as
+	| TestName | AuthenticationType | Error |
+	| Test1    | Windows            | true  |
+	Then NoErrorExpected is "false"	
+	And save is enabled
+	When I save
+	Then Tab Header is "Workflow 2 - Tests"
+	And there are 1 tests
+	And Delete is enabled
+	And Run is enabled
+	When I delete selected Test
+	Then The Confirmation popup is shown
+	When I click cancel
+	Then there are 1 tests
+	And Delete is enabled
+	And Run is enabled
+	When I delete selected test
+	Then The Confirmation popup is shown
+	When I click Ok
+	Then there are no tests
+	And Delete is disabled
+	And run is disabled
+	And add new test is enabled
+
+
+Scenario: Delete test not enabled when test disabled
+	Given the test builder is open with "Workflow 1"
+	And Tab Header is "Workflow 2 - Tests"
+	And there are no tests
+	And I click New Test
+		And I set Test Values as
+	| TestName | AuthenticationType | Error |
+	| Test1    | Windows            | true  |
+	Then NoErrorExpected is "false"	
+	And save is enabled
+	When I save
+	Then Tab Header is "Workflow 2 - Tests"
+	And there are 1 tests
+	When test is disabled 
+	Then Delete is disabled
+	When test is enabled
+	Then Delete is enabled
+	When I delete selected Test
+	Then The Confirmation popup is shown
+	When I click cancel
+	Then there are 1 tests
+	And Delete is enabled
+	And Run is enabled
+	When I delete selected test
+	Then The Confirmation popup is shown
+	When I click Ok
+	Then there are no tests
+	And Delete is disabled
+	And run is disabled
+	And add new test is enabled
+
+
+
+
+
+
+
+
 
 	
 
