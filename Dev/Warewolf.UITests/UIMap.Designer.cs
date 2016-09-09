@@ -58,6 +58,19 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
+        /// Assert_Expand_All_Button_Exist - Use 'Assert_Expand_All_Button_ExistExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void Assert_Expand_All_Button_Exist()
+        {
+            #region Variable Declarations
+            WpfToggleButton expandAllToggleButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ExpandAllToggleButton;
+            #endregion
+
+            // Verify that the 'Exists' property of 'ExpandAll' toggle button equals 'True'
+            Assert.AreEqual(this.Assert_Expand_All_Button_ExistExpectedValues.ExpandAllToggleButtonExists, expandAllToggleButton.Exists, "Expand all button does not exist");
+        }
+        
+        /// <summary>
         /// Assert_URL_exist - Use 'Assert_URL_existExpectedValues' to pass parameters into this method.
         /// </summary>
         public void Assert_URL_exist()
@@ -5705,6 +5718,18 @@ namespace Warewolf.UITests
             }
         }
         
+        public virtual Assert_Expand_All_Button_ExistExpectedValues Assert_Expand_All_Button_ExistExpectedValues
+        {
+            get
+            {
+                if ((this.mAssert_Expand_All_Button_ExistExpectedValues == null))
+                {
+                    this.mAssert_Expand_All_Button_ExistExpectedValues = new Assert_Expand_All_Button_ExistExpectedValues();
+                }
+                return this.mAssert_Expand_All_Button_ExistExpectedValues;
+            }
+        }
+        
         public virtual Assert_URL_existExpectedValues Assert_URL_existExpectedValues
         {
             get
@@ -7852,12 +7877,26 @@ namespace Warewolf.UITests
                 return this.mSwitchCaseDialog;
             }
         }
+        
+        public UIWarewolfDEV2SANELEMTWindow UIWarewolfDEV2SANELEMTWindow
+        {
+            get
+            {
+                if ((this.mUIWarewolfDEV2SANELEMTWindow == null))
+                {
+                    this.mUIWarewolfDEV2SANELEMTWindow = new UIWarewolfDEV2SANELEMTWindow();
+                }
+                return this.mUIWarewolfDEV2SANELEMTWindow;
+            }
+        }
         #endregion
         
         #region Fields
         private Assert_CancelConnectionButton_ExistsExpectedValues mAssert_CancelConnectionButton_ExistsExpectedValues;
         
         private Assert_Connection_PassedExpectedValues mAssert_Connection_PassedExpectedValues;
+        
+        private Assert_Expand_All_Button_ExistExpectedValues mAssert_Expand_All_Button_ExistExpectedValues;
         
         private Assert_URL_existExpectedValues mAssert_URL_existExpectedValues;
         
@@ -8216,6 +8255,8 @@ namespace Warewolf.UITests
         private ServicePickerDialog mServicePickerDialog;
         
         private SwitchCaseDialog mSwitchCaseDialog;
+        
+        private UIWarewolfDEV2SANELEMTWindow mUIWarewolfDEV2SANELEMTWindow;
         #endregion
     }
     
@@ -8246,6 +8287,21 @@ namespace Warewolf.UITests
         /// Verify that the 'Exists' property of first image next to 'Dev2.Studio.ViewModels.WorkSurface.WorkSurfaceCont...' custom control equals 'True'
         /// </summary>
         public bool ConnectionPassedImageExists = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Assert_Expand_All_Button_Exist'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Assert_Expand_All_Button_ExistExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'ExpandAll' toggle button equals 'True'
+        /// </summary>
+        public bool ExpandAllToggleButtonExists = true;
         #endregion
     }
     
@@ -20981,10 +21037,24 @@ namespace Warewolf.UITests
                 return this.mWorkflowDesignerView;
             }
         }
+        
+        public TopScrollViewerPane TopScrollViewerPane
+        {
+            get
+            {
+                if ((this.mTopScrollViewerPane == null))
+                {
+                    this.mTopScrollViewerPane = new TopScrollViewerPane(this);
+                }
+                return this.mTopScrollViewerPane;
+            }
+        }
         #endregion
         
         #region Fields
         private WorkflowDesignerView mWorkflowDesignerView;
+        
+        private TopScrollViewerPane mTopScrollViewerPane;
         #endregion
     }
     
@@ -21047,10 +21117,46 @@ namespace Warewolf.UITests
                 return this.mScrollViewerPane;
             }
         }
+        
+        public WpfToggleButton ExpandAllToggleButton
+        {
+            get
+            {
+                if ((this.mExpandAllToggleButton == null))
+                {
+                    this.mExpandAllToggleButton = new WpfToggleButton(this);
+                    #region Search Criteria
+                    this.mExpandAllToggleButton.SearchProperties[WpfToggleButton.PropertyNames.AutomationId] = "expandAllButton";
+                    this.mExpandAllToggleButton.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mExpandAllToggleButton;
+            }
+        }
+        
+        public WpfToggleButton CollapseAllToggleButton
+        {
+            get
+            {
+                if ((this.mCollapseAllToggleButton == null))
+                {
+                    this.mCollapseAllToggleButton = new WpfToggleButton(this);
+                    #region Search Criteria
+                    this.mCollapseAllToggleButton.SearchProperties[WpfToggleButton.PropertyNames.AutomationId] = "collapseAllButton";
+                    this.mCollapseAllToggleButton.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mCollapseAllToggleButton;
+            }
+        }
         #endregion
         
         #region Fields
         private ScrollViewerPane mScrollViewerPane;
+        
+        private WpfToggleButton mExpandAllToggleButton;
+        
+        private WpfToggleButton mCollapseAllToggleButton;
         #endregion
     }
     
@@ -26971,6 +27077,75 @@ namespace Warewolf.UITests
         private WpfButton mTestButton;
         
         private WpfComboBox mSourcesComboBox;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class TopScrollViewerPane : WpfPane
+    {
+        
+        public TopScrollViewerPane(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfPane.PropertyNames.ClassName] = "Uia.ScrollViewer";
+            this.SearchProperties[WpfPane.PropertyNames.AutomationId] = "ScrollViewer";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public Httprsaklfsanele3142Text Httprsaklfsanele3142Text
+        {
+            get
+            {
+                if ((this.mHttprsaklfsanele3142Text == null))
+                {
+                    this.mHttprsaklfsanele3142Text = new Httprsaklfsanele3142Text(this);
+                }
+                return this.mHttprsaklfsanele3142Text;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private Httprsaklfsanele3142Text mHttprsaklfsanele3142Text;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Httprsaklfsanele3142Text : WpfText
+    {
+        
+        public Httprsaklfsanele3142Text(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfText.PropertyNames.Name] = "http://rsaklfsanele:3142/secure/Unassigned/Unsaved 1.json?<DataList></DataList>";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfHyperlink Httprsaklfsanele3142Hyperlink
+        {
+            get
+            {
+                if ((this.mHttprsaklfsanele3142Hyperlink == null))
+                {
+                    this.mHttprsaklfsanele3142Hyperlink = new WpfHyperlink(this);
+                    #region Search Criteria
+                    this.mHttprsaklfsanele3142Hyperlink.SearchProperties[WpfHyperlink.PropertyNames.Name] = "http://rsaklfsanele:3142/secure/Unassigned/Unsaved 1.json?<DataList></DataList>";
+                    this.mHttprsaklfsanele3142Hyperlink.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mHttprsaklfsanele3142Hyperlink;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfHyperlink mHttprsaklfsanele3142Hyperlink;
         #endregion
     }
     
@@ -35660,6 +35835,75 @@ namespace Warewolf.UITests
         
         #region Fields
         private WpfButton mDoneButton;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIWarewolfDEV2SANELEMTWindow : WpfWindow
+    {
+        
+        public UIWarewolfDEV2SANELEMTWindow()
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfWindow.PropertyNames.Name] = "Warewolf (DEV2\\SANELE.MTHEMBU)";
+            this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public UIUI_WorkflowDesigner_Custom UIUI_WorkflowDesigner_Custom
+        {
+            get
+            {
+                if ((this.mUIUI_WorkflowDesigner_Custom == null))
+                {
+                    this.mUIUI_WorkflowDesigner_Custom = new UIUI_WorkflowDesigner_Custom(this);
+                }
+                return this.mUIUI_WorkflowDesigner_Custom;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIUI_WorkflowDesigner_Custom mUIUI_WorkflowDesigner_Custom;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIUI_WorkflowDesigner_Custom : WpfCustom
+    {
+        
+        public UIUI_WorkflowDesigner_Custom(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.WorkflowDesignerView";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "UI_WorkflowDesigner_AutoID";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfText UIHttprsaklfsanele3142Text
+        {
+            get
+            {
+                if ((this.mUIHttprsaklfsanele3142Text == null))
+                {
+                    this.mUIHttprsaklfsanele3142Text = new WpfText(this);
+                    #region Search Criteria
+                    this.mUIHttprsaklfsanele3142Text.SearchProperties[WpfText.PropertyNames.Name] = "http://rsaklfsanele:3142/secure/Unassigned/Unsaved 1.json?<DataList></DataList>";
+                    this.mUIHttprsaklfsanele3142Text.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mUIHttprsaklfsanele3142Text;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfText mUIHttprsaklfsanele3142Text;
         #endregion
     }
 }
