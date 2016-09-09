@@ -208,7 +208,14 @@ namespace Dev2.Activities.Specs.TestFramework
         public void ThenIsSelected(string testName)
         {
             ServiceTestViewModel serviceTest = GetTestFrameworkFromContext();
-            Assert.AreEqual(testName, serviceTest.SelectedServiceTest.TestName);
+            if (testName == "Dummy Test")
+            {
+                Assert.IsNull(serviceTest.SelectedServiceTest);
+            }
+            else
+            {
+                Assert.AreEqual(testName, serviceTest.SelectedServiceTest.TestName);
+            }
         }
 
 

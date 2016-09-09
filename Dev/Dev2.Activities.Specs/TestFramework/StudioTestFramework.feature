@@ -91,7 +91,9 @@ Scenario: Save a New Test
 	Then Tab Header is "Workflow 1 - Tests"
 	And I close the test builder
 	When the test builder is open with "Workflow 1"
-	Then there are 2 tests
+	Then there are 1 tests
+	And "Dummy Test" is selected
+	And I select "Test 1"
 	And "Test 1" is selected
 	And test name starts with "Test 1"
 	And inputs are
@@ -125,7 +127,7 @@ Scenario: Edit existing test
 	Then Tab Header is "Workflow 3 - Tests"
 	And I close the test builder
 	When the test builder is open with "Workflow 3"
-	Then there are 3 tests
+	Then there are 2 tests
 	And I select "Test2"
 	And I set Test Values as
 	| TestName | AuthenticationType | Error |
@@ -133,11 +135,45 @@ Scenario: Edit existing test
 	When I save
 	Then Tab Header is "Workflow 3 - Tests"
 	And I close the test builder
-	When the test builder is open with "Workflow 2"
-	Then there are 3 tests
+	When the test builder is open with "Workflow 3"
+	Then there are 2 tests
 	And I select "Test2"
 	And Test name is "Test2"
 	And Authentication is Public
+
+Scenario: Rename existing test
+	Given the test builder is open with "Workflow 3"
+	And Tab Header is "Workflow 3 - Tests"
+	And there are no tests
+	And I click New Test
+	And I set Test Values as
+	| TestName | AuthenticationType | Error |
+	| Test1    | Windows            | true  |
+	Then NoErrorExpected is "false"	
+	And save is enabled
+	When I save
+	Then Tab Header is "Workflow 3 - Tests"
+	When I click New Test
+	And I set Test Values as
+	| TestName | AuthenticationType | Error |
+	| Test2    | Windows            | true  |
+	And save is enabled
+	When I save
+	Then Tab Header is "Workflow 3 - Tests"
+	And I close the test builder
+	When the test builder is open with "Workflow 3"
+	Then there are 2 tests
+	And I select "Test2"
+	When I change the test name to "testing2"
+	Then save is enabled
+	When I save
+	Then test URL is "http://localhost:3142/secure/Examples/Workflow 1.tests/testing2"
+	Then Tab Header is "Workflow 3 - Tests"
+	And I close the test builder
+	When the test builder is open with "Workflow 3"
+	Then there are 2 tests
+	And I select "testing2"
+	And Test name is "testing2"
 
 Scenario: Loading exisiting Tests  	
 	Given the test builder is open with "Workflow 3"
@@ -160,7 +196,7 @@ Scenario: Loading exisiting Tests
 	Then Tab Header is "Workflow 3 - Tests"
 	And I close the test builder
 	When the test builder is open with "Workflow 3"
-	Then there are 3 tests
+	Then there are 2 tests
 
 
 Scenario: Delete an Enabled Test
