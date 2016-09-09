@@ -31,7 +31,29 @@ namespace Warewolf.Studio.ViewModels.Tests
             testModel.TestName = "Test Name";
             //------------Assert Results-------------------------
             Assert.AreEqual("Test Name", testModel.TestName);
-            Assert.AreEqual("Test Name", testModel.NameForDisplay);
+            Assert.AreEqual("Test Name *", testModel.NameForDisplay);
+            Assert.IsTrue(_wasCalled);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("TestModel_OldTestName")]
+        public void TestModel_OldTest_WhenSet_ShouldFirePropertyChanged()
+        {
+            //------------Setup for test--------------------------
+            var testModel = new ServiceTestModel(Guid.NewGuid());
+            var _wasCalled = false;
+            testModel.PropertyChanged += (sender, args) =>
+            {
+                if (args.PropertyName == "OldTestName")
+                {
+                    _wasCalled = true;
+                }
+            };
+            //------------Execute Test---------------------------
+            testModel.OldTestName = "Old Test Name";
+            //------------Assert Results-------------------------
+            Assert.AreEqual("Old Test Name", testModel.OldTestName);
             Assert.IsTrue(_wasCalled);
         }
 

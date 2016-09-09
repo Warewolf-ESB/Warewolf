@@ -6,6 +6,7 @@ using System.Windows;
 using Dev2;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Help;
+using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Data.Binary_Objects;
 using Dev2.Interfaces;
 using Dev2.Studio.Core.Interfaces;
@@ -263,6 +264,24 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("TestFrameworkViewModel_CreateTestCommand")]
+        public void TestFrameworkViewModel_CreateTestCommand_Execute_ShouldShowError()
+        {
+            //------------Setup for test--------------------------
+            var popupController = new Mock<IPopupController>();
+            CustomContainer.Register(popupController.Object);
+            var testFrameworkViewModel = new ServiceTestViewModel(CreateResourceModel());
+            //------------Assert Preconditions-------------------
+            //------------Execute Test---------------------------
+            testFrameworkViewModel.CreateTestCommand.Execute(null);
+            testFrameworkViewModel.CreateTestCommand.Execute(null);
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(testFrameworkViewModel.PopupController);
+            popupController.Verify(controller => controller.Show(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<MessageBoxButton>(), MessageBoxImage.Error, null, false, true, false, false), Times.Once);
+        }
+
+        [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("TestFrameworkViewModel_CreateTestCommand")]
         public void TestFrameworkViewModel_CreateTestCommand_Execute_ShouldAddANewTestWithDefaultName()
@@ -445,6 +464,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var serviceTestViewModel = new ServiceTestViewModel(resourceModelMock.Object);
             serviceTestViewModel.CreateTestCommand.Execute(null);
             //------------Execute Test---------------------------
+            Assert.IsTrue(serviceTestViewModel.CanSave);
             serviceTestViewModel.Save();
             //------------Assert Results-------------------------
             mockResourceRepo.Verify(repository => repository.SaveTests(It.IsAny<Guid>(), It.IsAny<List<IServiceTestModel>>()), Times.Once);
@@ -463,20 +483,21 @@ namespace Warewolf.Studio.ViewModels.Tests
             mockEnvironmentModel.Setup(model => model.ResourceRepository).Returns(mockResourceRepo.Object);
             resourceModelMock.Setup(model => model.Environment).Returns(mockEnvironmentModel.Object);
 
-            var popupController = new Mock<Dev2.Common.Interfaces.Studio.Controller.IPopupController>();
+            var popupController = new Mock<IPopupController>();
             CustomContainer.Register(popupController.Object);
 
+            //------------Execute Test---------------------------
             var serviceTestViewModel = new ServiceTestViewModel(resourceModelMock.Object);
             serviceTestViewModel.CreateTestCommand.Execute(null);
-
-            var serviceTestViewModel1 = new ServiceTestViewModel(resourceModelMock.Object);
-            serviceTestViewModel1.CreateTestCommand.Execute(null);
-            //------------Execute Test---------------------------
-
+            Assert.IsTrue(serviceTestViewModel.CanSave);
             serviceTestViewModel.Save();
-            serviceTestViewModel1.Save();
+
+            serviceTestViewModel.CreateTestCommand.Execute(null);
+            Assert.IsTrue(serviceTestViewModel.CanSave);
+            serviceTestViewModel.Save();
 
             //------------Assert Results-------------------------
+            Assert.IsNotNull(serviceTestViewModel.PopupController);
             popupController.Verify(controller => controller.Show(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<MessageBoxButton>(), MessageBoxImage.Error, null, false, true, false, false), Times.Once);
         }
 
