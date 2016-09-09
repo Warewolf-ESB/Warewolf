@@ -55,6 +55,8 @@ namespace Dev2.Runtime
                     var sw = new StreamWriter(filePath, false);
                     _serializer.Serialize(sw, serviceTestModelTo);
                 }
+                var dir = Path.Combine(EnvironmentVariables.TestPath, resourceID.ToString());
+                Tests.AddOrUpdate(resourceID, GetTestList(dir), (id, list) => GetTestList(dir));
             }
         }
 

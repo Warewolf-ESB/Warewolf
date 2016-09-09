@@ -92,7 +92,7 @@ Scenario: Save a New Test
 	And I close the test builder
 	When the test builder is open with "Workflow 1"
 	Then Tab Header is "Workflow 1 - Tests"
-	And there are 1 tests
+	And there are 2 tests
 	And "Test 1" is selected
 	And test name starts with "Test 1"
 	And inputs are

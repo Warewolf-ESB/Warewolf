@@ -59,8 +59,15 @@ namespace Warewolf.Studio.ViewModels
             }
 
             var testModel = ServiceTestCommandHandler.CreateTest(ResourceModel);
+            AddTest(testModel);
+            SelectedServiceTest = testModel;
+            SelectedServiceTest.RunSelectedTestUrl = WebServer.GetWorkflowUri(ResourceModel, "", UrlType.Tests) + "/" + SelectedServiceTest.TestName;
+        }
+
+        private void AddTest(IServiceTestModel testModel)
+        {
             var index = Tests.Count - 1;
-            if (index >= 0)
+            if(index >= 0)
             {
                 Tests.Insert(index, testModel);
             }
@@ -237,32 +244,34 @@ namespace Warewolf.Studio.ViewModels
         {
             try
             {
-                var loadResourceTests = ResourceModel.Environment.ResourceRepository.LoadResourceTests(ResourceModel.Environment, ResourceModel.ID);
-                var serviceTestModels = loadResourceTests.Select(to => new ServiceTestModel(ResourceModel.ID)
+                var loadResourceTests = ResourceModel.Environment.ResourceRepository.LoadResourceTests(ResourceModel.ID);
+                if (loadResourceTests != null)
                 {
-                    OldTestName = to.TestName,
-                    TestName = to.TestName,
-                    UserName = to.UserName,
-                    AuthenticationType = to.AuthenticationType,
-                    Enabled = to.Enabled,
-                    ErrorExpected = to.ErrorExpected,
-                    NoErrorExpected = to.NoErrorExpected,
-                    LastRunDate = to.LastRunDate,
-                    TestPending = to.TestPending,
-                    TestFailing = to.TestFailing,
-                    TestPassed = to.TestPassed,
-                    Password = to.Password,
-                    TestInvalid = to.TestInvalid,
-                    Inputs = to.Inputs.Select(input => new ServiceTestInput(input.Variable,input.Value) as IServiceTestInput).ToList(),
-                    Outputs = to.Outputs.Select(output => new ServiceTestOutput(output.Variable,output.Value) as IServiceTestOutput).ToList()
-                });
-                return serviceTestModels.ToObservableCollection<IServiceTestModel>();
+                    var serviceTestModels = loadResourceTests.Select(to => new ServiceTestModel(ResourceModel.ID)
+                    {
+                        TestName = to.TestName,
+                        UserName = to.UserName,
+                        AuthenticationType = to.AuthenticationType,
+                        Enabled = to.Enabled,
+                        ErrorExpected = to.ErrorExpected,
+                        NoErrorExpected = to.NoErrorExpected,
+                        LastRunDate = to.LastRunDate,
+                        TestPending = to.TestPending,
+                        TestFailing = to.TestFailing,
+                        TestPassed = to.TestPassed,
+                        Password = to.Password,
+                        TestInvalid = to.TestInvalid,
+                        Inputs = to.Inputs?.Select(input => new ServiceTestInput(input.Variable, input.Value) as IServiceTestInput).ToList(),
+                        Outputs = to.Outputs?.Select(output => new ServiceTestOutput(output.Variable, output.Value) as IServiceTestOutput).ToList()
+                    });
+                    return serviceTestModels.ToObservableCollection<IServiceTestModel>();
+                }
             }
             catch (Exception)
             {
-                
                 return new ObservableCollection<IServiceTestModel>();
             }
+            return new ObservableCollection<IServiceTestModel>();
         }
 
         public ICommand DeleteTestCommand { get; set; }
