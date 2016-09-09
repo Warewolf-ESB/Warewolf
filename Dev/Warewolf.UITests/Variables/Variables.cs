@@ -21,6 +21,9 @@ namespace Warewolf.UITests
             Uimap.Enter_Text_Into_Assign_Small_View_Row1_Value_Textbox_As_SomeVariable_Using_Click_Intellisense_Suggestion();
             Uimap.Click_Assign_Tool_Remove_Variable_From_Tool();
             Uimap.Assign_Value_To_Variable();
+            Uimap.Assert_URL_exist();
+            Uimap.Click_Assign_Tool_url();
+            Uimap.Click_Assign_Tool_ExpandAll();
         }
 
         #region Additional test attributes
@@ -36,10 +39,10 @@ namespace Warewolf.UITests
         [TestCleanup()]
         public void MyTestCleanup()
         {
-            //Playback.PlaybackError -= Uimap.OnError;
-            //Uimap.TryCloseHangingSaveDialog();
-            //Uimap.TryClearToolboxFilter();
-            //Uimap.TryCloseWorkflowTabs();
+            Playback.PlaybackError -= Uimap.OnError;
+            Uimap.TryCloseHangingSaveDialog();
+            Uimap.TryClearToolboxFilter();
+            Uimap.TryCloseWorkflowTabs();
         }
 
         public TestContext TestContext
