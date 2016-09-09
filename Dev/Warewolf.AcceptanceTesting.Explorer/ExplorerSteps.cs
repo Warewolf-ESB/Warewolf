@@ -561,7 +561,7 @@ namespace Warewolf.AcceptanceTesting.Explorer
             {
                 view.DataContext = explorerViewModel;
             }
-            catch(Exception e)
+            catch(Exception)
             {
                 view.DataContext = null;
                 view.DataContext = explorerViewModel;
