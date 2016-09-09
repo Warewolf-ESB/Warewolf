@@ -25,9 +25,9 @@ namespace Warewolf.UITests
 {
     public partial class UIMap
     {
-        const int _lenientSearchTimeout = 3000;
+        const int _lenientSearchTimeout = 5000;
         const int _lenientMaximumRetryCount = 3;
-        const int _strictSearchTimeout = 1250;
+        const int _strictSearchTimeout = 1000;
         const int _strictMaximumRetryCount = 1;
 
         public void SetGlobalPlaybackSettings()
@@ -203,6 +203,7 @@ namespace Warewolf.UITests
             if (MainStudioWindow.DockManager.SplitPaneLeft.Explorer.SearchTextBox.Text != string.Empty)
             {
                 Click_Explorer_Filter_Clear_Button();
+                Click_Explorer_Refresh_Button();
             }
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.SearchTextBox.Text == string.Empty, "Explorer filter textbox text value of " + MainStudioWindow.DockManager.SplitPaneLeft.Explorer.SearchTextBox.Text + " is not empty after clicking clear filter button.");
         }
@@ -850,11 +851,9 @@ namespace Warewolf.UITests
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DeployTab.WorkSurfaceContext.DeployButton);
             WaitForControlNotVisible(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DeployTab.WorkSurfaceContext.DeployButton.Spinner);
+            Assert.AreEqual("Success", MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DeployTab.WorkSurfaceContext.DeployButtonMessageText.DisplayText);
         }
-
-        /// <summary>
-        /// Change_Selected_Database_ToMySql_DataBase - Use 'Change_Selected_DatabaseParams' to pass parameters into this method.
-        /// </summary>
+        
         public void Change_Selected_Database_ToMySql_DataBase()
         {
             var serverTypeComboBox = MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DBSourceWizardTab.WorkSurfaceContext.NewDBSourceWizard.ServerTypeComboBox;
@@ -871,10 +870,7 @@ namespace Warewolf.UITests
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DBSourceWizardTab.WorkSurfaceContext.UserNameTextBox.TryGetClickablePoint(out point), "Username textbox is visible in db source wizard.");
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DBSourceWizardTab.WorkSurfaceContext.PasswordTextBox.TryGetClickablePoint(out point), "Password textbox is visible in db source wizard.");
         }
-
-        /// <summary>
-        /// Change_Selected_Database_ToMySql_DataBase - Use 'Change_Selected_DatabaseParams' to pass parameters into this method.
-        /// </summary>
+        
         public void Change_Selected_Database_ToMicrosoftSqlServer_DataBase()
         {
             var serverTypeComboBox = MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DBSourceWizardTab.WorkSurfaceContext.NewDBSourceWizard.ServerTypeComboBox;
@@ -888,9 +884,7 @@ namespace Warewolf.UITests
             Assert.IsTrue(!MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DBSourceWizardTab.WorkSurfaceContext.UserNameTextBox.TryGetClickablePoint(out point), "Username textbox is visible in db source wizard.");
             Assert.IsTrue(!MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DBSourceWizardTab.WorkSurfaceContext.PasswordTextBox.TryGetClickablePoint(out point), "Password textbox is visible in db source wizard.");
         }
-        /// <summary>
-        /// Change_Selected_Database_ToMySql_DataBase - Use 'Change_Selected_DatabaseParams' to pass parameters into this method.
-        /// </summary>
+
         public void Change_Selected_Database_ToOracle_DataBase()
         {
             var serverTypeComboBox = MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DBSourceWizardTab.WorkSurfaceContext.NewDBSourceWizard.ServerTypeComboBox;
@@ -904,10 +898,7 @@ namespace Warewolf.UITests
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DBSourceWizardTab.WorkSurfaceContext.UserNameTextBox.TryGetClickablePoint(out point), "Username textbox is visible in db source wizard.");
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DBSourceWizardTab.WorkSurfaceContext.PasswordTextBox.TryGetClickablePoint(out point), "Password textbox is visible in db source wizard.");
         }
-
-        /// <summary>
-        /// Change_Selected_Database_ToMySql_DataBase - Use 'Change_Selected_DatabaseParams' to pass parameters into this method.
-        /// </summary>
+        
         public void Change_Selected_Database_ToODBC_DataBase()
         {
             var serverTypeComboBox = MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DBSourceWizardTab.WorkSurfaceContext.NewDBSourceWizard.ServerTypeComboBox;
@@ -921,10 +912,7 @@ namespace Warewolf.UITests
             Assert.IsTrue(!MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DBSourceWizardTab.WorkSurfaceContext.UserNameTextBox.TryGetClickablePoint(out point), "Username textbox is visible in db source wizard.");
             Assert.IsTrue(!MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DBSourceWizardTab.WorkSurfaceContext.PasswordTextBox.TryGetClickablePoint(out point), "Password textbox is visible in db source wizard.");
         }
-
-        /// <summary>
-        /// Change_Selected_Database_ToMySql_DataBase - Use 'Change_Selected_DatabaseParams' to pass parameters into this method.
-        /// </summary>
+        
         public void Change_Selected_Database_ToPostgreSql_DataBase()
         {
             var serverTypeComboBox = MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DBSourceWizardTab.WorkSurfaceContext.NewDBSourceWizard.ServerTypeComboBox;
@@ -976,7 +964,7 @@ namespace Warewolf.UITests
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DeployTab.WorkSurfaceContext.NewResourcesText.Exists, "New Resource Label in the destination server does not exist in the deploy window");
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DeployTab.WorkSurfaceContext.OverrideText.Exists, "Override label on Destination Server does not exist in the deploy window");
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DeployTab.WorkSurfaceContext.DeployButton.Exists, "Deploy button in Destination server does not exist in the deploy window");
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DeployTab.WorkSurfaceContext.SuccessMessageText.Exists, "Success message label does not exist in destination server of the deploy window");
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DeployTab.WorkSurfaceContext.DeployButtonMessageText.Exists, "Success message label does not exist in destination server of the deploy window");
         }
 
         public void TryCloseDeployTab()
@@ -1011,6 +999,14 @@ namespace Warewolf.UITests
             // Click 'Test Connection' button
             Mouse.Click(testConnectionButton, new Point(21, 16));
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DBSourceWizardTab.WorkSurfaceContext.DatabaseCombobox.TryGetClickablePoint(out point), "Database Combobox does not exist");
+        }
+
+        public void Deploy_Service_From_Deploy_View(string ServiceName)
+        {
+            Enter_DeployViewOnly_Into_Deploy_Source_FilterParams.SearchTextboxText = ServiceName;
+            Enter_DeployViewOnly_Into_Deploy_Source_Filter();
+            Select_Deploy_First_Source_Item();
+            Click_Deploy_Tab_Deploy_Button();
         }
     }
 }
