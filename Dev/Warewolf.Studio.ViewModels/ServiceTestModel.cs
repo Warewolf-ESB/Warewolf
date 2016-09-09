@@ -38,6 +38,7 @@ namespace Warewolf.Studio.ViewModels
         {
             ParentId = resourceId;
         }
+      
 
         #region Implementation of IServiceTestModel
 

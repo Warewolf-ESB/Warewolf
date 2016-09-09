@@ -19,11 +19,11 @@ namespace Warewolf.Studio.ViewModels
 
         public DataListModel DataList { get; set; }
 
-        public IServiceTestModel CreateTest(IResourceModel resourceModel)
+        public IServiceTestModel CreateTest(IResourceModel resourceModel, int testNumber)
         {
             var testModel = new ServiceTestModel(resourceModel.ID)
             {
-                TestName = "Test 1",
+                TestName = "Test " + (testNumber == 0 ? 1 : testNumber),
                 IsDirty = true,
                 TestPending = true,
                 Enabled = true
@@ -31,7 +31,7 @@ namespace Warewolf.Studio.ViewModels
             if (!string.IsNullOrEmpty(resourceModel.DataList))
             {
 
-                DataList.Create(resourceModel.DataList,resourceModel.DataList);
+                DataList.Create(resourceModel.DataList, resourceModel.DataList);
                 var inputList = _dataListConversionUtils.GetInputs(DataList);
                 var outputList = _dataListConversionUtils.GetOutputs(DataList);
                 testModel.Inputs = inputList
@@ -42,7 +42,7 @@ namespace Warewolf.Studio.ViewModels
                         return serviceTestInput as IServiceTestInput;
                     }).ToList();
 
-                testModel.Outputs =  outputList
+                testModel.Outputs = outputList
                                     .Select(sca => new ServiceTestOutput(sca.DisplayValue, sca.Value) as IServiceTestOutput).ToList();
             }
             return testModel;
@@ -89,8 +89,24 @@ namespace Warewolf.Studio.ViewModels
         {
         }
 
-        public void DuplicateTest()
+        public IServiceTestModel DuplicateTest(IServiceTestModel selectedTest)
         {
+            var testClone = new ServiceTestModel(selectedTest.ParentId)
+            {
+                TestName = string.Concat(selectedTest.TestName, "_dup"),
+                IsDirty = true,
+                Inputs = selectedTest.Inputs,
+                Outputs = selectedTest.Outputs,
+                AuthenticationType = selectedTest.AuthenticationType,
+                Enabled = true,
+                ErrorExpected = selectedTest.ErrorExpected,
+                NoErrorExpected = selectedTest.NoErrorExpected,
+                IsTestSelected = true,
+                Password = selectedTest.Password,
+                TestPending = true,
+                UserName = selectedTest.UserName,
+            };
+            return testClone;
         }
 
         public void DeleteTest(IServiceTestModel selectedServiceTest)
