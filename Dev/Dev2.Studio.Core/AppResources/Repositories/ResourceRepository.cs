@@ -611,6 +611,23 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             return new List<IServiceTestModelTO>();
         }
 
+        public IServiceTestModelTO DeleteResourceTest(Guid resourceId, string testName)
+        {
+            var comsController = GetCommunicationController("DeleteResourceTest");
+            comsController.AddPayloadArgument("resourceID", resourceId.ToString());
+            comsController.AddPayloadArgument("testName", testName);
+            var executeCommand = comsController.ExecuteCommand<CompressedExecuteMessage>(_environmentModel.Connection, GlobalConstants.ServerWorkspaceID);
+            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+            var message = executeCommand.GetDecompressedMessage();
+            if (executeCommand.HasError)
+            {
+                var msg = serializer.Deserialize<StringBuilder>(message);
+                throw new Exception(msg.ToString());
+            }
+            var testsTO = serializer.Deserialize<IServiceTestModelTO>(message);
+            return testsTO;
+        }
+
         /// <summary>
         /// Stops the execution.
         /// </summary>

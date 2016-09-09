@@ -297,7 +297,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsNotNull(testFrameworkViewModel.Tests);
             var test = testFrameworkViewModel.Tests[0];
             Assert.IsNotNull(test);
-            Assert.AreEqual("Test 0", test.TestName);
+            Assert.AreEqual("Test 1", test.TestName);
         }
 
         [TestMethod]
@@ -604,8 +604,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             //------------Execute Test---------------------------
             var tests = serviceTestViewModel.Tests;
             //------------Assert Results-------------------------
-            Assert.AreEqual(1,tests.Count);
-            Assert.AreEqual("Create a new test.",tests[0].TestName);
+            Assert.AreEqual(1, tests.Count);
+            Assert.AreEqual("Create a new test.", tests[0].TestName);
         }
 
         [TestMethod]
@@ -625,8 +625,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             //------------Execute Test---------------------------
             var tests = serviceTestViewModel.Tests;
             //------------Assert Results-------------------------
-            Assert.AreEqual(1,tests.Count);
-            Assert.AreEqual("Create a new test.",tests[0].TestName);
+            Assert.AreEqual(1, tests.Count);
+            Assert.AreEqual("Create a new test.", tests[0].TestName);
         }
 
         [TestMethod]
@@ -654,12 +654,12 @@ namespace Warewolf.Studio.ViewModels.Tests
             //------------Execute Test---------------------------
             var tests = serviceTestViewModel.Tests;
             //------------Assert Results-------------------------
-            Assert.AreEqual(2,tests.Count);
+            Assert.AreEqual(2, tests.Count);
             Assert.AreEqual("Test From Server", tests[0].TestName);
             Assert.AreEqual(AuthenticationType.Public, tests[0].AuthenticationType);
             Assert.IsTrue(tests[0].Enabled);
-            Assert.AreEqual("Create a new test.",tests[1].TestName);
-            Assert.AreEqual(tests[0],serviceTestViewModel.SelectedServiceTest);
+            Assert.AreEqual("Create a new test.", tests[1].TestName);
+            Assert.AreEqual(tests[0], serviceTestViewModel.SelectedServiceTest);
         }
 
         [TestMethod]
@@ -757,6 +757,132 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(testFrameworkViewModel.SelectedServiceTest.TestName.Contains("_dup"));
         }
 
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void DeleteCommand_GivenSelectedTestIsDisabled_ShouldSetCanDeleteTrue()
+        {
+            //---------------Set up test pack-------------------
+            var testFrameworkViewModel = new ServiceTestViewModel(CreateMockResourceModelWithSingleScalarOutput());
+            testFrameworkViewModel.CreateTestCommand.Execute(null);
+            testFrameworkViewModel.Save();
+            //---------------Assert Precondition----------------
+            Assert.AreEqual("Test 1", testFrameworkViewModel.SelectedServiceTest.TestName);
+            //---------------Execute Test ----------------------
+            testFrameworkViewModel.SelectedServiceTest.Enabled = false;
+            var caDelete = testFrameworkViewModel.DeleteTestCommand.CanExecute(testFrameworkViewModel.SelectedServiceTest);
+            //---------------Test Result -----------------------
+            Assert.IsTrue(caDelete);
+
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void DeleteTestCommand_GivenNullTest_Execute_ShouldReturnNull()
+        {
+            //------------Setup for test--------------------------
+            var popupController = new Mock<IPopupController>();
+            CustomContainer.Register(popupController.Object);
+            var testFrameworkViewModel = new ServiceTestViewModel(CreateMockResourceModelWithSingleScalarOutput());
+            var mockServiceModel = new Mock<IServiceTestModel>();
+            mockServiceModel.Setup(a => a.NameForDisplay).Returns("TestName");
+            mockServiceModel.Setup(a => a.Enabled).Returns(false);
+            //------------Assert Preconditions-------------------
+            //------------Execute Test---------------------------
+
+            testFrameworkViewModel.DeleteTestCommand.Execute(null);
+            //------------Assert Results-------------------------
+            popupController.Verify(controller => controller.ShowDeleteConfirmation(It.IsAny<string>()), Times.Never);
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void DeleteTestCommand_GivenTests_ShouldShowConfirmation()
+        {
+            //------------Setup for test--------------------------
+            var popupController = new Mock<IPopupController>();
+            CustomContainer.Register(popupController.Object);
+            var testFrameworkViewModel = new ServiceTestViewModel(CreateMockResourceModelWithSingleScalarOutput());
+            var mockServiceModel = new Mock<IServiceTestModel>();
+            mockServiceModel.Setup(a => a.NameForDisplay).Returns("TestName");
+            mockServiceModel.Setup(a => a.Enabled).Returns(false);
+            //------------Assert Preconditions-------------------
+            //------------Execute Test---------------------------
+
+            testFrameworkViewModel.DeleteTestCommand.Execute(mockServiceModel.Object);
+            //------------Assert Results-------------------------
+            popupController.Verify(controller => controller.ShowDeleteConfirmation(It.IsAny<string>()), Times.Once);
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void DeleteTestCommand_GivenTests_ShouldRunDeleteOnResourceRepository()
+        {
+            //------------Setup for test--------------------------
+            var popupController = new Mock<IPopupController>();
+            popupController.Setup(controller => controller.ShowDeleteConfirmation(It.IsAny<string>())).Returns(MessageBoxResult.Yes);
+            CustomContainer.Register(popupController.Object);
+            var mockResourceModel = CreateMockResourceModel();
+            var resourceId = Guid.NewGuid();
+            const string testname = "TestName";
+            mockResourceModel.Setup(model => model.Environment.ResourceRepository.DeleteResourceTest(It.IsAny<Guid>(), It.IsAny<string>())).Returns(new ServiceTestModelTO { TestName = testname });
+            mockResourceModel.Setup(model => model.ID).Returns(resourceId);
+            var testFrameworkViewModel = new ServiceTestViewModel(mockResourceModel.Object);
+            var mockServiceModel = new Mock<IServiceTestModel>();
+
+            mockServiceModel.Setup(a => a.NameForDisplay).Returns(testname);
+            mockServiceModel.Setup(a => a.Enabled).Returns(false);
+
+            mockServiceModel.Setup(a => a.ParentId).Returns(resourceId);
+            //------------Assert Preconditions-------------------
+            //------------Execute Test---------------------------
+            testFrameworkViewModel.DeleteTestCommand.Execute(mockServiceModel.Object);
+            //------------Assert Results-------------------------
+            popupController.Verify(controller => controller.ShowDeleteConfirmation(It.IsAny<string>()), Times.Once);
+            mockResourceModel.Verify(model => model.Environment.ResourceRepository.DeleteResourceTest(It.IsAny<Guid>(), It.IsAny<string>()), Times.Once);
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void DeleteTestCommand_GivenTests_ShouldUpdateTestsCollection()
+        {
+            //------------Setup for test--------------------------
+            var popupController = new Mock<IPopupController>();
+            popupController.Setup(controller => controller.ShowDeleteConfirmation(It.IsAny<string>())).Returns(MessageBoxResult.Yes);
+            CustomContainer.Register(popupController.Object);
+            var mockResourceModel = CreateMockResourceModel();
+            var resourceId = Guid.NewGuid();
+            const string testname = "TestName";
+            mockResourceModel.Setup(model => model.Environment.ResourceRepository.DeleteResourceTest(It.IsAny<Guid>(), It.IsAny<string>())).Returns(new ServiceTestModelTO { TestName = testname });
+            mockResourceModel.Setup(model => model.ID).Returns(resourceId);
+            var testFrameworkViewModel = new ServiceTestViewModel(mockResourceModel.Object);
+            var mockServiceModel = new Mock<IServiceTestModel>();
+            bool wasCalled = false;
+            testFrameworkViewModel.PropertyChanged += (sender, args) =>
+            {
+                if (args.PropertyName == "Tests")
+                {
+                    wasCalled = true;
+                }
+            };
+
+            mockServiceModel.Setup(a => a.NameForDisplay).Returns(testname);
+            mockServiceModel.Setup(a => a.TestName).Returns(testname);
+            mockServiceModel.Setup(a => a.Enabled).Returns(false);
+            mockServiceModel.Setup(a => a.ParentId).Returns(resourceId);
+            testFrameworkViewModel.Tests.Add(mockServiceModel.Object);
+            //------------Assert Preconditions-------------------
+            var beforeDelete = GetTests(testFrameworkViewModel).Count;
+            Assert.AreEqual(1, beforeDelete);
+            //------------Execute Test---------------------------
+            testFrameworkViewModel.DeleteTestCommand.Execute(mockServiceModel.Object);
+            //------------Assert Results-------------------------
+            popupController.Verify(controller => controller.ShowDeleteConfirmation(It.IsAny<string>()), Times.Once);
+            mockResourceModel.Verify(model => model.Environment.ResourceRepository.DeleteResourceTest(It.IsAny<Guid>(), It.IsAny<string>()), Times.Once);
+            Assert.IsTrue(wasCalled);
+            Assert.AreEqual(beforeDelete - 1, GetTests(testFrameworkViewModel).Count);
+
+        }
+
         private IContextualResourceModel CreateResourceModelWithSingleScalarInput()
         {
             var resourceModel = CreateResourceModel();
@@ -800,8 +926,21 @@ namespace Warewolf.Studio.ViewModels.Tests
             dataListViewModel.InitializeDataListViewModel(resourceModel);
             dataListViewModel.ScalarCollection.Add(new ScalarItemModel("msg", enDev2ColumnArgumentDirection.Output));
             dataListViewModel.WriteToResourceModel();
-            moqModel.Setup(model => model.Environment.ResourceRepository.SaveTests(It.IsAny<Guid>(), It.IsAny<List<IServiceTestModel>>()));
+            moqModel.Setup(model => model.Environment.ResourceRepository.DeleteResourceTest(It.IsAny<Guid>(), It.IsAny<string>())).Returns(new ServiceTestModelTO());
             return moqModel.Object;
+        }
+
+        private Mock<IContextualResourceModel> CreateMockResourceModel()
+        {
+            var moqModel = new Mock<IContextualResourceModel>();
+            moqModel.SetupAllProperties();
+            moqModel.Setup(model => model.DisplayName).Returns("My WF");
+            var resourceModel = moqModel.Object;
+            var dataListViewModel = new DataListViewModel();
+            dataListViewModel.InitializeDataListViewModel(resourceModel);
+            dataListViewModel.ScalarCollection.Add(new ScalarItemModel("msg", enDev2ColumnArgumentDirection.Output));
+            dataListViewModel.WriteToResourceModel();
+            return moqModel;
         }
     }
 }
