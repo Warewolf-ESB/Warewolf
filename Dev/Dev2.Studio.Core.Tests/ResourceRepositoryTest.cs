@@ -1414,13 +1414,20 @@ namespace BusinessDesignStudio.Unit.Tests
             env.Setup(e => e.Connection).Returns(con.Object);
 
 
-            con.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Returns(new StringBuilder());
+
+            var serviceTestModel = new List<IServiceTestModelTO>();                           
+            Dev2JsonSerializer jsonSerializer = new Dev2JsonSerializer();
+            var payload = jsonSerializer.Serialize(serviceTestModel);
+            CompressedExecuteMessage message = new CompressedExecuteMessage();
+            message.SetMessage(payload);
+            var msgResult = jsonSerializer.Serialize(message);
+            con.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Returns(msgResult.ToStringBuilder);
 
             //------------Execute Test---------------------------
             var result = new ResourceRepository(env.Object);
             var serviceTestModels = result.LoadResourceTests(Guid.NewGuid());
             //------------Assert Results-------------------------
-            Assert.IsTrue( string.IsNullOrEmpty(serviceTestModels.ToString()));
+            Assert.AreEqual(0,serviceTestModels.Count);
         }
 
         [TestMethod]
@@ -2232,7 +2239,7 @@ namespace BusinessDesignStudio.Unit.Tests
 
             _repo.SaveToServer(_resourceModel.Object);
             PrivateObject p = new PrivateObject(_repo);
-            Assert.AreEqual(1, ((List<IResourceModel>)p.GetField("ResourceModels")).Count);
+            Assert.AreEqual(1, ((List<IResourceModel>)p.GetField("_resourceModels")).Count);
         }
 
         /// <summary>

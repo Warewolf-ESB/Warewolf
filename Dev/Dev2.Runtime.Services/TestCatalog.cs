@@ -22,6 +22,8 @@ namespace Dev2.Runtime
             return c;
         }, LazyThreadSafetyMode.PublicationOnly);
 
+        private FileWrapper _fileWrapper;
+
         /// <summary>
         /// Gets the instance.
         /// </summary>
@@ -32,6 +34,7 @@ namespace Dev2.Runtime
         public TestCatalog()
         {
             _directoryWrapper = new DirectoryWrapper();
+            _fileWrapper = new FileWrapper();
             _directoryWrapper.CreateIfNotExists(EnvironmentVariables.TestPath);
             Tests = new ConcurrentDictionary<Guid,List<IServiceTestModelTO>>();
             _serializer = new Dev2JsonSerializer();
@@ -50,7 +53,12 @@ namespace Dev2.Runtime
 
                 foreach (var serviceTestModelTo in serviceTestModelTos)
                 {
-                    var filePath = Path.Combine(dirPath, $"{serviceTestModelTo.TestName}.test");                    
+                    if (!string.Equals(serviceTestModelTo.OldTestName, serviceTestModelTo.TestName, StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        var oldFilePath = Path.Combine(dirPath, $"{serviceTestModelTo.OldTestName}.test");
+                        _fileWrapper.Delete(oldFilePath);
+                    }
+                    var filePath = Path.Combine(dirPath, $"{serviceTestModelTo.TestName}.test");
                     
                     var sw = new StreamWriter(filePath, false);
                     _serializer.Serialize(sw, serviceTestModelTo);
