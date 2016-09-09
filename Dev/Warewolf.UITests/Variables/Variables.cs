@@ -8,7 +8,7 @@ namespace Warewolf.UITests
     public class VariablesTests
     {
         [TestMethod]
-        public void BigDBConnectorUITest()
+        public void AssignValue_Filter_AndDeleteVariable()
         {
             Uimap.Click_New_Workflow_Ribbon_Button();
             Uimap.Drag_Toolbox_MultiAssign_Onto_DesignSurface();
