@@ -1418,7 +1418,7 @@ namespace BusinessDesignStudio.Unit.Tests
 
             //------------Execute Test---------------------------
             var result = new ResourceRepository(env.Object);
-            var serviceTestModels = result.LoadResourceTests(env.Object, Guid.NewGuid());
+            var serviceTestModels = result.LoadResourceTests(Guid.NewGuid());
             //------------Assert Results-------------------------
             Assert.IsTrue( string.IsNullOrEmpty(serviceTestModels.ToString()));
         }
@@ -1455,7 +1455,7 @@ namespace BusinessDesignStudio.Unit.Tests
 
             //------------Execute Test---------------------------
             var result = new ResourceRepository(env.Object);
-            var serviceTestModels = result.LoadResourceTests(env.Object,Guid.NewGuid());
+            var serviceTestModels = result.LoadResourceTests(Guid.NewGuid());
             //------------Assert Results-------------------------
             Assert.IsNotNull(serviceTestModels.ToString());
         }
@@ -1482,7 +1482,7 @@ namespace BusinessDesignStudio.Unit.Tests
             var result = new ResourceRepository(env.Object);
             try
             {
-                result.LoadResourceTests(env.Object,Guid.NewGuid());
+                result.LoadResourceTests(Guid.NewGuid());
             }
             catch(Exception ex)
             {

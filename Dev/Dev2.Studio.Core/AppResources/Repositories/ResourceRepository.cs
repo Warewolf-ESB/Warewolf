@@ -591,11 +591,11 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             return result;
         }
 
-        public List<IServiceTestModelTO> LoadResourceTests(IEnvironmentModel targetEnv, Guid resourceId)
+        public List<IServiceTestModelTO> LoadResourceTests(Guid resourceId)
         {
             var comsController = GetCommunicationController("FetchTests");
             comsController.AddPayloadArgument("resourceID", resourceId.ToString());
-            var executeCommand = comsController.ExecuteCommand<CompressedExecuteMessage>(targetEnv.Connection, GlobalConstants.ServerWorkspaceID);
+            var executeCommand = comsController.ExecuteCommand<CompressedExecuteMessage>(_environmentModel.Connection, GlobalConstants.ServerWorkspaceID);
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
             var message = executeCommand.GetDecompressedMessage();
             if (executeCommand.HasError)
