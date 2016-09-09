@@ -633,6 +633,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual(AuthenticationType.Public, tests[0].AuthenticationType);
             Assert.IsTrue(tests[0].Enabled);
             Assert.AreEqual("Create a new test.",tests[1].TestName);
+            Assert.AreEqual(tests[0],serviceTestViewModel.SelectedServiceTest);
         }
 
 
