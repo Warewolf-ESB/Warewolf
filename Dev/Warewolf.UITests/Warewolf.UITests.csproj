@@ -53,7 +53,7 @@
     </CodeAnalysisDependentAssemblyPaths>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Variables.cs" />
+    <Compile Include="Variables\Variables.cs" />
     <Compile Include="DebugInputWindow\SaveDebugInputs.cs" />
     <Compile Include="Explorer\WebConnector.cs" />
     <Compile Include="Explorer\PluginConnector.cs" />
