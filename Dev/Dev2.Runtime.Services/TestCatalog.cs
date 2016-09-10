@@ -7,6 +7,7 @@ using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Wrappers;
 using Dev2.Communication;
+// ReSharper disable LoopCanBeConvertedToQuery
 
 namespace Dev2.Runtime
 {
@@ -14,22 +15,15 @@ namespace Dev2.Runtime
     {
         private readonly DirectoryWrapper _directoryWrapper;
         private readonly Dev2JsonSerializer _serializer;
+        private readonly FileWrapper _fileWrapper;
 
-        #region Singleton Instance
         private static readonly Lazy<TestCatalog> LazyCat = new Lazy<TestCatalog>(() =>
         {
             var c = new TestCatalog();
             return c;
         }, LazyThreadSafetyMode.PublicationOnly);
 
-        private FileWrapper _fileWrapper;
-
-        /// <summary>
-        /// Gets the instance.
-        /// </summary>
         public static TestCatalog Instance => LazyCat.Value;
-
-        #endregion
 
         public TestCatalog()
         {
