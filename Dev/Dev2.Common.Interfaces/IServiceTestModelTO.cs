@@ -6,6 +6,7 @@ namespace Dev2.Common.Interfaces
 {
     public interface IServiceTestModelTO
     {
+        string OldTestName { get; set; }
         string TestName { get; set; }
         string UserName { get; set; }
         string Password { get; set; }
@@ -19,6 +20,7 @@ namespace Dev2.Common.Interfaces
         bool TestInvalid { get; set; }
         bool TestPending { get; set; }
         bool Enabled { get; set; }
+        bool IsDirty { get; set; }
         AuthenticationType AuthenticationType { get; set; }
     }
 }

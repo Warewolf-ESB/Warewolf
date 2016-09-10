@@ -7,6 +7,7 @@ namespace Dev2.Data
 {
     public class ServiceTestModelTO : IServiceTestModelTO
     {
+        public string OldTestName { get; set; }
         public string TestName { get; set; }
         public string UserName { get; set; }
         public string Password { get; set; }
@@ -20,6 +21,7 @@ namespace Dev2.Data
         public bool TestInvalid { get; set; }
         public bool TestPending { get; set; }
         public bool Enabled { get; set; }
+        public bool IsDirty { get; set; }
         public AuthenticationType AuthenticationType { get; set; }
     }
 }

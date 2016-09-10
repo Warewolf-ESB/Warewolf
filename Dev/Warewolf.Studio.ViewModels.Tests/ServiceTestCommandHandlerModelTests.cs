@@ -31,7 +31,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             var testModel = testFrameworkViewModel.CreateTest(CreateResourceModelWithNoInput(), 1);
             //------------Assert Results-------------------------
             Assert.IsNotNull(testModel);
-            Assert.IsNull(testModel.Inputs);
+            Assert.IsNotNull(testModel.Inputs);
+            Assert.AreEqual(0, testModel.Inputs.Count);
         }
 
         [TestMethod]
@@ -137,6 +138,13 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual(1, testModel.Inputs.Count);
             Assert.AreEqual("a", testModel.Inputs[0].Variable);
             Assert.AreEqual("", testModel.Inputs[0].Value);
+
+            var testModel1 = testFrameworkViewModel.CreateTest(CreateResourceModelWithSingleScalarInput(), 1);
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(testModel1);
+            Assert.AreEqual(1, testModel1.Inputs.Count);
+            Assert.AreEqual("a", testModel1.Inputs[0].Variable);
+            Assert.AreEqual("", testModel1.Inputs[0].Value);
         }
 
         [TestMethod]
@@ -178,24 +186,6 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual("rec(2).field", testModel.Inputs[2].Variable);
             Assert.AreEqual("", testModel.Inputs[2].Value);
 
-        }
-        [TestMethod]
-        [Owner("Pieter Terblanche")]
-        [TestCategory("TestCommandHandlerModelTests_DeleteTest")]
-        public void TestCommandHandlerModelTests_DeleteTest_Execute_ShouldThrowError()
-        {
-            //------------Setup for test--------------------------
-            var testFrameworkViewModel = new ServiceTestCommandHandlerModel();
-            var mockServiceModel = new Mock<IServiceTestModel>();
-            mockServiceModel.Setup(a => a.NameForDisplay).Returns("TestName");
-            mockServiceModel.Setup(a => a.Enabled).Returns(false);
-            //------------Assert Preconditions-------------------
-            //------------Execute Test---------------------------
-            var popupController = new Mock<Dev2.Common.Interfaces.Studio.Controller.IPopupController>();
-            CustomContainer.Register(popupController.Object);
-            testFrameworkViewModel.DeleteTest(mockServiceModel.Object);
-            //------------Assert Results-------------------------
-            popupController.Verify(controller => controller.ShowDeleteConfirmation(It.IsAny<string>()), Times.Once);
         }
 
         [TestMethod]
