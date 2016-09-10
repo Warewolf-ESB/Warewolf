@@ -5,25 +5,25 @@
 
 
 Background: Setup for workflows for tests
-			Given I have "Workflow 1" with inputs as
+		Given I have "Workflow 1" with inputs as
 			| Input Var Name |
 			| [[a]]          |
-			And "Workflow 1" has outputs as
+		And "Workflow 1" has outputs as
 			| Ouput Var Name  |
 			| [[outputValue]] |
-			Given I have "Workflow 2" with inputs as
+		Given I have "Workflow 2" with inputs as
 			| Input Var Name |
 			| [[rec().a]]    |
 			| [[rec().b]]    |
-			And "Workflow 2" has outputs as
+		And "Workflow 2" has outputs as
 			| Ouput Var Name |
 			| [[returnVal]]  |
-			 Given I have "Workflow 3" with inputs as
+		Given I have "Workflow 3" with inputs as
 			| Input Var Name |
 			| [[A]]              |
 			| [[B]]              |
 			| [[C]]              |
-			And "Workflow 3" has outputs as
+		And "Workflow 3" has outputs as
 			| Ouput Var Name |
 			| [[message]]    |
 
@@ -213,8 +213,55 @@ Scenario: Duplicate a test
 	When I right click "Test 1"
 	Then Duplicate Test in not Visible
 
-	 
-
+Scenario: Run a test with single scalar inputs and outputs
+	Given the test builder is open with existing service "Hello World"	
+	And Tab Header is "Hello World - Tests"
+	And there are no tests
+	When I click New Test
+	Then a new test is added
+	#And Tab Header is "Workflow 1 - Tests *"
+	And test name starts with "Test 1"
+	And username is blank
+	And password is blank
+	And inputs are
+	| Variable Name | Value |
+	| Name          |       |
+	And outputs as
+	| Variable Name | Value |
+	| Message       |       |
+	And save is enabled
+	And test status is pending
+	And test is enabled
+	And I update inputs as
+	| Variable Name | Value |
+	| Name          | Bob   |
+	And I update outputs as
+	| Variable Name | Value      |
+	| Message       | Hello Bob. |
+	And I save
+	When I run the test in debug mode
+	Then service inputs as
+		| Variable | Value |
+		| [[Name]] | Bob   |
+	Then the "Decision" debug inputs as
+	  | Recordset            |
+	  | [[rec(1).a]] = yes |
+	  | [[rec(2).a]] = no |
+	And the "Decsion"  debug outputs as    
+	  |               |
+	  | [[count]] = 2 |
+	And the "Assign" debug inputs as
+	  | # | Variable      | New Value |
+	  | 1 | [[rec().a]] = | yes       |
+	  | 2 | [[rec().a]] = | no        |
+	And the "Assign" debug outputs as    
+	  | # |                    |
+	  | 1 | [[rec(1).a]] = yes |
+	  | 2 | [[rec(2).a]] = no  |
+	And the service outputs as
+	  | Variable    | Value      |
+	  | [[Message]] | Hello Bob. |
+	And test result is Passed
 
 
 

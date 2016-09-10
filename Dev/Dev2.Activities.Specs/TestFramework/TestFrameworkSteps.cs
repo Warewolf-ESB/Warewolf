@@ -317,7 +317,9 @@ namespace Dev2.Activities.Specs.TestFramework
             Assert.IsTrue(serviceTest.SelectedServiceTest.Enabled);
         }
 
+        [Given(@"I save")]
         [When(@"I save")]
+        [Then(@"I save")]
         public void WhenISave()
         {
             ServiceTestViewModel serviceTest = GetTestFrameworkFromContext();
