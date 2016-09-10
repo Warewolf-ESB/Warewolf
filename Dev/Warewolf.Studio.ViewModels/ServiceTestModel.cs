@@ -268,9 +268,15 @@ namespace Warewolf.Studio.ViewModels
             }
             set
             {
+                if (_authenticationType != value)
+                {
+                    IsDirty = true;
+                }
+
                 _authenticationType = value;
                 OnPropertyChanged(() => AuthenticationType);
                 OnPropertyChanged(() => UserAuthenticationSelected);
+                OnPropertyChanged(() => NameForDisplay);
             }
         }
         public bool IsDirty

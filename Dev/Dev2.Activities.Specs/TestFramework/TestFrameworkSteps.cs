@@ -10,6 +10,7 @@ using Dev2.Studio.Core;
 using Dev2.Studio.Core.Models;
 using Dev2.Studio.Core.Models.DataList;
 using Dev2.Studio.ViewModels.DataList;
+using Dev2.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using TechTalk.SpecFlow;
@@ -54,7 +55,7 @@ namespace Dev2.Activities.Specs.TestFramework
             ScenarioContext.Add(workflowName, resourceModel);
             ScenarioContext.Add($"{workflowName}dataListViewModel", datalistViewModel);
             var popupController = new Mock<Common.Interfaces.Studio.Controller.IPopupController>();
-            
+            popupController.Setup(controller => controller.ShowDeleteConfirmation(It.IsAny<string>())).Returns(MessageBoxResult.Yes);
             CustomContainer.Register(popupController.Object);
 
             var containsKey = ScenarioContext.ContainsKey("popupController");
@@ -134,7 +135,7 @@ namespace Dev2.Activities.Specs.TestFramework
             ResourceModel resourceModel;
             if (ScenarioContext.TryGetValue(workflowName, out resourceModel))
             {
-                var testFramework = new ServiceTestViewModel(resourceModel);
+                var testFramework = new ServiceTestViewModel(resourceModel,new SynchronousAsyncWorker());
                 Assert.IsNotNull(testFramework);
                 Assert.IsNotNull(testFramework.ResourceModel);
                 ScenarioContext.Add("testFramework", testFramework);
@@ -207,7 +208,14 @@ namespace Dev2.Activities.Specs.TestFramework
         public void ThenIsSelected(string testName)
         {
             ServiceTestViewModel serviceTest = GetTestFrameworkFromContext();
-            Assert.AreEqual(testName, serviceTest.SelectedServiceTest.TestName);
+            if (testName == "Dummy Test")
+            {
+                Assert.IsNull(serviceTest.SelectedServiceTest);
+            }
+            else
+            {
+                Assert.AreEqual(testName, serviceTest.SelectedServiceTest.TestName);
+            }
         }
 
 
@@ -376,6 +384,13 @@ namespace Dev2.Activities.Specs.TestFramework
         {
             ServiceTestViewModel serviceTest = GetTestFrameworkFromContext();
             Assert.AreEqual(testName, serviceTest.SelectedServiceTest.TestName);
+        }
+
+        [Then(@"Name for display is ""(.*)""")]
+        public void ThenNameForDisplayIs(string nameForDisplay)
+        {
+            ServiceTestViewModel serviceTest = GetTestFrameworkFromContext();
+            Assert.AreEqual(nameForDisplay, serviceTest.SelectedServiceTest.NameForDisplay);
         }
 
         [Given(@"I select ""(.*)""")]

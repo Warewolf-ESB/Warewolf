@@ -64,8 +64,8 @@ namespace Dev2.Studio.Core.Interfaces
         IContextualResourceModel LoadContextualResourceModel(Guid resourceId);
         Task<ExecuteMessage> GetDependenciesXmlAsync(IContextualResourceModel resourceModel, bool getDependsOnMe);
         Task<IContextualResourceModel> LoadContextualResourceModelAsync(Guid resourceId);
-
         ExecuteMessage SaveTests(Guid resourceId, List<IServiceTestModel> tests);
         List<IServiceTestModelTO> LoadResourceTests(Guid resourceId);
+        IServiceTestModelTO DeleteResourceTest(Guid resourceId, string testName);
     }
 }

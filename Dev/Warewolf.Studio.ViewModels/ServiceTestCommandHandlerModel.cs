@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using Dev2;
@@ -26,11 +27,13 @@ namespace Warewolf.Studio.ViewModels
                 TestName = "Test " + (testNumber == 0 ? 1 : testNumber),
                 IsDirty = true,
                 TestPending = true,
-                Enabled = true
+                Enabled = true,
+                Inputs = new List<IServiceTestInput>(),
+                Outputs = new List<IServiceTestOutput>()
             };
             if (!string.IsNullOrEmpty(resourceModel.DataList))
             {
-
+                DataList = new DataListModel();
                 DataList.Create(resourceModel.DataList, resourceModel.DataList);
                 var inputList = _dataListConversionUtils.GetInputs(DataList);
                 var outputList = _dataListConversionUtils.GetOutputs(DataList);
@@ -39,7 +42,7 @@ namespace Warewolf.Studio.ViewModels
                     {
                         var serviceTestInput = new ServiceTestInput(sca.DisplayValue, sca.Value);
                         serviceTestInput.AddNewAction = () => testModel.AddRow(serviceTestInput, DataList);
-                        return serviceTestInput as IServiceTestInput;
+                        return (IServiceTestInput)serviceTestInput;
                     }).ToList();
 
                 testModel.Outputs = outputList
@@ -107,15 +110,6 @@ namespace Warewolf.Studio.ViewModels
                 UserName = selectedTest.UserName,
             };
             return testClone;
-        }
-
-        public void DeleteTest(IServiceTestModel selectedServiceTest)
-        {
-            var popupController = CustomContainer.Get<Dev2.Common.Interfaces.Studio.Controller.IPopupController>();
-            if (popupController.ShowDeleteConfirmation(selectedServiceTest.NameForDisplay.Replace("*", "").TrimEnd(' ')) == MessageBoxResult.Yes)
-            {
-                //Delete the test
-            }
         }
     }
 }
