@@ -342,7 +342,7 @@ namespace Warewolf.AcceptanceTesting.ComDll
     public class MyActivity : DsfComDllActivity
     {
         private IDSFDataObject _dsfDataObject;
-        public string _result = Empty;
+        public new string _result = Empty;
         
         public MyActivity(IDSFDataObject dsfDataObject, ComDllViewModel vm, DsfComDllActivity act)
         {           
