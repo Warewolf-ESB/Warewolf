@@ -11,7 +11,7 @@ namespace Warewolf.Studio.ServerProxyLayer
     public class VersionManagerProxy : Dev2.Common.Interfaces.ServerProxyLayer.IVersionManager {
         readonly Dev2.Studio.Core.Interfaces.IEnvironmentConnection _connection;
 
-        public VersionManagerProxy(Dev2.Studio.Core.Interfaces.IEnvironmentConnection connection, ICommunicationControllerFactory communicationControllerFactory)
+        public VersionManagerProxy(ICommunicationControllerFactory communicationControllerFactory, Dev2.Studio.Core.Interfaces.IEnvironmentConnection connection)
         {
             CommunicationControllerFactory = communicationControllerFactory;
             _connection = connection;

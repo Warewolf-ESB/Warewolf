@@ -67,7 +67,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
                     IsRefreshing = true;
                     if (_source.SelectedSource != null)
                     {
-                        Actions = model.GetActions(_source.SelectedSource);
+                        Actions = model.RefreshActions(_source.SelectedSource);
                     }
                     IsRefreshing = false;
                 }, CanRefresh);
