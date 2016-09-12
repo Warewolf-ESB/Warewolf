@@ -338,7 +338,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             con.Setup(connection => connection.IsConnected).Returns(true);
             con.Setup(model => model.WebServerUri).Returns(new Uri("http://rsaklf/bob"));
             var mockResourceRepo = new Mock<IResourceRepository>();
-            mockResourceRepo.Setup(repository => repository.SaveTests(It.IsAny<Guid>(), It.IsAny<List<IServiceTestModel>>()));
+            mockResourceRepo.Setup(repository => repository.SaveTests(It.IsAny<Guid>(), It.IsAny<List<IServiceTestModelTO>>()));
             mockEnvironmentModel.Setup(model => model.ResourceRepository).Returns(mockResourceRepo.Object);
             mockEnvironmentModel.Setup(model => model.Connection).Returns(con.Object);
             mockEnvironmentModel.Setup(model => model.IsConnected).Returns(true);
