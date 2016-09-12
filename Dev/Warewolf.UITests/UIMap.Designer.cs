@@ -5885,6 +5885,44 @@ namespace Warewolf.UITests
             Mouse.Click(configureSettingsButton, new Point(7, 13));
         }
         
+        /// <summary>
+        /// Click_Duplicate_From_ExplorerContextMenu - Use 'Click_Duplicate_From_ExplorerContextMenuParams' to pass parameters into this method.
+        /// </summary>
+        public void Click_Duplicate_From_ExplorerContextMenu()
+        {
+            #region Variable Declarations
+            WpfMenuItem duplicate = this.MainStudioWindow.ExplorerContextMenu.Duplicate;
+            #endregion
+
+            // Verify that the 'Exists' property of 'Duplicate' menu item equals 'True'
+            Assert.AreEqual(this.Click_Duplicate_From_ExplorerContextMenuParams.DuplicateExists, duplicate.Exists, "Duplicate button does not exist");
+
+            // Verify that the 'Enabled' property of 'Duplicate' menu item equals 'True'
+            Assert.AreEqual(this.Click_Duplicate_From_ExplorerContextMenuParams.DuplicateEnabled, duplicate.Enabled, "Duplicate button is disabled");
+
+            // Click 'Duplicate' menu item
+            Mouse.Click(duplicate, new Point(62, 12));
+        }
+        
+        /// <summary>
+        /// Click_ViewSwagger_From_ExplorerContextMenu - Use 'Click_ViewSwagger_From_ExplorerContextMenuParams' to pass parameters into this method.
+        /// </summary>
+        public void Click_ViewSwagger_From_ExplorerContextMenu()
+        {
+            #region Variable Declarations
+            WpfMenuItem viewSwagger = this.MainStudioWindow.ExplorerContextMenu.ViewSwagger;
+            #endregion
+
+            // Verify that the 'Exists' property of 'View Swagger' menu item equals 'True'
+            Assert.AreEqual(this.Click_ViewSwagger_From_ExplorerContextMenuParams.ViewSwaggerExists, viewSwagger.Exists, "View Swagger button does not exist");
+
+            // Verify that the 'Enabled' property of 'View Swagger' menu item equals 'True'
+            Assert.AreEqual(this.Click_ViewSwagger_From_ExplorerContextMenuParams.ViewSwaggerEnabled, viewSwagger.Enabled, "View swagger is disabled");
+
+            // Click 'View Swagger' menu item
+            Mouse.Click(viewSwagger, new Point(82, 16));
+        }
+        
         #region Properties
         public virtual Assert_CancelConnectionButton_ExistsExpectedValues Assert_CancelConnectionButton_ExistsExpectedValues
         {
@@ -8082,6 +8120,30 @@ namespace Warewolf.UITests
             }
         }
         
+        public virtual Click_Duplicate_From_ExplorerContextMenuParams Click_Duplicate_From_ExplorerContextMenuParams
+        {
+            get
+            {
+                if ((this.mClick_Duplicate_From_ExplorerContextMenuParams == null))
+                {
+                    this.mClick_Duplicate_From_ExplorerContextMenuParams = new Click_Duplicate_From_ExplorerContextMenuParams();
+                }
+                return this.mClick_Duplicate_From_ExplorerContextMenuParams;
+            }
+        }
+        
+        public virtual Click_ViewSwagger_From_ExplorerContextMenuParams Click_ViewSwagger_From_ExplorerContextMenuParams
+        {
+            get
+            {
+                if ((this.mClick_ViewSwagger_From_ExplorerContextMenuParams == null))
+                {
+                    this.mClick_ViewSwagger_From_ExplorerContextMenuParams = new Click_ViewSwagger_From_ExplorerContextMenuParams();
+                }
+                return this.mClick_ViewSwagger_From_ExplorerContextMenuParams;
+            }
+        }
+        
         public MainStudioWindow MainStudioWindow
         {
             get
@@ -8175,18 +8237,6 @@ namespace Warewolf.UITests
                     this.mSwitchCaseDialog = new SwitchCaseDialog();
                 }
                 return this.mSwitchCaseDialog;
-            }
-        }
-        
-        public UIWarewolfDEV2ASHLEYLEWindow UIWarewolfDEV2ASHLEYLEWindow
-        {
-            get
-            {
-                if ((this.mUIWarewolfDEV2ASHLEYLEWindow == null))
-                {
-                    this.mUIWarewolfDEV2ASHLEYLEWindow = new UIWarewolfDEV2ASHLEYLEWindow();
-                }
-                return this.mUIWarewolfDEV2ASHLEYLEWindow;
             }
         }
         
@@ -8570,6 +8620,10 @@ namespace Warewolf.UITests
         
         private Click_ConfigureSetting_From_MenuParams mClick_ConfigureSetting_From_MenuParams;
         
+        private Click_Duplicate_From_ExplorerContextMenuParams mClick_Duplicate_From_ExplorerContextMenuParams;
+        
+        private Click_ViewSwagger_From_ExplorerContextMenuParams mClick_ViewSwagger_From_ExplorerContextMenuParams;
+        
         private MainStudioWindow mMainStudioWindow;
         
         private MessageBoxWindow mMessageBoxWindow;
@@ -8585,8 +8639,6 @@ namespace Warewolf.UITests
         private ServicePickerDialog mServicePickerDialog;
         
         private SwitchCaseDialog mSwitchCaseDialog;
-        
-        private UIWarewolfDEV2ASHLEYLEWindow mUIWarewolfDEV2ASHLEYLEWindow;
         
         private UIWarewolfDEV2SANELEMTWindow mUIWarewolfDEV2SANELEMTWindow;
         #endregion
@@ -12362,6 +12414,46 @@ namespace Warewolf.UITests
         #endregion
     }
     
+    /// <summary>
+    /// Parameters to be passed into 'Click_Duplicate_From_ExplorerContextMenu'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Click_Duplicate_From_ExplorerContextMenuParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Duplicate' menu item equals 'True'
+        /// </summary>
+        public bool DuplicateExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Enabled' property of 'Duplicate' menu item equals 'True'
+        /// </summary>
+        public bool DuplicateEnabled = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Click_ViewSwagger_From_ExplorerContextMenu'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Click_ViewSwagger_From_ExplorerContextMenuParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'View Swagger' menu item equals 'True'
+        /// </summary>
+        public bool ViewSwaggerExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Enabled' property of 'View Swagger' menu item equals 'True'
+        /// </summary>
+        public bool ViewSwaggerEnabled = true;
+        #endregion
+    }
+    
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class MainStudioWindow : WpfWindow
     {
@@ -13340,6 +13432,38 @@ namespace Warewolf.UITests
                 return this.mShowDependencies;
             }
         }
+        
+        public WpfMenuItem Duplicate
+        {
+            get
+            {
+                if ((this.mDuplicate == null))
+                {
+                    this.mDuplicate = new WpfMenuItem(this);
+                    #region Search Criteria
+                    this.mDuplicate.SearchProperties[WpfMenuItem.PropertyNames.AutomationId] = "Duplicate";
+                    this.mDuplicate.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mDuplicate;
+            }
+        }
+        
+        public WpfMenuItem ViewSwagger
+        {
+            get
+            {
+                if ((this.mViewSwagger == null))
+                {
+                    this.mViewSwagger = new WpfMenuItem(this);
+                    #region Search Criteria
+                    this.mViewSwagger.SearchProperties[WpfMenuItem.PropertyNames.AutomationId] = "ViewSwagger";
+                    this.mViewSwagger.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mViewSwagger;
+            }
+        }
         #endregion
         
         #region Fields
@@ -13372,6 +13496,10 @@ namespace Warewolf.UITests
         private WpfMenuItem mShowServerVersion;
         
         private WpfMenuItem mShowDependencies;
+        
+        private WpfMenuItem mDuplicate;
+        
+        private WpfMenuItem mViewSwagger;
         #endregion
     }
     
@@ -36516,141 +36644,6 @@ namespace Warewolf.UITests
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class UIWarewolfDEV2ASHLEYLEWindow : WpfWindow
-    {
-        
-        public UIWarewolfDEV2ASHLEYLEWindow()
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfWindow.PropertyNames.Name] = "Warewolf (DEV2\\ASHLEY.LEWIS)";
-            this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
-            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
-            #endregion
-        }
-        
-        #region Properties
-        public UIUI_SplitPane_AutoIDCustom UIUI_SplitPane_AutoIDCustom
-        {
-            get
-            {
-                if ((this.mUIUI_SplitPane_AutoIDCustom == null))
-                {
-                    this.mUIUI_SplitPane_AutoIDCustom = new UIUI_SplitPane_AutoIDCustom(this);
-                }
-                return this.mUIUI_SplitPane_AutoIDCustom;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private UIUI_SplitPane_AutoIDCustom mUIUI_SplitPane_AutoIDCustom;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class UIUI_SplitPane_AutoIDCustom : WpfCustom
-    {
-        
-        public UIUI_SplitPane_AutoIDCustom(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.SplitPane";
-            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "UI_SplitPane_AutoID";
-            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
-            #endregion
-        }
-        
-        #region Properties
-        public UIUI_TabManager_AutoIDTabList UIUI_TabManager_AutoIDTabList
-        {
-            get
-            {
-                if ((this.mUIUI_TabManager_AutoIDTabList == null))
-                {
-                    this.mUIUI_TabManager_AutoIDTabList = new UIUI_TabManager_AutoIDTabList(this);
-                }
-                return this.mUIUI_TabManager_AutoIDTabList;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private UIUI_TabManager_AutoIDTabList mUIUI_TabManager_AutoIDTabList;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class UIUI_TabManager_AutoIDTabList : WpfTabList
-    {
-        
-        public UIUI_TabManager_AutoIDTabList(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfTabList.PropertyNames.AutomationId] = "UI_TabManager_AutoID";
-            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
-            #endregion
-        }
-        
-        #region Properties
-        public UIDev2ViewModelsSourceTabPage UIDev2ViewModelsSourceTabPage
-        {
-            get
-            {
-                if ((this.mUIDev2ViewModelsSourceTabPage == null))
-                {
-                    this.mUIDev2ViewModelsSourceTabPage = new UIDev2ViewModelsSourceTabPage(this);
-                }
-                return this.mUIDev2ViewModelsSourceTabPage;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private UIDev2ViewModelsSourceTabPage mUIDev2ViewModelsSourceTabPage;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class UIDev2ViewModelsSourceTabPage : WpfTabPage
-    {
-        
-        public UIDev2ViewModelsSourceTabPage(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfTabPage.PropertyNames.Name] = "Dev2.ViewModels.SourceViewModel`1[Dev2.Common.Interfaces.ServerProxyLayer.IDbSour" +
-                "ce]";
-            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
-            #endregion
-        }
-        
-        #region Properties
-        public WpfCustom UIDev2StudioViewModelsCustom
-        {
-            get
-            {
-                if ((this.mUIDev2StudioViewModelsCustom == null))
-                {
-                    this.mUIDev2StudioViewModelsCustom = new WpfCustom(this);
-                    #region Search Criteria
-                    this.mUIDev2StudioViewModelsCustom.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ContentPane";
-                    this.mUIDev2StudioViewModelsCustom.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Dev2.Studio.ViewModels.WorkSurface.WorkSurfaceContextViewModel";
-                    this.mUIDev2StudioViewModelsCustom.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
-                    #endregion
-                }
-                return this.mUIDev2StudioViewModelsCustom;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfCustom mUIDev2StudioViewModelsCustom;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class UIWarewolfDEV2SANELEMTWindow : WpfWindow
     {
         
@@ -36675,10 +36668,52 @@ namespace Warewolf.UITests
                 return this.mUIItemCustom;
             }
         }
+        
+        public UIExplorerMenuMenu UIExplorerMenuMenu
+        {
+            get
+            {
+                if ((this.mUIExplorerMenuMenu == null))
+                {
+                    this.mUIExplorerMenuMenu = new UIExplorerMenuMenu(this);
+                }
+                return this.mUIExplorerMenuMenu;
+            }
+        }
+        
+        public UIUI_ExplorerControl_ACustom UIUI_ExplorerControl_ACustom
+        {
+            get
+            {
+                if ((this.mUIUI_ExplorerControl_ACustom == null))
+                {
+                    this.mUIUI_ExplorerControl_ACustom = new UIUI_ExplorerControl_ACustom(this);
+                }
+                return this.mUIUI_ExplorerControl_ACustom;
+            }
+        }
+        
+        public UIExplorerMenuMenu1 UIExplorerMenuMenu1
+        {
+            get
+            {
+                if ((this.mUIExplorerMenuMenu1 == null))
+                {
+                    this.mUIExplorerMenuMenu1 = new UIExplorerMenuMenu1(this);
+                }
+                return this.mUIExplorerMenuMenu1;
+            }
+        }
         #endregion
         
         #region Fields
         private UIItemCustom mUIItemCustom;
+        
+        private UIExplorerMenuMenu mUIExplorerMenuMenu;
+        
+        private UIUI_ExplorerControl_ACustom mUIUI_ExplorerControl_ACustom;
+        
+        private UIExplorerMenuMenu1 mUIExplorerMenuMenu1;
         #endregion
     }
     
@@ -36747,6 +36782,181 @@ namespace Warewolf.UITests
         
         #region Fields
         private WpfText mUIItemText1;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIExplorerMenuMenu : WpfMenu
+    {
+        
+        public UIExplorerMenuMenu(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfMenu.PropertyNames.AutomationId] = "ExplorerMenu";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfMenuItem UIDuplicateMenuItem
+        {
+            get
+            {
+                if ((this.mUIDuplicateMenuItem == null))
+                {
+                    this.mUIDuplicateMenuItem = new WpfMenuItem(this);
+                    #region Search Criteria
+                    this.mUIDuplicateMenuItem.SearchProperties[WpfMenuItem.PropertyNames.AutomationId] = "Duplicate";
+                    this.mUIDuplicateMenuItem.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mUIDuplicateMenuItem;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfMenuItem mUIDuplicateMenuItem;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIUI_ExplorerControl_ACustom : WpfCustom
+    {
+        
+        public UIUI_ExplorerControl_ACustom(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ExplorerView";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "UI_ExplorerControl_AutoID";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public UIExplorerTreeTree UIExplorerTreeTree
+        {
+            get
+            {
+                if ((this.mUIExplorerTreeTree == null))
+                {
+                    this.mUIExplorerTreeTree = new UIExplorerTreeTree(this);
+                }
+                return this.mUIExplorerTreeTree;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIExplorerTreeTree mUIExplorerTreeTree;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIExplorerTreeTree : WpfTree
+    {
+        
+        public UIExplorerTreeTree(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfTree.PropertyNames.AutomationId] = "ExplorerTree";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public UIInfragisticsControlsTreeItem UIInfragisticsControlsTreeItem
+        {
+            get
+            {
+                if ((this.mUIInfragisticsControlsTreeItem == null))
+                {
+                    this.mUIInfragisticsControlsTreeItem = new UIInfragisticsControlsTreeItem(this);
+                }
+                return this.mUIInfragisticsControlsTreeItem;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIInfragisticsControlsTreeItem mUIInfragisticsControlsTreeItem;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIInfragisticsControlsTreeItem : WpfTreeItem
+    {
+        
+        public UIInfragisticsControlsTreeItem(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfTreeItem.PropertyNames.Name] = "Infragistics.Controls.Menus.XamDataTreeNodeDataContext";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfTreeItem UIInfragisticsControlsTreeItem1
+        {
+            get
+            {
+                if ((this.mUIInfragisticsControlsTreeItem1 == null))
+                {
+                    this.mUIInfragisticsControlsTreeItem1 = new WpfTreeItem(this);
+                    #region Search Criteria
+                    this.mUIInfragisticsControlsTreeItem1.SearchProperties[WpfTreeItem.PropertyNames.Name] = "Infragistics.Controls.Menus.XamDataTreeNodeDataContext";
+                    this.mUIInfragisticsControlsTreeItem1.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mUIInfragisticsControlsTreeItem1.SearchConfigurations.Add(SearchConfiguration.DisambiguateChild);
+                    this.mUIInfragisticsControlsTreeItem1.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mUIInfragisticsControlsTreeItem1;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfTreeItem mUIInfragisticsControlsTreeItem1;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIExplorerMenuMenu1 : WpfMenu
+    {
+        
+        public UIExplorerMenuMenu1(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfMenu.PropertyNames.AutomationId] = "ExplorerMenu";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfMenuItem UIViewSwaggerMenuItem
+        {
+            get
+            {
+                if ((this.mUIViewSwaggerMenuItem == null))
+                {
+                    this.mUIViewSwaggerMenuItem = new WpfMenuItem(this);
+                    #region Search Criteria
+                    this.mUIViewSwaggerMenuItem.SearchProperties[WpfMenuItem.PropertyNames.AutomationId] = "ViewSwagger";
+                    this.mUIViewSwaggerMenuItem.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mUIViewSwaggerMenuItem;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfMenuItem mUIViewSwaggerMenuItem;
         #endregion
     }
 }
