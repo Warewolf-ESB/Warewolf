@@ -66,6 +66,6 @@ namespace Dev2.Studio.Core.Interfaces
         Task<IContextualResourceModel> LoadContextualResourceModelAsync(Guid resourceId);
         ExecuteMessage SaveTests(Guid resourceId, List<IServiceTestModel> tests);
         List<IServiceTestModelTO> LoadResourceTests(Guid resourceId);
-        IServiceTestModelTO DeleteResourceTest(Guid resourceId, string testName);
+        void DeleteResourceTest(Guid resourceId, string testName);
     }
 }

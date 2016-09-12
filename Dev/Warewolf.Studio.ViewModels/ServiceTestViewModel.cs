@@ -48,10 +48,8 @@ namespace Warewolf.Studio.ViewModels
             CreateTestCommand = new DelegateCommand(CreateTests);
             DeleteTestCommand = new DelegateCommand<IServiceTestModel>(selectedServiceTest =>
             {
-                var serviceTestModel = DeleteTest(selectedServiceTest);
-                var testToRemove = Tests.SingleOrDefault(model => model.ParentId == serviceTestModel?.ParentId && model.TestName == serviceTestModel.TestName);
-                Tests.Remove(testToRemove);//test
-                OnPropertyChanged(() => Tests);//test
+                DeleteTest(selectedServiceTest);
+                
             }, CanDeleteTest);
             DuplicateTestCommand = new DelegateCommand(() =>
             {
@@ -272,25 +270,26 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        private IServiceTestModel DeleteTest(IServiceTestModel model)
+        private void DeleteTest(IServiceTestModel test)
         {
-            if(model == null) return default(ServiceTestModel);
-            var nameOfItemBeingDeleted = model.NameForDisplay.Replace("*", "").TrimEnd(' ');
+            if(test == null) return;
+            var nameOfItemBeingDeleted = test.NameForDisplay.Replace("*", "").TrimEnd(' ');
             if (PopupController.ShowDeleteConfirmation(nameOfItemBeingDeleted) == MessageBoxResult.Yes)
             {
                 try
                 {
-                    var serviceTestModelTO = ResourceModel.Environment.ResourceRepository.DeleteResourceTest(ResourceModel.ID, model.TestName);
-                    IServiceTestModel serviceTestModel = new ServiceTestModel(ResourceModel.ID) { TestName = serviceTestModelTO.TestName };
-                    return serviceTestModel;
+                    ResourceModel.Environment.ResourceRepository.DeleteResourceTest(ResourceModel.ID, test.TestName);
+                    var testToRemove = Tests.SingleOrDefault(model => model.ParentId == test.ParentId && model.TestName == test.TestName);
+                    Tests.Remove(testToRemove);//test
+                    OnPropertyChanged(() => Tests);//test
                 }
                 catch (Exception ex)
                 {
                     Dev2Logger.Error("IServiceTestModelTO DeleteTest(IServiceTestModel model)", ex);
-                    return default(ServiceTestModel);
+                    return;
                 }
             }
-            return default(ServiceTestModel);
+            return;
         }
 
         private ObservableCollection<IServiceTestModel> GetTests()

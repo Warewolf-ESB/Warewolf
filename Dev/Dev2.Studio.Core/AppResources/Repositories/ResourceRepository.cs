@@ -612,9 +612,9 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             return new List<IServiceTestModelTO>();
         }
 
-        public IServiceTestModelTO DeleteResourceTest(Guid resourceId, string testName)
+        public void DeleteResourceTest(Guid resourceId, string testName)
         {
-            var comsController = GetCommunicationController("DeleteResourceTest");
+            var comsController = GetCommunicationController("DeleteTest");
             comsController.AddPayloadArgument("resourceID", resourceId.ToString());
             comsController.AddPayloadArgument("testName", testName);
             var executeCommand = comsController.ExecuteCommand<CompressedExecuteMessage>(_environmentModel.Connection, GlobalConstants.ServerWorkspaceID);
@@ -624,9 +624,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             {
                 var msg = serializer.Deserialize<StringBuilder>(message);
                 throw new Exception(msg.ToString());
-            }
-            var testsTO = serializer.Deserialize<IServiceTestModelTO>(message);
-            return testsTO;
+            }            
         }
 
         /// <summary>
