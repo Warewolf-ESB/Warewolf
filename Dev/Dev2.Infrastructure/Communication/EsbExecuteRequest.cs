@@ -32,6 +32,8 @@ namespace Dev2.Communication
             }
         }
 
+        public string TestName { get; set; }
+
         public Dictionary<string, StringBuilder> Args { get; set; }
 
         public StringBuilder ExecuteResult { get; set; }

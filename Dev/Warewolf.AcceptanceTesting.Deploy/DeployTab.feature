@@ -253,6 +253,20 @@ Scenario: Deploy Based on permission Deploy From
      When selected Destination Server is "Remote"
 	 And destination is connected
 
+Scenario: Deploy resource Tests message
+	 Given I have deploy tab opened
+	 And selected Source Server is "localhost"
+	 And source is connected
+	 When selected Destination Server is "Remote"
+	 And destination is connected
+	 When I select "Examples\Utility - Date and Time" from Source Server
+	 And I select deploy Reource Test
+	 And deploy is enabled
+	 And I deploy
+	 Then deploy is successfull
+	 And the Deploy validation message is "1 Resource Deployed Successfully."
+
+
 ###REQUIREMENTS Check to see what needs to be included
 
 

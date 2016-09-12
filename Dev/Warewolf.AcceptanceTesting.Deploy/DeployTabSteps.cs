@@ -99,7 +99,7 @@ namespace Warewolf.AcceptanceTesting.Deploy
         {
             var shell = new Mock<IShellViewModel>();
             shell.Setup(a => a.LocalhostServer).Returns(GetMockServer(name));
-            shell.Setup(a => a.DeployResources(It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<IList<Guid>>())).Callback(() =>
+            shell.Setup(a => a.DeployResources(It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<IList<Guid>>(), It.IsAny<bool>())).Callback(() =>
             {
                 _deployed = true;
             });
@@ -318,6 +318,13 @@ namespace Warewolf.AcceptanceTesting.Deploy
             GetView().SelectPath(p0);
         }
 
+        [When(@"I select deploy Reource Test")]
+        public void WhenISelectDeployReourceTest()
+        {
+            var singleExplorerDeployViewModel = GetVm();
+            singleExplorerDeployViewModel.Destination.DeployTests = true;
+        }
+
         [When(@"I check ""(.*)"" on Source Server")]
         public void WhenICheckOnSourceServer(string p0)
         {
@@ -377,6 +384,15 @@ namespace Warewolf.AcceptanceTesting.Deploy
         {
             GetView().DeployItems();
         }
+
+        [When(@"deploy is enabled")]
+        public void WhenDeployIsEnabled()
+        {
+            var deployViewModel = GetVm();
+            var canDuplicate = deployViewModel.DeployCommand.CanExecute(null);
+            Assert.IsTrue(canDuplicate);
+        }
+
 
         [Then(@"deploy is successfull")]
         public void ThenDeployIsSuccessfull()

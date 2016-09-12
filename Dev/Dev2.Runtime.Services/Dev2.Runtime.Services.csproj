@@ -212,6 +212,7 @@
     <Compile Include="ESB\Management\Services\FetchServerPermissions.cs" />
     <Compile Include="ESB\Management\Services\FetchRabbitMQServiceSources.cs" />
     <Compile Include="ESB\Management\Services\FetchTests.cs" />
+    <Compile Include="ESB\Management\Services\FetchTestsForDeploy.cs" />
     <Compile Include="ESB\Management\Services\FetchWcfAction.cs" />
     <Compile Include="ESB\Management\Services\FetchWcfSources.cs" />
     <Compile Include="ESB\Management\Services\FetchWebSources.cs" />

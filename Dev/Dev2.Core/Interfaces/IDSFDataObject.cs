@@ -28,6 +28,8 @@ namespace Dev2.Interfaces
         string CurrentBookmarkName { get; set; }
         Guid WorkflowInstanceId { get; set; }
         string ServiceName { get; set; }
+        string TestName { get; set; }
+        bool IsServiceTestExecution { get; set; }
         string ParentWorkflowInstanceId { get; set; }
         string ParentServiceName { get; set; }
         StringBuilder DataList { get; set; }

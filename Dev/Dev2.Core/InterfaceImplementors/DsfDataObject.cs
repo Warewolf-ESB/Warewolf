@@ -248,6 +248,8 @@ namespace Dev2.DynamicServices
         public Dictionary<int, List<Guid>> ThreadsToDispose { get; set; }
         public string CurrentBookmarkName { get; set; }
         public string ServiceName { get; set; }
+        public string TestName { get; set; }
+        public bool IsServiceTestExecution { get; set; }
         public Guid WorkflowInstanceId { get; set; }
         public bool IsDebug { get; set; }
         public Guid WorkspaceID { get; set; }
@@ -382,6 +384,8 @@ namespace Dev2.DynamicServices
             result.EsbChannel = EsbChannel;
             result.ExecutionToken = ExecutionToken;
             result.ForEachUpdateValue = ForEachUpdateValue;
+            result.TestName = TestName;
+            result.IsServiceTestExecution = IsServiceTestExecution;
             return result;
         }
 
