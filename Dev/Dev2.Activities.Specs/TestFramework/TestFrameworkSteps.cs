@@ -42,7 +42,7 @@ namespace Dev2.Activities.Specs.TestFramework
                 DisplayName = workflowName,
                 DataList = "",
                 ID = Guid.NewGuid()
-                
+
             };
 
             var datalistViewModel = new DataListViewModel();
@@ -56,13 +56,11 @@ namespace Dev2.Activities.Specs.TestFramework
             ScenarioContext.Add($"{workflowName}dataListViewModel", datalistViewModel);
             var popupController = new Mock<Common.Interfaces.Studio.Controller.IPopupController>();
             popupController.Setup(controller => controller.ShowDeleteConfirmation(It.IsAny<string>())).Returns(MessageBoxResult.Yes);
+            popupController.Setup(controller => controller.Show(It.IsAny<string>(), It.IsAny<string>(), MessageBoxButton.OK, MessageBoxImage.Error, null, false, true, false, false)
+                                                                ).Verifiable();
             CustomContainer.Register(popupController.Object);
 
-            var containsKey = ScenarioContext.ContainsKey("popupController");
-            if (!containsKey)
-            {
-                ScenarioContext.Add("popupController", popupController);
-            }
+            ScenarioContext["popupController"] = popupController;
 
         }
 
@@ -135,7 +133,7 @@ namespace Dev2.Activities.Specs.TestFramework
             ResourceModel resourceModel;
             if (ScenarioContext.TryGetValue(workflowName, out resourceModel))
             {
-                var testFramework = new ServiceTestViewModel(resourceModel,new SynchronousAsyncWorker());
+                var testFramework = new ServiceTestViewModel(resourceModel, new SynchronousAsyncWorker());
                 Assert.IsNotNull(testFramework);
                 Assert.IsNotNull(testFramework.ResourceModel);
                 ScenarioContext.Add("testFramework", testFramework);
@@ -168,7 +166,7 @@ namespace Dev2.Activities.Specs.TestFramework
         public void WhenTheConfirmationPopupIsShownIClickOk()
         {
             Mock<Common.Interfaces.Studio.Controller.IPopupController> popupController = ScenarioContext.Get<Mock<Common.Interfaces.Studio.Controller.IPopupController>>("popupController");
-            popupController.Setup(controller => controller.Show(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<MessageBoxButton>(), It.IsAny<MessageBoxImage>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>())).Returns(MessageBoxResult.Yes);
+            popupController.Verify(controller => controller.ShowDeleteConfirmation(It.IsAny<string>()));
         }
 
 
@@ -545,7 +543,7 @@ namespace Dev2.Activities.Specs.TestFramework
         [Then(@"The Confirmation popup is shown")]
         public void ThenTheConfirmationPopupIsShown()
         {
-            var mock = ScenarioContext.Current["popupController"] as Mock<Dev2.Common.Interfaces.Studio.Controller.IPopupController>;
+            var mock = ScenarioContext["popupController"] as Mock<Common.Interfaces.Studio.Controller.IPopupController>;
             // ReSharper disable once PossibleNullReferenceException
             mock.VerifyAll();
         }
@@ -596,6 +594,14 @@ namespace Dev2.Activities.Specs.TestFramework
             var canExecute = serviceTest.DuplicateTestCommand.CanExecute(null);
             Assert.IsFalse(canExecute);
         }
+
+        [Then(@"The duplicate Name popup is shown")]
+        public void ThenTheDuplicateNamePopupIsShown()
+        {
+            var mock = (Mock<Common.Interfaces.Studio.Controller.IPopupController>)ScenarioContext["popupController"];
+            mock.Verify(controller => controller.Show(It.IsAny<string>(), It.IsAny<string>(), MessageBoxButton.OK, MessageBoxImage.Error, null, false, true, false, false));
+        }
+
 
 
         private IEnumerable<IServiceTestModel> GetTestForCurrentTestFramework()
