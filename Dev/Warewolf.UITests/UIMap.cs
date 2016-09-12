@@ -167,6 +167,7 @@ namespace Warewolf.UITests
                 throw new InvalidOperationException("Warewolf studio is not running. You are expected to run \"Dev\\TestScripts\\Studio\\Startup.bat\" as an administrator and wait for it to complete before running any coded UI tests");
             }
             TryClickMessageBoxOK();
+            WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);
         }
 
         private void TryClickMessageBoxOK()
@@ -624,12 +625,18 @@ namespace Warewolf.UITests
             Click_Save_Ribbon_Button_to_Open_Save_Dialog();
             WaitForControlNotVisible(SaveDialogWindow.ExplorerView.ExplorerTree.localhost.Checkbox.Spinner);
             Enter_Service_Name_Into_Save_Dialog(Name);
-            //Click_SaveDialog_Save_Button();
+            Click_SaveDialog_Save_Button();
             Enter_Text_Into_Explorer_Filter(Name);
             Click_Explorer_Refresh_Button();
             WaitForControlNotVisible(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.Exists, "Saved " + Name + " does not appear in the explorer tree.");
             Click_Explorer_Filter_Clear_Button();
+        }
+
+        public void Click_SaveDialog_Save_Button()
+        {
+            Mouse.Click(SaveDialogWindow.SaveButton, new Point(25, 4));
+            Assert.IsFalse(ControlExistsNow(SaveDialogWindow));
         }
 
         public void TryCloseNewPluginSourceWizardTab()

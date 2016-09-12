@@ -50,7 +50,9 @@ namespace Warewolf.Testing
         }
 
         private readonly IExplorerRepository _explorerProxy;
+#pragma warning disable 0649
         bool _hasLoaded;
+#pragma warning restore 0649
         private IStudioUpdateManager _updateManager;
         private List<IWindowsGroupPermission> _permissions;
 
