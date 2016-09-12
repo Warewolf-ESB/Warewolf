@@ -54,6 +54,27 @@ namespace Dev2.Studio.Core.Network
             }, () => { });
         }
 
+        public static void ExecuteTest(IContextualResourceModel resourceModel,string testName, string payload, IAsyncWorker asyncWorker)
+        {
+            if (resourceModel == null || resourceModel.Environment == null || !resourceModel.Environment.IsConnected)
+            {
+                return;
+            }
+
+            var clientContext = resourceModel.Environment.Connection;
+            if (clientContext == null)
+            {
+                return;
+            }
+            asyncWorker.Start(() =>
+            {
+                var controller = new CommunicationController { ServiceName = string.IsNullOrEmpty(resourceModel.Category) ? resourceModel.ResourceName : resourceModel.Category };
+                controller.ServicePayload.TestName = testName;
+                controller.AddPayloadArgument("DebugPayload", payload);
+                controller.ExecuteCommand<string>(clientContext, clientContext.WorkspaceID);
+            }, () => { });
+        }
+
         public static void OpenInBrowser(IContextualResourceModel resourceModel, string xmlData)
         {
             Uri url = GetWorkflowUri(resourceModel, xmlData, UrlType.Xml);

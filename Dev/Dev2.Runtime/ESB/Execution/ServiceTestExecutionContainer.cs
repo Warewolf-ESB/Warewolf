@@ -1,13 +1,3 @@
-/*
-*  Warewolf - Once bitten, there's no going back
-*  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
-*  Some rights reserved.
-*  Visit our website for more information <http://warewolf.io/>
-*  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
-*  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
-*/
-
 using System;
 using System.Activities;
 using System.Diagnostics.CodeAnalysis;
@@ -16,6 +6,7 @@ using Dev2.Activities;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
+using Dev2.Communication;
 using Dev2.DataList.Contract;
 using Dev2.DynamicServices.Objects;
 using Dev2.Interfaces;
@@ -27,9 +18,9 @@ using Dev2.Workspaces;
 
 namespace Dev2.Runtime.ESB.Execution
 {
-    public class WfExecutionContainer : EsbExecutionContainer
+    public class ServiceTestExecutionContainer : EsbExecutionContainer
     {
-        public WfExecutionContainer(ServiceAction sa, IDSFDataObject dataObj, IWorkspace theWorkspace, IEsbChannel esbChannel)
+        public ServiceTestExecutionContainer(ServiceAction sa, IDSFDataObject dataObj, IWorkspace theWorkspace, IEsbChannel esbChannel)
             : base(sa, dataObj, theWorkspace, esbChannel)
         {
         }
@@ -147,8 +138,11 @@ namespace Dev2.Runtime.ESB.Execution
         {
             Dev2Logger.Debug("Getting Resource to Execute");
             IDev2Activity resource = ResourceCatalog.Instance.Parse(TheWorkspace.ID, resourceID);
+            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+            var execPlan = serializer.SerializeToBuilder(resource);
+            var clonedExecPlan = serializer.Deserialize<IDev2Activity>(execPlan);
             Dev2Logger.Debug("Got Resource to Execute");
-            EvalInner(dataObject, resource, dataObject.ForEachUpdateValue);
+            EvalInner(dataObject, clonedExecPlan, dataObject.ForEachUpdateValue);
 
         }
 

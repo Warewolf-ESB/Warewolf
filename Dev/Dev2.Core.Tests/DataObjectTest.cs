@@ -18,6 +18,7 @@ using Dev2.DynamicServices;
 using Dev2.Interfaces;
 using Dev2.Web;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+// ReSharper disable FunctionComplexityOverflow
 
 // ReSharper disable InconsistentNaming
 // ReSharper disable MethodTooLong
@@ -158,8 +159,6 @@ namespace Dev2.Tests
             dataObject.DatalistOutMergeType = enDataListMergeTypes.Union;
             dataObject.DebugSessionID = Guid.NewGuid();
             dataObject.EnvironmentID = Guid.NewGuid();
-         //   dataObject.Errors = new ErrorResultTO();
-         //   dataObject.Errors.AddError("my error");
             dataObject.ExecutionCallbackID = Guid.NewGuid();
             dataObject.ExecutionOrigin = ExecutionOrigin.Debug;
             dataObject.ExecutionOriginDescription = "xxx";
@@ -193,6 +192,8 @@ namespace Dev2.Tests
             dataObject.IsDebugNested = true;
             dataObject.ForEachNestingLevel = 3;
             dataObject.StopExecution = false;
+            dataObject.IsServiceTestExecution = true;
+            dataObject.TestName = "Test 1";
             var threadsToDispose = new Dictionary<int, List<Guid>>();
             List<Guid> guidList = new List<Guid> { Guid.NewGuid() };
             threadsToDispose.Add(3, guidList);
@@ -205,7 +206,7 @@ namespace Dev2.Tests
 
             // check counts, then check values
             var properties = typeof(IDSFDataObject).GetProperties();
-            Assert.AreEqual(57, properties.Length);
+            Assert.AreEqual(59, properties.Length);
 
             // now check each value to ensure it transfered
             Assert.AreEqual(dataObject.BookmarkExecutionCallbackID, clonedObject.BookmarkExecutionCallbackID);
@@ -221,7 +222,6 @@ namespace Dev2.Tests
             Assert.AreEqual(dataObject.DatalistOutMergeType, clonedObject.DatalistOutMergeType);
             Assert.AreEqual(dataObject.DebugSessionID, clonedObject.DebugSessionID);
             Assert.AreEqual(dataObject.EnvironmentID, clonedObject.EnvironmentID);
-    //        Assert.AreEqual(dataObject.Errors, clonedObject.Errors);
             Assert.AreEqual(dataObject.ExecutingUser, clonedObject.ExecutingUser);
             Assert.AreEqual(dataObject.ExecutionCallbackID, clonedObject.ExecutionCallbackID);
             Assert.AreEqual(dataObject.ExecutionOrigin, clonedObject.ExecutionOrigin);
@@ -260,6 +260,8 @@ namespace Dev2.Tests
             Assert.AreEqual(dataObject.IsDebugNested, clonedObject.IsDebugNested);
             Assert.AreEqual(dataObject.ForEachNestingLevel, clonedObject.ForEachNestingLevel);
             Assert.AreEqual(dataObject.StopExecution, clonedObject.StopExecution);
+            Assert.AreEqual(dataObject.TestName, clonedObject.TestName);
+            Assert.AreEqual(dataObject.IsServiceTestExecution, clonedObject.IsServiceTestExecution);
         }
 
         #region Debug Mode Test
