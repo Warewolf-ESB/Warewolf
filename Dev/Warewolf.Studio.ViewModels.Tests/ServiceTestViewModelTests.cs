@@ -323,7 +323,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual(2, testFrameworkViewModel.Tests.Count);
             Assert.AreNotEqual(testModel, testFrameworkViewModel.SelectedServiceTest);
             Assert.AreEqual(testFrameworkViewModel.Tests[0], testFrameworkViewModel.SelectedServiceTest);
-            Assert.AreEqual("http://rsaklf/secure/My WF.tests/Test 1", testFrameworkViewModel.SelectedServiceTest.RunSelectedTestUrl);
+            Assert.AreEqual("http://rsaklf/secure/My WF.tests/Test 2", testFrameworkViewModel.SelectedServiceTest.RunSelectedTestUrl);
         }
 
         [TestMethod]
@@ -364,6 +364,27 @@ namespace Warewolf.Studio.ViewModels.Tests
               };
             //------------Execute Test---------------------------
             testFrameworkViewModel.SelectedServiceTest = new ServiceTestModel(Guid.NewGuid());
+            //------------Assert Results-------------------------
+            Assert.IsTrue(_wasCalled);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("TestFrameworkViewModel_Tests")]
+        public void TestFrameworkViewModel_ErrorMessage_SetProperty_ShouldFireOnPropertyChanged()
+        {
+            //------------Setup for test--------------------------
+            var testFrameworkViewModel = new ServiceTestViewModel(CreateResourceModel(), new SynchronousAsyncWorker());
+            var _wasCalled = false;
+            testFrameworkViewModel.PropertyChanged += (sender, args) =>
+              {
+                  if (args.PropertyName == "ErrorMessage")
+                  {
+                      _wasCalled = true;
+                  }
+              };
+            //------------Execute Test---------------------------
+            testFrameworkViewModel.ErrorMessage = "Home";
             //------------Assert Results-------------------------
             Assert.IsTrue(_wasCalled);
         }
@@ -732,6 +753,77 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsFalse(canSave);
         }
 
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void CanSave_GivenIsDirtyAndValidName_ShouldSetCanSavetrue()
+        {
+            //---------------Set up test pack-------------------
+            var testFrameworkViewModel = new ServiceTestViewModel(CreateResourceModelWithSingleScalarOutput(), new SynchronousAsyncWorker());
+            testFrameworkViewModel.CreateTestCommand.Execute(null);
+            testFrameworkViewModel.SelectedServiceTest.TestName = "name";
+            //---------------Assert Precondition----------------
+            Assert.IsTrue(testFrameworkViewModel.IsDirty);
+           
+            //---------------Execute Test ----------------------
+            var canSave = testFrameworkViewModel.CanSave;
+            //---------------Test Result -----------------------
+            Assert.IsTrue(canSave);
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void CanSave_GivenIsDirtyAndInvalidValidName_ShouldSetCanSaveFalse()
+        {
+            //---------------Set up test pack-------------------
+            var testFrameworkViewModel = new ServiceTestViewModel(CreateResourceModelWithSingleScalarOutput(), new SynchronousAsyncWorker());
+            testFrameworkViewModel.CreateTestCommand.Execute(null);
+            testFrameworkViewModel.SelectedServiceTest.TestName = "name$";
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(testFrameworkViewModel.DuplicateTestCommand);
+            Assert.IsTrue(testFrameworkViewModel.IsDirty);
+           
+            //---------------Execute Test ----------------------
+            var canSave = testFrameworkViewModel.CanSave;
+            //---------------Test Result -----------------------
+            Assert.IsFalse(canSave);
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void CanSave_GivenIsDirtyAndEmptyName_ShouldSetCanSaveFalse()
+        {
+            //---------------Set up test pack-------------------
+            var testFrameworkViewModel = new ServiceTestViewModel(CreateResourceModelWithSingleScalarOutput(), new SynchronousAsyncWorker());
+            testFrameworkViewModel.CreateTestCommand.Execute(null);
+            testFrameworkViewModel.SelectedServiceTest.TestName = "";
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(testFrameworkViewModel.DuplicateTestCommand);
+            Assert.IsTrue(testFrameworkViewModel.IsDirty);
+           
+            //---------------Execute Test ----------------------
+            var canSave = testFrameworkViewModel.CanSave;
+            //---------------Test Result -----------------------
+            Assert.IsFalse(canSave);
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void CanSave_GivenIsDirtynameHastrailingSpaces_ShouldSetCanSaveFalse()
+        {
+            //---------------Set up test pack-------------------
+            var testFrameworkViewModel = new ServiceTestViewModel(CreateResourceModelWithSingleScalarOutput(), new SynchronousAsyncWorker());
+            testFrameworkViewModel.CreateTestCommand.Execute(null);
+            testFrameworkViewModel.SelectedServiceTest.TestName = "name ";
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(testFrameworkViewModel.DuplicateTestCommand);
+            Assert.IsTrue(testFrameworkViewModel.IsDirty);
+           
+            //---------------Execute Test ----------------------
+            var canSave = testFrameworkViewModel.CanSave;
+            //---------------Test Result -----------------------
+            Assert.IsFalse(canSave);
+        }
+
         private List<IServiceTestModel> GetTests([NotNull]IServiceTestViewModel viewModel)
         {
             return viewModel.Tests.Where(model => model.GetType() != typeof(DummyServiceTest)).ToList();
@@ -911,11 +1003,20 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void IsValid_GivenNameOne_ShouldBeValid()
         {
             //---------------Set up test pack-------------------
-            var methodInfo = typeof(ServiceTestViewModel).GetMethod("IsValidName", BindingFlags.NonPublic | BindingFlags.Static);
+            var popupController = new Mock<IPopupController>();
+            popupController.Setup(controller => controller.ShowDeleteConfirmation(It.IsAny<string>())).Returns(MessageBoxResult.Yes);
+            CustomContainer.Register(popupController.Object);
+            var mockResourceModel = CreateMockResourceModel();
+            var resourceId = Guid.NewGuid();
+            const string testname = "TestName";
+            mockResourceModel.Setup(model => model.Environment.ResourceRepository.DeleteResourceTest(It.IsAny<Guid>(), It.IsAny<string>())).Verifiable();
+            mockResourceModel.Setup(model => model.ID).Returns(resourceId);
+            var testFrameworkViewModel = new ServiceTestViewModel(mockResourceModel.Object, new SynchronousAsyncWorker());
+            var methodInfo = typeof(ServiceTestViewModel).GetMethod("IsValidName", BindingFlags.NonPublic | BindingFlags.Instance);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(methodInfo);
             //---------------Execute Test ----------------------
-            var invoke = methodInfo.Invoke(null, new object[] { "NameOne" });
+            var invoke = methodInfo.Invoke(testFrameworkViewModel, new object[] { "NameOne" });
             //---------------Test Result -----------------------
             Assert.AreEqual(true, bool.Parse(invoke.ToString()));
         }
@@ -925,11 +1026,20 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void IsValid_GivenNameOnePErcenta_ShouldBeInValid()
         {
             //---------------Set up test pack-------------------
-            var methodInfo = typeof(ServiceTestViewModel).GetMethod("IsValidName", BindingFlags.NonPublic | BindingFlags.Static);
+            var popupController = new Mock<IPopupController>();
+            popupController.Setup(controller => controller.ShowDeleteConfirmation(It.IsAny<string>())).Returns(MessageBoxResult.Yes);
+            CustomContainer.Register(popupController.Object);
+            var mockResourceModel = CreateMockResourceModel();
+            var resourceId = Guid.NewGuid();
+            const string testname = "TestName";
+            mockResourceModel.Setup(model => model.Environment.ResourceRepository.DeleteResourceTest(It.IsAny<Guid>(), It.IsAny<string>())).Verifiable();
+            mockResourceModel.Setup(model => model.ID).Returns(resourceId);
+            var testFrameworkViewModel = new ServiceTestViewModel(mockResourceModel.Object, new SynchronousAsyncWorker());
+            var methodInfo = typeof(ServiceTestViewModel).GetMethod("IsValidName", BindingFlags.NonPublic | BindingFlags.Instance);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(methodInfo);
             //---------------Execute Test ----------------------
-            var invoke = methodInfo.Invoke(null, new object[] { "NameOne%" });
+            var invoke = methodInfo.Invoke(testFrameworkViewModel, new object[] { "NameOne%" });
             //---------------Test Result -----------------------
             Assert.AreEqual(false, bool.Parse(invoke.ToString()));
         }
@@ -939,11 +1049,20 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void IsValid_GivenEmpty_ShouldBeInValid()
         {
             //---------------Set up test pack-------------------
-            var methodInfo = typeof(ServiceTestViewModel).GetMethod("IsValidName", BindingFlags.NonPublic | BindingFlags.Static);
+            var popupController = new Mock<IPopupController>();
+            popupController.Setup(controller => controller.ShowDeleteConfirmation(It.IsAny<string>())).Returns(MessageBoxResult.Yes);
+            CustomContainer.Register(popupController.Object);
+            var mockResourceModel = CreateMockResourceModel();
+            var resourceId = Guid.NewGuid();
+            const string testname = "TestName";
+            mockResourceModel.Setup(model => model.Environment.ResourceRepository.DeleteResourceTest(It.IsAny<Guid>(), It.IsAny<string>())).Verifiable();
+            mockResourceModel.Setup(model => model.ID).Returns(resourceId);
+            var testFrameworkViewModel = new ServiceTestViewModel(mockResourceModel.Object, new SynchronousAsyncWorker());
+            var methodInfo = typeof(ServiceTestViewModel).GetMethod("IsValidName", BindingFlags.NonPublic | BindingFlags.Instance);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(methodInfo);
             //---------------Execute Test ----------------------
-            var invoke = methodInfo.Invoke(null, new object[] { "" });
+            var invoke = methodInfo.Invoke(testFrameworkViewModel, new object[] { "" });
             //---------------Test Result -----------------------
             Assert.AreEqual(false, bool.Parse(invoke.ToString()));
         }
@@ -953,11 +1072,20 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void IsValid_GivenNull_ShouldBeInValid()
         {
             //---------------Set up test pack-------------------
-            var methodInfo = typeof(ServiceTestViewModel).GetMethod("IsValidName", BindingFlags.NonPublic | BindingFlags.Static);
+            var popupController = new Mock<IPopupController>();
+            popupController.Setup(controller => controller.ShowDeleteConfirmation(It.IsAny<string>())).Returns(MessageBoxResult.Yes);
+            CustomContainer.Register(popupController.Object);
+            var mockResourceModel = CreateMockResourceModel();
+            var resourceId = Guid.NewGuid();
+            const string testname = "TestName";
+            mockResourceModel.Setup(model => model.Environment.ResourceRepository.DeleteResourceTest(It.IsAny<Guid>(), It.IsAny<string>())).Verifiable();
+            mockResourceModel.Setup(model => model.ID).Returns(resourceId);
+            var testFrameworkViewModel = new ServiceTestViewModel(mockResourceModel.Object, new SynchronousAsyncWorker());
+            var methodInfo = typeof(ServiceTestViewModel).GetMethod("IsValidName", BindingFlags.NonPublic | BindingFlags.Instance);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(methodInfo);
             //---------------Execute Test ----------------------
-            var invoke = methodInfo.Invoke(null, new object[] { null });
+            var invoke = methodInfo.Invoke(testFrameworkViewModel, new object[] { null });
             //---------------Test Result -----------------------
             Assert.AreEqual(false, bool.Parse(invoke.ToString()));
         }
@@ -967,11 +1095,20 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void IsValid_GivennameWithtrailingSpaces_ShouldBeInValid()
         {
             //---------------Set up test pack-------------------
-            var methodInfo = typeof(ServiceTestViewModel).GetMethod("IsValidName", BindingFlags.NonPublic | BindingFlags.Static);
+            var popupController = new Mock<IPopupController>();
+            popupController.Setup(controller => controller.ShowDeleteConfirmation(It.IsAny<string>())).Returns(MessageBoxResult.Yes);
+            CustomContainer.Register(popupController.Object);
+            var mockResourceModel = CreateMockResourceModel();
+            var resourceId = Guid.NewGuid();
+            const string testname = "TestName";
+            mockResourceModel.Setup(model => model.Environment.ResourceRepository.DeleteResourceTest(It.IsAny<Guid>(), It.IsAny<string>())).Verifiable();
+            mockResourceModel.Setup(model => model.ID).Returns(resourceId);
+            var testFrameworkViewModel = new ServiceTestViewModel(mockResourceModel.Object, new SynchronousAsyncWorker());
+            var methodInfo = typeof(ServiceTestViewModel).GetMethod("IsValidName", BindingFlags.NonPublic | BindingFlags.Instance);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(methodInfo);
             //---------------Execute Test ----------------------
-            var invoke = methodInfo.Invoke(null, new object[] { "name " });
+            var invoke = methodInfo.Invoke(testFrameworkViewModel, new object[] { "name " });
             //---------------Test Result -----------------------
             Assert.AreEqual(false, bool.Parse(invoke.ToString()));
         }

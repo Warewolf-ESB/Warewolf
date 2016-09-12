@@ -32,6 +32,7 @@ namespace Warewolf.Studio.ViewModels
         private string _displayName;
         public IPopupController PopupController { get; }
         private bool _canSave;
+        private string _errorMessage;
 
         public ServiceTestViewModel(IContextualResourceModel resourceModel, IAsyncWorker asyncWorker)
         {
@@ -84,7 +85,8 @@ namespace Warewolf.Studio.ViewModels
                 return;
             }
 
-            var testModel = ServiceTestCommandHandler.CreateTest(ResourceModel, RealTests().Count());
+            var testNumber = RealTests().Count() + 1;
+            var testModel = ServiceTestCommandHandler.CreateTest(ResourceModel, testNumber);
             AddAndSelectTest(testModel);
         }
 
@@ -132,19 +134,20 @@ namespace Warewolf.Studio.ViewModels
             return true;
         }
 
-        private static bool IsValidName(string name)
+        private bool IsValidName(string name)
         {
+            ErrorMessage = string.Empty;
             if (string.IsNullOrEmpty(name))
             {
-                ErrorMessage = string.Format(ErrorResource.CannotBeNull, "'Name'");
+                ErrorMessage = string.Format(ErrorResource.CannotBeNull, "'name'");
             }
             else if (NameHasInvalidCharacters(name))
             {
-                ErrorMessage = string.Format(ErrorResource.ContainsInvalidCharecters, "'Name'");
+                ErrorMessage = string.Format(ErrorResource.ContainsInvalidCharecters, "'name'");
             }
-            else if(name.Trim() != name)
+            else if (name.Trim() != name)
             {
-                ErrorMessage = string.Format(ErrorResource.ContainsLeadingOrTrailingWhitespace, "'Name'");
+                ErrorMessage = string.Format(ErrorResource.ContainsLeadingOrTrailingWhitespace, "'name'");
             }
 
             return string.IsNullOrEmpty(ErrorMessage);
@@ -154,7 +157,18 @@ namespace Warewolf.Studio.ViewModels
             return Regex.IsMatch(name, @"[^a-zA-Z0-9._\s-]");
         }
 
-        public static string ErrorMessage { get; set; }
+        public string ErrorMessage
+        {
+            get
+            {
+                return _errorMessage;
+            }
+            set
+            {
+                _errorMessage = value;
+                OnPropertyChanged(() => ErrorMessage);
+            }
+        }
 
         public bool IsDirty
         {
@@ -194,7 +208,7 @@ namespace Warewolf.Studio.ViewModels
                 if (HasDuplicateTestNames())
                 {
                     // ReSharper disable once UseNullPropagation
-                    if(PopupController != null)
+                    if (PopupController != null)
                     {
                         PopupController.Show(Resources.Languages.Core.ServiceTestDuplicateTestNameMessage, Resources.Languages.Core.ServiceTestDuplicateTestNameHeader, MessageBoxButton.OK, MessageBoxImage.Error, null, false, true, false, false);
                     }

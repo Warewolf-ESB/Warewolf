@@ -26,6 +26,8 @@ namespace Dev2.Studio.Core.Interfaces
         string DisplayName { get; set; }
         bool CanSave { get; set; }
         bool IsDirty { get; }
+        string ErrorMessage { get; set; }
+
         void Save();
     }
 }
