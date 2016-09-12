@@ -682,7 +682,6 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual(AuthenticationType.Public, tests[0].AuthenticationType);
             Assert.IsTrue(tests[0].Enabled);
             Assert.AreEqual("Create a new test.", tests[1].TestName);
-            Assert.AreEqual(tests[0], serviceTestViewModel.SelectedServiceTest);
         }
 
         [TestMethod]
@@ -753,7 +752,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsNotNull(selectedServiceTest);
             //---------------Execute Test ----------------------
             testFrameworkViewModel.DuplicateTestCommand.Execute(null);
-            Assert.IsTrue(testFrameworkViewModel.SelectedServiceTest.TestName.Contains("_dup"));
+            Assert.IsTrue(!testFrameworkViewModel.SelectedServiceTest.TestName.Contains("_dup"));
             //---------------Test Result -----------------------
             Assert.AreEqual(2, GetTests(testFrameworkViewModel).Count);
         }
@@ -777,7 +776,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             testFrameworkViewModel.DuplicateTestCommand.Execute(null);
 
             //---------------Test Result -----------------------
-            Assert.IsTrue(testFrameworkViewModel.SelectedServiceTest.TestName.Contains("_dup"));
+            Assert.IsTrue(!testFrameworkViewModel.SelectedServiceTest.TestName.Contains("_dup"));
         }
 
         [TestMethod]
