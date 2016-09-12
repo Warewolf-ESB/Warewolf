@@ -787,7 +787,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        public async Task TestCreateExplorerItems()
+        public void TestCreateExplorerItems()
         {
             //arrange
             var explorerItem = new Mock<IExplorerItem>();
