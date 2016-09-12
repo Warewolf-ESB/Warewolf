@@ -279,8 +279,8 @@ namespace Warewolf.Studio.ViewModels
                 try
                 {
                     ResourceModel.Environment.ResourceRepository.DeleteResourceTest(ResourceModel.ID, test.TestName);
-                    var testToRemove = Tests.SingleOrDefault(model => model.ParentId == test.ParentId && model.TestName == test.TestName);
-                    Tests.Remove(testToRemove);//test
+                    var testToRemove = _tests.SingleOrDefault(model => model.ParentId == test.ParentId && model.TestName == test.TestName);
+                    _tests.Remove(testToRemove);//test
                     OnPropertyChanged(() => Tests);//test
                 }
                 catch (Exception ex)
