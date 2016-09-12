@@ -10,5 +10,7 @@ namespace Dev2.Common.Interfaces
         void Load();
 
         List<IServiceTestModelTO> Fetch(Guid resourceId);
+
+        void DeleteTest(Guid resourceID, string testName);
     }
 }
