@@ -1,14 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text.RegularExpressions;
-using System.Windows.Input;
-using System.Windows.Forms;
-using System.Drawing;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Microsoft.VisualStudio.TestTools.UITest.Extension;
-using Keyboard = Microsoft.VisualStudio.TestTools.UITesting.Keyboard;
-
 
 namespace Warewolf.UITests.DebugInputWindow
 {
@@ -21,7 +13,8 @@ namespace Warewolf.UITests.DebugInputWindow
         public void SaveDebugInputsUITest()
         {
             Uimap.Enter_Text_Into_Explorer_Filter("Hello World");
-            Uimap.DoubleClick_Explorer_Localhost_First_Item();
+            Uimap.WaitForSpinner(Uimap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);
+            Uimap.Open_Explorer_First_Item_With_Context_Menu();
             Uimap.Click_Debug_Ribbon_Button();
             Uimap.MainStudioWindow.DebugInputDialog.RememberDebugInputCheckBox.Checked = true;
             Uimap.Enter_Text_Into_Debug_Input_Row1_Value_Textbox(InputDataText);
