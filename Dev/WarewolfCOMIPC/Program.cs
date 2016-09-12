@@ -52,26 +52,33 @@ namespace WarewolfCOMIPC
             {
                 //
             }
-            Console.WriteLine("Client Data read and Deserialized to Server Pipe Stream");
-            Console.WriteLine(callData.GetType());
-            var data = (CallData)callData;
-
-            while (data.Status != KeepAliveStatus.Close)
+            if (callData != null)
             {
-                Console.WriteLine("Executing");
-                try
+                Console.WriteLine("Client Data read and Deserialized to Server Pipe Stream");
+                Console.WriteLine(callData.GetType());
+                var data = (CallData)callData;
+
+                while (data.Status != KeepAliveStatus.Close)
                 {
-                    LoadLibrary(data, serializer, pipe);
+                    Console.WriteLine("Executing");
+                    try
+                    {
+                        LoadLibrary(data, serializer, pipe);
+                    }
+                    catch(Exception e)
+                    {
+                        var newException = new Exception("Error executing COM",e);
+                        var sw = new StreamWriter(pipe);
+                        serializer.Serialize(sw, newException);
+                        sw.Flush();
+                        Console.WriteLine("Execution errored " + data.MethodToCall);
+                    }
+                    AcceptMessagesFromPipe(pipe);
                 }
-                catch(Exception e)
-                {
-                    var newException = new Exception("Error executing COM",e);
-                    var sw = new StreamWriter(pipe);
-                    serializer.Serialize(sw, newException);
-                    sw.Flush();
-                    Console.WriteLine("Execution errored " + data.MethodToCall);
-                }
-                AcceptMessagesFromPipe(pipe);
+            }
+            else
+            {
+                Console.WriteLine("Client Data not read nor Deserialized to Server Pipe Stream");
             }
         }
 

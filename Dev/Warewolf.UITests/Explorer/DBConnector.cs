@@ -13,7 +13,7 @@ namespace Warewolf.UITests
         public void BigDBConnectorUITest()
         {
             Uimap.Click_New_Workflow_Ribbon_Button();
-            Uimap.Click_NewDatabaseSource_Ribbon_Button();
+            Uimap.Click_New_Database_Source_Ribbon_Button();
             Uimap.Select_MSSQLSERVER_From_DB_Source_Wizard_Address_Protocol_Dropdown();
             Uimap.Type_rsaklfsvrgen_into_DB_Source_Wizard_Server_Textbox();
             Uimap.Select_RSAKLFSVRGENDEV_From_Server_Source_Wizard_Dropdownlist();
