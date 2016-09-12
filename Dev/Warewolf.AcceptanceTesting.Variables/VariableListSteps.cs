@@ -19,7 +19,6 @@ namespace Warewolf.AcceptanceTesting.Variables
     [Binding]
     public class VariableListSteps
     {
-        private static string _mainVm = "mainVm";
         [BeforeFeature("VariableList")]
         public static void SetupForFeature()
         {

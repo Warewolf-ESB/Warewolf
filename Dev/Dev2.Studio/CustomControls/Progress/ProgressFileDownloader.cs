@@ -29,7 +29,6 @@ namespace Dev2.CustomControls.Progress
         protected readonly IProgressNotifier ProgressDialog;
         private readonly IFile _file;
         private readonly ICryptoProvider _cryptoProvider;
-        private bool _dontStartUpdate;
         private readonly Window _owner;
         private string _tmpFileName = "";
 
@@ -69,7 +68,6 @@ namespace Dev2.CustomControls.Progress
             _file = file;
             _cryptoProvider = cryptoProvider;
             _webClient.DownloadProgressChanged += OnDownloadProgressChanged;
-            _dontStartUpdate = false;
             ShutDownAction = ShutdownAndInstall;
             if (!Directory.Exists("Installers"))
                 Directory.CreateDirectory("Installers");
