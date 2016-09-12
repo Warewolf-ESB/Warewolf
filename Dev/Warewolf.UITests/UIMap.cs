@@ -1015,5 +1015,18 @@ namespace Warewolf.UITests
             Select_Deploy_First_Source_Item();
             Click_Deploy_Tab_Deploy_Button();
         }
+
+        /// <summary>
+        /// Assert_Help_Text_Exist - Use 'Assert_Help_Text_ExistParams' to pass parameters into this method.
+        /// </summary>
+        public void Assert_Help_Text_Exist()
+        {
+            #region Variable Declarations
+            WpfCustom helpTextEditor = this.MainStudioWindow.DockManager.SplitPaneLeft.Help.HelpTextEditor;
+            #endregion
+
+            // Verify that the 'Exists' property of 'XamRichTextEditor' custom control equals 'True'
+            Assert.IsTrue(helpTextEditor.Exists, "Help text does not exist");
+        }
     }
 }

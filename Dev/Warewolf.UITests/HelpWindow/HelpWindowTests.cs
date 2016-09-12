@@ -5,10 +5,10 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Warewolf.UITests
 {
     [CodedUITest]
-    public class VariablesTests
+    public class HelpWindowTests
     {
         [TestMethod]
-        public void AssignValue_Filter_AndDeleteVariable()
+        public void HelpWindowTestHelpTextChangesAsControlFocusChange()
         {
             Uimap.Click_New_Workflow_Ribbon_Button();
             Uimap.Drag_Toolbox_MultiAssign_Onto_DesignSurface();
@@ -19,11 +19,7 @@ namespace Warewolf.UITests
             Uimap.Click_Assign_Tool_Large_View_Done_Button();
             Uimap.Enter_Text_Into_Assign_Small_View_Row1_Value_Textbox_As_SomeVariable_UsingIntellisense();
             Uimap.Enter_Text_Into_Assign_Small_View_Row1_Value_Textbox_As_SomeVariable_Using_Click_Intellisense_Suggestion();
-            Uimap.Click_Assign_Tool_Remove_Variable_From_Tool();
-            Uimap.Assign_Value_To_Variable();
-            Uimap.Click_Assign_Tool_ExpandAll();
-            Uimap.Click_Assign_Tool_CollapseAll();
-            Uimap.Click_Assign_Tool_url();
+            Uimap.Assert_Help_Text_Exist();
         }
 
         #region Additional test attributes
@@ -39,10 +35,10 @@ namespace Warewolf.UITests
         [TestCleanup()]
         public void MyTestCleanup()
         {
-            Playback.PlaybackError -= Uimap.OnError;
-            Uimap.TryCloseHangingSaveDialog();
-            Uimap.TryClearToolboxFilter();
-            Uimap.TryCloseWorkflowTabs();
+            //Playback.PlaybackError -= Uimap.OnError;
+            //Uimap.TryCloseHangingSaveDialog();
+            //Uimap.TryClearToolboxFilter();
+            //Uimap.TryCloseWorkflowTabs();
         }
 
         public TestContext TestContext
