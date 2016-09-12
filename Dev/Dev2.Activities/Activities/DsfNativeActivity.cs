@@ -830,17 +830,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 {
                     DoErrorHandling(data, update);
                 }
-
-
-
             }
-
-            
-            if(NextNodes != null && NextNodes.Any())
+            if (NextNodes != null && NextNodes.Any())
             {
-              
-                    return NextNodes.First();
-             }
+                return NextNodes.First();
+            }
             return null;
         }
 
