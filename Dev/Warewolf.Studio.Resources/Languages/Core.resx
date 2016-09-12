@@ -2708,7 +2708,7 @@ You can use File System, URI, SFTP, FTP or FTPS format.</value>
 If this option is not selected, the test will not run part of the Run All list of tests.</value>
   </data>
   <data name="TestsDeleteSelectedTestDisabledTooltip" xml:space="preserve">
-    <value>Cannot delete a disabled test</value>
+    <value>Cannot delete an enabled test</value>
   </data>
   <data name="TestsDeleteSelectedTestEnabledTooltip" xml:space="preserve">
     <value>Delete this test</value>

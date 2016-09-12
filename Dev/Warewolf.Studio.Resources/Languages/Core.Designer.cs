@@ -8325,7 +8325,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cannot delete a disabled test.
+        ///   Looks up a localized string similar to Cannot delete an enabled test.
         /// </summary>
         public static string TestsDeleteSelectedTestDisabledTooltip {
             get {

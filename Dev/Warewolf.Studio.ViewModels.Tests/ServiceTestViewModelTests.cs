@@ -326,6 +326,43 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("TestFrameworkViewModel_CreateTestCommand")]
+        public void TestFrameworkViewModel_CreateTestCommand_SaveAsPublic_ShouldSetSelectedTestToPublic()
+        {
+            //------------Setup for test--------------------------
+            var resourceModelMock = CreateResourceModelWithSingleScalarOutputMock();
+            var mockEnvironmentModel = new Mock<IEnvironmentModel>();
+            var con = new Mock<IEnvironmentConnection>();
+            con.Setup(connection => connection.IsConnected).Returns(true);
+            con.Setup(model => model.WebServerUri).Returns(new Uri("http://rsaklf/bob"));
+            var mockResourceRepo = new Mock<IResourceRepository>();
+            mockResourceRepo.Setup(repository => repository.SaveTests(It.IsAny<Guid>(), It.IsAny<List<IServiceTestModel>>()));
+            mockEnvironmentModel.Setup(model => model.ResourceRepository).Returns(mockResourceRepo.Object);
+            mockEnvironmentModel.Setup(model => model.Connection).Returns(con.Object);
+            mockEnvironmentModel.Setup(model => model.IsConnected).Returns(true);
+            resourceModelMock.Setup(model => model.Environment).Returns(mockEnvironmentModel.Object);
+            resourceModelMock.Setup(model => model.Category).Returns("My WF");
+            resourceModelMock.Setup(model => model.ResourceName).Returns("My WF");
+
+            var testFrameworkViewModel = new ServiceTestViewModel(resourceModelMock.Object, new SynchronousAsyncWorker());
+            testFrameworkViewModel.CreateTestCommand.Execute(null);
+            testFrameworkViewModel.Save();
+            //------------Assert Preconditions-------------------
+            Assert.AreEqual(2, testFrameworkViewModel.Tests.Count);
+            Assert.AreEqual(testFrameworkViewModel.Tests[0], testFrameworkViewModel.SelectedServiceTest);
+            Assert.AreEqual("http://rsaklf/secure/My WF.tests/Test 1", testFrameworkViewModel.SelectedServiceTest.RunSelectedTestUrl);
+            //------------Execute Test---------------------------
+            testFrameworkViewModel.SelectedServiceTest.AuthenticationType = AuthenticationType.Public;
+            //------------Assert Results-------------------------
+            Assert.AreEqual("http://rsaklf/secure/My WF.tests/Test 1", testFrameworkViewModel.SelectedServiceTest.RunSelectedTestUrl);
+
+            testFrameworkViewModel.Save();
+
+            Assert.AreEqual("http://rsaklf/public/My WF.tests/Test 1", testFrameworkViewModel.SelectedServiceTest.RunSelectedTestUrl);
+        }
+
+        [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("TestFrameworkViewModel_Tests")]
         public void TestFrameworkViewModel_Tests_SetProperty_ShouldFireOnPropertyChanged()

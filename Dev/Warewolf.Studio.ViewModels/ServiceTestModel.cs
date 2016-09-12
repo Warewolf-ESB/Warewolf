@@ -8,10 +8,11 @@ using Dev2.Data.Util;
 using Dev2.Runtime.ServiceModel.Data;
 using Microsoft.Practices.Prism.Mvvm;
 // ReSharper disable ParameterTypeCanBeEnumerable.Local
+// ReSharper disable NonReadonlyMemberInGetHashCode
 
 namespace Warewolf.Studio.ViewModels
 {
-    public class ServiceTestModel : BindableBase, IServiceTestModel
+    public class ServiceTestModel : BindableBase, IServiceTestModel, IEquatable<ServiceTestModel>
     {
         private string _testName;
         private string _userName;
@@ -29,16 +30,27 @@ namespace Warewolf.Studio.ViewModels
         private DateTime _lastRunDate;
         private bool _enabled;
         private string _runSelectedTestUrl;
-        private bool _isDirty;
         private AuthenticationType _authenticationType;
         private Guid _parentId;
         private string _oldTestName;
+        private bool _newTest;
+        private string _nameForDisplay;
+        private ServiceTestModel _item;
 
         public ServiceTestModel(Guid resourceId)
         {
             ParentId = resourceId;
         }
-      
+
+        public ServiceTestModel Item
+        {
+            get { return _item; }
+            set
+            {
+                _item = value; 
+                OnPropertyChanged(() => Item);
+            }
+        }
 
         #region Implementation of IServiceTestModel
 
@@ -59,10 +71,6 @@ namespace Warewolf.Studio.ViewModels
             {
                 _oldTestName = value; 
                 OnPropertyChanged(()=> OldTestName);
-                if (!IsDirty)
-                {
-                    OnPropertyChanged(() => NameForDisplay);
-                }
             }
         }
 
@@ -71,13 +79,9 @@ namespace Warewolf.Studio.ViewModels
             get { return _testName; }
             set
             {
-                if (NameForDisplay != value)
-                {
-                    IsDirty = true;
-                }
                 _testName = value;
                 OnPropertyChanged(() => TestName);
-                OnPropertyChanged(() => NameForDisplay);
+                OnPropertyChanged(() => IsDirty);
             }
         }
 
@@ -85,11 +89,13 @@ namespace Warewolf.Studio.ViewModels
         {
             get
             {
-                if (IsDirty)
-                {
-                    return TestName + " *";
-                }
-                return TestName;
+               
+                return _nameForDisplay;
+            }
+            set
+            {
+                _nameForDisplay = value;
+                OnPropertyChanged(()=>NameForDisplay);
             }
         }
 
@@ -100,6 +106,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 _userName = value;
                 OnPropertyChanged(() => UserName);
+                OnPropertyChanged(() => IsDirty);
             }
         }
 
@@ -113,6 +120,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 _password = value;
                 OnPropertyChanged(() => Password);
+                OnPropertyChanged(() => IsDirty);
             }
         }
         public DateTime LastRunDate
@@ -135,6 +143,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 _inputs = value;
                 OnPropertyChanged(() => Inputs);
+                OnPropertyChanged(() => IsDirty);
             }
         }
 
@@ -145,6 +154,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 _outputs = value;
                 OnPropertyChanged(() => Outputs);
+                OnPropertyChanged(() => IsDirty);
             }
         }
         public bool NoErrorExpected
@@ -157,6 +167,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 _noErrorExpected = value;
                 OnPropertyChanged(() => NoErrorExpected);
+                OnPropertyChanged(() => NameForDisplay);
             }
         }
         public bool ErrorExpected
@@ -169,6 +180,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 _errorExpected = value;
                 OnPropertyChanged(() => ErrorExpected);
+                OnPropertyChanged(() => IsDirty);
             }
         }
 
@@ -246,6 +258,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 _enabled = value;
                 OnPropertyChanged(() => Enabled);
+                OnPropertyChanged(() => IsDirty);
             }
         }
         public string RunSelectedTestUrl
@@ -268,31 +281,45 @@ namespace Warewolf.Studio.ViewModels
             }
             set
             {
-                if (_authenticationType != value)
-                {
-                    IsDirty = true;
-                }
-
                 _authenticationType = value;
                 OnPropertyChanged(() => AuthenticationType);
                 OnPropertyChanged(() => UserAuthenticationSelected);
-                OnPropertyChanged(() => NameForDisplay);
+                OnPropertyChanged(() => IsDirty);
             }
         }
         public bool IsDirty
         {
             get
             {
-                return _isDirty;
-            }
-            set
-            {
-                _isDirty = value;
-                OnPropertyChanged(() => IsDirty);
-                OnPropertyChanged(() => NameForDisplay);
+                var isDirty = (Item != null && !Equals(Item)) || NewTest;
+                if (isDirty)
+                {
+                   NameForDisplay = TestName + " *";
+                }
+                else
+                {
+                    NameForDisplay = TestName;
+                }
+                return isDirty;
             }
         }
+
         public bool UserAuthenticationSelected => AuthenticationType == AuthenticationType.User;
+
+        public bool NewTest
+        {
+            get { return _newTest; }
+            set
+            {
+                _newTest = value; 
+                OnPropertyChanged(() => NewTest);
+            }
+        }
+
+        public void SetItem(IServiceTestModel model)
+        {
+            Item = model as ServiceTestModel;
+        }
 
         #endregion
 
@@ -348,6 +375,114 @@ namespace Warewolf.Studio.ViewModels
                     indexToInsertAt++;
                 }
                 colName = col.Name;
+            }
+        }
+
+        public bool Equals(ServiceTestModel other)
+        {
+            if (ReferenceEquals(null, other))
+            {
+                return false;
+            }
+            if (ReferenceEquals(this, other))
+            {
+                return true;
+            }
+            if (GetHashCode() == other.GetHashCode())
+                return true;
+
+            return EqualsSeq(other) && InputCompare(other, true) && OutputCompare(other, true);
+        }
+
+        private bool InputCompare(ServiceTestModel other, bool inputCompare)
+        {
+            if (_inputs == null)
+            {
+                return true;
+            }
+            for (int i = 0; i < _inputs.Count; i++)
+            {
+                if (_inputs[i].Value != other._inputs[i].Value)
+                {
+                    inputCompare = false;
+                }
+                if (!inputCompare) continue;
+                if (_inputs[i].Variable != other._inputs[i].Variable)
+                {
+                    inputCompare = false;
+                }
+                if (!inputCompare) continue;
+                if (_inputs[i].EmptyIsNull != other._inputs[i].EmptyIsNull)
+                {
+                    inputCompare = false;
+                }
+            }
+            return inputCompare;
+        }
+
+        private bool OutputCompare(ServiceTestModel other, bool outputCompare)
+        {
+            if (_outputs == null)
+            {
+                return true;
+            }
+            for (int i = 0; i < _outputs.Count; i++)
+            {
+                if (_outputs[i].Value != other._outputs[i].Value)
+                {
+                    outputCompare = false;
+                }
+                if (!outputCompare) continue;
+                if (_outputs[i].Variable != other._outputs[i].Variable)
+                {
+                    outputCompare = false;
+                }
+            }
+            return outputCompare;
+        }
+
+        private bool EqualsSeq(ServiceTestModel other)
+        {
+            return string.Equals(_testName, other._testName) && 
+                   string.Equals(_userName, other._userName) && 
+                   string.Equals(_password, other._password) && 
+                   _noErrorExpected == other._noErrorExpected && 
+                   _errorExpected == other._errorExpected && 
+                   _enabled == other._enabled && 
+                   _authenticationType == other._authenticationType;
+        }
+        
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj))
+            {
+                return false;
+            }
+            if (ReferenceEquals(this, obj))
+            {
+                return true;
+            }
+            if (obj.GetType() != GetType())
+            {
+                return false;
+            }
+            return Equals((ServiceTestModel) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                var hashCode = _testName?.GetHashCode() ?? 0;
+                hashCode = (hashCode*397) ^ (_userName?.GetHashCode() ?? 0);
+                hashCode = (hashCode*397) ^ (_password?.GetHashCode() ?? 0);
+                hashCode = (hashCode*397) ^ (_inputs?.GetHashCode() ?? 0);
+                hashCode = (hashCode*397) ^ (_outputs?.GetHashCode() ?? 0);
+                hashCode = (hashCode*397) ^ _noErrorExpected.GetHashCode();
+                hashCode = (hashCode*397) ^ _errorExpected.GetHashCode();
+                hashCode = (hashCode*397) ^ _enabled.GetHashCode();
+                hashCode = (hashCode*397) ^ (int) _authenticationType;
+                return hashCode;
             }
         }
     }

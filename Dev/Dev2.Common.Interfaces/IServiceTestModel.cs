@@ -27,9 +27,10 @@ namespace Dev2.Common.Interfaces
         string RunSelectedTestUrl { get; set; }
         AuthenticationType AuthenticationType { get; set; }
         string NameForDisplay { get; }
-        bool IsDirty { get; set; }
+        bool IsDirty { get; }
         bool UserAuthenticationSelected { get; }
-        
+        bool NewTest { get; set; }
+        void SetItem(IServiceTestModel model);
     }
 
     public interface IServiceTestInput

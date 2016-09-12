@@ -386,10 +386,19 @@ namespace Dev2.Activities.Specs.TestFramework
             Assert.AreEqual(testName, serviceTest.SelectedServiceTest.TestName);
         }
 
-        [Then(@"Name for display is ""(.*)""")]
+        [Then(@"Name for display is ""(.*)"" and test is edited")]
+        public void ThenNameForDisplayIsAndTestIsEdited(string nameForDisplay)
+        {
+            ServiceTestViewModel serviceTest = GetTestFrameworkFromContext();
+            Assert.IsTrue(serviceTest.SelectedServiceTest.IsDirty);
+            Assert.AreEqual(nameForDisplay, serviceTest.SelectedServiceTest.NameForDisplay);
+        }
+
+        [Then(@"Name for display is ""(.*)"" and test is not edited")]
         public void ThenNameForDisplayIs(string nameForDisplay)
         {
             ServiceTestViewModel serviceTest = GetTestFrameworkFromContext();
+            Assert.IsFalse(serviceTest.SelectedServiceTest.IsDirty);
             Assert.AreEqual(nameForDisplay, serviceTest.SelectedServiceTest.NameForDisplay);
         }
 

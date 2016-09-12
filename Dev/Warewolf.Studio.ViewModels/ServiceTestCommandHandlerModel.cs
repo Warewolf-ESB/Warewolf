@@ -25,9 +25,9 @@ namespace Warewolf.Studio.ViewModels
             var testModel = new ServiceTestModel(resourceModel.ID)
             {
                 TestName = "Test " + (testNumber == 0 ? 1 : testNumber),
-                IsDirty = true,
                 TestPending = true,
                 Enabled = true,
+                NewTest = true,
                 Inputs = new List<IServiceTestInput>(),
                 Outputs = new List<IServiceTestOutput>()
             };
@@ -48,6 +48,7 @@ namespace Warewolf.Studio.ViewModels
                 testModel.Outputs = outputList
                                     .Select(sca => new ServiceTestOutput(sca.DisplayValue, sca.Value) as IServiceTestOutput).ToList();
             }
+            testModel.Item = testModel;
             return testModel;
         }
 
@@ -97,7 +98,6 @@ namespace Warewolf.Studio.ViewModels
             var testClone = new ServiceTestModel(selectedTest.ParentId)
             {
                 TestName = selectedTest.TestName,
-                IsDirty = true,
                 Inputs = selectedTest.Inputs,
                 Outputs = selectedTest.Outputs,
                 AuthenticationType = selectedTest.AuthenticationType,
@@ -107,6 +107,7 @@ namespace Warewolf.Studio.ViewModels
                 IsTestSelected = true,
                 Password = selectedTest.Password,
                 TestPending = true,
+                NewTest = true,
                 UserName = selectedTest.UserName,
             };
             return testClone;

@@ -13,6 +13,7 @@ using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Common.Interfaces.Threading;
 using Dev2.Interfaces;
+using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Network;
 using Microsoft.Practices.Prism.Commands;
@@ -133,7 +134,7 @@ namespace Warewolf.Studio.ViewModels
                     {
                         return false;
                     }
-                    var isDirty = _tests.Any(resource => resource.IsDirty);
+                    var isDirty = _tests.Any(resource => resource.IsDirty) || _tests.Any(resource => resource.NewTest);
 
                     var isConnected = ResourceModel.Environment.Connection.IsConnected;
 
@@ -165,7 +166,7 @@ namespace Warewolf.Studio.ViewModels
                     return;
                 }
                 ResourceModel.Environment.ResourceRepository.SaveTests(ResourceModel.ID, serviceTestModels);
-                MarkTestsAsDirty(false);
+                MarkTestsAsNotNew();
                 SetSelectedTestUrl();
             }
             catch (Exception)
@@ -176,15 +177,22 @@ namespace Warewolf.Studio.ViewModels
 
         private void SetSelectedTestUrl()
         {
-            SelectedServiceTest.RunSelectedTestUrl = WebServer.GetWorkflowUri(ResourceModel, "", UrlType.Tests) + "/" +
-                                                     SelectedServiceTest.TestName;
+            SelectedServiceTest.RunSelectedTestUrl = WebServer.GetWorkflowUri(ResourceModel, "", UrlType.Tests) + "/" + SelectedServiceTest.TestName;
+            if (SelectedServiceTest.AuthenticationType == AuthenticationType.Public)
+            {
+                SelectedServiceTest.RunSelectedTestUrl = SelectedServiceTest.RunSelectedTestUrl.Replace("/secure/", "/public/");
+            }
         }
 
-        private void MarkTestsAsDirty(bool isDirty)
+        private void MarkTestsAsNotNew()
         {
-            foreach (var model in _tests) //This is based on the fact that the save will do a bulk save all the time
+            foreach (var model in _tests.Where(model => model.NewTest))
             {
-                model.IsDirty = isDirty;
+                model.NewTest = false;
+            }
+            foreach (var model in _tests.Where(model => model.IsDirty))
+            {
+                model.SetItem(model);
             }
         }
 
@@ -293,32 +301,17 @@ namespace Warewolf.Studio.ViewModels
         {
             try
             {
-                
+
                 var serviceTestModels = new List<ServiceTestModel>();
                 var loadResourceTests = ResourceModel.Environment.ResourceRepository.LoadResourceTests(ResourceModel.ID);
                 if (loadResourceTests != null)
                 {
-                    serviceTestModels = loadResourceTests.Select(to => new ServiceTestModel(ResourceModel.ID)
+                    foreach (var to in loadResourceTests)
                     {
-                        OldTestName = to.TestName,
-                        TestName = to.TestName,
-                        UserName = to.UserName,
-                        AuthenticationType = to.AuthenticationType,
-                        Enabled = to.Enabled,
-                        ErrorExpected = to.ErrorExpected,
-                        NoErrorExpected = to.NoErrorExpected,
-                        LastRunDate = to.LastRunDate,
-                        TestPending = to.TestPending,
-                        IsDirty = to.IsDirty,
-                        TestFailing = to.TestFailing,
-                        TestPassed = to.TestPassed,
-                        Password = to.Password,
-                        ParentId = to.ResourceId,
-                        TestInvalid = to.TestInvalid,
-                        Inputs =to.Inputs?.Select(input => new ServiceTestInput(input.Variable, input.Value) as IServiceTestInput).ToList(),
-                        Outputs =to.Outputs?.Select(output => new ServiceTestOutput(output.Variable, output.Value) as IServiceTestOutput).ToList()
-                    }).ToList();
-
+                        var serviceTestModel = ToServiceTestModel(to);
+                        serviceTestModel.Item = ToServiceTestModel(to);
+                        serviceTestModels.Add(serviceTestModel);
+                    }
                 }
                 return serviceTestModels.ToObservableCollection<IServiceTestModel>();
             }
@@ -326,6 +319,31 @@ namespace Warewolf.Studio.ViewModels
             {
                 return new ObservableCollection<IServiceTestModel>();
             }
+        }
+
+        private ServiceTestModel ToServiceTestModel(IServiceTestModelTO to)
+        {
+            var serviceTestModel = new ServiceTestModel(ResourceModel.ID)
+            {
+                OldTestName = to.TestName,
+                TestName = to.TestName,
+                NameForDisplay = to.TestName,
+                UserName = to.UserName,
+                AuthenticationType = to.AuthenticationType,
+                Enabled = to.Enabled,
+                ErrorExpected = to.ErrorExpected,
+                NoErrorExpected = to.NoErrorExpected,
+                LastRunDate = to.LastRunDate,
+                TestPending = to.TestPending,
+                TestFailing = to.TestFailing,
+                TestPassed = to.TestPassed,
+                Password = to.Password,
+                ParentId = to.ResourceId,
+                TestInvalid = to.TestInvalid,
+                Inputs = to.Inputs?.Select(input => new ServiceTestInput(input.Variable, input.Value) as IServiceTestInput).ToList(),
+                Outputs = to.Outputs?.Select(output => new ServiceTestOutput(output.Variable, output.Value) as IServiceTestOutput).ToList()
+            };
+            return serviceTestModel;
         }
 
         public ICommand DeleteTestCommand { get; set; }
