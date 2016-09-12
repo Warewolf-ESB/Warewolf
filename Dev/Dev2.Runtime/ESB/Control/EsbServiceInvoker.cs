@@ -99,7 +99,6 @@ namespace Dev2.Runtime.ESB
             time.Start();
             errors = new ErrorResultTO();
             const int Update = 0;
-            // BUG 9706 - 2013.06.22 - TWR : added pre debug dispatch
             if(dataObject.Environment.HasErrors())
             {
                 errors.AddError(dataObject.Environment.FetchErrors());
@@ -228,8 +227,6 @@ namespace Dev2.Runtime.ESB
 
                 return null;
             }
-            // we need a remote container ;)
-            // TODO : Set Output description for shaping ;)
             return GenerateContainer(new ServiceAction { ActionType = Common.Interfaces.Core.DynamicServices.enActionType.RemoteService }, dataObject, null);
         }
 
@@ -274,8 +271,6 @@ namespace Dev2.Runtime.ESB
                 }
 
             }
-            // we need a remote container ;)
-            // TODO : Set Output description for shaping ;)
             return GenerateContainer(new ServiceAction { ActionType = Common.Interfaces.Core.DynamicServices.enActionType.RemoteService }, dataObject, null);
         }
 

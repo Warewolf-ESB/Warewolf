@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Input;
 using Dev2;
@@ -12,12 +13,14 @@ using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Common.Interfaces.Threading;
+using Dev2.Data;
 using Dev2.Interfaces;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Network;
 using Microsoft.Practices.Prism.Commands;
 using Microsoft.Practices.Prism.Mvvm;
+using Warewolf.Resource.Errors;
 
 namespace Warewolf.Studio.ViewModels
 {
@@ -30,8 +33,9 @@ namespace Warewolf.Studio.ViewModels
         private string _displayName;
         public IPopupController PopupController { get; }
         private bool _canSave;
+        private string _errorMessage;
 
-        public ServiceTestViewModel(IContextualResourceModel resourceModel,IAsyncWorker asyncWorker)
+        public ServiceTestViewModel(IContextualResourceModel resourceModel, IAsyncWorker asyncWorker)
         {
             if (resourceModel == null)
                 throw new ArgumentNullException(nameof(resourceModel));
@@ -68,8 +72,8 @@ namespace Warewolf.Studio.ViewModels
 
         private bool CanDeleteTest(IServiceTestModel selectedTestModel)
         {
-          return GetPermissions() && selectedTestModel != null && !selectedTestModel.Enabled;
-        } 
+            return GetPermissions() && selectedTestModel != null && !selectedTestModel.Enabled;
+        }
         public bool IsLoading { get; set; }
 
         public IAsyncWorker AsyncWorker { get; set; }
@@ -82,14 +86,15 @@ namespace Warewolf.Studio.ViewModels
                 return;
             }
 
-            var testModel = ServiceTestCommandHandler.CreateTest(ResourceModel, RealTests().Count());
+            var testNumber = RealTests().Count() + 1;
+            var testModel = ServiceTestCommandHandler.CreateTest(ResourceModel, testNumber);
             AddAndSelectTest(testModel);
         }
 
         private void AddAndSelectTest(IServiceTestModel testModel)
         {
             var index = _tests.Count - 1;
-            if(index >= 0)
+            if (index >= 0)
             {
                 _tests.Insert(index, testModel);
             }
@@ -104,13 +109,19 @@ namespace Warewolf.Studio.ViewModels
         public bool CanStopTest { get; set; }
         private bool CanRunSelectedTestInBrowser => SelectedServiceTest != null && !SelectedServiceTest.IsDirty;
         private bool CanRunSelectedTest => GetPermissions();
-        public bool CanDuplicateTest => GetPermissions() && SelectedServiceTest != null;
+        public bool CanDuplicateTest => GetPermissions() && !IsDirty && SelectedServiceTest != null;
+        private bool HasDuplicateTestNames()
+        {
+            var dupTests = RealTests().ToList().GroupBy(x => x.TestName).Where(group => @group.Count() > 1).Select(group => @group.Key);
+            var hasDups = dupTests.Any();
+            return hasDups;
+        }
 
         public bool CanSave
         {
             get
             {
-                _canSave = IsDirty;
+                _canSave = IsDirty && IsValidName(SelectedServiceTest.TestName);
                 return _canSave;
             }
             set
@@ -122,6 +133,42 @@ namespace Warewolf.Studio.ViewModels
         private bool GetPermissions()
         {
             return true;
+        }
+
+        private bool IsValidName(string name)
+        {
+            ErrorMessage = string.Empty;
+            if (string.IsNullOrEmpty(name))
+            {
+                ErrorMessage = string.Format(ErrorResource.CannotBeNull, "'name'");
+            }
+            else if (NameHasInvalidCharacters(name))
+            {
+                ErrorMessage = string.Format(ErrorResource.ContainsInvalidCharecters, "'name'");
+            }
+            else if (name.Trim() != name)
+            {
+                ErrorMessage = string.Format(ErrorResource.ContainsLeadingOrTrailingWhitespace, "'name'");
+            }
+
+            return string.IsNullOrEmpty(ErrorMessage);
+        }
+        private static bool NameHasInvalidCharacters(string name)
+        {
+            return Regex.IsMatch(name, @"[^a-zA-Z0-9._\s-]");
+        }
+
+        public string ErrorMessage
+        {
+            get
+            {
+                return _errorMessage;
+            }
+            set
+            {
+                _errorMessage = value;
+                OnPropertyChanged(() => ErrorMessage);
+            }
         }
 
         public bool IsDirty
@@ -159,13 +206,36 @@ namespace Warewolf.Studio.ViewModels
             try
             {
                 var serviceTestModels = RealTests().Where(a => a.IsDirty).ToList();
-                var duplicateTests = RealTests().ToList().GroupBy(x => x.TestName).Where(group => group.Count() > 1).Select(group => group.Key);
-                if (duplicateTests.Any())
+                if (HasDuplicateTestNames())
                 {
-                    PopupController?.Show(Resources.Languages.Core.ServiceTestDuplicateTestNameMessage, Resources.Languages.Core.ServiceTestDuplicateTestNameHeader, MessageBoxButton.OK, MessageBoxImage.Error, null, false, true, false, false);
+                    // ReSharper disable once UseNullPropagation
+                    if (PopupController != null)
+                    {
+                        PopupController.Show(Resources.Languages.Core.ServiceTestDuplicateTestNameMessage, Resources.Languages.Core.ServiceTestDuplicateTestNameHeader, MessageBoxButton.OK, MessageBoxImage.Error, null, false, true, false, false);
+                    }
                     return;
                 }
-                ResourceModel.Environment.ResourceRepository.SaveTests(ResourceModel.ID, serviceTestModels);
+                var serviceTestModelTos = serviceTestModels.Select(model => new ServiceTestModelTO()
+                {
+                    TestName = model.TestName,
+                    ResourceId = model.ParentId,
+                    AuthenticationType = model.AuthenticationType,
+                    Enabled = model.Enabled,
+                    ErrorExpected = model.ErrorExpected,
+                    NoErrorExpected = model.NoErrorExpected,
+                    Inputs = model.Inputs,
+                    LastRunDate = model.LastRunDate,
+                    OldTestName = model.OldTestName,
+                    Outputs = model.Outputs,
+                    Password = model.Password,
+                    IsDirty = model.IsDirty,
+                    TestPending = model.TestPending,
+                    UserName = model.UserName,
+                    TestFailing = model.TestFailing,
+                    TestInvalid = model.TestInvalid,
+                    TestPassed = model.TestPassed
+                } as IServiceTestModelTO).ToList();
+                ResourceModel.Environment.ResourceRepository.SaveTests(ResourceModel.ID, serviceTestModelTos);
                 MarkTestsAsNotNew();
                 SetSelectedTestUrl();
             }
@@ -265,7 +335,7 @@ namespace Warewolf.Studio.ViewModels
         public ObservableCollection<IServiceTestModel> Tests
         {
             get
-            {               
+            {
                 return _tests;
             }
             set
@@ -277,7 +347,7 @@ namespace Warewolf.Studio.ViewModels
 
         private void DeleteTest(IServiceTestModel test)
         {
-            if(test == null) return;
+            if (test == null) return;
             var nameOfItemBeingDeleted = test.NameForDisplay.Replace("*", "").TrimEnd(' ');
             if (PopupController.ShowDeleteConfirmation(nameOfItemBeingDeleted) == MessageBoxResult.Yes)
             {

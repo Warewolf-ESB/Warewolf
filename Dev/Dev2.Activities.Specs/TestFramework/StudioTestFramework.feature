@@ -295,6 +295,9 @@ Scenario: Duplicate a test
 	When I click duplicate 
 	Then there are 2 tests
 	And the duplicated tests is "Test 1"
+	And save is enabled
+	When I save
+	Then The duplicate Name popup is shown
 	And Duplicate Test in not Visible
 
 Scenario: Run a test with single scalar inputs and outputs

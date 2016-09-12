@@ -155,6 +155,7 @@ namespace Warewolf.Studio.ViewModels
         private bool _isFolder;
         private bool _canDuplicate;
         private bool _canCreateTest;
+        private bool _deployResourceTests;
 
         public ExplorerItemViewModel(IServer server, IExplorerTreeItem parent, Action<IExplorerItemViewModel> selectAction, IShellViewModel shellViewModel, IPopupController popupController)
         {
@@ -959,6 +960,7 @@ namespace Warewolf.Studio.ViewModels
                 OnPropertyChanged(() => CanCreateTest);
             }
         }
+    
         public bool CanDelete
         {
             get

@@ -32,6 +32,7 @@ using Dev2.Data;
 using Dev2.Data.ServiceModel;
 using Dev2.Providers.Errors;
 using Dev2.Providers.Events;
+using Dev2.Runtime.ESB.Management.Services;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Services.Security;
 using Dev2.Studio.Core.AppResources.DependencyInjection.EqualityComparers;
@@ -598,7 +599,7 @@ namespace BusinessDesignStudio.Unit.Tests
         public void ResourceModel_Save_ExecuteMessageIsSuccessful_NoException()
         {
             //------------Setup for test--------------------------
-            var serviceTestModel = new ServiceTestModel(Guid.NewGuid())
+            var serviceTestModel = new ServiceTestModelTO()
             {
                 TestName = "Test Input",
                 AuthenticationType = AuthenticationType.Public,
@@ -606,7 +607,10 @@ namespace BusinessDesignStudio.Unit.Tests
                 ErrorExpected = false,
                 NoErrorExpected = true,
                 Inputs = new List<IServiceTestInput> { new ServiceTestInput("var", "val") },
-                Outputs = new List<IServiceTestOutput> { new ServiceTestOutput("var", "val") }
+                Outputs = new List<IServiceTestOutput> { new ServiceTestOutput("var", "val") },
+                ResourceId = Guid.NewGuid()
+
+
             };
             var retVal = new StringBuilder();
             Mock<IEnvironmentModel> mockEnvironmentModel = new Mock<IEnvironmentModel>();
@@ -623,7 +627,7 @@ namespace BusinessDesignStudio.Unit.Tests
             var resourceRepository = new ResourceRepository(mockEnvironmentModel.Object);
             var resourceId = Guid.NewGuid();
             //------------Execute Test---------------------------            
-            resourceRepository.SaveTests(resourceId, new List<IServiceTestModel> { serviceTestModel });
+            resourceRepository.SaveTests(resourceId, new List<IServiceTestModelTO> { serviceTestModel });
             //------------Assert Results-------------------------
             var ser = new Dev2JsonSerializer();
             var retMsg = ser.Deserialize<EsbExecuteRequest>(retVal.ToString());
@@ -1432,6 +1436,34 @@ namespace BusinessDesignStudio.Unit.Tests
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
+        [TestCategory("ResourceRepository_LoadResourceTestsForDeploy")]
+        public void ResourceRepository_LoadResourceTestsForDeploy_WhenNoTestsToFetch_ExpectNothing()
+        {
+            //------------Setup for test--------------------------
+            Mock<IEnvironmentModel> env = new Mock<IEnvironmentModel>();
+            Mock<IEnvironmentConnection> con = new Mock<IEnvironmentConnection>();
+            con.Setup(c => c.IsConnected).Returns(true);
+            env.Setup(e => e.Connection).Returns(con.Object);
+
+
+
+            var serviceTestModel = new List<IServiceTestModelTO>() {};
+            Dev2JsonSerializer jsonSerializer = new Dev2JsonSerializer();
+            var payload = jsonSerializer.Serialize(serviceTestModel);
+            CompressedExecuteMessage message = new CompressedExecuteMessage();
+            message.SetMessage(payload);
+            var msgResult = jsonSerializer.Serialize(message);
+            con.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Returns(msgResult.ToStringBuilder);
+
+            //------------Execute Test---------------------------
+            var result = new ResourceRepository(env.Object);
+            var serviceTestModels = result.LoadResourceTestsForDeploy(Guid.NewGuid());
+            //------------Assert Results-------------------------
+            Assert.AreEqual(0, serviceTestModels.Count);
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
         [TestCategory("ResourceRepository_DeleteResourceTests")]
         [ExpectedException(typeof(ArgumentNullException))]
         public void ResourceRepository_DeleteResourceTests_WhenNoTestNameIsNull_ExpectNothing()
@@ -1565,6 +1597,48 @@ namespace BusinessDesignStudio.Unit.Tests
             //------------Assert Results-------------------------
             Assert.IsNotNull(serviceTestModels.ToString());
         }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        [TestCategory("ResourceRepository_LoadResourceTestsForDeploy")]
+        public void ResourceRepository_LoadResourceTestsForDeploy_WhenTestFound_ExpectTestsBack()
+        {
+            //------------Setup for test--------------------------
+            Mock<IEnvironmentModel> env = new Mock<IEnvironmentModel>();
+            Mock<IEnvironmentConnection> con = new Mock<IEnvironmentConnection>();
+            con.Setup(c => c.IsConnected).Returns(true);
+            env.Setup(e => e.Connection).Returns(con.Object);
+            const string plainText = "pass.word1";
+            var decrypt = SecurityEncryption.Encrypt(plainText);
+            var serviceTestModel = new List<IServiceTestModelTO>
+            {
+                new ServiceTestModelTO
+                {
+                    TestName = "Test 1",
+                    AuthenticationType = AuthenticationType.Windows,
+                    Inputs = new List<IServiceTestInput>(),
+                    Outputs = new List<IServiceTestOutput>(),
+                    UserName = "nathi",
+                    Password = decrypt
+                }
+            };
+            Dev2JsonSerializer jsonSerializer = new Dev2JsonSerializer();
+            var payload = jsonSerializer.Serialize(serviceTestModel);
+            CompressedExecuteMessage message = new CompressedExecuteMessage();
+            message.SetMessage(payload);
+            var msgResult = jsonSerializer.Serialize(message);
+            con.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Returns(msgResult.ToStringBuilder);
+
+            //------------Execute Test---------------------------
+            var result = new ResourceRepository(env.Object);
+            var serviceTestModels = result.LoadResourceTestsForDeploy(Guid.NewGuid());
+            //------------Assert Results-------------------------
+            var isEncryted = serviceTestModels.Single().Password == decrypt;
+            var old = SecurityEncryption.Decrypt(serviceTestModels.Single().Password);
+
+            Assert.IsTrue(isEncryted);
+            Assert.IsTrue(old.Contains(plainText));
+        }
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("ResourceRepository_LoadResourceTests")]
@@ -1589,6 +1663,39 @@ namespace BusinessDesignStudio.Unit.Tests
             try
             {
                 result.LoadResourceTests(Guid.NewGuid());
+            }
+            catch (Exception ex)
+            {
+                //------------Assert Results-------------------------
+                Assert.AreEqual("An error occured", ex.Message);
+            }
+
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        [TestCategory("ResourceRepository_LoadResourceTestsForDeploy")]
+        public void ResourceRepository_LoadResourceTestsForDeploy_WhenError_ExpectException()
+        {
+            //------------Setup for test--------------------------
+            Mock<IEnvironmentModel> env = new Mock<IEnvironmentModel>();
+            Mock<IEnvironmentConnection> con = new Mock<IEnvironmentConnection>();
+            con.Setup(c => c.IsConnected).Returns(true);
+            env.Setup(e => e.Connection).Returns(con.Object);
+
+            Dev2JsonSerializer jsonSerializer = new Dev2JsonSerializer();
+            CompressedExecuteMessage message = new CompressedExecuteMessage();
+            message.HasError = true;
+            var stringBuilder = new StringBuilder("An error occured");
+            message.SetMessage(jsonSerializer.Serialize(stringBuilder));
+            var msgResult = jsonSerializer.Serialize(message);
+            con.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Returns(msgResult.ToStringBuilder);
+
+            //------------Execute Test---------------------------
+            var result = new ResourceRepository(env.Object);
+            try
+            {
+                result.LoadResourceTestsForDeploy(Guid.NewGuid());
             }
             catch (Exception ex)
             {
