@@ -8291,40 +8291,15 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
-    <AssertAction UIObjectName="UIMap.MainStudioWindow.SideMenuBar.RunAndDebugButton">
+    <AssertAction UIObjectName="UIMap.UIWarewolfDEV2SANELEMTWindow.UIWHATDOESTHISDOCustom.UIUI_HelpViewControl_ACustom.UIXamRichTextEditorCustom">
       <ParameterName />
       <PropertyName>Exists</PropertyName>
       <ExpectedValue>True</ExpectedValue>
-      <MessageOnValidationFailure>Run button does not exist</MessageOnValidationFailure>
+      <MessageOnValidationFailure>Help text does not exist</MessageOnValidationFailure>
       <Type>String</Type>
       <PropertyCondition>AreEqual</PropertyCondition>
     </AssertAction>
-    <AssertAction UIObjectName="UIMap.MainStudioWindow.SideMenuBar.RunAndDebugButton">
-      <ParameterName />
-      <PropertyName>Enabled</PropertyName>
-      <ExpectedValue>True</ExpectedValue>
-      <MessageOnValidationFailure>RunDebug button is disabled</MessageOnValidationFailure>
-      <Type>String</Type>
-      <PropertyCondition>AreEqual</PropertyCondition>
-    </AssertAction>
-    <TestStepMarkerAction Comment="" MarkerInformation="Assert_RunDebug_Button_Exist_And_Enabled">
-      <ParameterName />
-      <StepId>-1</StepId>
-      <Direction>Start</Direction>
-      <Outcome />
-      <Disabled>false</Disabled>
-      <WorkItemId>0</WorkItemId>
-      <MarkerRegionType>Assertion</MarkerRegionType>
-    </TestStepMarkerAction>
-    <AssertAction UIObjectName="UIMap.MainStudioWindow.SideMenuBar.RunAndDebugButton">
-      <ParameterName />
-      <PropertyName>Enabled</PropertyName>
-      <ExpectedValue>False</ExpectedValue>
-      <MessageOnValidationFailure>RunDebug button is enabled</MessageOnValidationFailure>
-      <Type>String</Type>
-      <PropertyCondition>AreEqual</PropertyCondition>
-    </AssertAction>
-    <TestStepMarkerAction Comment="" MarkerInformation="Assert_RunDebug_Button_Disabled">
+    <TestStepMarkerAction Comment="" MarkerInformation="AssertMethod1">
       <ParameterName />
       <StepId>-1</StepId>
       <Direction>Start</Direction>
@@ -11550,20 +11525,6 @@
                           <AndCondition>
                             <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                             <PropertyCondition Name="ControlType">Indicator</PropertyCondition>
-                          </AndCondition>
-                          <SupportLevel>0</SupportLevel>
-                          <Descendants />
-                        </UIObject>
-                        <UIObject ControlType="Custom" Id="HelpTextEditor" FriendlyName="XamRichTextEditor" SpecialControlType="None">
-                          <TechnologyName>UIA</TechnologyName>
-                          <WindowTitles>
-                            <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
-                          </WindowTitles>
-                          <AndCondition>
-                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                            <PropertyCondition Name="ControlType">Custom</PropertyCondition>
-                            <PropertyCondition Name="ClassName">Uia.XamRichTextEditor</PropertyCondition>
-                            <PropertyCondition Name="AutomationId">XamRichTextEditor</PropertyCondition>
                           </AndCondition>
                           <SupportLevel>0</SupportLevel>
                           <Descendants />
@@ -22219,43 +22180,17 @@
                     <PropertyCondition Name="AutomationId">UI_HelpViewControl_AutoID</PropertyCondition>
                   </AndCondition>
                   <SupportLevel>0</SupportLevel>
-                  <Descendants />
-                </UIObject>
-              </Descendants>
-            </UIObject>
-            <UIObject ControlType="Custom" Id="UIItemCustom" FriendlyName="" SpecialControlType="None">
-              <TechnologyName>UIA</TechnologyName>
-              <WindowTitles>
-                <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
-              </WindowTitles>
-              <AndCondition>
-                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                <PropertyCondition Name="ControlType">Custom</PropertyCondition>
-                <PropertyCondition Name="ClassName">Uia.MenuView</PropertyCondition>
-              </AndCondition>
-              <SupportLevel>0</SupportLevel>
-              <Descendants>
-                <UIObject ControlType="Text" Id="UIItemText" FriendlyName=" " SpecialControlType="None">
-                  <TechnologyName>UIA</TechnologyName>
-                  <WindowTitles>
-                    <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
-                  </WindowTitles>
-                  <AndCondition>
-                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                    <PropertyCondition Name="ControlType">Text</PropertyCondition>
-                    <PropertyCondition Name="Name">\ </PropertyCondition>
-                  </AndCondition>
-                  <SupportLevel>0</SupportLevel>
                   <Descendants>
-                    <UIObject ControlType="Text" Id="UIItemText1" FriendlyName="" SpecialControlType="None">
+                    <UIObject ControlType="Custom" Id="UIXamRichTextEditorCustom" FriendlyName="XamRichTextEditor" SpecialControlType="None">
                       <TechnologyName>UIA</TechnologyName>
                       <WindowTitles>
                         <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
                       </WindowTitles>
                       <AndCondition>
                         <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                        <PropertyCondition Name="ControlType">Text</PropertyCondition>
-                        <PropertyCondition Name="Name"></PropertyCondition>
+                        <PropertyCondition Name="ControlType">Custom</PropertyCondition>
+                        <PropertyCondition Name="ClassName">Uia.XamRichTextEditor</PropertyCondition>
+                        <PropertyCondition Name="AutomationId">XamRichTextEditor</PropertyCondition>
                       </AndCondition>
                       <SupportLevel>0</SupportLevel>
                       <Descendants />
