@@ -10,8 +10,11 @@
 
 namespace Warewolf.UITests
 {
+    using System;
     using System.CodeDom.Compiler;
+    using System.Collections.Generic;
     using System.Drawing;
+    using System.Text.RegularExpressions;
     using System.Windows.Input;
     using Microsoft.VisualStudio.TestTools.UITest.Extension;
     using Microsoft.VisualStudio.TestTools.UITesting;
@@ -22,8 +25,8 @@ namespace Warewolf.UITests
     using Keyboard = Microsoft.VisualStudio.TestTools.UITesting.Keyboard;
     using Mouse = Microsoft.VisualStudio.TestTools.UITesting.Mouse;
     using MouseButtons = System.Windows.Forms.MouseButtons;
-
-
+    
+    
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public partial class UIMap
     {
@@ -5832,6 +5835,22 @@ namespace Warewolf.UITests
             Mouse.Click(viewInBrowserF7Button, new Point(82, 14));
         }
         
+        /// <summary>
+        /// Click_AddNew_Web_Source_From_tool - Use 'Click_AddNew_Web_Source_From_toolParams' to pass parameters into this method.
+        /// </summary>
+        public void Click_AddNew_Web_Source_From_tool()
+        {
+            #region Variable Declarations
+            WpfButton newButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebGet.LargeView.NewButton;
+            #endregion
+
+            // Verify that the 'Exists' property of 'New' button equals 'True'
+            Assert.AreEqual(this.Click_AddNew_Web_Source_From_toolParams.NewButtonExists, newButton.Exists, "NewButton does not exist");
+
+            // Click 'New' button
+            Mouse.Click(newButton, new Point(30, 4));
+        }
+        
         #region Properties
         public virtual Assert_CancelConnectionButton_ExistsExpectedValues Assert_CancelConnectionButton_ExistsExpectedValues
         {
@@ -7993,6 +8012,18 @@ namespace Warewolf.UITests
             }
         }
         
+        public virtual Click_AddNew_Web_Source_From_toolParams Click_AddNew_Web_Source_From_toolParams
+        {
+            get
+            {
+                if ((this.mClick_AddNew_Web_Source_From_toolParams == null))
+                {
+                    this.mClick_AddNew_Web_Source_From_toolParams = new Click_AddNew_Web_Source_From_toolParams();
+                }
+                return this.mClick_AddNew_Web_Source_From_toolParams;
+            }
+        }
+        
         public MainStudioWindow MainStudioWindow
         {
             get
@@ -8474,6 +8505,8 @@ namespace Warewolf.UITests
         private Type_TestSite_into_Web_Source_Wizard_Address_TextboxParams mType_TestSite_into_Web_Source_Wizard_Address_TextboxParams;
         
         private Click_DebugInput_ViewInBrowser_ButtonParams mClick_DebugInput_ViewInBrowser_ButtonParams;
+        
+        private Click_AddNew_Web_Source_From_toolParams mClick_AddNew_Web_Source_From_toolParams;
         
         private MainStudioWindow mMainStudioWindow;
         
@@ -12214,6 +12247,21 @@ namespace Warewolf.UITests
         /// Verify that the 'Enabled' property of 'View In Browser (F7)' button equals 'True'
         /// </summary>
         public bool ViewInBrowserF7ButtonEnabled = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Click_AddNew_Web_Source_From_tool'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Click_AddNew_Web_Source_From_toolParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'New' button equals 'True'
+        /// </summary>
+        public bool NewButtonExists = true;
         #endregion
     }
     
@@ -27480,6 +27528,22 @@ namespace Warewolf.UITests
                 return this.mSourcesComboBox;
             }
         }
+        
+        public WpfButton NewButton
+        {
+            get
+            {
+                if ((this.mNewButton == null))
+                {
+                    this.mNewButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mNewButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "SourceNewButton";
+                    this.mNewButton.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mNewButton;
+            }
+        }
         #endregion
         
         #region Fields
@@ -27490,6 +27554,8 @@ namespace Warewolf.UITests
         private WpfButton mTestButton;
         
         private WpfComboBox mSourcesComboBox;
+        
+        private WpfButton mNewButton;
         #endregion
     }
     
@@ -36363,10 +36429,62 @@ namespace Warewolf.UITests
                 return this.mUIViewInBrowserF7Button;
             }
         }
+        
+        public UIDsfWebGetActivityCustom UIDsfWebGetActivityCustom
+        {
+            get
+            {
+                if ((this.mUIDsfWebGetActivityCustom == null))
+                {
+                    this.mUIDsfWebGetActivityCustom = new UIDsfWebGetActivityCustom(this);
+                }
+                return this.mUIDsfWebGetActivityCustom;
+            }
+        }
         #endregion
         
         #region Fields
         private WpfButton mUIViewInBrowserF7Button;
+        
+        private UIDsfWebGetActivityCustom mUIDsfWebGetActivityCustom;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIDsfWebGetActivityCustom : WpfCustom
+    {
+        
+        public UIDsfWebGetActivityCustom(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.WebServiceGetDesigner";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "GET Web Method(WebServiceGetDesigner)";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfCustom UILargeViewContentCustom
+        {
+            get
+            {
+                if ((this.mUILargeViewContentCustom == null))
+                {
+                    this.mUILargeViewContentCustom = new WpfCustom(this);
+                    #region Search Criteria
+                    this.mUILargeViewContentCustom.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.Large";
+                    this.mUILargeViewContentCustom.SearchProperties[WpfControl.PropertyNames.AutomationId] = "LargeViewContent";
+                    this.mUILargeViewContentCustom.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mUILargeViewContentCustom;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfCustom mUILargeViewContentCustom;
         #endregion
     }
     
