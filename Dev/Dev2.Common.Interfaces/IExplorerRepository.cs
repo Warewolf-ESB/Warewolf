@@ -24,6 +24,8 @@ namespace Dev2.Common.Interfaces
         IExplorerItem ExplorerItems { get; set; }
         IAdminManager AdminManagerProxy { get; set; }
         IQueryManager QueryManagerProxy { get; set; }
+        IExplorerUpdateManager UpdateManagerProxy { get; set; }
+        Dev2.Common.Interfaces.ServerProxyLayer.IVersionManager VersionManager { get; set; }
 
         Task<IExplorerItem> LoadExplorer(bool reloadCatalogue = false);
 

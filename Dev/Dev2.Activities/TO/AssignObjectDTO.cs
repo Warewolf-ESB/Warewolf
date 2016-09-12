@@ -32,10 +32,10 @@ namespace Dev2.TO
 
         public AssignObjectDTO(string fieldName, string fieldValue, int indexNumber, bool inserted = false)
         {
-            this._fieldName = fieldName;
-            this._fieldValue = fieldValue;
-            this._indexNumber = indexNumber;
-            this.Inserted = inserted;
+            _fieldName = fieldName;
+            _fieldValue = fieldValue;
+            _indexNumber = indexNumber;
+            Inserted = inserted;
             OutList = new List<string>();
         }
 

@@ -51,6 +51,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                         ResourceName = res.ResourceName,
                         HostName = res.HostName,
                         Port = res.Port,
+                        ResourcePath = res.GetSavePath(),
                         UserName = res.UserName,
                         Password = res.Password,
                         VirtualHost = res.VirtualHost

@@ -25,5 +25,6 @@ namespace Dev2.Common.Interfaces.ServerProxyLayer
         string Name { get; set; }
         string Path { get; set; }
         Guid Id { get; set; }
+        bool ReloadActions { get; set; }
     }
 }
