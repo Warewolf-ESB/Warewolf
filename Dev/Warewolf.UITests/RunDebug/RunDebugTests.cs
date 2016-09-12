@@ -17,8 +17,14 @@ namespace Warewolf.UITests
             Uimap.Open_Assign_Tool_Large_View();
             Uimap.Enter_Text_Into_Assign_Large_View_Row1_Variable_Textbox_As_SomeVariable();
             Uimap.Click_Assign_Tool_Large_View_Done_Button();
+            Uimap.Click_Variable_IsInput();
             Uimap.Click_RunDebug_button();
+            Uimap.Enter_InputDebug_value();
             Uimap.Click_Cancel_DebugInput_Window();
+            Uimap.Click_RunDebug_button();
+            Uimap.Click_DebugInput_Debug_Button();
+            Uimap.Click_RunDebug_button();
+            Uimap.Click_DebugInput_ViewInBrowser_Button();
         }
 
         #region Additional test attributes
@@ -34,10 +40,10 @@ namespace Warewolf.UITests
         [TestCleanup()]
         public void MyTestCleanup()
         {
-            Playback.PlaybackError -= Uimap.OnError;
-            Uimap.TryCloseHangingSaveDialog();
-            Uimap.TryClearToolboxFilter();
-            Uimap.TryCloseWorkflowTabs();
+            //Playback.PlaybackError -= Uimap.OnError;
+            //Uimap.TryCloseHangingSaveDialog();
+            //Uimap.TryClearToolboxFilter();
+            //Uimap.TryCloseWorkflowTabs();
         }
 
         public TestContext TestContext
