@@ -246,8 +246,7 @@ namespace Warewolf.Studio.ViewModels
                 OnPropertyChanged(() => Environments);
             }
         }
-
-        public event SelectedExplorerEnvironmentChanged SelectedEnvironmentChanged;
+        
         public event SelectedExplorerItemChanged SelectedItemChanged;
 
         public void UpdateHelpDescriptor(string helpText)
