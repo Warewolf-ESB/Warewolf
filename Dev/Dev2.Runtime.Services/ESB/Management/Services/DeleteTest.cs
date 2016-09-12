@@ -42,7 +42,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 
                 StringBuilder testName;
                 values.TryGetValue("testName", out testName);
-                if (string.IsNullOrEmpty(testName.ToString()))
+                if (string.IsNullOrEmpty(testName?.ToString()))
                 {
                     throw new InvalidDataContractException("testName is missing");
                 }

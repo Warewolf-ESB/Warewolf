@@ -585,8 +585,9 @@ namespace Dev2.Activities.Specs.TestFramework
         public void ThenTheDuplicatedTestsIs(string dupTestName)
         {
             ServiceTestViewModel serviceTest = GetTestFrameworkFromContext();
-            var hasDupTest = serviceTest.Tests.Any(model => model.TestName == dupTestName);
-            Assert.IsTrue(hasDupTest);
+            Assert.IsTrue(serviceTest.SelectedServiceTest.TestName == dupTestName);
+            var count = serviceTest.Tests.Count(model => model.TestName == dupTestName);
+            Assert.AreEqual(2, count);
         }
         [Then(@"Duplicate Test in not Visible")]
         public void ThenDuplicateTestInNotVisible()
