@@ -109,7 +109,7 @@ namespace Warewolf.Studio.ViewModels
         public bool CanStopTest { get; set; }
         private bool CanRunSelectedTestInBrowser => SelectedServiceTest != null && !SelectedServiceTest.IsDirty;
         private bool CanRunSelectedTest => GetPermissions();
-        public bool CanDuplicateTest => GetPermissions() && !IsDirty && SelectedServiceTest != null;
+        public bool CanDuplicateTest => GetPermissions() && SelectedServiceTest != null;
         private bool HasDuplicateTestNames()
         {
             var dupTests = RealTests().ToList().GroupBy(x => x.TestName).Where(group => @group.Count() > 1).Select(group => @group.Key);

@@ -298,7 +298,7 @@ Scenario: Duplicate a test
 	And save is enabled
 	When I save
 	Then The duplicate Name popup is shown
-	And Duplicate Test in not Visible
+	And Duplicate Test in Visible
 
 Scenario: Run a test with single scalar inputs and outputs
 	Given the test builder is open with existing service "Hello World"	
