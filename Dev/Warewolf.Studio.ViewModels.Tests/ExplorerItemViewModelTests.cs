@@ -1191,7 +1191,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(_target.ResourcePath.Contains(newName));
             _explorerRepositoryMock.Verify(it => it.Rename(_target, newName));
         }
-
+       
         [TestMethod]
         public void TestResourceNameWithSlashes()
         {

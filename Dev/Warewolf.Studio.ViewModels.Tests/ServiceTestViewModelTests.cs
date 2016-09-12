@@ -146,7 +146,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             moqModel.SetupAllProperties();
             moqModel.Setup(model => model.DisplayName).Returns("My WF");
             moqModel.Setup(model => model.Environment.Connection.IsConnected).Returns(true);
-            moqModel.Setup(model => model.Environment.ResourceRepository.SaveTests(It.IsAny<Guid>(), It.IsAny<List<IServiceTestModel>>()));
+            moqModel.Setup(model => model.Environment.ResourceRepository.SaveTests(It.IsAny<Guid>(), It.IsAny<List<IServiceTestModelTO>>()));
             return moqModel.Object;
         }
 
@@ -464,7 +464,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var con = new Mock<IEnvironmentConnection>();
             con.Setup(connection => connection.IsConnected).Returns(true);
             var mockResourceRepo = new Mock<IResourceRepository>();
-            mockResourceRepo.Setup(repository => repository.SaveTests(It.IsAny<Guid>(), It.IsAny<List<IServiceTestModel>>()));
+            mockResourceRepo.Setup(repository => repository.SaveTests(It.IsAny<Guid>(), It.IsAny<List<IServiceTestModelTO>>()));
             mockEnvironmentModel.Setup(model => model.ResourceRepository).Returns(mockResourceRepo.Object);
             mockEnvironmentModel.Setup(model => model.Connection).Returns(con.Object);
             resourceModelMock.Setup(model => model.Environment).Returns(mockEnvironmentModel.Object);
@@ -474,7 +474,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(serviceTestViewModel.CanSave);
             serviceTestViewModel.Save();
             //------------Assert Results-------------------------
-            mockResourceRepo.Verify(repository => repository.SaveTests(It.IsAny<Guid>(), It.IsAny<List<IServiceTestModel>>()), Times.Once);
+            mockResourceRepo.Verify(repository => repository.SaveTests(It.IsAny<Guid>(), It.IsAny<List<IServiceTestModelTO>>()), Times.Once);
         }
 
         [TestMethod]
@@ -486,7 +486,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var resourceModelMock = CreateResourceModelWithSingleScalarOutputMock();
             var mockEnvironmentModel = new Mock<IEnvironmentModel>();
             var mockResourceRepo = new Mock<IResourceRepository>();
-            mockResourceRepo.Setup(repository => repository.SaveTests(It.IsAny<Guid>(), It.IsAny<List<IServiceTestModel>>()));
+            mockResourceRepo.Setup(repository => repository.SaveTests(It.IsAny<Guid>(), It.IsAny<List<IServiceTestModelTO>>()));
             mockEnvironmentModel.Setup(model => model.ResourceRepository).Returns(mockResourceRepo.Object);
             resourceModelMock.Setup(model => model.Environment).Returns(mockEnvironmentModel.Object);
             resourceModelMock.Setup(model => model.Environment.Connection.IsConnected).Returns(true);

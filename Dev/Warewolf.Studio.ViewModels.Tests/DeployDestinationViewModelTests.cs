@@ -8,6 +8,7 @@ using Dev2.Common.Interfaces.Deploy;
 using Dev2.Common.Interfaces.Explorer;
 using Microsoft.Practices.Prism.PubSubEvents;
 using Moq;
+// ReSharper disable InconsistentNaming
 
 namespace Warewolf.Studio.ViewModels.Tests
 {
@@ -102,7 +103,27 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(_target.IsLoading);
             Assert.IsTrue(isIsLoadingChanged);
         }
-        
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void DeployTests_GivenIsSet_ShouldFireOnPropertyChanged()
+        {
+            //---------------Set up test pack-------------------
+            var wasCalled = false;
+            _target.IsLoading = false;
+            _target.PropertyChanged += (s, e) =>
+            {
+                if (e.PropertyName == "DeployTests")
+                    wasCalled = true;
+
+
+            };
+            //---------------Assert Precondition----------------
+            //---------------Execute Test ----------------------
+            _target.DeployTests = true;
+            //---------------Test Result -----------------------
+            Assert.IsTrue(wasCalled);
+        }
         #endregion Test properties
 
         #region Test methods
