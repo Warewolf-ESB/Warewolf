@@ -105,6 +105,37 @@ Scenario: Save a New Test
 	And save is disabled
 
 
+Scenario: Edit existing test validate star	
+	Given the test builder is open with "Workflow 3"
+	And Tab Header is "Workflow 3 - Tests"
+	And there are no tests
+	And I click New Test
+	And I set Test Values as
+	| TestName | AuthenticationType | Error |
+	| Test1    | Windows            | true  |
+	Then NoErrorExpected is "false"	
+	And save is enabled
+	When I save
+	Then Tab Header is "Workflow 3 - Tests"
+	When I click New Test
+	And I set Test Values as
+	| TestName | AuthenticationType | Error |
+	| Test2    | Windows            | true  |
+	And save is enabled
+	When I save
+	Then Tab Header is "Workflow 3 - Tests"
+	And I close the test builder
+	When the test builder is open with "Workflow 3"
+	Then there are 2 tests
+	And I select "Test2"
+	And I set Test Values as
+	| TestName | AuthenticationType | Error |
+	| Test2    | Public             | true  |
+	Then Name for display is "Test2 *" and test is edited
+	And I set Test Values as
+	| TestName | AuthenticationType | Error |
+	| Test2    | Windows            | true  |
+	Then Name for display is "Test2" and test is not edited
 
 Scenario: Edit existing test  	
 	Given the test builder is open with "Workflow 3"
@@ -191,7 +222,7 @@ Scenario: Loading exisiting Tests has correct Name for display
 	When the test builder is open with "Workflow 3"
 	Then there are 1 tests
 	And I select "Test1"
-	And Name for display is "Test1"
+	And Name for display is "Test1" and test is not edited
 
 Scenario: Loading exisiting Tests  	
 	Given the test builder is open with "Workflow 3"

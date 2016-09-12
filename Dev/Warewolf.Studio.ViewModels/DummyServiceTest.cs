@@ -63,6 +63,12 @@ namespace Warewolf.Studio.ViewModels
                 
             }
         }
+        public bool NewTest { get; set; }
+        public void SetItem(IServiceTestModel model)
+        {
+            
+        }
+
         public bool IsTestSelected { get; set; }
         public bool TestPassed { get; set; }
         public bool TestFailing { get; set; }

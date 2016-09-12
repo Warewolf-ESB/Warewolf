@@ -53,21 +53,6 @@ namespace Warewolf.Studio.ViewModels.Tests
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("TestCommandHandlerModelTests_CreateTest")]
-        public void TestCommandHandlerModelTests_CreateTest_ShouldSetIsDirtyTrue()
-        {
-            //------------Setup for test--------------------------
-            var testFrameworkViewModel = new ServiceTestCommandHandlerModel();
-            //------------Assert Preconditions-------------------
-            //------------Execute Test---------------------------
-            var testModel = testFrameworkViewModel.CreateTest(CreateResourceModelWithNoInput(), 1);
-            //------------Assert Results-------------------------
-            Assert.IsNotNull(testModel);
-            Assert.IsTrue(testModel.IsDirty);
-        }
-
-        [TestMethod]
-        [Owner("Hagashen Naidu")]
-        [TestCategory("TestCommandHandlerModelTests_CreateTest")]
         public void TestCommandHandlerModelTests_CreateTest_ShouldSetTestPending()
         {
             //------------Setup for test--------------------------
@@ -240,9 +225,9 @@ namespace Warewolf.Studio.ViewModels.Tests
                 Password = "Pppp",
                 TestPending = true,
                 AuthenticationType = AuthenticationType.Windows,
-                IsDirty = false,
                 Enabled = true,
                 IsNewTest = false,
+                NewTest = true,
                 NoErrorExpected = true
                 
             };
@@ -262,7 +247,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual(serviceTestModel.UserName, dupTest.UserName);
             Assert.AreEqual(serviceTestModel.Password, dupTest.Password);
             Assert.AreEqual(true, dupTest.TestPending);
-            Assert.AreEqual(true, dupTest.IsDirty);
+            Assert.AreEqual(true, dupTest.NewTest);
         }
 
         private IResourceModel CreateResourceModelWithSingleScalarInput()

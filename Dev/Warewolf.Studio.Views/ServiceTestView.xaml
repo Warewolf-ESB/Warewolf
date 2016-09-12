@@ -77,7 +77,7 @@
                 </Grid.ColumnDefinitions>
 
                 <ListBox Grid.Column="0" Style="{StaticResource ListBoxStyle}" BorderThickness="1,0,1,1"
-                         ItemsSource="{Binding Tests}" SelectedItem="{Binding SelectedServiceTest}" x:Name="TestsListbox">
+                         ItemsSource="{Binding Tests}" SelectedItem="{Binding SelectedServiceTest, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" x:Name="TestsListbox">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                             <Grid>

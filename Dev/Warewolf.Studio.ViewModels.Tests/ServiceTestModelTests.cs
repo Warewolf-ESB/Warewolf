@@ -31,7 +31,28 @@ namespace Warewolf.Studio.ViewModels.Tests
             testModel.TestName = "Test Name";
             //------------Assert Results-------------------------
             Assert.AreEqual("Test Name", testModel.TestName);
-            Assert.AreEqual("Test Name *", testModel.NameForDisplay);
+            Assert.IsTrue(_wasCalled);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("TestModel_NameForDisplay")]
+        public void TestModel_NameForDisplay_WhenSet_ShouldFirePropertyChanged()
+        {
+            //------------Setup for test--------------------------
+            var testModel = new ServiceTestModel(Guid.NewGuid());
+            var _wasCalled = false;
+            testModel.PropertyChanged += (sender, args) =>
+            {
+                if (args.PropertyName == "NameForDisplay")
+                {
+                    _wasCalled = true;
+                }
+            };
+            //------------Execute Test---------------------------
+            testModel.NameForDisplay = "Test Name";
+            //------------Assert Results-------------------------
+            Assert.AreEqual("Test Name", testModel.NameForDisplay);
             Assert.IsTrue(_wasCalled);
         }
 
@@ -54,30 +75,6 @@ namespace Warewolf.Studio.ViewModels.Tests
             testModel.OldTestName = "Old Test Name";
             //------------Assert Results-------------------------
             Assert.AreEqual("Old Test Name", testModel.OldTestName);
-            Assert.IsTrue(_wasCalled);
-        }
-
-        [TestMethod]
-        [Owner("Hagashen Naidu")]
-        [TestCategory("TestModel_TestName")]
-        public void TestModel_TestName_IsDirty_WhenSet_ShouldFirePropertyChanged()
-        {
-            //------------Setup for test--------------------------
-            var testModel = new ServiceTestModel(Guid.NewGuid());
-            var _wasCalled = false;
-            testModel.PropertyChanged += (sender, args) =>
-            {
-                if (args.PropertyName == "TestName")
-                {
-                    _wasCalled = true;
-                }
-            };
-            //------------Execute Test---------------------------
-            testModel.TestName = "Test Name";
-            testModel.IsDirty = true;
-            //------------Assert Results-------------------------
-            Assert.AreEqual("Test Name", testModel.TestName);
-            Assert.AreEqual("Test Name *", testModel.NameForDisplay);
             Assert.IsTrue(_wasCalled);
         }
 
@@ -485,23 +482,23 @@ namespace Warewolf.Studio.ViewModels.Tests
 
         [TestMethod]
         [Owner("Pieter Terblanche")]
-        [TestCategory("TestModel_IsDirty")]
-        public void TestModel_IsDirty_WhenSet_ShouldFirePropertyChanged()
+        [TestCategory("TestModel_NewTest")]
+        public void TestModel_NewTest_WhenSet_ShouldFirePropertyChanged()
         {
             //------------Setup for test--------------------------
             var testModel = new ServiceTestModel(Guid.NewGuid());
             var _wasCalled = false;
             testModel.PropertyChanged += (sender, args) =>
             {
-                if (args.PropertyName == "IsDirty")
+                if (args.PropertyName == "NewTest")
                 {
                     _wasCalled = true;
                 }
             };
             //------------Execute Test---------------------------
-            testModel.IsDirty = true;
+            testModel.NewTest = true;
             //------------Assert Results-------------------------
-            Assert.IsTrue(testModel.IsDirty);
+            Assert.IsTrue(testModel.NewTest);
             Assert.IsTrue(_wasCalled);
         }
 
