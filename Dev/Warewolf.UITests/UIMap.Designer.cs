@@ -324,6 +324,22 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
+        /// Click_Cancel_DebugInput_Window - Use 'Click_Cancel_DebugInput_WindowParams' to pass parameters into this method.
+        /// </summary>
+        public void Click_Cancel_DebugInput_Window()
+        {
+            #region Variable Declarations
+            WpfButton cancelButton = this.MainStudioWindow.DebugInputDialog.CancelButton;
+            #endregion
+
+            // Verify that the 'Enabled' property of 'Cancel' button equals 'True'
+            Assert.AreEqual(this.Click_Cancel_DebugInput_WindowParams.CancelButtonEnabled, cancelButton.Enabled, "CancelButton is not enabled after clicking RunDebug from Menu.");
+
+            // Click 'Cancel' button
+            Mouse.Click(cancelButton, new Point(26, 13));
+        }
+        
+        /// <summary>
         /// Click_Clear_Toolbox_Filter_Clear_Button
         /// </summary>
         public void Click_Clear_Toolbox_Filter_Clear_Button()
@@ -1041,6 +1057,19 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
+        /// Click_New_Database_Source_Ribbon_Button
+        /// </summary>
+        public void Click_New_Database_Source_Ribbon_Button()
+        {
+            #region Variable Declarations
+            WpfButton databaseSourceButton = this.MainStudioWindow.SideMenuBar.DatabaseSourceButton;
+            #endregion
+
+            // Click 'Create a new database source' button
+            Mouse.Click(databaseSourceButton, new Point(16, 15));
+        }
+        
+        /// <summary>
         /// Click_New_Web_Source_Test_Connection_Button - Use 'Click_New_Web_Source_Test_Connection_ButtonParams' to pass parameters into this method.
         /// </summary>
         public void Click_New_Web_Source_Test_Connection_Button()
@@ -1055,19 +1084,6 @@ namespace Warewolf.UITests
 
             // Verify that the 'Enabled' property of 'Save this tab' button equals 'True'
             Assert.AreEqual(this.Click_New_Web_Source_Test_Connection_ButtonParams.SaveButtonEnabled, saveButton.Enabled, "Save ribbon button is not enabled after testing a valid web source.");
-        }
-        
-        /// <summary>
-        /// Click_NewDatabaseSource_Ribbon_Button
-        /// </summary>
-        public void Click_NewDatabaseSource_Ribbon_Button()
-        {
-            #region Variable Declarations
-            WpfButton databaseSourceButton = this.MainStudioWindow.SideMenuBar.DatabaseSourceButton;
-            #endregion
-
-            // Click 'Create a new database source' button
-            Mouse.Click(databaseSourceButton, new Point(16, 15));
         }
         
         /// <summary>
@@ -5168,9 +5184,9 @@ namespace Warewolf.UITests
         public void Select_Dev2TestingDB_From_DB_Source_Wizard_Database_Combobox()
         {
             #region Variable Declarations
-            WpfCustom databaseCombobox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DBSourceWizardTab.WorkSurfaceContext.DatabaseCombobox;
+            WpfCustom databaseCombobox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DBSourceWizardTab.WorkSurfaceContext.ManageDatabaseSourceControl.DatabaseCombobox;
             WpfCustom comboboxListItemAsDev2TestingDB = this.MainStudioWindow.ComboboxListItemAsDev2TestingDB;
-            WpfText uIDev2TestingDBText = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DBSourceWizardTab.WorkSurfaceContext.NewDBSourceWizard.UIDatabaseComboxBoxCustom.UIDev2TestingDBText;
+            WpfText uIDev2TestingDBText = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DBSourceWizardTab.WorkSurfaceContext.ManageDatabaseSourceControl.UIDatabaseComboxBoxCustom.UIDev2TestingDBText;
             #endregion
 
             // Click 'DatabaseComboxBox' custom control
@@ -5289,9 +5305,9 @@ namespace Warewolf.UITests
         public void Select_MSSQLSERVER_From_DB_Source_Wizard_Address_Protocol_Dropdown()
         {
             #region Variable Declarations
-            WpfButton toggleButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DBSourceWizardTab.WorkSurfaceContext.NewDBSourceWizard.ServerTypeComboBox.ToggleButton;
+            WpfButton toggleButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DBSourceWizardTab.WorkSurfaceContext.ManageDatabaseSourceControl.ServerTypeComboBox.ToggleButton;
             WpfText microsoftSQLServerText = this.MainStudioWindow.ComboboxListItemAsMicrosoftSQLServer.MicrosoftSQLServerText;
-            WpfText microsoftSQLServer = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DBSourceWizardTab.WorkSurfaceContext.NewDBSourceWizard.ServerTypeComboBox.MicrosoftSQLServer;
+            WpfText microsoftSQLServer = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DBSourceWizardTab.WorkSurfaceContext.ManageDatabaseSourceControl.ServerTypeComboBox.MicrosoftSQLServer;
             #endregion
 
             // Click 'ToggleButton' button
@@ -5328,7 +5344,7 @@ namespace Warewolf.UITests
         {
             #region Variable Declarations
             WpfButton newDbSourceButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase.LargeView.NewDbSourceButton;
-            WpfText microsoftSQLServer = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DBSourceWizardTab.WorkSurfaceContext.NewDBSourceWizard.ServerTypeComboBox.MicrosoftSQLServer;
+            WpfText microsoftSQLServer = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DBSourceWizardTab.WorkSurfaceContext.ManageDatabaseSourceControl.ServerTypeComboBox.MicrosoftSQLServer;
             WpfEdit userNameTextBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DBSourceWizardTab.WorkSurfaceContext.UserNameTextBox;
             WpfEdit passwordTextBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DBSourceWizardTab.WorkSurfaceContext.PasswordTextBox;
             #endregion
@@ -5602,8 +5618,8 @@ namespace Warewolf.UITests
         public void Select_RSAKLFSVRGENDEV_From_Server_Source_Wizard_Dropdownlist()
         {
             #region Variable Declarations
-            WpfListItem rSAKLFSVRGENDEV = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DBSourceWizardTab.WorkSurfaceContext.NewDBSourceWizard.ServerComboBox.RSAKLFSVRGENDEV;
-            WpfEdit textbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DBSourceWizardTab.WorkSurfaceContext.NewDBSourceWizard.ServerComboBox.Textbox;
+            WpfListItem rSAKLFSVRGENDEV = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DBSourceWizardTab.WorkSurfaceContext.ManageDatabaseSourceControl.ServerComboBox.RSAKLFSVRGENDEV;
+            WpfEdit textbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DBSourceWizardTab.WorkSurfaceContext.ManageDatabaseSourceControl.ServerComboBox.Textbox;
             #endregion
 
             // Click 'RSAKLFSVRGENDEV' list item
@@ -5752,8 +5768,8 @@ namespace Warewolf.UITests
         public void Type_rsaklfsvrgen_into_DB_Source_Wizard_Server_Textbox()
         {
             #region Variable Declarations
-            WpfEdit textbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DBSourceWizardTab.WorkSurfaceContext.NewDBSourceWizard.ServerComboBox.Textbox;
-            WpfListItem rSAKLFSVRGENDEV = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DBSourceWizardTab.WorkSurfaceContext.NewDBSourceWizard.ServerComboBox.RSAKLFSVRGENDEV;
+            WpfEdit textbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DBSourceWizardTab.WorkSurfaceContext.ManageDatabaseSourceControl.ServerComboBox.Textbox;
+            WpfListItem rSAKLFSVRGENDEV = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DBSourceWizardTab.WorkSurfaceContext.ManageDatabaseSourceControl.ServerComboBox.RSAKLFSVRGENDEV;
             #endregion
 
             // Type 'rsaklfsvrgen' in 'Text' text box
@@ -5779,22 +5795,6 @@ namespace Warewolf.UITests
             // Verify that the 'Enabled' property of 'Test Connection' button equals 'True'
             Assert.AreEqual(this.Type_TestSite_into_Web_Source_Wizard_Address_TextboxParams.TestConnectionButtonEnabled, testConnectionButton.Enabled, "New web source wizard test connection button is not enabled after entering a vali" +
                     "d web address.");
-        }
-        
-        /// <summary>
-        /// Click_Cancel_DebugInput_Window - Use 'Click_Cancel_DebugInput_WindowParams' to pass parameters into this method.
-        /// </summary>
-        public void Click_Cancel_DebugInput_Window()
-        {
-            #region Variable Declarations
-            WpfButton cancelButton = this.MainStudioWindow.DebugInputDialog.CancelButton;
-            #endregion
-
-            // Verify that the 'Enabled' property of 'Cancel' button equals 'True'
-            Assert.AreEqual(this.Click_Cancel_DebugInput_WindowParams.CancelButtonEnabled, cancelButton.Enabled, "CancelButton is not enabled after clicking RunDebug from Menu.");
-
-            // Click 'Cancel' button
-            Mouse.Click(cancelButton, new Point(26, 13));
         }
         
         #region Properties
@@ -5963,6 +5963,18 @@ namespace Warewolf.UITests
                     this.mClick_Calculate_Large_View_Done_ButtonParams = new Click_Calculate_Large_View_Done_ButtonParams();
                 }
                 return this.mClick_Calculate_Large_View_Done_ButtonParams;
+            }
+        }
+        
+        public virtual Click_Cancel_DebugInput_WindowParams Click_Cancel_DebugInput_WindowParams
+        {
+            get
+            {
+                if ((this.mClick_Cancel_DebugInput_WindowParams == null))
+                {
+                    this.mClick_Cancel_DebugInput_WindowParams = new Click_Cancel_DebugInput_WindowParams();
+                }
+                return this.mClick_Cancel_DebugInput_WindowParams;
             }
         }
         
@@ -7922,18 +7934,6 @@ namespace Warewolf.UITests
             }
         }
         
-        public virtual Click_Cancel_DebugInput_WindowParams Click_Cancel_DebugInput_WindowParams
-        {
-            get
-            {
-                if ((this.mClick_Cancel_DebugInput_WindowParams == null))
-                {
-                    this.mClick_Cancel_DebugInput_WindowParams = new Click_Cancel_DebugInput_WindowParams();
-                }
-                return this.mClick_Cancel_DebugInput_WindowParams;
-            }
-        }
-        
         public MainStudioWindow MainStudioWindow
         {
             get
@@ -8041,6 +8041,18 @@ namespace Warewolf.UITests
                 return this.mUIWarewolfDEV2SANELEMTWindow;
             }
         }
+        
+        public UIWarewolfDEV2ASHLEYLEWindow UIWarewolfDEV2ASHLEYLEWindow
+        {
+            get
+            {
+                if ((this.mUIWarewolfDEV2ASHLEYLEWindow == null))
+                {
+                    this.mUIWarewolfDEV2ASHLEYLEWindow = new UIWarewolfDEV2ASHLEYLEWindow();
+                }
+                return this.mUIWarewolfDEV2ASHLEYLEWindow;
+            }
+        }
         #endregion
         
         #region Fields
@@ -8071,6 +8083,8 @@ namespace Warewolf.UITests
         private Click_Base_Convert_Large_View_Done_ButtonParams mClick_Base_Convert_Large_View_Done_ButtonParams;
         
         private Click_Calculate_Large_View_Done_ButtonParams mClick_Calculate_Large_View_Done_ButtonParams;
+        
+        private Click_Cancel_DebugInput_WindowParams mClick_Cancel_DebugInput_WindowParams;
         
         private Click_Close_Deploy_Tab_ButtonParams mClick_Close_Deploy_Tab_ButtonParams;
         
@@ -8398,8 +8412,6 @@ namespace Warewolf.UITests
         
         private Type_TestSite_into_Web_Source_Wizard_Address_TextboxParams mType_TestSite_into_Web_Source_Wizard_Address_TextboxParams;
         
-        private Click_Cancel_DebugInput_WindowParams mClick_Cancel_DebugInput_WindowParams;
-        
         private MainStudioWindow mMainStudioWindow;
         
         private MessageBoxWindow mMessageBoxWindow;
@@ -8417,6 +8429,8 @@ namespace Warewolf.UITests
         private SwitchCaseDialog mSwitchCaseDialog;
         
         private UIWarewolfDEV2SANELEMTWindow mUIWarewolfDEV2SANELEMTWindow;
+        
+        private UIWarewolfDEV2ASHLEYLEWindow mUIWarewolfDEV2ASHLEYLEWindow;
         #endregion
     }
     
@@ -8722,6 +8736,21 @@ namespace Warewolf.UITests
         /// Verify that the 'Text' property of 'FunctionTextbox' text box equals '[[SomeVariable]]'
         /// </summary>
         public string FunctionTextboxText = "[[SomeVariable]]";
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Click_Cancel_DebugInput_Window'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Click_Cancel_DebugInput_WindowParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Enabled' property of 'Cancel' button equals 'True'
+        /// </summary>
+        public bool CancelButtonEnabled = true;
         #endregion
     }
     
@@ -12077,21 +12106,6 @@ namespace Warewolf.UITests
         /// Verify that the 'Enabled' property of 'Test Connection' button equals 'True'
         /// </summary>
         public bool TestConnectionButtonEnabled = true;
-        #endregion
-    }
-    
-    /// <summary>
-    /// Parameters to be passed into 'Click_Cancel_DebugInput_Window'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Click_Cancel_DebugInput_WindowParams
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Verify that the 'Enabled' property of 'Cancel' button equals 'True'
-        /// </summary>
-        public bool CancelButtonEnabled = true;
         #endregion
     }
     
@@ -27542,15 +27556,15 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public NewDBSourceWizard NewDBSourceWizard
+        public ManageDatabaseSourceControl ManageDatabaseSourceControl
         {
             get
             {
-                if ((this.mNewDBSourceWizard == null))
+                if ((this.mManageDatabaseSourceControl == null))
                 {
-                    this.mNewDBSourceWizard = new NewDBSourceWizard(this);
+                    this.mManageDatabaseSourceControl = new ManageDatabaseSourceControl(this);
                 }
-                return this.mNewDBSourceWizard;
+                return this.mManageDatabaseSourceControl;
             }
         }
         
@@ -27579,18 +27593,6 @@ namespace Warewolf.UITests
                     this.mErrorText = new ErrorText1(this);
                 }
                 return this.mErrorText;
-            }
-        }
-        
-        public DatabaseCombobox DatabaseCombobox
-        {
-            get
-            {
-                if ((this.mDatabaseCombobox == null))
-                {
-                    this.mDatabaseCombobox = new DatabaseCombobox(this);
-                }
-                return this.mDatabaseCombobox;
             }
         }
         
@@ -27692,13 +27694,11 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private NewDBSourceWizard mNewDBSourceWizard;
+        private ManageDatabaseSourceControl mManageDatabaseSourceControl;
         
         private WpfButton mTestConnectionButton;
         
         private ErrorText1 mErrorText;
-        
-        private DatabaseCombobox mDatabaseCombobox;
         
         private WpfEdit mPasswordTextBox;
         
@@ -27715,10 +27715,10 @@ namespace Warewolf.UITests
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class NewDBSourceWizard : WpfCustom
+    public class ManageDatabaseSourceControl : WpfCustom
     {
         
-        public NewDBSourceWizard(UITestControl searchLimitContainer) : 
+        public ManageDatabaseSourceControl(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -27779,6 +27779,18 @@ namespace Warewolf.UITests
                 return this.mTestConnectionButton;
             }
         }
+        
+        public DatabaseCombobox DatabaseCombobox
+        {
+            get
+            {
+                if ((this.mDatabaseCombobox == null))
+                {
+                    this.mDatabaseCombobox = new DatabaseCombobox(this);
+                }
+                return this.mDatabaseCombobox;
+            }
+        }
         #endregion
         
         #region Fields
@@ -27789,6 +27801,8 @@ namespace Warewolf.UITests
         private UIDatabaseComboxBoxCustom mUIDatabaseComboxBoxCustom;
         
         private WpfButton mTestConnectionButton;
+        
+        private DatabaseCombobox mDatabaseCombobox;
         #endregion
     }
     
@@ -28011,43 +28025,6 @@ namespace Warewolf.UITests
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class ErrorText1 : WpfText
-    {
-        
-        public ErrorText1(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfText.PropertyNames.AutomationId] = "ErrorTextBlock";
-            this.WindowTitles.Add("Warewolf");
-            #endregion
-        }
-        
-        #region Properties
-        public WpfCustom Spinner
-        {
-            get
-            {
-                if ((this.mSpinner == null))
-                {
-                    this.mSpinner = new WpfCustom(this);
-                    #region Search Criteria
-                    this.mSpinner.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.CircularProgressBar";
-                    this.mSpinner.SearchConfigurations.Add(SearchConfiguration.NextSibling);
-                    this.mSpinner.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mSpinner;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfCustom mSpinner;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class DatabaseCombobox : WpfCustom
     {
         
@@ -28100,6 +28077,43 @@ namespace Warewolf.UITests
         private WpfCustom mDatabaseComboxBoxMsAccess;
         
         private WpfText mMSAccessDatabaseText;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class ErrorText1 : WpfText
+    {
+        
+        public ErrorText1(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfText.PropertyNames.AutomationId] = "ErrorTextBlock";
+            this.WindowTitles.Add("Warewolf");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfCustom Spinner
+        {
+            get
+            {
+                if ((this.mSpinner == null))
+                {
+                    this.mSpinner = new WpfCustom(this);
+                    #region Search Criteria
+                    this.mSpinner.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.CircularProgressBar";
+                    this.mSpinner.SearchConfigurations.Add(SearchConfiguration.NextSibling);
+                    this.mSpinner.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mSpinner;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfCustom mSpinner;
         #endregion
     }
     
@@ -36181,6 +36195,141 @@ namespace Warewolf.UITests
         private WpfWindow mUIWpfWindow;
         
         private WpfButton mUICancelButton;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIWarewolfDEV2ASHLEYLEWindow : WpfWindow
+    {
+        
+        public UIWarewolfDEV2ASHLEYLEWindow()
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfWindow.PropertyNames.Name] = "Warewolf (DEV2\\ASHLEY.LEWIS)";
+            this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public UIUI_SplitPane_AutoIDCustom UIUI_SplitPane_AutoIDCustom
+        {
+            get
+            {
+                if ((this.mUIUI_SplitPane_AutoIDCustom == null))
+                {
+                    this.mUIUI_SplitPane_AutoIDCustom = new UIUI_SplitPane_AutoIDCustom(this);
+                }
+                return this.mUIUI_SplitPane_AutoIDCustom;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIUI_SplitPane_AutoIDCustom mUIUI_SplitPane_AutoIDCustom;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIUI_SplitPane_AutoIDCustom : WpfCustom
+    {
+        
+        public UIUI_SplitPane_AutoIDCustom(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.SplitPane";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "UI_SplitPane_AutoID";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public UIUI_TabManager_AutoIDTabList UIUI_TabManager_AutoIDTabList
+        {
+            get
+            {
+                if ((this.mUIUI_TabManager_AutoIDTabList == null))
+                {
+                    this.mUIUI_TabManager_AutoIDTabList = new UIUI_TabManager_AutoIDTabList(this);
+                }
+                return this.mUIUI_TabManager_AutoIDTabList;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIUI_TabManager_AutoIDTabList mUIUI_TabManager_AutoIDTabList;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIUI_TabManager_AutoIDTabList : WpfTabList
+    {
+        
+        public UIUI_TabManager_AutoIDTabList(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfTabList.PropertyNames.AutomationId] = "UI_TabManager_AutoID";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public UIDev2ViewModelsSourceTabPage UIDev2ViewModelsSourceTabPage
+        {
+            get
+            {
+                if ((this.mUIDev2ViewModelsSourceTabPage == null))
+                {
+                    this.mUIDev2ViewModelsSourceTabPage = new UIDev2ViewModelsSourceTabPage(this);
+                }
+                return this.mUIDev2ViewModelsSourceTabPage;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIDev2ViewModelsSourceTabPage mUIDev2ViewModelsSourceTabPage;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIDev2ViewModelsSourceTabPage : WpfTabPage
+    {
+        
+        public UIDev2ViewModelsSourceTabPage(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfTabPage.PropertyNames.Name] = "Dev2.ViewModels.SourceViewModel`1[Dev2.Common.Interfaces.ServerProxyLayer.IDbSour" +
+                "ce]";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfCustom UIDev2StudioViewModelsCustom
+        {
+            get
+            {
+                if ((this.mUIDev2StudioViewModelsCustom == null))
+                {
+                    this.mUIDev2StudioViewModelsCustom = new WpfCustom(this);
+                    #region Search Criteria
+                    this.mUIDev2StudioViewModelsCustom.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ContentPane";
+                    this.mUIDev2StudioViewModelsCustom.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Dev2.Studio.ViewModels.WorkSurface.WorkSurfaceContextViewModel";
+                    this.mUIDev2StudioViewModelsCustom.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mUIDev2StudioViewModelsCustom;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfCustom mUIDev2StudioViewModelsCustom;
         #endregion
     }
 }
