@@ -21,7 +21,5 @@ namespace Dev2.Webs.Callbacks
         public string ModelData { get; set; }
 
         public ILayoutObjectViewModel SelectedLayoutObject => null;
-
-        public event NavigateRequestedEventHandler NavigateRequested;
     }
 }
