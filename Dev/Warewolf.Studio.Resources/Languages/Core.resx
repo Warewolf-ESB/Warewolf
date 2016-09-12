@@ -2716,6 +2716,15 @@ If this option is not selected, the test will not run part of the Run All list o
   <data name="TestsDeleteSelectedTestHelpText" xml:space="preserve">
     <value>Delete this test</value>
   </data>
+  <data name="ServiceTestDuplicateSelectedTestTooltip" xml:space="preserve">
+    <value>Duplicate this test</value>
+  </data>
+  <data name="ServiceTestDuplicateSelectedTestHelpText" xml:space="preserve">
+    <value>Duplicate this test</value>
+  </data>
+  <data name="ServiceTestDisabledDuplicateSelectedTestTooltip" xml:space="preserve">
+    <value>You do not have permissions to duplicate a test</value>
+  </data>
   <data name="ServiceTestRunSelectedTestTooltip" xml:space="preserve">
     <value>Run this test</value>
   </data>
