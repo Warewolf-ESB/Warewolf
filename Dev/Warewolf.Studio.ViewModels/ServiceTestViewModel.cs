@@ -263,6 +263,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 ViewModelUtils.RaiseCanExecuteChanged(RunSelectedTestInBrowserCommand);
             }
+            ViewModelUtils.RaiseCanExecuteChanged(DuplicateTestCommand);
         }
 
         public IServiceTestCommandHandler ServiceTestCommandHandler { get; set; }

@@ -6872,6 +6872,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to You do not have permissions to duplicate a test.
+        /// </summary>
+        public static string ServiceTestDisabledDuplicateSelectedTestTooltip {
+            get {
+                return ResourceManager.GetString("ServiceTestDisabledDuplicateSelectedTestTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Accept the test response results. This will use the results from the test execution to determine the actions outputs..
         /// </summary>
         public static string ServiceTestDoneButtonHelp {
@@ -6886,6 +6895,24 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string ServiceTestDoneButtonTooltip {
             get {
                 return ResourceManager.GetString("ServiceTestDoneButtonTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Duplicate this test.
+        /// </summary>
+        public static string ServiceTestDuplicateSelectedTestHelpText {
+            get {
+                return ResourceManager.GetString("ServiceTestDuplicateSelectedTestHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Duplicate this test.
+        /// </summary>
+        public static string ServiceTestDuplicateSelectedTestTooltip {
+            get {
+                return ResourceManager.GetString("ServiceTestDuplicateSelectedTestTooltip", resourceCulture);
             }
         }
         
