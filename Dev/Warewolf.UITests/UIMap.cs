@@ -1,25 +1,12 @@
 ﻿using System.Linq;
-using Microsoft.VisualStudio.TestTools.UITesting.HtmlControls;
-using Microsoft.VisualStudio.TestTools.UITesting.WinControls;
 using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
 using System;
-using System.Collections.Generic;
-using System.CodeDom.Compiler;
 using Microsoft.VisualStudio.TestTools.UITest.Extension;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Keyboard = Microsoft.VisualStudio.TestTools.UITesting.Keyboard;
 using Mouse = Microsoft.VisualStudio.TestTools.UITesting.Mouse;
-using MouseButtons = System.Windows.Forms.MouseButtons;
 using System.Drawing;
 using System.IO;
-using System.Windows.Input;
-using System.Text.RegularExpressions;
-using System.Reflection;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading;
-using System.Windows.Forms.VisualStyles;
 
 namespace Warewolf.UITests
 {
@@ -668,6 +655,7 @@ namespace Warewolf.UITests
 
         public void Click_New_Workflow_Ribbon_Button()
         {
+            Assert_RunDebug_Button_Disabled();
             Assert.IsTrue(MainStudioWindow.SideMenuBar.NewWorkflowButton.Exists, "New Workflow Ribbon Button Does Not Exist!");
             Mouse.Click(MainStudioWindow.SideMenuBar.NewWorkflowButton, new Point(3, 8));
             var getTimeBefore = System.DateTime.Now;
@@ -1027,6 +1015,18 @@ namespace Warewolf.UITests
 
             // Verify that the 'Exists' property of 'XamRichTextEditor' custom control equals 'True'
             Assert.IsTrue(helpTextEditor.Exists, "Help text does not exist");
+        }
+
+        /// <summary>
+        /// Assert_RunDebug_Button_Disabled - Use 'Assert_RunDebug_Button_DisabledExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void Assert_RunDebug_Button_Disabled()
+        {
+            #region Variable Declarations
+            WpfButton runAndDebugButton = this.MainStudioWindow.SideMenuBar.RunAndDebugButton;
+            #endregion
+            // Verify that the 'Enabled' property of 'Run and debug your workflow service' button equals 'False'
+            Assert.IsFalse(runAndDebugButton.Enabled, "RunDebug button is enabled");
         }
     }
 }
