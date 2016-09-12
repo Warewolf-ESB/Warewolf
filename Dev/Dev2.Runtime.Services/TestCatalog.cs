@@ -7,6 +7,8 @@ using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Wrappers;
 using Dev2.Communication;
+using Warewolf.Security.Encryption;
+
 // ReSharper disable LoopCanBeConvertedToQuery
 
 namespace Dev2.Runtime
@@ -23,7 +25,7 @@ namespace Dev2.Runtime
             return c;
         }, LazyThreadSafetyMode.PublicationOnly);
 
-        public static TestCatalog Instance => LazyCat.Value;
+        public static ITestCatalog Instance => LazyCat.Value;
 
         public TestCatalog()
         {
@@ -53,7 +55,7 @@ namespace Dev2.Runtime
                         _fileWrapper.Delete(oldFilePath);
                     }
                     var filePath = Path.Combine(dirPath, $"{serviceTestModelTo.TestName}.test");
-                    
+                    serviceTestModelTo.Password = DpapiWrapper.EncryptIfDecrypted(serviceTestModelTo.Password);
                     var sw = new StreamWriter(filePath, false);
                     _serializer.Serialize(sw, serviceTestModelTo);
                 }
@@ -97,6 +99,17 @@ namespace Dev2.Runtime
                  var dir = Path.Combine(EnvironmentVariables.TestPath, guid.ToString());
                  return GetTestList(dir);
              });
+        }
+
+        public void DeleteTest(Guid resourceID, string testName)
+        {
+            var testPath = EnvironmentVariables.TestPath;
+            var dirPath = Path.Combine(testPath, resourceID.ToString());
+            var testFilePath = Path.Combine(dirPath, $"{testName}.test");
+            if (_fileWrapper.Exists(testFilePath))
+            {
+                _fileWrapper.Delete(testFilePath);
+            }
         }
     }
 }
