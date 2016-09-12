@@ -58,19 +58,6 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
-        /// Assert_Expand_All_Button_Exist - Use 'Assert_Expand_All_Button_ExistExpectedValues' to pass parameters into this method.
-        /// </summary>
-        public void Assert_Expand_All_Button_Exist()
-        {
-            #region Variable Declarations
-            WpfToggleButton expandAllToggleButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ExpandAllToggleButton;
-            #endregion
-
-            // Verify that the 'Exists' property of 'ExpandAll' toggle button equals 'True'
-            Assert.AreEqual(this.Assert_Expand_All_Button_ExistExpectedValues.ExpandAllToggleButtonExists, expandAllToggleButton.Exists, "Expand all button does not exist");
-        }
-        
-        /// <summary>
         /// Assert_variable_filter_textbox_exist - Use 'Assert_variable_filter_textbox_existExpectedValues' to pass parameters into this method.
         /// </summary>
         public void Assert_variable_filter_textbox_exist()
@@ -104,16 +91,39 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
+        /// Click_Assign_Tool_CollapseAll - Use 'Click_Assign_Tool_CollapseAllParams' to pass parameters into this method.
+        /// </summary>
+        public void Click_Assign_Tool_CollapseAll()
+        {
+            #region Variable Declarations
+            WpfToggleButton collapseAllToggleButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.CollapseAllToggleButton;
+            #endregion
+
+            // Verify that the 'Exists' property of 'CollapseAll' toggle button equals 'True'
+            Assert.AreEqual(this.Click_Assign_Tool_CollapseAllParams.CollapseAllToggleButtonExists, collapseAllToggleButton.Exists, "Expand all button does not exist");
+
+            // Set to 'Pressed' state 'CollapseAll' toggle button
+            collapseAllToggleButton.Pressed = this.Click_Assign_Tool_CollapseAllParams.CollapseAllToggleButtonPressed;
+        }
+        
+        /// <summary>
         /// Click_Assign_Tool_ExpandAll - Use 'Click_Assign_Tool_ExpandAllParams' to pass parameters into this method.
         /// </summary>
         public void Click_Assign_Tool_ExpandAll()
         {
             #region Variable Declarations
-            WpfToggleButton expandAllToggleButton = this.MainStudioWindow.ExpandAllToggleButton;
+            WpfToggleButton expandAllToggleButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ExpandAllToggleButton;
+            WpfCustom multiAssign = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign;
             #endregion
+
+            // Verify that the 'Exists' property of 'ExpandAll' toggle button equals 'True'
+            Assert.AreEqual(this.Click_Assign_Tool_ExpandAllParams.ExpandAllToggleButtonExists, expandAllToggleButton.Exists, "Expand all button does not exist");
 
             // Set to 'Pressed' state 'ExpandAll' toggle button
             expandAllToggleButton.Pressed = this.Click_Assign_Tool_ExpandAllParams.ExpandAllToggleButtonPressed;
+
+            // Verify that the 'Exists' property of 'DsfMultiAssignActivity' custom control equals 'True'
+            Assert.AreEqual(this.Click_Assign_Tool_ExpandAllParams.MultiAssignExists, multiAssign.Exists, "Assign tool large view on the design surface does not exist");
         }
         
         /// <summary>
@@ -5694,6 +5704,35 @@ namespace Warewolf.UITests
                     "d web address.");
         }
         
+        /// <summary>
+        /// Assert_RunDebug_Button_Exist_And_Enabled - Use 'Assert_RunDebug_Button_Exist_And_EnabledExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void Assert_RunDebug_Button_Exist_And_Enabled()
+        {
+            #region Variable Declarations
+            WpfButton runAndDebugButton = this.MainStudioWindow.SideMenuBar.RunAndDebugButton;
+            #endregion
+
+            // Verify that the 'Exists' property of 'Run and debug your workflow service' button equals 'True'
+            Assert.AreEqual(this.Assert_RunDebug_Button_Exist_And_EnabledExpectedValues.RunAndDebugButtonExists, runAndDebugButton.Exists, "Run button does not exist");
+
+            // Verify that the 'Enabled' property of 'Run and debug your workflow service' button equals 'True'
+            Assert.AreEqual(this.Assert_RunDebug_Button_Exist_And_EnabledExpectedValues.RunAndDebugButtonEnabled, runAndDebugButton.Enabled, "RunDebug button is disabled");
+        }
+        
+        /// <summary>
+        /// Assert_RunDebug_Button_Disabled - Use 'Assert_RunDebug_Button_DisabledExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void Assert_RunDebug_Button_Disabled()
+        {
+            #region Variable Declarations
+            WpfButton runAndDebugButton = this.MainStudioWindow.SideMenuBar.RunAndDebugButton;
+            #endregion
+
+            // Verify that the 'Enabled' property of 'Run and debug your workflow service' button equals 'False'
+            Assert.AreEqual(this.Assert_RunDebug_Button_DisabledExpectedValues.RunAndDebugButtonEnabled, runAndDebugButton.Enabled, "RunDebug button is enabled");
+        }
+        
         #region Properties
         public virtual Assert_CancelConnectionButton_ExistsExpectedValues Assert_CancelConnectionButton_ExistsExpectedValues
         {
@@ -5719,18 +5758,6 @@ namespace Warewolf.UITests
             }
         }
         
-        public virtual Assert_Expand_All_Button_ExistExpectedValues Assert_Expand_All_Button_ExistExpectedValues
-        {
-            get
-            {
-                if ((this.mAssert_Expand_All_Button_ExistExpectedValues == null))
-                {
-                    this.mAssert_Expand_All_Button_ExistExpectedValues = new Assert_Expand_All_Button_ExistExpectedValues();
-                }
-                return this.mAssert_Expand_All_Button_ExistExpectedValues;
-            }
-        }
-        
         public virtual Assert_variable_filter_textbox_existExpectedValues Assert_variable_filter_textbox_existExpectedValues
         {
             get
@@ -5752,6 +5779,18 @@ namespace Warewolf.UITests
                     this.mAssign_Value_To_VariableParams = new Assign_Value_To_VariableParams();
                 }
                 return this.mAssign_Value_To_VariableParams;
+            }
+        }
+        
+        public virtual Click_Assign_Tool_CollapseAllParams Click_Assign_Tool_CollapseAllParams
+        {
+            get
+            {
+                if ((this.mClick_Assign_Tool_CollapseAllParams == null))
+                {
+                    this.mClick_Assign_Tool_CollapseAllParams = new Click_Assign_Tool_CollapseAllParams();
+                }
+                return this.mClick_Assign_Tool_CollapseAllParams;
             }
         }
         
@@ -7783,6 +7822,30 @@ namespace Warewolf.UITests
             }
         }
         
+        public virtual Assert_RunDebug_Button_Exist_And_EnabledExpectedValues Assert_RunDebug_Button_Exist_And_EnabledExpectedValues
+        {
+            get
+            {
+                if ((this.mAssert_RunDebug_Button_Exist_And_EnabledExpectedValues == null))
+                {
+                    this.mAssert_RunDebug_Button_Exist_And_EnabledExpectedValues = new Assert_RunDebug_Button_Exist_And_EnabledExpectedValues();
+                }
+                return this.mAssert_RunDebug_Button_Exist_And_EnabledExpectedValues;
+            }
+        }
+        
+        public virtual Assert_RunDebug_Button_DisabledExpectedValues Assert_RunDebug_Button_DisabledExpectedValues
+        {
+            get
+            {
+                if ((this.mAssert_RunDebug_Button_DisabledExpectedValues == null))
+                {
+                    this.mAssert_RunDebug_Button_DisabledExpectedValues = new Assert_RunDebug_Button_DisabledExpectedValues();
+                }
+                return this.mAssert_RunDebug_Button_DisabledExpectedValues;
+            }
+        }
+        
         public MainStudioWindow MainStudioWindow
         {
             get
@@ -7878,6 +7941,18 @@ namespace Warewolf.UITests
                 return this.mSwitchCaseDialog;
             }
         }
+        
+        public UIWarewolfDEV2SANELEMTWindow UIWarewolfDEV2SANELEMTWindow
+        {
+            get
+            {
+                if ((this.mUIWarewolfDEV2SANELEMTWindow == null))
+                {
+                    this.mUIWarewolfDEV2SANELEMTWindow = new UIWarewolfDEV2SANELEMTWindow();
+                }
+                return this.mUIWarewolfDEV2SANELEMTWindow;
+            }
+        }
         #endregion
         
         #region Fields
@@ -7885,11 +7960,11 @@ namespace Warewolf.UITests
         
         private Assert_Connection_PassedExpectedValues mAssert_Connection_PassedExpectedValues;
         
-        private Assert_Expand_All_Button_ExistExpectedValues mAssert_Expand_All_Button_ExistExpectedValues;
-        
         private Assert_variable_filter_textbox_existExpectedValues mAssert_variable_filter_textbox_existExpectedValues;
         
         private Assign_Value_To_VariableParams mAssign_Value_To_VariableParams;
+        
+        private Click_Assign_Tool_CollapseAllParams mClick_Assign_Tool_CollapseAllParams;
         
         private Click_Assign_Tool_ExpandAllParams mClick_Assign_Tool_ExpandAllParams;
         
@@ -8229,6 +8304,10 @@ namespace Warewolf.UITests
         
         private Type_TestSite_into_Web_Source_Wizard_Address_TextboxParams mType_TestSite_into_Web_Source_Wizard_Address_TextboxParams;
         
+        private Assert_RunDebug_Button_Exist_And_EnabledExpectedValues mAssert_RunDebug_Button_Exist_And_EnabledExpectedValues;
+        
+        private Assert_RunDebug_Button_DisabledExpectedValues mAssert_RunDebug_Button_DisabledExpectedValues;
+        
         private MainStudioWindow mMainStudioWindow;
         
         private MessageBoxWindow mMessageBoxWindow;
@@ -8244,6 +8323,8 @@ namespace Warewolf.UITests
         private ServicePickerDialog mServicePickerDialog;
         
         private SwitchCaseDialog mSwitchCaseDialog;
+        
+        private UIWarewolfDEV2SANELEMTWindow mUIWarewolfDEV2SANELEMTWindow;
         #endregion
     }
     
@@ -8274,21 +8355,6 @@ namespace Warewolf.UITests
         /// Verify that the 'Exists' property of first image next to 'Dev2.Studio.ViewModels.WorkSurface.WorkSurfaceCont...' custom control equals 'True'
         /// </summary>
         public bool ConnectionPassedImageExists = true;
-        #endregion
-    }
-    
-    /// <summary>
-    /// Parameters to be passed into 'Assert_Expand_All_Button_Exist'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Assert_Expand_All_Button_ExistExpectedValues
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Verify that the 'Exists' property of 'ExpandAll' toggle button equals 'True'
-        /// </summary>
-        public bool ExpandAllToggleButtonExists = true;
         #endregion
     }
     
@@ -8328,6 +8394,26 @@ namespace Warewolf.UITests
     }
     
     /// <summary>
+    /// Parameters to be passed into 'Click_Assign_Tool_CollapseAll'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Click_Assign_Tool_CollapseAllParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'CollapseAll' toggle button equals 'True'
+        /// </summary>
+        public bool CollapseAllToggleButtonExists = true;
+        
+        /// <summary>
+        /// Set to 'Pressed' state 'CollapseAll' toggle button
+        /// </summary>
+        public bool CollapseAllToggleButtonPressed = true;
+        #endregion
+    }
+    
+    /// <summary>
     /// Parameters to be passed into 'Click_Assign_Tool_ExpandAll'
     /// </summary>
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
@@ -8336,9 +8422,19 @@ namespace Warewolf.UITests
         
         #region Fields
         /// <summary>
+        /// Verify that the 'Exists' property of 'ExpandAll' toggle button equals 'True'
+        /// </summary>
+        public bool ExpandAllToggleButtonExists = true;
+        
+        /// <summary>
         /// Set to 'Pressed' state 'ExpandAll' toggle button
         /// </summary>
         public bool ExpandAllToggleButtonPressed = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'DsfMultiAssignActivity' custom control equals 'True'
+        /// </summary>
+        public bool MultiAssignExists = true;
         #endregion
     }
     
@@ -11802,6 +11898,41 @@ namespace Warewolf.UITests
         #endregion
     }
     
+    /// <summary>
+    /// Parameters to be passed into 'Assert_RunDebug_Button_Exist_And_Enabled'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Assert_RunDebug_Button_Exist_And_EnabledExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Run and debug your workflow service' button equals 'True'
+        /// </summary>
+        public bool RunAndDebugButtonExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Enabled' property of 'Run and debug your workflow service' button equals 'True'
+        /// </summary>
+        public bool RunAndDebugButtonEnabled = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Assert_RunDebug_Button_Disabled'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Assert_RunDebug_Button_DisabledExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Enabled' property of 'Run and debug your workflow service' button equals 'False'
+        /// </summary>
+        public bool RunAndDebugButtonEnabled = false;
+        #endregion
+    }
+    
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class MainStudioWindow : WpfWindow
     {
@@ -12392,22 +12523,6 @@ namespace Warewolf.UITests
                 return this.mExpandAllToggleButton;
             }
         }
-        
-        public WpfHyperlink Httprsaklfsanele3142Hyperlink
-        {
-            get
-            {
-                if ((this.mHttprsaklfsanele3142Hyperlink == null))
-                {
-                    this.mHttprsaklfsanele3142Hyperlink = new WpfHyperlink(this);
-                    #region Search Criteria
-                    this.mHttprsaklfsanele3142Hyperlink.SearchProperties[WpfHyperlink.PropertyNames.Name] = "http://rsaklfsanele:3142/secure/Unassigned/Unsaved 1.json?<DataList></DataList>";
-                    this.mHttprsaklfsanele3142Hyperlink.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
-                    #endregion
-                }
-                return this.mHttprsaklfsanele3142Hyperlink;
-            }
-        }
         #endregion
         
         #region Fields
@@ -12486,8 +12601,6 @@ namespace Warewolf.UITests
         private ComboboxListItemMySqlDatabase mComboboxListItemMySqlDatabase;
         
         private WpfToggleButton mExpandAllToggleButton;
-        
-        private WpfHyperlink mHttprsaklfsanele3142Hyperlink;
         #endregion
     }
     
@@ -17837,12 +17950,31 @@ namespace Warewolf.UITests
                 return this.mHelpWindow;
             }
         }
+        
+        public WpfCustom HelpTextEditor
+        {
+            get
+            {
+                if ((this.mHelpTextEditor == null))
+                {
+                    this.mHelpTextEditor = new WpfCustom(this);
+                    #region Search Criteria
+                    this.mHelpTextEditor.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.XamRichTextEditor";
+                    this.mHelpTextEditor.SearchProperties[WpfControl.PropertyNames.AutomationId] = "XamRichTextEditor";
+                    this.mHelpTextEditor.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mHelpTextEditor;
+            }
+        }
         #endregion
         
         #region Fields
         private WpfButton mDocumentorUnpinBtn;
         
         private WpfControl mHelpWindow;
+        
+        private WpfCustom mHelpTextEditor;
         #endregion
     }
     
@@ -35832,6 +35964,158 @@ namespace Warewolf.UITests
         
         #region Fields
         private WpfButton mDoneButton;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIWarewolfDEV2SANELEMTWindow : WpfWindow
+    {
+        
+        public UIWarewolfDEV2SANELEMTWindow()
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfWindow.PropertyNames.Name] = "Warewolf (DEV2\\SANELE.MTHEMBU)";
+            this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public UIWHATDOESTHISDOCustom UIWHATDOESTHISDOCustom
+        {
+            get
+            {
+                if ((this.mUIWHATDOESTHISDOCustom == null))
+                {
+                    this.mUIWHATDOESTHISDOCustom = new UIWHATDOESTHISDOCustom(this);
+                }
+                return this.mUIWHATDOESTHISDOCustom;
+            }
+        }
+        
+        public UIItemCustom UIItemCustom
+        {
+            get
+            {
+                if ((this.mUIItemCustom == null))
+                {
+                    this.mUIItemCustom = new UIItemCustom(this);
+                }
+                return this.mUIItemCustom;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIWHATDOESTHISDOCustom mUIWHATDOESTHISDOCustom;
+        
+        private UIItemCustom mUIItemCustom;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIWHATDOESTHISDOCustom : WpfCustom
+    {
+        
+        public UIWHATDOESTHISDOCustom(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ContentPane";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Help";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfCustom UIUI_HelpViewControl_ACustom
+        {
+            get
+            {
+                if ((this.mUIUI_HelpViewControl_ACustom == null))
+                {
+                    this.mUIUI_HelpViewControl_ACustom = new WpfCustom(this);
+                    #region Search Criteria
+                    this.mUIUI_HelpViewControl_ACustom.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.HelpView";
+                    this.mUIUI_HelpViewControl_ACustom.SearchProperties[WpfControl.PropertyNames.AutomationId] = "UI_HelpViewControl_AutoID";
+                    this.mUIUI_HelpViewControl_ACustom.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mUIUI_HelpViewControl_ACustom;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfCustom mUIUI_HelpViewControl_ACustom;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIItemCustom : WpfCustom
+    {
+        
+        public UIItemCustom(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.MenuView";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public UIItemText UIItemText
+        {
+            get
+            {
+                if ((this.mUIItemText == null))
+                {
+                    this.mUIItemText = new UIItemText(this);
+                }
+                return this.mUIItemText;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIItemText mUIItemText;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIItemText : WpfText
+    {
+        
+        public UIItemText(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfText.PropertyNames.Name] = " ";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfText UIItemText1
+        {
+            get
+            {
+                if ((this.mUIItemText1 == null))
+                {
+                    this.mUIItemText1 = new WpfText(this);
+                    #region Search Criteria
+                    this.mUIItemText1.SearchProperties[WpfText.PropertyNames.Name] = "";
+                    this.mUIItemText1.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mUIItemText1;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfText mUIItemText1;
         #endregion
     }
 }
