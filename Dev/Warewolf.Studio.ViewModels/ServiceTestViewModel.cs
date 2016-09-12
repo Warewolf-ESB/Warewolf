@@ -46,11 +46,7 @@ namespace Warewolf.Studio.ViewModels
             RunSelectedTestCommand = new DelegateCommand(ServiceTestCommandHandler.RunSelectedTest, () => CanRunSelectedTest);
             StopTestCommand = new DelegateCommand(ServiceTestCommandHandler.StopTest, () => CanStopTest);
             CreateTestCommand = new DelegateCommand(CreateTests);
-            DeleteTestCommand = new DelegateCommand<IServiceTestModel>(selectedServiceTest =>
-            {
-                DeleteTest(selectedServiceTest);
-                
-            }, CanDeleteTest);
+            DeleteTestCommand = new DelegateCommand<IServiceTestModel>(DeleteTest, CanDeleteTest);
             DuplicateTestCommand = new DelegateCommand(() =>
             {
                 var duplicateTest = ServiceTestCommandHandler.DuplicateTest(SelectedServiceTest);
@@ -316,6 +312,7 @@ namespace Warewolf.Studio.ViewModels
                         TestFailing = to.TestFailing,
                         TestPassed = to.TestPassed,
                         Password = to.Password,
+                        ParentId = to.ResourceId,
                         TestInvalid = to.TestInvalid,
                         Inputs =to.Inputs?.Select(input => new ServiceTestInput(input.Variable, input.Value) as IServiceTestInput).ToList(),
                         Outputs =to.Outputs?.Select(output => new ServiceTestOutput(output.Variable, output.Value) as IServiceTestOutput).ToList()

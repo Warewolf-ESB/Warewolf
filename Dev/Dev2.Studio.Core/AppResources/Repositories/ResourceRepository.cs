@@ -568,6 +568,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
                     NoErrorExpected = model.NoErrorExpected,
                     UserName = model.UserName,
                     Password = model.Password,
+                    ResourceId = model.ParentId,
                     Inputs = model.Inputs.Select(input => new ServiceTestInputTO
                     {
                         Variable = input.Variable,
