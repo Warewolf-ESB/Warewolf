@@ -5866,6 +5866,25 @@ namespace Warewolf.UITests
                     "d web address.");
         }
         
+        /// <summary>
+        /// Click_ConfigureSetting_From_Menu - Use 'Click_ConfigureSetting_From_MenuParams' to pass parameters into this method.
+        /// </summary>
+        public void Click_ConfigureSetting_From_Menu()
+        {
+            #region Variable Declarations
+            WpfButton configureSettingsButton = this.MainStudioWindow.SideMenuBar.ConfigureSettingsButton;
+            #endregion
+
+            // Verify that the 'Exists' property of 'Configure settings' button equals 'True'
+            Assert.AreEqual(this.Click_ConfigureSetting_From_MenuParams.ConfigureSettingsButtonExists, configureSettingsButton.Exists, "Configure/Settings button does not exist");
+
+            // Verify that the 'Enabled' property of 'Configure settings' button equals 'True'
+            Assert.AreEqual(this.Click_ConfigureSetting_From_MenuParams.ConfigureSettingsButtonEnabled, configureSettingsButton.Enabled, "Configure/Settings button is disabled");
+
+            // Click 'Configure settings' button
+            Mouse.Click(configureSettingsButton, new Point(7, 13));
+        }
+        
         #region Properties
         public virtual Assert_CancelConnectionButton_ExistsExpectedValues Assert_CancelConnectionButton_ExistsExpectedValues
         {
@@ -8051,6 +8070,18 @@ namespace Warewolf.UITests
             }
         }
         
+        public virtual Click_ConfigureSetting_From_MenuParams Click_ConfigureSetting_From_MenuParams
+        {
+            get
+            {
+                if ((this.mClick_ConfigureSetting_From_MenuParams == null))
+                {
+                    this.mClick_ConfigureSetting_From_MenuParams = new Click_ConfigureSetting_From_MenuParams();
+                }
+                return this.mClick_ConfigureSetting_From_MenuParams;
+            }
+        }
+        
         public MainStudioWindow MainStudioWindow
         {
             get
@@ -8156,6 +8187,18 @@ namespace Warewolf.UITests
                     this.mUIWarewolfDEV2ASHLEYLEWindow = new UIWarewolfDEV2ASHLEYLEWindow();
                 }
                 return this.mUIWarewolfDEV2ASHLEYLEWindow;
+            }
+        }
+        
+        public UIWarewolfDEV2SANELEMTWindow UIWarewolfDEV2SANELEMTWindow
+        {
+            get
+            {
+                if ((this.mUIWarewolfDEV2SANELEMTWindow == null))
+                {
+                    this.mUIWarewolfDEV2SANELEMTWindow = new UIWarewolfDEV2SANELEMTWindow();
+                }
+                return this.mUIWarewolfDEV2SANELEMTWindow;
             }
         }
         #endregion
@@ -8525,6 +8568,8 @@ namespace Warewolf.UITests
         
         private Type_TestSite_into_Web_Source_Wizard_Address_TextboxParams mType_TestSite_into_Web_Source_Wizard_Address_TextboxParams;
         
+        private Click_ConfigureSetting_From_MenuParams mClick_ConfigureSetting_From_MenuParams;
+        
         private MainStudioWindow mMainStudioWindow;
         
         private MessageBoxWindow mMessageBoxWindow;
@@ -8542,6 +8587,8 @@ namespace Warewolf.UITests
         private SwitchCaseDialog mSwitchCaseDialog;
         
         private UIWarewolfDEV2ASHLEYLEWindow mUIWarewolfDEV2ASHLEYLEWindow;
+        
+        private UIWarewolfDEV2SANELEMTWindow mUIWarewolfDEV2SANELEMTWindow;
         #endregion
     }
     
@@ -12292,6 +12339,26 @@ namespace Warewolf.UITests
         /// Verify that the 'Enabled' property of 'Test Connection' button equals 'True'
         /// </summary>
         public bool TestConnectionButtonEnabled = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Click_ConfigureSetting_From_Menu'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Click_ConfigureSetting_From_MenuParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Configure settings' button equals 'True'
+        /// </summary>
+        public bool ConfigureSettingsButtonExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Enabled' property of 'Configure settings' button equals 'True'
+        /// </summary>
+        public bool ConfigureSettingsButtonEnabled = true;
         #endregion
     }
     
@@ -36580,6 +36647,106 @@ namespace Warewolf.UITests
         
         #region Fields
         private WpfCustom mUIDev2StudioViewModelsCustom;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIWarewolfDEV2SANELEMTWindow : WpfWindow
+    {
+        
+        public UIWarewolfDEV2SANELEMTWindow()
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfWindow.PropertyNames.Name] = "Warewolf (DEV2\\SANELE.MTHEMBU)";
+            this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public UIItemCustom UIItemCustom
+        {
+            get
+            {
+                if ((this.mUIItemCustom == null))
+                {
+                    this.mUIItemCustom = new UIItemCustom(this);
+                }
+                return this.mUIItemCustom;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIItemCustom mUIItemCustom;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIItemCustom : WpfCustom
+    {
+        
+        public UIItemCustom(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.MenuView";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public UIItemText UIItemText
+        {
+            get
+            {
+                if ((this.mUIItemText == null))
+                {
+                    this.mUIItemText = new UIItemText(this);
+                }
+                return this.mUIItemText;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIItemText mUIItemText;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIItemText : WpfText
+    {
+        
+        public UIItemText(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfText.PropertyNames.Name] = " ";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfText UIItemText1
+        {
+            get
+            {
+                if ((this.mUIItemText1 == null))
+                {
+                    this.mUIItemText1 = new WpfText(this);
+                    #region Search Criteria
+                    this.mUIItemText1.SearchProperties[WpfText.PropertyNames.Name] = "";
+                    this.mUIItemText1.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mUIItemText1;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfText mUIItemText1;
         #endregion
     }
 }
