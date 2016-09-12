@@ -53,6 +53,7 @@
     </CodeAnalysisDependentAssemblyPaths>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Explorer\ShowServerVersion.cs" />
     <Compile Include="RunDebug\RunDebugTests.cs" />
     <Compile Include="HelpWindow\HelpWindowTests.cs" />
     <Compile Include="Tools\HTTP Web Methods\Create_WEB_Source_From_Tool.cs" />
