@@ -745,7 +745,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void DuplicateCommand_GivenIsDirty_ShouldSetCanExecuteFalse()
+        public void DuplicateCommand_GivenIsDirty_ShouldSetCanExecuteTrue()
         {
             //---------------Set up test pack-------------------
             var testFrameworkViewModel = new ServiceTestViewModel(CreateResourceModelWithSingleScalarOutput(), new SynchronousAsyncWorker());
@@ -756,7 +756,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //---------------Execute Test ----------------------
             var canDuplicate = testFrameworkViewModel.DuplicateTestCommand.CanExecute(null);
             //---------------Test Result -----------------------
-            Assert.IsFalse(canDuplicate);
+            Assert.IsTrue(canDuplicate);
         }
 
         [TestMethod]

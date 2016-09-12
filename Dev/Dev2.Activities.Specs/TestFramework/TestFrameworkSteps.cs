@@ -604,6 +604,15 @@ namespace Dev2.Activities.Specs.TestFramework
             Assert.IsFalse(canExecute);
         }
 
+        [Then(@"Duplicate Test in Visible")]
+        public void ThenDuplicateTestInVisible()
+        {
+            ServiceTestViewModel serviceTest = GetTestFrameworkFromContext();
+            var canExecute = serviceTest.DuplicateTestCommand.CanExecute(null);
+            Assert.IsTrue(canExecute);
+        }
+
+
         [Then(@"The duplicate Name popup is shown")]
         public void ThenTheDuplicateNamePopupIsShown()
         {
