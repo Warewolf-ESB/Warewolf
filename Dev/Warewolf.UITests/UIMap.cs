@@ -668,6 +668,7 @@ namespace Warewolf.UITests
 
         public void Click_New_Workflow_Ribbon_Button()
         {
+            Assert_RunDebug_Button_Disabled();
             Assert.IsTrue(MainStudioWindow.SideMenuBar.NewWorkflowButton.Exists, "New Workflow Ribbon Button Does Not Exist!");
             Mouse.Click(MainStudioWindow.SideMenuBar.NewWorkflowButton, new Point(3, 8));
             var getTimeBefore = System.DateTime.Now;
@@ -1027,6 +1028,18 @@ namespace Warewolf.UITests
 
             // Verify that the 'Exists' property of 'XamRichTextEditor' custom control equals 'True'
             Assert.IsTrue(helpTextEditor.Exists, "Help text does not exist");
+        }
+
+        /// <summary>
+        /// Assert_RunDebug_Button_Disabled - Use 'Assert_RunDebug_Button_DisabledExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void Assert_RunDebug_Button_Disabled()
+        {
+            #region Variable Declarations
+            WpfButton runAndDebugButton = this.MainStudioWindow.SideMenuBar.RunAndDebugButton;
+            #endregion
+            // Verify that the 'Enabled' property of 'Run and debug your workflow service' button equals 'False'
+            Assert.IsFalse(runAndDebugButton.Enabled, "RunDebug button is enabled");
         }
     }
 }
