@@ -416,7 +416,7 @@ namespace BusinessDesignStudio.Unit.Tests
             _repo.Save(model.Object);
             _repo.Load();
             //Assert
-            Assert.AreEqual(1,_repo.All().Count);
+            Assert.AreEqual(1, _repo.All().Count);
         }
 
         [TestMethod]
@@ -472,7 +472,7 @@ namespace BusinessDesignStudio.Unit.Tests
             IResourceModel[] setArray = set.ToArray();
             Assert.IsTrue(cnt == 1 && setArray[0].ResourceName == "NewName");
         }
-        
+
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("ResourceRepository_Save")]
@@ -480,16 +480,16 @@ namespace BusinessDesignStudio.Unit.Tests
         {
             //------------Setup for test--------------------------
             var repo = new ResourceRepository(_environmentModel.Object)
-                {
-                    IsLoaded = true
-                };
+            {
+                IsLoaded = true
+            };
 
             var commController = new Mock<ICommunicationController>();
             commController.Setup(m => m.ExecuteCommand<ExecuteMessage>(It.IsAny<IEnvironmentConnection>(), It.IsAny<Guid>()))
                           .Returns(new ExecuteMessage
-                              {
-                                  HasError = false
-                              });
+                          {
+                              HasError = false
+                          });
             repo.GetCommunicationController = someName => commController.Object;
 
             var resourceModel = new Mock<IResourceModel>();
@@ -511,7 +511,7 @@ namespace BusinessDesignStudio.Unit.Tests
             {
                 IsLoaded = true
             };
-            
+
             var commController = new Mock<ICommunicationController>();
             commController.Setup(m => m.ExecuteCommandAsync<ExecuteMessage>(It.IsAny<IEnvironmentConnection>(), It.IsAny<Guid>()))
                           .Returns(Task.FromResult(new ExecuteMessage
@@ -539,7 +539,7 @@ namespace BusinessDesignStudio.Unit.Tests
             {
                 IsLoaded = true
             };
-            
+
             var commController = new Mock<ICommunicationController>();
             commController.Setup(m => m.ExecuteCommandAsync<ExecuteMessage>(It.IsAny<IEnvironmentConnection>(), It.IsAny<Guid>()))
                           .Returns(Task.FromResult(new ExecuteMessage
@@ -559,7 +559,7 @@ namespace BusinessDesignStudio.Unit.Tests
 
         #endregion Save Tests
 
-        
+
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("ResourceRepository_OnDeleteFromWorkspace")]
@@ -605,8 +605,8 @@ namespace BusinessDesignStudio.Unit.Tests
                 Enabled = true,
                 ErrorExpected = false,
                 NoErrorExpected = true,
-                Inputs = new List<IServiceTestInput> { new ServiceTestInput("var","val")},
-                Outputs = new List<IServiceTestOutput> { new ServiceTestOutput("var","val")}                
+                Inputs = new List<IServiceTestInput> { new ServiceTestInput("var", "val") },
+                Outputs = new List<IServiceTestOutput> { new ServiceTestOutput("var", "val") }
             };
             var retVal = new StringBuilder();
             Mock<IEnvironmentModel> mockEnvironmentModel = new Mock<IEnvironmentModel>();
@@ -623,19 +623,19 @@ namespace BusinessDesignStudio.Unit.Tests
             var resourceRepository = new ResourceRepository(mockEnvironmentModel.Object);
             var resourceId = Guid.NewGuid();
             //------------Execute Test---------------------------            
-            resourceRepository.SaveTests(resourceId,new List<IServiceTestModel> { serviceTestModel });
+            resourceRepository.SaveTests(resourceId, new List<IServiceTestModel> { serviceTestModel });
             //------------Assert Results-------------------------
             var ser = new Dev2JsonSerializer();
             var retMsg = ser.Deserialize<EsbExecuteRequest>(retVal.ToString());
             Assert.IsNotNull(retMsg);
-            Assert.AreEqual("SaveTests",retMsg.ServiceName);
-            Assert.AreEqual(2,retMsg.Args.Count);
-            Assert.AreEqual(resourceId.ToString(),retMsg.Args["resourceID"].ToString());
+            Assert.AreEqual("SaveTests", retMsg.ServiceName);
+            Assert.AreEqual(2, retMsg.Args.Count);
+            Assert.AreEqual(resourceId.ToString(), retMsg.Args["resourceID"].ToString());
             var compressedMessage = ser.Deserialize<CompressedExecuteMessage>(retMsg.Args["testDefinitions"].ToString());
             Assert.IsNotNull(compressedMessage);
             var serviceTestModelTos = ser.Deserialize<List<ServiceTestModelTO>>(compressedMessage.GetDecompressedMessage());
             Assert.IsNotNull(serviceTestModelTos);
-            Assert.AreEqual(1,serviceTestModelTos.Count);
+            Assert.AreEqual(1, serviceTestModelTos.Count);
             Assert.AreEqual(serviceTestModel.TestName, serviceTestModelTos[0].TestName);
         }
 
@@ -759,7 +759,7 @@ namespace BusinessDesignStudio.Unit.Tests
             mockEnvironmentModel.Setup(x => x.LoadResources());
 
             var myItem = new ResourceModel(mockEnvironmentModel.Object) { ResourceName = "TestResource", Category = string.Empty };
-            
+
             ResourceRepository.Add(myItem);
             int expectedCount = mockEnvironmentModel.Object.ResourceRepository.All().Count;
 
@@ -1264,7 +1264,7 @@ namespace BusinessDesignStudio.Unit.Tests
                     return resourceObj;
                 }
             );
-            
+
             _environmentModel.Setup(e => e.Connection).Returns(conn.Object);
 
             //------------Execute Test---------------------------
@@ -1305,9 +1305,9 @@ namespace BusinessDesignStudio.Unit.Tests
                 };
 
             var resourceObj = BuildResourceObjectFromGuids(new[] { _resourceGuid }, "WorkflowService", errors);
-            
+
             conn.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Returns(() => resourceObj);
-            
+
             _environmentModel.Setup(e => e.Connection).Returns(conn.Object);
 
             //------------Execute Test---------------------------
@@ -1415,7 +1415,7 @@ namespace BusinessDesignStudio.Unit.Tests
 
 
 
-            var serviceTestModel = new List<IServiceTestModelTO>();                           
+            var serviceTestModel = new List<IServiceTestModelTO>();
             Dev2JsonSerializer jsonSerializer = new Dev2JsonSerializer();
             var payload = jsonSerializer.Serialize(serviceTestModel);
             CompressedExecuteMessage message = new CompressedExecuteMessage();
@@ -1427,12 +1427,13 @@ namespace BusinessDesignStudio.Unit.Tests
             var result = new ResourceRepository(env.Object);
             var serviceTestModels = result.LoadResourceTests(Guid.NewGuid());
             //------------Assert Results-------------------------
-            Assert.AreEqual(0,serviceTestModels.Count);
+            Assert.AreEqual(0, serviceTestModels.Count);
         }
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("ResourceRepository_DeleteResourceTests")]
+        [ExpectedException(typeof(ArgumentNullException))]
         public void ResourceRepository_DeleteResourceTests_WhenNoTestNameIsNull_ExpectNothing()
         {
             //------------Setup for test--------------------------
@@ -1443,7 +1444,7 @@ namespace BusinessDesignStudio.Unit.Tests
 
 
 
-            var serviceTestModel = new ServiceTestModelTO();                           
+            var serviceTestModel = new ServiceTestModelTO();
             Dev2JsonSerializer jsonSerializer = new Dev2JsonSerializer();
             var payload = jsonSerializer.Serialize(serviceTestModel);
             CompressedExecuteMessage message = new CompressedExecuteMessage();
@@ -1453,14 +1454,15 @@ namespace BusinessDesignStudio.Unit.Tests
 
             //------------Execute Test---------------------------
             var result = new ResourceRepository(env.Object);
-            var serviceTestModels = result.DeleteResourceTest(Guid.NewGuid(), It.IsAny<string>());
+            result.DeleteResourceTest(Guid.NewGuid(), It.IsAny<string>());
             //------------Assert Results-------------------------
-            Assert.IsNull(serviceTestModels);
+           
         }
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("ResourceRepository_DeleteResourceTests")]
+        [ExpectedException(typeof(ArgumentNullException))]
         public void ResourceRepository_DeleteResourceTests_WhenNoResourceIdIsNull_ExpectNothing()
         {
             //------------Setup for test--------------------------
@@ -1471,20 +1473,20 @@ namespace BusinessDesignStudio.Unit.Tests
 
 
 
-            var serviceTestModel = new ServiceTestModelTO();                           
-            Dev2JsonSerializer jsonSerializer = new Dev2JsonSerializer() ;
+            var serviceTestModel = new ServiceTestModelTO();
+            Dev2JsonSerializer jsonSerializer = new Dev2JsonSerializer();
             var payload = jsonSerializer.Serialize(serviceTestModel);
             CompressedExecuteMessage message = new CompressedExecuteMessage();
             message.SetMessage(payload);
-            
+
             var msgResult = jsonSerializer.Serialize(message);
             con.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Returns(msgResult.ToStringBuilder);
 
             //------------Execute Test---------------------------
             var result = new ResourceRepository(env.Object);
-            var serviceTestModels = result.DeleteResourceTest(Guid.Empty, "Name");
+            result.DeleteResourceTest(Guid.Empty, "Name");
             //------------Assert Results-------------------------
-            Assert.IsNull(serviceTestModels);
+          
         }
 
         [TestMethod]
@@ -1501,12 +1503,12 @@ namespace BusinessDesignStudio.Unit.Tests
 
 
             var msg = new StringBuilder("Error occured");
-            Dev2JsonSerializer jsonSerializer = new Dev2JsonSerializer() ;
+            Dev2JsonSerializer jsonSerializer = new Dev2JsonSerializer();
             var payload = jsonSerializer.Serialize(msg);
             CompressedExecuteMessage message = new CompressedExecuteMessage();
             message.SetMessage(payload);
             message.HasError = true;
-            
+
             var msgResult = jsonSerializer.Serialize(message);
             con.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Returns(msgResult.ToStringBuilder);
 
@@ -1517,14 +1519,14 @@ namespace BusinessDesignStudio.Unit.Tests
                 result.DeleteResourceTest(Guid.NewGuid(), "Name");
                 Assert.Fail("Exception not thrown");
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Assert.IsNotNull(ex);
                 Assert.AreEqual("Error occured", ex.Message);
             }
-            
+
             //------------Assert Results-------------------------
-            
+
         }
 
         [TestMethod]
@@ -1573,7 +1575,7 @@ namespace BusinessDesignStudio.Unit.Tests
             Mock<IEnvironmentConnection> con = new Mock<IEnvironmentConnection>();
             con.Setup(c => c.IsConnected).Returns(true);
             env.Setup(e => e.Connection).Returns(con.Object);
-            
+
             Dev2JsonSerializer jsonSerializer = new Dev2JsonSerializer();
             CompressedExecuteMessage message = new CompressedExecuteMessage();
             message.HasError = true;
@@ -1588,10 +1590,10 @@ namespace BusinessDesignStudio.Unit.Tests
             {
                 result.LoadResourceTests(Guid.NewGuid());
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 //------------Assert Results-------------------------
-                Assert.AreEqual("An error occured",ex.Message);
+                Assert.AreEqual("An error occured", ex.Message);
             }
 
         }
@@ -1729,9 +1731,9 @@ namespace BusinessDesignStudio.Unit.Tests
 
         }
         #endregion
-        
 
-     
+
+
         #region IsLoaded
 
 
@@ -1928,7 +1930,7 @@ namespace BusinessDesignStudio.Unit.Tests
         }
         #endregion
 
-      
+
 
         #region DeployResources
 
@@ -2079,10 +2081,10 @@ namespace BusinessDesignStudio.Unit.Tests
 
 
         #endregion
-        
+
         #region Helper Methods
 
- 
+
         private SerializableResource BuildSerializableResourceFromName(string name, string typeOf, bool isNewResource = false)
         {
 
