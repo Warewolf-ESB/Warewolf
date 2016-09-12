@@ -88,7 +88,6 @@ namespace Dev2.Runtime.WebServer.Handlers
                 xmlData = xmlData.Replace("<DataList>", "<XmlData>").Replace("</DataList>", "</XmlData>");
             }
 
-            // we need to adjust for the silly xml structure this system was init built on ;(
             if(string.IsNullOrEmpty(xmlData))
             {
                 xmlData = "<DataList></DataList>";
