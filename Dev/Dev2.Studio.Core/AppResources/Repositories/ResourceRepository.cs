@@ -617,6 +617,15 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             var comsController = GetCommunicationController("DeleteResourceTest");
             comsController.AddPayloadArgument("resourceID", resourceId.ToString());
             comsController.AddPayloadArgument("testName", testName);
+            if (string.IsNullOrEmpty(testName))
+            {
+                return default(ServiceTestModelTO);
+            }
+
+            if (resourceId == Guid.Empty)
+            {
+                return default(ServiceTestModelTO);
+            }
             var executeCommand = comsController.ExecuteCommand<CompressedExecuteMessage>(_environmentModel.Connection, GlobalConstants.ServerWorkspaceID);
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
             var message = executeCommand.GetDecompressedMessage();

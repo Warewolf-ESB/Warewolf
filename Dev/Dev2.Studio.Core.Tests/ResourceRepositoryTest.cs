@@ -1432,6 +1432,103 @@ namespace BusinessDesignStudio.Unit.Tests
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
+        [TestCategory("ResourceRepository_DeleteResourceTests")]
+        public void ResourceRepository_DeleteResourceTests_WhenNoTestNameIsNull_ExpectNothing()
+        {
+            //------------Setup for test--------------------------
+            Mock<IEnvironmentModel> env = new Mock<IEnvironmentModel>();
+            Mock<IEnvironmentConnection> con = new Mock<IEnvironmentConnection>();
+            con.Setup(c => c.IsConnected).Returns(true);
+            env.Setup(e => e.Connection).Returns(con.Object);
+
+
+
+            var serviceTestModel = new ServiceTestModelTO();                           
+            Dev2JsonSerializer jsonSerializer = new Dev2JsonSerializer();
+            var payload = jsonSerializer.Serialize(serviceTestModel);
+            CompressedExecuteMessage message = new CompressedExecuteMessage();
+            message.SetMessage(payload);
+            var msgResult = jsonSerializer.Serialize(message);
+            con.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Returns(msgResult.ToStringBuilder);
+
+            //------------Execute Test---------------------------
+            var result = new ResourceRepository(env.Object);
+            var serviceTestModels = result.DeleteResourceTest(Guid.NewGuid(), It.IsAny<string>());
+            //------------Assert Results-------------------------
+            Assert.IsNull(serviceTestModels);
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        [TestCategory("ResourceRepository_DeleteResourceTests")]
+        public void ResourceRepository_DeleteResourceTests_WhenNoResourceIdIsNull_ExpectNothing()
+        {
+            //------------Setup for test--------------------------
+            Mock<IEnvironmentModel> env = new Mock<IEnvironmentModel>();
+            Mock<IEnvironmentConnection> con = new Mock<IEnvironmentConnection>();
+            con.Setup(c => c.IsConnected).Returns(true);
+            env.Setup(e => e.Connection).Returns(con.Object);
+
+
+
+            var serviceTestModel = new ServiceTestModelTO();                           
+            Dev2JsonSerializer jsonSerializer = new Dev2JsonSerializer() ;
+            var payload = jsonSerializer.Serialize(serviceTestModel);
+            CompressedExecuteMessage message = new CompressedExecuteMessage();
+            message.SetMessage(payload);
+            
+            var msgResult = jsonSerializer.Serialize(message);
+            con.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Returns(msgResult.ToStringBuilder);
+
+            //------------Execute Test---------------------------
+            var result = new ResourceRepository(env.Object);
+            var serviceTestModels = result.DeleteResourceTest(Guid.Empty, "Name");
+            //------------Assert Results-------------------------
+            Assert.IsNull(serviceTestModels);
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        [TestCategory("ResourceRepository_DeleteResourceTests")]
+        public void ResourceRepository_DeleteResourceTests_WhenResultHasError_ExpectNothing()
+        {
+            //------------Setup for test--------------------------
+            Mock<IEnvironmentModel> env = new Mock<IEnvironmentModel>();
+            Mock<IEnvironmentConnection> con = new Mock<IEnvironmentConnection>();
+            con.Setup(c => c.IsConnected).Returns(true);
+            env.Setup(e => e.Connection).Returns(con.Object);
+
+
+
+            var msg = new StringBuilder("Error occured");
+            Dev2JsonSerializer jsonSerializer = new Dev2JsonSerializer() ;
+            var payload = jsonSerializer.Serialize(msg);
+            CompressedExecuteMessage message = new CompressedExecuteMessage();
+            message.SetMessage(payload);
+            message.HasError = true;
+            
+            var msgResult = jsonSerializer.Serialize(message);
+            con.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Returns(msgResult.ToStringBuilder);
+
+            //------------Execute Test---------------------------
+            try
+            {
+                var result = new ResourceRepository(env.Object);
+                result.DeleteResourceTest(Guid.NewGuid(), "Name");
+                Assert.Fail("Exception not thrown");
+            }
+            catch(Exception ex)
+            {
+                Assert.IsNotNull(ex);
+                Assert.AreEqual("Error occured", ex.Message);
+            }
+            
+            //------------Assert Results-------------------------
+            
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
         [TestCategory("ResourceRepository_LoadResourceTests")]
         public void ResourceRepository_LoadResourceTests_WhenTestFound_ExpectTestsBack()
         {
