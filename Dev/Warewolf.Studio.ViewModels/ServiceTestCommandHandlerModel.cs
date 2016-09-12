@@ -96,7 +96,7 @@ namespace Warewolf.Studio.ViewModels
         {
             var testClone = new ServiceTestModel(selectedTest.ParentId)
             {
-                TestName = string.Concat(selectedTest.TestName, "_dup"),
+                TestName = selectedTest.TestName,
                 IsDirty = true,
                 Inputs = selectedTest.Inputs,
                 Outputs = selectedTest.Outputs,
