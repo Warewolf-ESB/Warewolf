@@ -14,9 +14,9 @@ namespace Warewolf.UITests.Tools
         {
             Uimap.Drag_GET_Web_Connector_Onto_DesignSurface();
             Uimap.Open_GET_Web_Connector_Tool_Large_View();
-            Uimap.Click_AddNew_WebSource_From_GET_Large_View();
-            Uimap.Type_TestSite_into_Web_Source_Wizard_Address_Textbox();
-            Uimap.Save_With_Ribbon_Button_And_Dialog(WebSourceName);
+            //Uimap.Click_AddNew_WebSource_From_GET_Large_View();
+            //Uimap.Type_TestSite_into_Web_Source_Wizard_Address_Textbox();
+            //Uimap.Save_With_Ribbon_Button_And_Dialog(WebSourceName);
             //Uimap.Click_Close_Web_Source_Wizard_Tab_Button();
         }
 
