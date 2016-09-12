@@ -18,7 +18,7 @@ namespace Dev2.Common
     public static class Utilities
     {
         public static IEnumerable<T> Flatten<T>(this IEnumerable<T> e, Func<T, IEnumerable<T>> f)
-        {
+        {            
             var second = e as IList<T> ?? e.ToList();
             return second.SelectMany(c => f(c).Flatten(f)).Concat(second);
         }
@@ -50,10 +50,7 @@ namespace Dev2.Common
                 }
                 catch (Exception)
                 {
-                    if (impersonationContext != null)
-                    {
-                        impersonationContext.Undo();
-                    }
+                    impersonationContext?.Undo();
                     identity = ServerUser.Identity as WindowsIdentity;
                     if (identity != null)
                     {

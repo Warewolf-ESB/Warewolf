@@ -5,6 +5,7 @@ using System.Text;
 using System.Transactions;
 using Dev2.Common;
 using Dev2.Common.Common;
+using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Interfaces;
@@ -17,10 +18,17 @@ namespace Dev2.Runtime.ResourceCatalogImpl
     internal class ResourceDuplicateProvider : IResourceDuplicateProvider
     {
         private readonly IResourceCatalog _resourceCatalog;
+        private ITestCatalog _testCatalog;
 
         public ResourceDuplicateProvider(IResourceCatalog resourceCatalog)
         {
             _resourceCatalog = resourceCatalog;
+        }
+
+        public ITestCatalog TestCatalog
+        {
+            get { return _testCatalog ?? Runtime.TestCatalog.Instance; }
+            set { _testCatalog = value; }
         }
 
         public ResourceCatalogResult DuplicateFolder(string sourcePath, string destinationPath, string newName, bool fixRefences)
@@ -65,8 +73,22 @@ namespace Dev2.Runtime.ResourceCatalogImpl
             xElement.SetElementValue("DisplayName", newResourceName);
             var fixedResource = xElement.ToStringBuilder();
             _resourceCatalog.SaveResource(GlobalConstants.ServerWorkspaceID, resource, fixedResource, newPath);
-
+            SaveTests(resourceId, resourceID);
         }
+
+        private void SaveTests(Guid oldResourceId, Guid newResourceId)
+        {
+            var serviceTestModelTos = _testCatalog.Fetch(oldResourceId);
+            if(serviceTestModelTos != null && serviceTestModelTos.Count > 0)
+            {
+                foreach(var serviceTestModelTo in serviceTestModelTos)
+                {
+                    serviceTestModelTo.ResourceId = newResourceId;
+                }
+                TestCatalog.SaveTests(newResourceId, serviceTestModelTos);
+            }
+        }
+
         private void SaveFolders(string sourceLocation, string destination, string newName, bool fixRefences)
         {
             var resourcesToUpdate = new List<IResource>();
@@ -102,6 +124,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
                     _resourceCatalog.SaveResource(GlobalConstants.ServerWorkspaceID, newResource, fixedResource, savePath);
                     resourcesToUpdate.Add(newResource);
                     resourceUpdateMap.Add(oldResourceId, newResourceId);
+                    SaveTests(oldResourceId,newResourceId);
                 }
                 catch (Exception e)
                 {
