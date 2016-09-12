@@ -28,6 +28,7 @@ namespace Dev2.Common.Interfaces
         string EditToolTip { get; }
         string ActivityName { get; }
 
+
         ICommand ViewSwaggerCommand { get; set; }
         ICommand OpenCommand { get; set; }
         ICommand OpenVersionCommand { get; set; }

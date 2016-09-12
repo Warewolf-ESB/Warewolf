@@ -204,6 +204,7 @@
     <Compile Include="BaseWorkSurfaceViewModelTests.cs" />
     <Compile Include="ConnectionHelpers\ConnectControlSingletonTests.cs" />
     <Compile Include="CustomContainerTests.cs" />
+    <Compile Include="DeployDtoTests.cs" />
     <Compile Include="Dialogs\ProgressDialogViewModelTests.cs" />
     <Compile Include="ExceptionViewModelTest.cs" />
     <Compile Include="Helpers\TestProgressFileDownloaderTests.cs">

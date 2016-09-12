@@ -29,6 +29,7 @@ namespace Dev2.Studio.Core.InterfaceImplementors
             get;
             set;
         }
+        public bool DeployTests { get; set; }
 
         #endregion
     }

@@ -13,6 +13,7 @@ using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Common.Interfaces.Threading;
+using Dev2.Data;
 using Dev2.Interfaces;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Network;
@@ -199,7 +200,27 @@ namespace Warewolf.Studio.ViewModels
                     }
                     return;
                 }
-                ResourceModel.Environment.ResourceRepository.SaveTests(ResourceModel.ID, serviceTestModels);
+                var serviceTestModelTos = serviceTestModels.Select(model => new ServiceTestModelTO()
+                {
+                    TestName = model.TestName,
+                    ResourceId = model.ParentId,
+                    AuthenticationType = model.AuthenticationType,
+                    Enabled = model.Enabled,
+                    ErrorExpected = model.ErrorExpected,
+                    NoErrorExpected = model.NoErrorExpected,
+                    Inputs = model.Inputs,
+                    LastRunDate = model.LastRunDate,
+                    OldTestName = model.OldTestName,
+                    Outputs = model.Outputs,
+                    Password = model.Password,
+                    IsDirty = model.IsDirty,
+                    TestPending = model.TestPending,
+                    UserName = model.UserName,
+                    TestFailing = model.TestFailing,
+                    TestInvalid = model.TestInvalid,
+                    TestPassed = model.TestPassed
+                } as IServiceTestModelTO).ToList();
+                ResourceModel.Environment.ResourceRepository.SaveTests(ResourceModel.ID, serviceTestModelTos);
                 MarkTestsAsDirty(false);
                 SetSelectedTestUrl();
             }

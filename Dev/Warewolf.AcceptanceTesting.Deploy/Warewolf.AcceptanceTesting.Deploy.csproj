@@ -110,11 +110,6 @@
   <ItemGroup>
     <Compile Include="DeployDestinationViewModelForTesting.cs" />
     <Compile Include="DeploySourceExplorerViewModelForTesting.cs" />
-    <Compile Include="DeployTab.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>DeployTab.feature</DependentUpon>
-    </Compile>
     <Compile Include="DeployTabSteps.cs" />
     <Compile Include="..\AssemblyCommonInfo.cs">
       <Link>Properties\AssemblyCommonInfo.cs</Link>
@@ -124,7 +119,7 @@
     <None Include="App.config" />
     <None Include="DeployTab.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>DeployTab.feature.cs</LastGenOutput>
+      <LastGenOutput>DeployTab1.feature.cs</LastGenOutput>
     </None>
     <None Include="packages.config">
       <SubType>Designer</SubType>
