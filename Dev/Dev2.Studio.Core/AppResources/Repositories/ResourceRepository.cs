@@ -620,12 +620,12 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             comsController.AddPayloadArgument("testName", testName);
             if (string.IsNullOrEmpty(testName))
             {
-                return default(ServiceTestModelTO);
+                throw new ArgumentNullException(nameof(testName));
             }
 
-            if (resourceId == Guid.Empty)
+            if (resourceId == Guid.Empty ||resourceId == null)
             {
-                return default(ServiceTestModelTO);
+                throw new ArgumentNullException(nameof(resourceId));
             }
             var executeCommand = comsController.ExecuteCommand<CompressedExecuteMessage>(_environmentModel.Connection, GlobalConstants.ServerWorkspaceID);
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
