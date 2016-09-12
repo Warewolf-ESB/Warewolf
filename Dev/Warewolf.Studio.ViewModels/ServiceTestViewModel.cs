@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Input;
 using Dev2;
@@ -17,6 +18,7 @@ using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Network;
 using Microsoft.Practices.Prism.Commands;
 using Microsoft.Practices.Prism.Mvvm;
+using Warewolf.Resource.Errors;
 
 namespace Warewolf.Studio.ViewModels
 {
@@ -30,7 +32,7 @@ namespace Warewolf.Studio.ViewModels
         public IPopupController PopupController { get; }
         private bool _canSave;
 
-        public ServiceTestViewModel(IContextualResourceModel resourceModel,IAsyncWorker asyncWorker)
+        public ServiceTestViewModel(IContextualResourceModel resourceModel, IAsyncWorker asyncWorker)
         {
             if (resourceModel == null)
                 throw new ArgumentNullException(nameof(resourceModel));
@@ -67,8 +69,8 @@ namespace Warewolf.Studio.ViewModels
 
         private bool CanDeleteTest(IServiceTestModel selectedTestModel)
         {
-          return GetPermissions() && selectedTestModel != null && !selectedTestModel.Enabled;
-        } 
+            return GetPermissions() && selectedTestModel != null && !selectedTestModel.Enabled;
+        }
         public bool IsLoading { get; set; }
 
         public IAsyncWorker AsyncWorker { get; set; }
@@ -88,7 +90,7 @@ namespace Warewolf.Studio.ViewModels
         private void AddAndSelectTest(IServiceTestModel testModel)
         {
             var index = _tests.Count - 1;
-            if(index >= 0)
+            if (index >= 0)
             {
                 _tests.Insert(index, testModel);
             }
@@ -104,12 +106,18 @@ namespace Warewolf.Studio.ViewModels
         private bool CanRunSelectedTestInBrowser => SelectedServiceTest != null && !SelectedServiceTest.IsDirty;
         private bool CanRunSelectedTest => GetPermissions();
         public bool CanDuplicateTest => GetPermissions() && !IsDirty && SelectedServiceTest != null;
+        private bool HasDuplicateTestNames()
+        {
+            var dupTests = RealTests().ToList().GroupBy(x => x.TestName).Where(group => @group.Count() > 1).Select(group => @group.Key);
+            var hasDups = dupTests.Any();
+            return hasDups;
+        }
 
         public bool CanSave
         {
             get
             {
-                _canSave = IsDirty;
+                _canSave = IsDirty && IsValidName(SelectedServiceTest.TestName);
                 return _canSave;
             }
             set
@@ -122,6 +130,30 @@ namespace Warewolf.Studio.ViewModels
         {
             return true;
         }
+
+        private static bool IsValidName(string name)
+        {
+            if (string.IsNullOrEmpty(name))
+            {
+                ErrorMessage = string.Format(ErrorResource.CannotBeNull, "'Name'");
+            }
+            else if (NameHasInvalidCharacters(name))
+            {
+                ErrorMessage = string.Format(ErrorResource.ContainsInvalidCharecters, "'Name'");
+            }
+            else if(name.Trim() != name)
+            {
+                ErrorMessage = string.Format(ErrorResource.ContainsLeadingOrTrailingWhitespace, "'Name'");
+            }
+
+            return string.IsNullOrEmpty(ErrorMessage);
+        }
+        private static bool NameHasInvalidCharacters(string name)
+        {
+            return Regex.IsMatch(name, @"[^a-zA-Z0-9._\s-]");
+        }
+
+        public static string ErrorMessage { get; set; }
 
         public bool IsDirty
         {
@@ -158,10 +190,13 @@ namespace Warewolf.Studio.ViewModels
             try
             {
                 var serviceTestModels = RealTests().Where(a => a.IsDirty).ToList();
-                var duplicateTests = RealTests().ToList().GroupBy(x => x.TestName).Where(group => group.Count() > 1).Select(group => group.Key);
-                if (duplicateTests.Any())
+                if (HasDuplicateTestNames())
                 {
-                    PopupController?.Show(Resources.Languages.Core.ServiceTestDuplicateTestNameMessage, Resources.Languages.Core.ServiceTestDuplicateTestNameHeader, MessageBoxButton.OK, MessageBoxImage.Error, null, false, true, false, false);
+                    // ReSharper disable once UseNullPropagation
+                    if(PopupController != null)
+                    {
+                        PopupController.Show(Resources.Languages.Core.ServiceTestDuplicateTestNameMessage, Resources.Languages.Core.ServiceTestDuplicateTestNameHeader, MessageBoxButton.OK, MessageBoxImage.Error, null, false, true, false, false);
+                    }
                     return;
                 }
                 ResourceModel.Environment.ResourceRepository.SaveTests(ResourceModel.ID, serviceTestModels);
@@ -256,7 +291,7 @@ namespace Warewolf.Studio.ViewModels
         public ObservableCollection<IServiceTestModel> Tests
         {
             get
-            {               
+            {
                 return _tests;
             }
             set
@@ -268,7 +303,7 @@ namespace Warewolf.Studio.ViewModels
 
         private void DeleteTest(IServiceTestModel test)
         {
-            if(test == null) return;
+            if (test == null) return;
             var nameOfItemBeingDeleted = test.NameForDisplay.Replace("*", "").TrimEnd(' ');
             if (PopupController.ShowDeleteConfirmation(nameOfItemBeingDeleted) == MessageBoxResult.Yes)
             {
@@ -292,7 +327,7 @@ namespace Warewolf.Studio.ViewModels
         {
             try
             {
-                
+
                 var serviceTestModels = new List<ServiceTestModel>();
                 var loadResourceTests = ResourceModel.Environment.ResourceRepository.LoadResourceTests(ResourceModel.ID);
                 if (loadResourceTests != null)
@@ -314,8 +349,8 @@ namespace Warewolf.Studio.ViewModels
                         Password = to.Password,
                         ParentId = to.ResourceId,
                         TestInvalid = to.TestInvalid,
-                        Inputs =to.Inputs?.Select(input => new ServiceTestInput(input.Variable, input.Value) as IServiceTestInput).ToList(),
-                        Outputs =to.Outputs?.Select(output => new ServiceTestOutput(output.Variable, output.Value) as IServiceTestOutput).ToList()
+                        Inputs = to.Inputs?.Select(input => new ServiceTestInput(input.Variable, input.Value) as IServiceTestInput).ToList(),
+                        Outputs = to.Outputs?.Select(output => new ServiceTestOutput(output.Variable, output.Value) as IServiceTestOutput).ToList()
                     }).ToList();
 
                 }

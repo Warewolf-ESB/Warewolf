@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Reflection;
 using System.Windows;
 using Dev2;
 using Dev2.Common.Interfaces;
@@ -903,6 +904,76 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(wasCalled);
             Assert.AreEqual(beforeDelete - 1, GetTests(testFrameworkViewModel).Count);
 
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void IsValid_GivenNameOne_ShouldBeValid()
+        {
+            //---------------Set up test pack-------------------
+            var methodInfo = typeof(ServiceTestViewModel).GetMethod("IsValidName", BindingFlags.NonPublic | BindingFlags.Static);
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(methodInfo);
+            //---------------Execute Test ----------------------
+            var invoke = methodInfo.Invoke(null, new object[] { "NameOne" });
+            //---------------Test Result -----------------------
+            Assert.AreEqual(true, bool.Parse(invoke.ToString()));
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void IsValid_GivenNameOnePErcenta_ShouldBeInValid()
+        {
+            //---------------Set up test pack-------------------
+            var methodInfo = typeof(ServiceTestViewModel).GetMethod("IsValidName", BindingFlags.NonPublic | BindingFlags.Static);
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(methodInfo);
+            //---------------Execute Test ----------------------
+            var invoke = methodInfo.Invoke(null, new object[] { "NameOne%" });
+            //---------------Test Result -----------------------
+            Assert.AreEqual(false, bool.Parse(invoke.ToString()));
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void IsValid_GivenEmpty_ShouldBeInValid()
+        {
+            //---------------Set up test pack-------------------
+            var methodInfo = typeof(ServiceTestViewModel).GetMethod("IsValidName", BindingFlags.NonPublic | BindingFlags.Static);
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(methodInfo);
+            //---------------Execute Test ----------------------
+            var invoke = methodInfo.Invoke(null, new object[] { "" });
+            //---------------Test Result -----------------------
+            Assert.AreEqual(false, bool.Parse(invoke.ToString()));
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void IsValid_GivenNull_ShouldBeInValid()
+        {
+            //---------------Set up test pack-------------------
+            var methodInfo = typeof(ServiceTestViewModel).GetMethod("IsValidName", BindingFlags.NonPublic | BindingFlags.Static);
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(methodInfo);
+            //---------------Execute Test ----------------------
+            var invoke = methodInfo.Invoke(null, new object[] { null });
+            //---------------Test Result -----------------------
+            Assert.AreEqual(false, bool.Parse(invoke.ToString()));
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void IsValid_GivennameWithtrailingSpaces_ShouldBeInValid()
+        {
+            //---------------Set up test pack-------------------
+            var methodInfo = typeof(ServiceTestViewModel).GetMethod("IsValidName", BindingFlags.NonPublic | BindingFlags.Static);
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(methodInfo);
+            //---------------Execute Test ----------------------
+            var invoke = methodInfo.Invoke(null, new object[] { "name " });
+            //---------------Test Result -----------------------
+            Assert.AreEqual(false, bool.Parse(invoke.ToString()));
         }
 
         private IContextualResourceModel CreateResourceModelWithSingleScalarInput()
