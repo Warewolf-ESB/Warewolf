@@ -168,6 +168,9 @@ namespace Warewolf.UITests
             }
             TryClickMessageBoxOK();
             WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);
+
+            //TODO: remove this workaround for WOLF-2061
+            MainStudioWindow.SideMenuBar.NewWorkflowButton.WaitForControlEnabled();
         }
 
         private void TryClickMessageBoxOK()
