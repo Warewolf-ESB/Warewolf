@@ -752,7 +752,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsNotNull(selectedServiceTest);
             //---------------Execute Test ----------------------
             testFrameworkViewModel.DuplicateTestCommand.Execute(null);
-            Assert.IsTrue(testFrameworkViewModel.SelectedServiceTest.TestName.Contains("_dup"));
+            Assert.IsTrue(!testFrameworkViewModel.SelectedServiceTest.TestName.Contains("_dup"));
             //---------------Test Result -----------------------
             Assert.AreEqual(2, GetTests(testFrameworkViewModel).Count);
         }
@@ -776,7 +776,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             testFrameworkViewModel.DuplicateTestCommand.Execute(null);
 
             //---------------Test Result -----------------------
-            Assert.IsTrue(testFrameworkViewModel.SelectedServiceTest.TestName.Contains("_dup"));
+            Assert.IsTrue(!testFrameworkViewModel.SelectedServiceTest.TestName.Contains("_dup"));
         }
 
         [TestMethod]
