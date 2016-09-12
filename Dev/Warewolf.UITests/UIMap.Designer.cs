@@ -87,25 +87,6 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
-        /// Click_NewVersion_button - Use 'Click_NewVersion_buttonExpectedValues' to pass parameters into this method.
-        /// </summary>
-        public void Click_NewVersion_button()
-        {
-            #region Variable Declarations
-            WpfButton newVersionButton = this.MainStudioWindow.SideMenuBar.NewVersionButton;
-            #endregion
-
-            // Verify that the 'Exists' property of 'VersionButton' button equals 'True'
-            Assert.AreEqual(this.Click_NewVersion_buttonExpectedValues.NewVersionButtonExists, newVersionButton.Exists, "New version available button does not exist");
-
-            // Verify that the 'Enabled' property of 'VersionButton' button equals 'True'
-            Assert.AreEqual(this.Click_NewVersion_buttonExpectedValues.NewVersionButtonEnabled, newVersionButton.Enabled, "New version available button is disabled");
-
-            // Click 'VersionButton' button
-            Mouse.Click(newVersionButton, new Point(17, 9));
-        }
-        
-        /// <summary>
         /// Assign_Value_To_Variable - Use 'Assign_Value_To_VariableParams' to pass parameters into this method.
         /// </summary>
         public void Assign_Value_To_Variable()
@@ -1147,6 +1128,25 @@ namespace Warewolf.UITests
 
             // Verify that the 'Exists' property of 'AssemblyNameTextBox' text box equals 'True'
             Assert.AreEqual(this.Click_NewPluginSource_Ribbon_ButtonParams.AssemblyNameTextboxExists, assemblyNameTextbox.Exists, "Assembly textbox does not exist in new plugin source wizard tab.");
+        }
+        
+        /// <summary>
+        /// Click_NewVersion_button - Use 'Click_NewVersion_buttonExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void Click_NewVersion_button()
+        {
+            #region Variable Declarations
+            WpfButton newVersionButton = this.MainStudioWindow.SideMenuBar.NewVersionButton;
+            #endregion
+
+            // Verify that the 'Exists' property of 'VersionButton' button equals 'True'
+            Assert.AreEqual(this.Click_NewVersion_buttonExpectedValues.NewVersionButtonExists, newVersionButton.Exists, "New version available button does not exist");
+
+            // Verify that the 'Enabled' property of 'VersionButton' button equals 'True'
+            Assert.AreEqual(this.Click_NewVersion_buttonExpectedValues.NewVersionButtonEnabled, newVersionButton.Enabled, "New version available button is disabled");
+
+            // Click 'VersionButton' button
+            Mouse.Click(newVersionButton, new Point(17, 9));
         }
         
         /// <summary>
@@ -5842,14 +5842,10 @@ namespace Warewolf.UITests
         {
             #region Variable Declarations
             WpfEdit textbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DBSourceWizardTab.WorkSurfaceContext.ManageDatabaseSourceControl.ServerComboBox.Textbox;
-            WpfListItem rSAKLFSVRGENDEV = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DBSourceWizardTab.WorkSurfaceContext.ManageDatabaseSourceControl.ServerComboBox.RSAKLFSVRGENDEV;
             #endregion
 
             // Type 'rsaklfsvrgen' in 'Text' text box
             textbox.Text = this.Type_rsaklfsvrgen_into_DB_Source_Wizard_Server_TextboxParams.TextboxText;
-
-            // Verify that the 'Exists' property of 'RSAKLFSVRGENDEV' list item equals 'True'
-            Assert.AreEqual(this.Type_rsaklfsvrgen_into_DB_Source_Wizard_Server_TextboxParams.RSAKLFSVRGENDEVExists, rSAKLFSVRGENDEV.Exists, "RSAKLFSVRGENDEV does not exist as an option in DB source wizard server combobox.");
         }
         
         /// <summary>
@@ -5916,18 +5912,6 @@ namespace Warewolf.UITests
                     this.mAssert_variable_filter_textbox_existExpectedValues = new Assert_variable_filter_textbox_existExpectedValues();
                 }
                 return this.mAssert_variable_filter_textbox_existExpectedValues;
-            }
-        }
-        
-        public virtual Click_NewVersion_buttonExpectedValues Click_NewVersion_buttonExpectedValues
-        {
-            get
-            {
-                if ((this.mClick_NewVersion_buttonExpectedValues == null))
-                {
-                    this.mClick_NewVersion_buttonExpectedValues = new Click_NewVersion_buttonExpectedValues();
-                }
-                return this.mClick_NewVersion_buttonExpectedValues;
             }
         }
         
@@ -6324,6 +6308,18 @@ namespace Warewolf.UITests
                     this.mClick_NewPluginSource_Ribbon_ButtonParams = new Click_NewPluginSource_Ribbon_ButtonParams();
                 }
                 return this.mClick_NewPluginSource_Ribbon_ButtonParams;
+            }
+        }
+        
+        public virtual Click_NewVersion_buttonExpectedValues Click_NewVersion_buttonExpectedValues
+        {
+            get
+            {
+                if ((this.mClick_NewVersion_buttonExpectedValues == null))
+                {
+                    this.mClick_NewVersion_buttonExpectedValues = new Click_NewVersion_buttonExpectedValues();
+                }
+                return this.mClick_NewVersion_buttonExpectedValues;
             }
         }
         
@@ -8162,18 +8158,6 @@ namespace Warewolf.UITests
                 return this.mUIWarewolfDEV2ASHLEYLEWindow;
             }
         }
-        
-        public UIWarewolfDEV2SANELEMTWindow UIWarewolfDEV2SANELEMTWindow
-        {
-            get
-            {
-                if ((this.mUIWarewolfDEV2SANELEMTWindow == null))
-                {
-                    this.mUIWarewolfDEV2SANELEMTWindow = new UIWarewolfDEV2SANELEMTWindow();
-                }
-                return this.mUIWarewolfDEV2SANELEMTWindow;
-            }
-        }
         #endregion
         
         #region Fields
@@ -8184,8 +8168,6 @@ namespace Warewolf.UITests
         private Assert_RunDebug_Button_Exist_And_EnabledExpectedValues mAssert_RunDebug_Button_Exist_And_EnabledExpectedValues;
         
         private Assert_variable_filter_textbox_existExpectedValues mAssert_variable_filter_textbox_existExpectedValues;
-        
-        private Click_NewVersion_buttonExpectedValues mClick_NewVersion_buttonExpectedValues;
         
         private Assign_Value_To_VariableParams mAssign_Value_To_VariableParams;
         
@@ -8252,6 +8234,8 @@ namespace Warewolf.UITests
         private Click_New_Web_Source_Test_Connection_ButtonParams mClick_New_Web_Source_Test_Connection_ButtonParams;
         
         private Click_NewPluginSource_Ribbon_ButtonParams mClick_NewPluginSource_Ribbon_ButtonParams;
+        
+        private Click_NewVersion_buttonExpectedValues mClick_NewVersion_buttonExpectedValues;
         
         private Click_Output_OnRecordset_InVariableListParams mClick_Output_OnRecordset_InVariableListParams;
         
@@ -8558,8 +8542,6 @@ namespace Warewolf.UITests
         private SwitchCaseDialog mSwitchCaseDialog;
         
         private UIWarewolfDEV2ASHLEYLEWindow mUIWarewolfDEV2ASHLEYLEWindow;
-        
-        private UIWarewolfDEV2SANELEMTWindow mUIWarewolfDEV2SANELEMTWindow;
         #endregion
     }
     
@@ -8625,26 +8607,6 @@ namespace Warewolf.UITests
         /// Verify that the 'Exists' property of 'Filter' label equals 'True'
         /// </summary>
         public bool FilterTextExists = true;
-        #endregion
-    }
-    
-    /// <summary>
-    /// Parameters to be passed into 'Click_NewVersion_button'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Click_NewVersion_buttonExpectedValues
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Verify that the 'Exists' property of 'VersionButton' button equals 'True'
-        /// </summary>
-        public bool NewVersionButtonExists = true;
-        
-        /// <summary>
-        /// Verify that the 'Enabled' property of 'VersionButton' button equals 'True'
-        /// </summary>
-        public bool NewVersionButtonEnabled = true;
         #endregion
     }
     
@@ -9288,6 +9250,26 @@ namespace Warewolf.UITests
         /// Verify that the 'Exists' property of 'AssemblyNameTextBox' text box equals 'True'
         /// </summary>
         public bool AssemblyNameTextboxExists = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Click_NewVersion_button'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Click_NewVersion_buttonExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'VersionButton' button equals 'True'
+        /// </summary>
+        public bool NewVersionButtonExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Enabled' property of 'VersionButton' button equals 'True'
+        /// </summary>
+        public bool NewVersionButtonEnabled = true;
         #endregion
     }
     
@@ -12290,11 +12272,6 @@ namespace Warewolf.UITests
         /// Type 'rsaklfsvrgen' in 'Text' text box
         /// </summary>
         public string TextboxText = "rsaklfsvrgen";
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'RSAKLFSVRGENDEV' list item equals 'True'
-        /// </summary>
-        public bool RSAKLFSVRGENDEVExists = true;
         #endregion
     }
     
@@ -19375,12 +19352,30 @@ namespace Warewolf.UITests
                 return this.mRemoteConnectionIntegrationText;
             }
         }
+        
+        public WpfText NewRemoteServer
+        {
+            get
+            {
+                if ((this.mNewRemoteServer == null))
+                {
+                    this.mNewRemoteServer = new WpfText(this);
+                    #region Search Criteria
+                    this.mNewRemoteServer.SearchProperties[WpfText.PropertyNames.Name] = "New Remote Server...";
+                    this.mNewRemoteServer.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mNewRemoteServer;
+            }
+        }
         #endregion
         
         #region Fields
         private WpfButton mToggleButton;
         
         private WpfText mRemoteConnectionIntegrationText;
+        
+        private WpfText mNewRemoteServer;
         #endregion
     }
     
@@ -36585,106 +36580,6 @@ namespace Warewolf.UITests
         
         #region Fields
         private WpfCustom mUIDev2StudioViewModelsCustom;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class UIWarewolfDEV2SANELEMTWindow : WpfWindow
-    {
-        
-        public UIWarewolfDEV2SANELEMTWindow()
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfWindow.PropertyNames.Name] = "Warewolf (DEV2\\SANELE.MTHEMBU)";
-            this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
-            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
-            #endregion
-        }
-        
-        #region Properties
-        public UIItemCustom UIItemCustom
-        {
-            get
-            {
-                if ((this.mUIItemCustom == null))
-                {
-                    this.mUIItemCustom = new UIItemCustom(this);
-                }
-                return this.mUIItemCustom;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private UIItemCustom mUIItemCustom;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class UIItemCustom : WpfCustom
-    {
-        
-        public UIItemCustom(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.MenuView";
-            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
-            #endregion
-        }
-        
-        #region Properties
-        public UIItemText UIItemText
-        {
-            get
-            {
-                if ((this.mUIItemText == null))
-                {
-                    this.mUIItemText = new UIItemText(this);
-                }
-                return this.mUIItemText;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private UIItemText mUIItemText;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class UIItemText : WpfText
-    {
-        
-        public UIItemText(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfText.PropertyNames.Name] = " ";
-            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
-            #endregion
-        }
-        
-        #region Properties
-        public WpfText UIItemText1
-        {
-            get
-            {
-                if ((this.mUIItemText1 == null))
-                {
-                    this.mUIItemText1 = new WpfText(this);
-                    #region Search Criteria
-                    this.mUIItemText1.SearchProperties[WpfText.PropertyNames.AutomationId] = "VersionImage";
-                    this.mUIItemText1.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
-                    #endregion
-                }
-                return this.mUIItemText1;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfText mUIItemText1;
         #endregion
     }
 }

@@ -53,6 +53,7 @@
     </CodeAnalysisDependentAssemblyPaths>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Deploy\DeployTests.cs" />
     <Compile Include="Explorer\ShowServerVersion.cs" />
     <Compile Include="RunDebug\RunDebugTests.cs" />
     <Compile Include="HelpWindow\HelpWindowTests.cs" />

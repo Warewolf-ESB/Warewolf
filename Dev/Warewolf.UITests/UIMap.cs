@@ -1,4 +1,12 @@
-﻿using System.Linq;
+﻿using System.CodeDom.Compiler;
+using System.Collections.Generic;
+using System.Text.RegularExpressions;
+using System.Windows.Input;
+using Microsoft.VisualStudio.TestTools.UITesting.HtmlControls;
+using Microsoft.VisualStudio.TestTools.UITesting.WinControls;
+using Keyboard = Microsoft.VisualStudio.TestTools.UITesting.Keyboard;
+using MouseButtons = System.Windows.Forms.MouseButtons;
+using System.Linq;
 using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
 using System;
 using Microsoft.VisualStudio.TestTools.UITest.Extension;
@@ -1027,6 +1035,19 @@ namespace Warewolf.UITests
             #endregion
             // Verify that the 'Enabled' property of 'Run and debug your workflow service' button equals 'False'
             Assert.IsFalse(runAndDebugButton.Enabled, "RunDebug button is enabled");
+        }
+
+        /// <summary>
+        /// Select_New_Remote_Server_From_Destination_Server_DropDown
+        /// </summary>
+        public void Select_New_Remote_Server_From_Destination_Server_DropDown()
+        {
+            #region Variable Declarations
+            WpfText newRemoteServer = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DeployTab.WorkSurfaceContext.DestinationServerConectControl.Combobox.NewRemoteServer;
+            #endregion
+
+            // Click 'New Remote Server...' label
+            Mouse.Click(newRemoteServer);
         }
     }
 }
