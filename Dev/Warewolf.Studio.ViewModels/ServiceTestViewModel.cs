@@ -103,7 +103,7 @@ namespace Warewolf.Studio.ViewModels
         public bool CanStopTest { get; set; }
         private bool CanRunSelectedTestInBrowser => SelectedServiceTest != null && !SelectedServiceTest.IsDirty;
         private bool CanRunSelectedTest => GetPermissions();
-        public bool CanDuplicateTest => GetPermissions() && !IsDirty && SelectedServiceTest != null;
+        public bool CanDuplicateTest => GetPermissions() && SelectedServiceTest != null;
 
         public bool CanSave
         {
@@ -228,6 +228,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 ViewModelUtils.RaiseCanExecuteChanged(RunSelectedTestInBrowserCommand);
             }
+            ViewModelUtils.RaiseCanExecuteChanged(DuplicateTestCommand);
         }
 
         public IServiceTestCommandHandler ServiceTestCommandHandler { get; set; }
