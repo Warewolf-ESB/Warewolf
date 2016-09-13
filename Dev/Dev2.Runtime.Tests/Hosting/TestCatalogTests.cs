@@ -143,7 +143,8 @@ namespace Dev2.Tests.Runtime.Hosting
             Assert.AreEqual(test1FilePath, testFiles[0]);
             var test2FilePath = path + "\\" + "Test 2.test";
             Assert.AreEqual(test2FilePath, testFiles[1]);
-
+            var modelTO = testCatalog.Tests.Select(pair => pair.Value.Single(to => to.TestName == "Test 2")).Single();
+            Assert.IsNotNull(modelTO);
             var test1String = File.ReadAllText(test1FilePath);
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
             var test1 = serializer.Deserialize<IServiceTestModelTO>(test1String);
@@ -159,7 +160,60 @@ namespace Dev2.Tests.Runtime.Hosting
             //------------Assert Results-------------------------
             Assert.IsTrue(File.Exists(test1FilePath));
             Assert.IsFalse(File.Exists(test2FilePath));
+             modelTO = testCatalog.Tests.Select(pair => pair.Value.SingleOrDefault(to => to.TestName == "Test 2")).SingleOrDefault();
+            Assert.IsNull(modelTO);
+        }
 
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("TestCatalog_DeleteTest")]
+        public void TestCatalog_DeleteAllTests_WhenResourceIdTestName_ShouldDeleteTestFolder()
+        {
+            //------------Setup for test--------------------------
+            var testCatalog = new TestCatalog();
+            var resourceID = Guid.NewGuid();
+            var serviceTestModelTos = new List<IServiceTestModelTO>
+            {
+                new ServiceTestModelTO
+                {
+                    Enabled = true,
+                    TestName = "Test 1"
+                },
+                new ServiceTestModelTO
+                {
+                    Enabled = false,
+                    TestName = "Test 2"
+                }
+            };
+            testCatalog.SaveTests(resourceID, serviceTestModelTos);
+            //------------Assert Preconditions-------------------
+            var path = EnvironmentVariables.TestPath + "\\" + resourceID;
+            Assert.IsTrue(Directory.Exists(path));
+            var testFiles = Directory.EnumerateFiles(path).ToList();
+            var test1FilePath = path + "\\" + "Test 1.test";
+            Assert.AreEqual(test1FilePath, testFiles[0]);
+            var test2FilePath = path + "\\" + "Test 2.test";
+            Assert.AreEqual(test2FilePath, testFiles[1]);
+            var modelTO = testCatalog.Tests.Select(pair => pair.Value.Single(to => to.TestName == "Test 2")).Single();
+            Assert.IsNotNull(modelTO);
+            var test1String = File.ReadAllText(test1FilePath);
+            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+            var test1 = serializer.Deserialize<IServiceTestModelTO>(test1String);
+            Assert.AreEqual("Test 1", test1.TestName);
+            Assert.IsTrue(test1.Enabled);
+
+            var test2String = File.ReadAllText(test2FilePath);
+            var test2 = serializer.Deserialize<IServiceTestModelTO>(test2String);
+            Assert.AreEqual("Test 2", test2.TestName);
+            Assert.IsFalse(test2.Enabled);
+            //------------Execute Test---------------------------
+            testCatalog.DeleteAllTests(resourceID);
+            //------------Assert Results-------------------------
+            Assert.IsFalse(File.Exists(test1FilePath));
+            Assert.IsFalse(File.Exists(test2FilePath));
+             modelTO = testCatalog.Tests.Select(pair => pair.Value.SingleOrDefault(to => to.TestName == "Test 2")).SingleOrDefault();
+            Assert.IsNull(modelTO);
+            Assert.IsFalse(Directory.Exists(path));
         }
 
         [TestMethod]

@@ -1,0 +1,15 @@
+﻿<Service ID="89098b76-ac11-40b2-b3e8-b175314cb3bb" Version="1.0" Name="PluginTesterService" ResourceType="PluginService" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55">
+    <Actions>
+        <Action Name="PluginTesterService" Type="Plugin" SourceID="00746beb-46c1-48a8-9492-e2d20817fcd5" SourceName="PluginTesterSource" SourceMethod="Echo" Namespace="Dev2.Terrain.Mountain">
+            <Inputs>
+                <Input Name="text" Source="[[text]]" EmptyToNull="false" DefaultValue="&lt;root&gt;hello&lt;/root&gt;" NativeType="System.String">
+                    <Validator Type="Required" />
+                </Input>
+            </Inputs>
+            <Outputs>
+                <Output OriginalName="echo" Name="reverb" MapsTo="reverb" Value="[[reverb]]" RecordsetName="" RecordsetAlias="" Recordset="" />
+                <Output OriginalName="hack" Name="hacked" MapsTo="hacked" Value="[[hacked]]" RecordsetName="" RecordsetAlias="" Recordset="" />
+            </Outputs>
+        </Action>
+    </Actions>
+</Service>

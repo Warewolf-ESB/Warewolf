@@ -1,12 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Text;
 using System.Windows;
+using Dev2.Common;
 using Dev2.Common.Interfaces;
+using Dev2.Common.Interfaces.Data;
+using Dev2.Communication;
+using Dev2.Controller;
+using Dev2.Data;
 using Dev2.Data.Binary_Objects;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Data.Util;
+using Dev2.Runtime.Hosting;
 using Dev2.Studio.Core;
+using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Models;
 using Dev2.Studio.Core.Models.DataList;
 using Dev2.Studio.ViewModels.DataList;
@@ -63,6 +72,118 @@ namespace Dev2.Activities.Specs.TestFramework
             ScenarioContext["popupController"] = popupController;
 
         }
+
+        readonly object _syncRoot = new object();
+        string ResourceName { get; set; }
+        const string json = "{\"$type\":\"Dev2.Data.ServiceTestModelTO,Dev2.Data\",\"OldTestName\":null,\"TestName\":\"Test 1\",\"UserName\":null,\"Password\":null,\"LastRunDate\":\"0001-01-01T00:00:00\",\"Inputs\":null,\"Outputs\":null,\"NoErrorExpected\":false,\"ErrorExpected\":false,\"TestPassed\":false,\"TestFailing\":false,\"TestInvalid\":false,\"TestPending\":false,\"Enabled\":true,\"IsDirty\":false,\"AuthenticationType\":0,\"ResourceId\":\"00000000-0000-0000-0000-000000000000\"}";
+
+        [Given(@"I have a resouce ""(.*)""")]
+        public void GivenIHaveAResouce(string resourceName)
+        {
+            var sourcesPath = EnvironmentVariables.ResourcePath;
+            Directory.CreateDirectory(sourcesPath);
+            var resourceId = Guid.NewGuid();
+            ScenarioContext.Add("resourceId", resourceId);
+            ResourceName = resourceName + resourceId;
+            var pluginResource = GetPluginResource(resourceId, ResourceName);
+            // ReSharper disable once UnusedVariable
+            var environmentModel = EnvironmentRepository.Instance.Source;
+            SaveResource(environmentModel, pluginResource.ToStringBuilder(), GlobalConstants.ServerWorkspaceID, sourcesPath);
+
+            ScenarioContext.Current.Add("savedResources", pluginResource);
+        }
+        [Given(@"I add ""(.*)"" as tests")]
+        public void GivenIAddAsTests(string p0)
+        {
+            var resourceID = ScenarioContext.Get<Guid>("resourceId");
+            var environmentModel = EnvironmentRepository.Instance.Source;
+            var serviceTestModelTos = new List<IServiceTestModelTO>() { };
+
+            lock (_syncRoot)
+            {
+                var testNamesNames = p0.Split(',');
+                foreach (var resourceName in testNamesNames)
+                {
+                    Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+                    var serviceTestModelTO = serializer.Deserialize<ServiceTestModelTO>(json);
+                    serviceTestModelTO.TestName = resourceName;
+                    serviceTestModelTO.ResourceId = resourceID;
+                    serviceTestModelTO.Inputs = new List<IServiceTestInput>();
+                    serviceTestModelTO.Outputs = new List<IServiceTestOutput>();
+                    serviceTestModelTO.AuthenticationType = AuthenticationType.Windows;
+
+                    serviceTestModelTos.Add(serviceTestModelTO);
+                }
+            }
+            // ReSharper disable once UnusedVariable
+            var executeMessage = environmentModel.ResourceRepository.SaveTests(resourceID, serviceTestModelTos);
+        }
+
+        [Then(@"""(.*)"" has (.*) tests")]
+        public void ThenHasTests(string resourceName, int numberOdTests)
+        {
+            var environmentModel = EnvironmentRepository.Instance.Source;
+            var resourceID = ScenarioContext.Get<Guid>("resourceId");
+            var serviceTestModelTos = environmentModel.ResourceRepository.LoadResourceTests(resourceID);
+            Assert.AreEqual(numberOdTests, serviceTestModelTos.Count);
+        }
+
+        [When(@"I delete resource ""(.*)""")]
+        public void WhenIDeleteResource(string resourceName)
+        {
+
+            var resourceID = ScenarioContext.Get<Guid>("resourceId");
+            // ReSharper disable once UnusedVariable
+            var resource1 = ResourceCatalog.Instance.GetResource(GlobalConstants.ServerWorkspaceID, resourceID);
+            DeleteResource(resource1);
+        }
+
+
+
+        private void DeleteResource(IResource resource)
+        {
+            var environmentModel = EnvironmentRepository.Instance.Source;
+
+            var comsController = new CommunicationController { ServiceName = "DeleteResourceService" };
+
+            comsController.AddPayloadArgument("ResourceID", resource.ResourceID.ToString());
+            comsController.AddPayloadArgument("ResourceType", resource.ResourceType);
+            var result = comsController.ExecuteCommand<ExecuteMessage>(environmentModel.Connection, GlobalConstants.ServerWorkspaceID);
+
+            if (result.HasError)
+            {
+                throw new Exception(result.Message.ToString());
+            }
+
+        }
+
+
+
+        private void SaveResource(IEnvironmentModel targetEnvironment, StringBuilder resourceDefinition, Guid workspaceId, string savePath)
+        {
+            var comsController = new CommunicationController { ServiceName = "SaveResourceService" };
+            CompressedExecuteMessage message = new CompressedExecuteMessage();
+            message.SetMessage(resourceDefinition.ToString());
+            Dev2JsonSerializer ser = new Dev2JsonSerializer();
+            comsController.AddPayloadArgument("savePath", savePath);
+            comsController.AddPayloadArgument("ResourceXml", ser.SerializeToBuilder(message));
+            comsController.AddPayloadArgument("WorkspaceID", workspaceId.ToString());
+
+            var con = targetEnvironment.Connection;
+            var result = comsController.ExecuteCommand<StringBuilder>(con, GlobalConstants.ServerWorkspaceID);
+
+        }
+
+        private IResource GetPluginResource(Guid resId, string name)
+        {
+            var res = new PluginSource()
+            {
+                ResourceID = resId,
+                ResourceName = name
+            };
+            return res;
+        }
+
 
         private static void AddVariables(string variableName, DataListViewModel datalistViewModel, enDev2ColumnArgumentDirection ioDirection)
         {
