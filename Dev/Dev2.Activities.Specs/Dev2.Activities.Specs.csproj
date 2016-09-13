@@ -58,7 +58,6 @@
       <DependentUpon>StudioTestFramework.feature</DependentUpon>
     </Compile>
     <Compile Include="TestFramework\TestFrameworkSteps.cs" />
-    <Compile Include="TestFramework\XmlResource.cs" />
     <Reference Include="AeroWizard, Version=2.1.7.0, Culture=neutral, PublicKeyToken=915e74f5d64b8f37, processorArchitecture=MSIL">
       <HintPath>..\packages\AeroWizard.2.1.7\lib\net40\AeroWizard.dll</HintPath>
       <Private>True</Private>
@@ -397,11 +396,6 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Composition\DBSource\testingDBSrc.xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="XML\PluginService.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </EmbeddedResource>
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
