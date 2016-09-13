@@ -164,7 +164,7 @@ namespace Dev2.Activities.Designers.Tests.SqlServer
             sqlServer.ManageServiceInputViewModel = new InputViewForTest(sqlServer, mod);
             sqlServer.SourceRegion.SelectedSource = sqlServer.SourceRegion.Sources.First();
 #pragma warning disable 4014
-            sqlServer.TestInputCommand.Execute();
+            sqlServer.TestInputCommand.Execute(null);
             sqlServer.ManageServiceInputViewModel.TestCommand.Execute(null);
             sqlServer.ManageServiceInputViewModel.IsEnabled = true;
             sqlServer.ManageServiceInputViewModel.OutputArea.Outputs = new List<IServiceOutputMapping> { new ServiceOutputMapping("a", "b", "c"), new ServiceOutputMapping("a", "b", "c"), new ServiceOutputMapping("a", "b", "c") };
@@ -200,7 +200,7 @@ namespace Dev2.Activities.Designers.Tests.SqlServer
             sqlServer.ManageServiceInputViewModel = new InputViewForTest(sqlServer, mod);
             sqlServer.SourceRegion.SelectedSource = sqlServer.SourceRegion.Sources.First();
 #pragma warning disable 4014
-            sqlServer.TestInputCommand.Execute();
+            sqlServer.TestInputCommand.Execute(null);
             sqlServer.ManageServiceInputViewModel.TestCommand.Execute(null);
             sqlServer.ManageServiceInputViewModel.IsEnabled = true;
             sqlServer.ManageServiceInputViewModel.OutputArea.Outputs = new List<IServiceOutputMapping> { new ServiceOutputMapping("a", "b", "c"), new ServiceOutputMapping("a", "b", "c"), new ServiceOutputMapping("a", "b", "c") };
@@ -251,7 +251,7 @@ namespace Dev2.Activities.Designers.Tests.SqlServer
             sqlServer.ActionRegion.SelectedAction = sqlServer.ActionRegion.Actions.First();
             sqlServer.InputArea.Inputs.Add(new ServiceInput("[[a]]", "asa"));
 #pragma warning disable 4014
-            sqlServer.TestInputCommand.Execute();
+            sqlServer.TestInputCommand.Execute(null);
             sqlServer.ManageServiceInputViewModel.TestCommand.Execute(null);
             sqlServer.ManageServiceInputViewModel.IsEnabled = true;
             sqlServer.ManageServiceInputViewModel.OutputArea.Outputs = new List<IServiceOutputMapping> { new ServiceOutputMapping("a", "b", "c"), new ServiceOutputMapping("a", "b", "c"), new ServiceOutputMapping("a", "b", "c") };
@@ -284,7 +284,7 @@ namespace Dev2.Activities.Designers.Tests.SqlServer
             sqlServer.ActionRegion.SelectedAction = sqlServer.ActionRegion.Actions.First();
             sqlServer.InputArea.Inputs.Add(new ServiceInput("[[a]]", "asa"));
 #pragma warning disable 4014
-            sqlServer.TestInputCommand.Execute();
+            sqlServer.TestInputCommand.Execute(null);
             sqlServer.ManageServiceInputViewModel.TestCommand.Execute(null);
             sqlServer.ManageServiceInputViewModel.IsEnabled = true;
             sqlServer.ManageServiceInputViewModel.OutputArea.Outputs = new List<IServiceOutputMapping> { new ServiceOutputMapping("a", "b", "c"), new ServiceOutputMapping("a", "b", "c"), new ServiceOutputMapping("a", "b", "c") };
@@ -319,7 +319,7 @@ namespace Dev2.Activities.Designers.Tests.SqlServer
             sqlServer.ActionRegion.SelectedAction = sqlServer.ActionRegion.Actions.First();
             sqlServer.InputArea.Inputs.Add(new ServiceInput("[[a]]", "asa"));
 #pragma warning disable 4014
-            sqlServer.TestInputCommand.Execute();
+            sqlServer.TestInputCommand.Execute(null);
             sqlServer.ManageServiceInputViewModel.TestCommand.Execute(null);
             sqlServer.ManageServiceInputViewModel.IsEnabled = true;
             sqlServer.ManageServiceInputViewModel.OutputArea.Outputs = new List<IServiceOutputMapping> { new ServiceOutputMapping("a", "b", "c"), new ServiceOutputMapping("a", "b", "c"), new ServiceOutputMapping("a", "b", "c") };
