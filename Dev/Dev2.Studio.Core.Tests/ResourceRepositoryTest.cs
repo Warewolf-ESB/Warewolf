@@ -626,8 +626,15 @@ namespace BusinessDesignStudio.Unit.Tests
 
             var resourceRepository = new ResourceRepository(mockEnvironmentModel.Object);
             var resourceId = Guid.NewGuid();
-            //------------Execute Test---------------------------            
-            resourceRepository.SaveTests(new Mock<IResourceModel>().Object, new List<IServiceTestModelTO> { serviceTestModel });
+            //------------Execute Test--------------------------- 
+
+            var resourceModel = new Mock<IResourceModel>();
+            resourceModel.SetupGet(p => p.ID).Returns(Guid.NewGuid);
+            resourceModel.SetupGet(p => p.ResourceName).Returns("My WF");
+            resourceModel.SetupGet(p => p.Category).Returns("Root");
+            resourceModel.Setup(model => model.ToServiceDefinition(It.IsAny<bool>())).Returns(new StringBuilder("SomeXaml"));
+
+            resourceRepository.SaveTests(resourceModel.Object, new List<IServiceTestModelTO> { serviceTestModel });
             //------------Assert Results-------------------------
             var ser = new Dev2JsonSerializer();
             var retMsg = ser.Deserialize<EsbExecuteRequest>(retVal.ToString());

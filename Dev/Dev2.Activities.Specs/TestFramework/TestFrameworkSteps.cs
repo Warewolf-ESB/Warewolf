@@ -55,7 +55,7 @@ namespace Dev2.Activities.Specs.TestFramework
                 DisplayName = workflowName,
                 DataList = "",
                 ID = Guid.NewGuid(),
-                Category = ""
+                Category = workflowName
 
             };
             var workflowHelper = new WorkflowHelper();
