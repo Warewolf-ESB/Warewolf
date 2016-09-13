@@ -114,11 +114,6 @@ namespace Warewolf.Studio.ViewModels
 
         private void CreateTests()
         {
-            if (!ValidateIfResourceExists())
-            {
-                _shellViewModel.CloseResourceTestView(ResourceModel.ID,ResourceModel.ServerID,ResourceModel.Environment.ID);
-                return;
-            }
             if (IsDirty)
             {
                 PopupController?.Show(Resources.Languages.Core.ServiceTestSaveEditedTestsMessage, Resources.Languages.Core.ServiceTestSaveEditedTestsHeader, MessageBoxButton.OK, MessageBoxImage.Error, null, false, true, false, false);
