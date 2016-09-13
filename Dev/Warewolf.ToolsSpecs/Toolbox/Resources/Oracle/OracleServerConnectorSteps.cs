@@ -15,7 +15,6 @@ using System.Collections.ObjectModel;
 using System.Data;
 using System.Linq;
 using System.Linq.Expressions;
-using Dev2.Activities.Designers2.Core;
 using TechTalk.SpecFlow;
 using Warewolf.Core;
 
@@ -172,7 +171,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
         public void GivenValidateIsDisabled()
         {
             var viewModel = GetViewModel();
-            Assert.IsFalse(viewModel.TestInputCommand.CanExecute());
+            Assert.IsFalse(viewModel.TestInputCommand.CanExecute(null));
         }
 
         [When(@"Source iz changed from to ""(.*)""")]
@@ -210,7 +209,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
         public void ThenValidateIsEnabled()
         {
             var viewModel = GetViewModel();
-            Assert.IsTrue(viewModel.TestInputCommand.CanExecute());
+            Assert.IsTrue(viewModel.TestInputCommand.CanExecute(null));
         }
 
         [Given(@"Validate is Enable")]
@@ -308,7 +307,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
         [When(@"I click Validat")]
         public void WhenIClickValidate()
         {
-            GetViewModel().TestInputCommand.Execute();
+            GetViewModel().TestInputCommand.Execute(null);
         }
 
         [When(@"Test Inputs appear az")]
