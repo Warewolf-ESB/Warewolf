@@ -53,6 +53,7 @@ namespace Dev2.Security
 
         public static readonly DependencyProperty UnauthorizedVisibilityProperty =
             DependencyProperty.Register("UnauthorizedVisibility", typeof(Visibility), typeof(AuthorizeCommand<T>), new PropertyMetadata(Visibility.Collapsed));
+        private IContextualResourceModel _resourceModel;
 
         public AuthorizationContext AuthorizationContext { get; private set; }
 
@@ -87,6 +88,7 @@ namespace Dev2.Security
             // MUST set ResourceID first as setting AuthorizationService triggers IsAuthorized() query
             if(resourceModel != null)
             {
+                _resourceModel = resourceModel;
                 ResourceId = resourceModel.ID.ToString();
                 IsVersionResource = resourceModel.IsVersionResource;
             }
@@ -117,6 +119,11 @@ namespace Dev2.Security
             if (AuthorizationService == null)
             {
                 return true;
+            }
+            if (_resourceModel != null)
+            {
+                var perms = _resourceModel.UserPermissions;
+                return (perms & AuthorizationContext.ToPermissions()) != 0;
             }
             return !IsVersionResource && AuthorizationService != null && AuthorizationService.IsAuthorized(AuthorizationContext, ResourceId);
         }

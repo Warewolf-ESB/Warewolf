@@ -13,12 +13,12 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 // ReSharper disable CheckNamespace
+// ReSharper disable InconsistentNaming
 namespace Dev2.DataList
 {
     /// <summary>
     /// Class for the "not xml" recordset search option 
     /// </summary>
-    // ReSharper disable once InconsistentNaming
     [SuppressMessage("ReSharper", "UnusedMember.Global")]
     public class RsOpNotXML : AbstractRecsetSearchValidation
     {
