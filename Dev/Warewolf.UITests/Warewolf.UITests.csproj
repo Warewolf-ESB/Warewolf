@@ -128,6 +128,7 @@
     <Folder Include="Tools\Storage Dropbox\" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Properties\DefaultWorkspaceLayout.xml" />
     <Content Include="Tools\ToolUITestTemplate.txt" />
     <Content Include="AssertActionTemplates.txt" />
   </ItemGroup>
