@@ -34,6 +34,7 @@ namespace Warewolf.Studio.ViewModels
         public IPopupController PopupController { get; }
         private bool _canSave;
         private string _errorMessage;
+        private IShellViewModel _shellViewModel;
 
         public ServiceTestViewModel(IContextualResourceModel resourceModel, IAsyncWorker asyncWorker)
         {
@@ -44,19 +45,15 @@ namespace Warewolf.Studio.ViewModels
             DisplayName = resourceModel.DisplayName + " - Tests";
             ServiceTestCommandHandler = new ServiceTestCommandHandlerModel();
             PopupController = CustomContainer.Get<IPopupController>();
-
-            RunAllTestsInBrowserCommand = new DelegateCommand(() => ServiceTestCommandHandler.RunAllTestsInBrowser(IsDirty));
-            RunAllTestsCommand = new DelegateCommand(() => ServiceTestCommandHandler.RunAllTestsCommand(IsDirty));
-            RunSelectedTestInBrowserCommand = new DelegateCommand(ServiceTestCommandHandler.RunSelectedTestInBrowser, () => CanRunSelectedTestInBrowser);
-            RunSelectedTestCommand = new DelegateCommand(ServiceTestCommandHandler.RunSelectedTest, () => CanRunSelectedTest);
-            StopTestCommand = new DelegateCommand(ServiceTestCommandHandler.StopTest, () => CanStopTest);
+            _shellViewModel = CustomContainer.Get<IShellViewModel>();
+            RunAllTestsInBrowserCommand = new DelegateCommand(RunAllTestsInBrowser);
+            RunAllTestsCommand = new DelegateCommand(RunAllTests);
+            RunSelectedTestInBrowserCommand = new DelegateCommand(RunSelectedTestInBrowser, () => CanRunSelectedTestInBrowser);
+            RunSelectedTestCommand = new DelegateCommand(RunSelectedTest, () => CanRunSelectedTest);
+            StopTestCommand = new DelegateCommand(StopTest, () => CanStopTest);
             CreateTestCommand = new DelegateCommand(CreateTests);
             DeleteTestCommand = new DelegateCommand<IServiceTestModel>(DeleteTest, CanDeleteTest);
-            DuplicateTestCommand = new DelegateCommand(() =>
-            {
-                var duplicateTest = ServiceTestCommandHandler.DuplicateTest(SelectedServiceTest);
-                AddAndSelectTest(duplicateTest);
-            }, () => CanDuplicateTest);
+            DuplicateTestCommand = new DelegateCommand(DuplicateTest, () => CanDuplicateTest);
             CanSave = true;
             RunAllTestsUrl = WebServer.GetWorkflowUri(resourceModel, "", UrlType.Tests)?.ToString();
             IsLoading = true;
@@ -70,6 +67,68 @@ namespace Warewolf.Studio.ViewModels
             });
         }
 
+        private void StopTest()
+        {
+            SelectedServiceTest.IsTestRunning = false;
+            ServiceTestCommandHandler.StopTest();
+        }
+
+        #region CommandMethods
+
+        private void RunSelectedTestInBrowser()
+        {
+            if (!ValidateIfResourceExists())
+            {
+                _shellViewModel.CloseResourceTestView(ResourceModel.ID, ResourceModel.ServerID, ResourceModel.Environment.ID);
+                return;
+            }
+            ServiceTestCommandHandler.RunSelectedTestInBrowser();
+        }
+
+        private void RunSelectedTest()
+        {
+            if (!ValidateIfResourceExists())
+            {
+                _shellViewModel.CloseResourceTestView(ResourceModel.ID, ResourceModel.ServerID, ResourceModel.Environment.ID);
+                return;
+            }
+            SelectedServiceTest.IsTestRunning = true;
+            ServiceTestCommandHandler.RunSelectedTest();
+        }
+
+        private void RunAllTestsInBrowser()
+        {
+            if (!ValidateIfResourceExists())
+            {
+                _shellViewModel.CloseResourceTestView(ResourceModel.ID, ResourceModel.ServerID, ResourceModel.Environment.ID);
+                return;
+            }
+            ServiceTestCommandHandler.RunAllTestsInBrowser(IsDirty);
+        }
+
+        private void RunAllTests()
+        {
+            if (!ValidateIfResourceExists())
+            {
+                _shellViewModel.CloseResourceTestView(ResourceModel.ID, ResourceModel.ServerID, ResourceModel.Environment.ID);
+                return;
+            }
+            ServiceTestCommandHandler.RunAllTestsCommand(IsDirty);
+        }
+
+        private void DuplicateTest()
+        {
+            if (!ValidateIfResourceExists())
+            {
+                _shellViewModel.CloseResourceTestView(ResourceModel.ID, ResourceModel.ServerID, ResourceModel.Environment.ID);
+                return;
+            }
+            var duplicateTest = ServiceTestCommandHandler.DuplicateTest(SelectedServiceTest);
+            AddAndSelectTest(duplicateTest);
+        }
+
+        #endregion
+
         private bool CanDeleteTest(IServiceTestModel selectedTestModel)
         {
             return GetPermissions() && selectedTestModel != null && !selectedTestModel.Enabled;
@@ -80,6 +139,11 @@ namespace Warewolf.Studio.ViewModels
 
         private void CreateTests()
         {
+            if (!ValidateIfResourceExists())
+            {
+                _shellViewModel.CloseResourceTestView(ResourceModel.ID,ResourceModel.ServerID,ResourceModel.Environment.ID);
+                return;
+            }
             if (IsDirty)
             {
                 PopupController?.Show(Resources.Languages.Core.ServiceTestSaveEditedTestsMessage, Resources.Languages.Core.ServiceTestSaveEditedTestsHeader, MessageBoxButton.OK, MessageBoxImage.Error, null, false, true, false, false);
@@ -106,16 +170,10 @@ namespace Warewolf.Studio.ViewModels
             SetSelectedTestUrl();
         }
 
-        public bool CanStopTest { get; set; }
+        private bool CanStopTest { get; set; }
         private bool CanRunSelectedTestInBrowser => SelectedServiceTest != null && !SelectedServiceTest.IsDirty;
         private bool CanRunSelectedTest => GetPermissions();
-        public bool CanDuplicateTest => GetPermissions() && SelectedServiceTest != null;
-        private bool HasDuplicateTestNames()
-        {
-            var dupTests = RealTests().ToList().GroupBy(x => x.TestName).Where(group => @group.Count() > 1).Select(group => @group.Key);
-            var hasDups = dupTests.Any();
-            return hasDups;
-        }
+        private bool CanDuplicateTest => GetPermissions() && SelectedServiceTest != null;
 
         public bool CanSave
         {
@@ -205,16 +263,17 @@ namespace Warewolf.Studio.ViewModels
         {
             try
             {
-                var serviceTestModels = RealTests().Where(a => a.IsDirty).ToList();
-                if (HasDuplicateTestNames())
+                if (!ValidateIfResourceExists())
                 {
-                    // ReSharper disable once UseNullPropagation
-                    if (PopupController != null)
-                    {
-                        PopupController.Show(Resources.Languages.Core.ServiceTestDuplicateTestNameMessage, Resources.Languages.Core.ServiceTestDuplicateTestNameHeader, MessageBoxButton.OK, MessageBoxImage.Error, null, false, true, false, false);
-                    }
+                    _shellViewModel.CloseResourceTestView(ResourceModel.ID, ResourceModel.ServerID, ResourceModel.Environment.ID);
                     return;
                 }
+                if (HasDuplicateTestNames())
+                {
+                    return;
+                }
+
+                var serviceTestModels = RealTests().Where(a => a.IsDirty).ToList();
                 var serviceTestModelTos = serviceTestModels.Select(model => new ServiceTestModelTO()
                 {
                     TestName = model.TestName,
@@ -243,6 +302,30 @@ namespace Warewolf.Studio.ViewModels
             {
                 // MarkTestsAsDirty(true);
             }
+        }
+
+        private bool ValidateIfResourceExists()
+        {
+            var contextualResourceModel = ResourceModel.Environment.ResourceRepository.LoadResourceFromWorkspace(ResourceModel.ID,GlobalConstants.ServerWorkspaceID);
+            if (contextualResourceModel == null)
+            {
+                PopupController?.Show(Resources.Languages.Core.ServiceTestResourceDeletedMessage,
+                    Resources.Languages.Core.ServiceTestResourceDeletedHeader, MessageBoxButton.OK, MessageBoxImage.Error, null,
+                    false, true, false, false);
+                return false;
+            }
+            return true;
+        }
+
+        private bool HasDuplicateTestNames()
+        {
+            var dupTests = RealTests().ToList().GroupBy(x => x.TestName).Where(group => @group.Count() > 1).Select(group => @group.Key);
+            if (dupTests.Any())
+            {
+                PopupController?.Show(Resources.Languages.Core.ServiceTestDuplicateTestNameMessage, Resources.Languages.Core.ServiceTestDuplicateTestNameHeader, MessageBoxButton.OK, MessageBoxImage.Error, null, false, true, false, false);
+                return true;
+            }
+            return false;
         }
 
         private void SetSelectedTestUrl()
@@ -347,6 +430,11 @@ namespace Warewolf.Studio.ViewModels
 
         private void DeleteTest(IServiceTestModel test)
         {
+            if (!ValidateIfResourceExists())
+            {
+                _shellViewModel.CloseResourceTestView(ResourceModel.ID, ResourceModel.ServerID, ResourceModel.Environment.ID);
+                return;
+            }
             if (test == null) return;
             var nameOfItemBeingDeleted = test.NameForDisplay.Replace("*", "").TrimEnd(' ');
             if (PopupController.ShowDeleteConfirmation(nameOfItemBeingDeleted) == MessageBoxResult.Yes)

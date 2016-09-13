@@ -60,7 +60,7 @@ namespace Dev2.Studio.Core.Interfaces
         ExecuteMessage Save(IResourceModel instanceObj);
         void Load();
         ExecuteMessage DeleteResourceFromWorkspace(IResourceModel resource);
-        void LoadResourceFromWorkspace(Guid resourceId, Guid? workspaceId);
+        IResourceModel LoadResourceFromWorkspace(Guid resourceId, Guid? workspaceId);
         IContextualResourceModel LoadContextualResourceModel(Guid resourceId);
         Task<ExecuteMessage> GetDependenciesXmlAsync(IContextualResourceModel resourceModel, bool getDependsOnMe);
         Task<IContextualResourceModel> LoadContextualResourceModelAsync(Guid resourceId);
