@@ -224,6 +224,24 @@ Scenario: Loading exisiting Tests has correct Name for display
 	And I select "Test1"
 	And Name for display is "Test1" and test is not edited
 
+Scenario: Loading existing Tests has correct Test Status
+	Given the test builder is open with "Workflow 3"
+	And Tab Header is "Workflow 3 - Tests"
+	And there are no tests
+	And I click New Test
+	And I set Test Values as
+	| TestName | AuthenticationType | Error |
+	| Test1    | Windows            | true  |
+	Then NoErrorExpected is "false"	
+	Then Test Status saved is "TestPending"	
+	And save is enabled
+	When I save
+	Then Tab Header is "Workflow 3 - Tests"
+	And I close the test builder
+	When the test builder is open with "Workflow 3"
+	Then there are 1 tests
+	And Test Status is "TestPending"
+
 Scenario: Loading exisiting Tests  	
 	Given the test builder is open with "Workflow 3"
 	And Tab Header is "Workflow 3 - Tests"

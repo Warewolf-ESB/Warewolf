@@ -570,6 +570,10 @@ namespace Dev2.Studio.Core.AppResources.Repositories
                     UserName = model.UserName,
                     Password = model.Password,
                     ResourceId = model.ResourceId,
+                    TestPending = model.TestPending,
+                    TestFailing = model.TestFailing,
+                    TestInvalid = model.TestInvalid,
+                    TestPassed = model.TestPassed,
                     Inputs = model.Inputs.Select(input => new ServiceTestInputTO
                     {
                         Variable = input.Variable,
