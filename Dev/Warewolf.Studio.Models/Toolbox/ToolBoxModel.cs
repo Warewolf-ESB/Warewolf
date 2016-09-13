@@ -41,7 +41,9 @@ namespace Warewolf.Studio.Models.Toolbox
             return Server.IsConnected && _localServer.IsConnected; 
         }
 
+#pragma warning disable 0067
         public event ServerDisconnected OnserverDisconnected;
+#pragma warning restore 0067
 
         #endregion
     }

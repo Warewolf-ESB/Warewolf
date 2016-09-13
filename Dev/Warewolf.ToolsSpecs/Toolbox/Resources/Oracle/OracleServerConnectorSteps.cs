@@ -36,7 +36,6 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
         private DbAction _importOrderAction;
         private DbSourceDefinition _testingDbSource;
         private DbAction _getCountriesAction;
-        private OutputsRegion _outPuts;
 
         [Given(@"I drag a Oracle Server database connector")]
         public void GivenIDragAOracleServerDatabaseConnector()
