@@ -37,6 +37,7 @@ namespace Warewolf.AcceptanceTesting.ExchangeSource
             FeatureContext.Current.Add("updateManager", mockStudioUpdateManager);
             FeatureContext.Current.Add("requestServiceNameViewModel", mockRequestServiceNameViewModel);
             FeatureContext.Current.Add("externalProcessExecutor", mockExecutor);
+            task.Wait();
             task.Dispose();
         }
         

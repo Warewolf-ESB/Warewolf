@@ -14,6 +14,7 @@ using Dev2.Interfaces;
 using Newtonsoft.Json;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Storage;
+// ReSharper disable CyclomaticComplexity
 
 namespace Dev2.Activities
 {
@@ -79,18 +80,16 @@ namespace Dev2.Activities
             try
             {
                 InitializeDebug(dataObject);
-                    
 
                 if (dataObject.IsDebugMode())
                 {
                     _debugInputs = CreateDebugInputs(dataObject.Environment);
-                    DispatchDebugState(dataObject, StateType.Before,0,null,null,true);
+                    DispatchDebugState(dataObject, StateType.Before, 0, null, null, true);
                 }
 
                 var errorIfNull = !Conditions.TheStack.Any(decision => decision.EvaluationFn == enDecisionType.IsNull || decision.EvaluationFn == enDecisionType.IsNotNull);
 
-                var stack = Conditions.TheStack.Select(a => ParseDecision(dataObject.Environment, a,errorIfNull));
-
+                var stack = Conditions.TheStack.Select(a => ParseDecision(dataObject.Environment, a, errorIfNull));
 
                 var factory = Dev2DecisionFactory.Instance();
                 var res = stack.SelectMany(a =>
@@ -127,8 +126,8 @@ namespace Dev2.Activities
                     {
                         var activity = TrueArm.FirstOrDefault();
                         return activity;
-                        }
                     }
+                }
                 else
                 {
                     if (FalseArm != null)
@@ -153,17 +152,19 @@ namespace Dev2.Activities
                     dataObject.Environment.AddError(errorString);
 
                 }
-
-
+                if (dataObject.IsDebugMode())
+                {
+                    
+                    DispatchDebugState(dataObject, StateType.After, update);
+                    _debugOutputs = new List<DebugItem>();
+                    _debugOutputs = new List<DebugItem>();
+                    DispatchDebugState(dataObject, StateType.Duration, update);
                 }
-            if (dataObject.IsDebugMode())
-            {
-                _debugOutputs = new List<DebugItem>();
-                _debugOutputs = new List<DebugItem>();
-                DispatchDebugState(dataObject, StateType.Duration, update);
+
             }
+
             return null;
-            }
+        }
 
         #endregion
 
