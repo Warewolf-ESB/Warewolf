@@ -21,7 +21,7 @@ REM ****************************************************************************
 
 set /a LoopCounter=0
 :RetryClean
-IF NOT EXIST "%PROGRAMDATA%\Warewolf\Resources" IF NOT EXIST "%PROGRAMDATA%\Warewolf\Workspaces" IF NOT EXIST "%PROGRAMDATA%\Warewolf\Server Settings" EXIT 0
+IF NOT EXIST "%PROGRAMDATA%\Warewolf\Resources" IF NOT EXIST "%PROGRAMDATA%\Warewolf\Workspaces" IF NOT EXIST "%PROGRAMDATA%\Warewolf\Server Settings" GOTO StopRetrying
 
 REM ** Kill The Warewolf ;) **
 IF EXIST %windir%\nircmd.exe (nircmd elevate taskkill /f /im "Warewolf Studio.exe" /fi "STATUS eq RUNNING") else (taskkill /f /im "Warewolf Studio.exe" /fi "STATUS eq RUNNING")
@@ -34,24 +34,19 @@ REM ** Delete the Warewolf ProgramData folder
 IF EXIST %windir%\nircmd.exe (nircmd elevate cmd /c rd /S /Q "%PROGRAMDATA%\Warewolf\Resources") else (rd /S /Q "%PROGRAMDATA%\Warewolf\Resources")
 IF EXIST %windir%\nircmd.exe (nircmd elevate cmd /c rd /S /Q "%PROGRAMDATA%\Warewolf\Workspaces") else (rd /S /Q "%PROGRAMDATA%\Warewolf\Workspaces")
 IF EXIST %windir%\nircmd.exe (nircmd elevate cmd /c rd /S /Q "%PROGRAMDATA%\Warewolf\Server Settings\") else (rd /S /Q "%PROGRAMDATA%\Warewolf\Server Settings")
-IF EXIST "%PROGRAMDATA%\Warewolf\Resources" powershell.exe -nologo -noprofile -command "& { Remove-Item '%PROGRAMDATA%\Warewolf\Resources' -Recurse -Force }"
-IF EXIST "%PROGRAMDATA%\Warewolf\Workspaces" powershell.exe -nologo -noprofile -command "& { Remove-Item '%PROGRAMDATA%\Warewolf\Workspaces' -Recurse -Force }"
-IF EXIST "%PROGRAMDATA%\Warewolf\Server Settings" powershell.exe -nologo -noprofile -command "& { Remove-Item '%PROGRAMDATA%\Warewolf\Server Settings' -Recurse -Force }"
 @echo off
 IF EXIST "%PROGRAMDATA%\Warewolf\Resources" echo ERROR CANNOT DELETE %PROGRAMDATA%\Warewolf\Server Settings
 IF EXIST "%PROGRAMDATA%\Warewolf\Workspaces" echo ERROR CANNOT DELETE %PROGRAMDATA%\Warewolf\Server Settings
 IF EXIST "%PROGRAMDATA%\Warewolf\Server Settings" echo ERROR CANNOT DELETE %PROGRAMDATA%\Warewolf\Server Settings
 @echo on
 
-REM ** Clean temp directories
-IF EXIST "%windir%\Temp\*.*" del /s /q "%windir%\Temp\*.*"
-IF EXIST "%temp%\*.*" del /s /q "%temp%\*.*"
-
 set /a LoopCounter=LoopCounter+1
 IF %LoopCounter% EQU 30 exit 1
 rem wait for 5 seconds before trying again
 @echo %AgentName% is attempting number %LoopCounter% out of 30: Waiting 5 more seconds for "%PROGRAMDATA%\Warewolf" folder cleanup...
 ping -n 5 -w 1000 192.0.2.2 > nul
+set errorlevel=0
 goto RetryClean
 
-exit 0
+:StopRetrying
+IF NOT "%1"=="" exit 0

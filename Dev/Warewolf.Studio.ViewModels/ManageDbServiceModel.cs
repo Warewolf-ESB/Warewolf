@@ -45,6 +45,12 @@ namespace Warewolf.Studio.ViewModels
             return _queryProxy.FetchDbActions(source);
         }
 
+        public ICollection<IDbAction> RefreshActions(IDbSource source)
+        {
+            source.ReloadActions = true;
+            return _queryProxy.FetchDbActions(source);
+        }
+
         public void CreateNewSource()
         {
             _shell.NewDatabaseSource(string.Empty);

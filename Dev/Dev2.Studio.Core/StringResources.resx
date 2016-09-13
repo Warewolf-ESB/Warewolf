@@ -245,9 +245,6 @@ Version History will also be deleted.</value>
   <data name="Uri_Community_HomePage" xml:space="preserve">
     <value>https://warewolf.io/resources.php</value>
   </data>
-  <data name="Warewolf_Homepage_Start" xml:space="preserve">
-    <value>http://warewolf.io/start.html</value>
-  </data>
   <data name="XmlOriginalLayout" xml:space="preserve">
     <value>&lt;?xml version="1.0" encoding="utf-8"?&gt;
 &lt;xamDockManager version="12.1.20121.2107"&gt;

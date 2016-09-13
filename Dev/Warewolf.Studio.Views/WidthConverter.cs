@@ -22,7 +22,7 @@ namespace Warewolf.Studio.Views
                 }
                 return 22;
             }
-            catch(Exception e)
+            catch(Exception)
             {
                 return 22;
             }
