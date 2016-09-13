@@ -317,7 +317,7 @@ public class SecurityWrapper : ISecurityWrapper
         }
         if (ReturnValue == STATUS_INSUFFICIENT_RESOURCES || ReturnValue == STATUS_NO_MEMORY)
         {
-            throw new OutOfMemoryException();
+            return;
         }
         throw new Win32Exception(Win32Sec.LsaNtStatusToWinError((int)ReturnValue));
     }

@@ -112,6 +112,46 @@ namespace Dev2.Activities.Designers.Tests.SqlServer
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory("SqlServer_MethodName")]
+        public void SqlServer_TestActionSetSource_ShouldLoadActions()
+        {
+            //------------Setup for test--------------------------
+            var id = Guid.NewGuid();
+            var mod = new SqlServerModel();
+            var act = new DsfSqlServerDatabaseActivity();
+
+            //------------Execute Test---------------------------
+            var sqlServer = new SqlServerDatabaseDesignerViewModel(ModelItemUtils.CreateModelItem(act), mod);
+            sqlServer.ManageServiceInputViewModel = new InputViewForTest(sqlServer, mod);
+            sqlServer.SourceRegion.SelectedSource = sqlServer.SourceRegion.Sources.First();
+
+            //------------Assert Results-------------------------
+            Assert.IsTrue(sqlServer.SourceRegion.IsEnabled);
+            Assert.AreEqual(1,sqlServer.ActionRegion.Actions.Count);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("SqlServer_Refresh")]
+        public void SqlServer_Refresh_ShouldLoadRefreshActions()
+        {
+            //------------Setup for test--------------------------
+            var id = Guid.NewGuid();
+            var mod = new SqlServerModel();
+            var act = new DsfSqlServerDatabaseActivity();
+            var sqlServer = new SqlServerDatabaseDesignerViewModel(ModelItemUtils.CreateModelItem(act), mod);
+            sqlServer.ManageServiceInputViewModel = new InputViewForTest(sqlServer, mod);
+            sqlServer.SourceRegion.SelectedSource = sqlServer.SourceRegion.Sources.First();
+            //------------Execute Test---------------------------
+            sqlServer.ActionRegion.RefreshActionsCommand.Execute(null);
+
+            //------------Assert Results-------------------------
+            Assert.IsTrue(sqlServer.SourceRegion.IsEnabled);
+            Assert.AreEqual(2,sqlServer.ActionRegion.Actions.Count);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("SqlServer_MethodName")]
         public void SqlServer_TestActionSetSourceAndTestClickOkHasMappings()
         {
             //------------Setup for test--------------------------
@@ -124,7 +164,7 @@ namespace Dev2.Activities.Designers.Tests.SqlServer
             sqlServer.ManageServiceInputViewModel = new InputViewForTest(sqlServer, mod);
             sqlServer.SourceRegion.SelectedSource = sqlServer.SourceRegion.Sources.First();
 #pragma warning disable 4014
-            sqlServer.TestInputCommand.Execute();
+            sqlServer.TestInputCommand.Execute(null);
             sqlServer.ManageServiceInputViewModel.TestCommand.Execute(null);
             sqlServer.ManageServiceInputViewModel.IsEnabled = true;
             sqlServer.ManageServiceInputViewModel.OutputArea.Outputs = new List<IServiceOutputMapping> { new ServiceOutputMapping("a", "b", "c"), new ServiceOutputMapping("a", "b", "c"), new ServiceOutputMapping("a", "b", "c") };
@@ -160,7 +200,7 @@ namespace Dev2.Activities.Designers.Tests.SqlServer
             sqlServer.ManageServiceInputViewModel = new InputViewForTest(sqlServer, mod);
             sqlServer.SourceRegion.SelectedSource = sqlServer.SourceRegion.Sources.First();
 #pragma warning disable 4014
-            sqlServer.TestInputCommand.Execute();
+            sqlServer.TestInputCommand.Execute(null);
             sqlServer.ManageServiceInputViewModel.TestCommand.Execute(null);
             sqlServer.ManageServiceInputViewModel.IsEnabled = true;
             sqlServer.ManageServiceInputViewModel.OutputArea.Outputs = new List<IServiceOutputMapping> { new ServiceOutputMapping("a", "b", "c"), new ServiceOutputMapping("a", "b", "c"), new ServiceOutputMapping("a", "b", "c") };
@@ -211,7 +251,7 @@ namespace Dev2.Activities.Designers.Tests.SqlServer
             sqlServer.ActionRegion.SelectedAction = sqlServer.ActionRegion.Actions.First();
             sqlServer.InputArea.Inputs.Add(new ServiceInput("[[a]]", "asa"));
 #pragma warning disable 4014
-            sqlServer.TestInputCommand.Execute();
+            sqlServer.TestInputCommand.Execute(null);
             sqlServer.ManageServiceInputViewModel.TestCommand.Execute(null);
             sqlServer.ManageServiceInputViewModel.IsEnabled = true;
             sqlServer.ManageServiceInputViewModel.OutputArea.Outputs = new List<IServiceOutputMapping> { new ServiceOutputMapping("a", "b", "c"), new ServiceOutputMapping("a", "b", "c"), new ServiceOutputMapping("a", "b", "c") };
@@ -244,7 +284,7 @@ namespace Dev2.Activities.Designers.Tests.SqlServer
             sqlServer.ActionRegion.SelectedAction = sqlServer.ActionRegion.Actions.First();
             sqlServer.InputArea.Inputs.Add(new ServiceInput("[[a]]", "asa"));
 #pragma warning disable 4014
-            sqlServer.TestInputCommand.Execute();
+            sqlServer.TestInputCommand.Execute(null);
             sqlServer.ManageServiceInputViewModel.TestCommand.Execute(null);
             sqlServer.ManageServiceInputViewModel.IsEnabled = true;
             sqlServer.ManageServiceInputViewModel.OutputArea.Outputs = new List<IServiceOutputMapping> { new ServiceOutputMapping("a", "b", "c"), new ServiceOutputMapping("a", "b", "c"), new ServiceOutputMapping("a", "b", "c") };
@@ -279,7 +319,7 @@ namespace Dev2.Activities.Designers.Tests.SqlServer
             sqlServer.ActionRegion.SelectedAction = sqlServer.ActionRegion.Actions.First();
             sqlServer.InputArea.Inputs.Add(new ServiceInput("[[a]]", "asa"));
 #pragma warning disable 4014
-            sqlServer.TestInputCommand.Execute();
+            sqlServer.TestInputCommand.Execute(null);
             sqlServer.ManageServiceInputViewModel.TestCommand.Execute(null);
             sqlServer.ManageServiceInputViewModel.IsEnabled = true;
             sqlServer.ManageServiceInputViewModel.OutputArea.Outputs = new List<IServiceOutputMapping> { new ServiceOutputMapping("a", "b", "c"), new ServiceOutputMapping("a", "b", "c"), new ServiceOutputMapping("a", "b", "c") };
@@ -332,6 +372,25 @@ namespace Dev2.Activities.Designers.Tests.SqlServer
             }
         };
 
+        public ObservableCollection<IDbAction> _refreshActions = new ObservableCollection<IDbAction>
+        {
+            new DbAction()
+            {
+                Name = "mob",
+                Inputs = new List<IServiceInput>() { new ServiceInput("[[a]]", "asa") }
+            },
+            new DbAction()
+            {
+                Name = "arefreshOne",
+                Inputs = new List<IServiceInput>() { new ServiceInput("[[b]]", "bsb") }
+            }
+        };
+
+        public ICollection<IDbAction> RefreshActions(IDbSource source)
+        {
+            return RefreshActionsList;
+        }
+        public ICollection<IDbAction> RefreshActionsList => _refreshActions;
         public bool HasRecError { get; set; }
 
         #region Implementation of IDbServiceModel

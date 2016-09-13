@@ -26,7 +26,6 @@ namespace Warewolf.Studio.ViewModels
         readonly Action _closeAction;
 
         public MessageBoxResult Result { get; private set; }
-        private IEmailAttachmentView _view;
 
         public EmailAttachmentVm(IList<string> attachments, IEmailAttachmentModel model, Action closeAction)
             : this(model, closeAction)

@@ -22,7 +22,6 @@ namespace Warewolf.Studio.ViewModels.ToolBox
         IToolDescriptorViewModel _selectedTool;
         private string _searchTerm;
         private ObservableCollection<IToolDescriptorViewModel> _backedUpTools;
-        private bool _isEnabled;
         private bool _isVisible;
 
         public ToolboxViewModel(IToolboxModel localModel, IToolboxModel remoteModel)

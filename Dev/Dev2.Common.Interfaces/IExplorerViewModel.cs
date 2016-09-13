@@ -14,7 +14,6 @@ namespace Dev2.Common.Interfaces
 	{
         ObservableCollection<IEnvironmentViewModel> Environments {get;set;}
         void Filter(string filter);
-	    event SelectedExplorerEnvironmentChanged SelectedEnvironmentChanged;
         event SelectedExplorerItemChanged SelectedItemChanged;
         IEnvironmentViewModel SelectedEnvironment { get; set; }
         IServer SelectedServer { get;  }

@@ -13,8 +13,6 @@ namespace Warewolf.Studio.ViewModels
     {
         string _serverVersion;
         string _studioVersion;
-        string _serverInformationalVersion;
-        string _studioInformationalVersion;
 
         public SplashViewModel(IServer server, IExternalProcessExecutor externalProcessExecutor)
         {
@@ -58,19 +56,6 @@ namespace Warewolf.Studio.ViewModels
             }
         }
         [ExcludeFromCodeCoverage]
-        public string ServerInformationalVersion
-        {
-            get
-            {
-                return _serverInformationalVersion;
-            }
-            set
-            {
-                _serverVersion = value;
-                OnPropertyChanged("ServerInformationalVersion");
-            }
-        }
-        [ExcludeFromCodeCoverage]
         public string StudioVersion
         {
             get
@@ -81,19 +66,6 @@ namespace Warewolf.Studio.ViewModels
             {
                 _studioVersion = value;
                 OnPropertyChanged("StudioVersion");
-            }
-        }
-        [ExcludeFromCodeCoverage]
-        public string StudioInformationalVersion
-        {
-            get
-            {
-                return _studioInformationalVersion;
-            }
-            set
-            {
-                _studioInformationalVersion = value;
-                OnPropertyChanged("StudioInformationalVersion");
             }
         }
 
@@ -109,13 +81,13 @@ namespace Warewolf.Studio.ViewModels
             {
                 var serverVersion = Server.GetServerVersion();
                 var splitServerVersion = serverVersion.Split('.');
-                if (int.Parse(splitServerVersion[2]) > 6000)
+                if (splitServerVersion.Length > 2 && int.Parse(splitServerVersion[2]) > 6000)
                 {
                     var totalDays = Convert.ToDouble(splitServerVersion[2]);
                     var totalSeconds = Convert.ToDouble(splitServerVersion[3])*2;
                     var cSharpEpoc = new DateTime(2000, 1, 1);
-                    var compileTIme = cSharpEpoc.AddDays(totalDays).AddSeconds(totalSeconds);
-                    ServerVersion = "Compiled " + GetInformalDate(compileTIme);
+                    var compileTime = cSharpEpoc.AddDays(totalDays).AddSeconds(totalSeconds);
+                    ServerVersion = "Compiled " + GetInformalDate(compileTime);
                 }
                 else
                 {

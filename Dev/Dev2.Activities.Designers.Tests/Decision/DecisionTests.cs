@@ -333,6 +333,7 @@ namespace Dev2.Activities.Designers.Tests.Decision
             Assert.IsNotNull(viewModel.Collection);
             Assert.AreEqual("ResultsCollection", viewModel.CollectionName);
             Assert.AreEqual(0, viewModel.TitleBarToggles.Count);
+            Assert.AreEqual(38,viewModel.WhereOptions.Count);
         }
 
         [TestMethod]

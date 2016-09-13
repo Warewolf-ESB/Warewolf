@@ -45,7 +45,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 ServiceModel.Services services = new ServiceModel.Services();
 
                 var src = ResourceCatalog.Instance.GetResource<DbSource>(GlobalConstants.ServerWorkspaceID, dbSource.Id);
-
+                src.ReloadActions = dbSource.ReloadActions;
                 if (dbSource.Type == enSourceType.ODBC)
                 {
                     DbSource db = new DbSource();

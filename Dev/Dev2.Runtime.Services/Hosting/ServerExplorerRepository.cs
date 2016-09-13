@@ -139,7 +139,7 @@ namespace Dev2.Runtime.Hosting
             {
                 return new ExplorerRepositoryResult(ExecStatus.Fail, ErrorResource.ItemAlreadyExistInPath);
             }
-            ResourceCatalogResult result = ResourceCatalogue.RenameResource(workSpaceId, itemToRename.ResourceId, itemToRename.DisplayName, itemToRename.ResourcePath);
+            ResourceCatalogResult result = ResourceCatalogue.RenameResource(workSpaceId, itemToRename.ResourceId, itemToRename.DisplayName, itemToRename.ResourcePath);            
             return new ExplorerRepositoryResult(result.Status, result.Message);
         }
 
@@ -244,12 +244,55 @@ namespace Dev2.Runtime.Hosting
             if (itemToDelete.ResourceType == "Folder")
             {
                 var deleteResult = DeleteFolder(itemToDelete.ResourcePath, true, workSpaceId);
+                if (deleteResult.Status == ExecStatus.Success)
+                {
+                    var folderDeleted = Find(_root, item => item.ResourcePath == itemToDelete.ResourcePath);
+                    if (folderDeleted != null)
+                    {
+                        var parent = Find(_root, item => item.ResourcePath == GetSavePath(folderDeleted));
+                        if (parent != null)
+                        {
+                            parent.Children.Remove(folderDeleted);
+                        }
+                        else
+                        {
+                            _root.Children.Remove(folderDeleted);
+                        }
+                    }
+                }
                 return deleteResult;
             }
             ResourceCatalogResult result = ResourceCatalogue.DeleteResource(workSpaceId, itemToDelete.ResourceId, itemToDelete.ResourceType);
+            if (result.Status == ExecStatus.Success)
+            {
+                var itemDeleted = Find(_root, itemToDelete.ResourceId);
+                if (itemDeleted != null)
+                {
+                    var parent = Find(_root, item => item.ResourcePath == GetSavePath(itemDeleted));
+                    if (parent != null)
+                    {
+                        parent.Children.Remove(itemDeleted);
+                    }
+                    else
+                    {
+                        _root.Children.Remove(itemDeleted);
+                    }
+                }
+            }
             return new ExplorerRepositoryResult(result.Status, result.Message);
         }
 
+        private string GetSavePath(IExplorerItem item)
+        {
+            var resourcePath = item.ResourcePath;
+            var savePath = item.ResourcePath;
+            var resourceNameIndex = resourcePath.LastIndexOf(item.DisplayName, StringComparison.InvariantCultureIgnoreCase);
+            if (resourceNameIndex >= 0)
+            {
+                savePath = resourcePath.Substring(0, resourceNameIndex);
+            }
+            return savePath.TrimEnd('\\');
+        }
 
         public IExplorerRepositoryResult DeleteFolder(string path, bool deleteContents, Guid workSpaceId)
         {

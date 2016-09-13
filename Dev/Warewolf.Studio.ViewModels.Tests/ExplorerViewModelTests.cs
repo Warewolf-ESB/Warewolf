@@ -455,7 +455,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
         [TestMethod]
         [ExpectedException(typeof(NullReferenceException))]
-        public async Task TestServerReConnected()
+        public void TestServerReConnected()
         {
             //arrange
             var studioUpdateManagerMock = new Mock<IStudioUpdateManager>();
@@ -507,7 +507,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        public void TestRefreshSelectedEnvironment()
+        public async Task TestRefreshSelectedEnvironment()
         {
             //arrange
             var environmentViewModelMock = new Mock<IEnvironmentViewModel>();
@@ -520,7 +520,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _target.SelectedEnvironment = environmentViewModelMock.Object;
 
             //act
-            _target.RefreshSelectedEnvironment();
+            await _target.RefreshSelectedEnvironment();
 
             //assert
             environmentViewModelMock.VerifyGet(it => it.IsConnected);
@@ -689,7 +689,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void TestFindItems()
         {
             //act
-            var value = _target.FindItems(null);
+            var value = _target.FindItems();
 
             //assert
             Assert.IsNull(value);
