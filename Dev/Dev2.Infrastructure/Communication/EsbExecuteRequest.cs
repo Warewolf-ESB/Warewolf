@@ -19,18 +19,7 @@ namespace Dev2.Communication
     /// </summary>
     public class EsbExecuteRequest
     {
-        private string _serviceName;
-        public string ServiceName
-        {
-            get
-            {
-                return _serviceName;
-            }
-            set
-            {
-                _serviceName = value;
-            }
-        }
+        public string ServiceName { get; set; }
 
         public string TestName { get; set; }
 
