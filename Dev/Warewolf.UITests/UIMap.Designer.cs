@@ -3576,7 +3576,7 @@ namespace Warewolf.UITests
         {
             #region Variable Declarations
             WpfPane row1 = this.MainStudioWindow.DebugInputDialog.TabItemsTabList.InputDataTab.InputsTable.Row1;
-            WpfEdit inputValueText = this.MainStudioWindow.DebugInputDialog.TabItemsTabList.InputDataTab.InputsTable.Row1.Cell.InputValueCombobox.InputValueText;
+            WpfEdit inputValueText = this.MainStudioWindow.DebugInputDialog.TabItemsTabList.InputDataTab.InputsTable.Row1.Cell.InputValueText;
             #endregion
 
             // Verify that the 'Exists' property of 'Row1' pane equals 'True'
@@ -35960,15 +35960,19 @@ namespace Warewolf.UITests
             }
         }
         
-        public InputValueCombobox InputValueCombobox
+        public WpfEdit InputValueText
         {
             get
             {
-                if ((this.mInputValueCombobox == null))
+                if ((this.mInputValueText == null))
                 {
-                    this.mInputValueCombobox = new InputValueCombobox(this);
+                    this.mInputValueText = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mInputValueText.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "Text";
+                    this.mInputValueText.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
                 }
-                return this.mInputValueCombobox;
+                return this.mInputValueText;
             }
         }
         #endregion
@@ -35976,7 +35980,7 @@ namespace Warewolf.UITests
         #region Fields
         private ComboBox2 mComboBox;
         
-        private InputValueCombobox mInputValueCombobox;
+        private WpfEdit mInputValueText;
         #endregion
     }
     
@@ -36013,42 +36017,6 @@ namespace Warewolf.UITests
         
         #region Fields
         private WpfEdit mTextbox;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class InputValueCombobox : WpfComboBox
-    {
-        
-        public InputValueCombobox(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "UI_SomeVariabletxt_AutoID";
-            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
-            #endregion
-        }
-        
-        #region Properties
-        public WpfEdit InputValueText
-        {
-            get
-            {
-                if ((this.mInputValueText == null))
-                {
-                    this.mInputValueText = new WpfEdit(this);
-                    #region Search Criteria
-                    this.mInputValueText.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "Text";
-                    this.mInputValueText.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
-                    #endregion
-                }
-                return this.mInputValueText;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfEdit mInputValueText;
         #endregion
     }
     
