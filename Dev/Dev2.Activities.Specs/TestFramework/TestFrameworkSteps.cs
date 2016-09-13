@@ -7,6 +7,8 @@ using System.Windows;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data;
+using Dev2.Common.Interfaces.Hosting;
+using Dev2.Common.Interfaces.Infrastructure;
 using Dev2.Communication;
 using Dev2.Controller;
 using Dev2.Data;
@@ -23,6 +25,7 @@ using Dev2.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using TechTalk.SpecFlow;
+using Warewolf.Studio.ServerProxyLayer;
 using Warewolf.Studio.ViewModels;
 
 // ReSharper disable UnusedMember.Global
@@ -83,7 +86,7 @@ namespace Dev2.Activities.Specs.TestFramework
             var sourcesPath = EnvironmentVariables.ResourcePath;
             Directory.CreateDirectory(sourcesPath);
             var resourceId = Guid.NewGuid();
-            ScenarioContext.Add("resourceId", resourceId);
+            ScenarioContext.Add(resourceName+"id", resourceId);
             ResourceName = resourceName + resourceId;
             var pluginResource = GetPluginResource(resourceId, ResourceName);
             // ReSharper disable once UnusedVariable
@@ -95,7 +98,7 @@ namespace Dev2.Activities.Specs.TestFramework
         [Given(@"I add ""(.*)"" as tests")]
         public void GivenIAddAsTests(string p0)
         {
-            var resourceID = ScenarioContext.Get<Guid>("resourceId");
+            var resourceID = ScenarioContext.Get<Guid>("PluginSourceid");
             var environmentModel = EnvironmentRepository.Instance.Source;
             var serviceTestModelTos = new List<IServiceTestModelTO>() { };
 
@@ -123,7 +126,7 @@ namespace Dev2.Activities.Specs.TestFramework
         public void ThenHasTests(string resourceName, int numberOdTests)
         {
             var environmentModel = EnvironmentRepository.Instance.Source;
-            var resourceID = ScenarioContext.Get<Guid>("resourceId");
+            var resourceID = ScenarioContext.Get<Guid>(resourceName + "id");
             var serviceTestModelTos = environmentModel.ResourceRepository.LoadResourceTests(resourceID);
             Assert.AreEqual(numberOdTests, serviceTestModelTos.Count);
         }
@@ -132,7 +135,7 @@ namespace Dev2.Activities.Specs.TestFramework
         public void WhenIDeleteResource(string resourceName)
         {
 
-            var resourceID = ScenarioContext.Get<Guid>("resourceId");
+            var resourceID = ScenarioContext.Get<Guid>(resourceName+"id");
             // ReSharper disable once UnusedVariable
             var resource1 = ResourceCatalog.Instance.GetResource(GlobalConstants.ServerWorkspaceID, resourceID);
             DeleteResource(resource1);
@@ -174,12 +177,13 @@ namespace Dev2.Activities.Specs.TestFramework
 
         }
 
-        private IResource GetPluginResource(Guid resId, string name)
+        private IResource GetPluginResource(Guid resId, string name, string filePath = "")
         {
             var res = new PluginSource()
             {
                 ResourceID = resId,
-                ResourceName = name
+                ResourceName = name,
+                FilePath = filePath
             };
             return res;
         }
@@ -737,13 +741,14 @@ namespace Dev2.Activities.Specs.TestFramework
             Assert.IsFalse(enabled);
         }
 
-        [When(@"I right click ""(.*)""")]
-        public void WhenIRightClick(string testName)
+        [When(@"I click ""(.*)""")]
+        public void WhenIClick(string testName)
         {
             ServiceTestViewModel serviceTest = GetTestFrameworkFromContext();
             var serviceTestModel = serviceTest.Tests.Single(model => model.TestName == testName);
             serviceTest.SelectedServiceTest = serviceTestModel;
         }
+
 
         [Then(@"Duplicate Test is visible")]
         public void ThenDuplicateTestIsVisible()
@@ -791,6 +796,76 @@ namespace Dev2.Activities.Specs.TestFramework
             var mock = (Mock<Common.Interfaces.Studio.Controller.IPopupController>)ScenarioContext["popupController"];
             mock.Verify(controller => controller.Show(It.IsAny<string>(), It.IsAny<string>(), MessageBoxButton.OK, MessageBoxImage.Error, null, false, true, false, false));
         }
+
+        [Given(@"I have a folder ""(.*)""")]
+        public void GivenIHaveAFolder(string foldername)
+        {
+            var folderPath = Path.Combine(EnvironmentVariables.ResourcePath, foldername);
+            if (!Directory.Exists(folderPath))
+            {
+                Directory.CreateDirectory(folderPath);
+            }
+            ScenarioContext.Add("folderPath", foldername);
+        }
+
+        [Given(@"I have a resouce workflow ""(.*)"" inside Home")]
+        public void GivenIHaveAResouceWorkflowInsideHome(string resourceName)
+        {
+            var path = ScenarioContext.Get<string>("folderPath");
+
+            var plugInSource1Id = Guid.NewGuid();
+            var pluginResource = GetPluginResource(plugInSource1Id, resourceName);
+            var environmentModel = EnvironmentRepository.Instance.Source;
+            SaveResource(environmentModel, pluginResource.ToStringBuilder(), GlobalConstants.ServerWorkspaceID, path);
+            ScenarioContext.Add(resourceName + "id", plugInSource1Id);
+        }
+
+        [Given(@"I add ""(.*)"" to ""(.*)""")]
+        public void GivenIAddTo(string testNames, string rName)
+        {
+
+            var resourceID = ScenarioContext.Get<Guid>(rName + "id");
+            var environmentModel = EnvironmentRepository.Instance.Source;
+            var serviceTestModelTos = new List<IServiceTestModelTO>() { };
+
+            lock (_syncRoot)
+            {
+                var testNamesNames = testNames.Split(',');
+                foreach (var resourceName in testNamesNames)
+                {
+                    Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+                    var serviceTestModelTO = serializer.Deserialize<ServiceTestModelTO>(json);
+                    serviceTestModelTO.TestName = resourceName;
+                    serviceTestModelTO.ResourceId = resourceID;
+                    serviceTestModelTO.Inputs = new List<IServiceTestInput>();
+                    serviceTestModelTO.Outputs = new List<IServiceTestOutput>();
+                    serviceTestModelTO.AuthenticationType = AuthenticationType.Windows;
+
+                    serviceTestModelTos.Add(serviceTestModelTO);
+                }
+            }
+            // ReSharper disable once UnusedVariable
+            var executeMessage = environmentModel.ResourceRepository.SaveTests(resourceID, serviceTestModelTos);
+        }
+        [When(@"I delete folder ""(.*)""")]
+        public void WhenIDeleteFolder(string folderName)
+        {
+            var path = ScenarioContext.Get<string>("folderPath");
+            var environmentModel = EnvironmentRepository.Instance.Source;
+
+            var controller = new CommunicationController { ServiceName = "DeleteItemService" };
+            controller.AddPayloadArgument("folderToDelete", path);
+            var result = controller.ExecuteCommand<IExplorerRepositoryResult>(environmentModel.Connection, GlobalConstants.ServerWorkspaceID);
+            if (result.Status != ExecStatus.Success)
+            {
+                throw new WarewolfSaveException(result.Message, null);
+            }
+
+        }
+
+
+
+
 
 
 
