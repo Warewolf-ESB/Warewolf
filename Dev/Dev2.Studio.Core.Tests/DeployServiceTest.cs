@@ -72,7 +72,7 @@ namespace Dev2.Core.Tests
             var envMock = new Mock<IEnvironmentModel>();
             envMock.Setup(e => e.Connection).Returns(connection.Object);
             envMock.Setup(e => e.ResourceRepository.DeployResource(It.IsAny<IResourceModel>(), It.IsAny<string>())).Verifiable();
-            envMock.Setup(e => e.ResourceRepository.SaveTests(It.IsAny<Guid>(), It.IsAny<List<IServiceTestModelTO>>())).Verifiable();
+            envMock.Setup(e => e.ResourceRepository.SaveTests(It.IsAny<IResourceModel>(), It.IsAny<List<IServiceTestModelTO>>())).Verifiable();
             envMock.Setup(e => e.IsConnected).Returns(true);
 
             var sourceMock = new Mock<IEnvironmentModel>();
@@ -102,7 +102,7 @@ namespace Dev2.Core.Tests
             var envMock = new Mock<IEnvironmentModel>();
             envMock.Setup(e => e.Connection).Returns(connection.Object);
             envMock.Setup(e => e.ResourceRepository.DeployResource(It.IsAny<IResourceModel>(), It.IsAny<string>())).Verifiable();
-            envMock.Setup(e => e.ResourceRepository.SaveTests(It.IsAny<Guid>(), It.IsAny<List<IServiceTestModelTO>>())).Verifiable();
+            envMock.Setup(e => e.ResourceRepository.SaveTests(It.IsAny<IResourceModel>(), It.IsAny<List<IServiceTestModelTO>>())).Verifiable();
             envMock.Setup(e => e.IsConnected).Returns(true);
 
             var sourceMock = new Mock<IEnvironmentModel>();
@@ -119,7 +119,7 @@ namespace Dev2.Core.Tests
             ds.Deploy(dtoMock.Object, sourceMock.Object, envMock.Object);
             //---------------Test Result -----------------------
             sourceMock.Verify(e => e.ResourceRepository.LoadResourceTestsForDeploy(It.IsAny<Guid>()), Times.Never);
-            envMock.Verify(e => e.ResourceRepository.SaveTests(It.IsAny<Guid>(), It.IsAny<List<IServiceTestModelTO>>()), Times.Never);
+            envMock.Verify(e => e.ResourceRepository.SaveTests(It.IsAny<IResourceModel>(), It.IsAny<List<IServiceTestModelTO>>()), Times.Never);
             envMock.Verify(e => e.ResourceRepository.DeployResource(It.IsAny<IResourceModel>(), It.IsAny<string>()), Times.AtLeastOnce);
 
         }
@@ -137,7 +137,7 @@ namespace Dev2.Core.Tests
             var envMock = new Mock<IEnvironmentModel>();
             envMock.Setup(e => e.Connection).Returns(connection.Object);
             envMock.Setup(e => e.ResourceRepository.DeployResource(It.IsAny<IResourceModel>(), It.IsAny<string>())).Verifiable();
-            envMock.Setup(e => e.ResourceRepository.SaveTests(It.IsAny<Guid>(), It.IsAny<List<IServiceTestModelTO>>())).Verifiable();
+            envMock.Setup(e => e.ResourceRepository.SaveTests(It.IsAny<IResourceModel>(), It.IsAny<List<IServiceTestModelTO>>())).Verifiable();
             envMock.Setup(e => e.IsConnected).Returns(true);
 
             var sourceMock = new Mock<IEnvironmentModel>();
@@ -154,7 +154,7 @@ namespace Dev2.Core.Tests
             ds.Deploy(dtoMock.Object, sourceMock.Object, envMock.Object);
             //---------------Test Result -----------------------
             sourceMock.Verify(e => e.ResourceRepository.LoadResourceTestsForDeploy(It.IsAny<Guid>()), Times.AtLeastOnce );
-            envMock.Verify(e => e.ResourceRepository.SaveTests(It.IsAny<Guid>(), It.IsAny<List<IServiceTestModelTO>>()), Times.AtLeastOnce);
+            envMock.Verify(e => e.ResourceRepository.SaveTests(It.IsAny<IResourceModel>(), It.IsAny<List<IServiceTestModelTO>>()), Times.AtLeastOnce);
             envMock.Verify(e => e.ResourceRepository.DeployResource(It.IsAny<IResourceModel>(), It.IsAny<string>()), Times.AtLeastOnce);
 
         }

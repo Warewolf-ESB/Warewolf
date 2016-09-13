@@ -479,10 +479,17 @@ The more information you can provide us with, the faster we can track the issue 
     <value>New Database Source</value>
   </data>
   <data name="ServiceTestResourceDeletedMessage" xml:space="preserve">
-    <value>The resource for these tests does not exist. </value>
+    <value>The resource for these tests does not exist. The window will be closed when you click OK.</value>
   </data>
   <data name="ServiceTestResourceDeletedHeader" xml:space="preserve">
     <value>Resource not found</value>
+  </data>
+  <data name="ServiceTestResourceCategoryChangedMessage" xml:space="preserve">
+    <value>The resource for these tests has either been moved or renamed. 
+The window will be reloaded when you click OK.</value>
+  </data>
+  <data name="ServiceTestResourceCategoryChangedHeader" xml:space="preserve">
+    <value>Resource moved or renamed</value>
   </data>
   <data name="ServiceTestDuplicateTestNameMessage" xml:space="preserve">
     <value>The name already exists. Please choose a different name.</value>

@@ -7089,6 +7089,25 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Resource moved or renamed.
+        /// </summary>
+        public static string ServiceTestResourceCategoryChangedHeader {
+            get {
+                return ResourceManager.GetString("ServiceTestResourceCategoryChangedHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The resource for these tests has either been moved or renamed. 
+        ///The window will be reloaded when you click OK..
+        /// </summary>
+        public static string ServiceTestResourceCategoryChangedMessage {
+            get {
+                return ResourceManager.GetString("ServiceTestResourceCategoryChangedMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Resource not found.
         /// </summary>
         public static string ServiceTestResourceDeletedHeader {
@@ -7098,7 +7117,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The resource for these tests does not exist. .
+        ///   Looks up a localized string similar to The resource for these tests does not exist. The window will be closed when you click OK..
         /// </summary>
         public static string ServiceTestResourceDeletedMessage {
             get {
