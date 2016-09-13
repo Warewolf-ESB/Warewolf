@@ -268,9 +268,14 @@ Scenario: Delete an Enabled Test
 	When I delete "Test1"
 	When The Confirmation popup is shown I click Ok
 	Then there are no tests
-	#And I close the test
-	#When the test builder is open with "Workflow 3"
-	#Then there are no tests 
+
+Scenario: Delete Resource with tests
+	Given I have a resouce "PluginSource"
+	And I add "test1,test2,test3" as tests
+	Then "PluginSource" has 3 tests
+	When I delete resource "PluginSource"
+	Then "PluginSource" has 0 tests
+
 
 Scenario: Duplicate a test
 	Given the test builder is open with "Workflow 1"
@@ -349,6 +354,9 @@ Scenario: Run a test with single scalar inputs and outputs
 	  | Variable    | Value      |
 	  | [[Message]] | Hello Bob. |
 	And test result is Passed
+
+
+	
 
 
 
