@@ -1,12 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Newtonsoft.Json.Linq;
 using WarewolfParserInterop;
+// ReSharper disable InconsistentNaming
 
 namespace Warewolf.Storage.Tests
 {
@@ -110,6 +112,65 @@ namespace Warewolf.Storage.Tests
             var evalMultiAssign = PublicFunctions.EvalMultiAssign(assigns, 0, envEmpty);
             return evalMultiAssign;
         }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("ExecutionEnvironment_EvalAsList")]
+        public void ExecutionEnvironment_EvalAsList_WhenRecSet_ShouldReturnListOfAllValues()
+        {
+            //------------Setup for test--------------------------
+            _environment.Assign("[[rec(1).a]]", "27", 0);
+            _environment.Assign("[[rec(1).b]]", "bob", 0);
+            _environment.Assign("[[rec(2).a]]", "31", 0);
+            _environment.Assign("[[rec(2).b]]", "mary", 0);
+            //------------Execute Test---------------------------
+            var list = _environment.EvalAsList("[[rec(*)]]", 0).ToList();
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(list);
+            Assert.AreEqual("27",list[0].ToString());
+            Assert.AreEqual("31",list[1].ToString());
+            Assert.AreEqual("bob",list[2].ToString());
+            Assert.AreEqual("mary",list[3].ToString());
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("ExecutionEnvironment_EvalAsList")]
+        public void ExecutionEnvironment_EvalAsListOfString_WhenRecSet_ShouldReturnListOfAllValues()
+        {
+            //------------Setup for test--------------------------
+            _environment.Assign("[[rec(1).a]]", "27", 0);
+            _environment.Assign("[[rec(1).b]]", "bob", 0);
+            _environment.Assign("[[rec(2).a]]", "31", 0);
+            _environment.Assign("[[rec(2).b]]", "mary", 0);
+            //------------Execute Test---------------------------
+            var list = _environment.EvalAsListOfStrings("[[rec(*)]]", 0).ToList();
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(list);
+            Assert.AreEqual("27",list[0]);
+            Assert.AreEqual("31",list[1]);
+            Assert.AreEqual("bob",list[2]);
+            Assert.AreEqual("mary",list[3]);
+        }
+
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("ExecutionEnvironment_EvalAsList")]
+        public void ExecutionEnvironment_EvalAsString_WhenRecSet_ShouldReturnListOfAllValues()
+        {
+            //------------Setup for test--------------------------
+            _environment.Assign("[[rec(1).a]]", "27", 0);
+            _environment.Assign("[[rec(1).b]]", "bob", 0);
+            _environment.Assign("[[rec(2).a]]", "31", 0);
+            _environment.Assign("[[rec(2).b]]", "mary", 0);
+            //------------Execute Test---------------------------
+            var stringVal = ExecutionEnvironment.WarewolfEvalResultToString(_environment.Eval("[[rec(*)]]", 0));
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(stringVal);
+            Assert.AreEqual("27,31,bob,mary", stringVal);
+        }
+
 
         [TestMethod]
         [Owner("Sanele Mthembu")]
@@ -392,7 +453,7 @@ namespace Warewolf.Storage.Tests
         public void GivenRecSet_ExecutionEnvironmentGetIndexes_ShouldReturn1Index()
         {            
             Assert.IsNotNull(_environment);
-            var recA = "[[rec(*).a]]";
+            const string recA = "[[rec(*).a]]";
             _environment.Assign(recA, "Something", 0);
             var indexes = _environment.GetIndexes(recA);
             Assert.AreEqual(1, indexes.Count);
