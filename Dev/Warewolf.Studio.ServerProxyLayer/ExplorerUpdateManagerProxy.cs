@@ -97,7 +97,6 @@ namespace Warewolf.Studio.ServerProxyLayer
         /// </summary>
         /// <param name="path">the folder path</param>
         /// <param name="newName">the new name</param>
-        /// <param name="id"></param>
         public void RenameFolder(string path, string newName)
         {
             var controller = CommunicationControllerFactory.CreateController("RenameItemService");
