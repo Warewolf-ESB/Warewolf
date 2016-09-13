@@ -63,7 +63,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 }
                 else if(pathBeingDeleted != null)
                 {
-                    itemToDelete = new ServerExplorerItem()
+                    itemToDelete = new ServerExplorerItem
                     {
                         ResourceType =  "Folder",
                         ResourcePath = pathBeingDeleted.ToString()

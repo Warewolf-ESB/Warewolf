@@ -478,6 +478,12 @@ The more information you can provide us with, the faster we can track the issue 
   <data name="DatabaseSourceServerNewHeaderLabel" xml:space="preserve">
     <value>New Database Source</value>
   </data>
+  <data name="ServiceTestResourceDeletedMessage" xml:space="preserve">
+    <value>The resource for these tests does not exist. </value>
+  </data>
+  <data name="ServiceTestResourceDeletedHeader" xml:space="preserve">
+    <value>Resource not found</value>
+  </data>
   <data name="ServiceTestDuplicateTestNameMessage" xml:space="preserve">
     <value>The name already exists. Please choose a different name.</value>
   </data>
@@ -2731,6 +2737,12 @@ If this option is not selected, the test will not run part of the Run All list o
   <data name="ServiceTestRunSelectedTestHelpText" xml:space="preserve">
     <value>Run this test</value>
   </data>
+  <data name="ServiceTestStopSelectedTestTooltip" xml:space="preserve">
+    <value>Stop this test</value>
+  </data>
+  <data name="ServiceTestStopSelectedTestHelpText" xml:space="preserve">
+    <value>Stop this test</value>
+  </data>
   <data name="ServiceTestNewTestTooltip" xml:space="preserve">
     <value>Create a new test</value>
   </data>
@@ -3117,7 +3129,7 @@ To find the character index(s) of a string inside another string, put the string
   </data>
   <data name="FindIndexToolTipCharacters" xml:space="preserve">
     <value>Any variable and/or data goes in here.
-Put  the index of the string you are looking for in here.</value>
+Put the string of the index you are looking for in here.</value>
   </data>
   <data name="ExplorerSearchToolTip" xml:space="preserve">
     <value>Filter the connected resources</value>
@@ -3585,5 +3597,8 @@ If you put an = as the first character, it will turn into a calculation e.g. =[[
   </data>
   <data name="SaveButtonTooltip" xml:space="preserve">
     <value>Save the Resource</value>
-  </data>  
+  </data>
+  <data name="ServerVersionUnavailable" xml:space="preserve">
+    <value>Unavailable</value>
+  </data>
 </root>

@@ -1045,7 +1045,6 @@ namespace Warewolf.Studio.ViewModels.Tests
             CustomContainer.Register(popupController.Object);
             var mockResourceModel = CreateMockResourceModel();
             var resourceId = Guid.NewGuid();
-            const string testname = "TestName";
             mockResourceModel.Setup(model => model.Environment.ResourceRepository.DeleteResourceTest(It.IsAny<Guid>(), It.IsAny<string>())).Verifiable();
             mockResourceModel.Setup(model => model.ID).Returns(resourceId);
             var testFrameworkViewModel = new ServiceTestViewModel(mockResourceModel.Object, new SynchronousAsyncWorker());
@@ -1068,7 +1067,6 @@ namespace Warewolf.Studio.ViewModels.Tests
             CustomContainer.Register(popupController.Object);
             var mockResourceModel = CreateMockResourceModel();
             var resourceId = Guid.NewGuid();
-            const string testname = "TestName";
             mockResourceModel.Setup(model => model.Environment.ResourceRepository.DeleteResourceTest(It.IsAny<Guid>(), It.IsAny<string>())).Verifiable();
             mockResourceModel.Setup(model => model.ID).Returns(resourceId);
             var testFrameworkViewModel = new ServiceTestViewModel(mockResourceModel.Object, new SynchronousAsyncWorker());
@@ -1091,7 +1089,6 @@ namespace Warewolf.Studio.ViewModels.Tests
             CustomContainer.Register(popupController.Object);
             var mockResourceModel = CreateMockResourceModel();
             var resourceId = Guid.NewGuid();
-            const string testname = "TestName";
             mockResourceModel.Setup(model => model.Environment.ResourceRepository.DeleteResourceTest(It.IsAny<Guid>(), It.IsAny<string>())).Verifiable();
             mockResourceModel.Setup(model => model.ID).Returns(resourceId);
             var testFrameworkViewModel = new ServiceTestViewModel(mockResourceModel.Object, new SynchronousAsyncWorker());
@@ -1114,7 +1111,6 @@ namespace Warewolf.Studio.ViewModels.Tests
             CustomContainer.Register(popupController.Object);
             var mockResourceModel = CreateMockResourceModel();
             var resourceId = Guid.NewGuid();
-            const string testname = "TestName";
             mockResourceModel.Setup(model => model.Environment.ResourceRepository.DeleteResourceTest(It.IsAny<Guid>(), It.IsAny<string>())).Verifiable();
             mockResourceModel.Setup(model => model.ID).Returns(resourceId);
             var testFrameworkViewModel = new ServiceTestViewModel(mockResourceModel.Object, new SynchronousAsyncWorker());
@@ -1137,7 +1133,6 @@ namespace Warewolf.Studio.ViewModels.Tests
             CustomContainer.Register(popupController.Object);
             var mockResourceModel = CreateMockResourceModel();
             var resourceId = Guid.NewGuid();
-            const string testname = "TestName";
             mockResourceModel.Setup(model => model.Environment.ResourceRepository.DeleteResourceTest(It.IsAny<Guid>(), It.IsAny<string>())).Verifiable();
             mockResourceModel.Setup(model => model.ID).Returns(resourceId);
             var testFrameworkViewModel = new ServiceTestViewModel(mockResourceModel.Object, new SynchronousAsyncWorker());

@@ -5,7 +5,6 @@ using System.IO;
 using System.Linq;
 using System.Management;
 using System.Threading;
-using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Studio.UI.Tests.Utils

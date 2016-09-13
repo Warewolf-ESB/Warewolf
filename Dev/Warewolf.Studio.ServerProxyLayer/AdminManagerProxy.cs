@@ -15,13 +15,13 @@ namespace Warewolf.Studio.ServerProxyLayer
         /// <summary>
         /// Gets the Warewolf Server version
         /// </summary>
-        /// <returns>The version of the Server. Default version text of "less than 0.4.19.1" is returned
+        /// <returns>The version of the Server. Default version text of "Not Available." is returned
         /// if the server is older than that version.</returns>
         public string GetServerVersion()
         {
             var controller = CommunicationControllerFactory.CreateController("GetServerVersion");
             var version = controller.ExecuteCommand<string>(Connection, Guid.Empty);
-            return string.IsNullOrEmpty(version) ? Resources.Languages.Core.LessThanServerVersion : version;
+            return string.IsNullOrEmpty(version) ? Resources.Languages.Core.ServerVersionUnavailable : version;
         }
 
         #endregion

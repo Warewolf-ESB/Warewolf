@@ -3021,7 +3021,7 @@ namespace Warewolf.Studio.Resources.Languages {
         
         /// <summary>
         ///   Looks up a localized string similar to Any variable and/or data goes in here.
-        ///Put  the index of the string you are looking for in here..
+        ///Put the string of the index you are looking for in here..
         /// </summary>
         public static string FindIndexToolTipCharacters {
             get {
@@ -6809,6 +6809,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Unavailable.
+        /// </summary>
+        public static string ServerVersionUnavailable {
+            get {
+                return ResourceManager.GetString("ServerVersionUnavailable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Source was not found. This service will not execute..
         /// </summary>
         public static string ServiceDesignerSourceNotFound {
@@ -7080,6 +7089,24 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Resource not found.
+        /// </summary>
+        public static string ServiceTestResourceDeletedHeader {
+            get {
+                return ResourceManager.GetString("ServiceTestResourceDeletedHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The resource for these tests does not exist. .
+        /// </summary>
+        public static string ServiceTestResourceDeletedMessage {
+            get {
+                return ResourceManager.GetString("ServiceTestResourceDeletedMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Open this URL in your default browser to view the tests for this workflow.
         /// </summary>
         public static string ServiceTestRunAllTestsInBrowserTooltip {
@@ -7148,6 +7175,24 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string ServiceTestSaveEditedTestsMessage {
             get {
                 return ResourceManager.GetString("ServiceTestSaveEditedTestsMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Stop this test.
+        /// </summary>
+        public static string ServiceTestStopSelectedTestHelpText {
+            get {
+                return ResourceManager.GetString("ServiceTestStopSelectedTestHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Stop this test.
+        /// </summary>
+        public static string ServiceTestStopSelectedTestTooltip {
+            get {
+                return ResourceManager.GetString("ServiceTestStopSelectedTestTooltip", resourceCulture);
             }
         }
         

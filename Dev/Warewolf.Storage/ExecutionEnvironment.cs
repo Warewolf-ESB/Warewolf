@@ -165,6 +165,28 @@ namespace Warewolf.Storage
                 var x = (result as CommonFunctions.WarewolfEvalResult.WarewolfAtomResult)?.Item;
                 return new List<string> { WarewolfAtomToString(x) };
             }
+            if (result.IsWarewolfRecordSetResult)
+            {
+                var recSetResult = result as CommonFunctions.WarewolfEvalResult.WarewolfRecordSetResult;
+                if (recSetResult != null)
+                {
+                    var recSetData = recSetResult.Item;
+                    if (recSetData != null)
+                    {
+                        var data = recSetData.Data.ToArray();
+                        var listOfData = new List<string>();
+                        foreach (var keyValuePair in data)
+                        {
+                            if(keyValuePair.Key== "WarewolfPositionColumn")
+                            {
+                                continue;
+                            }
+                            listOfData.AddRange(keyValuePair.Value.Select(WarewolfAtomToString).ToList());
+                        }
+                        return listOfData;
+                    }
+                }
+            }
             var warewolfAtomListresult = result as CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult;
             if (warewolfAtomListresult == null)
                 throw new Exception(string.Format(ErrorResource.CouldNotRetrieveStringsFromExpression, expression));
@@ -237,6 +259,28 @@ namespace Warewolf.Storage
                     return WarewolfAtomToStringErrorIfNull(x);
                 }
                 throw new Exception(@"Null when value should have been returned.");
+            }
+            if (result.IsWarewolfRecordSetResult)
+            {
+                var recSetResult = result as CommonFunctions.WarewolfEvalResult.WarewolfRecordSetResult;
+                if (recSetResult != null)
+                {
+                    var recSetData = recSetResult.Item;
+                    if (recSetData != null)
+                    {
+                        var data = recSetData.Data.ToArray();
+                        var listOfData = new List<string>();
+                        foreach (var keyValuePair in data)
+                        {
+                            if (keyValuePair.Key == "WarewolfPositionColumn")
+                            {
+                                continue;
+                            }
+                            listOfData.AddRange(keyValuePair.Value.Select(WarewolfAtomToString).ToList());
+                        }
+                        return string.Join(",",listOfData);
+                    }
+                }
             }
             var warewolfAtomListresult = result as CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult;
             if (warewolfAtomListresult != null)
@@ -337,6 +381,28 @@ namespace Warewolf.Storage
                 if (warewolfAtomResult == null) throw new Exception(@"Null when value should have been returned.");
                 var item = warewolfAtomResult.Item;
                 return new List<DataStorage.WarewolfAtom> { item };
+            }
+            if (result.IsWarewolfRecordSetResult)
+            {
+                var recSetResult = result as CommonFunctions.WarewolfEvalResult.WarewolfRecordSetResult;
+                if (recSetResult != null)
+                {
+                    var recSetData = recSetResult.Item;
+                    if (recSetData != null)
+                    {
+                        var data = recSetData.Data.ToArray();
+                        var listOfData = new List<DataStorage.WarewolfAtom>();
+                        foreach(var keyValuePair in data)
+                        {
+                            if (keyValuePair.Key == "WarewolfPositionColumn")
+                            {
+                                continue;
+                            }
+                            listOfData.AddRange(keyValuePair.Value.ToList());
+                        }
+                        return listOfData;
+                    }
+                }
             }
             var x = (result as CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult)?.Item;
             return x?.ToList();

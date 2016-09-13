@@ -50,7 +50,9 @@ namespace Warewolf.Testing
         }
 
         private readonly IExplorerRepository _explorerProxy;
+#pragma warning disable 0649
         bool _hasLoaded;
+#pragma warning restore 0649
         private IStudioUpdateManager _updateManager;
         private List<IWindowsGroupPermission> _permissions;
 
@@ -148,8 +150,10 @@ namespace Warewolf.Testing
             return folders;
         }
         int i = 1;
+#pragma warning disable 0649
         private bool _canDeployTo;
         private bool _canDeployFrom;
+#pragma warning restore 0649
         private IQueryManager _queryManager;
 
         private void CreateChildrenForFolder(IExplorerItem explorerItem, IEnumerable<string> childNames)
@@ -250,9 +254,11 @@ namespace Warewolf.Testing
         public Guid EnvironmentID { get; set; }
 
         public Guid? ServerID { get; private set; }
+#pragma warning disable 0067
         public event PermissionsChanged PermissionsChanged;
         public event NetworkStateChanged NetworkStateChanged;
         public event ItemAddedEvent ItemAddedEvent;
+#pragma warning restore 0067
 
         [JsonIgnore]
         public IStudioUpdateManager UpdateRepository => _updateManager;

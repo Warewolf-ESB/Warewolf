@@ -646,6 +646,22 @@ namespace Dev2.Studio.ViewModels
             }
         }
 
+        public void CloseResourceTestView(Guid resourceId,Guid serverId,Guid environmentId)
+        {
+            var key = WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.ServiceTestsViewer,resourceId,serverId,environmentId);
+            var testViewModelForResource = FindWorkSurfaceContextViewModel(key);
+            if (testViewModelForResource != null)
+            {
+                DeactivateItem(testViewModelForResource,true);
+            }
+            
+        }
+
+        private WorkSurfaceContextViewModel FindWorkSurfaceContextViewModel(WorkSurfaceKey key)
+        {
+            return Items.FirstOrDefault(c => WorkSurfaceKeyEqualityComparerWithContextKey.Current.Equals(key, c.WorkSurfaceKey));
+        }
+
         public void CloseResource(Guid resourceId, Guid environmentId)
         {
             var environmentModel = EnvironmentRepository.Get(environmentId);
@@ -663,8 +679,7 @@ namespace Dev2.Studio.ViewModels
             if (environmentModel != null)
             {
                 var contextualResourceModel = await environmentModel.ResourceRepository.LoadContextualResourceModelAsync(resourceId);
-                var wfscvm = _worksurfaceContextManager.FindWorkSurfaceContextViewModel(contextualResourceModel);
-                DeactivateItem(wfscvm, true);
+                _worksurfaceContextManager.DisplayResourceWizard(contextualResourceModel);
             }
         }
 
