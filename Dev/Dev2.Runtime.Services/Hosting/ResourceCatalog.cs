@@ -399,6 +399,7 @@ namespace Dev2.Runtime.Hosting
         public IDev2Activity Parse(Guid workspaceID, Guid resourceID)
         {
             IResourceActivityCache parser = null;
+            Dev2Logger.Debug($"Fetching Execution Plan for {resourceID} for workspace {workspaceID}");
             if (_parsers != null && !_parsers.TryGetValue(workspaceID, out parser))
             {
                 parser = new ResourceActivityCache(CustomContainer.Get<IActivityParser>(), new ConcurrentDictionary<Guid, IDev2Activity>());

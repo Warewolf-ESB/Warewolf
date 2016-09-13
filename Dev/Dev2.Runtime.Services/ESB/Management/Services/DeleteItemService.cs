@@ -63,7 +63,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 }
                 else if(pathBeingDeleted != null)
                 {
-                    itemToDelete = new ServerExplorerItem()
+                    itemToDelete = new ServerExplorerItem
                     {
                         ResourceType =  "Folder",
                         ResourcePath = pathBeingDeleted.ToString()
@@ -71,7 +71,6 @@ namespace Dev2.Runtime.ESB.Management.Services
                     };
                     item = ServerExplorerRepo.DeleteItem(itemToDelete, GlobalConstants.ServerWorkspaceID);
                 }
-                ServerExplorerRepo.Load(GlobalConstants.ServerWorkspaceID, true);
             }
             catch(Exception e)
             {
