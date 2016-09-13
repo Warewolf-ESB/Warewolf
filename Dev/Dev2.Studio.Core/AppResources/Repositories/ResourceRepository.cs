@@ -556,7 +556,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             return result;
         }
 
-        public ExecuteMessage SaveTests(Guid resourceId, List<IServiceTestModelTO> tests)
+        public TestSaveResult SaveTests(IResourceModel resource, List<IServiceTestModelTO> tests)
         {
             var comsController = GetCommunicationController("SaveTests");
             var testDefinitions = new List<ServiceTestModelTO>(tests.Select(model =>
@@ -593,11 +593,13 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
             CompressedExecuteMessage message = new CompressedExecuteMessage();
             message.SetMessage(serializer.Serialize(testDefinitions));
-            comsController.AddPayloadArgument("resourceID", resourceId.ToString());
+            comsController.AddPayloadArgument("resourceID", resource.ID.ToString());
+            comsController.AddPayloadArgument("resourcePath", resource.Category);
             comsController.AddPayloadArgument("testDefinitions", serializer.SerializeToBuilder(message));
 
             var result = comsController.ExecuteCommand<ExecuteMessage>(_environmentModel.Connection, GlobalConstants.ServerWorkspaceID);
-            return result;
+            var res = serializer.Deserialize<TestSaveResult>(result.Message);
+            return res;
         }
 
         public List<IServiceTestModelTO> LoadResourceTests(Guid resourceId)

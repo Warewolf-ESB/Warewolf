@@ -48,7 +48,7 @@ namespace Dev2.Studio.Core.InterfaceImplementors
                     if (deployDto.DeployTests)
                     {
                         var models = sourceEnviroment.ResourceRepository.LoadResourceTestsForDeploy(resourceModel.ID);
-                        environmentModel.ResourceRepository.SaveTests(resourceModel.ID, models);
+                        environmentModel.ResourceRepository.SaveTests(resourceModel, models);
                     }
                 }
             }

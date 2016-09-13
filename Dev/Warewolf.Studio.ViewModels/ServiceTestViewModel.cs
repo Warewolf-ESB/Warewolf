@@ -77,52 +77,27 @@ namespace Warewolf.Studio.ViewModels
 
         private void RunSelectedTestInBrowser()
         {
-            if (!ValidateIfResourceExists())
-            {
-                _shellViewModel.CloseResourceTestView(ResourceModel.ID, ResourceModel.ServerID, ResourceModel.Environment.ID);
-                return;
-            }
             ServiceTestCommandHandler.RunSelectedTestInBrowser();
         }
 
         private void RunSelectedTest()
         {
-            if (!ValidateIfResourceExists())
-            {
-                _shellViewModel.CloseResourceTestView(ResourceModel.ID, ResourceModel.ServerID, ResourceModel.Environment.ID);
-                return;
-            }
             SelectedServiceTest.IsTestRunning = true;
             ServiceTestCommandHandler.RunSelectedTest();
         }
 
         private void RunAllTestsInBrowser()
         {
-            if (!ValidateIfResourceExists())
-            {
-                _shellViewModel.CloseResourceTestView(ResourceModel.ID, ResourceModel.ServerID, ResourceModel.Environment.ID);
-                return;
-            }
             ServiceTestCommandHandler.RunAllTestsInBrowser(IsDirty);
         }
 
         private void RunAllTests()
         {
-            if (!ValidateIfResourceExists())
-            {
-                _shellViewModel.CloseResourceTestView(ResourceModel.ID, ResourceModel.ServerID, ResourceModel.Environment.ID);
-                return;
-            }
             ServiceTestCommandHandler.RunAllTestsCommand(IsDirty);
         }
 
         private void DuplicateTest()
         {
-            if (!ValidateIfResourceExists())
-            {
-                _shellViewModel.CloseResourceTestView(ResourceModel.ID, ResourceModel.ServerID, ResourceModel.Environment.ID);
-                return;
-            }
             var duplicateTest = ServiceTestCommandHandler.DuplicateTest(SelectedServiceTest);
             AddAndSelectTest(duplicateTest);
         }
@@ -263,11 +238,6 @@ namespace Warewolf.Studio.ViewModels
         {
             try
             {
-                if (!ValidateIfResourceExists())
-                {
-                    _shellViewModel.CloseResourceTestView(ResourceModel.ID, ResourceModel.ServerID, ResourceModel.Environment.ID);
-                    return;
-                }
                 if (HasDuplicateTestNames())
                 {
                     return;
@@ -294,9 +264,23 @@ namespace Warewolf.Studio.ViewModels
                     TestInvalid = model.TestInvalid,
                     TestPassed = model.TestPassed
                 } as IServiceTestModelTO).ToList();
-                ResourceModel.Environment.ResourceRepository.SaveTests(ResourceModel.ID, serviceTestModelTos);
-                MarkTestsAsNotNew();
-                SetSelectedTestUrl();
+                var result = ResourceModel.Environment.ResourceRepository.SaveTests(ResourceModel, serviceTestModelTos);
+                switch (result.Result)
+                {
+                    case SaveResult.Success:
+                        MarkTestsAsNotNew();
+                        SetSelectedTestUrl();
+                        break;
+                    case SaveResult.ResourceDeleted:
+                        ValidateIfResourceExists();
+                        _shellViewModel.CloseResourceTestView(ResourceModel.ID,ResourceModel.ServerID,ResourceModel.Environment.ID);
+                        break;                        
+                    case SaveResult.ResourceUpdated:
+                        UpdateTestsFromResourceUpdate();
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
             }
             catch (Exception)
             {
@@ -304,17 +288,16 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
+        private void UpdateTestsFromResourceUpdate()
+        {
+            //ResourceModel = ResourceModel.Environment.ResourceRepository.LoadResourceFromWorkspace(ResourceModel.ID,GlobalConstants.ServerWorkspaceID);
+
+        }
+
         private bool ValidateIfResourceExists()
         {
-            var contextualResourceModel = ResourceModel.Environment.ResourceRepository.LoadResourceFromWorkspace(ResourceModel.ID,GlobalConstants.ServerWorkspaceID);
-            if (contextualResourceModel == null)
-            {
-                PopupController?.Show(Resources.Languages.Core.ServiceTestResourceDeletedMessage,
-                    Resources.Languages.Core.ServiceTestResourceDeletedHeader, MessageBoxButton.OK, MessageBoxImage.Error, null,
-                    false, true, false, false);
-                return false;
-            }
-            return true;
+            PopupController?.Show(Resources.Languages.Core.ServiceTestResourceDeletedMessage, Resources.Languages.Core.ServiceTestResourceDeletedHeader, MessageBoxButton.OK, MessageBoxImage.Error, null, false, true, false, false);
+            return false;
         }
 
         private bool HasDuplicateTestNames()
@@ -353,10 +336,7 @@ namespace Warewolf.Studio.ViewModels
 
         public IServiceTestModel SelectedServiceTest
         {
-            get
-            {
-                return _selectedServiceTest;
-            }
+            get { return _selectedServiceTest; }
             set
             {
                 if (value == null)
@@ -413,14 +393,12 @@ namespace Warewolf.Studio.ViewModels
                 OnPropertyChanged(() => TestPassingResult);
             }
         }
-        private IEnumerable<IServiceTestModel> RealTests() => _tests.Where(model => model.GetType() != typeof(DummyServiceTest)).ToObservableCollection();
+
+        private IEnumerable<IServiceTestModel> RealTests() => _tests.Where(model => model.GetType() != typeof (DummyServiceTest)).ToObservableCollection();
 
         public ObservableCollection<IServiceTestModel> Tests
         {
-            get
-            {
-                return _tests;
-            }
+            get { return _tests; }
             set
             {
                 _tests = value;
@@ -430,11 +408,6 @@ namespace Warewolf.Studio.ViewModels
 
         private void DeleteTest(IServiceTestModel test)
         {
-            if (!ValidateIfResourceExists())
-            {
-                _shellViewModel.CloseResourceTestView(ResourceModel.ID, ResourceModel.ServerID, ResourceModel.Environment.ID);
-                return;
-            }
             if (test == null) return;
             var nameOfItemBeingDeleted = test.NameForDisplay.Replace("*", "").TrimEnd(' ');
             if (PopupController.ShowDeleteConfirmation(nameOfItemBeingDeleted) == MessageBoxResult.Yes)
@@ -443,8 +416,8 @@ namespace Warewolf.Studio.ViewModels
                 {
                     ResourceModel.Environment.ResourceRepository.DeleteResourceTest(ResourceModel.ID, test.TestName);
                     var testToRemove = _tests.SingleOrDefault(model => model.ParentId == test.ParentId && model.TestName == test.TestName);
-                    _tests.Remove(testToRemove);//test
-                    OnPropertyChanged(() => Tests);//test
+                    _tests.Remove(testToRemove); //test
+                    OnPropertyChanged(() => Tests); //test
                 }
                 catch (Exception ex)
                 {
@@ -457,7 +430,6 @@ namespace Warewolf.Studio.ViewModels
         {
             try
             {
-
                 var serviceTestModels = new List<ServiceTestModel>();
                 var loadResourceTests = ResourceModel.Environment.ResourceRepository.LoadResourceTests(ResourceModel.ID);
                 if (loadResourceTests != null)
@@ -481,23 +453,7 @@ namespace Warewolf.Studio.ViewModels
         {
             var serviceTestModel = new ServiceTestModel(ResourceModel.ID)
             {
-                OldTestName = to.TestName,
-                TestName = to.TestName,
-                NameForDisplay = to.TestName,
-                UserName = to.UserName,
-                AuthenticationType = to.AuthenticationType,
-                Enabled = to.Enabled,
-                ErrorExpected = to.ErrorExpected,
-                NoErrorExpected = to.NoErrorExpected,
-                LastRunDate = to.LastRunDate,
-                TestPending = to.TestPending,
-                TestFailing = to.TestFailing,
-                TestPassed = to.TestPassed,
-                Password = to.Password,
-                ParentId = to.ResourceId,
-                TestInvalid = to.TestInvalid,
-                Inputs = to.Inputs?.Select(input => new ServiceTestInput(input.Variable, input.Value) as IServiceTestInput).ToList(),
-                Outputs = to.Outputs?.Select(output => new ServiceTestOutput(output.Variable, output.Value) as IServiceTestOutput).ToList()
+                OldTestName = to.TestName, TestName = to.TestName, NameForDisplay = to.TestName, UserName = to.UserName, AuthenticationType = to.AuthenticationType, Enabled = to.Enabled, ErrorExpected = to.ErrorExpected, NoErrorExpected = to.NoErrorExpected, LastRunDate = to.LastRunDate, TestPending = to.TestPending, TestFailing = to.TestFailing, TestPassed = to.TestPassed, Password = to.Password, ParentId = to.ResourceId, TestInvalid = to.TestInvalid, Inputs = to.Inputs?.Select(input => new ServiceTestInput(input.Variable, input.Value) as IServiceTestInput).ToList(), Outputs = to.Outputs?.Select(output => new ServiceTestOutput(output.Variable, output.Value) as IServiceTestOutput).ToList()
             };
             return serviceTestModel;
         }

@@ -627,7 +627,7 @@ namespace BusinessDesignStudio.Unit.Tests
             var resourceRepository = new ResourceRepository(mockEnvironmentModel.Object);
             var resourceId = Guid.NewGuid();
             //------------Execute Test---------------------------            
-            resourceRepository.SaveTests(resourceId, new List<IServiceTestModelTO> { serviceTestModel });
+            resourceRepository.SaveTests(new Mock<IResourceModel>().Object, new List<IServiceTestModelTO> { serviceTestModel });
             //------------Assert Results-------------------------
             var ser = new Dev2JsonSerializer();
             var retMsg = ser.Deserialize<EsbExecuteRequest>(retVal.ToString());

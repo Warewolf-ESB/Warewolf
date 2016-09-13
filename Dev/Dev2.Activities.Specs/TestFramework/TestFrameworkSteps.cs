@@ -54,7 +54,8 @@ namespace Dev2.Activities.Specs.TestFramework
                 ResourceName = workflowName,
                 DisplayName = workflowName,
                 DataList = "",
-                ID = Guid.NewGuid()
+                ID = Guid.NewGuid(),
+                Category = ""
 
             };
             var workflowHelper = new WorkflowHelper();
@@ -126,7 +127,11 @@ namespace Dev2.Activities.Specs.TestFramework
                 }
             }
             // ReSharper disable once UnusedVariable
-            var executeMessage = environmentModel.ResourceRepository.SaveTests(resourceID, serviceTestModelTos);
+            var resourceModel = new ResourceModel(environmentModel);
+            resourceModel.ID = resourceID;
+            resourceModel.Category = "ResourceCat\\ResourceName";
+            resourceModel.ResourceName = "Resourcename";
+            var executeMessage = environmentModel.ResourceRepository.SaveTests(resourceModel, serviceTestModelTos);
         }
 
         [Then(@"""(.*)"" has (.*) tests")]
@@ -314,7 +319,10 @@ namespace Dev2.Activities.Specs.TestFramework
                     popupController.Verify(controller => controller.ShowDeleteConfirmation(It.IsAny<string>()));
                     break;
                 case "Workflow Deleted":
-                    popupController.Verify(controller => controller.Show(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<MessageBoxButton>(), It.IsAny<MessageBoxImage>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>()));
+                    popupController.Verify(controller => controller.Show(Warewolf.Studio.Resources.Languages.Core.ServiceTestResourceDeletedMessage, Warewolf.Studio.Resources.Languages.Core.ServiceTestResourceDeletedHeader, It.IsAny<MessageBoxButton>(), It.IsAny<MessageBoxImage>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>()));
+                    break;
+                case "Workflow changed":
+                    popupController.Verify(controller => controller.Show(Warewolf.Studio.Resources.Languages.Core.ServiceTestResourceCategoryChangedMessage, Warewolf.Studio.Resources.Languages.Core.ServiceTestResourceCategoryChangedHeader, It.IsAny<MessageBoxButton>(), It.IsAny<MessageBoxImage>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>()));
                     break;
             }
         }
@@ -478,7 +486,19 @@ namespace Dev2.Activities.Specs.TestFramework
                 env.ResourceRepository.DeleteResource(resourceModel);
             }
         }
-        
+
+        [When(@"""(.*)"" is moved")]
+        public void WhenIsMoved(string workflowName)
+        {
+            ResourceModel resourceModel;
+            if (ScenarioContext.TryGetValue(workflowName, out resourceModel))
+            {
+                var env = EnvironmentRepository.Instance.Source;
+                resourceModel.Category = "bob\\" + workflowName;
+                env.ResourceRepository.SaveToServer(resourceModel);
+            }
+        }
+
         [Given(@"save is enabled")]
         [Then(@"save is disabled")]
         public void ThenSaveIsDisabled()
@@ -916,7 +936,11 @@ namespace Dev2.Activities.Specs.TestFramework
                 }
             }
             // ReSharper disable once UnusedVariable
-            var executeMessage = environmentModel.ResourceRepository.SaveTests(resourceID, serviceTestModelTos);
+            var resourceModel = new ResourceModel(environmentModel);
+            resourceModel.ID = resourceID;
+            resourceModel.Category = "ResourceCat\\ResourceName";
+            resourceModel.ResourceName = "Resourcename";
+            var executeMessage = environmentModel.ResourceRepository.SaveTests(resourceModel, serviceTestModelTos);
         }
         [When(@"I delete folder ""(.*)""")]
         public void WhenIDeleteFolder(string folderName)
