@@ -218,7 +218,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
                 var showResourceChangedUtil = ResourceChangeHandlerFactory.Create(EventPublisher);
                 Execute.OnUIThread(() =>
                 {
-                    numberOfDependants = compileMessageList.MessageList.Select(to => to.ServiceID.ToString()).ToList();
+                    numberOfDependants = compileMessageList.MessageList.Select(to => to.ServiceID.ToString()).Distinct(StringComparer.InvariantCultureIgnoreCase).ToList();
                     showResourceChangedUtil.ShowResourceChanged(ContextualResourceModel, numberOfDependants);
                 });
             }

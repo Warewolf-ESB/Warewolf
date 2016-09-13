@@ -39,8 +39,8 @@ namespace Warewolf.Studio.AntiCorruptionLayer
             }
             QueryManagerProxy = new QueryManagerProxy(controllerFactory, environmentConnection);
             UpdateManagerProxy = new ExplorerUpdateManagerProxy(controllerFactory, environmentConnection);
-            VersionManager = new VersionManagerProxy(environmentConnection, controllerFactory); //todo:swap
-            AdminManagerProxy = new AdminManagerProxy(controllerFactory, environmentConnection); //todo:swap
+            VersionManager = new VersionManagerProxy(controllerFactory, environmentConnection);
+            AdminManagerProxy = new AdminManagerProxy(controllerFactory, environmentConnection);
         }
 
         public async Task<IExplorerItem> LoadExplorer(bool reloadCatalogue = false)
@@ -59,7 +59,7 @@ namespace Warewolf.Studio.AntiCorruptionLayer
         public IExplorerItem ExplorerItems { get; set; }
         public Dev2.Common.Interfaces.ServerProxyLayer.IVersionManager VersionManager { get; set; }
         public IQueryManager QueryManagerProxy { get; set; }
-        public ExplorerUpdateManagerProxy UpdateManagerProxy { get; set; }
+        public IExplorerUpdateManager UpdateManagerProxy { get; set; }
 
         public IExplorerItem FindItemByID(Guid id)
         {
@@ -92,7 +92,12 @@ namespace Warewolf.Studio.AntiCorruptionLayer
                     if (explorerItemViewModel.ResourceType != "Version" && explorerItemViewModel.ResourceType != "Folder")
                     {
                         var dep = QueryManagerProxy.FetchDependants(explorerItemViewModel.ResourceId);
-                        return HasDependencies(explorerItemViewModel, graphGenerator, dep);                        
+                        var deleteFileMeta = HasDependencies(explorerItemViewModel, graphGenerator, dep);
+                        if (deleteFileMeta.IsDeleted)
+                        {
+                            UpdateManagerProxy.DeleteResource(explorerItemViewModel.ResourceId);
+                        }
+                        return deleteFileMeta;
                     }
                     if (explorerItemViewModel.ResourceType == "Version")
                     {
@@ -133,10 +138,6 @@ namespace Warewolf.Studio.AntiCorruptionLayer
                             }
                         }
                         return deleteFileMetaData;
-                    }
-                    else
-                    {
-                        UpdateManagerProxy.DeleteResource(explorerItemViewModel.ResourceId);
                     }
                 }
                 return new DeletedFileMetadata

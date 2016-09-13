@@ -605,6 +605,7 @@ namespace Dev2.Studio.ViewModels
                 AuthenticationType = db.AuthenticationType,
                 DbName = db.DatabaseName,
                 Id = db.ResourceID,
+                Path = resourceModel.GetSavePath(),
                 Name = db.ResourceName,
                 Password = db.Password,
                 ServerName = db.Server,
@@ -625,6 +626,7 @@ namespace Dev2.Studio.ViewModels
             {
                 SelectedDll = new DllListing { FullName = db.AssemblyLocation, Name = db.AssemblyName, Children = new Collection<IFileListing>(), IsDirectory = false },
                 Id = db.ResourceID,
+                Path = resourceModel.GetSavePath(),
                 Name = db.ResourceName
             };
             var workSurfaceKey = WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.PluginSource);
@@ -641,6 +643,7 @@ namespace Dev2.Studio.ViewModels
             {
                 SelectedDll = new DllListing { Name = db.ComName, ClsId = db.ClsId, Is32Bit = db.Is32Bit, Children = new Collection<IFileListing>(), IsDirectory = false },
                 Id = db.ResourceID,
+                ResourcePath = resourceModel.GetSavePath(),
                 ClsId = db.ClsId,
                 Is32Bit = db.Is32Bit,
                 ResourceName = db.ResourceName
@@ -663,7 +666,7 @@ namespace Dev2.Studio.ViewModels
                 Name = db.ResourceName,
                 Password = db.Password,
                 HostName = db.Address,
-
+                Path = resourceModel.GetSavePath(),
                 UserName = db.UserName
             };
             var workSurfaceKey = WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.WebSource);
@@ -680,6 +683,7 @@ namespace Dev2.Studio.ViewModels
             {
                 AuthenticationType = db.AuthenticationType,
                 Server = db.Server,
+                Path = resourceModel.GetSavePath(),
                 Id = db.ResourceID,
                 Name = db.ResourceName,
                 Password = db.Password,
@@ -702,6 +706,7 @@ namespace Dev2.Studio.ViewModels
                 HostName = db.Host,
                 Password = db.Password,
                 UserName = db.UserName,
+                Path = resourceModel.GetSavePath(),
                 Port = db.Port,
                 Timeout = db.Timeout,
                 ResourceName = db.ResourceName,
@@ -724,6 +729,7 @@ namespace Dev2.Studio.ViewModels
                 Id = db.ResourceID,
                 Password = db.Password,
                 UserName = db.UserName,
+                Path = resourceModel.GetSavePath(),
                 Timeout = db.Timeout,
                 ResourceName = db.ResourceName,
             };
@@ -742,6 +748,7 @@ namespace Dev2.Studio.ViewModels
             {
                 AccessToken = db.AccessToken,
                 ResourceID = db.ResourceID,
+                ResourcePath = resourceModel.GetSavePath(),
                 AppKey = db.AppKey,
                 ResourceName = db.ResourceName,
             };
@@ -762,6 +769,7 @@ namespace Dev2.Studio.ViewModels
                 HostName = source.HostName,
                 Port = source.Port,
                 UserName = source.UserName,
+                ResourcePath = resourceModel.GetSavePath(),
                 Password = source.Password,
                 VirtualHost = source.VirtualHost
             };
@@ -780,7 +788,7 @@ namespace Dev2.Studio.ViewModels
             {
                 Id = wcfsource.Id,
                 Name = wcfsource.ResourceName,
-                Path = wcfsource.Path,
+                Path = resourceModel.GetSavePath(),
                 ResourceName = wcfsource.Name,
                 EndpointUrl = wcfsource.EndpointUrl
             };
@@ -808,6 +816,7 @@ namespace Dev2.Studio.ViewModels
                 AuthenticationType = connection.AuthenticationType,
                 UserName = connection.UserName,
                 Password = connection.Password,
+                ResourcePath = resourceModel.GetSavePath(),
                 ServerName = address,
                 Name = connection.ResourceName
             };

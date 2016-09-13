@@ -42,9 +42,8 @@ namespace Dev2.TO
         bool _isSinglematchCriteriaVisible;
         bool _isBetweenCriteriaVisible;
         public static readonly IList<IFindRecsetOptions> Whereoptions = FindRecsetOptions.FindAllDecision();
-        Action<DecisionTO> _deleteAction;
         bool _isLast;
-        private bool _isInitializing;
+        private readonly bool _isInitializing;
         public RelayCommand DeleteCommand { get;  set; }
 
         public DecisionTO()
@@ -76,17 +75,7 @@ namespace Dev2.TO
             _isInitializing = false;
         }
 
-        public Action<DecisionTO> DeleteAction
-        {
-            get
-            {
-                return _deleteAction;
-            }
-            set
-            {
-                _deleteAction = value;
-            }
-        }
+        public Action<DecisionTO> DeleteAction { get; set; }
 
         public DecisionTO(Dev2Decision a, int ind, Action<DecisionTO> updateDisplayAction = null,Action<DecisionTO> deleteAction = null)
         {

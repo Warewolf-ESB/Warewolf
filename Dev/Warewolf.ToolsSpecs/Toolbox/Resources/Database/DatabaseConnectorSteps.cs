@@ -161,7 +161,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
         public void ThenValidateIsEnabled()
         {
             var viewModel = GetViewModel();
-            Assert.IsTrue(viewModel.TestInputCommand.CanExecute());
+            Assert.IsTrue(viewModel.TestInputCommand.CanExecute(null));
         }
 
         [Given(@"Inputs appear as")]
@@ -299,7 +299,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
         [When(@"I click Validate")]
         public void WhenIClickValidate()
         {
-            GetViewModel().TestInputCommand.Execute();
+            GetViewModel().TestInputCommand.Execute(null);
             //Assert.Fail();
         }
 
