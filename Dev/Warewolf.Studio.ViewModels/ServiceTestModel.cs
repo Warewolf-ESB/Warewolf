@@ -36,6 +36,7 @@ namespace Warewolf.Studio.ViewModels
         private bool _newTest;
         private string _nameForDisplay;
         private ServiceTestModel _item;
+        private bool _isTestRunning;
 
         public ServiceTestModel(Guid resourceId)
         {
@@ -337,6 +338,16 @@ namespace Warewolf.Studio.ViewModels
             {
                 _newTest = value; 
                 OnPropertyChanged(() => NewTest);
+            }
+        }
+
+        public bool IsTestRunning
+        {
+            get { return _isTestRunning; }
+            set
+            {
+                _isTestRunning = value; 
+                OnPropertyChanged(() => IsTestRunning);
             }
         }
 

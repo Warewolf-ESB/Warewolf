@@ -673,6 +673,77 @@
             </Trigger>
         </Style.Triggers>
     </Style>
+    <Style x:Key="ButtonStopTestTransparentStyle" TargetType="{x:Type Button}">
+        <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="VerticalAlignment" Value="Stretch"/>
+        <Setter Property="HorizontalAlignment" Value="Right"/>
+        <Setter Property="Background" Value="{StaticResource ButtonPressedTransparentBrush}" />
+        <Setter Property="Foreground" Value="{StaticResource WareWolfHeaderButtonBrush}" />
+        <Setter Property="ToolTip" Value="{x:Static languages:Core.ServiceTestStopSelectedTestTooltip}"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Grid>
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="CommonStates">
+                                <VisualState x:Name="Normal" />
+                                <VisualState x:Name="Disabled">
+                                    <Storyboard>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="DisabledVisualElement" Storyboard.TargetProperty="(UIElement.Visibility)">
+                                            <DiscreteObjectKeyFrame KeyTime="0">
+                                                <DiscreteObjectKeyFrame.Value>
+                                                    <Visibility>Visible</Visibility>
+                                                </DiscreteObjectKeyFrame.Value>
+                                            </DiscreteObjectKeyFrame>
+                                        </ObjectAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                            </VisualStateGroup>
+                            <VisualStateGroup x:Name="FocusStates">
+                                <VisualState x:Name="Unfocused" />
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+                        <Rectangle x:Name="Bd"
+                                   Fill="{StaticResource ButtonPressedTransparentBrush}"
+                                   Stroke="{StaticResource ButtonPressedTransparentBrush}"
+                                   StrokeThickness="1" />
+                        <ContentControl x:Name="ContentControl"
+                                        Margin="{TemplateBinding Padding}"
+                                        HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                        VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                        Foreground="{TemplateBinding Foreground}"
+                                        IsTabStop="False">
+                            <ContentPresenter x:Name="contentPresenter" />
+                        </ContentControl>
+                        <Rectangle x:Name="FocusedVisualElement"
+                                   StrokeThickness="1"
+                                   Visibility="Collapsed" />
+                        <Rectangle x:Name="DisabledVisualElement"
+                                   Fill="{StaticResource ButtonPressedTransparentBrush}"
+                                   Opacity="0.4"
+                                   Visibility="Collapsed" />
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="Bd" Property="Stroke" Value="{StaticResource ButtonPressedTransparentBrush}" />
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="False">
+                            <Setter TargetName="Bd" Property="Stroke" Value="{StaticResource ButtonPressedTransparentBrush}" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Foreground" Value="{StaticResource WareWolfOrangeBrush}" />
+            </Trigger>
+            <Trigger Property="Button.IsPressed" Value="True">
+                <Setter Property="Control.Foreground" Value="White" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
     <Style x:Key="ServiceTestDuplicateButtonStyle" TargetType="{x:Type Button}" BasedOn="{StaticResource ButtonStyle}">
         <Setter Property="ToolTipService.ShowOnDisabled" Value="True" />
         <Style.Triggers>
