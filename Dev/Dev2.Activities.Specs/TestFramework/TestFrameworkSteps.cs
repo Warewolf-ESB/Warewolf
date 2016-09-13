@@ -188,6 +188,31 @@ namespace Dev2.Activities.Specs.TestFramework
             Assert.AreNotEqual(0, currentTests.Count());
         }
 
+        [Then(@"Test Status is ""(.*)""")]
+        public void ThenTestStatusIs(string expectedStatus)
+        {
+            ServiceTestViewModel serviceTest = GetTestFrameworkFromContext();
+
+            switch (expectedStatus)
+            {
+                case "TestPending":
+                    Assert.IsTrue(serviceTest.Tests[0].TestPending);
+                    break;
+                case "TestPassed":
+                    Assert.IsTrue(serviceTest.Tests[0].TestPassed);
+                    break;
+                case "TestFailing":
+                    Assert.IsTrue(serviceTest.Tests[0].TestFailing);
+                    break;
+                case "TestInvalid":
+                    Assert.IsTrue(serviceTest.Tests[0].TestInvalid);
+                    break;
+                default:
+                    Assert.IsTrue(serviceTest.Tests[0].TestPending);
+                    break;
+            }
+        }
+
         [Then(@"there are (.*) tests")]
         public void ThenThereAreTests(int testCount)
         {
@@ -429,6 +454,32 @@ namespace Dev2.Activities.Specs.TestFramework
 
             }
         }
+
+        [Then(@"Test Status saved is ""(.*)""")]
+        public void ThenTestStatusSavedIs(string testStatus)
+        {
+            ServiceTestViewModel serviceTest = GetTestFrameworkFromContext();
+
+            switch (testStatus)
+            {
+                case "TestPending":
+                    serviceTest.SelectedServiceTest.TestPending = true;
+                    break;
+                case "TestInvalid":
+                    serviceTest.SelectedServiceTest.TestInvalid = true;
+                    break;
+                case "TestFailing":
+                    serviceTest.SelectedServiceTest.TestFailing = true;
+                    break;
+                case "TestPassed":
+                    serviceTest.SelectedServiceTest.TestPassed = true;
+                    break;
+                default:
+                    serviceTest.SelectedServiceTest.TestPending = true;
+                    break;
+            }
+        }
+
         [Then(@"NoErrorExpected is ""(.*)""")]
         public void ThenNoErrorExpectedIs(string error)
         {
