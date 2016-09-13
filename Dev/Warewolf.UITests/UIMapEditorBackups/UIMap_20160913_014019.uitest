@@ -5182,7 +5182,7 @@
       <Type>String</Type>
       <PropertyCondition>AreEqual</PropertyCondition>
     </AssertAction>
-    <AssertAction UIObjectName="UIMap.MainStudioWindow.DebugInputDialog.TabItemsTabList.InputDataTab.InputsTable.Row1.Cell.InputValueCombobox.InputValueText">
+    <AssertAction UIObjectName="UIMap.MainStudioWindow.DebugInputDialog.TabItemsTabList.InputDataTab.InputsTable.Row1.Cell.InputValueCell.InputValueComboboxl.InputValueText">
       <ParameterName />
       <PropertyName>Exists</PropertyName>
       <ExpectedValue>True</ExpectedValue>
@@ -5190,7 +5190,7 @@
       <Type>String</Type>
       <PropertyCondition>AreEqual</PropertyCondition>
     </AssertAction>
-    <SetValueAction UIObjectName="UIMap.MainStudioWindow.DebugInputDialog.TabItemsTabList.InputDataTab.InputsTable.Row1.Cell.InputValueCombobox.InputValueText">
+    <SetValueAction UIObjectName="UIMap.MainStudioWindow.DebugInputDialog.TabItemsTabList.InputDataTab.InputsTable.Row1.Cell.InputValueCell.InputValueComboboxl.InputValueText">
       <ParameterName />
       <Value Encoded="false">100</Value>
       <Type>String</Type>
@@ -21683,6 +21683,48 @@
                                   </AndCondition>
                                   <SupportLevel>0</SupportLevel>
                                   <Descendants>
+                                    <UIObject ControlType="Cell" Id="InputValueCell" FriendlyName="100" SpecialControlType="None">
+                                      <TechnologyName>UIA</TechnologyName>
+                                      <WindowTitles>
+                                        <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                                      </WindowTitles>
+                                      <AndCondition>
+                                        <PropertyCondition Name="ColumnHeader" />
+                                        <PropertyCondition Name="Value">100</PropertyCondition>
+                                        <PropertyCondition Name="ControlType">Cell</PropertyCondition>
+                                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                      </AndCondition>
+                                      <SupportLevel>0</SupportLevel>
+                                      <Descendants>
+                                        <UIObject ControlType="ComboBox" Id="InputValueComboboxl" FriendlyName="UI_SomeVariabletxt_AutoID" SpecialControlType="None">
+                                          <TechnologyName>UIA</TechnologyName>
+                                          <WindowTitles>
+                                            <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                                          </WindowTitles>
+                                          <AndCondition>
+                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                            <PropertyCondition Name="ControlType">ComboBox</PropertyCondition>
+                                            <PropertyCondition Name="AutomationId">UI_SomeVariabletxt_AutoID</PropertyCondition>
+                                          </AndCondition>
+                                          <SupportLevel>0</SupportLevel>
+                                          <Descendants>
+                                            <UIObject ControlType="Edit" Id="InputValueText" FriendlyName="Text" SpecialControlType="None">
+                                              <TechnologyName>UIA</TechnologyName>
+                                              <WindowTitles>
+                                                <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                                              </WindowTitles>
+                                              <AndCondition>
+                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                <PropertyCondition Name="ControlType">Edit</PropertyCondition>
+                                                <PropertyCondition Name="AutomationId">Text</PropertyCondition>
+                                              </AndCondition>
+                                              <SupportLevel>0</SupportLevel>
+                                              <Descendants />
+                                            </UIObject>
+                                          </Descendants>
+                                        </UIObject>
+                                      </Descendants>
+                                    </UIObject>
                                     <UIObject ControlType="ComboBox" Id="ComboBox" FriendlyName="UI_SomeVariabletxt_AutoID" SpecialControlType="None">
                                       <TechnologyName>UIA</TechnologyName>
                                       <WindowTitles>
@@ -21696,33 +21738,6 @@
                                       <SupportLevel>0</SupportLevel>
                                       <Descendants>
                                         <UIObject ControlType="Edit" Id="Textbox" FriendlyName="Text" SpecialControlType="None">
-                                          <TechnologyName>UIA</TechnologyName>
-                                          <WindowTitles>
-                                            <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
-                                          </WindowTitles>
-                                          <AndCondition>
-                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                            <PropertyCondition Name="ControlType">Edit</PropertyCondition>
-                                            <PropertyCondition Name="AutomationId">Text</PropertyCondition>
-                                          </AndCondition>
-                                          <SupportLevel>0</SupportLevel>
-                                          <Descendants />
-                                        </UIObject>
-                                      </Descendants>
-                                    </UIObject>
-                                    <UIObject ControlType="ComboBox" Id="InputValueCombobox" FriendlyName="UI_SomeVariabletxt_AutoID" SpecialControlType="None">
-                                      <TechnologyName>UIA</TechnologyName>
-                                      <WindowTitles>
-                                        <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
-                                      </WindowTitles>
-                                      <AndCondition>
-                                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                        <PropertyCondition Name="ControlType">ComboBox</PropertyCondition>
-                                        <PropertyCondition Name="AutomationId">UI_SomeVariabletxt_AutoID</PropertyCondition>
-                                      </AndCondition>
-                                      <SupportLevel>0</SupportLevel>
-                                      <Descendants>
-                                        <UIObject ControlType="Edit" Id="InputValueText" FriendlyName="Text" SpecialControlType="None">
                                           <TechnologyName>UIA</TechnologyName>
                                           <WindowTitles>
                                             <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>

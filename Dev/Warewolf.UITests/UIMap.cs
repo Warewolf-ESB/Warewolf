@@ -1049,5 +1049,149 @@ namespace Warewolf.UITests
             // Click 'New Remote Server...' label
             Mouse.Click(newRemoteServer);
         }
+
+        /// <summary>
+        /// Select_Show_Dependencies_In_Explorer_Context_Menu - Use 'Select_Show_Dependencies_In_Explorer_Context_MenuParams' to pass parameters into this method.
+        /// </summary>
+        /// <param name="workflowName"></param>
+        public void Select_Show_Dependencies_In_Explorer_Context_Menu(string workflowName)
+        {
+            #region Variable Declarations
+            WpfMenuItem showDependencies = this.MainStudioWindow.ExplorerContextMenu.ShowDependencies;
+            WpfRadioButton showwhatdependsonthisRadioButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DependencyGraphTab.WorksurfaceContext.DependencyView.ScrollViewer.ShowwhatdependsonthisRadioButton;
+            WpfEdit textbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DependencyGraphTab.WorksurfaceContext.DependencyView.ScrollViewer.NestingLevelsText.Textbox;
+            WpfButton refreshButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DependencyGraphTab.WorksurfaceContext.DependencyView.ScrollViewer.RefreshButton;
+            WpfText text = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DependencyGraphTab.WorksurfaceContext.DependencyView.ScrollViewer.Node1.Text;
+            #endregion
+
+            // Click 'Show Dependencies' menu item
+            Mouse.Click(showDependencies, new Point(50, 15));
+
+            // Verify that the 'Selected' property of 'Show what depends on this' radio button equals 'True'
+            Assert.AreEqual(this.Select_Show_Dependencies_In_Explorer_Context_MenuParams.ShowwhatdependsonthisRadioButtonSelected, showwhatdependsonthisRadioButton.Selected, "Dependency graph show dependencies radio button is not selected.");
+
+            // Verify that the 'Exists' property of first text box next to 'Nesting Levels' label equals 'True'
+            Assert.AreEqual(this.Select_Show_Dependencies_In_Explorer_Context_MenuParams.TextboxExists, textbox.Exists, "Dependency graph nesting levels textbox does not exist.");
+
+            // Verify that the 'Exists' property of 'Refresh' button equals 'True'
+            Assert.AreEqual(this.Select_Show_Dependencies_In_Explorer_Context_MenuParams.RefreshButtonExists, refreshButton.Exists, "Refresh button does not exist on dependency graph");
+
+            // Verify that the 'DisplayText' property of 'RemoteServerUITestWorkflow' label equals 'RemoteServerUITestWorkflow'
+            Assert.AreEqual(workflowName, text.DisplayText, "Dependant workflow not shown in dependency diagram");
+
+            // Verify that the 'Exists' property of 'Show what depends on this' radio button equals 'True'
+            Assert.AreEqual(this.Select_Show_Dependencies_In_Explorer_Context_MenuParams.ShowwhatdependsonthisRadioButtonExists, showwhatdependsonthisRadioButton.Exists, "Show what depends on workflow does not exist after Show Dependencies is selected");
+
+            // Verify that the 'Selected' property of 'Show what depends on this' radio button equals 'True'
+            Assert.AreEqual(this.Select_Show_Dependencies_In_Explorer_Context_MenuParams.ShowwhatdependsonthisRadioButtonSelected1, showwhatdependsonthisRadioButton.Selected, "Show what depends on workflow radio button is not selected after Show dependecies" +
+                    " is selected");
+        }
+
+        public virtual Select_Show_Dependencies_In_Explorer_Context_MenuParams Select_Show_Dependencies_In_Explorer_Context_MenuParams
+        {
+            get
+            {
+                if ((this.mSelect_Show_Dependencies_In_Explorer_Context_MenuParams == null))
+                {
+                    this.mSelect_Show_Dependencies_In_Explorer_Context_MenuParams = new Select_Show_Dependencies_In_Explorer_Context_MenuParams();
+                }
+                return this.mSelect_Show_Dependencies_In_Explorer_Context_MenuParams;
+            }
+        }
+
+        private Select_Show_Dependencies_In_Explorer_Context_MenuParams mSelect_Show_Dependencies_In_Explorer_Context_MenuParams;
+
+        /// <summary>
+        /// Drag_Dice_Onto_DesignSurface - Use 'Drag_Dice_Onto_DesignSurfaceParams' to pass parameters into this method.
+        /// </summary>
+        public void Drag_Dice_Onto_DesignSurface()
+        {
+            #region Variable Declarations
+            WpfTreeItem firstItem = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem;
+            WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
+            WpfButton doneButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ExternalWorkFlow.DoneButton;
+            #endregion
+
+            // Click 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item
+            Mouse.Click(firstItem, new Point(49, 10));
+
+            // Move 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item to 'Flowchart' custom control
+            flowchart.EnsureClickable(new Point(308, 127));
+            Mouse.StartDragging(firstItem, new Point(49, 10));
+            Mouse.StopDragging(flowchart, new Point(308, 127));
+
+            // Verify that the 'Exists' property of 'Done' button equals 'True'
+            Assert.AreEqual(this.Drag_Dice_Onto_DesignSurfaceParams.DoneButtonExists, doneButton.Exists, "Done button does not exist afer dragging dice service onto design surface");
+
+            // Click 'Done' button
+            Mouse.Click(doneButton, new Point(53, 16));
+        }
+
+        public virtual Drag_Dice_Onto_DesignSurfaceParams Drag_Dice_Onto_DesignSurfaceParams
+        {
+            get
+            {
+                if ((this.mDrag_Dice_Onto_DesignSurfaceParams == null))
+                {
+                    this.mDrag_Dice_Onto_DesignSurfaceParams = new Drag_Dice_Onto_DesignSurfaceParams();
+                }
+                return this.mDrag_Dice_Onto_DesignSurfaceParams;
+            }
+        }
+
+        private Drag_Dice_Onto_DesignSurfaceParams mDrag_Dice_Onto_DesignSurfaceParams;
+    }
+    /// <summary>
+    /// Parameters to be passed into 'Select_Show_Dependencies_In_Explorer_Context_Menu'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Select_Show_Dependencies_In_Explorer_Context_MenuParams
+    {
+
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Selected' property of 'Show what depends on this' radio button equals 'True'
+        /// </summary>
+        public bool ShowwhatdependsonthisRadioButtonSelected = true;
+
+        /// <summary>
+        /// Verify that the 'Exists' property of first text box next to 'Nesting Levels' label equals 'True'
+        /// </summary>
+        public bool TextboxExists = true;
+
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Refresh' button equals 'True'
+        /// </summary>
+        public bool RefreshButtonExists = true;
+
+        /// <summary>
+        /// Verify that the 'DisplayText' property of 'RemoteServerUITestWorkflow' label equals 'RemoteServerUITestWorkflow'
+        /// </summary>
+        public string TextDisplayText = "RemoteServerUITestWorkflow";
+
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Show what depends on this' radio button equals 'True'
+        /// </summary>
+        public bool ShowwhatdependsonthisRadioButtonExists = true;
+
+        /// <summary>
+        /// Verify that the 'Selected' property of 'Show what depends on this' radio button equals 'True'
+        /// </summary>
+        public bool ShowwhatdependsonthisRadioButtonSelected1 = true;
+        #endregion
+    }
+    /// <summary>
+    /// Parameters to be passed into 'Drag_Dice_Onto_DesignSurface'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Drag_Dice_Onto_DesignSurfaceParams
+    {
+
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Done' button equals 'True'
+        /// </summary>
+        public bool DoneButtonExists = true;
+        #endregion
     }
 }

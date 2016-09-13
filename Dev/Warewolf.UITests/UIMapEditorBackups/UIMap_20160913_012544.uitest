@@ -5182,7 +5182,7 @@
       <Type>String</Type>
       <PropertyCondition>AreEqual</PropertyCondition>
     </AssertAction>
-    <AssertAction UIObjectName="UIMap.MainStudioWindow.DebugInputDialog.TabItemsTabList.InputDataTab.InputsTable.Row1.Cell.InputValueCombobox.InputValueText">
+    <AssertAction UIObjectName="UIMap.MainStudioWindow.DebugInputDialog.TabItemsTabList.InputDataTab.InputsTable.Row1.Cell.InputValueCell.InputValueComboboxl.InputValueText">
       <ParameterName />
       <PropertyName>Exists</PropertyName>
       <ExpectedValue>True</ExpectedValue>
@@ -5190,7 +5190,7 @@
       <Type>String</Type>
       <PropertyCondition>AreEqual</PropertyCondition>
     </AssertAction>
-    <SetValueAction UIObjectName="UIMap.MainStudioWindow.DebugInputDialog.TabItemsTabList.InputDataTab.InputsTable.Row1.Cell.InputValueCombobox.InputValueText">
+    <SetValueAction UIObjectName="UIMap.MainStudioWindow.DebugInputDialog.TabItemsTabList.InputDataTab.InputsTable.Row1.Cell.InputValueCell.InputValueComboboxl.InputValueText">
       <ParameterName />
       <Value Encoded="false">100</Value>
       <Type>String</Type>
@@ -7024,14 +7024,6 @@
       <ActionType>Click</ActionType>
       <MouseButton>Right</MouseButton>
     </MouseAction>
-    <AssertAction UIObjectName="UIMap.MainStudioWindow.ExplorerContextMenu.ShowVersionHistory">
-      <ParameterName />
-      <PropertyName>Exists</PropertyName>
-      <ExpectedValue>True</ExpectedValue>
-      <MessageOnValidationFailure>Show version history does not exist after right clicking a resource</MessageOnValidationFailure>
-      <Type>String</Type>
-      <PropertyCondition>AreEqual</PropertyCondition>
-    </AssertAction>
     <TestStepMarkerAction Comment="" MarkerInformation="RightClick_Dice">
       <ParameterName />
       <StepId>-1</StepId>
@@ -8845,23 +8837,22 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
-    <MouseAction UIObjectName="UIMap.MainStudioWindow.ExplorerContextMenu.ShowVersionHistory">
+    <AssertAction UIObjectName="UIMap.UIWarewolfDEV2SANELEMTWindow.UIExplorerMenuMenu.UIShowVersionHistoryMenuItem">
       <ParameterName />
-      <ModifierKeys>None</ModifierKeys>
-      <IsGlobalHotkey>false</IsGlobalHotkey>
-      <Location X="66" Y="15" />
-      <WheelDirection>0</WheelDirection>
-      <ActionType>Click</ActionType>
-      <MouseButton>Left</MouseButton>
-    </MouseAction>
-    <TestStepMarkerAction Comment="" MarkerInformation="Select_Show_Version_History">
+      <PropertyName>Exists</PropertyName>
+      <ExpectedValue>True</ExpectedValue>
+      <MessageOnValidationFailure>Show version history does not exist after right clicking a resource</MessageOnValidationFailure>
+      <Type>String</Type>
+      <PropertyCondition>AreEqual</PropertyCondition>
+    </AssertAction>
+    <TestStepMarkerAction Comment="" MarkerInformation="AssertMethod1">
       <ParameterName />
       <StepId>-1</StepId>
       <Direction>Start</Direction>
       <Outcome />
       <Disabled>false</Disabled>
       <WorkItemId>0</WorkItemId>
-      <MarkerRegionType>Action</MarkerRegionType>
+      <MarkerRegionType>Assertion</MarkerRegionType>
     </TestStepMarkerAction>
   </ExecuteActions>
   <CleanupActions />
@@ -9214,22 +9205,6 @@
                     <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                     <PropertyCondition Name="ControlType">MenuItem</PropertyCondition>
                     <PropertyCondition Name="AutomationId">ViewSwagger</PropertyCondition>
-                  </AndCondition>
-                  <SupportLevel>0</SupportLevel>
-                  <Descendants />
-                </UIObject>
-                <UIObject ControlType="MenuItem" Id="ShowVersionHistory" FriendlyName="Show Version History" SpecialControlType="None">
-                  <TechnologyName>UIA</TechnologyName>
-                  <WindowTitles>
-                    <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
-                  </WindowTitles>
-                  <SearchConfigurations>
-                    <SearchConfiguration>Expand</SearchConfiguration>
-                  </SearchConfigurations>
-                  <AndCondition>
-                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                    <PropertyCondition Name="ControlType">MenuItem</PropertyCondition>
-                    <PropertyCondition Name="AutomationId">ShowHideVersions</PropertyCondition>
                   </AndCondition>
                   <SupportLevel>0</SupportLevel>
                   <Descendants />
@@ -21683,6 +21658,48 @@
                                   </AndCondition>
                                   <SupportLevel>0</SupportLevel>
                                   <Descendants>
+                                    <UIObject ControlType="Cell" Id="InputValueCell" FriendlyName="100" SpecialControlType="None">
+                                      <TechnologyName>UIA</TechnologyName>
+                                      <WindowTitles>
+                                        <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                                      </WindowTitles>
+                                      <AndCondition>
+                                        <PropertyCondition Name="ColumnHeader" />
+                                        <PropertyCondition Name="Value">100</PropertyCondition>
+                                        <PropertyCondition Name="ControlType">Cell</PropertyCondition>
+                                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                      </AndCondition>
+                                      <SupportLevel>0</SupportLevel>
+                                      <Descendants>
+                                        <UIObject ControlType="ComboBox" Id="InputValueComboboxl" FriendlyName="UI_SomeVariabletxt_AutoID" SpecialControlType="None">
+                                          <TechnologyName>UIA</TechnologyName>
+                                          <WindowTitles>
+                                            <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                                          </WindowTitles>
+                                          <AndCondition>
+                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                            <PropertyCondition Name="ControlType">ComboBox</PropertyCondition>
+                                            <PropertyCondition Name="AutomationId">UI_SomeVariabletxt_AutoID</PropertyCondition>
+                                          </AndCondition>
+                                          <SupportLevel>0</SupportLevel>
+                                          <Descendants>
+                                            <UIObject ControlType="Edit" Id="InputValueText" FriendlyName="Text" SpecialControlType="None">
+                                              <TechnologyName>UIA</TechnologyName>
+                                              <WindowTitles>
+                                                <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                                              </WindowTitles>
+                                              <AndCondition>
+                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                <PropertyCondition Name="ControlType">Edit</PropertyCondition>
+                                                <PropertyCondition Name="AutomationId">Text</PropertyCondition>
+                                              </AndCondition>
+                                              <SupportLevel>0</SupportLevel>
+                                              <Descendants />
+                                            </UIObject>
+                                          </Descendants>
+                                        </UIObject>
+                                      </Descendants>
+                                    </UIObject>
                                     <UIObject ControlType="ComboBox" Id="ComboBox" FriendlyName="UI_SomeVariabletxt_AutoID" SpecialControlType="None">
                                       <TechnologyName>UIA</TechnologyName>
                                       <WindowTitles>
@@ -21696,33 +21713,6 @@
                                       <SupportLevel>0</SupportLevel>
                                       <Descendants>
                                         <UIObject ControlType="Edit" Id="Textbox" FriendlyName="Text" SpecialControlType="None">
-                                          <TechnologyName>UIA</TechnologyName>
-                                          <WindowTitles>
-                                            <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
-                                          </WindowTitles>
-                                          <AndCondition>
-                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                            <PropertyCondition Name="ControlType">Edit</PropertyCondition>
-                                            <PropertyCondition Name="AutomationId">Text</PropertyCondition>
-                                          </AndCondition>
-                                          <SupportLevel>0</SupportLevel>
-                                          <Descendants />
-                                        </UIObject>
-                                      </Descendants>
-                                    </UIObject>
-                                    <UIObject ControlType="ComboBox" Id="InputValueCombobox" FriendlyName="UI_SomeVariabletxt_AutoID" SpecialControlType="None">
-                                      <TechnologyName>UIA</TechnologyName>
-                                      <WindowTitles>
-                                        <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
-                                      </WindowTitles>
-                                      <AndCondition>
-                                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                        <PropertyCondition Name="ControlType">ComboBox</PropertyCondition>
-                                        <PropertyCondition Name="AutomationId">UI_SomeVariabletxt_AutoID</PropertyCondition>
-                                      </AndCondition>
-                                      <SupportLevel>0</SupportLevel>
-                                      <Descendants>
-                                        <UIObject ControlType="Edit" Id="InputValueText" FriendlyName="Text" SpecialControlType="None">
                                           <TechnologyName>UIA</TechnologyName>
                                           <WindowTitles>
                                             <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
@@ -23140,69 +23130,6 @@
                   </AndCondition>
                   <SupportLevel>0</SupportLevel>
                   <Descendants />
-                </UIObject>
-              </Descendants>
-            </UIObject>
-            <UIObject ControlType="Custom" Id="UIUI_ExplorerControl_ACustom" FriendlyName="UI_ExplorerControl_AutoID" SpecialControlType="None">
-              <TechnologyName>UIA</TechnologyName>
-              <WindowTitles>
-                <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
-              </WindowTitles>
-              <AndCondition>
-                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                <PropertyCondition Name="ControlType">Custom</PropertyCondition>
-                <PropertyCondition Name="ClassName">Uia.ExplorerView</PropertyCondition>
-                <PropertyCondition Name="AutomationId">UI_ExplorerControl_AutoID</PropertyCondition>
-              </AndCondition>
-              <SupportLevel>0</SupportLevel>
-              <Descendants>
-                <UIObject ControlType="Tree" Id="UIExplorerTreeTree" FriendlyName="ExplorerTree" SpecialControlType="None">
-                  <TechnologyName>UIA</TechnologyName>
-                  <WindowTitles>
-                    <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
-                  </WindowTitles>
-                  <AndCondition>
-                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                    <PropertyCondition Name="ControlType">Tree</PropertyCondition>
-                    <PropertyCondition Name="AutomationId">ExplorerTree</PropertyCondition>
-                  </AndCondition>
-                  <SupportLevel>0</SupportLevel>
-                  <Descendants>
-                    <UIObject ControlType="TreeItem" Id="UIInfragisticsControlsTreeItem" FriendlyName="Infragistics.Controls.Menus.XamDataTreeNodeDataCon..." SpecialControlType="None">
-                      <TechnologyName>UIA</TechnologyName>
-                      <WindowTitles>
-                        <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
-                      </WindowTitles>
-                      <SearchConfigurations>
-                        <SearchConfiguration>Expand</SearchConfiguration>
-                      </SearchConfigurations>
-                      <AndCondition>
-                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                        <PropertyCondition Name="ControlType">TreeItem</PropertyCondition>
-                        <PropertyCondition Name="Name">Infragistics.Controls.Menus.XamDataTreeNodeDataContext</PropertyCondition>
-                      </AndCondition>
-                      <SupportLevel>0</SupportLevel>
-                      <Descendants>
-                        <UIObject ControlType="TreeItem" Id="UIInfragisticsControlsTreeItem1" FriendlyName="Infragistics.Controls.Menus.XamDataTreeNodeDataCon..." SpecialControlType="None">
-                          <TechnologyName>UIA</TechnologyName>
-                          <WindowTitles>
-                            <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
-                          </WindowTitles>
-                          <SearchConfigurations>
-                            <SearchConfiguration>Distinct</SearchConfiguration>
-                            <SearchConfiguration>Expand</SearchConfiguration>
-                          </SearchConfigurations>
-                          <AndCondition>
-                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                            <PropertyCondition Name="ControlType">TreeItem</PropertyCondition>
-                            <PropertyCondition Name="Name">Infragistics.Controls.Menus.XamDataTreeNodeDataContext</PropertyCondition>
-                          </AndCondition>
-                          <SupportLevel>0</SupportLevel>
-                          <Descendants />
-                        </UIObject>
-                      </Descendants>
-                    </UIObject>
-                  </Descendants>
                 </UIObject>
               </Descendants>
             </UIObject>
