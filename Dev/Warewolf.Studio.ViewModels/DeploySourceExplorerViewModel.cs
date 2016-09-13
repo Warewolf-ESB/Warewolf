@@ -258,7 +258,7 @@ namespace Warewolf.Studio.ViewModels
         {
             if (server?.UpdateRepository != null)
             {
-                server.UpdateRepository.ItemSaved += Refresh;
+                server.UpdateRepository.ItemSaved += async refresh => await Refresh(refresh);
             }
             return new EnvironmentViewModel(server, shellViewModel, false, _selectAction);
         }

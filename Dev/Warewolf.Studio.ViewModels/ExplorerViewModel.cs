@@ -19,7 +19,6 @@ using Dev2;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Interfaces;
-using Microsoft.Practices.ObjectBuilder2;
 using Microsoft.Practices.Prism.Mvvm;
 
 // ReSharper disable MemberCanBeProtected.Global
@@ -40,11 +39,9 @@ namespace Warewolf.Studio.ViewModels
         bool _fromActivityDrop;
         bool _allowDrag;
 
-        public IPopupController PopupController { get; set; }
-
         protected ExplorerViewModelBase()
         {
-            RefreshCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(() => Refresh(true));
+            RefreshCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(async () => await Refresh(true));
             ClearSearchTextCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(() => SearchText = "");
             CreateFolderCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(CreateFolder);
         }
@@ -178,14 +175,18 @@ namespace Warewolf.Studio.ViewModels
                 await RefreshEnvironment(SelectedEnvironment, true);
             }
         }
-        protected virtual void Refresh(bool refresh)
+        protected virtual async Task Refresh(bool refresh)
         {
             IsRefreshing = true;
-            Environments.ForEach(async env => await RefreshEnvironment(env, refresh));
+            foreach (var environmentViewModel in Environments)
+            {
+                await RefreshEnvironment(environmentViewModel, refresh);
+
+            }
             Environments = new ObservableCollection<IEnvironmentViewModel>(Environments);
             foreach (var environment in Environments)
             {
-                if(environment.Children != null)
+                if (environment.Children != null)
                     environment.Children = new ObservableCollection<IExplorerItemViewModel>(environment.Children.OrderByDescending(a => a.IsFolder).ThenBy(b => b.ResourceName).ToList());
             }
             IsRefreshing = false;
@@ -286,7 +287,7 @@ namespace Warewolf.Studio.ViewModels
                 environmentViewModel.SelectAction = a => SelectedItem = a;
             }
         }
-        public IList<IExplorerItemViewModel> FindItems(Func<IExplorerItemViewModel, bool> filterFunc)
+        public IList<IExplorerItemViewModel> FindItems()
         {
             return null;
         }
@@ -438,7 +439,7 @@ namespace Warewolf.Studio.ViewModels
         {
             if (server?.UpdateRepository != null)
             {
-                server.UpdateRepository.ItemSaved += Refresh;
+                server.UpdateRepository.ItemSaved += async refresh => await Refresh(refresh);
             }
             return new EnvironmentViewModel(server, shellViewModel, false, _selectAction);
         }
