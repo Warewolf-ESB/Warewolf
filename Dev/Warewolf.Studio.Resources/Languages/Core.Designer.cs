@@ -3021,7 +3021,7 @@ namespace Warewolf.Studio.Resources.Languages {
         
         /// <summary>
         ///   Looks up a localized string similar to Any variable and/or data goes in here.
-        ///Put  the index of the string you are looking for in here..
+        ///Put the string of the index you are looking for in here..
         /// </summary>
         public static string FindIndexToolTipCharacters {
             get {
@@ -6805,6 +6805,15 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string ServerTestConnectionHelp {
             get {
                 return ResourceManager.GetString("ServerTestConnectionHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unavailable.
+        /// </summary>
+        public static string ServerVersionUnavailable {
+            get {
+                return ResourceManager.GetString("ServerVersionUnavailable", resourceCulture);
             }
         }
         

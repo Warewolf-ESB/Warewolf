@@ -43,7 +43,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             {
                 if(values == null)
                 {
-                    throw new ArgumentNullException("values");
+                    throw new ArgumentNullException(nameof(values));
                 }               
                 StringBuilder itemBeingDeleted;
                 StringBuilder pathBeingDeleted=null;
@@ -63,7 +63,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 }
                 else if(pathBeingDeleted != null)
                 {
-                    itemToDelete = new ServerExplorerItem()
+                    itemToDelete = new ServerExplorerItem
                     {
                         ResourceType =  "Folder",
                         ResourcePath = pathBeingDeleted.ToString()

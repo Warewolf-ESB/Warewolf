@@ -43,7 +43,7 @@ namespace Warewolf.Studio.Themes.Luna.XamGrid
         /// <summary>
         ///     Hack to get around the fact that the SettingsBase.Grid property setter is internal
         /// </summary>
-        public Infragistics.Controls.Grids.XamGrid Grid
+        public new Infragistics.Controls.Grids.XamGrid Grid
         {
             get
             {

@@ -16,43 +16,39 @@ namespace Dev2.Activities.Debug
 {
     public class DebugItemStaticDataParams : DebugOutputBase
     {
-        readonly string _value;
-        readonly string _labelText;
         readonly string _operand;
-        readonly string _variable;
-        readonly DebugItemResultType _type;
 
         public DebugItemStaticDataParams(string value, string labelText)
         {
-            _value = value;
-            _labelText = labelText;
-            _type = DebugItemResultType.Value;
+            Value = value;
+            LabelText = labelText;
+            Type = DebugItemResultType.Value;
         }
 
         public DebugItemStaticDataParams(string value, string variable, string labelText)
         {
-            _value = value;
-            _labelText = labelText;
-            _variable = variable;
-            _type = DebugItemResultType.Variable;
+            Value = value;
+            LabelText = labelText;
+            Variable = variable;
+            Type = DebugItemResultType.Variable;
         }
 
         public DebugItemStaticDataParams(string value, string variable, string labelText, string operand)
         {
-            _value = value;
-            _labelText = labelText;
+            Value = value;
+            LabelText = labelText;
             _operand = operand;
-            _variable = variable;
-            _type = DebugItemResultType.Variable;
+            Variable = variable;
+            Type = DebugItemResultType.Variable;
         }
 
-        public string Value => _value;
+        public string Value { get; }
 
-        public override string LabelText => _labelText;
+        public override string LabelText { get; }
 
-        public string Variable => _variable;
+        public string Variable { get; }
 
-        public DebugItemResultType Type => _type;
+        public DebugItemResultType Type { get; }
 
         public override List<IDebugItemResult> GetDebugItemResult()
         {

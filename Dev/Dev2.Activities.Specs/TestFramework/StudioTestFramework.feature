@@ -508,9 +508,25 @@ Scenario: Delete an Enabled Test
 	When I delete "Test1"
 	Then The "DeleteConfirmation" popup is shown I click Ok
 	Then there are no tests
-	#And I close the test
-	#When the test builder is open with "Workflow 3"
-	#Then there are no tests 
+
+Scenario: Delete Resource with tests
+	Given I have a resouce "PluginSource"
+	And I add "test1,test2,test3" as tests
+	Then "PluginSource" has 3 tests
+	When I delete resource "PluginSource"
+	Then "PluginSource" has 0 tests
+
+Scenario: Delete folder with resources deletes all tests
+	Given I have a folder "Home" 
+	And I have a resouce workflow "PluginSource1" inside Home
+	And I add "test 1,test 2,test 3" to "PluginSource1"
+	And I have a resouce workflow "Hello world" inside Home
+	And I add "test 4,test 5,test 6" to "Hello world"
+	Then "PluginSource1" has 3 tests
+	And "Hello world" has 3 tests
+	When I delete folder "Home"
+	Then "PluginSource1" has 0 tests
+	And "Hello world" has 0 tests
 
 Scenario: Duplicate a test
 	Given the test builder is open with "Workflow 1"
@@ -530,7 +546,7 @@ Scenario: Duplicate a test
 	When I save
 	Then Tab Header is "Workflow 1 - Tests"
 	And there are 1 tests
-	When I right click "Test 1"
+	When I click "Test 1"
 	Then Duplicate Test is visible
 	When I click duplicate 
 	Then there are 2 tests
@@ -589,6 +605,9 @@ Scenario: Run a test with single scalar inputs and outputs
 	  | Variable    | Value      |
 	  | [[Message]] | Hello Bob. |
 	And test result is Passed
+
+
+	
 
 
 

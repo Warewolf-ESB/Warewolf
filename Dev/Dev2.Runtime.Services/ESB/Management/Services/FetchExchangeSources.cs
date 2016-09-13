@@ -32,12 +32,12 @@ namespace Dev2.Runtime.ESB.Management.Services
                 var res = Resources.GetResource<ExchangeSource>(GlobalConstants.ServerWorkspaceID, a.ResourceID);
                 if (res != null)
                 {
-                    return new ExchangeSourceDefinition()
+                    return new ExchangeSourceDefinition
                     {
                         ResourceID = res.ResourceID,
                         ResourceName = res.ResourceName,
                         Name = res.ResourceName,
-                        Path = res.Path,
+                        Path = res.GetSavePath(),
                         UserName = res.UserName,
                         Password = res.Password,
                         AutoDiscoverUrl = res.AutoDiscoverUrl,

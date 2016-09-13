@@ -22,6 +22,7 @@ using Dev2.Activities.Designers2.Service;
 using Dev2.Collections;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
+using Dev2.Common.Interfaces.Security;
 using Dev2.Common.Interfaces.Threading;
 using Dev2.DataList.Contract;
 using Dev2.Network;
@@ -397,6 +398,7 @@ namespace Dev2.Activities.Designers.Tests.Service
             mockRepo.Setup(repository => repository.LoadContextualResourceModel(It.IsAny<Guid>())).Returns(resourceModel.Object);
             environment.Setup(e => e.ResourceRepository).Returns(mockRepo.Object);
             environment.Setup(a => a.HasLoadedResources).Returns(true);
+            resourceModel.Setup(r => r.UserPermissions).Returns(Permissions.Administrator);
             resourceModel.Setup(contextualResourceModel => contextualResourceModel.ResourceType).Returns(Studio.Core.AppResources.Enums.ResourceType.Service);
             //------------Execute Test---------------------------
             var model = CreateServiceDesignerViewModel(instanceID, false, new Mock<IEventAggregator>().Object, null, resourceModel);
@@ -1973,7 +1975,7 @@ namespace Dev2.Activities.Designers.Tests.Service
             model.Setup(m => m.HasErrors).Returns(() => model.Object.Errors.Count > 0);
             model.SetupProperty(m => m.IsValid);
             model.Setup(m => m.RemoveError(It.IsAny<IErrorInfo>())).Callback((IErrorInfo error) => errors.Remove(error));
-
+            model.Setup(r => r.UserPermissions).Returns(Permissions.Administrator);
             resourceRepository = new Mock<IResourceRepository>();
             resourceRepository.Setup(repository => repository.LoadContextualResourceModel(It.IsAny<Guid>())).Returns(model.Object);
             var mockEnvironmentRepository = new Mock<IEnvironmentRepository>();
@@ -2117,7 +2119,7 @@ namespace Dev2.Activities.Designers.Tests.Service
                 rootModel.Setup(m => m.Errors.Count).Returns(0);
                 rootModel.Setup(m => m.GetErrors(It.IsAny<Guid>())).Returns(new List<IErrorInfo>());
             }
-
+            rootModel.Setup(r => r.UserPermissions).Returns(Permissions.Administrator);
             var activity = new DsfActivity { ResourceID = new InArgument<Guid>(resourceID), EnvironmentID = new InArgument<Guid>(Guid.Empty), UniqueID = Guid.NewGuid().ToString(), SimulationMode = SimulationMode.OnDemand, ServiceName = name };
 
             if (type != null)

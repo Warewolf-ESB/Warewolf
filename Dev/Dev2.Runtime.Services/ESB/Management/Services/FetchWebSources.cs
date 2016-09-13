@@ -47,6 +47,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                     {
                         Name = res.ResourceName,
                         Id = res.ResourceID,
+                        Path = res.GetSavePath(),
                         UserName = res.UserName,
                         Password = res.Password,
                         AuthenticationType = res.AuthenticationType,

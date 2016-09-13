@@ -67,7 +67,7 @@
                                 Grid.Column="1"
                                 Grid.Row="0"
                                 DefaultText="[[PathToCopy]]"
-                                AllowMultilinePaste="False"
+                                AllowUserInsertLine="False"
                                 FilterType="All"
                                 WrapInBrackets="False"
                                 Text="{Binding Path=ModelItem.InputPath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"

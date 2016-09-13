@@ -2,6 +2,7 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
@@ -41,10 +42,9 @@ namespace Dev2.Runtime
 
         public void SaveTests(Guid resourceID, List<IServiceTestModelTO> serviceTestModelTos)
         {
-            var testPath = EnvironmentVariables.TestPath;
             if (serviceTestModelTos != null && serviceTestModelTos.Count>0)
             {
-                var dirPath = Path.Combine(testPath, resourceID.ToString());
+                var dirPath = GetTestPathForResourceId(resourceID);
                 _directoryWrapper.CreateIfNotExists(dirPath);
 
                 foreach (var serviceTestModelTo in serviceTestModelTos)
@@ -103,13 +103,39 @@ namespace Dev2.Runtime
 
         public void DeleteTest(Guid resourceID, string testName)
         {
-            var testPath = EnvironmentVariables.TestPath;
-            var dirPath = Path.Combine(testPath, resourceID.ToString());
+            var dirPath = GetTestPathForResourceId(resourceID);
             var testFilePath = Path.Combine(dirPath, $"{testName}.test");
             if (_fileWrapper.Exists(testFilePath))
             {
                 _fileWrapper.Delete(testFilePath);
+                List<IServiceTestModelTO> testList;
+                if(Tests.TryGetValue(resourceID, out testList))
+                {
+                    var foundTestToDelete = testList.FirstOrDefault(to => to.TestName.Equals(testName, StringComparison.InvariantCultureIgnoreCase));
+                    if (foundTestToDelete!=null)
+                    {
+                        testList.Remove(foundTestToDelete);
+                    }
+                }
             }
+        }
+
+        public void DeleteAllTests(Guid resourceId)
+        {
+            var dirPath = GetTestPathForResourceId(resourceId);
+            if (_directoryWrapper.Exists(dirPath))
+            {
+                _directoryWrapper.Delete(dirPath,true);
+                List<IServiceTestModelTO> removedTests;
+                Tests.TryRemove(resourceId, out removedTests);
+            }
+        }
+
+        private static string GetTestPathForResourceId(Guid resourceId)
+        {
+            var testPath = EnvironmentVariables.TestPath;
+            var dirPath = Path.Combine(testPath, resourceId.ToString());
+            return dirPath;
         }
     }
 }

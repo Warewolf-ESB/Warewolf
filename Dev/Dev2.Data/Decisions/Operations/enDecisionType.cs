@@ -11,6 +11,8 @@
 using System;
 using System.Linq;
 using System.Reflection;
+// ReSharper disable AutoPropertyCanBeMadeGetOnly.Global
+// ReSharper disable InconsistentNaming
 
 namespace Dev2.Data.Decisions.Operations
 {
@@ -59,9 +61,9 @@ namespace Dev2.Data.Decisions.Operations
     {
         [DecisionTypeDisplayValue("Not a Valid Decision Type")]
         Choose,
-        [DecisionTypeDisplayValue("There Is An Error")]
+        [DecisionTypeDisplayValue("There is An Error")]
         IsError,
-        [DecisionTypeDisplayValue("There Is Not An Error")]
+        [DecisionTypeDisplayValue("There is No Error")]
         IsNotError,
         [DecisionTypeDisplayValue("Is NULL")]
         IsNull,
@@ -91,9 +93,9 @@ namespace Dev2.Data.Decisions.Operations
         IsEmail,
         [DecisionTypeDisplayValue("Not Email")]
         IsNotEmail,
-        [DecisionTypeDisplayValue("Is Regular Expression")]
+        [DecisionTypeDisplayValue("Is Regex")]
         IsRegEx,
-        [DecisionTypeDisplayValue("Not Regular Expression")]
+        [DecisionTypeDisplayValue("Not Regex")]
         NotRegEx,
         [DecisionTypeDisplayValue("=")]
         IsEqual,

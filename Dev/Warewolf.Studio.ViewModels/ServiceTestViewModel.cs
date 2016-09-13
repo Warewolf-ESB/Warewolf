@@ -246,7 +246,7 @@ namespace Warewolf.Studio.ViewModels
                     return isDirty && isConnected;
                 }
                 // ReSharper disable once UnusedVariable
-                catch (Exception ex)
+                catch (Exception)
                 {
                     //if (!_errorShown)
                     //{
@@ -449,10 +449,8 @@ namespace Warewolf.Studio.ViewModels
                 catch (Exception ex)
                 {
                     Dev2Logger.Error("IServiceTestModelTO DeleteTest(IServiceTestModel model)", ex);
-                    return;
                 }
             }
-            return;
         }
 
         private ObservableCollection<IServiceTestModel> GetTests()
