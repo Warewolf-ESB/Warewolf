@@ -99,12 +99,9 @@
         <TextBlock Grid.Column="0" Grid.Row="2" Text="Contents" Margin="0,-2,0,0" />
         <ui:IntellisenseTextBox Grid.Column="1"
                                 Grid.Row="2"
-                                AllowMultilinePaste="True"                                
                                 Margin="0,-2,0,0"
-                                AcceptsReturn="True"
-                                AllowUserInsertLine="True"
+                                AllowUserInsertLine="False"
                                 Height="Auto"
-                                TextWrapping="Wrap"
                                 WrapInBrackets="False"
                                 VerticalContentAlignment="Top"
                                 Text="{Binding Path=ModelItem.FileContents, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"

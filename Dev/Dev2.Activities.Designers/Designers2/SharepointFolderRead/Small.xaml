@@ -73,6 +73,7 @@
                                 Grid.Column="1"
                                 Grid.Row="1"
                                 Grid.ColumnSpan="2"
+                                AllowUserInsertLine="False"
                                 DefaultText="[[SharePoint Path]]"
                                 Margin="{StaticResource ControlBorderTop}"
                                 Text="{Binding Path=ModelItem.ServerInputPath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
