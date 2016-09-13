@@ -71,6 +71,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                     };
                     item = ServerExplorerRepo.DeleteItem(itemToDelete, GlobalConstants.ServerWorkspaceID);
                 }
+                ServerExplorerRepo.Load(GlobalConstants.ServerWorkspaceID, true);
             }
             catch(Exception e)
             {
