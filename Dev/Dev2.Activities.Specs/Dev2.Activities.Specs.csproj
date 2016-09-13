@@ -52,10 +52,10 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="TestFramework\StudioTestFramework.feature.cs">
-      <DependentUpon>StudioTestFramework.feature</DependentUpon>
+    <Compile Include="TestFramework\StudioTestFramework1.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
+      <DependentUpon>StudioTestFramework.feature</DependentUpon>
     </Compile>
     <Compile Include="TestFramework\TestFrameworkSteps.cs" />
     <Compile Include="TestFramework\XmlResource.cs" />
@@ -268,7 +268,7 @@
     </None>
     <None Include="TestFramework\StudioTestFramework.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>StudioTestFramework.feature.cs</LastGenOutput>
+      <LastGenOutput>StudioTestFramework1.feature.cs</LastGenOutput>
     </None>
   </ItemGroup>
   <ItemGroup>
