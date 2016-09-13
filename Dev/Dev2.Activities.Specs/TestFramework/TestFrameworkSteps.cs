@@ -68,10 +68,9 @@ namespace Dev2.Activities.Specs.TestFramework
             ScenarioContext.Add($"{workflowName}dataListViewModel", datalistViewModel);
             var popupController = new Mock<Common.Interfaces.Studio.Controller.IPopupController>();
             popupController.Setup(controller => controller.ShowDeleteConfirmation(It.IsAny<string>())).Returns(MessageBoxResult.Yes);
-            popupController.Setup(controller => controller.Show(It.IsAny<string>(), It.IsAny<string>(), MessageBoxButton.OK, MessageBoxImage.Error, null, false, true, false, false)
-                                                                ).Verifiable();
+            popupController.Setup(controller => controller.Show(It.IsAny<string>(), It.IsAny<string>(), MessageBoxButton.OK, MessageBoxImage.Error, null, false, true, false, false)).Verifiable();
+            popupController.Setup(controller => controller.Show(It.IsAny<string>(), It.IsAny<string>(), MessageBoxButton.OK, MessageBoxImage.Information, null, false, true, false, false)).Verifiable();
             CustomContainer.Register(popupController.Object);
-
             ScenarioContext["popupController"] = popupController;
 
         }
@@ -86,7 +85,7 @@ namespace Dev2.Activities.Specs.TestFramework
             var sourcesPath = EnvironmentVariables.ResourcePath;
             Directory.CreateDirectory(sourcesPath);
             var resourceId = Guid.NewGuid();
-            ScenarioContext.Add(resourceName+"id", resourceId);
+            ScenarioContext.Add(resourceName + "id", resourceId);
             ResourceName = resourceName + resourceId;
             var pluginResource = GetPluginResource(resourceId, ResourceName);
             // ReSharper disable once UnusedVariable
@@ -135,7 +134,7 @@ namespace Dev2.Activities.Specs.TestFramework
         public void WhenIDeleteResource(string resourceName)
         {
 
-            var resourceID = ScenarioContext.Get<Guid>(resourceName+"id");
+            var resourceID = ScenarioContext.Get<Guid>(resourceName + "id");
             // ReSharper disable once UnusedVariable
             var resource1 = ResourceCatalog.Instance.GetResource(GlobalConstants.ServerWorkspaceID, resourceID);
             DeleteResource(resource1);
@@ -288,6 +287,7 @@ namespace Dev2.Activities.Specs.TestFramework
         }
 
         [When(@"The Confirmation popup is shown I click Ok")]
+        [Then(@"The Confirmation popup is shown I click Ok")]
         public void WhenTheConfirmationPopupIsShownIClickOk()
         {
             Mock<Common.Interfaces.Studio.Controller.IPopupController> popupController = ScenarioContext.Get<Mock<Common.Interfaces.Studio.Controller.IPopupController>>("popupController");
@@ -732,6 +732,24 @@ namespace Dev2.Activities.Specs.TestFramework
             // ReSharper disable once PossibleNullReferenceException
             mock.VerifyAll();
         }
+
+        [Then(@"The Pending Changes Confirmation popup is shown I click Ok")]
+        public void ThenThePendingChangesConfirmationPopupIsShownIClickOk()
+        {
+            var mock = (Mock<Common.Interfaces.Studio.Controller.IPopupController>)ScenarioContext["popupController"];
+            mock.Verify(controller => controller.Show(It.IsAny<string>(), It.IsAny<string>(), MessageBoxButton.OK, MessageBoxImage.Information, null, false, true, false, false));
+        }
+
+        [Then(@"Error is ""(.*)""")]
+        public void ThenErrorIs(string hasError)
+        {
+            var error = bool.Parse(hasError);
+            ServiceTestViewModel serviceTest = GetTestFrameworkFromContext();
+            var errorExpected = serviceTest.SelectedServiceTest.ErrorExpected;
+            Assert.AreEqual(error, errorExpected);
+        }
+
+
 
         [When(@"test is disabled")]
         public void WhenTestIsDisabled()

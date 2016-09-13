@@ -416,6 +416,8 @@ namespace Warewolf.Studio.ViewModels
             return serviceTestModel;
         }
 
+
+
         public ICommand DeleteTestCommand { get; set; }
         public ICommand DuplicateTestCommand { get; set; }
         public ICommand RunAllTestsInBrowserCommand { get; set; }
@@ -447,8 +449,12 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
+
+
         public void Dispose()
         {
+
+            
         }
 
         public void UpdateHelpDescriptor(string helpText)
