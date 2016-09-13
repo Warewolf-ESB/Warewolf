@@ -110,6 +110,11 @@
   <ItemGroup>
     <Compile Include="DeployDestinationViewModelForTesting.cs" />
     <Compile Include="DeploySourceExplorerViewModelForTesting.cs" />
+    <Compile Include="DeployTab1.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DeployTab.feature</DependentUpon>
+    </Compile>
     <Compile Include="DeployTabSteps.cs" />
     <Compile Include="..\AssemblyCommonInfo.cs">
       <Link>Properties\AssemblyCommonInfo.cs</Link>
