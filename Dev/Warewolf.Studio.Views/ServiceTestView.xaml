@@ -135,12 +135,28 @@
                                             Grid.RowSpan="2" 
                                             Command="{Binding ElementName=TestsListbox, Path=DataContext.RunSelectedTestCommand }" 
                                             CommandParameter="{Binding .}" 
+                                            Visibility="{Binding IsTestRunning, Converter={StaticResource BoolToVisibilityConverterPositive}}"
                                             Style="{StaticResource ButtonRunTestTransparentStyle}" >
                                         <Button.Content>
                                             <fa:FontAwesome Icon="Play" FontSize="18"/>
                                         </Button.Content>
                                         <i:Interaction.Behaviors>
                                             <core:HelpSetter Text="{x:Static languages:Core.ServiceTestRunSelectedTestHelpText}" DataContext="{Binding}" />
+                                        </i:Interaction.Behaviors>
+                                    </Button>
+
+                                    <Button Grid.Column="3" 
+                                            Grid.Row="0" 
+                                            Grid.RowSpan="2" 
+                                            Command="{Binding ElementName=TestsListbox, Path=DataContext.StopTestCommand }" 
+                                            CommandParameter="{Binding .}" 
+                                            Visibility="{Binding IsTestRunning, Converter={StaticResource BoolToVisibilityConverterPositive}}"
+                                            Style="{StaticResource ButtonStopTestTransparentStyle}" >
+                                        <Button.Content>
+                                            <fa:FontAwesome Icon="Stop" FontSize="18"/>
+                                        </Button.Content>
+                                        <i:Interaction.Behaviors>
+                                            <core:HelpSetter Text="{x:Static languages:Core.ServiceTestStopSelectedTestHelpText}" DataContext="{Binding}" />
                                         </i:Interaction.Behaviors>
                                     </Button>
 

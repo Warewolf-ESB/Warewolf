@@ -33,7 +33,7 @@ Scenario: Create New Test
 	And there are no tests
 	When I click New Test
 	Then a new test is added
-	#And Tab Header is "Workflow 1 - Tests *"
+	And Tab Header is "Workflow 1 - Tests *"
 	And test name starts with "Test 1"
 	And username is blank
 	And password is blank
@@ -53,7 +53,7 @@ Scenario: Create New Test with Service that as recordset inputs
 	And there are no tests
 	When I click New Test
 	Then a new test is added
-	#And Tab Header is "Workflow 2 - Tests *"
+	And Tab Header is "Workflow 2 - Tests *"
 	And test name starts with "Test 1"
 	And username is blank
 	And password is blank
@@ -78,7 +78,7 @@ Scenario: Save a New Test
 	And there are no tests
 	And I click New Test
 	Then a new test is added
-	#And Tab Header is "Workflow 1 - Tests *"
+	And Tab Header is "Workflow 1 - Tests *"
 	And test name starts with "Test 1"
 	And inputs are
 	| Variable Name | Value |
@@ -104,6 +104,228 @@ Scenario: Save a New Test
 	| outputValue   |       |
 	And save is disabled
 
+Scenario: Save a New Test fails when workflow deleted
+	Given the test builder is open with "Workflow 1"
+	And Tab Header is "Workflow 1 - Tests"
+	And there are no tests
+	And I click New Test
+	Then a new test is added
+	And Tab Header is "Workflow 1 - Tests *"
+	And test name starts with "Test 1"
+	And inputs are
+	| Variable Name | Value |
+	| a             |       |
+	And outputs as
+	| Variable Name | Value |
+	| outputValue   |       |
+	And save is enabled
+	When "Workflow 1" is deleted
+	When I save
+	Then The "Workflow Deleted" popup is shown I click Ok
+	And the tab is closed
+
+Scenario: Create New Test fails when workflow deleted
+	Given the test builder is open with "Workflow 1"
+	And Tab Header is "Workflow 1 - Tests"
+	And there are no tests
+	When "Workflow 1" is deleted
+	And I click New Test
+	Then The "Workflow Deleted" popup is shown I click Ok
+	And the tab is closed
+
+Scenario: Delete Test fails when workflow deleted
+	Given the test builder is open with "Workflow 1"
+	And Tab Header is "Workflow 1 - Tests"
+	And there are no tests
+	And I click New Test
+	Then a new test is added
+	And Tab Header is "Workflow 1 - Tests *"
+	And test name starts with "Test 1"
+	And inputs are
+	| Variable Name | Value |
+	| a             |       |
+	And outputs as
+	| Variable Name | Value |
+	| outputValue   |       |
+	And save is enabled
+	When I save
+	Then Tab Header is "Workflow 1 - Tests"
+	And I close the test builder
+	When the test builder is open with "Workflow 1"
+	Then there are 1 tests
+	And "Dummy Test" is selected
+	And I select "Test 1"
+	And "Test 1" is selected
+	And test name starts with "Test 1"
+	And inputs are
+	| Variable Name | Value |
+	| a             |       |
+	And outputs as
+	| Variable Name | Value |
+	| outputValue   |       |
+	And save is disabled
+	When "Workflow 1" is deleted
+	And I click delete test
+	Then The "Workflow Deleted" popup is shown I click Ok
+	And the tab is closed
+
+Scenario: Duplicate Test fails when workflow deleted
+	Given the test builder is open with "Workflow 1"
+	And Tab Header is "Workflow 1 - Tests"
+	And there are no tests
+	And I click New Test
+	Then a new test is added
+	And Tab Header is "Workflow 1 - Tests *"
+	And test name starts with "Test 1"
+	And inputs are
+	| Variable Name | Value |
+	| a             |       |
+	And outputs as
+	| Variable Name | Value |
+	| outputValue   |       |
+	And save is enabled
+	When I save
+	Then Tab Header is "Workflow 1 - Tests"
+	And I close the test builder
+	When the test builder is open with "Workflow 1"
+	Then there are 1 tests
+	And "Dummy Test" is selected
+	And I select "Test 1"
+	And "Test 1" is selected
+	And test name starts with "Test 1"
+	And inputs are
+	| Variable Name | Value |
+	| a             |       |
+	And outputs as
+	| Variable Name | Value |
+	| outputValue   |       |
+	And save is disabled
+	When "Workflow 1" is deleted
+	And I click duplicate 
+	Then The "Workflow Deleted" popup is shown I click Ok
+	And the tab is closed
+
+Scenario: Run Selected Test fails when workflow deleted
+	Given the test builder is open with "Workflow 1"
+	And Tab Header is "Workflow 1 - Tests"
+	And there are no tests
+	And I click New Test
+	Then a new test is added
+	And Tab Header is "Workflow 1 - Tests *"
+	And test name starts with "Test 1"
+	And inputs are
+	| Variable Name | Value |
+	| a             |       |
+	And outputs as
+	| Variable Name | Value |
+	| outputValue   |       |
+	And save is enabled
+	When I save
+	Then Tab Header is "Workflow 1 - Tests"
+	And I close the test builder
+	When the test builder is open with "Workflow 1"
+	Then there are 1 tests
+	And "Dummy Test" is selected
+	And I select "Test 1"
+	And "Test 1" is selected
+	And test name starts with "Test 1"
+	And inputs are
+	| Variable Name | Value |
+	| a             |       |
+	And outputs as
+	| Variable Name | Value |
+	| outputValue   |       |
+	And save is disabled
+	When "Workflow 1" is deleted
+	And I run selected test
+	Then The "Workflow Deleted" popup is shown I click Ok
+	And the tab is closed
+
+Scenario: Run Selected Test in browser fails when workflow deleted
+	Given the test builder is open with "Workflow 1"
+	And Tab Header is "Workflow 1 - Tests"
+	And there are no tests
+	And I click New Test
+	Then a new test is added
+	And Tab Header is "Workflow 1 - Tests *"
+	And test name starts with "Test 1"
+	And inputs are
+	| Variable Name | Value |
+	| a             |       |
+	And outputs as
+	| Variable Name | Value |
+	| outputValue   |       |
+	And save is enabled
+	When I save
+	Then Tab Header is "Workflow 1 - Tests"
+	And I close the test builder
+	When the test builder is open with "Workflow 1"
+	Then there are 1 tests
+	And "Dummy Test" is selected
+	And I select "Test 1"
+	And "Test 1" is selected
+	And test name starts with "Test 1"
+	And inputs are
+	| Variable Name | Value |
+	| a             |       |
+	And outputs as
+	| Variable Name | Value |
+	| outputValue   |       |
+	And save is disabled
+	When "Workflow 1" is deleted
+	And I run selected test in browser
+	Then The "Workflow Deleted" popup is shown I click Ok
+	And the tab is closed
+
+Scenario: Run All Tests fails when workflow deleted
+	Given the test builder is open with "Workflow 1"
+	And Tab Header is "Workflow 1 - Tests"
+	And there are no tests
+	And I click New Test
+	Then a new test is added
+	And Tab Header is "Workflow 1 - Tests *"
+	And test name starts with "Test 1"
+	And inputs are
+	| Variable Name | Value |
+	| a             |       |
+	And outputs as
+	| Variable Name | Value |
+	| outputValue   |       |
+	And save is enabled
+	When I save
+	Then Tab Header is "Workflow 1 - Tests"
+	And I close the test builder
+	When the test builder is open with "Workflow 1"
+	Then there are 1 tests
+	When "Workflow 1" is deleted
+	And I run all tests
+	Then The "Workflow Deleted" popup is shown I click Ok
+	And the tab is closed
+
+Scenario: Run All Tests in browser fails when workflow deleted
+	Given the test builder is open with "Workflow 1"
+	And Tab Header is "Workflow 1 - Tests"
+	And there are no tests
+	And I click New Test
+	Then a new test is added
+	And Tab Header is "Workflow 1 - Tests *"
+	And test name starts with "Test 1"
+	And inputs are
+	| Variable Name | Value |
+	| a             |       |
+	And outputs as
+	| Variable Name | Value |
+	| outputValue   |       |
+	And save is enabled
+	When I save
+	Then Tab Header is "Workflow 1 - Tests"
+	And I close the test builder
+	When the test builder is open with "Workflow 1"
+	Then there are 1 tests
+	When "Workflow 1" is deleted
+	And I run all tests in browser
+	Then The "Workflow Deleted" popup is shown I click Ok
+	And the tab is closed
 
 Scenario: Edit existing test validate star	
 	Given the test builder is open with "Workflow 3"
@@ -206,7 +428,7 @@ Scenario: Rename existing test
 	And I select "testing2"
 	And Test name is "testing2"
 
-Scenario: Loading exisiting Tests has correct Name for display
+Scenario: Loading existing Tests has correct Name for display
 	Given the test builder is open with "Workflow 3"
 	And Tab Header is "Workflow 3 - Tests"
 	And there are no tests
@@ -242,7 +464,7 @@ Scenario: Loading existing Tests has correct Test Status
 	Then there are 1 tests
 	And Test Status is "TestPending"
 
-Scenario: Loading exisiting Tests  	
+Scenario: Loading existing Tests  	
 	Given the test builder is open with "Workflow 3"
 	And Tab Header is "Workflow 3 - Tests"
 	And there are no tests
@@ -305,7 +527,7 @@ Scenario: Delete an Enabled Test
 	When I enable "Test1"
 	Then Delete is disabled for "Test1"
 	When I delete "Test1"
-	When The Confirmation popup is shown I click Ok
+	Then The "DeleteConfirmation" popup is shown I click Ok
 	Then there are no tests
 
 Scenario: Saved workflow with tests changes the inputs

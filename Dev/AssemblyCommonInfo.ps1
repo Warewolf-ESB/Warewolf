@@ -98,7 +98,8 @@ $Line3 = "[<assembly: AssemblyCompany(""Warewolf"")>]"
 $Line4 = "[<assembly: AssemblyProduct(""Warewolf"")>]"
 $Line5 = "[<assembly: AssemblyCopyright(""Copyright Warewolf " + (Get-Date).year + """)>]"
 $Line6 = "[<assembly: AssemblyVersion(""" + $FullVersionString + """)>]"
-$Line7 = "[<assembly: AssemblyInformationalVersion(""" + $GitCommitTime + " " + $GitCommitID + """)>]"
+# Ashley: F# Compile thinks this is invalid for some reason
+#$Line7 = "[<assembly: AssemblyInformationalVersion(""" + $GitCommitTime + " " + $GitCommitID + """)>]"
 $Line8 = "do()"
 Write-Host $Line1
 $Line1 | Out-File -LiteralPath $FSharpVersionFile -Encoding utf8 -Force

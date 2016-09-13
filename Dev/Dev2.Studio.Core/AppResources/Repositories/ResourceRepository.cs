@@ -151,7 +151,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
 
 
 
-        public void LoadResourceFromWorkspace(Guid resourceId, Guid? workspaceId)
+        public IResourceModel LoadResourceFromWorkspace(Guid resourceId, Guid? workspaceId)
         {
             var con = _environmentModel.Connection;
             var comsController = new CommunicationController { ServiceName = "FindResourcesByID" };
@@ -172,7 +172,9 @@ namespace Dev2.Studio.Core.AppResources.Repositories
                 {
                     _resourceModels.Add(resource);
                 }
+                return resource;
             }
+            return null;
         }
 
         public ICollection<IResourceModel> All()

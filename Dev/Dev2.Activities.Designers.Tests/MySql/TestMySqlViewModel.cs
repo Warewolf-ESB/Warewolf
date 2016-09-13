@@ -247,6 +247,28 @@ namespace Dev2.Activities.Designers.Tests.MySql
             Assert.AreEqual(0, mySql.ManageServiceInputViewModel.Errors.Count);
         }
 
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("SqlServer_Refresh")]
+        public void MySql_Refresh_ShouldLoadRefreshActions()
+        {
+            //------------Setup for test--------------------------
+            var id = Guid.NewGuid();
+            var mod = new MySqlModel();
+            var act = new DsfMySqlDatabaseActivity();
+            var sqlServer = new MySqlDatabaseDesignerViewModel(ModelItemUtils.CreateModelItem(act), mod);
+            sqlServer.ManageServiceInputViewModel = new InputViewForTest(sqlServer, mod);
+            sqlServer.SourceRegion.SelectedSource = sqlServer.SourceRegion.Sources.First();
+            //------------Execute Test---------------------------
+            sqlServer.ActionRegion.RefreshActionsCommand.Execute(null);
+
+            //------------Assert Results-------------------------
+            Assert.IsTrue(sqlServer.SourceRegion.IsEnabled);
+            Assert.AreEqual(2, sqlServer.ActionRegion.Actions.Count);
+        }
+
+
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory("MySql_TestAction")]
@@ -316,6 +338,20 @@ namespace Dev2.Activities.Designers.Tests.MySql
             }
         };
 
+        public ObservableCollection<IDbAction> _refreshActions = new ObservableCollection<IDbAction>
+        {
+            new DbAction()
+            {
+                Name = "mob",
+                Inputs = new List<IServiceInput>() { new ServiceInput("[[a]]", "asa") }
+            },
+            new DbAction()
+            {
+                Name = "arefreshOne",
+                Inputs = new List<IServiceInput>() { new ServiceInput("[[b]]", "bsb") }
+            }
+        };
+
         public bool HasRecError { get; set; }
 
         #region Implementation of IDbServiceModel
@@ -332,7 +368,13 @@ namespace Dev2.Activities.Designers.Tests.MySql
             return Actions;
         }
 
+        public ICollection<IDbAction> RefreshActions(IDbSource source)
+        {
+            return RefreshActionsList;
+        }
+
         public ICollection<IDbAction> Actions => _actions;
+        public ICollection<IDbAction> RefreshActionsList => _refreshActions;
 
         public void CreateNewSource()
         {

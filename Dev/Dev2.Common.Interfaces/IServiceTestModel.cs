@@ -30,6 +30,7 @@ namespace Dev2.Common.Interfaces
         bool IsDirty { get; }
         bool UserAuthenticationSelected { get; }
         bool NewTest { get; set; }
+        bool IsTestRunning { get; set; }
         void SetItem(IServiceTestModel model);
     }
 

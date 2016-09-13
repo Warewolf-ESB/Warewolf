@@ -46,6 +46,6 @@
 
         public delegate void OpeningEventHandler(object sender, ContextMenuOpeningEventArgs e);
 
-        public event OpeningEventHandler ContextMenuOpening;
+        public new event OpeningEventHandler ContextMenuOpening;
     }
 }

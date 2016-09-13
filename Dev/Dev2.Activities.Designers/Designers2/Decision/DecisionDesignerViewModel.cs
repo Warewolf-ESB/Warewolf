@@ -48,7 +48,7 @@ namespace Dev2.Activities.Designers2.Decision
             AddTitleBarLargeToggle();
             Collection = new ObservableCollection<IDev2TOFn>();
             Collection.CollectionChanged += CollectionCollectionChanged;
-            var collection = FindRecsetOptions.FindAll().Select(c => c.HandlesType());
+            var collection = FindRecsetOptions.FindAllDecision().Select(c => c.HandlesType());
             WhereOptions = new ObservableCollection<string>(collection);
             SearchTypeUpdatedCommand = new DelegateCommand(OnSearchTypeChanged);
             _isInitializing = true;
@@ -242,7 +242,7 @@ namespace Dev2.Activities.Designers2.Decision
 
         public bool IsFalseArmFocused { get { return (bool)GetValue(IsFalseArmFocusedProperty); } set { SetValue(IsFalseArmFocusedProperty, value); } }
         public static readonly DependencyProperty IsFalseArmFocusedProperty = DependencyProperty.Register("IsFalseArmFocused", typeof(bool), typeof(DecisionDesignerViewModel), new PropertyMetadata(default(bool)));
-        private bool _isInitializing;
+        private readonly bool _isInitializing;
 
 
         void OnSearchTypeChanged(object indexObj)

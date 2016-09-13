@@ -1,8 +1,8 @@
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading.Tasks;
 using Dev2.Common.Interfaces;
-using Microsoft.Practices.ObjectBuilder2;
 
 namespace Warewolf.Studio.ViewModels
 {
@@ -46,32 +46,32 @@ namespace Warewolf.Studio.ViewModels
         }
         private bool FilterByType { get; set; }
 
-        protected override void Refresh(bool refresh)
+        protected override async Task Refresh(bool refresh)
         {
             IsRefreshing = true;
-            Environments.ForEach(async model =>
+            foreach (var environmentViewModel in Environments)
             {
-                if (model.IsConnected)
+                if (environmentViewModel.IsConnected)
                 {
-                    await model.LoadDialog(_selectedId);
-                    if (!string.IsNullOrEmpty(SearchText))
-                    {
-                        if (FilterByType)
-                        {
-                            Environments.First().Filter(a => a.ResourceName.ToUpper().Contains(SearchText.ToUpper()) && (a.ResourceType == "Folder" || a.ResourceType == "WorkflowService"));
-                        }
-                        else
-                        {
-                            Environments.First().Filter(a => a.ResourceName.ToUpper().Contains(SearchText.ToUpper()));
-                        }
-                    }
-                    else
-                    {
-                        if (FilterByType)
-                            Environments.First().Filter(a => a.ResourceType == "Folder" || a.ResourceType == "WorkflowService");
-                    }
+                    await environmentViewModel.LoadDialog(_selectedId);
                 }
-            });
+            }
+            if (!string.IsNullOrEmpty(SearchText))
+            {
+                if (FilterByType)
+                {
+                    Environments.First().Filter(a => a.ResourceName.ToUpper().Contains(SearchText.ToUpper()) && (a.ResourceType == "Folder" || a.ResourceType == "WorkflowService"));
+                }
+                else
+                {
+                    Environments.First().Filter(a => a.ResourceName.ToUpper().Contains(SearchText.ToUpper()));
+                }
+            }
+            else
+            {
+                if (FilterByType)
+                    Environments.First().Filter(a => a.ResourceType == "Folder" || a.ResourceType == "WorkflowService");
+            }
             IsRefreshing = false;
         }
     }

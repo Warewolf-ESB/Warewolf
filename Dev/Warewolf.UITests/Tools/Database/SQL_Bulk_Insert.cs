@@ -1,14 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text.RegularExpressions;
-using System.Windows.Input;
-using System.Windows.Forms;
-using System.Drawing;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Microsoft.VisualStudio.TestTools.UITest.Extension;
-using Keyboard = Microsoft.VisualStudio.TestTools.UITesting.Keyboard;
-
 
 namespace Warewolf.UITests.Tools
 {
@@ -16,7 +8,7 @@ namespace Warewolf.UITests.Tools
     public class SQL_Bulk_Insert
     {
         [TestMethod]
-		[TestCategory("Tools")]
+        [TestCategory("Tools")]
         public void SQLBulkInsertToolUITest()
         {
             Uimap.Drag_Toolbox_SQL_Bulk_Insert_Onto_DesignSurface();
@@ -75,5 +67,20 @@ namespace Warewolf.UITests.Tools
         private UIMap _uiMap;
 
         #endregion
+
+        public UIMap UIMap
+        {
+            get
+            {
+                if ((this.map == null))
+                {
+                    this.map = new UIMap();
+                }
+
+                return this.map;
+            }
+        }
+
+        private UIMap map;
     }
 }
