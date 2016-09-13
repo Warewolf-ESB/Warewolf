@@ -358,11 +358,11 @@ namespace Warewolf.UITests
         public void Click_Close_Dependecy_Tab()
         {
             #region Variable Declarations
-            WpfButton uIItemButton = this.UIWarewolfDEV2SANELEMTWindow.UIUI_SplitPane_AutoIDCustom.UIUI_TabManager_AutoIDTabList.UIDev2StudioViewModelsTabPage.UIItemButton;
+            WpfButton closeButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DependencyGraphTab.CloseButton;
             #endregion
 
             // Click '' button
-            Mouse.Click(uIItemButton, new Point(13, 10));
+            Mouse.Click(closeButton, new Point(13, 10));
         }
         
         /// <summary>
@@ -5930,6 +5930,19 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
+        /// Select_Show_Version_History
+        /// </summary>
+        public void Select_Show_Version_History()
+        {
+            #region Variable Declarations
+            WpfMenuItem showVersionHistory = this.MainStudioWindow.ExplorerContextMenu.ShowVersionHistory;
+            #endregion
+
+            // Click 'Show Version History' menu item
+            Mouse.Click(showVersionHistory, new Point(66, 15));
+        }
+        
+        /// <summary>
         /// Select_ShowLargeView_FromContextMenu
         /// </summary>
         public void Select_ShowLargeView_FromContextMenu()
@@ -6065,19 +6078,6 @@ namespace Warewolf.UITests
             // Verify that the 'Enabled' property of 'Test Connection' button equals 'True'
             Assert.AreEqual(this.Type_TestSite_into_Web_Source_Wizard_Address_TextboxParams.TestConnectionButtonEnabled, testConnectionButton.Enabled, "New web source wizard test connection button is not enabled after entering a vali" +
                     "d web address.");
-        }
-        
-        /// <summary>
-        /// Select_Show_Version_History
-        /// </summary>
-        public void Select_Show_Version_History()
-        {
-            #region Variable Declarations
-            WpfMenuItem showVersionHistory = this.MainStudioWindow.ExplorerContextMenu.ShowVersionHistory;
-            #endregion
-
-            // Click 'Show Version History' menu item
-            Mouse.Click(showVersionHistory, new Point(66, 15));
         }
         
         #region Properties
@@ -8504,18 +8504,6 @@ namespace Warewolf.UITests
                 return this.mUIItemWindow;
             }
         }
-        
-        public UIWarewolfDEV2SANELEMTWindow UIWarewolfDEV2SANELEMTWindow
-        {
-            get
-            {
-                if ((this.mUIWarewolfDEV2SANELEMTWindow == null))
-                {
-                    this.mUIWarewolfDEV2SANELEMTWindow = new UIWarewolfDEV2SANELEMTWindow();
-                }
-                return this.mUIWarewolfDEV2SANELEMTWindow;
-            }
-        }
         #endregion
         
         #region Fields
@@ -8922,8 +8910,6 @@ namespace Warewolf.UITests
         private SwitchCaseDialog mSwitchCaseDialog;
         
         private UIItemWindow mUIItemWindow;
-        
-        private UIWarewolfDEV2SANELEMTWindow mUIWarewolfDEV2SANELEMTWindow;
         #endregion
     }
     
@@ -29300,10 +29286,28 @@ namespace Warewolf.UITests
                 return this.mWorksurfaceContext;
             }
         }
+        
+        public WpfButton CloseButton
+        {
+            get
+            {
+                if ((this.mCloseButton == null))
+                {
+                    this.mCloseButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mCloseButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "closeBtn";
+                    this.mCloseButton.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mCloseButton;
+            }
+        }
         #endregion
         
         #region Fields
         private WorksurfaceContext6 mWorksurfaceContext;
+        
+        private WpfButton mCloseButton;
         #endregion
     }
     
@@ -37414,306 +37418,6 @@ namespace Warewolf.UITests
         
         #region Fields
         private WinList mUIItemList;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class UIWarewolfDEV2SANELEMTWindow : WpfWindow
-    {
-        
-        public UIWarewolfDEV2SANELEMTWindow()
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfWindow.PropertyNames.Name] = "Warewolf (DEV2\\SANELE.MTHEMBU)";
-            this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
-            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
-            #endregion
-        }
-        
-        #region Properties
-        public UIUI_SplitPane_AutoIDCustom UIUI_SplitPane_AutoIDCustom
-        {
-            get
-            {
-                if ((this.mUIUI_SplitPane_AutoIDCustom == null))
-                {
-                    this.mUIUI_SplitPane_AutoIDCustom = new UIUI_SplitPane_AutoIDCustom(this);
-                }
-                return this.mUIUI_SplitPane_AutoIDCustom;
-            }
-        }
-        
-        public UIExplorerMenuMenu UIExplorerMenuMenu
-        {
-            get
-            {
-                if ((this.mUIExplorerMenuMenu == null))
-                {
-                    this.mUIExplorerMenuMenu = new UIExplorerMenuMenu(this);
-                }
-                return this.mUIExplorerMenuMenu;
-            }
-        }
-        
-        public UIUI_ExplorerControl_ACustom UIUI_ExplorerControl_ACustom
-        {
-            get
-            {
-                if ((this.mUIUI_ExplorerControl_ACustom == null))
-                {
-                    this.mUIUI_ExplorerControl_ACustom = new UIUI_ExplorerControl_ACustom(this);
-                }
-                return this.mUIUI_ExplorerControl_ACustom;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private UIUI_SplitPane_AutoIDCustom mUIUI_SplitPane_AutoIDCustom;
-        
-        private UIExplorerMenuMenu mUIExplorerMenuMenu;
-        
-        private UIUI_ExplorerControl_ACustom mUIUI_ExplorerControl_ACustom;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class UIUI_SplitPane_AutoIDCustom : WpfCustom
-    {
-        
-        public UIUI_SplitPane_AutoIDCustom(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.SplitPane";
-            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "UI_SplitPane_AutoID";
-            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
-            #endregion
-        }
-        
-        #region Properties
-        public UIUI_TabManager_AutoIDTabList UIUI_TabManager_AutoIDTabList
-        {
-            get
-            {
-                if ((this.mUIUI_TabManager_AutoIDTabList == null))
-                {
-                    this.mUIUI_TabManager_AutoIDTabList = new UIUI_TabManager_AutoIDTabList(this);
-                }
-                return this.mUIUI_TabManager_AutoIDTabList;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private UIUI_TabManager_AutoIDTabList mUIUI_TabManager_AutoIDTabList;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class UIUI_TabManager_AutoIDTabList : WpfTabList
-    {
-        
-        public UIUI_TabManager_AutoIDTabList(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfTabList.PropertyNames.AutomationId] = "UI_TabManager_AutoID";
-            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
-            #endregion
-        }
-        
-        #region Properties
-        public UIDev2StudioViewModelsTabPage UIDev2StudioViewModelsTabPage
-        {
-            get
-            {
-                if ((this.mUIDev2StudioViewModelsTabPage == null))
-                {
-                    this.mUIDev2StudioViewModelsTabPage = new UIDev2StudioViewModelsTabPage(this);
-                }
-                return this.mUIDev2StudioViewModelsTabPage;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private UIDev2StudioViewModelsTabPage mUIDev2StudioViewModelsTabPage;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class UIDev2StudioViewModelsTabPage : WpfTabPage
-    {
-        
-        public UIDev2StudioViewModelsTabPage(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfTabPage.PropertyNames.Name] = "Dev2.Studio.ViewModels.DependencyVisualization.DependencyVisualiserViewModel";
-            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
-            #endregion
-        }
-        
-        #region Properties
-        public WpfButton UIItemButton
-        {
-            get
-            {
-                if ((this.mUIItemButton == null))
-                {
-                    this.mUIItemButton = new WpfButton(this);
-                    #region Search Criteria
-                    this.mUIItemButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "closeBtn";
-                    this.mUIItemButton.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
-                    #endregion
-                }
-                return this.mUIItemButton;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfButton mUIItemButton;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class UIExplorerMenuMenu : WpfMenu
-    {
-        
-        public UIExplorerMenuMenu(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfMenu.PropertyNames.AutomationId] = "ExplorerMenu";
-            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
-            #endregion
-        }
-        
-        #region Properties
-        public WpfMenuItem UIShowVersionHistoryMenuItem
-        {
-            get
-            {
-                if ((this.mUIShowVersionHistoryMenuItem == null))
-                {
-                    this.mUIShowVersionHistoryMenuItem = new WpfMenuItem(this);
-                    #region Search Criteria
-                    this.mUIShowVersionHistoryMenuItem.SearchProperties[WpfMenuItem.PropertyNames.AutomationId] = "ShowHideVersions";
-                    this.mUIShowVersionHistoryMenuItem.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
-                    #endregion
-                }
-                return this.mUIShowVersionHistoryMenuItem;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfMenuItem mUIShowVersionHistoryMenuItem;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class UIUI_ExplorerControl_ACustom : WpfCustom
-    {
-        
-        public UIUI_ExplorerControl_ACustom(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ExplorerView";
-            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "UI_ExplorerControl_AutoID";
-            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
-            #endregion
-        }
-        
-        #region Properties
-        public UIExplorerTreeTree UIExplorerTreeTree
-        {
-            get
-            {
-                if ((this.mUIExplorerTreeTree == null))
-                {
-                    this.mUIExplorerTreeTree = new UIExplorerTreeTree(this);
-                }
-                return this.mUIExplorerTreeTree;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private UIExplorerTreeTree mUIExplorerTreeTree;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class UIExplorerTreeTree : WpfTree
-    {
-        
-        public UIExplorerTreeTree(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfTree.PropertyNames.AutomationId] = "ExplorerTree";
-            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
-            #endregion
-        }
-        
-        #region Properties
-        public UIInfragisticsControlsTreeItem UIInfragisticsControlsTreeItem
-        {
-            get
-            {
-                if ((this.mUIInfragisticsControlsTreeItem == null))
-                {
-                    this.mUIInfragisticsControlsTreeItem = new UIInfragisticsControlsTreeItem(this);
-                }
-                return this.mUIInfragisticsControlsTreeItem;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private UIInfragisticsControlsTreeItem mUIInfragisticsControlsTreeItem;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class UIInfragisticsControlsTreeItem : WpfTreeItem
-    {
-        
-        public UIInfragisticsControlsTreeItem(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfTreeItem.PropertyNames.Name] = "Infragistics.Controls.Menus.XamDataTreeNodeDataContext";
-            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
-            #endregion
-        }
-        
-        #region Properties
-        public WpfTreeItem UIInfragisticsControlsTreeItem1
-        {
-            get
-            {
-                if ((this.mUIInfragisticsControlsTreeItem1 == null))
-                {
-                    this.mUIInfragisticsControlsTreeItem1 = new WpfTreeItem(this);
-                    #region Search Criteria
-                    this.mUIInfragisticsControlsTreeItem1.SearchProperties[WpfTreeItem.PropertyNames.Name] = "Infragistics.Controls.Menus.XamDataTreeNodeDataContext";
-                    this.mUIInfragisticsControlsTreeItem1.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mUIInfragisticsControlsTreeItem1.SearchConfigurations.Add(SearchConfiguration.DisambiguateChild);
-                    this.mUIInfragisticsControlsTreeItem1.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
-                    #endregion
-                }
-                return this.mUIInfragisticsControlsTreeItem1;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfTreeItem mUIInfragisticsControlsTreeItem1;
         #endregion
     }
 }
