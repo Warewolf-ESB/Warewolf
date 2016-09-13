@@ -596,7 +596,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Properties\DefaultWorkspaceLayout.xml" />
     <Content Include="UIMapTemplate.txt" />
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
