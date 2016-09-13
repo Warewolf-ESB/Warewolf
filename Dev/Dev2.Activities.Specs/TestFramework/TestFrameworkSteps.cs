@@ -11,6 +11,7 @@ using Dev2.Studio.Core.Models;
 using Dev2.Studio.Core.Models.DataList;
 using Dev2.Studio.ViewModels.DataList;
 using Dev2.Threading;
+using Dev2.Utilities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using TechTalk.SpecFlow;
@@ -44,7 +45,10 @@ namespace Dev2.Activities.Specs.TestFramework
                 ID = Guid.NewGuid()
 
             };
-
+            var workflowHelper = new WorkflowHelper();
+            var builder = workflowHelper.CreateWorkflow(workflowName);
+            resourceModel.WorkflowXaml = workflowHelper.GetXamlDefinition(builder);
+            
             var datalistViewModel = new DataListViewModel();
             datalistViewModel.InitializeDataListViewModel(resourceModel);
             foreach (var variablesRow in inputVariables.Rows)
@@ -62,6 +66,9 @@ namespace Dev2.Activities.Specs.TestFramework
 
             ScenarioContext["popupController"] = popupController;
 
+            var shellViewModel = new Mock<IShellViewModel>();
+            CustomContainer.Register(shellViewModel.Object);
+            ScenarioContext["shellViewModel"] = shellViewModel;
         }
 
         private static void AddVariables(string variableName, DataListViewModel datalistViewModel, enDev2ColumnArgumentDirection ioDirection)
@@ -113,6 +120,8 @@ namespace Dev2.Activities.Specs.TestFramework
                         AddVariables(variablesRow["Ouput Var Name"], dataListViewModel, enDev2ColumnArgumentDirection.Output);
                     }
                     dataListViewModel.WriteToResourceModel();
+                    var environmentModel = EnvironmentRepository.Instance.Source;
+                    environmentModel.ResourceRepository.SaveToServer(resourceModel);
                 }
                 else
                 {
@@ -162,13 +171,28 @@ namespace Dev2.Activities.Specs.TestFramework
             Assert.IsFalse(currentTests.Any());
         }
 
-        [When(@"The Confirmation popup is shown I click Ok")]
-        public void WhenTheConfirmationPopupIsShownIClickOk()
+        [Then(@"the tab is closed")]
+        public void ThenTheTabIsClosed()
         {
-            Mock<Common.Interfaces.Studio.Controller.IPopupController> popupController = ScenarioContext.Get<Mock<Common.Interfaces.Studio.Controller.IPopupController>>("popupController");
-            popupController.Verify(controller => controller.ShowDeleteConfirmation(It.IsAny<string>()));
+            Mock<IShellViewModel> shellViewModel = ScenarioContext.Get<Mock<IShellViewModel>>("shellViewModel");
+            shellViewModel.Verify(vm => vm.CloseResourceTestView(It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<Guid>()));
         }
 
+        [Then(@"The ""(.*)"" popup is shown I click Ok")]
+        public void ThenThePopupIsShownIClickOk(string popupViewName)
+        {
+            Mock<Common.Interfaces.Studio.Controller.IPopupController> popupController = ScenarioContext.Get<Mock<Common.Interfaces.Studio.Controller.IPopupController>>("popupController");
+
+            switch (popupViewName)
+            {
+                case "Delete Confirmation":
+                    popupController.Verify(controller => controller.ShowDeleteConfirmation(It.IsAny<string>()));
+                    break;
+                case "Workflow Deleted":
+                    popupController.Verify(controller => controller.Show(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<MessageBoxButton>(), It.IsAny<MessageBoxImage>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>()));
+                    break;
+            }
+        }
 
         [Given(@"I click New Test")]
         [When(@"I click New Test")]
@@ -318,6 +342,18 @@ namespace Dev2.Activities.Specs.TestFramework
                 i++;
             }
         }
+
+        [When(@"""(.*)"" is deleted")]
+        public void WhenIsDeleted(string workflowName)
+        {
+            ResourceModel resourceModel;
+            if (ScenarioContext.TryGetValue(workflowName, out resourceModel))
+            {
+                var env = EnvironmentRepository.Instance.Source;
+                env.ResourceRepository.DeleteResource(resourceModel);
+            }
+        }
+        
         [Given(@"save is enabled")]
         [Then(@"save is disabled")]
         public void ThenSaveIsDisabled()
@@ -630,6 +666,41 @@ namespace Dev2.Activities.Specs.TestFramework
             ServiceTestViewModel serviceTest = GetTestFrameworkFromContext();
             var canExecute = serviceTest.DuplicateTestCommand.CanExecute(null);
             Assert.IsTrue(canExecute);
+        }
+
+        [When(@"I run selected test")]
+        public void WhenIRunSelectedTest()
+        {
+            ServiceTestViewModel serviceTest = GetTestFrameworkFromContext();
+            serviceTest.RunSelectedTestCommand.Execute(null);
+        }
+
+        [When(@"I run selected test in browser")]
+        public void WhenIRunSelectedTestBrowser()
+        {
+            ServiceTestViewModel serviceTest = GetTestFrameworkFromContext();
+            serviceTest.RunSelectedTestInBrowserCommand.Execute(null);
+        }
+
+        [When(@"I run all tests")]
+        public void WhenIRunAllTests()
+        {
+            ServiceTestViewModel serviceTest = GetTestFrameworkFromContext();
+            serviceTest.RunAllTestsCommand.Execute(null);
+        }
+
+        [When(@"I run all tests in browser")]
+        public void WhenIRunAllTestsInBrowser()
+        {
+            ServiceTestViewModel serviceTest = GetTestFrameworkFromContext();
+            serviceTest.RunAllTestsInBrowserCommand.Execute(null);
+        }
+
+        [When(@"I click delete test")]
+        public void WhenIClickDeleteTest()
+        {
+            ServiceTestViewModel serviceTest = GetTestFrameworkFromContext();
+            serviceTest.DeleteTestCommand.Execute(null);
         }
 
         [When(@"I click duplicate")]

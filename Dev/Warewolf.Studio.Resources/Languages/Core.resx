@@ -478,6 +478,12 @@ The more information you can provide us with, the faster we can track the issue 
   <data name="DatabaseSourceServerNewHeaderLabel" xml:space="preserve">
     <value>New Database Source</value>
   </data>
+  <data name="ServiceTestResourceDeletedMessage" xml:space="preserve">
+    <value>The resource for these tests does not exist. </value>
+  </data>
+  <data name="ServiceTestResourceDeletedHeader" xml:space="preserve">
+    <value>Resource not found</value>
+  </data>
   <data name="ServiceTestDuplicateTestNameMessage" xml:space="preserve">
     <value>The name already exists. Please choose a different name.</value>
   </data>
@@ -2730,6 +2736,12 @@ If this option is not selected, the test will not run part of the Run All list o
   </data>
   <data name="ServiceTestRunSelectedTestHelpText" xml:space="preserve">
     <value>Run this test</value>
+  </data>
+  <data name="ServiceTestStopSelectedTestTooltip" xml:space="preserve">
+    <value>Stop this test</value>
+  </data>
+  <data name="ServiceTestStopSelectedTestHelpText" xml:space="preserve">
+    <value>Stop this test</value>
   </data>
   <data name="ServiceTestNewTestTooltip" xml:space="preserve">
     <value>Create a new test</value>

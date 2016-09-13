@@ -58,6 +58,28 @@ namespace Warewolf.Studio.ViewModels.Tests
 
         [TestMethod]
         [Owner("Pieter Terblanche")]
+        [TestCategory("TestModel_IsTestRunning")]
+        public void TestModel_IsTestRunning_WhenSet_ShouldFirePropertyChanged()
+        {
+            //------------Setup for test--------------------------
+            var testModel = new ServiceTestModel(Guid.NewGuid());
+            var _wasCalled = false;
+            testModel.PropertyChanged += (sender, args) =>
+            {
+                if (args.PropertyName == "IsTestRunning")
+                {
+                    _wasCalled = true;
+                }
+            };
+            //------------Execute Test---------------------------
+            testModel.IsTestRunning = true;
+            //------------Assert Results-------------------------
+            Assert.IsTrue(testModel.IsTestRunning);
+            Assert.IsTrue(_wasCalled);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
         [TestCategory("TestModel_OldTestName")]
         public void TestModel_OldTest_WhenSet_ShouldFirePropertyChanged()
         {
