@@ -35,7 +35,6 @@ namespace Dev2.Studio.ViewModels.Dialogs
         private readonly MessageBoxResult _defaultResult;
         private readonly string _dontShowAgainKey;
         private bool _dontShowAgain;
-        private bool _isButtonClickedForClosed;
 
         private static Dictionary<string, MessageBoxResult> _dontShowAgainOptions;
 

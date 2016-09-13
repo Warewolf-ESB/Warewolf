@@ -72,7 +72,6 @@ namespace Dev2.Studio.ViewModels.WorkSurface
         private AuthorizeCommand _debugCommand;
         private AuthorizeCommand _runCommand;
         private AuthorizeCommand _saveCommand;
-        private AuthorizeCommand _editResourceCommand;
         private AuthorizeCommand _quickDebugCommand;
         private AuthorizeCommand _quickViewInBrowserCommand;
 

@@ -13,8 +13,6 @@ namespace Warewolf.Studio.ViewModels
     {
         string _serverVersion;
         string _studioVersion;
-        string _serverInformationalVersion;
-        string _studioInformationalVersion;
 
         public SplashViewModel(IServer server, IExternalProcessExecutor externalProcessExecutor)
         {
@@ -58,19 +56,6 @@ namespace Warewolf.Studio.ViewModels
             }
         }
         [ExcludeFromCodeCoverage]
-        public string ServerInformationalVersion
-        {
-            get
-            {
-                return _serverInformationalVersion;
-            }
-            set
-            {
-                _serverVersion = value;
-                OnPropertyChanged("ServerInformationalVersion");
-            }
-        }
-        [ExcludeFromCodeCoverage]
         public string StudioVersion
         {
             get
@@ -81,19 +66,6 @@ namespace Warewolf.Studio.ViewModels
             {
                 _studioVersion = value;
                 OnPropertyChanged("StudioVersion");
-            }
-        }
-        [ExcludeFromCodeCoverage]
-        public string StudioInformationalVersion
-        {
-            get
-            {
-                return _studioInformationalVersion;
-            }
-            set
-            {
-                _studioInformationalVersion = value;
-                OnPropertyChanged("StudioInformationalVersion");
             }
         }
 
