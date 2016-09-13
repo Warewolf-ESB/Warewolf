@@ -3129,7 +3129,7 @@ To find the character index(s) of a string inside another string, put the string
   </data>
   <data name="FindIndexToolTipCharacters" xml:space="preserve">
     <value>Any variable and/or data goes in here.
-Put  the index of the string you are looking for in here.</value>
+Put the string of the index you are looking for in here.</value>
   </data>
   <data name="ExplorerSearchToolTip" xml:space="preserve">
     <value>Filter the connected resources</value>
@@ -3597,5 +3597,8 @@ If you put an = as the first character, it will turn into a calculation e.g. =[[
   </data>
   <data name="SaveButtonTooltip" xml:space="preserve">
     <value>Save the Resource</value>
-  </data>  
+  </data>
+  <data name="ServerVersionUnavailable" xml:space="preserve">
+    <value>Unavailable</value>
+  </data>
 </root>

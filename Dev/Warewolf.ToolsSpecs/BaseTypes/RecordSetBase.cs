@@ -42,7 +42,6 @@ namespace Warewolf.Tools.Specs.BaseTypes
         }
 
         protected const string ResultVariable = "[[result]]";
-        private int _lastAddedIndex;
         private readonly CommonSteps _commonSteps;
 
         protected abstract void BuildDataList();

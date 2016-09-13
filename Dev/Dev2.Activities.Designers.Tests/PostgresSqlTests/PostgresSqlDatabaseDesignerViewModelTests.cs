@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data;
 using System.Linq;
@@ -183,6 +184,27 @@ namespace Dev2.Activities.Designers.Tests.PostgresSqlTests
             Assert.IsTrue(model.ManageServiceInputViewModel.InputArea.Inputs.First().Name == "[[fname]]");
         }
 
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("SqlServer_Refresh")]
+        public void PostgreSql_Refresh_ShouldLoadRefreshActions()
+        {
+            //------------Setup for test--------------------------
+            var id = Guid.NewGuid();
+            var mod = new PostgreSqlModel();
+            var act = new DsfPostgreSqlActivity();
+            var sqlServer = new PostgreSqlDatabaseDesignerViewModel(ModelItemUtils.CreateModelItem(act), mod);
+            sqlServer.ManageServiceInputViewModel = new InputViewForTest(sqlServer, mod);
+            sqlServer.SourceRegion.SelectedSource = sqlServer.SourceRegion.Sources.First();
+            //------------Execute Test---------------------------
+            sqlServer.ActionRegion.RefreshActionsCommand.Execute(null);
+
+            //------------Assert Results-------------------------
+            Assert.IsTrue(sqlServer.SourceRegion.IsEnabled);
+            Assert.AreEqual(2, sqlServer.ActionRegion.Actions.Count);
+        }
+
         [TestMethod]
         [Owner(TestOwner)]
         [TestCategory(Category)]
@@ -250,6 +272,25 @@ namespace Dev2.Activities.Designers.Tests.PostgresSqlTests
             }
         };
 
+        public ObservableCollection<IDbAction> _refreshActions = new ObservableCollection<IDbAction>
+        {
+            new DbAction()
+            {
+                Name = "mob",
+                Inputs = new List<IServiceInput>() { new ServiceInput("[[a]]", "asa") }
+            },
+            new DbAction()
+            {
+                Name = "arefreshOne",
+                Inputs = new List<IServiceInput>() { new ServiceInput("[[b]]", "bsb") }
+            }
+        };
+
+        public ICollection<IDbAction> RefreshActions(IDbSource source)
+        {
+            return RefreshActionsList;
+        }
+        public ICollection<IDbAction> RefreshActionsList => _refreshActions;
         public bool HasRecError { get; set; }
 
         #region Implementation of IDbServiceModel

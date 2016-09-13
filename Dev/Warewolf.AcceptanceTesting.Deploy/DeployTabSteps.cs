@@ -551,7 +551,7 @@ namespace Warewolf.AcceptanceTesting.Deploy
                 GetPopup().Verify(controller => controller.ShowDeployServerVersionConflict("1.0.0.0", "0.0.0.1"));
             }
                 // ReSharper disable once UnusedVariable
-            catch(Exception e)
+            catch(Exception)
             {
                 var message = GetVm().ErrorMessage;
                 Assert.AreEqual(p0, message);

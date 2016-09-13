@@ -43,20 +43,22 @@ namespace Dev2.Factory
                 ServerID = Guid.Empty
             };
         }
+
         /// <summary>
         /// Create a key which are unique to the entire studio
         /// </summary>
         /// <param name="context">The context.</param>
+        /// <param name="environemt"></param>
         /// <returns></returns>
         /// <author>Jurie.smit</author>
         /// <date>2/28/2013</date>
-        public static IWorkSurfaceKey CreateEnvKey(WorkSurfaceContext context, Guid Environemt)
+        public static IWorkSurfaceKey CreateEnvKey(WorkSurfaceContext context, Guid environemt)
         {
             return new WorkSurfaceKey
             {
                 WorkSurfaceContext = context,
-                ResourceID = Environemt,
-                ServerID = Environemt
+                ResourceID = environemt,
+                ServerID = environemt
             };
         }
         /// <summary>

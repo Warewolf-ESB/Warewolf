@@ -10,7 +10,6 @@
 
 using System;
 using System.Globalization;
-using System.IO;
 using System.Windows.Data;
 using System.Windows.Media.Imaging;
 // ReSharper disable CheckNamespace
@@ -18,12 +17,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 {
     public class ImagePathConverter : IValueConverter 
     {
-        private string _imageDirectory = Directory.GetCurrentDirectory();
-        public string ImageDirectory {
-            get { return _imageDirectory; }
-            set { _imageDirectory = value; }
-        }
-
         #region IValueConverter Members
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture) {

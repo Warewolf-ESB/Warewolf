@@ -22,16 +22,6 @@ namespace Dev2.Core.Tests.Helpers
     [TestClass]
     public class VersionCheckerTests
     {
-        [TestMethod]
-        public void VersionCheckerStartPageUriWithCurrentIsLatestExpectedTake5()
-        {
-            var checker = new Mock<VersionChecker>();
-            checker.Setup(c => c.Latest).Returns(new Version(1, 0, 0, 0));
-            checker.Setup(c => c.Current).Returns(new Version(1, 0, 0, 0));
-
-            var startPage = checker.Object.StartPageUri;
-            Assert.AreEqual(StringResources.Warewolf_Homepage_Start, startPage);
-        }
 
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
@@ -48,16 +38,6 @@ namespace Dev2.Core.Tests.Helpers
             Assert.AreEqual(StringResources.Uri_Community_HomePage, startPage);
         }
 
-        [TestMethod]
-        public void VersionCheckerStartPageUriWithCurrentIsNotLatestExpectedStart()
-        {
-            var checker = new Mock<VersionChecker>();
-            checker.Setup(c => c.Latest).Returns(new Version(2, 0, 0, 0));
-            checker.Setup(c => c.Current).Returns(new Version(1, 0, 0, 0));
-
-            var startPage = checker.Object.StartPageUri;
-            Assert.AreEqual(StringResources.Warewolf_Homepage_Start, startPage);
-        }
 
         #region IsLastest Tests
 
