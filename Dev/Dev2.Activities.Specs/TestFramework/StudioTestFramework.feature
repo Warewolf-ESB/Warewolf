@@ -406,6 +406,27 @@ Scenario: Loading existing Tests
 	When the test builder is open with "Workflow 3"
 	Then there are 2 tests
 
+Scenario: Close test window
+	Given the test builder is open with "Workflow 3"
+	And Tab Header is "Workflow 3 - Tests"
+	And there are no tests
+	And I click New Test
+	And I set Test Values as
+	| TestName | AuthenticationType | Error |
+	| Test1    | Windows            | true  |
+	Then NoErrorExpected is "false"	
+	And save is enabled
+	When I save
+	Then Tab Header is "Workflow 3 - Tests"
+	When I click "Test1"
+	And I set Test Values as
+	| TestName | AuthenticationType | Error |
+	| NewName  | Windows            | false |
+	Then I close the test builder
+	And The Pending Changes Confirmation popup is shown I click Ok
+	And Test name is "NewName"
+	And Error is "false"
+
 
 Scenario: Delete an Enabled Test
 	Given the test builder is open with "Workflow 3"
@@ -427,6 +448,36 @@ Scenario: Delete an Enabled Test
 	When I delete "Test1"
 	Then The "DeleteConfirmation" popup is shown I click Ok
 	Then there are no tests
+
+Scenario: Saved workflow with tests changes the inputs
+		Given I have a resource "Workflow 1"
+		And "Workflow 1" is saved with output as
+		| Out Var Name |
+		| [[a]]        |
+		| [[b]]        |
+		And "Workflow 1" is saved with input as 
+		| In Var Name |
+		| [[msg]]     |
+		When the Test builder is loaded with "Workflow 1"
+		And Tab Header is "Workflow 1 - Tests"
+		And there are no tests
+		And I click New Test
+		And I set Test Values as
+		| TestName | AuthenticationType | Error |
+		| Test1    | Windows            | true  |
+		Then NoErrorExpected is "false"	
+		And save is enabled
+		And "Test1" is passing
+		When I save
+		Then Tab Header is "Workflow 1 - Tests"
+		And there are 1 tests		
+		When I change "Workflow 1" Tests inputs as
+		| In Var Name | new In Var Name |
+		| [[msg]]     | [[newmsg]]      |
+		When I Save workflow "Workflow 1"
+		Then "Test1" is Invalid
+
+
 
 Scenario: Delete Resource with tests
 	Given I have a resouce "PluginSource"
@@ -524,6 +575,7 @@ Scenario: Run a test with single scalar inputs and outputs
 	  | Variable    | Value      |
 	  | [[Message]] | Hello Bob. |
 	And test result is Passed
+
 
 
 	
