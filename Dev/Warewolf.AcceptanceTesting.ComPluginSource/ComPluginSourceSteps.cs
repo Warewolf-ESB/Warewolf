@@ -63,7 +63,8 @@ public class COMPluginSourceSteps
         {
             new DllListing
             {
-                Name = "Development"
+                Name = "Development",
+                ClsId = "DevClsid"
             }
         };
         return listing;
@@ -260,7 +261,7 @@ public class COMPluginSourceSteps
     public void GivenIFilterFor(string assemblyName)
     {
 
-        var expectedVisibility = String.Equals(assemblyName, "BDATunePIA", StringComparison.InvariantCultureIgnoreCase);
+        var expectedVisibility = String.Equals(assemblyName, "Development", StringComparison.InvariantCultureIgnoreCase);
         Assert.IsTrue(expectedVisibility);
     }
 
