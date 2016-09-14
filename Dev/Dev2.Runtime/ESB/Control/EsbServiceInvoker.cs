@@ -109,8 +109,6 @@ namespace Dev2.Runtime.ESB
             {
                 var serviceId = dataObject.ResourceID;
 
-                // we need to get better at getting this ;)
-
                 var serviceName = dataObject.ServiceName;
                 if(serviceId == Guid.Empty && string.IsNullOrEmpty(serviceName))
                 {
@@ -145,11 +143,14 @@ namespace Dev2.Runtime.ESB
                             Dev2Logger.Debug("Mapping Action Dependencies");
                             MapServiceActionDependencies(theStart, _serviceLocator);
 
-                            // Invoke based upon type ;)
                             if(theStart != null)
                             {
                                 theStart.DataListSpecification = theService.DataListSpecification;
                                 Dev2Logger.Debug("Getting container");
+                                if (dataObject.IsServiceTestExecution)
+                                {
+                                    theStart.ActionType =Common.Interfaces.Core.DynamicServices.enActionType.TestExecution;
+                                }
                                 var container = GenerateContainer(theStart, dataObject, _workspace);
                                 ErrorResultTO invokeErrors;
                                 result = container.Execute(out invokeErrors, Update);
@@ -300,6 +301,9 @@ namespace Dev2.Runtime.ESB
 
             switch(serviceAction.ActionType)
             {
+                case Common.Interfaces.Core.DynamicServices.enActionType.TestExecution:
+                    result = new ServiceTestExecutionContainer(serviceAction,dataObj,theWorkspace,_esbChannel, _request);
+                    break;
                 case Common.Interfaces.Core.DynamicServices.enActionType.InvokeManagementDynamicService:
                     result = new InternalServiceContainer(serviceAction, dataObj, theWorkspace, _esbChannel, _request);
                     break;

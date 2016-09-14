@@ -2,9 +2,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using Dev2;
+using Dev2.Common;
 using Dev2.Common.Interfaces;
+using Dev2.Common.Interfaces.Threading;
 using Dev2.Data;
 using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Core.Network;
 
 namespace Warewolf.Studio.ViewModels
 {
@@ -89,10 +92,7 @@ namespace Warewolf.Studio.ViewModels
         public void RunSelectedTestInBrowser()
         {
         }
-
-        public void RunSelectedTest()
-        {
-        }
+        
 
         public IServiceTestModel DuplicateTest(IServiceTestModel selectedTest)
         {
@@ -112,6 +112,23 @@ namespace Warewolf.Studio.ViewModels
                 UserName = selectedTest.UserName,
             };
             return testClone;
+        }
+
+        public void RunSelectedTest(IServiceTestModel selectedServiceTest, IContextualResourceModel resourceModel, IAsyncWorker asyncWorker)
+        {
+            asyncWorker.Start(() => WebServer.ExecuteTest(resourceModel, selectedServiceTest.TestName), res =>
+            {
+                if (res.Result == RunResult.TestFailed)
+                {
+                    selectedServiceTest.TestFailing = true;
+                    selectedServiceTest.TestPassed = false;
+                }
+                else if(res.Result == RunResult.TestPassed)
+                {
+                    selectedServiceTest.TestFailing = false;
+                    selectedServiceTest.TestPassed = true;
+                }
+            });
         }
     }
 }
