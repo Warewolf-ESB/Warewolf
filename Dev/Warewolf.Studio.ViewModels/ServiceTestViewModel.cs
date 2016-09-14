@@ -52,7 +52,7 @@ namespace Warewolf.Studio.ViewModels
             RunSelectedTestCommand = new DelegateCommand(RunSelectedTest, () => CanRunSelectedTest);
             StopTestCommand = new DelegateCommand(StopTest, () => CanStopTest);
             CreateTestCommand = new DelegateCommand(CreateTests);
-            DeleteTestCommand = new DelegateCommand<IServiceTestModel>(DeleteTest, CanDeleteTest);
+            DeleteTestCommand = new DelegateCommand(DeleteTest, () => CanDeleteTest);
             DuplicateTestCommand = new DelegateCommand(DuplicateTest, () => CanDuplicateTest);
             CanSave = true;
             RunAllTestsUrl = WebServer.GetWorkflowUri(resourceModel, "", UrlType.Tests)?.ToString();
@@ -106,10 +106,8 @@ namespace Warewolf.Studio.ViewModels
 
         
 
-        private bool CanDeleteTest(IServiceTestModel selectedTestModel)
-        {
-            return GetPermissions() && selectedTestModel != null && !selectedTestModel.Enabled;
-        }
+        private bool CanDeleteTest => GetPermissions() && SelectedServiceTest != null && !SelectedServiceTest.Enabled;
+        
         public bool IsLoading { get; set; }
 
         public IAsyncWorker AsyncWorker { get; set; }
@@ -413,16 +411,16 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        private void DeleteTest(IServiceTestModel test)
+        private void DeleteTest()
         {
-            if (test == null) return;
-            var nameOfItemBeingDeleted = test.NameForDisplay.Replace("*", "").TrimEnd(' ');
+            if (SelectedServiceTest == null) return;
+            var nameOfItemBeingDeleted = SelectedServiceTest.NameForDisplay.Replace("*", "").TrimEnd(' ');
             if (PopupController.ShowDeleteConfirmation(nameOfItemBeingDeleted) == MessageBoxResult.Yes)
             {
                 try
                 {
-                    ResourceModel.Environment.ResourceRepository.DeleteResourceTest(ResourceModel.ID, test.TestName);
-                    var testToRemove = _tests.SingleOrDefault(model => model.ParentId == test.ParentId && model.TestName == test.TestName);
+                    ResourceModel.Environment.ResourceRepository.DeleteResourceTest(ResourceModel.ID, SelectedServiceTest.TestName);
+                    var testToRemove = _tests.SingleOrDefault(model => model.ParentId == SelectedServiceTest.ParentId && model.TestName == SelectedServiceTest.TestName);
                     _tests.Remove(testToRemove); //test
                     OnPropertyChanged(() => Tests); //test
                 }

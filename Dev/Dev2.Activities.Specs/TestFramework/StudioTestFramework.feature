@@ -443,7 +443,7 @@ Scenario: Close test window
 	And Error is "false"
 
 
-Scenario: Delete an Enabled Test
+Scenario: Delete an Disabled Test
 	Given the test builder is open with "Workflow 3"
 	And Tab Header is "Workflow 3 - Tests"
 	And there are no tests
@@ -456,10 +456,10 @@ Scenario: Delete an Enabled Test
 	When I save
 	Then Tab Header is "Workflow 3 - Tests"
 	And there are 1 tests
-	When I disable "Test1"
-	Then Delete is enabled for "Test1"
 	When I enable "Test1"
 	Then Delete is disabled for "Test1"
+	When I disable "Test1"
+	Then Delete is enabled for "Test1"
 	When I delete "Test1"
 	Then The "DeleteConfirmation" popup is shown I click Ok
 	Then there are no tests
