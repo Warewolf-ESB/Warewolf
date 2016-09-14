@@ -1,12 +1,14 @@
 using System;
 using System.Activities;
 using System.Diagnostics.CodeAnalysis;
+using System.Text;
 using System.Threading;
 using Dev2.Activities;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Communication;
+using Dev2.Data.Util;
 using Dev2.DataList.Contract;
 using Dev2.DynamicServices.Objects;
 using Dev2.Interfaces;
@@ -15,14 +17,19 @@ using Dev2.Runtime.Execution;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Security;
 using Dev2.Workspaces;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace Dev2.Runtime.ESB.Execution
 {
     public class ServiceTestExecutionContainer : EsbExecutionContainer
     {
-        public ServiceTestExecutionContainer(ServiceAction sa, IDSFDataObject dataObj, IWorkspace theWorkspace, IEsbChannel esbChannel)
+        private readonly EsbExecuteRequest _request;
+
+        public ServiceTestExecutionContainer(ServiceAction sa, IDSFDataObject dataObj, IWorkspace theWorkspace, IEsbChannel esbChannel, EsbExecuteRequest request)
             : base(sa, dataObj, theWorkspace, esbChannel)
         {
+            _request = request;
         }
 
         /// <summary>
@@ -142,7 +149,73 @@ namespace Dev2.Runtime.ESB.Execution
             var execPlan = serializer.SerializeToBuilder(resource);
             var clonedExecPlan = serializer.Deserialize<IDev2Activity>(execPlan);
             Dev2Logger.Debug("Got Resource to Execute");
-            EvalInner(dataObject, clonedExecPlan, dataObject.ForEachUpdateValue);
+            var test = TestCatalog.Instance.FetchTest(resourceID, dataObject.TestName);
+            if (test != null)
+            {
+                if (test.Inputs != null)
+                {
+                    foreach (var input in test.Inputs)
+                    {
+                        var variable = DataListUtil.AddBracketsToValueIfNotExist(input.Variable);
+                        var value = input.Value;
+                        if (variable.StartsWith("[[@"))
+                        {
+                            var jContainer = JsonConvert.DeserializeObject(value) as JObject;
+                            dataObject.Environment.AddToJsonObjects(variable, jContainer);
+                        }
+                        else
+                        {
+                            dataObject.Environment.Assign(variable, value, 0);
+                        }
+                    }
+                }
+                EvalInner(dataObject, clonedExecPlan, dataObject.ForEachUpdateValue);
+                var testPassed = true;
+                var failureMessage =new StringBuilder();
+                if (test.Outputs != null)
+                {
+                    foreach (var output in test.Outputs)
+                    {
+                        var variable = DataListUtil.AddBracketsToValueIfNotExist(output.Variable);
+                        var value = output.Value;
+
+                        var result = dataObject.Environment.Eval(variable, 0);
+                        if (result.IsWarewolfAtomResult)
+                        {
+                            var x = (result as CommonFunctions.WarewolfEvalResult.WarewolfAtomResult)?.Item;
+                            var actualValue = x.ToString();
+                            if (!actualValue.Equals(value))
+                            {
+                                testPassed = false;
+                                failureMessage.AppendLine($"Assert Equal failed. Expected {value} for {variable} but got {actualValue}");
+                            }
+                        }
+                    }
+                }
+                test.TestFailing = !testPassed;
+                test.TestPassed = testPassed;
+                test.TestPending = false;
+                test.TestInvalid = false;
+                test.LastRunDate = DateTime.Now;
+                Common.Utilities.PerformActionInsideImpersonatedContext(Common.Utilities.ServerUser, () => { TestCatalog.Instance.SaveTest(resourceID, test); });
+                
+                var testRunReuslt = new TestRunReuslt();
+                testRunReuslt.TestName = test.TestName;
+                if (test.TestFailing)
+                {
+                    testRunReuslt.Result = RunResult.TestFailed;
+                    testRunReuslt.Message = failureMessage.ToString();
+                }
+                if (test.TestPassed)
+                {
+                    testRunReuslt.Result = RunResult.TestPassed;
+                }
+                _request.ExecuteResult = serializer.SerializeToBuilder(testRunReuslt);
+            }
+            else
+            {
+                throw new Exception($"Test {dataObject.TestName} for Resource {dataObject.ServiceName} ID {resourceID}");
+            }
 
         }
 

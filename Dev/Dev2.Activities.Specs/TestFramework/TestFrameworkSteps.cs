@@ -422,18 +422,16 @@ namespace Dev2.Activities.Specs.TestFramework
             foreach (var tableRow in table.Rows)
             {
                 Assert.AreEqual(tableRow["Variable Name"], inputs[i].Variable);
-                var expected = tableRow["Value"];
-                //                if (string.IsNullOrEmpty(expected))
-                //                {
-                //                    expected = null;
-                //                }
+                var expected = tableRow["Value"];                
                 Assert.AreEqual(expected, inputs[i].Value);
                 i++;
             }
 
         }
 
-        [When(@"I updated the inputs as")]
+        [Given(@"I update inputs as")]
+        [When(@"I update inputs as")]
+        [Then(@"I update inputs as")]
         public void WhenIUpdatedTheInputsAs(Table table)
         {
             ServiceTestViewModel serviceTest = GetTestFrameworkFromContext();
@@ -454,6 +452,54 @@ namespace Dev2.Activities.Specs.TestFramework
             }
         }
 
+        [Then(@"I update outputs as")]
+        public void ThenIUpdateOutputsAs(Table table)
+        {
+            ServiceTestViewModel serviceTest = GetTestFrameworkFromContext();
+            var outputs = serviceTest.SelectedServiceTest.Outputs;
+            foreach (var tableRow in table.Rows)
+            {
+                var valueToSet = tableRow["Value"];
+                if (!string.IsNullOrEmpty(valueToSet))
+                {
+                    var varName = tableRow["Variable Name"];
+                    var foundInput = outputs.FirstOrDefault(output => output.Variable == varName);
+                    if (foundInput != null)
+                    {
+                        foundInput.Value = valueToSet;
+                    }
+                }
+            }
+        }
+
+        [When(@"I run the test")]
+        public void WhenIRunTheTest()
+        {
+            ServiceTestViewModel serviceTest = GetTestFrameworkFromContext();
+            serviceTest.RunSelectedTestCommand.Execute(null);
+        }
+
+        [Then(@"test result is Passed")]
+        public void ThenTestResultIsPassed()
+        {
+            ServiceTestViewModel serviceTest = GetTestFrameworkFromContext();
+            var test = serviceTest.SelectedServiceTest;
+            Assert.IsNotNull(test);
+            Assert.IsTrue(test.TestPassed);
+            Assert.IsFalse(test.TestFailing);
+        }
+
+        [Then(@"test result is Failed")]
+        public void ThenTestResultIsFailed()
+        {
+            ServiceTestViewModel serviceTest = GetTestFrameworkFromContext();
+            var test = serviceTest.SelectedServiceTest;
+            Assert.IsNotNull(test);
+            Assert.IsFalse(test.TestPassed);
+            Assert.IsTrue(test.TestFailing);
+        }
+
+
 
         [Then(@"outputs as")]
         public void ThenOutputsAs(Table table)
@@ -465,11 +511,7 @@ namespace Dev2.Activities.Specs.TestFramework
             foreach (var tableRow in table.Rows)
             {
                 Assert.AreEqual(tableRow["Variable Name"], outputs[i].Variable);
-                var expected = tableRow["Value"];
-                //                if (string.IsNullOrEmpty(expected))
-                //                {
-                //                    expected = null;
-                //                }
+                var expected = tableRow["Value"];               
                 Assert.AreEqual(expected, outputs[i].Value);
                 i++;
             }
@@ -976,6 +1018,18 @@ namespace Dev2.Activities.Specs.TestFramework
         }
 
 
+        [Given(@"the test builder is open with existing service ""(.*)""")]
+        public void GivenTheTestBuilderIsOpenWithExistingService(string workflowName)
+        {
+            var env = EnvironmentRepository.Instance.Source;
+            env.ForceLoadResources();
+            var res = env.ResourceRepository.FindSingle(model => model.ResourceName.Equals(workflowName, StringComparison.InvariantCultureIgnoreCase), true);
+            var contextualResource = env.ResourceRepository.LoadContextualResourceModel(res.ID);
+            var serviceTestVm = new ServiceTestViewModel(contextualResource,new SynchronousAsyncWorker());
+            Assert.IsNotNull(serviceTestVm);
+            Assert.IsNotNull(serviceTestVm.ResourceModel);
+            ScenarioContext.Add("testFramework", serviceTestVm);
+        }
 
 
 

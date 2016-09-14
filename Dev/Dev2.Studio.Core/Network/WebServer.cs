@@ -20,6 +20,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Net;
 using System.Text;
+using Dev2.Communication;
 
 // ReSharper disable CheckNamespace
 namespace Dev2.Studio.Core.Network
@@ -54,25 +55,28 @@ namespace Dev2.Studio.Core.Network
             }, () => { });
         }
 
-        public static void ExecuteTest(IContextualResourceModel resourceModel,string testName, string payload, IAsyncWorker asyncWorker)
+        public static TestRunReuslt ExecuteTest(IContextualResourceModel resourceModel,string testName)
         {
             if (resourceModel == null || resourceModel.Environment == null || !resourceModel.Environment.IsConnected)
             {
-                return;
+                var testRunReuslt = new TestRunReuslt();
+                testRunReuslt.Result = RunResult.TestFailed;
+                return testRunReuslt;
             }
 
             var clientContext = resourceModel.Environment.Connection;
             if (clientContext == null)
             {
-                return;
+                var testRunReuslt = new TestRunReuslt();
+                testRunReuslt.Result = RunResult.TestFailed;
+                return testRunReuslt;
             }
-            asyncWorker.Start(() =>
-            {
-                var controller = new CommunicationController { ServiceName = string.IsNullOrEmpty(resourceModel.Category) ? resourceModel.ResourceName : resourceModel.Category };
-                controller.ServicePayload.TestName = testName;
-                controller.AddPayloadArgument("DebugPayload", payload);
-                controller.ExecuteCommand<string>(clientContext, clientContext.WorkspaceID);
-            }, () => { });
+            var controller = new CommunicationController { ServiceName = string.IsNullOrEmpty(resourceModel.Category) ? resourceModel.ResourceName : resourceModel.Category };
+            controller.AddPayloadArgument("ResourceID", resourceModel.ID.ToString());
+            controller.ServicePayload.TestName = testName;
+            var res = controller.ExecuteCommand<TestRunReuslt>(clientContext, clientContext.WorkspaceID);
+            return res;
+            
         }
 
         public static void OpenInBrowser(IContextualResourceModel resourceModel, string xmlData)
