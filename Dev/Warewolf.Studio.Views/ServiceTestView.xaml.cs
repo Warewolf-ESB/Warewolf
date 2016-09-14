@@ -108,10 +108,17 @@ namespace Warewolf.Studio.Views
             var frameworkElement = e.OriginalSource as FrameworkElement;
             if (frameworkElement != null)
             {
-                object clicked = frameworkElement.DataContext;
-                var lbi = TestsListbox.ItemContainerGenerator.ContainerFromItem(clicked) as ListBoxItem;
-                if (lbi != null)
-                    lbi.IsSelected = true;
+                try
+                {
+                    object clicked = frameworkElement.DataContext;
+                    var lbi = TestsListbox.ItemContainerGenerator.ContainerFromItem(clicked) as ListBoxItem;
+                    if (lbi != null)
+                        lbi.IsSelected = true;
+                }
+                catch(Exception )
+                {
+                    //
+                }
             }
         }
     }

@@ -42,12 +42,20 @@ namespace Warewolf.Studio.ViewModels
                 throw new ArgumentNullException(nameof(resourceModel));
             AsyncWorker = asyncWorker;
             ResourceModel = resourceModel;
+            ResourceModel.Environment.IsConnectedChanged += (sender, args) =>
+            {
+                ViewModelUtils.RaiseCanExecuteChanged(DeleteTestCommand);
+                ViewModelUtils.RaiseCanExecuteChanged(RunAllTestsCommand);
+                ViewModelUtils.RaiseCanExecuteChanged(RunAllTestsInBrowserCommand);
+                ViewModelUtils.RaiseCanExecuteChanged(RunSelectedTestCommand);
+                ViewModelUtils.RaiseCanExecuteChanged(RunSelectedTestInBrowserCommand);
+            };
             DisplayName = resourceModel.DisplayName + " - Tests";
             ServiceTestCommandHandler = new ServiceTestCommandHandlerModel();
             PopupController = CustomContainer.Get<IPopupController>();
             _shellViewModel = CustomContainer.Get<IShellViewModel>();
-            RunAllTestsInBrowserCommand = new DelegateCommand(RunAllTestsInBrowser);
-            RunAllTestsCommand = new DelegateCommand(RunAllTests);
+            RunAllTestsInBrowserCommand = new DelegateCommand(RunAllTestsInBrowser, IsServerConnected);
+            RunAllTestsCommand = new DelegateCommand(RunAllTests, IsServerConnected);
             RunSelectedTestInBrowserCommand = new DelegateCommand(RunSelectedTestInBrowser, () => CanRunSelectedTestInBrowser);
             RunSelectedTestCommand = new DelegateCommand(RunSelectedTest, () => CanRunSelectedTest);
             StopTestCommand = new DelegateCommand(StopTest, () => CanStopTest);
@@ -65,6 +73,12 @@ namespace Warewolf.Studio.ViewModels
                 Tests = models;
                 IsLoading = false;
             });
+        }
+
+        private bool IsServerConnected()
+        {
+            var isConnected = ResourceModel.Environment.IsConnected;
+            return isConnected;
         }
 
         private void StopTest()
@@ -104,10 +118,14 @@ namespace Warewolf.Studio.ViewModels
 
         #endregion
 
-        
 
-        private bool CanDeleteTest => GetPermissions() && SelectedServiceTest != null && !SelectedServiceTest.Enabled;
-        
+
+        private bool CanDeleteTest => GetPermissions()
+                                                    && SelectedServiceTest != null
+                                                    && !SelectedServiceTest.Enabled
+            && IsServerConnected()
+                                                    ;
+
         public bool IsLoading { get; set; }
 
         public IAsyncWorker AsyncWorker { get; set; }
@@ -142,8 +160,8 @@ namespace Warewolf.Studio.ViewModels
 
         // ReSharper disable once UnusedAutoPropertyAccessor.Local
         private bool CanStopTest { get; set; }
-        private bool CanRunSelectedTestInBrowser => SelectedServiceTest != null && !SelectedServiceTest.IsDirty;
-        private bool CanRunSelectedTest => GetPermissions();
+        private bool CanRunSelectedTestInBrowser => SelectedServiceTest != null && !SelectedServiceTest.IsDirty && IsServerConnected();
+        private bool CanRunSelectedTest => GetPermissions() &&  IsServerConnected();
         private bool CanDuplicateTest => GetPermissions() && SelectedServiceTest != null;
 
         public bool CanSave
@@ -274,8 +292,8 @@ namespace Warewolf.Studio.ViewModels
                         break;
                     case SaveResult.ResourceDeleted:
                         PopupController?.Show(Resources.Languages.Core.ServiceTestResourceDeletedMessage, Resources.Languages.Core.ServiceTestResourceDeletedHeader, MessageBoxButton.OK, MessageBoxImage.Error, null, false, true, false, false);
-                        _shellViewModel.CloseResourceTestView(ResourceModel.ID,ResourceModel.ServerID,ResourceModel.Environment.ID);
-                        break;                        
+                        _shellViewModel.CloseResourceTestView(ResourceModel.ID, ResourceModel.ServerID, ResourceModel.Environment.ID);
+                        break;
                     case SaveResult.ResourceUpdated:
                         UpdateTestsFromResourceUpdate();
                         break;
@@ -394,7 +412,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        private IEnumerable<IServiceTestModel> RealTests() => _tests.Where(model => model.GetType() != typeof (DummyServiceTest)).ToObservableCollection();
+        private IEnumerable<IServiceTestModel> RealTests() => _tests.Where(model => model.GetType() != typeof(DummyServiceTest)).ToObservableCollection();
 
         public ObservableCollection<IServiceTestModel> Tests
         {
@@ -453,7 +471,24 @@ namespace Warewolf.Studio.ViewModels
         {
             var serviceTestModel = new ServiceTestModel(ResourceModel.ID)
             {
-                OldTestName = to.TestName, TestName = to.TestName, IsTestRunning = false, NameForDisplay = to.TestName, UserName = to.UserName, AuthenticationType = to.AuthenticationType, Enabled = to.Enabled, ErrorExpected = to.ErrorExpected, NoErrorExpected = to.NoErrorExpected, LastRunDate = to.LastRunDate, TestPending = to.TestPending, TestFailing = to.TestFailing, TestPassed = to.TestPassed, Password = to.Password, ParentId = to.ResourceId, TestInvalid = to.TestInvalid, Inputs = to.Inputs?.Select(input => new ServiceTestInput(input.Variable, input.Value) as IServiceTestInput).ToList(), Outputs = to.Outputs?.Select(output => new ServiceTestOutput(output.Variable, output.Value) as IServiceTestOutput).ToList()
+                OldTestName = to.TestName,
+                TestName = to.TestName,
+                IsTestRunning = false,
+                NameForDisplay = to.TestName,
+                UserName = to.UserName,
+                AuthenticationType = to.AuthenticationType,
+                Enabled = to.Enabled,
+                ErrorExpected = to.ErrorExpected,
+                NoErrorExpected = to.NoErrorExpected,
+                LastRunDate = to.LastRunDate,
+                TestPending = to.TestPending,
+                TestFailing = to.TestFailing,
+                TestPassed = to.TestPassed,
+                Password = to.Password,
+                ParentId = to.ResourceId,
+                TestInvalid = to.TestInvalid,
+                Inputs = to.Inputs?.Select(input => new ServiceTestInput(input.Variable, input.Value) as IServiceTestInput).ToList(),
+                Outputs = to.Outputs?.Select(output => new ServiceTestOutput(output.Variable, output.Value) as IServiceTestOutput).ToList()
             };
             return serviceTestModel;
         }
@@ -496,7 +531,7 @@ namespace Warewolf.Studio.ViewModels
         public void Dispose()
         {
 
-            
+
         }
 
         public void UpdateHelpDescriptor(string helpText)
