@@ -50,9 +50,9 @@ namespace Dev2.Tests.Runtime.Hosting
             var testCatalog = new TestCatalog();
             var resourceID = Guid.NewGuid();
             //------------Execute Test---------------------------
-            testCatalog.SaveTests(resourceID,null);
+            testCatalog.SaveTests(resourceID, null);
             //------------Assert Results-------------------------
-            Assert.IsFalse(Directory.Exists(EnvironmentVariables.TestPath+"\\"+resourceID));
+            Assert.IsFalse(Directory.Exists(EnvironmentVariables.TestPath + "\\" + resourceID));
         }
 
         [TestMethod]
@@ -64,9 +64,9 @@ namespace Dev2.Tests.Runtime.Hosting
             var testCatalog = new TestCatalog();
             var resourceID = Guid.NewGuid();
             //------------Execute Test---------------------------
-            testCatalog.SaveTests(resourceID,new List<IServiceTestModelTO>());
+            testCatalog.SaveTests(resourceID, new List<IServiceTestModelTO>());
             //------------Assert Results-------------------------
-            Assert.IsFalse(Directory.Exists(EnvironmentVariables.TestPath+"\\"+resourceID));
+            Assert.IsFalse(Directory.Exists(EnvironmentVariables.TestPath + "\\" + resourceID));
         }
 
         [TestMethod]
@@ -91,20 +91,20 @@ namespace Dev2.Tests.Runtime.Hosting
                 }
             };
             //------------Execute Test---------------------------
-            testCatalog.SaveTests(resourceID,serviceTestModelTos);
+            testCatalog.SaveTests(resourceID, serviceTestModelTos);
             //------------Assert Results-------------------------
-            var path = EnvironmentVariables.TestPath+"\\"+resourceID;
+            var path = EnvironmentVariables.TestPath + "\\" + resourceID;
             Assert.IsTrue(Directory.Exists(path));
             var testFiles = Directory.EnumerateFiles(path).ToList();
-            var test1FilePath = path+"\\"+"Test 1.test";
-            Assert.AreEqual(test1FilePath,testFiles[0]);
-            var test2FilePath = path+"\\"+"Test 2.test";
-            Assert.AreEqual(test2FilePath,testFiles[1]);
+            var test1FilePath = path + "\\" + "Test 1.test";
+            Assert.AreEqual(test1FilePath, testFiles[0]);
+            var test2FilePath = path + "\\" + "Test 2.test";
+            Assert.AreEqual(test2FilePath, testFiles[1]);
 
             var test1String = File.ReadAllText(test1FilePath);
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
             var test1 = serializer.Deserialize<IServiceTestModelTO>(test1String);
-            Assert.AreEqual("Test 1",test1.TestName);
+            Assert.AreEqual("Test 1", test1.TestName);
             Assert.IsTrue(test1.Enabled);
 
             var test2String = File.ReadAllText(test2FilePath);
@@ -160,7 +160,7 @@ namespace Dev2.Tests.Runtime.Hosting
             //------------Assert Results-------------------------
             Assert.IsTrue(File.Exists(test1FilePath));
             Assert.IsFalse(File.Exists(test2FilePath));
-             modelTO = testCatalog.Tests.Select(pair => pair.Value.SingleOrDefault(to => to.TestName == "Test 2")).SingleOrDefault();
+            modelTO = testCatalog.Tests.Select(pair => pair.Value.SingleOrDefault(to => to.TestName == "Test 2")).SingleOrDefault();
             Assert.IsNull(modelTO);
         }
 
@@ -211,7 +211,7 @@ namespace Dev2.Tests.Runtime.Hosting
             //------------Assert Results-------------------------
             Assert.IsFalse(File.Exists(test1FilePath));
             Assert.IsFalse(File.Exists(test2FilePath));
-             modelTO = testCatalog.Tests.Select(pair => pair.Value.SingleOrDefault(to => to.TestName == "Test 2")).SingleOrDefault();
+            modelTO = testCatalog.Tests.Select(pair => pair.Value.SingleOrDefault(to => to.TestName == "Test 2")).SingleOrDefault();
             Assert.IsNull(modelTO);
             Assert.IsFalse(Directory.Exists(path));
         }
@@ -258,11 +258,11 @@ namespace Dev2.Tests.Runtime.Hosting
             //------------Execute Test---------------------------
             testCatalog.Load();
             //------------Assert Results-------------------------
-            Assert.AreEqual(2,testCatalog.Tests.Count);
+            Assert.AreEqual(2, testCatalog.Tests.Count);
             var res1Tests = testCatalog.Tests[resourceID];
-            Assert.AreEqual(2,res1Tests.Count);
-            Assert.AreEqual("Test 1",res1Tests[0].TestName);
-            Assert.AreEqual("Test 2",res1Tests[1].TestName);
+            Assert.AreEqual(2, res1Tests.Count);
+            Assert.AreEqual("Test 1", res1Tests[0].TestName);
+            Assert.AreEqual("Test 2", res1Tests[1].TestName);
             var res2Tests = testCatalog.Tests[resourceID2];
             Assert.AreEqual(2, res2Tests.Count);
             Assert.AreEqual("Test 21", res2Tests[0].TestName);
@@ -316,6 +316,77 @@ namespace Dev2.Tests.Runtime.Hosting
             Assert.AreEqual(2, res2Tests.Count);
             Assert.AreEqual("Test 21", res2Tests[0].TestName);
             Assert.AreEqual("Test 22", res2Tests[1].TestName);
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        [TestCategory("TestCatalog_Fetch")]
+        public void TestCatalog_Fetch_WhenPassResult_ShouldReturnListOfTestsForResourceIdWithCorrectPassResult()
+        {
+            //------------Setup for test--------------------------
+            var testCatalog = new TestCatalog();
+            var resourceID = Guid.NewGuid();
+            var resourceID2 = Guid.NewGuid();
+            var serviceTestModelTos = new List<IServiceTestModelTO>
+            {
+                new ServiceTestModelTO
+                {
+                    Enabled = true,
+                    TestName = "Test 1",
+                    TestFailing = true,
+                    TestInvalid = true,
+                    TestPassed = true,
+                    TestPending = true
+                },
+                new ServiceTestModelTO
+                {
+                    Enabled = false,
+                    TestName = "Test 2",
+                    TestFailing = true,
+                    TestInvalid = true,
+                    TestPassed = true,
+                    TestPending = true
+                }
+            };
+
+
+            var res2ServiceTestModelTos = new List<IServiceTestModelTO>
+            {
+                new ServiceTestModelTO
+                {
+                    Enabled = true,
+                    TestName = "Test 21",
+                        TestFailing = true,
+                    TestInvalid = true,
+                    TestPassed = true,
+                    TestPending = true
+                },
+                new ServiceTestModelTO
+                {
+                    Enabled = false,
+                    TestName = "Test 22",
+                        TestFailing = true,
+                    TestInvalid = true,
+                    TestPassed = true,
+                    TestPending = true
+                }
+            };
+            testCatalog.SaveTests(resourceID, serviceTestModelTos);
+            testCatalog.SaveTests(resourceID2, res2ServiceTestModelTos);
+            testCatalog.Load();
+            //------------Execute Test---------------------------
+            var tests = testCatalog.Fetch(resourceID2);
+            //------------Assert Results-------------------------
+            var res2Tests = tests;
+            Assert.AreEqual(2, res2Tests.Count);
+            Assert.AreEqual(true, res2Tests[0].TestFailing);
+            Assert.AreEqual(true, res2Tests[0].TestInvalid);
+            Assert.AreEqual(true, res2Tests[0].TestPending);
+            Assert.AreEqual(true, res2Tests[0].TestPassed);
+            Assert.AreEqual(true, res2Tests[1].TestPassed);
+            Assert.AreEqual(true, res2Tests[1].TestPassed);
+            Assert.AreEqual(true, res2Tests[1].TestPassed);
+            Assert.AreEqual(true, res2Tests[1].TestPassed);
         }
 
         [TestMethod]

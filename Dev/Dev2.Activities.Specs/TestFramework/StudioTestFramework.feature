@@ -26,6 +26,21 @@ Background: Setup for workflows for tests
 		And "Workflow 3" has outputs as
 			| Ouput Var Name |
 			| [[message]]    |
+		Given I have "WorkflowWithTests" with inputs as 
+			| Input Var Name |
+			| [[input]]      |
+		And "WorkflowWithTests" has outputs as
+			| Ouput Var Name  |
+			| [[outputValue]] |
+			
+		And "WorkflowWithTests" Tests as 
+			| TestName | AuthenticationType | Error | TestFailing | TestPending | TestInvalid | TestPassed |
+			| Test1    | Windows            | false | true        | true        | true        | true       |
+			| Test2    | Windows            | false | true        | true        | true        | true       |
+			| Test3    | Windows            | false | false       | false       | false       | false      |
+			| Test4    | Windows            | false | true        | true        | true        | true       |
+
+				
 
 Scenario: Create New Test
 	Given the test builder is open with "Workflow 1"	
@@ -497,6 +512,19 @@ Scenario: Delete folder with resources deletes all tests
 	When I delete folder "Home"
 	Then "PluginSource1" has 0 tests
 	And "Hello world" has 0 tests
+
+
+Scenario: Run all unselects all tests on selection shows corect debug
+	Given the test builder is open with "WorkflowWithTests"
+	Then there are 4 tests
+	And "Test1" is passing
+	And "Test2" is failing
+	And "Test3" is invalid
+	And "Test4" is pending
+	When I run all tests
+	And I select "Test1"
+	Then debug window is visible	
+
 
 Scenario: Duplicate a test
 	Given the test builder is open with "Workflow 1"
