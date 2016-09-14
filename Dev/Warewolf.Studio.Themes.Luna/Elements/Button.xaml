@@ -531,7 +531,7 @@
         <Setter Property="VerticalAlignment" Value="Stretch"/>
         <Setter Property="HorizontalAlignment" Value="Right"/>
         <Setter Property="Background" Value="{StaticResource ButtonPressedTransparentBrush}" />
-        <Setter Property="Foreground" Value="{StaticResource WareWolfHeaderButtonBrush}" />
+        <Setter Property="Foreground" Value="{StaticResource WareWolfBlackBrush}" />
         <Setter Property="ToolTipService.ShowOnDisabled" Value="True" />
         <Setter Property="Template">
             <Setter.Value>
@@ -596,6 +596,7 @@
             </Trigger>
             <Trigger Property="IsEnabled" Value="False">
                 <Setter Property="ToolTip" Value="{x:Static languages:Core.TestsDeleteSelectedTestDisabledTooltip}" />
+                <Setter Property="Foreground" Value="{StaticResource WareWolfHeaderButtonBrush}" />
             </Trigger>
             <Trigger Property="IsEnabled" Value="True">
                 <Setter Property="ToolTip" Value="{x:Static languages:Core.TestsDeleteSelectedTestEnabledTooltip}" />
@@ -608,7 +609,7 @@
         <Setter Property="VerticalAlignment" Value="Stretch"/>
         <Setter Property="HorizontalAlignment" Value="Right"/>
         <Setter Property="Background" Value="{StaticResource ButtonPressedTransparentBrush}" />
-        <Setter Property="Foreground" Value="{StaticResource WareWolfHeaderButtonBrush}" />
+        <Setter Property="Foreground" Value="{StaticResource WareWolfBlackBrush}" />
         <Setter Property="ToolTip" Value="{x:Static languages:Core.ServiceTestRunSelectedTestTooltip}"/>
         <Setter Property="Template">
             <Setter.Value>
@@ -679,7 +680,7 @@
         <Setter Property="VerticalAlignment" Value="Stretch"/>
         <Setter Property="HorizontalAlignment" Value="Right"/>
         <Setter Property="Background" Value="{StaticResource ButtonPressedTransparentBrush}" />
-        <Setter Property="Foreground" Value="{StaticResource WareWolfHeaderButtonBrush}" />
+        <Setter Property="Foreground" Value="{StaticResource WareWolfBlackBrush}" />
         <Setter Property="ToolTip" Value="{x:Static languages:Core.ServiceTestStopSelectedTestTooltip}"/>
         <Setter Property="Template">
             <Setter.Value>
@@ -707,12 +708,13 @@
                         <Rectangle x:Name="Bd"
                                    Fill="{StaticResource ButtonPressedTransparentBrush}"
                                    Stroke="{StaticResource ButtonPressedTransparentBrush}"
-                                   StrokeThickness="1" />
+                                   StrokeThickness="0" />
                         <ContentControl x:Name="ContentControl"
                                         Margin="{TemplateBinding Padding}"
                                         HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                                         VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
                                         Foreground="{TemplateBinding Foreground}"
+                                        Background="{StaticResource ButtonPressedTransparentBrush}"
                                         IsTabStop="False">
                             <ContentPresenter x:Name="contentPresenter" />
                         </ContentControl>

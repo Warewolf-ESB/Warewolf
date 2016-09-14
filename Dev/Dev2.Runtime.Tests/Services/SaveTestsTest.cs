@@ -1,10 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Dev2.Common;
+using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
+using Dev2.Common.Interfaces.Data;
 using Dev2.Communication;
 using Dev2.Data;
 using Dev2.Runtime.ESB.Management.Services;
+using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Workspaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -111,11 +115,70 @@ namespace Dev2.Tests.Runtime.Services
         }
 
         [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void Execute_GivenNoPath_ShouldReturnNoPathMsg()
+        {
+            //---------------Set up test pack-------------------
+            var serializer = new Dev2JsonSerializer();
+            var listOfTests = new List<ServiceTestModelTO>
+            {
+                new ServiceTestModelTO
+                {
+                    AuthenticationType = AuthenticationType.Public,
+                    Enabled = true,
+                    TestName = "Test MyWF"
+                }
+            };
+            var compressedExecuteMessage = new CompressedExecuteMessage();
+            compressedExecuteMessage.SetMessage(serializer.Serialize(listOfTests));
+            var values = new Dictionary<string, StringBuilder> { { "resourceID", new StringBuilder(Guid.NewGuid().ToString()) }, { "testDefinitions", serializer.SerializeToBuilder(compressedExecuteMessage) } };
+            var saveTests = new SaveTests();
+            //---------------Assert Precondition----------------
+            //---------------Execute Test ----------------------
+            StringBuilder jsonResult = saveTests.Execute(values, null);
+            var result = serializer.Deserialize<ExecuteMessage>(jsonResult);
+            //---------------Test Result -----------------------
+            Assert.IsTrue(result.HasError);
+            Assert.AreEqual("resourcePath is missing", result.Message.ToString());
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void Execute_GivenResourceDefination_ShouldReturnResourceDefinationMsg()
+        {
+            //---------------Set up test pack-------------------
+            var serializer = new Dev2JsonSerializer();
+            var listOfTests = new List<ServiceTestModelTO>
+            {
+                new ServiceTestModelTO
+                {
+                    AuthenticationType = AuthenticationType.Public,
+                    Enabled = true,
+                    TestName = "Test MyWF"
+                }
+            };
+            var compressedExecuteMessage = new CompressedExecuteMessage();
+            compressedExecuteMessage.SetMessage(serializer.Serialize(listOfTests));
+            var values = new Dictionary<string, StringBuilder> { { "resourceID", new StringBuilder(Guid.NewGuid().ToString()) }, { "resourcePath", "Home".ToStringBuilder() } };
+            var saveTests = new SaveTests();
+            //---------------Assert Precondition----------------
+            //---------------Execute Test ----------------------
+            StringBuilder jsonResult = saveTests.Execute(values, null);
+            var result = serializer.Deserialize<ExecuteMessage>(jsonResult);
+            //---------------Test Result -----------------------
+            Assert.IsTrue(result.HasError);
+            Assert.AreEqual("testDefinition is missing", result.Message.ToString());
+        }
+
+        [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("SaveTests_Execute")]
         public void SaveTests_Execute_ExpectName()
         {
             //------------Setup for test--------------------------
+            var serializer = new Dev2JsonSerializer();
+            var inputs = new Dictionary<string, StringBuilder>();
+            var resourceID = Guid.NewGuid();
             var saveTests = new SaveTests();
 
             var listOfTests = new List<ServiceTestModelTO>
@@ -128,30 +191,176 @@ namespace Dev2.Tests.Runtime.Services
                 }
             };
             var testModels = new List<IServiceTestModelTO>();
-            var repo = new Mock<ITestCatalog>();
+            var testCatalogMock = new Mock<ITestCatalog>();
+            var resourceCatalog = new Mock<IResourceCatalog>();
+            
+            var resourceMock = new Mock<IResource>();
+            resourceMock.SetupGet(resource => resource.ResourceID).Returns(resourceID);
+            resourceMock.Setup(resource => resource.GetResourcePath(It.IsAny<Guid>())).Returns("Home");
+            resourceCatalog.Setup(catalog => catalog.GetResource(GlobalConstants.ServerWorkspaceID, resourceID)).Returns(resourceMock.Object);
             var ws = new Mock<IWorkspace>();
             var resID = Guid.Empty;
-            repo.Setup(a => a.SaveTests(It.IsAny<Guid>(), It.IsAny<List<IServiceTestModelTO>>())).Callback((Guid id,List<IServiceTestModelTO> testModelTos)=>
+            testCatalogMock.Setup(a => a.SaveTests(It.IsAny<Guid>(), It.IsAny<List<IServiceTestModelTO>>())).Callback((Guid id,List<IServiceTestModelTO> testModelTos)=>
             {
                 resID = id;
                 testModels = testModelTos;
             }).Verifiable();
 
-            var serializer = new Dev2JsonSerializer();
-            var inputs = new Dictionary<string, StringBuilder>();
-            var resourceID = Guid.NewGuid();
+          
             inputs.Add("resourceID", new StringBuilder(resourceID.ToString()));
             var compressedExecuteMessage = new CompressedExecuteMessage();
             compressedExecuteMessage.SetMessage(serializer.Serialize(listOfTests));
             inputs.Add("testDefinitions", serializer.SerializeToBuilder(compressedExecuteMessage));            
-            saveTests.TestCatalog = repo.Object;
+            inputs.Add("resourcePath", "Home".ToStringBuilder());            
+            saveTests.TestCatalog = testCatalogMock.Object;
+            saveTests.ResourceCatalog = resourceCatalog.Object;
             //------------Execute Test---------------------------
             saveTests.Execute(inputs, ws.Object);
             //------------Assert Results-------------------------
-            repo.Verify(a => a.SaveTests(It.IsAny<Guid>(), It.IsAny<List<IServiceTestModelTO>>()));
+            testCatalogMock.Verify(a => a.SaveTests(It.IsAny<Guid>(), It.IsAny<List<IServiceTestModelTO>>()));
             Assert.AreEqual(listOfTests.Count,testModels.Count);
             Assert.AreEqual(listOfTests[0].TestName,testModels[0].TestName);
             Assert.AreEqual(resourceID,resID);
-        }        
+        }
+
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void Execute_GivenNullResource_ShouldReturnResourceDeletedMsg()
+        {
+            //------------Setup for test--------------------------
+            var serializer = new Dev2JsonSerializer();
+            var inputs = new Dictionary<string, StringBuilder>();
+            var resourceID = Guid.NewGuid();
+            var saveTests = new SaveTests();
+
+            var listOfTests = new List<ServiceTestModelTO>
+            {
+                new ServiceTestModelTO
+                {
+                    AuthenticationType = AuthenticationType.Public,
+                    Enabled = true,
+                    TestName = "Test MyWF"
+                }
+            };
+            var testCatalogMock = new Mock<ITestCatalog>();
+            var resourceCatalog = new Mock<IResourceCatalog>();
+            resourceCatalog.Setup(catalog => catalog.GetResource(GlobalConstants.ServerWorkspaceID, resourceID)).Returns(default(IResource));
+            var ws = new Mock<IWorkspace>();
+          
+            inputs.Add("resourceID", new StringBuilder(resourceID.ToString()));
+            var compressedExecuteMessage = new CompressedExecuteMessage();
+            compressedExecuteMessage.SetMessage(serializer.Serialize(listOfTests));
+            inputs.Add("testDefinitions", serializer.SerializeToBuilder(compressedExecuteMessage));            
+            inputs.Add("resourcePath", "Home".ToStringBuilder());            
+            saveTests.TestCatalog = testCatalogMock.Object;
+            saveTests.ResourceCatalog = resourceCatalog.Object;
+            //------------Execute Test---------------------------
+            var stringBuilder = saveTests.Execute(inputs, ws.Object);
+            //------------Assert Results-------------------------
+            var msg = serializer.Deserialize<ExecuteMessage>(stringBuilder);
+            var testSaveResult = serializer.Deserialize<TestSaveResult>(msg.Message);
+
+            Assert.AreEqual(SaveResult.ResourceDeleted, testSaveResult.Result);
+            Assert.AreEqual("Resource Home has been deleted. No Tests can be saved for this resource.", testSaveResult.Message);
+        }
+
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void Execute_GivenResourceMoved_ShouldReturnResourceMovedMsg()
+        {
+            //------------Setup for test--------------------------
+            var serializer = new Dev2JsonSerializer();
+            var inputs = new Dictionary<string, StringBuilder>();
+            var resourceID = Guid.NewGuid();
+            var saveTests = new SaveTests();
+
+            var listOfTests = new List<ServiceTestModelTO>
+            {
+                new ServiceTestModelTO
+                {
+                    AuthenticationType = AuthenticationType.Public,
+                    Enabled = true,
+                    TestName = "Test MyWF"
+                }
+            };
+            var resourceMock = new Mock<IResource>();
+            resourceMock.SetupGet(resource => resource.ResourceID).Returns(resourceID);
+            resourceMock.Setup(resource => resource.GetResourcePath(It.IsAny<Guid>())).Returns("Home");
+
+            var testCatalogMock = new Mock<ITestCatalog>();
+            var resourceCatalog = new Mock<IResourceCatalog>();
+            resourceCatalog.Setup(catalog => catalog.GetResource(GlobalConstants.ServerWorkspaceID, resourceID)).Returns(resourceMock.Object);
+            testCatalogMock.Setup(a => a.SaveTests(It.IsAny<Guid>(), It.IsAny<List<IServiceTestModelTO>>())).Verifiable();
+            var ws = new Mock<IWorkspace>();
+          
+            inputs.Add("resourceID", new StringBuilder(resourceID.ToString()));
+            var compressedExecuteMessage = new CompressedExecuteMessage();
+            compressedExecuteMessage.SetMessage(serializer.Serialize(listOfTests));
+            inputs.Add("testDefinitions", serializer.SerializeToBuilder(compressedExecuteMessage));            
+            inputs.Add("resourcePath", "AnathorPath".ToStringBuilder());            
+            saveTests.TestCatalog = testCatalogMock.Object;
+            saveTests.ResourceCatalog = resourceCatalog.Object;
+            //------------Execute Test---------------------------
+            var stringBuilder = saveTests.Execute(inputs, ws.Object);
+            //------------Assert Results-------------------------
+            var msg = serializer.Deserialize<ExecuteMessage>(stringBuilder);
+            var testSaveResult = serializer.Deserialize<TestSaveResult>(msg.Message);
+
+            Assert.AreEqual(SaveResult.ResourceUpdated, testSaveResult.Result);
+            Assert.AreEqual("Resource AnathorPath has changed to Home. Tests have been saved for this resource.", testSaveResult.Message);
+        }
+
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void Execute_GivenResourceMoved_ShouldSaveTests()
+        {
+            //------------Setup for test--------------------------
+            var serializer = new Dev2JsonSerializer();
+            var inputs = new Dictionary<string, StringBuilder>();
+            var resourceID = Guid.NewGuid();
+            var saveTests = new SaveTests();
+
+            var listOfTests = new List<ServiceTestModelTO>
+            {
+                new ServiceTestModelTO
+                {
+                    AuthenticationType = AuthenticationType.Public,
+                    Enabled = true,
+                    TestName = "Test MyWF"
+                }
+            };
+            var resourceMock = new Mock<IResource>();
+            resourceMock.SetupGet(resource => resource.ResourceID).Returns(resourceID);
+            resourceMock.Setup(resource => resource.GetResourcePath(It.IsAny<Guid>())).Returns("Home");
+
+            var testCatalogMock = new Mock<ITestCatalog>();
+            var resourceCatalog = new Mock<IResourceCatalog>();
+            resourceCatalog.Setup(catalog => catalog.GetResource(GlobalConstants.ServerWorkspaceID, resourceID)).Returns(resourceMock.Object);
+            testCatalogMock.Setup(a => a.SaveTests(It.IsAny<Guid>(), It.IsAny<List<IServiceTestModelTO>>())).Verifiable();
+            var ws = new Mock<IWorkspace>();
+          
+            inputs.Add("resourceID", new StringBuilder(resourceID.ToString()));
+            var compressedExecuteMessage = new CompressedExecuteMessage();
+            compressedExecuteMessage.SetMessage(serializer.Serialize(listOfTests));
+            inputs.Add("testDefinitions", serializer.SerializeToBuilder(compressedExecuteMessage));            
+            inputs.Add("resourcePath", "AnathorPath".ToStringBuilder());            
+            saveTests.TestCatalog = testCatalogMock.Object;
+            saveTests.ResourceCatalog = resourceCatalog.Object;
+            var stringBuilder = saveTests.Execute(inputs, ws.Object);
+            //---------------Assert Precondition----------------
+            var msg = serializer.Deserialize<ExecuteMessage>(stringBuilder);
+            var testSaveResult = serializer.Deserialize<TestSaveResult>(msg.Message);
+
+            Assert.AreEqual(SaveResult.ResourceUpdated, testSaveResult.Result);
+            Assert.AreEqual("Resource AnathorPath has changed to Home. Tests have been saved for this resource.", testSaveResult.Message);
+            //------------Execute Test---------------------------
+            //------------Assert Results-------------------------
+            testCatalogMock.Verify(a => a.SaveTests(It.IsAny<Guid>(), It.IsAny<List<IServiceTestModelTO>>()), Times.Once);
+        }
+
+      
     }
 }

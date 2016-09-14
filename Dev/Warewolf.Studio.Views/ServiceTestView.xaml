@@ -76,7 +76,7 @@
                     <ColumnDefinition Width="70*"/>
                 </Grid.ColumnDefinitions>
 
-                <ListBox Grid.Column="0" Style="{StaticResource ListBoxStyle}" BorderThickness="1,0,1,1"
+                <ListBox Grid.Column="0" Style="{StaticResource ListBoxStyle}" BorderThickness="1,0,1,1" PreviewMouseLeftButtonDown="TestsListbox_OnPreviewMouseLeftButtonDown"
                          ItemsSource="{Binding Tests}" SelectedItem="{Binding SelectedServiceTest, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" x:Name="TestsListbox">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
@@ -128,17 +128,26 @@
                                                Grid.Row="1" 
                                                Text="{Binding LastRunDate}" 
                                                FontSize="11" 
-                                               Margin="0,-4,0,0" />
+                                               Margin="0,-4,0,0" 
+                                               Visibility="{Binding LastRunDateVisibility}"
+                                               /> 
+                                    
+                                    <TextBlock Grid.Column="2" 
+                                               Grid.Row="1" 
+                                               Text="{Binding NeverRunString}" 
+                                               FontSize="11" 
+                                               Margin="0,-4,0,0"
+                                               Visibility="{Binding NeverRunStringVisibility}"
+                                               />
 
                                     <Button Grid.Column="3" 
                                             Grid.Row="0" 
                                             Grid.RowSpan="2" 
                                             Command="{Binding ElementName=TestsListbox, Path=DataContext.RunSelectedTestCommand }" 
                                             CommandParameter="{Binding .}" 
-                                            Visibility="{Binding IsTestRunning, Converter={StaticResource BoolToVisibilityConverterPositive}}"
                                             Style="{StaticResource ButtonRunTestTransparentStyle}" >
                                         <Button.Content>
-                                            <fa:FontAwesome Icon="Play" FontSize="18"/>
+                                            <fa:FontAwesome Icon="Play" FontSize="18" Background="Transparent"/>
                                         </Button.Content>
                                         <i:Interaction.Behaviors>
                                             <core:HelpSetter Text="{x:Static languages:Core.ServiceTestRunSelectedTestHelpText}" DataContext="{Binding}" />
@@ -153,7 +162,7 @@
                                             Visibility="{Binding IsTestRunning, Converter={StaticResource BoolToVisibilityConverterPositive}}"
                                             Style="{StaticResource ButtonStopTestTransparentStyle}" >
                                         <Button.Content>
-                                            <fa:FontAwesome Icon="Stop" FontSize="18"/>
+                                            <fa:FontAwesome Icon="Stop" FontSize="18" Background="Transparent"/>
                                         </Button.Content>
                                         <i:Interaction.Behaviors>
                                             <core:HelpSetter Text="{x:Static languages:Core.ServiceTestStopSelectedTestHelpText}" DataContext="{Binding}" />

@@ -114,7 +114,7 @@ namespace Warewolf.AcceptanceTesting.ComDll
         public void GivenActionIsDisabled()
         {
             var vm = _scenarioContext.Get<ComDllViewModel>("ViewModel");
-            Assert.IsTrue(vm.ActionRegion.IsActionEnabled);
+            Assert.IsFalse(vm.ActionRegion.IsActionEnabled);
         }
 
 

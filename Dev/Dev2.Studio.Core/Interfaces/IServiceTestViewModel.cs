@@ -29,5 +29,7 @@ namespace Dev2.Studio.Core.Interfaces
         string ErrorMessage { get; set; }
 
         void Save();
+
+        bool HasDuplicates();
     }
 }

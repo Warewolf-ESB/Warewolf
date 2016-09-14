@@ -21,6 +21,19 @@ namespace Warewolf.Studio.ViewModels.Tests
             //------------Assert Results-------------------------
             
         }
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        [TestCategory("DummyServiceTest_Constructor")]
+        public void DummyServiceTest_Constructor_isNew_SetsNeverRunTests()
+        {
+            //------------Setup for test--------------------------
+            var dummyServiceTest = new DummyServiceTest(() => { });
+            //------------Execute Test---------------------------
+            Assert.IsNotNull(dummyServiceTest);
+            //------------Assert Results-------------------------
+            Assert.AreEqual("Never run", dummyServiceTest.NeverRunString);
+
+        }
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]

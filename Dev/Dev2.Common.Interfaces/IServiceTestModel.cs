@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Windows;
 using Dev2.Runtime.ServiceModel.Data;
 
 namespace Dev2.Common.Interfaces
@@ -31,6 +32,10 @@ namespace Dev2.Common.Interfaces
         bool UserAuthenticationSelected { get; }
         bool NewTest { get; set; }
         bool IsTestRunning { get; set; }
+        string NeverRunString { get; set; }
+        Visibility LastRunDateVisibility { get; }
+        Visibility NeverRunStringVisibility { get; }
+
         void SetItem(IServiceTestModel model);
     }
 

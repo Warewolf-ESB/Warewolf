@@ -598,7 +598,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             comsController.AddPayloadArgument("testDefinitions", serializer.SerializeToBuilder(message));
 
             var result = comsController.ExecuteCommand<ExecuteMessage>(_environmentModel.Connection, GlobalConstants.ServerWorkspaceID);
-            var res = serializer.Deserialize<TestSaveResult>(result.Message);
+            var res = serializer.Deserialize<TestSaveResult>(result?.Message);
             return res;
         }
 
