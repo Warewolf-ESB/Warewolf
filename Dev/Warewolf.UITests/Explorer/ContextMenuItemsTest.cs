@@ -18,12 +18,7 @@ namespace Warewolf.UITests
             Uimap.Select_Rename_FromExplorerContextMenu();
             Uimap.Rename_LocalWorkflow_To_SecodWorkFlow();
 
-            ////Uimap.RightClick_Localhost();
-            ////Uimap.Select_NewWorkFlowService_From_ContextMenu();
-            ////Uimap.Drag_Toolbox_Random_Onto_DesignSurface();
-            ////Uimap.Enter_Dice_Roll_Values();
-            ////Uimap.Save_With_Ribbon_Button_And_Dialog(Dice);
-            ////Uimap.Click_Close_Workflow_Tab_Button();
+            //Uimap.CreateAndSave_Dice_Workflow();            
 
             //Uimap.Click_New_Workflow_Ribbon_Button();
             //Uimap.Click_Explorer_Refresh_Button();

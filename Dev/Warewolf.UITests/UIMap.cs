@@ -1141,20 +1141,6 @@ namespace Warewolf.UITests
 
         private Drag_Dice_Onto_DesignSurfaceParams mDrag_Dice_Onto_DesignSurfaceParams;
 
-        public virtual AssertMethod1ExpectedValues AssertMethod1ExpectedValues
-        {
-            get
-            {
-                if ((this.mAssertMethod1ExpectedValues == null))
-                {
-                    this.mAssertMethod1ExpectedValues = new AssertMethod1ExpectedValues();
-                }
-                return this.mAssertMethod1ExpectedValues;
-            }
-        }
-
-        private AssertMethod1ExpectedValues mAssertMethod1ExpectedValues;
-
         /// <summary>
         /// UnCheck_Public_Administrator - Use 'Click_Public_ContributeParams' to pass parameters into this method.
         /// </summary>
@@ -1203,7 +1189,28 @@ namespace Warewolf.UITests
             Assert.IsFalse(public_ContributeCheckBox.Checked, "Public Contribute checkbox is checked after UnChecking Execute/View.");
             Assert.IsFalse(public_AdministratorCheckBox.Checked, "Public Administrator checkbox is checked after UnChecking Contribute.");
         }
-           
+
+        /// <summary>
+        /// Check_Resource_Contribute
+        /// </summary>
+        public void Check_Resource_Contribute()
+        {
+            WpfCheckBox resource_ContributeCheckBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1.ContributeCell.ContributeCheckBox;
+            WpfCheckBox resource_ViewCheckBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1.ContributeCell.ContributeCheckBox;
+            WpfCheckBox resource_ExecuteCheckBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1.ContributeCell.ContributeCheckBox;
+            WpfButton resource_DeleteButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1.DeleteCell.DeleteButton;
+
+            resource_ContributeCheckBox.Checked = true;
+
+            // Verify that the 'Checked' property of 'UI_Public_ViewPermissionCheckBox_AutoID' check box equals 'True'
+            Assert.IsTrue(resource_ViewCheckBox.Checked, "Resource View checkbox is NOT checked after Checking Contribute.");
+
+            // Verify that the 'Checked' property of 'UI_Public_ExecutePermissionCheckBox_AutoID' check box equals 'True'
+            Assert.IsTrue(resource_ExecuteCheckBox.Checked, "Resource Execute checkbox is NOT checked after Checking Contribute.");
+
+            Assert.IsTrue(resource_DeleteButton.Enabled, "Resource Delete button is disabled");
+
+        }
         /// <summary>
         /// Check_Public_Contribute - Use 'Click_Public_ContributeParams' to pass parameters into this method.
         /// </summary>
@@ -1224,6 +1231,16 @@ namespace Warewolf.UITests
 
             // Verify that the 'Checked' property of 'UI_Public_ExecutePermissionCheckBox_AutoID' check box equals 'True'
             Assert.IsTrue(public_ExecuteCheckBox.Checked, "Public Execute checkbox is NOT checked after Checking Contribute.");
+        }
+
+        public void CreateAndSave_Dice_Workflow()
+        {
+            RightClick_Localhost();
+            Select_NewWorkFlowService_From_ContextMenu();
+            Drag_Toolbox_Random_Onto_DesignSurface();
+            Enter_Dice_Roll_Values();
+            Save_With_Ribbon_Button_And_Dialog("Dice");
+            Click_Close_Workflow_Tab_Button();
         }
     }
     /// <summary>
@@ -1311,5 +1328,5 @@ namespace Warewolf.UITests
         /// </summary>
         public bool HelpTextEditorExists = true;
         #endregion
-    }
+    }    
 }
