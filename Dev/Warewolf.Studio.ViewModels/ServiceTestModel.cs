@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Windows;
 using Dev2.Common.Interfaces;
 using Dev2.Data;
 using Dev2.Data.Binary_Objects;
@@ -37,10 +38,26 @@ namespace Warewolf.Studio.ViewModels
         private string _nameForDisplay;
         private ServiceTestModel _item;
         private bool _isTestRunning;
+        private string _neverRunString;
+        public string NeverRunString
+        {
+            get
+            {
+                return _neverRunString;
+            }
+            set
+            {
+                _neverRunString = value;
+                OnPropertyChanged(NeverRunString);
+            }
+        }
+        public Visibility LastRunDateVisibility => LastRunDate != default(DateTime) ? Visibility.Visible : Visibility.Collapsed;
+        public Visibility NeverRunStringVisibility => LastRunDate == default(DateTime) ? Visibility.Visible : Visibility.Collapsed;
 
         public ServiceTestModel(Guid resourceId)
         {
             ParentId = resourceId;
+            NeverRunString = "Never run";
         }
 
         public ServiceTestModel Item
@@ -48,7 +65,7 @@ namespace Warewolf.Studio.ViewModels
             get { return _item; }
             set
             {
-                _item = value; 
+                _item = value;
                 OnPropertyChanged(() => Item);
             }
         }
@@ -60,7 +77,7 @@ namespace Warewolf.Studio.ViewModels
             get { return _parentId; }
             set
             {
-                _parentId = value; 
+                _parentId = value;
                 OnPropertyChanged(() => ParentId);
             }
         }
@@ -70,8 +87,8 @@ namespace Warewolf.Studio.ViewModels
             get { return _oldTestName; }
             set
             {
-                _oldTestName = value; 
-                OnPropertyChanged(()=> OldTestName);
+                _oldTestName = value;
+                OnPropertyChanged(() => OldTestName);
             }
         }
 
@@ -90,13 +107,13 @@ namespace Warewolf.Studio.ViewModels
         {
             get
             {
-               
+
                 return _nameForDisplay;
             }
             set
             {
                 _nameForDisplay = value;
-                OnPropertyChanged(()=>NameForDisplay);
+                OnPropertyChanged(() => NameForDisplay);
             }
         }
 
@@ -295,7 +312,7 @@ namespace Warewolf.Studio.ViewModels
             set
             {
                 _runSelectedTestUrl = value;
-                OnPropertyChanged(()=>RunSelectedTestUrl);
+                OnPropertyChanged(() => RunSelectedTestUrl);
             }
         }
         public AuthenticationType AuthenticationType
@@ -319,7 +336,7 @@ namespace Warewolf.Studio.ViewModels
                 var isDirty = (Item != null && !Equals(Item)) || NewTest;
                 if (isDirty)
                 {
-                   NameForDisplay = TestName + " *";
+                    NameForDisplay = TestName + " *";
                 }
                 else
                 {
@@ -336,7 +353,7 @@ namespace Warewolf.Studio.ViewModels
             get { return _newTest; }
             set
             {
-                _newTest = value; 
+                _newTest = value;
                 OnPropertyChanged(() => NewTest);
             }
         }
@@ -346,7 +363,7 @@ namespace Warewolf.Studio.ViewModels
             get { return _isTestRunning; }
             set
             {
-                _isTestRunning = value; 
+                _isTestRunning = value;
                 OnPropertyChanged(() => IsTestRunning);
             }
         }
@@ -400,9 +417,9 @@ namespace Warewolf.Studio.ViewModels
         {
             IList<IScalar> recsetCols = columns.Distinct(Scalar.Comparer).ToList();
             string colName = null;
-            foreach(var col in recsetCols.Distinct(new ScalarNameComparer()))
+            foreach (var col in recsetCols.Distinct(new ScalarNameComparer()))
             {
-                if(string.IsNullOrEmpty(colName) || !colName.Equals(col.Name))
+                if (string.IsNullOrEmpty(colName) || !colName.Equals(col.Name))
                 {
                     var recSetName = DataListUtil.ExtractRecordsetNameFromValue(dlItem.Variable);
                     var varName = string.Concat(recSetName, @"(", indexNum, @").", col.Name);
@@ -478,15 +495,15 @@ namespace Warewolf.Studio.ViewModels
 
         private bool EqualsSeq(ServiceTestModel other)
         {
-            return string.Equals(_testName, other._testName) && 
-                   string.Equals(_userName, other._userName) && 
-                   string.Equals(_password, other._password) && 
-                   _noErrorExpected == other._noErrorExpected && 
-                   _errorExpected == other._errorExpected && 
-                   _enabled == other._enabled && 
+            return string.Equals(_testName, other._testName) &&
+                   string.Equals(_userName, other._userName) &&
+                   string.Equals(_password, other._password) &&
+                   _noErrorExpected == other._noErrorExpected &&
+                   _errorExpected == other._errorExpected &&
+                   _enabled == other._enabled &&
                    _authenticationType == other._authenticationType;
         }
-        
+
         public override bool Equals(object obj)
         {
             if (ReferenceEquals(null, obj))
@@ -501,7 +518,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 return false;
             }
-            return Equals((ServiceTestModel) obj);
+            return Equals((ServiceTestModel)obj);
         }
 
         public override int GetHashCode()
@@ -509,14 +526,14 @@ namespace Warewolf.Studio.ViewModels
             unchecked
             {
                 var hashCode = _testName?.GetHashCode() ?? 0;
-                hashCode = (hashCode*397) ^ (_userName?.GetHashCode() ?? 0);
-                hashCode = (hashCode*397) ^ (_password?.GetHashCode() ?? 0);
-                hashCode = (hashCode*397) ^ (_inputs?.GetHashCode() ?? 0);
-                hashCode = (hashCode*397) ^ (_outputs?.GetHashCode() ?? 0);
-                hashCode = (hashCode*397) ^ _noErrorExpected.GetHashCode();
-                hashCode = (hashCode*397) ^ _errorExpected.GetHashCode();
-                hashCode = (hashCode*397) ^ _enabled.GetHashCode();
-                hashCode = (hashCode*397) ^ (int) _authenticationType;
+                hashCode = (hashCode * 397) ^ (_userName?.GetHashCode() ?? 0);
+                hashCode = (hashCode * 397) ^ (_password?.GetHashCode() ?? 0);
+                hashCode = (hashCode * 397) ^ (_inputs?.GetHashCode() ?? 0);
+                hashCode = (hashCode * 397) ^ (_outputs?.GetHashCode() ?? 0);
+                hashCode = (hashCode * 397) ^ _noErrorExpected.GetHashCode();
+                hashCode = (hashCode * 397) ^ _errorExpected.GetHashCode();
+                hashCode = (hashCode * 397) ^ _enabled.GetHashCode();
+                hashCode = (hashCode * 397) ^ (int)_authenticationType;
                 return hashCode;
             }
         }
