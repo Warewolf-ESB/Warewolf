@@ -105,8 +105,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Runtime.Configuration.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Runtime.Tests", "Dev2.Runtime.Tests\Dev2.Runtime.Tests.csproj", "{85617545-2121-4683-9828-DAEDB5878CE9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Scheduler.Tests", "Dev2.Scheduler.Test\Dev2.Scheduler.Tests.csproj", "{211601FA-019A-4F23-9A30-5FE5344E1BE1}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Sql.Tests", "Dev2.Sql.Tests\Dev2.Sql.Tests.csproj", "{B27B3F88-100B-496F-B574-04684F612BB9}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.TaskScheduler.Wrappers.Tests", "Dev2.TaskScheduler.Wrappers.Test\Dev2.TaskScheduler.Wrappers.Tests.csproj", "{134EC485-9C05-4EE2-8C35-6A8B6A5528BF}"
@@ -296,6 +294,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Service", "Service", "{B9BA
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WarewolfCOMIPC.Tests", "WarewolfCOMIPC.Tests\WarewolfCOMIPC.Tests.csproj", "{9BED6B93-8BFF-4331-9DD7-98ED81ABFABA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Scheduler.Tests", "Dev2.Scheduler.Tests\Dev2.Scheduler.Tests.csproj", "{211601FA-019A-4F23-9A30-5FE5344E1BE1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -627,13 +627,6 @@ Global
 		{85617545-2121-4683-9828-DAEDB5878CE9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{85617545-2121-4683-9828-DAEDB5878CE9}.Release|x86.ActiveCfg = Release|Any CPU
 		{85617545-2121-4683-9828-DAEDB5878CE9}.Release|x86.Build.0 = Release|Any CPU
-		{211601FA-019A-4F23-9A30-5FE5344E1BE1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{211601FA-019A-4F23-9A30-5FE5344E1BE1}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{211601FA-019A-4F23-9A30-5FE5344E1BE1}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{211601FA-019A-4F23-9A30-5FE5344E1BE1}.Debug|x86.Build.0 = Debug|Any CPU
-		{211601FA-019A-4F23-9A30-5FE5344E1BE1}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{211601FA-019A-4F23-9A30-5FE5344E1BE1}.Release|x86.ActiveCfg = Release|Any CPU
-		{211601FA-019A-4F23-9A30-5FE5344E1BE1}.Release|x86.Build.0 = Release|Any CPU
 		{B27B3F88-100B-496F-B574-04684F612BB9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{B27B3F88-100B-496F-B574-04684F612BB9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B27B3F88-100B-496F-B574-04684F612BB9}.Debug|x86.ActiveCfg = Debug|Any CPU
@@ -1028,6 +1021,14 @@ Global
 		{9BED6B93-8BFF-4331-9DD7-98ED81ABFABA}.Release|Any CPU.ActiveCfg = Release|x86
 		{9BED6B93-8BFF-4331-9DD7-98ED81ABFABA}.Release|x86.ActiveCfg = Release|x86
 		{9BED6B93-8BFF-4331-9DD7-98ED81ABFABA}.Release|x86.Build.0 = Release|x86
+		{211601FA-019A-4F23-9A30-5FE5344E1BE1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{211601FA-019A-4F23-9A30-5FE5344E1BE1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{211601FA-019A-4F23-9A30-5FE5344E1BE1}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{211601FA-019A-4F23-9A30-5FE5344E1BE1}.Debug|x86.Build.0 = Debug|Any CPU
+		{211601FA-019A-4F23-9A30-5FE5344E1BE1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{211601FA-019A-4F23-9A30-5FE5344E1BE1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{211601FA-019A-4F23-9A30-5FE5344E1BE1}.Release|x86.ActiveCfg = Release|Any CPU
+		{211601FA-019A-4F23-9A30-5FE5344E1BE1}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
