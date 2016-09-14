@@ -127,7 +127,7 @@
                         <TextBlock Grid.Column="0" Grid.Row="2" Text="Sources" Foreground="White" FontSize="{StaticResource FontSize-Medium}"/>
                         <TextBlock Grid.Column="1" Grid.Row="2" x:Name="SourcesCount" Text="{Binding SourcesCount}" Foreground="White" FontSize="{StaticResource FontSize-Medium}"/>
                         <TextBlock Grid.Column="0" Grid.Row="3" Text="Deploy Tests" Foreground="White" FontSize="{StaticResource FontSize-Medium}"/>
-                        <CheckBox Grid.Column="1" Grid.Row="3" HorizontalAlignment="Center" VerticalAlignment="Center" IsChecked="{Binding Destination.DeployTests}"/>
+                        <CheckBox Grid.Column="1" Grid.Row="3" HorizontalAlignment="Left" VerticalAlignment="Center" IsChecked="{Binding Destination.DeployTests}"/>
                     </Grid>
 
                     <StackPanel Grid.Row="2"
