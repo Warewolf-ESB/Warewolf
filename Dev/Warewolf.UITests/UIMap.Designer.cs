@@ -1810,11 +1810,11 @@ namespace Warewolf.UITests
         public void Click_Settings_Security_Resource_Permissions_Add_Resource_Button()
         {
             #region Variable Declarations
-            WpfButton addResourceButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1.ResourceCell.AddResourceButton;
+            WpfButton itemButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1.ResourceCell.ItemButton;
             #endregion
 
             // Click '...' button
-            Mouse.Click(addResourceButton, new Point(6, 15));
+            Mouse.Click(itemButton, new Point(6, 15));
         }
         
         /// <summary>
@@ -6265,19 +6265,6 @@ namespace Warewolf.UITests
             // Verify that the 'Enabled' property of 'Test Connection' button equals 'True'
             Assert.AreEqual(this.Type_TestSite_into_Web_Source_Wizard_Address_TextboxParams.TestConnectionButtonEnabled, testConnectionButton.Enabled, "New web source wizard test connection button is not enabled after entering a vali" +
                     "d web address.");
-        }
-        
-        /// <summary>
-        /// RecordedMethod1
-        /// </summary>
-        public void RecordedMethod1()
-        {
-            #region Variable Declarations
-            WpfButton itemButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1.ResourceCell.ItemButton;
-            #endregion
-
-            // Click '...' button
-            Mouse.Click(itemButton, new Point(12, 2));
         }
         
         #region Properties
@@ -23345,22 +23332,6 @@ namespace Warewolf.UITests
             }
         }
         
-        public WpfButton AddResourceButton
-        {
-            get
-            {
-                if ((this.mAddResourceButton == null))
-                {
-                    this.mAddResourceButton = new WpfButton(this);
-                    #region Search Criteria
-                    this.mAddResourceButton.SearchProperties[WpfButton.PropertyNames.Instance] = "2";
-                    this.mAddResourceButton.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mAddResourceButton;
-            }
-        }
-        
         public WpfButton ItemButton
         {
             get
@@ -23380,8 +23351,6 @@ namespace Warewolf.UITests
         
         #region Fields
         private WpfText mAddResourceText;
-        
-        private WpfButton mAddResourceButton;
         
         private WpfButton mItemButton;
         #endregion
