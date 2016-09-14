@@ -273,7 +273,7 @@ namespace Warewolf.Studio.ViewModels
                         SetSelectedTestUrl();
                         break;
                     case SaveResult.ResourceDeleted:
-                        ValidateIfResourceExists();
+                        PopupController?.Show(Resources.Languages.Core.ServiceTestResourceDeletedMessage, Resources.Languages.Core.ServiceTestResourceDeletedHeader, MessageBoxButton.OK, MessageBoxImage.Error, null, false, true, false, false);
                         _shellViewModel.CloseResourceTestView(ResourceModel.ID,ResourceModel.ServerID,ResourceModel.Environment.ID);
                         break;                        
                     case SaveResult.ResourceUpdated:
@@ -293,12 +293,6 @@ namespace Warewolf.Studio.ViewModels
         {
             //ResourceModel = ResourceModel.Environment.ResourceRepository.LoadResourceFromWorkspace(ResourceModel.ID,GlobalConstants.ServerWorkspaceID);
 
-        }
-
-        private bool ValidateIfResourceExists()
-        {
-            PopupController?.Show(Resources.Languages.Core.ServiceTestResourceDeletedMessage, Resources.Languages.Core.ServiceTestResourceDeletedHeader, MessageBoxButton.OK, MessageBoxImage.Error, null, false, true, false, false);
-            return false;
         }
 
         private bool HasDuplicateTestNames()
