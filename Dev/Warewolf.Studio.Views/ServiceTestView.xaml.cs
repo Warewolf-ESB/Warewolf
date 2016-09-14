@@ -102,5 +102,17 @@ namespace Warewolf.Studio.Views
                 //}
             }
         }
+
+        private void TestsListbox_OnPreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            var frameworkElement = e.OriginalSource as FrameworkElement;
+            if (frameworkElement != null)
+            {
+                object clicked = frameworkElement.DataContext;
+                var lbi = TestsListbox.ItemContainerGenerator.ContainerFromItem(clicked) as ListBoxItem;
+                if (lbi != null)
+                    lbi.IsSelected = true;
+            }
+        }
     }
 }
