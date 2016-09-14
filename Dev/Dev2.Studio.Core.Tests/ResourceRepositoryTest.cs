@@ -629,7 +629,7 @@ namespace BusinessDesignStudio.Unit.Tests
             //------------Execute Test--------------------------- 
 
             var resourceModel = new Mock<IResourceModel>();
-            resourceModel.SetupGet(p => p.ID).Returns(Guid.NewGuid);
+            resourceModel.SetupGet(p => p.ID).Returns(resourceId);
             resourceModel.SetupGet(p => p.ResourceName).Returns("My WF");
             resourceModel.SetupGet(p => p.Category).Returns("Root");
             resourceModel.Setup(model => model.ToServiceDefinition(It.IsAny<bool>())).Returns(new StringBuilder("SomeXaml"));
@@ -640,8 +640,9 @@ namespace BusinessDesignStudio.Unit.Tests
             var retMsg = ser.Deserialize<EsbExecuteRequest>(retVal.ToString());
             Assert.IsNotNull(retMsg);
             Assert.AreEqual("SaveTests", retMsg.ServiceName);
-            Assert.AreEqual(2, retMsg.Args.Count);
+            Assert.AreEqual(3, retMsg.Args.Count);
             Assert.AreEqual(resourceId.ToString(), retMsg.Args["resourceID"].ToString());
+            Assert.AreEqual("Root", retMsg.Args["resourcePath"].ToString());
             var compressedMessage = ser.Deserialize<CompressedExecuteMessage>(retMsg.Args["testDefinitions"].ToString());
             Assert.IsNotNull(compressedMessage);
             var serviceTestModelTos = ser.Deserialize<List<ServiceTestModelTO>>(compressedMessage.GetDecompressedMessage());
