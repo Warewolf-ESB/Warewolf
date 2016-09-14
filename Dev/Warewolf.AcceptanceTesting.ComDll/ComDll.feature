@@ -105,7 +105,6 @@ Given I create New Workflow
 	And GenerateOutput is disabled
 	And I click Generate output
 	Then Validation is successful
-	And I click fSix to Execute the tool the result is ""System.__ComObject""
 		
 Scenario: Executing com with valid source
 Given I create New Workflow
@@ -123,7 +122,6 @@ Given I create New Workflow
 	And GenerateOutput is disabled
 	And I click Generate output
 	Then Validation is successful
-	And I click fSix to Execute the tool the result is ""System.__ComObject""
 		
 Scenario: Executing com without method
 Given I create New Workflow

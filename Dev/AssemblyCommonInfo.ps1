@@ -55,12 +55,26 @@ if (-not "$CustomVersionString" -eq "") {
 				[int]$NewBuildNumber = $FullVersionString.Split(".")[3]
 				$NewBuildNumber++
 				$FullVersionString = $FullVersionString.Split(".")[0] + "." + $FullVersionString.Split(".")[1] + "." + $FullVersionString.Split(".")[2] + "." + $NewBuildNumber
-				Write-Host Next version would be `"$FullVersionString`". Double checking with origin...
-				# Check new version against server repo.
+				Write-Host Next version would be `"$FullVersionString`". Checking against Origin repo...
+				# Check tag against origin
 				$originTag = git -C "$WarewolfGitRepoDirectory" ls-remote --tags origin $FullVersionString
 				if ($originTag.length -ne 0) {
 					Write-Host Origin has tag `"$originTag`".
-				}        
+				} else {
+					Write-Host Double checking with hard coded integration manager repo...
+					# Check tag against hard coded integration manager repo
+					$originTag = git -C "$WarewolfGitRepoDirectory" ls-remote --tags "file:////rsaklfsvrgendev/Git-Repositories/Warewolf-ESB" $FullVersionString
+					if ($originTag.length -ne 0) {
+						Write-Host Hard coded integration manager repo has tag `"$originTag`".
+					} else {
+						Write-Host Double checking with hard coded blessed repo...
+						# Check tag against hard coded blessed repo
+						$originTag = git -C "$WarewolfGitRepoDirectory" ls-remote --tags "https://github.com/Warewolf-ESB/Warewolf" $FullVersionString
+						if ($originTag.length -ne 0) {
+							Write-Host Hard coded blessed repo has tag `"$originTag`".
+						}
+					}
+				}
 			} while ($originTag.length -ne 0)
 		}
 		# New (unique) version has been generated.
