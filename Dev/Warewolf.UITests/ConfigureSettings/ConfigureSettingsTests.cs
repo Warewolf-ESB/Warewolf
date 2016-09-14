@@ -11,6 +11,9 @@ namespace Warewolf.UITests
         public void ConfigureSetting()
         {
             Uimap.Click_ConfigureSetting_From_Menu();
+            Uimap.Check_Public_Contribute();
+            Uimap.Check_Public_Administrator();
+            Uimap.UnCheck_Public_Contribute();
         }
 
         #region Additional test attributes

@@ -1,4 +1,11 @@
-﻿using System.CodeDom.Compiler;
+﻿using System.Collections.Generic;
+using System.Text.RegularExpressions;
+using System.Windows.Input;
+using Microsoft.VisualStudio.TestTools.UITesting.HtmlControls;
+using Microsoft.VisualStudio.TestTools.UITesting.WinControls;
+using Keyboard = Microsoft.VisualStudio.TestTools.UITesting.Keyboard;
+using MouseButtons = System.Windows.Forms.MouseButtons;
+using System.CodeDom.Compiler;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
 using System;
@@ -1147,6 +1154,52 @@ namespace Warewolf.UITests
         }
 
         private AssertMethod1ExpectedValues mAssertMethod1ExpectedValues;
+
+        /// <summary>
+        /// UnCheck_Public_Contribute - Use 'Click_Public_ContributeParams' to pass parameters into this method.
+        /// </summary>
+        public void UnCheck_Public_Contribute()
+        {
+            #region Variable Declarations
+            WpfCheckBox public_AdministratorCheckBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.PublicROW.Public_AdministratorCell.Public_AdministratorCheckBox;
+            WpfCheckBox public_ContributeCheckBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.PublicROW.Public_ContributeCell.Public_ContributeCheckBox;
+            WpfCheckBox public_ViewCheckBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.PublicROW.Public_ViewCell.Public_ViewCheckBox;
+            WpfCheckBox public_ExecuteCheckBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.PublicROW.Public_ExecuteCell.Public_ExecuteCheckBox;
+            #endregion
+
+            // Select 'UI_Public_ContributePermissionCheckBox_AutoID' check box
+            public_ViewCheckBox.Checked = false;
+
+            // Verify that the 'Checked' property of 'UI_Public_ViewPermissionCheckBox_AutoID' check box equals 'True'
+            Assert.IsFalse(public_ViewCheckBox.Checked, "Public View checkbox is checked after Checking Contribute.");
+
+            // Verify that the 'Checked' property of 'UI_Public_ExecutePermissionCheckBox_AutoID' check box equals 'True'
+            Assert.IsTrue(public_ExecuteCheckBox.Checked, "Public Execute checkbox is NOT checked after Checking Contribute.");
+            Assert.IsFalse(public_ContributeCheckBox.Checked, "Public Contribute checkbox is checked after UnChecking Execute/View.");
+            Assert.IsFalse(public_AdministratorCheckBox.Checked, "Public Administrator checkbox is checked after UnChecking Contribute.");
+        }
+           
+        /// <summary>
+        /// Check_Public_Contribute - Use 'Click_Public_ContributeParams' to pass parameters into this method.
+        /// </summary>
+        public void Check_Public_Contribute()
+        {
+            #region Variable Declarations
+            WpfCheckBox public_AdministratorCheckBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.PublicROW.Public_AdministratorCell.Public_AdministratorCheckBox;
+            WpfCheckBox public_ContributeCheckBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.PublicROW.Public_ContributeCell.Public_ContributeCheckBox;
+            WpfCheckBox public_ViewCheckBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.PublicROW.Public_ViewCell.Public_ViewCheckBox;
+            WpfCheckBox public_ExecuteCheckBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.PublicROW.Public_ExecuteCell.Public_ExecuteCheckBox;
+            #endregion
+
+            // Select 'UI_Public_ContributePermissionCheckBox_AutoID' check box
+            public_ContributeCheckBox.Checked = true;
+
+            // Verify that the 'Checked' property of 'UI_Public_ViewPermissionCheckBox_AutoID' check box equals 'True'
+            Assert.IsTrue(public_ViewCheckBox.Checked, "Public View checkbox is NOT checked after Checking Contribute.");
+
+            // Verify that the 'Checked' property of 'UI_Public_ExecutePermissionCheckBox_AutoID' check box equals 'True'
+            Assert.IsTrue(public_ExecuteCheckBox.Checked, "Public Execute checkbox is NOT checked after Checking Contribute.");
+        }
     }
     /// <summary>
     /// Parameters to be passed into 'Select_Show_Dependencies_In_Explorer_Context_Menu'
