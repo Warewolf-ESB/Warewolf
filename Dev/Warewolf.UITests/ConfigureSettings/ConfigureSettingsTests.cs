@@ -10,12 +10,21 @@ namespace Warewolf.UITests
         [TestMethod]
         public void ConfigureSetting()
         {
+            Uimap.CreateAndSave_Dice_Workflow();
+            Uimap.Click_Explorer_Refresh_Button();
             Uimap.Click_ConfigureSetting_From_Menu();
             Uimap.Check_Public_Contribute();
             Uimap.Check_Public_Administrator();
             Uimap.UnCheck_Public_View();
             Uimap.Check_Public_Administrator();
             Uimap.UnCheck_Public_Administrator();
+            Uimap.Click_Save_Ribbon_Button_With_No_Save_Dialog();
+            Uimap.Click_Select_Resource_Button_From_Resource_Permissions();
+            Uimap.Select_Dice_From_Service_Picker();
+            Uimap.Enter_Public_As_Windows_Group();
+            Uimap.Check_Resource_Contribute();
+            Uimap.Click_Save_Ribbon_Button_With_No_Save_Dialog();
+            Uimap.Click_Close_Settings_Tab_Button();
         }
 
         #region Additional test attributes

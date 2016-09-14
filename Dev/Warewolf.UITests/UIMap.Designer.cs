@@ -107,6 +107,27 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
+        /// Check_Public_Administrator - Use 'Check_Public_AdministratorParams' to pass parameters into this method.
+        /// </summary>
+        public void Check_Public_Administrator()
+        {
+            #region Variable Declarations
+            WpfCheckBox public_AdministratorCheckBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.PublicROW.Public_AdministratorCell.Public_AdministratorCheckBox;
+            WpfCheckBox public_DeployToCheckBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.PublicROW.Public_DeployToCell.Public_DeployToCheckBox;
+            WpfCheckBox public_DeployFromCheckBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.PublicROW.Public_DeployFromCell.Public_DeployFromCheckBox;
+            #endregion
+
+            // Select 'UI_Public_AdministratorPermissionCheckBox_AutoID' check box
+            public_AdministratorCheckBox.Checked = this.Check_Public_AdministratorParams.Public_AdministratorCheckBoxChecked;
+
+            // Verify that the 'Checked' property of 'UI_Public_DeployToPermissionCheckBox_AutoID' check box equals 'True'
+            Assert.AreEqual(this.Check_Public_AdministratorParams.Public_DeployToCheckBoxChecked, public_DeployToCheckBox.Checked, "Public DeployTo checkbox is NOT checked after Checking Administrator.");
+
+            // Verify that the 'Checked' property of 'UI_Public_DeployFromPermissionCheckBox_AutoID' check box equals 'True'
+            Assert.AreEqual(this.Check_Public_AdministratorParams.Public_DeployFromCheckBoxChecked, public_DeployFromCheckBox.Checked, "Public DeployFrom checkbox is NOT checked after Checking Administrator.");
+        }
+        
+        /// <summary>
         /// Click_AddNew_Web_Source_From_tool - Use 'Click_AddNew_Web_Source_From_toolParams' to pass parameters into this method.
         /// </summary>
         public void Click_AddNew_Web_Source_From_tool()
@@ -1407,27 +1428,6 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
-        /// Check_Public_Administrator - Use 'Click_Public_AdministratorParams' to pass parameters into this method.
-        /// </summary>
-        public void Check_Public_Administrator()
-        {
-            #region Variable Declarations
-            WpfCheckBox public_AdministratorCheckBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.PublicROW.Public_AdministratorCell.Public_AdministratorCheckBox;
-            WpfCheckBox public_DeployToCheckBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.PublicROW.Public_DeployToCell.Public_DeployToCheckBox;
-            WpfCheckBox public_DeployFromCheckBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.PublicROW.Public_DeployFromCell.Public_DeployFromCheckBox;
-            #endregion
-
-            // Select 'UI_Public_AdministratorPermissionCheckBox_AutoID' check box
-            public_AdministratorCheckBox.Checked = this.Click_Public_AdministratorParams.Public_AdministratorCheckBoxChecked;
-
-            // Verify that the 'Checked' property of 'UI_Public_DeployToPermissionCheckBox_AutoID' check box equals 'True'
-            Assert.AreEqual(this.Click_Public_AdministratorParams.Public_DeployToCheckBoxChecked, public_DeployToCheckBox.Checked, "Public DeployTo checkbox is NOT checked after Checking Administrator.");
-
-            // Verify that the 'Checked' property of 'UI_Public_DeployFromPermissionCheckBox_AutoID' check box equals 'True'
-            Assert.AreEqual(this.Click_Public_AdministratorParams.Public_DeployFromCheckBoxChecked, public_DeployFromCheckBox.Checked, "Public DeployFrom checkbox is NOT checked after Checking Administrator.");
-        }
-        
-        /// <summary>
         /// Click_RunDebug_button - Use 'Click_RunDebug_buttonParams' to pass parameters into this method.
         /// </summary>
         public void Click_RunDebug_button()
@@ -1678,6 +1678,23 @@ namespace Warewolf.UITests
 
             // Select 'Run task as soon as possible after a scheduled sta...' check box
             runTaskCheckBox.Checked = this.Click_Scheduler_RunTaskParams.RunTaskCheckBoxChecked;
+        }
+        
+        /// <summary>
+        /// Click_Select_Resource_Button_From_Resource_Permissions - Use 'Click_Select_Resource_Button_From_Resource_PermissionsParams' to pass parameters into this method.
+        /// </summary>
+        public void Click_Select_Resource_Button_From_Resource_Permissions()
+        {
+            #region Variable Declarations
+            WpfButton itemButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1.ResourceCell.ItemButton;
+            WpfWindow servicePickerDialog = this.ServicePickerDialog;
+            #endregion
+
+            // Click '...' button
+            Mouse.Click(itemButton, new Point(13, 16));
+
+            // Verify that the 'Exists' property of 'ServicePickerDialog' window equals 'True'
+            Assert.AreEqual(this.Click_Select_Resource_Button_From_Resource_PermissionsParams.ServicePickerDialogExists, servicePickerDialog.Exists, "Service window does not exist after clicking SelectResource button");
         }
         
         /// <summary>
@@ -3700,6 +3717,19 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
+        /// Enter_Public_As_Windows_Group - Use 'Enter_Public_As_Windows_GroupParams' to pass parameters into this method.
+        /// </summary>
+        public void Enter_Public_As_Windows_Group()
+        {
+            #region Variable Declarations
+            WpfEdit addWindowsGroupsEdit = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1.WindowsGroupCell.AddWindowsGroupsEdit;
+            #endregion
+
+            // Type 'Public' in 'UI__AddWindowsGroupsTextBox_AutoID' text box
+            addWindowsGroupsEdit.Text = this.Enter_Public_As_Windows_GroupParams.AddWindowsGroupsEditText;
+        }
+        
+        /// <summary>
         /// Enter_SomeVariable_Into_Base_Convert_Large_View_Row1_Value_Textbox - Use 'Enter_SomeVariable_Into_Base_Convert_Large_View_Row1_Value_TextboxParams' to pass parameters into this method.
         /// </summary>
         public void Enter_SomeVariable_Into_Base_Convert_Large_View_Row1_Value_Textbox()
@@ -5568,6 +5598,37 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
+        /// Select_Dice_From_Service_Picker - Use 'Select_Dice_From_Service_PickerParams' to pass parameters into this method.
+        /// </summary>
+        public void Select_Dice_From_Service_Picker()
+        {
+            #region Variable Declarations
+            WpfEdit filterTextbox = this.ServicePickerDialog.Explorer.FilterTextbox;
+            WpfTreeItem subTreeItem1 = this.ServicePickerDialog.Explorer.ExplorerTree.TreeItem1.SubTreeItem1;
+            WpfButton ok = this.ServicePickerDialog.OK;
+            WpfText addResourceText = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1.ResourceCell.AddResourceText;
+            #endregion
+
+            // Click 'SearchTextBox' text box
+            Mouse.Click(filterTextbox, new Point(93, 6));
+
+            // Type 'Dice' in 'SearchTextBox' text box
+            filterTextbox.Text = this.Select_Dice_From_Service_PickerParams.FilterTextboxText;
+
+            // Right-Click 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item
+            Mouse.Click(subTreeItem1, MouseButtons.Right, ModifierKeys.None, new Point(53, 12));
+
+            // Click 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item
+            Mouse.Click(subTreeItem1, new Point(53, 12));
+
+            // Click 'OK' button
+            Mouse.Click(ok, new Point(52, 15));
+
+            // Verify that the 'DisplayText' property of 'UI__AddResourceTextBox_AutoID' label equals 'Dice'
+            Assert.AreEqual(this.Select_Dice_From_Service_PickerParams.AddResourceTextDisplayText, addResourceText.DisplayText, "Resource Name is not set to Dice after selecting Dice from Service picker");
+        }
+        
+        /// <summary>
         /// Select_First_Item_From_DotNet_DLL_Large_View_Source_Combobox
         /// </summary>
         public void Select_First_Item_From_DotNet_DLL_Large_View_Source_Combobox()
@@ -6206,6 +6267,19 @@ namespace Warewolf.UITests
                     "d web address.");
         }
         
+        /// <summary>
+        /// RecordedMethod1
+        /// </summary>
+        public void RecordedMethod1()
+        {
+            #region Variable Declarations
+            WpfButton itemButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1.ResourceCell.ItemButton;
+            #endregion
+
+            // Click '...' button
+            Mouse.Click(itemButton, new Point(12, 2));
+        }
+        
         #region Properties
         public virtual Assert_CancelConnectionButton_ExistsExpectedValues Assert_CancelConnectionButton_ExistsExpectedValues
         {
@@ -6264,6 +6338,18 @@ namespace Warewolf.UITests
                     this.mAssign_Value_To_VariableParams = new Assign_Value_To_VariableParams();
                 }
                 return this.mAssign_Value_To_VariableParams;
+            }
+        }
+        
+        public virtual Check_Public_AdministratorParams Check_Public_AdministratorParams
+        {
+            get
+            {
+                if ((this.mCheck_Public_AdministratorParams == null))
+                {
+                    this.mCheck_Public_AdministratorParams = new Check_Public_AdministratorParams();
+                }
+                return this.mCheck_Public_AdministratorParams;
             }
         }
         
@@ -6723,18 +6809,6 @@ namespace Warewolf.UITests
             }
         }
         
-        public virtual Click_Public_AdministratorParams Click_Public_AdministratorParams
-        {
-            get
-            {
-                if ((this.mClick_Public_AdministratorParams == null))
-                {
-                    this.mClick_Public_AdministratorParams = new Click_Public_AdministratorParams();
-                }
-                return this.mClick_Public_AdministratorParams;
-            }
-        }
-        
         public virtual Click_RunDebug_buttonParams Click_RunDebug_buttonParams
         {
             get
@@ -6804,6 +6878,18 @@ namespace Warewolf.UITests
                     this.mClick_Scheduler_RunTaskParams = new Click_Scheduler_RunTaskParams();
                 }
                 return this.mClick_Scheduler_RunTaskParams;
+            }
+        }
+        
+        public virtual Click_Select_Resource_Button_From_Resource_PermissionsParams Click_Select_Resource_Button_From_Resource_PermissionsParams
+        {
+            get
+            {
+                if ((this.mClick_Select_Resource_Button_From_Resource_PermissionsParams == null))
+                {
+                    this.mClick_Select_Resource_Button_From_Resource_PermissionsParams = new Click_Select_Resource_Button_From_Resource_PermissionsParams();
+                }
+                return this.mClick_Select_Resource_Button_From_Resource_PermissionsParams;
             }
         }
         
@@ -7719,6 +7805,18 @@ namespace Warewolf.UITests
             }
         }
         
+        public virtual Enter_Public_As_Windows_GroupParams Enter_Public_As_Windows_GroupParams
+        {
+            get
+            {
+                if ((this.mEnter_Public_As_Windows_GroupParams == null))
+                {
+                    this.mEnter_Public_As_Windows_GroupParams = new Enter_Public_As_Windows_GroupParams();
+                }
+                return this.mEnter_Public_As_Windows_GroupParams;
+            }
+        }
+        
         public virtual Enter_SomeVariable_Into_Base_Convert_Large_View_Row1_Value_TextboxParams Enter_SomeVariable_Into_Base_Convert_Large_View_Row1_Value_TextboxParams
         {
             get
@@ -8319,6 +8417,18 @@ namespace Warewolf.UITests
             }
         }
         
+        public virtual Select_Dice_From_Service_PickerParams Select_Dice_From_Service_PickerParams
+        {
+            get
+            {
+                if ((this.mSelect_Dice_From_Service_PickerParams == null))
+                {
+                    this.mSelect_Dice_From_Service_PickerParams = new Select_Dice_From_Service_PickerParams();
+                }
+                return this.mSelect_Dice_From_Service_PickerParams;
+            }
+        }
+        
         public virtual Select_GetCountries_From_SQL_Server_Large_View_Action_ComboboxExpectedValues Select_GetCountries_From_SQL_Server_Large_View_Action_ComboboxExpectedValues
         {
             get
@@ -8679,6 +8789,8 @@ namespace Warewolf.UITests
         
         private Assign_Value_To_VariableParams mAssign_Value_To_VariableParams;
         
+        private Check_Public_AdministratorParams mCheck_Public_AdministratorParams;
+        
         private Click_AddNew_Web_Source_From_toolParams mClick_AddNew_Web_Source_From_toolParams;
         
         private Click_Assign_Tool_ExpandAllParams mClick_Assign_Tool_ExpandAllParams;
@@ -8755,8 +8867,6 @@ namespace Warewolf.UITests
         
         private Click_Output_OnVariable_InVariableListParams mClick_Output_OnVariable_InVariableListParams;
         
-        private Click_Public_AdministratorParams mClick_Public_AdministratorParams;
-        
         private Click_RunDebug_buttonParams mClick_RunDebug_buttonParams;
         
         private Click_Save_Ribbon_Button_to_Open_Save_DialogParams mClick_Save_Ribbon_Button_to_Open_Save_DialogParams;
@@ -8768,6 +8878,8 @@ namespace Warewolf.UITests
         private Click_Scheduler_Enable_Task_Radio_ButtonParams mClick_Scheduler_Enable_Task_Radio_ButtonParams;
         
         private Click_Scheduler_RunTaskParams mClick_Scheduler_RunTaskParams;
+        
+        private Click_Select_Resource_Button_From_Resource_PermissionsParams mClick_Select_Resource_Button_From_Resource_PermissionsParams;
         
         private Click_Select_Windows_Group_Cancel_ButtonParams mClick_Select_Windows_Group_Cancel_ButtonParams;
         
@@ -8921,6 +9033,8 @@ namespace Warewolf.UITests
         
         private Enter_InputDebug_valueParams mEnter_InputDebug_valueParams;
         
+        private Enter_Public_As_Windows_GroupParams mEnter_Public_As_Windows_GroupParams;
+        
         private Enter_SomeVariable_Into_Base_Convert_Large_View_Row1_Value_TextboxParams mEnter_SomeVariable_Into_Base_Convert_Large_View_Row1_Value_TextboxParams;
         
         private Enter_SomeVariable_Into_Calculate_Large_View_Function_TextboxParams mEnter_SomeVariable_Into_Calculate_Large_View_Function_TextboxParams;
@@ -9020,6 +9134,8 @@ namespace Warewolf.UITests
         private Select_Delete_FromExplorerContextMenuParams mSelect_Delete_FromExplorerContextMenuParams;
         
         private Select_Dev2TestingDB_From_DB_Source_Wizard_Database_ComboboxParams mSelect_Dev2TestingDB_From_DB_Source_Wizard_Database_ComboboxParams;
+        
+        private Select_Dice_From_Service_PickerParams mSelect_Dice_From_Service_PickerParams;
         
         private Select_GetCountries_From_SQL_Server_Large_View_Action_ComboboxExpectedValues mSelect_GetCountries_From_SQL_Server_Large_View_Action_ComboboxExpectedValues;
         
@@ -9163,6 +9279,31 @@ namespace Warewolf.UITests
         /// Type '50' in 'Text' text box
         /// </summary>
         public string TextEditText = "50";
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Check_Public_Administrator'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Check_Public_AdministratorParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Select 'UI_Public_AdministratorPermissionCheckBox_AutoID' check box
+        /// </summary>
+        public bool Public_AdministratorCheckBoxChecked = true;
+        
+        /// <summary>
+        /// Verify that the 'Checked' property of 'UI_Public_DeployToPermissionCheckBox_AutoID' check box equals 'True'
+        /// </summary>
+        public bool Public_DeployToCheckBoxChecked = true;
+        
+        /// <summary>
+        /// Verify that the 'Checked' property of 'UI_Public_DeployFromPermissionCheckBox_AutoID' check box equals 'True'
+        /// </summary>
+        public bool Public_DeployFromCheckBoxChecked = true;
         #endregion
     }
     
@@ -10005,31 +10146,6 @@ namespace Warewolf.UITests
     }
     
     /// <summary>
-    /// Parameters to be passed into 'Check_Public_Administrator'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Click_Public_AdministratorParams
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Select 'UI_Public_AdministratorPermissionCheckBox_AutoID' check box
-        /// </summary>
-        public bool Public_AdministratorCheckBoxChecked = true;
-        
-        /// <summary>
-        /// Verify that the 'Checked' property of 'UI_Public_DeployToPermissionCheckBox_AutoID' check box equals 'True'
-        /// </summary>
-        public bool Public_DeployToCheckBoxChecked = true;
-        
-        /// <summary>
-        /// Verify that the 'Checked' property of 'UI_Public_DeployFromPermissionCheckBox_AutoID' check box equals 'True'
-        /// </summary>
-        public bool Public_DeployFromCheckBoxChecked = true;
-        #endregion
-    }
-    
-    /// <summary>
     /// Parameters to be passed into 'Click_RunDebug_button'
     /// </summary>
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
@@ -10211,6 +10327,21 @@ namespace Warewolf.UITests
         /// Select 'Run task as soon as possible after a scheduled sta...' check box
         /// </summary>
         public bool RunTaskCheckBoxChecked = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Click_Select_Resource_Button_From_Resource_Permissions'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Click_Select_Resource_Button_From_Resource_PermissionsParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'ServicePickerDialog' window equals 'True'
+        /// </summary>
+        public bool ServicePickerDialogExists = true;
         #endregion
     }
     
@@ -11920,6 +12051,21 @@ namespace Warewolf.UITests
     }
     
     /// <summary>
+    /// Parameters to be passed into 'Enter_Public_As_Windows_Group'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Enter_Public_As_Windows_GroupParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Type 'Public' in 'UI__AddWindowsGroupsTextBox_AutoID' text box
+        /// </summary>
+        public string AddWindowsGroupsEditText = "Public";
+        #endregion
+    }
+    
+    /// <summary>
     /// Parameters to be passed into 'Enter_SomeVariable_Into_Base_Convert_Large_View_Row1_Value_Textbox'
     /// </summary>
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
@@ -12801,6 +12947,26 @@ namespace Warewolf.UITests
         /// Verify that the 'DisplayText' property of 'Dev2TestingDB' label equals 'Dev2TestingDB'
         /// </summary>
         public string UIDev2TestingDBTextDisplayText = "Dev2TestingDB";
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Select_Dice_From_Service_Picker'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Select_Dice_From_Service_PickerParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Type 'Dice' in 'SearchTextBox' text box
+        /// </summary>
+        public string FilterTextboxText = "Dice";
+        
+        /// <summary>
+        /// Verify that the 'DisplayText' property of 'UI__AddResourceTextBox_AutoID' label equals 'Dice'
+        /// </summary>
+        public string AddResourceTextDisplayText = "Dice";
         #endregion
     }
     
@@ -22933,28 +23099,10 @@ namespace Warewolf.UITests
                 return this.mPublic_ExecuteCheckBox;
             }
         }
-        
-        public WpfCheckBox Public_ExecuteCheckedCheckBox
-        {
-            get
-            {
-                if ((this.mPublic_ExecuteCheckedCheckBox == null))
-                {
-                    this.mPublic_ExecuteCheckedCheckBox = new WpfCheckBox(this);
-                    #region Search Criteria
-                    this.mPublic_ExecuteCheckedCheckBox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_Public_ExecutePermissionCheckBox_AutoID";
-                    this.mPublic_ExecuteCheckedCheckBox.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
-                    #endregion
-                }
-                return this.mPublic_ExecuteCheckedCheckBox;
-            }
-        }
         #endregion
         
         #region Fields
         private WpfCheckBox mPublic_ExecuteCheckBox;
-        
-        private WpfCheckBox mPublic_ExecuteCheckedCheckBox;
         #endregion
     }
     
@@ -23103,15 +23251,51 @@ namespace Warewolf.UITests
             }
         }
         
-        public PermissionsCell PermissionsCell
+        public ViewCell1 ViewCell
         {
             get
             {
-                if ((this.mPermissionsCell == null))
+                if ((this.mViewCell == null))
                 {
-                    this.mPermissionsCell = new PermissionsCell(this);
+                    this.mViewCell = new ViewCell1(this);
                 }
-                return this.mPermissionsCell;
+                return this.mViewCell;
+            }
+        }
+        
+        public ExecuteCell1 ExecuteCell
+        {
+            get
+            {
+                if ((this.mExecuteCell == null))
+                {
+                    this.mExecuteCell = new ExecuteCell1(this);
+                }
+                return this.mExecuteCell;
+            }
+        }
+        
+        public ContributeCell1 ContributeCell
+        {
+            get
+            {
+                if ((this.mContributeCell == null))
+                {
+                    this.mContributeCell = new ContributeCell1(this);
+                }
+                return this.mContributeCell;
+            }
+        }
+        
+        public DeleteCell1 DeleteCell
+        {
+            get
+            {
+                if ((this.mDeleteCell == null))
+                {
+                    this.mDeleteCell = new DeleteCell1(this);
+                }
+                return this.mDeleteCell;
             }
         }
         #endregion
@@ -23121,7 +23305,13 @@ namespace Warewolf.UITests
         
         private WindowsGroupCell mWindowsGroupCell;
         
-        private PermissionsCell mPermissionsCell;
+        private ViewCell1 mViewCell;
+        
+        private ExecuteCell1 mExecuteCell;
+        
+        private ContributeCell1 mContributeCell;
+        
+        private DeleteCell1 mDeleteCell;
         #endregion
     }
     
@@ -23139,22 +23329,6 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public WpfButton AddResourceButton
-        {
-            get
-            {
-                if ((this.mAddResourceButton == null))
-                {
-                    this.mAddResourceButton = new WpfButton(this);
-                    #region Search Criteria
-                    this.mAddResourceButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "UI__AddResourceButton_AutoID";
-                    this.mAddResourceButton.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mAddResourceButton;
-            }
-        }
-        
         public WpfText AddResourceText
         {
             get
@@ -23163,19 +23337,53 @@ namespace Warewolf.UITests
                 {
                     this.mAddResourceText = new WpfText(this);
                     #region Search Criteria
-                    this.mAddResourceText.SearchProperties[WpfText.PropertyNames.AutomationId] = "UI__AddResourceTextBox_AutoID";
+                    this.mAddResourceText.SearchProperties[WpfText.PropertyNames.Instance] = "1";
                     this.mAddResourceText.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mAddResourceText;
             }
         }
+        
+        public WpfButton AddResourceButton
+        {
+            get
+            {
+                if ((this.mAddResourceButton == null))
+                {
+                    this.mAddResourceButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mAddResourceButton.SearchProperties[WpfButton.PropertyNames.Instance] = "2";
+                    this.mAddResourceButton.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mAddResourceButton;
+            }
+        }
+        
+        public WpfButton ItemButton
+        {
+            get
+            {
+                if ((this.mItemButton == null))
+                {
+                    this.mItemButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mItemButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "UI__AddResourceButton_AutoID";
+                    this.mItemButton.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mItemButton;
+            }
+        }
         #endregion
         
         #region Fields
+        private WpfText mAddResourceText;
+        
         private WpfButton mAddResourceButton;
         
-        private WpfText mAddResourceText;
+        private WpfButton mItemButton;
         #endregion
     }
     
@@ -23234,13 +23442,14 @@ namespace Warewolf.UITests
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class PermissionsCell : WpfCell
+    public class ViewCell1 : WpfCell
     {
         
-        public PermissionsCell(UITestControl searchLimitContainer) : 
+        public ViewCell1(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
+            this.SearchProperties[WpfCell.PropertyNames.Instance] = "3";
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
@@ -23254,14 +23463,34 @@ namespace Warewolf.UITests
                 {
                     this.mViewCheckBox = new WpfCheckBox(this);
                     #region Search Criteria
-                    this.mViewCheckBox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI__ViewPermissionCheckBox_AutoID";
+                    this.mViewCheckBox.SearchProperties[WpfCheckBox.PropertyNames.Instance] = "1";
                     this.mViewCheckBox.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mViewCheckBox;
             }
         }
+        #endregion
         
+        #region Fields
+        private WpfCheckBox mViewCheckBox;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class ExecuteCell1 : WpfCell
+    {
+        
+        public ExecuteCell1(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfCell.PropertyNames.Instance] = "4";
+            this.WindowTitles.Add("Warewolf");
+            #endregion
+        }
+        
+        #region Properties
         public WpfCheckBox ExecuteCheckBox
         {
             get
@@ -23270,14 +23499,34 @@ namespace Warewolf.UITests
                 {
                     this.mExecuteCheckBox = new WpfCheckBox(this);
                     #region Search Criteria
-                    this.mExecuteCheckBox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI__ExecutePermissionCheckBox_AutoID";
+                    this.mExecuteCheckBox.SearchProperties[WpfCheckBox.PropertyNames.Instance] = "1";
                     this.mExecuteCheckBox.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mExecuteCheckBox;
             }
         }
+        #endregion
         
+        #region Fields
+        private WpfCheckBox mExecuteCheckBox;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class ContributeCell1 : WpfCell
+    {
+        
+        public ContributeCell1(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfCell.PropertyNames.Instance] = "5";
+            this.WindowTitles.Add("Warewolf");
+            #endregion
+        }
+        
+        #region Properties
         public WpfCheckBox ContributeCheckBox
         {
             get
@@ -23286,7 +23535,7 @@ namespace Warewolf.UITests
                 {
                     this.mContributeCheckBox = new WpfCheckBox(this);
                     #region Search Criteria
-                    this.mContributeCheckBox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI__ContributePermissionCheckBox_AutoID";
+                    this.mContributeCheckBox.SearchProperties[WpfCheckBox.PropertyNames.Instance] = "1";
                     this.mContributeCheckBox.WindowTitles.Add("Warewolf");
                     #endregion
                 }
@@ -23296,11 +23545,43 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private WpfCheckBox mViewCheckBox;
-        
-        private WpfCheckBox mExecuteCheckBox;
-        
         private WpfCheckBox mContributeCheckBox;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class DeleteCell1 : WpfCell
+    {
+        
+        public DeleteCell1(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfCell.PropertyNames.Instance] = "6";
+            this.WindowTitles.Add("Warewolf");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfButton DeleteButton
+        {
+            get
+            {
+                if ((this.mDeleteButton == null))
+                {
+                    this.mDeleteButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mDeleteButton.SearchProperties[WpfButton.PropertyNames.Instance] = "1";
+                    this.mDeleteButton.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mDeleteButton;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfButton mDeleteButton;
         #endregion
     }
     
@@ -38651,77 +38932,57 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public UIServerPermissionsDatTable UIServerPermissionsDatTable
+        public UIResourcePermissionsDTable UIResourcePermissionsDTable
         {
             get
             {
-                if ((this.mUIServerPermissionsDatTable == null))
+                if ((this.mUIResourcePermissionsDTable == null))
                 {
-                    this.mUIServerPermissionsDatTable = new UIServerPermissionsDatTable(this);
+                    this.mUIResourcePermissionsDTable = new UIResourcePermissionsDTable(this);
                 }
-                return this.mUIServerPermissionsDatTable;
+                return this.mUIResourcePermissionsDTable;
             }
         }
         #endregion
         
         #region Fields
-        private UIServerPermissionsDatTable mUIServerPermissionsDatTable;
+        private UIResourcePermissionsDTable mUIResourcePermissionsDTable;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class UIServerPermissionsDatTable : WpfTable
+    public class UIResourcePermissionsDTable : WpfTable
     {
         
-        public UIServerPermissionsDatTable(UITestControl searchLimitContainer) : 
+        public UIResourcePermissionsDTable(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
-            this.SearchProperties[WpfTable.PropertyNames.AutomationId] = "ServerPermissionsDataGrid";
+            this.SearchProperties[WpfTable.PropertyNames.AutomationId] = "ResourcePermissionsDataGrid";
             this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
             #endregion
         }
         
         #region Properties
-        public WpfCell UIFalseCell
+        public WpfCell UIResourcesCell
         {
             get
             {
-                if ((this.mUIFalseCell == null))
+                if ((this.mUIResourcesCell == null))
                 {
-                    this.mUIFalseCell = new WpfCell(this);
+                    this.mUIResourcesCell = new WpfCell(this);
                     #region Search Criteria
-                    this.mUIFalseCell.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = null;
-                    this.mUIFalseCell.SearchProperties[WpfCell.PropertyNames.Value] = "False";
-                    this.mUIFalseCell.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    this.mUIResourcesCell.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = null;
+                    this.mUIResourcesCell.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
                     #endregion
                 }
-                return this.mUIFalseCell;
-            }
-        }
-        
-        public WpfCell UITrueCell
-        {
-            get
-            {
-                if ((this.mUITrueCell == null))
-                {
-                    this.mUITrueCell = new WpfCell(this);
-                    #region Search Criteria
-                    this.mUITrueCell.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = null;
-                    this.mUITrueCell.SearchProperties[WpfCell.PropertyNames.Value] = "True";
-                    this.mUITrueCell.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
-                    #endregion
-                }
-                return this.mUITrueCell;
+                return this.mUIResourcesCell;
             }
         }
         #endregion
         
         #region Fields
-        private WpfCell mUIFalseCell;
-        
-        private WpfCell mUITrueCell;
+        private WpfCell mUIResourcesCell;
         #endregion
     }
 }
