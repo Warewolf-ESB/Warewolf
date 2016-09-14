@@ -2,11 +2,9 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Windows;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
-using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Hosting;
 using Dev2.Common.Interfaces.Infrastructure;
 using Dev2.Communication;
@@ -49,19 +47,11 @@ namespace Dev2.Activities.Specs.TestFramework
         {
             var environmentModel = EnvironmentRepository.Instance.Source;
             environmentModel.Connect();
-            var resourceModel = new ResourceModel(environmentModel)
-            {
-                ResourceName = workflowName,
-                DisplayName = workflowName,
-                DataList = "",
-                ID = Guid.NewGuid(),
-                Category = workflowName
-
-            };
+            var resourceModel = BuildResourceModel(workflowName, environmentModel);
             var workflowHelper = new WorkflowHelper();
             var builder = workflowHelper.CreateWorkflow(workflowName);
             resourceModel.WorkflowXaml = workflowHelper.GetXamlDefinition(builder);
-            
+
             var datalistViewModel = new DataListViewModel();
             datalistViewModel.InitializeDataListViewModel(resourceModel);
             foreach (var variablesRow in inputVariables.Rows)
@@ -83,6 +73,19 @@ namespace Dev2.Activities.Specs.TestFramework
             ScenarioContext["shellViewModel"] = shellViewModel;
         }
 
+        private static ResourceModel BuildResourceModel(string workflowName, IEnvironmentModel environmentModel)
+        {
+            var resourceModel = new ResourceModel(environmentModel)
+            {
+                ResourceName = workflowName,
+                DisplayName = workflowName,
+                DataList = "",
+                ID = Guid.NewGuid(),
+                Category = workflowName
+            };
+            return resourceModel;
+        }
+
         readonly object _syncRoot = new object();
         string ResourceName { get; set; }
         const string json = "{\"$type\":\"Dev2.Data.ServiceTestModelTO,Dev2.Data\",\"OldTestName\":null,\"TestName\":\"Test 1\",\"UserName\":null,\"Password\":null,\"LastRunDate\":\"0001-01-01T00:00:00\",\"Inputs\":null,\"Outputs\":null,\"NoErrorExpected\":false,\"ErrorExpected\":false,\"TestPassed\":false,\"TestFailing\":false,\"TestInvalid\":false,\"TestPending\":false,\"Enabled\":true,\"IsDirty\":false,\"AuthenticationType\":0,\"ResourceId\":\"00000000-0000-0000-0000-000000000000\"}";
@@ -90,25 +93,38 @@ namespace Dev2.Activities.Specs.TestFramework
         [Given(@"I have a resouce ""(.*)""")]
         public void GivenIHaveAResouce(string resourceName)
         {
-            var sourcesPath = EnvironmentVariables.ResourcePath;
-            Directory.CreateDirectory(sourcesPath);
+            _resourceForTests = resourceName;
             var resourceId = Guid.NewGuid();
-            ScenarioContext.Add(resourceName + "id", resourceId);
-            ResourceName = resourceName + resourceId;
-            var pluginResource = GetPluginResource(resourceId, ResourceName);
             // ReSharper disable once UnusedVariable
             var environmentModel = EnvironmentRepository.Instance.Source;
-            SaveResource(environmentModel, pluginResource.ToStringBuilder(), GlobalConstants.ServerWorkspaceID, sourcesPath);
+            var resourceModel = new ResourceModel(environmentModel)
+            {
+                ResourceName = resourceName,
+                DisplayName = resourceName,
+                DataList = "",
+                ID = resourceId,
+                Category = resourceName
+            };
+            var workflowHelper = new WorkflowHelper();
+            var builder = workflowHelper.CreateWorkflow(resourceName);
+            resourceModel.WorkflowXaml = workflowHelper.GetXamlDefinition(builder);
 
-            ScenarioContext.Current.Add("savedResources", pluginResource);
+            environmentModel.ResourceRepository.SaveToServer(resourceModel);
+
+            ScenarioContext.Current.Add(resourceName + "id", resourceId);
         }
+        string _resourceForTests = "";
         [Given(@"I add ""(.*)"" as tests")]
         public void GivenIAddAsTests(string p0)
         {
-            var resourceID = ScenarioContext.Get<Guid>("PluginSourceid");
+
             var environmentModel = EnvironmentRepository.Instance.Source;
             var serviceTestModelTos = new List<IServiceTestModelTO>() { };
+            environmentModel.ResourceRepository.ForceLoad();
+            var savedSource = environmentModel.ResourceRepository.All().First(model => model.ResourceName.Equals(_resourceForTests, StringComparison.InvariantCultureIgnoreCase));
+            ScenarioContext["PluginSource" + "id"] = savedSource.ID;
 
+            var resourceID = ScenarioContext.Get<Guid>("PluginSourceid");
             lock (_syncRoot)
             {
                 var testNamesNames = p0.Split(',');
@@ -126,13 +142,15 @@ namespace Dev2.Activities.Specs.TestFramework
                 }
             }
             // ReSharper disable once UnusedVariable
-            var resourceModel = new ResourceModel(environmentModel);
-            resourceModel.ID = resourceID;
-            resourceModel.Category = "ResourceCat\\ResourceName";
-            resourceModel.ResourceName = "Resourcename";
+            var resourceModel = new ResourceModel(environmentModel)
+            {
+                ID = savedSource.ID,
+                Category = "",
+                ResourceName = _resourceForTests
+            };
             var executeMessage = environmentModel.ResourceRepository.SaveTests(resourceModel, serviceTestModelTos);
         }
-
+        const string _resourceCat = "ResourceCat\\";
         [Then(@"""(.*)"" has (.*) tests")]
         public void ThenHasTests(string resourceName, int numberOdTests)
         {
@@ -145,60 +163,13 @@ namespace Dev2.Activities.Specs.TestFramework
         [When(@"I delete resource ""(.*)""")]
         public void WhenIDeleteResource(string resourceName)
         {
-
+            var environmentModel = EnvironmentRepository.Instance.Source;
             var resourceID = ScenarioContext.Get<Guid>(resourceName + "id");
             // ReSharper disable once UnusedVariable
-            var resource1 = ResourceCatalog.Instance.GetResource(GlobalConstants.ServerWorkspaceID, resourceID);
-            DeleteResource(resource1);
-        }
-
-
-
-        private void DeleteResource(IResource resource)
-        {
-            var environmentModel = EnvironmentRepository.Instance.Source;
-
-            var comsController = new CommunicationController { ServiceName = "DeleteResourceService" };
-
-            comsController.AddPayloadArgument("ResourceID", resource.ResourceID.ToString());
-            comsController.AddPayloadArgument("ResourceType", resource.ResourceType);
-            var result = comsController.ExecuteCommand<ExecuteMessage>(environmentModel.Connection, GlobalConstants.ServerWorkspaceID);
-
-            if (result.HasError)
-            {
-                throw new Exception(result.Message.ToString());
-            }
+            var savedSource = environmentModel.ResourceRepository.All().First(model => model.ResourceName.Equals(_resourceForTests, StringComparison.InvariantCultureIgnoreCase));
+            var deleteResource = environmentModel.ResourceRepository.DeleteResource(savedSource);
 
         }
-
-
-
-        private void SaveResource(IEnvironmentModel targetEnvironment, StringBuilder resourceDefinition, Guid workspaceId, string savePath)
-        {
-            var comsController = new CommunicationController { ServiceName = "SaveResourceService" };
-            CompressedExecuteMessage message = new CompressedExecuteMessage();
-            message.SetMessage(resourceDefinition.ToString());
-            Dev2JsonSerializer ser = new Dev2JsonSerializer();
-            comsController.AddPayloadArgument("savePath", savePath);
-            comsController.AddPayloadArgument("ResourceXml", ser.SerializeToBuilder(message));
-            comsController.AddPayloadArgument("WorkspaceID", workspaceId.ToString());
-
-            var con = targetEnvironment.Connection;
-            var result = comsController.ExecuteCommand<StringBuilder>(con, GlobalConstants.ServerWorkspaceID);
-
-        }
-
-        private IResource GetPluginResource(Guid resId, string name, string filePath = "")
-        {
-            var res = new PluginSource()
-            {
-                ResourceID = resId,
-                ResourceName = name,
-                FilePath = filePath
-            };
-            return res;
-        }
-
 
         private static void AddVariables(string variableName, DataListViewModel datalistViewModel, enDev2ColumnArgumentDirection ioDirection)
         {
@@ -908,34 +879,50 @@ namespace Dev2.Activities.Specs.TestFramework
         [Given(@"I have a folder ""(.*)""")]
         public void GivenIHaveAFolder(string foldername)
         {
-            var folderPath = Path.Combine(EnvironmentVariables.ResourcePath, foldername);
-            if (!Directory.Exists(folderPath))
-            {
-                Directory.CreateDirectory(folderPath);
-            }
-            ScenarioContext.Add("folderPath", foldername);
+            var category = _resourceCat + foldername;
+            var folderPath = Path.Combine(EnvironmentVariables.ResourcePath, category);
+            //if (!Directory.Exists(folderPath))
+            //{
+            //    Directory.CreateDirectory(folderPath);
+            //}
+            ScenarioContext.Add("folderPath", category);
         }
 
         [Given(@"I have a resouce workflow ""(.*)"" inside Home")]
         public void GivenIHaveAResouceWorkflowInsideHome(string resourceName)
         {
             var path = ScenarioContext.Get<string>("folderPath");
-
-            var plugInSource1Id = Guid.NewGuid();
-            var pluginResource = GetPluginResource(plugInSource1Id, resourceName);
             var environmentModel = EnvironmentRepository.Instance.Source;
-            SaveResource(environmentModel, pluginResource.ToStringBuilder(), GlobalConstants.ServerWorkspaceID, path);
-            ScenarioContext.Add(resourceName + "id", plugInSource1Id);
+
+
+            var resourceId = Guid.NewGuid();
+            // ReSharper disable once UnusedVariable
+            var resourceModel = new ResourceModel(environmentModel)
+            {
+                ResourceName = resourceName,
+                DisplayName = resourceName,
+                DataList = "",
+                ID = resourceId,
+                Category = path
+            };
+            var workflowHelper = new WorkflowHelper();
+            var builder = workflowHelper.CreateWorkflow(resourceName);
+            resourceModel.WorkflowXaml = workflowHelper.GetXamlDefinition(builder);
+            environmentModel.ResourceRepository.SaveToServer(resourceModel);
+            ScenarioContext.Current.Add(resourceName + "id", resourceId);
         }
 
         [Given(@"I add ""(.*)"" to ""(.*)""")]
         public void GivenIAddTo(string testNames, string rName)
         {
 
-            var resourceID = ScenarioContext.Get<Guid>(rName + "id");
+            var path = ScenarioContext.Get<string>("folderPath");
             var environmentModel = EnvironmentRepository.Instance.Source;
             var serviceTestModelTos = new List<IServiceTestModelTO>() { };
-
+            environmentModel.ResourceRepository.ForceLoad();
+            var savedSource = environmentModel.ResourceRepository.All().Single(model => model.ResourceName.Equals(rName, StringComparison.InvariantCultureIgnoreCase));
+            ScenarioContext[rName + "id"] = savedSource.ID;
+            var resourceID = ScenarioContext.Get<Guid>(rName + "id");
             lock (_syncRoot)
             {
                 var testNamesNames = testNames.Split(',');
@@ -952,12 +939,16 @@ namespace Dev2.Activities.Specs.TestFramework
                     serviceTestModelTos.Add(serviceTestModelTO);
                 }
             }
+
             // ReSharper disable once UnusedVariable
-            var resourceModel = new ResourceModel(environmentModel);
-            resourceModel.ID = resourceID;
-            resourceModel.Category = "ResourceCat\\ResourceName";
-            resourceModel.ResourceName = "Resourcename";
+            var resourceModel = new ResourceModel(environmentModel)
+            {
+                ID = savedSource.ID,
+                Category = path,
+                ResourceName = rName
+            };
             var executeMessage = environmentModel.ResourceRepository.SaveTests(resourceModel, serviceTestModelTos);
+            Assert.IsTrue(executeMessage.Result == SaveResult.Success || executeMessage.Result == SaveResult.ResourceUpdated);
         }
         [When(@"I delete folder ""(.*)""")]
         public void WhenIDeleteFolder(string folderName)
