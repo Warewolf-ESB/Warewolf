@@ -149,7 +149,12 @@ namespace Warewolf.Studio.ViewModels
         {
             get
             {
-                _canSave = IsDirty && IsValidName(SelectedServiceTest.TestName);
+                var isValid = false;
+                if (SelectedServiceTest != null)
+                {
+                    isValid = IsValidName(SelectedServiceTest.TestName);
+                }
+                _canSave = IsDirty && isValid;
                 return _canSave;
             }
             set
@@ -360,6 +365,10 @@ namespace Warewolf.Studio.ViewModels
             {
                 ViewModelUtils.RaiseCanExecuteChanged(DeleteTestCommand);
             }
+            if (e.PropertyName == "IsDirty")
+            {
+                ViewModelUtils.RaiseCanExecuteChanged(RunSelectedTestInBrowserCommand);
+            }
             if (e.PropertyName == "RunSelectedTestUrl")
             {
                 ViewModelUtils.RaiseCanExecuteChanged(RunSelectedTestInBrowserCommand);
@@ -448,7 +457,7 @@ namespace Warewolf.Studio.ViewModels
         {
             var serviceTestModel = new ServiceTestModel(ResourceModel.ID)
             {
-                OldTestName = to.TestName, TestName = to.TestName, NameForDisplay = to.TestName, UserName = to.UserName, AuthenticationType = to.AuthenticationType, Enabled = to.Enabled, ErrorExpected = to.ErrorExpected, NoErrorExpected = to.NoErrorExpected, LastRunDate = to.LastRunDate, TestPending = to.TestPending, TestFailing = to.TestFailing, TestPassed = to.TestPassed, Password = to.Password, ParentId = to.ResourceId, TestInvalid = to.TestInvalid, Inputs = to.Inputs?.Select(input => new ServiceTestInput(input.Variable, input.Value) as IServiceTestInput).ToList(), Outputs = to.Outputs?.Select(output => new ServiceTestOutput(output.Variable, output.Value) as IServiceTestOutput).ToList()
+                OldTestName = to.TestName, TestName = to.TestName, IsTestRunning = false, NameForDisplay = to.TestName, UserName = to.UserName, AuthenticationType = to.AuthenticationType, Enabled = to.Enabled, ErrorExpected = to.ErrorExpected, NoErrorExpected = to.NoErrorExpected, LastRunDate = to.LastRunDate, TestPending = to.TestPending, TestFailing = to.TestFailing, TestPassed = to.TestPassed, Password = to.Password, ParentId = to.ResourceId, TestInvalid = to.TestInvalid, Inputs = to.Inputs?.Select(input => new ServiceTestInput(input.Variable, input.Value) as IServiceTestInput).ToList(), Outputs = to.Outputs?.Select(output => new ServiceTestOutput(output.Variable, output.Value) as IServiceTestOutput).ToList()
             };
             return serviceTestModel;
         }

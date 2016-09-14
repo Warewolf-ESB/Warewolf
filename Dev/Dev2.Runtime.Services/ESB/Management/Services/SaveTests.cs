@@ -79,7 +79,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                     {
                         var testResult = new TestSaveResult
                         {
-                            Result = SaveResult.ResourceDeleted,
+                            Result = SaveResult.ResourceUpdated,
                             Message = $"Resource {resourcePathString} has changed to {resourcePath}. Tests have been saved for this resource."
                         };
                         res.Message = serializer.SerializeToBuilder(testResult);
