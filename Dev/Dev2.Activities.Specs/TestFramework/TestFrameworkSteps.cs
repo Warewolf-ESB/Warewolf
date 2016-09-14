@@ -13,7 +13,6 @@ using Dev2.Data;
 using Dev2.Data.Binary_Objects;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Data.Util;
-using Dev2.Runtime.Hosting;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Models;
