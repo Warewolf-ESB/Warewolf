@@ -1,11 +1,4 @@
 ﻿using System.CodeDom.Compiler;
-using System.Collections.Generic;
-using System.Text.RegularExpressions;
-using System.Windows.Input;
-using Microsoft.VisualStudio.TestTools.UITesting.HtmlControls;
-using Microsoft.VisualStudio.TestTools.UITesting.WinControls;
-using Keyboard = Microsoft.VisualStudio.TestTools.UITesting.Keyboard;
-using MouseButtons = System.Windows.Forms.MouseButtons;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
 using System;
@@ -165,8 +158,7 @@ namespace Warewolf.UITests
             WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);
 
             //TODO: remove this workaround for WOLF-2061
-            Mouse.Click(MainStudioWindow.SideMenuBar.NewWorkflowButton);
-            MainStudioWindow.SideMenuBar.NewWorkflowButton.WaitForControlEnabled();
+            //MainStudioWindow.SideMenuBar.NewWorkflowButton.WaitForControlEnabled();
         }
 
         private void TryClickMessageBoxOK()
@@ -1141,6 +1133,20 @@ namespace Warewolf.UITests
         }
 
         private Drag_Dice_Onto_DesignSurfaceParams mDrag_Dice_Onto_DesignSurfaceParams;
+
+        public virtual AssertMethod1ExpectedValues AssertMethod1ExpectedValues
+        {
+            get
+            {
+                if ((this.mAssertMethod1ExpectedValues == null))
+                {
+                    this.mAssertMethod1ExpectedValues = new AssertMethod1ExpectedValues();
+                }
+                return this.mAssertMethod1ExpectedValues;
+            }
+        }
+
+        private AssertMethod1ExpectedValues mAssertMethod1ExpectedValues;
     }
     /// <summary>
     /// Parameters to be passed into 'Select_Show_Dependencies_In_Explorer_Context_Menu'
@@ -1193,6 +1199,39 @@ namespace Warewolf.UITests
         /// Verify that the 'Exists' property of 'Done' button equals 'True'
         /// </summary>
         public bool DoneButtonExists = true;
+        #endregion
+    }
+    /// <summary>
+    /// Parameters to be passed into 'Select_NewFolder_From_ExplorerContextMenu'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Select_NewFolder_From_ExplorerContextMenuParams
+    {
+
+        #region Fields
+        /// <summary>
+        /// Type 'NewFolder' in first text box next to 'ResourceImage' image
+        /// </summary>
+        public string UIItemEditText = "NewFolder";
+        #endregion
+    }
+    /// <summary>
+    /// Parameters to be passed into 'AssertMethod1'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class AssertMethod1ExpectedValues
+    {
+
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item equals 'True'
+        /// </summary>
+        public bool UIInfragisticsControlsTreeItem1Exists = true;
+
+        /// <summary>
+        /// Verify that the 'Exists' property of 'XamRichTextEditor' custom control equals 'True'
+        /// </summary>
+        public bool HelpTextEditorExists = true;
         #endregion
     }
 }
