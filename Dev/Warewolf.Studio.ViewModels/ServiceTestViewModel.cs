@@ -140,6 +140,7 @@ namespace Warewolf.Studio.ViewModels
             SetSelectedTestUrl();
         }
 
+        // ReSharper disable once UnusedAutoPropertyAccessor.Local
         private bool CanStopTest { get; set; }
         private bool CanRunSelectedTestInBrowser => SelectedServiceTest != null && !SelectedServiceTest.IsDirty;
         private bool CanRunSelectedTest => GetPermissions();
