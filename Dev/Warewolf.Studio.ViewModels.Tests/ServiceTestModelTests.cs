@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Windows;
 using Dev2.Common.Interfaces;
 using Dev2.Data;
 using Dev2.Data.Binary_Objects;
@@ -12,6 +13,8 @@ namespace Warewolf.Studio.ViewModels.Tests
     [TestClass]
     public class ServiceTestModelTests
     {
+
+
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("TestModel_Name")]
@@ -33,6 +36,81 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual("Test Name", testModel.TestName);
             Assert.IsTrue(_wasCalled);
         }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void NerverRunStringVisibility_GivenisNew_ShouldBeVisible()
+        {
+            //---------------Set up test pack-------------------
+            var testModel = new ServiceTestModel(Guid.NewGuid());
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(testModel.NeverRunStringVisibility);
+            Assert.AreEqual(default(DateTime), testModel.LastRunDate);
+            //---------------Execute Test ----------------------
+            var neverRunStringVisibility = testModel.NeverRunStringVisibility;
+            //---------------Test Result -----------------------
+            Assert.AreEqual(Visibility.Visible, neverRunStringVisibility);
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void NerverRunStringVisibility_GivenLastRunDateHasValue_ShouldCollapsed()
+        {
+            //---------------Set up test pack-------------------
+            var testModel = new ServiceTestModel(Guid.NewGuid());
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(testModel.NeverRunStringVisibility);
+            Assert.AreEqual(default(DateTime), testModel.LastRunDate);
+            //---------------Execute Test ----------------------
+            testModel.LastRunDate = DateTime.Now;
+            var neverRunStringVisibility = testModel.NeverRunStringVisibility;
+            //---------------Test Result -----------------------
+            Assert.AreEqual(Visibility.Collapsed, neverRunStringVisibility);
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void LastRunDateVisibility_GivenLastRunDateHasValue_ShouldBeVisible()
+        {
+            //---------------Set up test pack-------------------
+            var testModel = new ServiceTestModel(Guid.NewGuid());
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(testModel.LastRunDateVisibility);
+            Assert.AreEqual(default(DateTime), testModel.LastRunDate);
+            //---------------Execute Test ----------------------
+            testModel.LastRunDate = DateTime.Now;
+            var lastRunDateVisibility = testModel.LastRunDateVisibility;
+            //---------------Test Result -----------------------
+            Assert.AreEqual(Visibility.Visible, lastRunDateVisibility);
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void LastRunDateVisibility_GivenisNew_ShouldBeCollapsed()
+        {
+            //---------------Set up test pack-------------------
+            var testModel = new ServiceTestModel(Guid.NewGuid());
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(testModel.LastRunDateVisibility);
+            Assert.AreEqual(default(DateTime), testModel.LastRunDate);
+            //---------------Execute Test ----------------------
+            var neverRunStringVisibility = testModel.LastRunDateVisibility;
+            //---------------Test Result -----------------------
+            Assert.AreEqual(Visibility.Collapsed, neverRunStringVisibility);
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void TestModel_NeverRunString_WhenNew_ShouldSetNeverRunString()
+        {
+            //------------Setup for test--------------------------
+            var testModel = new ServiceTestModel(Guid.NewGuid());
+            //------------Execute Test---------------------------
+            Assert.IsFalse(string.IsNullOrEmpty(testModel.NeverRunString));
+            //------------Assert Results-------------------------
+            Assert.AreEqual("Never run", testModel.NeverRunString);
+        }
+       
 
         [TestMethod]
         [Owner("Pieter Terblanche")]

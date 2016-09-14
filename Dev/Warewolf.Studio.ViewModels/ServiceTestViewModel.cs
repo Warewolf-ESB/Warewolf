@@ -104,6 +104,8 @@ namespace Warewolf.Studio.ViewModels
 
         #endregion
 
+        
+
         private bool CanDeleteTest(IServiceTestModel selectedTestModel)
         {
             return GetPermissions() && selectedTestModel != null && !selectedTestModel.Enabled;
