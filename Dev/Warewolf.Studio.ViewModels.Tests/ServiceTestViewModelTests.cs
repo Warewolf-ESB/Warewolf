@@ -1145,6 +1145,48 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual(false, bool.Parse(invoke.ToString()));
         }
 
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void LastDateVisibility_GivenSelectedTestIsNew_ShouldHaveDateVisibilityCollapsed()
+        {
+            //---------------Set up test pack-------------------
+            var popupController = new Mock<IPopupController>();
+            popupController.Setup(controller => controller.ShowDeleteConfirmation(It.IsAny<string>())).Returns(MessageBoxResult.Yes);
+            CustomContainer.Register(popupController.Object);
+            var mockResourceModel = CreateMockResourceModel();
+            var resourceId = Guid.NewGuid();
+            mockResourceModel.Setup(model => model.Environment.ResourceRepository.DeleteResourceTest(It.IsAny<Guid>(), It.IsAny<string>())).Verifiable();
+            mockResourceModel.Setup(model => model.ID).Returns(resourceId);
+            var testFrameworkViewModel = new ServiceTestViewModel(mockResourceModel.Object, new SynchronousAsyncWorker());
+            //---------------Assert Precondition----------------
+            //---------------Execute Test ----------------------
+            testFrameworkViewModel.CreateTestCommand.Execute(null);
+            Assert.IsNotNull(testFrameworkViewModel.SelectedServiceTest);
+            //---------------Test Result -----------------------
+            Assert.AreEqual(Visibility.Collapsed, testFrameworkViewModel.SelectedServiceTest.LastRunDateVisibility);
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void NeverRunStringVisibility_GivenSelectedTestIsNew_ShouldHaveDateVisibilityVisible()
+        {
+            //---------------Set up test pack-------------------
+            var popupController = new Mock<IPopupController>();
+            popupController.Setup(controller => controller.ShowDeleteConfirmation(It.IsAny<string>())).Returns(MessageBoxResult.Yes);
+            CustomContainer.Register(popupController.Object);
+            var mockResourceModel = CreateMockResourceModel();
+            var resourceId = Guid.NewGuid();
+            mockResourceModel.Setup(model => model.Environment.ResourceRepository.DeleteResourceTest(It.IsAny<Guid>(), It.IsAny<string>())).Verifiable();
+            mockResourceModel.Setup(model => model.ID).Returns(resourceId);
+            var testFrameworkViewModel = new ServiceTestViewModel(mockResourceModel.Object, new SynchronousAsyncWorker());
+            //---------------Assert Precondition----------------
+            //---------------Execute Test ----------------------
+            testFrameworkViewModel.CreateTestCommand.Execute(null);
+            Assert.IsNotNull(testFrameworkViewModel.SelectedServiceTest);
+            //---------------Test Result -----------------------
+            Assert.AreEqual(Visibility.Visible, testFrameworkViewModel.SelectedServiceTest.NeverRunStringVisibility);
+        }
+
         private IContextualResourceModel CreateResourceModelWithSingleScalarInput()
         {
             var resourceModel = CreateResourceModel();
