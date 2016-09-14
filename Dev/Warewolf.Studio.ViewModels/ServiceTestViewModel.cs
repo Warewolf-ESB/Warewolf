@@ -418,6 +418,7 @@ namespace Warewolf.Studio.ViewModels
                     var testToRemove = _tests.SingleOrDefault(model => model.ParentId == SelectedServiceTest.ParentId && model.TestName == SelectedServiceTest.TestName);
                     _tests.Remove(testToRemove); //test
                     OnPropertyChanged(() => Tests); //test
+                    SelectedServiceTest = null;
                 }
                 catch (Exception ex)
                 {
