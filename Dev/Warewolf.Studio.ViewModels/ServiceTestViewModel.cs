@@ -239,7 +239,7 @@ namespace Warewolf.Studio.ViewModels
         {
             try
             {
-                if (HasDuplicateTestNames())
+                if (ShowPoputWhenDuplicates())
                 {
                     return;
                 }
@@ -295,16 +295,17 @@ namespace Warewolf.Studio.ViewModels
 
         }
 
-        private bool HasDuplicateTestNames()
+        private bool ShowPoputWhenDuplicates()
         {
-            var dupTests = RealTests().ToList().GroupBy(x => x.TestName).Where(group => @group.Count() > 1).Select(group => @group.Key);
-            if (dupTests.Any())
+            if (HasDuplicates())
             {
                 PopupController?.Show(Resources.Languages.Core.ServiceTestDuplicateTestNameMessage, Resources.Languages.Core.ServiceTestDuplicateTestNameHeader, MessageBoxButton.OK, MessageBoxImage.Error, null, false, true, false, false);
                 return true;
             }
             return false;
         }
+
+        public bool HasDuplicates() => RealTests().ToList().GroupBy(x => x.TestName).Where(group => @group.Count() > 1).Select(group => @group.Key).Any();
 
         private void SetSelectedTestUrl()
         {

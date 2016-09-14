@@ -69,6 +69,7 @@ namespace Dev2.Activities.Specs.TestFramework
             ScenarioContext["popupController"] = popupController;
 
             var shellViewModel = new Mock<IShellViewModel>();
+            shellViewModel.Setup(model => model.CloseResourceTestView(It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<Guid>()));
             CustomContainer.Register(shellViewModel.Object);
             ScenarioContext["shellViewModel"] = shellViewModel;
         }
