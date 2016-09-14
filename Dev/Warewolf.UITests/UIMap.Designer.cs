@@ -87,19 +87,6 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
-        /// AssertMethod1 - Use 'AssertMethod1ExpectedValues' to pass parameters into this method.
-        /// </summary>
-        public void AssertMethod1()
-        {
-            #region Variable Declarations
-            WpfButton select_GroupButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.PublicROW.WindowsGroup.Select_GroupButton;
-            #endregion
-
-            // Verify that the 'Enabled' property of '...' button equals 'False'
-            Assert.AreEqual(this.AssertMethod1ExpectedValues.Select_GroupButtonEnabled, select_GroupButton.Enabled, "Public Edit Windows group is enabled");
-        }
-        
-        /// <summary>
         /// Assign_Value_To_Variable - Use 'Assign_Value_To_VariableParams' to pass parameters into this method.
         /// </summary>
         public void Assign_Value_To_Variable()
@@ -6247,18 +6234,6 @@ namespace Warewolf.UITests
             }
         }
         
-        public virtual AssertMethod1ExpectedValues AssertMethod1ExpectedValues
-        {
-            get
-            {
-                if ((this.mAssertMethod1ExpectedValues == null))
-                {
-                    this.mAssertMethod1ExpectedValues = new AssertMethod1ExpectedValues();
-                }
-                return this.mAssertMethod1ExpectedValues;
-            }
-        }
-        
         public virtual Assign_Value_To_VariableParams Assign_Value_To_VariableParams
         {
             get
@@ -8669,8 +8644,6 @@ namespace Warewolf.UITests
         
         private Assert_variable_filter_textbox_existExpectedValues mAssert_variable_filter_textbox_existExpectedValues;
         
-        private AssertMethod1ExpectedValues mAssertMethod1ExpectedValues;
-        
         private Assign_Value_To_VariableParams mAssign_Value_To_VariableParams;
         
         private Click_AddNew_Web_Source_From_toolParams mClick_AddNew_Web_Source_From_toolParams;
@@ -9135,21 +9108,6 @@ namespace Warewolf.UITests
         /// Verify that the 'Exists' property of 'Filter' label equals 'True'
         /// </summary>
         public bool FilterTextExists = true;
-        #endregion
-    }
-    
-    /// <summary>
-    /// Parameters to be passed into 'AssertMethod1'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class AssertMethod1ExpectedValues
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Verify that the 'Enabled' property of '...' button equals 'False'
-        /// </summary>
-        public bool Select_GroupButtonEnabled = false;
         #endregion
     }
     
@@ -22745,7 +22703,7 @@ namespace Warewolf.UITests
                 base(searchLimitContainer)
         {
             #region Search Criteria
-            this.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = "";
+            this.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = null;
             this.SearchProperties[WpfCell.PropertyNames.Value] = "False";
             this.SearchProperties[WpfCell.PropertyNames.Instance] = "1";
             this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
@@ -22783,7 +22741,7 @@ namespace Warewolf.UITests
                 base(searchLimitContainer)
         {
             #region Search Criteria
-            this.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = "";
+            this.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = null;
             this.SearchProperties[WpfCell.PropertyNames.Value] = "False";
             this.SearchProperties[WpfCell.PropertyNames.Instance] = "2";
             this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
@@ -22821,7 +22779,7 @@ namespace Warewolf.UITests
                 base(searchLimitContainer)
         {
             #region Search Criteria
-            this.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = "";
+            this.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = null;
             this.SearchProperties[WpfCell.PropertyNames.Value] = "False";
             this.SearchProperties[WpfCell.PropertyNames.Instance] = "3";
             this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
@@ -22859,7 +22817,7 @@ namespace Warewolf.UITests
                 base(searchLimitContainer)
         {
             #region Search Criteria
-            this.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = "";
+            this.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = null;
             this.SearchProperties[WpfCell.PropertyNames.Value] = "False";
             this.SearchProperties[WpfCell.PropertyNames.Instance] = "4";
             this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
@@ -22897,7 +22855,7 @@ namespace Warewolf.UITests
                 base(searchLimitContainer)
         {
             #region Search Criteria
-            this.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = "";
+            this.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = null;
             this.SearchProperties[WpfCell.PropertyNames.Value] = "False";
             this.SearchProperties[WpfCell.PropertyNames.Instance] = "5";
             this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
@@ -22935,7 +22893,7 @@ namespace Warewolf.UITests
                 base(searchLimitContainer)
         {
             #region Search Criteria
-            this.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = "";
+            this.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = null;
             this.SearchProperties[WpfCell.PropertyNames.Value] = "False";
             this.SearchProperties[WpfCell.PropertyNames.Instance] = "6";
             this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
