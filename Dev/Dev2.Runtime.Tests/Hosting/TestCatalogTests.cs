@@ -113,6 +113,147 @@ namespace Dev2.Tests.Runtime.Hosting
             Assert.IsFalse(test2.Enabled);
         }
 
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("TestCatalog_SaveTest")]
+        public void TestCatalog_SaveTests_WhenNoResourceIdList_ShouldSaveTestAsFiles()
+        {
+            //------------Setup for test--------------------------
+            var testCatalog = new TestCatalog();
+            var resourceID = Guid.NewGuid();
+
+            var testToSave = new ServiceTestModelTO
+            {
+                Enabled = false,
+                TestName = "Test 1"
+            };
+            
+            //------------Execute Test---------------------------
+            testCatalog.SaveTest(resourceID, testToSave);
+            //------------Assert Results-------------------------
+            var path = EnvironmentVariables.TestPath + "\\" + resourceID;
+            Assert.IsTrue(Directory.Exists(path));
+            var testFiles = Directory.EnumerateFiles(path).ToList();
+            var test1FilePath = path + "\\" + "Test 1.test";
+            Assert.AreEqual(test1FilePath, testFiles[0]);
+          
+            var test1String = File.ReadAllText(test1FilePath);
+            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+            var test1 = serializer.Deserialize<IServiceTestModelTO>(test1String);
+            Assert.AreEqual("Test 1", test1.TestName);
+            Assert.IsFalse(test1.Enabled);
+            
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("TestCatalog_SaveTest")]
+        public void TestCatalog_SaveTests_WhenResourceIdList_ShouldSaveTestAsAddToList()
+        {
+            //------------Setup for test--------------------------
+            var testCatalog = new TestCatalog();
+            var resourceID = Guid.NewGuid();
+
+            var testToSave = new ServiceTestModelTO
+            {
+                Enabled = false,
+                TestName = "Test 1"
+            };
+
+            var testToSave2 = new ServiceTestModelTO
+            {
+                Enabled = false,
+                TestName = "Test 2"
+            };
+
+            testCatalog.SaveTest(resourceID, testToSave);
+
+            //------------Execute Test---------------------------
+            testCatalog.SaveTest(resourceID, testToSave2);
+            //------------Assert Results-------------------------
+            var path = EnvironmentVariables.TestPath + "\\" + resourceID;
+            Assert.IsTrue(Directory.Exists(path));
+            var testFiles = Directory.EnumerateFiles(path).ToList();
+            var test2FilePath = path + "\\" + "Test 2.test";
+            Assert.AreEqual(test2FilePath, testFiles[1]);
+          
+            var test2String = File.ReadAllText(test2FilePath);
+            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+            var test1 = serializer.Deserialize<IServiceTestModelTO>(test2String);
+            Assert.AreEqual("Test 2", test1.TestName);
+            Assert.IsFalse(test1.Enabled);
+
+            var testInList = testCatalog.FetchTest(resourceID, "Test 2");
+            Assert.IsNotNull(testInList);
+            Assert.AreEqual("Test 2",testInList.TestName);
+            
+        }
+
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("TestCatalog_SaveTest")]
+        public void TestCatalog_SaveTests_WhenResourceIdListHasTest_ShouldSaveTestUpdateToList()
+        {
+            //------------Setup for test--------------------------
+            var testCatalog = new TestCatalog();
+            var resourceID = Guid.NewGuid();
+
+            var testToSave = new ServiceTestModelTO
+            {
+                Enabled = false,
+                TestName = "Test 1"
+            };
+
+            var testToSave2 = new ServiceTestModelTO
+            {
+                Enabled = false,
+                TestName = "Test 2"
+            };
+
+            testCatalog.SaveTest(resourceID, testToSave);
+            testCatalog.SaveTest(resourceID, testToSave2);
+
+            //------------Assert Preconditions-------------------
+            var path = EnvironmentVariables.TestPath + "\\" + resourceID;
+            Assert.IsTrue(Directory.Exists(path));
+            var testFiles = Directory.EnumerateFiles(path).ToList();
+            var test1FilePath = path + "\\" + "Test 1.test";
+            var test2FilePath = path + "\\" + "Test 2.test";
+            Assert.AreEqual(test1FilePath, testFiles[0]);
+            Assert.AreEqual(test2FilePath, testFiles[1]);
+
+            var test1String = File.ReadAllText(test2FilePath);
+            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+            var test2 = serializer.Deserialize<IServiceTestModelTO>(test1String);
+            Assert.AreEqual("Test 2", test2.TestName);
+            Assert.IsFalse(test2.Enabled);
+
+            var testInList = testCatalog.FetchTest(resourceID, "Test 2");
+            Assert.IsNotNull(testInList);
+            Assert.AreEqual("Test 2", testInList.TestName);
+            //------------Execute Test---------------------------
+            var testToSaveUpdate = new ServiceTestModelTO
+            {
+                Enabled = true,
+                TestName = "Test 2"
+            };
+
+            testCatalog.SaveTest(resourceID, testToSaveUpdate);
+            //------------Assert Results-------------------------
+            var test2StringUpdated = File.ReadAllText(test2FilePath);
+            var test2Updated = serializer.Deserialize<IServiceTestModelTO>(test2StringUpdated);
+            Assert.AreEqual("Test 2", test2Updated.TestName);
+            Assert.IsTrue(test2Updated.Enabled);
+
+            var testInListUpdated = testCatalog.FetchTest(resourceID, "Test 2");
+            Assert.IsNotNull(testInListUpdated);
+            Assert.AreEqual("Test 2", testInListUpdated.TestName);
+            Assert.IsTrue(testInListUpdated.Enabled);
+
+        }
+
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("TestCatalog_DeleteTest")]
@@ -481,6 +622,95 @@ namespace Dev2.Tests.Runtime.Hosting
             //------------Assert Results-------------------------
             var res2Tests = tests;
             Assert.AreEqual(0, res2Tests.Count);
+        }
+
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("TestCatalog_FetchTest")]
+        public void TestCatalog_FetchTest_WhenResourceIdTestName_ShouldReturnTest()
+        {
+            //------------Setup for test--------------------------
+            var testCatalog = new TestCatalog();
+            var resourceID = Guid.NewGuid();
+            var serviceTestModelTos = new List<IServiceTestModelTO>
+            {
+                new ServiceTestModelTO
+                {
+                    Enabled = true,
+                    TestName = "Test 1"
+                },
+                new ServiceTestModelTO
+                {
+                    Enabled = false,
+                    TestName = "Test 2"
+                }
+            };
+            testCatalog.SaveTests(resourceID, serviceTestModelTos);
+            //------------Assert Preconditions-------------------           
+            //------------Execute Test---------------------------
+            var test = testCatalog.FetchTest(resourceID, "Test 2");
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(test);
+            Assert.AreEqual("Test 2",test.TestName);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("TestCatalog_FetchTest")]
+        public void TestCatalog_FetchTest_WhenResourceIdInvalidTestName_ShouldReturnNull()
+        {
+            //------------Setup for test--------------------------
+            var testCatalog = new TestCatalog();
+            var resourceID = Guid.NewGuid();
+            var serviceTestModelTos = new List<IServiceTestModelTO>
+            {
+                new ServiceTestModelTO
+                {
+                    Enabled = true,
+                    TestName = "Test 1"
+                },
+                new ServiceTestModelTO
+                {
+                    Enabled = false,
+                    TestName = "Test 2"
+                }
+            };
+            testCatalog.SaveTests(resourceID, serviceTestModelTos);
+            //------------Assert Preconditions-------------------           
+            //------------Execute Test---------------------------
+            var test = testCatalog.FetchTest(resourceID, "Test 6");
+            //------------Assert Results-------------------------
+            Assert.IsNull(test);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("TestCatalog_FetchTest")]
+        public void TestCatalog_FetchTest_WhenInvalidResourceIdTestName_ShouldReturnNull()
+        {
+            //------------Setup for test--------------------------
+            var testCatalog = new TestCatalog();
+            var resourceID = Guid.NewGuid();
+            var serviceTestModelTos = new List<IServiceTestModelTO>
+            {
+                new ServiceTestModelTO
+                {
+                    Enabled = true,
+                    TestName = "Test 1"
+                },
+                new ServiceTestModelTO
+                {
+                    Enabled = false,
+                    TestName = "Test 2"
+                }
+            };
+            testCatalog.SaveTests(Guid.NewGuid(), serviceTestModelTos);
+            //------------Assert Preconditions-------------------           
+            //------------Execute Test---------------------------
+            var test = testCatalog.FetchTest(resourceID, "Test 6");
+            //------------Assert Results-------------------------
+            Assert.IsNull(test);
         }
     }
 }

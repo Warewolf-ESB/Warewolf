@@ -97,7 +97,7 @@ namespace Warewolf.Studio.ViewModels
         private void RunSelectedTest()
         {
             SelectedServiceTest.IsTestRunning = true;
-            ServiceTestCommandHandler.RunSelectedTest();
+            ServiceTestCommandHandler.RunSelectedTest(SelectedServiceTest,ResourceModel,AsyncWorker);
         }
 
         private void RunAllTestsInBrowser()
@@ -436,6 +436,7 @@ namespace Warewolf.Studio.ViewModels
                     var testToRemove = _tests.SingleOrDefault(model => model.ParentId == SelectedServiceTest.ParentId && model.TestName == SelectedServiceTest.TestName);
                     _tests.Remove(testToRemove); //test
                     OnPropertyChanged(() => Tests); //test
+                    SelectedServiceTest = null;
                 }
                 catch (Exception ex)
                 {
