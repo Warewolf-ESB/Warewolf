@@ -26,6 +26,21 @@ Background: Setup for workflows for tests
 		And "Workflow 3" has outputs as
 			| Ouput Var Name |
 			| [[message]]    |
+		Given I have "WorkflowWithTests" with inputs as 
+			| Input Var Name |
+			| [[input]]      |
+		And "WorkflowWithTests" has outputs as
+			| Ouput Var Name  |
+			| [[outputValue]] |
+			
+		And "WorkflowWithTests" Tests as 
+			| TestName | AuthenticationType | Error | TestFailing | TestPending | TestInvalid | TestPassed |
+			| Test1    | Windows            | false | true        | true        | true        | true       |
+			| Test2    | Windows            | false | true        | true        | true        | true       |
+			| Test3    | Windows            | false | false       | false       | false       | false      |
+			| Test4    | Windows            | false | true        | true        | true        | true       |
+
+				
 
 Scenario: Create New Test
 	Given the test builder is open with "Workflow 1"	
@@ -428,7 +443,7 @@ Scenario: Close test window
 	And Error is "false"
 
 
-Scenario: Delete an Enabled Test
+Scenario: Delete an Disabled Test
 	Given the test builder is open with "Workflow 3"
 	And Tab Header is "Workflow 3 - Tests"
 	And there are no tests
@@ -441,10 +456,10 @@ Scenario: Delete an Enabled Test
 	When I save
 	Then Tab Header is "Workflow 3 - Tests"
 	And there are 1 tests
-	When I disable "Test1"
-	Then Delete is enabled for "Test1"
 	When I enable "Test1"
 	Then Delete is disabled for "Test1"
+	When I disable "Test1"
+	Then Delete is enabled for "Test1"
 	When I delete "Test1"
 	Then The "DeleteConfirmation" popup is shown I click Ok
 	Then there are no tests
@@ -497,6 +512,19 @@ Scenario: Delete folder with resources deletes all tests
 	When I delete folder "Home"
 	Then "PluginSource1" has 0 tests
 	And "Hello world" has 0 tests
+
+
+Scenario: Run all unselects all tests on selection shows corect debug
+	Given the test builder is open with "WorkflowWithTests"
+	Then there are 4 tests
+	And "Test1" is passing
+	And "Test2" is failing
+	And "Test3" is invalid
+	And "Test4" is pending
+	When I run all tests
+	And I select "Test1"
+	Then debug window is visible	
+
 
 Scenario: Duplicate a test
 	Given the test builder is open with "Workflow 1"
@@ -632,7 +660,34 @@ Scenario: Run a test with single scalar inputs and outputs failure
 	Then The "DeleteConfirmation" popup is shown I click Ok
 	Then there are no tests
 
-	
+#Feedback specs
+Scenario: Duplicate test new test has name
+	Given the test builder is open with "Workflow 1"
+	And Tab Header is "Workflow 1 - Tests"
+	And there are no tests
+	And I click New Test
+	Then a new test is added
+	And Tab Header is "Workflow 1 - Tests *"
+	And test name starts with "Test 1"
+	And inputs are
+	| Variable Name | Value |
+	| a             |       |
+	And outputs as
+	| Variable Name | Value |
+	| outputValue   |       |
+	And save is enabled
+	When I save
+	Then Tab Header is "Workflow 1 - Tests"
+	And there are 1 tests
+	When I click "Test 1"
+	Then Duplicate Test is visible
+	When I click duplicate 
+	Then there are 2 tests
+	And Test name is "Test 1"
+
+
+
+
 
 
 

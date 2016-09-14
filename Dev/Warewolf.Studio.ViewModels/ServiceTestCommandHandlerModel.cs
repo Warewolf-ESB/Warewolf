@@ -23,6 +23,7 @@ namespace Warewolf.Studio.ViewModels
 
         public DataListModel DataList { get; set; }
 
+
         public IServiceTestModel CreateTest(IResourceModel resourceModel, int testNumber)
         {
             var testModel = new ServiceTestModel(resourceModel.ID)
@@ -32,7 +33,7 @@ namespace Warewolf.Studio.ViewModels
                 Enabled = true,
                 NewTest = true,
                 Inputs = new List<IServiceTestInput>(),
-                Outputs = new List<IServiceTestOutput>()
+                Outputs = new List<IServiceTestOutput>(),
             };
             if (!string.IsNullOrEmpty(resourceModel.DataList))
             {
