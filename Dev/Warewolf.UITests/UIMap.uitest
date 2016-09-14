@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+﻿<?xml version="1.0"?>
 <UITest xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="" Id="45640482-0581-473c-94ee-16c8c82c3b14" AssemblyVersion="12.0.40629.0" Version="1.0" xmlns="http://schemas.microsoft.com/VisualStudio/TeamTest/UITest/2010">
   <Configuration>
     <Group Name="IE">
@@ -2176,6 +2176,35 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
+    <SetStateAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.PublicROW.Public_AdministratorCell.Public_AdministratorCheckBox">
+      <ParameterName />
+      <State>Checked</State>
+    </SetStateAction>
+    <AssertAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.PublicROW.Public_DeployToCell.Public_DeployToCheckBox">
+      <ParameterName />
+      <PropertyName>Checked</PropertyName>
+      <ExpectedValue>True</ExpectedValue>
+      <MessageOnValidationFailure>Public DeployTo checkbox is NOT checked after Checking Administrator.</MessageOnValidationFailure>
+      <Type>String</Type>
+      <PropertyCondition>AreEqual</PropertyCondition>
+    </AssertAction>
+    <AssertAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.PublicROW.Public_DeployFromCell.Public_DeployFromCheckBox">
+      <ParameterName />
+      <PropertyName>Checked</PropertyName>
+      <ExpectedValue>True</ExpectedValue>
+      <MessageOnValidationFailure>Public DeployFrom checkbox is NOT checked after Checking Administrator.</MessageOnValidationFailure>
+      <Type>String</Type>
+      <PropertyCondition>AreEqual</PropertyCondition>
+    </AssertAction>
+    <TestStepMarkerAction Comment="" MarkerInformation="Check_Public_Administrator">
+      <ParameterName />
+      <StepId>-1</StepId>
+      <Direction>Start</Direction>
+      <Outcome />
+      <Disabled>false</Disabled>
+      <WorkItemId>0</WorkItemId>
+      <MarkerRegionType>Action</MarkerRegionType>
+    </TestStepMarkerAction>    
     <MouseAction UIObjectName="UIMap.MainStudioWindow.SideMenuBar.RunAndDebugButton">
       <ParameterName />
       <ModifierKeys>None</ModifierKeys>
@@ -14236,9 +14265,8 @@
                                                           <AndCondition>
                                                             <PropertyCondition Name="ControlType">Cell</PropertyCondition>
                                                             <PropertyCondition Name="ColumnHeader" />
-                                                            <PropertyCondition Name="Value">False</PropertyCondition>
                                                             <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                                            <PropertyCondition Name="Instance">1</PropertyCondition>
+                                                            <PropertyCondition Name="Instance">2</PropertyCondition>
                                                           </AndCondition>
                                                           <SupportLevel>0</SupportLevel>
                                                           <Descendants>
@@ -14265,9 +14293,8 @@
                                                           <AndCondition>
                                                             <PropertyCondition Name="ControlType">Cell</PropertyCondition>
                                                             <PropertyCondition Name="ColumnHeader" />
-                                                            <PropertyCondition Name="Value">False</PropertyCondition>
                                                             <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                                            <PropertyCondition Name="Instance">2</PropertyCondition>
+                                                            <PropertyCondition Name="Instance">3</PropertyCondition>
                                                           </AndCondition>
                                                           <SupportLevel>0</SupportLevel>
                                                           <Descendants>
@@ -14294,9 +14321,8 @@
                                                           <AndCondition>
                                                             <PropertyCondition Name="ControlType">Cell</PropertyCondition>
                                                             <PropertyCondition Name="ColumnHeader" />
-                                                            <PropertyCondition Name="Value">False</PropertyCondition>
                                                             <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                                            <PropertyCondition Name="Instance">3</PropertyCondition>
+                                                            <PropertyCondition Name="Instance">4</PropertyCondition>
                                                           </AndCondition>
                                                           <SupportLevel>0</SupportLevel>
                                                           <Descendants>
@@ -14323,9 +14349,8 @@
                                                           <AndCondition>
                                                             <PropertyCondition Name="ControlType">Cell</PropertyCondition>
                                                             <PropertyCondition Name="ColumnHeader" />
-                                                            <PropertyCondition Name="Value">False</PropertyCondition>
                                                             <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                                            <PropertyCondition Name="Instance">4</PropertyCondition>
+                                                            <PropertyCondition Name="Instance">5</PropertyCondition>
                                                           </AndCondition>
                                                           <SupportLevel>0</SupportLevel>
                                                           <Descendants>
@@ -14352,13 +14377,25 @@
                                                           <AndCondition>
                                                             <PropertyCondition Name="ControlType">Cell</PropertyCondition>
                                                             <PropertyCondition Name="ColumnHeader" />
-                                                            <PropertyCondition Name="Value">False</PropertyCondition>
                                                             <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                                            <PropertyCondition Name="Instance">5</PropertyCondition>
+                                                            <PropertyCondition Name="Instance">6</PropertyCondition>
                                                           </AndCondition>
                                                           <SupportLevel>0</SupportLevel>
                                                           <Descendants>
                                                             <UIObject ControlType="CheckBox" Id="Public_ExecuteCheckBox" FriendlyName="UI_Public_ExecutePermissionCheckBox_AutoID" SpecialControlType="None">
+                                                              <TechnologyName>UIA</TechnologyName>
+                                                              <WindowTitles>
+                                                                <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                                                              </WindowTitles>
+                                                              <AndCondition>
+                                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                                <PropertyCondition Name="ControlType">CheckBox</PropertyCondition>
+                                                                <PropertyCondition Name="AutomationId">UI_Public_ExecutePermissionCheckBox_AutoID</PropertyCondition>
+                                                              </AndCondition>
+                                                              <SupportLevel>0</SupportLevel>
+                                                              <Descendants />
+                                                            </UIObject>
+                                                            <UIObject ControlType="CheckBox" Id="Public_ExecuteCheckedCheckBox" FriendlyName="UI_Public_ExecutePermissionCheckBox_AutoID" SpecialControlType="None">
                                                               <TechnologyName>UIA</TechnologyName>
                                                               <WindowTitles>
                                                                 <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
@@ -14381,9 +14418,8 @@
                                                           <AndCondition>
                                                             <PropertyCondition Name="ControlType">Cell</PropertyCondition>
                                                             <PropertyCondition Name="ColumnHeader" />
-                                                            <PropertyCondition Name="Value">False</PropertyCondition>
                                                             <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                                            <PropertyCondition Name="Instance">6</PropertyCondition>
+                                                            <PropertyCondition Name="Instance">7</PropertyCondition>
                                                           </AndCondition>
                                                           <SupportLevel>0</SupportLevel>
                                                           <Descendants>
@@ -23746,7 +23782,36 @@
                     <PropertyCondition Name="AutomationId">ServerPermissionsDataGrid</PropertyCondition>
                   </AndCondition>
                   <SupportLevel>0</SupportLevel>
-                  <Descendants />
+                  <Descendants>
+                    <UIObject ControlType="Cell" Id="UIFalseCell" FriendlyName="False" SpecialControlType="None">
+                      <TechnologyName>UIA</TechnologyName>
+                      <WindowTitles>
+                        <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                      </WindowTitles>
+                      <AndCondition>
+                        <PropertyCondition Name="ColumnHeader" />
+                        <PropertyCondition Name="Value">False</PropertyCondition>
+                        <PropertyCondition Name="ControlType">Cell</PropertyCondition>
+                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                      </AndCondition>
+                      <SupportLevel>0</SupportLevel>
+                      <Descendants />
+                    </UIObject>
+                    <UIObject ControlType="Cell" Id="UITrueCell" FriendlyName="True" SpecialControlType="None">
+                      <TechnologyName>UIA</TechnologyName>
+                      <WindowTitles>
+                        <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                      </WindowTitles>
+                      <AndCondition>
+                        <PropertyCondition Name="ColumnHeader" />
+                        <PropertyCondition Name="Value">True</PropertyCondition>
+                        <PropertyCondition Name="ControlType">Cell</PropertyCondition>
+                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                      </AndCondition>
+                      <SupportLevel>0</SupportLevel>
+                      <Descendants />
+                    </UIObject>
+                  </Descendants>
                 </UIObject>
               </Descendants>
             </UIObject>
