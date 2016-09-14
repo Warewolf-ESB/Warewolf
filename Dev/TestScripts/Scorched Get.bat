@@ -17,7 +17,7 @@ git -C "%~dp0..\.." clean -xdf
 if not %errorlevel%==0 pause & exit 1
 echo Repo scorched. Get version? Leave blank to get latest. Branch and tag names are also allowed.
 set /p Version=
-if "%Version%"=="" (git -C "%~dp0..\.." pull) else (git -C "%~dp0..\.." checkout %Version%)
+if "%Version%"=="" (git -C "%~dp0..\.." pull) else (git -C "%~dp0..\.." pull & git -C "%~dp0..\.." checkout %Version%)
 @echo on
 if not %errorlevel%==0 pause & exit 1
 :exit
