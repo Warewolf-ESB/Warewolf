@@ -5,12 +5,12 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Warewolf.UITests
 {
     [CodedUITest]
-    public class ConfigureSettingsTests
+    public class ItemDragAndDropTest
     {
+        const string Dice = "Dice";
         [TestMethod]
-        public void ConfigureSetting()
+        public void ItemDragAndDropUITest()
         {
-            Uimap.Click_ConfigureSetting_From_Menu();
         }
 
         #region Additional test attributes
@@ -27,7 +27,8 @@ namespace Warewolf.UITests
         public void MyTestCleanup()
         {
             Playback.PlaybackError -= Uimap.OnError;
-            //Uimap.TryCloseAllTabs();
+            Uimap.TryRemoveFromExplorer(Dice);
+            Uimap.TryCloseAllTabs();
         }
 
         public TestContext TestContext
