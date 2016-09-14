@@ -443,7 +443,7 @@ Scenario: Close test window
 	And Error is "false"
 
 
-Scenario: Delete an Enabled Test
+Scenario: Delete an Disabled Test
 	Given the test builder is open with "Workflow 3"
 	And Tab Header is "Workflow 3 - Tests"
 	And there are no tests
@@ -456,10 +456,10 @@ Scenario: Delete an Enabled Test
 	When I save
 	Then Tab Header is "Workflow 3 - Tests"
 	And there are 1 tests
-	When I disable "Test1"
-	Then Delete is enabled for "Test1"
 	When I enable "Test1"
 	Then Delete is disabled for "Test1"
+	When I disable "Test1"
+	Then Delete is enabled for "Test1"
 	When I delete "Test1"
 	Then The "DeleteConfirmation" popup is shown I click Ok
 	Then there are no tests
@@ -606,7 +606,32 @@ Scenario: Run a test with single scalar inputs and outputs
 
 
 
-	
+#Feedback specs
+Scenario: Duplicate test new test has name
+	Given the test builder is open with "Workflow 1"
+	And Tab Header is "Workflow 1 - Tests"
+	And there are no tests
+	And I click New Test
+	Then a new test is added
+	And Tab Header is "Workflow 1 - Tests *"
+	And test name starts with "Test 1"
+	And inputs are
+	| Variable Name | Value |
+	| a             |       |
+	And outputs as
+	| Variable Name | Value |
+	| outputValue   |       |
+	And save is enabled
+	When I save
+	Then Tab Header is "Workflow 1 - Tests"
+	And there are 1 tests
+	When I click "Test 1"
+	Then Duplicate Test is visible
+	When I click duplicate 
+	Then there are 2 tests
+	And Test name is "Test 1"
+
+
 
 
 

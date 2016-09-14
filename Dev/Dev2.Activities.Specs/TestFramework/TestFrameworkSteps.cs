@@ -651,7 +651,28 @@ namespace Dev2.Activities.Specs.TestFramework
         Assert.AreEqual(nameForDisplay, serviceTest.SelectedServiceTest.NameForDisplay);
     }
 
-    [Given(@"I select ""(.*)""")]
+        [When(@"I ""(.*)"" the selected test")]
+        public void WhenITheSelectedTest(string status)
+        {
+            ServiceTestViewModel serviceTest = GetTestFrameworkFromContext();
+            serviceTest.SelectedServiceTest.Enabled = status == "Enable";
+        }
+
+        [Then(@"DeleteCommand is ""(.*)""")]
+        public void ThenDeleteCommandIs(string status)
+        {
+            ServiceTestViewModel serviceTest = GetTestFrameworkFromContext();
+            if (status == "Active")
+            {
+                Assert.IsTrue(serviceTest.DeleteTestCommand.CanExecute(null));
+            }
+            else
+            {
+                Assert.IsFalse(serviceTest.DeleteTestCommand.CanExecute(null));
+            }
+        }
+
+        [Given(@"I select ""(.*)""")]
     [When(@"I select ""(.*)""")]
     [Then(@"I select ""(.*)""")]
     public void GivenISelect(string testName)

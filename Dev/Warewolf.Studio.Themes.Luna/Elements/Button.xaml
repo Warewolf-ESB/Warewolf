@@ -600,7 +600,6 @@
             </Trigger>
             <Trigger Property="IsEnabled" Value="True">
                 <Setter Property="ToolTip" Value="{x:Static languages:Core.TestsDeleteSelectedTestEnabledTooltip}" />
-                <Setter Property="Foreground" Value="{StaticResource WareWolfBlackBrush}" />
             </Trigger>
         </Style.Triggers>
     </Style>

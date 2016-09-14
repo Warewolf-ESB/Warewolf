@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Windows;
 using System.Windows.Input;
 using Dev2.Common.Interfaces;
 using Dev2.Runtime.ServiceModel.Data;
@@ -19,6 +20,7 @@ namespace Warewolf.Studio.ViewModels
         public DummyServiceTest(Action createNewAction)
         {
             NameForDisplay = "'";
+            NeverRunString = "Never run";
             _isNewTest = true;
             _newCommand = new DelegateCommand(createNewAction);
         }
@@ -65,6 +67,9 @@ namespace Warewolf.Studio.ViewModels
         }
         public bool NewTest { get; set; }
         public bool IsTestRunning { get; set; }
+        public string NeverRunString { get; set; }
+        public Visibility LastRunDateVisibility => Visibility.Visible;
+        public Visibility NeverRunStringVisibility => Visibility.Collapsed;
 
         public void SetItem(IServiceTestModel model)
         {
