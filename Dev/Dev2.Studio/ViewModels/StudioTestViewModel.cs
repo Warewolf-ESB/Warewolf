@@ -96,6 +96,8 @@ namespace Dev2.ViewModels
                         case MessageBoxResult.No:
                             return true;
                         case MessageBoxResult.Yes:
+                            if (ViewModel.HasDuplicates())
+                                return false;//dont close the tab
                             if (ViewModel.CanSave)
                             {
                                 ViewModel.Save();
