@@ -4,6 +4,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using Dev2.Common.Interfaces;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.UI;
 using Infragistics.Controls.Grids;
@@ -105,13 +106,24 @@ namespace Warewolf.Studio.Views
 
         private void TestsListbox_OnPreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            var frameworkElement = e.OriginalSource as FrameworkElement;
-            if (frameworkElement != null)
+            var listBox = sender as ListBox;
+            if (listBox != null)
             {
-                object clicked = frameworkElement.DataContext;
-                var lbi = TestsListbox.ItemContainerGenerator.ContainerFromItem(clicked) as ListBoxItem;
-                if (lbi != null)
-                    lbi.IsSelected = true;
+                var viewModel = listBox.DataContext as IServiceTestViewModel;
+
+                var frameworkElement = e.OriginalSource as FrameworkElement;
+                if (frameworkElement != null)
+                {
+                    if (viewModel != null)
+                    {
+                        var model = frameworkElement.DataContext as IServiceTestModel;
+
+                        if (model != null)
+                        {
+                            viewModel.SelectedServiceTest = model;
+                        }
+                    }
+                }
             }
         }
     }
