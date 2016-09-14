@@ -20,7 +20,6 @@ using System.Diagnostics;
 using System.IO;
 using System.Net;
 using System.Text;
-using Dev2.Communication;
 
 // ReSharper disable CheckNamespace
 namespace Dev2.Studio.Core.Network
