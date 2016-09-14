@@ -532,7 +532,7 @@ Scenario: Run a test with single scalar inputs and outputs
 	And there are no tests
 	When I click New Test
 	Then a new test is added
-	#And Tab Header is "Workflow 1 - Tests *"
+	#And Tab Header is "Hello World - Tests *"
 	And test name starts with "Test 1"
 	And username is blank
 	And password is blank
@@ -552,31 +552,85 @@ Scenario: Run a test with single scalar inputs and outputs
 	| Variable Name | Value      |
 	| Message       | Hello Bob. |
 	And I save
-	When I run the test in debug mode
-	Then service inputs as
-		| Variable | Value |
-		| [[Name]] | Bob   |
-	Then the "Decision" debug inputs as
-	  | Recordset            |
-	  | [[rec(1).a]] = yes |
-	  | [[rec(2).a]] = no |
-	And the "Decsion"  debug outputs as    
-	  |               |
-	  | [[count]] = 2 |
-	And the "Assign" debug inputs as
-	  | # | Variable      | New Value |
-	  | 1 | [[rec().a]] = | yes       |
-	  | 2 | [[rec().a]] = | no        |
-	And the "Assign" debug outputs as    
-	  | # |                    |
-	  | 1 | [[rec(1).a]] = yes |
-	  | 2 | [[rec(2).a]] = no  |
-	And the service outputs as
-	  | Variable    | Value      |
-	  | [[Message]] | Hello Bob. |
-	And test result is Passed
+	When I run the test
+	Then test result is Passed
+	#Then service inputs as
+	#	| Variable | Value |
+	#	| [[Name]] | Bob   |
+	#Then the "Decision" debug inputs as
+	#  | Recordset            |
+	#  | [[rec(1).a]] = yes |
+	#  | [[rec(2).a]] = no |
+	#And the "Decsion"  debug outputs as    
+	#  |               |
+	#  | [[count]] = 2 |
+	#And the "Assign" debug inputs as
+	#  | # | Variable      | New Value |
+	#  | 1 | [[rec().a]] = | yes       |
+	#  | 2 | [[rec().a]] = | no        |
+	#And the "Assign" debug outputs as    
+	#  | # |                    |
+	#  | 1 | [[rec(1).a]] = yes |
+	#  | 2 | [[rec(2).a]] = no  |
+	#And the service outputs as
+	#  | Variable    | Value      |
+	#  | [[Message]] | Hello Bob. |
+	When I delete "Test 1"
+	Then The "DeleteConfirmation" popup is shown I click Ok
+	Then there are no tests
 
-
+Scenario: Run a test with single scalar inputs and outputs failure
+	Given the test builder is open with existing service "Hello World"	
+	And Tab Header is "Hello World - Tests"
+	And there are no tests
+	When I click New Test
+	Then a new test is added
+	#And Tab Header is "Hello World - Tests *"
+	And test name starts with "Test 1"
+	And username is blank
+	And password is blank
+	And inputs are
+	| Variable Name | Value |
+	| Name          |       |
+	And outputs as
+	| Variable Name | Value |
+	| Message       |       |
+	And save is enabled
+	And test status is pending
+	And test is enabled
+	And I update inputs as
+	| Variable Name | Value |
+	| Name          | Bob   |
+	And I update outputs as
+	| Variable Name | Value      |
+	| Message       | Hello Mary. |
+	And I save
+	When I run the test
+	Then test result is Failed
+	#Then service inputs as
+	#	| Variable | Value |
+	#	| [[Name]] | Bob   |
+	#Then the "Decision" debug inputs as
+	#  | Recordset            |
+	#  | [[rec(1).a]] = yes |
+	#  | [[rec(2).a]] = no |
+	#And the "Decsion"  debug outputs as    
+	#  |               |
+	#  | [[count]] = 2 |
+	#And the "Assign" debug inputs as
+	#  | # | Variable      | New Value |
+	#  | 1 | [[rec().a]] = | yes       |
+	#  | 2 | [[rec().a]] = | no        |
+	#And the "Assign" debug outputs as    
+	#  | # |                    |
+	#  | 1 | [[rec(1).a]] = yes |
+	#  | 2 | [[rec(2).a]] = no  |
+	#And the service outputs as
+	#  | Variable    | Value      |
+	#  | [[Message]] | Hello Bob. |
+	When I delete "Test 1"
+	Then The "DeleteConfirmation" popup is shown I click Ok
+	Then there are no tests
 
 	
 

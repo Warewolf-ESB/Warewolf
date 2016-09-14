@@ -83,7 +83,7 @@ namespace Warewolf.Studio.ViewModels
         private void RunSelectedTest()
         {
             SelectedServiceTest.IsTestRunning = true;
-            ServiceTestCommandHandler.RunSelectedTest();
+            ServiceTestCommandHandler.RunSelectedTest(SelectedServiceTest,ResourceModel,AsyncWorker);
         }
 
         private void RunAllTestsInBrowser()

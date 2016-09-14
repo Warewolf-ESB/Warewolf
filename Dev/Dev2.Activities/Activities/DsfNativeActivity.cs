@@ -32,6 +32,7 @@ using Dev2.Runtime.Execution;
 using Dev2.Runtime.Interfaces;
 using Dev2.Simulation;
 using Dev2.Util;
+using Newtonsoft.Json;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Hosting;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 using Warewolf.Storage;
@@ -60,7 +61,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         public IDataListCompiler Compiler { get; set; }
         // ReSharper restore UnusedMember.Global
         // END TODO: Remove legacy properties 
-
+        [JsonIgnore]
         public InOutArgument<List<string>> AmbientDataList { get; set; }
 
         // Moved into interface ;)

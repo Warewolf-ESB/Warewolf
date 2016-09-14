@@ -40,28 +40,48 @@ namespace Dev2.Runtime
 
         public ConcurrentDictionary<Guid, List<IServiceTestModelTO>> Tests { get; }
 
-        public void SaveTests(Guid resourceID, List<IServiceTestModelTO> serviceTestModelTos)
+        public void SaveTests(Guid resourceId, List<IServiceTestModelTO> serviceTestModelTos)
         {
             if (serviceTestModelTos != null && serviceTestModelTos.Count>0)
             {
-                var dirPath = GetTestPathForResourceId(resourceID);
-                _directoryWrapper.CreateIfNotExists(dirPath);
-
                 foreach (var serviceTestModelTo in serviceTestModelTos)
                 {
-                    if (!string.Equals(serviceTestModelTo.OldTestName, serviceTestModelTo.TestName, StringComparison.InvariantCultureIgnoreCase))
-                    {
-                        var oldFilePath = Path.Combine(dirPath, $"{serviceTestModelTo.OldTestName}.test");
-                        _fileWrapper.Delete(oldFilePath);
-                    }
-                    var filePath = Path.Combine(dirPath, $"{serviceTestModelTo.TestName}.test");
-                    serviceTestModelTo.Password = DpapiWrapper.EncryptIfDecrypted(serviceTestModelTo.Password);
-                    var sw = new StreamWriter(filePath, false);
-                    _serializer.Serialize(sw, serviceTestModelTo);
+                    SaveTestToDisk(resourceId, serviceTestModelTo);
                 }
-                var dir = Path.Combine(EnvironmentVariables.TestPath, resourceID.ToString());
-                Tests.AddOrUpdate(resourceID, GetTestList(dir), (id, list) => GetTestList(dir));
+                var dir = Path.Combine(EnvironmentVariables.TestPath, resourceId.ToString());
+                Tests.AddOrUpdate(resourceId, GetTestList(dir), (id, list) => GetTestList(dir));
             }
+        }
+
+        public void SaveTest(Guid resourceId, IServiceTestModelTO serviceTestModelTo)
+        {
+            SaveTestToDisk(resourceId, serviceTestModelTo);
+            Tests.AddOrUpdate(resourceId, new List<IServiceTestModelTO> { serviceTestModelTo }, (id, list) =>
+            {
+                var serviceTestModelTos = Fetch(id);
+                var found = serviceTestModelTos.FirstOrDefault(to => to.TestName.Equals(serviceTestModelTo.TestName, StringComparison.CurrentCultureIgnoreCase));
+                if (found != null)
+                {
+                    serviceTestModelTos.Remove(found);
+                }
+                serviceTestModelTos.Add(serviceTestModelTo);
+                return serviceTestModelTos;
+            });
+        }
+
+        private void SaveTestToDisk(Guid resourceId, IServiceTestModelTO serviceTestModelTo)
+        {
+            var dirPath = GetTestPathForResourceId(resourceId);
+            _directoryWrapper.CreateIfNotExists(dirPath);
+            if(!string.Equals(serviceTestModelTo.OldTestName, serviceTestModelTo.TestName, StringComparison.InvariantCultureIgnoreCase))
+            {
+                var oldFilePath = Path.Combine(dirPath, $"{serviceTestModelTo.OldTestName}.test");
+                _fileWrapper.Delete(oldFilePath);
+            }
+            var filePath = Path.Combine(dirPath, $"{serviceTestModelTo.TestName}.test");
+            serviceTestModelTo.Password = DpapiWrapper.EncryptIfDecrypted(serviceTestModelTo.Password);
+            var sw = new StreamWriter(filePath, false);
+            _serializer.Serialize(sw, serviceTestModelTo);
         }
 
         public void Load()
@@ -136,6 +156,20 @@ namespace Dev2.Runtime
             var testPath = EnvironmentVariables.TestPath;
             var dirPath = Path.Combine(testPath, resourceId.ToString());
             return dirPath;
+        }
+
+        public IServiceTestModelTO FetchTest(Guid resourceID, string testName)
+        {
+            List<IServiceTestModelTO> testList;
+            if (Tests.TryGetValue(resourceID, out testList))
+            {
+                var foundTestToDelete = testList.FirstOrDefault(to => to.TestName.Equals(testName, StringComparison.InvariantCultureIgnoreCase));
+                if (foundTestToDelete != null)
+                {
+                    return foundTestToDelete;
+                }
+            }            
+            return null;
         }
     }
 }

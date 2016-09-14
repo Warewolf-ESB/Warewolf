@@ -14,5 +14,9 @@ namespace Dev2.Common.Interfaces
         void DeleteTest(Guid resourceID, string testName);
 
         void DeleteAllTests(Guid resourceId);
+
+        IServiceTestModelTO FetchTest(Guid resourceID, string testName);
+
+        void SaveTest(Guid resourceID, IServiceTestModelTO test);
     }
 }

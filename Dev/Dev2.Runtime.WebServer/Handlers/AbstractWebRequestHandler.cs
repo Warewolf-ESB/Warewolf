@@ -34,6 +34,7 @@ using Dev2.Runtime.WebServer.TransferObjects;
 using Dev2.Services.Security;
 using Dev2.Web;
 using Dev2.Workspaces;
+using Newtonsoft.Json.Linq;
 
 namespace Dev2.Runtime.WebServer.Handlers
 {
@@ -98,66 +99,87 @@ namespace Dev2.Runtime.WebServer.Handlers
                 
                 
                     int loc;
-                    if (!String.IsNullOrEmpty(serviceName) && (loc = serviceName.LastIndexOf(".", StringComparison.Ordinal)) > 0)
+                if (!String.IsNullOrEmpty(serviceName) && (loc = serviceName.LastIndexOf(".", StringComparison.Ordinal)) > 0)
+                {
+                    // default it to xml
+                    dataObject.ReturnType = EmitionTypes.XML;
+
+                    if (loc > 0)
                     {
-                        // default it to xml
-                        dataObject.ReturnType = EmitionTypes.XML;
-
-                        if (loc > 0)
+                        var typeOf = serviceName.Substring(loc + 1).ToUpper();
+                        EmitionTypes myType;
+                        if (Enum.TryParse(typeOf, out myType))
                         {
-                            var typeOf = serviceName.Substring(loc + 1).ToUpper();
-                            EmitionTypes myType;
-                            if (Enum.TryParse(typeOf, out myType))
+                            dataObject.ReturnType = myType;
+                        }
+
+                        if (typeOf.StartsWith("tests/", StringComparison.InvariantCultureIgnoreCase))
+                        {
+                            dataObject.IsServiceTestExecution = true;
+                            var idx = serviceName.LastIndexOf("/", StringComparison.InvariantCultureIgnoreCase);
+                            if (idx > loc)
                             {
-                                dataObject.ReturnType = myType;
+                                var testName = serviceName.Substring(idx + 1).ToUpper();
+                                if (string.IsNullOrEmpty(testName))
+                                {
+                                    dataObject.TestName = "*";
+                                }
+                                else
+                                {
+                                    dataObject.TestName = testName;
+                                }
                             }
-
-                            // adjust the service name to drop the type ;)
-
-                            // avoid .wiz amendments ;)
-                            if (!typeOf.ToLower().Equals(GlobalConstants.WizardExt))
+                            else
                             {
-                                serviceName = serviceName.Substring(0, loc);
-                                dataObject.ServiceName = serviceName;
+                                dataObject.TestName = "*";
                             }
+                        }
+                        // adjust the service name to drop the type ;)
 
-                            if (typeOf.Equals("api", StringComparison.OrdinalIgnoreCase))
+                        // avoid .wiz amendments ;)
+                        if (!typeOf.ToLower().Equals(GlobalConstants.WizardExt))
+                        {
+                            serviceName = serviceName.Substring(0, loc);
+                            dataObject.ServiceName = serviceName;
+                        }
+
+                        if (typeOf.Equals("api", StringComparison.OrdinalIgnoreCase))
+                        {
+                            dataObject.ReturnType = EmitionTypes.SWAGGER;
+                        }
+
+                    }
+                }
+                else
+                {
+                    if (headers != null)
+                    {
+                        var contentType = headers.Get("Content-Type");
+                        if (String.IsNullOrEmpty(contentType))
+                        {
+                            contentType = headers.Get("Accept");
+                        }
+                        if (String.IsNullOrEmpty(contentType))
+                        {
+                            contentType = headers.Get("ContentType");
+                        }
+                        if (!String.IsNullOrEmpty(contentType))
+                        {
+                            if (contentType.ToLowerInvariant().Contains("json"))
                             {
-                                dataObject.ReturnType = EmitionTypes.SWAGGER;
+                                dataObject.ReturnType = EmitionTypes.JSON;
                             }
-
+                            if (contentType.ToLowerInvariant().Contains("xml"))
+                            {
+                                dataObject.ReturnType = EmitionTypes.XML;
+                            }
                         }
                     }
                     else
                     {
-                        if (headers != null)
-                        {
-                            var contentType = headers.Get("Content-Type");
-                            if (String.IsNullOrEmpty(contentType))
-                            {
-                                contentType = headers.Get("Accept");
-                            }
-                            if (String.IsNullOrEmpty(contentType))
-                            {
-                                contentType = headers.Get("ContentType");
-                            }
-                            if (!String.IsNullOrEmpty(contentType))
-                            {
-                                if (contentType.ToLowerInvariant().Contains("json"))
-                                {
-                                    dataObject.ReturnType = EmitionTypes.JSON;
-                                }
-                                if (contentType.ToLowerInvariant().Contains("xml"))
-                                {
-                                    dataObject.ReturnType = EmitionTypes.XML;
-                                }
-                            }
-                        }
-                        else
-                        {
-                            dataObject.ReturnType = EmitionTypes.XML;
-                        }
+                        dataObject.ReturnType = EmitionTypes.XML;
                     }
+                }
                 
                 // ensure service gets set ;)
                 if(dataObject.ServiceName == null)
@@ -219,7 +241,8 @@ namespace Dev2.Runtime.WebServer.Handlers
                 if(!dataObject.Environment.HasErrors())
                 {
                     // a normal service request
-                    if(!esbExecuteRequest.WasInternalService)
+                    var serializer = new Dev2JsonSerializer();
+                    if (!esbExecuteRequest.WasInternalService)
                     {
                         dataObject.DataListID = executionDlid;
                         dataObject.WorkspaceID = workspaceGuid;
@@ -227,7 +250,23 @@ namespace Dev2.Runtime.WebServer.Handlers
                         
                         if(!dataObject.IsDebug || dataObject.RemoteInvoke ||  dataObject.RemoteNonDebugInvoke)
                         {
-                            if (dataObject.ReturnType == EmitionTypes.JSON)
+                            if (dataObject.IsServiceTestExecution)
+                            {
+                                formatter = DataListFormat.CreateFormat("JSON", EmitionTypes.JSON, "application/json");
+                                var result = serializer.Deserialize<TestRunReuslt>(esbExecuteRequest.ExecuteResult);
+                                var resObj = new JObject();
+                                if (result.Result == RunResult.TestPassed)
+                                {
+                                    resObj.Add("Result","Test Passed");
+                                }
+                                else
+                                {
+                                    resObj.Add("Result", "Test Failed");
+                                    resObj.Add("Message", result.Message);
+                                }
+                                executePayload = serializer.Serialize(resObj);
+                            }
+                            else if (dataObject.ReturnType == EmitionTypes.JSON)
                             {
                                 formatter = DataListFormat.CreateFormat("JSON", EmitionTypes.JSON, "application/json");
                                 executePayload = ExecutionEnvironmentUtils.GetJsonOutputFromEnvironment(dataObject, resource.DataList.ToString(), 0);
@@ -249,7 +288,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                     else
                     {
                         // internal service request we need to return data for it from the request object ;)
-                        var serializer = new Dev2JsonSerializer();
+                        
                         executePayload = string.Empty;
                         var msg = serializer.Deserialize<ExecuteMessage>(esbExecuteRequest.ExecuteResult);
 
