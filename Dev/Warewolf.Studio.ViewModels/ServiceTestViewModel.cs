@@ -12,6 +12,7 @@ using Dev2;
 using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
+using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Common.Interfaces.Threading;
 using Dev2.Data;
@@ -375,7 +376,7 @@ namespace Warewolf.Studio.ViewModels
                 _selectedServiceTest.PropertyChanged += ActionsForPropChanges;
                 SetSelectedTestUrl();
                 OnPropertyChanged(() => SelectedServiceTest);
-                EventPublisher.Publish(new DebugOutputMessage(_selectedServiceTest.DebugForTest));
+                EventPublisher.Publish(new DebugOutputMessage(_selectedServiceTest.DebugForTest?? new List<IDebugState>()));
             }
         }
 
@@ -388,6 +389,17 @@ namespace Warewolf.Studio.ViewModels
             if (e.PropertyName == "IsDirty")
             {
                 ViewModelUtils.RaiseCanExecuteChanged(RunSelectedTestInBrowserCommand);
+                if (IsDirty)
+                {
+                    if (!DisplayName.EndsWith(" *"))
+                    {
+                        DisplayName += " *";
+                    }
+                }
+                else
+                {
+                    DisplayName = _displayName.Replace("*", "").TrimEnd(' ');
+                }
             }
             if (e.PropertyName == "Inputs" || e.PropertyName == "Outputs")
             {
@@ -519,16 +531,8 @@ namespace Warewolf.Studio.ViewModels
         {
             get
             {
-                if (IsDirty)
-                {
-                    if (!_displayName.EndsWith(" *"))
-                    {
-                        _displayName += " *";
-                    }
-                    return _displayName;
-                }
-                var displayName = _displayName.Replace("*", "").TrimEnd(' ');
-                return displayName;
+               
+                return _displayName;
             }
             set
             {
