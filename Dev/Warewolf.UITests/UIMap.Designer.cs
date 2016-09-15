@@ -100,6 +100,19 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
+        /// AssertMethod10 - Use 'AssertMethod10ExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void AssertMethod10()
+        {
+            #region Variable Declarations
+            WpfRadioButton errorRadioButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.TestsStudioViewModel.ServiceTestView.ErrorRadioButton;
+            #endregion
+
+            // Verify that the 'ControlType' property of 'Error' radio button equals 'RadioButton'
+            Assert.AreEqual(this.AssertMethod10ExpectedValues.ErrorRadioButtonControlType, errorRadioButton.ControlType.ToString(), "error");
+        }
+        
+        /// <summary>
         /// AssertMethod2 - Use 'AssertMethod2ExpectedValues' to pass parameters into this method.
         /// </summary>
         public void AssertMethod2()
@@ -123,6 +136,32 @@ namespace Warewolf.UITests
 
             // Verify that the 'ControlType' property of 'Warewolf.Studio.ViewModels.ServiceTestModel' list item equals 'ListItem'
             Assert.AreEqual(this.AssertMethod3ExpectedValues.Test1ControlType, test1.ControlType.ToString(), "Test1");
+        }
+        
+        /// <summary>
+        /// AssertMethod4 - Use 'AssertMethod4ExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void AssertMethod4()
+        {
+            #region Variable Declarations
+            WpfEdit uIItemEdit = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.TestsStudioViewModel.ServiceTestView.TestNameText.UIItemEdit;
+            #endregion
+
+            // Verify that the 'ControlType' property of first text box next to 'Test Name' label equals 'Edit'
+            Assert.AreEqual(this.AssertMethod4ExpectedValues.UIItemEditControlType, uIItemEdit.ControlType.ToString(), "test 1 name");
+        }
+        
+        /// <summary>
+        /// AssertMethod5 - Use 'AssertMethod5ExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void AssertMethod5()
+        {
+            #region Variable Declarations
+            WpfRadioButton windowsRadioButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.TestsStudioViewModel.ServiceTestView.WindowsRadioButton;
+            #endregion
+
+            // Verify that the 'ControlType' property of 'Windows' radio button equals 'RadioButton'
+            Assert.AreEqual(this.AssertMethod5ExpectedValues.WindowsRadioButtonControlType, windowsRadioButton.ControlType.ToString(), "windows selected");
         }
         
         /// <summary>
@@ -156,6 +195,45 @@ namespace Warewolf.UITests
 
             // Verify that the 'Exists' property of 'TestsListbox' list box equals 'True'
             Assert.AreEqual(this.AssertMethod6ExpectedValues.TestsListboxListExists, testsListboxList.Exists, "Tests listbox does not exist after clicking Tests from Context Menu");
+        }
+        
+        /// <summary>
+        /// AssertMethod7 - Use 'AssertMethod7ExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void AssertMethod7()
+        {
+            #region Variable Declarations
+            WpfTable testInputsTable = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.TestsStudioViewModel.ServiceTestView.TestInputsTable;
+            #endregion
+
+            // Verify that the 'ControlType' property of 'TestInputs' table equals 'Table'
+            Assert.AreEqual(this.AssertMethod7ExpectedValues.TestInputsTableControlType, testInputsTable.ControlType.ToString(), "Inputs");
+        }
+        
+        /// <summary>
+        /// AssertMethod8 - Use 'AssertMethod8ExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void AssertMethod8()
+        {
+            #region Variable Declarations
+            WpfTable testOutputsTable = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.TestsStudioViewModel.ServiceTestView.TestOutputsTable;
+            #endregion
+
+            // Verify that the 'ControlType' property of 'TestOutputsGrid' table equals 'Table'
+            Assert.AreEqual(this.AssertMethod8ExpectedValues.TestOutputsTableControlType, testOutputsTable.ControlType.ToString(), "Outputs");
+        }
+        
+        /// <summary>
+        /// AssertMethod9 - Use 'AssertMethod9ExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void AssertMethod9()
+        {
+            #region Variable Declarations
+            WpfRadioButton noErrorRadioButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.TestsStudioViewModel.ServiceTestView.NoErrorRadioButton;
+            #endregion
+
+            // Verify that the 'ControlType' property of 'No Error' radio button equals 'RadioButton'
+            Assert.AreEqual(this.AssertMethod9ExpectedValues.NoErrorRadioButtonControlType, noErrorRadioButton.ControlType.ToString(), "No Error");
         }
         
         /// <summary>
@@ -599,7 +677,6 @@ namespace Warewolf.UITests
         {
             #region Variable Declarations
             WpfButton createTestButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.TestsStudioViewModel.ServiceTestView.TestsListboxList.CreateTest.CreateTestButton;
-            WpfText testUrlText = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.TestsStudioViewModel.ServiceTestView.TestUrlText;
             WpfListItem test1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.TestsStudioViewModel.ServiceTestView.TestsListboxList.Test1;
             WpfButton duplicateButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.TestsStudioViewModel.ServiceTestView.DuplicateButton;
             WpfText testNameText = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.TestsStudioViewModel.ServiceTestView.TestNameText;
@@ -612,9 +689,6 @@ namespace Warewolf.UITests
 
             // Click 'Create a new test' button
             Mouse.Click(createTestButton, new Point(158, 10));
-
-            // Verify that the 'Exists' property of label numbered 2 in 'UI_ServiceTestView_AutoID' custom control equals 'True'
-            Assert.AreEqual(this.Click_Create_New_TestsParams.TestUrlTextExists, testUrlText.Exists, "Test1 Url does not exist after clicking Create New Test");
 
             // Verify that the 'Exists' property of 'Warewolf.Studio.ViewModels.ServiceTestModel' list item equals 'True'
             Assert.AreEqual(this.Click_Create_New_TestsParams.Test1Exists, test1.Exists, "Test1 Url does not exist after clicking Create New Test");
@@ -5991,84 +6065,6 @@ namespace Warewolf.UITests
                     "d web address.");
         }
         
-        /// <summary>
-        /// AssertMethod4 - Use 'AssertMethod4ExpectedValues' to pass parameters into this method.
-        /// </summary>
-        public void AssertMethod4()
-        {
-            #region Variable Declarations
-            WpfEdit uIItemEdit = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.TestsStudioViewModel.ServiceTestView.TestNameText.UIItemEdit;
-            #endregion
-
-            // Verify that the 'ControlType' property of first text box next to 'Test Name' label equals 'Edit'
-            Assert.AreEqual(this.AssertMethod4ExpectedValues.UIItemEditControlType, uIItemEdit.ControlType.ToString(), "test 1 name");
-        }
-        
-        /// <summary>
-        /// AssertMethod5 - Use 'AssertMethod5ExpectedValues' to pass parameters into this method.
-        /// </summary>
-        public void AssertMethod5()
-        {
-            #region Variable Declarations
-            WpfRadioButton windowsRadioButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.TestsStudioViewModel.ServiceTestView.WindowsRadioButton;
-            #endregion
-
-            // Verify that the 'ControlType' property of 'Windows' radio button equals 'RadioButton'
-            Assert.AreEqual(this.AssertMethod5ExpectedValues.WindowsRadioButtonControlType, windowsRadioButton.ControlType.ToString(), "windows selected");
-        }
-        
-        /// <summary>
-        /// AssertMethod7 - Use 'AssertMethod7ExpectedValues' to pass parameters into this method.
-        /// </summary>
-        public void AssertMethod7()
-        {
-            #region Variable Declarations
-            WpfTable testInputsTable = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.TestsStudioViewModel.ServiceTestView.TestInputsTable;
-            #endregion
-
-            // Verify that the 'ControlType' property of 'TestInputs' table equals 'Table'
-            Assert.AreEqual(this.AssertMethod7ExpectedValues.TestInputsTableControlType, testInputsTable.ControlType.ToString(), "Inputs");
-        }
-        
-        /// <summary>
-        /// AssertMethod8 - Use 'AssertMethod8ExpectedValues' to pass parameters into this method.
-        /// </summary>
-        public void AssertMethod8()
-        {
-            #region Variable Declarations
-            WpfTable testOutputsTable = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.TestsStudioViewModel.ServiceTestView.TestOutputsTable;
-            #endregion
-
-            // Verify that the 'ControlType' property of 'TestOutputsGrid' table equals 'Table'
-            Assert.AreEqual(this.AssertMethod8ExpectedValues.TestOutputsTableControlType, testOutputsTable.ControlType.ToString(), "Outputs");
-        }
-        
-        /// <summary>
-        /// AssertMethod9 - Use 'AssertMethod9ExpectedValues' to pass parameters into this method.
-        /// </summary>
-        public void AssertMethod9()
-        {
-            #region Variable Declarations
-            WpfRadioButton noErrorRadioButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.TestsStudioViewModel.ServiceTestView.NoErrorRadioButton;
-            #endregion
-
-            // Verify that the 'ControlType' property of 'No Error' radio button equals 'RadioButton'
-            Assert.AreEqual(this.AssertMethod9ExpectedValues.NoErrorRadioButtonControlType, noErrorRadioButton.ControlType.ToString(), "No Error");
-        }
-        
-        /// <summary>
-        /// AssertMethod10 - Use 'AssertMethod10ExpectedValues' to pass parameters into this method.
-        /// </summary>
-        public void AssertMethod10()
-        {
-            #region Variable Declarations
-            WpfRadioButton errorRadioButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.TestsStudioViewModel.ServiceTestView.ErrorRadioButton;
-            #endregion
-
-            // Verify that the 'ControlType' property of 'Error' radio button equals 'RadioButton'
-            Assert.AreEqual(this.AssertMethod10ExpectedValues.ErrorRadioButtonControlType, errorRadioButton.ControlType.ToString(), "error");
-        }
-        
         #region Properties
         public virtual Assert_CancelConnectionButton_ExistsExpectedValues Assert_CancelConnectionButton_ExistsExpectedValues
         {
@@ -6130,6 +6126,18 @@ namespace Warewolf.UITests
             }
         }
         
+        public virtual AssertMethod10ExpectedValues AssertMethod10ExpectedValues
+        {
+            get
+            {
+                if ((this.mAssertMethod10ExpectedValues == null))
+                {
+                    this.mAssertMethod10ExpectedValues = new AssertMethod10ExpectedValues();
+                }
+                return this.mAssertMethod10ExpectedValues;
+            }
+        }
+        
         public virtual AssertMethod2ExpectedValues AssertMethod2ExpectedValues
         {
             get
@@ -6154,6 +6162,30 @@ namespace Warewolf.UITests
             }
         }
         
+        public virtual AssertMethod4ExpectedValues AssertMethod4ExpectedValues
+        {
+            get
+            {
+                if ((this.mAssertMethod4ExpectedValues == null))
+                {
+                    this.mAssertMethod4ExpectedValues = new AssertMethod4ExpectedValues();
+                }
+                return this.mAssertMethod4ExpectedValues;
+            }
+        }
+        
+        public virtual AssertMethod5ExpectedValues AssertMethod5ExpectedValues
+        {
+            get
+            {
+                if ((this.mAssertMethod5ExpectedValues == null))
+                {
+                    this.mAssertMethod5ExpectedValues = new AssertMethod5ExpectedValues();
+                }
+                return this.mAssertMethod5ExpectedValues;
+            }
+        }
+        
         public virtual AssertMethod6ExpectedValues AssertMethod6ExpectedValues
         {
             get
@@ -6163,6 +6195,42 @@ namespace Warewolf.UITests
                     this.mAssertMethod6ExpectedValues = new AssertMethod6ExpectedValues();
                 }
                 return this.mAssertMethod6ExpectedValues;
+            }
+        }
+        
+        public virtual AssertMethod7ExpectedValues AssertMethod7ExpectedValues
+        {
+            get
+            {
+                if ((this.mAssertMethod7ExpectedValues == null))
+                {
+                    this.mAssertMethod7ExpectedValues = new AssertMethod7ExpectedValues();
+                }
+                return this.mAssertMethod7ExpectedValues;
+            }
+        }
+        
+        public virtual AssertMethod8ExpectedValues AssertMethod8ExpectedValues
+        {
+            get
+            {
+                if ((this.mAssertMethod8ExpectedValues == null))
+                {
+                    this.mAssertMethod8ExpectedValues = new AssertMethod8ExpectedValues();
+                }
+                return this.mAssertMethod8ExpectedValues;
+            }
+        }
+        
+        public virtual AssertMethod9ExpectedValues AssertMethod9ExpectedValues
+        {
+            get
+            {
+                if ((this.mAssertMethod9ExpectedValues == null))
+                {
+                    this.mAssertMethod9ExpectedValues = new AssertMethod9ExpectedValues();
+                }
+                return this.mAssertMethod9ExpectedValues;
             }
         }
         
@@ -8314,78 +8382,6 @@ namespace Warewolf.UITests
             }
         }
         
-        public virtual AssertMethod4ExpectedValues AssertMethod4ExpectedValues
-        {
-            get
-            {
-                if ((this.mAssertMethod4ExpectedValues == null))
-                {
-                    this.mAssertMethod4ExpectedValues = new AssertMethod4ExpectedValues();
-                }
-                return this.mAssertMethod4ExpectedValues;
-            }
-        }
-        
-        public virtual AssertMethod5ExpectedValues AssertMethod5ExpectedValues
-        {
-            get
-            {
-                if ((this.mAssertMethod5ExpectedValues == null))
-                {
-                    this.mAssertMethod5ExpectedValues = new AssertMethod5ExpectedValues();
-                }
-                return this.mAssertMethod5ExpectedValues;
-            }
-        }
-        
-        public virtual AssertMethod7ExpectedValues AssertMethod7ExpectedValues
-        {
-            get
-            {
-                if ((this.mAssertMethod7ExpectedValues == null))
-                {
-                    this.mAssertMethod7ExpectedValues = new AssertMethod7ExpectedValues();
-                }
-                return this.mAssertMethod7ExpectedValues;
-            }
-        }
-        
-        public virtual AssertMethod8ExpectedValues AssertMethod8ExpectedValues
-        {
-            get
-            {
-                if ((this.mAssertMethod8ExpectedValues == null))
-                {
-                    this.mAssertMethod8ExpectedValues = new AssertMethod8ExpectedValues();
-                }
-                return this.mAssertMethod8ExpectedValues;
-            }
-        }
-        
-        public virtual AssertMethod9ExpectedValues AssertMethod9ExpectedValues
-        {
-            get
-            {
-                if ((this.mAssertMethod9ExpectedValues == null))
-                {
-                    this.mAssertMethod9ExpectedValues = new AssertMethod9ExpectedValues();
-                }
-                return this.mAssertMethod9ExpectedValues;
-            }
-        }
-        
-        public virtual AssertMethod10ExpectedValues AssertMethod10ExpectedValues
-        {
-            get
-            {
-                if ((this.mAssertMethod10ExpectedValues == null))
-                {
-                    this.mAssertMethod10ExpectedValues = new AssertMethod10ExpectedValues();
-                }
-                return this.mAssertMethod10ExpectedValues;
-            }
-        }
-        
         public MainStudioWindow MainStudioWindow
         {
             get
@@ -8506,11 +8502,23 @@ namespace Warewolf.UITests
         
         private AssertMethod1ExpectedValues mAssertMethod1ExpectedValues;
         
+        private AssertMethod10ExpectedValues mAssertMethod10ExpectedValues;
+        
         private AssertMethod2ExpectedValues mAssertMethod2ExpectedValues;
         
         private AssertMethod3ExpectedValues mAssertMethod3ExpectedValues;
         
+        private AssertMethod4ExpectedValues mAssertMethod4ExpectedValues;
+        
+        private AssertMethod5ExpectedValues mAssertMethod5ExpectedValues;
+        
         private AssertMethod6ExpectedValues mAssertMethod6ExpectedValues;
+        
+        private AssertMethod7ExpectedValues mAssertMethod7ExpectedValues;
+        
+        private AssertMethod8ExpectedValues mAssertMethod8ExpectedValues;
+        
+        private AssertMethod9ExpectedValues mAssertMethod9ExpectedValues;
         
         private Assign_Value_To_VariableParams mAssign_Value_To_VariableParams;
         
@@ -8870,18 +8878,6 @@ namespace Warewolf.UITests
         
         private Type_TestSite_into_Web_Source_Wizard_Address_TextboxParams mType_TestSite_into_Web_Source_Wizard_Address_TextboxParams;
         
-        private AssertMethod4ExpectedValues mAssertMethod4ExpectedValues;
-        
-        private AssertMethod5ExpectedValues mAssertMethod5ExpectedValues;
-        
-        private AssertMethod7ExpectedValues mAssertMethod7ExpectedValues;
-        
-        private AssertMethod8ExpectedValues mAssertMethod8ExpectedValues;
-        
-        private AssertMethod9ExpectedValues mAssertMethod9ExpectedValues;
-        
-        private AssertMethod10ExpectedValues mAssertMethod10ExpectedValues;
-        
         private MainStudioWindow mMainStudioWindow;
         
         private MessageBoxWindow mMessageBoxWindow;
@@ -8983,6 +8979,21 @@ namespace Warewolf.UITests
     }
     
     /// <summary>
+    /// Parameters to be passed into 'AssertMethod10'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class AssertMethod10ExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'ControlType' property of 'Error' radio button equals 'RadioButton'
+        /// </summary>
+        public string ErrorRadioButtonControlType = "RadioButton";
+        #endregion
+    }
+    
+    /// <summary>
     /// Parameters to be passed into 'AssertMethod2'
     /// </summary>
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
@@ -9009,6 +9020,36 @@ namespace Warewolf.UITests
         /// Verify that the 'ControlType' property of 'Warewolf.Studio.ViewModels.ServiceTestModel' list item equals 'ListItem'
         /// </summary>
         public string Test1ControlType = "ListItem";
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'AssertMethod4'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class AssertMethod4ExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'ControlType' property of first text box next to 'Test Name' label equals 'Edit'
+        /// </summary>
+        public string UIItemEditControlType = "Edit";
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'AssertMethod5'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class AssertMethod5ExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'ControlType' property of 'Windows' radio button equals 'RadioButton'
+        /// </summary>
+        public string WindowsRadioButtonControlType = "RadioButton";
         #endregion
     }
     
@@ -9049,6 +9090,51 @@ namespace Warewolf.UITests
         /// Verify that the 'Exists' property of 'TestsListbox' list box equals 'True'
         /// </summary>
         public bool TestsListboxListExists = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'AssertMethod7'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class AssertMethod7ExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'ControlType' property of 'TestInputs' table equals 'Table'
+        /// </summary>
+        public string TestInputsTableControlType = "Table";
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'AssertMethod8'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class AssertMethod8ExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'ControlType' property of 'TestOutputsGrid' table equals 'Table'
+        /// </summary>
+        public string TestOutputsTableControlType = "Table";
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'AssertMethod9'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class AssertMethod9ExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'ControlType' property of 'No Error' radio button equals 'RadioButton'
+        /// </summary>
+        public string NoErrorRadioButtonControlType = "RadioButton";
         #endregion
     }
     
@@ -9360,11 +9446,6 @@ namespace Warewolf.UITests
     {
         
         #region Fields
-        /// <summary>
-        /// Verify that the 'Exists' property of label numbered 2 in 'UI_ServiceTestView_AutoID' custom control equals 'True'
-        /// </summary>
-        public bool TestUrlTextExists = true;
-        
         /// <summary>
         /// Verify that the 'Exists' property of 'Warewolf.Studio.ViewModels.ServiceTestModel' list item equals 'True'
         /// </summary>
@@ -12794,96 +12875,6 @@ namespace Warewolf.UITests
         /// Verify that the 'Enabled' property of 'Test Connection' button equals 'True'
         /// </summary>
         public bool TestConnectionButtonEnabled = true;
-        #endregion
-    }
-    
-    /// <summary>
-    /// Parameters to be passed into 'AssertMethod4'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class AssertMethod4ExpectedValues
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Verify that the 'ControlType' property of first text box next to 'Test Name' label equals 'Edit'
-        /// </summary>
-        public string UIItemEditControlType = "Edit";
-        #endregion
-    }
-    
-    /// <summary>
-    /// Parameters to be passed into 'AssertMethod5'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class AssertMethod5ExpectedValues
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Verify that the 'ControlType' property of 'Windows' radio button equals 'RadioButton'
-        /// </summary>
-        public string WindowsRadioButtonControlType = "RadioButton";
-        #endregion
-    }
-    
-    /// <summary>
-    /// Parameters to be passed into 'AssertMethod7'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class AssertMethod7ExpectedValues
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Verify that the 'ControlType' property of 'TestInputs' table equals 'Table'
-        /// </summary>
-        public string TestInputsTableControlType = "Table";
-        #endregion
-    }
-    
-    /// <summary>
-    /// Parameters to be passed into 'AssertMethod8'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class AssertMethod8ExpectedValues
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Verify that the 'ControlType' property of 'TestOutputsGrid' table equals 'Table'
-        /// </summary>
-        public string TestOutputsTableControlType = "Table";
-        #endregion
-    }
-    
-    /// <summary>
-    /// Parameters to be passed into 'AssertMethod9'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class AssertMethod9ExpectedValues
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Verify that the 'ControlType' property of 'No Error' radio button equals 'RadioButton'
-        /// </summary>
-        public string NoErrorRadioButtonControlType = "RadioButton";
-        #endregion
-    }
-    
-    /// <summary>
-    /// Parameters to be passed into 'AssertMethod10'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class AssertMethod10ExpectedValues
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Verify that the 'ControlType' property of 'Error' radio button equals 'RadioButton'
-        /// </summary>
-        public string ErrorRadioButtonControlType = "RadioButton";
         #endregion
     }
     
@@ -30057,8 +30048,7 @@ namespace Warewolf.UITests
                 {
                     this.mTestUrlText = new WpfText(this);
                     #region Search Criteria
-                    this.mTestUrlText.SearchProperties[WpfText.PropertyNames.Name] = " ";
-                    this.mTestUrlText.SearchProperties[WpfText.PropertyNames.Instance] = "2";
+                    this.mTestUrlText.SearchProperties[WpfText.PropertyNames.Name] = "\\ ";
                     this.mTestUrlText.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
                     #endregion
                 }
