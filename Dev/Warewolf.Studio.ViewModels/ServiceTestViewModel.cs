@@ -337,7 +337,8 @@ namespace Warewolf.Studio.ViewModels
             {
                 if (value == null)
                 {
-                    _selectedServiceTest.PropertyChanged -= ActionsForPropChanges;
+                    if (_selectedServiceTest != null)
+                        _selectedServiceTest.PropertyChanged -= ActionsForPropChanges;
                     _selectedServiceTest = null;
                     OnPropertyChanged(() => SelectedServiceTest);
                     return;
@@ -362,6 +363,10 @@ namespace Warewolf.Studio.ViewModels
                 ViewModelUtils.RaiseCanExecuteChanged(DeleteTestCommand);
             }
             if (e.PropertyName == "IsDirty")
+            {
+                ViewModelUtils.RaiseCanExecuteChanged(RunSelectedTestInBrowserCommand);
+            }
+            if (e.PropertyName == "Inputs" || e.PropertyName == "Outputs")
             {
                 ViewModelUtils.RaiseCanExecuteChanged(RunSelectedTestInBrowserCommand);
             }

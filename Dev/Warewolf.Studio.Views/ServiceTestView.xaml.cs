@@ -116,6 +116,7 @@ namespace Warewolf.Studio.Views
                 {
                     if (viewModel != null)
                     {
+                        viewModel.SelectedServiceTest = null;
                         var model = frameworkElement.DataContext as IServiceTestModel;
 
                         if (model != null)

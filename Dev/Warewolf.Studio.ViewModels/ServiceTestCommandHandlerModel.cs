@@ -96,9 +96,12 @@ namespace Warewolf.Studio.ViewModels
 
         public IServiceTestModel DuplicateTest(IServiceTestModel selectedTest)
         {
+            var nameForDisplay = selectedTest.NameForDisplay.Replace(" *", "");
+
             var testClone = new ServiceTestModel(selectedTest.ParentId)
             {
                 TestName = selectedTest.TestName,
+                NameForDisplay = nameForDisplay + " *",
                 Inputs = selectedTest.Inputs,
                 Outputs = selectedTest.Outputs,
                 AuthenticationType = selectedTest.AuthenticationType,
