@@ -37,7 +37,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                     {
                         Id = res.ResourceID,
                         Name = res.ResourceName,
-                        Path = res.Path,
+                        Path = res.GetSavePath(),
                         EndpointUrl = res.EndpointUrl,
                         Type = res.Type,
                         ResourceType = res.ResourceType,

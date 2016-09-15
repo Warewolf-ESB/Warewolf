@@ -98,6 +98,7 @@ namespace Dev2.Data.ServiceModel
             ParseProperties(connectionString, properties);
             AccessToken = properties["AccessToken"];
             AppKey = properties["AppKey"];
+            ResourcePath = GetSavePath();
         }
 
         public sealed override string AccessToken { get; set; }

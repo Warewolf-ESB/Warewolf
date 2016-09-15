@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
+using System.Windows.Input;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Activities.Designers2.Core.ActionRegion;
 using Dev2.Activities.Designers2.Core.Extensions;
@@ -305,7 +306,7 @@ namespace Dev2.Activities.Designers2.SqlServerDatabase
 
         bool _generateOutputsVisible;
 
-        public DelegateCommand TestInputCommand { get; set; }
+        public ICommand TestInputCommand { get; set; }
 
         private string Type => GetProperty<string>();
         // ReSharper disable InconsistentNaming

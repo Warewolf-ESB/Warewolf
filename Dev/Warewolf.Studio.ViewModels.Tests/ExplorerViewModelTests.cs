@@ -689,7 +689,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void TestFindItems()
         {
             //act
-            var value = _target.FindItems(null);
+            var value = _target.FindItems();
 
             //assert
             Assert.IsNull(value);

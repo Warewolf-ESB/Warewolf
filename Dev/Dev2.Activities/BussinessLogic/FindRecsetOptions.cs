@@ -58,7 +58,7 @@ namespace Dev2.DataList
             foreach (string findRecordsOperation in GlobalConstants.FindRecordsOperations)
             // ReSharper restore LoopCanBeConvertedToQuery
             {
-                KeyValuePair<string, IFindRecsetOptions> firstOrDefault = _options.FirstOrDefault(c => c.Value.HandlesType() == findRecordsOperation);
+                KeyValuePair<string, IFindRecsetOptions> firstOrDefault = _options.FirstOrDefault(c => c.Value.HandlesType().Equals(findRecordsOperation,StringComparison.InvariantCultureIgnoreCase));
                 if (!string.IsNullOrEmpty(firstOrDefault.Key))
                 {
                     tmpDictionary.Add(firstOrDefault.Key, firstOrDefault.Value);
