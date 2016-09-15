@@ -109,9 +109,6 @@ namespace Dev2.Runtime.ESB.Control
             {
                 errors.AddError(ex.Message);
             }
-
-
-
             return resultID;
         }
 

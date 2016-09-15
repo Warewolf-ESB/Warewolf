@@ -86,7 +86,7 @@ namespace Warewolf.Studio.ViewModels
         {
             SelectedServiceTest.IsTestRunning = false;
             SelectedServiceTest.TestPending = true;
-            ServiceTestCommandHandler.StopTest();
+            ServiceTestCommandHandler.StopTest(ResourceModel);
         }
 
         #region CommandMethods
@@ -98,7 +98,6 @@ namespace Warewolf.Studio.ViewModels
 
         private void RunSelectedTest()
         {
-            SelectedServiceTest.IsTestRunning = true;
             ServiceTestCommandHandler.RunSelectedTest(SelectedServiceTest, ResourceModel, AsyncWorker);
             ViewModelUtils.RaiseCanExecuteChanged(StopTestCommand);
         }
@@ -110,7 +109,7 @@ namespace Warewolf.Studio.ViewModels
 
         private void RunAllTests()
         {
-            ServiceTestCommandHandler.RunAllTestsCommand(IsDirty);
+            ServiceTestCommandHandler.RunAllTestsCommand(IsDirty,Tests,ResourceModel,AsyncWorker);
         }
 
         private void DuplicateTest()
@@ -128,9 +127,13 @@ namespace Warewolf.Studio.ViewModels
             return GetPermissions() && selectedTestModel != null && !selectedTestModel.Enabled && IsServerConnected();
         }
 
+        // ReSharper disable once MemberCanBePrivate.Global
+        // ReSharper disable once UnusedAutoPropertyAccessor.Global
         public bool IsLoading { get; set; }
 
+        // ReSharper disable once MemberCanBePrivate.Global
         public IAsyncWorker AsyncWorker { get; set; }
+        // ReSharper disable once MemberCanBePrivate.Global
         public IEventAggregator EventPublisher { get; set; }
 
         private void CreateTests()
@@ -413,6 +416,7 @@ namespace Warewolf.Studio.ViewModels
                     }
                     
                     _selectedServiceTest = null;
+                    EventPublisher.Publish(new DebugOutputMessage(new List<IDebugState>()));
                     OnPropertyChanged(() => SelectedServiceTest);
                     return;
                 }

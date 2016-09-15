@@ -4,7 +4,7 @@ using Microsoft.Practices.Prism.Mvvm;
 
 namespace Warewolf.Studio.ViewModels
 {
-    public class ServiceTestInput: BindableBase,IServiceTestInput
+    public class ServiceTestInput : BindableBase, IServiceTestInput
     {
         private string _variable;
         private string _value;
@@ -12,9 +12,9 @@ namespace Warewolf.Studio.ViewModels
 
         public ServiceTestInput(string variableName, string value)
         {
-            if(variableName == null)
+            if (variableName == null)
                 throw new ArgumentNullException(nameof(variableName));
-            EmptyIsNull = true;
+            EmptyIsNull = false;
             Variable = variableName;
             Value = value;
         }
@@ -30,7 +30,7 @@ namespace Warewolf.Studio.ViewModels
             set
             {
                 _variable = value;
-                OnPropertyChanged(()=>Variable);
+                OnPropertyChanged(() => Variable);
             }
         }
         public string Value
@@ -57,8 +57,9 @@ namespace Warewolf.Studio.ViewModels
             }
             set
             {
-                _emptyIsNull = value;               
-                OnPropertyChanged(()=>EmptyIsNull);
+                _emptyIsNull = value;
+                AddNewAction?.Invoke();
+                OnPropertyChanged(() => EmptyIsNull);
             }
         }
         public Action AddNewAction { get; set; }

@@ -18,9 +18,11 @@ using Dev2.Runtime.Execution;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Security;
 using Dev2.Runtime.ServiceModel.Data;
+using Dev2.Services.Security;
 using Dev2.Workspaces;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Warewolf.Security.Encryption;
 
 namespace Dev2.Runtime.ESB.Execution
 {
@@ -104,13 +106,18 @@ namespace Dev2.Runtime.ESB.Execution
                         userName = userName.Substring(0, atIndex);
                         domain = userName.Substring(atIndex + 1);
                     }
-                    impersonator.Impersonate(userName, domain, serviceTestModelTO.Password);
+                    var hasImpersonated = impersonator.Impersonate(userName, domain, DpapiWrapper.DecryptIfEncrypted(serviceTestModelTO.Password));
+                    if (!hasImpersonated)
+                    {
+                        DataObject.Environment.AllErrors.Add("Unauthorized to execute this resource.");
+                        DataObject.StopExecution = true;
+                    }
                 }
                 else if (serviceTestModelTO.AuthenticationType == AuthenticationType.Public)
                 {
                     Thread.CurrentPrincipal = GlobalConstants.GenericPrincipal;
                 }
-                var userPrinciple = Thread.CurrentPrincipal;
+                var userPrinciple = Thread.CurrentPrincipal;                
                 Common.Utilities.PerformActionInsideImpersonatedContext(userPrinciple, () =>
                 {
                     result = ExecuteWf(to, serviceTestModelTO);
@@ -148,7 +155,10 @@ namespace Dev2.Runtime.ESB.Execution
                     }
                     else
                     {
-                        DataObject.Environment.Assign(variable, value, 0);
+                        if (!input.EmptyIsNull || !string.IsNullOrEmpty(value))
+                        {
+                            DataObject.Environment.Assign(variable, value, 0);
+                        }
                     }
                 }
             }
@@ -207,27 +217,45 @@ namespace Dev2.Runtime.ESB.Execution
             Dev2Logger.Debug("Got Resource to Execute");
             
             if (test != null)
-            {               
-                EvalInner(dataObject, clonedExecPlan, dataObject.ForEachUpdateValue);
+            {
                 var testPassed = true;
-                var failureMessage =new StringBuilder();
-                if (test.Outputs != null)
+                var canExecute = true;
+                var failureMessage = new StringBuilder();
+                if (ServerAuthorizationService.Instance != null)
                 {
-                    foreach (var output in test.Outputs)
+                    var authorizationService = ServerAuthorizationService.Instance;
+                    var hasView = authorizationService.IsAuthorized(AuthorizationContext.View, DataObject.ResourceID.ToString());
+                    var hasExecute = authorizationService.IsAuthorized(AuthorizationContext.Execute, DataObject.ResourceID.ToString());
+                    canExecute = hasExecute && hasView;
+                }
+                if (!canExecute)
+                {
+                    dataObject.Environment.AllErrors.Add("Unauthorized to execute this resource.");
+                }
+                else
+                {
+                    if (!dataObject.StopExecution)
                     {
-                        var variable = DataListUtil.AddBracketsToValueIfNotExist(output.Variable);
-                        var value = output.Value;
-
-                        var result = dataObject.Environment.Eval(variable, 0);
-                        if (result.IsWarewolfAtomResult)
+                        EvalInner(dataObject, clonedExecPlan, dataObject.ForEachUpdateValue);
+                        if (test.Outputs != null)
                         {
-                            var x = (result as CommonFunctions.WarewolfEvalResult.WarewolfAtomResult)?.Item;
-                            // ReSharper disable once PossibleNullReferenceException
-                            var actualValue = x.ToString();
-                            if (!actualValue.Equals(value))
+                            foreach (var output in test.Outputs)
                             {
-                                testPassed = false;
-                                failureMessage.AppendLine($"Assert Equal failed. Expected {value} for {variable} but got {actualValue}");
+                                var variable = DataListUtil.AddBracketsToValueIfNotExist(output.Variable);
+                                var value = output.Value;
+
+                                var result = dataObject.Environment.Eval(variable, 0);
+                                if (result.IsWarewolfAtomResult)
+                                {
+                                    var x = (result as CommonFunctions.WarewolfEvalResult.WarewolfAtomResult)?.Item;
+                                    // ReSharper disable once PossibleNullReferenceException
+                                    var actualValue = x.ToString();
+                                    if (!actualValue.Equals(value))
+                                    {
+                                        testPassed = false;
+                                        failureMessage.AppendLine($"Assert Equal failed. Expected {value} for {variable} but got {actualValue}");
+                                    }
+                                }
                             }
                         }
                     }
@@ -235,12 +263,15 @@ namespace Dev2.Runtime.ESB.Execution
                 var hasErrors = DataObject.Environment.HasErrors();
                 if (test.ErrorExpected)
                 {
-
                     testPassed = hasErrors;
                 }
                 else if (test.NoErrorExpected)
                 {
                     testPassed = !hasErrors;
+                    if (hasErrors)
+                    {
+                        failureMessage.AppendLine(DataObject.Environment.FetchErrors());
+                    }
                 }
 
                 test.TestFailing = !testPassed;

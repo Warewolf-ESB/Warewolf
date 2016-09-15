@@ -526,6 +526,9 @@ namespace Dev2.Activities.Specs.TestFramework
                 case "Run":
                     Assert.IsTrue(serviceTest.RunSelectedTestCommand.CanExecute(null));
                     break;
+                case "Save":
+                    Assert.IsTrue(serviceTest.CanSave);
+                    break;
                 default:
                     Assert.Fail("Incorrect Command Option!");
                     break;
