@@ -513,6 +513,25 @@ namespace Dev2.Activities.Specs.TestFramework
             }
         }
 
+        [Then(@"""(.*)"" test is visible")]
+        public void ThenTestIsVisible(string testCommand)
+        {
+            ServiceTestViewModel serviceTest = GetTestFrameworkFromContext();
+
+            switch (testCommand)
+            {
+                case "Stop":
+                    Assert.IsTrue(serviceTest.StopTestCommand.CanExecute(null));
+                    break;
+                case "Run":
+                    Assert.IsTrue(serviceTest.RunSelectedTestCommand.CanExecute(null));
+                    break;
+                default:
+                    Assert.Fail("Incorrect Command Option!");
+                    break;
+            }
+        }
+
         [Then(@"there are (.*) tests")]
         public void ThenThereAreTests(int testCount)
         {
