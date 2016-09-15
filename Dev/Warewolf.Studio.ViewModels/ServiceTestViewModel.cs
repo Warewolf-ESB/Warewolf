@@ -320,10 +320,15 @@ namespace Warewolf.Studio.ViewModels
         {
             if (HasDuplicates())
             {
-                PopupController?.Show(Resources.Languages.Core.ServiceTestDuplicateTestNameMessage, Resources.Languages.Core.ServiceTestDuplicateTestNameHeader, MessageBoxButton.OK, MessageBoxImage.Error, null, false, true, false, false);
+                ShowDuplicatePopup();
                 return true;
             }
             return false;
+        }
+
+        public void ShowDuplicatePopup()
+        {
+            PopupController?.Show(Resources.Languages.Core.ServiceTestDuplicateTestNameMessage, Resources.Languages.Core.ServiceTestDuplicateTestNameHeader, MessageBoxButton.OK, MessageBoxImage.Error, null, false, true, false, false);
         }
 
         public bool HasDuplicates() => RealTests().ToList().GroupBy(x => x.TestName).Where(group => @group.Count() > 1).Select(group => @group.Key).Any();

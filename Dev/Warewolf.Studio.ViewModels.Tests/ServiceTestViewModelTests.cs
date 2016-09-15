@@ -44,6 +44,23 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void ShoDuplicatePopup_GivenIsInvoked_ShouldShowCorrectMessage()
+        {
+            //---------------Set up test pack-------------------
+            var mock = new Mock<IPopupController>();
+            mock.Setup(controller => controller.Show(Resources.Languages.Core.ServiceTestDuplicateTestNameMessage, Resources.Languages.Core.ServiceTestDuplicateTestNameHeader, MessageBoxButton.OK, MessageBoxImage.Error, null, false, true, false, false)).Verifiable();
+            CustomContainer.Register(mock.Object);
+            var testVM = new ServiceTestViewModel(CreateResourceModel(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object);
+            //---------------Assert Precondition----------------
+            //---------------Execute Test ----------------------
+            testVM.ShowDuplicatePopup();
+            //---------------Test Result -----------------------
+            mock.Verify(controller => controller.Show(Resources.Languages.Core.ServiceTestDuplicateTestNameMessage, Resources.Languages.Core.ServiceTestDuplicateTestNameHeader, MessageBoxButton.OK, MessageBoxImage.Error, null, false, true, false, false), Times.Once);
+
+        }
+
+        [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("TestFrameworkViewModel_Constructor")]
         public void TestFrameworkViewModel_Constructor_NotNullResourceModel_ShouldSetResourceModel()
