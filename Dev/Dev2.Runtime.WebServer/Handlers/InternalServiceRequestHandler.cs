@@ -92,8 +92,21 @@ namespace Dev2.Runtime.WebServer.Handlers
             {
                 xmlData = "<DataList></DataList>";
             }
+            bool isDebug = false;
+            if (request.Args.ContainsKey("IsDebug"))
+            {
+                var debugString = request.Args["IsDebug"].ToString();
+                if(!bool.TryParse(debugString,out isDebug))
+                {
+                    isDebug = false; 
+                }
+            }
 
             IDSFDataObject dataObject = new DsfDataObject(xmlData, dataListID);
+            if (isDebug)
+            {
+                dataObject.IsDebug = true;
+            }
             dataObject.StartTime = DateTime.Now;
             dataObject.EsbChannel = channel;
             dataObject.ServiceName = request.ServiceName;

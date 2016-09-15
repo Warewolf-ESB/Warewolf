@@ -16,14 +16,14 @@ namespace Dev2.ViewModels
     {
         readonly IPopupController _popupController;
 
-        public StudioTestViewModel(IEventAggregator eventPublisher, IServiceTestViewModel vm, IPopupController popupController,IView view)
+        public StudioTestViewModel(IEventAggregator eventPublisher, IServiceTestViewModel vm, IPopupController popupController, IView view)
             : base(eventPublisher)
         {
             ViewModel = vm;
             View = view;
             _popupController = popupController;
             ViewModel.PropertyChanged += (sender, args) =>
-            {               
+            {
                 var mainViewModel = CustomContainer.Get<IMainViewModel>();
                 if (mainViewModel != null)
                 {
@@ -32,7 +32,7 @@ namespace Dev2.ViewModels
 
                 if (args.PropertyName == "DisplayName")
                 {
-                    NotifyOfPropertyChange(()=>DisplayName);
+                    NotifyOfPropertyChange(() => DisplayName);
                 }
             };
         }
@@ -102,7 +102,10 @@ namespace Dev2.ViewModels
                             return true;
                         case MessageBoxResult.Yes:
                             if (ViewModel.HasDuplicates())
+                            {
+                                ViewModel.ShowDuplicatePopup();
                                 return false;//dont close the tab
+                            }
                             if (ViewModel.CanSave)
                             {
                                 ViewModel.Save();

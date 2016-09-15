@@ -44,6 +44,23 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void ShoDuplicatePopup_GivenIsInvoked_ShouldShowCorrectMessage()
+        {
+            //---------------Set up test pack-------------------
+            var mock = new Mock<IPopupController>();
+            mock.Setup(controller => controller.Show(Resources.Languages.Core.ServiceTestDuplicateTestNameMessage, Resources.Languages.Core.ServiceTestDuplicateTestNameHeader, MessageBoxButton.OK, MessageBoxImage.Error, null, false, true, false, false)).Verifiable();
+            CustomContainer.Register(mock.Object);
+            var testVM = new ServiceTestViewModel(CreateResourceModel(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object);
+            //---------------Assert Precondition----------------
+            //---------------Execute Test ----------------------
+            testVM.ShowDuplicatePopup();
+            //---------------Test Result -----------------------
+            mock.Verify(controller => controller.Show(Resources.Languages.Core.ServiceTestDuplicateTestNameMessage, Resources.Languages.Core.ServiceTestDuplicateTestNameHeader, MessageBoxButton.OK, MessageBoxImage.Error, null, false, true, false, false), Times.Once);
+
+        }
+
+        [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("TestFrameworkViewModel_Constructor")]
         public void TestFrameworkViewModel_Constructor_NotNullResourceModel_ShouldSetResourceModel()
@@ -52,7 +69,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
 
             //------------Execute Test---------------------------
-            var testVM = new ServiceTestViewModel(new Mock<IContextualResourceModel>().Object, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object);
+            var testVM = new ServiceTestViewModel(CreateResourceModel(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object);
             //------------Assert Results-------------------------
             Assert.IsNotNull(testVM);
             Assert.IsNotNull(testVM.ResourceModel);
@@ -67,7 +84,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var mockResourceModel = new Mock<IContextualResourceModel>();
             mockResourceModel.Setup(model => model.DisplayName).Returns("Workflow Name");
             //------------Execute Test---------------------------
-            var testVM = new ServiceTestViewModel(mockResourceModel.Object, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object);
+            var testVM = new ServiceTestViewModel(CreateResourceModel(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object);
             //------------Assert Results-------------------------
             Assert.AreEqual("My WF - Tests", testVM.DisplayName);
         }
@@ -98,7 +115,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //---------------Test Result -----------------------
             Assert.IsFalse(vm.DuplicateTestCommand.CanExecute(null));
         }
-
+        
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
@@ -182,6 +199,21 @@ namespace Warewolf.Studio.ViewModels.Tests
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
+        public void OnCreation_GivenIsNewNotConnected_ShouldSetRunAllTestsCommandExecuteFalse()
+        {
+            //---------------Set up test pack-------------------
+            var mock = new Mock<IEventAggregator>();
+            var vm = new ServiceTestViewModel(CreateResourceModel(false), new SynchronousAsyncWorker(), mock.Object);
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(vm);
+            //---------------Execute Test ----------------------
+            Assert.IsNotNull(vm.RunAllTestsCommand);
+            //---------------Test Result -----------------------
+            Assert.IsFalse(vm.RunAllTestsCommand.CanExecute(null));
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
         public void OnCreation_GivenIsNew_ShouldHaveRunSelectedTestCommand()
         {
             //---------------Set up test pack-------------------
@@ -194,20 +226,36 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(vm.RunSelectedTestCommand.CanExecute(null));
         }
 
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void OnCreation_GivenIsNewNotConnected_ShouldSetRunSelectedTestCommandCanExecuteFalse()
+        {
+            //---------------Set up test pack-------------------
+            var mock = new Mock<IEventAggregator>();
+            var vm = new ServiceTestViewModel(CreateResourceModel(false), new SynchronousAsyncWorker(), mock.Object);
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(vm);
+            //---------------Execute Test ----------------------
+            Assert.IsNotNull(vm.RunSelectedTestCommand);
+            //---------------Test Result -----------------------
+            Assert.IsFalse(vm.RunSelectedTestCommand.CanExecute(null));
+        }
+
 
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void OnCreation_GivenIsNew_ShouldHaveRunAllTestsInBrowserCommand()
+        public void OnCreation_GivenIsNewNotConnected_ShouldSetRunAllTestsInBrowserCommandCanExecuteFalse()
         {
             //---------------Set up test pack-------------------
-            var vm = new ServiceTestViewModel(CreateResourceModel(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object);
+            var mock = new Mock<IEventAggregator>();
+            var vm = new ServiceTestViewModel(CreateResourceModel(false), new SynchronousAsyncWorker(), mock.Object);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(vm);
             //---------------Execute Test ----------------------
             Assert.IsNotNull(vm.RunAllTestsInBrowserCommand);
             //---------------Test Result -----------------------
-            Assert.IsTrue(vm.RunAllTestsInBrowserCommand.CanExecute(null));
+            Assert.IsFalse(vm.RunAllTestsInBrowserCommand.CanExecute(null));
         }
 
         [TestMethod]
@@ -530,7 +578,7 @@ namespace Warewolf.Studio.ViewModels.Tests
          
             vm.SelectedServiceTest.Enabled = false;
             //---------------Test Result -----------------------
-            var canExecute = vm.DeleteTestCommand.CanExecute(null);
+            var canExecute = vm.DeleteTestCommand.CanExecute(vm.SelectedServiceTest);
             Assert.IsTrue(canExecute);
         }
 
@@ -990,7 +1038,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void DeleteCommand_GivenSelectedTestIsDisabled_ShouldSetCanDeleteTrue()
         {
             //---------------Set up test pack-------------------
-            var testFrameworkViewModel = new ServiceTestViewModel(CreateMockResourceModelWithSingleScalarOutput(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object);
+            var testFrameworkViewModel = new ServiceTestViewModel(CreateResourceModel(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object);
             testFrameworkViewModel.CreateTestCommand.Execute(null);
             testFrameworkViewModel.Save();
             //---------------Assert Precondition----------------
