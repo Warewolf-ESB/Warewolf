@@ -34,7 +34,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //------------Assert Results-------------------------
             Assert.AreEqual("someVar",input.Variable);
             Assert.AreEqual("someValue",input.Value);
-            Assert.IsTrue(input.EmptyIsNull);
+            Assert.IsFalse(input.EmptyIsNull);
         }
 
         [TestMethod]
@@ -131,7 +131,7 @@ namespace Warewolf.Studio.ViewModels.Tests
                 }
             };
             //------------Execute Test---------------------------
-            input.EmptyIsNull = false;
+            input.EmptyIsNull = true;
             //------------Assert Results-------------------------
             Assert.IsTrue(_wasCalled);
         }
