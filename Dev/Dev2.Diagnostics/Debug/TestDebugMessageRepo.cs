@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 
 namespace Dev2.Diagnostics.Debug
@@ -29,7 +30,15 @@ namespace Dev2.Diagnostics.Debug
                     var key = new Tuple<Guid, string>(resourceID,testName);
                     if(_data.TryGetValue(key, out list))
                     {
-                        if(list.Contains(ds)) return;
+                        if(list.Contains(ds))
+                        {
+                            var existingItem = list.FirstOrDefault(state => state.Equals(ds));
+                            if(existingItem.StateType != ds.StateType && ds.StateType!=StateType.Duration)
+                            {
+                                list.Add(ds);
+                            }
+                            return;
+                        }
                         list.Add(ds);
                     }
                     else

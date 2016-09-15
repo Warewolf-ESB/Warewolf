@@ -592,27 +592,12 @@ Scenario: Run a test with single scalar inputs and outputs
 	And I save
 	When I run the test
 	Then test result is Passed
-	#Then service inputs as
-	#	| Variable | Value |
-	#	| [[Name]] | Bob   |
-	#Then the "Decision" debug inputs as
-	#  | Recordset            |
-	#  | [[rec(1).a]] = yes |
-	#  | [[rec(2).a]] = no |
-	#And the "Decsion"  debug outputs as    
-	#  |               |
-	#  | [[count]] = 2 |
-	#And the "Assign" debug inputs as
-	#  | # | Variable      | New Value |
-	#  | 1 | [[rec().a]] = | yes       |
-	#  | 2 | [[rec().a]] = | no        |
-	#And the "Assign" debug outputs as    
-	#  | # |                    |
-	#  | 1 | [[rec(1).a]] = yes |
-	#  | 2 | [[rec(2).a]] = no  |
-	#And the service outputs as
-	#  | Variable    | Value      |
-	#  | [[Message]] | Hello Bob. |
+	And service debug inputs as
+		| Variable | Value |
+		| [[Name]] | Bob   |
+	And the service debug outputs as
+	  | Variable    | Value      |
+	  | [[Message]] | Hello Bob. |
 	When I delete "Test 1"
 	Then The "DeleteConfirmation" popup is shown I click Ok
 	Then there are no tests
@@ -645,27 +630,12 @@ Scenario: Run a test with single scalar inputs and outputs failure
 	And I save
 	When I run the test
 	Then test result is Failed
-	#Then service inputs as
-	#	| Variable | Value |
-	#	| [[Name]] | Bob   |
-	#Then the "Decision" debug inputs as
-	#  | Recordset            |
-	#  | [[rec(1).a]] = yes |
-	#  | [[rec(2).a]] = no |
-	#And the "Decsion"  debug outputs as    
-	#  |               |
-	#  | [[count]] = 2 |
-	#And the "Assign" debug inputs as
-	#  | # | Variable      | New Value |
-	#  | 1 | [[rec().a]] = | yes       |
-	#  | 2 | [[rec().a]] = | no        |
-	#And the "Assign" debug outputs as    
-	#  | # |                    |
-	#  | 1 | [[rec(1).a]] = yes |
-	#  | 2 | [[rec(2).a]] = no  |
-	#And the service outputs as
-	#  | Variable    | Value      |
-	#  | [[Message]] | Hello Bob. |
+	Then service debug inputs as
+		| Variable | Value |
+		| [[Name]] | Bob   |	
+	And the service debug outputs as
+	  | Variable    | Value      |
+	  | [[Message]] | Hello Bob. |
 	When I delete "Test 1"
 	Then The "DeleteConfirmation" popup is shown I click Ok
 	Then there are no tests

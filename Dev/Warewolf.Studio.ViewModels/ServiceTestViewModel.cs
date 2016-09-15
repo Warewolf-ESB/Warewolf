@@ -37,7 +37,7 @@ namespace Warewolf.Studio.ViewModels
         public IPopupController PopupController { get; }
         private bool _canSave;
         private string _errorMessage;
-        private IShellViewModel _shellViewModel;
+        private readonly IShellViewModel _shellViewModel;
 
         public ServiceTestViewModel(IContextualResourceModel resourceModel, IAsyncWorker asyncWorker, IEventAggregator eventPublisher)
         {
@@ -101,7 +101,7 @@ namespace Warewolf.Studio.ViewModels
         private void RunSelectedTest()
         {
             SelectedServiceTest.IsTestRunning = true;
-            ServiceTestCommandHandler.RunSelectedTest(SelectedServiceTest,ResourceModel,AsyncWorker);
+            ServiceTestCommandHandler.RunSelectedTest(SelectedServiceTest, ResourceModel, AsyncWorker);
         }
 
         private void RunAllTestsInBrowser()
@@ -311,10 +311,10 @@ namespace Warewolf.Studio.ViewModels
                     Enabled = model.Enabled,
                     ErrorExpected = model.ErrorExpected,
                     NoErrorExpected = model.NoErrorExpected,
-                    Inputs = model.Inputs,
+                    Inputs = model.Inputs.ToList(),
                     LastRunDate = model.LastRunDate,
                     OldTestName = model.OldTestName,
-                    Outputs = model.Outputs,
+                    Outputs = model.Outputs.ToList(),
                     Password = model.Password,
                     IsDirty = model.IsDirty,
                     TestPending = model.TestPending,
@@ -357,10 +357,15 @@ namespace Warewolf.Studio.ViewModels
         {
             if (HasDuplicates())
             {
-                PopupController?.Show(Resources.Languages.Core.ServiceTestDuplicateTestNameMessage, Resources.Languages.Core.ServiceTestDuplicateTestNameHeader, MessageBoxButton.OK, MessageBoxImage.Error, null, false, true, false, false);
+                ShowDuplicatePopup();
                 return true;
             }
             return false;
+        }
+
+        public void ShowDuplicatePopup()
+        {
+            PopupController?.Show(Resources.Languages.Core.ServiceTestDuplicateTestNameMessage, Resources.Languages.Core.ServiceTestDuplicateTestNameHeader, MessageBoxButton.OK, MessageBoxImage.Error, null, false, true, false, false);
         }
 
         public bool HasDuplicates() => RealTests().ToList().GroupBy(x => x.TestName).Where(group => @group.Count() > 1).Select(group => @group.Key).Any();
@@ -406,7 +411,9 @@ namespace Warewolf.Studio.ViewModels
                     return;
                 }
                 if (_selectedServiceTest != null)
+                {
                     _selectedServiceTest.PropertyChanged -= ActionsForPropChanges;
+                }
                 _selectedServiceTest = value;
                 _selectedServiceTest.PropertyChanged += ActionsForPropChanges;
                 SetSelectedTestUrl();
@@ -444,6 +451,10 @@ namespace Warewolf.Studio.ViewModels
             if (e.PropertyName == "RunSelectedTestUrl")
             {
                 ViewModelUtils.RaiseCanExecuteChanged(RunSelectedTestInBrowserCommand);
+            }
+            if (e.PropertyName == "DebugForTest")
+            {
+                EventPublisher.Publish(new DebugOutputMessage(SelectedServiceTest.DebugForTest ?? new List<IDebugState>()));
             }
             ViewModelUtils.RaiseCanExecuteChanged(DuplicateTestCommand);
         }
@@ -546,8 +557,8 @@ namespace Warewolf.Studio.ViewModels
                 Password = to.Password,
                 ParentId = to.ResourceId,
                 TestInvalid = to.TestInvalid,
-                Inputs = to.Inputs?.Select(input => new ServiceTestInput(input.Variable, input.Value) as IServiceTestInput).ToList(),
-                Outputs = to.Outputs?.Select(output => new ServiceTestOutput(output.Variable, output.Value) as IServiceTestOutput).ToList()
+                Inputs = to.Inputs?.Select(input => new ServiceTestInput(input.Variable, input.Value) as IServiceTestInput).ToObservableCollection(),
+                Outputs = to.Outputs?.Select(output => new ServiceTestOutput(output.Variable, output.Value) as IServiceTestOutput).ToObservableCollection()
             };
             return serviceTestModel;
         }
