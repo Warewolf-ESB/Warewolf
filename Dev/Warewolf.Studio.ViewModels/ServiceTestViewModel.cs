@@ -128,9 +128,13 @@ namespace Warewolf.Studio.ViewModels
             return GetPermissions() && selectedTestModel != null && !selectedTestModel.Enabled && IsServerConnected();
         }
 
+        // ReSharper disable once MemberCanBePrivate.Global
+        // ReSharper disable once UnusedAutoPropertyAccessor.Global
         public bool IsLoading { get; set; }
 
+        // ReSharper disable once MemberCanBePrivate.Global
         public IAsyncWorker AsyncWorker { get; set; }
+        // ReSharper disable once MemberCanBePrivate.Global
         public IEventAggregator EventPublisher { get; set; }
 
         private void CreateTests()

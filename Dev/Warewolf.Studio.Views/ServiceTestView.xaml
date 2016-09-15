@@ -135,8 +135,8 @@
                                                FontSize="11" 
                                                Margin="0,-4,0,0" 
                                                Visibility="{Binding LastRunDateVisibility}"
-                                               /> 
-                                    
+                                               />
+
                                     <TextBlock Grid.Column="2" 
                                                Grid.Row="1" 
                                                Text="{Binding NeverRunString}" 
@@ -420,9 +420,10 @@
                                                                 d:DataContext="{d:DesignInstance Type=interfaces:IServiceTestInput}">
                                             <DataGridTemplateColumn.CellTemplate>
                                                 <DataTemplate>
-                                                    <CheckBox IsChecked="{Binding Path=EmptyIsNull}" 
+                                                    <CheckBox IsChecked="{Binding Path=EmptyIsNull, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                                               HorizontalAlignment="Center"
                                                                   Checked="ToggleButton_OnChecked"
+                                                                  Unchecked="ToggleButton_OnChecked"
                                                               ToolTip="{x:Static languages:Core.InputEmptyIsNullToolTip}">
                                                         <i:Interaction.Behaviors>
                                                             <core:HelpSetter Text="{x:Static languages:Core.InputEmptyIsNullDefaultValueHelp}" DataContext="{Binding}" />
