@@ -10,6 +10,7 @@ namespace Warewolf.UITests
         [TestMethod]
         public void WorkflowTestingUITests()
         {
+            Uimap.Click_Create_New_Tests();
         }
 
         #region Additional test attributes
