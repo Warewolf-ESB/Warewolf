@@ -145,6 +145,7 @@
                                             Grid.RowSpan="2" 
                                             Command="{Binding ElementName=TestsListbox, Path=DataContext.RunSelectedTestCommand }" 
                                             CommandParameter="{Binding .}" 
+                                            Visibility="{Binding IsTestRunning, Converter={StaticResource BoolToVisibilityConverterNegative}}"
                                             Style="{StaticResource ButtonRunTestTransparentStyle}" >
                                         <Button.Content>
                                             <fa:FontAwesome Icon="Play" FontSize="18" Background="Transparent"/>
