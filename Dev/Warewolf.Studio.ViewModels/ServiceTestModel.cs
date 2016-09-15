@@ -195,6 +195,10 @@ namespace Warewolf.Studio.ViewModels
             set
             {
                 _lastRunDate = value;
+                if (_lastRunDate != default(DateTime))
+                {
+                    LastRunDateVisibility = true;
+                }
                 OnPropertyChanged(() => LastRunDate);
             }
         }

@@ -63,7 +63,6 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual(default(DateTime), testModel.LastRunDate);
             //---------------Execute Test ----------------------
             testModel.LastRunDate = DateTime.Now;
-            testModel.LastRunDateVisibility = true;
             //---------------Test Result -----------------------
             Assert.IsFalse(testModel.NeverRunStringVisibility);
         }
@@ -79,7 +78,6 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual(default(DateTime), testModel.LastRunDate);
             //---------------Execute Test ----------------------
             testModel.LastRunDate = DateTime.Now;
-            testModel.LastRunDateVisibility = true;
             //---------------Test Result -----------------------
             Assert.IsTrue(testModel.LastRunDateVisibility);
         }
