@@ -8802,18 +8802,6 @@ namespace Warewolf.UITests
                 return this.mUIItemWindow;
             }
         }
-        
-        public UIWarewolfDEV2SANELEMTWindow UIWarewolfDEV2SANELEMTWindow
-        {
-            get
-            {
-                if ((this.mUIWarewolfDEV2SANELEMTWindow == null))
-                {
-                    this.mUIWarewolfDEV2SANELEMTWindow = new UIWarewolfDEV2SANELEMTWindow();
-                }
-                return this.mUIWarewolfDEV2SANELEMTWindow;
-            }
-        }
         #endregion
         
         #region Fields
@@ -9230,8 +9218,6 @@ namespace Warewolf.UITests
         private SwitchCaseDialog mSwitchCaseDialog;
         
         private UIItemWindow mUIItemWindow;
-        
-        private UIWarewolfDEV2SANELEMTWindow mUIWarewolfDEV2SANELEMTWindow;
         #endregion
     }
     
@@ -22061,10 +22047,28 @@ namespace Warewolf.UITests
                 return this.mCreateTaskButton;
             }
         }
+        
+        public WpfButton CreateanewscheduledtButton
+        {
+            get
+            {
+                if ((this.mCreateanewscheduledtButton == null))
+                {
+                    this.mCreateanewscheduledtButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mCreateanewscheduledtButton.SearchProperties[WpfButton.PropertyNames.HelpText] = "Create a new scheduled task";
+                    this.mCreateanewscheduledtButton.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mCreateanewscheduledtButton;
+            }
+        }
         #endregion
         
         #region Fields
         private CreateTaskButton mCreateTaskButton;
+        
+        private WpfButton mCreateanewscheduledtButton;
         #endregion
     }
     
@@ -39928,107 +39932,6 @@ namespace Warewolf.UITests
         
         #region Fields
         private WinList mUIItemList;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class UIWarewolfDEV2SANELEMTWindow : WpfWindow
-    {
-        
-        public UIWarewolfDEV2SANELEMTWindow()
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfWindow.PropertyNames.Name] = "Warewolf (DEV2\\SANELE.MTHEMBU)";
-            this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
-            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
-            #endregion
-        }
-        
-        #region Properties
-        public UIPerfmonViewContentCustom UIPerfmonViewContentCustom
-        {
-            get
-            {
-                if ((this.mUIPerfmonViewContentCustom == null))
-                {
-                    this.mUIPerfmonViewContentCustom = new UIPerfmonViewContentCustom(this);
-                }
-                return this.mUIPerfmonViewContentCustom;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private UIPerfmonViewContentCustom mUIPerfmonViewContentCustom;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class UIPerfmonViewContentCustom : WpfCustom
-    {
-        
-        public UIPerfmonViewContentCustom(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.PerfCounterView";
-            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "PerfmonViewContent";
-            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
-            #endregion
-        }
-        
-        #region Properties
-        public UIResourcePermissionsDTable UIResourcePermissionsDTable
-        {
-            get
-            {
-                if ((this.mUIResourcePermissionsDTable == null))
-                {
-                    this.mUIResourcePermissionsDTable = new UIResourcePermissionsDTable(this);
-                }
-                return this.mUIResourcePermissionsDTable;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private UIResourcePermissionsDTable mUIResourcePermissionsDTable;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class UIResourcePermissionsDTable : WpfTable
-    {
-        
-        public UIResourcePermissionsDTable(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfTable.PropertyNames.AutomationId] = "ResourcePermissionsDataGrid";
-            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
-            #endregion
-        }
-        
-        #region Properties
-        public WpfCell UIResourcesCell
-        {
-            get
-            {
-                if ((this.mUIResourcesCell == null))
-                {
-                    this.mUIResourcesCell = new WpfCell(this);
-                    #region Search Criteria
-                    this.mUIResourcesCell.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = null;
-                    this.mUIResourcesCell.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
-                    #endregion
-                }
-                return this.mUIResourcesCell;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfCell mUIResourcesCell;
         #endregion
     }
 }
