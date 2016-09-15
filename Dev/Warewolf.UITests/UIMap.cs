@@ -980,6 +980,17 @@ namespace Warewolf.UITests
                 Console.WriteLine("TryClose method failed to close Deploy tab.\n" + e.Message);
             }
         }
+        public void Click_Disable_This_Test()
+        {
+            WpfCheckBox testEnabledSelector = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.TestsStudioViewModel.ServiceTestView.TestsListboxList.Test1.TestEnabledSelector;
+            WpfButton runButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.TestsStudioViewModel.ServiceTestView.TestsListboxList.Test1.DeleteButton;
+            var beforeClick = testEnabledSelector.Checked;
+            Mouse.Click(testEnabledSelector);
+            Assert.AreNotEqual(beforeClick, testEnabledSelector.Checked);
+            WaitForControlVisible(runButton);
+            Assert.IsTrue(runButton.Enabled, "Delete button is disabled");
+        }
+
 
         /// <summary>
         /// Click_DB_Source_Wizard_Test_Connection_Button
