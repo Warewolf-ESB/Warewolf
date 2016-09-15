@@ -1021,7 +1021,7 @@ namespace Dev2.Activities.Specs.TestFramework
         {
             ServiceTestViewModel serviceTest = GetTestFrameworkFromContext();
             Assert.IsTrue(serviceTest.SelectedServiceTest.TestName == dupTestName);
-            var count = serviceTest.Tests.Count(model => model.TestName == dupTestName);
+            var count = serviceTest.Tests.Count(model => dupTestName.Contains(model.TestName));
             Assert.AreEqual(2, count);
         }
         [Then(@"Duplicate Test in not Visible")]
@@ -1030,6 +1030,21 @@ namespace Dev2.Activities.Specs.TestFramework
             ServiceTestViewModel serviceTest = GetTestFrameworkFromContext();
             var canExecute = serviceTest.DuplicateTestCommand.CanExecute(null);
             Assert.IsFalse(canExecute);
+        }
+
+        [Then(@"Duplicate Test is ""(.*)""")]
+        public void ThenDuplicateTestIs(string visibilityStatus)
+        {
+            ServiceTestViewModel serviceTest = GetTestFrameworkFromContext();
+            var canExecute = serviceTest.DuplicateTestCommand.CanExecute(null);
+            if (visibilityStatus == "Enabled")
+            {
+                Assert.IsTrue(canExecute);
+            }
+            else
+            {
+                Assert.IsFalse(canExecute);
+            }
         }
 
         [Then(@"Duplicate Test in Visible")]
