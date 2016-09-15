@@ -433,6 +433,39 @@ namespace Dev2.Tests.Runtime.Hosting
             Assert.AreEqual(result.Status, ExecStatus.DuplicateMatch);
             catalogue.Verify(a => a.DeleteResource(It.IsAny<Guid>(), guid, "DbSource", true));
         }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        [TestCategory("ServerExplorerRepository_DeleteItem")]
+        public void ServerExplorerRepository_DeleteItem_DeleteTests_ExpectErrorMessage()
+        {
+            //------------Setup for test--------------------------
+            var testCatalogue = new Mock<ITestCatalog>();
+            var catalogue = new Mock<IResourceCatalog>();
+            var factory = new Mock<IExplorerItemFactory>();
+            var dir = new Mock<IDirectory>();
+            var guid = Guid.NewGuid();
+
+            var explorerItem = new ServerExplorerItem(
+                "dave", guid,
+                "DbSource",
+                new List<IExplorerItem>()
+                , Permissions.Administrator, "bob", "", ""
+                );
+            factory.Setup(a => a.CreateRootExplorerItem(It.IsAny<string>(), It.IsAny<Guid>())).Returns(explorerItem);
+            catalogue.Setup(a => a.DeleteResource(It.IsAny<Guid>(), guid, "DbSource", true)).Returns(new ResourceCatalogResult { Message = "bob", Status = ExecStatus.DuplicateMatch });
+            testCatalogue.Setup(catalog => catalog.DeleteAllTests(It.IsAny<Guid>())).Verifiable();
+            var sync = new Mock<IExplorerRepositorySync>();
+            var serverExplorerRepository = new ServerExplorerRepository(catalogue.Object, factory.Object, dir.Object, sync.Object, new Mock<IServerVersionRepository>().Object, new FileWrapper(), testCatalogue.Object);
+
+            //------------Execute Test---------------------------
+            var result = serverExplorerRepository.DeleteItem(explorerItem, Guid.NewGuid());
+            //------------Assert Results-------------------------
+            Assert.AreEqual(result.Message, "bob");
+            Assert.AreEqual(result.Status, ExecStatus.DuplicateMatch);
+            catalogue.Verify(a => a.DeleteResource(It.IsAny<Guid>(), guid, "DbSource", true));
+            testCatalogue.Verify(catalog => catalog.DeleteAllTests(It.IsAny<Guid>()), Times.Once);
+        }
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("ServerExplorerRepository_DeleteItem")]
