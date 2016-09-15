@@ -2738,6 +2738,9 @@ If this option is not selected, the test will not run part of the Run All list o
   <data name="ServiceTestDisabledDuplicateSelectedTestTooltip" xml:space="preserve">
     <value>You do not have permissions to duplicate a test</value>
   </data>
+  <data name="ServiceTestNewTestDisabledDuplicateSelectedTestTooltip" xml:space="preserve">
+    <value>You have to save a new test before duplicate</value>
+  </data>
   <data name="ServiceTestRunSelectedTestTooltip" xml:space="preserve">
     <value>Run this test</value>
   </data>

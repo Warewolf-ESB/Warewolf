@@ -6,6 +6,7 @@ using System.Windows;
 using Caliburn.Micro;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
+using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Hosting;
 using Dev2.Common.Interfaces.Infrastructure;
 using Dev2.Communication;
@@ -1020,7 +1021,7 @@ namespace Dev2.Activities.Specs.TestFramework
         {
             ServiceTestViewModel serviceTest = GetTestFrameworkFromContext();
             Assert.IsTrue(serviceTest.SelectedServiceTest.TestName == dupTestName);
-            var count = serviceTest.Tests.Count(model => model.TestName == dupTestName);
+            var count = serviceTest.Tests.Count(model => dupTestName.Contains(model.TestName));
             Assert.AreEqual(2, count);
         }
         [Then(@"Duplicate Test in not Visible")]
@@ -1029,6 +1030,21 @@ namespace Dev2.Activities.Specs.TestFramework
             ServiceTestViewModel serviceTest = GetTestFrameworkFromContext();
             var canExecute = serviceTest.DuplicateTestCommand.CanExecute(null);
             Assert.IsFalse(canExecute);
+        }
+
+        [Then(@"Duplicate Test is ""(.*)""")]
+        public void ThenDuplicateTestIs(string visibilityStatus)
+        {
+            ServiceTestViewModel serviceTest = GetTestFrameworkFromContext();
+            var canExecute = serviceTest.DuplicateTestCommand.CanExecute(null);
+            if (visibilityStatus == "Enabled")
+            {
+                Assert.IsTrue(canExecute);
+            }
+            else
+            {
+                Assert.IsFalse(canExecute);
+            }
         }
 
         [Then(@"Duplicate Test in Visible")]
@@ -1151,7 +1167,55 @@ namespace Dev2.Activities.Specs.TestFramework
         }
 
 
+        [Then(@"service debug inputs as")]
+        public void ThenServiceDebugInputsAs(Table table)
+        {
+            ServiceTestViewModel serviceTest = GetTestFrameworkFromContext();
+            var test = serviceTest.SelectedServiceTest;
+            Assert.IsNotNull(test);
+            Assert.IsNotNull(test.DebugForTest);
+            var debugStates = test.DebugForTest;
+            var serviceStartDebug = debugStates[0];
+            foreach(var tableRow in table.Rows)
+            {
+                var variableName = tableRow["Variable"];
+                var variableValue = tableRow["Value"];
+                IDebugItemResult debugItemResult = null;
+                var debugItem = serviceStartDebug.Inputs.FirstOrDefault(item =>
+                {
+                    debugItemResult = item.ResultsList.FirstOrDefault(result => result.Variable.Equals(variableName, StringComparison.InvariantCultureIgnoreCase));
+                    return debugItemResult != null;
+                });
+                Assert.IsNotNull(debugItem);
+                Assert.IsNotNull(debugItemResult);
+                Assert.AreEqual(variableValue,debugItemResult.Value);
+            }
+        }
 
+        [Then(@"the service debug outputs as")]
+        public void ThenTheServiceDebugOutputsAs(Table table)
+        {
+            ServiceTestViewModel serviceTest = GetTestFrameworkFromContext();
+            var test = serviceTest.SelectedServiceTest;
+            Assert.IsNotNull(test);
+            Assert.IsNotNull(test.DebugForTest);
+            var debugStates = test.DebugForTest;
+            var serviceEndDebug = debugStates[debugStates.Count-1];
+            foreach (var tableRow in table.Rows)
+            {
+                var variableName = tableRow["Variable"];
+                var variableValue = tableRow["Value"];
+                IDebugItemResult debugItemResult = null;
+                var debugItem = serviceEndDebug.Outputs.FirstOrDefault(item =>
+                {
+                    debugItemResult = item.ResultsList.FirstOrDefault(result => result.Variable.Equals(variableName, StringComparison.InvariantCultureIgnoreCase));
+                    return debugItemResult != null;
+                });
+                Assert.IsNotNull(debugItem);
+                Assert.IsNotNull(debugItemResult);
+                Assert.AreEqual(variableValue, debugItemResult.Value);
+            }
+        }
 
 
 
