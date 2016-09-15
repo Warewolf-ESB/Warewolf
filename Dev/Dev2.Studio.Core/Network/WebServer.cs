@@ -72,6 +72,7 @@ namespace Dev2.Studio.Core.Network
             }
             var controller = new CommunicationController { ServiceName = string.IsNullOrEmpty(resourceModel.Category) ? resourceModel.ResourceName : resourceModel.Category };
             controller.AddPayloadArgument("ResourceID", resourceModel.ID.ToString());
+            controller.AddPayloadArgument("IsDebug", true.ToString());
             controller.ServicePayload.TestName = testName;
             var res = controller.ExecuteCommand<TestRunResult>(clientContext, clientContext.WorkspaceID);
             return res;

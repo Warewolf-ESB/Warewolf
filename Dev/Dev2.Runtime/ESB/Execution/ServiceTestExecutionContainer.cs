@@ -17,6 +17,7 @@ using Dev2.Runtime.ESB.WF;
 using Dev2.Runtime.Execution;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Security;
+using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Workspaces;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -80,29 +81,77 @@ namespace Dev2.Runtime.ESB.Execution
             {
                 DataObject.ExecutionOrigin = ExecutionOrigin.External;
             }
-            var userPrinciple = Thread.CurrentPrincipal;
+           
+            
             ErrorResultTO to = errors;
-            Common.Utilities.PerformActionInsideImpersonatedContext(userPrinciple, () => { result = ExecuteWf(to); });
-            foreach (var err in DataObject.Environment.Errors)
+            var serviceTestModelTO = TestCatalog.Instance.FetchTest(DataObject.ResourceID, DataObject.TestName);
+            if (serviceTestModelTO.Enabled)
             {
-                errors.AddError(err, true);
-            }
-            foreach (var err in DataObject.Environment.AllErrors)
-            {
-                errors.AddError(err, true);
-            }
+                if (serviceTestModelTO.AuthenticationType == AuthenticationType.User)
+                {
+                    Impersonator impersonator = new Impersonator();
+                    var userName = serviceTestModelTO.UserName;
+                    var domain = "";
+                    if (userName.Contains("\\"))
+                    {
+                        var slashIndex = userName.IndexOf("\\", StringComparison.InvariantCultureIgnoreCase);
+                        domain = userName.Substring(0, slashIndex);
+                        userName = userName.Substring(slashIndex + 1);
+                    }
+                    else if (userName.Contains("@"))
+                    {
+                        var atIndex = userName.IndexOf("@", StringComparison.InvariantCultureIgnoreCase);
+                        userName = userName.Substring(0, atIndex);
+                        domain = userName.Substring(atIndex + 1);
+                    }
+                    impersonator.Impersonate(userName, domain, serviceTestModelTO.Password);
+                }
+                else if (serviceTestModelTO.AuthenticationType == AuthenticationType.Public)
+                {
+                    Thread.CurrentPrincipal = GlobalConstants.GenericPrincipal;
+                }
+                var userPrinciple = Thread.CurrentPrincipal;
+                Common.Utilities.PerformActionInsideImpersonatedContext(userPrinciple, () =>
+                {
+                    result = ExecuteWf(to, serviceTestModelTO);
+                });
+                foreach (var err in DataObject.Environment.Errors)
+                {
+                    errors.AddError(err, true);
+                }
+                foreach (var err in DataObject.Environment.AllErrors)
+                {
+                    errors.AddError(err, true);
+                }
 
-            Dev2Logger.Info($"Completed Execution for Service Name:{DataObject.ServiceName} Resource Id: {DataObject.ResourceID} Mode:{(DataObject.IsDebug ? "Debug" : "Execute")}");
+                Dev2Logger.Info($"Completed Execution for Service Name:{DataObject.ServiceName} Resource Id: {DataObject.ResourceID} Mode:{(DataObject.IsDebug ? "Debug" : "Execute")}");
+            }
             return result;
         }
 
-        Guid ExecuteWf(ErrorResultTO to)
+        Guid ExecuteWf(ErrorResultTO to, IServiceTestModelTO test)
         {
             Guid result = new Guid();
             var wfappUtils = new WfApplicationUtils();
             ErrorResultTO invokeErrors;
             var resourceID = DataObject.ResourceID;
-            var test = TestCatalog.Instance.FetchTest(resourceID, DataObject.TestName);
+            if (test?.Inputs != null)
+            {
+                foreach (var input in test.Inputs)
+                {
+                    var variable = DataListUtil.AddBracketsToValueIfNotExist(input.Variable);
+                    var value = input.Value;
+                    if (variable.StartsWith("[[@"))
+                    {
+                        var jContainer = JsonConvert.DeserializeObject(value) as JObject;
+                        DataObject.Environment.AddToJsonObjects(variable, jContainer);
+                    }
+                    else
+                    {
+                        DataObject.Environment.Assign(variable, value, 0);
+                    }
+                }
+            }
             try
             {
                 IExecutionToken exeToken = new ExecutionToken { IsUserCanceled = false };
@@ -113,8 +162,8 @@ namespace Dev2.Runtime.ESB.Execution
                     wfappUtils.DispatchDebugState(DataObject, StateType.Start, DataObject.Environment.HasErrors(), DataObject.Environment.FetchErrors(), out invokeErrors, DateTime.Now, true, false, false);
                 }
                 Dev2JsonSerializer serializer = new Dev2JsonSerializer();
-                var testRunResult = Eval(resourceID, DataObject,test);
-                
+                var testRunResult = Eval(resourceID, DataObject, test);
+
                 if (DataObject.IsDebugMode())
                 {
                     wfappUtils.DispatchDebugState(DataObject, StateType.End, DataObject.Environment.HasErrors(), DataObject.Environment.FetchErrors(), out invokeErrors, DataObject.StartTime, false, true);
@@ -158,24 +207,7 @@ namespace Dev2.Runtime.ESB.Execution
             Dev2Logger.Debug("Got Resource to Execute");
             
             if (test != null)
-            {
-                if (test.Inputs != null)
-                {
-                    foreach (var input in test.Inputs)
-                    {
-                        var variable = DataListUtil.AddBracketsToValueIfNotExist(input.Variable);
-                        var value = input.Value;
-                        if (variable.StartsWith("[[@"))
-                        {
-                            var jContainer = JsonConvert.DeserializeObject(value) as JObject;
-                            dataObject.Environment.AddToJsonObjects(variable, jContainer);
-                        }
-                        else
-                        {
-                            dataObject.Environment.Assign(variable, value, 0);
-                        }
-                    }
-                }
+            {               
                 EvalInner(dataObject, clonedExecPlan, dataObject.ForEachUpdateValue);
                 var testPassed = true;
                 var failureMessage =new StringBuilder();

@@ -37,7 +37,7 @@ namespace Warewolf.Studio.ViewModels
         public IPopupController PopupController { get; }
         private bool _canSave;
         private string _errorMessage;
-        private IShellViewModel _shellViewModel;
+        private readonly IShellViewModel _shellViewModel;
 
         public ServiceTestViewModel(IContextualResourceModel resourceModel, IAsyncWorker asyncWorker, IEventAggregator eventPublisher)
         {
@@ -49,10 +49,7 @@ namespace Warewolf.Studio.ViewModels
             ResourceModel.Environment.IsConnectedChanged += (sender, args) =>
             {
                 ViewModelUtils.RaiseCanExecuteChanged(DeleteTestCommand);
-                ViewModelUtils.RaiseCanExecuteChanged(RunAllTestsCommand);
-                ViewModelUtils.RaiseCanExecuteChanged(RunAllTestsInBrowserCommand);
-                ViewModelUtils.RaiseCanExecuteChanged(RunSelectedTestCommand);
-                ViewModelUtils.RaiseCanExecuteChanged(RunSelectedTestInBrowserCommand);
+                RefreshCommands();
             };
             DisplayName = resourceModel.DisplayName + " - Tests";
             ServiceTestCommandHandler = new ServiceTestCommandHandlerModel();
@@ -88,6 +85,7 @@ namespace Warewolf.Studio.ViewModels
         private void StopTest()
         {
             SelectedServiceTest.IsTestRunning = false;
+            SelectedServiceTest.TestPending = true;
             ServiceTestCommandHandler.StopTest();
         }
 
@@ -102,6 +100,7 @@ namespace Warewolf.Studio.ViewModels
         {
             SelectedServiceTest.IsTestRunning = true;
             ServiceTestCommandHandler.RunSelectedTest(SelectedServiceTest, ResourceModel, AsyncWorker);
+            ViewModelUtils.RaiseCanExecuteChanged(StopTestCommand);
         }
 
         private void RunAllTestsInBrowser()
@@ -116,7 +115,8 @@ namespace Warewolf.Studio.ViewModels
 
         private void DuplicateTest()
         {
-            var duplicateTest = ServiceTestCommandHandler.DuplicateTest(SelectedServiceTest);
+            var testNumber = GetNewTestNumber(SelectedServiceTest.TestName);
+            var duplicateTest = ServiceTestCommandHandler.DuplicateTest(SelectedServiceTest, testNumber);
             AddAndSelectTest(duplicateTest);
         }
 
@@ -141,9 +141,44 @@ namespace Warewolf.Studio.ViewModels
                 return;
             }
 
-            var testNumber = RealTests().Count() + 1;
+            var testNumber = GetNewTestNumber("Test");
             var testModel = ServiceTestCommandHandler.CreateTest(ResourceModel, testNumber);
             AddAndSelectTest(testModel);
+        }
+
+        private int GetNewTestNumber(string testName)
+        {
+            int counter = 1;
+            string fullName = testName + " " + counter;
+
+            while (Contains(fullName))
+            {
+                counter++;
+                fullName = testName + " " + counter;
+            }
+
+            return counter;
+        }
+
+        private bool Contains(string nameToCheck)
+        {
+            var serviceTestModel = RealTests().FirstOrDefault(a => a.TestName.Contains(nameToCheck));
+            return serviceTestModel != null;
+        }
+
+        private void SetDuplicateTestTooltip()
+        {
+            if (SelectedServiceTest != null)
+            {
+                if (SelectedServiceTest.NewTest)
+                {
+                    SelectedServiceTest.DuplicateTestTooltip = Resources.Languages.Core.ServiceTestNewTestDisabledDuplicateSelectedTestTooltip;
+                }
+                else
+                {
+                    SelectedServiceTest.DuplicateTestTooltip = CanDuplicateTest ? Resources.Languages.Core.ServiceTestDuplicateSelectedTestTooltip : Resources.Languages.Core.ServiceTestDisabledDuplicateSelectedTestTooltip;
+                }
+            }
         }
 
         private void AddAndSelectTest(IServiceTestModel testModel)
@@ -159,13 +194,14 @@ namespace Warewolf.Studio.ViewModels
             }
             SelectedServiceTest = testModel;
             SetSelectedTestUrl();
+            SetDuplicateTestTooltip();
         }
 
         // ReSharper disable once UnusedAutoPropertyAccessor.Local
-        private bool CanStopTest { get; set; }
+        private bool CanStopTest => SelectedServiceTest != null && SelectedServiceTest.IsTestRunning;
         private bool CanRunSelectedTestInBrowser => SelectedServiceTest != null && !SelectedServiceTest.IsDirty && IsServerConnected();
         private bool CanRunSelectedTest => GetPermissions() && IsServerConnected();
-        private bool CanDuplicateTest => GetPermissions() && SelectedServiceTest != null;
+        private bool CanDuplicateTest => GetPermissions() && SelectedServiceTest != null && !SelectedServiceTest.NewTest;
 
         public bool CanSave
         {
@@ -320,10 +356,23 @@ namespace Warewolf.Studio.ViewModels
         {
             if (HasDuplicates())
             {
-                PopupController?.Show(Resources.Languages.Core.ServiceTestDuplicateTestNameMessage, Resources.Languages.Core.ServiceTestDuplicateTestNameHeader, MessageBoxButton.OK, MessageBoxImage.Error, null, false, true, false, false);
+                ShowDuplicatePopup();
                 return true;
             }
             return false;
+        }
+
+        public void ShowDuplicatePopup()
+        {
+            PopupController?.Show(Resources.Languages.Core.ServiceTestDuplicateTestNameMessage, Resources.Languages.Core.ServiceTestDuplicateTestNameHeader, MessageBoxButton.OK, MessageBoxImage.Error, null, false, true, false, false);
+        }
+
+        public void RefreshCommands()
+        {
+            ViewModelUtils.RaiseCanExecuteChanged(RunAllTestsCommand);
+            ViewModelUtils.RaiseCanExecuteChanged(RunAllTestsInBrowserCommand);
+            ViewModelUtils.RaiseCanExecuteChanged(RunSelectedTestCommand);
+            ViewModelUtils.RaiseCanExecuteChanged(RunSelectedTestInBrowserCommand);
         }
 
         public bool HasDuplicates() => RealTests().ToList().GroupBy(x => x.TestName).Where(group => @group.Count() > 1).Select(group => @group.Key).Any();
@@ -359,7 +408,10 @@ namespace Warewolf.Studio.ViewModels
                 if (value == null)
                 {
                     if (_selectedServiceTest != null)
+                    {
                         _selectedServiceTest.PropertyChanged -= ActionsForPropChanges;
+                    }
+                    
                     _selectedServiceTest = null;
                     OnPropertyChanged(() => SelectedServiceTest);
                     return;
@@ -375,10 +427,13 @@ namespace Warewolf.Studio.ViewModels
                 _selectedServiceTest = value;
                 _selectedServiceTest.PropertyChanged += ActionsForPropChanges;
                 SetSelectedTestUrl();
+                SetDuplicateTestTooltip();
                 OnPropertyChanged(() => SelectedServiceTest);
-                EventPublisher.Publish(new DebugOutputMessage(_selectedServiceTest.DebugForTest?? new List<IDebugState>()));
+                EventPublisher.Publish(new DebugOutputMessage(_selectedServiceTest.DebugForTest ?? new List<IDebugState>()));
             }
         }
+
+      
 
         private void ActionsForPropChanges(object sender, PropertyChangedEventArgs e)
         {
@@ -408,6 +463,10 @@ namespace Warewolf.Studio.ViewModels
             if (e.PropertyName == "RunSelectedTestUrl")
             {
                 ViewModelUtils.RaiseCanExecuteChanged(RunSelectedTestInBrowserCommand);
+            }
+            if (e.PropertyName == "DebugForTest")
+            {
+                EventPublisher.Publish(new DebugOutputMessage(SelectedServiceTest.DebugForTest ?? new List<IDebugState>()));
             }
             ViewModelUtils.RaiseCanExecuteChanged(DuplicateTestCommand);
         }
@@ -516,8 +575,6 @@ namespace Warewolf.Studio.ViewModels
             return serviceTestModel;
         }
 
-
-
         public ICommand DeleteTestCommand { get; set; }
         public ICommand DuplicateTestCommand { get; set; }
         public ICommand RunAllTestsInBrowserCommand { get; set; }
@@ -531,7 +588,6 @@ namespace Warewolf.Studio.ViewModels
         {
             get
             {
-               
                 return _displayName;
             }
             set
@@ -540,8 +596,6 @@ namespace Warewolf.Studio.ViewModels
                 OnPropertyChanged(() => DisplayName);
             }
         }
-
-
 
         public void Dispose()
         {
