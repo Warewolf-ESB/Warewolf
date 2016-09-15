@@ -86,7 +86,7 @@ namespace Warewolf.Studio.ViewModels
         {
             SelectedServiceTest.IsTestRunning = false;
             SelectedServiceTest.TestPending = true;
-            ServiceTestCommandHandler.StopTest();
+            ServiceTestCommandHandler.StopTest(ResourceModel);
         }
 
         #region CommandMethods

@@ -59,8 +59,9 @@ namespace Warewolf.Studio.ViewModels
         }
 
 
-        public void StopTest()
+        public void StopTest(IContextualResourceModel resourceModel)
         {
+            resourceModel.Environment.ResourceRepository.StopExecution(resourceModel);
         }
 
         public void RunAllTestsInBrowser(bool isDirty)
