@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Windows;
+using Caliburn.Micro;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Hosting;
@@ -308,6 +309,16 @@ namespace Dev2.Activities.Specs.TestFramework
             }
         }
 
+        [Given(@"there are no tests")]
+        [When(@"there are no tests")]
+        [Then(@"there are no tests")]
+        public void GivenThereAreNoTests()
+        {
+            var currentTests = GetTestForCurrentTestFramework();
+            Assert.IsFalse(currentTests.Any());
+        }
+
+
         [Given(@"the test builder is open with ""(.*)""")]
         [When(@"the test builder is open with ""(.*)""")]
         [Then(@"the test builder is open with ""(.*)""")]
@@ -316,7 +327,7 @@ namespace Dev2.Activities.Specs.TestFramework
             ResourceModel resourceModel;
             if (ScenarioContext.TryGetValue(workflowName, out resourceModel))
             {
-                var testFramework = new ServiceTestViewModel(resourceModel, new SynchronousAsyncWorker());
+                var testFramework = new ServiceTestViewModel(resourceModel, new SynchronousAsyncWorker(),new Mock<IEventAggregator>().Object);
                 Assert.IsNotNull(testFramework);
                 Assert.IsNotNull(testFramework.ResourceModel);
                 ScenarioContext.Add("testFramework", testFramework);
@@ -1096,7 +1107,7 @@ namespace Dev2.Activities.Specs.TestFramework
             env.ForceLoadResources();
             var res = env.ResourceRepository.FindSingle(model => model.ResourceName.Equals(workflowName, StringComparison.InvariantCultureIgnoreCase), true);
             var contextualResource = env.ResourceRepository.LoadContextualResourceModel(res.ID);
-            var serviceTestVm = new ServiceTestViewModel(contextualResource, new SynchronousAsyncWorker());
+            var serviceTestVm = new ServiceTestViewModel(contextualResource, new SynchronousAsyncWorker(),new Mock<IEventAggregator>().Object);
             Assert.IsNotNull(serviceTestVm);
             Assert.IsNotNull(serviceTestVm.ResourceModel);
             ScenarioContext.Add("testFramework", serviceTestVm);
