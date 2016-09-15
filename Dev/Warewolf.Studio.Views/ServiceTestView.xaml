@@ -370,9 +370,7 @@
                                                         <TextBlock KeyboardNavigation.IsTabStop="False" 
                                                                Focusable="True" 
                                                                ToolTip="{Binding Path=Variable}" 
-                                                               Text="{Binding Path=Variable, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
-                                                                   
-                                                                   />
+                                                               Text="{Binding Path=Variable, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
                                                     </Grid>
                                                 </DataTemplate>
                                             </ig:TemplateColumn.ItemTemplate>
