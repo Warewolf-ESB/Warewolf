@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Windows;
 using Dev2;
@@ -219,8 +218,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             var serviceTestModel = new ServiceTestModel(resourceId)
             {
                 TestName = "Test 1",
-                Inputs = new List<IServiceTestInput>(),
-                Outputs = new List<IServiceTestOutput>(),
+                Inputs = new ObservableCollection<IServiceTestInput >(),
+                Outputs = new ObservableCollection<IServiceTestOutput>(),
                 UserName = "userName",
                 Password = "Pppp",
                 TestPending = true,

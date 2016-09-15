@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Windows;
 using Dev2.Common.Interfaces;
 using Dev2.Data;
@@ -110,7 +111,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //------------Assert Results-------------------------
             Assert.AreEqual("Never run", testModel.NeverRunString);
         }
-       
+
 
         [TestMethod]
         [Owner("Pieter Terblanche")]
@@ -394,7 +395,7 @@ namespace Warewolf.Studio.ViewModels.Tests
                 }
             };
             //------------Execute Test---------------------------
-            testModel.Inputs = new List<IServiceTestInput>();
+            testModel.Inputs = new ObservableCollection<IServiceTestInput>();
             //------------Assert Results-------------------------
             Assert.AreEqual(0, testModel.Inputs.Count);
             Assert.IsTrue(_wasCalled);
@@ -416,7 +417,7 @@ namespace Warewolf.Studio.ViewModels.Tests
                 }
             };
             //------------Execute Test---------------------------
-            testModel.Outputs = new List<IServiceTestOutput>();
+            testModel.Outputs = new ObservableCollection<IServiceTestOutput>();
             //------------Assert Results-------------------------
             Assert.AreEqual(0, testModel.Outputs.Count);
             Assert.IsTrue(_wasCalled);
@@ -609,8 +610,8 @@ namespace Warewolf.Studio.ViewModels.Tests
         {
             //------------Setup for test--------------------------
             var serviceTestModel = new ServiceTestModel(Guid.NewGuid());
-            var serviceTestInput = new ServiceTestInput("rec(1).a","val");
-            serviceTestModel.Inputs = new List<IServiceTestInput>
+            var serviceTestInput = new ServiceTestInput("rec(1).a", "val");
+            serviceTestModel.Inputs = new ObservableCollection<IServiceTestInput>
             {
                 serviceTestInput
             };
@@ -621,7 +622,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             recordSet.IODirection = enDev2ColumnArgumentDirection.Input;
             recordSet.Name = "rec";
             var recordSetColumns = new Dictionary<int, List<IScalar>>();
-            recordSetColumns.Add(1,new List<IScalar>
+            recordSetColumns.Add(1, new List<IScalar>
             {
                 new Scalar
                 {
@@ -632,11 +633,11 @@ namespace Warewolf.Studio.ViewModels.Tests
             recordSet.Columns = recordSetColumns;
             shapeRecordSets.Add(recordSet);
             dataListModel.ShapeRecordSets = shapeRecordSets;
-            serviceTestModel.AddRow(serviceTestInput,dataListModel);
+            serviceTestModel.AddRow(serviceTestInput, dataListModel);
             //------------Assert Results-------------------------
-            Assert.AreEqual(2,serviceTestModel.Inputs.Count);
-            Assert.AreEqual("rec(2).a",serviceTestModel.Inputs[1].Variable );
-            Assert.AreEqual("",serviceTestModel.Inputs[1].Value );
+            Assert.AreEqual(2, serviceTestModel.Inputs.Count);
+            Assert.AreEqual("rec(2).a", serviceTestModel.Inputs[1].Variable);
+            Assert.AreEqual("", serviceTestModel.Inputs[1].Value);
         }
     }
 }

@@ -1,5 +1,5 @@
 using System;
-using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows;
@@ -50,8 +50,8 @@ namespace Warewolf.Studio.ViewModels
         public string UserName { get; set; }
         public string Password { get; set; }
         public DateTime LastRunDate { get; set; }
-        public List<IServiceTestInput> Inputs { get; set; }
-        public List<IServiceTestOutput> Outputs { get; set; }
+        public ObservableCollection<IServiceTestInput> Inputs { get; set; }
+        public ObservableCollection<IServiceTestOutput> Outputs { get; set; }
         public bool NoErrorExpected { get; set; }
         public bool ErrorExpected { get; set; }
         public bool IsNewTest

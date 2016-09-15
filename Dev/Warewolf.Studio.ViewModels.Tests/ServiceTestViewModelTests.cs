@@ -97,7 +97,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //---------------Test Result -----------------------
             Assert.IsFalse(vm.DuplicateTestCommand.CanExecute(null));
         }
-
+        
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
@@ -181,6 +181,20 @@ namespace Warewolf.Studio.ViewModels.Tests
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
+        public void OnCreation_GivenIsNewNotConnected_ShouldSetRunAllTestsCommandExecuteFalse()
+        {
+            //---------------Set up test pack-------------------
+            var vm = new ServiceTestViewModel(CreateResourceModel(false), new SynchronousAsyncWorker());
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(vm);
+            //---------------Execute Test ----------------------
+            Assert.IsNotNull(vm.RunAllTestsCommand);
+            //---------------Test Result -----------------------
+            Assert.IsFalse(vm.RunAllTestsCommand.CanExecute(null));
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
         public void OnCreation_GivenIsNew_ShouldHaveRunSelectedTestCommand()
         {
             //---------------Set up test pack-------------------
@@ -193,20 +207,34 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(vm.RunSelectedTestCommand.CanExecute(null));
         }
 
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void OnCreation_GivenIsNewNotConnected_ShouldSetRunSelectedTestCommandCanExecuteFalse()
+        {
+            //---------------Set up test pack-------------------
+            var vm = new ServiceTestViewModel(CreateResourceModel(false), new SynchronousAsyncWorker());
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(vm);
+            //---------------Execute Test ----------------------
+            Assert.IsNotNull(vm.RunSelectedTestCommand);
+            //---------------Test Result -----------------------
+            Assert.IsFalse(vm.RunSelectedTestCommand.CanExecute(null));
+        }
+
 
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void OnCreation_GivenIsNew_ShouldHaveRunAllTestsInBrowserCommand()
+        public void OnCreation_GivenIsNewNotConnected_ShouldSetRunAllTestsInBrowserCommandCanExecuteFalse()
         {
             //---------------Set up test pack-------------------
-            var vm = new ServiceTestViewModel(CreateResourceModel(), new SynchronousAsyncWorker());
+            var vm = new ServiceTestViewModel(CreateResourceModel(false), new SynchronousAsyncWorker());
             //---------------Assert Precondition----------------
             Assert.IsNotNull(vm);
             //---------------Execute Test ----------------------
             Assert.IsNotNull(vm.RunAllTestsInBrowserCommand);
             //---------------Test Result -----------------------
-            Assert.IsTrue(vm.RunAllTestsInBrowserCommand.CanExecute(null));
+            Assert.IsFalse(vm.RunAllTestsInBrowserCommand.CanExecute(null));
         }
 
         [TestMethod]

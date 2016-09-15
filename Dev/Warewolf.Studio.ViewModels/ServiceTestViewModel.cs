@@ -97,7 +97,7 @@ namespace Warewolf.Studio.ViewModels
         private void RunSelectedTest()
         {
             SelectedServiceTest.IsTestRunning = true;
-            ServiceTestCommandHandler.RunSelectedTest(SelectedServiceTest,ResourceModel,AsyncWorker);
+            ServiceTestCommandHandler.RunSelectedTest(SelectedServiceTest, ResourceModel, AsyncWorker);
         }
 
         private void RunAllTestsInBrowser()
@@ -161,7 +161,7 @@ namespace Warewolf.Studio.ViewModels
         // ReSharper disable once UnusedAutoPropertyAccessor.Local
         private bool CanStopTest { get; set; }
         private bool CanRunSelectedTestInBrowser => SelectedServiceTest != null && !SelectedServiceTest.IsDirty && IsServerConnected();
-        private bool CanRunSelectedTest => GetPermissions() &&  IsServerConnected();
+        private bool CanRunSelectedTest => GetPermissions() && IsServerConnected();
         private bool CanDuplicateTest => GetPermissions() && SelectedServiceTest != null;
 
         public bool CanSave
@@ -271,10 +271,10 @@ namespace Warewolf.Studio.ViewModels
                     Enabled = model.Enabled,
                     ErrorExpected = model.ErrorExpected,
                     NoErrorExpected = model.NoErrorExpected,
-                    Inputs = model.Inputs,
+                    Inputs = model.Inputs.ToList(),
                     LastRunDate = model.LastRunDate,
                     OldTestName = model.OldTestName,
-                    Outputs = model.Outputs,
+                    Outputs = model.Outputs.ToList(),
                     Password = model.Password,
                     IsDirty = model.IsDirty,
                     TestPending = model.TestPending,
@@ -365,7 +365,9 @@ namespace Warewolf.Studio.ViewModels
                     return;
                 }
                 if (_selectedServiceTest != null)
+                {
                     _selectedServiceTest.PropertyChanged -= ActionsForPropChanges;
+                }
                 _selectedServiceTest = value;
                 _selectedServiceTest.PropertyChanged += ActionsForPropChanges;
                 SetSelectedTestUrl();
@@ -488,8 +490,8 @@ namespace Warewolf.Studio.ViewModels
                 Password = to.Password,
                 ParentId = to.ResourceId,
                 TestInvalid = to.TestInvalid,
-                Inputs = to.Inputs?.Select(input => new ServiceTestInput(input.Variable, input.Value) as IServiceTestInput).ToList(),
-                Outputs = to.Outputs?.Select(output => new ServiceTestOutput(output.Variable, output.Value) as IServiceTestOutput).ToList()
+                Inputs = to.Inputs?.Select(input => new ServiceTestInput(input.Variable, input.Value) as IServiceTestInput).ToObservableCollection(),
+                Outputs = to.Outputs?.Select(output => new ServiceTestOutput(output.Variable, output.Value) as IServiceTestOutput).ToObservableCollection()
             };
             return serviceTestModel;
         }
