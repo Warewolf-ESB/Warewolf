@@ -1,3 +1,4 @@
+using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
@@ -58,8 +59,9 @@ namespace Warewolf.Studio.ViewModels
         }
 
 
-        public void StopTest()
+        public void StopTest(IContextualResourceModel resourceModel)
         {
+            resourceModel.Environment.ResourceRepository.StopExecution(resourceModel);
         }
 
         public void RunAllTestsInBrowser(bool isDirty)
@@ -72,14 +74,17 @@ namespace Warewolf.Studio.ViewModels
             //Run all tests
         }
 
-        public void RunAllTestsCommand(bool isDirty)
+        public void RunAllTestsCommand(bool isDirty,ObservableCollection<IServiceTestModel> tests, IContextualResourceModel resourceModel, IAsyncWorker asyncWorker)
         {
             if (isDirty)
             {
                 ShowRunAllUnsavedError();
-                //return;
+                return;
             }
-            //Run all tests
+            foreach(var serviceTestModel in tests)
+            {
+                RunSelectedTest(serviceTestModel,resourceModel,asyncWorker);
+            }
         }
 
         private static void ShowRunAllUnsavedError()
@@ -120,6 +125,11 @@ namespace Warewolf.Studio.ViewModels
 
         public void RunSelectedTest(IServiceTestModel selectedServiceTest, IContextualResourceModel resourceModel, IAsyncWorker asyncWorker)
         {
+            if (selectedServiceTest.IsNewTest)
+            {
+                return;
+            }
+            selectedServiceTest.IsTestRunning = true;
             asyncWorker.Start(() => WebServer.ExecuteTest(resourceModel, selectedServiceTest.TestName), res =>
             {
                 if (res.Result == RunResult.TestFailed)
@@ -132,7 +142,12 @@ namespace Warewolf.Studio.ViewModels
                     selectedServiceTest.TestFailing = false;
                     selectedServiceTest.TestPassed = true;
                 }
-                selectedServiceTest.DebugForTest = res.DebugForTest;
+                if (selectedServiceTest.Enabled)
+                {
+                    selectedServiceTest.DebugForTest = res.DebugForTest;
+                }
+                selectedServiceTest.IsTestRunning = false;
+                selectedServiceTest.LastRunDate = DateTime.Now;
             });
         }
     }

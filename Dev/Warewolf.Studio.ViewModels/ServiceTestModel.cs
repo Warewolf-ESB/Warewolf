@@ -349,7 +349,9 @@ namespace Warewolf.Studio.ViewModels
         {
             get
             {
-                var isDirty = (Item != null && !Equals(Item)) || NewTest;
+                var equals = !Equals(Item);
+                var isDirty = (Item != null && equals) || NewTest;
+
                 if (isDirty)
                 {
                     NameForDisplay = TestName + " *";
@@ -459,7 +461,8 @@ namespace Warewolf.Studio.ViewModels
             if (GetHashCode() == other.GetHashCode())
                 return true;
 
-            return EqualsSeq(other) && InputCompare(other, true) && OutputCompare(other, true);
+            var @equals = EqualsSeq(other) && InputCompare(other, true) && OutputCompare(other, true);
+            return @equals;
         }
 
         private bool InputCompare(ServiceTestModel other, bool inputCompare)
@@ -470,17 +473,17 @@ namespace Warewolf.Studio.ViewModels
             }
             for (int i = 0; i < _inputs.Count; i++)
             {
-                if (_inputs[i].Value != other._inputs[i].Value)
+                if (_inputs[i].Value != other.Inputs[i].Value)
                 {
                     inputCompare = false;
                 }
                 if (!inputCompare) continue;
-                if (_inputs[i].Variable != other._inputs[i].Variable)
+                if (_inputs[i].Variable != other.Inputs[i].Variable)
                 {
                     inputCompare = false;
                 }
                 if (!inputCompare) continue;
-                if (_inputs[i].EmptyIsNull != other._inputs[i].EmptyIsNull)
+                if (_inputs[i].EmptyIsNull != other.Inputs[i].EmptyIsNull)
                 {
                     inputCompare = false;
                 }
