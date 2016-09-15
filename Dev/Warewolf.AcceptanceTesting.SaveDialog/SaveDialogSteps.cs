@@ -32,14 +32,14 @@ namespace Warewolf.AcceptanceTesting.SaveDialog
             var window = new Window {Content = view};
             var app = Application.Current;
             app.MainWindow = window;
-            Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new Action(() =>
-            {
-                var viewWindow = (RequestServiceNameView)Application.Current.MainWindow.Content;
-                Assert.IsNotNull(viewWindow);
-                Assert.IsNotNull(viewWindow.DataContext);
-                Assert.IsInstanceOfType(viewWindow.DataContext, typeof(IRequestServiceNameViewModel));
-                Application.Current.Shutdown();
-            }));
+            await Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new Action(() =>
+             {
+                 var viewWindow = (RequestServiceNameView)Application.Current.MainWindow.Content;
+                 Assert.IsNotNull(viewWindow);
+                 Assert.IsNotNull(viewWindow.DataContext);
+                 Assert.IsInstanceOfType(viewWindow.DataContext, typeof(IRequestServiceNameViewModel));
+                 Application.Current.Shutdown();
+             }));
 
             Application.Current.Run(Application.Current.MainWindow);
             FeatureContext.Current.Add("view",view);
