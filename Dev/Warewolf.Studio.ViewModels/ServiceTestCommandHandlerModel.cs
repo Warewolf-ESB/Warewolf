@@ -147,6 +147,7 @@ namespace Warewolf.Studio.ViewModels
                 }
                 selectedServiceTest.IsTestRunning = false;
                 selectedServiceTest.LastRunDate = DateTime.Now;
+                selectedServiceTest.LastRunDateVisibility = true;
             });
         }
     }
