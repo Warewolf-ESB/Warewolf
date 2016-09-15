@@ -78,7 +78,10 @@
                     <ColumnDefinition Width="70*"/>
                 </Grid.ColumnDefinitions>
 
-                <ListBox Grid.Column="0" Style="{StaticResource ListBoxStyle}" BorderThickness="1,0,1,1" PreviewMouseLeftButtonDown="TestsListbox_OnPreviewMouseLeftButtonDown"
+                <ListBox Grid.Column="0" Style="{StaticResource ListBoxStyle}" 
+                         BorderThickness="1,0,1,1"
+                         PreviewMouseLeftButtonDown="TestsListbox_OnPreviewMouseLeftButtonDown"
+                         
                          ItemsSource="{Binding Tests}" SelectionMode="Single" SelectedItem="{Binding SelectedServiceTest, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" x:Name="TestsListbox">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
@@ -132,8 +135,8 @@
                                                FontSize="11" 
                                                Margin="0,-4,0,0" 
                                                Visibility="{Binding LastRunDateVisibility}"
-                                               /> 
-                                    
+                                               />
+
                                     <TextBlock Grid.Column="2" 
                                                Grid.Row="1" 
                                                Text="{Binding NeverRunString}" 
@@ -390,6 +393,7 @@
                                                                             AllowMultilinePaste="True"
                                                                             TextWrapping="Wrap"
                                                                             Focusable="True" 
+                                                                            TextChanged="TxtValue_OnTextChanged"   
                                                                             IsTabStop="True"
                                                                             AcceptsReturn="True"
                                                                             ToolTip="{x:Static languages:Core.ServiceTestInputValueTooltip}"
@@ -416,8 +420,10 @@
                                                                 d:DataContext="{d:DesignInstance Type=interfaces:IServiceTestInput}">
                                             <DataGridTemplateColumn.CellTemplate>
                                                 <DataTemplate>
-                                                    <CheckBox IsChecked="{Binding Path=EmptyIsNull}" 
+                                                    <CheckBox IsChecked="{Binding Path=EmptyIsNull, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                                               HorizontalAlignment="Center"
+                                                                  Checked="ToggleButton_OnChecked"
+                                                                  Unchecked="ToggleButton_OnChecked"
                                                               ToolTip="{x:Static languages:Core.InputEmptyIsNullToolTip}">
                                                         <i:Interaction.Behaviors>
                                                             <core:HelpSetter Text="{x:Static languages:Core.InputEmptyIsNullDefaultValueHelp}" DataContext="{Binding}" />
@@ -468,6 +474,7 @@
                                                                             Margin="1,0,1,1"
                                                                             AllowMultilinePaste="True"
                                                                             TextWrapping="Wrap"
+                                                                             TextChanged="TxtValue_OnTextChanged"
                                                                             Focusable="True" 
                                                                             IsTabStop="True"
                                                                             AcceptsReturn="True"

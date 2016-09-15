@@ -49,10 +49,7 @@ namespace Warewolf.Studio.ViewModels
             ResourceModel.Environment.IsConnectedChanged += (sender, args) =>
             {
                 ViewModelUtils.RaiseCanExecuteChanged(DeleteTestCommand);
-                ViewModelUtils.RaiseCanExecuteChanged(RunAllTestsCommand);
-                ViewModelUtils.RaiseCanExecuteChanged(RunAllTestsInBrowserCommand);
-                ViewModelUtils.RaiseCanExecuteChanged(RunSelectedTestCommand);
-                ViewModelUtils.RaiseCanExecuteChanged(RunSelectedTestInBrowserCommand);
+                RefreshCommands();
             };
             DisplayName = resourceModel.DisplayName + " - Tests";
             ServiceTestCommandHandler = new ServiceTestCommandHandlerModel();
@@ -101,7 +98,6 @@ namespace Warewolf.Studio.ViewModels
 
         private void RunSelectedTest()
         {
-            SelectedServiceTest.IsTestRunning = true;
             ServiceTestCommandHandler.RunSelectedTest(SelectedServiceTest, ResourceModel, AsyncWorker);
             ViewModelUtils.RaiseCanExecuteChanged(StopTestCommand);
         }
@@ -113,7 +109,7 @@ namespace Warewolf.Studio.ViewModels
 
         private void RunAllTests()
         {
-            ServiceTestCommandHandler.RunAllTestsCommand(IsDirty);
+            ServiceTestCommandHandler.RunAllTestsCommand(IsDirty,Tests,ResourceModel,AsyncWorker);
         }
 
         private void DuplicateTest()
@@ -131,9 +127,13 @@ namespace Warewolf.Studio.ViewModels
             return GetPermissions() && selectedTestModel != null && !selectedTestModel.Enabled && IsServerConnected();
         }
 
+        // ReSharper disable once MemberCanBePrivate.Global
+        // ReSharper disable once UnusedAutoPropertyAccessor.Global
         public bool IsLoading { get; set; }
 
+        // ReSharper disable once MemberCanBePrivate.Global
         public IAsyncWorker AsyncWorker { get; set; }
+        // ReSharper disable once MemberCanBePrivate.Global
         public IEventAggregator EventPublisher { get; set; }
 
         private void CreateTests()
@@ -203,7 +203,7 @@ namespace Warewolf.Studio.ViewModels
         // ReSharper disable once UnusedAutoPropertyAccessor.Local
         private bool CanStopTest => SelectedServiceTest != null && SelectedServiceTest.IsTestRunning;
         private bool CanRunSelectedTestInBrowser => SelectedServiceTest != null && !SelectedServiceTest.IsDirty && IsServerConnected();
-        private bool CanRunSelectedTest => GetPermissions() &&  IsServerConnected();
+        private bool CanRunSelectedTest => GetPermissions() && IsServerConnected();
         private bool CanDuplicateTest => GetPermissions() && SelectedServiceTest != null && !SelectedServiceTest.NewTest;
 
         public bool CanSave
@@ -370,6 +370,14 @@ namespace Warewolf.Studio.ViewModels
             PopupController?.Show(Resources.Languages.Core.ServiceTestDuplicateTestNameMessage, Resources.Languages.Core.ServiceTestDuplicateTestNameHeader, MessageBoxButton.OK, MessageBoxImage.Error, null, false, true, false, false);
         }
 
+        public void RefreshCommands()
+        {
+            ViewModelUtils.RaiseCanExecuteChanged(RunAllTestsCommand);
+            ViewModelUtils.RaiseCanExecuteChanged(RunAllTestsInBrowserCommand);
+            ViewModelUtils.RaiseCanExecuteChanged(RunSelectedTestCommand);
+            ViewModelUtils.RaiseCanExecuteChanged(RunSelectedTestInBrowserCommand);
+        }
+
         public bool HasDuplicates() => RealTests().ToList().GroupBy(x => x.TestName).Where(group => @group.Count() > 1).Select(group => @group.Key).Any();
 
         private void SetSelectedTestUrl()
@@ -403,8 +411,12 @@ namespace Warewolf.Studio.ViewModels
                 if (value == null)
                 {
                     if (_selectedServiceTest != null)
+                    {
                         _selectedServiceTest.PropertyChanged -= ActionsForPropChanges;
+                    }
+                    
                     _selectedServiceTest = null;
+                    EventPublisher.Publish(new DebugOutputMessage(new List<IDebugState>()));
                     OnPropertyChanged(() => SelectedServiceTest);
                     return;
                 }
@@ -421,9 +433,11 @@ namespace Warewolf.Studio.ViewModels
                 SetSelectedTestUrl();
                 SetDuplicateTestTooltip();
                 OnPropertyChanged(() => SelectedServiceTest);
-                EventPublisher.Publish(new DebugOutputMessage(_selectedServiceTest.DebugForTest?? new List<IDebugState>()));
+                EventPublisher.Publish(new DebugOutputMessage(_selectedServiceTest.DebugForTest ?? new List<IDebugState>()));
             }
         }
+
+      
 
         private void ActionsForPropChanges(object sender, PropertyChangedEventArgs e)
         {
