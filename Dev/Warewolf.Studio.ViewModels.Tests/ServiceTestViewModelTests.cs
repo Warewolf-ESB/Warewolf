@@ -98,7 +98,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //---------------Test Result -----------------------
             Assert.IsFalse(vm.DuplicateTestCommand.CanExecute(null));
         }
-
+        
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
@@ -148,7 +148,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             moqModel.SetupAllProperties();
             moqModel.Setup(model => model.DisplayName).Returns("My WF");
             moqModel.Setup(model => model.Environment.Connection.IsConnected).Returns(true);
-            moqModel.Setup(model => model.Environment.ResourceRepository.SaveTests(It.IsAny<IResourceModel>(), It.IsAny<List<IServiceTestModelTO>>())).Returns(new TestSaveResult() { Result = SaveResult.Success });
+            moqModel.Setup(model => model.Environment.ResourceRepository.SaveTests(It.IsAny<IResourceModel>(), It.IsAny<List<IServiceTestModelTO>>())).Returns(new TestSaveResult() {Result = SaveResult.Success});
             return moqModel.Object;
         }
 
@@ -521,12 +521,12 @@ namespace Warewolf.Studio.ViewModels.Tests
             vm.CreateTestCommand.Execute(null);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(vm);
-
+            
             Assert.IsTrue(vm.SelectedServiceTest != null);
             var isConnected = vm.ResourceModel.Environment.IsConnected;
             Assert.IsTrue(isConnected);
             //---------------Execute Test ----------------------
-
+         
             vm.SelectedServiceTest.Enabled = false;
             //---------------Test Result -----------------------
             var canExecute = vm.DeleteTestCommand.CanExecute(vm.SelectedServiceTest);
@@ -981,8 +981,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             testFrameworkViewModel.DuplicateTestCommand.Execute(null);
 
             //---------------Test Result -----------------------
-            Assert.AreEqual("NewTestSaved 2", testFrameworkViewModel.SelectedServiceTest.TestName);
-            Assert.AreEqual("NewTestSaved 2 *", testFrameworkViewModel.SelectedServiceTest.NameForDisplay);
+            Assert.IsTrue(!testFrameworkViewModel.SelectedServiceTest.TestName.Contains("_dup"));
         }
 
         [TestMethod]
