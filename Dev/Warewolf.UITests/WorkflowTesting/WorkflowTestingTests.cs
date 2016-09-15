@@ -7,6 +7,10 @@ namespace Warewolf.UITests
     [CodedUITest]
     public class WorkflowTestingTests
     {
+        const string DuplicateNameError = "DuplicateNameError";
+        const string UnsavedResourceError = "UnsavedResourceError";
+        const string DuplicateTestName = "Second_Dice_Test";
+
         [TestMethod]
         public void CreateAndSaveWorkFlowTest()
         {
@@ -24,14 +28,14 @@ namespace Warewolf.UITests
             Uimap.Select_Tests_From_Context_Menu();
             Uimap.Click_Create_New_Tests();
             Uimap.Update_Test_Name();
-            Uimap.Click_RunAll_Button("UNSAVED");
+            Uimap.Click_RunAll_Button(UnsavedResourceError);
             Uimap.Click_MessageBox_OK();
             Uimap.Click_Save_Ribbon_Button_With_No_Save_Dialog();
             Uimap.Click_Create_New_Tests();
             Uimap.Update_Test_Name();
-            Uimap.Click_RunAll_Button("DUPLICATENAME");
+            Uimap.Click_RunAll_Button(DuplicateNameError);
             Uimap.Click_MessageBox_OK();
-            Uimap.Update_Test_Name("Second_Dice_Test");
+            Uimap.Update_Test_Name(DuplicateTestName);
             Uimap.Click_Save_Ribbon_Button_With_No_Save_Dialog();
         }
         
@@ -58,6 +62,11 @@ namespace Warewolf.UITests
             Uimap.Update_Test_Name();
             Uimap.Click_Save_Ribbon_Button_With_No_Save_Dialog();
             Uimap.Click_Duplicate_Test_Button();
+            Uimap.Click_Save_Ribbon_Button_With_No_Save_Dialog();            
+            Uimap.Click_RunAll_Button(DuplicateNameError);
+            Uimap.Click_MessageBox_OK();            
+            Uimap.Update_Test_Name(DuplicateTestName);
+            Uimap.Click_Save_Ribbon_Button_With_No_Save_Dialog();
         }
 
         #region Additional test attributes
