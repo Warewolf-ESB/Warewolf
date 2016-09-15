@@ -37,6 +37,7 @@ namespace Dev2.Common.Interfaces
         Visibility LastRunDateVisibility { get; }
         Visibility NeverRunStringVisibility { get; }
         IList<IDebugState> DebugForTest { get; set; }
+        string DuplicateTestTooltip { get; set; }
 
         void SetItem(IServiceTestModel model);
     }

@@ -116,7 +116,8 @@ namespace Warewolf.Studio.ViewModels
 
         private void DuplicateTest()
         {
-            var duplicateTest = ServiceTestCommandHandler.DuplicateTest(SelectedServiceTest);
+            var testNumber = GetNewTestNumber(SelectedServiceTest.TestName);
+            var duplicateTest = ServiceTestCommandHandler.DuplicateTest(SelectedServiceTest, testNumber);
             AddAndSelectTest(duplicateTest);
         }
 
@@ -141,9 +142,44 @@ namespace Warewolf.Studio.ViewModels
                 return;
             }
 
-            var testNumber = RealTests().Count() + 1;
+            var testNumber = GetNewTestNumber("Test ");
             var testModel = ServiceTestCommandHandler.CreateTest(ResourceModel, testNumber);
             AddAndSelectTest(testModel);
+        }
+
+        private int GetNewTestNumber(string testName)
+        {
+            int counter = 1;
+            string fullName = testName + " " + counter;
+
+            while (Contains(fullName))
+            {
+                counter++;
+                fullName = testName + " " + counter;
+            }
+
+            return counter;
+        }
+
+        private bool Contains(string nameToCheck)
+        {
+            var serviceTestModel = RealTests().FirstOrDefault(a => a.TestName.Contains(nameToCheck));
+            return serviceTestModel != null;
+        }
+
+        private void SetDuplicateTestTooltip()
+        {
+            if (SelectedServiceTest != null)
+            {
+                if (SelectedServiceTest.NewTest)
+                {
+                    SelectedServiceTest.DuplicateTestTooltip = Resources.Languages.Core.ServiceTestNewTestDisabledDuplicateSelectedTestTooltip;
+                }
+                else
+                {
+                    SelectedServiceTest.DuplicateTestTooltip = CanDuplicateTest ? Resources.Languages.Core.ServiceTestDuplicateSelectedTestTooltip : Resources.Languages.Core.ServiceTestDisabledDuplicateSelectedTestTooltip;
+                }
+            }
         }
 
         private void AddAndSelectTest(IServiceTestModel testModel)
@@ -159,13 +195,14 @@ namespace Warewolf.Studio.ViewModels
             }
             SelectedServiceTest = testModel;
             SetSelectedTestUrl();
+            SetDuplicateTestTooltip();
         }
 
         // ReSharper disable once UnusedAutoPropertyAccessor.Local
         private bool CanStopTest { get; set; }
         private bool CanRunSelectedTestInBrowser => SelectedServiceTest != null && !SelectedServiceTest.IsDirty && IsServerConnected();
         private bool CanRunSelectedTest => GetPermissions() &&  IsServerConnected();
-        private bool CanDuplicateTest => GetPermissions() && SelectedServiceTest != null;
+        private bool CanDuplicateTest => GetPermissions() && SelectedServiceTest != null && !SelectedServiceTest.NewTest;
 
         public bool CanSave
         {
@@ -373,6 +410,7 @@ namespace Warewolf.Studio.ViewModels
                 _selectedServiceTest = value;
                 _selectedServiceTest.PropertyChanged += ActionsForPropChanges;
                 SetSelectedTestUrl();
+                SetDuplicateTestTooltip();
                 OnPropertyChanged(() => SelectedServiceTest);
                 EventPublisher.Publish(new DebugOutputMessage(_selectedServiceTest.DebugForTest?? new List<IDebugState>()));
             }
@@ -514,8 +552,6 @@ namespace Warewolf.Studio.ViewModels
             return serviceTestModel;
         }
 
-
-
         public ICommand DeleteTestCommand { get; set; }
         public ICommand DuplicateTestCommand { get; set; }
         public ICommand RunAllTestsInBrowserCommand { get; set; }
@@ -529,7 +565,6 @@ namespace Warewolf.Studio.ViewModels
         {
             get
             {
-               
                 return _displayName;
             }
             set
@@ -538,8 +573,6 @@ namespace Warewolf.Studio.ViewModels
                 OnPropertyChanged(() => DisplayName);
             }
         }
-
-
 
         public void Dispose()
         {

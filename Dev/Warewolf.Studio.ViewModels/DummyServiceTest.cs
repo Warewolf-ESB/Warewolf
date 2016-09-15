@@ -73,6 +73,8 @@ namespace Warewolf.Studio.ViewModels
         public Visibility NeverRunStringVisibility => Visibility.Collapsed;
         public IList<IDebugState> DebugForTest { get; set; }
 
+        public string DuplicateTestTooltip { get; set; }
+
         public void SetItem(IServiceTestModel model)
         {
             

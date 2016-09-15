@@ -755,12 +755,6 @@
             <Trigger Property="Button.IsPressed" Value="True">
                 <Setter Property="Control.Foreground" Value="White" />
             </Trigger>
-            <Trigger Property="IsEnabled" Value="False">
-                <Setter Property="ToolTip" Value="{x:Static languages:Core.ServiceTestDisabledDuplicateSelectedTestTooltip}" />
-            </Trigger>
-            <Trigger Property="IsEnabled" Value="True">
-                <Setter Property="ToolTip" Value="{x:Static languages:Core.ServiceTestDuplicateSelectedTestTooltip}" />
-            </Trigger>
         </Style.Triggers>
     </Style>
     <Style x:Key="ButtonOrangeStyle" TargetType="{x:Type Button}">

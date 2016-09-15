@@ -218,8 +218,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             var resourceId = Guid.NewGuid();
             var serviceTestModel = new ServiceTestModel(resourceId)
             {
-                TestName = "Test 1",
-                NameForDisplay = "Test 1",
+                TestName = "Test",
+                NameForDisplay = "Test",
                 Inputs = new List<IServiceTestInput>(),
                 Outputs = new List<IServiceTestOutput>(),
                 UserName = "userName",
@@ -237,7 +237,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsNotNull(serviceTestModel.TestName);
             //---------------Execute Test ----------------------
 
-            var dupTest=testFrameworkViewModel.DuplicateTest(serviceTestModel);
+            var dupTest=testFrameworkViewModel.DuplicateTest(serviceTestModel, 1);
             //---------------Test Result -----------------------
             Assert.AreEqual("Test 1", dupTest.TestName);
             Assert.AreEqual("Test 1 *", dupTest.NameForDisplay);
