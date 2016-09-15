@@ -7017,6 +7017,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to You have to save a new test before duplicate.
+        /// </summary>
+        public static string ServiceTestNewTestDisabledDuplicateSelectedTestTooltip {
+            get {
+                return ResourceManager.GetString("ServiceTestNewTestDisabledDuplicateSelectedTestTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Create a new test.
         /// </summary>
         public static string ServiceTestNewTestTooltip {

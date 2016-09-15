@@ -40,6 +40,8 @@ namespace Warewolf.Studio.ViewModels
         private ServiceTestModel _item;
         private bool _isTestRunning;
         private string _neverRunString;
+        private string _duplicateTestTooltip;
+
         public string NeverRunString
         {
             get
@@ -55,6 +57,16 @@ namespace Warewolf.Studio.ViewModels
         public Visibility LastRunDateVisibility => LastRunDate != default(DateTime) ? Visibility.Visible : Visibility.Collapsed;
         public Visibility NeverRunStringVisibility => LastRunDate == default(DateTime) ? Visibility.Visible : Visibility.Collapsed;
         public IList<IDebugState> DebugForTest { get; set; }
+
+        public string DuplicateTestTooltip
+        {
+            get { return _duplicateTestTooltip; }
+            set
+            {
+                _duplicateTestTooltip = value; 
+                OnPropertyChanged(() => DuplicateTestTooltip);
+            }
+        }
 
         public ServiceTestModel(Guid resourceId)
         {
