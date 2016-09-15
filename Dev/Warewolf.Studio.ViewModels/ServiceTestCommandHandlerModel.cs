@@ -128,6 +128,7 @@ namespace Warewolf.Studio.ViewModels
                     selectedServiceTest.TestFailing = false;
                     selectedServiceTest.TestPassed = true;
                 }
+                selectedServiceTest.DebugForTest = res.DebugForTest;
             });
         }
     }

@@ -10,6 +10,7 @@ using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Communication;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract;
+using Dev2.Diagnostics.Debug;
 using Dev2.DynamicServices.Objects;
 using Dev2.Interfaces;
 using Dev2.Runtime.ESB.WF;
@@ -100,6 +101,8 @@ namespace Dev2.Runtime.ESB.Execution
             Guid result = new Guid();
             var wfappUtils = new WfApplicationUtils();
             ErrorResultTO invokeErrors;
+            var resourceID = DataObject.ResourceID;
+            var test = TestCatalog.Instance.FetchTest(resourceID, DataObject.TestName);
             try
             {
                 IExecutionToken exeToken = new ExecutionToken { IsUserCanceled = false };
@@ -109,11 +112,15 @@ namespace Dev2.Runtime.ESB.Execution
                 {
                     wfappUtils.DispatchDebugState(DataObject, StateType.Start, DataObject.Environment.HasErrors(), DataObject.Environment.FetchErrors(), out invokeErrors, DateTime.Now, true, false, false);
                 }
-                Eval(DataObject.ResourceID, DataObject);
+                Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+                var testRunResult = Eval(resourceID, DataObject,test);
+                
                 if (DataObject.IsDebugMode())
                 {
                     wfappUtils.DispatchDebugState(DataObject, StateType.End, DataObject.Environment.HasErrors(), DataObject.Environment.FetchErrors(), out invokeErrors, DataObject.StartTime, false, true);
                 }
+                testRunResult.DebugForTest = TestDebugMessageRepo.Instance.FetchDebugItems(resourceID, test.TestName);
+                _request.ExecuteResult = serializer.SerializeToBuilder(testRunResult);
                 result = DataObject.DataListID;
             }
             catch (InvalidWorkflowException iwe)
@@ -141,7 +148,7 @@ namespace Dev2.Runtime.ESB.Execution
             EvalInner(dsfDataObject, resource, update);
         }
 
-        private void Eval(Guid resourceID, IDSFDataObject dataObject)
+        private TestRunResult Eval(Guid resourceID, IDSFDataObject dataObject,IServiceTestModelTO test)
         {
             Dev2Logger.Debug("Getting Resource to Execute");
             IDev2Activity resource = ResourceCatalog.Instance.Parse(TheWorkspace.ID, resourceID);
@@ -149,7 +156,7 @@ namespace Dev2.Runtime.ESB.Execution
             var execPlan = serializer.SerializeToBuilder(resource);
             var clonedExecPlan = serializer.Deserialize<IDev2Activity>(execPlan);
             Dev2Logger.Debug("Got Resource to Execute");
-            var test = TestCatalog.Instance.FetchTest(resourceID, dataObject.TestName);
+            
             if (test != null)
             {
                 if (test.Inputs != null)
@@ -192,31 +199,39 @@ namespace Dev2.Runtime.ESB.Execution
                         }
                     }
                 }
+                var hasErrors = DataObject.Environment.HasErrors();
+                if (test.ErrorExpected)
+                {
+
+                    testPassed = hasErrors;
+                }
+                else if (test.NoErrorExpected)
+                {
+                    testPassed = !hasErrors;
+                }
+
                 test.TestFailing = !testPassed;
                 test.TestPassed = testPassed;
                 test.TestPending = false;
                 test.TestInvalid = false;
                 test.LastRunDate = DateTime.Now;
+
+
                 Common.Utilities.PerformActionInsideImpersonatedContext(Common.Utilities.ServerUser, () => { TestCatalog.Instance.SaveTest(resourceID, test); });
-                
-                var testRunReuslt = new TestRunReuslt();
-                testRunReuslt.TestName = test.TestName;
+
+                var testRunResult = new TestRunResult { TestName = test.TestName };
                 if (test.TestFailing)
                 {
-                    testRunReuslt.Result = RunResult.TestFailed;
-                    testRunReuslt.Message = failureMessage.ToString();
+                    testRunResult.Result = RunResult.TestFailed;
+                    testRunResult.Message = failureMessage.ToString();
                 }
                 if (test.TestPassed)
                 {
-                    testRunReuslt.Result = RunResult.TestPassed;
+                    testRunResult.Result = RunResult.TestPassed;
                 }
-                _request.ExecuteResult = serializer.SerializeToBuilder(testRunReuslt);
+                return testRunResult;
             }
-            else
-            {
-                throw new Exception($"Test {dataObject.TestName} for Resource {dataObject.ServiceName} ID {resourceID}");
-            }
-
+            throw new Exception($"Test {dataObject.TestName} for Resource {dataObject.ServiceName} ID {resourceID}");
         }
 
 

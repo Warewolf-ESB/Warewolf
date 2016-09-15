@@ -23,11 +23,13 @@ namespace Dev2.Common.Interfaces.ServerProxyLayer
         /// <param name="resourceId">the resource</param>
         /// <param name="versionNumber">the version to rollback to</param>
         IRollbackResult RollbackTo(Guid resourceId, string versionNumber);
+
         /// <summary>
         /// Delete a version o a resource
         /// </summary>
         /// <param name="resourceId">the resource</param>
         /// <param name="versionNumber">the version to delete</param>
+        /// <param name="resourcePath"></param>
         /// <returns></returns>
         IList<IExplorerItem> DeleteVersion(Guid resourceId, string versionNumber, string resourcePath);
 
