@@ -54,11 +54,11 @@ namespace Dev2.Studio.Core.Network
             }, () => { });
         }
 
-        public static TestRunReuslt ExecuteTest(IContextualResourceModel resourceModel,string testName)
+        public static TestRunResult ExecuteTest(IContextualResourceModel resourceModel,string testName)
         {
             if (resourceModel == null || resourceModel.Environment == null || !resourceModel.Environment.IsConnected)
             {
-                var testRunReuslt = new TestRunReuslt();
+                var testRunReuslt = new TestRunResult();
                 testRunReuslt.Result = RunResult.TestFailed;
                 return testRunReuslt;
             }
@@ -66,14 +66,14 @@ namespace Dev2.Studio.Core.Network
             var clientContext = resourceModel.Environment.Connection;
             if (clientContext == null)
             {
-                var testRunReuslt = new TestRunReuslt();
+                var testRunReuslt = new TestRunResult();
                 testRunReuslt.Result = RunResult.TestFailed;
                 return testRunReuslt;
             }
             var controller = new CommunicationController { ServiceName = string.IsNullOrEmpty(resourceModel.Category) ? resourceModel.ResourceName : resourceModel.Category };
             controller.AddPayloadArgument("ResourceID", resourceModel.ID.ToString());
             controller.ServicePayload.TestName = testName;
-            var res = controller.ExecuteCommand<TestRunReuslt>(clientContext, clientContext.WorkspaceID);
+            var res = controller.ExecuteCommand<TestRunResult>(clientContext, clientContext.WorkspaceID);
             return res;
             
         }

@@ -199,7 +199,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
                 }
             }
 
-            if (WorkSurfaceKey.WorkSurfaceContext == WorkSurfaceContext.Scheduler)
+            if (WorkSurfaceKey.WorkSurfaceContext == WorkSurfaceContext.Scheduler || WorkSurfaceKey.WorkSurfaceContext == WorkSurfaceContext.ServiceTestsViewer)
             {
                 if (DebugOutputViewModel == null)
                 {
@@ -252,7 +252,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
         public void Handle(DebugOutputMessage message)
         {
             Dev2Logger.Info(message.GetType().Name);
-            if (WorkSurfaceKey.WorkSurfaceContext == WorkSurfaceContext.Scheduler)
+            if (WorkSurfaceKey.WorkSurfaceContext == WorkSurfaceContext.Scheduler || WorkSurfaceKey.WorkSurfaceContext == WorkSurfaceContext.ServiceTestsViewer)
             {
                 DebugOutputViewModel.Clear();
                 var debugState = message.DebugStates.LastOrDefault();

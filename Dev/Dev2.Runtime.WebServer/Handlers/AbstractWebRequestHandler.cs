@@ -253,7 +253,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                             if (dataObject.IsServiceTestExecution)
                             {
                                 formatter = DataListFormat.CreateFormat("JSON", EmitionTypes.JSON, "application/json");
-                                var result = serializer.Deserialize<TestRunReuslt>(esbExecuteRequest.ExecuteResult);
+                                var result = serializer.Deserialize<TestRunResult>(esbExecuteRequest.ExecuteResult);
                                 var resObj = new JObject();
                                 if (result.Result == RunResult.TestPassed)
                                 {
