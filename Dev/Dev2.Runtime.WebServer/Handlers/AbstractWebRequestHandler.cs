@@ -391,11 +391,11 @@ namespace Dev2.Runtime.WebServer.Handlers
             resObj.Add("Test Name",result.TestName);
             if(result.Result == RunResult.TestPassed)
             {
-                resObj.Add("Result", "Test Passed");
+                resObj.Add("Result", "Passed");
             }
             else
             {
-                resObj.Add("Result", "Test Failed");
+                resObj.Add("Result", "Failed");
                 resObj.Add("Message", result.Message);
             }
             return resObj;
