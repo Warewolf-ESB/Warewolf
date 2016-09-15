@@ -218,6 +218,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var serviceTestModel = new ServiceTestModel(resourceId)
             {
                 TestName = "Test 1",
+                NameForDisplay = "Test 1",
                 Inputs = new ObservableCollection<IServiceTestInput >(),
                 Outputs = new ObservableCollection<IServiceTestOutput>(),
                 UserName = "userName",

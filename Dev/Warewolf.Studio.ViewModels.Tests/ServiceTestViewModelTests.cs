@@ -52,7 +52,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
 
             //------------Execute Test---------------------------
-            var testVM = new ServiceTestViewModel(new Mock<IContextualResourceModel>().Object, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object);
+            var testVM = new ServiceTestViewModel(CreateResourceModel(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object);
             //------------Assert Results-------------------------
             Assert.IsNotNull(testVM);
             Assert.IsNotNull(testVM.ResourceModel);
@@ -67,7 +67,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var mockResourceModel = new Mock<IContextualResourceModel>();
             mockResourceModel.Setup(model => model.DisplayName).Returns("Workflow Name");
             //------------Execute Test---------------------------
-            var testVM = new ServiceTestViewModel(mockResourceModel.Object, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object);
+            var testVM = new ServiceTestViewModel(CreateResourceModel(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object);
             //------------Assert Results-------------------------
             Assert.AreEqual("My WF - Tests", testVM.DisplayName);
         }
@@ -185,7 +185,8 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void OnCreation_GivenIsNewNotConnected_ShouldSetRunAllTestsCommandExecuteFalse()
         {
             //---------------Set up test pack-------------------
-            var vm = new ServiceTestViewModel(CreateResourceModel(false), new SynchronousAsyncWorker());
+            var mock = new Mock<IEventAggregator>();
+            var vm = new ServiceTestViewModel(CreateResourceModel(false), new SynchronousAsyncWorker(), mock.Object);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(vm);
             //---------------Execute Test ----------------------
@@ -213,7 +214,8 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void OnCreation_GivenIsNewNotConnected_ShouldSetRunSelectedTestCommandCanExecuteFalse()
         {
             //---------------Set up test pack-------------------
-            var vm = new ServiceTestViewModel(CreateResourceModel(false), new SynchronousAsyncWorker());
+            var mock = new Mock<IEventAggregator>();
+            var vm = new ServiceTestViewModel(CreateResourceModel(false), new SynchronousAsyncWorker(), mock.Object);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(vm);
             //---------------Execute Test ----------------------
@@ -229,7 +231,8 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void OnCreation_GivenIsNewNotConnected_ShouldSetRunAllTestsInBrowserCommandCanExecuteFalse()
         {
             //---------------Set up test pack-------------------
-            var vm = new ServiceTestViewModel(CreateResourceModel(false), new SynchronousAsyncWorker());
+            var mock = new Mock<IEventAggregator>();
+            var vm = new ServiceTestViewModel(CreateResourceModel(false), new SynchronousAsyncWorker(), mock.Object);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(vm);
             //---------------Execute Test ----------------------
@@ -526,7 +529,7 @@ namespace Warewolf.Studio.ViewModels.Tests
          
             vm.SelectedServiceTest.Enabled = false;
             //---------------Test Result -----------------------
-            var canExecute = vm.DeleteTestCommand.CanExecute(null);
+            var canExecute = vm.DeleteTestCommand.CanExecute(vm.SelectedServiceTest);
             Assert.IsTrue(canExecute);
         }
 
@@ -986,7 +989,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void DeleteCommand_GivenSelectedTestIsDisabled_ShouldSetCanDeleteTrue()
         {
             //---------------Set up test pack-------------------
-            var testFrameworkViewModel = new ServiceTestViewModel(CreateMockResourceModelWithSingleScalarOutput(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object);
+            var testFrameworkViewModel = new ServiceTestViewModel(CreateResourceModel(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object);
             testFrameworkViewModel.CreateTestCommand.Execute(null);
             testFrameworkViewModel.Save();
             //---------------Assert Precondition----------------
