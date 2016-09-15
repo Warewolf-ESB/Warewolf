@@ -6,6 +6,7 @@ using System.Reflection;
 using System.Windows;
 using Caliburn.Micro;
 using Dev2;
+using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Help;
 using Dev2.Common.Interfaces.Studio.Controller;
@@ -68,7 +69,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //------------Execute Test---------------------------
             var testVM = new ServiceTestViewModel(mockResourceModel.Object, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object);
             //------------Assert Results-------------------------
-            Assert.AreEqual("Workflow Name - Tests", testVM.DisplayName);
+            Assert.AreEqual("My WF - Tests", testVM.DisplayName);
         }
 
         [TestMethod]
@@ -128,13 +129,13 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(vm.CreateTestCommand.CanExecute(null));
         }
 
-        private IContextualResourceModel CreateResourceModel()
+        private IContextualResourceModel CreateResourceModel(bool isConnected = true)
         {
             var moqModel = new Mock<IContextualResourceModel>();
             moqModel.SetupAllProperties();
             moqModel.Setup(model => model.DisplayName).Returns("My WF");
-            moqModel.Setup(model => model.Environment.Connection.IsConnected).Returns(true);
-            moqModel.Setup(model => model.Environment.IsConnected).Returns(true);
+            moqModel.Setup(model => model.Environment.Connection.IsConnected).Returns(isConnected);
+            moqModel.Setup(model => model.Environment.IsConnected).Returns(isConnected);
             moqModel.Setup(model => model.Environment.Connection.WebServerUri).Returns(new Uri("http://rsaklf/bob"));
             moqModel.Setup(model => model.Category).Returns("My WF");
             moqModel.Setup(model => model.ResourceName).Returns("My WF");
@@ -147,7 +148,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             moqModel.SetupAllProperties();
             moqModel.Setup(model => model.DisplayName).Returns("My WF");
             moqModel.Setup(model => model.Environment.Connection.IsConnected).Returns(true);
-            moqModel.Setup(model => model.Environment.ResourceRepository.SaveTests(It.IsAny<IResourceModel>(), It.IsAny<List<IServiceTestModelTO>>()));
+            moqModel.Setup(model => model.Environment.ResourceRepository.SaveTests(It.IsAny<IResourceModel>(), It.IsAny<List<IServiceTestModelTO>>())).Returns(new TestSaveResult() {Result = SaveResult.Success});
             return moqModel.Object;
         }
 
@@ -481,6 +482,48 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void DeleteTestCommand_GivenResourceModelIsConnectedAndTestIsDisabled_ShouldsetCanExecuteTrue()
+        {
+            //---------------Set up test pack-------------------
+            var vm = new ServiceTestViewModel(CreateResourceModel(), new SynchronousAsyncWorker());
+            vm.CreateTestCommand.Execute(null);
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(vm);
+            
+            Assert.IsTrue(vm.SelectedServiceTest != null);
+            var isConnected = vm.ResourceModel.Environment.IsConnected;
+            Assert.IsTrue(isConnected);
+            //---------------Execute Test ----------------------
+         
+            vm.SelectedServiceTest.Enabled = false;
+            //---------------Test Result -----------------------
+            var canExecute = vm.DeleteTestCommand.CanExecute(null);
+            Assert.IsTrue(canExecute);
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void DeleteTestCommand_GivenResourceModelIsNotConnectedAndTestIsDisabled_ShouldsetCanExecuteTrue()
+        {
+            //---------------Set up test pack-------------------
+            var vm = new ServiceTestViewModel(CreateResourceModel(false), new SynchronousAsyncWorker());
+            vm.CreateTestCommand.Execute(null);
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(vm);
+
+            Assert.IsTrue(vm.SelectedServiceTest != null);
+            var isConnected = vm.ResourceModel.Environment.IsConnected;
+            Assert.IsFalse(isConnected);
+            //---------------Execute Test ----------------------
+            vm.CreateTestCommand.Execute(null);
+            vm.SelectedServiceTest.Enabled = false;
+            //---------------Test Result -----------------------
+            var canExecute = vm.DeleteTestCommand.CanExecute(null);
+            Assert.IsFalse(canExecute);
+        }
+
+        [TestMethod]
         [Owner("Pieter Terblanche")]
         public void OnCreation_GivenIsDisabled_DeleteTestCommandShouldBeEnabled()
         {
@@ -801,7 +844,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             testFrameworkViewModel.SelectedServiceTest.TestName = "name";
             //---------------Assert Precondition----------------
             Assert.IsTrue(testFrameworkViewModel.IsDirty);
-           
+
             //---------------Execute Test ----------------------
             var canSave = testFrameworkViewModel.CanSave;
             //---------------Test Result -----------------------
@@ -819,7 +862,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //---------------Assert Precondition----------------
             Assert.IsNotNull(testFrameworkViewModel.DuplicateTestCommand);
             Assert.IsTrue(testFrameworkViewModel.IsDirty);
-           
+
             //---------------Execute Test ----------------------
             var canSave = testFrameworkViewModel.CanSave;
             //---------------Test Result -----------------------
@@ -837,7 +880,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //---------------Assert Precondition----------------
             Assert.IsNotNull(testFrameworkViewModel.DuplicateTestCommand);
             Assert.IsTrue(testFrameworkViewModel.IsDirty);
-           
+
             //---------------Execute Test ----------------------
             var canSave = testFrameworkViewModel.CanSave;
             //---------------Test Result -----------------------
@@ -855,7 +898,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //---------------Assert Precondition----------------
             Assert.IsNotNull(testFrameworkViewModel.DuplicateTestCommand);
             Assert.IsTrue(testFrameworkViewModel.IsDirty);
-           
+
             //---------------Execute Test ----------------------
             var canSave = testFrameworkViewModel.CanSave;
             //---------------Test Result -----------------------

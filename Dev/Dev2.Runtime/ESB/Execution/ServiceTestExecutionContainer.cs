@@ -190,6 +190,7 @@ namespace Dev2.Runtime.ESB.Execution
                         if (result.IsWarewolfAtomResult)
                         {
                             var x = (result as CommonFunctions.WarewolfEvalResult.WarewolfAtomResult)?.Item;
+                            // ReSharper disable once PossibleNullReferenceException
                             var actualValue = x.ToString();
                             if (!actualValue.Equals(value))
                             {
