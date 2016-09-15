@@ -116,7 +116,7 @@ namespace Warewolf.Studio.ViewModels
 
         private void DuplicateTest()
         {
-            var duplicateTest = ServiceTestCommandHandler.DuplicateTest(SelectedServiceTest);
+            var duplicateTest = ServiceTestCommandHandler.DuplicateTest(SelectedServiceTest, GetTestCount());
             AddAndSelectTest(duplicateTest);
         }
 
@@ -141,9 +141,14 @@ namespace Warewolf.Studio.ViewModels
                 return;
             }
 
-            var testNumber = RealTests().Count() + 1;
+            var testNumber = GetTestCount();
             var testModel = ServiceTestCommandHandler.CreateTest(ResourceModel, testNumber);
             AddAndSelectTest(testModel);
+        }
+
+        private int GetTestCount()
+        {
+            return RealTests().Count() + 1;
         }
 
         private void AddAndSelectTest(IServiceTestModel testModel)

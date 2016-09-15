@@ -33,8 +33,8 @@ namespace Warewolf.Studio.ViewModels
                 TestPending = true,
                 Enabled = true,
                 NewTest = true,
-                Inputs = new ObservableCollection< IServiceTestInput >(),
-                Outputs = new ObservableCollection< IServiceTestOutput >(),
+                Inputs = new ObservableCollection<IServiceTestInput>(),
+                Outputs = new ObservableCollection<IServiceTestOutput>(),
             };
             if (!string.IsNullOrEmpty(resourceModel.DataList))
             {
@@ -93,15 +93,15 @@ namespace Warewolf.Studio.ViewModels
         public void RunSelectedTestInBrowser()
         {
         }
-        
 
-        public IServiceTestModel DuplicateTest(IServiceTestModel selectedTest)
+
+        public IServiceTestModel DuplicateTest(IServiceTestModel selectedTest, int testNumber)
         {
-            var nameForDisplay = selectedTest.NameForDisplay.Replace(" *", "");
-
+            var testName = selectedTest.TestName + " " + testNumber;
+            var nameForDisplay = selectedTest.NameForDisplay.Replace(" *", "") + " " + testNumber;
             var testClone = new ServiceTestModel(selectedTest.ParentId)
             {
-                TestName = selectedTest.TestName,
+                TestName = testName,
                 NameForDisplay = nameForDisplay + " *",
                 Inputs = selectedTest.Inputs,
                 Outputs = selectedTest.Outputs,
@@ -127,7 +127,7 @@ namespace Warewolf.Studio.ViewModels
                     selectedServiceTest.TestFailing = true;
                     selectedServiceTest.TestPassed = false;
                 }
-                else if(res.Result == RunResult.TestPassed)
+                else if (res.Result == RunResult.TestPassed)
                 {
                     selectedServiceTest.TestFailing = false;
                     selectedServiceTest.TestPassed = true;
