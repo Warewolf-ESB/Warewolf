@@ -513,9 +513,8 @@ namespace Warewolf.UITests
         {
             control.WaitForControlCondition((uicontrol) =>
             {
-                var point = new Point();
                 TryClickMessageBoxOK();
-                return control.TryGetClickablePoint(out point);
+                return GetControlVisible(uicontrol);
             }, searchTimeout * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString()));
         }
 
@@ -524,9 +523,14 @@ namespace Warewolf.UITests
             control.WaitForControlCondition((uicontrol) =>
             {
                 TryClickMessageBoxOK();
-                var point = new Point();
-                return !uicontrol.TryGetClickablePoint(out point);
+                return !GetControlVisible(uicontrol);
             }, searchTimeout * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString()));
+        }
+
+        private static bool GetControlVisible(UITestControl uicontrol)
+        {
+            var point = new Point();
+            return uicontrol.TryGetClickablePoint(out point);
         }
 
         public void WaitForSpinner(UITestControl control, int searchTimeout = 60000)
