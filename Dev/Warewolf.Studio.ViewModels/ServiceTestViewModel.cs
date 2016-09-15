@@ -100,7 +100,6 @@ namespace Warewolf.Studio.ViewModels
 
         private void RunSelectedTest()
         {
-            SelectedServiceTest.IsTestRunning = true;
             ServiceTestCommandHandler.RunSelectedTest(SelectedServiceTest, ResourceModel, AsyncWorker);
         }
 
@@ -111,7 +110,7 @@ namespace Warewolf.Studio.ViewModels
 
         private void RunAllTests()
         {
-            ServiceTestCommandHandler.RunAllTestsCommand(IsDirty);
+            ServiceTestCommandHandler.RunAllTestsCommand(IsDirty,Tests,ResourceModel,AsyncWorker);
         }
 
         private void DuplicateTest()
@@ -403,6 +402,7 @@ namespace Warewolf.Studio.ViewModels
                     if (_selectedServiceTest != null)
                         _selectedServiceTest.PropertyChanged -= ActionsForPropChanges;
                     _selectedServiceTest = null;
+                    EventPublisher.Publish(new DebugOutputMessage(new List<IDebugState>()));
                     OnPropertyChanged(() => SelectedServiceTest);
                     return;
                 }

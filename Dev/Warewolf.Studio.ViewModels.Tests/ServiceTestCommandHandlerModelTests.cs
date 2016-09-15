@@ -9,6 +9,7 @@ using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Interfaces.DataList;
 using Dev2.Studio.Core.Models.DataList;
 using Dev2.Studio.ViewModels.DataList;
+using Dev2.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 // ReSharper disable InconsistentNaming
@@ -183,7 +184,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //------------Execute Test---------------------------
             var popupController = new Mock<Dev2.Common.Interfaces.Studio.Controller.IPopupController>();
             CustomContainer.Register(popupController.Object);
-            testFrameworkViewModel.RunAllTestsCommand(true);
+            testFrameworkViewModel.RunAllTestsCommand(true,new ObservableCollection<IServiceTestModel>(), new Mock<IContextualResourceModel>().Object,new SynchronousAsyncWorker());
             //------------Assert Results-------------------------
             popupController.Verify(controller => controller.Show(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<MessageBoxButton>(), MessageBoxImage.Error, null, false, true, false, false), Times.Once);
         }
