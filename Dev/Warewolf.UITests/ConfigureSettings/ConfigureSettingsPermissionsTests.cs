@@ -20,7 +20,7 @@ namespace Warewolf.UITests
             Uimap.UnCheck_Public_Administrator();
             Uimap.Click_Save_Ribbon_Button_With_No_Save_Dialog();
             Uimap.Click_Select_Resource_Button_From_Resource_Permissions();
-            Uimap.Select_Dice_From_Service_Picker();
+            Uimap.Select_Dice_From_Service_Picker("SecurityTab");
             Uimap.Enter_Public_As_Windows_Group();
             Uimap.Check_Resource_Contribute();
             Uimap.Click_Save_Ribbon_Button_With_No_Save_Dialog();

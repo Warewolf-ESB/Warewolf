@@ -1424,6 +1424,27 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
+        /// Click_Reset_Perfomance_Counter - Use 'Click_Reset_Perfomance_CounterParams' to pass parameters into this method.
+        /// </summary>
+        public void Click_Reset_Perfomance_Counter()
+        {
+            #region Variable Declarations
+            WpfHyperlink itemHyperlink = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.PerfomanceCounterTab.PerfmonViewContent.ResetCounter.ItemHyperlink;
+            WpfWindow messageBoxWindow = this.MessageBoxWindow;
+            WpfButton oKButton = this.MessageBoxWindow.OKButton;
+            #endregion
+
+            // Click link
+            Mouse.Click(itemHyperlink, new Point(49, 9));
+
+            // Verify that the 'Exists' property of 'WarewolfMessageBox' window equals 'True'
+            Assert.AreEqual(this.Click_Reset_Perfomance_CounterParams.MessageBoxWindowExists, messageBoxWindow.Exists, "MessageBoxWindow did not show after clicking reset counters");
+
+            // Click 'OK' button
+            Mouse.Click(oKButton, new Point(50, 12));
+        }
+        
+        /// <summary>
         /// Click_RunDebug_button - Use 'Click_RunDebug_buttonParams' to pass parameters into this method.
         /// </summary>
         public void Click_RunDebug_button()
@@ -1677,6 +1698,19 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
+        /// Click_Select_Resource_Button
+        /// </summary>
+        public void Click_Select_Resource_Button()
+        {
+            #region Variable Declarations
+            WpfButton itemButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.PerfomanceCounterTab.PerfmonViewContent.ResourceTable.ResourceCell.ItemButton;
+            #endregion
+
+            // Click '...' button
+            Mouse.Click(itemButton, new Point(9, 8));
+        }
+        
+        /// <summary>
         /// Click_Select_Resource_Button_From_Resource_Permissions - Use 'Click_Select_Resource_Button_From_Resource_PermissionsParams' to pass parameters into this method.
         /// </summary>
         public void Click_Select_Resource_Button_From_Resource_Permissions()
@@ -1902,6 +1936,19 @@ namespace Warewolf.UITests
 
             // Click 'Done' button
             Mouse.Click(testInputsDoneButton, new Point(35, 6));
+        }
+        
+        /// <summary>
+        /// Click_Studio_Log_File
+        /// </summary>
+        public void Click_Studio_Log_File()
+        {
+            #region Variable Declarations
+            WpfHyperlink itemHyperlink = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.LoggingTab.LogSettingsViewConte.StudioLogs.StudioLogFile.ItemHyperlink;
+            #endregion
+
+            // Click link
+            Mouse.Click(itemHyperlink, new Point(79, 10));
         }
         
         /// <summary>
@@ -5607,37 +5654,6 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
-        /// Select_Dice_From_Service_Picker - Use 'Select_Dice_From_Service_PickerParams' to pass parameters into this method.
-        /// </summary>
-        public void Select_Dice_From_Service_Picker()
-        {
-            #region Variable Declarations
-            WpfEdit filterTextbox = this.ServicePickerDialog.Explorer.FilterTextbox;
-            WpfTreeItem subTreeItem1 = this.ServicePickerDialog.Explorer.ExplorerTree.TreeItem1.SubTreeItem1;
-            WpfButton ok = this.ServicePickerDialog.OK;
-            WpfText addResourceText = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1.ResourceCell.AddResourceText;
-            #endregion
-
-            // Click 'SearchTextBox' text box
-            Mouse.Click(filterTextbox, new Point(93, 6));
-
-            // Type 'Dice' in 'SearchTextBox' text box
-            filterTextbox.Text = this.Select_Dice_From_Service_PickerParams.FilterTextboxText;
-
-            // Right-Click 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item
-            Mouse.Click(subTreeItem1, MouseButtons.Right, ModifierKeys.None, new Point(53, 12));
-
-            // Click 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item
-            Mouse.Click(subTreeItem1, new Point(53, 12));
-
-            // Click 'OK' button
-            Mouse.Click(ok, new Point(52, 15));
-
-            // Verify that the 'DisplayText' property of 'UI__AddResourceTextBox_AutoID' label equals 'Dice'
-            Assert.AreEqual(this.Select_Dice_From_Service_PickerParams.AddResourceTextDisplayText, addResourceText.DisplayText, "Resource Name is not set to Dice after selecting Dice from Service picker");
-        }
-        
-        /// <summary>
         /// Select_First_Item_From_DotNet_DLL_Large_View_Source_Combobox
         /// </summary>
         public void Select_First_Item_From_DotNet_DLL_Large_View_Source_Combobox()
@@ -6302,32 +6318,6 @@ namespace Warewolf.UITests
                     "d web address.");
         }
         
-        /// <summary>
-        /// Clic_Studio_Log_File
-        /// </summary>
-        public void Clic_Studio_Log_File()
-        {
-            #region Variable Declarations
-            WpfHyperlink uIItemHyperlink = this.UIWarewolfDEV2SANELEMTWindow.UILogSettingsViewConteCustom.UIItemText.UIItemHyperlink;
-            #endregion
-
-            // Click link
-            Mouse.Click(uIItemHyperlink, new Point(30, 5));
-        }
-        
-        /// <summary>
-        /// Click_Studio_Log_File
-        /// </summary>
-        public void Click_Studio_Log_File()
-        {
-            #region Variable Declarations
-            WpfHyperlink itemHyperlink = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.LoggingTab.LogSettingsViewConte.StudioLogs.StudioLogFile.ItemHyperlink;
-            #endregion
-
-            // Click link
-            Mouse.Click(itemHyperlink, new Point(79, 10));
-        }
-        
         #region Properties
         public virtual Assert_CancelConnectionButton_ExistsExpectedValues Assert_CancelConnectionButton_ExistsExpectedValues
         {
@@ -6854,6 +6844,18 @@ namespace Warewolf.UITests
                     this.mClick_Output_OnVariable_InVariableListParams = new Click_Output_OnVariable_InVariableListParams();
                 }
                 return this.mClick_Output_OnVariable_InVariableListParams;
+            }
+        }
+        
+        public virtual Click_Reset_Perfomance_CounterParams Click_Reset_Perfomance_CounterParams
+        {
+            get
+            {
+                if ((this.mClick_Reset_Perfomance_CounterParams == null))
+                {
+                    this.mClick_Reset_Perfomance_CounterParams = new Click_Reset_Perfomance_CounterParams();
+                }
+                return this.mClick_Reset_Perfomance_CounterParams;
             }
         }
         
@@ -8465,18 +8467,6 @@ namespace Warewolf.UITests
             }
         }
         
-        public virtual Select_Dice_From_Service_PickerParams Select_Dice_From_Service_PickerParams
-        {
-            get
-            {
-                if ((this.mSelect_Dice_From_Service_PickerParams == null))
-                {
-                    this.mSelect_Dice_From_Service_PickerParams = new Select_Dice_From_Service_PickerParams();
-                }
-                return this.mSelect_Dice_From_Service_PickerParams;
-            }
-        }
-        
         public virtual Select_GetCountries_From_SQL_Server_Large_View_Action_ComboboxExpectedValues Select_GetCountries_From_SQL_Server_Large_View_Action_ComboboxExpectedValues
         {
             get
@@ -8915,6 +8905,8 @@ namespace Warewolf.UITests
         
         private Click_Output_OnVariable_InVariableListParams mClick_Output_OnVariable_InVariableListParams;
         
+        private Click_Reset_Perfomance_CounterParams mClick_Reset_Perfomance_CounterParams;
+        
         private Click_RunDebug_buttonParams mClick_RunDebug_buttonParams;
         
         private Click_Save_Ribbon_Button_to_Open_Save_DialogParams mClick_Save_Ribbon_Button_to_Open_Save_DialogParams;
@@ -9182,8 +9174,6 @@ namespace Warewolf.UITests
         private Select_Delete_FromExplorerContextMenuParams mSelect_Delete_FromExplorerContextMenuParams;
         
         private Select_Dev2TestingDB_From_DB_Source_Wizard_Database_ComboboxParams mSelect_Dev2TestingDB_From_DB_Source_Wizard_Database_ComboboxParams;
-        
-        private Select_Dice_From_Service_PickerParams mSelect_Dice_From_Service_PickerParams;
         
         private Select_GetCountries_From_SQL_Server_Large_View_Action_ComboboxExpectedValues mSelect_GetCountries_From_SQL_Server_Large_View_Action_ComboboxExpectedValues;
         
@@ -10185,6 +10175,21 @@ namespace Warewolf.UITests
         /// Select 'UI_IsOutputCheckbox_AutoID' check box
         /// </summary>
         public bool IsOutputCheckboxChecked = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Click_Reset_Perfomance_Counter'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Click_Reset_Perfomance_CounterParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'WarewolfMessageBox' window equals 'True'
+        /// </summary>
+        public bool MessageBoxWindowExists = true;
         #endregion
     }
     
@@ -12990,26 +12995,6 @@ namespace Warewolf.UITests
         /// Verify that the 'DisplayText' property of 'Dev2TestingDB' label equals 'Dev2TestingDB'
         /// </summary>
         public string UIDev2TestingDBTextDisplayText = "Dev2TestingDB";
-        #endregion
-    }
-    
-    /// <summary>
-    /// Parameters to be passed into 'Select_Dice_From_Service_Picker'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Select_Dice_From_Service_PickerParams
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Type 'Dice' in 'SearchTextBox' text box
-        /// </summary>
-        public string FilterTextboxText = "Dice";
-        
-        /// <summary>
-        /// Verify that the 'DisplayText' property of 'UI__AddResourceTextBox_AutoID' label equals 'Dice'
-        /// </summary>
-        public string AddResourceTextDisplayText = "Dice";
         #endregion
     }
     
@@ -24055,6 +24040,7 @@ namespace Warewolf.UITests
                 {
                     this.mResourceTextBox = new WpfText(this);
                     #region Search Criteria
+                    this.mResourceTextBox.SearchProperties[WpfText.PropertyNames.Instance] = "1";
                     this.mResourceTextBox.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
                     #endregion
                 }
@@ -24070,11 +24056,27 @@ namespace Warewolf.UITests
                 {
                     this.mResourceButton = new WpfButton(this);
                     #region Search Criteria
-                    this.mResourceButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "UI_workflow1_AddResourceButton_AutoID";
+                    this.mResourceButton.SearchProperties[WpfButton.PropertyNames.Instance] = "2";
                     this.mResourceButton.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
                     #endregion
                 }
                 return this.mResourceButton;
+            }
+        }
+        
+        public WpfButton ItemButton
+        {
+            get
+            {
+                if ((this.mItemButton == null))
+                {
+                    this.mItemButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mItemButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "UI__AddResourceButton_AutoID";
+                    this.mItemButton.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mItemButton;
             }
         }
         #endregion
@@ -24083,6 +24085,8 @@ namespace Warewolf.UITests
         private WpfText mResourceTextBox;
         
         private WpfButton mResourceButton;
+        
+        private WpfButton mItemButton;
         #endregion
     }
     
@@ -24613,7 +24617,7 @@ namespace Warewolf.UITests
                 {
                     this.mItemHyperlink = new WpfHyperlink(this);
                     #region Search Criteria
-                    this.mItemHyperlink.SearchProperties[WpfHyperlink.PropertyNames.Name] = "   ";
+                    this.mItemHyperlink.SearchProperties[WpfHyperlink.PropertyNames.Instance] = "1";
                     this.mItemHyperlink.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
                     #endregion
                 }
@@ -39941,206 +39945,90 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public UILogSettingsViewConteCustom UILogSettingsViewConteCustom
+        public UIPerfmonViewContentCustom UIPerfmonViewContentCustom
         {
             get
             {
-                if ((this.mUILogSettingsViewConteCustom == null))
+                if ((this.mUIPerfmonViewContentCustom == null))
                 {
-                    this.mUILogSettingsViewConteCustom = new UILogSettingsViewConteCustom(this);
+                    this.mUIPerfmonViewContentCustom = new UIPerfmonViewContentCustom(this);
                 }
-                return this.mUILogSettingsViewConteCustom;
-            }
-        }
-        
-        public UIUI_SettingsView_AutoCustom UIUI_SettingsView_AutoCustom
-        {
-            get
-            {
-                if ((this.mUIUI_SettingsView_AutoCustom == null))
-                {
-                    this.mUIUI_SettingsView_AutoCustom = new UIUI_SettingsView_AutoCustom(this);
-                }
-                return this.mUIUI_SettingsView_AutoCustom;
+                return this.mUIPerfmonViewContentCustom;
             }
         }
         #endregion
         
         #region Fields
-        private UILogSettingsViewConteCustom mUILogSettingsViewConteCustom;
-        
-        private UIUI_SettingsView_AutoCustom mUIUI_SettingsView_AutoCustom;
+        private UIPerfmonViewContentCustom mUIPerfmonViewContentCustom;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class UILogSettingsViewConteCustom : WpfCustom
+    public class UIPerfmonViewContentCustom : WpfCustom
     {
         
-        public UILogSettingsViewConteCustom(UITestControl searchLimitContainer) : 
+        public UIPerfmonViewContentCustom(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
-            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.LoggingView";
-            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "LogSettingsViewContent";
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.PerfCounterView";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "PerfmonViewContent";
             this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
             #endregion
         }
         
         #region Properties
-        public UIItemText UIItemText
+        public UIResourcePermissionsDTable UIResourcePermissionsDTable
         {
             get
             {
-                if ((this.mUIItemText == null))
+                if ((this.mUIResourcePermissionsDTable == null))
                 {
-                    this.mUIItemText = new UIItemText(this);
+                    this.mUIResourcePermissionsDTable = new UIResourcePermissionsDTable(this);
                 }
-                return this.mUIItemText;
+                return this.mUIResourcePermissionsDTable;
             }
         }
         #endregion
         
         #region Fields
-        private UIItemText mUIItemText;
+        private UIResourcePermissionsDTable mUIResourcePermissionsDTable;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class UIItemText : WpfText
+    public class UIResourcePermissionsDTable : WpfTable
     {
         
-        public UIItemText(UITestControl searchLimitContainer) : 
+        public UIResourcePermissionsDTable(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
-            this.SearchProperties[WpfText.PropertyNames.Name] = "   ";
+            this.SearchProperties[WpfTable.PropertyNames.AutomationId] = "ResourcePermissionsDataGrid";
             this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
             #endregion
         }
         
         #region Properties
-        public WpfHyperlink UIItemHyperlink
+        public WpfCell UIResourcesCell
         {
             get
             {
-                if ((this.mUIItemHyperlink == null))
+                if ((this.mUIResourcesCell == null))
                 {
-                    this.mUIItemHyperlink = new WpfHyperlink(this);
+                    this.mUIResourcesCell = new WpfCell(this);
                     #region Search Criteria
-                    this.mUIItemHyperlink.SearchProperties[WpfHyperlink.PropertyNames.Name] = "   ";
-                    this.mUIItemHyperlink.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    this.mUIResourcesCell.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = null;
+                    this.mUIResourcesCell.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
                     #endregion
                 }
-                return this.mUIItemHyperlink;
+                return this.mUIResourcesCell;
             }
         }
         #endregion
         
         #region Fields
-        private WpfHyperlink mUIItemHyperlink;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class UIUI_SettingsView_AutoCustom : WpfCustom
-    {
-        
-        public UIUI_SettingsView_AutoCustom(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.SettingsView";
-            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "UI_SettingsView_AutoID";
-            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
-            #endregion
-        }
-        
-        #region Properties
-        public UIItemTabList UIItemTabList
-        {
-            get
-            {
-                if ((this.mUIItemTabList == null))
-                {
-                    this.mUIItemTabList = new UIItemTabList(this);
-                }
-                return this.mUIItemTabList;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private UIItemTabList mUIItemTabList;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class UIItemTabList : WpfTabList
-    {
-        
-        public UIItemTabList(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
-            #endregion
-        }
-        
-        #region Properties
-        public UISystemWindowsControlTabPage UISystemWindowsControlTabPage
-        {
-            get
-            {
-                if ((this.mUISystemWindowsControlTabPage == null))
-                {
-                    this.mUISystemWindowsControlTabPage = new UISystemWindowsControlTabPage(this);
-                }
-                return this.mUISystemWindowsControlTabPage;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private UISystemWindowsControlTabPage mUISystemWindowsControlTabPage;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class UISystemWindowsControlTabPage : WpfTabPage
-    {
-        
-        public UISystemWindowsControlTabPage(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfTabPage.PropertyNames.Name] = "System.Windows.Controls.TabItem Header: Content:";
-            this.SearchProperties[WpfTabPage.PropertyNames.Instance] = "2";
-            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
-            #endregion
-        }
-        
-        #region Properties
-        public WpfCustom UILogSettingsViewConteCustom
-        {
-            get
-            {
-                if ((this.mUILogSettingsViewConteCustom == null))
-                {
-                    this.mUILogSettingsViewConteCustom = new WpfCustom(this);
-                    #region Search Criteria
-                    this.mUILogSettingsViewConteCustom.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.LoggingView";
-                    this.mUILogSettingsViewConteCustom.SearchProperties[WpfControl.PropertyNames.AutomationId] = "LogSettingsViewContent";
-                    this.mUILogSettingsViewConteCustom.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
-                    #endregion
-                }
-                return this.mUILogSettingsViewConteCustom;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfCustom mUILogSettingsViewConteCustom;
+        private WpfCell mUIResourcesCell;
         #endregion
     }
 }
