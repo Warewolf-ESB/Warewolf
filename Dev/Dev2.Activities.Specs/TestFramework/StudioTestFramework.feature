@@ -61,6 +61,7 @@ Scenario: Create New Test
 	And save is enabled
 	And test status is pending
 	And test is enabled
+	And Duplicate Test is "Disabled"
 
 Scenario: Create New Test with Service that as recordset inputs
 	Given the test builder is open with "Workflow 2"	
@@ -316,6 +317,7 @@ Scenario: Edit existing test
 	When the test builder is open with "Workflow 3"
 	Then there are 2 tests
 	And I select "Test2"
+	Then Duplicate Test is "Enabled"
 	And I set Test Values as
 	| TestName | AuthenticationType | Error |
 	| Test2    | Public            | true  |
@@ -529,11 +531,38 @@ Scenario: Duplicate a test
 	Then Duplicate Test is visible
 	When I click duplicate 
 	Then there are 2 tests
-	And the duplicated tests is "Test 1"
+	And the duplicated tests is "Test 1 1"
+	And save is enabled
+	When I save
+
+Scenario: Duplicate a test with same name fails
+	Given the test builder is open with "Workflow 1"
+	And Tab Header is "Workflow 1 - Tests"
+	And there are no tests
+	And I click New Test
+	Then a new test is added
+	And Tab Header is "Workflow 1 - Tests *"
+	And test name starts with "Test 1"
+	And inputs are
+	| Variable Name | Value |
+	| a             |       |
+	And outputs as
+	| Variable Name | Value |
+	| outputValue   |       |
+	And save is enabled
+	When I save
+	Then Tab Header is "Workflow 1 - Tests"
+	And there are 1 tests
+	When I click "Test 1"
+	Then Duplicate Test is visible
+	When I click duplicate 
+	Then there are 2 tests
+	And the duplicated tests is "Test 1 1"
+	When I change the test name to "Test 1"
 	And save is enabled
 	When I save
 	Then The duplicate Name popup is shown
-	And Duplicate Test in Visible
+	And Duplicate Test is "Disabled"
 
 Scenario: Run a test with single scalar inputs and outputs
 	Given the test builder is open with existing service "Hello World"	
@@ -563,27 +592,12 @@ Scenario: Run a test with single scalar inputs and outputs
 	And I save
 	When I run the test
 	Then test result is Passed
-	#Then service inputs as
-	#	| Variable | Value |
-	#	| [[Name]] | Bob   |
-	#Then the "Decision" debug inputs as
-	#  | Recordset            |
-	#  | [[rec(1).a]] = yes |
-	#  | [[rec(2).a]] = no |
-	#And the "Decsion"  debug outputs as    
-	#  |               |
-	#  | [[count]] = 2 |
-	#And the "Assign" debug inputs as
-	#  | # | Variable      | New Value |
-	#  | 1 | [[rec().a]] = | yes       |
-	#  | 2 | [[rec().a]] = | no        |
-	#And the "Assign" debug outputs as    
-	#  | # |                    |
-	#  | 1 | [[rec(1).a]] = yes |
-	#  | 2 | [[rec(2).a]] = no  |
-	#And the service outputs as
-	#  | Variable    | Value      |
-	#  | [[Message]] | Hello Bob. |
+	And service debug inputs as
+		| Variable | Value |
+		| [[Name]] | Bob   |
+	And the service debug outputs as
+	  | Variable    | Value      |
+	  | [[Message]] | Hello Bob. |
 	When I delete "Test 1"
 	Then The "DeleteConfirmation" popup is shown I click Ok
 	Then there are no tests
@@ -616,27 +630,12 @@ Scenario: Run a test with single scalar inputs and outputs failure
 	And I save
 	When I run the test
 	Then test result is Failed
-	#Then service inputs as
-	#	| Variable | Value |
-	#	| [[Name]] | Bob   |
-	#Then the "Decision" debug inputs as
-	#  | Recordset            |
-	#  | [[rec(1).a]] = yes |
-	#  | [[rec(2).a]] = no |
-	#And the "Decsion"  debug outputs as    
-	#  |               |
-	#  | [[count]] = 2 |
-	#And the "Assign" debug inputs as
-	#  | # | Variable      | New Value |
-	#  | 1 | [[rec().a]] = | yes       |
-	#  | 2 | [[rec().a]] = | no        |
-	#And the "Assign" debug outputs as    
-	#  | # |                    |
-	#  | 1 | [[rec(1).a]] = yes |
-	#  | 2 | [[rec(2).a]] = no  |
-	#And the service outputs as
-	#  | Variable    | Value      |
-	#  | [[Message]] | Hello Bob. |
+	Then service debug inputs as
+		| Variable | Value |
+		| [[Name]] | Bob   |	
+	And the service debug outputs as
+	  | Variable    | Value      |
+	  | [[Message]] | Hello Bob. |
 	When I delete "Test 1"
 	Then The "DeleteConfirmation" popup is shown I click Ok
 	Then there are no tests
@@ -664,7 +663,7 @@ Scenario: Duplicate test new test has name
 	Then Duplicate Test is visible
 	When I click duplicate 
 	Then there are 2 tests
-	And Test name is "Test 1"
+	And Test name is "Test 1 1"
 
 
 

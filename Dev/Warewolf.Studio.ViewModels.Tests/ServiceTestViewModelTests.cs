@@ -320,6 +320,38 @@ namespace Warewolf.Studio.ViewModels.Tests
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory("TestFrameworkViewModel_CreateTestCommand")]
+        public void TestFrameworkViewModel_CreateTestCommand_Execute_ShouldIncrementTestNumber()
+        {
+            //------------Setup for test--------------------------
+            var testFrameworkViewModel = new ServiceTestViewModel(CreateResourceModel(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object);
+            //------------Assert Preconditions-------------------
+            //------------Execute Test---------------------------
+            testFrameworkViewModel.CreateTestCommand.Execute(null);
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(testFrameworkViewModel.Tests);
+            Assert.AreEqual(2, testFrameworkViewModel.Tests.Count);
+            Assert.AreEqual("Test 1", testFrameworkViewModel.Tests[0].TestName);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("TestFrameworkViewModel_CreateTestCommand")]
+        public void TestFrameworkViewModel_CreateTestCommand_Execute_ShouldDisableDuplicateCommand()
+        {
+            //------------Setup for test--------------------------
+            var testFrameworkViewModel = new ServiceTestViewModel(CreateResourceModel(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object);
+            //------------Assert Preconditions-------------------
+            //------------Execute Test---------------------------
+            testFrameworkViewModel.CreateTestCommand.Execute(null);
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(testFrameworkViewModel.Tests);
+            Assert.AreEqual(2, testFrameworkViewModel.Tests.Count);
+            Assert.IsFalse(testFrameworkViewModel.DuplicateTestCommand.CanExecute(null));
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("TestFrameworkViewModel_CreateTestCommand")]
         public void TestFrameworkViewModel_CreateTestCommand_Execute_ShouldShowError()
         {
             //------------Setup for test--------------------------

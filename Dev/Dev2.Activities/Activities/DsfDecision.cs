@@ -240,7 +240,10 @@ namespace Dev2.Activities
             }
 
             var val =  result.Select(a => a as DebugItem).ToList();
-            _inner.SetDebugInputs(val);
+            if (_inner != null)
+            {
+                _inner.SetDebugInputs(val);
+            }
             return val;
         }
 
@@ -287,7 +290,10 @@ namespace Dev2.Activities
 
             }
 
-            _inner.SetDebugOutputs(result);
+            if (_inner != null)
+            {
+                _inner.SetDebugOutputs(result);
+            }
             return result;
         }
 
