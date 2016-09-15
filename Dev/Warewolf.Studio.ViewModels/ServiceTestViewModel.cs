@@ -12,6 +12,7 @@ using Dev2;
 using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
+using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Common.Interfaces.Threading;
 using Dev2.Data;
@@ -36,7 +37,7 @@ namespace Warewolf.Studio.ViewModels
         public IPopupController PopupController { get; }
         private bool _canSave;
         private string _errorMessage;
-        private IShellViewModel _shellViewModel;
+        private readonly IShellViewModel _shellViewModel;
 
         public ServiceTestViewModel(IContextualResourceModel resourceModel, IAsyncWorker asyncWorker, IEventAggregator eventPublisher)
         {
@@ -374,7 +375,7 @@ namespace Warewolf.Studio.ViewModels
                 _selectedServiceTest.PropertyChanged += ActionsForPropChanges;
                 SetSelectedTestUrl();
                 OnPropertyChanged(() => SelectedServiceTest);
-                EventPublisher.Publish(new DebugOutputMessage(_selectedServiceTest.DebugForTest));
+                EventPublisher.Publish(new DebugOutputMessage(_selectedServiceTest.DebugForTest?? new List<IDebugState>()));
             }
         }
 
@@ -391,6 +392,10 @@ namespace Warewolf.Studio.ViewModels
             if (e.PropertyName == "RunSelectedTestUrl")
             {
                 ViewModelUtils.RaiseCanExecuteChanged(RunSelectedTestInBrowserCommand);
+            }
+            if (e.PropertyName == "DebugForTest")
+            {
+                EventPublisher.Publish(new DebugOutputMessage(SelectedServiceTest.DebugForTest ?? new List<IDebugState>()));
             }
             ViewModelUtils.RaiseCanExecuteChanged(DuplicateTestCommand);
         }
