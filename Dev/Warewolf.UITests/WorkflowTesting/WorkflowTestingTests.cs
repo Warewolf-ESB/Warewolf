@@ -53,8 +53,8 @@ namespace Warewolf.UITests
         public void RunDeuplicatedTest()
         {
             //Uimap.CreateAndSave_Dice_Wokflow();
-            //Uimap.Select_Tests_From_Context_Menu();
-            //Uimap.Click_Create_New_Tests();
+            Uimap.Select_Tests_From_Context_Menu();
+            Uimap.Click_Create_New_Tests();
             Uimap.Update_Test_Name();
             Uimap.Click_Save_Ribbon_Button_With_No_Save_Dialog();
             Uimap.Click_Duplicate_Test_Button();

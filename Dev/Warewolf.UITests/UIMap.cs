@@ -1143,6 +1143,7 @@ namespace Warewolf.UITests
             // Click '' button
             Mouse.Click(duplicateButton, new Point(14, 10));
 
+            WaitForSpinner(duplicateButton);
             wpfList = MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestsListboxList as WpfList;
             var countAfter = wpfList.GetContent().Length;
 
