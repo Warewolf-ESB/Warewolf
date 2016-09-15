@@ -120,6 +120,51 @@ Scenario: Save a New Test
 	| outputValue   |       |
 	And save is disabled
 
+Scenario: Save multiple New Tests Enabled Save after Edit
+	Given the test builder is open with "Workflow 1"
+	And Tab Header is "Workflow 1 - Tests"
+	And there are no tests
+	And I click New Test
+	Then a new test is added
+	And Tab Header is "Workflow 1 - Tests *"
+	And test name starts with "Test 1"
+	And inputs are
+	| Variable Name | Value |
+	| a             |       |
+	And outputs as
+	| Variable Name | Value |
+	| outputValue   |       |
+	And save is enabled
+	When I save
+	Then Tab Header is "Workflow 1 - Tests"
+	Then there are 1 tests
+	And I select "Test 1"
+	And "Test 1" is selected
+	And test name starts with "Test 1"
+	And inputs are
+	| Variable Name | Value |
+	| a             |       |
+	And outputs as
+	| Variable Name | Value |
+	| outputValue   |       |
+	And save is disabled
+	And I click New Test
+	Then a new test is added
+	And Tab Header is "Workflow 1 - Tests *"
+	And test name starts with "Test 2"
+	And inputs are
+	| Variable Name | Value |
+	| a             |       |
+	And outputs as
+	| Variable Name | Value |
+	| outputValue   |       |
+	And save is enabled
+	When I save
+	Then Tab Header is "Workflow 1 - Tests"
+	When I select "Test 1"
+	When I change the test name to "testing2"
+	Then "Save" test is visible
+
 Scenario: Save a New Test fails when workflow deleted
 	Given the test builder is open with "Workflow 1"
 	And Tab Header is "Workflow 1 - Tests"
