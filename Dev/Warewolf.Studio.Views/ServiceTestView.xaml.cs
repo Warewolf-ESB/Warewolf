@@ -127,5 +127,30 @@ namespace Warewolf.Studio.Views
                 }
             }
         }
+
+        private void TxtValue_OnTextChanged(object sender, RoutedEventArgs e)
+        {
+            var textBox = sender as IntellisenseTextBox;
+            if(textBox != null)
+            {
+                RefreshCommands(e);
+            }
+        }
+
+        private void ToggleButton_OnChecked(object sender, RoutedEventArgs e)
+        {
+            var textBox = sender as CheckBox;
+            if (textBox != null)
+            {
+                RefreshCommands(e);
+            }
+        }
+
+        private void RefreshCommands(RoutedEventArgs e)
+        {
+            var serviceTestViewModel = DataContext as IServiceTestViewModel;
+            serviceTestViewModel?.RefreshCommands();
+            e.Handled = true;
+        }
     }
 }

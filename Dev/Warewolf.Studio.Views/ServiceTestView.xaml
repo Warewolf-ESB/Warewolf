@@ -76,7 +76,10 @@
                     <ColumnDefinition Width="70*"/>
                 </Grid.ColumnDefinitions>
 
-                <ListBox Grid.Column="0" Style="{StaticResource ListBoxStyle}" BorderThickness="1,0,1,1" PreviewMouseLeftButtonDown="TestsListbox_OnPreviewMouseLeftButtonDown"
+                <ListBox Grid.Column="0" Style="{StaticResource ListBoxStyle}" 
+                         BorderThickness="1,0,1,1"
+                         PreviewMouseLeftButtonDown="TestsListbox_OnPreviewMouseLeftButtonDown"
+                         
                          ItemsSource="{Binding Tests}" SelectionMode="Single" SelectedItem="{Binding SelectedServiceTest, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" x:Name="TestsListbox">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
@@ -367,7 +370,9 @@
                                                         <TextBlock KeyboardNavigation.IsTabStop="False" 
                                                                Focusable="True" 
                                                                ToolTip="{Binding Path=Variable}" 
-                                                               Text="{Binding Path=Variable, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" />
+                                                               Text="{Binding Path=Variable, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+                                                                   
+                                                                   />
                                                     </Grid>
                                                 </DataTemplate>
                                             </ig:TemplateColumn.ItemTemplate>
@@ -384,6 +389,7 @@
                                                                             AllowMultilinePaste="True"
                                                                             TextWrapping="Wrap"
                                                                             Focusable="True" 
+                                                                            TextChanged="TxtValue_OnTextChanged"   
                                                                             IsTabStop="True"
                                                                             AcceptsReturn="True"
                                                                             ToolTip="{x:Static languages:Core.ServiceTestInputValueTooltip}"
@@ -407,9 +413,12 @@
                                         <ig:TemplateColumn Key="EmptyIsNull" Width="1*" IsReadOnly="True" HorizontalContentAlignment="Stretch">
                                             <ig:TemplateColumn.ItemTemplate>
                                                 <DataTemplate>
-                                                    <Grid PreviewKeyDown="GridPreviewKeyDown" Background="Transparent" HorizontalAlignment="Stretch">
+                                                    <Grid PreviewKeyDown="GridPreviewKeyDown"
+                                                          Background="Transparent"
+                                                          HorizontalAlignment="Stretch">
                                                         <CheckBox IsChecked="{Binding Path=EmptyIsNull}" 
                                                               HorizontalAlignment="Center"
+                                                                  Checked="ToggleButton_OnChecked"
                                                               ToolTip="{x:Static languages:Core.InputEmptyIsNullToolTip}">
                                                             <i:Interaction.Behaviors>
                                                                 <core:HelpSetter Text="{x:Static languages:Core.InputEmptyIsNullDefaultValueHelp}" DataContext="{Binding}" />
@@ -458,6 +467,7 @@
                                                                             Margin="0" 
                                                                             AllowMultilinePaste="True"
                                                                             TextWrapping="Wrap"
+                                                                             TextChanged="TxtValue_OnTextChanged"
                                                                             Focusable="True" 
                                                                             IsTabStop="True"
                                                                             AcceptsReturn="True"
