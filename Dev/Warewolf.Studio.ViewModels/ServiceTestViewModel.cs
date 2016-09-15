@@ -142,7 +142,7 @@ namespace Warewolf.Studio.ViewModels
                 return;
             }
 
-            var testNumber = GetNewTestNumber("Test ");
+            var testNumber = GetNewTestNumber("Test");
             var testModel = ServiceTestCommandHandler.CreateTest(ResourceModel, testNumber);
             AddAndSelectTest(testModel);
         }
