@@ -157,7 +157,6 @@ namespace Warewolf.UITests
             WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);
 
             //TODO: remove this workaround for WOLF-2061
-            Mouse.Click(MainStudioWindow.SideMenuBar.NewWorkflowButton);
             MainStudioWindow.SideMenuBar.NewWorkflowButton.WaitForControlEnabled();
         }
 

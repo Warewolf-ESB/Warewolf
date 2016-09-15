@@ -100,38 +100,12 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
-        /// AssertMethod2 - Use 'AssertMethod2ExpectedValues' to pass parameters into this method.
-        /// </summary>
-        public void AssertMethod2()
-        {
-            #region Variable Declarations
-            WpfText uIItemText = this.UIWarewolfDEV2SANELEMTWindow.UIDev2StudioViewModelsCustom.UIUI_ServiceTestView_ACustom.UIPassingText.UIItemText;
-            #endregion
-
-            // Verify that the 'Exists' property of first label next to 'Passing:' label equals 'True'
-            Assert.AreEqual(this.AssertMethod2ExpectedValues.UIItemTextExists, uIItemText.Exists, "Number of passing tests textbox does not Exist after clicking Tests from Context " +
-                    "menu");
-        }
-        
-        /// <summary>
-        /// AssertMethod3 - Use 'AssertMethod3ExpectedValues' to pass parameters into this method.
-        /// </summary>
-        public void AssertMethod3()
-        {
-            #region Variable Declarations
-            WpfListItem createNewTest = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.TestsStudioViewModel.ServiceTestView.TestsListboxList.CreateNewTest;
-            #endregion
-
-            // Verify that the 'Exists' property of 'Warewolf.Studio.ViewModels.DummyServiceTest' list item equals 'True'
-            Assert.AreEqual(this.AssertMethod3ExpectedValues.CreateNewTestExists, createNewTest.Exists, "Creater New test button does not exist after clicking Tests from Context Menu");
-        }
-        
-        /// <summary>
         /// AssertMethod6 - Use 'AssertMethod6ExpectedValues' to pass parameters into this method.
         /// </summary>
         public void AssertMethod6()
         {
             #region Variable Declarations
+            WpfListItem createNewTest = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.TestsStudioViewModel.ServiceTestView.TestsListboxList.CreateNewTest;
             WpfButton createanewtestButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.ServiceTestView.TestsListbox.WarewolfStudioView.CreateanewtestButton;
             WpfCustom serviceTestView = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.TestsStudioViewModel.ServiceTestView;
             WpfHyperlink urlHyperlink = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.TestsStudioViewModel.ServiceTestView.UrlText.UrlHyperlink;
@@ -139,6 +113,9 @@ namespace Warewolf.UITests
             WpfButton runAllButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.TestsStudioViewModel.ServiceTestView.RunAllButton;
             WpfList testsListboxList = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.TestsStudioViewModel.ServiceTestView.TestsListboxList;
             #endregion
+
+            // Verify that the 'Exists' property of 'Warewolf.Studio.ViewModels.DummyServiceTest' list item equals 'True'
+            Assert.AreEqual(this.AssertMethod6ExpectedValues.CreateNewTestExists, createNewTest.Exists, "Creater New test button does not exist after clicking Tests from Context Menu");
 
             // Verify that the 'Exists' property of 'Create a new test' button equals 'True'
             Assert.AreEqual(this.AssertMethod6ExpectedValues.CreateanewtestButtonExists, createanewtestButton.Exists, "Create new tests button does not exist");
@@ -5943,6 +5920,49 @@ namespace Warewolf.UITests
                     "d web address.");
         }
         
+        /// <summary>
+        /// Click_Create_New_Tests - Use 'Click_Create_New_TestsParams' to pass parameters into this method.
+        /// </summary>
+        public void Click_Create_New_Tests()
+        {
+            #region Variable Declarations
+            WpfButton createanewtestButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.TestsStudioViewModel.ServiceTestView.TestsListboxList.CreateNewTest.CreateanewtestButton;
+            WpfListItem test1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.TestsStudioViewModel.ServiceTestView.TestsListboxList.Test1;
+            #endregion
+
+            // Click 'Create a new test' button
+            Mouse.Click(createanewtestButton, new Point(158, 10));
+
+            // Verify that the 'Exists' property of 'Warewolf.Studio.ViewModels.ServiceTestModel' list item equals 'True'
+            Assert.AreEqual(this.Click_Create_New_TestsParams.Test1Exists, test1.Exists, "Test1 does not exist after clicking Create New Test");
+        }
+        
+        /// <summary>
+        /// CREATENewTest - Use 'CREATENewTestExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void CREATENewTest()
+        {
+            #region Variable Declarations
+            WpfText testUrlText = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.TestsStudioViewModel.ServiceTestView.TestUrlText;
+            #endregion
+
+            // Verify that the 'Exists' property of label numbered 2 in 'UI_ServiceTestView_AutoID' custom control equals 'True'
+            Assert.AreEqual(this.CREATENewTestExpectedValues.TestUrlTextExists, testUrlText.Exists, "Test1 Url does not exist after clicking Create New Test");
+        }
+        
+        /// <summary>
+        /// CREATENewTest2 - Use 'CREATENewTest2ExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void CREATENewTest2()
+        {
+            #region Variable Declarations
+            WpfButton duplicateButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.TestsStudioViewModel.ServiceTestView.DuplicateButton;
+            #endregion
+
+            // Verify that the 'Exists' property of '' button equals 'True'
+            Assert.AreEqual(this.CREATENewTest2ExpectedValues.DuplicateButtonExists, duplicateButton.Exists, "Duplicate test button does not exist after clicking Create New Test");
+        }
+        
         #region Properties
         public virtual Assert_CancelConnectionButton_ExistsExpectedValues Assert_CancelConnectionButton_ExistsExpectedValues
         {
@@ -6001,30 +6021,6 @@ namespace Warewolf.UITests
                     this.mAssertMethod1ExpectedValues = new AssertMethod1ExpectedValues();
                 }
                 return this.mAssertMethod1ExpectedValues;
-            }
-        }
-        
-        public virtual AssertMethod2ExpectedValues AssertMethod2ExpectedValues
-        {
-            get
-            {
-                if ((this.mAssertMethod2ExpectedValues == null))
-                {
-                    this.mAssertMethod2ExpectedValues = new AssertMethod2ExpectedValues();
-                }
-                return this.mAssertMethod2ExpectedValues;
-            }
-        }
-        
-        public virtual AssertMethod3ExpectedValues AssertMethod3ExpectedValues
-        {
-            get
-            {
-                if ((this.mAssertMethod3ExpectedValues == null))
-                {
-                    this.mAssertMethod3ExpectedValues = new AssertMethod3ExpectedValues();
-                }
-                return this.mAssertMethod3ExpectedValues;
             }
         }
         
@@ -8176,6 +8172,42 @@ namespace Warewolf.UITests
             }
         }
         
+        public virtual Click_Create_New_TestsParams Click_Create_New_TestsParams
+        {
+            get
+            {
+                if ((this.mClick_Create_New_TestsParams == null))
+                {
+                    this.mClick_Create_New_TestsParams = new Click_Create_New_TestsParams();
+                }
+                return this.mClick_Create_New_TestsParams;
+            }
+        }
+        
+        public virtual CREATENewTestExpectedValues CREATENewTestExpectedValues
+        {
+            get
+            {
+                if ((this.mCREATENewTestExpectedValues == null))
+                {
+                    this.mCREATENewTestExpectedValues = new CREATENewTestExpectedValues();
+                }
+                return this.mCREATENewTestExpectedValues;
+            }
+        }
+        
+        public virtual CREATENewTest2ExpectedValues CREATENewTest2ExpectedValues
+        {
+            get
+            {
+                if ((this.mCREATENewTest2ExpectedValues == null))
+                {
+                    this.mCREATENewTest2ExpectedValues = new CREATENewTest2ExpectedValues();
+                }
+                return this.mCREATENewTest2ExpectedValues;
+            }
+        }
+        
         public MainStudioWindow MainStudioWindow
         {
             get
@@ -8307,10 +8339,6 @@ namespace Warewolf.UITests
         private Assert_variable_filter_textbox_existExpectedValues mAssert_variable_filter_textbox_existExpectedValues;
         
         private AssertMethod1ExpectedValues mAssertMethod1ExpectedValues;
-        
-        private AssertMethod2ExpectedValues mAssertMethod2ExpectedValues;
-        
-        private AssertMethod3ExpectedValues mAssertMethod3ExpectedValues;
         
         private AssertMethod6ExpectedValues mAssertMethod6ExpectedValues;
         
@@ -8670,6 +8698,12 @@ namespace Warewolf.UITests
         
         private Type_TestSite_into_Web_Source_Wizard_Address_TextboxParams mType_TestSite_into_Web_Source_Wizard_Address_TextboxParams;
         
+        private Click_Create_New_TestsParams mClick_Create_New_TestsParams;
+        
+        private CREATENewTestExpectedValues mCREATENewTestExpectedValues;
+        
+        private CREATENewTest2ExpectedValues mCREATENewTest2ExpectedValues;
+        
         private MainStudioWindow mMainStudioWindow;
         
         private MessageBoxWindow mMessageBoxWindow;
@@ -8773,36 +8807,6 @@ namespace Warewolf.UITests
     }
     
     /// <summary>
-    /// Parameters to be passed into 'AssertMethod2'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class AssertMethod2ExpectedValues
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Verify that the 'Exists' property of first label next to 'Passing:' label equals 'True'
-        /// </summary>
-        public bool UIItemTextExists = true;
-        #endregion
-    }
-    
-    /// <summary>
-    /// Parameters to be passed into 'AssertMethod3'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class AssertMethod3ExpectedValues
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Verify that the 'Exists' property of 'Warewolf.Studio.ViewModels.DummyServiceTest' list item equals 'True'
-        /// </summary>
-        public bool CreateNewTestExists = true;
-        #endregion
-    }
-    
-    /// <summary>
     /// Parameters to be passed into 'AssertMethod6'
     /// </summary>
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
@@ -8810,6 +8814,11 @@ namespace Warewolf.UITests
     {
         
         #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Warewolf.Studio.ViewModels.DummyServiceTest' list item equals 'True'
+        /// </summary>
+        public bool CreateNewTestExists = true;
+        
         /// <summary>
         /// Verify that the 'Exists' property of 'Create a new test' button equals 'True'
         /// </summary>
@@ -12529,6 +12538,51 @@ namespace Warewolf.UITests
         /// Verify that the 'Enabled' property of 'Test Connection' button equals 'True'
         /// </summary>
         public bool TestConnectionButtonEnabled = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Click_Create_New_Tests'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Click_Create_New_TestsParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Warewolf.Studio.ViewModels.ServiceTestModel' list item equals 'True'
+        /// </summary>
+        public bool Test1Exists = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'CREATENewTest'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class CREATENewTestExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of label numbered 2 in 'UI_ServiceTestView_AutoID' custom control equals 'True'
+        /// </summary>
+        public bool TestUrlTextExists = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'CREATENewTest2'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class CREATENewTest2ExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of '' button equals 'True'
+        /// </summary>
+        public bool DuplicateButtonExists = true;
         #endregion
     }
     
@@ -29677,6 +29731,39 @@ namespace Warewolf.UITests
                 return this.mNumberOfPassingTestsTexbox;
             }
         }
+        
+        public WpfButton DuplicateButton
+        {
+            get
+            {
+                if ((this.mDuplicateButton == null))
+                {
+                    this.mDuplicateButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mDuplicateButton.SearchProperties[WpfButton.PropertyNames.Name] = "";
+                    this.mDuplicateButton.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mDuplicateButton;
+            }
+        }
+        
+        public WpfText TestUrlText
+        {
+            get
+            {
+                if ((this.mTestUrlText == null))
+                {
+                    this.mTestUrlText = new WpfText(this);
+                    #region Search Criteria
+                    this.mTestUrlText.SearchProperties[WpfText.PropertyNames.Name] = " ";
+                    this.mTestUrlText.SearchProperties[WpfText.PropertyNames.Instance] = "2";
+                    this.mTestUrlText.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mTestUrlText;
+            }
+        }
         #endregion
         
         #region Fields
@@ -29689,6 +29776,10 @@ namespace Warewolf.UITests
         private TestsListboxList mTestsListboxList;
         
         private WpfText mNumberOfPassingTestsTexbox;
+        
+        private WpfButton mDuplicateButton;
+        
+        private WpfText mTestUrlText;
         #endregion
     }
     
@@ -29742,25 +29833,75 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public WpfListItem CreateNewTest
+        public CreateNewTest CreateNewTest
         {
             get
             {
                 if ((this.mCreateNewTest == null))
                 {
-                    this.mCreateNewTest = new WpfListItem(this);
-                    #region Search Criteria
-                    this.mCreateNewTest.SearchProperties[WpfListItem.PropertyNames.Name] = "Warewolf.Studio.ViewModels.DummyServiceTest";
-                    this.mCreateNewTest.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
-                    #endregion
+                    this.mCreateNewTest = new CreateNewTest(this);
                 }
                 return this.mCreateNewTest;
+            }
+        }
+        
+        public WpfListItem Test1
+        {
+            get
+            {
+                if ((this.mTest1 == null))
+                {
+                    this.mTest1 = new WpfListItem(this);
+                    #region Search Criteria
+                    this.mTest1.SearchProperties[WpfListItem.PropertyNames.Name] = "Warewolf.Studio.ViewModels.ServiceTestModel";
+                    this.mTest1.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mTest1;
             }
         }
         #endregion
         
         #region Fields
-        private WpfListItem mCreateNewTest;
+        private CreateNewTest mCreateNewTest;
+        
+        private WpfListItem mTest1;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class CreateNewTest : WpfListItem
+    {
+        
+        public CreateNewTest(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfListItem.PropertyNames.Name] = "Warewolf.Studio.ViewModels.DummyServiceTest";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfButton CreateanewtestButton
+        {
+            get
+            {
+                if ((this.mCreateanewtestButton == null))
+                {
+                    this.mCreateanewtestButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mCreateanewtestButton.SearchProperties[WpfButton.PropertyNames.HelpText] = "Create a new test";
+                    this.mCreateanewtestButton.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mCreateanewtestButton;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfButton mCreateanewtestButton;
         #endregion
     }
     
@@ -37219,30 +37360,25 @@ namespace Warewolf.UITests
             }
         }
         
-        public WpfCustom UIUI_SplitPane_AutoIDCustom
+        public UIUI_SplitPane_AutoIDCustom1 UIUI_SplitPane_AutoIDCustom
         {
             get
             {
                 if ((this.mUIUI_SplitPane_AutoIDCustom == null))
                 {
-                    this.mUIUI_SplitPane_AutoIDCustom = new WpfCustom(this);
-                    #region Search Criteria
-                    this.mUIUI_SplitPane_AutoIDCustom.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.SplitPane";
-                    this.mUIUI_SplitPane_AutoIDCustom.SearchProperties[WpfControl.PropertyNames.AutomationId] = "UI_SplitPane_AutoID";
-                    this.mUIUI_SplitPane_AutoIDCustom.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
-                    #endregion
+                    this.mUIUI_SplitPane_AutoIDCustom = new UIUI_SplitPane_AutoIDCustom1(this);
                 }
                 return this.mUIUI_SplitPane_AutoIDCustom;
             }
         }
         
-        public UIDev2StudioViewModelsCustom UIDev2StudioViewModelsCustom
+        public UIDev2StudioViewModelsCustom1 UIDev2StudioViewModelsCustom
         {
             get
             {
                 if ((this.mUIDev2StudioViewModelsCustom == null))
                 {
-                    this.mUIDev2StudioViewModelsCustom = new UIDev2StudioViewModelsCustom(this);
+                    this.mUIDev2StudioViewModelsCustom = new UIDev2StudioViewModelsCustom1(this);
                 }
                 return this.mUIDev2StudioViewModelsCustom;
             }
@@ -37263,16 +37399,127 @@ namespace Warewolf.UITests
                 return this.mUIExplorerMenuMenu;
             }
         }
+        
+        public UIUI_ServiceTestView_ACustom1 UIUI_ServiceTestView_ACustom
+        {
+            get
+            {
+                if ((this.mUIUI_ServiceTestView_ACustom == null))
+                {
+                    this.mUIUI_ServiceTestView_ACustom = new UIUI_ServiceTestView_ACustom1(this);
+                }
+                return this.mUIUI_ServiceTestView_ACustom;
+            }
+        }
         #endregion
         
         #region Fields
         private WpfCustom mUIItemCustom;
         
-        private WpfCustom mUIUI_SplitPane_AutoIDCustom;
+        private UIUI_SplitPane_AutoIDCustom1 mUIUI_SplitPane_AutoIDCustom;
         
-        private UIDev2StudioViewModelsCustom mUIDev2StudioViewModelsCustom;
+        private UIDev2StudioViewModelsCustom1 mUIDev2StudioViewModelsCustom;
         
         private WpfMenu mUIExplorerMenuMenu;
+        
+        private UIUI_ServiceTestView_ACustom1 mUIUI_ServiceTestView_ACustom;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIUI_SplitPane_AutoIDCustom1 : WpfCustom
+    {
+        
+        public UIUI_SplitPane_AutoIDCustom1(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.SplitPane";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "UI_SplitPane_AutoID";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public UIUI_TabManager_AutoIDTabList1 UIUI_TabManager_AutoIDTabList
+        {
+            get
+            {
+                if ((this.mUIUI_TabManager_AutoIDTabList == null))
+                {
+                    this.mUIUI_TabManager_AutoIDTabList = new UIUI_TabManager_AutoIDTabList1(this);
+                }
+                return this.mUIUI_TabManager_AutoIDTabList;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIUI_TabManager_AutoIDTabList1 mUIUI_TabManager_AutoIDTabList;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIUI_TabManager_AutoIDTabList1 : WpfTabList
+    {
+        
+        public UIUI_TabManager_AutoIDTabList1(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfTabList.PropertyNames.AutomationId] = "UI_TabManager_AutoID";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public UIDev2ViewModelsStudioTabPage UIDev2ViewModelsStudioTabPage
+        {
+            get
+            {
+                if ((this.mUIDev2ViewModelsStudioTabPage == null))
+                {
+                    this.mUIDev2ViewModelsStudioTabPage = new UIDev2ViewModelsStudioTabPage(this);
+                }
+                return this.mUIDev2ViewModelsStudioTabPage;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIDev2ViewModelsStudioTabPage mUIDev2ViewModelsStudioTabPage;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIDev2ViewModelsStudioTabPage : WpfTabPage
+    {
+        
+        public UIDev2ViewModelsStudioTabPage(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfTabPage.PropertyNames.Name] = "Dev2.ViewModels.StudioTestViewModel";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public UIDev2StudioViewModelsCustom UIDev2StudioViewModelsCustom
+        {
+            get
+            {
+                if ((this.mUIDev2StudioViewModelsCustom == null))
+                {
+                    this.mUIDev2StudioViewModelsCustom = new UIDev2StudioViewModelsCustom(this);
+                }
+                return this.mUIDev2StudioViewModelsCustom;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIDev2StudioViewModelsCustom mUIDev2StudioViewModelsCustom;
         #endregion
     }
     
@@ -37281,6 +37528,44 @@ namespace Warewolf.UITests
     {
         
         public UIDev2StudioViewModelsCustom(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ContentPane";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Dev2.Studio.ViewModels.WorkSurface.WorkSurfaceContextViewModel";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfCustom UIUI_ServiceTestView_ACustom
+        {
+            get
+            {
+                if ((this.mUIUI_ServiceTestView_ACustom == null))
+                {
+                    this.mUIUI_ServiceTestView_ACustom = new WpfCustom(this);
+                    #region Search Criteria
+                    this.mUIUI_ServiceTestView_ACustom.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ServiceTestView";
+                    this.mUIUI_ServiceTestView_ACustom.SearchProperties[WpfControl.PropertyNames.AutomationId] = "UI_ServiceTestView_AutoID";
+                    this.mUIUI_ServiceTestView_ACustom.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mUIUI_ServiceTestView_ACustom;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfCustom mUIUI_ServiceTestView_ACustom;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIDev2StudioViewModelsCustom1 : WpfCustom
+    {
+        
+        public UIDev2StudioViewModelsCustom1(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -37394,6 +37679,75 @@ namespace Warewolf.UITests
         
         #region Fields
         private WpfText mUIItemText;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIUI_ServiceTestView_ACustom1 : WpfCustom
+    {
+        
+        public UIUI_ServiceTestView_ACustom1(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ServiceTestView";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "UI_ServiceTestView_AutoID";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public UITestsListboxList UITestsListboxList
+        {
+            get
+            {
+                if ((this.mUITestsListboxList == null))
+                {
+                    this.mUITestsListboxList = new UITestsListboxList(this);
+                }
+                return this.mUITestsListboxList;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UITestsListboxList mUITestsListboxList;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UITestsListboxList : WpfList
+    {
+        
+        public UITestsListboxList(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfList.PropertyNames.AutomationId] = "TestsListbox";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfListItem UIWarewolfStudioViewMoListItem
+        {
+            get
+            {
+                if ((this.mUIWarewolfStudioViewMoListItem == null))
+                {
+                    this.mUIWarewolfStudioViewMoListItem = new WpfListItem(this);
+                    #region Search Criteria
+                    this.mUIWarewolfStudioViewMoListItem.SearchProperties[WpfListItem.PropertyNames.Name] = "Warewolf.Studio.ViewModels.DummyServiceTest";
+                    this.mUIWarewolfStudioViewMoListItem.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mUIWarewolfStudioViewMoListItem;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfListItem mUIWarewolfStudioViewMoListItem;
         #endregion
     }
 }
