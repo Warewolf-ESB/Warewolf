@@ -73,6 +73,7 @@ namespace Warewolf.Studio.ViewModels
         {
             ParentId = resourceId;
             NeverRunString = "Never run";
+            IsTestRunning = false;
         }
 
         public ServiceTestModel Item
