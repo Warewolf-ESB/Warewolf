@@ -270,6 +270,13 @@ namespace Dev2.Activities.Specs.TestFramework
             Assert.IsTrue(serviceTestModel.TestInvalid);
         }
 
+        [Given(@"there are no tests")]
+        public void GivenThereAreNoTests()
+        {
+            var serviceTest = GetTestForCurrentTestFramework();
+            Assert.AreEqual(0, serviceTest.Count());
+        }
+
         [Then(@"""(.*)"" is pending")]
         public void ThenIsPending(string testName)
         {
