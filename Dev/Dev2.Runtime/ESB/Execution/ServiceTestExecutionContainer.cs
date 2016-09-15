@@ -1,13 +1,16 @@
 using System;
 using System.Activities;
 using System.Diagnostics.CodeAnalysis;
+using System.Text;
 using System.Threading;
 using Dev2.Activities;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Communication;
+using Dev2.Data.Util;
 using Dev2.DataList.Contract;
+using Dev2.Diagnostics.Debug;
 using Dev2.DynamicServices.Objects;
 using Dev2.Interfaces;
 using Dev2.Runtime.ESB.WF;
@@ -15,14 +18,19 @@ using Dev2.Runtime.Execution;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Security;
 using Dev2.Workspaces;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace Dev2.Runtime.ESB.Execution
 {
     public class ServiceTestExecutionContainer : EsbExecutionContainer
     {
-        public ServiceTestExecutionContainer(ServiceAction sa, IDSFDataObject dataObj, IWorkspace theWorkspace, IEsbChannel esbChannel)
+        private readonly EsbExecuteRequest _request;
+
+        public ServiceTestExecutionContainer(ServiceAction sa, IDSFDataObject dataObj, IWorkspace theWorkspace, IEsbChannel esbChannel, EsbExecuteRequest request)
             : base(sa, dataObj, theWorkspace, esbChannel)
         {
+            _request = request;
         }
 
         /// <summary>
@@ -93,6 +101,8 @@ namespace Dev2.Runtime.ESB.Execution
             Guid result = new Guid();
             var wfappUtils = new WfApplicationUtils();
             ErrorResultTO invokeErrors;
+            var resourceID = DataObject.ResourceID;
+            var test = TestCatalog.Instance.FetchTest(resourceID, DataObject.TestName);
             try
             {
                 IExecutionToken exeToken = new ExecutionToken { IsUserCanceled = false };
@@ -102,11 +112,15 @@ namespace Dev2.Runtime.ESB.Execution
                 {
                     wfappUtils.DispatchDebugState(DataObject, StateType.Start, DataObject.Environment.HasErrors(), DataObject.Environment.FetchErrors(), out invokeErrors, DateTime.Now, true, false, false);
                 }
-                Eval(DataObject.ResourceID, DataObject);
+                Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+                var testRunResult = Eval(resourceID, DataObject,test);
+                
                 if (DataObject.IsDebugMode())
                 {
                     wfappUtils.DispatchDebugState(DataObject, StateType.End, DataObject.Environment.HasErrors(), DataObject.Environment.FetchErrors(), out invokeErrors, DataObject.StartTime, false, true);
                 }
+                testRunResult.DebugForTest = TestDebugMessageRepo.Instance.FetchDebugItems(resourceID, test.TestName);
+                _request.ExecuteResult = serializer.SerializeToBuilder(testRunResult);
                 result = DataObject.DataListID;
             }
             catch (InvalidWorkflowException iwe)
@@ -134,7 +148,7 @@ namespace Dev2.Runtime.ESB.Execution
             EvalInner(dsfDataObject, resource, update);
         }
 
-        private void Eval(Guid resourceID, IDSFDataObject dataObject)
+        private TestRunResult Eval(Guid resourceID, IDSFDataObject dataObject,IServiceTestModelTO test)
         {
             Dev2Logger.Debug("Getting Resource to Execute");
             IDev2Activity resource = ResourceCatalog.Instance.Parse(TheWorkspace.ID, resourceID);
@@ -142,8 +156,83 @@ namespace Dev2.Runtime.ESB.Execution
             var execPlan = serializer.SerializeToBuilder(resource);
             var clonedExecPlan = serializer.Deserialize<IDev2Activity>(execPlan);
             Dev2Logger.Debug("Got Resource to Execute");
-            EvalInner(dataObject, clonedExecPlan, dataObject.ForEachUpdateValue);
+            
+            if (test != null)
+            {
+                if (test.Inputs != null)
+                {
+                    foreach (var input in test.Inputs)
+                    {
+                        var variable = DataListUtil.AddBracketsToValueIfNotExist(input.Variable);
+                        var value = input.Value;
+                        if (variable.StartsWith("[[@"))
+                        {
+                            var jContainer = JsonConvert.DeserializeObject(value) as JObject;
+                            dataObject.Environment.AddToJsonObjects(variable, jContainer);
+                        }
+                        else
+                        {
+                            dataObject.Environment.Assign(variable, value, 0);
+                        }
+                    }
+                }
+                EvalInner(dataObject, clonedExecPlan, dataObject.ForEachUpdateValue);
+                var testPassed = true;
+                var failureMessage =new StringBuilder();
+                if (test.Outputs != null)
+                {
+                    foreach (var output in test.Outputs)
+                    {
+                        var variable = DataListUtil.AddBracketsToValueIfNotExist(output.Variable);
+                        var value = output.Value;
 
+                        var result = dataObject.Environment.Eval(variable, 0);
+                        if (result.IsWarewolfAtomResult)
+                        {
+                            var x = (result as CommonFunctions.WarewolfEvalResult.WarewolfAtomResult)?.Item;
+                            // ReSharper disable once PossibleNullReferenceException
+                            var actualValue = x.ToString();
+                            if (!actualValue.Equals(value))
+                            {
+                                testPassed = false;
+                                failureMessage.AppendLine($"Assert Equal failed. Expected {value} for {variable} but got {actualValue}");
+                            }
+                        }
+                    }
+                }
+                var hasErrors = DataObject.Environment.HasErrors();
+                if (test.ErrorExpected)
+                {
+
+                    testPassed = hasErrors;
+                }
+                else if (test.NoErrorExpected)
+                {
+                    testPassed = !hasErrors;
+                }
+
+                test.TestFailing = !testPassed;
+                test.TestPassed = testPassed;
+                test.TestPending = false;
+                test.TestInvalid = false;
+                test.LastRunDate = DateTime.Now;
+
+
+                Common.Utilities.PerformActionInsideImpersonatedContext(Common.Utilities.ServerUser, () => { TestCatalog.Instance.SaveTest(resourceID, test); });
+
+                var testRunResult = new TestRunResult { TestName = test.TestName };
+                if (test.TestFailing)
+                {
+                    testRunResult.Result = RunResult.TestFailed;
+                    testRunResult.Message = failureMessage.ToString();
+                }
+                if (test.TestPassed)
+                {
+                    testRunResult.Result = RunResult.TestPassed;
+                }
+                return testRunResult;
+            }
+            throw new Exception($"Test {dataObject.TestName} for Resource {dataObject.ServiceName} ID {resourceID}");
         }
 
 

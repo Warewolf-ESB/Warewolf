@@ -462,36 +462,7 @@ Scenario: Delete an Disabled Test
 	Then Delete is enabled for "Test1"
 	When I delete "Test1"
 	Then The "DeleteConfirmation" popup is shown I click Ok
-	Then there are no tests
-
-Scenario: Saved workflow with tests changes the inputs
-		Given I have a resource "Workflow 1"
-		And "Workflow 1" is saved with output as
-		| Out Var Name |
-		| [[a]]        |
-		| [[b]]        |
-		And "Workflow 1" is saved with input as 
-		| In Var Name |
-		| [[msg]]     |
-		When the Test builder is loaded with "Workflow 1"
-		And Tab Header is "Workflow 1 - Tests"
-		And there are no tests
-		And I click New Test
-		And I set Test Values as
-		| TestName | AuthenticationType | Error |
-		| Test1    | Windows            | true  |
-		Then NoErrorExpected is "false"	
-		And save is enabled
-		And "Test1" is passing
-		When I save
-		Then Tab Header is "Workflow 1 - Tests"
-		And there are 1 tests		
-		When I change "Workflow 1" Tests inputs as
-		| In Var Name | new In Var Name |
-		| [[msg]]     | [[newmsg]]      |
-		When I Save workflow "Workflow 1"
-		Then "Test1" is Invalid
-
+	Then there are 0 tests
 
 
 Scenario: Delete Resource with tests
@@ -513,6 +484,15 @@ Scenario: Delete folder with resources deletes all tests
 	Then "PluginSource1" has 0 tests
 	And "Hello world" has 0 tests
 
+Scenario: Saved workflow with tests changes the inputs
+		Given the test builder is open with "WorkflowWithTests"
+		Then there are 4 tests
+		And I close the test builder
+		When I remove input "input" from workflow "WorkflowWithTests" 
+		And I save Workflow	"WorkflowWithTests"
+		When the test builder is open with "WorkflowWithTests"
+		And Tab Header is "WorkflowWithTests - Tests"				
+		And all test are invalid	
 
 Scenario: Run all unselects all tests on selection shows corect debug
 	Given the test builder is open with "WorkflowWithTests"
@@ -522,6 +502,7 @@ Scenario: Run all unselects all tests on selection shows corect debug
 	And "Test3" is invalid
 	And "Test4" is pending
 	When I run all tests
+	And selected test is empty
 	And I select "Test1"
 	Then debug window is visible	
 
@@ -560,7 +541,7 @@ Scenario: Run a test with single scalar inputs and outputs
 	And there are no tests
 	When I click New Test
 	Then a new test is added
-	#And Tab Header is "Workflow 1 - Tests *"
+	#And Tab Header is "Hello World - Tests *"
 	And test name starts with "Test 1"
 	And username is blank
 	And password is blank
@@ -580,31 +561,85 @@ Scenario: Run a test with single scalar inputs and outputs
 	| Variable Name | Value      |
 	| Message       | Hello Bob. |
 	And I save
-	When I run the test in debug mode
-	Then service inputs as
-		| Variable | Value |
-		| [[Name]] | Bob   |
-	Then the "Decision" debug inputs as
-	  | Recordset            |
-	  | [[rec(1).a]] = yes |
-	  | [[rec(2).a]] = no |
-	And the "Decsion"  debug outputs as    
-	  |               |
-	  | [[count]] = 2 |
-	And the "Assign" debug inputs as
-	  | # | Variable      | New Value |
-	  | 1 | [[rec().a]] = | yes       |
-	  | 2 | [[rec().a]] = | no        |
-	And the "Assign" debug outputs as    
-	  | # |                    |
-	  | 1 | [[rec(1).a]] = yes |
-	  | 2 | [[rec(2).a]] = no  |
-	And the service outputs as
-	  | Variable    | Value      |
-	  | [[Message]] | Hello Bob. |
-	And test result is Passed
+	When I run the test
+	Then test result is Passed
+	#Then service inputs as
+	#	| Variable | Value |
+	#	| [[Name]] | Bob   |
+	#Then the "Decision" debug inputs as
+	#  | Recordset            |
+	#  | [[rec(1).a]] = yes |
+	#  | [[rec(2).a]] = no |
+	#And the "Decsion"  debug outputs as    
+	#  |               |
+	#  | [[count]] = 2 |
+	#And the "Assign" debug inputs as
+	#  | # | Variable      | New Value |
+	#  | 1 | [[rec().a]] = | yes       |
+	#  | 2 | [[rec().a]] = | no        |
+	#And the "Assign" debug outputs as    
+	#  | # |                    |
+	#  | 1 | [[rec(1).a]] = yes |
+	#  | 2 | [[rec(2).a]] = no  |
+	#And the service outputs as
+	#  | Variable    | Value      |
+	#  | [[Message]] | Hello Bob. |
+	When I delete "Test 1"
+	Then The "DeleteConfirmation" popup is shown I click Ok
+	Then there are no tests
 
-
+Scenario: Run a test with single scalar inputs and outputs failure
+	Given the test builder is open with existing service "Hello World"	
+	And Tab Header is "Hello World - Tests"
+	And there are no tests
+	When I click New Test
+	Then a new test is added
+	#And Tab Header is "Hello World - Tests *"
+	And test name starts with "Test 1"
+	And username is blank
+	And password is blank
+	And inputs are
+	| Variable Name | Value |
+	| Name          |       |
+	And outputs as
+	| Variable Name | Value |
+	| Message       |       |
+	And save is enabled
+	And test status is pending
+	And test is enabled
+	And I update inputs as
+	| Variable Name | Value |
+	| Name          | Bob   |
+	And I update outputs as
+	| Variable Name | Value      |
+	| Message       | Hello Mary. |
+	And I save
+	When I run the test
+	Then test result is Failed
+	#Then service inputs as
+	#	| Variable | Value |
+	#	| [[Name]] | Bob   |
+	#Then the "Decision" debug inputs as
+	#  | Recordset            |
+	#  | [[rec(1).a]] = yes |
+	#  | [[rec(2).a]] = no |
+	#And the "Decsion"  debug outputs as    
+	#  |               |
+	#  | [[count]] = 2 |
+	#And the "Assign" debug inputs as
+	#  | # | Variable      | New Value |
+	#  | 1 | [[rec().a]] = | yes       |
+	#  | 2 | [[rec().a]] = | no        |
+	#And the "Assign" debug outputs as    
+	#  | # |                    |
+	#  | 1 | [[rec(1).a]] = yes |
+	#  | 2 | [[rec(2).a]] = no  |
+	#And the service outputs as
+	#  | Variable    | Value      |
+	#  | [[Message]] | Hello Bob. |
+	When I delete "Test 1"
+	Then The "DeleteConfirmation" popup is shown I click Ok
+	Then there are no tests
 
 #Feedback specs
 Scenario: Duplicate test new test has name
