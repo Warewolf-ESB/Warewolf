@@ -391,11 +391,11 @@ namespace Dev2.Runtime.WebServer.Handlers
             resObj.Add("Test Name",result.TestName);
             if(result.Result == RunResult.TestPassed)
             {
-                resObj.Add("Result", "Passed");
+                resObj.Add("Result", Warewolf.Resource.Messages.Messages.Test_PassedResult);
             }
             else
             {
-                resObj.Add("Result", "Failed");
+                resObj.Add("Result", Warewolf.Resource.Messages.Messages.Test_FailureResult);
                 resObj.Add("Message", result.Message);
             }
             return resObj;

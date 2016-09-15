@@ -253,7 +253,7 @@ namespace Dev2.Runtime.ESB.Execution
                                     if (!string.Equals(actualValue,value))
                                     {
                                         testPassed = false;
-                                        failureMessage.AppendLine($"Assert Equal failed. Expected {value} for {variable} but got {actualValue}");
+                                        failureMessage.AppendLine(string.Format(Warewolf.Resource.Messages.Messages.Test_FailureMessage_Equals, value, variable, actualValue));
                                     }
                                 }
                             }
