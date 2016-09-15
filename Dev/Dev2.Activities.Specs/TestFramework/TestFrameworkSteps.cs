@@ -273,6 +273,8 @@ namespace Dev2.Activities.Specs.TestFramework
         }
 
         [Given(@"there are no tests")]
+        [When(@"there are no tests")]
+        [Then(@"there are no tests")]
         public void GivenThereAreNoTests()
         {
             var serviceTest = GetTestForCurrentTestFramework();
@@ -316,15 +318,7 @@ namespace Dev2.Activities.Specs.TestFramework
                 Assert.Fail($"Resource Model for {workflowName} not found");
             }
         }
-
-        [Given(@"there are no tests")]
-        [When(@"there are no tests")]
-        [Then(@"there are no tests")]
-        public void GivenThereAreNoTests()
-        {
-            var currentTests = GetTestForCurrentTestFramework();
-            Assert.IsFalse(currentTests.Any());
-        }
+        
 
 
         [Given(@"the test builder is open with ""(.*)""")]

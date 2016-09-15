@@ -486,7 +486,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void DeleteTestCommand_GivenResourceModelIsConnectedAndTestIsDisabled_ShouldsetCanExecuteTrue()
         {
             //---------------Set up test pack-------------------
-            var vm = new ServiceTestViewModel(CreateResourceModel(), new SynchronousAsyncWorker());
+            var vm = new ServiceTestViewModel(CreateResourceModel(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object);
             vm.CreateTestCommand.Execute(null);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(vm);
@@ -507,7 +507,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void DeleteTestCommand_GivenResourceModelIsNotConnectedAndTestIsDisabled_ShouldsetCanExecuteTrue()
         {
             //---------------Set up test pack-------------------
-            var vm = new ServiceTestViewModel(CreateResourceModel(false), new SynchronousAsyncWorker());
+            var vm = new ServiceTestViewModel(CreateResourceModel(false), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object);
             vm.CreateTestCommand.Execute(null);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(vm);
