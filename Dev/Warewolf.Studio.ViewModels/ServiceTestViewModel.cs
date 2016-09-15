@@ -110,6 +110,7 @@ namespace Warewolf.Studio.ViewModels
         private void RunAllTests()
         {
             ServiceTestCommandHandler.RunAllTestsCommand(IsDirty,Tests,ResourceModel,AsyncWorker);
+            SelectedServiceTest = null;
         }
 
         private void DuplicateTest()
