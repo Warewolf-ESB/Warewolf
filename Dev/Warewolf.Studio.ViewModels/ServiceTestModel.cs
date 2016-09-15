@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
 using Dev2.Common.Interfaces;
@@ -23,8 +24,8 @@ namespace Warewolf.Studio.ViewModels
         private bool _testPending;
         private bool _testInvalid;
         private string _password;
-        private List<IServiceTestInput> _inputs;
-        private List<IServiceTestOutput> _outputs;
+        private ObservableCollection<IServiceTestInput> _inputs;
+        private ObservableCollection<IServiceTestOutput> _outputs;
         private bool _noErrorExpected;
         private bool _errorExpected;
         private bool _isNewTest;
@@ -156,7 +157,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        public List<IServiceTestInput> Inputs
+        public ObservableCollection<IServiceTestInput> Inputs
         {
             get { return _inputs; }
             set
@@ -167,7 +168,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        public List<IServiceTestOutput> Outputs
+        public ObservableCollection<IServiceTestOutput> Outputs
         {
             get { return _outputs; }
             set

@@ -1,8 +1,9 @@
-using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
 using Dev2;
 using Dev2.Common;
+using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Threading;
 using Dev2.Data;
@@ -32,8 +33,8 @@ namespace Warewolf.Studio.ViewModels
                 TestPending = true,
                 Enabled = true,
                 NewTest = true,
-                Inputs = new List<IServiceTestInput>(),
-                Outputs = new List<IServiceTestOutput>(),
+                Inputs = new ObservableCollection< IServiceTestInput >(),
+                Outputs = new ObservableCollection< IServiceTestOutput >(),
             };
             if (!string.IsNullOrEmpty(resourceModel.DataList))
             {
@@ -47,10 +48,10 @@ namespace Warewolf.Studio.ViewModels
                         var serviceTestInput = new ServiceTestInput(sca.DisplayValue, sca.Value);
                         serviceTestInput.AddNewAction = () => testModel.AddRow(serviceTestInput, DataList);
                         return (IServiceTestInput)serviceTestInput;
-                    }).ToList();
+                    }).ToObservableCollection();
 
                 testModel.Outputs = outputList
-                                    .Select(sca => new ServiceTestOutput(sca.DisplayValue, sca.Value) as IServiceTestOutput).ToList();
+                                    .Select(sca => new ServiceTestOutput(sca.DisplayValue, sca.Value) as IServiceTestOutput).ToObservableCollection();
             }
             testModel.Item = testModel;
             return testModel;
@@ -96,9 +97,12 @@ namespace Warewolf.Studio.ViewModels
 
         public IServiceTestModel DuplicateTest(IServiceTestModel selectedTest)
         {
+            var nameForDisplay = selectedTest.NameForDisplay.Replace(" *", "");
+
             var testClone = new ServiceTestModel(selectedTest.ParentId)
             {
                 TestName = selectedTest.TestName,
+                NameForDisplay = nameForDisplay + " *",
                 Inputs = selectedTest.Inputs,
                 Outputs = selectedTest.Outputs,
                 AuthenticationType = selectedTest.AuthenticationType,

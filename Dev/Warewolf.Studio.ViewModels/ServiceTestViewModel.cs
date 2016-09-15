@@ -64,7 +64,7 @@ namespace Warewolf.Studio.ViewModels
             RunSelectedTestCommand = new DelegateCommand(RunSelectedTest, () => CanRunSelectedTest);
             StopTestCommand = new DelegateCommand(StopTest, () => CanStopTest);
             CreateTestCommand = new DelegateCommand(CreateTests);
-            DeleteTestCommand = new DelegateCommand(DeleteTest, () => CanDeleteTest);
+            DeleteTestCommand = new DelegateCommand<IServiceTestModel>(DeleteTest, CanDeleteTest);
             DuplicateTestCommand = new DelegateCommand(DuplicateTest, () => CanDuplicateTest);
             CanSave = true;
             RunAllTestsUrl = WebServer.GetWorkflowUri(resourceModel, "", UrlType.Tests)?.ToString();
@@ -101,7 +101,7 @@ namespace Warewolf.Studio.ViewModels
         private void RunSelectedTest()
         {
             SelectedServiceTest.IsTestRunning = true;
-            ServiceTestCommandHandler.RunSelectedTest(SelectedServiceTest,ResourceModel,AsyncWorker);
+            ServiceTestCommandHandler.RunSelectedTest(SelectedServiceTest, ResourceModel, AsyncWorker);
         }
 
         private void RunAllTestsInBrowser()
@@ -123,12 +123,10 @@ namespace Warewolf.Studio.ViewModels
         #endregion
 
 
-
-        private bool CanDeleteTest => GetPermissions()
-                                                    && SelectedServiceTest != null
-                                                    && !SelectedServiceTest.Enabled
-            && IsServerConnected()
-                                                    ;
+        private bool CanDeleteTest(IServiceTestModel selectedTestModel)
+        {
+            return GetPermissions() && selectedTestModel != null && !selectedTestModel.Enabled && IsServerConnected();
+        }
 
         public bool IsLoading { get; set; }
 
@@ -166,7 +164,7 @@ namespace Warewolf.Studio.ViewModels
         // ReSharper disable once UnusedAutoPropertyAccessor.Local
         private bool CanStopTest { get; set; }
         private bool CanRunSelectedTestInBrowser => SelectedServiceTest != null && !SelectedServiceTest.IsDirty && IsServerConnected();
-        private bool CanRunSelectedTest => GetPermissions() &&  IsServerConnected();
+        private bool CanRunSelectedTest => GetPermissions() && IsServerConnected();
         private bool CanDuplicateTest => GetPermissions() && SelectedServiceTest != null;
 
         public bool CanSave
@@ -276,10 +274,10 @@ namespace Warewolf.Studio.ViewModels
                     Enabled = model.Enabled,
                     ErrorExpected = model.ErrorExpected,
                     NoErrorExpected = model.NoErrorExpected,
-                    Inputs = model.Inputs,
+                    Inputs = model.Inputs.ToList(),
                     LastRunDate = model.LastRunDate,
                     OldTestName = model.OldTestName,
-                    Outputs = model.Outputs,
+                    Outputs = model.Outputs.ToList(),
                     Password = model.Password,
                     IsDirty = model.IsDirty,
                     TestPending = model.TestPending,
@@ -322,10 +320,15 @@ namespace Warewolf.Studio.ViewModels
         {
             if (HasDuplicates())
             {
-                PopupController?.Show(Resources.Languages.Core.ServiceTestDuplicateTestNameMessage, Resources.Languages.Core.ServiceTestDuplicateTestNameHeader, MessageBoxButton.OK, MessageBoxImage.Error, null, false, true, false, false);
+                ShowDuplicatePopup();
                 return true;
             }
             return false;
+        }
+
+        public void ShowDuplicatePopup()
+        {
+            PopupController?.Show(Resources.Languages.Core.ServiceTestDuplicateTestNameMessage, Resources.Languages.Core.ServiceTestDuplicateTestNameHeader, MessageBoxButton.OK, MessageBoxImage.Error, null, false, true, false, false);
         }
 
         public bool HasDuplicates() => RealTests().ToList().GroupBy(x => x.TestName).Where(group => @group.Count() > 1).Select(group => @group.Key).Any();
@@ -360,7 +363,8 @@ namespace Warewolf.Studio.ViewModels
             {
                 if (value == null)
                 {
-                    _selectedServiceTest.PropertyChanged -= ActionsForPropChanges;
+                    if (_selectedServiceTest != null)
+                        _selectedServiceTest.PropertyChanged -= ActionsForPropChanges;
                     _selectedServiceTest = null;
                     OnPropertyChanged(() => SelectedServiceTest);
                     return;
@@ -370,7 +374,9 @@ namespace Warewolf.Studio.ViewModels
                     return;
                 }
                 if (_selectedServiceTest != null)
+                {
                     _selectedServiceTest.PropertyChanged -= ActionsForPropChanges;
+                }
                 _selectedServiceTest = value;
                 _selectedServiceTest.PropertyChanged += ActionsForPropChanges;
                 SetSelectedTestUrl();
@@ -386,6 +392,21 @@ namespace Warewolf.Studio.ViewModels
                 ViewModelUtils.RaiseCanExecuteChanged(DeleteTestCommand);
             }
             if (e.PropertyName == "IsDirty")
+            {
+                ViewModelUtils.RaiseCanExecuteChanged(RunSelectedTestInBrowserCommand);
+                if (IsDirty)
+                {
+                    if (!DisplayName.EndsWith(" *"))
+                    {
+                        DisplayName += " *";
+                    }
+                }
+                else
+                {
+                    DisplayName = _displayName.Replace("*", "").TrimEnd(' ');
+                }
+            }
+            if (e.PropertyName == "Inputs" || e.PropertyName == "Outputs")
             {
                 ViewModelUtils.RaiseCanExecuteChanged(RunSelectedTestInBrowserCommand);
             }
@@ -434,16 +455,16 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        private void DeleteTest()
+        private void DeleteTest(IServiceTestModel test)
         {
-            if (SelectedServiceTest == null) return;
-            var nameOfItemBeingDeleted = SelectedServiceTest.NameForDisplay.Replace("*", "").TrimEnd(' ');
+            if (test == null) return;
+            var nameOfItemBeingDeleted = test.NameForDisplay.Replace("*", "").TrimEnd(' ');
             if (PopupController.ShowDeleteConfirmation(nameOfItemBeingDeleted) == MessageBoxResult.Yes)
             {
                 try
                 {
-                    ResourceModel.Environment.ResourceRepository.DeleteResourceTest(ResourceModel.ID, SelectedServiceTest.TestName);
-                    var testToRemove = _tests.SingleOrDefault(model => model.ParentId == SelectedServiceTest.ParentId && model.TestName == SelectedServiceTest.TestName);
+                    ResourceModel.Environment.ResourceRepository.DeleteResourceTest(ResourceModel.ID, test.TestName);
+                    var testToRemove = _tests.SingleOrDefault(model => model.ParentId == test.ParentId && model.TestName == SelectedServiceTest.TestName);
                     _tests.Remove(testToRemove); //test
                     OnPropertyChanged(() => Tests); //test
                     SelectedServiceTest = null;
@@ -498,8 +519,8 @@ namespace Warewolf.Studio.ViewModels
                 Password = to.Password,
                 ParentId = to.ResourceId,
                 TestInvalid = to.TestInvalid,
-                Inputs = to.Inputs?.Select(input => new ServiceTestInput(input.Variable, input.Value) as IServiceTestInput).ToList(),
-                Outputs = to.Outputs?.Select(output => new ServiceTestOutput(output.Variable, output.Value) as IServiceTestOutput).ToList()
+                Inputs = to.Inputs?.Select(input => new ServiceTestInput(input.Variable, input.Value) as IServiceTestInput).ToObservableCollection(),
+                Outputs = to.Outputs?.Select(output => new ServiceTestOutput(output.Variable, output.Value) as IServiceTestOutput).ToObservableCollection()
             };
             return serviceTestModel;
         }
@@ -519,16 +540,8 @@ namespace Warewolf.Studio.ViewModels
         {
             get
             {
-                if (IsDirty)
-                {
-                    if (!_displayName.EndsWith(" *"))
-                    {
-                        _displayName += " *";
-                    }
-                    return _displayName;
-                }
-                var displayName = _displayName.Replace("*", "").TrimEnd(' ');
-                return displayName;
+               
+                return _displayName;
             }
             set
             {
