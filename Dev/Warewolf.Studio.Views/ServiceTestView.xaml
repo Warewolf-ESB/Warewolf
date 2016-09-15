@@ -420,10 +420,6 @@
                                                                 d:DataContext="{d:DesignInstance Type=interfaces:IServiceTestInput}">
                                             <DataGridTemplateColumn.CellTemplate>
                                                 <DataTemplate>
-                                                    <Grid PreviewKeyDown="GridPreviewKeyDown"
-                                                          Background="Transparent"
-                                                          HorizontalAlignment="Stretch">
-                                                        <CheckBox IsChecked="{Binding Path=EmptyIsNull}" 
                                                     <CheckBox IsChecked="{Binding Path=EmptyIsNull}" 
                                                               HorizontalAlignment="Center"
                                                                   Checked="ToggleButton_OnChecked"
