@@ -82,8 +82,12 @@
         <TextBlock Grid.Column="0" Grid.Row="2" Text="Characters" Margin="{StaticResource ControlBorderTop}"/>
         <ui:IntellisenseTextBox Grid.Column="1" 
                                 Grid.Row="2"
-                                AllowUserInsertLine="False"
+                                AllowMultilinePaste="True"
+                                AcceptsReturn="True"
+                                AllowUserInsertLine="True"
+                                MaxHeight="52"
                                 Margin="{StaticResource ControlBorderTop}"
+                                TextWrapping="Wrap"
                                 DefaultText="Look for info" 
                                 Text="{Binding Path=ModelItem.Characters,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
