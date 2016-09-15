@@ -8,13 +8,56 @@ namespace Warewolf.UITests
     public class WorkflowTestingTests
     {
         [TestMethod]
-        public void WorkflowTestingUITests()
+        public void CreateAndSaveWorkFlowTest()
         {
             //Uimap.CreateAndSave_Dice_Wokflow();
             Uimap.Click_Create_New_Tests();
             Uimap.Update_Test_Name();
             Uimap.Click_Save_Ribbon_Button_With_No_Save_Dialog();
             Uimap.Click_Disable_This_Test();
+        }
+
+        [TestMethod]
+        public void RunAllTestsBeforeSaving()
+        {
+            //Uimap.CreateAndSave_Dice_Wokflow();
+            Uimap.Select_Tests_From_Context_Menu();
+            Uimap.Click_Create_New_Tests();
+            Uimap.Update_Test_Name();
+            Uimap.Click_RunAll_Button("UNSAVED");
+            Uimap.Click_MessageBox_OK();
+            Uimap.Click_Save_Ribbon_Button_With_No_Save_Dialog();
+            Uimap.Click_Create_New_Tests();
+            Uimap.Update_Test_Name();
+            Uimap.Click_RunAll_Button("DUPLICATENAME");
+            Uimap.Click_MessageBox_OK();
+            Uimap.Update_Test_Name("Second_Dice_Test");
+            Uimap.Click_Save_Ribbon_Button_With_No_Save_Dialog();
+        }
+        
+        [TestMethod]
+        public void RunTestAsSpecificUser()
+        {
+            //Uimap.CreateAndSave_Dice_Wokflow();
+            Uimap.Select_Tests_From_Context_Menu();
+            Uimap.Click_Create_New_Tests();
+            Uimap.Update_Test_Name();
+            Uimap.Click_Save_Ribbon_Button_With_No_Save_Dialog();
+            Uimap.Select_User_From_RunTestAs();
+            Uimap.Enter_RunAsUser_Username_And_Password();
+            Uimap.Click_Save_Ribbon_Button_With_No_Save_Dialog();
+            Uimap.Click_RunAll_Button();
+        }
+
+        [TestMethod]
+        public void RunDeuplicatedTest()
+        {
+            //Uimap.CreateAndSave_Dice_Wokflow();
+            //Uimap.Select_Tests_From_Context_Menu();
+            //Uimap.Click_Create_New_Tests();
+            Uimap.Update_Test_Name();
+            Uimap.Click_Save_Ribbon_Button_With_No_Save_Dialog();
+            Uimap.Click_Duplicate_Test_Button();
         }
 
         #region Additional test attributes

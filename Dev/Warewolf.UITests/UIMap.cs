@@ -1,4 +1,12 @@
-﻿using System.Linq;
+﻿using System.CodeDom.Compiler;
+using System.Collections.Generic;
+using System.Text.RegularExpressions;
+using System.Windows.Input;
+using Microsoft.VisualStudio.TestTools.UITesting.HtmlControls;
+using Microsoft.VisualStudio.TestTools.UITesting.WinControls;
+using Keyboard = Microsoft.VisualStudio.TestTools.UITesting.Keyboard;
+using MouseButtons = System.Windows.Forms.MouseButtons;
+using System.Linq;
 using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
 using System;
 using Microsoft.VisualStudio.TestTools.UITest.Extension;
@@ -982,8 +990,8 @@ namespace Warewolf.UITests
         }
         public void Click_Disable_This_Test()
         {
-            WpfCheckBox testEnabledSelector = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.TestsStudioViewModel.ServiceTestView.TestsListboxList.Test1.TestEnabledSelector;
-            WpfButton runButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.TestsStudioViewModel.ServiceTestView.TestsListboxList.Test1.DeleteButton;
+            WpfCheckBox testEnabledSelector = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestsListboxList.Test1.TestEnabledSelector;
+            WpfButton runButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestsListboxList.Test1.DeleteButton;
             var beforeClick = testEnabledSelector.Checked;
             Mouse.Click(testEnabledSelector);
             Assert.AreNotEqual(beforeClick, testEnabledSelector.Checked);
@@ -1039,5 +1047,146 @@ namespace Warewolf.UITests
             // Verify that the 'Enabled' property of 'Run and debug your workflow service' button equals 'False'
             Assert.IsFalse(runAndDebugButton.Enabled, "RunDebug button is enabled");
         }
+
+        /// <summary>
+        /// Click_RunAll_Button - Use 'Click_RunAll_ButtonParams' to pass parameters into this method.
+        /// </summary>
+        public void Click_RunAll_Button(string BrokenRule = null)
+        {
+            #region Variable Declarations
+            WpfButton runAllButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.RunAllButton;
+            WpfWindow messageBoxWindow = this.MessageBoxWindow;
+            WpfText message = this.MessageBoxWindow.UIPleasesavecurrentlyeText;
+            #endregion
+
+            // Click 'Run All' button
+            Mouse.Click(runAllButton, new Point(35, 10));
+
+            // Verify that the 'ControlType' property of 'WarewolfMessageBox' window equals 'Window'
+            Assert.AreEqual(this.Click_RunAll_ButtonParams.MessageBoxWindowControlType, messageBoxWindow.ControlType.ToString(), "Messagebox does not exist after clicking RunAll button");
+
+
+            if (BrokenRule.ToUpper().Equals("UNSAVED"))
+            {
+                // Verify that the 'DisplayText' property of 'Please save currently edited Test(s) before runnin...' label equals 'Please save currently edited Test(s) before running the tests.'
+                Assert.AreEqual(this.Click_RunAll_ButtonParams.UIPleasesavecurrentlyeTextDisplayText, message.DisplayText, "Message is not Equal to Please save currently edited Test(s) before running the t" +
+                        "ests.");
+            }
+            if (BrokenRule.ToUpper().Equals("DUPLICATENAME"))
+            {
+                // Verify that the 'DisplayText' property of 'Please save currently edited Test(s) before runnin...' label equals 'Please save currently edited Test(s) before running the tests.'
+                Assert.AreEqual(this.Click_RunAll_ButtonParams.UIThenamealreadyexistsTextDisplayText, message.DisplayText, "Messagebox does not show duplicated name error");
+            }
+
+        }
+
+        public virtual Click_RunAll_ButtonParams Click_RunAll_ButtonParams
+        {
+            get
+            {
+                if ((this.mClick_RunAll_ButtonParams == null))
+                {
+                    this.mClick_RunAll_ButtonParams = new Click_RunAll_ButtonParams();
+                }
+                return this.mClick_RunAll_ButtonParams;
+            }
+        }
+
+        private Click_RunAll_ButtonParams mClick_RunAll_ButtonParams;
+
+        /// <summary>
+        /// Update_Test_Name - Use 'Update_Test_NameParams' to pass parameters into this method.
+        /// </summary>
+        public void Update_Test_Name(string overrideName = null)
+        {
+            #region Variable Declarations
+            WpfEdit uIItemEdit = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestNameText.UIItemEdit;
+            #endregion
+
+            // Click first text box next to 'Test Name' label
+            Mouse.Click(uIItemEdit, new Point(59, 16));
+
+            // Type '' in first text box next to 'Test Name' label
+            uIItemEdit.Text = this.Update_Test_NameParams.UIItemEditText;
+
+            if (!string.IsNullOrEmpty(overrideName))
+                uIItemEdit.Text = overrideName;
+            else
+                // Type 'Dice_Test' in first text box next to 'Test Name' label
+                uIItemEdit.Text = this.Update_Test_NameParams.UIItemEditText1;
+        }
+
+        public virtual Update_Test_NameParams Update_Test_NameParams
+        {
+            get
+            {
+                if ((this.mUpdate_Test_NameParams == null))
+                {
+                    this.mUpdate_Test_NameParams = new Update_Test_NameParams();
+                }
+                return this.mUpdate_Test_NameParams;
+            }
+        }
+
+        private Update_Test_NameParams mUpdate_Test_NameParams;
+
+        /// <summary>
+        /// Click_Duplicate_Test_Button
+        /// </summary>
+        public void Click_Duplicate_Test_Button()
+        {
+            #region Variable Declarations
+            WpfButton duplicateButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.DuplicateButton;
+            #endregion
+            var wpfList = MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestsListboxList as WpfList;
+            var countBefore = wpfList.GetContent().Length;
+            // Click '' button
+            Mouse.Click(duplicateButton, new Point(14, 10));
+
+            wpfList = MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestsListboxList as WpfList;
+            var countAfter = wpfList.GetContent().Length;
+
+            Assert.IsTrue(countAfter > countBefore);
+            
+        }
+    }
+    /// <summary>
+    /// Parameters to be passed into 'Click_RunAll_Button'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Click_RunAll_ButtonParams
+    {
+
+        #region Fields
+        /// <summary>
+        /// Verify that the 'ControlType' property of 'WarewolfMessageBox' window equals 'Window'
+        /// </summary>
+        public string MessageBoxWindowControlType = "Window";
+
+        /// <summary>
+        /// Verify that the 'DisplayText' property of 'Please save currently edited Test(s) before runnin...' label equals 'Please save currently edited Test(s) before running the tests.'
+        /// </summary>
+        public string UIPleasesavecurrentlyeTextDisplayText = "Please save currently edited Test(s) before running the tests.";
+        public string UIThenamealreadyexistsTextDisplayText = "The name already exists. Please choose a different name.";
+        #endregion
+    }
+    /// <summary>
+    /// Parameters to be passed into 'Update_Test_Name'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Update_Test_NameParams
+    {
+
+        #region Fields
+        /// <summary>
+        /// Type '' in first text box next to 'Test Name' label
+        /// </summary>
+        public string UIItemEditText = "";
+
+        /// <summary>
+        /// Type 'Dice_Test' in first text box next to 'Test Name' label
+        /// </summary>
+        public string UIItemEditText1 = "Dice_Test";
+        #endregion
     }
 }
