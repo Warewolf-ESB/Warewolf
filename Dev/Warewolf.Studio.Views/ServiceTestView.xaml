@@ -134,16 +134,14 @@
                                                Text="{Binding LastRunDate}" 
                                                FontSize="11" 
                                                Margin="0,-4,0,0" 
-                                               Visibility="{Binding LastRunDateVisibility}"
-                                               />
+                                               Visibility="{Binding LastRunDateVisibility, Converter={StaticResource BoolToVisibilityConverter}}" />
 
                                     <TextBlock Grid.Column="2" 
                                                Grid.Row="1" 
                                                Text="{Binding NeverRunString}" 
                                                FontSize="11" 
                                                Margin="0,-4,0,0"
-                                               Visibility="{Binding NeverRunStringVisibility}"
-                                               />
+                                               Visibility="{Binding NeverRunStringVisibility, Converter={StaticResource BoolToVisibilityConverter}}" />
 
                                     <Button Grid.Column="3" 
                                             Grid.Row="0" 
