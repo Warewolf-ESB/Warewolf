@@ -10,7 +10,11 @@ namespace Warewolf.UITests
         [TestMethod]
         public void WorkflowTestingUITests()
         {
+            //Uimap.CreateAndSave_Dice_Wokflow();
             Uimap.Click_Create_New_Tests();
+            Uimap.Update_Test_Name();
+            Uimap.Click_Save_Ribbon_Button_With_No_Save_Dialog();
+            Uimap.Click_Disable_This_Test();
         }
 
         #region Additional test attributes
