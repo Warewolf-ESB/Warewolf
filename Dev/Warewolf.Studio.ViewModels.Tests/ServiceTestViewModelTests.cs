@@ -856,7 +856,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void DuplicateCommand_GivenIsDirtyFalseAndSelectedIsNotNull_ShouldSetCanExecuteTrue()
         {
             //---------------Set up test pack-------------------
-            var testFrameworkViewModel = new ServiceTestViewModel(CreateResourceModelWithSingleScalarOutput(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object);
+            var testFrameworkViewModel = new ServiceTestViewModel(CreateResourceModel(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(testFrameworkViewModel.DuplicateTestCommand);
             Assert.IsFalse(testFrameworkViewModel.IsDirty);
