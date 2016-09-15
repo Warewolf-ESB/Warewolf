@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Windows;
+using Caliburn.Micro;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Hosting;
@@ -14,6 +15,7 @@ using Dev2.Data.Binary_Objects;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Data.Util;
 using Dev2.Studio.Core;
+using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Models;
 using Dev2.Studio.Core.Models.DataList;
@@ -271,6 +273,8 @@ namespace Dev2.Activities.Specs.TestFramework
         }
 
         [Given(@"there are no tests")]
+        [When(@"there are no tests")]
+        [Then(@"there are no tests")]
         public void GivenThereAreNoTests()
         {
             var serviceTest = GetTestForCurrentTestFramework();
@@ -314,6 +318,8 @@ namespace Dev2.Activities.Specs.TestFramework
                 Assert.Fail($"Resource Model for {workflowName} not found");
             }
         }
+        
+
 
         [Given(@"the test builder is open with ""(.*)""")]
         [When(@"the test builder is open with ""(.*)""")]
@@ -323,7 +329,7 @@ namespace Dev2.Activities.Specs.TestFramework
             ResourceModel resourceModel;
             if (ScenarioContext.TryGetValue(workflowName, out resourceModel))
             {
-                var testFramework = new ServiceTestViewModel(resourceModel, new SynchronousAsyncWorker());
+                var testFramework = new ServiceTestViewModel(resourceModel, new SynchronousAsyncWorker(),new Mock<IEventAggregator>().Object);
                 Assert.IsNotNull(testFramework);
                 Assert.IsNotNull(testFramework.ResourceModel);
                 ScenarioContext.Add("testFramework", testFramework);
@@ -408,6 +414,34 @@ namespace Dev2.Activities.Specs.TestFramework
             Assert.IsTrue(test.TestFailing);
         }
 
+        [When(@"I remove input ""(.*)"" from workflow ""(.*)""")]
+        public void WhenIRemoveInputFromWorkflow(string input, string workflow)
+        {
+            var resourceIdKey = workflow + "Resourceid";
+            var environmentModel = EnvironmentRepository.Instance.Source;
+            var resourceId = ScenarioContext.Get<Guid>(resourceIdKey);
+            var resourceToChange = environmentModel.ResourceRepository.FindResourcesByID(environmentModel, new[] { resourceId.ToString() }, ResourceType.WorkflowService).Single();
+            var newDatalist = resourceToChange.DataList.Replace(input, input + "Newname");
+            resourceToChange.DataList = newDatalist;
+            _resourceModelWithDifInputs = resourceToChange;
+
+        }
+        IResourceModel _resourceModelWithDifInputs;
+
+        [When(@"I save Workflow\t""(.*)""")]
+        public void WhenISaveWorkflow(string workflow)
+        {
+            var environmentModel = EnvironmentRepository.Instance.Source;
+            environmentModel.ResourceRepository.SaveToServer(_resourceModelWithDifInputs);
+        }
+
+        [When(@"all test are invalid")]
+        public void WhenAllTestAreInvalid()
+        {
+            var serviceTestModels = GetTestForCurrentTestFramework();
+            var allInvalid = serviceTestModels.All(model => model.TestInvalid);
+            Assert.IsTrue(allInvalid);
+        }
 
         [Then(@"the tab is closed")]
         public void ThenTheTabIsClosed()
@@ -946,6 +980,13 @@ namespace Dev2.Activities.Specs.TestFramework
             serviceTest.RunSelectedTestInBrowserCommand.Execute(null);
         }
 
+        [When(@"selected test is empty")]
+        public void WhenSelectedTestIsEmpty()
+        {
+            ServiceTestViewModel serviceTest = GetTestFrameworkFromContext();
+            Assert.IsNull(serviceTest.SelectedServiceTest);
+        }
+
         [When(@"I run all tests")]
         public void WhenIRunAllTests()
         {
@@ -1103,7 +1144,7 @@ namespace Dev2.Activities.Specs.TestFramework
             env.ForceLoadResources();
             var res = env.ResourceRepository.FindSingle(model => model.ResourceName.Equals(workflowName, StringComparison.InvariantCultureIgnoreCase), true);
             var contextualResource = env.ResourceRepository.LoadContextualResourceModel(res.ID);
-            var serviceTestVm = new ServiceTestViewModel(contextualResource, new SynchronousAsyncWorker());
+            var serviceTestVm = new ServiceTestViewModel(contextualResource, new SynchronousAsyncWorker(),new Mock<IEventAggregator>().Object);
             Assert.IsNotNull(serviceTestVm);
             Assert.IsNotNull(serviceTestVm.ResourceModel);
             ScenarioContext.Add("testFramework", serviceTestVm);

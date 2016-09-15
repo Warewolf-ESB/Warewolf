@@ -115,11 +115,11 @@ namespace Dev2.Runtime.ESB.WF
                     {
                         Thread.Sleep(100);
                     }
-                    debugDispatcher.Write(debugState, dataObject.RemoteInvoke, dataObject.RemoteInvokerID, dataObject.ParentInstanceID, dataObject.RemoteDebugItems);
+                    debugDispatcher.Write(debugState, dataObject.IsServiceTestExecution, dataObject.TestName, dataObject.RemoteInvoke, dataObject.RemoteInvokerID, dataObject.ParentInstanceID, dataObject.RemoteDebugItems);
                 }
                 else
                 {
-                    debugDispatcher.Write(debugState);
+                    debugDispatcher.Write(debugState, dataObject.IsServiceTestExecution, dataObject.TestName);
                 }
             }
         }

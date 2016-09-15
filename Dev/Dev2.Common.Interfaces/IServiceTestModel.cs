@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows;
+using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Runtime.ServiceModel.Data;
 
 namespace Dev2.Common.Interfaces
@@ -14,8 +16,8 @@ namespace Dev2.Common.Interfaces
         string UserName { get; set; }
         string Password { get; set; }
         DateTime LastRunDate { get; set; }
-        List<IServiceTestInput> Inputs { get; set; }
-        List<IServiceTestOutput> Outputs { get; set; }
+        ObservableCollection<IServiceTestInput> Inputs { get; set; }
+        ObservableCollection<IServiceTestOutput> Outputs { get; set; }
         bool NoErrorExpected { get; set; }
         bool ErrorExpected { get; set; }
         bool IsNewTest { get; set; }
@@ -35,6 +37,7 @@ namespace Dev2.Common.Interfaces
         string NeverRunString { get; set; }
         Visibility LastRunDateVisibility { get; }
         Visibility NeverRunStringVisibility { get; }
+        IList<IDebugState> DebugForTest { get; set; }
 
         void SetItem(IServiceTestModel model);
     }
