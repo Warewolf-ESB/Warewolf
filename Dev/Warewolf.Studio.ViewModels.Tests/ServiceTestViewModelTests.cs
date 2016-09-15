@@ -1282,7 +1282,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             testFrameworkViewModel.CreateTestCommand.Execute(null);
             Assert.IsNotNull(testFrameworkViewModel.SelectedServiceTest);
             //---------------Test Result -----------------------
-            Assert.AreEqual(Visibility.Collapsed, testFrameworkViewModel.SelectedServiceTest.LastRunDateVisibility);
+            Assert.IsFalse(testFrameworkViewModel.SelectedServiceTest.LastRunDateVisibility);
         }
 
         [TestMethod]
@@ -1303,7 +1303,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             testFrameworkViewModel.CreateTestCommand.Execute(null);
             Assert.IsNotNull(testFrameworkViewModel.SelectedServiceTest);
             //---------------Test Result -----------------------
-            Assert.AreEqual(Visibility.Visible, testFrameworkViewModel.SelectedServiceTest.NeverRunStringVisibility);
+            Assert.IsTrue(testFrameworkViewModel.SelectedServiceTest.NeverRunStringVisibility);
         }
 
         private IContextualResourceModel CreateResourceModelWithSingleScalarInput()

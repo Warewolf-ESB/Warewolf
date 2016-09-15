@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Windows;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Data;
@@ -42,6 +41,8 @@ namespace Warewolf.Studio.ViewModels
         private bool _isTestRunning;
         private string _neverRunString;
         private string _duplicateTestTooltip;
+        private bool _lastRunDateVisibility;
+        private bool _neverRunStringVisibility;
 
         public string NeverRunString
         {
@@ -55,8 +56,34 @@ namespace Warewolf.Studio.ViewModels
                 OnPropertyChanged(NeverRunString);
             }
         }
-        public Visibility LastRunDateVisibility => LastRunDate != default(DateTime) ? Visibility.Visible : Visibility.Collapsed;
-        public Visibility NeverRunStringVisibility => LastRunDate == default(DateTime) ? Visibility.Visible : Visibility.Collapsed;
+
+        public bool LastRunDateVisibility
+        {
+            get { return _lastRunDateVisibility; }
+            set
+            {
+                if (value)
+                {
+                    NeverRunStringVisibility = false;
+                }
+                _lastRunDateVisibility = value; 
+                OnPropertyChanged(() => LastRunDateVisibility);
+            }
+        }
+
+        public bool NeverRunStringVisibility
+        {
+            get { return _neverRunStringVisibility; }
+            set
+            {
+                if (value)
+                {
+                    LastRunDateVisibility = false;
+                }
+                _neverRunStringVisibility = value; 
+                OnPropertyChanged(() => NeverRunStringVisibility);
+            }
+        }
         public IList<IDebugState> DebugForTest { get; set; }
 
         public string DuplicateTestTooltip
@@ -73,6 +100,7 @@ namespace Warewolf.Studio.ViewModels
         {
             ParentId = resourceId;
             NeverRunString = "Never run";
+            NeverRunStringVisibility = true;
             IsTestRunning = false;
         }
 
@@ -166,6 +194,10 @@ namespace Warewolf.Studio.ViewModels
             set
             {
                 _lastRunDate = value;
+                if (_lastRunDate != default(DateTime))
+                {
+                    LastRunDateVisibility = true;
+                }
                 OnPropertyChanged(() => LastRunDate);
             }
         }

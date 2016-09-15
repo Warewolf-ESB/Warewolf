@@ -48,9 +48,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsNotNull(testModel.NeverRunStringVisibility);
             Assert.AreEqual(default(DateTime), testModel.LastRunDate);
             //---------------Execute Test ----------------------
-            var neverRunStringVisibility = testModel.NeverRunStringVisibility;
             //---------------Test Result -----------------------
-            Assert.AreEqual(Visibility.Visible, neverRunStringVisibility);
+            Assert.IsTrue(testModel.NeverRunStringVisibility);
         }
 
         [TestMethod]
@@ -64,9 +63,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual(default(DateTime), testModel.LastRunDate);
             //---------------Execute Test ----------------------
             testModel.LastRunDate = DateTime.Now;
-            var neverRunStringVisibility = testModel.NeverRunStringVisibility;
             //---------------Test Result -----------------------
-            Assert.AreEqual(Visibility.Collapsed, neverRunStringVisibility);
+            Assert.IsFalse(testModel.NeverRunStringVisibility);
         }
 
         [TestMethod]
@@ -80,9 +78,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual(default(DateTime), testModel.LastRunDate);
             //---------------Execute Test ----------------------
             testModel.LastRunDate = DateTime.Now;
-            var lastRunDateVisibility = testModel.LastRunDateVisibility;
             //---------------Test Result -----------------------
-            Assert.AreEqual(Visibility.Visible, lastRunDateVisibility);
+            Assert.IsTrue(testModel.LastRunDateVisibility);
         }
 
         [TestMethod]
@@ -95,9 +92,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsNotNull(testModel.LastRunDateVisibility);
             Assert.AreEqual(default(DateTime), testModel.LastRunDate);
             //---------------Execute Test ----------------------
-            var neverRunStringVisibility = testModel.LastRunDateVisibility;
             //---------------Test Result -----------------------
-            Assert.AreEqual(Visibility.Collapsed, neverRunStringVisibility);
+            Assert.IsFalse(testModel.LastRunDateVisibility);
         }
 
         [TestMethod]

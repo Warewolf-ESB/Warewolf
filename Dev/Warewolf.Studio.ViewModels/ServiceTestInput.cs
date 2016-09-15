@@ -14,7 +14,7 @@ namespace Warewolf.Studio.ViewModels
         {
             if (variableName == null)
                 throw new ArgumentNullException(nameof(variableName));
-            EmptyIsNull = true;
+            EmptyIsNull = false;
             Variable = variableName;
             Value = value;
         }

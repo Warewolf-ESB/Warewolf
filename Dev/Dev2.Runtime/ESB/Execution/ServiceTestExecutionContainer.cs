@@ -22,6 +22,7 @@ using Dev2.Services.Security;
 using Dev2.Workspaces;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Warewolf.Security.Encryption;
 
 namespace Dev2.Runtime.ESB.Execution
 {
@@ -105,7 +106,12 @@ namespace Dev2.Runtime.ESB.Execution
                         userName = userName.Substring(0, atIndex);
                         domain = userName.Substring(atIndex + 1);
                     }
-                    impersonator.Impersonate(userName, domain, serviceTestModelTO.Password);
+                    var hasImpersonated = impersonator.Impersonate(userName, domain, DpapiWrapper.DecryptIfEncrypted(serviceTestModelTO.Password));
+                    if (!hasImpersonated)
+                    {
+                        DataObject.Environment.AllErrors.Add("Unauthorized to execute this resource.");
+                        DataObject.StopExecution = true;
+                    }
                 }
                 else if (serviceTestModelTO.AuthenticationType == AuthenticationType.Public)
                 {
@@ -149,7 +155,10 @@ namespace Dev2.Runtime.ESB.Execution
                     }
                     else
                     {
-                        DataObject.Environment.Assign(variable, value, 0);
+                        if (!input.EmptyIsNull || !string.IsNullOrEmpty(value))
+                        {
+                            DataObject.Environment.Assign(variable, value, 0);
+                        }
                     }
                 }
             }
@@ -225,24 +234,27 @@ namespace Dev2.Runtime.ESB.Execution
                 }
                 else
                 {
-                    EvalInner(dataObject, clonedExecPlan, dataObject.ForEachUpdateValue);
-                    if (test.Outputs != null)
+                    if (!dataObject.StopExecution)
                     {
-                        foreach (var output in test.Outputs)
+                        EvalInner(dataObject, clonedExecPlan, dataObject.ForEachUpdateValue);
+                        if (test.Outputs != null)
                         {
-                            var variable = DataListUtil.AddBracketsToValueIfNotExist(output.Variable);
-                            var value = output.Value;
-
-                            var result = dataObject.Environment.Eval(variable, 0);
-                            if (result.IsWarewolfAtomResult)
+                            foreach (var output in test.Outputs)
                             {
-                                var x = (result as CommonFunctions.WarewolfEvalResult.WarewolfAtomResult)?.Item;
-                                // ReSharper disable once PossibleNullReferenceException
-                                var actualValue = x.ToString();
-                                if (!actualValue.Equals(value))
+                                var variable = DataListUtil.AddBracketsToValueIfNotExist(output.Variable);
+                                var value = output.Value;
+
+                                var result = dataObject.Environment.Eval(variable, 0);
+                                if (result.IsWarewolfAtomResult)
                                 {
-                                    testPassed = false;
-                                    failureMessage.AppendLine($"Assert Equal failed. Expected {value} for {variable} but got {actualValue}");
+                                    var x = (result as CommonFunctions.WarewolfEvalResult.WarewolfAtomResult)?.Item;
+                                    // ReSharper disable once PossibleNullReferenceException
+                                    var actualValue = x.ToString();
+                                    if (!string.Equals(actualValue,value))
+                                    {
+                                        testPassed = false;
+                                        failureMessage.AppendLine($"Assert Equal failed. Expected {value} for {variable} but got {actualValue}");
+                                    }
                                 }
                             }
                         }
