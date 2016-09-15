@@ -462,7 +462,7 @@ Scenario: Delete an Disabled Test
 	Then Delete is enabled for "Test1"
 	When I delete "Test1"
 	Then The "DeleteConfirmation" popup is shown I click Ok
-	Then there are no tests
+	Then there are 0 tests
 
 Scenario: Saved workflow with tests changes the inputs
 		Given I have a resource "Workflow 1"
