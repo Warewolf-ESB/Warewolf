@@ -85,6 +85,7 @@ namespace Warewolf.Studio.ViewModels
         private void StopTest()
         {
             SelectedServiceTest.IsTestRunning = false;
+            SelectedServiceTest.TestPending = true;
             ServiceTestCommandHandler.StopTest();
         }
 
@@ -99,6 +100,7 @@ namespace Warewolf.Studio.ViewModels
         {
             SelectedServiceTest.IsTestRunning = true;
             ServiceTestCommandHandler.RunSelectedTest(SelectedServiceTest, ResourceModel, AsyncWorker);
+            ViewModelUtils.RaiseCanExecuteChanged(StopTestCommand);
         }
 
         private void RunAllTestsInBrowser()
@@ -139,7 +141,7 @@ namespace Warewolf.Studio.ViewModels
                 return;
             }
 
-            var testNumber = GetNewTestNumber("Test ");
+            var testNumber = GetNewTestNumber("Test");
             var testModel = ServiceTestCommandHandler.CreateTest(ResourceModel, testNumber);
             AddAndSelectTest(testModel);
         }
@@ -196,7 +198,7 @@ namespace Warewolf.Studio.ViewModels
         }
 
         // ReSharper disable once UnusedAutoPropertyAccessor.Local
-        private bool CanStopTest { get; set; }
+        private bool CanStopTest => SelectedServiceTest != null && SelectedServiceTest.IsTestRunning;
         private bool CanRunSelectedTestInBrowser => SelectedServiceTest != null && !SelectedServiceTest.IsDirty && IsServerConnected();
         private bool CanRunSelectedTest => GetPermissions() && IsServerConnected();
         private bool CanDuplicateTest => GetPermissions() && SelectedServiceTest != null && !SelectedServiceTest.NewTest;
