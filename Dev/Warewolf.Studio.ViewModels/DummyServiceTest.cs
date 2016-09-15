@@ -5,6 +5,7 @@ using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Input;
 using Dev2.Common.Interfaces;
+using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Runtime.ServiceModel.Data;
 using Microsoft.Practices.Prism.Commands;
 
@@ -70,6 +71,7 @@ namespace Warewolf.Studio.ViewModels
         public string NeverRunString { get; set; }
         public Visibility LastRunDateVisibility => Visibility.Visible;
         public Visibility NeverRunStringVisibility => Visibility.Collapsed;
+        public IList<IDebugState> DebugForTest { get; set; }
 
         public void SetItem(IServiceTestModel model)
         {

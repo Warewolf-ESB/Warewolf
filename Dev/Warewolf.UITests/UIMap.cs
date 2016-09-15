@@ -157,7 +157,6 @@ namespace Warewolf.UITests
             WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);
 
             //TODO: remove this workaround for WOLF-2061
-            Mouse.Click(MainStudioWindow.SideMenuBar.NewWorkflowButton);
             MainStudioWindow.SideMenuBar.NewWorkflowButton.WaitForControlEnabled();
         }
 
@@ -442,6 +441,7 @@ namespace Warewolf.UITests
                     Console.WriteLine("TryClose method failed to close all Workflow tabs.\n" + e.Message);
                 }
             }
+            Assert_RunDebug_Button_Disabled();
         }
 
         public void TryCloseWorkflowTab()
@@ -656,7 +656,6 @@ namespace Warewolf.UITests
 
         public void Click_New_Workflow_Ribbon_Button()
         {
-            Assert_RunDebug_Button_Disabled();
             Assert.IsTrue(MainStudioWindow.SideMenuBar.NewWorkflowButton.Exists, "New Workflow Ribbon Button Does Not Exist!");
             Mouse.Click(MainStudioWindow.SideMenuBar.NewWorkflowButton, new Point(3, 8));
             var getTimeBefore = System.DateTime.Now;
