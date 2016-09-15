@@ -1053,6 +1053,9 @@ namespace Warewolf.UITests
         /// </summary>
         public void Click_RunAll_Button(string BrokenRule = null)
         {
+            string DuplicateNameError = "DuplicateNameError";
+            string UnsavedResourceError = "UnsavedResourceError";
+
             #region Variable Declarations
             WpfButton runAllButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.RunAllButton;
             WpfWindow messageBoxWindow = this.MessageBoxWindow;
@@ -1066,13 +1069,13 @@ namespace Warewolf.UITests
             Assert.AreEqual(this.Click_RunAll_ButtonParams.MessageBoxWindowControlType, messageBoxWindow.ControlType.ToString(), "Messagebox does not exist after clicking RunAll button");
 
 
-            if (BrokenRule.ToUpper().Equals("UNSAVED"))
+            if (BrokenRule.ToUpper().Equals(UnsavedResourceError))
             {
                 // Verify that the 'DisplayText' property of 'Please save currently edited Test(s) before runnin...' label equals 'Please save currently edited Test(s) before running the tests.'
                 Assert.AreEqual(this.Click_RunAll_ButtonParams.UIPleasesavecurrentlyeTextDisplayText, message.DisplayText, "Message is not Equal to Please save currently edited Test(s) before running the t" +
                         "ests.");
             }
-            if (BrokenRule.ToUpper().Equals("DUPLICATENAME"))
+            if (BrokenRule.ToUpper().Equals(DuplicateNameError))
             {
                 // Verify that the 'DisplayText' property of 'Please save currently edited Test(s) before runnin...' label equals 'Please save currently edited Test(s) before running the tests.'
                 Assert.AreEqual(this.Click_RunAll_ButtonParams.UIThenamealreadyexistsTextDisplayText, message.DisplayText, "Messagebox does not show duplicated name error");
