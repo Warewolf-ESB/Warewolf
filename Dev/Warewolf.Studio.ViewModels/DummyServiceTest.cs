@@ -70,8 +70,8 @@ namespace Warewolf.Studio.ViewModels
         public bool NewTest { get; set; }
         public bool IsTestRunning { get; set; }
         public string NeverRunString { get; set; }
-        public Visibility LastRunDateVisibility => Visibility.Visible;
-        public Visibility NeverRunStringVisibility => Visibility.Collapsed;
+        public bool LastRunDateVisibility { get; set; }
+        public bool NeverRunStringVisibility { get; set; }
         public IList<IDebugState> DebugForTest { get; set; }
 
         public string DuplicateTestTooltip { get; set; }

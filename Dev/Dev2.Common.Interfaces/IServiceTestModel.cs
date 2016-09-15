@@ -35,8 +35,8 @@ namespace Dev2.Common.Interfaces
         bool NewTest { get; set; }
         bool IsTestRunning { get; set; }
         string NeverRunString { get; set; }
-        Visibility LastRunDateVisibility { get; }
-        Visibility NeverRunStringVisibility { get; }
+        bool LastRunDateVisibility { get; set; }
+        bool NeverRunStringVisibility { get; set; }
         IList<IDebugState> DebugForTest { get; set; }
         string DuplicateTestTooltip { get; set; }
 
