@@ -487,6 +487,25 @@ namespace Dev2.Activities.Designers.Tests.ODBC
             }
         };
 
+        public ObservableCollection<IDbAction> _refreshActions = new ObservableCollection<IDbAction>
+        {
+            new DbAction()
+            {
+                Name = "mob",
+                Inputs = new List<IServiceInput>() { new ServiceInput("[[a]]", "asa") }
+            },
+            new DbAction()
+            {
+                Name = "arefreshOne",
+                Inputs = new List<IServiceInput>() { new ServiceInput("[[b]]", "bsb") }
+            }
+        };
+
+        public ICollection<IDbAction> RefreshActions(IDbSource source)
+        {
+            return RefreshActionsList;
+        }
+        public ICollection<IDbAction> RefreshActionsList => _refreshActions;
         public bool HasRecError { get; set; }
 
         #region Implementation of IDbServiceModel

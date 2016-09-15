@@ -39,6 +39,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                         DbName = res.DatabaseName,
                         Id = res.ResourceID,
                         Name = res.ResourceName,
+                        Path = res.GetSavePath(),
                         Password = res.Password,
                         ServerName = res.Server,
                         Type = res.ServerType,

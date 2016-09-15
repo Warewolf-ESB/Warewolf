@@ -120,6 +120,7 @@ namespace Dev2.Common.Interfaces.Core
         public string Name { get; set; }
         public string Path { get; set; }
         public Guid Id { get; set; }
+        public bool ReloadActions { get; set; }
 
         #endregion
 

@@ -24,5 +24,7 @@ namespace Dev2.Common.Interfaces.DB
         DataTable TestService(IDatabaseService inputValues);
 
         IStudioUpdateManager UpdateRepository { get; }
+
+        ICollection<IDbAction> RefreshActions(IDbSource source);
     }
 }

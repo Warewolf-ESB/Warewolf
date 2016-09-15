@@ -55,12 +55,26 @@ if (-not "$CustomVersionString" -eq "") {
 				[int]$NewBuildNumber = $FullVersionString.Split(".")[3]
 				$NewBuildNumber++
 				$FullVersionString = $FullVersionString.Split(".")[0] + "." + $FullVersionString.Split(".")[1] + "." + $FullVersionString.Split(".")[2] + "." + $NewBuildNumber
-				Write-Host Next version would be `"$FullVersionString`". Double checking with origin...
-				# Check new version against server repo.
+				Write-Host Next version would be `"$FullVersionString`". Checking against Origin repo...
+				# Check tag against origin
 				$originTag = git -C "$WarewolfGitRepoDirectory" ls-remote --tags origin $FullVersionString
 				if ($originTag.length -ne 0) {
 					Write-Host Origin has tag `"$originTag`".
-				}        
+				} else {
+					Write-Host Double checking with hard coded integration manager repo...
+					# Check tag against hard coded integration manager repo
+					$originTag = git -C "$WarewolfGitRepoDirectory" ls-remote --tags "file:////rsaklfsvrgendev/Git-Repositories/Warewolf-ESB" $FullVersionString
+					if ($originTag.length -ne 0) {
+						Write-Host Hard coded integration manager repo has tag `"$originTag`".
+					} else {
+						Write-Host Double checking with hard coded blessed repo...
+						# Check tag against hard coded blessed repo
+						$originTag = git -C "$WarewolfGitRepoDirectory" ls-remote --tags "https://github.com/Warewolf-ESB/Warewolf" $FullVersionString
+						if ($originTag.length -ne 0) {
+							Write-Host Hard coded blessed repo has tag `"$originTag`".
+						}
+					}
+				}
 			} while ($originTag.length -ne 0)
 		}
 		# New (unique) version has been generated.
@@ -98,7 +112,8 @@ $Line3 = "[<assembly: AssemblyCompany(""Warewolf"")>]"
 $Line4 = "[<assembly: AssemblyProduct(""Warewolf"")>]"
 $Line5 = "[<assembly: AssemblyCopyright(""Copyright Warewolf " + (Get-Date).year + """)>]"
 $Line6 = "[<assembly: AssemblyVersion(""" + $FullVersionString + """)>]"
-$Line7 = "[<assembly: AssemblyInformationalVersion(""" + $GitCommitTime + " " + $GitCommitID + """)>]"
+# Ashley: F# Compile thinks this is invalid for some reason
+#$Line7 = "[<assembly: AssemblyInformationalVersion(""" + $GitCommitTime + " " + $GitCommitID + """)>]"
 $Line8 = "do()"
 Write-Host $Line1
 $Line1 | Out-File -LiteralPath $FSharpVersionFile -Encoding utf8 -Force
