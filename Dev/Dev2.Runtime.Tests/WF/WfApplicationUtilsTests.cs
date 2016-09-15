@@ -193,7 +193,7 @@ namespace Dev2.Tests.Runtime.WF
             var envMock = new Mock<IExecutionEnvironment>();
             var debugDispatcher = new Mock<IDebugDispatcher>();
             var debugState = new DebugState { StateType = StateType.Start };
-            debugDispatcher.Setup(dispatcher => dispatcher.Write(debugState, It.IsAny<bool>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IList<IDebugState>>()));
+            debugDispatcher.Setup(dispatcher => dispatcher.Write(debugState, It.IsAny<bool>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IList<IDebugState>>()));
             var mock = new Mock<Func<IDebugDispatcher>>();
             mock.Setup(func => func()).Returns(() => debugDispatcher.Object);
             var mockObj = new Mock<IDSFDataObject>();
@@ -209,13 +209,13 @@ namespace Dev2.Tests.Runtime.WF
                
                 wfApplicationUtils.DispatchDebugState(mockObj.Object, StateType.Start, false, string.Empty, out error);
                 var state = debugState;
-                debugDispatcher.Verify(dispatcher => dispatcher.Write(state, It.IsAny<bool>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IList<IDebugState>>()));
+                debugDispatcher.Verify(dispatcher => dispatcher.Write(state, It.IsAny<bool>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IList<IDebugState>>()));
 
                 debugState = new DebugState { StateType = StateType.End };
                 debugDispatcher.Setup(dispatcher => dispatcher.IsQueueEmpty).Returns(true);
                 wfApplicationUtils.DispatchDebugState(mockObj.Object, StateType.End, false, string.Empty, out error);
 
-                debugDispatcher.Verify(dispatcher => dispatcher.Write(debugState, It.IsAny<bool>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IList<IDebugState>>()));
+                debugDispatcher.Verify(dispatcher => dispatcher.Write(debugState, It.IsAny<bool>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IList<IDebugState>>()));
             }
             catch (Exception ex)
             {
@@ -234,7 +234,7 @@ namespace Dev2.Tests.Runtime.WF
             var envMock = new Mock<IExecutionEnvironment>();
             var debugDispatcher = new Mock<IDebugDispatcher>();
             var debugState = new DebugState { StateType = StateType.Start };
-            debugDispatcher.Setup(dispatcher => dispatcher.Write(debugState, It.IsAny<bool>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IList<IDebugState>>()));
+            debugDispatcher.Setup(dispatcher => dispatcher.Write(debugState, It.IsAny<bool>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IList<IDebugState>>()));
             var mock = new Mock<Func<IDebugDispatcher>>();
             mock.Setup(func => func()).Returns(() => debugDispatcher.Object);
             var mockObj = new Mock<IDSFDataObject>();
@@ -250,7 +250,7 @@ namespace Dev2.Tests.Runtime.WF
                
                 wfApplicationUtils.DispatchDebugState(mockObj.Object, StateType.Start, false, string.Empty, out error, DateTime.Now, true);
                 var state = debugState;
-                debugDispatcher.Verify(dispatcher => dispatcher.Write(state, It.IsAny<bool>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IList<IDebugState>>()));
+                debugDispatcher.Verify(dispatcher => dispatcher.Write(state, It.IsAny<bool>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IList<IDebugState>>()));
                 
             }
             catch (Exception ex)

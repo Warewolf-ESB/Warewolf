@@ -1,10 +1,12 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Input;
 using Dev2.Common.Interfaces;
+using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Runtime.ServiceModel.Data;
 using Microsoft.Practices.Prism.Commands;
 
@@ -50,8 +52,8 @@ namespace Warewolf.Studio.ViewModels
         public string UserName { get; set; }
         public string Password { get; set; }
         public DateTime LastRunDate { get; set; }
-        public List<IServiceTestInput> Inputs { get; set; }
-        public List<IServiceTestOutput> Outputs { get; set; }
+        public ObservableCollection<IServiceTestInput> Inputs { get; set; }
+        public ObservableCollection<IServiceTestOutput> Outputs { get; set; }
         public bool NoErrorExpected { get; set; }
         public bool ErrorExpected { get; set; }
         public bool IsNewTest
@@ -70,6 +72,7 @@ namespace Warewolf.Studio.ViewModels
         public string NeverRunString { get; set; }
         public Visibility LastRunDateVisibility => Visibility.Visible;
         public Visibility NeverRunStringVisibility => Visibility.Collapsed;
+        public IList<IDebugState> DebugForTest { get; set; }
 
         public void SetItem(IServiceTestModel model)
         {

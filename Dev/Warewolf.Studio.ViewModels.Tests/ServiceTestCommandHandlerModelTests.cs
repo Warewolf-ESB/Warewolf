@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Windows;
 using Dev2;
@@ -219,8 +218,9 @@ namespace Warewolf.Studio.ViewModels.Tests
             var serviceTestModel = new ServiceTestModel(resourceId)
             {
                 TestName = "Test 1",
-                Inputs = new List<IServiceTestInput>(),
-                Outputs = new List<IServiceTestOutput>(),
+                NameForDisplay = "Test 1",
+                Inputs = new ObservableCollection<IServiceTestInput >(),
+                Outputs = new ObservableCollection<IServiceTestOutput>(),
                 UserName = "userName",
                 Password = "Pppp",
                 TestPending = true,
@@ -239,6 +239,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var dupTest=testFrameworkViewModel.DuplicateTest(serviceTestModel);
             //---------------Test Result -----------------------
             Assert.AreEqual("Test 1", dupTest.TestName);
+            Assert.AreEqual("Test 1 *", dupTest.NameForDisplay);
             Assert.AreEqual(resourceId, dupTest.ParentId);
             Assert.AreEqual(serviceTestModel.Inputs, dupTest.Inputs);
             Assert.AreEqual(serviceTestModel.Outputs, dupTest.Outputs);

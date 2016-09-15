@@ -3136,7 +3136,7 @@ To find the character index(s) of a string inside another string, put the string
   </data>
   <data name="FindIndexToolTipCharacters" xml:space="preserve">
     <value>Any variable and/or data goes in here.
-Put the string of the index you are looking for in here.</value>
+Put  the index of the string you are looking for in here.</value>
   </data>
   <data name="ExplorerSearchToolTip" xml:space="preserve">
     <value>Filter the connected resources</value>
