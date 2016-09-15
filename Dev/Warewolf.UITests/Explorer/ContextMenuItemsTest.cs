@@ -38,7 +38,7 @@ namespace Warewolf.UITests
             Uimap.Click_Duplicate_From_Duplicate_Dialog();
             Uimap.RightClick_Dice();
             Uimap.Select_Show_Dependencies_In_Explorer_Context_Menu(DoubleDice);
-            //Uimap.Click_Close_Dependecy_Tab();
+            Uimap.Click_Close_Dependecy_Tab();
         }
 
         #region Additional test attributes
