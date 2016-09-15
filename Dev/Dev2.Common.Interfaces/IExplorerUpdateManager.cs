@@ -38,7 +38,6 @@ namespace Dev2.Common.Interfaces
         /// </summary>
         /// <param name="path">the folder path</param>
         /// <param name="newName">the new name</param>
-        /// <param name="id"></param>
         void RenameFolder(string path, string newName);
 
         /// <summary>

@@ -29,6 +29,11 @@ namespace Dev2.ViewModels
                 {
                     ViewModelUtils.RaiseCanExecuteChanged(mainViewModel.SaveCommand);
                 }
+
+                if (args.PropertyName == "DisplayName")
+                {
+                    NotifyOfPropertyChange(()=>DisplayName);
+                }
             };
         }
 

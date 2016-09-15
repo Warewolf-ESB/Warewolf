@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
 using Dev2.Common.Interfaces;
+using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Data;
 using Dev2.Data.Binary_Objects;
 using Dev2.Data.Util;
@@ -54,6 +55,7 @@ namespace Warewolf.Studio.ViewModels
         }
         public Visibility LastRunDateVisibility => LastRunDate != default(DateTime) ? Visibility.Visible : Visibility.Collapsed;
         public Visibility NeverRunStringVisibility => LastRunDate == default(DateTime) ? Visibility.Visible : Visibility.Collapsed;
+        public IList<IDebugState> DebugForTest { get; set; }
 
         public ServiceTestModel(Guid resourceId)
         {
