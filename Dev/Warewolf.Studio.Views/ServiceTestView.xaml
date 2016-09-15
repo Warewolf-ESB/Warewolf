@@ -246,7 +246,8 @@
                             </Grid.ColumnDefinitions>
                             <TextBlock Grid.Row="0" Grid.Column="0" Text="Test Name"/>
                             <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding SelectedServiceTest.TestName, UpdateSourceTrigger=PropertyChanged}"/>
-                            <Button Grid.Row="0" Grid.Column="2" Command="{Binding DuplicateTestCommand}" Margin="{StaticResource ControlBorderLeft}" Style="{StaticResource ServiceTestDuplicateButtonStyle}" >
+                            <Button Grid.Row="0" Grid.Column="2" Command="{Binding DuplicateTestCommand}" Margin="{StaticResource ControlBorderLeft}" Style="{StaticResource ServiceTestDuplicateButtonStyle}" 
+                                    ToolTip="{Binding SelectedServiceTest.DuplicateTestTooltip}">
                                 <fa:FontAwesome FontSize="12" FontWeight="Light" Icon="Clone" />
                                 <i:Interaction.Behaviors>
                                     <core:HelpSetter Text="{x:Static languages:Core.ServiceTestDuplicateSelectedTestHelpText}" DataContext="{Binding}" />
