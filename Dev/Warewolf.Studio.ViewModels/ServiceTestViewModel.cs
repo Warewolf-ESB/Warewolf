@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Input;
+using Caliburn.Micro;
 using Dev2;
 using Dev2.Common;
 using Dev2.Common.Common;
@@ -17,6 +18,7 @@ using Dev2.Data;
 using Dev2.Interfaces;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.Network;
 using Microsoft.Practices.Prism.Commands;
 using Microsoft.Practices.Prism.Mvvm;
@@ -36,11 +38,12 @@ namespace Warewolf.Studio.ViewModels
         private string _errorMessage;
         private IShellViewModel _shellViewModel;
 
-        public ServiceTestViewModel(IContextualResourceModel resourceModel, IAsyncWorker asyncWorker)
+        public ServiceTestViewModel(IContextualResourceModel resourceModel, IAsyncWorker asyncWorker, IEventAggregator eventPublisher)
         {
             if (resourceModel == null)
                 throw new ArgumentNullException(nameof(resourceModel));
             AsyncWorker = asyncWorker;
+            EventPublisher = eventPublisher;
             ResourceModel = resourceModel;
             ResourceModel.Environment.IsConnectedChanged += (sender, args) =>
             {
@@ -129,6 +132,7 @@ namespace Warewolf.Studio.ViewModels
         public bool IsLoading { get; set; }
 
         public IAsyncWorker AsyncWorker { get; set; }
+        public IEventAggregator EventPublisher { get; set; }
 
         private void CreateTests()
         {
@@ -370,6 +374,7 @@ namespace Warewolf.Studio.ViewModels
                 _selectedServiceTest.PropertyChanged += ActionsForPropChanges;
                 SetSelectedTestUrl();
                 OnPropertyChanged(() => SelectedServiceTest);
+                EventPublisher.Publish(new DebugOutputMessage(_selectedServiceTest.DebugForTest));
             }
         }
 

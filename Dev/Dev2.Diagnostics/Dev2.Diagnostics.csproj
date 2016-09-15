@@ -76,6 +76,7 @@
     <Compile Include="Debug\DirectoryPath.cs" />
     <Compile Include="Debug\FilePath.cs" />
     <Compile Include="Debug\RemoteDebugMessageRepo.cs" />
+    <Compile Include="Debug\TestDebugMessageRepo.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="Logging\EnvironmentVariables.cs" />
     <Compile Include="Logging\Dev2Logger.cs" />

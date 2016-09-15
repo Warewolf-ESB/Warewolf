@@ -464,35 +464,6 @@ Scenario: Delete an Disabled Test
 	Then The "DeleteConfirmation" popup is shown I click Ok
 	Then there are 0 tests
 
-Scenario: Saved workflow with tests changes the inputs
-		Given I have a resource "Workflow 1"
-		And "Workflow 1" is saved with output as
-		| Out Var Name |
-		| [[a]]        |
-		| [[b]]        |
-		And "Workflow 1" is saved with input as 
-		| In Var Name |
-		| [[msg]]     |
-		When the Test builder is loaded with "Workflow 1"
-		And Tab Header is "Workflow 1 - Tests"
-		And there are no tests
-		And I click New Test
-		And I set Test Values as
-		| TestName | AuthenticationType | Error |
-		| Test1    | Windows            | true  |
-		Then NoErrorExpected is "false"	
-		And save is enabled
-		And "Test1" is passing
-		When I save
-		Then Tab Header is "Workflow 1 - Tests"
-		And there are 1 tests		
-		When I change "Workflow 1" Tests inputs as
-		| In Var Name | new In Var Name |
-		| [[msg]]     | [[newmsg]]      |
-		When I Save workflow "Workflow 1"
-		Then "Test1" is Invalid
-
-
 
 Scenario: Delete Resource with tests
 	Given I have a resouce "PluginSource"
@@ -513,6 +484,15 @@ Scenario: Delete folder with resources deletes all tests
 	Then "PluginSource1" has 0 tests
 	And "Hello world" has 0 tests
 
+Scenario: Saved workflow with tests changes the inputs
+		Given the test builder is open with "WorkflowWithTests"
+		Then there are 4 tests
+		And I close the test builder
+		When I remove input "input" from workflow "WorkflowWithTests" 
+		And I save Workflow	"WorkflowWithTests"
+		When the test builder is open with "WorkflowWithTests"
+		And Tab Header is "WorkflowWithTests - Tests"				
+		And all test are invalid	
 
 Scenario: Run all unselects all tests on selection shows corect debug
 	Given the test builder is open with "WorkflowWithTests"
@@ -522,6 +502,7 @@ Scenario: Run all unselects all tests on selection shows corect debug
 	And "Test3" is invalid
 	And "Test4" is pending
 	When I run all tests
+	And selected test is empty
 	And I select "Test1"
 	Then debug window is visible	
 

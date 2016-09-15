@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reflection;
 using System.Windows;
+using Caliburn.Micro;
 using Dev2;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
@@ -38,7 +39,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
 
             //------------Execute Test---------------------------
-            new ServiceTestViewModel(null, new SynchronousAsyncWorker());
+            new ServiceTestViewModel(null, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object);
             //------------Assert Results-------------------------
         }
 
@@ -51,7 +52,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
 
             //------------Execute Test---------------------------
-            var testVM = new ServiceTestViewModel(CreateResourceModel(), new SynchronousAsyncWorker());
+            var testVM = new ServiceTestViewModel(new Mock<IContextualResourceModel>().Object, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object);
             //------------Assert Results-------------------------
             Assert.IsNotNull(testVM);
             Assert.IsNotNull(testVM.ResourceModel);
@@ -66,7 +67,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var mockResourceModel = new Mock<IContextualResourceModel>();
             mockResourceModel.Setup(model => model.DisplayName).Returns("Workflow Name");
             //------------Execute Test---------------------------
-            var testVM = new ServiceTestViewModel(CreateResourceModel(), new SynchronousAsyncWorker());
+            var testVM = new ServiceTestViewModel(mockResourceModel.Object, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object);
             //------------Assert Results-------------------------
             Assert.AreEqual("My WF - Tests", testVM.DisplayName);
         }
@@ -76,7 +77,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void OnCreation_GivenIsNew_ShouldHaveRunAllTestsUrl()
         {
             //---------------Set up test pack-------------------
-            var vm = new ServiceTestViewModel(CreateResourceModel(), new SynchronousAsyncWorker());
+            var vm = new ServiceTestViewModel(CreateResourceModel(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(vm);
             //---------------Execute Test ----------------------
@@ -89,7 +90,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void OnCreation_GivenIsNew_ShouldHaveDuplicateTestCommand()
         {
             //---------------Set up test pack-------------------
-            var vm = new ServiceTestViewModel(CreateResourceModel(), new SynchronousAsyncWorker());
+            var vm = new ServiceTestViewModel(CreateResourceModel(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(vm);
             //---------------Execute Test ----------------------
@@ -104,7 +105,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void OnCreation_GivenIsNew_ShouldHaveStopTestCommand()
         {
             //---------------Set up test pack-------------------
-            var vm = new ServiceTestViewModel(CreateResourceModel(), new SynchronousAsyncWorker());
+            var vm = new ServiceTestViewModel(CreateResourceModel(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(vm);
             //---------------Execute Test ----------------------
@@ -119,7 +120,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void OnCreation_GivenIsNew_ShouldHaveCreateTestCommand()
         {
             //---------------Set up test pack-------------------
-            var vm = new ServiceTestViewModel(CreateResourceModel(), new SynchronousAsyncWorker());
+            var vm = new ServiceTestViewModel(CreateResourceModel(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(vm);
             //---------------Execute Test ----------------------
@@ -156,7 +157,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void OnCreation_GivenIsNew_ShouldHaveModel()
         {
             //---------------Set up test pack-------------------
-            var vm = new ServiceTestViewModel(CreateResourceModel(), new SynchronousAsyncWorker());
+            var vm = new ServiceTestViewModel(CreateResourceModel(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(vm);
             //---------------Execute Test ----------------------
@@ -170,7 +171,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void OnCreation_GivenIsNew_ShouldHaveRunAllTestsCommand()
         {
             //---------------Set up test pack-------------------
-            var vm = new ServiceTestViewModel(CreateResourceModel(), new SynchronousAsyncWorker());
+            var vm = new ServiceTestViewModel(CreateResourceModel(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(vm);
             //---------------Execute Test ----------------------
@@ -184,7 +185,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void OnCreation_GivenIsNew_ShouldHaveRunSelectedTestCommand()
         {
             //---------------Set up test pack-------------------
-            var vm = new ServiceTestViewModel(CreateResourceModel(), new SynchronousAsyncWorker());
+            var vm = new ServiceTestViewModel(CreateResourceModel(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(vm);
             //---------------Execute Test ----------------------
@@ -200,7 +201,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void OnCreation_GivenIsNew_ShouldHaveRunAllTestsInBrowserCommand()
         {
             //---------------Set up test pack-------------------
-            var vm = new ServiceTestViewModel(CreateResourceModel(), new SynchronousAsyncWorker());
+            var vm = new ServiceTestViewModel(CreateResourceModel(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(vm);
             //---------------Execute Test ----------------------
@@ -214,7 +215,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void OnCreation_GivenIsNew_ShouldHaveRunSelectedTestInBrowserCommand()
         {
             //---------------Set up test pack-------------------
-            var vm = new ServiceTestViewModel(CreateResourceModel(), new SynchronousAsyncWorker());
+            var vm = new ServiceTestViewModel(CreateResourceModel(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(vm);
             //---------------Execute Test ----------------------
@@ -228,7 +229,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void Save_GivenThrowsNoException_ShouldMarkAllTestsAsNotDirty()
         {
             //---------------Set up test pack-------------------
-            var vm = new ServiceTestViewModel(CreateResourceModelWithMoreSave(), new SynchronousAsyncWorker());
+            var vm = new ServiceTestViewModel(CreateResourceModelWithMoreSave(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(vm);
             //---------------Execute Test ----------------------
@@ -244,7 +245,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void TestFrameworkViewModel_SelectedServiceTest_CheckIsNull()
         {
             //------------Setup for test--------------------------
-            var testFrameworkViewModel = new ServiceTestViewModel(CreateResourceModel(), new SynchronousAsyncWorker());
+            var testFrameworkViewModel = new ServiceTestViewModel(CreateResourceModel(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object);
             //------------Assert Preconditions-------------------
             //------------Execute Test---------------------------
             testFrameworkViewModel.CreateTestCommand.Execute(null);
@@ -259,7 +260,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void TestFrameworkViewModel_CreateTestCommand_Execute_ShouldAddANewTest()
         {
             //------------Setup for test--------------------------
-            var testFrameworkViewModel = new ServiceTestViewModel(CreateResourceModel(), new SynchronousAsyncWorker());
+            var testFrameworkViewModel = new ServiceTestViewModel(CreateResourceModel(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object);
             //------------Assert Preconditions-------------------
             //------------Execute Test---------------------------
             testFrameworkViewModel.CreateTestCommand.Execute(null);
@@ -276,7 +277,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //------------Setup for test--------------------------
             var popupController = new Mock<IPopupController>();
             CustomContainer.Register(popupController.Object);
-            var testFrameworkViewModel = new ServiceTestViewModel(CreateResourceModel(), new SynchronousAsyncWorker());
+            var testFrameworkViewModel = new ServiceTestViewModel(CreateResourceModel(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object);
             //------------Assert Preconditions-------------------
             //------------Execute Test---------------------------
             testFrameworkViewModel.CreateTestCommand.Execute(null);
@@ -292,7 +293,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void TestFrameworkViewModel_CreateTestCommand_Execute_ShouldAddANewTestWithDefaultName()
         {
             //------------Setup for test--------------------------
-            var testFrameworkViewModel = new ServiceTestViewModel(CreateResourceModel(), new SynchronousAsyncWorker());
+            var testFrameworkViewModel = new ServiceTestViewModel(CreateResourceModel(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object);
             //------------Assert Preconditions-------------------
             //------------Execute Test---------------------------
             testFrameworkViewModel.CreateTestCommand.Execute(null);
@@ -309,7 +310,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void TestFrameworkViewModel_CreateTestCommand_Executed_ShouldSetSelectedTestToNewlyCreatedTest()
         {
             //------------Setup for test--------------------------
-            var testFrameworkViewModel = new ServiceTestViewModel(CreateResourceModel(), new SynchronousAsyncWorker());
+            var testFrameworkViewModel = new ServiceTestViewModel(CreateResourceModel(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object);
             var testModel = new ServiceTestModel(Guid.NewGuid()) { TestName = "Test 2" };
             testFrameworkViewModel.Tests = new ObservableCollection<IServiceTestModel> { testModel };
             testFrameworkViewModel.SelectedServiceTest = testModel;
@@ -347,7 +348,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             resourceModelMock.Setup(model => model.Category).Returns("My WF");
             resourceModelMock.Setup(model => model.ResourceName).Returns("My WF");
 
-            var testFrameworkViewModel = new ServiceTestViewModel(resourceModelMock.Object, new SynchronousAsyncWorker());
+            var testFrameworkViewModel = new ServiceTestViewModel(resourceModelMock.Object, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object);
             testFrameworkViewModel.CreateTestCommand.Execute(null);
             testFrameworkViewModel.Save();
             //------------Assert Preconditions-------------------
@@ -370,7 +371,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void TestFrameworkViewModel_Tests_SetProperty_ShouldFireOnPropertyChanged()
         {
             //------------Setup for test--------------------------
-            var testFrameworkViewModel = new ServiceTestViewModel(CreateResourceModel(), new SynchronousAsyncWorker());
+            var testFrameworkViewModel = new ServiceTestViewModel(CreateResourceModel(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object);
             var _wasCalled = false;
             testFrameworkViewModel.PropertyChanged += (sender, args) =>
               {
@@ -391,7 +392,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void TestFrameworkViewModel_SelectedTest_SetProperty_ShouldFireOnPropertyChanged()
         {
             //------------Setup for test--------------------------
-            var testFrameworkViewModel = new ServiceTestViewModel(CreateResourceModel(), new SynchronousAsyncWorker());
+            var testFrameworkViewModel = new ServiceTestViewModel(CreateResourceModel(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object);
             var _wasCalled = false;
             testFrameworkViewModel.PropertyChanged += (sender, args) =>
               {
@@ -412,7 +413,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void TestFrameworkViewModel_ErrorMessage_SetProperty_ShouldFireOnPropertyChanged()
         {
             //------------Setup for test--------------------------
-            var testFrameworkViewModel = new ServiceTestViewModel(CreateResourceModel(), new SynchronousAsyncWorker());
+            var testFrameworkViewModel = new ServiceTestViewModel(CreateResourceModel(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object);
             var _wasCalled = false;
             testFrameworkViewModel.PropertyChanged += (sender, args) =>
               {
@@ -433,7 +434,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void TestFrameworkViewModel_CreateTestCommand_Execute_ShouldAddInputsFromResourceModel()
         {
             //------------Setup for test--------------------------
-            var testFrameworkViewModel = new ServiceTestViewModel(CreateResourceModelWithSingleScalarInput(), new SynchronousAsyncWorker());
+            var testFrameworkViewModel = new ServiceTestViewModel(CreateResourceModelWithSingleScalarInput(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object);
             //------------Assert Preconditions-------------------
             //------------Execute Test---------------------------
             testFrameworkViewModel.CreateTestCommand.Execute(null);
@@ -452,7 +453,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void TestFrameworkViewModel_CreateTestCommand_Execute_ShouldAddOutputsFromResourceModel()
         {
             //------------Setup for test--------------------------
-            var testFrameworkViewModel = new ServiceTestViewModel(CreateResourceModelWithSingleScalarOutput(), new SynchronousAsyncWorker());
+            var testFrameworkViewModel = new ServiceTestViewModel(CreateResourceModelWithSingleScalarOutput(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object);
             //------------Assert Preconditions-------------------
             //------------Execute Test---------------------------
             testFrameworkViewModel.CreateTestCommand.Execute(null);
@@ -470,7 +471,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void OnCreation_GivenIsNew_ShouldHaveDeleteTestCommand()
         {
             //---------------Set up test pack-------------------
-            var vm = new ServiceTestViewModel(CreateResourceModel(), new SynchronousAsyncWorker());
+            var vm = new ServiceTestViewModel(CreateResourceModel(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(vm);
             //---------------Execute Test ----------------------
@@ -527,7 +528,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void OnCreation_GivenIsDisabled_DeleteTestCommandShouldBeEnabled()
         {
             //---------------Set up test pack-------------------
-            var vm = new ServiceTestViewModel(CreateResourceModel(), new SynchronousAsyncWorker());
+            var vm = new ServiceTestViewModel(CreateResourceModel(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(vm);
             //---------------Execute Test ----------------------
@@ -542,7 +543,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void OnCreation_GivenIsEnabled_DeleteTestCommandShouldBeDisabled()
         {
             //---------------Set up test pack-------------------
-            var vm = new ServiceTestViewModel(CreateResourceModel(), new SynchronousAsyncWorker());
+            var vm = new ServiceTestViewModel(CreateResourceModel(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(vm);
             //---------------Execute Test ----------------------
@@ -569,7 +570,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             mockEnvironmentModel.Setup(model => model.ResourceRepository).Returns(mockResourceRepo.Object);
             mockEnvironmentModel.Setup(model => model.Connection).Returns(con.Object);
             resourceModelMock.Setup(model => model.Environment).Returns(mockEnvironmentModel.Object);
-            var serviceTestViewModel = new ServiceTestViewModel(resourceModelMock.Object, new SynchronousAsyncWorker());
+            var serviceTestViewModel = new ServiceTestViewModel(resourceModelMock.Object, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object);
             serviceTestViewModel.CreateTestCommand.Execute(null);
             //------------Execute Test---------------------------
             Assert.IsTrue(serviceTestViewModel.CanSave);
@@ -596,7 +597,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             CustomContainer.Register(popupController.Object);
 
             //------------Execute Test---------------------------
-            var serviceTestViewModel = new ServiceTestViewModel(resourceModelMock.Object, new SynchronousAsyncWorker());
+            var serviceTestViewModel = new ServiceTestViewModel(resourceModelMock.Object, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object);
             serviceTestViewModel.CreateTestCommand.Execute(null);
             Assert.IsTrue(serviceTestViewModel.CanSave);
             serviceTestViewModel.Save();
@@ -618,7 +619,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //------------Setup for test--------------------------
 
             //------------Execute Test---------------------------
-            var serviceTestViewModel = new ServiceTestViewModel(CreateResourceModel(), new SynchronousAsyncWorker());
+            var serviceTestViewModel = new ServiceTestViewModel(CreateResourceModel(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object);
             serviceTestViewModel.CreateTestCommand.Execute(null);
             Assert.IsTrue(serviceTestViewModel.IsDirty);
             Assert.IsTrue(serviceTestViewModel.CanSave);
@@ -638,7 +639,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void TestFrameworkViewModel_Constructor_IsDirty_IsFalse()
         {
             //------------Setup for test--------------------------
-            var testFrameworkViewModel = new ServiceTestViewModel(CreateResourceModel(), new SynchronousAsyncWorker());
+            var testFrameworkViewModel = new ServiceTestViewModel(CreateResourceModel(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object);
             //------------Assert Preconditions-------------------
             //------------Execute Test---------------------------
             //------------Assert Results-------------------------
@@ -651,7 +652,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void TestFrameworkViewModel_CreateTestCommand_Execute_ShouldSetHasChangedTrue()
         {
             //------------Setup for test--------------------------
-            var testFrameworkViewModel = new ServiceTestViewModel(CreateResourceModelWithSingleScalarOutput(), new SynchronousAsyncWorker());
+            var testFrameworkViewModel = new ServiceTestViewModel(CreateResourceModelWithSingleScalarOutput(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object);
             //------------Assert Preconditions-------------------
             //------------Execute Test---------------------------
             testFrameworkViewModel.CreateTestCommand.Execute(null);
@@ -673,7 +674,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             CustomContainer.Register(mainViewModelMock.Object);
             const string helpText = "someText";
 
-            var testFrameworkViewModel = new ServiceTestViewModel(CreateResourceModelWithSingleScalarOutput(), new SynchronousAsyncWorker());
+            var testFrameworkViewModel = new ServiceTestViewModel(CreateResourceModelWithSingleScalarOutput(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object);
 
             //act
             testFrameworkViewModel.UpdateHelpDescriptor(helpText);
@@ -688,7 +689,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void ServiceTestViewModel_IsDirty_WhenSetTrue_ShouldUpdateDisplayNameWithStar()
         {
             //------------Setup for test--------------------------
-            var testFrameworkViewModel = new ServiceTestViewModel(CreateResourceModelWithSingleScalarOutput(), new SynchronousAsyncWorker());
+            var testFrameworkViewModel = new ServiceTestViewModel(CreateResourceModelWithSingleScalarOutput(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object);
             //------------Assert Preconditions-------------------
             //------------Execute Test---------------------------
             testFrameworkViewModel.CreateTestCommand.Execute(null);
@@ -703,7 +704,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void ServiceTestViewModel_IsDirty_WhenSetTrueTwice_ShouldUpdateDisplayNameWithOneStarOnly()
         {
             //------------Setup for test--------------------------
-            var testFrameworkViewModel = new ServiceTestViewModel(CreateResourceModelWithSingleScalarOutput(), new SynchronousAsyncWorker());
+            var testFrameworkViewModel = new ServiceTestViewModel(CreateResourceModelWithSingleScalarOutput(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object);
             //------------Assert Preconditions-------------------
             //------------Execute Test---------------------------
             testFrameworkViewModel.CreateTestCommand.Execute(null);
@@ -724,7 +725,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             mockRepo.Setup(repository => repository.LoadResourceTests(It.IsAny<Guid>())).Returns((List<IServiceTestModelTO>)null);
             mockEnvironment.Setup(model => model.ResourceRepository).Returns(mockRepo.Object);
             resourceMock.Setup(model => model.Environment).Returns(mockEnvironment.Object);
-            var serviceTestViewModel = new ServiceTestViewModel(resourceMock.Object, new SynchronousAsyncWorker());
+            var serviceTestViewModel = new ServiceTestViewModel(resourceMock.Object, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object);
 
             //------------Execute Test---------------------------
             var tests = serviceTestViewModel.Tests;
@@ -745,7 +746,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             mockRepo.Setup(repository => repository.LoadResourceTests(It.IsAny<Guid>())).Returns(new List<IServiceTestModelTO>());
             mockEnvironment.Setup(model => model.ResourceRepository).Returns(mockRepo.Object);
             resourceMock.Setup(model => model.Environment).Returns(mockEnvironment.Object);
-            var serviceTestViewModel = new ServiceTestViewModel(resourceMock.Object, new SynchronousAsyncWorker());
+            var serviceTestViewModel = new ServiceTestViewModel(resourceMock.Object, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object);
 
             //------------Execute Test---------------------------
             var tests = serviceTestViewModel.Tests;
@@ -774,7 +775,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             });
             mockEnvironment.Setup(model => model.ResourceRepository).Returns(mockRepo.Object);
             resourceMock.Setup(model => model.Environment).Returns(mockEnvironment.Object);
-            var serviceTestViewModel = new ServiceTestViewModel(resourceMock.Object, new SynchronousAsyncWorker());
+            var serviceTestViewModel = new ServiceTestViewModel(resourceMock.Object, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object);
 
             //------------Execute Test---------------------------
             var tests = serviceTestViewModel.Tests;
@@ -791,7 +792,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void DuplicateCommand_GivenIsDirty_ShouldSetCanExecuteTrue()
         {
             //---------------Set up test pack-------------------
-            var testFrameworkViewModel = new ServiceTestViewModel(CreateResourceModelWithSingleScalarOutput(), new SynchronousAsyncWorker());
+            var testFrameworkViewModel = new ServiceTestViewModel(CreateResourceModelWithSingleScalarOutput(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object);
             testFrameworkViewModel.CreateTestCommand.Execute(null);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(testFrameworkViewModel.DuplicateTestCommand);
@@ -807,7 +808,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void DuplicateCommand_GivenIsDirtyFalseAndSelectedIsNotNull_ShouldSetCanExecuteTrue()
         {
             //---------------Set up test pack-------------------
-            var testFrameworkViewModel = new ServiceTestViewModel(CreateResourceModelWithSingleScalarOutput(), new SynchronousAsyncWorker());
+            var testFrameworkViewModel = new ServiceTestViewModel(CreateResourceModelWithSingleScalarOutput(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(testFrameworkViewModel.DuplicateTestCommand);
             Assert.IsFalse(testFrameworkViewModel.IsDirty);
@@ -823,7 +824,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void CanSave_GivenIsDirty_ShouldSetCanSaveFalse()
         {
             //---------------Set up test pack-------------------
-            var testFrameworkViewModel = new ServiceTestViewModel(CreateResourceModelWithSingleScalarOutput(), new SynchronousAsyncWorker());
+            var testFrameworkViewModel = new ServiceTestViewModel(CreateResourceModelWithSingleScalarOutput(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(testFrameworkViewModel.DuplicateTestCommand);
             Assert.IsFalse(testFrameworkViewModel.IsDirty);
@@ -838,7 +839,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void CanSave_GivenIsDirtyAndValidName_ShouldSetCanSavetrue()
         {
             //---------------Set up test pack-------------------
-            var testFrameworkViewModel = new ServiceTestViewModel(CreateResourceModelWithSingleScalarOutput(), new SynchronousAsyncWorker());
+            var testFrameworkViewModel = new ServiceTestViewModel(CreateResourceModelWithSingleScalarOutput(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object);
             testFrameworkViewModel.CreateTestCommand.Execute(null);
             testFrameworkViewModel.SelectedServiceTest.TestName = "name";
             //---------------Assert Precondition----------------
@@ -855,7 +856,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void CanSave_GivenIsDirtyAndInvalidValidName_ShouldSetCanSaveFalse()
         {
             //---------------Set up test pack-------------------
-            var testFrameworkViewModel = new ServiceTestViewModel(CreateResourceModelWithSingleScalarOutput(), new SynchronousAsyncWorker());
+            var testFrameworkViewModel = new ServiceTestViewModel(CreateResourceModelWithSingleScalarOutput(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object);
             testFrameworkViewModel.CreateTestCommand.Execute(null);
             testFrameworkViewModel.SelectedServiceTest.TestName = "name$";
             //---------------Assert Precondition----------------
@@ -873,7 +874,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void CanSave_GivenIsDirtyAndEmptyName_ShouldSetCanSaveFalse()
         {
             //---------------Set up test pack-------------------
-            var testFrameworkViewModel = new ServiceTestViewModel(CreateResourceModelWithSingleScalarOutput(), new SynchronousAsyncWorker());
+            var testFrameworkViewModel = new ServiceTestViewModel(CreateResourceModelWithSingleScalarOutput(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object);
             testFrameworkViewModel.CreateTestCommand.Execute(null);
             testFrameworkViewModel.SelectedServiceTest.TestName = "";
             //---------------Assert Precondition----------------
@@ -891,7 +892,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void CanSave_GivenIsDirtynameHastrailingSpaces_ShouldSetCanSaveFalse()
         {
             //---------------Set up test pack-------------------
-            var testFrameworkViewModel = new ServiceTestViewModel(CreateResourceModelWithSingleScalarOutput(), new SynchronousAsyncWorker());
+            var testFrameworkViewModel = new ServiceTestViewModel(CreateResourceModelWithSingleScalarOutput(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object);
             testFrameworkViewModel.CreateTestCommand.Execute(null);
             testFrameworkViewModel.SelectedServiceTest.TestName = "name ";
             //---------------Assert Precondition----------------
@@ -913,7 +914,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void DuplicateTestCommand_GivenSelectedTesIsNotNull_ShouldAddNewTestToTestCollection()
         {
             //---------------Set up test pack-------------------
-            var testFrameworkViewModel = new ServiceTestViewModel(CreateMockResourceModelWithSingleScalarOutput(), new SynchronousAsyncWorker());
+            var testFrameworkViewModel = new ServiceTestViewModel(CreateMockResourceModelWithSingleScalarOutput(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object);
             testFrameworkViewModel.CreateTestCommand.Execute(null);
             testFrameworkViewModel.SelectedServiceTest.TestName = "NewTestSaved";
             testFrameworkViewModel.Save();
@@ -935,7 +936,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void DuplicateTestCommand_GivenSelectedTesIsNotNull_ShouldSetSelectedTestToNewlyDuplicatedTest()
         {
             //---------------Set up test pack-------------------
-            var testFrameworkViewModel = new ServiceTestViewModel(CreateMockResourceModelWithSingleScalarOutput(), new SynchronousAsyncWorker());
+            var testFrameworkViewModel = new ServiceTestViewModel(CreateMockResourceModelWithSingleScalarOutput(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object);
             testFrameworkViewModel.CreateTestCommand.Execute(null);
             testFrameworkViewModel.SelectedServiceTest.TestName = "NewTestSaved";
             testFrameworkViewModel.Save();
@@ -957,7 +958,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void DeleteCommand_GivenSelectedTestIsDisabled_ShouldSetCanDeleteTrue()
         {
             //---------------Set up test pack-------------------
-            var testFrameworkViewModel = new ServiceTestViewModel(CreateResourceModel(), new SynchronousAsyncWorker());
+            var testFrameworkViewModel = new ServiceTestViewModel(CreateMockResourceModelWithSingleScalarOutput(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object);
             testFrameworkViewModel.CreateTestCommand.Execute(null);
             testFrameworkViewModel.Save();
             //---------------Assert Precondition----------------
@@ -977,7 +978,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //------------Setup for test--------------------------
             var popupController = new Mock<IPopupController>();
             CustomContainer.Register(popupController.Object);
-            var testFrameworkViewModel = new ServiceTestViewModel(CreateMockResourceModelWithSingleScalarOutput(), new SynchronousAsyncWorker());
+            var testFrameworkViewModel = new ServiceTestViewModel(CreateMockResourceModelWithSingleScalarOutput(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object);
             var mockServiceModel = new Mock<IServiceTestModel>();
             mockServiceModel.Setup(a => a.NameForDisplay).Returns("TestName");
             mockServiceModel.Setup(a => a.Enabled).Returns(false);
@@ -1011,7 +1012,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             resourceModelMock.Setup(model => model.Category).Returns("My WF");
             resourceModelMock.Setup(model => model.ResourceName).Returns("My WF");
 
-            var testFrameworkViewModel = new ServiceTestViewModel(resourceModelMock.Object, new SynchronousAsyncWorker());
+            var testFrameworkViewModel = new ServiceTestViewModel(resourceModelMock.Object, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object);
 
             var testModel = new ServiceTestModel(Guid.NewGuid()) { TestName = "Test 2", NameForDisplay = "Test 2" };
             testFrameworkViewModel.Tests = new ObservableCollection<IServiceTestModel> { testModel };
@@ -1047,7 +1048,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             resourceModelMock.Setup(model => model.Category).Returns("My WF");
             resourceModelMock.Setup(model => model.ResourceName).Returns("My WF");
 
-            var testFrameworkViewModel = new ServiceTestViewModel(resourceModelMock.Object, new SynchronousAsyncWorker());
+            var testFrameworkViewModel = new ServiceTestViewModel(resourceModelMock.Object, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object);
 
             bool wasCalled = false;
             testFrameworkViewModel.PropertyChanged += (sender, args) =>
@@ -1085,7 +1086,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var resourceId = Guid.NewGuid();
             mockResourceModel.Setup(model => model.Environment.ResourceRepository.DeleteResourceTest(It.IsAny<Guid>(), It.IsAny<string>())).Verifiable();
             mockResourceModel.Setup(model => model.ID).Returns(resourceId);
-            var testFrameworkViewModel = new ServiceTestViewModel(mockResourceModel.Object, new SynchronousAsyncWorker());
+            var testFrameworkViewModel = new ServiceTestViewModel(mockResourceModel.Object, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object);
             var methodInfo = typeof(ServiceTestViewModel).GetMethod("IsValidName", BindingFlags.NonPublic | BindingFlags.Instance);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(methodInfo);
@@ -1107,7 +1108,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var resourceId = Guid.NewGuid();
             mockResourceModel.Setup(model => model.Environment.ResourceRepository.DeleteResourceTest(It.IsAny<Guid>(), It.IsAny<string>())).Verifiable();
             mockResourceModel.Setup(model => model.ID).Returns(resourceId);
-            var testFrameworkViewModel = new ServiceTestViewModel(mockResourceModel.Object, new SynchronousAsyncWorker());
+            var testFrameworkViewModel = new ServiceTestViewModel(mockResourceModel.Object, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object);
             var methodInfo = typeof(ServiceTestViewModel).GetMethod("IsValidName", BindingFlags.NonPublic | BindingFlags.Instance);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(methodInfo);
@@ -1129,7 +1130,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var resourceId = Guid.NewGuid();
             mockResourceModel.Setup(model => model.Environment.ResourceRepository.DeleteResourceTest(It.IsAny<Guid>(), It.IsAny<string>())).Verifiable();
             mockResourceModel.Setup(model => model.ID).Returns(resourceId);
-            var testFrameworkViewModel = new ServiceTestViewModel(mockResourceModel.Object, new SynchronousAsyncWorker());
+            var testFrameworkViewModel = new ServiceTestViewModel(mockResourceModel.Object, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object);
             var methodInfo = typeof(ServiceTestViewModel).GetMethod("IsValidName", BindingFlags.NonPublic | BindingFlags.Instance);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(methodInfo);
@@ -1151,7 +1152,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var resourceId = Guid.NewGuid();
             mockResourceModel.Setup(model => model.Environment.ResourceRepository.DeleteResourceTest(It.IsAny<Guid>(), It.IsAny<string>())).Verifiable();
             mockResourceModel.Setup(model => model.ID).Returns(resourceId);
-            var testFrameworkViewModel = new ServiceTestViewModel(mockResourceModel.Object, new SynchronousAsyncWorker());
+            var testFrameworkViewModel = new ServiceTestViewModel(mockResourceModel.Object, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object);
             var methodInfo = typeof(ServiceTestViewModel).GetMethod("IsValidName", BindingFlags.NonPublic | BindingFlags.Instance);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(methodInfo);
@@ -1173,7 +1174,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var resourceId = Guid.NewGuid();
             mockResourceModel.Setup(model => model.Environment.ResourceRepository.DeleteResourceTest(It.IsAny<Guid>(), It.IsAny<string>())).Verifiable();
             mockResourceModel.Setup(model => model.ID).Returns(resourceId);
-            var testFrameworkViewModel = new ServiceTestViewModel(mockResourceModel.Object, new SynchronousAsyncWorker());
+            var testFrameworkViewModel = new ServiceTestViewModel(mockResourceModel.Object, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object);
             var methodInfo = typeof(ServiceTestViewModel).GetMethod("IsValidName", BindingFlags.NonPublic | BindingFlags.Instance);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(methodInfo);
@@ -1195,7 +1196,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var resourceId = Guid.NewGuid();
             mockResourceModel.Setup(model => model.Environment.ResourceRepository.DeleteResourceTest(It.IsAny<Guid>(), It.IsAny<string>())).Verifiable();
             mockResourceModel.Setup(model => model.ID).Returns(resourceId);
-            var testFrameworkViewModel = new ServiceTestViewModel(mockResourceModel.Object, new SynchronousAsyncWorker());
+            var testFrameworkViewModel = new ServiceTestViewModel(mockResourceModel.Object, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object);
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
             testFrameworkViewModel.CreateTestCommand.Execute(null);
@@ -1216,7 +1217,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var resourceId = Guid.NewGuid();
             mockResourceModel.Setup(model => model.Environment.ResourceRepository.DeleteResourceTest(It.IsAny<Guid>(), It.IsAny<string>())).Verifiable();
             mockResourceModel.Setup(model => model.ID).Returns(resourceId);
-            var testFrameworkViewModel = new ServiceTestViewModel(mockResourceModel.Object, new SynchronousAsyncWorker());
+            var testFrameworkViewModel = new ServiceTestViewModel(mockResourceModel.Object, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object);
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
             testFrameworkViewModel.CreateTestCommand.Execute(null);
