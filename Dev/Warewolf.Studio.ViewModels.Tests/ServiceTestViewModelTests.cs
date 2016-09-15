@@ -44,6 +44,23 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void ShoDuplicatePopup_GivenIsInvoked_ShouldShowCorrectMessage()
+        {
+            //---------------Set up test pack-------------------
+            var mock = new Mock<IPopupController>();
+            mock.Setup(controller => controller.Show(Resources.Languages.Core.ServiceTestDuplicateTestNameMessage, Resources.Languages.Core.ServiceTestDuplicateTestNameHeader, MessageBoxButton.OK, MessageBoxImage.Error, null, false, true, false, false)).Verifiable();
+            CustomContainer.Register(mock.Object);
+            var testVM = new ServiceTestViewModel(CreateResourceModel(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object);
+            //---------------Assert Precondition----------------
+            //---------------Execute Test ----------------------
+            testVM.ShowDuplicatePopup();
+            //---------------Test Result -----------------------
+            mock.Verify(controller => controller.Show(Resources.Languages.Core.ServiceTestDuplicateTestNameMessage, Resources.Languages.Core.ServiceTestDuplicateTestNameHeader, MessageBoxButton.OK, MessageBoxImage.Error, null, false, true, false, false), Times.Once);
+
+        }
+
+        [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("TestFrameworkViewModel_Constructor")]
         public void TestFrameworkViewModel_Constructor_NotNullResourceModel_ShouldSetResourceModel()
@@ -303,6 +320,38 @@ namespace Warewolf.Studio.ViewModels.Tests
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory("TestFrameworkViewModel_CreateTestCommand")]
+        public void TestFrameworkViewModel_CreateTestCommand_Execute_ShouldIncrementTestNumber()
+        {
+            //------------Setup for test--------------------------
+            var testFrameworkViewModel = new ServiceTestViewModel(CreateResourceModel(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object);
+            //------------Assert Preconditions-------------------
+            //------------Execute Test---------------------------
+            testFrameworkViewModel.CreateTestCommand.Execute(null);
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(testFrameworkViewModel.Tests);
+            Assert.AreEqual(2, testFrameworkViewModel.Tests.Count);
+            Assert.AreEqual("Test 1", testFrameworkViewModel.Tests[0].TestName);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("TestFrameworkViewModel_CreateTestCommand")]
+        public void TestFrameworkViewModel_CreateTestCommand_Execute_ShouldDisableDuplicateCommand()
+        {
+            //------------Setup for test--------------------------
+            var testFrameworkViewModel = new ServiceTestViewModel(CreateResourceModel(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object);
+            //------------Assert Preconditions-------------------
+            //------------Execute Test---------------------------
+            testFrameworkViewModel.CreateTestCommand.Execute(null);
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(testFrameworkViewModel.Tests);
+            Assert.AreEqual(2, testFrameworkViewModel.Tests.Count);
+            Assert.IsFalse(testFrameworkViewModel.DuplicateTestCommand.CanExecute(null));
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("TestFrameworkViewModel_CreateTestCommand")]
         public void TestFrameworkViewModel_CreateTestCommand_Execute_ShouldShowError()
         {
             //------------Setup for test--------------------------
@@ -356,7 +405,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual(2, testFrameworkViewModel.Tests.Count);
             Assert.AreNotEqual(testModel, testFrameworkViewModel.SelectedServiceTest);
             Assert.AreEqual(testFrameworkViewModel.Tests[0], testFrameworkViewModel.SelectedServiceTest);
-            Assert.AreEqual("http://rsaklf/secure/My WF.tests/Test 2", testFrameworkViewModel.SelectedServiceTest.RunSelectedTestUrl);
+            Assert.AreEqual("http://rsaklf/secure/My WF.tests/Test 1", testFrameworkViewModel.SelectedServiceTest.RunSelectedTestUrl);
         }
 
         [TestMethod]
@@ -820,7 +869,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void DuplicateCommand_GivenIsDirty_ShouldSetCanExecuteTrue()
+        public void DuplicateCommand_GivenIsDirty_ShouldSetCanExecuteFalse()
         {
             //---------------Set up test pack-------------------
             var testFrameworkViewModel = new ServiceTestViewModel(CreateResourceModelWithSingleScalarOutput(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object);
@@ -831,7 +880,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //---------------Execute Test ----------------------
             var canDuplicate = testFrameworkViewModel.DuplicateTestCommand.CanExecute(null);
             //---------------Test Result -----------------------
-            Assert.IsTrue(canDuplicate);
+            Assert.IsFalse(canDuplicate);
         }
 
         [TestMethod]
@@ -839,7 +888,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void DuplicateCommand_GivenIsDirtyFalseAndSelectedIsNotNull_ShouldSetCanExecuteTrue()
         {
             //---------------Set up test pack-------------------
-            var testFrameworkViewModel = new ServiceTestViewModel(CreateResourceModelWithSingleScalarOutput(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object);
+            var testFrameworkViewModel = new ServiceTestViewModel(CreateResourceModel(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(testFrameworkViewModel.DuplicateTestCommand);
             Assert.IsFalse(testFrameworkViewModel.IsDirty);
