@@ -86,7 +86,7 @@ namespace Warewolf.Studio.ViewModels
         {
             SelectedServiceTest.IsTestRunning = false;
             SelectedServiceTest.TestPending = true;
-            ServiceTestCommandHandler.StopTest();
+            ServiceTestCommandHandler.StopTest(ResourceModel);
         }
 
         #region CommandMethods
@@ -110,6 +110,7 @@ namespace Warewolf.Studio.ViewModels
         private void RunAllTests()
         {
             ServiceTestCommandHandler.RunAllTestsCommand(IsDirty,Tests,ResourceModel,AsyncWorker);
+            SelectedServiceTest = null;
         }
 
         private void DuplicateTest()
@@ -138,6 +139,7 @@ namespace Warewolf.Studio.ViewModels
 
         private void CreateTests()
         {
+            SelectedServiceTest = null;
             if (IsDirty)
             {
                 PopupController?.Show(Resources.Languages.Core.ServiceTestSaveEditedTestsMessage, Resources.Languages.Core.ServiceTestSaveEditedTestsHeader, MessageBoxButton.OK, MessageBoxImage.Error, null, false, true, false, false);
