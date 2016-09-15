@@ -1242,6 +1242,54 @@ namespace Warewolf.UITests
             Save_With_Ribbon_Button_And_Dialog("Dice");
             Click_Close_Workflow_Tab_Button();
         }
+
+        /// <summary>
+        /// Select_Dice_From_Service_Picker - Use 'Select_Dice_From_Service_PickerParams' to pass parameters into this method.
+        /// </summary>
+        public void Select_Dice_From_Service_Picker(string tabName)
+        {
+            #region Variable Declarations
+            WpfEdit filterTextbox = this.ServicePickerDialog.Explorer.FilterTextbox;
+            WpfTreeItem subTreeItem1 = this.ServicePickerDialog.Explorer.ExplorerTree.TreeItem1.SubTreeItem1;
+            WpfButton ok = this.ServicePickerDialog.OK;
+            WpfText addResourceText = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1.ResourceCell.AddResourceText;
+            WpfText ResourceText = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.PerfomanceCounterTab.PerfmonViewContent.ResourceTable.ResourceCell.ResourceTextBox;
+            #endregion
+
+            // Click 'SearchTextBox' text box
+            Mouse.Click(filterTextbox, new Point(93, 6));
+
+            // Type 'Dice' in 'SearchTextBox' text box
+            filterTextbox.Text = this.Select_Dice_From_Service_PickerParams.Dice;
+
+            // Right-Click 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item
+            Mouse.Click(subTreeItem1, MouseButtons.Right, ModifierKeys.None, new Point(53, 12));
+
+            // Click 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item
+            Mouse.Click(subTreeItem1, new Point(53, 12));
+
+            // Click 'OK' button
+            Mouse.Click(ok, new Point(52, 15));
+
+            if(tabName == "SecurityTab")
+                Assert.AreEqual(this.Select_Dice_From_Service_PickerParams.Dice, addResourceText.DisplayText, "Resource Name is not set to Dice after selecting Dice from Service picker");
+            else if (tabName == "PerfomanceCounterTab")
+                Assert.AreEqual(this.Select_Dice_From_Service_PickerParams.Dice, ResourceText.DisplayText, "Resource Name is not set to Dice after selecting Dice from Service picker");
+        }
+
+        public virtual Select_Dice_From_Service_PickerParams Select_Dice_From_Service_PickerParams
+        {
+            get
+            {
+                if ((this.mSelect_Dice_From_Service_PickerParams == null))
+                {
+                    this.mSelect_Dice_From_Service_PickerParams = new Select_Dice_From_Service_PickerParams();
+                }
+                return this.mSelect_Dice_From_Service_PickerParams;
+            }
+        }
+
+        private Select_Dice_From_Service_PickerParams mSelect_Dice_From_Service_PickerParams;
     }
     /// <summary>
     /// Parameters to be passed into 'Select_Show_Dependencies_In_Explorer_Context_Menu'
@@ -1328,5 +1376,18 @@ namespace Warewolf.UITests
         /// </summary>
         public bool HelpTextEditorExists = true;
         #endregion
-    }    
+    }
+    /// <summary>
+    /// Parameters to be passed into 'Select_Dice_From_Service_Picker'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Select_Dice_From_Service_PickerParams
+    {
+        #region Fields
+        /// <summary>
+        /// Verify that the 'DisplayText' property of 'UI__AddResourceTextBox_AutoID' label equals 'Dice'
+        /// </summary>
+        public string Dice = "Dice";
+        #endregion
+    }
 }
