@@ -255,13 +255,14 @@ namespace Dev2.Studio.ViewModels.WorkSurface
             if (WorkSurfaceKey.WorkSurfaceContext == WorkSurfaceContext.Scheduler || WorkSurfaceKey.WorkSurfaceContext == WorkSurfaceContext.ServiceTestsViewer)
             {
                 DebugOutputViewModel.Clear();
-                var debugState = message.DebugStates.LastOrDefault();
-
-                if (debugState != null)
+                foreach(var debugState in message.DebugStates)
                 {
-                    debugState.StateType = StateType.Clear;
-                    debugState.SessionID = DebugOutputViewModel.SessionID;
-                    DebugOutputViewModel.Append(debugState);
+                    if (debugState != null)
+                    {
+                        debugState.StateType = StateType.Clear;
+                        debugState.SessionID = DebugOutputViewModel.SessionID;
+                        DebugOutputViewModel.Append(debugState);
+                    }
                 }
             }
         }
