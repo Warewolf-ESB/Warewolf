@@ -524,7 +524,7 @@ namespace Dev2.Activities.Specs.TestFramework
                     Assert.IsTrue(serviceTest.StopTestCommand.CanExecute(null));
                     break;
                 case "Run":
-                    Assert.IsTrue(serviceTest.Tests[0].TestPassed);
+                    Assert.IsTrue(serviceTest.RunSelectedTestCommand.CanExecute(null));
                     break;
                 default:
                     Assert.Fail("Incorrect Command Option!");
