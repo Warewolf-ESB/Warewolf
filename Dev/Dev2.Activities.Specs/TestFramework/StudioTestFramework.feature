@@ -665,7 +665,39 @@ Scenario: Duplicate test new test has name
 	Then there are 2 tests
 	And Test name is "Test 1 1"
 
-
+Scenario: Run Selected Test Shows Stop Option
+	Given the test builder is open with "Workflow 1"
+	And Tab Header is "Workflow 1 - Tests"
+	And there are no tests
+	And I click New Test
+	Then a new test is added
+	And Tab Header is "Workflow 1 - Tests *"
+	And test name starts with "Test 1"
+	And inputs are
+	| Variable Name | Value |
+	| a             |       |
+	And outputs as
+	| Variable Name | Value |
+	| outputValue   |       |
+	And save is enabled
+	When I save
+	Then Tab Header is "Workflow 1 - Tests"
+	And I close the test builder
+	When the test builder is open with "Workflow 1"
+	Then there are 1 tests
+	And "Dummy Test" is selected
+	And I select "Test 1"
+	And "Test 1" is selected
+	And test name starts with "Test 1"
+	And inputs are
+	| Variable Name | Value |
+	| a             |       |
+	And outputs as
+	| Variable Name | Value |
+	| outputValue   |       |
+	And save is disabled
+	When I run selected test
+	Then "Stop" test is visible
 
 
 

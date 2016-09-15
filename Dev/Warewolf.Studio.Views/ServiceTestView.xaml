@@ -16,6 +16,8 @@
              xmlns:converters1="clr-namespace:Dev2.Studio.Core.AppResources.Converters;assembly=Dev2.Studio.Core"
              xmlns:serviceModel="clr-namespace:Dev2.Runtime.ServiceModel.Data;assembly=Dev2.Common.Interfaces"
              xmlns:converters="clr-namespace:Dev2.AppResources.Converters;assembly=Dev2.Studio.Core"
+             xmlns:controls="clr-namespace:Dev2.Activities.Designers2.Core.Controls;assembly=Dev2.Activities.Designers"
+             xmlns:interfaces="clr-namespace:Dev2.Common.Interfaces;assembly=Dev2.Common.Interfaces"
              d:DesignHeight="300"
              d:DesignWidth="300"
              mc:Ignorable="d"
@@ -76,7 +78,10 @@
                     <ColumnDefinition Width="70*"/>
                 </Grid.ColumnDefinitions>
 
-                <ListBox Grid.Column="0" Style="{StaticResource ListBoxStyle}" BorderThickness="1,0,1,1" PreviewMouseLeftButtonDown="TestsListbox_OnPreviewMouseLeftButtonDown"
+                <ListBox Grid.Column="0" Style="{StaticResource ListBoxStyle}" 
+                         BorderThickness="1,0,1,1"
+                         PreviewMouseLeftButtonDown="TestsListbox_OnPreviewMouseLeftButtonDown"
+                         
                          ItemsSource="{Binding Tests}" SelectionMode="Single" SelectedItem="{Binding SelectedServiceTest, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" x:Name="TestsListbox">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
@@ -130,8 +135,8 @@
                                                FontSize="11" 
                                                Margin="0,-4,0,0" 
                                                Visibility="{Binding LastRunDateVisibility}"
-                                               /> 
-                                    
+                                               />
+
                                     <TextBlock Grid.Column="2" 
                                                Grid.Row="1" 
                                                Text="{Binding NeverRunString}" 
@@ -145,6 +150,7 @@
                                             Grid.RowSpan="2" 
                                             Command="{Binding ElementName=TestsListbox, Path=DataContext.RunSelectedTestCommand }" 
                                             CommandParameter="{Binding .}" 
+                                            Visibility="{Binding IsTestRunning, Converter={StaticResource BoolToVisibilityConverterNegative}}"
                                             Style="{StaticResource ButtonRunTestTransparentStyle}" >
                                         <Button.Content>
                                             <fa:FontAwesome Icon="Play" FontSize="18" Background="Transparent"/>
@@ -351,136 +357,146 @@
 
                             <TextBlock Grid.Row="0" Text="Inputs" FontWeight="Bold"/>
                             <Border Grid.Row="1" BorderBrush="{StaticResource XamGridBorderBrush}" BorderThickness="1">
-                                <ig:XamGrid ItemsSource="{Binding SelectedServiceTest.Inputs, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-                                        AutoGenerateColumns="False"
-                                        Style="{StaticResource XamGridStyle}"
-                                        BorderThickness="0"       
-                                        HeaderVisibility="Hidden"
-                                        KeyboardNavigation="CurrentLayout"
-                                        Loaded="TestInputs_OnLoaded"
-                                        x:Name="TestInputs">
-                                    <ig:XamGrid.Columns>
-                                        <ig:TemplateColumn Key="Variable" Width="1*" IsReadOnly="True" HorizontalContentAlignment="Stretch">
-                                            <ig:TemplateColumn.ItemTemplate>
+                                <controls:Dev2DataGrid ItemsSource="{Binding SelectedServiceTest.Inputs, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                                       AutoGenerateColumns="False"
+                                                       BorderThickness="0"      
+                                                       Style="{StaticResource ActivityMapppingDataGridStyle}"
+                                                       x:Name="TestInputs">
+
+                                    <!-- DO NOT override ItemsPanel - doing so causes column sizing issues on first drop -->
+                                    <DataGrid.Columns>
+                                        <DataGridTemplateColumn Width="*"
+                                                                MinWidth="125"
+                                                                Header="Variable"
+                                                                HeaderStyle="{StaticResource ActivityMapppingDataGridHeaderStyle}"
+                                                                d:DataContext="{d:DesignInstance Type=interfaces:IServiceTestInput}">
+                                            <DataGridTemplateColumn.CellTemplate>
                                                 <DataTemplate>
-                                                    <Grid PreviewKeyDown="GridPreviewKeyDown" Background="Transparent" HorizontalAlignment="Stretch">
-                                                        <TextBlock KeyboardNavigation.IsTabStop="False" 
+                                                    <TextBlock KeyboardNavigation.IsTabStop="False" 
                                                                Focusable="True" 
                                                                ToolTip="{Binding Path=Variable}" 
                                                                Text="{Binding Path=Variable, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" />
-                                                    </Grid>
                                                 </DataTemplate>
-                                            </ig:TemplateColumn.ItemTemplate>
-                                        </ig:TemplateColumn>
-                                        <ig:TemplateColumn Key="Value" Width="1*" IsReadOnly="False" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
-                                            <ig:TemplateColumn.ItemTemplate>
+                                            </DataGridTemplateColumn.CellTemplate>
+                                        </DataGridTemplateColumn>
+                                        <DataGridTemplateColumn Width="*"
+                                                                MinWidth="125"
+                                                                Header="Value"
+                                                                HeaderStyle="{StaticResource ActivityMapppingDataGridHeaderStyle}"
+                                                                d:DataContext="{d:DesignInstance Type=interfaces:IServiceTestInput}">
+                                            <DataGridTemplateColumn.CellTemplate>
                                                 <DataTemplate>
-                                                    <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                                                        <ui:IntellisenseTextBox x:Name="txtValue" 
-                                                                            FilterType="All" 
+                                                    <ui:IntellisenseTextBox FilterType="All" 
                                                                             WrapInBrackets="False" 
                                                                             Text="{Binding Path=Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                                                             Margin="0" 
                                                                             AllowMultilinePaste="True"
                                                                             TextWrapping="Wrap"
                                                                             Focusable="True" 
+                                                                            TextChanged="TxtValue_OnTextChanged"   
                                                                             IsTabStop="True"
                                                                             AcceptsReturn="True"
                                                                             ToolTip="{x:Static languages:Core.ServiceTestInputValueTooltip}"
                                                                             AllowUserInsertLine="True"
                                                                             SelectAllOnGotFocus="True">
-                                                            <AutomationProperties.AutomationId>
-                                                                <MultiBinding StringFormat="UI_{0}txt_AutoID">
-                                                                    <Binding Path="Value"/>
-                                                                </MultiBinding>
-                                                            </AutomationProperties.AutomationId>
-                                                            <ui:IntellisenseTextBox.IntellisenseProvider>
-                                                                <interfaceImplementors:CompositeIntellisenseProvider>
-                                                                    <provider:BlankIntellisenseProvider />
-                                                                </interfaceImplementors:CompositeIntellisenseProvider>
-                                                            </ui:IntellisenseTextBox.IntellisenseProvider>
-                                                        </ui:IntellisenseTextBox>
-                                                    </Grid>
+                                                        <AutomationProperties.AutomationId>
+                                                            <MultiBinding StringFormat="UI_{0}txt_AutoID">
+                                                                <Binding Path="Value"/>
+                                                            </MultiBinding>
+                                                        </AutomationProperties.AutomationId>
+                                                        <ui:IntellisenseTextBox.IntellisenseProvider>
+                                                            <interfaceImplementors:CompositeIntellisenseProvider>
+                                                                <provider:BlankIntellisenseProvider />
+                                                            </interfaceImplementors:CompositeIntellisenseProvider>
+                                                        </ui:IntellisenseTextBox.IntellisenseProvider>
+                                                    </ui:IntellisenseTextBox>
                                                 </DataTemplate>
-                                            </ig:TemplateColumn.ItemTemplate>
-                                        </ig:TemplateColumn>
-                                        <ig:TemplateColumn Key="EmptyIsNull" Width="1*" IsReadOnly="True" HorizontalContentAlignment="Stretch">
-                                            <ig:TemplateColumn.ItemTemplate>
+                                            </DataGridTemplateColumn.CellTemplate>
+                                        </DataGridTemplateColumn>
+                                        <DataGridTemplateColumn Width="*"
+                                                                MinWidth="125"
+                                                                Header="EmptyIsNull"
+                                                                HeaderStyle="{StaticResource ActivityMapppingDataGridHeaderStyle}"
+                                                                d:DataContext="{d:DesignInstance Type=interfaces:IServiceTestInput}">
+                                            <DataGridTemplateColumn.CellTemplate>
                                                 <DataTemplate>
-                                                    <Grid PreviewKeyDown="GridPreviewKeyDown" Background="Transparent" HorizontalAlignment="Stretch">
-                                                        <CheckBox IsChecked="{Binding Path=EmptyIsNull}" 
+                                                    <CheckBox IsChecked="{Binding Path=EmptyIsNull, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                                               HorizontalAlignment="Center"
+                                                                  Checked="ToggleButton_OnChecked"
+                                                                  Unchecked="ToggleButton_OnChecked"
                                                               ToolTip="{x:Static languages:Core.InputEmptyIsNullToolTip}">
-                                                            <i:Interaction.Behaviors>
-                                                                <core:HelpSetter Text="{x:Static languages:Core.InputEmptyIsNullDefaultValueHelp}" DataContext="{Binding}" />
-                                                            </i:Interaction.Behaviors>
-                                                        </CheckBox>
-                                                    </Grid>
+                                                        <i:Interaction.Behaviors>
+                                                            <core:HelpSetter Text="{x:Static languages:Core.InputEmptyIsNullDefaultValueHelp}" DataContext="{Binding}" />
+                                                        </i:Interaction.Behaviors>
+                                                    </CheckBox>
                                                 </DataTemplate>
-                                            </ig:TemplateColumn.ItemTemplate>
-                                        </ig:TemplateColumn>
-                                    </ig:XamGrid.Columns>
-                                </ig:XamGrid>
+                                            </DataGridTemplateColumn.CellTemplate>
+                                        </DataGridTemplateColumn>
+                                    </DataGrid.Columns>
+                                </controls:Dev2DataGrid>
                             </Border>
                             <!-- Grid.Row="2" is in place for Assert - V3 -->
 
                             <TextBlock Grid.Row="3" Text="Outputs" FontWeight="Bold"/>
                             <Border Grid.Row="4" BorderBrush="{StaticResource XamGridBorderBrush}" BorderThickness="1">
-                                <ig:XamGrid ItemsSource="{Binding SelectedServiceTest.Outputs, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-                                        AutoGenerateColumns="False"
-                                        Style="{StaticResource XamGridStyle}"
-                                        BorderThickness="0"       
-                                        HeaderVisibility="Hidden"
-                                        KeyboardNavigation="CurrentLayout"
-                                        Loaded="TestInputs_OnLoaded"
-                                        x:Name="TestOutputsGrid">
-                                    <ig:XamGrid.Columns>
-                                        <ig:TemplateColumn Key="Variable" Width="1*" IsReadOnly="True" HorizontalContentAlignment="Stretch">
-                                            <ig:TemplateColumn.ItemTemplate>
+                                <controls:Dev2DataGrid ItemsSource="{Binding SelectedServiceTest.Outputs, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                                       AutoGenerateColumns="False"
+                                                       BorderThickness="0"      
+                                                       Style="{StaticResource ActivityMapppingDataGridStyle}"
+                                                       x:Name="TestOutputsGrid">
+
+                                    <!-- DO NOT override ItemsPanel - doing so causes column sizing issues on first drop -->
+                                    <DataGrid.Columns>
+                                        <DataGridTemplateColumn Width="*"
+                                                                MinWidth="125"
+                                                                Header="Variable"
+                                                                HeaderStyle="{StaticResource ActivityMapppingDataGridHeaderStyle}"
+                                                                d:DataContext="{d:DesignInstance Type=interfaces:IServiceTestOutput}">
+                                            <DataGridTemplateColumn.CellTemplate>
                                                 <DataTemplate>
-                                                    <Grid PreviewKeyDown="GridPreviewKeyDown" Background="Transparent" HorizontalAlignment="Stretch">
-                                                        <TextBlock KeyboardNavigation.IsTabStop="False" 
+                                                    <TextBlock KeyboardNavigation.IsTabStop="False" 
                                                                Focusable="True" 
                                                                ToolTip="{Binding Path=Variable}" 
                                                                Text="{Binding Path=Variable, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" />
-                                                    </Grid>
                                                 </DataTemplate>
-                                            </ig:TemplateColumn.ItemTemplate>
-                                        </ig:TemplateColumn>
-                                        <ig:TemplateColumn Key="Value" Width="1*" IsReadOnly="False" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
-                                            <ig:TemplateColumn.ItemTemplate>
+                                            </DataGridTemplateColumn.CellTemplate>
+                                        </DataGridTemplateColumn>
+                                        <DataGridTemplateColumn Width="*"
+                                                                MinWidth="125"
+                                                                Header="Value"
+                                                                HeaderStyle="{StaticResource ActivityMapppingDataGridHeaderStyle}"
+                                                                d:DataContext="{d:DesignInstance Type=interfaces:IServiceTestOutput}">
+                                            <DataGridTemplateColumn.CellTemplate>
                                                 <DataTemplate>
-                                                    <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                                                        <ui:IntellisenseTextBox x:Name="txtValue" 
-                                                                            FilterType="All" 
+                                                    <ui:IntellisenseTextBox FilterType="All" 
                                                                             WrapInBrackets="False" 
                                                                             Text="{Binding Path=Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                                                             Margin="0" 
                                                                             AllowMultilinePaste="True"
                                                                             TextWrapping="Wrap"
+                                                                             TextChanged="TxtValue_OnTextChanged"
                                                                             Focusable="True" 
                                                                             IsTabStop="True"
                                                                             AcceptsReturn="True"
                                                                             ToolTip="{x:Static languages:Core.ServiceTestInputValueTooltip}"
                                                                             AllowUserInsertLine="True"
                                                                             SelectAllOnGotFocus="True">
-                                                            <AutomationProperties.AutomationId>
-                                                                <MultiBinding StringFormat="UI_{0}txt_AutoID">
-                                                                    <Binding Path="Value"/>
-                                                                </MultiBinding>
-                                                            </AutomationProperties.AutomationId>
-                                                            <ui:IntellisenseTextBox.IntellisenseProvider>
-                                                                <interfaceImplementors:CompositeIntellisenseProvider>
-                                                                    <provider:BlankIntellisenseProvider />
-                                                                </interfaceImplementors:CompositeIntellisenseProvider>
-                                                            </ui:IntellisenseTextBox.IntellisenseProvider>
-                                                        </ui:IntellisenseTextBox>
-                                                    </Grid>
+                                                        <AutomationProperties.AutomationId>
+                                                            <MultiBinding StringFormat="UI_{0}txt_AutoID">
+                                                                <Binding Path="Value"/>
+                                                            </MultiBinding>
+                                                        </AutomationProperties.AutomationId>
+                                                        <ui:IntellisenseTextBox.IntellisenseProvider>
+                                                            <interfaceImplementors:CompositeIntellisenseProvider>
+                                                                <provider:BlankIntellisenseProvider />
+                                                            </interfaceImplementors:CompositeIntellisenseProvider>
+                                                        </ui:IntellisenseTextBox.IntellisenseProvider>
+                                                    </ui:IntellisenseTextBox>
                                                 </DataTemplate>
-                                            </ig:TemplateColumn.ItemTemplate>
-                                        </ig:TemplateColumn>
-                                    </ig:XamGrid.Columns>
-                                </ig:XamGrid>
+                                            </DataGridTemplateColumn.CellTemplate>
+                                        </DataGridTemplateColumn>
+                                    </DataGrid.Columns>
+                                </controls:Dev2DataGrid>
                             </Border>
 
                             <Grid Grid.Row="5">

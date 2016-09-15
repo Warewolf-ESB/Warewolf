@@ -31,7 +31,7 @@ namespace Dev2.Studio.Core.Interfaces
         void Save();
 
         bool HasDuplicates();
-
         void ShowDuplicatePopup();
+        void RefreshCommands();
     }
 }
