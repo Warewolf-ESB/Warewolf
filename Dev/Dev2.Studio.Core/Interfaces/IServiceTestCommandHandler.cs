@@ -10,7 +10,8 @@ namespace Dev2.Studio.Core.Interfaces
         void RunAllTestsInBrowser(bool isDirty);
         void RunAllTestsCommand(bool isDirty);
         void RunSelectedTestInBrowser();
-        IServiceTestModel DuplicateTest(IServiceTestModel selectedTests, int testNumber);
+        IServiceTestModel DuplicateTest(IServiceTestModel selectedTests);
+
         void RunSelectedTest(IServiceTestModel selectedServiceTest, IContextualResourceModel resourceModel, IAsyncWorker asyncWorker);
     }
 }
