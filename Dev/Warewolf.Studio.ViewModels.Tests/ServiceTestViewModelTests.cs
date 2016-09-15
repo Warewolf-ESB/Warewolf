@@ -405,7 +405,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual(2, testFrameworkViewModel.Tests.Count);
             Assert.AreNotEqual(testModel, testFrameworkViewModel.SelectedServiceTest);
             Assert.AreEqual(testFrameworkViewModel.Tests[0], testFrameworkViewModel.SelectedServiceTest);
-            Assert.AreEqual("http://rsaklf/secure/My WF.tests/Test 2", testFrameworkViewModel.SelectedServiceTest.RunSelectedTestUrl);
+            Assert.AreEqual("http://rsaklf/secure/My WF.tests/Test 1", testFrameworkViewModel.SelectedServiceTest.RunSelectedTestUrl);
         }
 
         [TestMethod]
