@@ -19,7 +19,9 @@ using Dev2.DynamicServices;
 using Dev2.Interfaces;
 using Dev2.Runtime.ESB.Control;
 using Dev2.Runtime.Hosting;
+using Dev2.Runtime.Security;
 using Dev2.Runtime.WebServer.TransferObjects;
+using Dev2.Services.Security;
 using Warewolf.Resource.Errors;
 
 namespace Dev2.Runtime.WebServer.Handlers
@@ -93,7 +95,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                 xmlData = "<DataList></DataList>";
             }
             bool isDebug = false;
-            if (request.Args.ContainsKey("IsDebug"))
+            if (request.Args != null && request.Args.ContainsKey("IsDebug"))
             {
                 var debugString = request.Args["IsDebug"].ToString();
                 if(!bool.TryParse(debugString,out isDebug))
@@ -148,7 +150,15 @@ namespace Dev2.Runtime.WebServer.Handlers
                             dataObject.ExecutingUser = Common.Utilities.ServerUser;
                         }else if (dataObject.IsServiceTestExecution)
                         {
-                            
+                            if (ServerAuthorizationService.Instance != null)
+                            {
+                                var authorizationService = ServerAuthorizationService.Instance;
+                                var hasContribute = authorizationService.IsAuthorized(AuthorizationContext.Contribute,Guid.Empty.ToString());
+                                if (!hasContribute)
+                                {
+                                    throw new UnauthorizedAccessException("The user does not have permission to execute tests.");
+                                }
+                            }
                         }
                         channel.ExecuteRequest(dataObject, request, workspaceID, out errors);
                     });
