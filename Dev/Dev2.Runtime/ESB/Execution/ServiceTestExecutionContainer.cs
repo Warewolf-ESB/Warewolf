@@ -103,6 +103,23 @@ namespace Dev2.Runtime.ESB.Execution
             ErrorResultTO invokeErrors;
             var resourceID = DataObject.ResourceID;
             var test = TestCatalog.Instance.FetchTest(resourceID, DataObject.TestName);
+            if (test?.Inputs != null)
+            {
+                foreach (var input in test.Inputs)
+                {
+                    var variable = DataListUtil.AddBracketsToValueIfNotExist(input.Variable);
+                    var value = input.Value;
+                    if (variable.StartsWith("[[@"))
+                    {
+                        var jContainer = JsonConvert.DeserializeObject(value) as JObject;
+                        DataObject.Environment.AddToJsonObjects(variable, jContainer);
+                    }
+                    else
+                    {
+                        DataObject.Environment.Assign(variable, value, 0);
+                    }
+                }
+            }
             try
             {
                 IExecutionToken exeToken = new ExecutionToken { IsUserCanceled = false };
@@ -113,8 +130,8 @@ namespace Dev2.Runtime.ESB.Execution
                     wfappUtils.DispatchDebugState(DataObject, StateType.Start, DataObject.Environment.HasErrors(), DataObject.Environment.FetchErrors(), out invokeErrors, DateTime.Now, true, false, false);
                 }
                 Dev2JsonSerializer serializer = new Dev2JsonSerializer();
-                var testRunResult = Eval(resourceID, DataObject,test);
-                
+                var testRunResult = Eval(resourceID, DataObject, test);
+
                 if (DataObject.IsDebugMode())
                 {
                     wfappUtils.DispatchDebugState(DataObject, StateType.End, DataObject.Environment.HasErrors(), DataObject.Environment.FetchErrors(), out invokeErrors, DataObject.StartTime, false, true);
@@ -158,24 +175,7 @@ namespace Dev2.Runtime.ESB.Execution
             Dev2Logger.Debug("Got Resource to Execute");
             
             if (test != null)
-            {
-                if (test.Inputs != null)
-                {
-                    foreach (var input in test.Inputs)
-                    {
-                        var variable = DataListUtil.AddBracketsToValueIfNotExist(input.Variable);
-                        var value = input.Value;
-                        if (variable.StartsWith("[[@"))
-                        {
-                            var jContainer = JsonConvert.DeserializeObject(value) as JObject;
-                            dataObject.Environment.AddToJsonObjects(variable, jContainer);
-                        }
-                        else
-                        {
-                            dataObject.Environment.Assign(variable, value, 0);
-                        }
-                    }
-                }
+            {               
                 EvalInner(dataObject, clonedExecPlan, dataObject.ForEachUpdateValue);
                 var testPassed = true;
                 var failureMessage =new StringBuilder();
