@@ -80,11 +80,10 @@
                 </Grid.ColumnDefinitions>
 
                 <ListBox Grid.Column="0" Style="{StaticResource TestsListBoxStyle}" 
-                         BorderThickness="1,0,1,1"
-                         PreviewMouseLeftButtonDown="TestsListbox_OnPreviewMouseLeftButtonDown"
+                         BorderThickness="1,0,1,1"                        
                          ItemsSource="{Binding Tests}" SelectionMode="Single" 
                          x:Name="TestsListbox"
-                         SelectedItem="{Binding SelectedServiceTest.IsTestSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" >
+                         SelectedItem="{Binding SelectedServiceTest, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" >
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                             <Grid>
@@ -92,18 +91,18 @@
                                       VerticalAlignment="Stretch" 
                                       Visibility="{Binding IsNewTest,Converter={StaticResource BoolToVisibilityConverterNegative}}">
                                     <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="10*"/>
-                                        <ColumnDefinition Width="10*"/>
-                                        <ColumnDefinition Width="60*"/>
-                                        <ColumnDefinition Width="10*"/>
-                                        <ColumnDefinition Width="10*"/>
+                                        <ColumnDefinition Width="30"/>
+                                        <ColumnDefinition Width="30"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="30"/>
+                                        <ColumnDefinition Width="30"/>
                                     </Grid.ColumnDefinitions>
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="Auto"/>
                                         <RowDefinition Height="Auto"/>
                                     </Grid.RowDefinitions>
 
-                                    <StackPanel VerticalAlignment="Center" HorizontalAlignment="Left" Grid.Row="0" Grid.RowSpan="2">
+                                    <StackPanel VerticalAlignment="Center" HorizontalAlignment="Left" Grid.Row="0" Grid.RowSpan="2" Margin="{StaticResource ElementBorderRight}">
                                         <fa:FontAwesome Icon="Check" Foreground="Green" ToolTip="{x:Static languages:Core.ServiceTestPassedTooltip}" FontSize="20" Visibility="{Binding TestPassed, Converter={StaticResource BoolToVisibilityConverter}}" />
                                         <fa:FontAwesome Icon="Times" Foreground="Red" ToolTip="{x:Static languages:Core.ServiceTestFailingTooltip}" FontSize="20"  Visibility="{Binding TestFailing, Converter={StaticResource BoolToVisibilityConverter}}" />
                                         <fa:FontAwesome Icon="Exclamation" Foreground="OrangeRed" Margin="{StaticResource ControlBorderLeft}" ToolTip="{x:Static languages:Core.ServiceTestInvalidTooltip}" FontSize="20"  Visibility="{Binding TestInvalid, Converter={StaticResource BoolToVisibilityConverter}}" />
@@ -117,8 +116,8 @@
                                               HorizontalAlignment="Left" Style="{StaticResource CheckBoxRoundedStyle}" 
                                               Margin="-2,0,0,0"
                                               ToolTip="{x:Static languages:Core.ServiceTestEnableRunSelectedTestTooltip}"
-                                              IsChecked="{Binding Enabled}"
-                                              Click="SelectedTestCheckBox_OnClick">
+                                              IsChecked="{Binding Enabled}" 
+                                              PreviewMouseLeftButtonDown="SelectedTestCheckBox_OnPreviewMouseLeftButtonDown">
                                         <i:Interaction.Behaviors>
                                             <core:HelpSetter Text="{x:Static languages:Core.ServiceTestEnableRunSelectedTestHelpText}" DataContext="{Binding }" />
                                         </i:Interaction.Behaviors>
@@ -154,7 +153,7 @@
                                             CommandParameter="{Binding .}" 
                                             Visibility="{Binding IsTestRunning, Converter={StaticResource BoolToVisibilityConverterNegative}}"
                                             Style="{StaticResource ButtonRunTestTransparentStyle}" 
-                                            Click="SelectedTestRunTestButton_OnClick">
+                                            PreviewMouseLeftButtonDown="SelectedTestRunTestButton_OnPreviewMouseLeftButtonDown">
                                         <Button.Content>
                                             <fa:FontAwesome Icon="Play" FontSize="18" Background="Transparent"/>
                                         </Button.Content>
@@ -169,7 +168,8 @@
                                             Command="{Binding ElementName=TestsListbox, Path=DataContext.StopTestCommand }" 
                                             CommandParameter="{Binding .}" 
                                             Visibility="{Binding IsTestRunning, Converter={StaticResource BoolToVisibilityConverterPositive}}"
-                                            Style="{StaticResource ButtonStopTestTransparentStyle}" >
+                                            Style="{StaticResource ButtonStopTestTransparentStyle}" 
+                                            PreviewMouseLeftButtonDown="SelectedTestRunTestButton_OnPreviewMouseLeftButtonDown">
                                         <Button.Content>
                                             <fa:FontAwesome Icon="Stop" FontSize="18" Background="Transparent"/>
                                         </Button.Content>
@@ -184,7 +184,9 @@
                                             Command="{Binding ElementName=TestsListbox, Path=DataContext.DeleteTestCommand }" 
                                             CommandParameter="{Binding .}" 
                                             IsEnabled="{Binding Enabled, Converter={StaticResource InverseBooleanConverter}}"
-                                            Style="{StaticResource ButtonDeleteTestTransparentStyle}" >
+                                            Margin="10,0,0,0"
+                                            Style="{StaticResource ButtonDeleteTestTransparentStyle}" 
+                                            PreviewMouseLeftButtonDown="SelectedTestRunTestButton_OnPreviewMouseLeftButtonDown">
                                         <Button.Content>
                                             <fa:FontAwesome Icon="Trash" FontSize="18"/>
                                         </Button.Content>

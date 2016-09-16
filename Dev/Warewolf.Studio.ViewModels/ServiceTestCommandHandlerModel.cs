@@ -93,23 +93,15 @@ namespace Warewolf.Studio.ViewModels
         {
             var nameForDisplay = selectedTest.NameForDisplay.Replace(" *", "") + " " + (testNumber == 0 ? 1 : testNumber);
 
-            var testClone = new ServiceTestModel(selectedTest.ParentId)
-            {
-                TestName = selectedTest.TestName + " " + (testNumber == 0 ? 1 : testNumber),
-                NameForDisplay = nameForDisplay + " *",
-                Inputs = selectedTest.Inputs,
-                Outputs = selectedTest.Outputs,
-                AuthenticationType = selectedTest.AuthenticationType,
-                Enabled = true,
-                ErrorExpected = selectedTest.ErrorExpected,
-                NoErrorExpected = selectedTest.NoErrorExpected,
-                IsTestSelected = true,
-                Password = selectedTest.Password,
-                TestPending = true,
-                NewTest = true,
-                UserName = selectedTest.UserName,
-            };
-            return testClone;
+            var clone = (ServiceTestModel)selectedTest.Clone();
+            clone.TestName = selectedTest.TestName + " " + (testNumber == 0 ? 1 : testNumber);
+            clone.Enabled = true;
+            clone.IsTestSelected = true;
+            clone.TestPending = true;
+            clone.NewTest = true;
+            clone.NameForDisplay = nameForDisplay + " *";
+           
+            return clone;
         }
 
         public void RunSelectedTest(IServiceTestModel selectedServiceTest, IContextualResourceModel resourceModel, IAsyncWorker asyncWorker)

@@ -123,6 +123,9 @@
   <data name="Test_FailureResult" xml:space="preserve">
     <value>Failed</value>
   </data>
+  <data name="Test_InvalidResult" xml:space="preserve">
+    <value>Invalid</value>
+  </data>
   <data name="Test_PassedResult" xml:space="preserve">
     <value>Passed</value>
   </data>

@@ -11,11 +11,13 @@ using Dev2.Runtime.ServiceModel.Data;
 using Microsoft.Practices.Prism.Mvvm;
 // ReSharper disable ParameterTypeCanBeEnumerable.Local
 // ReSharper disable NonReadonlyMemberInGetHashCode
+// ReSharper disable ArrangeThisQualifier
 
 namespace Warewolf.Studio.ViewModels
 {
-    public class ServiceTestModel : BindableBase, IServiceTestModel, IEquatable<ServiceTestModel>
+    public class ServiceTestModel : BindableBase, IServiceTestModel
     {
+
         private string _testName;
         private string _userName;
         private bool _testPassed;
@@ -501,7 +503,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        public bool Equals(ServiceTestModel other)
+        private bool Equals(ServiceTestModel other)
         {
             if (ReferenceEquals(null, other))
             {
@@ -510,11 +512,13 @@ namespace Warewolf.Studio.ViewModels
             if (ReferenceEquals(this, other))
             {
                 return true;
-            }
-            if (GetHashCode() == other.GetHashCode())
-                return true;
+            }            
 
-            var @equals = EqualsSeq(other) && InputCompare(other, true) && OutputCompare(other, true);
+            var equalsSeq = EqualsSeq(other);
+            var inputCompare = InputCompare(other, true);
+            var outputCompare = OutputCompare(other, true);
+            var @equals = equalsSeq && inputCompare && outputCompare;
+
             return @equals;
         }
 
@@ -524,19 +528,23 @@ namespace Warewolf.Studio.ViewModels
             {
                 return true;
             }
+            if (_inputs.Count != other._inputs.Count)
+            {
+                return false;
+            }
             for (int i = 0; i < _inputs.Count; i++)
             {
-                if (_inputs[i].Value != other.Inputs[i].Value)
+                if (Inputs[i].Value != other.Inputs[i].Value)
                 {
                     inputCompare = false;
                 }
                 if (!inputCompare) continue;
-                if (_inputs[i].Variable != other.Inputs[i].Variable)
+                if (Inputs[i].Variable != other.Inputs[i].Variable)
                 {
                     inputCompare = false;
                 }
                 if (!inputCompare) continue;
-                if (_inputs[i].EmptyIsNull != other.Inputs[i].EmptyIsNull)
+                if (Inputs[i].EmptyIsNull != other.Inputs[i].EmptyIsNull)
                 {
                     inputCompare = false;
                 }
@@ -549,6 +557,10 @@ namespace Warewolf.Studio.ViewModels
             if (_outputs == null)
             {
                 return true;
+            }
+            if(_outputs.Count!=other._outputs.Count)
+            {
+                return false;
             }
             for (int i = 0; i < _outputs.Count; i++)
             {
@@ -576,41 +588,10 @@ namespace Warewolf.Studio.ViewModels
                    _authenticationType == other._authenticationType;
         }
 
-        public override bool Equals(object obj)
-        {
-            if (ReferenceEquals(null, obj))
-            {
-                return false;
-            }
-            if (ReferenceEquals(this, obj))
-            {
-                return true;
-            }
-            if (obj.GetType() != GetType())
-            {
-                return false;
-            }
-            return Equals((ServiceTestModel)obj);
-        }
-
-        public override int GetHashCode()
-        {
-            unchecked
-            {
-                var hashCode = _testName?.GetHashCode() ?? 0;
-                hashCode = (hashCode * 397) ^ (_userName?.GetHashCode() ?? 0);
-                hashCode = (hashCode * 397) ^ (_password?.GetHashCode() ?? 0);
-                hashCode = (hashCode * 397) ^ (_inputs?.GetHashCode() ?? 0);
-                hashCode = (hashCode * 397) ^ (_outputs?.GetHashCode() ?? 0);
-                hashCode = (hashCode * 397) ^ _noErrorExpected.GetHashCode();
-                hashCode = (hashCode * 397) ^ _errorExpected.GetHashCode();
-                hashCode = (hashCode * 397) ^ _enabled.GetHashCode();
-                hashCode = (hashCode * 397) ^ (int)_authenticationType;
-                return hashCode;
-            }
-        }
 
         #region Implementation of ICloneable
+
+
 
         /// <summary>
         /// Creates a new object that is a copy of the current instance.
@@ -620,7 +601,29 @@ namespace Warewolf.Studio.ViewModels
         /// </returns>
         public object Clone()
         {
-            return MemberwiseClone();
+            var memberwiseClone = (ServiceTestModel)MemberwiseClone();
+            if (Inputs != null)
+            {
+                memberwiseClone.Inputs = new ObservableCollection<IServiceTestInput>();
+                var serviceTestInputs = Inputs.ToList();
+                foreach (var serviceTestInput in serviceTestInputs)
+                {
+                    memberwiseClone.Inputs.Add(new ServiceTestInput(serviceTestInput.Variable, serviceTestInput.Value)
+                    {
+                        EmptyIsNull = serviceTestInput.EmptyIsNull
+                    });
+                }
+            }
+            if (Outputs != null)
+            {
+                memberwiseClone.Outputs = new ObservableCollection<IServiceTestOutput>();
+                var serviceTestInputs = Outputs.ToList();
+                foreach (var serviceTestInput in serviceTestInputs)
+                {
+                    memberwiseClone.Outputs.Add(new ServiceTestOutput(serviceTestInput.Variable, serviceTestInput.Value));
+                }
+            }
+            return memberwiseClone;
         }
 
         #endregion
