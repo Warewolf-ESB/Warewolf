@@ -250,10 +250,10 @@ namespace Dev2.Runtime.ESB.Execution
                                     var x = (result as CommonFunctions.WarewolfEvalResult.WarewolfAtomResult)?.Item;
                                     // ReSharper disable once PossibleNullReferenceException
                                     var actualValue = x.ToString();
-                                    if (!actualValue.Equals(value))
+                                    if (!string.Equals(actualValue,value))
                                     {
                                         testPassed = false;
-                                        failureMessage.AppendLine($"Assert Equal failed. Expected {value} for {variable} but got {actualValue}");
+                                        failureMessage.AppendLine(string.Format(Warewolf.Resource.Messages.Messages.Test_FailureMessage_Equals, value, variable, actualValue));
                                     }
                                 }
                             }
