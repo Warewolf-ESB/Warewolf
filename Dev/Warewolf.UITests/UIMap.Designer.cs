@@ -93,11 +93,11 @@ namespace Warewolf.UITests
         {
             #region Variable Declarations
             WpfButton createanewtestButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.ServiceTestView.TestsListbox.WarewolfStudioView.CreateanewtestButton;
-            WpfCustom serviceTestView = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.WorksurfaceContext.ServiceTestView;
-            WpfHyperlink urlHyperlink = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.WorksurfaceContext.ServiceTestView.UrlText.UrlHyperlink;
-            WpfText passingText = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.WorksurfaceContext.ServiceTestView.PassingText;
-            WpfButton runAllButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.WorksurfaceContext.ServiceTestView.RunAllButton;
-            WpfList testsListboxList = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.WorksurfaceContext.ServiceTestView.TestsListboxList;
+            WpfCustom serviceTestView = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView;
+            WpfHyperlink urlHyperlink = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.UrlText.UrlHyperlink;
+            WpfText passingText = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.PassingText;
+            WpfButton runAllButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.RunAllButton;
+            WpfList testsListboxList = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestsListboxList;
             #endregion
 
             // Verify that the 'Exists' property of 'CreateTest' button equals 'True'
@@ -559,12 +559,12 @@ namespace Warewolf.UITests
         public void Click_Create_New_Tests()
         {
             #region Variable Declarations
-            WpfButton createTestButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.WorksurfaceContext.ServiceTestView.TestsListboxList.CreateTest.CreateTestButton;
-            WpfListItem test1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.WorksurfaceContext.ServiceTestView.TestsListboxList.Test1;
-            WpfButton duplicateButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.WorksurfaceContext.ServiceTestView.DuplicateButton;
-            WpfText testNameText = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.WorksurfaceContext.ServiceTestView.TestNameText;
-            WpfCheckBox testEnabledSelector = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.WorksurfaceContext.ServiceTestView.TestsListboxList.Test1.TestEnabledSelector;
-            WpfEdit textbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.WorksurfaceContext.ServiceTestView.TestInputsTable.Row1.Cell.IntellisenseComboBox.Textbox;
+            WpfButton createTestButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestsListboxList.CreateTest.CreateTestButton;
+            WpfListItem test1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestsListboxList.Test1;
+            WpfButton duplicateButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.DuplicateButton;
+            WpfText testNameText = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestNameText;
+            WpfCheckBox testEnabledSelector = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestsListboxList.Test1.TestEnabledSelector;
+            WpfEdit textbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestInputsTable.Row1.Cell.IntellisenseComboBox.Textbox;
             #endregion
 
             // Click 'Create a new test' button
@@ -3622,7 +3622,7 @@ namespace Warewolf.UITests
         public void Enter_Text_Into_Workflow_Tests_Row1_Value_Textbox_As_CodedUITest()
         {
             #region Variable Declarations
-            WpfEdit textbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.WorksurfaceContext.ServiceTestView.TestInputsTable.Row1.Cell.IntellisenseComboBox.Textbox;
+            WpfEdit textbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestInputsTable.Row1.Cell.IntellisenseComboBox.Textbox;
             #endregion
 
             // Type 'Coded UI Test' in 'Text' text box
@@ -4015,7 +4015,7 @@ namespace Warewolf.UITests
             #region Variable Declarations
             WpfTreeItem firstItem = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem;
             WpfMenuItem tests = this.MainStudioWindow.ExplorerContextMenu.Tests;
-            WpfButton runAllButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.WorksurfaceContext.ServiceTestView.RunAllButton;
+            WpfButton runAllButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.RunAllButton;
             #endregion
 
             // Right-Click 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item
@@ -29574,39 +29574,6 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public WorksurfaceContext9 WorksurfaceContext
-        {
-            get
-            {
-                if ((this.mWorksurfaceContext == null))
-                {
-                    this.mWorksurfaceContext = new WorksurfaceContext9(this);
-                }
-                return this.mWorksurfaceContext;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WorksurfaceContext9 mWorksurfaceContext;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class WorksurfaceContext9 : WpfCustom
-    {
-        
-        public WorksurfaceContext9(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ContentPane";
-            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Dev2.Studio.ViewModels.WorkSurface.WorkSurfaceContextViewModel";
-            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
-            #endregion
-        }
-        
-        #region Properties
         public ServiceTestView1 ServiceTestView
         {
             get
@@ -36576,6 +36543,22 @@ namespace Warewolf.UITests
                 return this.mOKButton;
             }
         }
+        
+        public WpfText UIPleasesavecurrentlyeText
+        {
+            get
+            {
+                if ((this.mUIPleasesavecurrentlyeText == null))
+                {
+                    this.mUIPleasesavecurrentlyeText = new WpfText(this);
+                    #region Search Criteria
+                    this.mUIPleasesavecurrentlyeText.SearchProperties[WpfText.PropertyNames.Name] = "Please save currently edited Test(s) before running the tests.";
+                    this.mUIPleasesavecurrentlyeText.WindowTitles.Add("WarewolfMessageBox");
+                    #endregion
+                }
+                return this.mUIPleasesavecurrentlyeText;
+            }
+        }
         #endregion
         
         #region Fields
@@ -36586,6 +36569,8 @@ namespace Warewolf.UITests
         private CancelButton mCancelButton;
         
         private WpfButton mOKButton;
+        
+        private WpfText mUIPleasesavecurrentlyeText;
         #endregion
     }
     
