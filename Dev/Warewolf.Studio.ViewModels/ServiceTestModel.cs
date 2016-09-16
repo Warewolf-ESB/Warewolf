@@ -530,7 +530,11 @@ namespace Warewolf.Studio.ViewModels
             {
                 return true;
             }
-            for (int i = 0; i < Inputs.Count; i++)
+            if (_inputs.Count != other._inputs.Count)
+            {
+                return false;
+            }
+            for (int i = 0; i < _inputs.Count; i++)
             {
                 if (Inputs[i].Value != other.Inputs[i].Value)
                 {
@@ -555,6 +559,10 @@ namespace Warewolf.Studio.ViewModels
             if (_outputs == null)
             {
                 return true;
+            }
+            if(_outputs.Count!=other._outputs.Count)
+            {
+                return false;
             }
             for (int i = 0; i < _outputs.Count; i++)
             {
