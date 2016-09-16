@@ -407,7 +407,12 @@ namespace Dev2.Runtime.Hosting
             }
             if (parser != null && parser.HasActivityInCache(resourceID))
             {
-                return parser.GetActivity(resourceID);
+                var dev2Activity = parser.GetActivity(resourceID);
+                if (dev2Activity != null)
+                {
+                    return dev2Activity;
+                }
+                
             }
             var resource = GetResource(workspaceID, resourceID);
             var service = GetService(workspaceID, resourceID, resource.ResourceName);

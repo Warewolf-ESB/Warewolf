@@ -52,32 +52,7 @@ namespace Dev2.Studio.Core.Network
                 controller.AddPayloadArgument("DebugPayload", payload);
                 controller.ExecuteCommand<string>(clientContext, clientContext.WorkspaceID);
             }, () => { });
-        }
-
-        public static TestRunResult ExecuteTest(IContextualResourceModel resourceModel,string testName)
-        {
-            if (resourceModel == null || resourceModel.Environment == null || !resourceModel.Environment.IsConnected)
-            {
-                var testRunReuslt = new TestRunResult();
-                testRunReuslt.Result = RunResult.TestFailed;
-                return testRunReuslt;
-            }
-
-            var clientContext = resourceModel.Environment.Connection;
-            if (clientContext == null)
-            {
-                var testRunReuslt = new TestRunResult();
-                testRunReuslt.Result = RunResult.TestFailed;
-                return testRunReuslt;
-            }
-            var controller = new CommunicationController { ServiceName = string.IsNullOrEmpty(resourceModel.Category) ? resourceModel.ResourceName : resourceModel.Category };
-            controller.AddPayloadArgument("ResourceID", resourceModel.ID.ToString());
-            controller.AddPayloadArgument("IsDebug", true.ToString());
-            controller.ServicePayload.TestName = testName;
-            var res = controller.ExecuteCommand<TestRunResult>(clientContext, clientContext.WorkspaceID);
-            return res;
-            
-        }
+        }        
 
         public static void OpenInBrowser(IContextualResourceModel resourceModel, string xmlData)
         {

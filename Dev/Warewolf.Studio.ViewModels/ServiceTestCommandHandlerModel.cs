@@ -111,7 +111,7 @@ namespace Warewolf.Studio.ViewModels
                 return;
             }
             selectedServiceTest.IsTestRunning = true;
-            asyncWorker.Start(() => WebServer.ExecuteTest(resourceModel, selectedServiceTest.TestName), res =>
+            asyncWorker.Start(() => resourceModel.Environment.ResourceRepository.ExecuteTest(resourceModel, selectedServiceTest.TestName), res =>
             {
                 if (res != null)
                 {
@@ -120,10 +120,12 @@ namespace Warewolf.Studio.ViewModels
                         case RunResult.TestFailed:
                             selectedServiceTest.TestFailing = true;
                             selectedServiceTest.TestPassed = false;
+                            selectedServiceTest.TestInvalid = false;
                             break;
                         case RunResult.TestPassed:
                             selectedServiceTest.TestFailing = false;
                             selectedServiceTest.TestPassed = true;
+                            selectedServiceTest.TestInvalid = false;
                             break;
                         case RunResult.TestInvalid:
                             selectedServiceTest.TestFailing = false;
@@ -154,17 +156,14 @@ namespace Warewolf.Studio.ViewModels
             processExecutor?.OpenInBrowser(new Uri(runSelectedTestUrl));
         }
 
-        public void RunAllTestsInBrowser(bool isDirty, IEnumerable<IServiceTestModel> tests, IExternalProcessExecutor processExecutor)
+        public void RunAllTestsInBrowser(bool isDirty, string runAllUrl, IExternalProcessExecutor processExecutor)
         {
             if (isDirty)
             {
                 ShowRunAllUnsavedError();
                 return;
             }
-            foreach(var serviceTestModel in tests)
-            {
-                RunSelectedTestInBrowser(serviceTestModel.RunSelectedTestUrl,processExecutor);
-            }
+            processExecutor?.OpenInBrowser(new Uri(runAllUrl));
         }
     }
 }
