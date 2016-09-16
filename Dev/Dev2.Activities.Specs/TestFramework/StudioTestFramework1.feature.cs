@@ -1404,12 +1404,6 @@ this.FeatureBackground();
  testRunner.And("I set Test Values as", ((string)(null)), table55, "And ");
 #line 493
  testRunner.Then("I close the test builder", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 494
- testRunner.And("The Pending Changes Confirmation popup is shown I click Ok", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 495
- testRunner.And("Test name is \"NewName\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 496
- testRunner.And("Error is \"false\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
