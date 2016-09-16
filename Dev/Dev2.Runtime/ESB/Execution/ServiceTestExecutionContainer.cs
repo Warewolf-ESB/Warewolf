@@ -263,11 +263,11 @@ namespace Dev2.Runtime.ESB.Execution
                 var hasErrors = DataObject.Environment.HasErrors();
                 if (test.ErrorExpected)
                 {
-                    testPassed = hasErrors;
+                    testPassed = hasErrors && testPassed;
                 }
                 else if (test.NoErrorExpected)
                 {
-                    testPassed = !hasErrors;
+                    testPassed = !hasErrors && testPassed;
                     if (hasErrors)
                     {
                         failureMessage.AppendLine(DataObject.Environment.FetchErrors());
