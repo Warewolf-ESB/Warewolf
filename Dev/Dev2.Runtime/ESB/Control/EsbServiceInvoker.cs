@@ -21,6 +21,7 @@
 
 using System;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using Dev2.Common;
@@ -127,6 +128,19 @@ namespace Dev2.Runtime.ESB
                             theService = _serviceLocator.FindService(serviceName, GlobalConstants.ServerWorkspaceID);
                             if (theService == null)
                             {
+                                if (dataObject.IsServiceTestExecution)
+                                {
+                                    var testResult = new TestRunResult
+                                    {
+                                        Message = "Resource has been deleted",
+                                        Result = RunResult.TestResourceDeleted,
+                                        TestName = dataObject.TestName,
+                                        DebugForTest = new List<IDebugState>()
+                                    };
+                                    var ser = new Dev2JsonSerializer();
+                                    _request.ExecuteResult = ser.SerializeToBuilder(testResult);
+                                }
+
                                 errors.AddError(string.Format(ErrorResource.ServiceNotFound, serviceName));
                             }
 
