@@ -38,6 +38,11 @@ using Dev2.Web;
 using Dev2.Workspaces;
 using Newtonsoft.Json.Linq;
 using Warewolf.Storage;
+// ReSharper disable MemberCanBeProtected.Global
+// ReSharper disable CyclomaticComplexity
+// ReSharper disable FunctionComplexityOverflow
+// ReSharper disable LoopCanBeConvertedToQuery
+// ReSharper disable MemberCanBePrivate.Global
 
 namespace Dev2.Runtime.WebServer.Handlers
 {
@@ -123,14 +128,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                             if (idx > loc)
                             {
                                 var testName = serviceName.Substring(idx + 1).ToUpper();
-                                if (string.IsNullOrEmpty(testName))
-                                {
-                                    dataObject.TestName = "*";
-                                }
-                                else
-                                {
-                                    dataObject.TestName = testName;
-                                }
+                                dataObject.TestName = string.IsNullOrEmpty(testName) ? "*" : testName;
                             }
                             else
                             {
@@ -238,8 +236,11 @@ namespace Dev2.Runtime.WebServer.Handlers
                         var objArray = new List<JObject>();
                         foreach(var testRunResult in testResults)
                         {
-                            var resObj = BuildTestResultForWebRequest(testRunResult);
-                            objArray.Add(resObj);
+                            if (testRunResult != null)
+                            {
+                                var resObj = BuildTestResultForWebRequest(testRunResult);
+                                objArray.Add(resObj);
+                            }
                         }
                         
                         executePayload = serializer.Serialize(objArray);
@@ -259,10 +260,17 @@ namespace Dev2.Runtime.WebServer.Handlers
                 {
                     formatter = DataListFormat.CreateFormat("JSON", EmitionTypes.JSON, "application/json");
                     var result = serializer.Deserialize<TestRunResult>(esbExecuteRequest.ExecuteResult);
-                    var resObj = BuildTestResultForWebRequest(result);
-                    executePayload = serializer.Serialize(resObj);
-                    Dev2DataListDecisionHandler.Instance.RemoveEnvironment(dataObject.DataListID);
-                    dataObject.Environment = null;
+                    if (result != null)
+                    {
+                        var resObj = BuildTestResultForWebRequest(result);
+                        executePayload = serializer.Serialize(resObj);
+                        Dev2DataListDecisionHandler.Instance.RemoveEnvironment(dataObject.DataListID);
+                        dataObject.Environment = null;
+                    }
+                    else
+                    {
+                        executePayload = serializer.Serialize(new JObject());
+                    }
                     return new StringResponseWriter(executePayload, formatter.ContentType);
                 }
 
@@ -393,8 +401,7 @@ namespace Dev2.Runtime.WebServer.Handlers
 
         private static JObject BuildTestResultForWebRequest(TestRunResult result)
         {
-            var resObj = new JObject();
-            resObj.Add("Test Name",result.TestName);
+            var resObj = new JObject { { "Test Name", result.TestName } };
             if(result.Result == RunResult.TestPassed)
             {
                 resObj.Add("Result", Warewolf.Resource.Messages.Messages.Test_PassedResult);

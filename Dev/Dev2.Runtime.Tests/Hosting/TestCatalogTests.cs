@@ -723,11 +723,8 @@ namespace Dev2.Tests.Runtime.Hosting
         public void TestCatalog_UpdateTestsBasedOnIOChange_WhenTestsFound_ShouldUpdateBasedOnChange_Scalars()
         {
             //------------Setup for test--------------------------
-            var inputDefs = new List<IDev2Definition>();
-            inputDefs.Add(DataListFactory.CreateDefinition("Age", "", "", "", false, "",false, "", false));
-            inputDefs.Add(DataListFactory.CreateDefinition("Gender", "", "", "", false, "",false, "", false));
-            var outputDefs = new List<IDev2Definition>();
-            outputDefs.Add(DataListFactory.CreateDefinition("MessageForUser", "", "", "", false, "", false, "", false));
+            var inputDefs = new List<IDev2Definition> { DataListFactory.CreateDefinition("Age", "", "", "", false, "", false, "", false), DataListFactory.CreateDefinition("Gender", "", "", "", false, "", false, "", false) };
+            var outputDefs = new List<IDev2Definition> { DataListFactory.CreateDefinition("MessageForUser", "", "", "", false, "", false, "", false) };
             var testCatalog = new TestCatalog();
             var resourceID = Guid.NewGuid();
             var serviceTestModelTos = new List<IServiceTestModelTO>
@@ -829,16 +826,8 @@ namespace Dev2.Tests.Runtime.Hosting
         public void TestCatalog_UpdateTestsBasedOnIOChange_WhenTestsFound_ShouldUpdateBasedOnChange_RecordSets()
         {
             //------------Setup for test--------------------------
-            var inputDefs = new List<IDev2Definition>();
-            inputDefs.Add(DataListFactory.CreateDefinition("Age", "", "", "", false, "",false, "", false));
-            inputDefs.Add(DataListFactory.CreateDefinition("Gender", "", "", "", false, "",false, "", false));
-            inputDefs.Add(DataListFactory.CreateDefinition("f", "", "", "rs", false, "",false, "", false));
-            inputDefs.Add(DataListFactory.CreateDefinition("g", "", "", "rs", false, "",false, "", false));
-            inputDefs.Add(DataListFactory.CreateDefinition("i", "", "", "rs", false, "",false, "", false));
-            inputDefs.Add(DataListFactory.CreateDefinition("set", "", "", "rec", false, "",false, "", false));
-            var outputDefs = new List<IDev2Definition>();
-            outputDefs.Add(DataListFactory.CreateDefinition("MessageForUser", "", "", "", false, "", false, "", false));
-            outputDefs.Add(DataListFactory.CreateDefinition("out", "", "", "res", false, "", false, "", false));
+            var inputDefs = new List<IDev2Definition> { DataListFactory.CreateDefinition("Age", "", "", "", false, "", false, "", false), DataListFactory.CreateDefinition("Gender", "", "", "", false, "", false, "", false), DataListFactory.CreateDefinition("f", "", "", "rs", false, "", false, "", false), DataListFactory.CreateDefinition("g", "", "", "rs", false, "", false, "", false), DataListFactory.CreateDefinition("i", "", "", "rs", false, "", false, "", false), DataListFactory.CreateDefinition("set", "", "", "rec", false, "", false, "", false) };
+            var outputDefs = new List<IDev2Definition> { DataListFactory.CreateDefinition("MessageForUser", "", "", "", false, "", false, "", false), DataListFactory.CreateDefinition("out", "", "", "res", false, "", false, "", false) };
             var testCatalog = new TestCatalog();
             var resourceID = Guid.NewGuid();
             var serviceTestModelTos = new List<IServiceTestModelTO>
