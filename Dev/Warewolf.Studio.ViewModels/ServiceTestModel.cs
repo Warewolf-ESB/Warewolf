@@ -11,11 +11,13 @@ using Dev2.Runtime.ServiceModel.Data;
 using Microsoft.Practices.Prism.Mvvm;
 // ReSharper disable ParameterTypeCanBeEnumerable.Local
 // ReSharper disable NonReadonlyMemberInGetHashCode
+// ReSharper disable ArrangeThisQualifier
 
 namespace Warewolf.Studio.ViewModels
 {
     public class ServiceTestModel : BindableBase, IServiceTestModel, IEquatable<ServiceTestModel>
     {
+
         private string _testName;
         private string _userName;
         private bool _testPassed;
@@ -514,7 +516,11 @@ namespace Warewolf.Studio.ViewModels
             if (GetHashCode() == other.GetHashCode())
                 return true;
 
-            var @equals = EqualsSeq(other) && InputCompare(other, true) && OutputCompare(other, true);
+            var equalsSeq = EqualsSeq(other);
+            var inputCompare = InputCompare(other, true);
+            var outputCompare = OutputCompare(other, true);
+            var @equals = equalsSeq && inputCompare && outputCompare;
+
             return @equals;
         }
 
@@ -530,17 +536,17 @@ namespace Warewolf.Studio.ViewModels
             }
             for (int i = 0; i < _inputs.Count; i++)
             {
-                if (_inputs[i].Value != other.Inputs[i].Value)
+                if (Inputs[i].Value != other.Inputs[i].Value)
                 {
                     inputCompare = false;
                 }
                 if (!inputCompare) continue;
-                if (_inputs[i].Variable != other.Inputs[i].Variable)
+                if (Inputs[i].Variable != other.Inputs[i].Variable)
                 {
                     inputCompare = false;
                 }
                 if (!inputCompare) continue;
-                if (_inputs[i].EmptyIsNull != other.Inputs[i].EmptyIsNull)
+                if (Inputs[i].EmptyIsNull != other.Inputs[i].EmptyIsNull)
                 {
                     inputCompare = false;
                 }
@@ -605,17 +611,74 @@ namespace Warewolf.Studio.ViewModels
         {
             unchecked
             {
-                var hashCode = _testName?.GetHashCode() ?? 0;
-                hashCode = (hashCode * 397) ^ (_userName?.GetHashCode() ?? 0);
-                hashCode = (hashCode * 397) ^ (_password?.GetHashCode() ?? 0);
-                hashCode = (hashCode * 397) ^ (_inputs?.GetHashCode() ?? 0);
-                hashCode = (hashCode * 397) ^ (_outputs?.GetHashCode() ?? 0);
-                hashCode = (hashCode * 397) ^ _noErrorExpected.GetHashCode();
-                hashCode = (hashCode * 397) ^ _errorExpected.GetHashCode();
-                hashCode = (hashCode * 397) ^ _enabled.GetHashCode();
-                hashCode = (hashCode * 397) ^ (int)_authenticationType;
+
+                var hashCode = TestName?.GetHashCode() ?? 0;
+                hashCode = (hashCode * 397) ^ (UserName?.GetHashCode() ?? 0);
+                hashCode = (hashCode * 397) ^ (Password?.GetHashCode() ?? 0);
+                if (Inputs != null)
+                {
+                    foreach (var serviceTestInput in Inputs)
+                    {
+                        hashCode = (hashCode * 397) ^ (serviceTestInput.Variable?.GetHashCode() ?? 0);
+                        hashCode = (hashCode * 397) ^ (serviceTestInput.Value?.GetHashCode() ?? 0);
+                        hashCode = (hashCode * 397) ^ (serviceTestInput.EmptyIsNull.GetHashCode());
+                    }
+                }
+
+                if (Outputs != null)
+                {
+                    foreach (var serviceTestInput in Outputs)
+                    {
+                        hashCode = (hashCode * 397) ^ (serviceTestInput.Variable?.GetHashCode() ?? 0);
+                        hashCode = (hashCode * 397) ^ (serviceTestInput.Value?.GetHashCode() ?? 0);
+                    }
+                }
+
+                hashCode = (hashCode * 397) ^ NoErrorExpected.GetHashCode();
+                hashCode = (hashCode * 397) ^ ErrorExpected.GetHashCode();
+                hashCode = (hashCode * 397) ^ Enabled.GetHashCode();
+                hashCode = (hashCode * 397) ^ (int)AuthenticationType;
                 return hashCode;
             }
         }
+
+        #region Implementation of ICloneable
+
+
+
+        /// <summary>
+        /// Creates a new object that is a copy of the current instance.
+        /// </summary>
+        /// <returns>
+        /// A new object that is a copy of this instance.
+        /// </returns>
+        public object Clone()
+        {
+            var memberwiseClone = (ServiceTestModel)MemberwiseClone();
+            if (Inputs != null)
+            {
+                memberwiseClone.Inputs = new ObservableCollection<IServiceTestInput>();
+                var serviceTestInputs = Inputs.ToList();
+                foreach (var serviceTestInput in serviceTestInputs)
+                {
+                    memberwiseClone.Inputs.Add(new ServiceTestInput(serviceTestInput.Variable, serviceTestInput.Value)
+                    {
+                        EmptyIsNull = serviceTestInput.EmptyIsNull
+                    });
+                }
+            }
+            if (Outputs != null)
+            {
+                memberwiseClone.Outputs = new ObservableCollection<IServiceTestOutput>();
+                var serviceTestInputs = Outputs.ToList();
+                foreach (var serviceTestInput in serviceTestInputs)
+                {
+                    memberwiseClone.Outputs.Add(new ServiceTestOutput(serviceTestInput.Variable, serviceTestInput.Value));
+                }
+            }
+            return memberwiseClone;
+        }
+
+        #endregion
     }
 }
