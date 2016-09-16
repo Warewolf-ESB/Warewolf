@@ -41,7 +41,7 @@ namespace Warewolf.Studio.Views
             e.Handled = true;
         }
 
-        private void SelectedTestCheckBox_OnClick(object sender, RoutedEventArgs e)
+        private void SelectedTestCheckBox_OnPreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             var cb = sender as CheckBox;
             if (cb != null)
@@ -51,7 +51,7 @@ namespace Warewolf.Studio.Views
             }
         }
 
-        private void SelectedTestRunTestButton_OnClick(object sender, RoutedEventArgs e)
+        private void SelectedTestRunTestButton_OnPreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             var btn = sender as Button;
             if (btn != null)
