@@ -43,6 +43,7 @@ namespace Warewolf.Studio.ViewModels
         private string _duplicateTestTooltip;
         private bool _lastRunDateVisibility;
         private bool _neverRunStringVisibility;
+        private IList<IDebugState> _debugForTest;
 
         public string NeverRunString
         {
@@ -66,7 +67,7 @@ namespace Warewolf.Studio.ViewModels
                 {
                     NeverRunStringVisibility = false;
                 }
-                _lastRunDateVisibility = value; 
+                _lastRunDateVisibility = value;
                 OnPropertyChanged(() => LastRunDateVisibility);
             }
         }
@@ -80,18 +81,29 @@ namespace Warewolf.Studio.ViewModels
                 {
                     LastRunDateVisibility = false;
                 }
-                _neverRunStringVisibility = value; 
+                _neverRunStringVisibility = value;
                 OnPropertyChanged(() => NeverRunStringVisibility);
             }
         }
-        public IList<IDebugState> DebugForTest { get; set; }
+        public IList<IDebugState> DebugForTest
+        {
+            get
+            {
+                return _debugForTest;
+            }
+            set
+            {
+                _debugForTest = value;
+                OnPropertyChanged(() => DebugForTest);
+            }
+        }
 
         public string DuplicateTestTooltip
         {
             get { return _duplicateTestTooltip; }
             set
             {
-                _duplicateTestTooltip = value; 
+                _duplicateTestTooltip = value;
                 OnPropertyChanged(() => DuplicateTestTooltip);
             }
         }
@@ -381,8 +393,17 @@ namespace Warewolf.Studio.ViewModels
         {
             get
             {
-                var equals = !Equals(Item);
-                var isDirty = (Item != null && equals) || NewTest;
+
+                var isDirty = false;
+                var notEquals = !Equals(Item);
+                if (NewTest)
+                {
+                    isDirty = true;
+                }
+                else if (notEquals)
+                {
+                    isDirty = true;
+                }
 
                 if (isDirty)
                 {

@@ -24,11 +24,13 @@ using Dev2.Studio.Core.Network;
 using Microsoft.Practices.Prism.Commands;
 using Microsoft.Practices.Prism.Mvvm;
 using Warewolf.Resource.Errors;
+// ReSharper disable ParameterTypeCanBeEnumerable.Local
 
 namespace Warewolf.Studio.ViewModels
 {
     public class ServiceTestViewModel : BindableBase, IServiceTestViewModel
     {
+        private readonly IExternalProcessExecutor _processExecutor;
         private IServiceTestModel _selectedServiceTest;
         private string _runAllTestsUrl;
         private string _testPassingResult;
@@ -39,10 +41,12 @@ namespace Warewolf.Studio.ViewModels
         private string _errorMessage;
         private readonly IShellViewModel _shellViewModel;
 
-        public ServiceTestViewModel(IContextualResourceModel resourceModel, IAsyncWorker asyncWorker, IEventAggregator eventPublisher)
+        public ServiceTestViewModel(IContextualResourceModel resourceModel, IAsyncWorker asyncWorker, IEventAggregator eventPublisher,IExternalProcessExecutor processExecutor)
         {
+            
             if (resourceModel == null)
                 throw new ArgumentNullException(nameof(resourceModel));
+            _processExecutor = processExecutor;
             AsyncWorker = asyncWorker;
             EventPublisher = eventPublisher;
             ResourceModel = resourceModel;
@@ -93,23 +97,27 @@ namespace Warewolf.Studio.ViewModels
 
         private void RunSelectedTestInBrowser()
         {
-            ServiceTestCommandHandler.RunSelectedTestInBrowser();
+            ServiceTestCommandHandler.RunSelectedTestInBrowser(SelectedServiceTest.RunSelectedTestUrl, _processExecutor);
         }
 
         private void RunSelectedTest()
         {
+            if (SelectedServiceTest.IsDirty)
+            {
+                Save(new List<IServiceTestModel> {SelectedServiceTest});
+            }
             ServiceTestCommandHandler.RunSelectedTest(SelectedServiceTest, ResourceModel, AsyncWorker);
             ViewModelUtils.RaiseCanExecuteChanged(StopTestCommand);
         }
 
         private void RunAllTestsInBrowser()
         {
-            ServiceTestCommandHandler.RunAllTestsInBrowser(IsDirty);
+            ServiceTestCommandHandler.RunAllTestsInBrowser(IsDirty,RealTests(),_processExecutor);
         }
 
         private void RunAllTests()
         {
-            ServiceTestCommandHandler.RunAllTestsCommand(IsDirty,Tests,ResourceModel,AsyncWorker);
+            ServiceTestCommandHandler.RunAllTestsCommand(IsDirty, RealTests(), ResourceModel,AsyncWorker);
             SelectedServiceTest = null;
         }
 
@@ -212,7 +220,7 @@ namespace Warewolf.Studio.ViewModels
         {
             get
             {
-                var isValid = false;
+                var isValid = true;
                 if (SelectedServiceTest != null)
                 {
                     isValid = IsValidName(SelectedServiceTest.TestName);
@@ -307,47 +315,52 @@ namespace Warewolf.Studio.ViewModels
                 }
 
                 var serviceTestModels = RealTests().Where(a => a.IsDirty).ToList();
-                var serviceTestModelTos = serviceTestModels.Select(model => new ServiceTestModelTO()
-                {
-                    TestName = model.TestName,
-                    ResourceId = model.ParentId,
-                    AuthenticationType = model.AuthenticationType,
-                    Enabled = model.Enabled,
-                    ErrorExpected = model.ErrorExpected,
-                    NoErrorExpected = model.NoErrorExpected,
-                    Inputs = model.Inputs.ToList(),
-                    LastRunDate = model.LastRunDate,
-                    OldTestName = model.OldTestName,
-                    Outputs = model.Outputs.ToList(),
-                    Password = model.Password,
-                    IsDirty = model.IsDirty,
-                    TestPending = model.TestPending,
-                    UserName = model.UserName,
-                    TestFailing = model.TestFailing,
-                    TestInvalid = model.TestInvalid,
-                    TestPassed = model.TestPassed
-                } as IServiceTestModelTO).ToList();
-                var result = ResourceModel.Environment.ResourceRepository.SaveTests(ResourceModel, serviceTestModelTos);
-                switch (result.Result)
-                {
-                    case SaveResult.Success:
-                        MarkTestsAsNotNew();
-                        SetSelectedTestUrl();
-                        break;
-                    case SaveResult.ResourceDeleted:
-                        PopupController?.Show(Resources.Languages.Core.ServiceTestResourceDeletedMessage, Resources.Languages.Core.ServiceTestResourceDeletedHeader, MessageBoxButton.OK, MessageBoxImage.Error, null, false, true, false, false);
-                        _shellViewModel.CloseResourceTestView(ResourceModel.ID, ResourceModel.ServerID, ResourceModel.Environment.ID);
-                        break;
-                    case SaveResult.ResourceUpdated:
-                        UpdateTestsFromResourceUpdate();
-                        break;
-                    default:
-                        throw new ArgumentOutOfRangeException();
-                }
+                Save(serviceTestModels);
             }
             catch (Exception)
             {
                 // MarkTestsAsDirty(true);
+            }
+        }
+
+        private void Save(List<IServiceTestModel> serviceTestModels)
+        {
+            var serviceTestModelTos = serviceTestModels.Select(model => new ServiceTestModelTO
+            {
+                TestName = model.TestName,
+                ResourceId = model.ParentId,
+                AuthenticationType = model.AuthenticationType,
+                Enabled = model.Enabled,
+                ErrorExpected = model.ErrorExpected,
+                NoErrorExpected = model.NoErrorExpected,
+                Inputs = model.Inputs.ToList(),
+                LastRunDate = model.LastRunDate,
+                OldTestName = model.OldTestName,
+                Outputs = model.Outputs.ToList(),
+                Password = model.Password,
+                IsDirty = model.IsDirty,
+                TestPending = model.TestPending,
+                UserName = model.UserName,
+                TestFailing = model.TestFailing,
+                TestInvalid = model.TestInvalid,
+                TestPassed = model.TestPassed
+            } as IServiceTestModelTO).ToList();
+            var result = ResourceModel.Environment.ResourceRepository.SaveTests(ResourceModel, serviceTestModelTos);
+            switch(result.Result)
+            {
+                case SaveResult.Success:
+                    MarkTestsAsNotNew();
+                    SetSelectedTestUrl();
+                    break;
+                case SaveResult.ResourceDeleted:
+                    PopupController?.Show(Resources.Languages.Core.ServiceTestResourceDeletedMessage, Resources.Languages.Core.ServiceTestResourceDeletedHeader, MessageBoxButton.OK, MessageBoxImage.Error, null, false, true, false, false);
+                    _shellViewModel.CloseResourceTestView(ResourceModel.ID, ResourceModel.ServerID, ResourceModel.Environment.ID);
+                    break;
+                case SaveResult.ResourceUpdated:
+                    UpdateTestsFromResourceUpdate();
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
             }
         }
 
@@ -378,6 +391,7 @@ namespace Warewolf.Studio.ViewModels
             ViewModelUtils.RaiseCanExecuteChanged(RunAllTestsInBrowserCommand);
             ViewModelUtils.RaiseCanExecuteChanged(RunSelectedTestCommand);
             ViewModelUtils.RaiseCanExecuteChanged(RunSelectedTestInBrowserCommand);
+            OnPropertyChanged(() => DisplayName);
         }
 
         public bool HasDuplicates() => RealTests().ToList().GroupBy(x => x.TestName).Where(group => @group.Count() > 1).Select(group => @group.Key).Any();
