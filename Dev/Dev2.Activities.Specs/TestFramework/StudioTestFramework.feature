@@ -10,13 +10,7 @@ Background: Setup for workflows for tests
 			| [[a]]          |
 		And "Workflow 1" has outputs as
 			| Ouput Var Name  |
-			| [[outputValue]] |
-		Given I have "Hello World" with inputs as
-			| Input Var Name |
-			| [[Name]]          |
-		And "Hello World" has outputs as
-			| Ouput Var Name  |
-			| [[Message]] |
+			| [[outputValue]] |		
 		Given I have "Workflow 2" with inputs as
 			| Input Var Name |
 			| [[rec().a]]    |
@@ -37,8 +31,7 @@ Background: Setup for workflows for tests
 			| [[input]]      |
 		And "WorkflowWithTests" has outputs as
 			| Ouput Var Name  |
-			| [[outputValue]] |
-			
+			| [[outputValue]] |			
 		And "WorkflowWithTests" Tests as 
 			| TestName | AuthenticationType | Error | TestFailing | TestPending | TestInvalid | TestPassed |
 			| Test1    | Windows            | false | false       | false       | false       | true       |
