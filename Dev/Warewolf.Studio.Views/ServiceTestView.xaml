@@ -83,7 +83,8 @@
                          BorderThickness="1,0,1,1"
                          PreviewMouseLeftButtonDown="TestsListbox_OnPreviewMouseLeftButtonDown"
                          ItemsSource="{Binding Tests}" SelectionMode="Single" 
-                         SelectedItem="{Binding SelectedServiceTest.IsTestSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" x:Name="TestsListbox">
+                         x:Name="TestsListbox"
+                         SelectedItem="{Binding SelectedServiceTest.IsTestSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" >
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                             <Grid>
