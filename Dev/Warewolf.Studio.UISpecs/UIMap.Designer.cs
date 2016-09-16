@@ -8,6 +8,8 @@
 //  </auto-generated>
 // ------------------------------------------------------------------------------
 
+using System.Linq;
+
 namespace Warewolf.Studio.UISpecs
 {
     using System;
@@ -4571,7 +4573,7 @@ namespace Warewolf.Studio.UISpecs
             #region Variable Declarations
             WpfButton documentorUnpinBtn = this.MainStudioWindow.DockManager.SplitPaneLeft.Help.DocumentorUnpinBtn;
             #endregion
-
+            
             // Click 'unpinBtn' button
             Mouse.Click(documentorUnpinBtn, new Point(2, 11));
         }

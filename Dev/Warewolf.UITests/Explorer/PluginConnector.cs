@@ -31,8 +31,8 @@ namespace Warewolf.UITests
             Uimap.TryClearToolboxFilter();
             Uimap.Open_DotNet_DLL_Connector_Tool_Large_View();
             Uimap.Select_First_Item_From_DotNet_DLL_Large_View_Source_Combobox();
-            Uimap.Select_SystemRandom_From_DotNet_DLL_Large_View_Namespace_Combobox();
-            Uimap.Select_Next_From_DotNet_DLL_Large_View_Action_Combobox();
+            Uimap.Select_SystemObject_From_DotNet_DLL_Large_View_Namespace_Combobox();
+            Uimap.Select_ToString_From_DotNet_DLL_Large_View_Action_Combobox();
             Uimap.Click_DotNet_DLL_Large_View_Generate_Outputs();
             Uimap.Click_DotNet_DLL_Large_View_Test_Inputs_Button();
             Uimap.Click_DotNet_DLL_Large_View_Test_Inputs_Done_Button();
