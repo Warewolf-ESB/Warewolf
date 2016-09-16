@@ -51,6 +51,22 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("TestCommandHandlerModelTests_CreateTest")]
+        public void TestCommandHandlerModelTests_CreateTest_ShouldSetDefaultNoError()
+        {
+            //------------Setup for test--------------------------
+            var testFrameworkViewModel = new ServiceTestCommandHandlerModel();
+            //------------Assert Preconditions-------------------
+            //------------Execute Test---------------------------
+            var testModel = testFrameworkViewModel.CreateTest(CreateResourceModelWithNoInput(), 1);
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(testModel);
+            Assert.IsTrue(testModel.NoErrorExpected);
+            Assert.IsFalse(testModel.ErrorExpected);
+        }
+
+        [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("TestCommandHandlerModelTests_CreateTest")]
         public void TestCommandHandlerModelTests_CreateTest_ShouldSetTestPending()
