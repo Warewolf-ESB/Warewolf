@@ -988,15 +988,25 @@ namespace Warewolf.UITests
                 Console.WriteLine("TryClose method failed to close Deploy tab.\n" + e.Message);
             }
         }
-        public void Click_Disable_This_Test()
+
+        public void Click_Run_Test()
+        {
+            WpfButton runButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestsListboxList.Test1.DeleteButton;
+            Mouse.Click(runButton);
+        }
+
+        public void Click_EnableDisable_This_Test_CheckBox()
         {
             WpfCheckBox testEnabledSelector = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestsListboxList.Test1.TestEnabledSelector;
-            WpfButton runButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestsListboxList.Test1.DeleteButton;
+            WpfButton deleteButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestsListboxList.Test1.DeleteButton;
             var beforeClick = testEnabledSelector.Checked;
+
             Mouse.Click(testEnabledSelector);
+            WaitForControlVisible(testEnabledSelector);
             Assert.AreNotEqual(beforeClick, testEnabledSelector.Checked);
-            WaitForControlVisible(runButton);
-            Assert.IsTrue(runButton.Enabled, "Delete button is disabled");
+
+            WaitForControlVisible(deleteButton);
+            Assert.IsTrue(deleteButton.Enabled, "Delete button is disabled");
         }
 
 
@@ -1141,17 +1151,9 @@ namespace Warewolf.UITests
             #region Variable Declarations
             WpfButton duplicateButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.DuplicateButton;
             #endregion
-            var wpfList = MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestsListboxList as WpfList;
-            var countBefore = wpfList.GetContent().Length;
+            
             // Click '' button
             Mouse.Click(duplicateButton, new Point(14, 10));
-
-            WaitForSpinner(duplicateButton);
-            wpfList = MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestsListboxList as WpfList;
-            var countAfter = wpfList.GetContent().Length;
-
-            Assert.IsTrue(countAfter > countBefore);
-            
         }
     }
     /// <summary>
