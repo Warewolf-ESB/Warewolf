@@ -243,8 +243,7 @@ namespace Dev2.Activities.Specs.TestFramework
                 Category = "",
                 ResourceName = _resourceForTests
             };
-            var executeMessage = environmentModel.ResourceRepository.SaveTests(resourceModel, serviceTestModelTos);
-            Assert.AreNotEqual(SaveResult.ResourceDeleted, executeMessage.Result);
+            environmentModel.ResourceRepository.SaveTests(resourceModel, serviceTestModelTos);
         }
 
         [Then(@"""(.*)"" is passing")]
