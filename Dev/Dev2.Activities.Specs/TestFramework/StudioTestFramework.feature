@@ -315,7 +315,7 @@ Scenario: Edit existing test validate star
 	And I set Test Values as
 	| TestName | AuthenticationType | Error |
 	| Test1    | Windows            | true  |
-	Then NoErrorExpected is "false"	
+	Then NoErrorExpected is "true"	
 	And save is enabled
 	When I save
 	Then Tab Header is "Workflow 3 - Tests"
@@ -347,7 +347,7 @@ Scenario: Edit existing test
 	And I set Test Values as
 	| TestName | AuthenticationType | Error |
 	| Test1    | Windows            | true  |
-	Then NoErrorExpected is "false"	
+	Then NoErrorExpected is "true"	
 	And save is enabled
 	When I save
 	Then Tab Header is "Workflow 3 - Tests"
@@ -383,7 +383,7 @@ Scenario: Rename existing test
 	And I set Test Values as
 	| TestName | AuthenticationType | Error |
 	| Test1    | Windows            | true  |
-	Then NoErrorExpected is "false"	
+	Then NoErrorExpected is "true"	
 	And save is enabled
 	When I save
 	Then Tab Header is "Workflow 3 - Tests"
@@ -417,7 +417,7 @@ Scenario: Loading existing Tests has correct Name for display
 	And I set Test Values as
 	| TestName | AuthenticationType | Error |
 	| Test1    | Windows            | true  |
-	Then NoErrorExpected is "false"	
+	Then NoErrorExpected is "true"	
 	And save is enabled
 	When I save
 	Then Tab Header is "Workflow 3 - Tests"
@@ -435,7 +435,7 @@ Scenario: Loading existing Tests has correct Test Status
 	And I set Test Values as
 	| TestName | AuthenticationType | Error |
 	| Test1    | Windows            | true  |
-	Then NoErrorExpected is "false"	
+	Then NoErrorExpected is "true"	
 	Then Test Status saved is "TestPending"	
 	And save is enabled
 	When I save
@@ -453,7 +453,7 @@ Scenario: Loading existing Tests
 	And I set Test Values as
 	| TestName | AuthenticationType | Error |
 	| Test1    | Windows            | true  |
-	Then NoErrorExpected is "false"	
+	Then NoErrorExpected is "true"	
 	And save is enabled
 	When I save
 	Then Tab Header is "Workflow 3 - Tests"
@@ -476,7 +476,7 @@ Scenario: Close test window
 	And I set Test Values as
 	| TestName | AuthenticationType | Error |
 	| Test1    | Windows            | true  |
-	Then NoErrorExpected is "false"	
+	Then NoErrorExpected is "true"	
 	And save is enabled
 	When I save
 	Then Tab Header is "Workflow 3 - Tests"
@@ -498,7 +498,7 @@ Scenario: Delete an Disabled Test
 	And I set Test Values as
 	| TestName | AuthenticationType | Error |
 	| Test1    | Windows            | true  |
-	Then NoErrorExpected is "false"	
+	Then NoErrorExpected is "true"	
 	And save is enabled
 	When I save
 	Then Tab Header is "Workflow 3 - Tests"
@@ -615,7 +615,7 @@ Scenario: Run a test with single scalar inputs and outputs
 	And there are no tests
 	When I click New Test
 	Then a new test is added
-	#And Tab Header is "Hello World - Tests *"
+	And Tab Header is "Hello World - Tests *"
 	And test name starts with "Test 1"
 	And username is blank
 	And password is blank
@@ -653,7 +653,7 @@ Scenario: Run a test with single scalar inputs and outputs failure
 	And there are no tests
 	When I click New Test
 	Then a new test is added
-	#And Tab Header is "Hello World - Tests *"
+	And Tab Header is "Hello World - Tests *"
 	And test name starts with "Test 1"
 	And username is blank
 	And password is blank
