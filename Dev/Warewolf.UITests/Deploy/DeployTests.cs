@@ -5,22 +5,25 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Warewolf.UITests
 {
     [CodedUITest]
-    public class HelpWindowTests
+    public class DeployTests
     {
+        const string ServerSourceName = "TSTCIREMOTE";
+        const string LocalWorkflowName = "RemoteServerUITestWorkflow";
+        const string RemoteSubWorkflowName = "workflow1";
+        const string LocalWorkflow = "LocalWorkflow";
+        const string WindowsGroup = "Domain Users";
+        private const string ServerAddress = "tst-ci-";
+
         [TestMethod]
-        public void HelpWindowTestHelpTextChangesAsControlFocusChange()
+        public void Deploy_WorkFlow_To_Remote_Server()
         {
             Uimap.Click_New_Workflow_Ribbon_Button();
             Uimap.Drag_Toolbox_MultiAssign_Onto_DesignSurface();
-            Uimap.Open_Assign_Tool_Large_View();
-            Uimap.Enter_Text_Into_Assign_Large_View_Row1_Variable_Textbox_As_SomeInvalidVariableName();
-            Uimap.Click_Assign_Tool_Large_View_Done_Button_With_Row1_Variable_Textbox_As_SomeInvalidVariableName();
-            Uimap.Enter_Text_Into_Assign_Large_View_Row1_Variable_Textbox_As_SomeVariable();
-            Uimap.Click_Assign_Tool_Large_View_Done_Button();
-            Uimap.Enter_Text_Into_Assign_Small_View_Row1_Value_Textbox_As_SomeVariable_UsingIntellisense();
-            Uimap.Enter_Text_Into_Assign_Small_View_Row1_Value_Textbox_As_SomeVariable_Using_Click_Intellisense_Suggestion();
-            Assert.IsTrue(Uimap.MainStudioWindow.DockManager.SplitPaneLeft.Help.HelpTextEditor.Exists, "Help text does not exist");
+            Uimap.Save_With_Ribbon_Button_And_Dialog(LocalWorkflow);
+            Uimap.Click_Deploy_Ribbon_Button();
+            Uimap.Click_Deploy_Tab_Destination_Server_Combobox();
         }
+
 
         #region Additional test attributes
 
@@ -35,10 +38,11 @@ namespace Warewolf.UITests
         [TestCleanup()]
         public void MyTestCleanup()
         {
-            //Playback.PlaybackError -= Uimap.OnError;
-            Uimap.TryCloseHangingSaveDialog();
-            Uimap.TryClearToolboxFilter();
-            Uimap.TryCloseWorkflowTabs();
+            Playback.PlaybackError -= Uimap.OnError;
+            //Uimap.TryCloseHangingSaveDialog();
+            Uimap.TryRemoveFromExplorer(LocalWorkflow);
+            //Uimap.TryDisconnectFromRemoteServerAndRemoveSourceFromExplorer(ServerSourceName);
+            //Uimap.TryCloseAllTabs();
         }
 
         public TestContext TestContext
