@@ -735,7 +735,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             var result = new WorkflowInputDataViewModel(debugInfoModel, sessionId);
             if (resourceModel?.Environment?.AuthorizationService != null)
             {
-                result.CanDebug = resourceModel.Environment.AuthorizationService.GetResourcePermissions(resourceModel.ID).CanDebug();
+                result.CanDebug = resourceModel.UserPermissions.CanDebug();
             }
 
             return result;
