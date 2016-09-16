@@ -64,13 +64,22 @@ namespace Dev2.Activities.Specs.TestFramework
             datalistViewModel.WriteToResourceModel();
             ScenarioContext.Add(workflowName, resourceModel);
             ScenarioContext.Add($"{workflowName}dataListViewModel", datalistViewModel);
-            var popupController = new Mock<Common.Interfaces.Studio.Controller.IPopupController>();
-            popupController.Setup(controller => controller.ShowDeleteConfirmation(It.IsAny<string>())).Returns(MessageBoxResult.Yes);
-            popupController.Setup(controller => controller.Show(It.IsAny<string>(), It.IsAny<string>(), MessageBoxButton.OK, MessageBoxImage.Error, null, false, true, false, false)).Verifiable();
-            popupController.Setup(controller => controller.Show(It.IsAny<string>(), It.IsAny<string>(), MessageBoxButton.OK, MessageBoxImage.Information, null, false, true, false, false)).Verifiable();
-            CustomContainer.Register(popupController.Object);
-            ScenarioContext["popupController"] = popupController;
-
+            if (!ScenarioContext.ContainsKey("popupController"))
+            {
+                var popupController = new Mock<Common.Interfaces.Studio.Controller.IPopupController>();
+                popupController.Setup(controller => controller.ShowDeleteConfirmation(It.IsAny<string>()))
+                    .Returns(MessageBoxResult.Yes);
+                popupController.Setup(
+                    controller =>
+                        controller.Show(It.IsAny<string>(), It.IsAny<string>(), MessageBoxButton.OK,
+                            MessageBoxImage.Error, null, false, true, false, false)).Verifiable();
+                popupController.Setup(
+                    controller =>
+                        controller.Show(It.IsAny<string>(), It.IsAny<string>(), MessageBoxButton.OK,
+                            MessageBoxImage.Information, null, false, true, false, false)).Verifiable();
+                CustomContainer.Register(popupController.Object);
+                ScenarioContext["popupController"] = popupController;
+            }
             var shellViewModel = new Mock<IShellViewModel>();
             shellViewModel.Setup(model => model.CloseResourceTestView(It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<Guid>()));
             CustomContainer.Register(shellViewModel.Object);
