@@ -5,8 +5,10 @@ using System.Linq;
 using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
+using Dev2.Common.Interfaces.Data;
 using Dev2.Communication;
 using Dev2.Data;
+using Dev2.DataList.Contract;
 using Dev2.Runtime;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 // ReSharper disable ObjectCreationAsStatement
@@ -712,5 +714,254 @@ namespace Dev2.Tests.Runtime.Hosting
             //------------Assert Results-------------------------
             Assert.IsNull(test);
         }
+
+
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("TestCatalog_UpdateTestsBasedOnIOChange")]
+        public void TestCatalog_UpdateTestsBasedOnIOChange_WhenTestsFound_ShouldUpdateBasedOnChange_Scalars()
+        {
+            //------------Setup for test--------------------------
+            var inputDefs = new List<IDev2Definition>();
+            inputDefs.Add(DataListFactory.CreateDefinition("Age", "", "", "", false, "",false, "", false));
+            inputDefs.Add(DataListFactory.CreateDefinition("Gender", "", "", "", false, "",false, "", false));
+            var outputDefs = new List<IDev2Definition>();
+            outputDefs.Add(DataListFactory.CreateDefinition("MessageForUser", "", "", "", false, "", false, "", false));
+            var testCatalog = new TestCatalog();
+            var resourceID = Guid.NewGuid();
+            var serviceTestModelTos = new List<IServiceTestModelTO>
+            {
+                new ServiceTestModelTO
+                {
+                    Enabled = true,
+                    TestName = "Test 1",
+                    Inputs = new List<IServiceTestInput>
+                    {
+                        new ServiceTestInputTO
+                        {
+                            Variable = "Name"
+                        },
+                        new ServiceTestInputTO
+                        {
+                            Variable = "Age",
+                            Value = "20"
+                        }
+                    },
+                    Outputs = new List<IServiceTestOutput>
+                    {
+                        new ServiceTestOutputTO
+                        {
+                            Variable = "OutputMessage"
+                        },
+                        new ServiceTestOutputTO
+                        {
+                            Variable = "MessageForUser",
+                            Value = "This is the message"
+                        }
+                    }
+                },
+                new ServiceTestModelTO
+                {
+                    Enabled = false,
+                    TestName = "Test 2",
+                    Inputs = new List<IServiceTestInput>
+                    {
+                        new ServiceTestInputTO
+                        {
+                            Variable = "Name"
+                        },
+                        new ServiceTestInputTO
+                        {
+                            Variable = "Age",
+                            Value = "25"
+                        }
+                    }
+                }
+            };
+            testCatalog.SaveTests(resourceID, serviceTestModelTos);
+            //------------Execute Test---------------------------
+            testCatalog.UpdateTestsBasedOnIOChange(resourceID, inputDefs,outputDefs );
+            //------------Assert Results-------------------------
+            var updatedTests = testCatalog.Fetch(resourceID);
+            var updatedTest1 = updatedTests[0];
+            var updatedTest2 = updatedTests[1];
+
+            Assert.AreEqual("Test 1",updatedTest1.TestName);
+            Assert.IsTrue(updatedTest1.TestInvalid);
+            Assert.IsFalse(updatedTest1.TestFailing);
+            Assert.IsFalse(updatedTest1.TestPassed);
+            Assert.IsFalse(updatedTest1.TestPending);
+            Assert.AreEqual(2,updatedTest1.Inputs.Count);
+            Assert.AreEqual("Age",updatedTest1.Inputs[0].Variable);
+            Assert.AreEqual("20",updatedTest1.Inputs[0].Value);
+            Assert.AreEqual("Gender", updatedTest1.Inputs[1].Variable);
+            Assert.AreEqual("", updatedTest1.Inputs[1].Value);
+            Assert.IsFalse(updatedTest1.Inputs[1].EmptyIsNull);
+
+            Assert.AreEqual(1, updatedTest1.Outputs.Count);
+            Assert.AreEqual("MessageForUser", updatedTest1.Outputs[0].Variable);
+            Assert.AreEqual("This is the message", updatedTest1.Outputs[0].Value);
+            
+
+
+            Assert.AreEqual("Test 2",updatedTest2.TestName);
+            Assert.IsTrue(updatedTest2.TestInvalid);
+            Assert.IsFalse(updatedTest2.TestFailing);
+            Assert.IsFalse(updatedTest2.TestPassed);
+            Assert.IsFalse(updatedTest2.TestPending);
+            Assert.AreEqual(2, updatedTest2.Inputs.Count);
+            Assert.AreEqual("Age", updatedTest2.Inputs[0].Variable);
+            Assert.AreEqual("25", updatedTest2.Inputs[0].Value);
+            Assert.AreEqual("Gender", updatedTest2.Inputs[1].Variable);
+            Assert.AreEqual("", updatedTest2.Inputs[1].Value);
+            Assert.IsFalse(updatedTest2.Inputs[1].EmptyIsNull);
+
+            Assert.AreEqual(1, updatedTest2.Outputs.Count);
+            Assert.AreEqual("MessageForUser", updatedTest2.Outputs[0].Variable);
+            Assert.AreEqual("", updatedTest2.Outputs[0].Value);
+        }
+
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("TestCatalog_UpdateTestsBasedOnIOChange")]
+        public void TestCatalog_UpdateTestsBasedOnIOChange_WhenTestsFound_ShouldUpdateBasedOnChange_RecordSets()
+        {
+            //------------Setup for test--------------------------
+            var inputDefs = new List<IDev2Definition>();
+            inputDefs.Add(DataListFactory.CreateDefinition("Age", "", "", "", false, "",false, "", false));
+            inputDefs.Add(DataListFactory.CreateDefinition("Gender", "", "", "", false, "",false, "", false));
+            inputDefs.Add(DataListFactory.CreateDefinition("f", "", "", "rs", false, "",false, "", false));
+            inputDefs.Add(DataListFactory.CreateDefinition("g", "", "", "rs", false, "",false, "", false));
+            inputDefs.Add(DataListFactory.CreateDefinition("i", "", "", "rs", false, "",false, "", false));
+            inputDefs.Add(DataListFactory.CreateDefinition("set", "", "", "rec", false, "",false, "", false));
+            var outputDefs = new List<IDev2Definition>();
+            outputDefs.Add(DataListFactory.CreateDefinition("MessageForUser", "", "", "", false, "", false, "", false));
+            outputDefs.Add(DataListFactory.CreateDefinition("out", "", "", "res", false, "", false, "", false));
+            var testCatalog = new TestCatalog();
+            var resourceID = Guid.NewGuid();
+            var serviceTestModelTos = new List<IServiceTestModelTO>
+            {
+                new ServiceTestModelTO
+                {
+                    Enabled = true,
+                    TestName = "Test 1",
+                    Inputs = new List<IServiceTestInput>
+                    {
+                        new ServiceTestInputTO
+                        {
+                            Variable = "Name"
+                        },
+                        new ServiceTestInputTO
+                        {
+                            Variable = "Age",
+                            Value = "20"
+                        },
+                        new ServiceTestInputTO
+                        {
+                            Variable = "rs(1).f",
+                            Value = "20"
+                        },
+                        new ServiceTestInputTO
+                        {
+                            Variable = "rs(1).g",
+                            Value = "2"
+                        },
+                        new ServiceTestInputTO
+                        {
+                            Variable = "rs(1).h",
+                            Value = "1"
+                        },
+                        new ServiceTestInputTO
+                        {
+                            Variable = "rs(2).f",
+                            Value = "20"
+                        },
+                        new ServiceTestInputTO
+                        {
+                            Variable = "rs(2).g",
+                            Value = "2"
+                        },
+                        new ServiceTestInputTO
+                        {
+                            Variable = "rs(2).h",
+                            Value = "1"
+                        }
+                    },
+                    Outputs = new List<IServiceTestOutput>
+                    {
+                        new ServiceTestOutputTO
+                        {
+                            Variable = "OutputMessage"
+                        },
+                        new ServiceTestOutputTO
+                        {
+                            Variable = "MessageForUser",
+                            Value = "This is the message"
+                        }
+                    }
+                },
+                new ServiceTestModelTO
+                {
+                    Enabled = false,
+                    TestName = "Test 2",
+                    Inputs = new List<IServiceTestInput>
+                    {
+                        new ServiceTestInputTO
+                        {
+                            Variable = "Name"
+                        },
+                        new ServiceTestInputTO
+                        {
+                            Variable = "Age",
+                            Value = "25"
+                        }
+                    }
+                }
+            };
+            testCatalog.SaveTests(resourceID, serviceTestModelTos);
+            //------------Execute Test---------------------------
+            testCatalog.UpdateTestsBasedOnIOChange(resourceID, inputDefs,outputDefs );
+            //------------Assert Results-------------------------
+            var updatedTests = testCatalog.Fetch(resourceID);
+            var updatedTest1 = updatedTests[0];
+            var updatedTest2 = updatedTests[1];
+
+            Assert.AreEqual("Test 1",updatedTest1.TestName);
+            Assert.IsTrue(updatedTest1.TestInvalid);
+            Assert.IsFalse(updatedTest1.TestFailing);
+            Assert.IsFalse(updatedTest1.TestPassed);
+            Assert.IsFalse(updatedTest1.TestPending);
+            Assert.AreEqual(9,updatedTest1.Inputs.Count);
+            Assert.AreEqual("Age",updatedTest1.Inputs[0].Variable);
+            Assert.AreEqual("20",updatedTest1.Inputs[0].Value);
+            Assert.AreEqual("Gender", updatedTest1.Inputs[1].Variable);
+            Assert.AreEqual("", updatedTest1.Inputs[1].Value);
+            Assert.IsFalse(updatedTest1.Inputs[1].EmptyIsNull);
+
+            Assert.AreEqual(2, updatedTest1.Outputs.Count);
+            Assert.AreEqual("MessageForUser", updatedTest1.Outputs[0].Variable);
+            Assert.AreEqual("This is the message", updatedTest1.Outputs[0].Value);
+            
+
+
+            Assert.AreEqual("Test 2",updatedTest2.TestName);
+            Assert.IsTrue(updatedTest2.TestInvalid);
+            Assert.IsFalse(updatedTest2.TestFailing);
+            Assert.IsFalse(updatedTest2.TestPassed);
+            Assert.IsFalse(updatedTest2.TestPending);
+            Assert.AreEqual(6, updatedTest2.Inputs.Count);
+            Assert.AreEqual("Age", updatedTest2.Inputs[0].Variable);
+            Assert.AreEqual("25", updatedTest2.Inputs[0].Value);
+            Assert.AreEqual("Gender", updatedTest2.Inputs[1].Variable);
+            Assert.AreEqual("", updatedTest2.Inputs[1].Value);
+            Assert.IsFalse(updatedTest2.Inputs[1].EmptyIsNull);
+
+            Assert.AreEqual(2, updatedTest2.Outputs.Count);
+            Assert.AreEqual("MessageForUser", updatedTest2.Outputs[0].Variable);
+            Assert.AreEqual("", updatedTest2.Outputs[0].Value);
+        }
+
     }
 }
