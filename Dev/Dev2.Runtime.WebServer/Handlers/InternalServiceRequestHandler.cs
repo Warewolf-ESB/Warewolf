@@ -9,10 +9,12 @@
 */
 
 using System;
+using System.Collections.Generic;
 using System.Security.Principal;
 using System.Text;
 using System.Threading;
 using Dev2.Common;
+using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Communication;
 using Dev2.DataList.Contract;
 using Dev2.DynamicServices;
@@ -115,7 +117,7 @@ namespace Dev2.Runtime.WebServer.Handlers
            
             var resource = ResourceCatalog.Instance.GetResource(workspaceID, request.ServiceName);
             var isManagementResource = false;
-            if(resource != null)
+            if (resource != null)
             {
                 dataObject.ResourceID = resource.ResourceID;
                 if (!string.IsNullOrEmpty(request.TestName))
@@ -123,7 +125,22 @@ namespace Dev2.Runtime.WebServer.Handlers
                     dataObject.TestName = request.TestName;
                     dataObject.IsServiceTestExecution = true;
                 }
-                isManagementResource =  ResourceCatalog.Instance.ManagementServices.ContainsKey(resource.ResourceID);
+                isManagementResource = ResourceCatalog.Instance.ManagementServices.ContainsKey(resource.ResourceID);
+            }
+            else
+            {
+                if (!string.IsNullOrEmpty(request.TestName))
+                {
+                    var testResult = new TestRunResult
+                    {
+                        Message = "Resource has been deleted",
+                        Result = RunResult.TestResourceDeleted,
+                        TestName = request.TestName,
+                        DebugForTest =  new List<IDebugState>()
+                    };
+                    var ser = new Dev2JsonSerializer();
+                    return ser.SerializeToBuilder(testResult);
+                }
             }
             dataObject.ClientID = Guid.Parse(connectionId);
             Common.Utilities.OrginalExecutingUser = ExecutingUser;
