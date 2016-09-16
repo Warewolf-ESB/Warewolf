@@ -5647,7 +5647,7 @@ namespace Warewolf.UITests
             #region Variable Declarations
             WpfCustom databaseCombobox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DBSourceWizardTab.WorkSurfaceContext.ManageDatabaseSourceControl.DatabaseCombobox;
             WpfCustom comboboxListItemAsDev2TestingDB = this.MainStudioWindow.ComboboxListItemAsDev2TestingDB;
-            WpfText uIDev2TestingDBText = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DBSourceWizardTab.WorkSurfaceContext.ManageDatabaseSourceControl.UIDatabaseComboxBoxCustom.UIDev2TestingDBText;
+            WpfText dev2TestingDBText = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DBSourceWizardTab.WorkSurfaceContext.ManageDatabaseSourceControl.DatabaseCombobox.Dev2TestingDBText;
             #endregion
 
             // Click 'DatabaseComboxBox' custom control
@@ -5657,7 +5657,7 @@ namespace Warewolf.UITests
             Mouse.Click(comboboxListItemAsDev2TestingDB, new Point(129, 19));
 
             // Verify that the 'DisplayText' property of 'Dev2TestingDB' label equals 'Dev2TestingDB'
-            Assert.AreEqual(this.Select_Dev2TestingDB_From_DB_Source_Wizard_Database_ComboboxParams.UIDev2TestingDBTextDisplayText, uIDev2TestingDBText.DisplayText);
+            Assert.AreEqual(this.Select_Dev2TestingDB_From_DB_Source_Wizard_Database_ComboboxParams.Dev2TestingDBTextDisplayText, dev2TestingDBText.DisplayText);
         }
         
         /// <summary>
@@ -5957,26 +5957,6 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
-        /// Select_Next_From_DotNet_DLL_Large_View_Action_Combobox - Use 'Select_Next_From_DotNet_DLL_Large_View_Action_ComboboxExpectedValues' to pass parameters into this method.
-        /// </summary>
-        public void Select_Next_From_DotNet_DLL_Large_View_Action_Combobox()
-        {
-            #region Variable Declarations
-            WpfComboBox actionsComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ActionsComboBox;
-            WpfListItem nextListItem = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ActionsComboBox.NextListItem;
-            #endregion
-
-            // Click 'ActionsComboBox' combo box
-            Mouse.Click(actionsComboBox, new Point(216, 7));
-
-            // Click 'Next' list item
-            Mouse.Click(nextListItem, new Point(137, 7));
-
-            // Verify that the 'SelectedItem' property of 'ActionsComboBox' combo box equals 'Next'
-            Assert.AreEqual(this.Select_Next_From_DotNet_DLL_Large_View_Action_ComboboxExpectedValues.ActionsComboBoxSelectedItem, actionsComboBox.SelectedItem, "System.Random is not selected in DotNet DLL tool large view namespace combobox.");
-        }
-        
-        /// <summary>
         /// Select_Open_FromExplorerContextMenu
         /// </summary>
         public void Select_Open_FromExplorerContextMenu()
@@ -6185,23 +6165,46 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
-        /// Select_SystemRandom_From_DotNet_DLL_Large_View_Namespace_Combobox - Use 'Select_SystemRandom_From_DotNet_DLL_Large_View_Namespace_ComboboxExpectedValues' to pass parameters into this method.
+        /// Select_SystemObject_From_DotNet_DLL_Large_View_Namespace_Combobox - Use 'Select_SystemObject_From_DotNet_DLL_Large_View_Namespace_ComboboxExpectedValues' to pass parameters into this method.
         /// </summary>
-        public void Select_SystemRandom_From_DotNet_DLL_Large_View_Namespace_Combobox()
+        public void Select_SystemObject_From_DotNet_DLL_Large_View_Namespace_Combobox()
         {
             #region Variable Declarations
             WpfComboBox classNameComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ClassNameComboBox;
-            WpfListItem systemRandomListItem = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ClassNameComboBox.SystemRandomListItem;
+            WpfListItem comboboxlistItemAsSystemObject = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ClassNameComboBox.ComboboxlistItemAsSystemObject;
             #endregion
 
             // Click 'NamespaceComboBox' combo box
             Mouse.Click(classNameComboBox, new Point(216, 7));
 
-            // Click 'SystemRandom' list item
-            Mouse.Click(systemRandomListItem, new Point(137, 7));
+            // Verify that the 'Exists' property of '{"AssemblyLocation":"C:\\Windows\\Microsoft.NET\\F...' list item equals 'True'
+            Assert.AreEqual(this.Select_SystemObject_From_DotNet_DLL_Large_View_Namespace_ComboboxExpectedValues.ComboboxlistItemAsSystemObjectExists, comboboxlistItemAsSystemObject.Exists, "System.Random item does not exist in the DotNet DLL tool ClassName dropdown");
 
-            // Verify that the 'SelectedItem' property of 'NamespaceComboBox' combo box equals '{"AssemblyLocation":"C:\\Windows\\Microsoft.NET\\Framework64\\v4.0.30319\\mscorlib.dll","AssemblyName":"mscorlib.dll","FullName":"System.Random","MethodName":null}'
-            Assert.AreEqual(this.Select_SystemRandom_From_DotNet_DLL_Large_View_Namespace_ComboboxExpectedValues.ClassNameComboBoxSelectedItem, classNameComboBox.SelectedItem, "System.Random is not selected in DotNet DLL tool large view namespace combobox.");
+            // Click '{"AssemblyLocation":"C:\\Windows\\Microsoft.NET\\F...' list item
+            Mouse.Click(comboboxlistItemAsSystemObject, new Point(137, 7));
+
+            // Verify that the 'SelectedItem' property of 'NamespaceComboBox' combo box equals '{"AssemblyLocation":"C:\\Windows\\Microsoft.NET\\Framework64\\v4.0.30319\\mscorlib.dll","AssemblyName":"mscorlib.dll","FullName":"System.Object","MethodName":null}'
+            Assert.AreEqual(this.Select_SystemObject_From_DotNet_DLL_Large_View_Namespace_ComboboxExpectedValues.ClassNameComboBoxSelectedItem, classNameComboBox.SelectedItem, "System.Random is not selected in DotNet DLL tool large view namespace combobox.");
+        }
+        
+        /// <summary>
+        /// Select_ToString_From_DotNet_DLL_Large_View_Action_Combobox - Use 'Select_ToString_From_DotNet_DLL_Large_View_Action_ComboboxExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void Select_ToString_From_DotNet_DLL_Large_View_Action_Combobox()
+        {
+            #region Variable Declarations
+            WpfComboBox actionsComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ActionsComboBox;
+            WpfListItem item1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ActionsComboBox.Item1;
+            #endregion
+
+            // Click 'ActionsComboBox' combo box
+            Mouse.Click(actionsComboBox, new Point(216, 7));
+
+            // Click 'Item1' list item
+            Mouse.Click(item1, new Point(137, 7));
+
+            // Verify that the 'SelectedItem' property of 'ActionsComboBox' combo box equals 'ToString'
+            Assert.AreEqual(this.Select_ToString_From_DotNet_DLL_Large_View_Action_ComboboxExpectedValues.ActionsComboBoxSelectedItem, actionsComboBox.SelectedItem, "System.Random is not selected in DotNet DLL tool large view namespace combobox.");
         }
         
         /// <summary>
@@ -8546,18 +8549,6 @@ namespace Warewolf.UITests
             }
         }
         
-        public virtual Select_Next_From_DotNet_DLL_Large_View_Action_ComboboxExpectedValues Select_Next_From_DotNet_DLL_Large_View_Action_ComboboxExpectedValues
-        {
-            get
-            {
-                if ((this.mSelect_Next_From_DotNet_DLL_Large_View_Action_ComboboxExpectedValues == null))
-                {
-                    this.mSelect_Next_From_DotNet_DLL_Large_View_Action_ComboboxExpectedValues = new Select_Next_From_DotNet_DLL_Large_View_Action_ComboboxExpectedValues();
-                }
-                return this.mSelect_Next_From_DotNet_DLL_Large_View_Action_ComboboxExpectedValues;
-            }
-        }
-        
         public virtual Select_RemoteConnectionIntegration_From_Deploy_Tab_Destination_Server_ComboboxParams Select_RemoteConnectionIntegration_From_Deploy_Tab_Destination_Server_ComboboxParams
         {
             get
@@ -8606,15 +8597,27 @@ namespace Warewolf.UITests
             }
         }
         
-        public virtual Select_SystemRandom_From_DotNet_DLL_Large_View_Namespace_ComboboxExpectedValues Select_SystemRandom_From_DotNet_DLL_Large_View_Namespace_ComboboxExpectedValues
+        public virtual Select_SystemObject_From_DotNet_DLL_Large_View_Namespace_ComboboxExpectedValues Select_SystemObject_From_DotNet_DLL_Large_View_Namespace_ComboboxExpectedValues
         {
             get
             {
-                if ((this.mSelect_SystemRandom_From_DotNet_DLL_Large_View_Namespace_ComboboxExpectedValues == null))
+                if ((this.mSelect_SystemObject_From_DotNet_DLL_Large_View_Namespace_ComboboxExpectedValues == null))
                 {
-                    this.mSelect_SystemRandom_From_DotNet_DLL_Large_View_Namespace_ComboboxExpectedValues = new Select_SystemRandom_From_DotNet_DLL_Large_View_Namespace_ComboboxExpectedValues();
+                    this.mSelect_SystemObject_From_DotNet_DLL_Large_View_Namespace_ComboboxExpectedValues = new Select_SystemObject_From_DotNet_DLL_Large_View_Namespace_ComboboxExpectedValues();
                 }
-                return this.mSelect_SystemRandom_From_DotNet_DLL_Large_View_Namespace_ComboboxExpectedValues;
+                return this.mSelect_SystemObject_From_DotNet_DLL_Large_View_Namespace_ComboboxExpectedValues;
+            }
+        }
+        
+        public virtual Select_ToString_From_DotNet_DLL_Large_View_Action_ComboboxExpectedValues Select_ToString_From_DotNet_DLL_Large_View_Action_ComboboxExpectedValues
+        {
+            get
+            {
+                if ((this.mSelect_ToString_From_DotNet_DLL_Large_View_Action_ComboboxExpectedValues == null))
+                {
+                    this.mSelect_ToString_From_DotNet_DLL_Large_View_Action_ComboboxExpectedValues = new Select_ToString_From_DotNet_DLL_Large_View_Action_ComboboxExpectedValues();
+                }
+                return this.mSelect_ToString_From_DotNet_DLL_Large_View_Action_ComboboxExpectedValues;
             }
         }
         
@@ -9194,8 +9197,6 @@ namespace Warewolf.UITests
         
         private Select_NewWorkFlowService_From_ContextMenuParams mSelect_NewWorkFlowService_From_ContextMenuParams;
         
-        private Select_Next_From_DotNet_DLL_Large_View_Action_ComboboxExpectedValues mSelect_Next_From_DotNet_DLL_Large_View_Action_ComboboxExpectedValues;
-        
         private Select_RemoteConnectionIntegration_From_Deploy_Tab_Destination_Server_ComboboxParams mSelect_RemoteConnectionIntegration_From_Deploy_Tab_Destination_Server_ComboboxParams;
         
         private Select_RemoteConnectionIntegration_From_Deploy_Tab_Source_Server_ComboboxParams mSelect_RemoteConnectionIntegration_From_Deploy_Tab_Source_Server_ComboboxParams;
@@ -9204,7 +9205,9 @@ namespace Warewolf.UITests
         
         private Select_RSAKLFSVRGENDEV_From_Server_Source_Wizard_DropdownlistExpectedValues mSelect_RSAKLFSVRGENDEV_From_Server_Source_Wizard_DropdownlistExpectedValues;
         
-        private Select_SystemRandom_From_DotNet_DLL_Large_View_Namespace_ComboboxExpectedValues mSelect_SystemRandom_From_DotNet_DLL_Large_View_Namespace_ComboboxExpectedValues;
+        private Select_SystemObject_From_DotNet_DLL_Large_View_Namespace_ComboboxExpectedValues mSelect_SystemObject_From_DotNet_DLL_Large_View_Namespace_ComboboxExpectedValues;
+        
+        private Select_ToString_From_DotNet_DLL_Large_View_Action_ComboboxExpectedValues mSelect_ToString_From_DotNet_DLL_Large_View_Action_ComboboxExpectedValues;
         
         private Select_TSTCIREMOTE_From_Server_Source_Wizard_DropdownlistParams mSelect_TSTCIREMOTE_From_Server_Source_Wizard_DropdownlistParams;
         
@@ -13001,7 +13004,7 @@ namespace Warewolf.UITests
         /// <summary>
         /// Verify that the 'DisplayText' property of 'Dev2TestingDB' label equals 'Dev2TestingDB'
         /// </summary>
-        public string UIDev2TestingDBTextDisplayText = "Dev2TestingDB";
+        public string Dev2TestingDBTextDisplayText = "Dev2TestingDB";
         #endregion
     }
     
@@ -13126,21 +13129,6 @@ namespace Warewolf.UITests
     }
     
     /// <summary>
-    /// Parameters to be passed into 'Select_Next_From_DotNet_DLL_Large_View_Action_Combobox'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Select_Next_From_DotNet_DLL_Large_View_Action_ComboboxExpectedValues
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Verify that the 'SelectedItem' property of 'ActionsComboBox' combo box equals 'Next'
-        /// </summary>
-        public string ActionsComboBoxSelectedItem = "Next";
-        #endregion
-    }
-    
-    /// <summary>
     /// Parameters to be passed into 'Select_RemoteConnectionIntegration_From_Deploy_Tab_Destination_Server_Combobox'
     /// </summary>
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
@@ -13231,19 +13219,39 @@ namespace Warewolf.UITests
     }
     
     /// <summary>
-    /// Parameters to be passed into 'Select_SystemRandom_From_DotNet_DLL_Large_View_Namespace_Combobox'
+    /// Parameters to be passed into 'Select_SystemObject_From_DotNet_DLL_Large_View_Namespace_Combobox'
     /// </summary>
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Select_SystemRandom_From_DotNet_DLL_Large_View_Namespace_ComboboxExpectedValues
+    public class Select_SystemObject_From_DotNet_DLL_Large_View_Namespace_ComboboxExpectedValues
     {
         
         #region Fields
         /// <summary>
-        /// Verify that the 'SelectedItem' property of 'NamespaceComboBox' combo box equals '{"AssemblyLocation":"C:\\Windows\\Microsoft.NET\\Framework64\\v4.0.30319\\mscorlib.dll","AssemblyName":"mscorlib.dll","FullName":"System.Random","MethodName":null}'
+        /// Verify that the 'Exists' property of '{"AssemblyLocation":"C:\\Windows\\Microsoft.NET\\F...' list item equals 'True'
+        /// </summary>
+        public bool ComboboxlistItemAsSystemObjectExists = true;
+        
+        /// <summary>
+        /// Verify that the 'SelectedItem' property of 'NamespaceComboBox' combo box equals '{"AssemblyLocation":"C:\\Windows\\Microsoft.NET\\Framework64\\v4.0.30319\\mscorlib.dll","AssemblyName":"mscorlib.dll","FullName":"System.Object","MethodName":null}'
         /// </summary>
         public string ClassNameComboBoxSelectedItem = "{\"AssemblyLocation\":\"C:\\\\Windows\\\\Microsoft.NET\\\\Framework64\\\\v4.0.30319\\\\mscorli" +
-            "b.dll\",\"AssemblyName\":\"mscorlib.dll\",\"FullName\":\"System.Random\",\"MethodName\":nul" +
+            "b.dll\",\"AssemblyName\":\"mscorlib.dll\",\"FullName\":\"System.Object\",\"MethodName\":nul" +
             "l}";
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Select_ToString_From_DotNet_DLL_Large_View_Action_Combobox'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Select_ToString_From_DotNet_DLL_Large_View_Action_ComboboxExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'SelectedItem' property of 'ActionsComboBox' combo box equals 'ToString'
+        /// </summary>
+        public string ActionsComboBoxSelectedItem = "ToString";
         #endregion
     }
     
@@ -27354,25 +27362,25 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public WpfListItem NextListItem
+        public WpfListItem Item1
         {
             get
             {
-                if ((this.mNextListItem == null))
+                if ((this.mItem1 == null))
                 {
-                    this.mNextListItem = new WpfListItem(this);
+                    this.mItem1 = new WpfListItem(this);
                     #region Search Criteria
-                    this.mNextListItem.SearchProperties[WpfListItem.PropertyNames.Name] = "Next";
-                    this.mNextListItem.WindowTitles.Add("Warewolf");
+                    this.mItem1.SearchProperties[WpfListItem.PropertyNames.Instance] = "1";
+                    this.mItem1.WindowTitles.Add("Warewolf");
                     #endregion
                 }
-                return this.mNextListItem;
+                return this.mItem1;
             }
         }
         #endregion
         
         #region Fields
-        private WpfListItem mNextListItem;
+        private WpfListItem mItem1;
         #endregion
     }
     
@@ -27390,25 +27398,25 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public WpfListItem SystemRandomListItem
+        public WpfListItem ComboboxlistItemAsSystemObject
         {
             get
             {
-                if ((this.mSystemRandomListItem == null))
+                if ((this.mComboboxlistItemAsSystemObject == null))
                 {
-                    this.mSystemRandomListItem = new WpfListItem(this);
+                    this.mComboboxlistItemAsSystemObject = new WpfListItem(this);
                     #region Search Criteria
-                    this.mSystemRandomListItem.SearchProperties.Add(new PropertyExpression(WpfListItem.PropertyNames.Name, "System.Random", PropertyExpressionOperator.Contains));
-                    this.mSystemRandomListItem.WindowTitles.Add("Warewolf");
+                    this.mComboboxlistItemAsSystemObject.SearchProperties.Add(new PropertyExpression(WpfListItem.PropertyNames.Name, "System.Object", PropertyExpressionOperator.Contains));
+                    this.mComboboxlistItemAsSystemObject.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
                     #endregion
                 }
-                return this.mSystemRandomListItem;
+                return this.mComboboxlistItemAsSystemObject;
             }
         }
         #endregion
         
         #region Fields
-        private WpfListItem mSystemRandomListItem;
+        private WpfListItem mComboboxlistItemAsSystemObject;
         #endregion
     }
     
@@ -31409,18 +31417,6 @@ namespace Warewolf.UITests
             }
         }
         
-        public UIDatabaseComboxBoxCustom UIDatabaseComboxBoxCustom
-        {
-            get
-            {
-                if ((this.mUIDatabaseComboxBoxCustom == null))
-                {
-                    this.mUIDatabaseComboxBoxCustom = new UIDatabaseComboxBoxCustom(this);
-                }
-                return this.mUIDatabaseComboxBoxCustom;
-            }
-        }
-        
         public WpfButton TestConnectionButton
         {
             get
@@ -31454,8 +31450,6 @@ namespace Warewolf.UITests
         private ServerTypeComboBox mServerTypeComboBox;
         
         private ServerComboBox1 mServerComboBox;
-        
-        private UIDatabaseComboxBoxCustom mUIDatabaseComboxBoxCustom;
         
         private WpfButton mTestConnectionButton;
         
@@ -31645,43 +31639,6 @@ namespace Warewolf.UITests
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class UIDatabaseComboxBoxCustom : WpfCustom
-    {
-        
-        public UIDatabaseComboxBoxCustom(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.XamComboEditor";
-            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "DatabaseComboxBox";
-            this.WindowTitles.Add("Warewolf");
-            #endregion
-        }
-        
-        #region Properties
-        public WpfText UIDev2TestingDBText
-        {
-            get
-            {
-                if ((this.mUIDev2TestingDBText == null))
-                {
-                    this.mUIDev2TestingDBText = new WpfText(this);
-                    #region Search Criteria
-                    this.mUIDev2TestingDBText.SearchProperties[WpfText.PropertyNames.Name] = "Dev2TestingDB";
-                    this.mUIDev2TestingDBText.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mUIDev2TestingDBText;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfText mUIDev2TestingDBText;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class DatabaseCombobox : WpfCustom
     {
         
@@ -31728,12 +31685,30 @@ namespace Warewolf.UITests
                 return this.mMSAccessDatabaseText;
             }
         }
+        
+        public WpfText Dev2TestingDBText
+        {
+            get
+            {
+                if ((this.mDev2TestingDBText == null))
+                {
+                    this.mDev2TestingDBText = new WpfText(this);
+                    #region Search Criteria
+                    this.mDev2TestingDBText.SearchProperties[WpfText.PropertyNames.Name] = "Dev2TestingDB";
+                    this.mDev2TestingDBText.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mDev2TestingDBText;
+            }
+        }
         #endregion
         
         #region Fields
         private WpfCustom mDatabaseComboxBoxMsAccess;
         
         private WpfText mMSAccessDatabaseText;
+        
+        private WpfText mDev2TestingDBText;
         #endregion
     }
     

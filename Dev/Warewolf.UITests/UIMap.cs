@@ -22,7 +22,7 @@ namespace Warewolf.UITests
     {
         const int _lenientSearchTimeout = 6000;
         const int _lenientMaximumRetryCount = 3;
-        const int _strictSearchTimeout = 2500;
+        const int _strictSearchTimeout = 3000;
         const int _strictMaximumRetryCount = 1;
 
         public void SetGlobalPlaybackSettings()
@@ -163,9 +163,6 @@ namespace Warewolf.UITests
             }
             TryClickMessageBoxOK();
             WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);
-
-            //TODO: remove this workaround for WOLF-2061
-            //MainStudioWindow.SideMenuBar.NewWorkflowButton.WaitForControlEnabled();
         }
 
         private void TryClickMessageBoxOK()
