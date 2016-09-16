@@ -1307,6 +1307,65 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(testFrameworkViewModel.SelectedServiceTest.NeverRunStringVisibility);
         }
 
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void DisplayName_GivenServerIsNotLocalHost_ShouldAppendServerIntoDisplayName()
+        {
+            //---------------Set up test pack-------------------
+            var popupController = new Mock<IPopupController>();
+            CustomContainer.Register(popupController.Object);
+            var moqModel = new Mock<IContextualResourceModel>();
+            moqModel.SetupAllProperties();
+            moqModel.Setup(model => model.DisplayName).Returns("My WF");
+            moqModel.Setup(model => model.Environment.Connection.IsConnected).Returns(true);
+            moqModel.Setup(model => model.Environment.IsConnected).Returns(true);
+            moqModel.Setup(model => model.Environment.Connection.WebServerUri).Returns(new Uri("http://rsaklf/bob"));
+            moqModel.Setup(model => model.Category).Returns("My WF");
+            moqModel.Setup(model => model.ResourceName).Returns("My WF");
+            const string serverName = "GenDev";
+            moqModel.Setup(model => model.Environment.Name).Returns(serverName).Verifiable();
+
+            var testFrameworkViewModel = new ServiceTestViewModel(moqModel.Object, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object);
+            //---------------Assert Precondition----------------
+            var fieldInfo = typeof(ServiceTestViewModel).GetField("_serverName", BindingFlags.Instance | BindingFlags.NonPublic);
+            
+            // ReSharper disable once PossibleNullReferenceException
+            var server=    fieldInfo.GetValue(testFrameworkViewModel).ToString();
+            Assert.AreEqual(" - GenDev", server);
+            //---------------Execute Test ----------------------
+            //---------------Test Result -----------------------
+            Assert.AreEqual("My WF - Tests - GenDev", testFrameworkViewModel.DisplayName);
+        }
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void DisplayName_GivenServerIsLocalHost_ShouldAppendNotServerIntoDisplayName()
+        {
+            //---------------Set up test pack-------------------
+            var popupController = new Mock<IPopupController>();
+            CustomContainer.Register(popupController.Object);
+            var moqModel = new Mock<IContextualResourceModel>();
+            moqModel.SetupAllProperties();
+            moqModel.Setup(model => model.DisplayName).Returns("My WF");
+            moqModel.Setup(model => model.Environment.Connection.IsConnected).Returns(true);
+            moqModel.Setup(model => model.Environment.IsConnected).Returns(true);
+            moqModel.Setup(model => model.Environment.Connection.WebServerUri).Returns(new Uri("http://rsaklf/bob"));
+            moqModel.Setup(model => model.Category).Returns("My WF");
+            moqModel.Setup(model => model.ResourceName).Returns("My WF");
+            const string serverName = "localhost";
+            moqModel.Setup(model => model.Environment.Name).Returns(serverName).Verifiable();
+
+            var testFrameworkViewModel = new ServiceTestViewModel(moqModel.Object, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object);
+            //---------------Assert Precondition----------------
+            var fieldInfo = typeof(ServiceTestViewModel).GetField("_serverName", BindingFlags.Instance | BindingFlags.NonPublic);
+            
+            // ReSharper disable once PossibleNullReferenceException
+            var server=    fieldInfo.GetValue(testFrameworkViewModel).ToString();
+            Assert.AreEqual("", server);
+            //---------------Execute Test ----------------------
+            //---------------Test Result -----------------------
+            Assert.AreEqual("My WF - Tests", testFrameworkViewModel.DisplayName);
+        }
+
         private IContextualResourceModel CreateResourceModelWithSingleScalarInput()
         {
             var resourceModel = CreateResourceModel();
