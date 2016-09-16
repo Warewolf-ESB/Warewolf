@@ -7,6 +7,7 @@ using Dev2;
 using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
+using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Common.Interfaces.Threading;
 using Dev2.Data;
 using Dev2.Studio.Core.Interfaces;
@@ -81,7 +82,7 @@ namespace Warewolf.Studio.ViewModels
 
         private static void ShowRunAllUnsavedError()
         {
-            var popupController = CustomContainer.Get<Dev2.Common.Interfaces.Studio.Controller.IPopupController>();
+            var popupController = CustomContainer.Get<IPopupController>();
             popupController?.Show(Resources.Languages.Core.ServiceTestRunAllUnsavedTestsMessage,
                 Resources.Languages.Core.ServiceTestRunAllUnsavedTestsHeader, MessageBoxButton.OK, MessageBoxImage.Error, null,
                 false, true, false, false);
@@ -130,6 +131,12 @@ namespace Warewolf.Studio.ViewModels
                             selectedServiceTest.TestFailing = false;
                             selectedServiceTest.TestPassed = false;
                             selectedServiceTest.TestInvalid = true;
+                            break;
+                        case RunResult.TestResourceDeleted:
+                            var popupController = CustomContainer.Get<IPopupController>();
+                            popupController?.Show(Resources.Languages.Core.ServiceTestResourceDeletedMessage, Resources.Languages.Core.ServiceTestResourceDeletedHeader, MessageBoxButton.OK, MessageBoxImage.Error, null, false, true, false, false);
+                            var shellViewModel = CustomContainer.Get<IShellViewModel>();
+                            shellViewModel.CloseResourceTestView(resourceModel.ID, resourceModel.ServerID, resourceModel.Environment.ID);
                             break;
                     }
                     if (selectedServiceTest.Enabled)
