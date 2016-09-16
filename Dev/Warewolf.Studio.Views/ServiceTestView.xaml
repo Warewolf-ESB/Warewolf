@@ -249,7 +249,7 @@
                                 <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
                             <TextBlock Grid.Row="0" Grid.Column="0" Text="Test Name"/>
-                            <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding SelectedServiceTest.TestName, UpdateSourceTrigger=PropertyChanged}"/>
+                            <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding SelectedServiceTest.TestName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                             <Button Grid.Row="0" Grid.Column="2" Command="{Binding DuplicateTestCommand}" Margin="{StaticResource ControlBorderLeft}" Style="{StaticResource ServiceTestDuplicateButtonStyle}" 
                                     ToolTip="{Binding SelectedServiceTest.DuplicateTestTooltip}">
                                 <fa:FontAwesome FontSize="12" FontWeight="Light" Icon="Clone" />
@@ -271,7 +271,7 @@
                                              VerticalAlignment="Center" 
                                              HorizontalAlignment="Left" 
                                              Margin="{StaticResource ControlBorderRight}"
-                                             IsChecked="{Binding SelectedServiceTest.AuthenticationType, Mode=TwoWay, Converter={StaticResource EnumToBoolConverter}, 
+                                             IsChecked="{Binding SelectedServiceTest.AuthenticationType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource EnumToBoolConverter}, 
                                     ConverterParameter={x:Static serviceModel:AuthenticationType.Windows}}">Windows
                                     <i:Interaction.Behaviors>
                                         <core:HelpSetter Text="{x:Static languages:Core.ServiceTestWindowsHelpText}" DataContext="{Binding}" />
@@ -284,7 +284,7 @@
                                              VerticalAlignment="Center" 
                                              HorizontalAlignment="Left" 
                                              Margin="{StaticResource ControlBorderRight}"
-                                             IsChecked="{Binding SelectedServiceTest.AuthenticationType, Mode=TwoWay, Converter={StaticResource EnumToBoolConverter}, 
+                                             IsChecked="{Binding SelectedServiceTest.AuthenticationType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource EnumToBoolConverter}, 
                                         ConverterParameter={x:Static serviceModel:AuthenticationType.User}}">User
                                     <i:Interaction.Behaviors>
                                         <core:HelpSetter Text="{x:Static languages:Core.ServiceTestUserHelpText}" DataContext="{Binding}" />
@@ -296,7 +296,7 @@
                                              Padding="0,0,5,0" 
                                              VerticalAlignment="Center" 
                                              HorizontalAlignment="Left" 
-                                             IsChecked="{Binding SelectedServiceTest.AuthenticationType, Mode=TwoWay, Converter={StaticResource EnumToBoolConverter}, 
+                                             IsChecked="{Binding SelectedServiceTest.AuthenticationType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource EnumToBoolConverter}, 
                                         ConverterParameter={x:Static serviceModel:AuthenticationType.Public}}">Public
                                     <i:Interaction.Behaviors>
                                         <core:HelpSetter Text="{x:Static languages:Core.ServiceTestPublicHelpText}" DataContext="{Binding}" />
