@@ -20,8 +20,8 @@ namespace Warewolf.UITests
 {
     public partial class UIMap
     {
-        const int _lenientSearchTimeout = 5000;
-        const int _lenientMaximumRetryCount = 3;
+        const int _lenientSearchTimeout = 10000;
+        const int _lenientMaximumRetryCount = 6;
         const int _strictSearchTimeout = 1000;
         const int _strictMaximumRetryCount = 1;
 
@@ -989,11 +989,10 @@ namespace Warewolf.UITests
             }
         }
 
-        public void Click_Run_Test()
-        {
-            WpfButton runButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestsListboxList.Test1.DeleteButton;
-            Mouse.Click(runButton);
-        }
+        //public void Select_test_From_Test_List()
+        //{
+
+        //}
 
         public void Click_EnableDisable_This_Test_CheckBox()
         {
@@ -1079,18 +1078,16 @@ namespace Warewolf.UITests
             Assert.AreEqual(this.Click_RunAll_ButtonParams.MessageBoxWindowControlType, messageBoxWindow.ControlType.ToString(), "Messagebox does not exist after clicking RunAll button");
 
 
-            if (BrokenRule.ToUpper().Equals(UnsavedResourceError))
+            if (!string.IsNullOrEmpty(BrokenRule))
             {
+                if (BrokenRule.ToUpper().Equals(UnsavedResourceError))
                 // Verify that the 'DisplayText' property of 'Please save currently edited Test(s) before runnin...' label equals 'Please save currently edited Test(s) before running the tests.'
                 Assert.AreEqual(this.Click_RunAll_ButtonParams.UIPleasesavecurrentlyeTextDisplayText, message.DisplayText, "Message is not Equal to Please save currently edited Test(s) before running the t" +
                         "ests.");
+                if(BrokenRule.ToUpper().Equals(DuplicateNameError))
+                    // Verify that the 'DisplayText' property of 'Please save currently edited Test(s) before runnin...' label equals 'Please save currently edited Test(s) before running the tests.'
+                    Assert.AreEqual(this.Click_RunAll_ButtonParams.UIThenamealreadyexistsTextDisplayText, message.DisplayText, "Messagebox does not show duplicated name error");
             }
-            if (BrokenRule.ToUpper().Equals(DuplicateNameError))
-            {
-                // Verify that the 'DisplayText' property of 'Please save currently edited Test(s) before runnin...' label equals 'Please save currently edited Test(s) before running the tests.'
-                Assert.AreEqual(this.Click_RunAll_ButtonParams.UIThenamealreadyexistsTextDisplayText, message.DisplayText, "Messagebox does not show duplicated name error");
-            }
-
         }
 
         public virtual Click_RunAll_ButtonParams Click_RunAll_ButtonParams
@@ -1144,6 +1141,33 @@ namespace Warewolf.UITests
         private Update_Test_NameParams mUpdate_Test_NameParams;
 
         /// <summary>
+        /// Click_Delete_Test_Button
+        /// </summary>
+        public void Click_Delete_Test_Button()
+        {
+            WpfButton deleteButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestsListboxList.Test1.DeleteButton;
+            Mouse.Click(deleteButton);
+
+            Assert.IsTrue(MessageBoxWindow.Exists);
+        }
+
+        /// <summary>
+        /// Click_Run_Test_Button
+        /// </summary>
+        public void Click_Run_Test_Button()
+        {
+            WpfButton runButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestsListboxList.Test1.RunButton;
+            WpfText testRunTimeDisplay = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestsListboxList.Test1.RunTimeDisplay;
+            WpfText failing = MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestsListboxList.Test1.Failing;
+
+            Mouse.Click(runButton);
+            Assert.IsTrue(testRunTimeDisplay.Exists, "Test run time does not exist");
+            Assert.IsTrue(failing.Exists, "Failing does not exist");
+
+        }
+
+
+        /// <summary>
         /// Click_Duplicate_Test_Button
         /// </summary>
         public void Click_Duplicate_Test_Button()
@@ -1155,7 +1179,22 @@ namespace Warewolf.UITests
             // Click '' button
             Mouse.Click(duplicateButton, new Point(14, 10));
         }
-        
+
+        public void Assert_Test_Result(string result)
+        {
+            WpfText passing = MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestsListboxList.Test1.Passing;
+            WpfText invalid = MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestsListboxList.Test1.Invalid;
+            WpfText failing = MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestsListboxList.Test1.Failing;
+            WpfText pending = MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestsListboxList.Test1.Pending;
+            if (result == "Passing")
+                Assert.IsTrue(passing.Exists, "Test is not passing");
+            if (result == "Failing")
+                    Assert.IsTrue(failing.Exists, "Test is not failing");
+            if (result == "Invalid")
+                        Assert.IsTrue(invalid.Exists, "Test is not invalid");
+            if (result == "Pending")
+                Assert.IsTrue(pending.Exists, "Test is not pending");
+        }
         /// <summary>
         /// Click_Create_New_Tests - Use 'Click_Create_New_TestsParams' to pass parameters into this method.
         /// testInstance = What number is the test you are creating e.g. 4th test, 5th test
@@ -1166,7 +1205,9 @@ namespace Warewolf.UITests
             WpfButton createTestButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestsListboxList.CreateTest.CreateTestButton;
             WpfText testNameText = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestNameText;
             WpfCheckBox testEnabledSelector = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestsListboxList.Test1.TestEnabledSelector;
+            WpfText testNeverRun = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestsListboxList.Test1.NeverRunDisplay;
             WpfEdit textbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestInputsTable.Row1.Cell.IntellisenseComboBox.Textbox;
+            WpfText pending = MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestsListboxList.Test1.Pending;
             WpfList testsListBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestsListboxList;
 
             #endregion
@@ -1175,8 +1216,10 @@ namespace Warewolf.UITests
             Mouse.Click(createTestButton, new Point(158, 10));
 
             Assert.AreEqual(testInstance + 1, testsListBox.GetContent().Length);
+            Assert.AreEqual("Never run", testNeverRun.DisplayText);
+            Assert.IsTrue(pending.Exists, "Pending Icon does not exist");
 
-            //// Verify that the 'Exists' property of 'Test Name' label equals 'True'
+            // Verify that the 'Exists' property of 'Test Name' label equals 'True'
             //Assert.AreEqual(this.Click_Create_New_TestsParams.TestNameTextExists, testNameText.Exists, "Test1 Name textbox does not exist after clicking Create New Test");
 
             //// Verify that the 'Checked' property of 'Select or De-Select to run the test' check box equals 'True'
@@ -1186,28 +1229,40 @@ namespace Warewolf.UITests
             //Assert.AreEqual(this.Click_Create_New_TestsParams.TextboxExists, textbox.Exists, "Row 1 input value textbox does not exist on workflow tests tab.");
         }
 
-        public void Assert_Display_Text_ContainStar(string control, bool containsStar, string instance = null)
-        {
+        public void Assert_Display_Text_ContainStar(string control, bool containsStar, int instance = 1)
+        {            
             WpfList testsListBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestsListboxList;
+
             string description = string.Empty;
-            if(control == "Tab")
+            if (control == "Tab")
             {
                 description = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.TabDescription.DisplayText;
+                if (containsStar)
+                    Assert.IsTrue(description.Contains("*"), description + " DOES NOT contain a Star");
+                else
+                    Assert.IsFalse(description.Contains("*"), description + " contains a Star");
             }
             else if (control == "Test")
-                description = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestsListboxList.Test1.TestNameDisplay.DisplayText;
+            {
+                var wpfListItem = GetCurrentTest(instance);
+                description = wpfListItem.DisplayText;
+                if (containsStar)
+                    Assert.IsTrue(description.Contains("*"), description +" DOES NOT contain a Star");
+                else
+                    Assert.IsFalse(description.Contains("*"), description + " contains a Star");
+            }
 
-            if(containsStar)
+            if (containsStar)
                 Assert.IsTrue(description.Contains("*"));
             else
                 Assert.IsFalse(description.Contains("*"));
-            if(instance == "All")
+            if (instance == 0)
             {
                 var descriptions = testsListBox.GetContent();
                 Assert.IsFalse(descriptions.Contains("*"));
             }
         }
-        
+
         public virtual Click_Create_New_TestsParams Click_Create_New_TestsParams
         {
             get
@@ -1221,6 +1276,40 @@ namespace Warewolf.UITests
         }
 
         private Click_Create_New_TestsParams mClick_Create_New_TestsParams;
+
+        /// <summary>
+        /// Select_Test_From_TestList
+        /// </summary>
+        public void Select_Test_From_TestList(int testInstance = 1)
+        {
+            var test = GetCurrentTest(testInstance);
+            
+            // Click 'Warewolf.Studio.ViewModels.ServiceTestModel' list item
+            //Mouse.Click(test, new Point(189, 19));
+            if(test != null)
+                Mouse.Click(test);
+        }
+
+        private WpfText GetCurrentTest(int testInstance)
+        {
+            WpfText test;
+            switch(testInstance)
+            {
+                case 1:
+                    test = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestsListboxList.Test1.TestNameDisplay;
+                    break;
+                case 2:
+                    test = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestsListboxList.Test2.TestNameDisplay;
+                    break;
+                case 3:
+                    test = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestsListboxList.Test3.TestNameDisplay;
+                    break;
+                default:
+                    test = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestsListboxList.Test1.TestNameDisplay;
+                    break;
+            }
+            return test;
+        }
     }
     /// <summary>
     /// Parameters to be passed into 'Click_RunAll_Button'
