@@ -18,46 +18,6 @@ namespace Warewolf.Studio.Views
         public ServiceTestView()
         {
             InitializeComponent();
-            ((INotifyCollectionChanged)TestsListbox.Items).CollectionChanged += OnCollectionChanged;
-        }
-
-        private void OnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
-        {
-            if (e.Action == NotifyCollectionChangedAction.Add)
-            {
-                var item = e.NewItems[0];
-                // scroll the new item into view
-                TestsListbox.SelectedItem = item;
-                TestsListbox.ScrollIntoView(item);
-            }
-        }
-
-        private void TestsListbox_OnPreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            var listBox = sender as ListBox;
-            if (listBox != null)
-            {
-                var viewModel = listBox.DataContext as IServiceTestViewModel;
-
-                var frameworkElement = e.OriginalSource as FrameworkElement;
-                if (frameworkElement != null)
-                {
-                    if (viewModel != null)
-                    {
-                        viewModel.SelectedServiceTest = null;
-                        var model = frameworkElement.DataContext as IServiceTestModel;
-
-                        if (model != null)
-                        {
-                            viewModel.SelectedServiceTest = model;
-                            if (viewModel.SelectedServiceTest != null)
-                            {
-                                viewModel.SelectedServiceTest.IsTestSelected = true;
-                            }
-                        }
-                    }
-                }
-            }
         }
 
         private void TxtValue_OnTextChanged(object sender, RoutedEventArgs e)

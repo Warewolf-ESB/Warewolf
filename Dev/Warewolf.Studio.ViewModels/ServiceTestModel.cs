@@ -15,7 +15,7 @@ using Microsoft.Practices.Prism.Mvvm;
 
 namespace Warewolf.Studio.ViewModels
 {
-    public class ServiceTestModel : BindableBase, IServiceTestModel, IEquatable<ServiceTestModel>
+    public class ServiceTestModel : BindableBase, IServiceTestModel
     {
 
         private string _testName;
@@ -503,7 +503,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        public bool Equals(ServiceTestModel other)
+        private bool Equals(ServiceTestModel other)
         {
             if (ReferenceEquals(null, other))
             {
@@ -512,9 +512,7 @@ namespace Warewolf.Studio.ViewModels
             if (ReferenceEquals(this, other))
             {
                 return true;
-            }
-            if (GetHashCode() == other.GetHashCode())
-                return true;
+            }            
 
             var equalsSeq = EqualsSeq(other);
             var inputCompare = InputCompare(other, true);
@@ -582,57 +580,6 @@ namespace Warewolf.Studio.ViewModels
                    _authenticationType == other._authenticationType;
         }
 
-        public override bool Equals(object obj)
-        {
-            if (ReferenceEquals(null, obj))
-            {
-                return false;
-            }
-            if (ReferenceEquals(this, obj))
-            {
-                return true;
-            }
-            if (obj.GetType() != GetType())
-            {
-                return false;
-            }
-            return Equals((ServiceTestModel)obj);
-        }
-
-        public override int GetHashCode()
-        {
-            unchecked
-            {
-
-                var hashCode = TestName?.GetHashCode() ?? 0;
-                hashCode = (hashCode * 397) ^ (UserName?.GetHashCode() ?? 0);
-                hashCode = (hashCode * 397) ^ (Password?.GetHashCode() ?? 0);
-                if (Inputs != null)
-                {
-                    foreach (var serviceTestInput in Inputs)
-                    {
-                        hashCode = (hashCode * 397) ^ (serviceTestInput.Variable?.GetHashCode() ?? 0);
-                        hashCode = (hashCode * 397) ^ (serviceTestInput.Value?.GetHashCode() ?? 0);
-                        hashCode = (hashCode * 397) ^ (serviceTestInput.EmptyIsNull.GetHashCode());
-                    }
-                }
-
-                if (Outputs != null)
-                {
-                    foreach (var serviceTestInput in Outputs)
-                    {
-                        hashCode = (hashCode * 397) ^ (serviceTestInput.Variable?.GetHashCode() ?? 0);
-                        hashCode = (hashCode * 397) ^ (serviceTestInput.Value?.GetHashCode() ?? 0);
-                    }
-                }
-
-                hashCode = (hashCode * 397) ^ NoErrorExpected.GetHashCode();
-                hashCode = (hashCode * 397) ^ ErrorExpected.GetHashCode();
-                hashCode = (hashCode * 397) ^ Enabled.GetHashCode();
-                hashCode = (hashCode * 397) ^ (int)AuthenticationType;
-                return hashCode;
-            }
-        }
 
         #region Implementation of ICloneable
 
