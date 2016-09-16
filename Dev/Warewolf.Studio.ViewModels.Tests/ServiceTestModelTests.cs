@@ -109,6 +109,18 @@ namespace Warewolf.Studio.ViewModels.Tests
 
 
         [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void TestModel_GivenIsNew_ShouldBeClonable()
+        {
+            //------------Setup for test--------------------------
+            var testModel = new ServiceTestModel(Guid.NewGuid());
+            //------------Execute Test---------------------------
+            //------------Assert Results-------------------------
+            Assert.IsInstanceOfType(testModel, typeof(ICloneable));
+        }
+
+
+        [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory("TestModel_NameForDisplay")]
         public void TestModel_NameForDisplay_WhenSet_ShouldFirePropertyChanged()
@@ -829,6 +841,61 @@ namespace Warewolf.Studio.ViewModels.Tests
             //---------------Test Result -----------------------
             Assert.IsTrue(serviceTestModel.Equals(clone));
             Assert.IsFalse(referenceEquals);
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void Clone_GivenObjectsWithDifferntInputs_ShouldFalseEquality()
+        {
+            //---------------Set up test pack-------------------
+            var serviceTestModel = new ServiceTestModel(Guid.NewGuid());
+            var serviceTestInput = new ServiceTestInput("rec(1).a", "val");
+            serviceTestModel.Inputs = new ObservableCollection<IServiceTestInput>
+            {
+                serviceTestInput
+            };
+            var dataListModel = new DataListModel();
+            var shapeRecordSets = new List<IRecordSet>();
+            var recordSet = new RecordSet
+            {
+                IODirection = enDev2ColumnArgumentDirection.Input,
+                Name = "rec"
+            };
+            var recordSetColumns = new Dictionary<int, List<IScalar>>
+            {
+                {
+                    1, new List<IScalar>
+                    {
+                        new Scalar
+                        {
+                            Name = "a",
+                            IODirection = enDev2ColumnArgumentDirection.Input
+                        }
+                    }
+                }
+            };
+            recordSet.Columns = recordSetColumns;
+            shapeRecordSets.Add(recordSet);
+            dataListModel.ShapeRecordSets = shapeRecordSets;
+            serviceTestModel.AddRow(serviceTestInput, dataListModel);
+
+            
+            var clone = serviceTestModel.Clone();
+            //---------------Assert Precondition----------------
+            var isCorrectType = clone is ServiceTestModel;
+            Assert.IsTrue(isCorrectType);
+            var referenceEquals = ReferenceEquals(serviceTestModel, clone);
+            var inputRefs = ReferenceEquals(serviceTestModel.Inputs, ((ServiceTestModel)clone).Inputs);
+            Assert.IsFalse(referenceEquals);
+            Assert.IsFalse(inputRefs);
+            //---------------Execute Test ----------------------
+
+
+            ((ServiceTestModel)clone).Inputs[0].Variable = "NewVariable";
+            //---------------Test Result -----------------------
+            var condition = serviceTestModel.Equals(clone);
+            Assert.IsFalse(condition);
+           
         }
     }
 }
