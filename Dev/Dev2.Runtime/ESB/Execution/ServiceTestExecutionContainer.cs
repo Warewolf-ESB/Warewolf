@@ -162,6 +162,7 @@ namespace Dev2.Runtime.ESB.Execution
                     }
                 }
             }
+            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
             try
             {
                 IExecutionToken exeToken = new ExecutionToken { IsUserCanceled = false };
@@ -171,7 +172,7 @@ namespace Dev2.Runtime.ESB.Execution
                 {
                     wfappUtils.DispatchDebugState(DataObject, StateType.Start, DataObject.Environment.HasErrors(), DataObject.Environment.FetchErrors(), out invokeErrors, DateTime.Now, true, false, false);
                 }
-                Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+                
                 var testRunResult = Eval(resourceID, DataObject, test);
 
                 if (DataObject.IsDebugMode())
@@ -189,6 +190,26 @@ namespace Dev2.Runtime.ESB.Execution
 
                 int start = msg.IndexOf("Flowchart ", StringComparison.Ordinal);
                 to.AddError(start > 0 ? GlobalConstants.NoStartNodeError : iwe.Message);
+                var failureMessage = DataObject.Environment.FetchErrors();
+                wfappUtils.DispatchDebugState(DataObject, StateType.End, DataObject.Environment.HasErrors(), failureMessage, out invokeErrors, DataObject.StartTime, false, true);
+
+                test.TestFailing = false;
+                test.TestPassed = false;
+                test.TestPending = false;
+                test.TestInvalid = true;
+                test.LastRunDate = DateTime.Now;
+
+
+                Common.Utilities.PerformActionInsideImpersonatedContext(Common.Utilities.ServerUser, () => { TestCatalog.Instance.SaveTest(resourceID, test); });
+
+                var testRunResult = new TestRunResult { TestName = test.TestName };
+                if (test.TestInvalid)
+                {
+                    testRunResult.Result = RunResult.TestInvalid;
+                    testRunResult.Message = failureMessage;
+                }
+                testRunResult.DebugForTest = TestDebugMessageRepo.Instance.FetchDebugItems(resourceID, test.TestName);
+                _request.ExecuteResult = serializer.SerializeToBuilder(testRunResult);
             }
             catch (Exception ex)
             {
