@@ -29,8 +29,6 @@ Scenario: Save button is Enabled when I enter new name for resource and filter
 	Then save button is "Disabled"
 	And Filter is "Folder 1"
 	Then I should see "1" folders
-	When I refresh the filter
-	Then I should see "1" folders
 	And I open "Folder 1" in save dialog 
 	When I enter name "Savewf"
 	Then save button is "enabled"
