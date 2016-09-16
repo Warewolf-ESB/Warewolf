@@ -15,6 +15,6 @@ namespace Dev2.Studio.Core.Interfaces
 
         void RunSelectedTestInBrowser(string runSelectedTestUrl, IExternalProcessExecutor processExecutor);
 
-        void RunAllTestsInBrowser(bool isDirty, IEnumerable<IServiceTestModel> tests, IExternalProcessExecutor processExecutor);
+        void RunAllTestsInBrowser(bool isDirty, string runAllTestUrl, IExternalProcessExecutor processExecutor);
     }
 }
