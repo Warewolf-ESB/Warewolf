@@ -180,6 +180,7 @@ namespace Warewolf.Studio.ViewModels
             var testNumber = GetNewTestNumber("Test");
             var testModel = ServiceTestCommandHandler.CreateTest(ResourceModel, testNumber);
             AddAndSelectTest(testModel);
+            SetDisplayName();
         }
 
         private int GetNewTestNumber(string testName)

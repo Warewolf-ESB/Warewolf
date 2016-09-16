@@ -805,7 +805,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             mockRepo.Setup(repository => repository.LoadResourceTests(It.IsAny<Guid>())).Returns((List<IServiceTestModelTO>)null);
             mockEnvironment.Setup(model => model.ResourceRepository).Returns(mockRepo.Object);
             resourceMock.Setup(model => model.Environment).Returns(mockEnvironment.Object);
-            var serviceTestViewModel = new ServiceTestViewModel(resourceMock.Object, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object);
+            var serviceTestViewModel = new ServiceTestViewModel(CreateResourceModel(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object);
 
             //------------Execute Test---------------------------
             var tests = serviceTestViewModel.Tests;
@@ -826,7 +826,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             mockRepo.Setup(repository => repository.LoadResourceTests(It.IsAny<Guid>())).Returns(new List<IServiceTestModelTO>());
             mockEnvironment.Setup(model => model.ResourceRepository).Returns(mockRepo.Object);
             resourceMock.Setup(model => model.Environment).Returns(mockEnvironment.Object);
-            var serviceTestViewModel = new ServiceTestViewModel(resourceMock.Object, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object);
+            var serviceTestViewModel = new ServiceTestViewModel(CreateResourceModel(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object);
 
             //------------Execute Test---------------------------
             var tests = serviceTestViewModel.Tests;
@@ -843,6 +843,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //------------Setup for test--------------------------
             var resourceMock = CreateResourceModelWithSingleScalarOutputMock();
             var mockEnvironment = new Mock<IEnvironmentModel>();
+            mockEnvironment.Setup(model => model.Connection.IsConnected).Returns(true);
             var mockRepo = new Mock<IResourceRepository>();
             mockRepo.Setup(repository => repository.LoadResourceTests(It.IsAny<Guid>())).Returns(new List<IServiceTestModelTO>
             {
@@ -1166,7 +1167,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var resourceId = Guid.NewGuid();
             mockResourceModel.Setup(model => model.Environment.ResourceRepository.DeleteResourceTest(It.IsAny<Guid>(), It.IsAny<string>())).Verifiable();
             mockResourceModel.Setup(model => model.ID).Returns(resourceId);
-            var testFrameworkViewModel = new ServiceTestViewModel(mockResourceModel.Object, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object);
+            var testFrameworkViewModel = new ServiceTestViewModel(CreateResourceModel(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object);
             var methodInfo = typeof(ServiceTestViewModel).GetMethod("IsValidName", BindingFlags.NonPublic | BindingFlags.Instance);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(methodInfo);
@@ -1188,7 +1189,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var resourceId = Guid.NewGuid();
             mockResourceModel.Setup(model => model.Environment.ResourceRepository.DeleteResourceTest(It.IsAny<Guid>(), It.IsAny<string>())).Verifiable();
             mockResourceModel.Setup(model => model.ID).Returns(resourceId);
-            var testFrameworkViewModel = new ServiceTestViewModel(mockResourceModel.Object, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object);
+            var testFrameworkViewModel = new ServiceTestViewModel(CreateResourceModel(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object);
             var methodInfo = typeof(ServiceTestViewModel).GetMethod("IsValidName", BindingFlags.NonPublic | BindingFlags.Instance);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(methodInfo);
@@ -1210,7 +1211,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var resourceId = Guid.NewGuid();
             mockResourceModel.Setup(model => model.Environment.ResourceRepository.DeleteResourceTest(It.IsAny<Guid>(), It.IsAny<string>())).Verifiable();
             mockResourceModel.Setup(model => model.ID).Returns(resourceId);
-            var testFrameworkViewModel = new ServiceTestViewModel(mockResourceModel.Object, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object);
+            var testFrameworkViewModel = new ServiceTestViewModel(CreateResourceModel(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object);
             var methodInfo = typeof(ServiceTestViewModel).GetMethod("IsValidName", BindingFlags.NonPublic | BindingFlags.Instance);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(methodInfo);
@@ -1232,7 +1233,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var resourceId = Guid.NewGuid();
             mockResourceModel.Setup(model => model.Environment.ResourceRepository.DeleteResourceTest(It.IsAny<Guid>(), It.IsAny<string>())).Verifiable();
             mockResourceModel.Setup(model => model.ID).Returns(resourceId);
-            var testFrameworkViewModel = new ServiceTestViewModel(mockResourceModel.Object, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object);
+            var testFrameworkViewModel = new ServiceTestViewModel(CreateResourceModel(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object);
             var methodInfo = typeof(ServiceTestViewModel).GetMethod("IsValidName", BindingFlags.NonPublic | BindingFlags.Instance);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(methodInfo);
@@ -1254,7 +1255,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var resourceId = Guid.NewGuid();
             mockResourceModel.Setup(model => model.Environment.ResourceRepository.DeleteResourceTest(It.IsAny<Guid>(), It.IsAny<string>())).Verifiable();
             mockResourceModel.Setup(model => model.ID).Returns(resourceId);
-            var testFrameworkViewModel = new ServiceTestViewModel(mockResourceModel.Object, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object);
+            var testFrameworkViewModel = new ServiceTestViewModel(CreateResourceModel(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object);
             var methodInfo = typeof(ServiceTestViewModel).GetMethod("IsValidName", BindingFlags.NonPublic | BindingFlags.Instance);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(methodInfo);
@@ -1276,7 +1277,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var resourceId = Guid.NewGuid();
             mockResourceModel.Setup(model => model.Environment.ResourceRepository.DeleteResourceTest(It.IsAny<Guid>(), It.IsAny<string>())).Verifiable();
             mockResourceModel.Setup(model => model.ID).Returns(resourceId);
-            var testFrameworkViewModel = new ServiceTestViewModel(mockResourceModel.Object, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object);
+            var testFrameworkViewModel = new ServiceTestViewModel(CreateResourceModel(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object);
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
             testFrameworkViewModel.CreateTestCommand.Execute(null);
@@ -1297,7 +1298,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var resourceId = Guid.NewGuid();
             mockResourceModel.Setup(model => model.Environment.ResourceRepository.DeleteResourceTest(It.IsAny<Guid>(), It.IsAny<string>())).Verifiable();
             mockResourceModel.Setup(model => model.ID).Returns(resourceId);
-            var testFrameworkViewModel = new ServiceTestViewModel(mockResourceModel.Object, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object);
+            var testFrameworkViewModel = new ServiceTestViewModel(CreateResourceModel(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object);
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
             testFrameworkViewModel.CreateTestCommand.Execute(null);
@@ -1350,6 +1351,9 @@ namespace Warewolf.Studio.ViewModels.Tests
             dataListViewModel.ScalarCollection.Add(new ScalarItemModel("msg", enDev2ColumnArgumentDirection.Output));
             dataListViewModel.WriteToResourceModel();
             moqModel.Setup(model => model.Environment.ResourceRepository.DeleteResourceTest(It.IsAny<Guid>(), It.IsAny<string>())).Verifiable();
+            moqModel.Setup(model => model.Environment.ResourceRepository.SaveTests(It.IsAny<IResourceModel>(), It.IsAny<List<IServiceTestModelTO>>())).Returns(new TestSaveResult() {Result = SaveResult.Success}).Verifiable();
+            moqModel.Setup(model => model.Environment.Connection.IsConnected).Returns(true).Verifiable();
+            moqModel.Setup(model => model.Environment.IsConnected).Returns(true).Verifiable();
             return moqModel.Object;
         }
 
