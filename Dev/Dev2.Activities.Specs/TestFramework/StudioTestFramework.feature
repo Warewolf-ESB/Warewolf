@@ -615,7 +615,7 @@ Scenario: Run a test with single scalar inputs and outputs
 	And there are no tests
 	When I click New Test
 	Then a new test is added
-	#And Tab Header is "Hello World - Tests *"
+	And Tab Header is "Hello World - Tests *"
 	And test name starts with "Test 1"
 	And username is blank
 	And password is blank
@@ -653,7 +653,7 @@ Scenario: Run a test with single scalar inputs and outputs failure
 	And there are no tests
 	When I click New Test
 	Then a new test is added
-	#And Tab Header is "Hello World - Tests *"
+	And Tab Header is "Hello World - Tests *"
 	And test name starts with "Test 1"
 	And username is blank
 	And password is blank
