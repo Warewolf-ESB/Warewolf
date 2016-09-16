@@ -86,13 +86,13 @@ namespace Dev2.Runtime.WebServer.Handlers
         {
             var channel = new EsbServicesEndpoint();
             var xmlData = string.Empty;
-            if(request.Args != null && request.Args.ContainsKey("DebugPayload"))
+            if (request.Args != null && request.Args.ContainsKey("DebugPayload"))
             {
                 xmlData = request.Args["DebugPayload"].ToString();
                 xmlData = xmlData.Replace("<DataList>", "<XmlData>").Replace("</DataList>", "</XmlData>");
             }
 
-            if(string.IsNullOrEmpty(xmlData))
+            if (string.IsNullOrEmpty(xmlData))
             {
                 xmlData = "<DataList></DataList>";
             }
@@ -100,9 +100,9 @@ namespace Dev2.Runtime.WebServer.Handlers
             if (request.Args != null && request.Args.ContainsKey("IsDebug"))
             {
                 var debugString = request.Args["IsDebug"].ToString();
-                if(!bool.TryParse(debugString,out isDebug))
+                if (!bool.TryParse(debugString, out isDebug))
                 {
-                    isDebug = false; 
+                    isDebug = false;
                 }
             }
 
@@ -114,7 +114,7 @@ namespace Dev2.Runtime.WebServer.Handlers
             dataObject.StartTime = DateTime.Now;
             dataObject.EsbChannel = channel;
             dataObject.ServiceName = request.ServiceName;
-           
+
             var resource = ResourceCatalog.Instance.GetResource(workspaceID, request.ServiceName);
             var isManagementResource = false;
             if (resource != null)
@@ -127,29 +127,15 @@ namespace Dev2.Runtime.WebServer.Handlers
                 }
                 isManagementResource = ResourceCatalog.Instance.ManagementServices.ContainsKey(resource.ResourceID);
             }
-            else
-            {
-                if (!string.IsNullOrEmpty(request.TestName))
-                {
-                    var testResult = new TestRunResult
-                    {
-                        Message = "Resource has been deleted",
-                        Result = RunResult.TestResourceDeleted,
-                        TestName = request.TestName,
-                        DebugForTest =  new List<IDebugState>()
-                    };
-                    var ser = new Dev2JsonSerializer();
-                    return ser.SerializeToBuilder(testResult);
-                }
-            }
+            
             dataObject.ClientID = Guid.Parse(connectionId);
             Common.Utilities.OrginalExecutingUser = ExecutingUser;
             dataObject.ExecutingUser = ExecutingUser;
-            if(!dataObject.Environment.HasErrors())
+            if (!dataObject.Environment.HasErrors())
             {
                 ErrorResultTO errors;
 
-                if(ExecutingUser == null)
+                if (ExecutingUser == null)
                 {
                     throw new Exception(ErrorResource.NullExecutingUser);
                 }
@@ -160,20 +146,24 @@ namespace Dev2.Runtime.WebServer.Handlers
                     var t = new Thread(() =>
                     {
                         Thread.CurrentPrincipal = ExecutingUser;
-                        if(isManagementResource)
+                        if (isManagementResource)
                         {
                             Thread.CurrentPrincipal = Common.Utilities.ServerUser;
                             ExecutingUser = Common.Utilities.ServerUser;
                             dataObject.ExecutingUser = Common.Utilities.ServerUser;
-                        }else if (dataObject.IsServiceTestExecution)
+                        }
+                        else if (dataObject.IsServiceTestExecution)
                         {
                             if (ServerAuthorizationService.Instance != null)
                             {
                                 var authorizationService = ServerAuthorizationService.Instance;
-                                var hasContribute = authorizationService.IsAuthorized(AuthorizationContext.Contribute,Guid.Empty.ToString());
+                                var hasContribute =
+                                    authorizationService.IsAuthorized(AuthorizationContext.Contribute,
+                                        Guid.Empty.ToString());
                                 if (!hasContribute)
                                 {
-                                    throw new UnauthorizedAccessException("The user does not have permission to execute tests.");
+                                    throw new UnauthorizedAccessException(
+                                        "The user does not have permission to execute tests.");
                                 }
                             }
                         }
@@ -184,14 +174,13 @@ namespace Dev2.Runtime.WebServer.Handlers
 
                     t.Join();
                 }
-                catch(Exception e)
+                catch (Exception e)
                 {
-                    Dev2Logger.Error(e.Message,e);
+                    Dev2Logger.Error(e.Message, e);
                 }
 
 
-
-                if(request.ExecuteResult.Length > 0)
+                if (request.ExecuteResult.Length > 0)
                 {
                     return request.ExecuteResult;
                 }
@@ -199,7 +188,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                 return new StringBuilder();
             }
 
-            ExecuteMessage msg = new ExecuteMessage { HasError = true };
+            ExecuteMessage msg = new ExecuteMessage {HasError = true};
             msg.SetMessage(String.Join(Environment.NewLine, dataObject.Environment.Errors));
 
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
