@@ -6,8 +6,11 @@ using System.Linq;
 using System.Threading;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
+using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Wrappers;
 using Dev2.Communication;
+using Dev2.Data;
+using Dev2.Data.Util;
 using Warewolf.Security.Encryption;
 
 // ReSharper disable LoopCanBeConvertedToQuery
@@ -67,6 +70,183 @@ namespace Dev2.Runtime
                 serviceTestModelTos.Add(serviceTestModelTo);
                 return serviceTestModelTos;
             });
+        }
+
+        public void UpdateTestsBasedOnIOChange(Guid resourceID, IList<IDev2Definition> inputDefs, IList<IDev2Definition> outputDefs)
+        {
+            var testsToUpdate = Fetch(resourceID);
+            if(testsToUpdate!=null && testsToUpdate.Count > 0)
+            {
+                foreach(var serviceTestModelTO in testsToUpdate)
+                {
+                    serviceTestModelTO.TestFailing = false;
+                    serviceTestModelTO.TestPassed = false;
+                    serviceTestModelTO.TestPending = false;
+                    serviceTestModelTO.TestInvalid = true;
+
+                    UpdateInputsForTest(serviceTestModelTO, inputDefs);
+                    UpdateOutputsForTest(serviceTestModelTO, outputDefs);
+                }
+                SaveTests(resourceID,testsToUpdate);
+            }
+        }
+
+        private void UpdateOutputsForTest(IServiceTestModelTO serviceTestModelTO, IList<IDev2Definition> outputDefs)
+        {
+            if (outputDefs.Count == 0)
+            {
+                serviceTestModelTO.Outputs = new List<IServiceTestOutput>();
+            }
+            else
+            {
+                if (serviceTestModelTO.Outputs == null)
+                {
+                    serviceTestModelTO.Outputs = new List<IServiceTestOutput>();
+                }
+                foreach (var dev2Definition in outputDefs)
+                {
+                    if (dev2Definition.IsRecordSet)
+                    {
+                        var rec = DataListUtil.CreateRecordsetDisplayValue(dev2Definition.RecordSetName, dev2Definition.Name, "");
+                        var indexes = serviceTestModelTO.Outputs.Where(output => DataListUtil.ExtractRecordsetNameFromValue(output.Variable) == dev2Definition.RecordSetName).Select(input => DataListUtil.ExtractIndexRegionFromRecordset(input.Variable)).Distinct(StringComparer.OrdinalIgnoreCase).ToList();
+
+                        if (serviceTestModelTO.Outputs.FirstOrDefault(output => DataListUtil.ReplaceRecordsetIndexWithBlank(output.Variable) == rec) == null)
+                        {
+                            if (indexes.Count == 0)
+                            {
+                                serviceTestModelTO.Outputs.Add(new ServiceTestOutputTO
+                                {
+                                    Variable = DataListUtil.CreateRecordsetDisplayValue(dev2Definition.RecordSetName, dev2Definition.Name, "1"),
+                                    Value = ""
+                                });
+                            }
+                            else
+                            {
+                                foreach (var index in indexes)
+                                {
+                                    serviceTestModelTO.Outputs.Add(new ServiceTestOutputTO
+                                    {
+                                        Variable = DataListUtil.CreateRecordsetDisplayValue(dev2Definition.RecordSetName, dev2Definition.Name, index),
+                                        Value = ""
+                                    });
+                                }
+                            }
+
+                        }
+                    }
+                    else
+                    {
+                        if (serviceTestModelTO.Outputs.FirstOrDefault(output => output.Variable == dev2Definition.Name) == null)
+                        {
+                            serviceTestModelTO.Outputs.Add(new ServiceTestOutputTO
+                            {
+                                Variable = dev2Definition.Name,
+                                Value = ""
+                            });
+                        }
+                    }
+                }
+
+                for (int i = serviceTestModelTO.Outputs.Count - 1; i >= 0; i--)
+                {
+                    var output = serviceTestModelTO.Outputs[i];
+                    if (outputDefs.FirstOrDefault(definition =>
+                    {
+                        if (definition.IsRecordSet)
+                        {
+                            var rec = DataListUtil.CreateRecordsetDisplayValue(definition.RecordSetName, definition.Name, "");
+                            var inRec = DataListUtil.ReplaceRecordsetIndexWithBlank(output.Variable);
+                            return rec == inRec;
+                        }
+                        return definition.Name == output.Variable;
+                    }) == null)
+                    {
+                        serviceTestModelTO.Outputs.Remove(output);
+                    }
+                }
+                serviceTestModelTO.Outputs.Sort((output, testOutput) => string.Compare(output.Variable,testOutput.Variable,StringComparison.InvariantCultureIgnoreCase));
+            }
+
+        }
+
+        private void UpdateInputsForTest(IServiceTestModelTO serviceTestModelTO, IList<IDev2Definition> inputDefs)
+        {
+            if (inputDefs.Count == 0)
+            {
+                serviceTestModelTO.Inputs = new List<IServiceTestInput>();
+            }
+            else
+            {
+                if (serviceTestModelTO.Inputs == null)
+                {
+                    serviceTestModelTO.Inputs = new List<IServiceTestInput>();
+                }
+                foreach (var dev2Definition in inputDefs)
+                {
+                    if (dev2Definition.IsRecordSet)
+                    {
+                        var rec = DataListUtil.CreateRecordsetDisplayValue(dev2Definition.RecordSetName, dev2Definition.Name, "");
+                        var indexes = serviceTestModelTO.Inputs.Where(input => DataListUtil.ExtractRecordsetNameFromValue(input.Variable) == dev2Definition.RecordSetName).Select(input => DataListUtil.ExtractIndexRegionFromRecordset(input.Variable)).Distinct(StringComparer.OrdinalIgnoreCase).ToList();
+
+                        if (serviceTestModelTO.Inputs.FirstOrDefault(input => DataListUtil.ReplaceRecordsetIndexWithBlank(input.Variable) == rec) == null)
+                        {
+                            if (indexes.Count == 0)
+                            {
+                                serviceTestModelTO.Inputs.Add(new ServiceTestInputTO
+                                {
+                                    Variable = DataListUtil.CreateRecordsetDisplayValue(dev2Definition.RecordSetName, dev2Definition.Name, "1"),
+                                    Value = "",
+                                    EmptyIsNull = false
+                                });
+                            }
+                            else
+                            {
+                                foreach (var index in indexes)
+                                {
+                                    serviceTestModelTO.Inputs.Add(new ServiceTestInputTO
+                                    {
+                                        Variable = DataListUtil.CreateRecordsetDisplayValue(dev2Definition.RecordSetName, dev2Definition.Name, index),
+                                        Value = "",
+                                        EmptyIsNull = false
+                                    });
+                                }
+                            }
+                            
+                        }                       
+                    }
+                    else
+                    {
+                        if (serviceTestModelTO.Inputs.FirstOrDefault(input => input.Variable == dev2Definition.Name) == null)
+                        {
+                            serviceTestModelTO.Inputs.Add(new ServiceTestInputTO
+                            {
+                                Variable = dev2Definition.Name,
+                                Value = "",
+                                EmptyIsNull = false
+                            });
+                        }
+                    }
+                }
+
+                for (int i = serviceTestModelTO.Inputs.Count-1; i >= 0; i--)
+                {
+                    var input = serviceTestModelTO.Inputs[i];
+                    if (inputDefs.FirstOrDefault(definition =>
+                        {
+                            if (definition.IsRecordSet)
+                            {
+                                var rec = DataListUtil.CreateRecordsetDisplayValue(definition.RecordSetName, definition.Name, "");
+                                var inRec = DataListUtil.ReplaceRecordsetIndexWithBlank(input.Variable);
+                                return rec == inRec;
+                            }
+                            return definition.Name == input.Variable;
+                        }) == null)
+                    {
+                        serviceTestModelTO.Inputs.Remove(input);
+                    }
+                }
+                serviceTestModelTO.Inputs.Sort((input, testInput) => string.Compare(input.Variable, testInput.Variable, StringComparison.InvariantCultureIgnoreCase));
+            }
         }
 
         private void SaveTestToDisk(Guid resourceId, IServiceTestModelTO serviceTestModelTo)

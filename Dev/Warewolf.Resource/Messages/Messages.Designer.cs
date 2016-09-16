@@ -79,6 +79,15 @@ namespace Warewolf.Resource.Messages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Invalid.
+        /// </summary>
+        public static string Test_InvalidResult {
+            get {
+                return ResourceManager.GetString("Test_InvalidResult", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Passed.
         /// </summary>
         public static string Test_PassedResult {
