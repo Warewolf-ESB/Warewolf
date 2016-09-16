@@ -43,9 +43,9 @@ namespace Warewolf.Studio.ViewModels
         private readonly IShellViewModel _shellViewModel;
         private IContextualResourceModel _resourceModel;
 
-        public ServiceTestViewModel(IContextualResourceModel resourceModel, IAsyncWorker asyncWorker, IEventAggregator eventPublisher,IExternalProcessExecutor processExecutor)
+        public ServiceTestViewModel(IContextualResourceModel resourceModel, IAsyncWorker asyncWorker, IEventAggregator eventPublisher, IExternalProcessExecutor processExecutor)
         {
-            
+
             if (resourceModel == null)
                 throw new ArgumentNullException(nameof(resourceModel));
             _processExecutor = processExecutor;
@@ -57,8 +57,11 @@ namespace Warewolf.Studio.ViewModels
                 ViewModelUtils.RaiseCanExecuteChanged(DeleteTestCommand);
                 RefreshCommands();
             };
+
             ResourceModel.Environment.Connection.ReceivedResourceAffectedMessage += OnReceivedResourceAffectedMessage;
-            DisplayName = resourceModel.DisplayName + " - Tests";
+            //SetServerName(resourceModel);
+            DisplayName = resourceModel.DisplayName + " - Tests" + _serverName;
+
             ServiceTestCommandHandler = new ServiceTestCommandHandlerModel();
             PopupController = CustomContainer.Get<IPopupController>();
             _shellViewModel = CustomContainer.Get<IShellViewModel>();
@@ -83,9 +86,17 @@ namespace Warewolf.Studio.ViewModels
             });
         }
 
+        private void SetServerName(IContextualResourceModel resourceModel)
+        {
+            if (resourceModel.Environment != null && !string.IsNullOrEmpty(resourceModel.Environment.Name))
+                _serverName = resourceModel.Environment.Name.Equals("localhost", StringComparison.InvariantCultureIgnoreCase) ? "" : " - " + resourceModel.Environment.Name;
+        }
+
+        private string _serverName;
+
         private void OnReceivedResourceAffectedMessage(Guid resourceId, CompileMessageList changeList)
         {
-            AsyncWorker.Start(()=>
+            AsyncWorker.Start(() =>
             {
                 var contextModel = ResourceModel.Environment.ResourceRepository.LoadContextualResourceModel(resourceId);
                 _resourceModel = contextModel;
@@ -97,7 +108,7 @@ namespace Warewolf.Studio.ViewModels
                 var testName = SelectedServiceTest.TestName;
                 SelectedServiceTest = dummyTest;
                 _tests = models;
-                OnPropertyChanged(()=>Tests);
+                OnPropertyChanged(() => Tests);
                 SelectedServiceTest = _tests.FirstOrDefault(model => model.TestName == testName);
                 IsLoading = false;
             });
@@ -127,7 +138,7 @@ namespace Warewolf.Studio.ViewModels
         {
             if (SelectedServiceTest.IsDirty)
             {
-                Save(new List<IServiceTestModel> {SelectedServiceTest});
+                Save(new List<IServiceTestModel> { SelectedServiceTest });
             }
             ServiceTestCommandHandler.RunSelectedTest(SelectedServiceTest, ResourceModel, AsyncWorker);
             ViewModelUtils.RaiseCanExecuteChanged(StopTestCommand);
@@ -135,12 +146,12 @@ namespace Warewolf.Studio.ViewModels
 
         private void RunAllTestsInBrowser()
         {
-            ServiceTestCommandHandler.RunAllTestsInBrowser(IsDirty,RealTests(),_processExecutor);
+            ServiceTestCommandHandler.RunAllTestsInBrowser(IsDirty,RunAllTestsUrl,_processExecutor);
         }
 
         private void RunAllTests()
         {
-            ServiceTestCommandHandler.RunAllTestsCommand(IsDirty, RealTests(), ResourceModel,AsyncWorker);
+            ServiceTestCommandHandler.RunAllTestsCommand(IsDirty, RealTests(), ResourceModel, AsyncWorker);
             SelectedServiceTest = null;
         }
 
@@ -371,7 +382,7 @@ namespace Warewolf.Studio.ViewModels
                 TestPassed = model.TestPassed
             } as IServiceTestModelTO).ToList();
             var result = ResourceModel.Environment.ResourceRepository.SaveTests(ResourceModel, serviceTestModelTos);
-            switch(result.Result)
+            switch (result.Result)
             {
                 case SaveResult.Success:
                     MarkTestsAsNotNew();
@@ -443,7 +454,7 @@ namespace Warewolf.Studio.ViewModels
                 var clone = model.Clone() as IServiceTestModel;
                 model.SetItem(clone);
             }
-            
+
         }
 
         public IContextualResourceModel ResourceModel
@@ -469,7 +480,7 @@ namespace Warewolf.Studio.ViewModels
                     {
                         _selectedServiceTest.PropertyChanged -= ActionsForPropChanges;
                     }
-                    
+
                     _selectedServiceTest = null;
                     EventPublisher.Publish(new DebugOutputMessage(new List<IDebugState>()));
                     OnPropertyChanged(() => SelectedServiceTest);
@@ -492,7 +503,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-      
+
 
         private void ActionsForPropChanges(object sender, PropertyChangedEventArgs e)
         {
@@ -515,7 +526,7 @@ namespace Warewolf.Studio.ViewModels
             }
             if (e.PropertyName == "DebugForTest")
             {
-                EventPublisher.Publish(new DebugOutputMessage(SelectedServiceTest.DebugForTest ?? new List<IDebugState>()));
+                EventPublisher.Publish(new DebugOutputMessage(SelectedServiceTest?.DebugForTest ?? new List<IDebugState>()));
             }
             ViewModelUtils.RaiseCanExecuteChanged(DuplicateTestCommand);
         }
@@ -664,7 +675,7 @@ namespace Warewolf.Studio.ViewModels
         public void Dispose()
         {
             // ReSharper disable DelegateSubtraction
-            if(ResourceModel?.Environment?.Connection != null)
+            if (ResourceModel?.Environment?.Connection != null)
                 ResourceModel.Environment.Connection.ReceivedResourceAffectedMessage -= OnReceivedResourceAffectedMessage;
         }
 
