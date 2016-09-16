@@ -10,7 +10,7 @@ namespace Warewolf.UITests
         [TestMethod]
         public void RunDebugShouldPopupDebugWindow()
         {
-            Uimap.Assert_RunDebug_Button_Disabled();
+            Assert.IsFalse(Uimap.MainStudioWindow.SideMenuBar.RunAndDebugButton.Enabled, "RunDebug button is enabled");
             Uimap.Click_New_Workflow_Ribbon_Button();
             Uimap.Drag_Toolbox_MultiAssign_Onto_DesignSurface();
             Uimap.Assert_RunDebug_Button_Exist_And_Enabled();

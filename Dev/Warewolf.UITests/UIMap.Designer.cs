@@ -1019,19 +1019,6 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
-        /// Click_Explorer_Refresh_Button
-        /// </summary>
-        public void Click_Explorer_Refresh_Button()
-        {
-            #region Variable Declarations
-            WpfButton explorerRefreshButton = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerRefreshButton;
-            #endregion
-
-            // Click '' button
-            Mouse.Click(explorerRefreshButton, new Point(10, 10));
-        }
-        
-        /// <summary>
         /// Click_Explorer_RemoteServer_Connect_Button - Use 'Click_Explorer_RemoteServer_Connect_ButtonParams' to pass parameters into this method.
         /// </summary>
         public void Click_Explorer_RemoteServer_Connect_Button()
@@ -4280,6 +4267,23 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
+        /// Open_Explorer_First_Item_Dependancies_With_Context_Menu - Use 'Open_Explorer_First_Item_Dependancies_With_Context_MenuParams' to pass parameters into this method.
+        /// </summary>
+        public void Open_Explorer_First_Item_Dependancies_With_Context_Menu()
+        {
+            #region Variable Declarations
+            WpfTreeItem firstItem = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem;
+            WpfMenuItem showVersionHistory = this.MainStudioWindow.ExplorerContextMenu.ShowVersionHistory;
+            #endregion
+
+            // Right-Click 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item
+            Mouse.Click(firstItem, MouseButtons.Right, ModifierKeys.None, new Point(69, 10));
+
+            // Verify that the 'Exists' property of 'Show Version History' menu item equals 'True'
+            Assert.AreEqual(this.Open_Explorer_First_Item_Dependancies_With_Context_MenuParams.ShowVersionHistoryExists, showVersionHistory.Exists, "Show version history does not exist after right clicking a resource");
+        }
+        
+        /// <summary>
         /// Open_Explorer_First_Item_With_Context_Menu - Use 'Open_Explorer_First_Item_With_Context_MenuParams' to pass parameters into this method.
         /// </summary>
         public void Open_Explorer_First_Item_With_Context_Menu()
@@ -5045,23 +5049,6 @@ namespace Warewolf.UITests
 
             // Right-Click 'DsfDeleteRecordActivity' custom control
             Mouse.Click(deleteRecord, MouseButtons.Right, ModifierKeys.None, new Point(116, 9));
-        }
-        
-        /// <summary>
-        /// RightClick_Dice - Use 'RightClick_DiceParams' to pass parameters into this method.
-        /// </summary>
-        public void RightClick_Dice()
-        {
-            #region Variable Declarations
-            WpfTreeItem firstItem = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem;
-            WpfMenuItem showVersionHistory = this.MainStudioWindow.ExplorerContextMenu.ShowVersionHistory;
-            #endregion
-
-            // Right-Click 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item
-            Mouse.Click(firstItem, MouseButtons.Right, ModifierKeys.None, new Point(69, 10));
-
-            // Verify that the 'Exists' property of 'Show Version History' menu item equals 'True'
-            Assert.AreEqual(this.RightClick_DiceParams.ShowVersionHistoryExists, showVersionHistory.Exists, "Show version history does not exist after right clicking a resource");
         }
         
         /// <summary>
@@ -8151,6 +8138,18 @@ namespace Warewolf.UITests
             }
         }
         
+        public virtual Open_Explorer_First_Item_Dependancies_With_Context_MenuParams Open_Explorer_First_Item_Dependancies_With_Context_MenuParams
+        {
+            get
+            {
+                if ((this.mOpen_Explorer_First_Item_Dependancies_With_Context_MenuParams == null))
+                {
+                    this.mOpen_Explorer_First_Item_Dependancies_With_Context_MenuParams = new Open_Explorer_First_Item_Dependancies_With_Context_MenuParams();
+                }
+                return this.mOpen_Explorer_First_Item_Dependancies_With_Context_MenuParams;
+            }
+        }
+        
         public virtual Open_Explorer_First_Item_With_Context_MenuParams Open_Explorer_First_Item_With_Context_MenuParams
         {
             get
@@ -8436,18 +8435,6 @@ namespace Warewolf.UITests
                     this.mRename_LocalWorkflow_To_SecodWorkFlowParams = new Rename_LocalWorkflow_To_SecodWorkFlowParams();
                 }
                 return this.mRename_LocalWorkflow_To_SecodWorkFlowParams;
-            }
-        }
-        
-        public virtual RightClick_DiceParams RightClick_DiceParams
-        {
-            get
-            {
-                if ((this.mRightClick_DiceParams == null))
-                {
-                    this.mRightClick_DiceParams = new RightClick_DiceParams();
-                }
-                return this.mRightClick_DiceParams;
             }
         }
         
@@ -9139,6 +9126,8 @@ namespace Warewolf.UITests
         
         private Open_DotNet_DLL_Connector_Tool_Large_ViewParams mOpen_DotNet_DLL_Connector_Tool_Large_ViewParams;
         
+        private Open_Explorer_First_Item_Dependancies_With_Context_MenuParams mOpen_Explorer_First_Item_Dependancies_With_Context_MenuParams;
+        
         private Open_Explorer_First_Item_With_Context_MenuParams mOpen_Explorer_First_Item_With_Context_MenuParams;
         
         private Open_GET_Web_Connector_Tool_Large_ViewParams mOpen_GET_Web_Connector_Tool_Large_ViewParams;
@@ -9186,8 +9175,6 @@ namespace Warewolf.UITests
         private PressF11_EnterFullScreenParams mPressF11_EnterFullScreenParams;
         
         private Rename_LocalWorkflow_To_SecodWorkFlowParams mRename_LocalWorkflow_To_SecodWorkFlowParams;
-        
-        private RightClick_DiceParams mRightClick_DiceParams;
         
         private RightClick_Explorer_Localhost_First_ItemParams mRightClick_Explorer_Localhost_First_ItemParams;
         
@@ -12554,6 +12541,21 @@ namespace Warewolf.UITests
     }
     
     /// <summary>
+    /// Parameters to be passed into 'Open_Explorer_First_Item_Dependancies_With_Context_Menu'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Open_Explorer_First_Item_Dependancies_With_Context_MenuParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Show Version History' menu item equals 'True'
+        /// </summary>
+        public bool ShowVersionHistoryExists = true;
+        #endregion
+    }
+    
+    /// <summary>
     /// Parameters to be passed into 'Open_Explorer_First_Item_With_Context_Menu'
     /// </summary>
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
@@ -12945,21 +12947,6 @@ namespace Warewolf.UITests
         /// Type '{Enter}' in first text box next to 'ResourceImage' image
         /// </summary>
         public string ItemEditSendKeys = "{Enter}";
-        #endregion
-    }
-    
-    /// <summary>
-    /// Parameters to be passed into 'RightClick_Dice'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class RightClick_DiceParams
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Verify that the 'Exists' property of 'Show Version History' menu item equals 'True'
-        /// </summary>
-        public bool ShowVersionHistoryExists = true;
         #endregion
     }
     
@@ -15279,17 +15266,13 @@ namespace Warewolf.UITests
             }
         }
         
-        public WpfButton ExplorerRefreshButton
+        public ExplorerRefreshButton ExplorerRefreshButton
         {
             get
             {
                 if ((this.mExplorerRefreshButton == null))
                 {
-                    this.mExplorerRefreshButton = new WpfButton(this);
-                    #region Search Criteria
-                    this.mExplorerRefreshButton.SearchProperties[WpfButton.PropertyNames.Name] = "";
-                    this.mExplorerRefreshButton.WindowTitles.Add("Warewolf");
-                    #endregion
+                    this.mExplorerRefreshButton = new ExplorerRefreshButton(this);
                 }
                 return this.mExplorerRefreshButton;
             }
@@ -15315,7 +15298,7 @@ namespace Warewolf.UITests
         
         private SearchTextBox mSearchTextBox;
         
-        private WpfButton mExplorerRefreshButton;
+        private ExplorerRefreshButton mExplorerRefreshButton;
         
         private ExplorerTree mExplorerTree;
         #endregion
@@ -15550,6 +15533,43 @@ namespace Warewolf.UITests
         private WpfText mFilterText;
         
         private WpfButton mClearFilterButton;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class ExplorerRefreshButton : WpfButton
+    {
+        
+        public ExplorerRefreshButton(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfButton.PropertyNames.Name] = "";
+            this.WindowTitles.Add("Warewolf");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfCustom Spinner
+        {
+            get
+            {
+                if ((this.mSpinner == null))
+                {
+                    this.mSpinner = new WpfCustom(this);
+                    #region Search Criteria
+                    this.mSpinner.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.CircularProgressBar";
+                    this.mSpinner.SearchConfigurations.Add(SearchConfiguration.NextSibling);
+                    this.mSpinner.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mSpinner;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfCustom mSpinner;
         #endregion
     }
     
