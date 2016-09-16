@@ -226,6 +226,7 @@ namespace Warewolf.Studio.ViewModels
                     isValid = IsValidName(SelectedServiceTest.TestName);
                 }
                 _canSave = IsDirty && isValid;
+                SetDisplayName();
                 return _canSave;
             }
             set
@@ -466,17 +467,7 @@ namespace Warewolf.Studio.ViewModels
             if (e.PropertyName == "IsDirty")
             {
                 ViewModelUtils.RaiseCanExecuteChanged(RunSelectedTestInBrowserCommand);
-                if (IsDirty)
-                {
-                    if (!DisplayName.EndsWith(" *"))
-                    {
-                        DisplayName += " *";
-                    }
-                }
-                else
-                {
-                    DisplayName = _displayName.Replace("*", "").TrimEnd(' ');
-                }
+                SetDisplayName();
             }
             if (e.PropertyName == "Inputs" || e.PropertyName == "Outputs")
             {
@@ -491,6 +482,21 @@ namespace Warewolf.Studio.ViewModels
                 EventPublisher.Publish(new DebugOutputMessage(SelectedServiceTest.DebugForTest ?? new List<IDebugState>()));
             }
             ViewModelUtils.RaiseCanExecuteChanged(DuplicateTestCommand);
+        }
+
+        private void SetDisplayName()
+        {
+            if (IsDirty)
+            {
+                if (!DisplayName.EndsWith(" *"))
+                {
+                    DisplayName += " *";
+                }
+            }
+            else
+            {
+                DisplayName = _displayName.Replace("*", "").TrimEnd(' ');
+            }
         }
 
         public IServiceTestCommandHandler ServiceTestCommandHandler { get; set; }
