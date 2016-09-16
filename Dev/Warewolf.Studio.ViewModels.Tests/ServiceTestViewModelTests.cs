@@ -157,6 +157,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             moqModel.Setup(model => model.Environment.IsConnected).Returns(isConnected);
             moqModel.Setup(model => model.Environment.Connection.WebServerUri).Returns(new Uri("http://rsaklf/bob"));
             moqModel.Setup(model => model.Category).Returns("My WF");
+            moqModel.Setup(model => model.Environment.IsLocalHost).Returns(isConnected);
             moqModel.Setup(model => model.ResourceName).Returns("My WF");
             return moqModel.Object;
         }
@@ -976,6 +977,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void RunSelectedTestCommand_GivenSelectedTestIsNotDirty_ShouldRunTheTest()
         {
             //---------------Set up test pack-------------------
+            // ReSharper disable once NotAccessedVariable
             var retVal = new StringBuilder();
             Mock<IEnvironmentModel> mockEnvironmentModel = new Mock<IEnvironmentModel>();
             Mock<IEnvironmentConnection> conn = new Mock<IEnvironmentConnection>();
@@ -1378,6 +1380,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             moqModel.Setup(model => model.DisplayName).Returns("My WF");
             moqModel.Setup(model => model.Environment.Connection.IsConnected).Returns(true);
             moqModel.Setup(model => model.Environment.IsConnected).Returns(true);
+            moqModel.Setup(model => model.Environment.IsLocalHost).Returns(false);
             moqModel.Setup(model => model.Environment.Connection.WebServerUri).Returns(new Uri("http://rsaklf/bob"));
             moqModel.Setup(model => model.Category).Returns("My WF");
             moqModel.Setup(model => model.ResourceName).Returns("My WF");
@@ -1407,6 +1410,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             moqModel.Setup(model => model.DisplayName).Returns("My WF");
             moqModel.Setup(model => model.Environment.Connection.IsConnected).Returns(true);
             moqModel.Setup(model => model.Environment.IsConnected).Returns(true);
+            moqModel.Setup(model => model.Environment.IsLocalHost).Returns(true);
             moqModel.Setup(model => model.Environment.Connection.WebServerUri).Returns(new Uri("http://rsaklf/bob"));
             moqModel.Setup(model => model.Category).Returns("My WF");
             moqModel.Setup(model => model.ResourceName).Returns("My WF");
