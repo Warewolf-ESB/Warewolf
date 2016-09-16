@@ -5,21 +5,26 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Warewolf.UITests
 {
     [CodedUITest]
-    public class HelpWindowTests
+    public class ConfigureSettingsPermissionsTests
     {
         [TestMethod]
-        public void HelpWindowTestHelpTextChangesAsControlFocusChange()
+        public void ConfigureSettingPermission()
         {
-            Uimap.Click_New_Workflow_Ribbon_Button();
-            Uimap.Drag_Toolbox_MultiAssign_Onto_DesignSurface();
-            Uimap.Open_Assign_Tool_Large_View();
-            Uimap.Enter_Text_Into_Assign_Large_View_Row1_Variable_Textbox_As_SomeInvalidVariableName();
-            Uimap.Click_Assign_Tool_Large_View_Done_Button_With_Row1_Variable_Textbox_As_SomeInvalidVariableName();
-            Uimap.Enter_Text_Into_Assign_Large_View_Row1_Variable_Textbox_As_SomeVariable();
-            Uimap.Click_Assign_Tool_Large_View_Done_Button();
-            Uimap.Enter_Text_Into_Assign_Small_View_Row1_Value_Textbox_As_SomeVariable_UsingIntellisense();
-            Uimap.Enter_Text_Into_Assign_Small_View_Row1_Value_Textbox_As_SomeVariable_Using_Click_Intellisense_Suggestion();
-            Assert.IsTrue(Uimap.MainStudioWindow.DockManager.SplitPaneLeft.Help.HelpTextEditor.Exists, "Help text does not exist");
+            Uimap.CreateAndSave_Dice_Workflow();
+            Uimap.Click_Explorer_Refresh_Button();
+            Uimap.Click_ConfigureSetting_From_Menu();
+            Uimap.Check_Public_Contribute();
+            Uimap.Check_Public_Administrator();
+            Uimap.UnCheck_Public_View();
+            Uimap.Check_Public_Administrator();
+            Uimap.UnCheck_Public_Administrator();
+            Uimap.Click_Save_Ribbon_Button_With_No_Save_Dialog();
+            Uimap.Click_Select_Resource_Button_From_Resource_Permissions();
+            Uimap.Select_Dice_From_Service_Picker("SecurityTab");
+            Uimap.Enter_Public_As_Windows_Group();
+            Uimap.Check_Resource_Contribute();
+            Uimap.Click_Save_Ribbon_Button_With_No_Save_Dialog();
+            Uimap.Click_Close_Settings_Tab_Button();
         }
 
         #region Additional test attributes
@@ -35,10 +40,8 @@ namespace Warewolf.UITests
         [TestCleanup()]
         public void MyTestCleanup()
         {
-            //Playback.PlaybackError -= Uimap.OnError;
-            Uimap.TryCloseHangingSaveDialog();
-            Uimap.TryClearToolboxFilter();
-            Uimap.TryCloseWorkflowTabs();
+            Playback.PlaybackError -= Uimap.OnError;
+            Uimap.TryCloseAllTabs();
         }
 
         public TestContext TestContext

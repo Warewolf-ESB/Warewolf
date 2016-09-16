@@ -424,9 +424,9 @@ Scenario: Close test window
 	| TestName | AuthenticationType | Error |
 	| NewName  | Windows            | false |
 	Then I close the test builder
-	And The Pending Changes Confirmation popup is shown I click Ok
-	And Test name is "NewName"
-	And Error is "false"
+	#And The Pending Changes Confirmation popup is shown I click Ok
+	#And Test name is "NewName"
+	#And Error is "false"
 
 
 Scenario: Delete an Disabled Test
