@@ -13,7 +13,9 @@ using System.Diagnostics.CodeAnalysis;
 using System.Runtime.ConstrainedExecution;
 using System.Runtime.InteropServices;
 using System.Security;
+using System.Security.Claims;
 using System.Security.Principal;
+using System.Threading;
 
 namespace Dev2
 {
@@ -62,6 +64,8 @@ namespace Dev2
                         _impersonationContext = tempWindowsIdentity.Impersonate();
                         if(_impersonationContext != null)
                         {
+                            ClaimsPrincipal principal = new WindowsPrincipal(tempWindowsIdentity);
+                            Thread.CurrentPrincipal = principal;
                             CloseHandle(token);
                             CloseHandle(tokenDuplicate);
                             return true;
