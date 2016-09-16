@@ -554,39 +554,6 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
-        /// Click_Create_New_Tests - Use 'Click_Create_New_TestsParams' to pass parameters into this method.
-        /// </summary>
-        public void Click_Create_New_Tests()
-        {
-            #region Variable Declarations
-            WpfButton createTestButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestsListboxList.CreateTest.CreateTestButton;
-            WpfListItem test1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestsListboxList.Test1;
-            WpfButton duplicateButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.DuplicateButton;
-            WpfText testNameText = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestNameText;
-            WpfCheckBox testEnabledSelector = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestsListboxList.Test1.TestEnabledSelector;
-            WpfEdit textbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestInputsTable.Row1.Cell.IntellisenseComboBox.Textbox;
-            #endregion
-
-            // Click 'Create a new test' button
-            Mouse.Click(createTestButton, new Point(158, 10));
-
-            // Verify that the 'Exists' property of 'Warewolf.Studio.ViewModels.ServiceTestModel' list item equals 'True'
-            Assert.AreEqual(this.Click_Create_New_TestsParams.Test1Exists, test1.Exists, "Test1 Url does not exist after clicking Create New Test");
-
-            // Verify that the 'Exists' property of '' button equals 'True'
-            Assert.AreEqual(this.Click_Create_New_TestsParams.DuplicateButtonExists, duplicateButton.Exists, "Test1 duplicate button does not exist after clicking Create New Test");
-
-            // Verify that the 'Exists' property of 'Test Name' label equals 'True'
-            Assert.AreEqual(this.Click_Create_New_TestsParams.TestNameTextExists, testNameText.Exists, "Test1 Name textbox does not exist after clicking Create New Test");
-
-            // Verify that the 'Checked' property of 'Select or De-Select to run the test' check box equals 'True'
-            Assert.AreEqual(this.Click_Create_New_TestsParams.TestEnabledSelectorChecked, testEnabledSelector.Checked, "Test 1 is diabled after clicking Create new test from context menu");
-
-            // Verify that the 'Exists' property of 'Text' text box equals 'True'
-            Assert.AreEqual(this.Click_Create_New_TestsParams.TextboxExists, textbox.Exists, "Row 1 input value textbox does not exist on workflow tests tab.");
-        }
-        
-        /// <summary>
         /// Click_Debug_Output_Assign_Cell - Use 'Click_Debug_Output_Assign_CellParams' to pass parameters into this method.
         /// </summary>
         public void Click_Debug_Output_Assign_Cell()
@@ -3517,6 +3484,26 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
+        /// Enter_RunAsUser_Username_And_Password - Use 'Enter_RunAsUser_Username_And_PasswordParams' to pass parameters into this method.
+        /// </summary>
+        public void Enter_RunAsUser_Username_And_Password()
+        {
+            #region Variable Declarations
+            WpfEdit usernameTextBoxEdit = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.UsernameTextBoxEdit;
+            WpfEdit passwordTextBoxEdit = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.PasswordTextBoxEdit;
+            #endregion
+
+            // Type 'testuser' in 'UsernameTextBox' text box
+            usernameTextBoxEdit.Text = this.Enter_RunAsUser_Username_And_PasswordParams.UsernameTextBoxEditText;
+
+            // Type '{Tab}' in 'UsernameTextBox' text box
+            Keyboard.SendKeys(usernameTextBoxEdit, this.Enter_RunAsUser_Username_And_PasswordParams.UsernameTextBoxEditSendKeys, ModifierKeys.None);
+
+            // Type '********' in 'PasswordTextBox' text box
+            Keyboard.SendKeys(passwordTextBoxEdit, this.Enter_RunAsUser_Username_And_PasswordParams.PasswordTextBoxEditSendKeys, true);
+        }
+        
+        /// <summary>
         /// Enter_SomeVariable_Into_Base_Convert_Large_View_Row1_Value_Textbox - Use 'Enter_SomeVariable_Into_Base_Convert_Large_View_Row1_Value_TextboxParams' to pass parameters into this method.
         /// </summary>
         public void Enter_SomeVariable_Into_Base_Convert_Large_View_Row1_Value_Textbox()
@@ -5264,6 +5251,26 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
+        /// Search_And_Select_HelloWolrd - Use 'Search_And_Select_HelloWolrdParams' to pass parameters into this method.
+        /// </summary>
+        public void Search_And_Select_HelloWolrd()
+        {
+            #region Variable Declarations
+            WpfEdit searchTextBox = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.SearchTextBox;
+            WpfTreeItem firstItem = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem;
+            #endregion
+
+            // Click 'SearchTextBox' text box
+            Mouse.Click(searchTextBox, new Point(165, 9));
+
+            // Type 'Hello World' in 'SearchTextBox' text box
+            searchTextBox.Text = this.Search_And_Select_HelloWolrdParams.SearchTextBoxText;
+
+            // Right-Click 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item
+            Mouse.Click(firstItem, MouseButtons.Right, ModifierKeys.None, new Point(101, 9));
+        }
+        
+        /// <summary>
         /// Select_Copy_FromContextMenu
         /// </summary>
         public void Select_Copy_FromContextMenu()
@@ -5869,6 +5876,19 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
+        /// Select_Tests_From_Context_Menu
+        /// </summary>
+        public void Select_Tests_From_Context_Menu()
+        {
+            #region Variable Declarations
+            WpfMenuItem tests = this.MainStudioWindow.ExplorerContextMenu.Tests;
+            #endregion
+
+            // Click 'Tests' menu item
+            Mouse.Click(tests, new Point(46, 16));
+        }
+        
+        /// <summary>
         /// Select_TSTCIREMOTE_From_Server_Source_Wizard_Dropdownlist - Use 'Select_TSTCIREMOTE_From_Server_Source_Wizard_DropdownlistParams' to pass parameters into this method.
         /// </summary>
         public void Select_TSTCIREMOTE_From_Server_Source_Wizard_Dropdownlist()
@@ -5908,6 +5928,31 @@ namespace Warewolf.UITests
             // Verify that the 'SelectedItem' property of 'SourcesComboBox' combo box equals 'UITestingDBSource'
             Assert.AreEqual(this.Select_UITestingDBSource_From_SQL_Server_Large_View_Source_ComboboxParams.SourcesComboboxSelectedItem, sourcesCombobox.SelectedItem, "SQL Server large view source combobox selected item is not equal to UITestingDBSo" +
                     "urce.");
+        }
+        
+        /// <summary>
+        /// Select_User_From_RunTestAs - Use 'Select_User_From_RunTestAsParams' to pass parameters into this method.
+        /// </summary>
+        public void Select_User_From_RunTestAs()
+        {
+            #region Variable Declarations
+            WpfRadioButton userRadioButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.UserRadioButton;
+            WpfEdit usernameTextBoxEdit = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.UsernameTextBoxEdit;
+            WpfEdit passwordTextBoxEdit = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.PasswordTextBoxEdit;
+            WpfButton saveButton = this.MainStudioWindow.SideMenuBar.SaveButton;
+            #endregion
+
+            // Select 'User' radio button
+            userRadioButton.Selected = this.Select_User_From_RunTestAsParams.UserRadioButtonSelected;
+
+            // Verify that the 'Exists' property of 'UsernameTextBox' text box equals 'True'
+            Assert.AreEqual(this.Select_User_From_RunTestAsParams.UsernameTextBoxEditExists, usernameTextBoxEdit.Exists, "Username textbox does not exist after clicking RunAsUser radio button");
+
+            // Verify that the 'Exists' property of 'PasswordTextBox' text box equals 'True'
+            Assert.AreEqual(this.Select_User_From_RunTestAsParams.PasswordTextBoxEditExists, passwordTextBoxEdit.Exists, "Password textbox does not exist after clicking RunAsUser radio button");
+
+            // Verify that the 'Enabled' property of 'Save this tab' button equals 'True'
+            Assert.AreEqual(this.Select_User_From_RunTestAsParams.SaveButtonEnabled, saveButton.Enabled, "Save Ribbon Menu buton is disabled after changing test");
         }
         
         /// <summary>
@@ -5975,6 +6020,19 @@ namespace Warewolf.UITests
             // Verify that the 'Enabled' property of 'Test Connection' button equals 'True'
             Assert.AreEqual(this.Type_TestSite_into_Web_Source_Wizard_Address_TextboxParams.TestConnectionButtonEnabled, testConnectionButton.Enabled, "New web source wizard test connection button is not enabled after entering a vali" +
                     "d web address.");
+        }
+        
+        /// <summary>
+        /// AssertMethod1 - Use 'AssertMethod1ExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void AssertMethod1()
+        {
+            #region Variable Declarations
+            WpfTabPage uIDev2ViewModelsStudioTabPage = this.UIWarewolfDEV2SANELEMTWindow.UIUI_SplitPane_AutoIDCustom.UIUI_TabManager_AutoIDTabList.UIDev2ViewModelsStudioTabPage;
+            #endregion
+
+            // Verify that the 'Exists' property of 'Dev2.ViewModels.StudioTestViewModel' tab equals 'True'
+            Assert.AreEqual(this.AssertMethod1ExpectedValues.UIDev2ViewModelsStudioTabPageExists, uIDev2ViewModelsStudioTabPage.Exists);
         }
         
         #region Properties
@@ -6203,18 +6261,6 @@ namespace Warewolf.UITests
                     this.mClick_Close_Workflow_Tab_ButtonParams = new Click_Close_Workflow_Tab_ButtonParams();
                 }
                 return this.mClick_Close_Workflow_Tab_ButtonParams;
-            }
-        }
-        
-        public virtual Click_Create_New_TestsParams Click_Create_New_TestsParams
-        {
-            get
-            {
-                if ((this.mClick_Create_New_TestsParams == null))
-                {
-                    this.mClick_Create_New_TestsParams = new Click_Create_New_TestsParams();
-                }
-                return this.mClick_Create_New_TestsParams;
             }
         }
         
@@ -7406,6 +7452,18 @@ namespace Warewolf.UITests
             }
         }
         
+        public virtual Enter_RunAsUser_Username_And_PasswordParams Enter_RunAsUser_Username_And_PasswordParams
+        {
+            get
+            {
+                if ((this.mEnter_RunAsUser_Username_And_PasswordParams == null))
+                {
+                    this.mEnter_RunAsUser_Username_And_PasswordParams = new Enter_RunAsUser_Username_And_PasswordParams();
+                }
+                return this.mEnter_RunAsUser_Username_And_PasswordParams;
+            }
+        }
+        
         public virtual Enter_SomeVariable_Into_Base_Convert_Large_View_Row1_Value_TextboxParams Enter_SomeVariable_Into_Base_Convert_Large_View_Row1_Value_TextboxParams
         {
             get
@@ -7982,6 +8040,18 @@ namespace Warewolf.UITests
             }
         }
         
+        public virtual Search_And_Select_HelloWolrdParams Search_And_Select_HelloWolrdParams
+        {
+            get
+            {
+                if ((this.mSearch_And_Select_HelloWolrdParams == null))
+                {
+                    this.mSearch_And_Select_HelloWolrdParams = new Search_And_Select_HelloWolrdParams();
+                }
+                return this.mSearch_And_Select_HelloWolrdParams;
+            }
+        }
+        
         public virtual Select_Delete_FromExplorerContextMenuParams Select_Delete_FromExplorerContextMenuParams
         {
             get
@@ -8162,6 +8232,18 @@ namespace Warewolf.UITests
             }
         }
         
+        public virtual Select_User_From_RunTestAsParams Select_User_From_RunTestAsParams
+        {
+            get
+            {
+                if ((this.mSelect_User_From_RunTestAsParams == null))
+                {
+                    this.mSelect_User_From_RunTestAsParams = new Select_User_From_RunTestAsParams();
+                }
+                return this.mSelect_User_From_RunTestAsParams;
+            }
+        }
+        
         public virtual Type_0_Into_SQL_Server_Large_View_Inputs_Row1_Data_TextboxExpectedValues Type_0_Into_SQL_Server_Large_View_Inputs_Row1_Data_TextboxExpectedValues
         {
             get
@@ -8207,6 +8289,18 @@ namespace Warewolf.UITests
                     this.mType_TestSite_into_Web_Source_Wizard_Address_TextboxParams = new Type_TestSite_into_Web_Source_Wizard_Address_TextboxParams();
                 }
                 return this.mType_TestSite_into_Web_Source_Wizard_Address_TextboxParams;
+            }
+        }
+        
+        public virtual AssertMethod1ExpectedValues AssertMethod1ExpectedValues
+        {
+            get
+            {
+                if ((this.mAssertMethod1ExpectedValues == null))
+                {
+                    this.mAssertMethod1ExpectedValues = new AssertMethod1ExpectedValues();
+                }
+                return this.mAssertMethod1ExpectedValues;
             }
         }
         
@@ -8305,6 +8399,18 @@ namespace Warewolf.UITests
                 return this.mSwitchCaseDialog;
             }
         }
+        
+        public UIWarewolfDEV2SANELEMTWindow UIWarewolfDEV2SANELEMTWindow
+        {
+            get
+            {
+                if ((this.mUIWarewolfDEV2SANELEMTWindow == null))
+                {
+                    this.mUIWarewolfDEV2SANELEMTWindow = new UIWarewolfDEV2SANELEMTWindow();
+                }
+                return this.mUIWarewolfDEV2SANELEMTWindow;
+            }
+        }
         #endregion
         
         #region Fields
@@ -8345,8 +8451,6 @@ namespace Warewolf.UITests
         private Click_Close_Settings_Tab_ButtonParams mClick_Close_Settings_Tab_ButtonParams;
         
         private Click_Close_Workflow_Tab_ButtonParams mClick_Close_Workflow_Tab_ButtonParams;
-        
-        private Click_Create_New_TestsParams mClick_Create_New_TestsParams;
         
         private Click_Debug_Output_Assign_CellParams mClick_Debug_Output_Assign_CellParams;
         
@@ -8546,6 +8650,8 @@ namespace Warewolf.UITests
         
         private Enter_InputDebug_valueParams mEnter_InputDebug_valueParams;
         
+        private Enter_RunAsUser_Username_And_PasswordParams mEnter_RunAsUser_Username_And_PasswordParams;
+        
         private Enter_SomeVariable_Into_Base_Convert_Large_View_Row1_Value_TextboxParams mEnter_SomeVariable_Into_Base_Convert_Large_View_Row1_Value_TextboxParams;
         
         private Enter_SomeVariable_Into_Calculate_Large_View_Function_TextboxParams mEnter_SomeVariable_Into_Calculate_Large_View_Function_TextboxParams;
@@ -8642,6 +8748,8 @@ namespace Warewolf.UITests
         
         private RightClick_Explorer_Localhost_First_ItemParams mRightClick_Explorer_Localhost_First_ItemParams;
         
+        private Search_And_Select_HelloWolrdParams mSearch_And_Select_HelloWolrdParams;
+        
         private Select_Delete_FromExplorerContextMenuParams mSelect_Delete_FromExplorerContextMenuParams;
         
         private Select_Dev2TestingDB_From_DB_Source_Wizard_Database_ComboboxParams mSelect_Dev2TestingDB_From_DB_Source_Wizard_Database_ComboboxParams;
@@ -8672,6 +8780,8 @@ namespace Warewolf.UITests
         
         private Select_UITestingDBSource_From_SQL_Server_Large_View_Source_ComboboxParams mSelect_UITestingDBSource_From_SQL_Server_Large_View_Source_ComboboxParams;
         
+        private Select_User_From_RunTestAsParams mSelect_User_From_RunTestAsParams;
+        
         private Type_0_Into_SQL_Server_Large_View_Inputs_Row1_Data_TextboxExpectedValues mType_0_Into_SQL_Server_Large_View_Inputs_Row1_Data_TextboxExpectedValues;
         
         private Type_0_Into_SQL_Server_Large_View_Test_Inputs_Row1_Test_Data_TextboxExpectedValues mType_0_Into_SQL_Server_Large_View_Test_Inputs_Row1_Test_Data_TextboxExpectedValues;
@@ -8679,6 +8789,8 @@ namespace Warewolf.UITests
         private Type_rsaklfsvrgen_into_DB_Source_Wizard_Server_TextboxParams mType_rsaklfsvrgen_into_DB_Source_Wizard_Server_TextboxParams;
         
         private Type_TestSite_into_Web_Source_Wizard_Address_TextboxParams mType_TestSite_into_Web_Source_Wizard_Address_TextboxParams;
+        
+        private AssertMethod1ExpectedValues mAssertMethod1ExpectedValues;
         
         private MainStudioWindow mMainStudioWindow;
         
@@ -8695,6 +8807,8 @@ namespace Warewolf.UITests
         private ServicePickerDialog mServicePickerDialog;
         
         private SwitchCaseDialog mSwitchCaseDialog;
+        
+        private UIWarewolfDEV2SANELEMTWindow mUIWarewolfDEV2SANELEMTWindow;
         #endregion
     }
     
@@ -9100,41 +9214,6 @@ namespace Warewolf.UITests
         /// Verify that the 'Exists' property of 'closeBtn' custom control equals 'True'
         /// </summary>
         public bool CloseButtonExists = true;
-        #endregion
-    }
-    
-    /// <summary>
-    /// Parameters to be passed into 'Click_Create_New_Tests'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Click_Create_New_TestsParams
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Verify that the 'Exists' property of 'Warewolf.Studio.ViewModels.ServiceTestModel' list item equals 'True'
-        /// </summary>
-        public bool Test1Exists = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of '' button equals 'True'
-        /// </summary>
-        public bool DuplicateButtonExists = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'Test Name' label equals 'True'
-        /// </summary>
-        public bool TestNameTextExists = true;
-        
-        /// <summary>
-        /// Verify that the 'Checked' property of 'Select or De-Select to run the test' check box equals 'True'
-        /// </summary>
-        public bool TestEnabledSelectorChecked = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'Text' text box equals 'True'
-        /// </summary>
-        public bool TextboxExists = true;
         #endregion
     }
     
@@ -11337,6 +11416,31 @@ namespace Warewolf.UITests
     }
     
     /// <summary>
+    /// Parameters to be passed into 'Enter_RunAsUser_Username_And_Password'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Enter_RunAsUser_Username_And_PasswordParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Type 'testuser' in 'UsernameTextBox' text box
+        /// </summary>
+        public string UsernameTextBoxEditText = "testuser";
+        
+        /// <summary>
+        /// Type '{Tab}' in 'UsernameTextBox' text box
+        /// </summary>
+        public string UsernameTextBoxEditSendKeys = "{Tab}";
+        
+        /// <summary>
+        /// Type '********' in 'PasswordTextBox' text box
+        /// </summary>
+        public string PasswordTextBoxEditSendKeys = "a1cbgHEVu098QBN0jqs55wYP/bLfpGNMxw2YxtLIgKOALxPfITSBDjNERdIi/KEq";
+        #endregion
+    }
+    
+    /// <summary>
     /// Parameters to be passed into 'Enter_SomeVariable_Into_Base_Convert_Large_View_Row1_Value_Textbox'
     /// </summary>
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
@@ -12197,6 +12301,21 @@ namespace Warewolf.UITests
     }
     
     /// <summary>
+    /// Parameters to be passed into 'Search_And_Select_HelloWolrd'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Search_And_Select_HelloWolrdParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Type 'Hello World' in 'SearchTextBox' text box
+        /// </summary>
+        public string SearchTextBoxText = "Hello World";
+        #endregion
+    }
+    
+    /// <summary>
     /// Parameters to be passed into 'Select_Delete_FromExplorerContextMenu'
     /// </summary>
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
@@ -12489,6 +12608,36 @@ namespace Warewolf.UITests
     }
     
     /// <summary>
+    /// Parameters to be passed into 'Select_User_From_RunTestAs'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Select_User_From_RunTestAsParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Select 'User' radio button
+        /// </summary>
+        public bool UserRadioButtonSelected = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'UsernameTextBox' text box equals 'True'
+        /// </summary>
+        public bool UsernameTextBoxEditExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'PasswordTextBox' text box equals 'True'
+        /// </summary>
+        public bool PasswordTextBoxEditExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Enabled' property of 'Save this tab' button equals 'True'
+        /// </summary>
+        public bool SaveButtonEnabled = true;
+        #endregion
+    }
+    
+    /// <summary>
     /// Parameters to be passed into 'Type_0_Into_SQL_Server_Large_View_Inputs_Row1_Data_Textbox'
     /// </summary>
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
@@ -12565,6 +12714,21 @@ namespace Warewolf.UITests
         /// Verify that the 'Enabled' property of 'Test Connection' button equals 'True'
         /// </summary>
         public bool TestConnectionButtonEnabled = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'AssertMethod1'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class AssertMethod1ExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Dev2.ViewModels.StudioTestViewModel' tab equals 'True'
+        /// </summary>
+        public bool UIDev2ViewModelsStudioTabPageExists = true;
         #endregion
     }
     
@@ -29800,6 +29964,54 @@ namespace Warewolf.UITests
                 return this.mNoErrorRadioButton;
             }
         }
+        
+        public WpfRadioButton UserRadioButton
+        {
+            get
+            {
+                if ((this.mUserRadioButton == null))
+                {
+                    this.mUserRadioButton = new WpfRadioButton(this);
+                    #region Search Criteria
+                    this.mUserRadioButton.SearchProperties[WpfRadioButton.PropertyNames.AutomationId] = "UserRadioButton";
+                    this.mUserRadioButton.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mUserRadioButton;
+            }
+        }
+        
+        public WpfEdit PasswordTextBoxEdit
+        {
+            get
+            {
+                if ((this.mPasswordTextBoxEdit == null))
+                {
+                    this.mPasswordTextBoxEdit = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mPasswordTextBoxEdit.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "PasswordTextBox";
+                    this.mPasswordTextBoxEdit.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mPasswordTextBoxEdit;
+            }
+        }
+        
+        public WpfEdit UsernameTextBoxEdit
+        {
+            get
+            {
+                if ((this.mUsernameTextBoxEdit == null))
+                {
+                    this.mUsernameTextBoxEdit = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mUsernameTextBoxEdit.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "UsernameTextBox";
+                    this.mUsernameTextBoxEdit.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mUsernameTextBoxEdit;
+            }
+        }
         #endregion
         
         #region Fields
@@ -29828,6 +30040,12 @@ namespace Warewolf.UITests
         private WpfRadioButton mErrorRadioButton;
         
         private WpfRadioButton mNoErrorRadioButton;
+        
+        private WpfRadioButton mUserRadioButton;
+        
+        private WpfEdit mPasswordTextBoxEdit;
+        
+        private WpfEdit mUsernameTextBoxEdit;
         #endregion
     }
     
@@ -37496,6 +37714,107 @@ namespace Warewolf.UITests
         
         #region Fields
         private WpfButton mDoneButton;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIWarewolfDEV2SANELEMTWindow : WpfWindow
+    {
+        
+        public UIWarewolfDEV2SANELEMTWindow()
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfWindow.PropertyNames.Name] = "Warewolf (DEV2\\SANELE.MTHEMBU)";
+            this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public UIUI_SplitPane_AutoIDCustom UIUI_SplitPane_AutoIDCustom
+        {
+            get
+            {
+                if ((this.mUIUI_SplitPane_AutoIDCustom == null))
+                {
+                    this.mUIUI_SplitPane_AutoIDCustom = new UIUI_SplitPane_AutoIDCustom(this);
+                }
+                return this.mUIUI_SplitPane_AutoIDCustom;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIUI_SplitPane_AutoIDCustom mUIUI_SplitPane_AutoIDCustom;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIUI_SplitPane_AutoIDCustom : WpfCustom
+    {
+        
+        public UIUI_SplitPane_AutoIDCustom(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.SplitPane";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "UI_SplitPane_AutoID";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public UIUI_TabManager_AutoIDTabList UIUI_TabManager_AutoIDTabList
+        {
+            get
+            {
+                if ((this.mUIUI_TabManager_AutoIDTabList == null))
+                {
+                    this.mUIUI_TabManager_AutoIDTabList = new UIUI_TabManager_AutoIDTabList(this);
+                }
+                return this.mUIUI_TabManager_AutoIDTabList;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIUI_TabManager_AutoIDTabList mUIUI_TabManager_AutoIDTabList;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIUI_TabManager_AutoIDTabList : WpfTabList
+    {
+        
+        public UIUI_TabManager_AutoIDTabList(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfTabList.PropertyNames.AutomationId] = "UI_TabManager_AutoID";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfTabPage UIDev2ViewModelsStudioTabPage
+        {
+            get
+            {
+                if ((this.mUIDev2ViewModelsStudioTabPage == null))
+                {
+                    this.mUIDev2ViewModelsStudioTabPage = new WpfTabPage(this);
+                    #region Search Criteria
+                    this.mUIDev2ViewModelsStudioTabPage.SearchProperties[WpfTabPage.PropertyNames.Name] = "Dev2.ViewModels.StudioTestViewModel";
+                    this.mUIDev2ViewModelsStudioTabPage.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mUIDev2ViewModelsStudioTabPage;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfTabPage mUIDev2ViewModelsStudioTabPage;
         #endregion
     }
 }

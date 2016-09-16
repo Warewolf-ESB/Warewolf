@@ -19,6 +19,7 @@ namespace Warewolf.UITests
             Uimap.Select_Tests_From_Context_Menu();
             Uimap.Click_Create_New_Tests();
             Uimap.Update_Test_Name(TestName);
+            Uimap.Enter_Text_Into_Workflow_Tests_Row1_Value_Textbox_As_CodedUITest();
             Uimap.Click_Save_Ribbon_Button_With_No_Save_Dialog();
             Uimap.Click_EnableDisable_This_Test_CheckBox();
             Uimap.Click_Run_Test();

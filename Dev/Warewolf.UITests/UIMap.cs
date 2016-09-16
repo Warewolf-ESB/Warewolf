@@ -1151,10 +1151,51 @@ namespace Warewolf.UITests
             #region Variable Declarations
             WpfButton duplicateButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.DuplicateButton;
             #endregion
-            
+
             // Click '' button
             Mouse.Click(duplicateButton, new Point(14, 10));
         }
+
+        /// <summary>
+        /// Click_Create_New_Tests - Use 'Click_Create_New_TestsParams' to pass parameters into this method.
+        /// </summary>
+        public void Click_Create_New_Tests()
+        {
+            #region Variable Declarations
+            WpfButton createTestButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestsListboxList.CreateTest.CreateTestButton;
+            WpfText testNameText = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestNameText;
+            WpfCheckBox testEnabledSelector = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestsListboxList.Test1.TestEnabledSelector;
+            WpfEdit textbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestInputsTable.Row1.Cell.IntellisenseComboBox.Textbox;
+            var testsTabPage = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage;
+
+            #endregion
+
+            // Click 'Create a new test' button
+            Mouse.Click(createTestButton, new Point(158, 10));
+
+            // Verify that the 'Exists' property of 'Test Name' label equals 'True'
+            Assert.AreEqual(this.Click_Create_New_TestsParams.TestNameTextExists, testNameText.Exists, "Test1 Name textbox does not exist after clicking Create New Test");
+
+            // Verify that the 'Checked' property of 'Select or De-Select to run the test' check box equals 'True'
+            Assert.AreEqual(this.Click_Create_New_TestsParams.TestEnabledSelectorChecked, testEnabledSelector.Checked, "Test 1 is diabled after clicking Create new test from context menu");
+
+            // Verify that the 'Exists' property of 'Text' text box equals 'True'
+            Assert.AreEqual(this.Click_Create_New_TestsParams.TextboxExists, textbox.Exists, "Row 1 input value textbox does not exist on workflow tests tab.");
+        }
+
+        public virtual Click_Create_New_TestsParams Click_Create_New_TestsParams
+        {
+            get
+            {
+                if ((this.mClick_Create_New_TestsParams == null))
+                {
+                    this.mClick_Create_New_TestsParams = new Click_Create_New_TestsParams();
+                }
+                return this.mClick_Create_New_TestsParams;
+            }
+        }
+
+        private Click_Create_New_TestsParams mClick_Create_New_TestsParams;
     }
     /// <summary>
     /// Parameters to be passed into 'Click_RunAll_Button'
@@ -1193,6 +1234,30 @@ namespace Warewolf.UITests
         /// Type 'Dice_Test' in first text box next to 'Test Name' label
         /// </summary>
         public string UIItemEditText1 = "Dice_Test";
+        #endregion
+    }
+    /// <summary>
+    /// Parameters to be passed into 'Click_Create_New_Tests'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Click_Create_New_TestsParams
+    {
+
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Test Name' label equals 'True'
+        /// </summary>
+        public bool TestNameTextExists = true;
+
+        /// <summary>
+        /// Verify that the 'Checked' property of 'Select or De-Select to run the test' check box equals 'True'
+        /// </summary>
+        public bool TestEnabledSelectorChecked = true;
+
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Text' text box equals 'True'
+        /// </summary>
+        public bool TextboxExists = true;
         #endregion
     }
 }
