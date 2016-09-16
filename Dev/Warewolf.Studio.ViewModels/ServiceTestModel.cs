@@ -43,6 +43,7 @@ namespace Warewolf.Studio.ViewModels
         private string _duplicateTestTooltip;
         private bool _lastRunDateVisibility;
         private bool _neverRunStringVisibility;
+        private IList<IDebugState> _debugForTest;
 
         public string NeverRunString
         {
@@ -84,7 +85,18 @@ namespace Warewolf.Studio.ViewModels
                 OnPropertyChanged(() => NeverRunStringVisibility);
             }
         }
-        public IList<IDebugState> DebugForTest { get; set; }
+        public IList<IDebugState> DebugForTest
+        {
+            get
+            {
+                return _debugForTest;
+            }
+            set
+            {
+                _debugForTest = value;
+                OnPropertyChanged(() => DebugForTest);
+            }
+        }
 
         public string DuplicateTestTooltip
         {

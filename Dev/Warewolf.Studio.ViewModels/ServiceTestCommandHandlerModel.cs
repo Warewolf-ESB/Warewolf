@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
@@ -35,6 +36,7 @@ namespace Warewolf.Studio.ViewModels
                 Enabled = true,
                 NewTest = true,
                 NoErrorExpected = true,
+                ErrorExpected = false,
                 Inputs = new ObservableCollection< IServiceTestInput >(),
                 Outputs = new ObservableCollection< IServiceTestOutput >(),
             };
@@ -64,18 +66,8 @@ namespace Warewolf.Studio.ViewModels
         {
             resourceModel.Environment.ResourceRepository.StopExecution(resourceModel);
         }
-
-        public void RunAllTestsInBrowser(bool isDirty)
-        {
-            if (isDirty)
-            {
-                ShowRunAllUnsavedError();
-                //return;
-            }
-            //Run all tests
-        }
-
-        public void RunAllTestsCommand(bool isDirty,ObservableCollection<IServiceTestModel> tests, IContextualResourceModel resourceModel, IAsyncWorker asyncWorker)
+        
+        public void RunAllTestsCommand(bool isDirty, IEnumerable<IServiceTestModel> tests, IContextualResourceModel resourceModel, IAsyncWorker asyncWorker)
         {
             if (isDirty)
             {
@@ -96,10 +88,6 @@ namespace Warewolf.Studio.ViewModels
                 false, true, false, false);
         }
 
-        public void RunSelectedTestInBrowser()
-        {
-        }
-        
 
         public IServiceTestModel DuplicateTest(IServiceTestModel selectedTest, int testNumber)
         {
@@ -133,24 +121,58 @@ namespace Warewolf.Studio.ViewModels
             selectedServiceTest.IsTestRunning = true;
             asyncWorker.Start(() => WebServer.ExecuteTest(resourceModel, selectedServiceTest.TestName), res =>
             {
-                if (res.Result == RunResult.TestFailed)
+                if (res != null)
                 {
-                    selectedServiceTest.TestFailing = true;
+                    switch(res.Result)
+                    {
+                        case RunResult.TestFailed:
+                            selectedServiceTest.TestFailing = true;
+                            selectedServiceTest.TestPassed = false;
+                            break;
+                        case RunResult.TestPassed:
+                            selectedServiceTest.TestFailing = false;
+                            selectedServiceTest.TestPassed = true;
+                            break;
+                        case RunResult.TestInvalid:
+                            selectedServiceTest.TestFailing = false;
+                            selectedServiceTest.TestPassed = false;
+                            selectedServiceTest.TestInvalid = true;
+                            break;
+                    }
+                    if (selectedServiceTest.Enabled)
+                    {
+                        selectedServiceTest.DebugForTest = res.DebugForTest;
+                    }
+                    selectedServiceTest.LastRunDate = DateTime.Now;
+                    selectedServiceTest.LastRunDateVisibility = true;
+                }
+                else
+                {
                     selectedServiceTest.TestPassed = false;
-                }
-                else if(res.Result == RunResult.TestPassed)
-                {
                     selectedServiceTest.TestFailing = false;
-                    selectedServiceTest.TestPassed = true;
-                }
-                if (selectedServiceTest.Enabled)
-                {
-                    selectedServiceTest.DebugForTest = res.DebugForTest;
+                    selectedServiceTest.TestInvalid = true;
                 }
                 selectedServiceTest.IsTestRunning = false;
-                selectedServiceTest.LastRunDate = DateTime.Now;
-                selectedServiceTest.LastRunDateVisibility = true;
+                
             });
+        }
+
+        public void RunSelectedTestInBrowser(string runSelectedTestUrl, IExternalProcessExecutor processExecutor)
+        {
+            processExecutor?.OpenInBrowser(new Uri(runSelectedTestUrl));
+        }
+
+        public void RunAllTestsInBrowser(bool isDirty, IEnumerable<IServiceTestModel> tests, IExternalProcessExecutor processExecutor)
+        {
+            if (isDirty)
+            {
+                ShowRunAllUnsavedError();
+                return;
+            }
+            foreach(var serviceTestModel in tests)
+            {
+                RunSelectedTestInBrowser(serviceTestModel.RunSelectedTestUrl,processExecutor);
+            }
         }
     }
 }
