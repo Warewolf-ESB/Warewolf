@@ -120,7 +120,7 @@ namespace Warewolf.Studio.ViewModels
 
         public ServiceTestModel Item
         {
-            get { return _item; }
+            private get { return _item; }
             set
             {
                 _item = value;

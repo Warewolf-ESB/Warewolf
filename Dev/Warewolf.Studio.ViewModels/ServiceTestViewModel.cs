@@ -59,7 +59,7 @@ namespace Warewolf.Studio.ViewModels
             };
 
             ResourceModel.Environment.Connection.ReceivedResourceAffectedMessage += OnReceivedResourceAffectedMessage;
-            //SetServerName(resourceModel);
+            SetServerName(resourceModel);
             DisplayName = resourceModel.DisplayName + " - Tests" + _serverName;
 
             ServiceTestCommandHandler = new ServiceTestCommandHandlerModel();
@@ -403,8 +403,15 @@ namespace Warewolf.Studio.ViewModels
 
         private void UpdateTestsFromResourceUpdate()
         {
-            //ResourceModel = ResourceModel.Environment.ResourceRepository.LoadResourceFromWorkspace(ResourceModel.ID,GlobalConstants.ServerWorkspaceID);
-
+            foreach(var serviceTestModel in Tests)
+            {
+                serviceTestModel.RunSelectedTestUrl = WebServer.GetWorkflowUri(ResourceModel, "", UrlType.Tests) + "/" + serviceTestModel.TestName;
+                if (serviceTestModel.AuthenticationType == AuthenticationType.Public)
+                {
+                    serviceTestModel.RunSelectedTestUrl = serviceTestModel.RunSelectedTestUrl.Replace("/secure/", "/public/");
+                }
+            }
+            
         }
 
         private bool ShowPoputWhenDuplicates()
@@ -463,7 +470,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 return _resourceModel;
             }
-            set
+            private set
             {
                 _resourceModel = value;
             }

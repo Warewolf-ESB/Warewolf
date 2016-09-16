@@ -607,16 +607,14 @@ namespace Dev2.Studio.Core.AppResources.Repositories
         {
             if (resourceModel?.Environment == null || !resourceModel.Environment.IsConnected)
             {
-                var testRunReuslt = new TestRunResult();
-                testRunReuslt.Result = RunResult.TestFailed;
+                var testRunReuslt = new TestRunResult { Result = RunResult.TestFailed };
                 return testRunReuslt;
             }
 
             var clientContext = resourceModel.Environment.Connection;
             if (clientContext == null)
             {
-                var testRunReuslt = new TestRunResult();
-                testRunReuslt.Result = RunResult.TestFailed;
+                var testRunReuslt = new TestRunResult { Result = RunResult.TestFailed };
                 return testRunReuslt;
             }
             var controller = new CommunicationController { ServiceName = string.IsNullOrEmpty(resourceModel.Category) ? resourceModel.ResourceName : resourceModel.Category };

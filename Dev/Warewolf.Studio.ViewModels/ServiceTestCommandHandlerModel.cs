@@ -10,7 +10,6 @@ using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Threading;
 using Dev2.Data;
 using Dev2.Studio.Core.Interfaces;
-using Dev2.Studio.Core.Network;
 
 namespace Warewolf.Studio.ViewModels
 {
@@ -24,7 +23,7 @@ namespace Warewolf.Studio.ViewModels
             _dataListConversionUtils = new DataListConversionUtils();
         }
 
-        public DataListModel DataList { get; set; }
+        private DataListModel DataList { get; set; }
 
 
         public IServiceTestModel CreateTest(IResourceModel resourceModel, int testNumber)
