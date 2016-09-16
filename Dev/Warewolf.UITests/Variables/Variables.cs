@@ -22,7 +22,7 @@ namespace Warewolf.UITests
             Uimap.Click_Assign_Tool_Remove_Variable_From_Tool();
             Uimap.Assign_Value_To_Variable();
             Uimap.Click_Assign_Tool_ExpandAll();
-            Uimap.Click_Assign_Tool_CollapseAll();
+            Uimap.Click_Workflow_CollapseAll();
             Uimap.Click_Assign_Tool_url();
         }
 
