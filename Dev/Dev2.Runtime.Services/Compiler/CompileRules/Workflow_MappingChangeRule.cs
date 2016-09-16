@@ -51,7 +51,7 @@ namespace Dev2.Runtime.Compiler.CompileRules
                 var inputDefs = DataListUtil.GenerateDefsFromDataList(postDL, enDev2ColumnArgumentDirection.Input);
                 var outputDefs = DataListUtil.GenerateDefsFromDataList(postDL, enDev2ColumnArgumentDirection.Output);
                 var defStr = "<Args><Input>" + JsonConvert.SerializeObject(inputDefs) + "</Input><Output>" + JsonConvert.SerializeObject(outputDefs) + "</Output></Args>";
-
+                TestCatalog.Instance.UpdateTestsBasedOnIOChange(serviceID,inputDefs,outputDefs);
                 return new CompileMessageTO { MessageID = Guid.NewGuid(), MessageType = CompileMessageType.MappingChange, ServiceID = serviceID, MessagePayload = defStr,ErrorType = ErrorType.Critical};
             }
 
@@ -60,7 +60,7 @@ namespace Dev2.Runtime.Compiler.CompileRules
                 var inputDefs = DataListUtil.GenerateDefsFromDataList(postDL, enDev2ColumnArgumentDirection.Input);
                 var outputDefs = DataListUtil.GenerateDefsFromDataList(postDL, enDev2ColumnArgumentDirection.Output);
                 var defStr = "<Args><Input>" + JsonConvert.SerializeObject(inputDefs) + "</Input><Output>" + JsonConvert.SerializeObject(outputDefs) + "</Output></Args>";
-
+                TestCatalog.Instance.UpdateTestsBasedOnIOChange(serviceID, inputDefs, outputDefs);
                 return new CompileMessageTO { MessageID = Guid.NewGuid(), MessageType = CompileMessageType.MappingChange, ServiceID = serviceID, MessagePayload = defStr,ErrorType = ErrorType.Critical};
             }
             return null;

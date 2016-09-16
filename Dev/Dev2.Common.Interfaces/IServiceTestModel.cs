@@ -42,7 +42,7 @@ namespace Dev2.Common.Interfaces
         void SetItem(IServiceTestModel model);
     }
 
-    public interface IServiceTestInput: ICloneable
+    public interface IServiceTestInput
     {
         string Variable { get; set; }
         string Value { get; set; }
