@@ -259,8 +259,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual("Test 1", dupTest.TestName);
             Assert.AreEqual("Test 1 *", dupTest.NameForDisplay);
             Assert.AreEqual(resourceId, dupTest.ParentId);
-            Assert.AreEqual(serviceTestModel.Inputs, dupTest.Inputs);
-            Assert.AreEqual(serviceTestModel.Outputs, dupTest.Outputs);
+            Assert.AreEqual(serviceTestModel.Inputs.Count, dupTest.Inputs.Count);
+            Assert.AreEqual(serviceTestModel.Outputs.Count, dupTest.Outputs.Count);
             Assert.AreEqual(true, dupTest.Enabled);
             Assert.AreEqual(serviceTestModel.AuthenticationType, dupTest.AuthenticationType);
             Assert.AreEqual(serviceTestModel.UserName, dupTest.UserName);

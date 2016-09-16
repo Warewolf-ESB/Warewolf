@@ -87,6 +87,15 @@ namespace Dev2.Runtime.ESB.Execution
             
             ErrorResultTO to = errors;
             var serviceTestModelTO = TestCatalog.Instance.FetchTest(DataObject.ResourceID, DataObject.TestName);
+            if (serviceTestModelTO == null)
+            {
+                Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+                var testRunResult = new TestRunResult { TestName = DataObject.TestName };
+                testRunResult.Result = RunResult.TestInvalid;
+                testRunResult.Message = $"Test {DataObject.TestName} for Resource {DataObject.ServiceName} ID {DataObject.ResourceID}";                
+                _request.ExecuteResult = serializer.SerializeToBuilder(testRunResult);
+                return Guid.NewGuid();
+            }
             if (serviceTestModelTO.Enabled)
             {
                 if (serviceTestModelTO.AuthenticationType == AuthenticationType.User)
@@ -215,7 +224,25 @@ namespace Dev2.Runtime.ESB.Execution
             {
                 Dev2Logger.Error(ex);
                 to.AddError(ex.Message);
-                wfappUtils.DispatchDebugState(DataObject, StateType.End, DataObject.Environment.HasErrors(), DataObject.Environment.FetchErrors(), out invokeErrors, DataObject.StartTime, false, true);
+                var failureMessage = DataObject.Environment.FetchErrors();
+                wfappUtils.DispatchDebugState(DataObject, StateType.End, DataObject.Environment.HasErrors(), failureMessage, out invokeErrors, DataObject.StartTime, false, true);
+                test.TestFailing = false;
+                test.TestPassed = false;
+                test.TestPending = false;
+                test.TestInvalid = true;
+                test.LastRunDate = DateTime.Now;
+
+
+                Common.Utilities.PerformActionInsideImpersonatedContext(Common.Utilities.ServerUser, () => { TestCatalog.Instance.SaveTest(resourceID, test); });
+
+                var testRunResult = new TestRunResult { TestName = test.TestName };
+                if (test.TestInvalid)
+                {
+                    testRunResult.Result = RunResult.TestInvalid;
+                    testRunResult.Message = ex.Message;
+                }
+                testRunResult.DebugForTest = TestDebugMessageRepo.Instance.FetchDebugItems(resourceID, test.TestName);
+                _request.ExecuteResult = serializer.SerializeToBuilder(testRunResult);
             }
             return result;
         }

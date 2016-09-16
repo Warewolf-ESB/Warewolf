@@ -16,6 +16,7 @@ using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Common.Interfaces.Threading;
 using Dev2.Data;
+using Dev2.Data.ServiceModel.Messages;
 using Dev2.Interfaces;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Studio.Core.Interfaces;
@@ -40,6 +41,7 @@ namespace Warewolf.Studio.ViewModels
         private bool _canSave;
         private string _errorMessage;
         private readonly IShellViewModel _shellViewModel;
+        private IContextualResourceModel _resourceModel;
 
         public ServiceTestViewModel(IContextualResourceModel resourceModel, IAsyncWorker asyncWorker, IEventAggregator eventPublisher,IExternalProcessExecutor processExecutor)
         {
@@ -55,6 +57,7 @@ namespace Warewolf.Studio.ViewModels
                 ViewModelUtils.RaiseCanExecuteChanged(DeleteTestCommand);
                 RefreshCommands();
             };
+            ResourceModel.Environment.Connection.ReceivedResourceAffectedMessage += OnReceivedResourceAffectedMessage;
             DisplayName = resourceModel.DisplayName + " - Tests";
             ServiceTestCommandHandler = new ServiceTestCommandHandlerModel();
             PopupController = CustomContainer.Get<IPopupController>();
@@ -76,6 +79,26 @@ namespace Warewolf.Studio.ViewModels
                 models.Add(dummyTest);
                 SelectedServiceTest = dummyTest;
                 Tests = models;
+                IsLoading = false;
+            });
+        }
+
+        private void OnReceivedResourceAffectedMessage(Guid resourceId, CompileMessageList changeList)
+        {
+            AsyncWorker.Start(()=>
+            {
+                var contextModel = ResourceModel.Environment.ResourceRepository.LoadContextualResourceModel(resourceId);
+                _resourceModel = contextModel;
+                return GetTests();
+            }, models =>
+            {
+                var dummyTest = new DummyServiceTest(CreateTests) { TestName = "Create a new test." };
+                models.Add(dummyTest);
+                var testName = SelectedServiceTest.TestName;
+                SelectedServiceTest = dummyTest;
+                _tests = models;
+                OnPropertyChanged(()=>Tests);
+                SelectedServiceTest = _tests.FirstOrDefault(model => model.TestName == testName);
                 IsLoading = false;
             });
         }
@@ -393,6 +416,7 @@ namespace Warewolf.Studio.ViewModels
             ViewModelUtils.RaiseCanExecuteChanged(RunSelectedTestCommand);
             ViewModelUtils.RaiseCanExecuteChanged(RunSelectedTestInBrowserCommand);
             OnPropertyChanged(() => DisplayName);
+            SetDisplayName();
         }
 
         public bool HasDuplicates() => RealTests().ToList().GroupBy(x => x.TestName).Where(group => @group.Count() > 1).Select(group => @group.Key).Any();
@@ -420,7 +444,17 @@ namespace Warewolf.Studio.ViewModels
             
         }
 
-        public IContextualResourceModel ResourceModel { get; }
+        public IContextualResourceModel ResourceModel
+        {
+            get
+            {
+                return _resourceModel;
+            }
+            set
+            {
+                _resourceModel = value;
+            }
+        }
 
         public IServiceTestModel SelectedServiceTest
         {
@@ -627,8 +661,9 @@ namespace Warewolf.Studio.ViewModels
 
         public void Dispose()
         {
-
-
+            // ReSharper disable DelegateSubtraction
+            if(ResourceModel?.Environment?.Connection != null)
+                ResourceModel.Environment.Connection.ReceivedResourceAffectedMessage -= OnReceivedResourceAffectedMessage;
         }
 
         public void UpdateHelpDescriptor(string helpText)
