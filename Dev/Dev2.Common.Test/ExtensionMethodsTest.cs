@@ -16,6 +16,7 @@ using System.Xml;
 using System.Xml.Linq;
 using ChinhDo.Transactions;
 using Dev2.Common.Common;
+using Dev2.Common.ExtMethods;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 // ReSharper disable InconsistentNaming
@@ -817,6 +818,28 @@ namespace Dev2.Common.Tests
             StringBuilder stringBuilder = myString.ToStringBuilder();
             //------------Assert Results-------------------------
             StringAssert.Contains(stringBuilder.ToString(),myString);
+        }
+
+        class Person
+        {
+            string Name { get; set; }
+            string SurName { get; set; }
+            int Age { get; set; }
+             List<Person> Ps { get; set; }
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void DeepCopy_GivenPesron_ShouldCopy()
+        {
+            //---------------Set up test pack-------------------
+            Person p = new Person();
+            //---------------Assert Precondition----------------
+            var deepCopy = ObjectExtensions.DeepCopy(p);
+            //---------------Execute Test ----------------------
+            //---------------Test Result -----------------------
+            var referenceEquals = ReferenceEquals(p, deepCopy);
+            Assert.IsFalse(referenceEquals);
         }
     }
 }
