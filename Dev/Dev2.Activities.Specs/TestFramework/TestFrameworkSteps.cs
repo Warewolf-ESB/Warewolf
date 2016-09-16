@@ -5,6 +5,7 @@ using System.Linq;
 using System.Windows;
 using Caliburn.Micro;
 using Dev2.Common;
+using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Hosting;
@@ -44,6 +45,13 @@ namespace Dev2.Activities.Specs.TestFramework
 
         ScenarioContext ScenarioContext { get; }
 
+        [Given(@"test folder is cleaned")]
+        public void GivenTestFolderIsCleaned()
+        {
+            DirectoryHelper.CleanUp(EnvironmentVariables.TestPath);
+        }
+
+
         [Given(@"I have ""(.*)"" with inputs as")]
         public void GivenIHaveWithInputsAs(string workflowName, Table inputVariables)
         {
@@ -67,16 +75,9 @@ namespace Dev2.Activities.Specs.TestFramework
             if (!ScenarioContext.ContainsKey("popupController"))
             {
                 var popupController = new Mock<Common.Interfaces.Studio.Controller.IPopupController>();
-                popupController.Setup(controller => controller.ShowDeleteConfirmation(It.IsAny<string>()))
-                    .Returns(MessageBoxResult.Yes);
-                popupController.Setup(
-                    controller =>
-                        controller.Show(It.IsAny<string>(), It.IsAny<string>(), MessageBoxButton.OK,
-                            MessageBoxImage.Error, null, false, true, false, false)).Verifiable();
-                popupController.Setup(
-                    controller =>
-                        controller.Show(It.IsAny<string>(), It.IsAny<string>(), MessageBoxButton.OK,
-                            MessageBoxImage.Information, null, false, true, false, false)).Verifiable();
+                popupController.Setup(controller => controller.ShowDeleteConfirmation(It.IsAny<string>())).Returns(MessageBoxResult.Yes);
+                popupController.Setup(controller => controller.Show(It.IsAny<string>(), It.IsAny<string>(), MessageBoxButton.OK, MessageBoxImage.Error, null, false, true, false, false)).Verifiable();
+                popupController.Setup(controller => controller.Show(It.IsAny<string>(), It.IsAny<string>(), MessageBoxButton.OK, MessageBoxImage.Information, null, false, true, false, false)).Verifiable();
                 CustomContainer.Register(popupController.Object);
                 ScenarioContext["popupController"] = popupController;
             }
@@ -1104,11 +1105,6 @@ namespace Dev2.Activities.Specs.TestFramework
         public void GivenIHaveAFolder(string foldername)
         {
             var category = _resourceCat + foldername;
-            var folderPath = Path.Combine(EnvironmentVariables.ResourcePath, category);
-            //if (!Directory.Exists(folderPath))
-            //{
-            //    Directory.CreateDirectory(folderPath);
-            //}
             ScenarioContext.Add("folderPath", category);
         }
 
@@ -1127,7 +1123,7 @@ namespace Dev2.Activities.Specs.TestFramework
                 DisplayName = resourceName,
                 DataList = "",
                 ID = resourceId,
-                Category = path
+                Category = path+"\\"+resourceName
             };
             var workflowHelper = new WorkflowHelper();
             var builder = workflowHelper.CreateWorkflow(resourceName);

@@ -5,7 +5,8 @@
 
 
 Background: Setup for workflows for tests
-		Given I have "Workflow 1" with inputs as
+		Given test folder is cleaned	
+		And I have "Workflow 1" with inputs as
 			| Input Var Name |
 			| [[a]]          |
 		And "Workflow 1" has outputs as
@@ -76,7 +77,7 @@ Scenario: Create New Test with Service that as recordset inputs
 	| Variable Name | Value |
 	| rec(1).a      |       |
 	| rec(1).b      |       |
-	When I updated the inputs as
+	And I update inputs as
 	| Variable Name | Value |
 	| rec(1).a      | val1  |
 	| rec(1).b      |       |
@@ -423,10 +424,7 @@ Scenario: Close test window
 	And I set Test Values as
 	| TestName | AuthenticationType | Error |
 	| NewName  | Windows            | false |
-	Then I close the test builder
-	#And The Pending Changes Confirmation popup is shown I click Ok
-	#And Test name is "NewName"
-	#And Error is "false"
+	Then Tab Header is "Workflow 3 - Tests *"
 
 
 Scenario: Delete an Disabled Test
