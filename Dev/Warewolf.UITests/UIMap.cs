@@ -1155,34 +1155,59 @@ namespace Warewolf.UITests
             // Click '' button
             Mouse.Click(duplicateButton, new Point(14, 10));
         }
-
+        
         /// <summary>
         /// Click_Create_New_Tests - Use 'Click_Create_New_TestsParams' to pass parameters into this method.
+        /// testInstance = What number is the test you are creating e.g. 4th test, 5th test
         /// </summary>
-        public void Click_Create_New_Tests()
+        public void Click_Create_New_Tests(int testInstance = 1)
         {
             #region Variable Declarations
             WpfButton createTestButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestsListboxList.CreateTest.CreateTestButton;
             WpfText testNameText = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestNameText;
             WpfCheckBox testEnabledSelector = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestsListboxList.Test1.TestEnabledSelector;
             WpfEdit textbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestInputsTable.Row1.Cell.IntellisenseComboBox.Textbox;
-            var testsTabPage = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage;
+            WpfList testsListBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestsListboxList;
 
             #endregion
 
             // Click 'Create a new test' button
             Mouse.Click(createTestButton, new Point(158, 10));
 
-            // Verify that the 'Exists' property of 'Test Name' label equals 'True'
-            Assert.AreEqual(this.Click_Create_New_TestsParams.TestNameTextExists, testNameText.Exists, "Test1 Name textbox does not exist after clicking Create New Test");
+            Assert.AreEqual(testInstance + 1, testsListBox.GetContent().Length);
 
-            // Verify that the 'Checked' property of 'Select or De-Select to run the test' check box equals 'True'
-            Assert.AreEqual(this.Click_Create_New_TestsParams.TestEnabledSelectorChecked, testEnabledSelector.Checked, "Test 1 is diabled after clicking Create new test from context menu");
+            //// Verify that the 'Exists' property of 'Test Name' label equals 'True'
+            //Assert.AreEqual(this.Click_Create_New_TestsParams.TestNameTextExists, testNameText.Exists, "Test1 Name textbox does not exist after clicking Create New Test");
 
-            // Verify that the 'Exists' property of 'Text' text box equals 'True'
-            Assert.AreEqual(this.Click_Create_New_TestsParams.TextboxExists, textbox.Exists, "Row 1 input value textbox does not exist on workflow tests tab.");
+            //// Verify that the 'Checked' property of 'Select or De-Select to run the test' check box equals 'True'
+            //Assert.AreEqual(this.Click_Create_New_TestsParams.TestEnabledSelectorChecked, testEnabledSelector.Checked, "Test 1 is diabled after clicking Create new test from context menu");
+
+            //// Verify that the 'Exists' property of 'Text' text box equals 'True'
+            //Assert.AreEqual(this.Click_Create_New_TestsParams.TextboxExists, textbox.Exists, "Row 1 input value textbox does not exist on workflow tests tab.");
         }
 
+        public void Assert_Display_Text_ContainStar(string control, bool containsStar, string instance = null)
+        {
+            WpfList testsListBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestsListboxList;
+            string description = string.Empty;
+            if(control == "Tab")
+            {
+                description = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.TabDescription.DisplayText;
+            }
+            else if (control == "Test")
+                description = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestsListboxList.Test1.TestNameDisplay.DisplayText;
+
+            if(containsStar)
+                Assert.IsTrue(description.Contains("*"));
+            else
+                Assert.IsFalse(description.Contains("*"));
+            if(instance == "All")
+            {
+                var descriptions = testsListBox.GetContent();
+                Assert.IsFalse(descriptions.Contains("*"));
+            }
+        }
+        
         public virtual Click_Create_New_TestsParams Click_Create_New_TestsParams
         {
             get
