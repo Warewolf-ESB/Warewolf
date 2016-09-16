@@ -376,6 +376,7 @@ namespace Warewolf.Studio.ViewModels
                 case SaveResult.Success:
                     MarkTestsAsNotNew();
                     SetSelectedTestUrl();
+                    SetDisplayName();
                     break;
                 case SaveResult.ResourceDeleted:
                     PopupController?.Show(Resources.Languages.Core.ServiceTestResourceDeletedMessage, Resources.Languages.Core.ServiceTestResourceDeletedHeader, MessageBoxButton.OK, MessageBoxImage.Error, null, false, true, false, false);
