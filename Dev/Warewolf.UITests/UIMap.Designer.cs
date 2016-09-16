@@ -87,36 +87,16 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
-        /// AssertMethod6 - Use 'AssertMethod6ExpectedValues' to pass parameters into this method.
+        /// AssertMethod1 - Use 'AssertMethod1ExpectedValues' to pass parameters into this method.
         /// </summary>
-        public void AssertMethod6()
+        public void AssertMethod1()
         {
             #region Variable Declarations
-            WpfButton createanewtestButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.ServiceTestView.TestsListbox.WarewolfStudioView.CreateanewtestButton;
-            WpfCustom serviceTestView = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView;
-            WpfHyperlink urlHyperlink = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.UrlText.UrlHyperlink;
-            WpfText passingText = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.PassingText;
-            WpfButton runAllButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.RunAllButton;
-            WpfList testsListboxList = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestsListboxList;
+            WpfButton yesButton = this.MessageBoxWindow.YesButton;
             #endregion
 
-            // Verify that the 'Exists' property of 'CreateTest' button equals 'True'
-            Assert.AreEqual(this.AssertMethod6ExpectedValues.CreateanewtestButtonExists, createanewtestButton.Exists, "Create new tests button does not exist");
-
-            // Verify that the 'ControlType' property of 'UI_ServiceTestView_AutoID' custom control equals 'Custom'
-            Assert.AreEqual(this.AssertMethod6ExpectedValues.ServiceTestViewControlType, serviceTestView.ControlType.ToString(), "TestWindoe does not exist after clicking Tests on the Explorer Context Menu");
-
-            // Verify that the 'Exists' property of link equals 'True'
-            Assert.AreEqual(this.AssertMethod6ExpectedValues.UrlHyperlinkExists, urlHyperlink.Exists, "Test URL does not exist after clicking Tests from Context Menu");
-
-            // Verify that the 'Exists' property of 'Passing:' label equals 'True'
-            Assert.AreEqual(this.AssertMethod6ExpectedValues.PassingTextExists, passingText.Exists, "Passing text does not exist after clicking tests from context Menu");
-
-            // Verify that the 'Exists' property of 'Run All' button equals 'True'
-            Assert.AreEqual(this.AssertMethod6ExpectedValues.RunAllButtonExists, runAllButton.Exists, "RunAll button does not exist after clicking Tests from Context Menu");
-
-            // Verify that the 'Exists' property of 'TestsListbox' list box equals 'True'
-            Assert.AreEqual(this.AssertMethod6ExpectedValues.TestsListboxListExists, testsListboxList.Exists, "Tests listbox does not exist after clicking Tests from Context Menu");
+            // Verify that the 'Exists' property of 'Yes' button equals 'True'
+            Assert.AreEqual(this.AssertMethod1ExpectedValues.YesButtonExists, yesButton.Exists, "Yes button does not exist on after clicking Delete");
         }
         
         /// <summary>
@@ -1870,6 +1850,19 @@ namespace Warewolf.UITests
 
             // Select 'UI_IsInputCheckbox_AutoID' check box
             isInputCheckbox.Checked = this.Click_VariableList_Scalar_Row1_IsInputCheckboxParams.IsInputCheckboxChecked;
+        }
+        
+        /// <summary>
+        /// Click_Yes_On_The_Confirm_Delete
+        /// </summary>
+        public void Click_Yes_On_The_Confirm_Delete()
+        {
+            #region Variable Declarations
+            WpfButton yesButton = this.MessageBoxWindow.YesButton;
+            #endregion
+
+            // Click 'Yes' button
+            Mouse.Click(yesButton, new Point(39, 17));
         }
         
         /// <summary>
@@ -6071,15 +6064,15 @@ namespace Warewolf.UITests
             }
         }
         
-        public virtual AssertMethod6ExpectedValues AssertMethod6ExpectedValues
+        public virtual AssertMethod1ExpectedValues AssertMethod1ExpectedValues
         {
             get
             {
-                if ((this.mAssertMethod6ExpectedValues == null))
+                if ((this.mAssertMethod1ExpectedValues == null))
                 {
-                    this.mAssertMethod6ExpectedValues = new AssertMethod6ExpectedValues();
+                    this.mAssertMethod1ExpectedValues = new AssertMethod1ExpectedValues();
                 }
-                return this.mAssertMethod6ExpectedValues;
+                return this.mAssertMethod1ExpectedValues;
             }
         }
         
@@ -8385,7 +8378,7 @@ namespace Warewolf.UITests
         
         private Assert_variable_filter_textbox_existExpectedValues mAssert_variable_filter_textbox_existExpectedValues;
         
-        private AssertMethod6ExpectedValues mAssertMethod6ExpectedValues;
+        private AssertMethod1ExpectedValues mAssertMethod1ExpectedValues;
         
         private Assign_Value_To_VariableParams mAssign_Value_To_VariableParams;
         
@@ -8837,42 +8830,17 @@ namespace Warewolf.UITests
     }
     
     /// <summary>
-    /// Parameters to be passed into 'AssertMethod6'
+    /// Parameters to be passed into 'AssertMethod1'
     /// </summary>
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class AssertMethod6ExpectedValues
+    public class AssertMethod1ExpectedValues
     {
         
         #region Fields
         /// <summary>
-        /// Verify that the 'Exists' property of 'CreateTest' button equals 'True'
+        /// Verify that the 'Exists' property of 'Yes' button equals 'True'
         /// </summary>
-        public bool CreateanewtestButtonExists = true;
-        
-        /// <summary>
-        /// Verify that the 'ControlType' property of 'UI_ServiceTestView_AutoID' custom control equals 'Custom'
-        /// </summary>
-        public string ServiceTestViewControlType = "Custom";
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of link equals 'True'
-        /// </summary>
-        public bool UrlHyperlinkExists = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'Passing:' label equals 'True'
-        /// </summary>
-        public bool PassingTextExists = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'Run All' button equals 'True'
-        /// </summary>
-        public bool RunAllButtonExists = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'TestsListbox' list box equals 'True'
-        /// </summary>
-        public bool TestsListboxListExists = true;
+        public bool YesButtonExists = true;
         #endregion
     }
     
@@ -30083,12 +30051,40 @@ namespace Warewolf.UITests
                 return this.mTest1;
             }
         }
+        
+        public Test2 Test2
+        {
+            get
+            {
+                if ((this.mTest2 == null))
+                {
+                    this.mTest2 = new Test2(this);
+                }
+                return this.mTest2;
+            }
+        }
+        
+        public Test3 Test3
+        {
+            get
+            {
+                if ((this.mTest3 == null))
+                {
+                    this.mTest3 = new Test3(this);
+                }
+                return this.mTest3;
+            }
+        }
         #endregion
         
         #region Fields
         private CreateTest mCreateTest;
         
         private Test1 mTest1;
+        
+        private Test2 mTest2;
+        
+        private Test3 mTest3;
         #endregion
     }
     
@@ -30136,7 +30132,7 @@ namespace Warewolf.UITests
                 base(searchLimitContainer)
         {
             #region Search Criteria
-            this.SearchProperties[WpfListItem.PropertyNames.Name] = "Warewolf.Studio.ViewModels.ServiceTestModel";
+            this.SearchProperties[WpfListItem.PropertyNames.Instance] = "1";
             this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
             #endregion
         }
@@ -30174,6 +30170,22 @@ namespace Warewolf.UITests
             }
         }
         
+        public WpfButton StopButton
+        {
+            get
+            {
+                if ((this.mStopButton == null))
+                {
+                    this.mStopButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mStopButton.SearchProperties[WpfButton.PropertyNames.Name] = "";
+                    this.mStopButton.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mStopButton;
+            }
+        }
+        
         public WpfButton DeleteButton
         {
             get
@@ -30204,6 +30216,100 @@ namespace Warewolf.UITests
                 return this.mTestNameDisplay;
             }
         }
+        
+        public WpfText Pending
+        {
+            get
+            {
+                if ((this.mPending == null))
+                {
+                    this.mPending = new WpfText(this);
+                    #region Search Criteria
+                    this.mPending.SearchProperties[WpfText.PropertyNames.HelpText] = "Pending";
+                    this.mPending.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mPending;
+            }
+        }
+        
+        public WpfText Passing
+        {
+            get
+            {
+                if ((this.mPassing == null))
+                {
+                    this.mPassing = new WpfText(this);
+                    #region Search Criteria
+                    this.mPassing.SearchProperties[WpfText.PropertyNames.HelpText] = "Passed";
+                    this.mPassing.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mPassing;
+            }
+        }
+        
+        public WpfText Failing
+        {
+            get
+            {
+                if ((this.mFailing == null))
+                {
+                    this.mFailing = new WpfText(this);
+                    #region Search Criteria
+                    this.mFailing.SearchProperties[WpfText.PropertyNames.HelpText] = "Failing";
+                    this.mFailing.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mFailing;
+            }
+        }
+        
+        public WpfText Invalid
+        {
+            get
+            {
+                if ((this.mInvalid == null))
+                {
+                    this.mInvalid = new WpfText(this);
+                    #region Search Criteria
+                    this.mInvalid.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mInvalid;
+            }
+        }
+        
+        public WpfText NeverRunDisplay
+        {
+            get
+            {
+                if ((this.mNeverRunDisplay == null))
+                {
+                    this.mNeverRunDisplay = new WpfText(this);
+                    #region Search Criteria
+                    this.mNeverRunDisplay.SearchProperties[WpfText.PropertyNames.Name] = "Never run";
+                    this.mNeverRunDisplay.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mNeverRunDisplay;
+            }
+        }
+        
+        public WpfText RunTimeDisplay
+        {
+            get
+            {
+                if ((this.mRunTimeDisplay == null))
+                {
+                    this.mRunTimeDisplay = new WpfText(this);
+                    #region Search Criteria
+                    this.mRunTimeDisplay.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mRunTimeDisplay;
+            }
+        }
         #endregion
         
         #region Fields
@@ -30211,9 +30317,451 @@ namespace Warewolf.UITests
         
         private WpfButton mRunButton;
         
+        private WpfButton mStopButton;
+        
         private WpfButton mDeleteButton;
         
         private WpfText mTestNameDisplay;
+        
+        private WpfText mPending;
+        
+        private WpfText mPassing;
+        
+        private WpfText mFailing;
+        
+        private WpfText mInvalid;
+        
+        private WpfText mNeverRunDisplay;
+        
+        private WpfText mRunTimeDisplay;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Test2 : WpfListItem
+    {
+        
+        public Test2(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfListItem.PropertyNames.Instance] = "2";
+            this.SearchConfigurations.Add(SearchConfiguration.DisambiguateChild);
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfCheckBox TestEnabledSelector
+        {
+            get
+            {
+                if ((this.mTestEnabledSelector == null))
+                {
+                    this.mTestEnabledSelector = new WpfCheckBox(this);
+                    #region Search Criteria
+                    this.mTestEnabledSelector.SearchProperties[WpfCheckBox.PropertyNames.HelpText] = "Select or De-Select to run the test";
+                    this.mTestEnabledSelector.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mTestEnabledSelector;
+            }
+        }
+        
+        public WpfButton RunButton
+        {
+            get
+            {
+                if ((this.mRunButton == null))
+                {
+                    this.mRunButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mRunButton.SearchProperties[WpfButton.PropertyNames.Name] = "";
+                    this.mRunButton.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mRunButton;
+            }
+        }
+        
+        public WpfButton StopButton
+        {
+            get
+            {
+                if ((this.mStopButton == null))
+                {
+                    this.mStopButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mStopButton.SearchProperties[WpfButton.PropertyNames.Name] = "";
+                    this.mStopButton.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mStopButton;
+            }
+        }
+        
+        public WpfButton DeleteButton
+        {
+            get
+            {
+                if ((this.mDeleteButton == null))
+                {
+                    this.mDeleteButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mDeleteButton.SearchProperties[WpfButton.PropertyNames.Name] = "";
+                    this.mDeleteButton.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mDeleteButton;
+            }
+        }
+        
+        public WpfText TestNameDisplay
+        {
+            get
+            {
+                if ((this.mTestNameDisplay == null))
+                {
+                    this.mTestNameDisplay = new WpfText(this);
+                    #region Search Criteria
+                    this.mTestNameDisplay.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mTestNameDisplay;
+            }
+        }
+        
+        public WpfText Pending
+        {
+            get
+            {
+                if ((this.mPending == null))
+                {
+                    this.mPending = new WpfText(this);
+                    #region Search Criteria
+                    this.mPending.SearchProperties[WpfText.PropertyNames.HelpText] = "Pending";
+                    this.mPending.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mPending;
+            }
+        }
+        
+        public WpfText Passing
+        {
+            get
+            {
+                if ((this.mPassing == null))
+                {
+                    this.mPassing = new WpfText(this);
+                    #region Search Criteria
+                    this.mPassing.SearchProperties[WpfText.PropertyNames.HelpText] = "Passing";
+                    this.mPassing.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mPassing;
+            }
+        }
+        
+        public WpfText Failing
+        {
+            get
+            {
+                if ((this.mFailing == null))
+                {
+                    this.mFailing = new WpfText(this);
+                    #region Search Criteria
+                    this.mFailing.SearchProperties[WpfText.PropertyNames.HelpText] = "Failing";
+                    this.mFailing.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mFailing;
+            }
+        }
+        
+        public WpfText Invalid
+        {
+            get
+            {
+                if ((this.mInvalid == null))
+                {
+                    this.mInvalid = new WpfText(this);
+                    #region Search Criteria
+                    this.mInvalid.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mInvalid;
+            }
+        }
+        
+        public WpfText NeverRunDisplay
+        {
+            get
+            {
+                if ((this.mNeverRunDisplay == null))
+                {
+                    this.mNeverRunDisplay = new WpfText(this);
+                    #region Search Criteria
+                    this.mNeverRunDisplay.SearchProperties[WpfText.PropertyNames.Name] = "Never run";
+                    this.mNeverRunDisplay.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mNeverRunDisplay;
+            }
+        }
+        
+        public WpfText RunTimeDisplay
+        {
+            get
+            {
+                if ((this.mRunTimeDisplay == null))
+                {
+                    this.mRunTimeDisplay = new WpfText(this);
+                    #region Search Criteria
+                    this.mRunTimeDisplay.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mRunTimeDisplay;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfCheckBox mTestEnabledSelector;
+        
+        private WpfButton mRunButton;
+        
+        private WpfButton mStopButton;
+        
+        private WpfButton mDeleteButton;
+        
+        private WpfText mTestNameDisplay;
+        
+        private WpfText mPending;
+        
+        private WpfText mPassing;
+        
+        private WpfText mFailing;
+        
+        private WpfText mInvalid;
+        
+        private WpfText mNeverRunDisplay;
+        
+        private WpfText mRunTimeDisplay;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Test3 : WpfListItem
+    {
+        
+        public Test3(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfListItem.PropertyNames.Name] = "Warewolf.Studio.ViewModels.ServiceTestModel";
+            this.SearchProperties[WpfListItem.PropertyNames.Instance] = "3";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfCheckBox TestEnabledSelector
+        {
+            get
+            {
+                if ((this.mTestEnabledSelector == null))
+                {
+                    this.mTestEnabledSelector = new WpfCheckBox(this);
+                    #region Search Criteria
+                    this.mTestEnabledSelector.SearchProperties[WpfCheckBox.PropertyNames.HelpText] = "Select or De-Select to run the test";
+                    this.mTestEnabledSelector.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mTestEnabledSelector;
+            }
+        }
+        
+        public WpfButton RunButton
+        {
+            get
+            {
+                if ((this.mRunButton == null))
+                {
+                    this.mRunButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mRunButton.SearchProperties[WpfButton.PropertyNames.Name] = "";
+                    this.mRunButton.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mRunButton;
+            }
+        }
+        
+        public WpfButton StopButton
+        {
+            get
+            {
+                if ((this.mStopButton == null))
+                {
+                    this.mStopButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mStopButton.SearchProperties[WpfButton.PropertyNames.Name] = "";
+                    this.mStopButton.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mStopButton;
+            }
+        }
+        
+        public WpfButton DeleteButton
+        {
+            get
+            {
+                if ((this.mDeleteButton == null))
+                {
+                    this.mDeleteButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mDeleteButton.SearchProperties[WpfButton.PropertyNames.Name] = "";
+                    this.mDeleteButton.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mDeleteButton;
+            }
+        }
+        
+        public WpfText TestNameDisplay
+        {
+            get
+            {
+                if ((this.mTestNameDisplay == null))
+                {
+                    this.mTestNameDisplay = new WpfText(this);
+                    #region Search Criteria
+                    this.mTestNameDisplay.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mTestNameDisplay;
+            }
+        }
+        
+        public WpfText Pending
+        {
+            get
+            {
+                if ((this.mPending == null))
+                {
+                    this.mPending = new WpfText(this);
+                    #region Search Criteria
+                    this.mPending.SearchProperties[WpfText.PropertyNames.HelpText] = "Pending";
+                    this.mPending.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mPending;
+            }
+        }
+        
+        public WpfText Passing
+        {
+            get
+            {
+                if ((this.mPassing == null))
+                {
+                    this.mPassing = new WpfText(this);
+                    #region Search Criteria
+                    this.mPassing.SearchProperties[WpfText.PropertyNames.HelpText] = "Passing";
+                    this.mPassing.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mPassing;
+            }
+        }
+        
+        public WpfText Failing
+        {
+            get
+            {
+                if ((this.mFailing == null))
+                {
+                    this.mFailing = new WpfText(this);
+                    #region Search Criteria
+                    this.mFailing.SearchProperties[WpfText.PropertyNames.HelpText] = "Failing";
+                    this.mFailing.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mFailing;
+            }
+        }
+        
+        public WpfText Invalid
+        {
+            get
+            {
+                if ((this.mInvalid == null))
+                {
+                    this.mInvalid = new WpfText(this);
+                    #region Search Criteria
+                    this.mInvalid.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mInvalid;
+            }
+        }
+        
+        public WpfText NeverRunDisplay
+        {
+            get
+            {
+                if ((this.mNeverRunDisplay == null))
+                {
+                    this.mNeverRunDisplay = new WpfText(this);
+                    #region Search Criteria
+                    this.mNeverRunDisplay.SearchProperties[WpfText.PropertyNames.Name] = "Never run";
+                    this.mNeverRunDisplay.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mNeverRunDisplay;
+            }
+        }
+        
+        public WpfText RunTimeDisplay
+        {
+            get
+            {
+                if ((this.mRunTimeDisplay == null))
+                {
+                    this.mRunTimeDisplay = new WpfText(this);
+                    #region Search Criteria
+                    this.mRunTimeDisplay.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mRunTimeDisplay;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfCheckBox mTestEnabledSelector;
+        
+        private WpfButton mRunButton;
+        
+        private WpfButton mStopButton;
+        
+        private WpfButton mDeleteButton;
+        
+        private WpfText mTestNameDisplay;
+        
+        private WpfText mPending;
+        
+        private WpfText mPassing;
+        
+        private WpfText mFailing;
+        
+        private WpfText mInvalid;
+        
+        private WpfText mNeverRunDisplay;
+        
+        private WpfText mRunTimeDisplay;
         #endregion
     }
     
