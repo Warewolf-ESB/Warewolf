@@ -17,7 +17,8 @@ namespace Warewolf.Security.Encryption
 
         public static string EncryptIfDecrypted(string input)
         {
-            if (string.IsNullOrEmpty(input) || string.IsNullOrWhiteSpace(input) || input.IsBase64()) return input;
+            if(string.IsNullOrEmpty(input) || string.IsNullOrWhiteSpace(input)) return input; 
+            if(input.IsBase64() && input.CanBeDecrypted()) return input;
             return Encrypt(input);
         }
         /// <summary>

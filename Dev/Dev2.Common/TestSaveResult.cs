@@ -21,6 +21,7 @@ namespace Dev2.Common
     {
         TestPassed,
         TestFailed,
+        TestInvalid,
         TestResourceDeleted,
         TestResourcePathUpdated
     }

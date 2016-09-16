@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Windows;
 using Dev2.Common.Interfaces;
 using Dev2.Data;
 using Dev2.Data.Binary_Objects;
@@ -634,6 +633,155 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual(2, serviceTestModel.Inputs.Count);
             Assert.AreEqual("rec(2).a", serviceTestModel.Inputs[1].Variable);
             Assert.AreEqual("", serviceTestModel.Inputs[1].Value);
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void IsDirty_GivenNameChanged_ShouldReurnTrue()
+        {
+            //---------------Set up test pack-------------------
+            var serviceTestModel = new ServiceTestModel(Guid.NewGuid());
+            var serviceTestInput = new ServiceTestInput("rec(1).a", "val");
+            serviceTestModel.Inputs = new ObservableCollection<IServiceTestInput>
+            {
+                serviceTestInput
+            };
+            var dataListModel = new DataListModel();
+            var shapeRecordSets = new List<IRecordSet>();
+            var recordSet = new RecordSet
+            {
+                IODirection = enDev2ColumnArgumentDirection.Input,
+                Name = "rec"
+            };
+            var recordSetColumns = new Dictionary<int, List<IScalar>>
+            {
+                {
+                    1, new List<IScalar>
+                    {
+                        new Scalar
+                        {
+                            Name = "a",
+                            IODirection = enDev2ColumnArgumentDirection.Input
+                        }
+                    }
+                }
+            };
+            recordSet.Columns = recordSetColumns;
+            shapeRecordSets.Add(recordSet);
+            dataListModel.ShapeRecordSets = shapeRecordSets;
+            serviceTestModel.AddRow(serviceTestInput, dataListModel);
+
+            var serviceTestModelClone = new ServiceTestModel(Guid.NewGuid()) { Inputs = serviceTestModel.Inputs, TestName = "NewTestName" };
+            serviceTestModelClone.AddRow(serviceTestInput, dataListModel);
+
+            serviceTestModel.SetItem(serviceTestModelClone);
+
+
+
+            //---------------Assert Precondition----------------
+            Assert.AreNotEqual(serviceTestModel.TestName, serviceTestModelClone.TestName);
+            //---------------Execute Test ----------------------
+            var isDirty = serviceTestModel.IsDirty;
+            //---------------Test Result -----------------------
+            Assert.IsTrue(isDirty);
+        }
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void IsDirty_GivenInputsChanges_ShouldReurnTrue()
+        {
+            //---------------Set up test pack-------------------
+            var serviceTestModel = new ServiceTestModel(Guid.NewGuid());
+            var serviceTestInput = new ServiceTestInput("rec(1).a", "val");
+            serviceTestModel.Inputs = new ObservableCollection<IServiceTestInput>
+            {
+                serviceTestInput
+            };
+            var dataListModel = new DataListModel();
+            var shapeRecordSets = new List<IRecordSet>();
+            var recordSet = new RecordSet
+            {
+                IODirection = enDev2ColumnArgumentDirection.Input,
+                Name = "rec"
+            };
+            var recordSetColumns = new Dictionary<int, List<IScalar>>
+            {
+                {
+                    1, new List<IScalar>
+                    {
+                        new Scalar
+                        {
+                            Name = "a",
+                            IODirection = enDev2ColumnArgumentDirection.Input
+                        }
+                    }
+                }
+            };
+            recordSet.Columns = recordSetColumns;
+            shapeRecordSets.Add(recordSet);
+            dataListModel.ShapeRecordSets = shapeRecordSets;
+            serviceTestModel.AddRow(serviceTestInput, dataListModel);
+
+            var serviceTestModelClone = new ServiceTestModel(Guid.NewGuid()) { Inputs = new ObservableCollection<IServiceTestInput>()
+            {
+                new ServiceTestInput("rec(1).a", "valChanges")
+            } };
+            serviceTestModelClone.AddRow(serviceTestInput, dataListModel);
+            serviceTestModel.SetItem(serviceTestModelClone);
+            //---------------Assert Precondition----------------
+            //---------------Execute Test ----------------------
+            var isDirty = serviceTestModel.IsDirty;
+            //---------------Test Result -----------------------
+            Assert.IsTrue(isDirty);
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void IsDirty_GivenNoChanges_ShouldReurnFalse()
+        {
+            //---------------Set up test pack-------------------
+            var serviceTestModel = new ServiceTestModel(Guid.NewGuid());
+            var serviceTestInput = new ServiceTestInput("rec(1).a", "val");
+            serviceTestModel.Inputs = new ObservableCollection<IServiceTestInput>
+            {
+                serviceTestInput
+            };
+            var dataListModel = new DataListModel();
+            var shapeRecordSets = new List<IRecordSet>();
+            var recordSet = new RecordSet
+            {
+                IODirection = enDev2ColumnArgumentDirection.Input,
+                Name = "rec"
+            };
+            var recordSetColumns = new Dictionary<int, List<IScalar>>
+            {
+                {
+                    1, new List<IScalar>
+                    {
+                        new Scalar
+                        {
+                            Name = "a",
+                            IODirection = enDev2ColumnArgumentDirection.Input
+                        }
+                    }
+                }
+            };
+            recordSet.Columns = recordSetColumns;
+            shapeRecordSets.Add(recordSet);
+            dataListModel.ShapeRecordSets = shapeRecordSets;
+            serviceTestModel.AddRow(serviceTestInput, dataListModel);
+
+            var serviceTestModelClone = new ServiceTestModel(Guid.NewGuid()) { Inputs = serviceTestModel.Inputs };
+            serviceTestModelClone.AddRow(serviceTestInput, dataListModel);
+
+            serviceTestModel.SetItem(serviceTestModelClone);
+
+
+
+            //---------------Assert Precondition----------------
+            //---------------Execute Test ----------------------
+            var isDirty = serviceTestModel.IsDirty;
+            //---------------Test Result -----------------------
+            Assert.IsFalse(isDirty);
         }
     }
 }
