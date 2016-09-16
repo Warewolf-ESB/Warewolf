@@ -65,5 +65,6 @@ namespace Warewolf.Studio.ViewModels
         public Action AddNewAction { get; set; }
 
         #endregion
+       
     }
 }

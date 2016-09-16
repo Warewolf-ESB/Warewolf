@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Specialized;
+﻿using System.Collections.Specialized;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -18,46 +17,6 @@ namespace Warewolf.Studio.Views
         public ServiceTestView()
         {
             InitializeComponent();
-            ((INotifyCollectionChanged)TestsListbox.Items).CollectionChanged += OnCollectionChanged;
-        }
-
-        private void OnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
-        {
-            if (e.Action == NotifyCollectionChangedAction.Add)
-            {
-                var item = e.NewItems[0];
-                // scroll the new item into view
-                TestsListbox.SelectedItem = item;
-                TestsListbox.ScrollIntoView(item);
-            }
-        }
-
-        private void TestsListbox_OnPreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            var listBox = sender as ListBox;
-            if (listBox != null)
-            {
-                var viewModel = listBox.DataContext as IServiceTestViewModel;
-
-                var frameworkElement = e.OriginalSource as FrameworkElement;
-                if (frameworkElement != null)
-                {
-                    if (viewModel != null)
-                    {
-                        viewModel.SelectedServiceTest = null;
-                        var model = frameworkElement.DataContext as IServiceTestModel;
-
-                        if (model != null)
-                        {
-                            viewModel.SelectedServiceTest = model;
-                            if (viewModel.SelectedServiceTest != null)
-                            {
-                                viewModel.SelectedServiceTest.IsTestSelected = true;
-                            }
-                        }
-                    }
-                }
-            }
         }
 
         private void TxtValue_OnTextChanged(object sender, RoutedEventArgs e)
@@ -85,7 +44,7 @@ namespace Warewolf.Studio.Views
             e.Handled = true;
         }
 
-        private void SelectedTestCheckBox_OnClick(object sender, RoutedEventArgs e)
+        private void SelectedTestCheckBox_OnPreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             var cb = sender as CheckBox;
             if (cb != null)
@@ -95,7 +54,7 @@ namespace Warewolf.Studio.Views
             }
         }
 
-        private void SelectedTestRunTestButton_OnClick(object sender, RoutedEventArgs e)
+        private void SelectedTestRunTestButton_OnPreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             var btn = sender as Button;
             if (btn != null)

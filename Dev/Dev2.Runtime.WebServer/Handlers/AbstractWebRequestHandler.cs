@@ -254,6 +254,18 @@ namespace Dev2.Runtime.WebServer.Handlers
                 {
                     allErrors.AddError("Executing a service externally requires View and Execute permissions");
                 }
+
+                if (dataObject.IsServiceTestExecution)
+                {
+                    formatter = DataListFormat.CreateFormat("JSON", EmitionTypes.JSON, "application/json");
+                    var result = serializer.Deserialize<TestRunResult>(esbExecuteRequest.ExecuteResult);
+                    var resObj = BuildTestResultForWebRequest(result);
+                    executePayload = serializer.Serialize(resObj);
+                    Dev2DataListDecisionHandler.Instance.RemoveEnvironment(dataObject.DataListID);
+                    dataObject.Environment = null;
+                    return new StringResponseWriter(executePayload, formatter.ContentType);
+                }
+
                 foreach (var error in dataObject.Environment.Errors.Union(dataObject.Environment.AllErrors))
                 {
                     if (error.Length > 0)
@@ -274,14 +286,8 @@ namespace Dev2.Runtime.WebServer.Handlers
                         
                         if(!dataObject.IsDebug || dataObject.RemoteInvoke ||  dataObject.RemoteNonDebugInvoke)
                         {
-                            if (dataObject.IsServiceTestExecution)
-                            {
-                                formatter = DataListFormat.CreateFormat("JSON", EmitionTypes.JSON, "application/json");
-                                var result = serializer.Deserialize<TestRunResult>(esbExecuteRequest.ExecuteResult);
-                                var resObj = BuildTestResultForWebRequest(result);
-                                executePayload = serializer.Serialize(resObj);
-                            }
-                            else if (dataObject.ReturnType == EmitionTypes.JSON)
+                            
+                            if (dataObject.ReturnType == EmitionTypes.JSON)
                             {
                                 formatter = DataListFormat.CreateFormat("JSON", EmitionTypes.JSON, "application/json");
                                 executePayload = ExecutionEnvironmentUtils.GetJsonOutputFromEnvironment(dataObject, resource.DataList.ToString(), 0);
@@ -393,9 +399,14 @@ namespace Dev2.Runtime.WebServer.Handlers
             {
                 resObj.Add("Result", Warewolf.Resource.Messages.Messages.Test_PassedResult);
             }
-            else
+            else if(result.Result == RunResult.TestFailed)
             {
                 resObj.Add("Result", Warewolf.Resource.Messages.Messages.Test_FailureResult);
+                resObj.Add("Message", result.Message);
+            }
+            else if (result.Result == RunResult.TestInvalid)
+            {
+                resObj.Add("Result", Warewolf.Resource.Messages.Messages.Test_InvalidResult);
                 resObj.Add("Message", result.Message);
             }
             return resObj;
