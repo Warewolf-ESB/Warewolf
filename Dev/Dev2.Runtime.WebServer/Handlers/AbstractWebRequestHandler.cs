@@ -238,8 +238,11 @@ namespace Dev2.Runtime.WebServer.Handlers
                         var objArray = new List<JObject>();
                         foreach(var testRunResult in testResults)
                         {
-                            var resObj = BuildTestResultForWebRequest(testRunResult);
-                            objArray.Add(resObj);
+                            if (testRunResult != null)
+                            {
+                                var resObj = BuildTestResultForWebRequest(testRunResult);
+                                objArray.Add(resObj);
+                            }
                         }
                         
                         executePayload = serializer.Serialize(objArray);
@@ -259,10 +262,17 @@ namespace Dev2.Runtime.WebServer.Handlers
                 {
                     formatter = DataListFormat.CreateFormat("JSON", EmitionTypes.JSON, "application/json");
                     var result = serializer.Deserialize<TestRunResult>(esbExecuteRequest.ExecuteResult);
-                    var resObj = BuildTestResultForWebRequest(result);
-                    executePayload = serializer.Serialize(resObj);
-                    Dev2DataListDecisionHandler.Instance.RemoveEnvironment(dataObject.DataListID);
-                    dataObject.Environment = null;
+                    if (result != null)
+                    {
+                        var resObj = BuildTestResultForWebRequest(result);
+                        executePayload = serializer.Serialize(resObj);
+                        Dev2DataListDecisionHandler.Instance.RemoveEnvironment(dataObject.DataListID);
+                        dataObject.Environment = null;
+                    }
+                    else
+                    {
+                        executePayload = serializer.Serialize(new JObject());
+                    }
                     return new StringResponseWriter(executePayload, formatter.ContentType);
                 }
 
