@@ -24,20 +24,20 @@ namespace Warewolf.UITests
             Uimap.Save_With_Ribbon_Button_And_Dialog(DoubleDice);
             Uimap.Click_Close_Workflow_Tab_Button();
             Uimap.Click_Explorer_Refresh_Button();
-            Uimap.RightClick_Dice();
+            Uimap.Open_Explorer_First_Item_Dependancies_With_Context_Menu();
             Uimap.Click_ViewSwagger_From_ExplorerContextMenu();
-            Uimap.RightClick_Dice();
+            Uimap.Open_Explorer_First_Item_Dependancies_With_Context_Menu();
             Uimap.Select_Show_Version_History();
-            Uimap.RightClick_Dice();
+            Uimap.Open_Explorer_First_Item_Dependancies_With_Context_Menu();
             Uimap.Select_Rename_FromExplorerContextMenu();
             Uimap.Rename_LocalWorkflow_To_SecodWorkFlow();
-            Uimap.RightClick_Dice();
+            Uimap.Open_Explorer_First_Item_Dependancies_With_Context_Menu();
             Uimap.Click_Duplicate_From_ExplorerContextMenu();
             Uimap.Enter_Duplicate_workflow_name();
             Uimap.Click_UpdateDuplicateRelationships();
             Uimap.Click_Duplicate_From_Duplicate_Dialog();
-            Uimap.RightClick_Dice();
-            Uimap.Select_Show_Dependencies_In_Explorer_Context_Menu(DoubleDice);
+            Uimap.Open_Explorer_First_Item_Dependancies_With_Context_Menu();
+            Uimap.Select_Show_Dependencies_In_Explorer_Context_Menu();
             Uimap.Click_Close_Dependecy_Tab();
         }
 

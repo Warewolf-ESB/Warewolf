@@ -19,7 +19,7 @@ namespace Warewolf.UITests
             Uimap.Click_Assign_Tool_Large_View_Done_Button();
             Uimap.Enter_Text_Into_Assign_Small_View_Row1_Value_Textbox_As_SomeVariable_UsingIntellisense();
             Uimap.Enter_Text_Into_Assign_Small_View_Row1_Value_Textbox_As_SomeVariable_Using_Click_Intellisense_Suggestion();
-            Uimap.Assert_Help_Text_Exist();
+            Assert.IsTrue(Uimap.MainStudioWindow.DockManager.SplitPaneLeft.Help.HelpTextEditor.Exists, "Help text does not exist");
         }
 
         #region Additional test attributes

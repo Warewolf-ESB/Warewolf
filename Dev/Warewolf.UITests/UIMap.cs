@@ -449,7 +449,7 @@ namespace Warewolf.UITests
                     Console.WriteLine("TryClose method failed to close all Workflow tabs.\n" + e.Message);
                 }
             }
-            Assert_RunDebug_Button_Disabled();
+            Assert.IsFalse(MainStudioWindow.SideMenuBar.RunAndDebugButton.Enabled, "RunDebug button is enabled");
         }
 
         public void TryCloseWorkflowTab()
@@ -630,6 +630,7 @@ namespace Warewolf.UITests
             Enter_Service_Name_Into_Save_Dialog(Name);
             Click_SaveDialog_Save_Button();
             Enter_Text_Into_Explorer_Filter(Name);
+            WaitForControlVisible(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerRefreshButton);
             Click_Explorer_Refresh_Button();
             WaitForControlNotVisible(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.Exists, "Saved " + Name + " does not appear in the explorer tree.");
@@ -993,9 +994,6 @@ namespace Warewolf.UITests
             }
         }
 
-        /// <summary>
-        /// Click_DB_Source_Wizard_Test_Connection_Button
-        /// </summary>
         public void Click_DB_Source_Wizard_Test_Connection_Button()
         {
             #region Variable Declarations
@@ -1003,7 +1001,6 @@ namespace Warewolf.UITests
             #endregion
             var point = new Point();
             Assert.IsTrue(!MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DBSourceWizardTab.WorkSurfaceContext.ManageDatabaseSourceControl.DatabaseCombobox.TryGetClickablePoint(out point), "Database Combobox does not exist");
-            // Click 'Test Connection' button
             Mouse.Click(testConnectionButton, new Point(21, 16));
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DBSourceWizardTab.WorkSurfaceContext.ManageDatabaseSourceControl.DatabaseCombobox.TryGetClickablePoint(out point), "Database Combobox does not exist");
         }
@@ -1015,50 +1012,8 @@ namespace Warewolf.UITests
             Select_Deploy_First_Source_Item();
             Click_Deploy_Tab_Deploy_Button();
         }
-
-        /// <summary>
-        /// Assert_Help_Text_Exist - Use 'Assert_Help_Text_ExistParams' to pass parameters into this method.
-        /// </summary>
-        public void Assert_Help_Text_Exist()
-        {
-            #region Variable Declarations
-            WpfCustom helpTextEditor = this.MainStudioWindow.DockManager.SplitPaneLeft.Help.HelpTextEditor;
-            #endregion
-
-            // Verify that the 'Exists' property of 'XamRichTextEditor' custom control equals 'True'
-            Assert.IsTrue(helpTextEditor.Exists, "Help text does not exist");
-        }
-
-        /// <summary>
-        /// Assert_RunDebug_Button_Disabled - Use 'Assert_RunDebug_Button_DisabledExpectedValues' to pass parameters into this method.
-        /// </summary>
-        public void Assert_RunDebug_Button_Disabled()
-        {
-            #region Variable Declarations
-            WpfButton runAndDebugButton = this.MainStudioWindow.SideMenuBar.RunAndDebugButton;
-            #endregion
-            // Verify that the 'Enabled' property of 'Run and debug your workflow service' button equals 'False'
-            Assert.IsFalse(runAndDebugButton.Enabled, "RunDebug button is enabled");
-        }
-
-        /// <summary>
-        /// Select_New_Remote_Server_From_Destination_Server_DropDown
-        /// </summary>
-        public void Select_New_Remote_Server_From_Destination_Server_DropDown()
-        {
-            #region Variable Declarations
-            WpfText newRemoteServer = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DeployTab.WorkSurfaceContext.DestinationServerConectControl.Combobox.NewRemoteServer;
-            #endregion
-
-            // Click 'New Remote Server...' label
-            Mouse.Click(newRemoteServer);
-        }
-
-        /// <summary>
-        /// Select_Show_Dependencies_In_Explorer_Context_Menu - Use 'Select_Show_Dependencies_In_Explorer_Context_MenuParams' to pass parameters into this method.
-        /// </summary>
-        /// <param name="workflowName"></param>
-        public void Select_Show_Dependencies_In_Explorer_Context_Menu(string workflowName)
+        
+        public void Select_Show_Dependencies_In_Explorer_Context_Menu()
         {
             #region Variable Declarations
             WpfMenuItem showDependencies = this.MainStudioWindow.ExplorerContextMenu.ShowDependencies;
@@ -1067,47 +1022,17 @@ namespace Warewolf.UITests
             WpfButton refreshButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DependencyGraphTab.WorksurfaceContext.DependencyView.ScrollViewer.RefreshButton;
             WpfText text = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DependencyGraphTab.WorksurfaceContext.DependencyView.ScrollViewer.Node1.Text;
             #endregion
-
-            // Click 'Show Dependencies' menu item
+            
             Mouse.Click(showDependencies, new Point(50, 15));
-
-            // Verify that the 'Selected' property of 'Show what depends on this' radio button equals 'True'
-            Assert.AreEqual(this.Select_Show_Dependencies_In_Explorer_Context_MenuParams.ShowwhatdependsonthisRadioButtonSelected, showwhatdependsonthisRadioButton.Selected, "Dependency graph show dependencies radio button is not selected.");
-
-            // Verify that the 'Exists' property of first text box next to 'Nesting Levels' label equals 'True'
-            Assert.AreEqual(this.Select_Show_Dependencies_In_Explorer_Context_MenuParams.TextboxExists, textbox.Exists, "Dependency graph nesting levels textbox does not exist.");
-
-            // Verify that the 'Exists' property of 'Refresh' button equals 'True'
-            Assert.AreEqual(this.Select_Show_Dependencies_In_Explorer_Context_MenuParams.RefreshButtonExists, refreshButton.Exists, "Refresh button does not exist on dependency graph");
-
-            // Verify that the 'DisplayText' property of 'RemoteServerUITestWorkflow' label equals 'RemoteServerUITestWorkflow'
-            Assert.AreEqual(workflowName, text.DisplayText, "Dependant workflow not shown in dependency diagram");
-
-            // Verify that the 'Exists' property of 'Show what depends on this' radio button equals 'True'
-            Assert.AreEqual(this.Select_Show_Dependencies_In_Explorer_Context_MenuParams.ShowwhatdependsonthisRadioButtonExists, showwhatdependsonthisRadioButton.Exists, "Show what depends on workflow does not exist after Show Dependencies is selected");
-
-            // Verify that the 'Selected' property of 'Show what depends on this' radio button equals 'True'
-            Assert.AreEqual(this.Select_Show_Dependencies_In_Explorer_Context_MenuParams.ShowwhatdependsonthisRadioButtonSelected1, showwhatdependsonthisRadioButton.Selected, "Show what depends on workflow radio button is not selected after Show dependecies" +
+            Assert.IsTrue(showwhatdependsonthisRadioButton.Selected, "Dependency graph show dependencies radio button is not selected.");
+            Assert.IsTrue(textbox.Exists, "Dependency graph nesting levels textbox does not exist.");
+            Assert.IsTrue(refreshButton.Exists, "Refresh button does not exist on dependency graph");
+            Assert.AreEqual("RemoteServerUITestWorkflow", text.DisplayText, "Dependant workflow not shown in dependency diagram");
+            Assert.IsTrue(showwhatdependsonthisRadioButton.Exists, "Show what depends on workflow does not exist after Show Dependencies is selected");
+            Assert.IsTrue(showwhatdependsonthisRadioButton.Selected, "Show what depends on workflow radio button is not selected after Show dependecies" +
                     " is selected");
         }
 
-        public virtual Select_Show_Dependencies_In_Explorer_Context_MenuParams Select_Show_Dependencies_In_Explorer_Context_MenuParams
-        {
-            get
-            {
-                if ((this.mSelect_Show_Dependencies_In_Explorer_Context_MenuParams == null))
-                {
-                    this.mSelect_Show_Dependencies_In_Explorer_Context_MenuParams = new Select_Show_Dependencies_In_Explorer_Context_MenuParams();
-                }
-                return this.mSelect_Show_Dependencies_In_Explorer_Context_MenuParams;
-            }
-        }
-
-        private Select_Show_Dependencies_In_Explorer_Context_MenuParams mSelect_Show_Dependencies_In_Explorer_Context_MenuParams;
-
-        /// <summary>
-        /// Drag_Dice_Onto_DesignSurface - Use 'Drag_Dice_Onto_DesignSurfaceParams' to pass parameters into this method.
-        /// </summary>
         public void Drag_Dice_Onto_DesignSurface()
         {
             #region Variable Declarations
@@ -1116,38 +1041,14 @@ namespace Warewolf.UITests
             WpfButton doneButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ExternalWorkFlow.DoneButton;
             #endregion
 
-            // Click 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item
             Mouse.Click(firstItem, new Point(49, 10));
-
-            // Move 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item to 'Flowchart' custom control
             flowchart.EnsureClickable(new Point(308, 127));
             Mouse.StartDragging(firstItem, new Point(49, 10));
             Mouse.StopDragging(flowchart, new Point(308, 127));
-
-            // Verify that the 'Exists' property of 'Done' button equals 'True'
-            Assert.AreEqual(this.Drag_Dice_Onto_DesignSurfaceParams.DoneButtonExists, doneButton.Exists, "Done button does not exist afer dragging dice service onto design surface");
-
-            // Click 'Done' button
+            Assert.IsTrue(doneButton.Exists, "Done button does not exist afer dragging dice service onto design surface");
             Mouse.Click(doneButton, new Point(53, 16));
         }
-
-        public virtual Drag_Dice_Onto_DesignSurfaceParams Drag_Dice_Onto_DesignSurfaceParams
-        {
-            get
-            {
-                if ((this.mDrag_Dice_Onto_DesignSurfaceParams == null))
-                {
-                    this.mDrag_Dice_Onto_DesignSurfaceParams = new Drag_Dice_Onto_DesignSurfaceParams();
-                }
-                return this.mDrag_Dice_Onto_DesignSurfaceParams;
-            }
-        }
-
-        private Drag_Dice_Onto_DesignSurfaceParams mDrag_Dice_Onto_DesignSurfaceParams;
-
-        /// <summary>
-        /// UnCheck_Public_Administrator - Use 'Click_Public_ContributeParams' to pass parameters into this method.
-        /// </summary>
+        
         public void UnCheck_Public_Administrator()
         {
             #region Variable Declarations
@@ -1158,21 +1059,16 @@ namespace Warewolf.UITests
             WpfCheckBox public_DeployToCheckBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.PublicROW.Public_DeployToCell.Public_DeployToCheckBox;
             WpfCheckBox public_DeployFromCheckBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.PublicROW.Public_DeployFromCell.Public_DeployFromCheckBox;
             #endregion
-
-            // Select 'UI_Public_ContributePermissionCheckBox_AutoID' check box
+            
             public_AdministratorCheckBox.Checked = false;
-
             Assert.IsFalse(public_AdministratorCheckBox.Checked, "Public Administrator checkbox is checked after UnChecking Administrator.");
-            // Verify that the 'Checked' property of 'UI_Public_ViewPermissionCheckBox_AutoID' check box equals 'True'
             Assert.IsTrue(public_ViewCheckBox.Checked, "Public View checkbox is unchecked after unChecking Administrator.");
             Assert.IsTrue(public_ExecuteCheckBox.Checked, "Public Execute checkbox unchecked after unChecking Administrator.");
             Assert.IsTrue(public_ContributeCheckBox.Checked, "Public Contribute checkbox is unchecked after unChecking Administrator.");
             Assert.IsTrue(public_DeployFromCheckBox.Checked, "Public DeplotFrom checkbox is unchecked after unChecking Administrator.");
             Assert.IsTrue(public_DeployToCheckBox.Checked, "Public DeployTo checkbox is unchecked after unChecking Administrator.");
         }
-        /// <summary>
-        /// UnCheck_Public_View - Use 'Click_Public_ContributeParams' to pass parameters into this method.
-        /// </summary>
+
         public void UnCheck_Public_View()
         {
             #region Variable Declarations
@@ -1181,22 +1077,14 @@ namespace Warewolf.UITests
             WpfCheckBox public_ViewCheckBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.PublicROW.Public_ViewCell.Public_ViewCheckBox;
             WpfCheckBox public_ExecuteCheckBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.PublicROW.Public_ExecuteCell.Public_ExecuteCheckBox;
             #endregion
-
-            // Select 'UI_Public_ContributePermissionCheckBox_AutoID' check box
+            
             public_ViewCheckBox.Checked = false;
-
-            // Verify that the 'Checked' property of 'UI_Public_ViewPermissionCheckBox_AutoID' check box equals 'True'
             Assert.IsFalse(public_ViewCheckBox.Checked, "Public View checkbox is checked after Checking Contribute.");
-
-            // Verify that the 'Checked' property of 'UI_Public_ExecutePermissionCheckBox_AutoID' check box equals 'True'
             Assert.IsTrue(public_ExecuteCheckBox.Checked, "Public Execute checkbox is NOT checked after Checking Contribute.");
             Assert.IsFalse(public_ContributeCheckBox.Checked, "Public Contribute checkbox is checked after UnChecking Execute/View.");
             Assert.IsFalse(public_AdministratorCheckBox.Checked, "Public Administrator checkbox is checked after UnChecking Contribute.");
         }
 
-        /// <summary>
-        /// Check_Resource_Contribute
-        /// </summary>
         public void Check_Resource_Contribute()
         {
             WpfCheckBox resource_ContributeCheckBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1.ContributeCell.ContributeCheckBox;
@@ -1205,19 +1093,12 @@ namespace Warewolf.UITests
             WpfButton resource_DeleteButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1.DeleteCell.DeleteButton;
 
             resource_ContributeCheckBox.Checked = true;
-
-            // Verify that the 'Checked' property of 'UI_Public_ViewPermissionCheckBox_AutoID' check box equals 'True'
             Assert.IsTrue(resource_ViewCheckBox.Checked, "Resource View checkbox is NOT checked after Checking Contribute.");
-
-            // Verify that the 'Checked' property of 'UI_Public_ExecutePermissionCheckBox_AutoID' check box equals 'True'
             Assert.IsTrue(resource_ExecuteCheckBox.Checked, "Resource Execute checkbox is NOT checked after Checking Contribute.");
-
             Assert.IsTrue(resource_DeleteButton.Enabled, "Resource Delete button is disabled");
 
         }
-        /// <summary>
-        /// Check_Public_Contribute - Use 'Click_Public_ContributeParams' to pass parameters into this method.
-        /// </summary>
+
         public void Check_Public_Contribute()
         {
             #region Variable Declarations
@@ -1226,14 +1107,9 @@ namespace Warewolf.UITests
             WpfCheckBox public_ViewCheckBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.PublicROW.Public_ViewCell.Public_ViewCheckBox;
             WpfCheckBox public_ExecuteCheckBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.PublicROW.Public_ExecuteCell.Public_ExecuteCheckBox;
             #endregion
-
-            // Select 'UI_Public_ContributePermissionCheckBox_AutoID' check box
+            
             public_ContributeCheckBox.Checked = true;
-
-            // Verify that the 'Checked' property of 'UI_Public_ViewPermissionCheckBox_AutoID' check box equals 'True'
             Assert.IsTrue(public_ViewCheckBox.Checked, "Public View checkbox is NOT checked after Checking Contribute.");
-
-            // Verify that the 'Checked' property of 'UI_Public_ExecutePermissionCheckBox_AutoID' check box equals 'True'
             Assert.IsTrue(public_ExecuteCheckBox.Checked, "Public Execute checkbox is NOT checked after Checking Contribute.");
         }
 
@@ -1247,9 +1123,6 @@ namespace Warewolf.UITests
             Click_Close_Workflow_Tab_Button();
         }
 
-        /// <summary>
-        /// Select_Dice_From_Service_Picker - Use 'Select_Dice_From_Service_PickerParams' to pass parameters into this method.
-        /// </summary>
         public void Select_Dice_From_Service_Picker(string tabName)
         {
             #region Variable Declarations
@@ -1259,139 +1132,24 @@ namespace Warewolf.UITests
             WpfText addResourceText = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1.ResourceCell.AddResourceText;
             WpfText ResourceText = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.PerfomanceCounterTab.PerfmonViewContent.ResourceTable.ResourceCell.ResourceTextBox;
             #endregion
-
-            // Click 'SearchTextBox' text box
+            
             Mouse.Click(filterTextbox, new Point(93, 6));
-
-            // Type 'Dice' in 'SearchTextBox' text box
-            filterTextbox.Text = this.Select_Dice_From_Service_PickerParams.Dice;
-
-            // Right-Click 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item
+            filterTextbox.Text = "Dice";
             Mouse.Click(subTreeItem1, MouseButtons.Right, ModifierKeys.None, new Point(53, 12));
-
-            // Click 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item
             Mouse.Click(subTreeItem1, new Point(53, 12));
-
-            // Click 'OK' button
             Mouse.Click(ok, new Point(52, 15));
 
-            if(tabName == "SecurityTab")
-                Assert.AreEqual(this.Select_Dice_From_Service_PickerParams.Dice, addResourceText.DisplayText, "Resource Name is not set to Dice after selecting Dice from Service picker");
+            if (tabName == "SecurityTab")
+                Assert.AreEqual("Dice", addResourceText.DisplayText, "Resource Name is not set to Dice after selecting Dice from Service picker");
             else if (tabName == "PerfomanceCounterTab")
-                Assert.AreEqual(this.Select_Dice_From_Service_PickerParams.Dice, ResourceText.DisplayText, "Resource Name is not set to Dice after selecting Dice from Service picker");
+                Assert.AreEqual("Dice", ResourceText.DisplayText, "Resource Name is not set to Dice after selecting Dice from Service picker");
         }
 
-        public virtual Select_Dice_From_Service_PickerParams Select_Dice_From_Service_PickerParams
+        public void Click_Explorer_Refresh_Button()
         {
-            get
-            {
-                if ((this.mSelect_Dice_From_Service_PickerParams == null))
-                {
-                    this.mSelect_Dice_From_Service_PickerParams = new Select_Dice_From_Service_PickerParams();
-                }
-                return this.mSelect_Dice_From_Service_PickerParams;
-            }
+            WaitForControlVisible(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerRefreshButton);
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerRefreshButton, new Point(10, 10));
+            Assert.IsTrue(GetControlVisible(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerRefreshButton.Spinner), "No spinner after clicking refresh in explorer.");
         }
-
-        private Select_Dice_From_Service_PickerParams mSelect_Dice_From_Service_PickerParams;
-    }
-    /// <summary>
-    /// Parameters to be passed into 'Select_Show_Dependencies_In_Explorer_Context_Menu'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Select_Show_Dependencies_In_Explorer_Context_MenuParams
-    {
-
-        #region Fields
-        /// <summary>
-        /// Verify that the 'Selected' property of 'Show what depends on this' radio button equals 'True'
-        /// </summary>
-        public bool ShowwhatdependsonthisRadioButtonSelected = true;
-
-        /// <summary>
-        /// Verify that the 'Exists' property of first text box next to 'Nesting Levels' label equals 'True'
-        /// </summary>
-        public bool TextboxExists = true;
-
-        /// <summary>
-        /// Verify that the 'Exists' property of 'Refresh' button equals 'True'
-        /// </summary>
-        public bool RefreshButtonExists = true;
-
-        /// <summary>
-        /// Verify that the 'DisplayText' property of 'RemoteServerUITestWorkflow' label equals 'RemoteServerUITestWorkflow'
-        /// </summary>
-        public string TextDisplayText = "RemoteServerUITestWorkflow";
-
-        /// <summary>
-        /// Verify that the 'Exists' property of 'Show what depends on this' radio button equals 'True'
-        /// </summary>
-        public bool ShowwhatdependsonthisRadioButtonExists = true;
-
-        /// <summary>
-        /// Verify that the 'Selected' property of 'Show what depends on this' radio button equals 'True'
-        /// </summary>
-        public bool ShowwhatdependsonthisRadioButtonSelected1 = true;
-        #endregion
-    }
-    /// <summary>
-    /// Parameters to be passed into 'Drag_Dice_Onto_DesignSurface'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Drag_Dice_Onto_DesignSurfaceParams
-    {
-
-        #region Fields
-        /// <summary>
-        /// Verify that the 'Exists' property of 'Done' button equals 'True'
-        /// </summary>
-        public bool DoneButtonExists = true;
-        #endregion
-    }
-    /// <summary>
-    /// Parameters to be passed into 'Select_NewFolder_From_ExplorerContextMenu'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Select_NewFolder_From_ExplorerContextMenuParams
-    {
-
-        #region Fields
-        /// <summary>
-        /// Type 'NewFolder' in first text box next to 'ResourceImage' image
-        /// </summary>
-        public string UIItemEditText = "NewFolder";
-        #endregion
-    }
-    /// <summary>
-    /// Parameters to be passed into 'AssertMethod1'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class AssertMethod1ExpectedValues
-    {
-
-        #region Fields
-        /// <summary>
-        /// Verify that the 'Exists' property of 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item equals 'True'
-        /// </summary>
-        public bool UIInfragisticsControlsTreeItem1Exists = true;
-
-        /// <summary>
-        /// Verify that the 'Exists' property of 'XamRichTextEditor' custom control equals 'True'
-        /// </summary>
-        public bool HelpTextEditorExists = true;
-        #endregion
-    }
-    /// <summary>
-    /// Parameters to be passed into 'Select_Dice_From_Service_Picker'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Select_Dice_From_Service_PickerParams
-    {
-        #region Fields
-        /// <summary>
-        /// Verify that the 'DisplayText' property of 'UI__AddResourceTextBox_AutoID' label equals 'Dice'
-        /// </summary>
-        public string Dice = "Dice";
-        #endregion
     }
 }

@@ -36,7 +36,7 @@ namespace Warewolf.UITests
             Uimap.Enter_Text_Into_Explorer_Filter(LocalWorkflowName);
             Uimap.WaitForControlNotVisible(Uimap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);
             Uimap.RightClick_Explorer_Localhost_First_Item();
-            Uimap.Select_Show_Dependencies_In_Explorer_Context_Menu(LocalWorkflowName);
+            Uimap.Select_Show_Dependencies_In_Explorer_Context_Menu();
             Uimap.SetResourcePermissions(LocalWorkflowName, WindowsGroup, true, true);
             Uimap.Click_Deploy_Ribbon_Button();
         }
