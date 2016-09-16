@@ -602,6 +602,32 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             return res;
         }
 
+
+        public TestRunResult ExecuteTest(IContextualResourceModel resourceModel, string testName)
+        {
+            if (resourceModel?.Environment == null || !resourceModel.Environment.IsConnected)
+            {
+                var testRunReuslt = new TestRunResult();
+                testRunReuslt.Result = RunResult.TestFailed;
+                return testRunReuslt;
+            }
+
+            var clientContext = resourceModel.Environment.Connection;
+            if (clientContext == null)
+            {
+                var testRunReuslt = new TestRunResult();
+                testRunReuslt.Result = RunResult.TestFailed;
+                return testRunReuslt;
+            }
+            var controller = new CommunicationController { ServiceName = string.IsNullOrEmpty(resourceModel.Category) ? resourceModel.ResourceName : resourceModel.Category };
+            controller.AddPayloadArgument("ResourceID", resourceModel.ID.ToString());
+            controller.AddPayloadArgument("IsDebug", true.ToString());
+            controller.ServicePayload.TestName = testName;
+            var res = controller.ExecuteCommand<TestRunResult>(clientContext, clientContext.WorkspaceID);
+            return res;
+
+        }
+
         public List<IServiceTestModelTO> LoadResourceTests(Guid resourceId)
         {
             var comsController = GetCommunicationController("FetchTests");

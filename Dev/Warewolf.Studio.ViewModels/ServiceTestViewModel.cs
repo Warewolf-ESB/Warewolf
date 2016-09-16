@@ -146,7 +146,7 @@ namespace Warewolf.Studio.ViewModels
 
         private void RunAllTestsInBrowser()
         {
-            ServiceTestCommandHandler.RunAllTestsInBrowser(IsDirty, RealTests(), _processExecutor);
+            ServiceTestCommandHandler.RunAllTestsInBrowser(IsDirty,RunAllTestsUrl,_processExecutor);
         }
 
         private void RunAllTests()
@@ -526,7 +526,7 @@ namespace Warewolf.Studio.ViewModels
             }
             if (e.PropertyName == "DebugForTest")
             {
-                EventPublisher.Publish(new DebugOutputMessage(SelectedServiceTest.DebugForTest ?? new List<IDebugState>()));
+                EventPublisher.Publish(new DebugOutputMessage(SelectedServiceTest?.DebugForTest ?? new List<IDebugState>()));
             }
             ViewModelUtils.RaiseCanExecuteChanged(DuplicateTestCommand);
         }
