@@ -33,8 +33,6 @@ namespace Warewolf.Studio.Views
             _explorerViewTestClass = new ExplorerViewTestClass(this);
         }
 
-
-
         #region ExplorerViewTestClass
         // ReSharper disable once ConvertToAutoProperty
         public ExplorerViewTestClass ExplorerViewTestClass => _explorerViewTestClass;

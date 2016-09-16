@@ -32,14 +32,14 @@ namespace Warewolf.AcceptanceTesting.SaveDialog
             var window = new Window {Content = view};
             var app = Application.Current;
             app.MainWindow = window;
-            Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new Action(() =>
-            {
-                var viewWindow = (RequestServiceNameView)Application.Current.MainWindow.Content;
-                Assert.IsNotNull(viewWindow);
-                Assert.IsNotNull(viewWindow.DataContext);
-                Assert.IsInstanceOfType(viewWindow.DataContext, typeof(IRequestServiceNameViewModel));
-                Application.Current.Shutdown();
-            }));
+            await Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new Action(() =>
+             {
+                 var viewWindow = (RequestServiceNameView)Application.Current.MainWindow.Content;
+                 Assert.IsNotNull(viewWindow);
+                 Assert.IsNotNull(viewWindow.DataContext);
+                 Assert.IsInstanceOfType(viewWindow.DataContext, typeof(IRequestServiceNameViewModel));
+                 Application.Current.Shutdown();
+             }));
 
             Application.Current.Run(Application.Current.MainWindow);
             FeatureContext.Current.Add("view",view);
@@ -228,17 +228,7 @@ namespace Warewolf.AcceptanceTesting.SaveDialog
             ScenarioContext.Current.TryGetValue("saveView", out saveView);
             Assert.IsNotNull(saveView);
             var explorer = saveView.GetExplorerView();
-            explorer.VerifyItemDoesNotExist(folderName + "/" + resourceName);
-        }
-
-        [When(@"I refresh the filter")]
-        public void WhenIRefreshTheFilter()
-        {
-            IRequestServiceNameView saveView;
-            ScenarioContext.Current.TryGetValue("saveView", out saveView);
-            Assert.IsNotNull(saveView);
-            var explorer = saveView.GetExplorerView();
-            explorer.Refresh();
+            explorer.VerifyItemExists(folderName + "/" + resourceName);
         }
 
         [When(@"I context menu ""(.*)"" ""(.*)"" on ""(.*)""")]
