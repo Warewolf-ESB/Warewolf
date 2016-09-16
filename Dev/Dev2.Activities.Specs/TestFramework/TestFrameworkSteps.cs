@@ -243,8 +243,7 @@ namespace Dev2.Activities.Specs.TestFramework
                 Category = "",
                 ResourceName = _resourceForTests
             };
-            var executeMessage = environmentModel.ResourceRepository.SaveTests(resourceModel, serviceTestModelTos);
-            Assert.AreNotEqual(SaveResult.ResourceDeleted, executeMessage.Result);
+            environmentModel.ResourceRepository.SaveTests(resourceModel, serviceTestModelTos);
         }
 
         [Then(@"""(.*)"" is passing")]
@@ -288,6 +287,13 @@ namespace Dev2.Activities.Specs.TestFramework
             ServiceTestViewModel serviceTest = GetTestFrameworkFromContext();
             var serviceTestModel = serviceTest.Tests.Single(model => model.TestName.Equals(testName, StringComparison.InvariantCultureIgnoreCase));
             Assert.IsTrue(serviceTestModel.TestPending);
+        }
+        [Then(@"debug window is visible")]
+        public void ThenDebugWindowIsVisible()
+        {
+            ServiceTestViewModel serviceTest = GetTestFrameworkFromContext();
+            var count = serviceTest.SelectedServiceTest.DebugForTest.All(state => state.DisplayName== "WorkflowWithTests");
+            Assert.IsTrue(count);
         }
 
 
@@ -1258,6 +1264,8 @@ namespace Dev2.Activities.Specs.TestFramework
             Assert.Fail("Test Framework ViewModel not found");
             return null;
         }
+
+        
 
     }
 }

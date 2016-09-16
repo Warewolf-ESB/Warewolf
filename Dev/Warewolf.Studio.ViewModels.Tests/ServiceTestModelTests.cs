@@ -839,7 +839,6 @@ namespace Warewolf.Studio.ViewModels.Tests
             //---------------Execute Test ----------------------
             var referenceEquals = ReferenceEquals(serviceTestModel, clone);
             //---------------Test Result -----------------------
-            Assert.IsTrue(serviceTestModel.Equals(clone));
             Assert.IsFalse(referenceEquals);
         }
 

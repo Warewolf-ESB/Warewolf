@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reflection;
+using System.Text;
 using System.Windows;
 using Caliburn.Micro;
 using Dev2;
@@ -13,6 +14,7 @@ using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Data;
 using Dev2.Data.Binary_Objects;
 using Dev2.Interfaces;
+using Dev2.Providers.Events;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Models.DataList;
@@ -155,6 +157,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             moqModel.Setup(model => model.Environment.IsConnected).Returns(isConnected);
             moqModel.Setup(model => model.Environment.Connection.WebServerUri).Returns(new Uri("http://rsaklf/bob"));
             moqModel.Setup(model => model.Category).Returns("My WF");
+            moqModel.Setup(model => model.Environment.IsLocalHost).Returns(isConnected);
             moqModel.Setup(model => model.ResourceName).Returns("My WF");
             return moqModel.Object;
         }
@@ -420,13 +423,14 @@ namespace Warewolf.Studio.ViewModels.Tests
             con.Setup(connection => connection.IsConnected).Returns(true);
             con.Setup(model => model.WebServerUri).Returns(new Uri("http://rsaklf/bob"));
             var mockResourceRepo = new Mock<IResourceRepository>();
-            mockResourceRepo.Setup(repository => repository.SaveTests(It.IsAny<IResourceModel>(), It.IsAny<List<IServiceTestModelTO>>()));
+            mockResourceRepo.Setup(model => model.SaveTests(It.IsAny<IResourceModel>(), It.IsAny<List<IServiceTestModelTO>>())).Returns(new TestSaveResult() { Result = SaveResult.Success }).Verifiable();
             mockEnvironmentModel.Setup(model => model.ResourceRepository).Returns(mockResourceRepo.Object);
             mockEnvironmentModel.Setup(model => model.Connection).Returns(con.Object);
             mockEnvironmentModel.Setup(model => model.IsConnected).Returns(true);
-            resourceModelMock.Setup(model => model.Environment).Returns(mockEnvironmentModel.Object);
+            resourceModelMock.Setup(model => model.Environment).Returns(mockEnvironmentModel.Object);            
             resourceModelMock.Setup(model => model.Category).Returns("My WF");
             resourceModelMock.Setup(model => model.ResourceName).Returns("My WF");
+            
 
             var testFrameworkViewModel = new ServiceTestViewModel(resourceModelMock.Object, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object);
             testFrameworkViewModel.CreateTestCommand.Execute(null);
@@ -973,7 +977,27 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void RunSelectedTestCommand_GivenSelectedTestIsNotDirty_ShouldRunTheTest()
         {
             //---------------Set up test pack-------------------
-            var testFrameworkViewModel = new ServiceTestViewModel(CreateMockResourceModel().Object, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object);
+            // ReSharper disable once NotAccessedVariable
+            var retVal = new StringBuilder();
+            Mock<IEnvironmentModel> mockEnvironmentModel = new Mock<IEnvironmentModel>();
+            Mock<IEnvironmentConnection> conn = new Mock<IEnvironmentConnection>();
+            conn.Setup(c => c.IsConnected).Returns(true);
+            conn.Setup(c => c.ServerEvents).Returns(new EventPublisher());
+            conn.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Callback((StringBuilder o, Guid workspaceID) =>
+            {
+                retVal = o;
+            });
+
+            mockEnvironmentModel.Setup(e => e.Connection).Returns(conn.Object);
+            mockEnvironmentModel.Setup(e => e.IsConnected).Returns(true);
+
+            var mockResourceModel = CreateMockResourceModel();
+            mockResourceModel.SetupGet(a => a.Environment).Returns(mockEnvironmentModel.Object);
+            mockResourceModel.SetupGet(a => a.Environment.Connection).Returns(conn.Object);
+
+            mockResourceModel.Setup(model => model.Environment.ResourceRepository.SaveTests(It.IsAny<IResourceModel>(), It.IsAny<List<IServiceTestModelTO>>())).Returns(new TestSaveResult() { Result = SaveResult.Success }).Verifiable();
+
+            var testFrameworkViewModel = new ServiceTestViewModel(mockResourceModel.Object, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object);
             testFrameworkViewModel.CreateTestCommand.Execute(null);
             testFrameworkViewModel.SelectedServiceTest.TestName = "NewTestSaved";
             testFrameworkViewModel.Save();
@@ -1356,6 +1380,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             moqModel.Setup(model => model.DisplayName).Returns("My WF");
             moqModel.Setup(model => model.Environment.Connection.IsConnected).Returns(true);
             moqModel.Setup(model => model.Environment.IsConnected).Returns(true);
+            moqModel.Setup(model => model.Environment.IsLocalHost).Returns(false);
             moqModel.Setup(model => model.Environment.Connection.WebServerUri).Returns(new Uri("http://rsaklf/bob"));
             moqModel.Setup(model => model.Category).Returns("My WF");
             moqModel.Setup(model => model.ResourceName).Returns("My WF");
@@ -1385,6 +1410,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             moqModel.Setup(model => model.DisplayName).Returns("My WF");
             moqModel.Setup(model => model.Environment.Connection.IsConnected).Returns(true);
             moqModel.Setup(model => model.Environment.IsConnected).Returns(true);
+            moqModel.Setup(model => model.Environment.IsLocalHost).Returns(true);
             moqModel.Setup(model => model.Environment.Connection.WebServerUri).Returns(new Uri("http://rsaklf/bob"));
             moqModel.Setup(model => model.Category).Returns("My WF");
             moqModel.Setup(model => model.ResourceName).Returns("My WF");

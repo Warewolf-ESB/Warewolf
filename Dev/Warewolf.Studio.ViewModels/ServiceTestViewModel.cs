@@ -88,8 +88,14 @@ namespace Warewolf.Studio.ViewModels
 
         private void SetServerName(IContextualResourceModel resourceModel)
         {
-            if (resourceModel.Environment != null && !string.IsNullOrEmpty(resourceModel.Environment.Name))
-                _serverName = resourceModel.Environment.Name.Equals("localhost", StringComparison.InvariantCultureIgnoreCase) ? "" : " - " + resourceModel.Environment.Name;
+            if (resourceModel.Environment == null || resourceModel.Environment.IsLocalHost)
+            {
+                _serverName = string.Empty;
+            }
+            else if(!resourceModel.Environment.IsLocalHost)
+            {
+                _serverName = " - " + resourceModel.Environment.Name;
+            }
         }
 
         private string _serverName;
@@ -146,7 +152,7 @@ namespace Warewolf.Studio.ViewModels
 
         private void RunAllTestsInBrowser()
         {
-            ServiceTestCommandHandler.RunAllTestsInBrowser(IsDirty,RunAllTestsUrl,_processExecutor);
+            ServiceTestCommandHandler.RunAllTestsInBrowser(IsDirty, RunAllTestsUrl, _processExecutor);
         }
 
         private void RunAllTests()
@@ -403,7 +409,7 @@ namespace Warewolf.Studio.ViewModels
 
         private void UpdateTestsFromResourceUpdate()
         {
-            foreach(var serviceTestModel in Tests)
+            foreach (var serviceTestModel in Tests)
             {
                 serviceTestModel.RunSelectedTestUrl = WebServer.GetWorkflowUri(ResourceModel, "", UrlType.Tests) + "/" + serviceTestModel.TestName;
                 if (serviceTestModel.AuthenticationType == AuthenticationType.Public)
@@ -411,7 +417,7 @@ namespace Warewolf.Studio.ViewModels
                     serviceTestModel.RunSelectedTestUrl = serviceTestModel.RunSelectedTestUrl.Replace("/secure/", "/public/");
                 }
             }
-            
+
         }
 
         private bool ShowPoputWhenDuplicates()
