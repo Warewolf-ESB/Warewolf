@@ -220,7 +220,7 @@ namespace Warewolf.Studio.ViewModels
         {
             get
             {
-                var isValid = false;
+                var isValid = true;
                 if (SelectedServiceTest != null)
                 {
                     isValid = IsValidName(SelectedServiceTest.TestName);
@@ -391,6 +391,7 @@ namespace Warewolf.Studio.ViewModels
             ViewModelUtils.RaiseCanExecuteChanged(RunAllTestsInBrowserCommand);
             ViewModelUtils.RaiseCanExecuteChanged(RunSelectedTestCommand);
             ViewModelUtils.RaiseCanExecuteChanged(RunSelectedTestInBrowserCommand);
+            OnPropertyChanged(() => DisplayName);
         }
 
         public bool HasDuplicates() => RealTests().ToList().GroupBy(x => x.TestName).Where(group => @group.Count() > 1).Select(group => @group.Key).Any();
