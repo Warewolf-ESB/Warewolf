@@ -212,7 +212,7 @@ namespace Warewolf.Studio.ViewModels
         {
             get
             {
-                var isValid = false;
+                var isValid = true;
                 if (SelectedServiceTest != null)
                 {
                     isValid = IsValidName(SelectedServiceTest.TestName);
