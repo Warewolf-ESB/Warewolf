@@ -80,11 +80,10 @@
                 </Grid.ColumnDefinitions>
 
                 <ListBox Grid.Column="0" Style="{StaticResource TestsListBoxStyle}" 
-                         BorderThickness="1,0,1,1"
-                         PreviewMouseLeftButtonDown="TestsListbox_OnPreviewMouseLeftButtonDown"
+                         BorderThickness="1,0,1,1"                        
                          ItemsSource="{Binding Tests}" SelectionMode="Single" 
                          x:Name="TestsListbox"
-                         SelectedItem="{Binding SelectedServiceTest.IsTestSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" >
+                         SelectedItem="{Binding SelectedServiceTest, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" >
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                             <Grid>
@@ -92,11 +91,11 @@
                                       VerticalAlignment="Stretch" 
                                       Visibility="{Binding IsNewTest,Converter={StaticResource BoolToVisibilityConverterNegative}}">
                                     <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="Auto"/>
-                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="30"/>
+                                        <ColumnDefinition Width="30"/>
                                         <ColumnDefinition Width="*"/>
-                                        <ColumnDefinition Width="Auto"/>
-                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="30"/>
+                                        <ColumnDefinition Width="30"/>
                                     </Grid.ColumnDefinitions>
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="Auto"/>
@@ -117,7 +116,7 @@
                                               HorizontalAlignment="Left" Style="{StaticResource CheckBoxRoundedStyle}" 
                                               Margin="-2,0,0,0"
                                               ToolTip="{x:Static languages:Core.ServiceTestEnableRunSelectedTestTooltip}"
-                                              IsChecked="{Binding Enabled}"
+                                              IsChecked="{Binding Enabled, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                               Click="SelectedTestCheckBox_OnClick">
                                         <i:Interaction.Behaviors>
                                             <core:HelpSetter Text="{x:Static languages:Core.ServiceTestEnableRunSelectedTestHelpText}" DataContext="{Binding }" />
@@ -168,7 +167,6 @@
                                             Grid.RowSpan="2" 
                                             Command="{Binding ElementName=TestsListbox, Path=DataContext.StopTestCommand }" 
                                             CommandParameter="{Binding .}" 
-                                            Margin="0,0,10,0"
                                             Visibility="{Binding IsTestRunning, Converter={StaticResource BoolToVisibilityConverterPositive}}"
                                             Style="{StaticResource ButtonStopTestTransparentStyle}" >
                                         <Button.Content>
