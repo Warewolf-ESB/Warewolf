@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Runtime.ServiceModel.Data;
+// ReSharper disable UnusedMemberInSuper.Global
 
 namespace Dev2.Common.Interfaces
 {

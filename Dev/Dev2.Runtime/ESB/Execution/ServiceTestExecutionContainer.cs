@@ -23,6 +23,7 @@ using Dev2.Workspaces;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Warewolf.Security.Encryption;
+// ReSharper disable CyclomaticComplexity
 
 namespace Dev2.Runtime.ESB.Execution
 {
@@ -90,8 +91,11 @@ namespace Dev2.Runtime.ESB.Execution
             if (serviceTestModelTO == null)
             {
                 Dev2JsonSerializer serializer = new Dev2JsonSerializer();
-                var testRunResult = new TestRunResult { TestName = DataObject.TestName };
-                testRunResult.Result = RunResult.TestInvalid;
+                var testRunResult = new TestRunResult
+                {
+                    TestName = DataObject.TestName,
+                    Result = RunResult.TestInvalid
+                };
                 Dev2Logger.Error($"Test {DataObject.TestName} for Resource {DataObject.ServiceName} ID {DataObject.ResourceID}");
                 testRunResult.Message = $"Test {DataObject.TestName} for Resource {DataObject.ServiceName} ID {DataObject.ResourceID}";                
                 _request.ExecuteResult = serializer.SerializeToBuilder(testRunResult);
