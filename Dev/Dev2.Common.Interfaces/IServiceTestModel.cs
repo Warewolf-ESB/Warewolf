@@ -7,7 +7,7 @@ using Dev2.Runtime.ServiceModel.Data;
 
 namespace Dev2.Common.Interfaces
 {
-    public interface IServiceTestModel: INotifyPropertyChanged
+    public interface IServiceTestModel: INotifyPropertyChanged, ICloneable
     {
         Guid ParentId { get; set; }
         string OldTestName { get; set; }
