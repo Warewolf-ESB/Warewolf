@@ -293,7 +293,8 @@ namespace Dev2.Activities.Specs.TestFramework
         public void ThenDebugWindowIsVisible()
         {
             ServiceTestViewModel serviceTest = GetTestFrameworkFromContext();
-            var count = serviceTest.SelectedServiceTest.DebugForTest.Count;
+            var count = serviceTest.SelectedServiceTest.DebugForTest.All(state => state.DisplayName== "WorkflowWithTests");
+            Assert.IsTrue(count);
         }
 
 
