@@ -34,6 +34,7 @@ namespace Warewolf.Studio.ViewModels
                 TestPending = true,
                 Enabled = true,
                 NewTest = true,
+                NoErrorExpected = true,
                 Inputs = new ObservableCollection< IServiceTestInput >(),
                 Outputs = new ObservableCollection< IServiceTestOutput >(),
             };
