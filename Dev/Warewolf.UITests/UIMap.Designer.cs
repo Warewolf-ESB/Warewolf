@@ -6022,19 +6022,6 @@ namespace Warewolf.UITests
                     "d web address.");
         }
         
-        /// <summary>
-        /// AssertMethod1 - Use 'AssertMethod1ExpectedValues' to pass parameters into this method.
-        /// </summary>
-        public void AssertMethod1()
-        {
-            #region Variable Declarations
-            WpfTabPage uIDev2ViewModelsStudioTabPage = this.UIWarewolfDEV2SANELEMTWindow.UIUI_SplitPane_AutoIDCustom.UIUI_TabManager_AutoIDTabList.UIDev2ViewModelsStudioTabPage;
-            #endregion
-
-            // Verify that the 'Exists' property of 'Dev2.ViewModels.StudioTestViewModel' tab equals 'True'
-            Assert.AreEqual(this.AssertMethod1ExpectedValues.UIDev2ViewModelsStudioTabPageExists, uIDev2ViewModelsStudioTabPage.Exists);
-        }
-        
         #region Properties
         public virtual Assert_CancelConnectionButton_ExistsExpectedValues Assert_CancelConnectionButton_ExistsExpectedValues
         {
@@ -8292,18 +8279,6 @@ namespace Warewolf.UITests
             }
         }
         
-        public virtual AssertMethod1ExpectedValues AssertMethod1ExpectedValues
-        {
-            get
-            {
-                if ((this.mAssertMethod1ExpectedValues == null))
-                {
-                    this.mAssertMethod1ExpectedValues = new AssertMethod1ExpectedValues();
-                }
-                return this.mAssertMethod1ExpectedValues;
-            }
-        }
-        
         public MainStudioWindow MainStudioWindow
         {
             get
@@ -8397,18 +8372,6 @@ namespace Warewolf.UITests
                     this.mSwitchCaseDialog = new SwitchCaseDialog();
                 }
                 return this.mSwitchCaseDialog;
-            }
-        }
-        
-        public UIWarewolfDEV2SANELEMTWindow UIWarewolfDEV2SANELEMTWindow
-        {
-            get
-            {
-                if ((this.mUIWarewolfDEV2SANELEMTWindow == null))
-                {
-                    this.mUIWarewolfDEV2SANELEMTWindow = new UIWarewolfDEV2SANELEMTWindow();
-                }
-                return this.mUIWarewolfDEV2SANELEMTWindow;
             }
         }
         #endregion
@@ -8790,8 +8753,6 @@ namespace Warewolf.UITests
         
         private Type_TestSite_into_Web_Source_Wizard_Address_TextboxParams mType_TestSite_into_Web_Source_Wizard_Address_TextboxParams;
         
-        private AssertMethod1ExpectedValues mAssertMethod1ExpectedValues;
-        
         private MainStudioWindow mMainStudioWindow;
         
         private MessageBoxWindow mMessageBoxWindow;
@@ -8807,8 +8768,6 @@ namespace Warewolf.UITests
         private ServicePickerDialog mServicePickerDialog;
         
         private SwitchCaseDialog mSwitchCaseDialog;
-        
-        private UIWarewolfDEV2SANELEMTWindow mUIWarewolfDEV2SANELEMTWindow;
         #endregion
     }
     
@@ -12714,21 +12673,6 @@ namespace Warewolf.UITests
         /// Verify that the 'Enabled' property of 'Test Connection' button equals 'True'
         /// </summary>
         public bool TestConnectionButtonEnabled = true;
-        #endregion
-    }
-    
-    /// <summary>
-    /// Parameters to be passed into 'AssertMethod1'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class AssertMethod1ExpectedValues
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Verify that the 'Exists' property of 'Dev2.ViewModels.StudioTestViewModel' tab equals 'True'
-        /// </summary>
-        public bool UIDev2ViewModelsStudioTabPageExists = true;
         #endregion
     }
     
@@ -29738,6 +29682,21 @@ namespace Warewolf.UITests
         }
         
         #region Properties
+        public WpfText TabDescription
+        {
+            get
+            {
+                if ((this.mTabDescription == null))
+                {
+                    this.mTabDescription = new WpfText(this);
+                    #region Search Criteria
+                    this.mTabDescription.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mTabDescription;
+            }
+        }
+        
         public ServiceTestView1 ServiceTestView
         {
             get
@@ -29752,6 +29711,8 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
+        private WpfText mTabDescription;
+        
         private ServiceTestView1 mServiceTestView;
         #endregion
     }
@@ -30228,6 +30189,21 @@ namespace Warewolf.UITests
                 return this.mDeleteButton;
             }
         }
+        
+        public WpfText TestNameDisplay
+        {
+            get
+            {
+                if ((this.mTestNameDisplay == null))
+                {
+                    this.mTestNameDisplay = new WpfText(this);
+                    #region Search Criteria
+                    this.mTestNameDisplay.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mTestNameDisplay;
+            }
+        }
         #endregion
         
         #region Fields
@@ -30236,6 +30212,8 @@ namespace Warewolf.UITests
         private WpfButton mRunButton;
         
         private WpfButton mDeleteButton;
+        
+        private WpfText mTestNameDisplay;
         #endregion
     }
     
@@ -37714,107 +37692,6 @@ namespace Warewolf.UITests
         
         #region Fields
         private WpfButton mDoneButton;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class UIWarewolfDEV2SANELEMTWindow : WpfWindow
-    {
-        
-        public UIWarewolfDEV2SANELEMTWindow()
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfWindow.PropertyNames.Name] = "Warewolf (DEV2\\SANELE.MTHEMBU)";
-            this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
-            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
-            #endregion
-        }
-        
-        #region Properties
-        public UIUI_SplitPane_AutoIDCustom UIUI_SplitPane_AutoIDCustom
-        {
-            get
-            {
-                if ((this.mUIUI_SplitPane_AutoIDCustom == null))
-                {
-                    this.mUIUI_SplitPane_AutoIDCustom = new UIUI_SplitPane_AutoIDCustom(this);
-                }
-                return this.mUIUI_SplitPane_AutoIDCustom;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private UIUI_SplitPane_AutoIDCustom mUIUI_SplitPane_AutoIDCustom;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class UIUI_SplitPane_AutoIDCustom : WpfCustom
-    {
-        
-        public UIUI_SplitPane_AutoIDCustom(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.SplitPane";
-            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "UI_SplitPane_AutoID";
-            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
-            #endregion
-        }
-        
-        #region Properties
-        public UIUI_TabManager_AutoIDTabList UIUI_TabManager_AutoIDTabList
-        {
-            get
-            {
-                if ((this.mUIUI_TabManager_AutoIDTabList == null))
-                {
-                    this.mUIUI_TabManager_AutoIDTabList = new UIUI_TabManager_AutoIDTabList(this);
-                }
-                return this.mUIUI_TabManager_AutoIDTabList;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private UIUI_TabManager_AutoIDTabList mUIUI_TabManager_AutoIDTabList;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class UIUI_TabManager_AutoIDTabList : WpfTabList
-    {
-        
-        public UIUI_TabManager_AutoIDTabList(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfTabList.PropertyNames.AutomationId] = "UI_TabManager_AutoID";
-            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
-            #endregion
-        }
-        
-        #region Properties
-        public WpfTabPage UIDev2ViewModelsStudioTabPage
-        {
-            get
-            {
-                if ((this.mUIDev2ViewModelsStudioTabPage == null))
-                {
-                    this.mUIDev2ViewModelsStudioTabPage = new WpfTabPage(this);
-                    #region Search Criteria
-                    this.mUIDev2ViewModelsStudioTabPage.SearchProperties[WpfTabPage.PropertyNames.Name] = "Dev2.ViewModels.StudioTestViewModel";
-                    this.mUIDev2ViewModelsStudioTabPage.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
-                    #endregion
-                }
-                return this.mUIDev2ViewModelsStudioTabPage;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfTabPage mUIDev2ViewModelsStudioTabPage;
         #endregion
     }
 }
