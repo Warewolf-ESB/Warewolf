@@ -271,16 +271,16 @@ namespace Warewolf.UITests
         public void Click_Assign_Tool_url()
         {
             #region Variable Declarations
-            WpfHyperlink httprsaklfsanele3142Hyperlink = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.TopScrollViewerPane.Httprsaklfsanele3142Text.Httprsaklfsanele3142Hyperlink;
+            WpfHyperlink hyperlink = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.TopScrollViewerPane.UnsavedHyperlink.Hyperlink;
             WpfWindow messageBoxWindow = this.MessageBoxWindow;
             WpfButton oKButton = this.MessageBoxWindow.OKButton;
             #endregion
 
-            // Verify that the 'Exists' property of 'http://rsaklfsanele:3142/secure/Unassigned/Unsaved...' link equals 'True'
-            Assert.AreEqual(this.Click_Assign_Tool_urlParams.Httprsaklfsanele3142HyperlinkExists, httprsaklfsanele3142Hyperlink.Exists, "Url hyperlink does not exist");
+            // Verify that the 'Exists' property of 'Hyperlink' link equals 'True'
+            Assert.AreEqual(this.Click_Assign_Tool_urlParams.HyperlinkExists, hyperlink.Exists, "Url hyperlink does not exist");
 
-            // Click 'http://rsaklfsanele:3142/secure/Unassigned/Unsaved...' link
-            Mouse.Click(httprsaklfsanele3142Hyperlink, new Point(201, 10));
+            // Click 'Hyperlink' link
+            Mouse.Click(hyperlink, new Point(201, 10));
 
             // Verify that the 'Exists' property of 'WarewolfMessageBox' window equals 'True'
             Assert.AreEqual(this.Click_Assign_Tool_urlParams.MessageBoxWindowExists, messageBoxWindow.Exists, "Did you know popup does not exis");
@@ -3906,6 +3906,26 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
+        /// Move_File_To_Localhost
+        /// </summary>
+        public void Move_File_To_Localhost()
+        {
+            #region Variable Declarations
+            WpfCheckBox uIExpansionIndicatorCheckBox = this.UIWarewolfDEV2SANELEMTWindow.UIUI_ExplorerControl_ACustom.UIExplorerTreeTree.UIInfragisticsControlsTreeItem.UIInfragisticsControlsTreeItem1.UIExpansionIndicatorCheckBox;
+            WpfTreeItem uIInfragisticsControlsTreeItem = this.UIWarewolfDEV2SANELEMTWindow.UIUI_ExplorerControl_ACustom.UIExplorerTreeTree.UIInfragisticsControlsTreeItem.UIInfragisticsControlsTreeItem1.UIInfragisticsControlsTreeItem;
+            WpfWindow uIWpfWindow = this.UIWarewolfDEV2SANELEMTWindow.UIWpfWindow;
+            #endregion
+
+            // Click 'ExpansionIndicator' check box
+            Mouse.Click(uIExpansionIndicatorCheckBox, new Point(17, 6));
+
+            // Move 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item to 'Wpf' window
+            uIWpfWindow.EnsureClickable(new Point(10, 10));
+            Mouse.StartDragging(uIInfragisticsControlsTreeItem, new Point(76, 12));
+            Mouse.StopDragging(uIWpfWindow, new Point(10, 10));
+        }
+        
+        /// <summary>
         /// Open_Assign_Tool_Large_View - Use 'Open_Assign_Tool_Large_ViewParams' to pass parameters into this method.
         /// </summary>
         public void Open_Assign_Tool_Large_View()
@@ -6316,26 +6336,6 @@ namespace Warewolf.UITests
             // Verify that the 'Enabled' property of 'Test Connection' button equals 'True'
             Assert.AreEqual(this.Type_TestSite_into_Web_Source_Wizard_Address_TextboxParams.TestConnectionButtonEnabled, testConnectionButton.Enabled, "New web source wizard test connection button is not enabled after entering a vali" +
                     "d web address.");
-        }
-        
-        /// <summary>
-        /// Move_File_To_Localhost
-        /// </summary>
-        public void Move_File_To_Localhost()
-        {
-            #region Variable Declarations
-            WpfCheckBox uIExpansionIndicatorCheckBox = this.UIWarewolfDEV2SANELEMTWindow.UIUI_ExplorerControl_ACustom.UIExplorerTreeTree.UIInfragisticsControlsTreeItem.UIInfragisticsControlsTreeItem1.UIExpansionIndicatorCheckBox;
-            WpfTreeItem uIInfragisticsControlsTreeItem = this.UIWarewolfDEV2SANELEMTWindow.UIUI_ExplorerControl_ACustom.UIExplorerTreeTree.UIInfragisticsControlsTreeItem.UIInfragisticsControlsTreeItem1.UIInfragisticsControlsTreeItem;
-            WpfWindow uIWpfWindow = this.UIWarewolfDEV2SANELEMTWindow.UIWpfWindow;
-            #endregion
-
-            // Click 'ExpansionIndicator' check box
-            Mouse.Click(uIExpansionIndicatorCheckBox, new Point(17, 6));
-
-            // Move 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item to 'Wpf' window
-            uIWpfWindow.EnsureClickable(new Point(10, 10));
-            Mouse.StartDragging(uIInfragisticsControlsTreeItem, new Point(76, 12));
-            Mouse.StopDragging(uIWpfWindow, new Point(10, 10));
         }
         
         #region Properties
@@ -9514,9 +9514,9 @@ namespace Warewolf.UITests
         
         #region Fields
         /// <summary>
-        /// Verify that the 'Exists' property of 'http://rsaklfsanele:3142/secure/Unassigned/Unsaved...' link equals 'True'
+        /// Verify that the 'Exists' property of 'Hyperlink' link equals 'True'
         /// </summary>
-        public bool Httprsaklfsanele3142HyperlinkExists = true;
+        public bool HyperlinkExists = true;
         
         /// <summary>
         /// Verify that the 'Exists' property of 'WarewolfMessageBox' window equals 'True'
@@ -31038,57 +31038,56 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public Httprsaklfsanele3142Text Httprsaklfsanele3142Text
+        public UnsavedHyperlink UnsavedHyperlink
         {
             get
             {
-                if ((this.mHttprsaklfsanele3142Text == null))
+                if ((this.mUnsavedHyperlink == null))
                 {
-                    this.mHttprsaklfsanele3142Text = new Httprsaklfsanele3142Text(this);
+                    this.mUnsavedHyperlink = new UnsavedHyperlink(this);
                 }
-                return this.mHttprsaklfsanele3142Text;
+                return this.mUnsavedHyperlink;
             }
         }
         #endregion
         
         #region Fields
-        private Httprsaklfsanele3142Text mHttprsaklfsanele3142Text;
+        private UnsavedHyperlink mUnsavedHyperlink;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Httprsaklfsanele3142Text : WpfText
+    public class UnsavedHyperlink : WpfText
     {
         
-        public Httprsaklfsanele3142Text(UITestControl searchLimitContainer) : 
+        public UnsavedHyperlink(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
-            this.SearchProperties[WpfText.PropertyNames.Name] = "http://rsaklfsanele:3142/secure/Unassigned/Unsaved 1.json?<DataList></DataList>";
+            this.SearchProperties.Add(new PropertyExpression(WpfText.PropertyNames.Name, ":3142/secure/Unassigned/Unsaved", PropertyExpressionOperator.Contains));
             this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
             #endregion
         }
         
         #region Properties
-        public WpfHyperlink Httprsaklfsanele3142Hyperlink
+        public WpfHyperlink Hyperlink
         {
             get
             {
-                if ((this.mHttprsaklfsanele3142Hyperlink == null))
+                if ((this.mHyperlink == null))
                 {
-                    this.mHttprsaklfsanele3142Hyperlink = new WpfHyperlink(this);
+                    this.mHyperlink = new WpfHyperlink(this);
                     #region Search Criteria
-                    this.mHttprsaklfsanele3142Hyperlink.SearchProperties[WpfHyperlink.PropertyNames.Name] = "http://rsaklfsanele:3142/secure/Unassigned/Unsaved 1.json?<DataList></DataList>";
-                    this.mHttprsaklfsanele3142Hyperlink.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    this.mHyperlink.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
                     #endregion
                 }
-                return this.mHttprsaklfsanele3142Hyperlink;
+                return this.mHyperlink;
             }
         }
         #endregion
         
         #region Fields
-        private WpfHyperlink mHttprsaklfsanele3142Hyperlink;
+        private WpfHyperlink mHyperlink;
         #endregion
     }
     
