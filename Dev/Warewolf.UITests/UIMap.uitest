@@ -8226,7 +8226,7 @@
       <ActionType>Click</ActionType>
       <MouseButton>Left</MouseButton>
     </MouseAction>
-    <AssertAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DBSourceWizardTab.WorkSurfaceContext.ManageDatabaseSourceControl.UIDatabaseComboxBoxCustom.UIDev2TestingDBText">
+    <AssertAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DBSourceWizardTab.WorkSurfaceContext.ManageDatabaseSourceControl.DatabaseCombobox.Dev2TestingDBText">
       <ParameterName />
       <PropertyName>DisplayText</PropertyName>
       <ExpectedValue>Dev2TestingDB</ExpectedValue>
@@ -19270,34 +19270,6 @@
                                         </UIObject>
                                       </Descendants>
                                     </UIObject>
-                                    <UIObject ControlType="Custom" Id="UIDatabaseComboxBoxCustom" FriendlyName="DatabaseComboxBox" SpecialControlType="None">
-                                      <TechnologyName>UIA</TechnologyName>
-                                      <WindowTitles>
-                                        <WindowTitle>Warewolf</WindowTitle>
-                                      </WindowTitles>
-                                      <AndCondition>
-                                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                        <PropertyCondition Name="ControlType">Custom</PropertyCondition>
-                                        <PropertyCondition Name="ClassName">Uia.XamComboEditor</PropertyCondition>
-                                        <PropertyCondition Name="AutomationId">DatabaseComboxBox</PropertyCondition>
-                                      </AndCondition>
-                                      <SupportLevel>0</SupportLevel>
-                                      <Descendants>
-                                        <UIObject ControlType="Text" Id="UIDev2TestingDBText" FriendlyName="Dev2TestingDB" SpecialControlType="None">
-                                          <TechnologyName>UIA</TechnologyName>
-                                          <WindowTitles>
-                                            <WindowTitle>Warewolf</WindowTitle>
-                                          </WindowTitles>
-                                          <AndCondition>
-                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                            <PropertyCondition Name="ControlType">Text</PropertyCondition>
-                                            <PropertyCondition Name="Name">Dev2TestingDB</PropertyCondition>
-                                          </AndCondition>
-                                          <SupportLevel>0</SupportLevel>
-                                          <Descendants />
-                                        </UIObject>
-                                      </Descendants>
-                                    </UIObject>
                                     <UIObject ControlType="Button" Id="TestConnectionButton" FriendlyName="Test Connection" SpecialControlType="None">
                                       <TechnologyName>UIA</TechnologyName>
                                       <WindowTitles>
@@ -19347,6 +19319,19 @@
                                             <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                             <PropertyCondition Name="ControlType">Text</PropertyCondition>
                                             <PropertyCondition Name="Name">MS Access Database</PropertyCondition>
+                                          </AndCondition>
+                                          <SupportLevel>0</SupportLevel>
+                                          <Descendants />
+                                        </UIObject>
+                                        <UIObject ControlType="Text" Id="Dev2TestingDBText" FriendlyName="Dev2TestingDB" SpecialControlType="None">
+                                          <TechnologyName>UIA</TechnologyName>
+                                          <WindowTitles>
+                                            <WindowTitle>Warewolf</WindowTitle>
+                                          </WindowTitles>
+                                          <AndCondition>
+                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                            <PropertyCondition Name="ControlType">Text</PropertyCondition>
+                                            <PropertyCondition Name="Name">Dev2TestingDB</PropertyCondition>
                                           </AndCondition>
                                           <SupportLevel>0</SupportLevel>
                                           <Descendants />

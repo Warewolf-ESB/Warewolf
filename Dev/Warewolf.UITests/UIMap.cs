@@ -22,7 +22,7 @@ namespace Warewolf.UITests
     {
         const int _lenientSearchTimeout = 6000;
         const int _lenientMaximumRetryCount = 3;
-        const int _strictSearchTimeout = 2000;
+        const int _strictSearchTimeout = 2500;
         const int _strictMaximumRetryCount = 1;
 
         public void SetGlobalPlaybackSettings()
@@ -996,13 +996,11 @@ namespace Warewolf.UITests
 
         public void Click_DB_Source_Wizard_Test_Connection_Button()
         {
-            #region Variable Declarations
-            WpfButton testConnectionButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DBSourceWizardTab.WorkSurfaceContext.TestConnectionButton;
-            #endregion
-            var point = new Point();
-            Assert.IsTrue(!MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DBSourceWizardTab.WorkSurfaceContext.ManageDatabaseSourceControl.DatabaseCombobox.TryGetClickablePoint(out point), "Database Combobox does not exist");
-            Mouse.Click(testConnectionButton, new Point(21, 16));
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DBSourceWizardTab.WorkSurfaceContext.ManageDatabaseSourceControl.DatabaseCombobox.TryGetClickablePoint(out point), "Database Combobox does not exist");
+            Assert.IsTrue(!GetControlVisible(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DBSourceWizardTab.WorkSurfaceContext.ManageDatabaseSourceControl.DatabaseCombobox), "Database Combobox is visible before clicking test connection button.");
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DBSourceWizardTab.WorkSurfaceContext.TestConnectionButton, new Point(21, 16));
+            WaitForControlNotVisible(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DBSourceWizardTab.WorkSurfaceContext.ErrorText.Spinner);
+            Assert.IsTrue(GetControlVisible(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DBSourceWizardTab.WorkSurfaceContext.ConnectionPassedImage), "Test database connection failed.");
+            Assert.IsTrue(GetControlVisible(MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DBSourceWizardTab.WorkSurfaceContext.ManageDatabaseSourceControl.DatabaseCombobox), "Database Combobox is not visible after clicking test.");
         }
 
         public void Deploy_Service_From_Deploy_View(string ServiceName)
