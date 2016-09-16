@@ -88,8 +88,8 @@ namespace Warewolf.Studio.ViewModels
 
         private void SetServerName(IContextualResourceModel resourceModel)
         {
-            if (resourceModel.Environment != null && !string.IsNullOrEmpty(resourceModel.Environment.Name))
-                _serverName = resourceModel.Environment.Name.Equals("localhost", StringComparison.InvariantCultureIgnoreCase) ? "" : " - " + resourceModel.Environment.Name;
+            if (!string.IsNullOrEmpty(resourceModel.Environment?.Name))
+                _serverName = resourceModel.Environment.Name.ToUpper().Contains("localhost".ToUpper()) ? "" : " - " + resourceModel.Environment.Name;
         }
 
         private string _serverName;
