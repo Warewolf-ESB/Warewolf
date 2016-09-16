@@ -92,6 +92,7 @@ namespace Dev2.Runtime.ESB.Execution
                 Dev2JsonSerializer serializer = new Dev2JsonSerializer();
                 var testRunResult = new TestRunResult { TestName = DataObject.TestName };
                 testRunResult.Result = RunResult.TestInvalid;
+                Dev2Logger.Error($"Test {DataObject.TestName} for Resource {DataObject.ServiceName} ID {DataObject.ResourceID}");
                 testRunResult.Message = $"Test {DataObject.TestName} for Resource {DataObject.ServiceName} ID {DataObject.ResourceID}";                
                 _request.ExecuteResult = serializer.SerializeToBuilder(testRunResult);
                 return Guid.NewGuid();
@@ -216,6 +217,7 @@ namespace Dev2.Runtime.ESB.Execution
                 {
                     testRunResult.Result = RunResult.TestInvalid;
                     testRunResult.Message = failureMessage;
+                    Dev2Logger.Error($"Test {DataObject.TestName} for Resource {DataObject.ServiceName} ID {DataObject.ResourceID} marked invalid in exception for no start node");
                 }
                 testRunResult.DebugForTest = TestDebugMessageRepo.Instance.FetchDebugItems(resourceID, test.TestName);
                 _request.ExecuteResult = serializer.SerializeToBuilder(testRunResult);
@@ -240,6 +242,7 @@ namespace Dev2.Runtime.ESB.Execution
                 {
                     testRunResult.Result = RunResult.TestInvalid;
                     testRunResult.Message = ex.Message;
+                    Dev2Logger.Error($"Test {DataObject.TestName} for Resource {DataObject.ServiceName} ID {DataObject.ResourceID} marked invalid in general exception");
                 }
                 testRunResult.DebugForTest = TestDebugMessageRepo.Instance.FetchDebugItems(resourceID, test.TestName);
                 _request.ExecuteResult = serializer.SerializeToBuilder(testRunResult);

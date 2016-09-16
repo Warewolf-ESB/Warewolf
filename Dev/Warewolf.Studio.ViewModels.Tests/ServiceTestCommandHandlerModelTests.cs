@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Windows;
 using Dev2;
@@ -217,7 +216,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //------------Execute Test---------------------------
             var popupController = new Mock<Dev2.Common.Interfaces.Studio.Controller.IPopupController>();
             CustomContainer.Register(popupController.Object);
-            testFrameworkViewModel.RunAllTestsInBrowser(true,new List<IServiceTestModel>(),new Mock<IExternalProcessExecutor>().Object);
+            testFrameworkViewModel.RunAllTestsInBrowser(true,"Url",new Mock<IExternalProcessExecutor>().Object);
             //------------Assert Results-------------------------
             popupController.Verify(controller => controller.Show(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<MessageBoxButton>(), MessageBoxImage.Error, null, false, true, false, false), Times.Once);
         }
@@ -290,8 +289,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             dataListViewModel.InitializeDataListViewModel(resourceModel);
             dataListViewModel.ScalarCollection.Add(new ScalarItemModel("a", enDev2ColumnArgumentDirection.Input));
             var recordSetItemModel = new RecordSetItemModel("rec", enDev2ColumnArgumentDirection.Input);
-            var recordSetFieldItemModels = new ObservableCollection<IRecordSetFieldItemModel>();
-            recordSetFieldItemModels.Add(new RecordSetFieldItemModel("field", recordSetItemModel, enDev2ColumnArgumentDirection.Input));
+            var recordSetFieldItemModels = new ObservableCollection<IRecordSetFieldItemModel> { new RecordSetFieldItemModel("field", recordSetItemModel, enDev2ColumnArgumentDirection.Input) };
             recordSetItemModel.Children = recordSetFieldItemModels;
             dataListViewModel.RecsetCollection.Add(recordSetItemModel);
             dataListViewModel.WriteToResourceModel();

@@ -969,6 +969,43 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
+        [Owner("Pieter Terblanche")]
+        public void RunSelectedTestCommand_GivenSelectedTestIsNotDirty_ShouldRunTheTest()
+        {
+            //---------------Set up test pack-------------------
+            var testFrameworkViewModel = new ServiceTestViewModel(CreateMockResourceModel().Object, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object);
+            testFrameworkViewModel.CreateTestCommand.Execute(null);
+            testFrameworkViewModel.SelectedServiceTest.TestName = "NewTestSaved";
+            testFrameworkViewModel.Save();
+            //---------------Assert Precondition----------------
+            Assert.IsFalse(testFrameworkViewModel.IsDirty);
+            var selectedServiceTest = testFrameworkViewModel.SelectedServiceTest;
+            Assert.IsNotNull(selectedServiceTest);
+            //---------------Execute Test ----------------------
+            testFrameworkViewModel.RunSelectedTestCommand.Execute(null);
+            //---------------Test Result -----------------------
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        public void RunSelectedTestCommand_GivenSelectedTestIsDirty_ShouldSaveAndRunTheTest()
+        {
+            //---------------Set up test pack-------------------
+            var testFrameworkViewModel = new ServiceTestViewModel(CreateMockResourceModelWithSingleScalarOutput(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object);
+            testFrameworkViewModel.CreateTestCommand.Execute(null);
+            testFrameworkViewModel.SelectedServiceTest.TestName = "NewTestSaved";
+            testFrameworkViewModel.Save();
+            //---------------Assert Precondition----------------
+            testFrameworkViewModel.SelectedServiceTest.TestName = "NewTestSaved1";
+            Assert.IsTrue(testFrameworkViewModel.IsDirty);
+            var selectedServiceTest = testFrameworkViewModel.SelectedServiceTest;
+            Assert.IsNotNull(selectedServiceTest);
+            //---------------Execute Test ----------------------
+            testFrameworkViewModel.RunSelectedTestCommand.Execute(null);
+            //---------------Test Result -----------------------
+        }
+
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void CanSave_GivenIsDirtynameHastrailingSpaces_ShouldSetCanSaveFalse()
         {
@@ -1305,6 +1342,65 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsNotNull(testFrameworkViewModel.SelectedServiceTest);
             //---------------Test Result -----------------------
             Assert.IsTrue(testFrameworkViewModel.SelectedServiceTest.NeverRunStringVisibility);
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void DisplayName_GivenServerIsNotLocalHost_ShouldAppendServerIntoDisplayName()
+        {
+            //---------------Set up test pack-------------------
+            var popupController = new Mock<IPopupController>();
+            CustomContainer.Register(popupController.Object);
+            var moqModel = new Mock<IContextualResourceModel>();
+            moqModel.SetupAllProperties();
+            moqModel.Setup(model => model.DisplayName).Returns("My WF");
+            moqModel.Setup(model => model.Environment.Connection.IsConnected).Returns(true);
+            moqModel.Setup(model => model.Environment.IsConnected).Returns(true);
+            moqModel.Setup(model => model.Environment.Connection.WebServerUri).Returns(new Uri("http://rsaklf/bob"));
+            moqModel.Setup(model => model.Category).Returns("My WF");
+            moqModel.Setup(model => model.ResourceName).Returns("My WF");
+            const string serverName = "GenDev";
+            moqModel.Setup(model => model.Environment.Name).Returns(serverName).Verifiable();
+
+            var testFrameworkViewModel = new ServiceTestViewModel(moqModel.Object, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object);
+            //---------------Assert Precondition----------------
+            var fieldInfo = typeof(ServiceTestViewModel).GetField("_serverName", BindingFlags.Instance | BindingFlags.NonPublic);
+            
+            // ReSharper disable once PossibleNullReferenceException
+            var server=    fieldInfo.GetValue(testFrameworkViewModel).ToString();
+            Assert.AreEqual(" - GenDev", server);
+            //---------------Execute Test ----------------------
+            //---------------Test Result -----------------------
+            Assert.AreEqual("My WF - Tests - GenDev", testFrameworkViewModel.DisplayName);
+        }
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void DisplayName_GivenServerIsLocalHost_ShouldAppendNotServerIntoDisplayName()
+        {
+            //---------------Set up test pack-------------------
+            var popupController = new Mock<IPopupController>();
+            CustomContainer.Register(popupController.Object);
+            var moqModel = new Mock<IContextualResourceModel>();
+            moqModel.SetupAllProperties();
+            moqModel.Setup(model => model.DisplayName).Returns("My WF");
+            moqModel.Setup(model => model.Environment.Connection.IsConnected).Returns(true);
+            moqModel.Setup(model => model.Environment.IsConnected).Returns(true);
+            moqModel.Setup(model => model.Environment.Connection.WebServerUri).Returns(new Uri("http://rsaklf/bob"));
+            moqModel.Setup(model => model.Category).Returns("My WF");
+            moqModel.Setup(model => model.ResourceName).Returns("My WF");
+            const string serverName = "localhost";
+            moqModel.Setup(model => model.Environment.Name).Returns(serverName).Verifiable();
+
+            var testFrameworkViewModel = new ServiceTestViewModel(moqModel.Object, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object);
+            //---------------Assert Precondition----------------
+            var fieldInfo = typeof(ServiceTestViewModel).GetField("_serverName", BindingFlags.Instance | BindingFlags.NonPublic);
+            
+            // ReSharper disable once PossibleNullReferenceException
+            var server=    fieldInfo.GetValue(testFrameworkViewModel).ToString();
+            Assert.AreEqual("", server);
+            //---------------Execute Test ----------------------
+            //---------------Test Result -----------------------
+            Assert.AreEqual("My WF - Tests", testFrameworkViewModel.DisplayName);
         }
 
         private IContextualResourceModel CreateResourceModelWithSingleScalarInput()
