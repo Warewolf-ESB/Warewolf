@@ -13,8 +13,7 @@ namespace Warewolf.Studio.ViewModels.Tests
     [TestClass]
     public class ServiceTestModelTests
     {
-
-
+        
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("TestModel_Name")]
