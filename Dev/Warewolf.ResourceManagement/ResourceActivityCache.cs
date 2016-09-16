@@ -21,7 +21,11 @@ namespace Warewolf.ResourceManagement
         {
             if(HasActivityInCache(resourceIdGuid))
             {
-                return GetActivity(resourceIdGuid);
+                var dev2Activity = GetActivity(resourceIdGuid);
+                if (dev2Activity != null)
+                {
+                    return dev2Activity;
+                }
             }
             var dynamicActivity = activity;
             if (dynamicActivity != null)
@@ -33,6 +37,11 @@ namespace Warewolf.ResourceManagement
                     {
                         return act;
                     }
+                    _cache.AddOrUpdate(resourceIdGuid, act, (guid, dev2Activity) =>
+                    {
+                        _cache[resourceIdGuid] = act;
+                        return act;
+                    });
                 }
                     // ReSharper disable EmptyGeneralCatchClause
                 catch(Exception err) //errors caught inside
