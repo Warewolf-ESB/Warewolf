@@ -651,6 +651,55 @@ namespace BusinessDesignStudio.Unit.Tests
             Assert.AreEqual(serviceTestModel.TestName, serviceTestModelTos[0].TestName);
         }
 
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("ResourceModel_ExecuteTest")]
+        public void ResourceModel_ExecuteTest_ExecuteMessageIsSuccessful_NoException()
+        {
+            //------------Setup for test--------------------------
+            var serviceTestModel = new ServiceTestModelTO()
+            {
+                TestName = "Test Input",
+                AuthenticationType = AuthenticationType.Public,
+                Enabled = true,
+                ErrorExpected = false,
+                NoErrorExpected = true,
+                Inputs = new List<IServiceTestInput> { new ServiceTestInput("var", "val") },
+                Outputs = new List<IServiceTestOutput> { new ServiceTestOutput("var", "val") },
+                ResourceId = Guid.NewGuid()
+
+
+            };
+            var retVal = new StringBuilder();
+            Mock<IEnvironmentModel> mockEnvironmentModel = new Mock<IEnvironmentModel>();
+            Mock<IEnvironmentConnection> conn = new Mock<IEnvironmentConnection>();
+            conn.Setup(c => c.IsConnected).Returns(true);
+            conn.Setup(c => c.ServerEvents).Returns(new EventPublisher());
+            conn.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Callback((StringBuilder o, Guid workspaceID) =>
+            {
+                retVal = o;
+            });
+
+            mockEnvironmentModel.Setup(e => e.Connection).Returns(conn.Object);
+            mockEnvironmentModel.Setup(e => e.IsConnected).Returns(true);
+
+            var resourceRepository = new ResourceRepository(mockEnvironmentModel.Object);
+            var resourceId = Guid.NewGuid();
+            //------------Execute Test--------------------------- 
+
+            var resourceModel = new Mock<IContextualResourceModel>();
+            resourceModel.SetupGet(p => p.Environment).Returns(mockEnvironmentModel.Object);
+            resourceModel.SetupGet(p => p.ID).Returns(resourceId);
+            resourceModel.SetupGet(p => p.ResourceName).Returns("My WF");
+            resourceModel.SetupGet(p => p.Category).Returns("Root");
+            resourceModel.Setup(model => model.ToServiceDefinition(It.IsAny<bool>())).Returns(new StringBuilder("SomeXaml"));
+
+            resourceRepository.ExecuteTest(resourceModel.Object, serviceTestModel.TestName);
+            //------------Assert Results-------------------------
+            var ser = new Dev2JsonSerializer();
+            var retMsg = ser.Deserialize<EsbExecuteRequest>(retVal.ToString());
+            Assert.IsNotNull(retMsg);
+        }
 
         [TestMethod]
         public void WorkFlowService_OnDeleteFromWorkspace_Expected_InRepository()
