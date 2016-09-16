@@ -288,6 +288,12 @@ namespace Dev2.Activities.Specs.TestFramework
             var serviceTestModel = serviceTest.Tests.Single(model => model.TestName.Equals(testName, StringComparison.InvariantCultureIgnoreCase));
             Assert.IsTrue(serviceTestModel.TestPending);
         }
+        [Then(@"debug window is visible")]
+        public void ThenDebugWindowIsVisible()
+        {
+            ServiceTestViewModel serviceTest = GetTestFrameworkFromContext();
+            var count = serviceTest.SelectedServiceTest.DebugForTest.Count;
+        }
 
 
 
@@ -1257,6 +1263,8 @@ namespace Dev2.Activities.Specs.TestFramework
             Assert.Fail("Test Framework ViewModel not found");
             return null;
         }
+
+        
 
     }
 }
