@@ -38,6 +38,11 @@ using Dev2.Web;
 using Dev2.Workspaces;
 using Newtonsoft.Json.Linq;
 using Warewolf.Storage;
+// ReSharper disable MemberCanBeProtected.Global
+// ReSharper disable CyclomaticComplexity
+// ReSharper disable FunctionComplexityOverflow
+// ReSharper disable LoopCanBeConvertedToQuery
+// ReSharper disable MemberCanBePrivate.Global
 
 namespace Dev2.Runtime.WebServer.Handlers
 {
@@ -123,14 +128,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                             if (idx > loc)
                             {
                                 var testName = serviceName.Substring(idx + 1).ToUpper();
-                                if (string.IsNullOrEmpty(testName))
-                                {
-                                    dataObject.TestName = "*";
-                                }
-                                else
-                                {
-                                    dataObject.TestName = testName;
-                                }
+                                dataObject.TestName = string.IsNullOrEmpty(testName) ? "*" : testName;
                             }
                             else
                             {
@@ -403,8 +401,7 @@ namespace Dev2.Runtime.WebServer.Handlers
 
         private static JObject BuildTestResultForWebRequest(TestRunResult result)
         {
-            var resObj = new JObject();
-            resObj.Add("Test Name",result.TestName);
+            var resObj = new JObject { { "Test Name", result.TestName } };
             if(result.Result == RunResult.TestPassed)
             {
                 resObj.Add("Result", Warewolf.Resource.Messages.Messages.Test_PassedResult);
