@@ -563,6 +563,12 @@ namespace Warewolf.UITests
             WpfListItem test1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestsListboxList.Test1;
             WpfText testNameText = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestNameText;
             WpfCheckBox testEnabledSelector = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestsListboxList.Test1.TestEnabledSelector;
+            WpfButton createTestButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.WorksurfaceContext.ServiceTestView.TestsListboxList.CreateTest.CreateTestButton;
+            WpfListItem test1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.WorksurfaceContext.ServiceTestView.TestsListboxList.Test1;
+            WpfButton duplicateButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.WorksurfaceContext.ServiceTestView.DuplicateButton;
+            WpfText testNameText = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.WorksurfaceContext.ServiceTestView.TestNameText;
+            WpfCheckBox testEnabledSelector = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.WorksurfaceContext.ServiceTestView.TestsListboxList.Test1.TestEnabledSelector;
+            WpfEdit textbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.WorksurfaceContext.ServiceTestView.TestInputsTable.Row1.Cell.IntellisenseComboBox.Textbox;
             #endregion
 
             // Click 'Create a new test' button
@@ -576,6 +582,10 @@ namespace Warewolf.UITests
 
             // Verify that the 'Checked' property of 'Select or De-Select to run the test' check box equals 'True'
             Assert.AreEqual(this.Click_Create_New_TestsParams.TestEnabledSelectorChecked, testEnabledSelector.Checked, "Test 1 is disabled after clicking Create new test from context menu");
+            Assert.AreEqual(this.Click_Create_New_TestsParams.TestEnabledSelectorChecked, testEnabledSelector.Checked, "Test 1 is diabled after clicking Create new test from context menu");
+
+            // Verify that the 'Exists' property of 'Text' text box equals 'True'
+            Assert.AreEqual(this.Click_Create_New_TestsParams.TextboxExists, textbox.Exists, "Row 1 input value textbox does not exist on workflow tests tab.");
         }
         
         /// <summary>
@@ -3629,6 +3639,23 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
+        /// Enter_Text_Into_Workflow_Tests_Row1_Value_Textbox_As_CodedUITest - Use 'Enter_Text_Into_Workflow_Tests_Row1_Value_Textbox_As_CodedUITestParams' to pass parameters into this method.
+        /// </summary>
+        public void Enter_Text_Into_Workflow_Tests_Row1_Value_Textbox_As_CodedUITest()
+        {
+            #region Variable Declarations
+            WpfEdit textbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.WorksurfaceContext.ServiceTestView.TestInputsTable.Row1.Cell.IntellisenseComboBox.Textbox;
+            #endregion
+
+            // Type 'Coded UI Test' in 'Text' text box
+            Keyboard.SendKeys(textbox, this.Enter_Text_Into_Workflow_Tests_Row1_Value_Textbox_As_CodedUITestParams.TextboxSendKeys, ModifierKeys.None);
+
+            // Verify that the 'Text' property of 'Text' text box equals 'Coded UI Test'
+            Assert.AreEqual(this.Enter_Text_Into_Workflow_Tests_Row1_Value_Textbox_As_CodedUITestParams.TextboxText, textbox.Text, "Workflow tests row 1 value textbox text does not equal Coded UI Test after typing" +
+                    " that in.");
+        }
+        
+        /// <summary>
         /// Filter_variables - Use 'Filter_variablesParams' to pass parameters into this method.
         /// </summary>
         public void Filter_variables()
@@ -4000,6 +4027,30 @@ namespace Warewolf.UITests
 
             // Double-Click 'DsfExecuteCommandLineActivity' custom control
             Mouse.DoubleClick(executeCommandLine, new Point(178, 10));
+        }
+        
+        /// <summary>
+        /// Open_Explorer_First_Item_Tests_With_Context_Menu - Use 'Open_Explorer_First_Item_Tests_With_Context_MenuParams' to pass parameters into this method.
+        /// </summary>
+        public void Open_Explorer_First_Item_Tests_With_Context_Menu()
+        {
+            #region Variable Declarations
+            WpfTreeItem firstItem = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem;
+            WpfMenuItem tests = this.MainStudioWindow.ExplorerContextMenu.Tests;
+            WpfButton runAllButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.WorksurfaceContext.ServiceTestView.RunAllButton;
+            #endregion
+
+            // Right-Click 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item
+            Mouse.Click(firstItem, MouseButtons.Right, ModifierKeys.None, new Point(107, 9));
+
+            // Verify that the 'Exists' property of 'Tests' menu item equals 'True'
+            Assert.AreEqual(this.Open_Explorer_First_Item_Tests_With_Context_MenuParams.TestsExists, tests.Exists, "Open does not exist in explorer context menu.");
+
+            // Click 'Tests' menu item
+            Mouse.Click(tests, new Point(30, 11));
+
+            // Verify that the 'Exists' property of 'Run All' button equals 'True'
+            Assert.AreEqual(this.Open_Explorer_First_Item_Tests_With_Context_MenuParams.RunAllButtonExists, runAllButton.Exists, "Run all button does not exist on tests tab");
         }
         
         /// <summary>
@@ -5994,6 +6045,7 @@ namespace Warewolf.UITests
             #region Variable Declarations
             WpfEdit searchTextBox = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.SearchTextBox;
             WpfTreeItem firstItem = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem;
+            WpfEdit uIItemEdit = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.WorksurfaceContext.ServiceTestView.TestNameText.UIItemEdit;
             #endregion
 
             // Click 'SearchTextBox' text box
@@ -7519,6 +7571,18 @@ namespace Warewolf.UITests
             }
         }
         
+        public virtual Enter_Text_Into_Workflow_Tests_Row1_Value_Textbox_As_CodedUITestParams Enter_Text_Into_Workflow_Tests_Row1_Value_Textbox_As_CodedUITestParams
+        {
+            get
+            {
+                if ((this.mEnter_Text_Into_Workflow_Tests_Row1_Value_Textbox_As_CodedUITestParams == null))
+                {
+                    this.mEnter_Text_Into_Workflow_Tests_Row1_Value_Textbox_As_CodedUITestParams = new Enter_Text_Into_Workflow_Tests_Row1_Value_Textbox_As_CodedUITestParams();
+                }
+                return this.mEnter_Text_Into_Workflow_Tests_Row1_Value_Textbox_As_CodedUITestParams;
+            }
+        }
+        
         public virtual Filter_variablesParams Filter_variablesParams
         {
             get
@@ -7708,6 +7772,18 @@ namespace Warewolf.UITests
                     this.mOpen_DotNet_DLL_Connector_Tool_Large_ViewParams = new Open_DotNet_DLL_Connector_Tool_Large_ViewParams();
                 }
                 return this.mOpen_DotNet_DLL_Connector_Tool_Large_ViewParams;
+            }
+        }
+        
+        public virtual Open_Explorer_First_Item_Tests_With_Context_MenuParams Open_Explorer_First_Item_Tests_With_Context_MenuParams
+        {
+            get
+            {
+                if ((this.mOpen_Explorer_First_Item_Tests_With_Context_MenuParams == null))
+                {
+                    this.mOpen_Explorer_First_Item_Tests_With_Context_MenuParams = new Open_Explorer_First_Item_Tests_With_Context_MenuParams();
+                }
+                return this.mOpen_Explorer_First_Item_Tests_With_Context_MenuParams;
             }
         }
         
@@ -8613,6 +8689,8 @@ namespace Warewolf.UITests
         
         private Enter_Text_Into_Assign_Small_View_Row1_Value_Textbox_As_SomeVariable_UsingIntellisenseParams mEnter_Text_Into_Assign_Small_View_Row1_Value_Textbox_As_SomeVariable_UsingIntellisenseParams;
         
+        private Enter_Text_Into_Workflow_Tests_Row1_Value_Textbox_As_CodedUITestParams mEnter_Text_Into_Workflow_Tests_Row1_Value_Textbox_As_CodedUITestParams;
+        
         private Filter_variablesParams mFilter_variablesParams;
         
         private Open_Assign_Tool_Large_ViewParams mOpen_Assign_Tool_Large_ViewParams;
@@ -8644,6 +8722,8 @@ namespace Warewolf.UITests
         private Open_Delete_Tool_Large_ViewParams mOpen_Delete_Tool_Large_ViewParams;
         
         private Open_DotNet_DLL_Connector_Tool_Large_ViewParams mOpen_DotNet_DLL_Connector_Tool_Large_ViewParams;
+        
+        private Open_Explorer_First_Item_Tests_With_Context_MenuParams mOpen_Explorer_First_Item_Tests_With_Context_MenuParams;
         
         private Open_Explorer_First_Item_With_Context_MenuParams mOpen_Explorer_First_Item_With_Context_MenuParams;
         
@@ -9182,6 +9262,11 @@ namespace Warewolf.UITests
         /// Verify that the 'Checked' property of 'Select or De-Select to run the test' check box equals 'True'
         /// </summary>
         public bool TestEnabledSelectorChecked = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Text' text box equals 'True'
+        /// </summary>
+        public bool TextboxExists = true;
         #endregion
     }
     
@@ -11524,6 +11609,26 @@ namespace Warewolf.UITests
     }
     
     /// <summary>
+    /// Parameters to be passed into 'Enter_Text_Into_Workflow_Tests_Row1_Value_Textbox_As_CodedUITest'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Enter_Text_Into_Workflow_Tests_Row1_Value_Textbox_As_CodedUITestParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Type 'Coded UI Test' in 'Text' text box
+        /// </summary>
+        public string TextboxSendKeys = "Coded UI Test";
+        
+        /// <summary>
+        /// Verify that the 'Text' property of 'Text' text box equals 'Coded UI Test'
+        /// </summary>
+        public string TextboxText = "Coded UI Test";
+        #endregion
+    }
+    
+    /// <summary>
     /// Parameters to be passed into 'Filter_variables'
     /// </summary>
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
@@ -11825,6 +11930,26 @@ namespace Warewolf.UITests
         /// Verify that the 'Exists' property of 'LargeDataGrid' table equals 'True'
         /// </summary>
         public bool InputsTableExists = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Open_Explorer_First_Item_Tests_With_Context_Menu'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Open_Explorer_First_Item_Tests_With_Context_MenuParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Tests' menu item equals 'True'
+        /// </summary>
+        public bool TestsExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Run All' button equals 'True'
+        /// </summary>
+        public bool RunAllButtonExists = true;
         #endregion
     }
     
@@ -29651,11 +29776,12 @@ namespace Warewolf.UITests
         }
         
         #region Properties
+        public WorksurfaceContext9 WorksurfaceContext
         public WpfCustom TestsStudioViewModel
         {
             get
             {
-                if ((this.mTestsStudioViewModel == null))
+                if ((this.mWorksurfaceContext == null))
                 {
                     this.mTestsStudioViewModel = new WpfCustom(this);
                     #region Search Criteria
@@ -29663,8 +29789,9 @@ namespace Warewolf.UITests
                     this.mTestsStudioViewModel.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Dev2.Studio.ViewModels.WorkSurface.WorkSurfaceContextViewModel";
                     this.mTestsStudioViewModel.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
                     #endregion
+                    this.mWorksurfaceContext = new WorksurfaceContext9(this);
                 }
-                return this.mTestsStudioViewModel;
+                return this.mWorksurfaceContext;
             }
         }
         
@@ -29837,17 +29964,13 @@ namespace Warewolf.UITests
             }
         }
         
-        public WpfTable TestInputsTable
+        public TestInputsTable1 TestInputsTable
         {
             get
             {
                 if ((this.mTestInputsTable == null))
                 {
-                    this.mTestInputsTable = new WpfTable(this);
-                    #region Search Criteria
-                    this.mTestInputsTable.SearchProperties[WpfTable.PropertyNames.AutomationId] = "TestInputs";
-                    this.mTestInputsTable.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
-                    #endregion
+                    this.mTestInputsTable = new TestInputsTable1(this);
                 }
                 return this.mTestInputsTable;
             }
@@ -29969,7 +30092,7 @@ namespace Warewolf.UITests
         
         private TestNameText mTestNameText;
         
-        private WpfTable mTestInputsTable;
+        private TestInputsTable1 mTestInputsTable;
         
         private WpfTable mTestOutputsTable;
         
@@ -30208,6 +30331,140 @@ namespace Warewolf.UITests
         
         #region Fields
         private WpfEdit mUIItemEdit;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class TestInputsTable1 : WpfTable
+    {
+        
+        public TestInputsTable1(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfTable.PropertyNames.AutomationId] = "TestInputs";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public Row19 Row1
+        {
+            get
+            {
+                if ((this.mRow1 == null))
+                {
+                    this.mRow1 = new Row19(this);
+                }
+                return this.mRow1;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private Row19 mRow1;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Row19 : WpfRow
+    {
+        
+        public Row19(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfRow.PropertyNames.Instance] = "1";
+            this.SearchConfigurations.Add(SearchConfiguration.AlwaysSearch);
+            this.WindowTitles.Add("Warewolf");
+            #endregion
+        }
+        
+        #region Properties
+        public Cell2 Cell
+        {
+            get
+            {
+                if ((this.mCell == null))
+                {
+                    this.mCell = new Cell2(this);
+                }
+                return this.mCell;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private Cell2 mCell;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Cell2 : WpfCell
+    {
+        
+        public Cell2(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = "Value";
+            this.SearchProperties[WpfCell.PropertyNames.AutomationId] = "UI_DataGridCell_AutoID";
+            this.WindowTitles.Add("Warewolf");
+            #endregion
+        }
+        
+        #region Properties
+        public IntellisenseComboBox IntellisenseComboBox
+        {
+            get
+            {
+                if ((this.mIntellisenseComboBox == null))
+                {
+                    this.mIntellisenseComboBox = new IntellisenseComboBox(this);
+                }
+                return this.mIntellisenseComboBox;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private IntellisenseComboBox mIntellisenseComboBox;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class IntellisenseComboBox : WpfComboBox
+    {
+        
+        public IntellisenseComboBox(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "UI_Coded UI Testtxt_AutoID";
+            this.WindowTitles.Add("Warewolf");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfEdit Textbox
+        {
+            get
+            {
+                if ((this.mTextbox == null))
+                {
+                    this.mTextbox = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mTextbox.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "Text";
+                    this.mTextbox.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mTextbox;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfEdit mTextbox;
         #endregion
     }
     
@@ -36035,13 +36292,13 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public Row19 Row1
+        public Row110 Row1
         {
             get
             {
                 if ((this.mRow1 == null))
                 {
-                    this.mRow1 = new Row19(this);
+                    this.mRow1 = new Row110(this);
                 }
                 return this.mRow1;
             }
@@ -36049,15 +36306,15 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private Row19 mRow1;
+        private Row110 mRow1;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Row19 : WpfPane
+    public class Row110 : WpfPane
     {
         
-        public Row19(UITestControl searchLimitContainer) : 
+        public Row110(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -36068,13 +36325,13 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public Cell2 Cell
+        public Cell3 Cell
         {
             get
             {
                 if ((this.mCell == null))
                 {
-                    this.mCell = new Cell2(this);
+                    this.mCell = new Cell3(this);
                 }
                 return this.mCell;
             }
@@ -36082,15 +36339,15 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private Cell2 mCell;
+        private Cell3 mCell;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Cell2 : WpfCell
+    public class Cell3 : WpfCell
     {
         
-        public Cell2(UITestControl searchLimitContainer) : 
+        public Cell3(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria

@@ -61,8 +61,9 @@ namespace Warewolf.UITests
         [TestMethod]
         public void RunDuplicatedTest()
         {
-            Uimap.Search_And_Select_HelloWolrd();
-            Uimap.Select_Tests_From_Context_Menu();
+            Uimap.Enter_Text_Into_Explorer_Filter("Hello World");
+            Uimap.WaitForSpinner(Uimap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);
+            Uimap.Open_Explorer_First_Item_Tests_With_Context_Menu();
             Uimap.Click_Create_New_Tests();
             Uimap.Update_Test_Name(TestName);
             Uimap.Click_Save_Ribbon_Button_With_No_Save_Dialog();
