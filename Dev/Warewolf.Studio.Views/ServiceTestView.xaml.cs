@@ -11,30 +11,11 @@ namespace Warewolf.Studio.Views
     /// <summary>
     /// Interaction logic for ServiceTestView.xaml
     /// </summary>
-    public partial class ServiceTestView : UserControl,IView
+    public partial class ServiceTestView : IView
     {
         public ServiceTestView()
         {
             InitializeComponent();
-        }
-
-        private void GridPreviewKeyDown(object sender, KeyEventArgs e)
-        {
-            UIElement keyboardFocus = Keyboard.FocusedElement as TextBox;
-            if (e.KeyboardDevice.IsKeyDown(Key.LeftShift) && e.KeyboardDevice.IsKeyDown(Key.Tab))
-            {
-                keyboardFocus?.MoveFocus(new TraversalRequest(FocusNavigationDirection.Previous));
-            }
-            if (e.KeyboardDevice.IsKeyDown(Key.Tab))
-            {
-                var vm = DataContext as IServiceTestViewModel;
-                //var itemToSelect = vm?.GetNextRow(TestInputs.ActiveItem as IServiceTestModel);
-                //if (itemToSelect != null)
-                //{
-                //    TestInputs.ActiveItem = itemToSelect;
-                //    FocusOnAddition();
-                //}
-            }
         }
 
         private void TestsListbox_OnPreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -55,6 +36,10 @@ namespace Warewolf.Studio.Views
                         if (model != null)
                         {
                             viewModel.SelectedServiceTest = model;
+                            if (viewModel.SelectedServiceTest != null)
+                            {
+                                viewModel.SelectedServiceTest.IsTestSelected = true;
+                            }
                         }
                     }
                 }
@@ -84,6 +69,26 @@ namespace Warewolf.Studio.Views
             var serviceTestViewModel = DataContext as IServiceTestViewModel;
             serviceTestViewModel?.RefreshCommands();
             e.Handled = true;
+        }
+
+        private void SelectedTestCheckBox_OnClick(object sender, RoutedEventArgs e)
+        {
+            var cb = sender as CheckBox;
+            if (cb != null)
+            {
+                var item = cb.DataContext;
+                TestsListbox.SelectedItem = item;
+            }
+        }
+
+        private void SelectedTestRunTestButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            var btn = sender as Button;
+            if (btn != null)
+            {
+                var item = btn.DataContext;
+                TestsListbox.SelectedItem = item;
+            }
         }
     }
 }
