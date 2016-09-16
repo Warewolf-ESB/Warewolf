@@ -969,6 +969,43 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
+        [Owner("Pieter Terblanche")]
+        public void RunSelectedTestCommand_GivenSelectedTestIsNotDirty_ShouldRunTheTest()
+        {
+            //---------------Set up test pack-------------------
+            var testFrameworkViewModel = new ServiceTestViewModel(CreateMockResourceModel().Object, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object);
+            testFrameworkViewModel.CreateTestCommand.Execute(null);
+            testFrameworkViewModel.SelectedServiceTest.TestName = "NewTestSaved";
+            testFrameworkViewModel.Save();
+            //---------------Assert Precondition----------------
+            Assert.IsFalse(testFrameworkViewModel.IsDirty);
+            var selectedServiceTest = testFrameworkViewModel.SelectedServiceTest;
+            Assert.IsNotNull(selectedServiceTest);
+            //---------------Execute Test ----------------------
+            testFrameworkViewModel.RunSelectedTestCommand.Execute(null);
+            //---------------Test Result -----------------------
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        public void RunSelectedTestCommand_GivenSelectedTestIsDirty_ShouldSaveAndRunTheTest()
+        {
+            //---------------Set up test pack-------------------
+            var testFrameworkViewModel = new ServiceTestViewModel(CreateMockResourceModelWithSingleScalarOutput(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object);
+            testFrameworkViewModel.CreateTestCommand.Execute(null);
+            testFrameworkViewModel.SelectedServiceTest.TestName = "NewTestSaved";
+            testFrameworkViewModel.Save();
+            //---------------Assert Precondition----------------
+            testFrameworkViewModel.SelectedServiceTest.TestName = "NewTestSaved1";
+            Assert.IsTrue(testFrameworkViewModel.IsDirty);
+            var selectedServiceTest = testFrameworkViewModel.SelectedServiceTest;
+            Assert.IsNotNull(selectedServiceTest);
+            //---------------Execute Test ----------------------
+            testFrameworkViewModel.RunSelectedTestCommand.Execute(null);
+            //---------------Test Result -----------------------
+        }
+
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void CanSave_GivenIsDirtynameHastrailingSpaces_ShouldSetCanSaveFalse()
         {

@@ -111,7 +111,7 @@ namespace Warewolf.Studio.ViewModels
                 return;
             }
             selectedServiceTest.IsTestRunning = true;
-            asyncWorker.Start(() => WebServer.ExecuteTest(resourceModel, selectedServiceTest.TestName), res =>
+            asyncWorker.Start(() => resourceModel.Environment.ResourceRepository.ExecuteTest(resourceModel, selectedServiceTest.TestName), res =>
             {
                 if (res != null)
                 {
