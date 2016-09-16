@@ -59,7 +59,7 @@ namespace Warewolf.Studio.ViewModels
             };
 
             ResourceModel.Environment.Connection.ReceivedResourceAffectedMessage += OnReceivedResourceAffectedMessage;
-            //SetServerName(resourceModel);
+            SetServerName(resourceModel);
             DisplayName = resourceModel.DisplayName + " - Tests" + _serverName;
 
             ServiceTestCommandHandler = new ServiceTestCommandHandlerModel();
