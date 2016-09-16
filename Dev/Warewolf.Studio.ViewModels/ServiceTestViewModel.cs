@@ -398,10 +398,12 @@ namespace Warewolf.Studio.ViewModels
             {
                 model.NewTest = false;
             }
-            foreach (var model in _tests.Where(model => model.IsDirty))
+            foreach (var model in RealTests())
             {
-                model.SetItem(model);
+                var clone = model.Clone() as IServiceTestModel;
+                model.SetItem(clone);
             }
+            
         }
 
         public IContextualResourceModel ResourceModel { get; }
