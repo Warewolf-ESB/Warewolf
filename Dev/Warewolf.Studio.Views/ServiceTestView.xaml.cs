@@ -1,4 +1,6 @@
-﻿using System.Windows;
+﻿using System;
+using System.Collections.Specialized;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using Dev2.Common.Interfaces;
@@ -16,6 +18,18 @@ namespace Warewolf.Studio.Views
         public ServiceTestView()
         {
             InitializeComponent();
+            ((INotifyCollectionChanged)TestsListbox.Items).CollectionChanged += OnCollectionChanged;
+        }
+
+        private void OnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e.Action == NotifyCollectionChangedAction.Add)
+            {
+                var item = e.NewItems[0];
+                // scroll the new item into view
+                TestsListbox.SelectedItem = item;
+                TestsListbox.ScrollIntoView(item);
+            }
         }
 
         private void TestsListbox_OnPreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
