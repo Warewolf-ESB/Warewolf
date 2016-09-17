@@ -106,7 +106,7 @@ namespace Warewolf.Studio.ViewModels
 
         public void RunSelectedTest(IServiceTestModel selectedServiceTest, IContextualResourceModel resourceModel, IAsyncWorker asyncWorker)
         {
-            if (selectedServiceTest.IsNewTest)
+            if (selectedServiceTest==null || resourceModel==null || asyncWorker==null || selectedServiceTest.IsNewTest)
             {
                 return;
             }

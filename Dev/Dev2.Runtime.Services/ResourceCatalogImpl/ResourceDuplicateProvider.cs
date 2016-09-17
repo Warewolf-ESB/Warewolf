@@ -78,7 +78,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
 
         private void SaveTests(Guid oldResourceId, Guid newResourceId)
         {
-            var serviceTestModelTos = _testCatalog.Fetch(oldResourceId);
+            var serviceTestModelTos = _testCatalog?.Fetch(oldResourceId);
             if(serviceTestModelTos != null && serviceTestModelTos.Count > 0)
             {
                 foreach(var serviceTestModelTo in serviceTestModelTos)

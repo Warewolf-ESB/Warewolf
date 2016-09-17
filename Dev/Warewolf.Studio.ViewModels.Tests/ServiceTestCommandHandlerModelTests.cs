@@ -1,8 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Windows;
 using Dev2;
+using Dev2.Common;
 using Dev2.Common.Interfaces;
+using Dev2.Common.Interfaces.Diagnostics.Debug;
+using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Data.Binary_Objects;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Studio.Core.Interfaces;
@@ -206,6 +210,178 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("ServiceTestCommandHandler_RunSelectedTestCommand")]
+        public void ServiceTestCommandHandler_RunSelectedTestCommand_ResourceModelTest_ShouldUpdateTestWithPassResult()
+        {
+            //------------Setup for test--------------------------
+            var serviceTestCommandHandler = new ServiceTestCommandHandlerModel();
+            var selectedServiceTest = new ServiceTestModel(Guid.NewGuid());
+            var mockResourceModel = new Mock<IContextualResourceModel>();
+            var mockEnvironment = new Mock<IEnvironmentModel>();
+            var mockResourceRepo = new Mock<IResourceRepository>();
+            var testRunResult = new TestRunResult();
+            testRunResult.DebugForTest = new List<IDebugState>();
+            testRunResult.Result = RunResult.TestPassed;
+            mockResourceRepo.Setup(repository => repository.ExecuteTest(mockResourceModel.Object, It.IsAny<string>())).Returns(testRunResult);
+            mockEnvironment.Setup(model => model.ResourceRepository).Returns(mockResourceRepo.Object);
+            mockResourceModel.Setup(model => model.Environment).Returns(mockEnvironment.Object);
+            selectedServiceTest.Enabled = true;
+            //------------Execute Test---------------------------
+            serviceTestCommandHandler.RunSelectedTest(selectedServiceTest,mockResourceModel.Object,new SynchronousAsyncWorker());
+            //------------Assert Results-------------------------
+            mockResourceRepo.Verify(repository => repository.ExecuteTest(It.IsAny<IContextualResourceModel>(),It.IsAny<string>()));
+            Assert.IsTrue(selectedServiceTest.TestPassed);
+            Assert.IsFalse(selectedServiceTest.TestFailing);
+            Assert.IsFalse(selectedServiceTest.TestPending);
+            Assert.IsFalse(selectedServiceTest.TestInvalid);
+            Assert.IsNotNull(selectedServiceTest.DebugForTest);
+        }
+
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("ServiceTestCommandHandler_RunSelectedTestCommand")]
+        public void ServiceTestCommandHandler_RunSelectedTestCommand_ResourceModelTest_ShouldUpdateTestWithFailResult()
+        {
+            //------------Setup for test--------------------------
+            var serviceTestCommandHandler = new ServiceTestCommandHandlerModel();
+            var selectedServiceTest = new ServiceTestModel(Guid.NewGuid());
+            var mockResourceModel = new Mock<IContextualResourceModel>();
+            var mockEnvironment = new Mock<IEnvironmentModel>();
+            var mockResourceRepo = new Mock<IResourceRepository>();
+            var testRunResult = new TestRunResult();
+            testRunResult.DebugForTest = new List<IDebugState>();
+            testRunResult.Result = RunResult.TestFailed;
+            mockResourceRepo.Setup(repository => repository.ExecuteTest(mockResourceModel.Object, It.IsAny<string>())).Returns(testRunResult);
+            mockEnvironment.Setup(model => model.ResourceRepository).Returns(mockResourceRepo.Object);
+            mockResourceModel.Setup(model => model.Environment).Returns(mockEnvironment.Object);
+            selectedServiceTest.Enabled = true;
+            //------------Execute Test---------------------------
+            serviceTestCommandHandler.RunSelectedTest(selectedServiceTest, mockResourceModel.Object, new SynchronousAsyncWorker());
+            //------------Assert Results-------------------------
+            mockResourceRepo.Verify(repository => repository.ExecuteTest(It.IsAny<IContextualResourceModel>(), It.IsAny<string>()));
+            Assert.IsFalse(selectedServiceTest.TestPassed);
+            Assert.IsTrue(selectedServiceTest.TestFailing);
+            Assert.IsFalse(selectedServiceTest.TestPending);
+            Assert.IsFalse(selectedServiceTest.TestInvalid);
+            Assert.IsNotNull(selectedServiceTest.DebugForTest);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("ServiceTestCommandHandler_RunSelectedTestCommand")]
+        public void ServiceTestCommandHandler_RunSelectedTestCommand_ResourceModelTest_ShouldUpdateTestWithInvalidResult()
+        {
+            //------------Setup for test--------------------------
+            var serviceTestCommandHandler = new ServiceTestCommandHandlerModel();
+            var selectedServiceTest = new ServiceTestModel(Guid.NewGuid());
+            var mockResourceModel = new Mock<IContextualResourceModel>();
+            var mockEnvironment = new Mock<IEnvironmentModel>();
+            var mockResourceRepo = new Mock<IResourceRepository>();
+            var testRunResult = new TestRunResult();
+            testRunResult.DebugForTest = new List<IDebugState>();
+            testRunResult.Result = RunResult.TestInvalid;
+            mockResourceRepo.Setup(repository => repository.ExecuteTest(mockResourceModel.Object, It.IsAny<string>())).Returns(testRunResult);
+            mockEnvironment.Setup(model => model.ResourceRepository).Returns(mockResourceRepo.Object);
+            mockResourceModel.Setup(model => model.Environment).Returns(mockEnvironment.Object);
+            selectedServiceTest.Enabled = true;
+            //------------Execute Test---------------------------
+            serviceTestCommandHandler.RunSelectedTest(selectedServiceTest, mockResourceModel.Object, new SynchronousAsyncWorker());
+            //------------Assert Results-------------------------
+            mockResourceRepo.Verify(repository => repository.ExecuteTest(It.IsAny<IContextualResourceModel>(), It.IsAny<string>()));
+            Assert.IsFalse(selectedServiceTest.TestPassed);
+            Assert.IsFalse(selectedServiceTest.TestFailing);
+            Assert.IsFalse(selectedServiceTest.TestPending);
+            Assert.IsTrue(selectedServiceTest.TestInvalid);
+            Assert.IsNotNull(selectedServiceTest.DebugForTest);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("ServiceTestCommandHandler_RunSelectedTestCommand")]
+        public void ServiceTestCommandHandler_RunSelectedTestCommand_ResourceModelTest_ShouldUpdateTestWithNullResult()
+        {
+            //------------Setup for test--------------------------
+            var serviceTestCommandHandler = new ServiceTestCommandHandlerModel();
+            var selectedServiceTest = new ServiceTestModel(Guid.NewGuid());
+            var mockResourceModel = new Mock<IContextualResourceModel>();
+            var mockEnvironment = new Mock<IEnvironmentModel>();
+            var mockResourceRepo = new Mock<IResourceRepository>();           
+            mockResourceRepo.Setup(repository => repository.ExecuteTest(mockResourceModel.Object, It.IsAny<string>())).Returns((TestRunResult)null);
+            mockEnvironment.Setup(model => model.ResourceRepository).Returns(mockResourceRepo.Object);
+            mockResourceModel.Setup(model => model.Environment).Returns(mockEnvironment.Object);
+            selectedServiceTest.Enabled = true;
+            //------------Execute Test---------------------------
+            serviceTestCommandHandler.RunSelectedTest(selectedServiceTest, mockResourceModel.Object, new SynchronousAsyncWorker());
+            //------------Assert Results-------------------------
+            mockResourceRepo.Verify(repository => repository.ExecuteTest(It.IsAny<IContextualResourceModel>(), It.IsAny<string>()));
+            Assert.IsFalse(selectedServiceTest.TestPassed);
+            Assert.IsFalse(selectedServiceTest.TestFailing);
+            Assert.IsFalse(selectedServiceTest.TestPending);
+            Assert.IsTrue(selectedServiceTest.TestInvalid);
+            Assert.IsNull(selectedServiceTest.DebugForTest);
+        }
+
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("ServiceTestCommandHandler_RunSelectedTestCommand")]
+        public void ServiceTestCommandHandler_RunAllSelectedTestCommand_ResourceModelTest_ShouldCallExecuteForEachTest()
+        {
+            //------------Setup for test--------------------------
+            var serviceTestCommandHandler = new ServiceTestCommandHandlerModel();
+            var selectedServiceTest = new ServiceTestModel(Guid.NewGuid());
+            var mockResourceModel = new Mock<IContextualResourceModel>();
+            var mockEnvironment = new Mock<IEnvironmentModel>();
+            var mockResourceRepo = new Mock<IResourceRepository>();
+            var testRunResult = new TestRunResult();
+            testRunResult.DebugForTest = new List<IDebugState>();
+            testRunResult.Result = RunResult.TestInvalid;
+            mockResourceRepo.Setup(repository => repository.ExecuteTest(mockResourceModel.Object, It.IsAny<string>())).Returns(testRunResult);
+            mockEnvironment.Setup(model => model.ResourceRepository).Returns(mockResourceRepo.Object);
+            mockResourceModel.Setup(model => model.Environment).Returns(mockEnvironment.Object);
+            selectedServiceTest.Enabled = true;
+            //------------Execute Test---------------------------
+            serviceTestCommandHandler.RunAllTestsCommand(false,new List<IServiceTestModel> { selectedServiceTest,new ServiceTestModel(Guid.NewGuid()) }, mockResourceModel.Object, new SynchronousAsyncWorker());
+            //------------Assert Results-------------------------
+            mockResourceRepo.Verify(repository => repository.ExecuteTest(It.IsAny<IContextualResourceModel>(), It.IsAny<string>()),Times.Exactly(2));            
+        }
+
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("ServiceTestCommandHandler_RunSelectedTestCommand")]
+        public void ServiceTestCommandHandler_RunSelectedTestCommand_ResourceModelTest_ShouldUpdateTestWithResourceDeletedResult()
+        {
+            //------------Setup for test--------------------------
+            var serviceTestCommandHandler = new ServiceTestCommandHandlerModel();
+            var selectedServiceTest = new ServiceTestModel(Guid.NewGuid());
+            var mockResourceModel = new Mock<IContextualResourceModel>();
+            var mockEnvironment = new Mock<IEnvironmentModel>();
+            var mockResourceRepo = new Mock<IResourceRepository>();
+            var testRunResult = new TestRunResult();
+            var mockPopupController = new Mock<IPopupController>();
+            mockPopupController.Setup(controller => controller.Show(Resources.Languages.Core.ServiceTestResourceDeletedMessage, Resources.Languages.Core.ServiceTestResourceDeletedHeader, MessageBoxButton.OK, MessageBoxImage.Error, null, false, true, false, false)).Verifiable();
+            var mockShellViewModel = new Mock<IShellViewModel>();
+            mockShellViewModel.Setup(model => model.CloseResourceTestView(It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Verifiable();
+            CustomContainer.Register(mockPopupController.Object);
+            CustomContainer.Register(mockShellViewModel.Object);
+            testRunResult.DebugForTest = new List<IDebugState>();
+            testRunResult.Result = RunResult.TestResourceDeleted;
+            mockResourceRepo.Setup(repository => repository.ExecuteTest(mockResourceModel.Object, It.IsAny<string>())).Returns(testRunResult);
+            mockEnvironment.Setup(model => model.ResourceRepository).Returns(mockResourceRepo.Object);
+            mockResourceModel.Setup(model => model.Environment).Returns(mockEnvironment.Object);
+            selectedServiceTest.Enabled = true;
+            //------------Execute Test---------------------------
+            serviceTestCommandHandler.RunSelectedTest(selectedServiceTest, mockResourceModel.Object, new SynchronousAsyncWorker());
+            //------------Assert Results-------------------------
+            mockResourceRepo.Verify(repository => repository.ExecuteTest(It.IsAny<IContextualResourceModel>(), It.IsAny<string>()));
+            mockPopupController.Verify(controller => controller.Show(Resources.Languages.Core.ServiceTestResourceDeletedMessage, Resources.Languages.Core.ServiceTestResourceDeletedHeader, MessageBoxButton.OK, MessageBoxImage.Error, null, false, true, false, false));
+            mockShellViewModel.Verify(model => model.CloseResourceTestView(It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<Guid>()));
+        }
+
+        [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory("TestCommandHandlerModelTests_RunAllTests")]
         public void TestCommandHandlerModelTests_RunAllTestsInBrowser_Execute_ShouldThrowError()
@@ -219,6 +395,21 @@ namespace Warewolf.Studio.ViewModels.Tests
             testFrameworkViewModel.RunAllTestsInBrowser(true,"Url",new Mock<IExternalProcessExecutor>().Object);
             //------------Assert Results-------------------------
             popupController.Verify(controller => controller.Show(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<MessageBoxButton>(), MessageBoxImage.Error, null, false, true, false, false), Times.Once);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("TestCommandHanderModel_RunAllTestsInBrowser")]
+        public void TestCommandHanderModel_RunAllTestsInBrowser_WhenNotDirty_ShouldFireOpenInBrowser()
+        {
+            //------------Setup for test--------------------------
+            var testFrameworkViewModel = new ServiceTestCommandHandlerModel();
+            var mockExternalExecutor = new Mock<IExternalProcessExecutor>();
+            mockExternalExecutor.Setup(executor => executor.OpenInBrowser(It.IsAny<Uri>())).Verifiable();
+            //------------Execute Test---------------------------
+            testFrameworkViewModel.RunAllTestsInBrowser(false, "http://localhost:3142/secure/Hello World.tests", mockExternalExecutor.Object);
+            //------------Assert Results-------------------------
+            mockExternalExecutor.Verify(executor => executor.OpenInBrowser(It.IsAny<Uri>()),Times.Once());
         }
 
         [TestMethod]

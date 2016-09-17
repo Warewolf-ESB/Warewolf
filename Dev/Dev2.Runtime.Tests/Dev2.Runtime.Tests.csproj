@@ -205,7 +205,6 @@
     <Compile Include="ESB\Execution\WfExecutionContainerTests.cs" />
     <Compile Include="ESB\Plugin\PluginRuntimeHandlerTest.cs" />
     <Compile Include="ESB\Plugin\PluginServiceExecutionFactoryTest.cs" />
-    <Compile Include="FileResourceBuilderTests.cs" />
     <Compile Include="Hosting\ExplorerItemFactoryTests.cs" />
     <Compile Include="Hosting\ResourceDuplicateProviderTests.cs" />
     <Compile Include="Hosting\ResourceUpgraderTests.cs" />
