@@ -145,7 +145,7 @@ namespace Dev2.Tests.Diagnostics
             var remoteID = Guid.NewGuid();
 
             //------------Execute Test---------------------------
-            DebugDispatcher.Instance.Write(state.Object, true, remoteID.ToString()); // queue remote item ;)
+            DebugDispatcher.Instance.Write(state.Object, false,"",true, remoteID.ToString()); // queue remote item ;)
 
             //------------Assert Results-------------------------
 

@@ -32,34 +32,6 @@ namespace Warewolf.Studio.ViewModels.Tests
     public class ServiceTestViewModelTests
     {
         [TestMethod]
-        [Owner("Nkosinathi Sangweni")]
-        public void RefreshCommands_GivenIsInvoked_ShouldChangeDisplayName()
-        {
-            //---------------Set up test pack-------------------
-            var mock = new Mock<IPopupController>();
-            mock.Setup(controller => controller.Show(Resources.Languages.Core.ServiceTestDuplicateTestNameMessage, Resources.Languages.Core.ServiceTestDuplicateTestNameHeader, MessageBoxButton.OK, MessageBoxImage.Error, null, false, true, false, false)).Verifiable();
-            CustomContainer.Register(mock.Object);
-            var testVM = new ServiceTestViewModel(CreateResourceModel(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object);
-            var _wasCalled = false;
-            testVM.PropertyChanged += (sender, args) =>
-            {
-                if (args.PropertyName == "DisplayName")
-                {
-                    _wasCalled = true;
-                }
-            };
-            //---------------Assert Precondition----------------
-            //---------------Execute Test ----------------------
-            testVM.RefreshCommands();
-            //---------------Test Result -----------------------
-            Assert.IsTrue(_wasCalled);
-        }
-
-
-      
-
-
-        [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("TestFrameworkViewModel_Constructor")]
         [ExpectedException(typeof(ArgumentNullException))]

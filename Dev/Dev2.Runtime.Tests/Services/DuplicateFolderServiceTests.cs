@@ -84,8 +84,6 @@ namespace Dev2.Tests.Runtime.Services
             resourceCatalog.Setup(catalog => catalog.DuplicateFolder(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<bool>()))
                 .Returns(new ResourceCatalogResult { Message = "Hi" });
             var mockTestCatalog = new Mock<ITestCatalog>();
-            mockTestCatalog.Setup(catalog => catalog.Fetch(It.IsAny<Guid>())).Verifiable();
-            mockTestCatalog.Setup(catalog => catalog.SaveTests(It.IsAny<Guid>(),It.IsAny<List<IServiceTestModelTO>>())).Verifiable();
             var workScpace = new Mock<IWorkspace>();
             const string guid = "7B71D6B8-3E11-4726-A7A0-AC924977D6E5";
             DuplicateFolderService resourceService = new DuplicateFolderService(resourceCatalog.Object);
@@ -106,8 +104,6 @@ namespace Dev2.Tests.Runtime.Services
             var executeMessage = serializer.Deserialize<ExecuteMessage>(stringBuilder);
             Assert.IsFalse(executeMessage.HasError);
             Assert.IsFalse(string.IsNullOrEmpty(executeMessage.Message.ToString()));
-            mockTestCatalog.Verify(catalog => catalog.Fetch(It.IsAny<Guid>()),Times.Once());
-            mockTestCatalog.Verify(catalog => catalog.SaveTests(It.IsAny<Guid>(), It.IsAny<List<IServiceTestModelTO>>()),Times.Once);
         }
 
         [TestMethod]
