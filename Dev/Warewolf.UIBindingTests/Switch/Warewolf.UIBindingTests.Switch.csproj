@@ -3,11 +3,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{410A057A-BCFC-476B-AF27-46D6E442FA04}</ProjectGuid>
+    <ProjectGuid>{681079A2-971B-4BC1-9637-C01BB80C2579}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Warewolf.AcceptanceTesting.Deploy</RootNamespace>
-    <AssemblyName>Warewolf.AcceptanceTesting.Deploy</AssemblyName>
+    <RootNamespace>Warewolf.AcceptanceTesting.Switch</RootNamespace>
+    <AssemblyName>Warewolf.AcceptanceTesting.Switch</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -39,44 +39,40 @@
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Caliburn.Micro">
-      <HintPath>..\packages\Caliburn.Micro.1.4\lib\net40\Caliburn.Micro.dll</HintPath>
+    <Reference Include="InfragisticsWPF4.Calculations.XamCalculationManager.v15.1, Version=15.1.20151.2055, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Binaries\InfragisticsWPF4.Calculations.XamCalculationManager.v15.1.dll</HintPath>
     </Reference>
-    <Reference Include="FontAwesome.WPF, Version=4.5.0.37524, Culture=neutral, PublicKeyToken=0758b07a11a4f466, processorArchitecture=MSIL">
-      <HintPath>..\packages\FontAwesome.WPF.4.5.0.8\lib\net40\FontAwesome.WPF.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="InfragisticsWPF4.Controls.Editors.XamComboEditor.v15.1">
+      <HintPath>..\Binaries\InfragisticsWPF4.Controls.Editors.XamComboEditor.v15.1.dll</HintPath>
+    </Reference>
+    <Reference Include="InfragisticsWPF4.Controls.Editors.XamDateTimeInput.v15.1">
+      <HintPath>..\Binaries\InfragisticsWPF4.Controls.Editors.XamDateTimeInput.v15.1.dll</HintPath>
+    </Reference>
+    <Reference Include="InfragisticsWPF4.Controls.Editors.XamMaskedInput.v15.1">
+      <HintPath>..\Binaries\InfragisticsWPF4.Controls.Editors.XamMaskedInput.v15.1.dll</HintPath>
+    </Reference>
+    <Reference Include="InfragisticsWPF4.Controls.Editors.XamRichTextEditor.v15.1">
+      <HintPath>..\Binaries\InfragisticsWPF4.Controls.Editors.XamRichTextEditor.v15.1.dll</HintPath>
+    </Reference>
+    <Reference Include="InfragisticsWPF4.Controls.Grids.XamGrid.v15.1">
+      <HintPath>..\Binaries\InfragisticsWPF4.Controls.Grids.XamGrid.v15.1.dll</HintPath>
     </Reference>
     <Reference Include="InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1">
       <HintPath>..\Binaries\InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll</HintPath>
     </Reference>
-    <Reference Include="log4net, Version=1.2.15.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
-      <HintPath>..\packages\log4net.2.0.5\lib\net45-full\log4net.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.Practices.Prism.Composition">
-      <HintPath>..\packages\Prism.Composition.5.0.0\lib\NET45\Microsoft.Practices.Prism.Composition.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Practices.Prism.Interactivity">
-      <HintPath>..\packages\Prism.Interactivity.5.0.0\lib\NET45\Microsoft.Practices.Prism.Interactivity.dll</HintPath>
+    <Reference Include="InfragisticsWPF4.Controls.Menus.XamDataTree.v15.1">
+      <HintPath>..\Binaries\InfragisticsWPF4.Controls.Menus.XamDataTree.v15.1.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Practices.Prism.Mvvm">
       <HintPath>..\packages\Prism.Mvvm.1.1.1\lib\net45\Microsoft.Practices.Prism.Mvvm.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Practices.Prism.Mvvm.Desktop">
-      <HintPath>..\packages\Prism.Mvvm.1.1.1\lib\net45\Microsoft.Practices.Prism.Mvvm.Desktop.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Practices.Prism.PubSubEvents">
-      <HintPath>..\packages\Prism.PubSubEvents.1.0.0\lib\portable-sl4+wp7+windows8+net40\Microsoft.Practices.Prism.PubSubEvents.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Practices.Prism.SharedInterfaces">
+    <Reference Include="Microsoft.Practices.Prism.SharedInterfaces, Version=1.1.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Prism.Mvvm.1.1.1\lib\net45\Microsoft.Practices.Prism.SharedInterfaces.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Practices.ServiceLocation">
-      <HintPath>..\packages\CommonServiceLocator.1.2\lib\portable-windows8+net40+sl5+windowsphone8\Microsoft.Practices.ServiceLocation.dll</HintPath>
     </Reference>
     <Reference Include="Moq">
       <HintPath>..\packages\Moq.4.2.1510.2205\lib\net40\Moq.dll</HintPath>
-      <Private>True</Private>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.8.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
@@ -85,6 +81,8 @@
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
+    <Reference Include="System.Activities" />
+    <Reference Include="System.Activities.Presentation" />
     <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Expression.Blend.Sdk.1.0.2\lib\net45\System.Windows.Interactivity.dll</HintPath>
       <Private>True</Private>
@@ -110,84 +108,104 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="DeployDestinationViewModelForTesting.cs" />
-    <Compile Include="DeploySourceExplorerViewModelForTesting.cs" />
-    <Compile Include="DeployTab.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>DeployTab.feature</DependentUpon>
-    </Compile>
-    <Compile Include="DeployTabSteps.cs" />
-    <Compile Include="..\AssemblyCommonInfo.cs">
+    <Compile Include="..\..\AssemblyCommonInfo.cs">
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
+    <Compile Include="SwitchDialog.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SwitchDialog.feature</DependentUpon>
+    </Compile>
+    <Compile Include="SwitchDialogSteps.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="DeployTab.feature">
+    <None Include="packages.config" />
+    <None Include="SwitchDialog.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>DeployTab.feature.cs</LastGenOutput>
-    </None>
-    <None Include="packages.config">
-      <SubType>Designer</SubType>
+      <LastGenOutput>SwitchDialog.feature.cs</LastGenOutput>
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Dev2.Activities.Designers\Dev2.Activities.Designers.csproj">
-      <Project>{b95b724a-b052-4e18-98a4-88072c8df2c2}</Project>
+    <ProjectReference Include="..\..\Dev2.Activities.Designers.Tests\Dev2.Activities.Designers.Tests.csproj">
+      <Project>{3c4ac14c-4134-48a6-a9ea-9d47218e05c5}</Project>
+      <Name>Dev2.Activities.Designers.Tests</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Dev2.Activities.Designers\Dev2.Activities.Designers.csproj">
+      <Project>{B95B724A-B052-4E18-98A4-88072C8DF2C2}</Project>
       <Name>Dev2.Activities.Designers</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Dev2.Common.Interfaces\Dev2.Common.Interfaces.csproj">
+    <ProjectReference Include="..\..\Dev2.Activities\Dev2.Activities.csproj">
+      <Project>{0A369A8B-0906-47EB-8EEE-CA20E9D4F151}</Project>
+      <Name>Dev2.Activities</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Dev2.Common.Interfaces\Dev2.Common.Interfaces.csproj">
       <Project>{13C0C6E9-7DC3-4DC3-8535-031C263CEE0B}</Project>
       <Name>Dev2.Common.Interfaces</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Dev2.Infrastructure\Dev2.Infrastructure.csproj">
-      <Project>{615EAE6D-040C-4364-B708-63DC8755CD4F}</Project>
-      <Name>Dev2.Infrastructure</Name>
+    <ProjectReference Include="..\..\Dev2.Core\Dev2.Core.csproj">
+      <Project>{6007C1F1-CE38-474A-A88C-0C05A77BC415}</Project>
+      <Name>Dev2.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Dev2.Studio.Core\Dev2.Studio.Core.csproj">
+    <ProjectReference Include="..\..\Dev2.Data\Dev2.Data.csproj">
+      <Project>{4BD0C970-ECD6-470B-B9EE-17ECFE53E5FB}</Project>
+      <Name>Dev2.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Dev2.Studio.Core\Dev2.Studio.Core.csproj">
       <Project>{A58B157B-960B-4E84-8957-24E4884C5C77}</Project>
       <Name>Dev2.Studio.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Dev2.Studio\Dev2.Studio.csproj">
-      <Project>{62247A80-2266-4295-A8F6-A05507E2796E}</Project>
-      <Name>Dev2.Studio</Name>
+    <ProjectReference Include="..\..\Warewolf.Storage\Warewolf.Storage.csproj">
+      <Project>{b3d070e0-11c1-4c1c-81a5-e680c1494945}</Project>
+      <Name>Warewolf.Storage</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Warewolf.AcceptanceTesting.Core\Warewolf.AcceptanceTesting.Core.csproj">
-      <Project>{CB0F5535-5E1D-41F9-A23C-F59FDC816B75}</Project>
-      <Name>Warewolf.AcceptanceTesting.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Warewolf.Studio.AntiCorruptionLayer\Warewolf.Studio.AntiCorruptionLayer.csproj">
+    <ProjectReference Include="..\..\Warewolf.Studio.AntiCorruptionLayer\Warewolf.Studio.AntiCorruptionLayer.csproj">
       <Project>{cc1b89cd-3222-4019-a0d1-58664f92cc47}</Project>
       <Name>Warewolf.Studio.AntiCorruptionLayer</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Warewolf.Studio.Core\Warewolf.Studio.Core.csproj">
+    <ProjectReference Include="..\..\Warewolf.Studio.Core\Warewolf.Studio.Core.csproj">
       <Project>{f9fe2ce9-625e-4e7f-8f4c-fce28bb59510}</Project>
       <Name>Warewolf.Studio.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Warewolf.Studio.Models\Warewolf.Studio.Models.csproj">
+    <ProjectReference Include="..\..\Warewolf.Studio.CustomControls\Warewolf.Studio.CustomControls.csproj">
+      <Project>{1bd5cc42-66c7-4a1b-af1f-e6f2d4372b44}</Project>
+      <Name>Warewolf.Studio.CustomControls</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Warewolf.Studio.Models\Warewolf.Studio.Models.csproj">
       <Project>{a62da168-5bf3-4c14-b880-4ad83478e3a7}</Project>
       <Name>Warewolf.Studio.Models</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Warewolf.Studio.Resources\Warewolf.Studio.Resources.csproj">
+    <ProjectReference Include="..\..\Warewolf.Studio.Resources\Warewolf.Studio.Resources.csproj">
       <Project>{cb565c94-8833-4911-b20f-0921ee3c286c}</Project>
       <Name>Warewolf.Studio.Resources</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Warewolf.Studio.ServerProxyLayer\Warewolf.Studio.ServerProxyLayer.csproj">
+    <ProjectReference Include="..\..\Warewolf.Studio.ServerProxyLayer\Warewolf.Studio.ServerProxyLayer.csproj">
       <Project>{c35c7c88-1eae-4421-ac03-cefa26461d6c}</Project>
       <Name>Warewolf.Studio.ServerProxyLayer</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Warewolf.Studio.Themes.Luna\Warewolf.Studio.Themes.Luna.csproj">
+    <ProjectReference Include="..\..\Warewolf.Studio.Themes.Luna\Warewolf.Studio.Themes.Luna.csproj">
       <Project>{18717e42-df21-45a4-9527-f0bb95d7135d}</Project>
       <Name>Warewolf.Studio.Themes.Luna</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Warewolf.Studio.ViewModels\Warewolf.Studio.ViewModels.csproj">
+    <ProjectReference Include="..\..\Warewolf.Studio.ViewModels.Tests\Warewolf.Studio.ViewModels.Tests.csproj">
+      <Project>{cd5e517a-1dc1-48de-a697-c614f8a18929}</Project>
+      <Name>Warewolf.Studio.ViewModels.Tests</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Warewolf.Studio.ViewModels\Warewolf.Studio.ViewModels.csproj">
       <Project>{c52b12c2-6a1d-4c4f-a878-cf283662a226}</Project>
       <Name>Warewolf.Studio.ViewModels</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Warewolf.Studio.Views\Warewolf.Studio.Views.csproj">
+    <ProjectReference Include="..\..\Warewolf.Studio.Views\Warewolf.Studio.Views.csproj">
       <Project>{f0d6a8c9-ff25-40c9-99db-ccbc21abdc36}</Project>
       <Name>Warewolf.Studio.Views</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\WarewolfParserInterop\WarewolfParserInterop.csproj">
+      <Project>{6eb59eee-4e16-4f29-b1b0-715e56e9139d}</Project>
+      <Name>WarewolfParserInterop</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\WarewolfParsing.Tests\WarewolfParsing.Tests.csproj">
+      <Project>{2a765154-2288-4fd3-a008-f0b7173f4074}</Project>
+      <Name>WarewolfParsing.Tests</Name>
     </ProjectReference>
   </ItemGroup>
   <Choose>
