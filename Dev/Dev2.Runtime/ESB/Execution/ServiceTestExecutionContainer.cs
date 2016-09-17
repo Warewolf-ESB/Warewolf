@@ -1,6 +1,8 @@
 using System;
 using System.Activities;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using System.Text;
 using System.Threading;
 using Dev2.Activities;
@@ -23,6 +25,8 @@ using Dev2.Workspaces;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Warewolf.Security.Encryption;
+using Warewolf.Storage;
+
 // ReSharper disable CyclomaticComplexity
 
 namespace Dev2.Runtime.ESB.Execution
@@ -150,6 +154,38 @@ namespace Dev2.Runtime.ESB.Execution
             return result;
         }
 
+        private static void AddRecordsetsInputs(IEnumerable<IServiceTestInput> recSets, IExecutionEnvironment environment)
+        {
+            var groupedRecsets = recSets.GroupBy(item => DataListUtil.ExtractRecordsetNameFromValue(item.Variable));
+            foreach (var groupedRecset in groupedRecsets)
+            {
+                var dataListItems = groupedRecset.GroupBy(item => DataListUtil.ExtractIndexRegionFromRecordset(item.Variable));
+                foreach (var dataListItem in dataListItems)
+                {
+                    List<IServiceTestInput> recSetsToAssign = new List<IServiceTestInput>();
+                    var empty = true;
+                    foreach (var listItem in dataListItem)
+                    {
+                        if (!string.IsNullOrEmpty(listItem.Value))
+                        {
+                            empty = false;
+                        }
+                        recSetsToAssign.Add(listItem);
+                    }
+                    if (!empty)
+                    {
+                        foreach(var serviceTestInput in recSetsToAssign)
+                        {
+                            if (!serviceTestInput.EmptyIsNull || !string.IsNullOrEmpty(serviceTestInput.Value))
+                            {
+                                environment.Assign(DataListUtil.AddBracketsToValueIfNotExist(serviceTestInput.Variable), serviceTestInput.Value, 0);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
         Guid ExecuteWf(ErrorResultTO to, IServiceTestModelTO test)
         {
             Guid result = new Guid();
@@ -158,6 +194,7 @@ namespace Dev2.Runtime.ESB.Execution
             var resourceID = DataObject.ResourceID;
             if (test?.Inputs != null)
             {
+                AddRecordsetsInputs(test.Inputs.Where(input => DataListUtil.IsValueRecordset(input.Variable) && !input.Variable.Contains("@")),DataObject.Environment);
                 foreach (var input in test.Inputs)
                 {
                     var variable = DataListUtil.AddBracketsToValueIfNotExist(input.Variable);
@@ -167,7 +204,7 @@ namespace Dev2.Runtime.ESB.Execution
                         var jContainer = JsonConvert.DeserializeObject(value) as JObject;
                         DataObject.Environment.AddToJsonObjects(variable, jContainer);
                     }
-                    else
+                    else if(!DataListUtil.IsValueRecordset(input.Variable))
                     {
                         if (!input.EmptyIsNull || !string.IsNullOrEmpty(value))
                         {

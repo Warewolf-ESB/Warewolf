@@ -46,16 +46,14 @@ namespace Warewolf.Studio.ViewModels
                 DataList.Create(resourceModel.DataList, resourceModel.DataList);
                 var inputList = _dataListConversionUtils.GetInputs(DataList);
                 var outputList = _dataListConversionUtils.GetOutputs(DataList);
-                testModel.Inputs = inputList
-                                    .Select(sca =>
+                testModel.Inputs = inputList.Select(sca =>
                     {
-                        var serviceTestInput = new ServiceTestInput(sca.DisplayValue, sca.Value);
+                        var serviceTestInput = new ServiceTestInput(sca.DisplayValue, "");
                         serviceTestInput.AddNewAction = () => testModel.AddRow(serviceTestInput, DataList);
                         return (IServiceTestInput)serviceTestInput;
                     }).ToObservableCollection();
 
-                testModel.Outputs = outputList
-                                    .Select(sca => new ServiceTestOutput(sca.DisplayValue, sca.Value) as IServiceTestOutput).ToObservableCollection();
+                testModel.Outputs = outputList.Select(sca => new ServiceTestOutput(sca.DisplayValue, "") as IServiceTestOutput).ToObservableCollection();
             }
             testModel.Item = testModel;
             return testModel;
