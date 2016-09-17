@@ -202,7 +202,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
             {
                 throw new ArgumentNullException(nameof(resourceName));
             }
-
+            Dev2Logger.Debug("Getting Dynamic Objects");
             List<DynamicServiceObjectBase> results;
 
             if (useContains)

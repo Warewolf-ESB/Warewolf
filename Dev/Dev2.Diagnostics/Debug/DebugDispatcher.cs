@@ -135,7 +135,7 @@ namespace Dev2.Diagnostics.Debug
 
         #region Write
 
-        public void Write(IDebugState debugState,bool isTestExecution=false,string testName="", bool isRemoteInvoke = false, string remoteInvokerId = null, string parentInstanceId = null, IList<IDebugState> remoteDebugItems = null)
+        public void Write(IDebugState debugState,bool isTestExecution,string testName, bool isRemoteInvoke = false, string remoteInvokerId = null, string parentInstanceId = null, IList<IDebugState> remoteDebugItems = null)
         {
             if(debugState == null)
             {

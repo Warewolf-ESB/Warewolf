@@ -42,6 +42,7 @@ namespace Warewolf.ResourceManagement
                         _cache[resourceIdGuid] = act;
                         return act;
                     });
+                    return act;
                 }
                     // ReSharper disable EmptyGeneralCatchClause
                 catch(Exception err) //errors caught inside

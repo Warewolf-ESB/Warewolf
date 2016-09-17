@@ -117,7 +117,7 @@ namespace Dev2.Tests.Diagnostics
         public void WriteWithNull()
         {
 
-            DebugDispatcher.Instance.Write(null);
+            DebugDispatcher.Instance.Write(null,false,"");
 
             // No exception thrown
             Assert.IsTrue(true);
