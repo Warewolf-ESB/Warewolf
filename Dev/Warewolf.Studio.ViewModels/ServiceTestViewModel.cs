@@ -111,7 +111,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 var dummyTest = new DummyServiceTest(CreateTests) { TestName = "Create a new test." };
                 models.Add(dummyTest);
-                var testName = SelectedServiceTest.TestName;
+                var testName = SelectedServiceTest?.TestName;
                 SelectedServiceTest = dummyTest;
                 _tests = models;
                 OnPropertyChanged(() => Tests);
@@ -512,7 +512,7 @@ namespace Warewolf.Studio.ViewModels
                 SetSelectedTestUrl();
                 SetDuplicateTestTooltip();
                 OnPropertyChanged(() => SelectedServiceTest);
-                EventPublisher.Publish(new DebugOutputMessage(_selectedServiceTest.DebugForTest ?? new List<IDebugState>()));
+                EventPublisher.Publish(new DebugOutputMessage(_selectedServiceTest?.DebugForTest ?? new List<IDebugState>()));
             }
         }
 

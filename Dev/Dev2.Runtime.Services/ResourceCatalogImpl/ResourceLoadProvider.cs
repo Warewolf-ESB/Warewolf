@@ -525,7 +525,6 @@ namespace Dev2.Runtime.ResourceCatalogImpl
                 if (!FrequentlyUsedServices.TryGetValue(resource.ResourceName, out objects))
                 {
                     objects = GenerateObjectGraph(resource);
-                    //_frequentlyUsedServices.TryAdd(resource.ResourceName, objects);
                 }
                 else
                 {
