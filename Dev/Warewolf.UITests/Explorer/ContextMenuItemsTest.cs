@@ -15,7 +15,6 @@ namespace Warewolf.UITests
         public void ContextMenuItemsUITest()
         {
             Uimap.CreateAndSave_Dice_Workflow();
-
             Uimap.Click_New_Workflow_Ribbon_Button();
             Uimap.Click_Explorer_Refresh_Button();
             Uimap.Drag_Dice_Onto_DesignSurface();
