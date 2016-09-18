@@ -45,58 +45,6 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
-        /// RightClick_Localhost
-        /// </summary>
-        public void RightClick_Localhost()
-        {
-            #region Variable Declarations
-            WpfTreeItem localhost = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost;
-            #endregion
-
-            // Right-Click 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item
-            Mouse.Click(localhost, MouseButtons.Right, ModifierKeys.None, new Point(75, 10));
-        }
-        
-        /// <summary>
-        /// Select_NewWorkFlowService_From_ContextMenu - Use 'Select_NewWorkFlowService_From_ContextMenuParams' to pass parameters into this method.
-        /// </summary>
-        public void Select_NewWorkFlowService_From_ContextMenu()
-        {
-            #region Variable Declarations
-            WpfMenuItem newWorkflowService = this.MainStudioWindow.ExplorerEnvironmentMenu.NewWorkflowService;
-            #endregion
-
-            // Verify that the 'Enabled' property of 'New Workflow Service' menu item equals 'True'
-            Assert.AreEqual(this.Select_NewWorkFlowService_From_ContextMenuParams.NewWorkflowServiceEnabled, newWorkflowService.Enabled, "NewWorkFlowService button is disabled.");
-
-            // Click 'New Workflow Service' menu item
-            Mouse.Click(newWorkflowService, new Point(79, 13));
-        }
-        
-        /// <summary>
-        /// Enter_Dice_Roll_Values - Use 'Enter_Dice_Roll_ValuesParams' to pass parameters into this method.
-        /// </summary>
-        public void Enter_Dice_Roll_Values()
-        {
-            #region Variable Declarations
-            WpfEdit fromTextEdit = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Random.SmallView.From.FromTextEdit;
-            WpfEdit toTextEdit = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Random.SmallView.To.ToTextEdit;
-            #endregion
-
-            // Verify that the 'Exists' property of 'Text' text box equals 'True'
-            Assert.AreEqual(this.Enter_Dice_Roll_ValuesParams.FromTextEditExists, fromTextEdit.Exists, "From textbox does not exist");
-
-            // Type '1' in 'Text' text box
-            fromTextEdit.Text = this.Enter_Dice_Roll_ValuesParams.FromTextEditText;
-
-            // Verify that the 'Exists' property of 'Text' text box equals 'True'
-            Assert.AreEqual(this.Enter_Dice_Roll_ValuesParams.ToTextEditExists, toTextEdit.Exists, "To textbox does not exist");
-
-            // Type '6' in 'Text' text box
-            toTextEdit.Text = this.Enter_Dice_Roll_ValuesParams.ToTextEditText;
-        }
-        
-        /// <summary>
         /// Assert_Connection_Passed - Use 'Assert_Connection_PassedExpectedValues' to pass parameters into this method.
         /// </summary>
         public void Assert_Connection_Passed()
@@ -169,6 +117,27 @@ namespace Warewolf.UITests
 
             // Click 'Done' button
             Mouse.Click(doneButton, new Point(35, 3));
+        }
+        
+        /// <summary>
+        /// Check_Public_Administrator - Use 'Check_Public_AdministratorParams' to pass parameters into this method.
+        /// </summary>
+        public void Check_Public_Administrator()
+        {
+            #region Variable Declarations
+            WpfCheckBox public_AdministratorCheckBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.PublicROW.Public_AdministratorCell.Public_AdministratorCheckBox;
+            WpfCheckBox public_DeployToCheckBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.PublicROW.Public_DeployToCell.Public_DeployToCheckBox;
+            WpfCheckBox public_DeployFromCheckBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.PublicROW.Public_DeployFromCell.Public_DeployFromCheckBox;
+            #endregion
+
+            // Select 'UI_Public_AdministratorPermissionCheckBox_AutoID' check box
+            public_AdministratorCheckBox.Checked = this.Check_Public_AdministratorParams.Public_AdministratorCheckBoxChecked;
+
+            // Verify that the 'Checked' property of 'UI_Public_DeployToPermissionCheckBox_AutoID' check box equals 'True'
+            Assert.AreEqual(this.Check_Public_AdministratorParams.Public_DeployToCheckBoxChecked, public_DeployToCheckBox.Checked, "Public DeployTo checkbox is NOT checked after Checking Administrator.");
+
+            // Verify that the 'Checked' property of 'UI_Public_DeployFromPermissionCheckBox_AutoID' check box equals 'True'
+            Assert.AreEqual(this.Check_Public_AdministratorParams.Public_DeployFromCheckBoxChecked, public_DeployFromCheckBox.Checked, "Public DeployFrom checkbox is NOT checked after Checking Administrator.");
         }
         
         /// <summary>
@@ -434,6 +403,19 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
+        /// Click_Close_Dependecy_Tab
+        /// </summary>
+        public void Click_Close_Dependecy_Tab()
+        {
+            #region Variable Declarations
+            WpfButton closeButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DependencyGraphTab.CloseButton;
+            #endregion
+
+            // Click '' button
+            Mouse.Click(closeButton, new Point(13, 10));
+        }
+        
+        /// <summary>
         /// Click_Close_Deploy_Tab_Button - Use 'Click_Close_Deploy_Tab_ButtonParams' to pass parameters into this method.
         /// </summary>
         public void Click_Close_Deploy_Tab_Button()
@@ -570,6 +552,110 @@ namespace Warewolf.UITests
 
             // Click 'Close All But This' menu item
             Mouse.Click(uICloseAllButThisMenuItem, new Point(44, 12));
+        }
+        
+        /// <summary>
+        /// Click_ConfigureSetting_From_Menu - Use 'Click_ConfigureSetting_From_MenuParams' to pass parameters into this method.
+        /// </summary>
+        public void Click_ConfigureSetting_From_Menu()
+        {
+            #region Variable Declarations
+            WpfButton configureSettingsButton = this.MainStudioWindow.SideMenuBar.ConfigureSettingsButton;
+            WpfTabPage loggingTab = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.LoggingTab;
+            WpfText sECURITY = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SECURITY;
+            WpfTable serverPermissions = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions;
+            WpfPane warewolfAdminROW = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.WarewolfAdminROW;
+            WpfButton deleteButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.WarewolfAdminROW.DeleteCell.DeleteButton;
+            WpfCheckBox deployToCheckBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.WarewolfAdminROW.DeployToCell.DeployToCheckBox;
+            WpfCell deployFromCell = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.WarewolfAdminROW.DeployFromCell;
+            WpfCheckBox deployFromCheckBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.WarewolfAdminROW.DeployFromCell.DeployFromCheckBox;
+            WpfCell administratorCell = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.WarewolfAdminROW.AdministratorCell;
+            WpfCheckBox administratorCheckBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.WarewolfAdminROW.AdministratorCell.AdministratorCheckBox;
+            WpfCell executeCell = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.WarewolfAdminROW.ExecuteCell;
+            WpfCheckBox executeCheckBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.WarewolfAdminROW.ExecuteCell.ExecuteCheckBox;
+            WpfCell viewCell = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.WarewolfAdminROW.ViewCell;
+            WpfCheckBox viewCheckBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.WarewolfAdminROW.ViewCell.ViewCheckBox;
+            WpfCell contributeCell = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.WarewolfAdminROW.ContributeCell;
+            WpfCheckBox contributeCheckBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.WarewolfAdminROW.ContributeCell.ContributeCheckBox;
+            WpfPane publicROW = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.PublicROW;
+            #endregion
+
+            // Click 'Configure settings' button
+            Mouse.Click(configureSettingsButton, new Point(7, 13));
+
+            // Verify that the 'Exists' property of 'System.Windows.Controls.TabItem Header: Content:' tab equals 'True'
+            Assert.AreEqual(this.Click_ConfigureSetting_From_MenuParams.LoggingTabExists, loggingTab.Exists, "Logging tab does not exist after the Configure/Setting Menu button is clicked");
+
+            // Verify that the 'Enabled' property of 'System.Windows.Controls.TabItem Header: Content:' tab equals 'True'
+            Assert.AreEqual(this.Click_ConfigureSetting_From_MenuParams.LoggingTabEnabled, loggingTab.Enabled, "Logging tab is disabled after the Configure/Setting Menu button is clicked");
+
+            // Verify that the 'Name' property of 'SECURITY' label equals 'SECURITY'
+            Assert.AreEqual(this.Click_ConfigureSetting_From_MenuParams.SECURITYName, sECURITY.Name, "Current selected tab page is not Security after Configure/Setting Menu button is " +
+                    "clicked");
+
+            // Verify that the 'Exists' property of 'ServerPermissionsDataGrid' table equals 'True'
+            Assert.AreEqual(this.Click_ConfigureSetting_From_MenuParams.ServerPermissionsExists, serverPermissions.Exists, "Current selected tab page is not Security after Configure/Setting Menu button is " +
+                    "clicked");
+
+            // Verify that the 'Exists' property of '0' pane equals 'True'
+            Assert.AreEqual(this.Click_ConfigureSetting_From_MenuParams.WarewolfAdminROWExists, warewolfAdminROW.Exists, "Warewolf Administrators row does not exist");
+
+            // Verify that the 'Exists' property of 'UI_AddRemovebtn_AutoID' button equals 'True'
+            Assert.AreEqual(this.Click_ConfigureSetting_From_MenuParams.DeleteButtonExists, deleteButton.Exists, "DeleteButton does not exist");
+
+            // Verify that the 'Checked' property of 'UI_Warewolf Administrators_DeployToPermissionCheckBox_AutoID' check box equals 'True'
+            Assert.AreEqual(this.Click_ConfigureSetting_From_MenuParams.DeployToCheckBoxChecked, deployToCheckBox.Checked, "DeployTo checkbox is Unchecked");
+
+            // Verify that the 'Enabled' property of 'UI_Warewolf Administrators_DeployToPermissionCheckBox_AutoID' check box equals 'False'
+            Assert.AreEqual(this.Click_ConfigureSetting_From_MenuParams.DeployToCheckBoxEnabled, deployToCheckBox.Enabled, "DeployTo checkbox is enabled");
+
+            // Verify that the 'ReadOnly' property of 'True' cell equals 'True'
+            Assert.AreEqual(this.Click_ConfigureSetting_From_MenuParams.DeployFromCellReadOnly, deployFromCell.ReadOnly, "DeployFrom cell for WarewolfAdministratorsRow is NOT set to ReadOnly ");
+
+            // Verify that the 'Checked' property of 'UI_Warewolf Administrators_DeployFromPermissionCheckBox_AutoID' check box equals 'True'
+            Assert.AreEqual(this.Click_ConfigureSetting_From_MenuParams.DeployFromCheckBoxChecked, deployFromCheckBox.Checked, "DeployFrom checkbox is Unchecked");
+
+            // Verify that the 'Enabled' property of 'UI_Warewolf Administrators_DeployFromPermissionCheckBox_AutoID' check box equals 'False'
+            Assert.AreEqual(this.Click_ConfigureSetting_From_MenuParams.DeployFromCheckBoxEnabled, deployFromCheckBox.Enabled, "DeployFrom checkbox is enabled");
+
+            // Verify that the 'ReadOnly' property of 'True' cell equals 'True'
+            Assert.AreEqual(this.Click_ConfigureSetting_From_MenuParams.AdministratorCellReadOnly, administratorCell.ReadOnly, "Administrator cell for WarewolfAdministratorsRow is NOT set to ReadOnly ");
+
+            // Verify that the 'Checked' property of 'UI_Warewolf Administrators_AdministratorPermissionCheck...' check box equals 'True'
+            Assert.AreEqual(this.Click_ConfigureSetting_From_MenuParams.AdministratorCheckBoxChecked, administratorCheckBox.Checked, "Administrator checkbox is Unchecked");
+
+            // Verify that the 'Enabled' property of 'UI_Warewolf Administrators_AdministratorPermissionCheck...' check box equals 'False'
+            Assert.AreEqual(this.Click_ConfigureSetting_From_MenuParams.AdministratorCheckBoxEnabled, administratorCheckBox.Enabled, "Administrator checkbox is enabled");
+
+            // Verify that the 'ReadOnly' property of 'True' cell equals 'True'
+            Assert.AreEqual(this.Click_ConfigureSetting_From_MenuParams.ExecuteCellReadOnly, executeCell.ReadOnly, "Execute cell for WarewolfAdministratorsRow is NOT set to ReadOnly ");
+
+            // Verify that the 'Checked' property of 'UI_Warewolf Administrators_ExecutePermissionCheck...' check box equals 'True'
+            Assert.AreEqual(this.Click_ConfigureSetting_From_MenuParams.ExecuteCheckBoxChecked, executeCheckBox.Checked, "Execute checkbox is Unchecked");
+
+            // Verify that the 'Enabled' property of 'UI_Warewolf Administrators_ExecutePermissionCheck...' check box equals 'False'
+            Assert.AreEqual(this.Click_ConfigureSetting_From_MenuParams.ExecuteCheckBoxEnabled, executeCheckBox.Enabled, "Execute checkbox is enabled");
+
+            // Verify that the 'ReadOnly' property of 'True' cell equals 'True'
+            Assert.AreEqual(this.Click_ConfigureSetting_From_MenuParams.ViewCellReadOnly, viewCell.ReadOnly, "View cell for WarewolfAdministratorsRow is NOT set to ReadOnly ");
+
+            // Verify that the 'Checked' property of 'UI_Warewolf Administrators_ViewPermissionCheck...' check box equals 'True'
+            Assert.AreEqual(this.Click_ConfigureSetting_From_MenuParams.ViewCheckBoxChecked, viewCheckBox.Checked, "View checkbox is Unchecked");
+
+            // Verify that the 'Enabled' property of 'UI_Warewolf Administrators_ViewPermissionCheck...' check box equals 'False'
+            Assert.AreEqual(this.Click_ConfigureSetting_From_MenuParams.ViewCheckBoxEnabled, viewCheckBox.Enabled, "View checkbox is enabled");
+
+            // Verify that the 'ReadOnly' property of 'True' cell equals 'True'
+            Assert.AreEqual(this.Click_ConfigureSetting_From_MenuParams.ContributeCellReadOnly, contributeCell.ReadOnly, "Contribute cell for WarewolfAdministratorsRow is NOT set to ReadOnly ");
+
+            // Verify that the 'Checked' property of 'UI_Warewolf Administrators_ContributePermissionCheck...' check box equals 'True'
+            Assert.AreEqual(this.Click_ConfigureSetting_From_MenuParams.ContributeCheckBoxChecked, contributeCheckBox.Checked, "Contribute checkbox is Unchecked");
+
+            // Verify that the 'Enabled' property of 'UI_Warewolf Administrators_ContributePermissionCheck...' check box equals 'False'
+            Assert.AreEqual(this.Click_ConfigureSetting_From_MenuParams.ContributeCheckBoxEnabled, contributeCheckBox.Enabled, "Contribute checkbox is enabled");
+
+            // Verify that the 'Exists' property of '1' pane equals 'True'
+            Assert.AreEqual(this.Click_ConfigureSetting_From_MenuParams.PublicROWExists, publicROW.Exists, "Public row does not exist");
         }
         
         /// <summary>
@@ -881,6 +967,41 @@ namespace Warewolf.UITests
 
             // Click 'Done' button
             Mouse.Click(doneButton, new Point(35, 6));
+        }
+        
+        /// <summary>
+        /// Click_Duplicate_From_Duplicate_Dialog - Use 'Click_Duplicate_From_Duplicate_DialogParams' to pass parameters into this method.
+        /// </summary>
+        public void Click_Duplicate_From_Duplicate_Dialog()
+        {
+            #region Variable Declarations
+            WpfButton duplicateButton = this.SaveDialogWindow.DuplicateButton;
+            #endregion
+
+            // Verify that the 'Exists' property of 'Duplicate' button equals 'True'
+            Assert.AreEqual(this.Click_Duplicate_From_Duplicate_DialogParams.DuplicateButtonExists, duplicateButton.Exists, "Duplicate button does not exist");
+
+            // Click 'Duplicate' button
+            Mouse.Click(duplicateButton, new Point(26, 10));
+        }
+        
+        /// <summary>
+        /// Click_Duplicate_From_ExplorerContextMenu - Use 'Click_Duplicate_From_ExplorerContextMenuParams' to pass parameters into this method.
+        /// </summary>
+        public void Click_Duplicate_From_ExplorerContextMenu()
+        {
+            #region Variable Declarations
+            WpfMenuItem duplicate = this.MainStudioWindow.ExplorerContextMenu.Duplicate;
+            #endregion
+
+            // Verify that the 'Exists' property of 'Duplicate' menu item equals 'True'
+            Assert.AreEqual(this.Click_Duplicate_From_ExplorerContextMenuParams.DuplicateExists, duplicate.Exists, "Duplicate button does not exist");
+
+            // Verify that the 'Enabled' property of 'Duplicate' menu item equals 'True'
+            Assert.AreEqual(this.Click_Duplicate_From_ExplorerContextMenuParams.DuplicateEnabled, duplicate.Enabled, "Duplicate button is disabled");
+
+            // Click 'Duplicate' menu item
+            Mouse.Click(duplicate, new Point(62, 12));
         }
         
         /// <summary>
@@ -1319,6 +1440,27 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
+        /// Click_Reset_Perfomance_Counter - Use 'Click_Reset_Perfomance_CounterParams' to pass parameters into this method.
+        /// </summary>
+        public void Click_Reset_Perfomance_Counter()
+        {
+            #region Variable Declarations
+            WpfHyperlink itemHyperlink = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.PerfomanceCounterTab.PerfmonViewContent.ResetCounter.ItemHyperlink;
+            WpfWindow messageBoxWindow = this.MessageBoxWindow;
+            WpfButton oKButton = this.MessageBoxWindow.OKButton;
+            #endregion
+
+            // Click link
+            Mouse.Click(itemHyperlink, new Point(49, 9));
+
+            // Verify that the 'Exists' property of 'WarewolfMessageBox' window equals 'True'
+            Assert.AreEqual(this.Click_Reset_Perfomance_CounterParams.MessageBoxWindowExists, messageBoxWindow.Exists, "MessageBoxWindow did not show after clicking reset counters");
+
+            // Click 'OK' button
+            Mouse.Click(oKButton, new Point(50, 12));
+        }
+        
+        /// <summary>
         /// Click_RunDebug_button - Use 'Click_RunDebug_buttonParams' to pass parameters into this method.
         /// </summary>
         public void Click_RunDebug_button()
@@ -1572,6 +1714,36 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
+        /// Click_Select_Resource_Button
+        /// </summary>
+        public void Click_Select_Resource_Button()
+        {
+            #region Variable Declarations
+            WpfButton itemButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.PerfomanceCounterTab.PerfmonViewContent.ResourceTable.ResourceCell.ItemButton;
+            #endregion
+
+            // Click '...' button
+            Mouse.Click(itemButton, new Point(9, 8));
+        }
+        
+        /// <summary>
+        /// Click_Select_Resource_Button_From_Resource_Permissions - Use 'Click_Select_Resource_Button_From_Resource_PermissionsParams' to pass parameters into this method.
+        /// </summary>
+        public void Click_Select_Resource_Button_From_Resource_Permissions()
+        {
+            #region Variable Declarations
+            WpfButton itemButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1.ResourceCell.ItemButton;
+            WpfWindow servicePickerDialog = this.ServicePickerDialog;
+            #endregion
+
+            // Click '...' button
+            Mouse.Click(itemButton, new Point(13, 16));
+
+            // Verify that the 'Exists' property of 'ServicePickerDialog' window equals 'True'
+            Assert.AreEqual(this.Click_Select_Resource_Button_From_Resource_PermissionsParams.ServicePickerDialogExists, servicePickerDialog.Exists, "Service window does not exist after clicking SelectResource button");
+        }
+        
+        /// <summary>
         /// Click_Select_Windows_Group_Cancel_Button - Use 'Click_Select_Windows_Group_Cancel_ButtonParams' to pass parameters into this method.
         /// </summary>
         public void Click_Select_Windows_Group_Cancel_Button()
@@ -1598,6 +1770,19 @@ namespace Warewolf.UITests
 
             // Click 'OK' button
             Mouse.Click(ok, new Point(37, 9));
+        }
+        
+        /// <summary>
+        /// Click_Server_Log_File_Button
+        /// </summary>
+        public void Click_Server_Log_File_Button()
+        {
+            #region Variable Declarations
+            WpfHyperlink itemHyperlink = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.LoggingTab.LogSettingsViewConte.ServerLogs.ServerLogFile.ItemHyperlink;
+            #endregion
+
+            // Click link
+            Mouse.Click(itemHyperlink, new Point(83, 6));
         }
         
         /// <summary>
@@ -1783,157 +1968,6 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
-        /// Click_ConfigureSetting_From_Menu - Use 'Click_ConfigureSetting_From_MenuParams' to pass parameters into this method.
-        /// </summary>
-        public void Click_ConfigureSetting_From_Menu()
-        {
-            #region Variable Declarations
-            WpfButton configureSettingsButton = this.MainStudioWindow.SideMenuBar.ConfigureSettingsButton;
-            WpfTabPage loggingTab = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.LoggingTab;
-            WpfText sECURITY = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SECURITY;
-            WpfTable serverPermissions = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions;
-            WpfPane warewolfAdminROW = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.WarewolfAdminROW;
-            WpfButton deleteButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.WarewolfAdminROW.DeleteCell.DeleteButton;
-            WpfCheckBox deployToCheckBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.WarewolfAdminROW.DeployToCell.DeployToCheckBox;
-            WpfCell deployFromCell = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.WarewolfAdminROW.DeployFromCell;
-            WpfCheckBox deployFromCheckBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.WarewolfAdminROW.DeployFromCell.DeployFromCheckBox;
-            WpfCell administratorCell = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.WarewolfAdminROW.AdministratorCell;
-            WpfCheckBox administratorCheckBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.WarewolfAdminROW.AdministratorCell.AdministratorCheckBox;
-            WpfCell executeCell = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.WarewolfAdminROW.ExecuteCell;
-            WpfCheckBox executeCheckBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.WarewolfAdminROW.ExecuteCell.ExecuteCheckBox;
-            WpfCell viewCell = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.WarewolfAdminROW.ViewCell;
-            WpfCheckBox viewCheckBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.WarewolfAdminROW.ViewCell.ViewCheckBox;
-            WpfCell contributeCell = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.WarewolfAdminROW.ContributeCell;
-            WpfCheckBox contributeCheckBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.WarewolfAdminROW.ContributeCell.ContributeCheckBox;
-            WpfPane publicROW = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.PublicROW;
-            #endregion
-
-            // Click 'Configure settings' button
-            Mouse.Click(configureSettingsButton, new Point(7, 13));
-
-            // Verify that the 'Exists' property of 'System.Windows.Controls.TabItem Header: Content:' tab equals 'True'
-            Assert.AreEqual(this.Click_ConfigureSetting_From_MenuParams.LoggingTabExists, loggingTab.Exists, "Logging tab does not exist after the Configure/Setting Menu button is clicked");
-
-            // Verify that the 'Enabled' property of 'System.Windows.Controls.TabItem Header: Content:' tab equals 'True'
-            Assert.AreEqual(this.Click_ConfigureSetting_From_MenuParams.LoggingTabEnabled, loggingTab.Enabled, "Logging tab is disabled after the Configure/Setting Menu button is clicked");
-
-            // Verify that the 'Name' property of 'SECURITY' label equals 'SECURITY'
-            Assert.AreEqual(this.Click_ConfigureSetting_From_MenuParams.SECURITYName, sECURITY.Name, "Current selected tab page is not Security after Configure/Setting Menu button is " +
-                    "clicked");
-
-            // Verify that the 'Exists' property of 'ServerPermissionsDataGrid' table equals 'True'
-            Assert.AreEqual(this.Click_ConfigureSetting_From_MenuParams.ServerPermissionsExists, serverPermissions.Exists, "Current selected tab page is not Security after Configure/Setting Menu button is " +
-                    "clicked");
-
-            // Verify that the 'Exists' property of '0' pane equals 'True'
-            Assert.AreEqual(this.Click_ConfigureSetting_From_MenuParams.WarewolfAdminROWExists, warewolfAdminROW.Exists, "Warewolf Administrators row does not exist");
-
-            // Verify that the 'Exists' property of 'UI_AddRemovebtn_AutoID' button equals 'True'
-            Assert.AreEqual(this.Click_ConfigureSetting_From_MenuParams.DeleteButtonExists, deleteButton.Exists, "DeleteButton does not exist");
-
-            // Verify that the 'Checked' property of 'UI_Warewolf Administrators_DeployToPermissionCheckBox_AutoID' check box equals 'True'
-            Assert.AreEqual(this.Click_ConfigureSetting_From_MenuParams.DeployToCheckBoxChecked, deployToCheckBox.Checked, "DeployTo checkbox is Unchecked");
-
-            // Verify that the 'Enabled' property of 'UI_Warewolf Administrators_DeployToPermissionCheckBox_AutoID' check box equals 'False'
-            Assert.AreEqual(this.Click_ConfigureSetting_From_MenuParams.DeployToCheckBoxEnabled, deployToCheckBox.Enabled, "DeployTo checkbox is enabled");
-
-            // Verify that the 'ReadOnly' property of 'True' cell equals 'True'
-            Assert.AreEqual(this.Click_ConfigureSetting_From_MenuParams.DeployFromCellReadOnly, deployFromCell.ReadOnly, "DeployFrom cell for WarewolfAdministratorsRow is NOT set to ReadOnly ");
-
-            // Verify that the 'Checked' property of 'UI_Warewolf Administrators_DeployFromPermissionCheckBox_AutoID' check box equals 'True'
-            Assert.AreEqual(this.Click_ConfigureSetting_From_MenuParams.DeployFromCheckBoxChecked, deployFromCheckBox.Checked, "DeployFrom checkbox is Unchecked");
-
-            // Verify that the 'Enabled' property of 'UI_Warewolf Administrators_DeployFromPermissionCheckBox_AutoID' check box equals 'False'
-            Assert.AreEqual(this.Click_ConfigureSetting_From_MenuParams.DeployFromCheckBoxEnabled, deployFromCheckBox.Enabled, "DeployFrom checkbox is enabled");
-
-            // Verify that the 'ReadOnly' property of 'True' cell equals 'True'
-            Assert.AreEqual(this.Click_ConfigureSetting_From_MenuParams.AdministratorCellReadOnly, administratorCell.ReadOnly, "Administrator cell for WarewolfAdministratorsRow is NOT set to ReadOnly ");
-
-            // Verify that the 'Checked' property of 'UI_Warewolf Administrators_AdministratorPermissionCheck...' check box equals 'True'
-            Assert.AreEqual(this.Click_ConfigureSetting_From_MenuParams.AdministratorCheckBoxChecked, administratorCheckBox.Checked, "Administrator checkbox is Unchecked");
-
-            // Verify that the 'Enabled' property of 'UI_Warewolf Administrators_AdministratorPermissionCheck...' check box equals 'False'
-            Assert.AreEqual(this.Click_ConfigureSetting_From_MenuParams.AdministratorCheckBoxEnabled, administratorCheckBox.Enabled, "Administrator checkbox is enabled");
-
-            // Verify that the 'ReadOnly' property of 'True' cell equals 'True'
-            Assert.AreEqual(this.Click_ConfigureSetting_From_MenuParams.ExecuteCellReadOnly, executeCell.ReadOnly, "Execute cell for WarewolfAdministratorsRow is NOT set to ReadOnly ");
-
-            // Verify that the 'Checked' property of 'UI_Warewolf Administrators_ExecutePermissionCheck...' check box equals 'True'
-            Assert.AreEqual(this.Click_ConfigureSetting_From_MenuParams.ExecuteCheckBoxChecked, executeCheckBox.Checked, "Execute checkbox is Unchecked");
-
-            // Verify that the 'Enabled' property of 'UI_Warewolf Administrators_ExecutePermissionCheck...' check box equals 'False'
-            Assert.AreEqual(this.Click_ConfigureSetting_From_MenuParams.ExecuteCheckBoxEnabled, executeCheckBox.Enabled, "Execute checkbox is enabled");
-
-            // Verify that the 'ReadOnly' property of 'True' cell equals 'True'
-            Assert.AreEqual(this.Click_ConfigureSetting_From_MenuParams.ViewCellReadOnly, viewCell.ReadOnly, "View cell for WarewolfAdministratorsRow is NOT set to ReadOnly ");
-
-            // Verify that the 'Checked' property of 'UI_Warewolf Administrators_ViewPermissionCheck...' check box equals 'True'
-            Assert.AreEqual(this.Click_ConfigureSetting_From_MenuParams.ViewCheckBoxChecked, viewCheckBox.Checked, "View checkbox is Unchecked");
-
-            // Verify that the 'Enabled' property of 'UI_Warewolf Administrators_ViewPermissionCheck...' check box equals 'False'
-            Assert.AreEqual(this.Click_ConfigureSetting_From_MenuParams.ViewCheckBoxEnabled, viewCheckBox.Enabled, "View checkbox is enabled");
-
-            // Verify that the 'ReadOnly' property of 'True' cell equals 'True'
-            Assert.AreEqual(this.Click_ConfigureSetting_From_MenuParams.ContributeCellReadOnly, contributeCell.ReadOnly, "Contribute cell for WarewolfAdministratorsRow is NOT set to ReadOnly ");
-
-            // Verify that the 'Checked' property of 'UI_Warewolf Administrators_ContributePermissionCheck...' check box equals 'True'
-            Assert.AreEqual(this.Click_ConfigureSetting_From_MenuParams.ContributeCheckBoxChecked, contributeCheckBox.Checked, "Contribute checkbox is Unchecked");
-
-            // Verify that the 'Enabled' property of 'UI_Warewolf Administrators_ContributePermissionCheck...' check box equals 'False'
-            Assert.AreEqual(this.Click_ConfigureSetting_From_MenuParams.ContributeCheckBoxEnabled, contributeCheckBox.Enabled, "Contribute checkbox is enabled");
-
-            // Verify that the 'Exists' property of '1' pane equals 'True'
-            Assert.AreEqual(this.Click_ConfigureSetting_From_MenuParams.PublicROWExists, publicROW.Exists, "Public row does not exist");
-        }
-        
-        /// <summary>
-        /// Select_PerfomanceCounterTab
-        /// </summary>
-        public void Select_PerfomanceCounterTab()
-        {
-            #region Variable Declarations
-            WpfTabPage perfomanceCounterTab = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.PerfomanceCounterTab;
-            #endregion
-
-            // Click 'System.Windows.Controls.TabItem Header: Content:' tab
-            Mouse.Click(perfomanceCounterTab, new Point(124, 14));
-        }
-        
-        /// <summary>
-        /// Click_Reset_Perfomance_Counter - Use 'Click_Reset_Perfomance_CounterParams' to pass parameters into this method.
-        /// </summary>
-        public void Click_Reset_Perfomance_Counter()
-        {
-            #region Variable Declarations
-            WpfHyperlink itemHyperlink = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.PerfomanceCounterTab.PerfmonViewContent.ResetCounter.ItemHyperlink;
-            WpfWindow messageBoxWindow = this.MessageBoxWindow;
-            WpfButton oKButton = this.MessageBoxWindow.OKButton;
-            #endregion
-
-            // Click link
-            Mouse.Click(itemHyperlink, new Point(49, 9));
-
-            // Verify that the 'Exists' property of 'WarewolfMessageBox' window equals 'True'
-            Assert.AreEqual(this.Click_Reset_Perfomance_CounterParams.MessageBoxWindowExists, messageBoxWindow.Exists, "MessageBoxWindow did not show after clicking reset counters");
-
-            // Click 'OK' button
-            Mouse.Click(oKButton, new Point(50, 12));
-        }
-        
-        /// <summary>
-        /// Click_Select_Resource_Button
-        /// </summary>
-        public void Click_Select_Resource_Button()
-        {
-            #region Variable Declarations
-            WpfButton itemButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.PerfomanceCounterTab.PerfmonViewContent.ResourceTable.ResourceCell.ItemButton;
-            #endregion
-
-            // Click '...' button
-            Mouse.Click(itemButton, new Point(9, 8));
-        }
-        
-        /// <summary>
         /// Click_SQL_Server_Large_View_Test_Inputs_Done_Button - Use 'Click_SQL_Server_Large_View_Test_Inputs_Done_ButtonExpectedValues' to pass parameters into this method.
         /// </summary>
         public void Click_SQL_Server_Large_View_Test_Inputs_Done_Button()
@@ -1947,6 +1981,19 @@ namespace Warewolf.UITests
 
             // Click 'Done' button
             Mouse.Click(testInputsDoneButton, new Point(35, 6));
+        }
+        
+        /// <summary>
+        /// Click_Studio_Log_File
+        /// </summary>
+        public void Click_Studio_Log_File()
+        {
+            #region Variable Declarations
+            WpfHyperlink itemHyperlink = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.LoggingTab.LogSettingsViewConte.StudioLogs.StudioLogFile.ItemHyperlink;
+            #endregion
+
+            // Click link
+            Mouse.Click(itemHyperlink, new Point(79, 10));
         }
         
         /// <summary>
@@ -2010,6 +2057,19 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
+        /// Click_UpdateDuplicateRelationships - Use 'Click_UpdateDuplicateRelationshipsParams' to pass parameters into this method.
+        /// </summary>
+        public void Click_UpdateDuplicateRelationships()
+        {
+            #region Variable Declarations
+            WpfCheckBox updateDuplicatedRelat = this.SaveDialogWindow.UpdateDuplicatedRelat;
+            #endregion
+
+            // Select 'Update duplicated relationships?' check box
+            updateDuplicatedRelat.Checked = this.Click_UpdateDuplicateRelationshipsParams.UpdateDuplicatedRelatChecked;
+        }
+        
+        /// <summary>
         /// Click_Variable_IsInput - Use 'Click_Variable_IsInputParams' to pass parameters into this method.
         /// </summary>
         public void Click_Variable_IsInput()
@@ -2056,6 +2116,41 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
+        /// Click_ViewSwagger_From_ExplorerContextMenu - Use 'Click_ViewSwagger_From_ExplorerContextMenuParams' to pass parameters into this method.
+        /// </summary>
+        public void Click_ViewSwagger_From_ExplorerContextMenu()
+        {
+            #region Variable Declarations
+            WpfMenuItem viewSwagger = this.MainStudioWindow.ExplorerContextMenu.ViewSwagger;
+            #endregion
+
+            // Verify that the 'Exists' property of 'View Swagger' menu item equals 'True'
+            Assert.AreEqual(this.Click_ViewSwagger_From_ExplorerContextMenuParams.ViewSwaggerExists, viewSwagger.Exists, "View Swagger button does not exist");
+
+            // Verify that the 'Enabled' property of 'View Swagger' menu item equals 'True'
+            Assert.AreEqual(this.Click_ViewSwagger_From_ExplorerContextMenuParams.ViewSwaggerEnabled, viewSwagger.Enabled, "View swagger is disabled");
+
+            // Click 'View Swagger' menu item
+            Mouse.Click(viewSwagger, new Point(82, 16));
+        }
+        
+        /// <summary>
+        /// Click_Workflow_CollapseAll - Use 'Click_Workflow_CollapseAllParams' to pass parameters into this method.
+        /// </summary>
+        public void Click_Workflow_CollapseAll()
+        {
+            #region Variable Declarations
+            WpfToggleButton collapseAllToggleButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.CollapseAllToggleButton;
+            #endregion
+
+            // Verify that the 'Exists' property of 'CollapseAll' toggle button equals 'True'
+            Assert.AreEqual(this.Click_Workflow_CollapseAllParams.CollapseAllToggleButtonExists, collapseAllToggleButton.Exists, "Expand all button does not exist");
+
+            // Set to 'Pressed' state 'CollapseAll' toggle button
+            collapseAllToggleButton.Pressed = this.Click_Workflow_CollapseAllParams.CollapseAllToggleButtonPressed;
+        }
+        
+        /// <summary>
         /// Click_Yes_On_The_Confirm_Delete
         /// </summary>
         public void Click_Yes_On_The_Confirm_Delete()
@@ -2092,6 +2187,26 @@ namespace Warewolf.UITests
 
             // Double-Click 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item
             Mouse.DoubleClick(firstItem, new Point(63, 11));
+        }
+        
+        /// <summary>
+        /// Drag_Dice_Onto_Dice_On_The_DesignSurface - Use 'Drag_Dice_Onto_Dice_On_The_DesignSurfaceParams' to pass parameters into this method.
+        /// </summary>
+        public void Drag_Dice_Onto_Dice_On_The_DesignSurface()
+        {
+            #region Variable Declarations
+            WpfTreeItem firstItem = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem;
+            WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
+            WpfButton doneButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ExternalWorkFlow.DoneButton;
+            #endregion
+
+            // Move 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item to 'Flowchart' custom control
+            flowchart.EnsureClickable(new Point(301, 228));
+            Mouse.StartDragging(firstItem, new Point(49, 10));
+            Mouse.StopDragging(flowchart, new Point(301, 228));
+
+            // Verify that the 'Exists' property of 'Done' button equals 'True'
+            Assert.AreEqual(this.Drag_Dice_Onto_Dice_On_The_DesignSurfaceParams.DoneButtonExists, doneButton.Exists, "Done button does not exist afer dragging dice service onto design surface");
         }
         
         /// <summary>
@@ -3660,6 +3775,42 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
+        /// Enter_Dice_Roll_Values - Use 'Enter_Dice_Roll_ValuesParams' to pass parameters into this method.
+        /// </summary>
+        public void Enter_Dice_Roll_Values()
+        {
+            #region Variable Declarations
+            WpfEdit fromTextEdit = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Random.SmallView.From.FromTextEdit;
+            WpfEdit toTextEdit = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Random.SmallView.To.ToTextEdit;
+            #endregion
+
+            // Verify that the 'Exists' property of 'Text' text box equals 'True'
+            Assert.AreEqual(this.Enter_Dice_Roll_ValuesParams.FromTextEditExists, fromTextEdit.Exists, "From textbox does not exist");
+
+            // Type '1' in 'Text' text box
+            fromTextEdit.Text = this.Enter_Dice_Roll_ValuesParams.FromTextEditText;
+
+            // Verify that the 'Exists' property of 'Text' text box equals 'True'
+            Assert.AreEqual(this.Enter_Dice_Roll_ValuesParams.ToTextEditExists, toTextEdit.Exists, "To textbox does not exist");
+
+            // Type '6' in 'Text' text box
+            toTextEdit.Text = this.Enter_Dice_Roll_ValuesParams.ToTextEditText;
+        }
+        
+        /// <summary>
+        /// Enter_Duplicate_workflow_name - Use 'Enter_Duplicate_workflow_nameParams' to pass parameters into this method.
+        /// </summary>
+        public void Enter_Duplicate_workflow_name()
+        {
+            #region Variable Declarations
+            WpfEdit serviceNameTextBox = this.SaveDialogWindow.ServiceNameTextBox;
+            #endregion
+
+            // Type 'DuplicatedWorkFlow' in 'ServiceNameTextBox' text box
+            serviceNameTextBox.Text = this.Enter_Duplicate_workflow_nameParams.ServiceNameTextBoxText;
+        }
+        
+        /// <summary>
         /// Enter_InputDebug_value - Use 'Enter_InputDebug_valueParams' to pass parameters into this method.
         /// </summary>
         public void Enter_InputDebug_value()
@@ -3677,6 +3828,19 @@ namespace Warewolf.UITests
 
             // Type '100' in 'Text' text box
             inputValueText.Text = this.Enter_InputDebug_valueParams.InputValueTextText;
+        }
+        
+        /// <summary>
+        /// Enter_Public_As_Windows_Group - Use 'Enter_Public_As_Windows_GroupParams' to pass parameters into this method.
+        /// </summary>
+        public void Enter_Public_As_Windows_Group()
+        {
+            #region Variable Declarations
+            WpfEdit addWindowsGroupsEdit = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1.WindowsGroupCell.AddWindowsGroupsEdit;
+            #endregion
+
+            // Type 'Public' in 'UI__AddWindowsGroupsTextBox_AutoID' text box
+            addWindowsGroupsEdit.Text = this.Enter_Public_As_Windows_GroupParams.AddWindowsGroupsEditText;
         }
         
         /// <summary>
@@ -3817,57 +3981,6 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
-        /// Check_Public_Administrator - Use 'Check_Public_AdministratorParams' to pass parameters into this method.
-        /// </summary>
-        public void Check_Public_Administrator()
-        {
-            #region Variable Declarations
-            WpfCheckBox public_AdministratorCheckBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.PublicROW.Public_AdministratorCell.Public_AdministratorCheckBox;
-            WpfCheckBox public_DeployToCheckBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.PublicROW.Public_DeployToCell.Public_DeployToCheckBox;
-            WpfCheckBox public_DeployFromCheckBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.PublicROW.Public_DeployFromCell.Public_DeployFromCheckBox;
-            #endregion
-
-            // Select 'UI_Public_AdministratorPermissionCheckBox_AutoID' check box
-            public_AdministratorCheckBox.Checked = this.Check_Public_AdministratorParams.Public_AdministratorCheckBoxChecked;
-
-            // Verify that the 'Checked' property of 'UI_Public_DeployToPermissionCheckBox_AutoID' check box equals 'True'
-            Assert.AreEqual(this.Check_Public_AdministratorParams.Public_DeployToCheckBoxChecked, public_DeployToCheckBox.Checked, "Public DeployTo checkbox is NOT checked after Checking Administrator.");
-
-            // Verify that the 'Checked' property of 'UI_Public_DeployFromPermissionCheckBox_AutoID' check box equals 'True'
-            Assert.AreEqual(this.Check_Public_AdministratorParams.Public_DeployFromCheckBoxChecked, public_DeployFromCheckBox.Checked, "Public DeployFrom checkbox is NOT checked after Checking Administrator.");
-        }
-        
-        /// <summary>
-        /// Click_Select_Resource_Button_From_Resource_Permissions - Use 'Click_Select_Resource_Button_From_Resource_PermissionsParams' to pass parameters into this method.
-        /// </summary>
-        public void Click_Select_Resource_Button_From_Resource_Permissions()
-        {
-            #region Variable Declarations
-            WpfButton itemButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1.ResourceCell.ItemButton;
-            WpfWindow servicePickerDialog = this.ServicePickerDialog;
-            #endregion
-
-            // Click '...' button
-            Mouse.Click(itemButton, new Point(13, 16));
-
-            // Verify that the 'Exists' property of 'ServicePickerDialog' window equals 'True'
-            Assert.AreEqual(this.Click_Select_Resource_Button_From_Resource_PermissionsParams.ServicePickerDialogExists, servicePickerDialog.Exists, "Service window does not exist after clicking SelectResource button");
-        }
-        
-        /// <summary>
-        /// Enter_Public_As_Windows_Group - Use 'Enter_Public_As_Windows_GroupParams' to pass parameters into this method.
-        /// </summary>
-        public void Enter_Public_As_Windows_Group()
-        {
-            #region Variable Declarations
-            WpfEdit addWindowsGroupsEdit = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1.WindowsGroupCell.AddWindowsGroupsEdit;
-            #endregion
-
-            // Type 'Public' in 'UI__AddWindowsGroupsTextBox_AutoID' text box
-            addWindowsGroupsEdit.Text = this.Enter_Public_As_Windows_GroupParams.AddWindowsGroupsEditText;
-        }
-        
-        /// <summary>
         /// Filter_variables - Use 'Filter_variablesParams' to pass parameters into this method.
         /// </summary>
         public void Filter_variables()
@@ -3885,25 +3998,6 @@ namespace Warewolf.UITests
 
             // Type 'Other' in 'SearchTextBox' text box
             variableSearchTextBoxEdit.Text = this.Filter_variablesParams.VariableSearchTextBoxEditText;
-        }
-        
-        /// <summary>
-        /// Click_ViewSwagger_From_ExplorerContextMenu - Use 'Click_ViewSwagger_From_ExplorerContextMenuParams' to pass parameters into this method.
-        /// </summary>
-        public void Click_ViewSwagger_From_ExplorerContextMenu()
-        {
-            #region Variable Declarations
-            WpfMenuItem viewSwagger = this.MainStudioWindow.ExplorerContextMenu.ViewSwagger;
-            #endregion
-
-            // Verify that the 'Exists' property of 'View Swagger' menu item equals 'True'
-            Assert.AreEqual(this.Click_ViewSwagger_From_ExplorerContextMenuParams.ViewSwaggerExists, viewSwagger.Exists, "View Swagger button does not exist");
-
-            // Verify that the 'Enabled' property of 'View Swagger' menu item equals 'True'
-            Assert.AreEqual(this.Click_ViewSwagger_From_ExplorerContextMenuParams.ViewSwaggerEnabled, viewSwagger.Enabled, "View swagger is disabled");
-
-            // Click 'View Swagger' menu item
-            Mouse.Click(viewSwagger, new Point(82, 16));
         }
         
         /// <summary>
@@ -4258,6 +4352,23 @@ namespace Warewolf.UITests
 
             // Double-Click 'DsfExecuteCommandLineActivity' custom control
             Mouse.DoubleClick(executeCommandLine, new Point(178, 10));
+        }
+        
+        /// <summary>
+        /// Open_Explorer_First_Item_Dependancies_With_Context_Menu - Use 'Open_Explorer_First_Item_Dependancies_With_Context_MenuParams' to pass parameters into this method.
+        /// </summary>
+        public void Open_Explorer_First_Item_Dependancies_With_Context_Menu()
+        {
+            #region Variable Declarations
+            WpfTreeItem firstItem = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem;
+            WpfMenuItem showVersionHistory = this.MainStudioWindow.ExplorerContextMenu.ShowVersionHistory;
+            #endregion
+
+            // Right-Click 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item
+            Mouse.Click(firstItem, MouseButtons.Right, ModifierKeys.None, new Point(69, 10));
+
+            // Verify that the 'Exists' property of 'Show Version History' menu item equals 'True'
+            Assert.AreEqual(this.Open_Explorer_First_Item_Dependancies_With_Context_MenuParams.ShowVersionHistoryExists, showVersionHistory.Exists, "Show version history does not exist after right clicking a resource");
         }
         
         /// <summary>
@@ -4816,6 +4927,22 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
+        /// Rename_LocalWorkflow_To_SecodWorkFlow - Use 'Rename_LocalWorkflow_To_SecodWorkFlowParams' to pass parameters into this method.
+        /// </summary>
+        public void Rename_LocalWorkflow_To_SecodWorkFlow()
+        {
+            #region Variable Declarations
+            WpfEdit itemEdit = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.ResourceImageImage.ItemEdit;
+            #endregion
+
+            // Type 'SecondWorkflow' in first text box next to 'ResourceImage' image
+            itemEdit.Text = this.Rename_LocalWorkflow_To_SecodWorkFlowParams.ItemEditText;
+
+            // Type '{Enter}' in first text box next to 'ResourceImage' image
+            Keyboard.SendKeys(itemEdit, this.Rename_LocalWorkflow_To_SecodWorkFlowParams.ItemEditSendKeys, ModifierKeys.None);
+        }
+        
+        /// <summary>
         /// Right_Click_Help_Tab
         /// </summary>
         public void Right_Click_Help_Tab()
@@ -5189,6 +5316,23 @@ namespace Warewolf.UITests
 
             // Right-Click 'DsfRecordsetLengthActivity' custom control
             Mouse.Click(length, MouseButtons.Right, ModifierKeys.None, new Point(97, 10));
+        }
+        
+        /// <summary>
+        /// RightClick_Localhost - Use 'RightClick_LocalhostParams' to pass parameters into this method.
+        /// </summary>
+        public void RightClick_Localhost()
+        {
+            #region Variable Declarations
+            WpfTreeItem localhost = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost;
+            WpfMenuItem viewApisJsonMenuItem = this.MainStudioWindow.ExplorerContextMenu.ViewApisJsonMenuItem;
+            #endregion
+
+            // Right-Click 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item
+            Mouse.Click(localhost, MouseButtons.Right, ModifierKeys.None, new Point(75, 10));
+
+            // Verify that the 'Exists' property of 'View Apis.Json' menu item equals 'True'
+            Assert.AreEqual(this.RightClick_LocalhostParams.ViewApisJsonMenuItemExists, viewApisJsonMenuItem.Exists, "View Apis does not exist on the context Menu");
         }
         
         /// <summary>
@@ -5753,6 +5897,19 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
+        /// Select_LoggingTab
+        /// </summary>
+        public void Select_LoggingTab()
+        {
+            #region Variable Declarations
+            WpfTabPage loggingTab = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.LoggingTab;
+            #endregion
+
+            // Click 'System.Windows.Controls.TabItem Header: Content:' tab
+            Mouse.Click(loggingTab, new Point(57, 7));
+        }
+        
+        /// <summary>
         /// Select_MSSQLSERVER_From_DB_Source_Wizard_Address_Protocol_Dropdown - Use 'Select_MSSQLSERVER_From_DB_Source_Wizard_Address_Protocol_DropdownParams' to pass parameters into this method.
         /// </summary>
         public void Select_MSSQLSERVER_From_DB_Source_Wizard_Address_Protocol_Dropdown()
@@ -5920,6 +6077,22 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
+        /// Select_NewWorkFlowService_From_ContextMenu - Use 'Select_NewWorkFlowService_From_ContextMenuParams' to pass parameters into this method.
+        /// </summary>
+        public void Select_NewWorkFlowService_From_ContextMenu()
+        {
+            #region Variable Declarations
+            WpfMenuItem newWorkflowService = this.MainStudioWindow.ExplorerEnvironmentMenu.NewWorkflowService;
+            #endregion
+
+            // Verify that the 'Enabled' property of 'New Workflow Service' menu item equals 'True'
+            Assert.AreEqual(this.Select_NewWorkFlowService_From_ContextMenuParams.NewWorkflowServiceEnabled, newWorkflowService.Enabled, "NewWorkFlowService button is disabled.");
+
+            // Click 'New Workflow Service' menu item
+            Mouse.Click(newWorkflowService, new Point(79, 13));
+        }
+        
+        /// <summary>
         /// Select_Next_From_DotNet_DLL_Large_View_Action_Combobox - Use 'Select_Next_From_DotNet_DLL_Large_View_Action_ComboboxExpectedValues' to pass parameters into this method.
         /// </summary>
         public void Select_Next_From_DotNet_DLL_Large_View_Action_Combobox()
@@ -5963,6 +6136,19 @@ namespace Warewolf.UITests
 
             // Click 'Paste' menu item
             Mouse.Click(paste, new Point(52, 16));
+        }
+        
+        /// <summary>
+        /// Select_PerfomanceCounterTab
+        /// </summary>
+        public void Select_PerfomanceCounterTab()
+        {
+            #region Variable Declarations
+            WpfTabPage perfomanceCounterTab = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.PerfomanceCounterTab;
+            #endregion
+
+            // Click 'System.Windows.Controls.TabItem Header: Content:' tab
+            Mouse.Click(perfomanceCounterTab, new Point(124, 14));
         }
         
         /// <summary>
@@ -6109,6 +6295,19 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
+        /// Select_Show_Version_History
+        /// </summary>
+        public void Select_Show_Version_History()
+        {
+            #region Variable Declarations
+            WpfMenuItem showVersionHistory = this.MainStudioWindow.ExplorerContextMenu.ShowVersionHistory;
+            #endregion
+
+            // Click 'Show Version History' menu item
+            Mouse.Click(showVersionHistory, new Point(66, 15));
+        }
+        
+        /// <summary>
         /// Select_ShowLargeView_FromContextMenu
         /// </summary>
         public void Select_ShowLargeView_FromContextMenu()
@@ -6119,6 +6318,29 @@ namespace Warewolf.UITests
 
             // Click 'Show Large View' menu item
             Mouse.Click(showLargeView, new Point(43, 15));
+        }
+        
+        /// <summary>
+        /// Select_SystemObject_From_DotNet_DLL_Large_View_Namespace_Combobox - Use 'Select_SystemObject_From_DotNet_DLL_Large_View_Namespace_ComboboxExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void Select_SystemObject_From_DotNet_DLL_Large_View_Namespace_Combobox()
+        {
+            #region Variable Declarations
+            WpfComboBox classNameComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ClassNameComboBox;
+            WpfListItem comboboxlistItemAsSystemObject = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ClassNameComboBox.ComboboxlistItemAsSystemObject;
+            #endregion
+
+            // Click 'NamespaceComboBox' combo box
+            Mouse.Click(classNameComboBox, new Point(216, 7));
+
+            // Verify that the 'Exists' property of '{"AssemblyLocation":"C:\\Windows\\Microsoft.NET\\F...' list item equals 'True'
+            Assert.AreEqual(this.Select_SystemObject_From_DotNet_DLL_Large_View_Namespace_ComboboxExpectedValues.ComboboxlistItemAsSystemObjectExists, comboboxlistItemAsSystemObject.Exists, "System.Random item does not exist in the DotNet DLL tool ClassName dropdown");
+
+            // Click '{"AssemblyLocation":"C:\\Windows\\Microsoft.NET\\F...' list item
+            Mouse.Click(comboboxlistItemAsSystemObject, new Point(137, 7));
+
+            // Verify that the 'SelectedItem' property of 'NamespaceComboBox' combo box equals '{"AssemblyLocation":"C:\\Windows\\Microsoft.NET\\Framework64\\v4.0.30319\\mscorlib.dll","AssemblyName":"mscorlib.dll","FullName":"System.Object","MethodName":null}'
+            Assert.AreEqual(this.Select_SystemObject_From_DotNet_DLL_Large_View_Namespace_ComboboxExpectedValues.ClassNameComboBoxSelectedItem, classNameComboBox.SelectedItem, "System.Random is not selected in DotNet DLL tool large view namespace combobox.");
         }
         
         /// <summary>
@@ -6155,222 +6377,6 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
-        /// Select_TSTCIREMOTE_From_Server_Source_Wizard_Dropdownlist - Use 'Select_TSTCIREMOTE_From_Server_Source_Wizard_DropdownlistParams' to pass parameters into this method.
-        /// </summary>
-        public void Select_TSTCIREMOTE_From_Server_Source_Wizard_Dropdownlist()
-        {
-            #region Variable Declarations
-            WpfListItem tSTCIREMOTE = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.ServerSourceWizardTab.WorkSurfaceContext.NewServerSourceWizard.AddressComboBox.TSTCIREMOTE;
-            WpfEdit addressEditBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.ServerSourceWizardTab.WorkSurfaceContext.NewServerSourceWizard.AddressComboBox.AddressEditBox;
-            WpfButton testConnectionButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.ServerSourceWizardTab.WorkSurfaceContext.NewServerSourceWizard.TestConnectionButton;
-            #endregion
-
-            // Click 'TST-CI-REMOTE' list item
-            Mouse.Click(tSTCIREMOTE, new Point(70, 19));
-
-            // Verify that the 'Text' property of 'Text' text box equals 'TST-CI-REMOTE'
-            Assert.AreEqual(this.Select_TSTCIREMOTE_From_Server_Source_Wizard_DropdownlistParams.AddressEditBoxText, addressEditBox.Text, "Server source address textbox text does not equal TST-CI-REMOTE");
-
-            // Verify that the 'Exists' property of 'Test Connection' button equals 'True'
-            Assert.AreEqual(this.Select_TSTCIREMOTE_From_Server_Source_Wizard_DropdownlistParams.TestConnectionButtonExists, testConnectionButton.Exists, "Server source wizard does not contain a test connection button");
-        }
-        
-        /// <summary>
-        /// Click_Studio_Log_File
-        /// </summary>
-        public void Click_Studio_Log_File()
-        {
-            #region Variable Declarations
-            WpfHyperlink itemHyperlink = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.LoggingTab.LogSettingsViewConte.StudioLogs.StudioLogFile.ItemHyperlink;
-            #endregion
-
-            // Click link
-            Mouse.Click(itemHyperlink, new Point(79, 10));
-        }
-        
-        /// <summary>
-        /// Click_Server_Log_File_Button
-        /// </summary>
-        public void Click_Server_Log_File_Button()
-        {
-            #region Variable Declarations
-            WpfHyperlink itemHyperlink = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.LoggingTab.LogSettingsViewConte.ServerLogs.ServerLogFile.ItemHyperlink;
-            #endregion
-
-            // Click link
-            Mouse.Click(itemHyperlink, new Point(83, 6));
-        }
-        
-        /// <summary>
-        /// Select_LoggingTab
-        /// </summary>
-        public void Select_LoggingTab()
-        {
-            #region Variable Declarations
-            WpfTabPage loggingTab = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.LoggingTab;
-            #endregion
-
-            // Click 'System.Windows.Controls.TabItem Header: Content:' tab
-            Mouse.Click(loggingTab, new Point(57, 7));
-        }
-        
-        /// <summary>
-        /// Click_Workflow_CollapseAll - Use 'Click_Workflow_CollapseAllParams' to pass parameters into this method.
-        /// </summary>
-        public void Click_Workflow_CollapseAll()
-        {
-            #region Variable Declarations
-            WpfToggleButton collapseAllToggleButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.CollapseAllToggleButton;
-            #endregion
-
-            // Verify that the 'Exists' property of 'CollapseAll' toggle button equals 'True'
-            Assert.AreEqual(this.Click_Workflow_CollapseAllParams.CollapseAllToggleButtonExists, collapseAllToggleButton.Exists, "Expand all button does not exist");
-
-            // Set to 'Pressed' state 'CollapseAll' toggle button
-            collapseAllToggleButton.Pressed = this.Click_Workflow_CollapseAllParams.CollapseAllToggleButtonPressed;
-        }
-        
-        /// <summary>
-        /// Click_Close_Dependecy_Tab
-        /// </summary>
-        public void Click_Close_Dependecy_Tab()
-        {
-            #region Variable Declarations
-            WpfButton closeButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DependencyGraphTab.CloseButton;
-            #endregion
-
-            // Click '' button
-            Mouse.Click(closeButton, new Point(13, 10));
-        }
-        
-        /// <summary>
-        /// Open_Explorer_First_Item_Dependancies_With_Context_Menu - Use 'Open_Explorer_First_Item_Dependancies_With_Context_MenuParams' to pass parameters into this method.
-        /// </summary>
-        public void Open_Explorer_First_Item_Dependancies_With_Context_Menu()
-        {
-            #region Variable Declarations
-            WpfTreeItem firstItem = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem;
-            WpfMenuItem showVersionHistory = this.MainStudioWindow.ExplorerContextMenu.ShowVersionHistory;
-            #endregion
-
-            // Right-Click 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item
-            Mouse.Click(firstItem, MouseButtons.Right, ModifierKeys.None, new Point(69, 10));
-
-            // Verify that the 'Exists' property of 'Show Version History' menu item equals 'True'
-            Assert.AreEqual(this.Open_Explorer_First_Item_Dependancies_With_Context_MenuParams.ShowVersionHistoryExists, showVersionHistory.Exists, "Show version history does not exist after right clicking a resource");
-        }
-        
-        /// <summary>
-        /// Click_Duplicate_From_Duplicate_Dialog - Use 'Click_Duplicate_From_Duplicate_DialogParams' to pass parameters into this method.
-        /// </summary>
-        public void Click_Duplicate_From_Duplicate_Dialog()
-        {
-            #region Variable Declarations
-            WpfButton duplicateButton = this.SaveDialogWindow.DuplicateButton;
-            #endregion
-
-            // Verify that the 'Exists' property of 'Duplicate' button equals 'True'
-            Assert.AreEqual(this.Click_Duplicate_From_Duplicate_DialogParams.DuplicateButtonExists, duplicateButton.Exists, "Duplicate button does not exist");
-
-            // Click 'Duplicate' button
-            Mouse.Click(duplicateButton, new Point(26, 10));
-        }
-        
-        /// <summary>
-        /// Click_UpdateDuplicateRelationships - Use 'Click_UpdateDuplicateRelationshipsParams' to pass parameters into this method.
-        /// </summary>
-        public void Click_UpdateDuplicateRelationships()
-        {
-            #region Variable Declarations
-            WpfCheckBox updateDuplicatedRelat = this.SaveDialogWindow.UpdateDuplicatedRelat;
-            #endregion
-
-            // Select 'Update duplicated relationships?' check box
-            updateDuplicatedRelat.Checked = this.Click_UpdateDuplicateRelationshipsParams.UpdateDuplicatedRelatChecked;
-        }
-        
-        /// <summary>
-        /// Enter_Duplicate_workflow_name - Use 'Enter_Duplicate_workflow_nameParams' to pass parameters into this method.
-        /// </summary>
-        public void Enter_Duplicate_workflow_name()
-        {
-            #region Variable Declarations
-            WpfEdit serviceNameTextBox = this.SaveDialogWindow.ServiceNameTextBox;
-            #endregion
-
-            // Type 'DuplicatedWorkFlow' in 'ServiceNameTextBox' text box
-            serviceNameTextBox.Text = this.Enter_Duplicate_workflow_nameParams.ServiceNameTextBoxText;
-        }
-        
-        /// <summary>
-        /// Click_Duplicate_From_ExplorerContextMenu - Use 'Click_Duplicate_From_ExplorerContextMenuParams' to pass parameters into this method.
-        /// </summary>
-        public void Click_Duplicate_From_ExplorerContextMenu()
-        {
-            #region Variable Declarations
-            WpfMenuItem duplicate = this.MainStudioWindow.ExplorerContextMenu.Duplicate;
-            #endregion
-
-            // Verify that the 'Exists' property of 'Duplicate' menu item equals 'True'
-            Assert.AreEqual(this.Click_Duplicate_From_ExplorerContextMenuParams.DuplicateExists, duplicate.Exists, "Duplicate button does not exist");
-
-            // Verify that the 'Enabled' property of 'Duplicate' menu item equals 'True'
-            Assert.AreEqual(this.Click_Duplicate_From_ExplorerContextMenuParams.DuplicateEnabled, duplicate.Enabled, "Duplicate button is disabled");
-
-            // Click 'Duplicate' menu item
-            Mouse.Click(duplicate, new Point(62, 12));
-        }
-        
-        /// <summary>
-        /// Rename_LocalWorkflow_To_SecodWorkFlow - Use 'Rename_LocalWorkflow_To_SecodWorkFlowParams' to pass parameters into this method.
-        /// </summary>
-        public void Rename_LocalWorkflow_To_SecodWorkFlow()
-        {
-            #region Variable Declarations
-            WpfEdit itemEdit = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.ResourceImageImage.ItemEdit;
-            #endregion
-
-            // Type 'SecondWorkflow' in first text box next to 'ResourceImage' image
-            itemEdit.Text = this.Rename_LocalWorkflow_To_SecodWorkFlowParams.ItemEditText;
-
-            // Type '{Enter}' in first text box next to 'ResourceImage' image
-            Keyboard.SendKeys(itemEdit, this.Rename_LocalWorkflow_To_SecodWorkFlowParams.ItemEditSendKeys, ModifierKeys.None);
-        }
-        
-        /// <summary>
-        /// Select_Show_Version_History
-        /// </summary>
-        public void Select_Show_Version_History()
-        {
-            #region Variable Declarations
-            WpfMenuItem showVersionHistory = this.MainStudioWindow.ExplorerContextMenu.ShowVersionHistory;
-            #endregion
-
-            // Click 'Show Version History' menu item
-            Mouse.Click(showVersionHistory, new Point(66, 15));
-        }
-        
-        /// <summary>
-        /// Drag_Dice_Onto_Dice_On_The_DesignSurface - Use 'Drag_Dice_Onto_Dice_On_The_DesignSurfaceParams' to pass parameters into this method.
-        /// </summary>
-        public void Drag_Dice_Onto_Dice_On_The_DesignSurface()
-        {
-            #region Variable Declarations
-            WpfTreeItem firstItem = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem;
-            WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
-            WpfButton doneButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ExternalWorkFlow.DoneButton;
-            #endregion
-
-            // Move 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item to 'Flowchart' custom control
-            flowchart.EnsureClickable(new Point(301, 228));
-            Mouse.StartDragging(firstItem, new Point(49, 10));
-            Mouse.StopDragging(flowchart, new Point(301, 228));
-
-            // Verify that the 'Exists' property of 'Done' button equals 'True'
-            Assert.AreEqual(this.Drag_Dice_Onto_Dice_On_The_DesignSurfaceParams.DoneButtonExists, doneButton.Exists, "Done button does not exist afer dragging dice service onto design surface");
-        }
-        
-        /// <summary>
         /// Select_ToString_From_DotNet_DLL_Large_View_Action_Combobox - Use 'Select_ToString_From_DotNet_DLL_Large_View_Action_ComboboxExpectedValues' to pass parameters into this method.
         /// </summary>
         public void Select_ToString_From_DotNet_DLL_Large_View_Action_Combobox()
@@ -6391,26 +6397,24 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
-        /// Select_SystemObject_From_DotNet_DLL_Large_View_Namespace_Combobox - Use 'Select_SystemObject_From_DotNet_DLL_Large_View_Namespace_ComboboxExpectedValues' to pass parameters into this method.
+        /// Select_TSTCIREMOTE_From_Server_Source_Wizard_Dropdownlist - Use 'Select_TSTCIREMOTE_From_Server_Source_Wizard_DropdownlistParams' to pass parameters into this method.
         /// </summary>
-        public void Select_SystemObject_From_DotNet_DLL_Large_View_Namespace_Combobox()
+        public void Select_TSTCIREMOTE_From_Server_Source_Wizard_Dropdownlist()
         {
             #region Variable Declarations
-            WpfComboBox classNameComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ClassNameComboBox;
-            WpfListItem comboboxlistItemAsSystemObject = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ClassNameComboBox.ComboboxlistItemAsSystemObject;
+            WpfListItem tSTCIREMOTE = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.ServerSourceWizardTab.WorkSurfaceContext.NewServerSourceWizard.AddressComboBox.TSTCIREMOTE;
+            WpfEdit addressEditBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.ServerSourceWizardTab.WorkSurfaceContext.NewServerSourceWizard.AddressComboBox.AddressEditBox;
+            WpfButton testConnectionButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.ServerSourceWizardTab.WorkSurfaceContext.NewServerSourceWizard.TestConnectionButton;
             #endregion
 
-            // Click 'NamespaceComboBox' combo box
-            Mouse.Click(classNameComboBox, new Point(216, 7));
+            // Click 'TST-CI-REMOTE' list item
+            Mouse.Click(tSTCIREMOTE, new Point(70, 19));
 
-            // Verify that the 'Exists' property of '{"AssemblyLocation":"C:\\Windows\\Microsoft.NET\\F...' list item equals 'True'
-            Assert.AreEqual(this.Select_SystemObject_From_DotNet_DLL_Large_View_Namespace_ComboboxExpectedValues.ComboboxlistItemAsSystemObjectExists, comboboxlistItemAsSystemObject.Exists, "System.Random item does not exist in the DotNet DLL tool ClassName dropdown");
+            // Verify that the 'Text' property of 'Text' text box equals 'TST-CI-REMOTE'
+            Assert.AreEqual(this.Select_TSTCIREMOTE_From_Server_Source_Wizard_DropdownlistParams.AddressEditBoxText, addressEditBox.Text, "Server source address textbox text does not equal TST-CI-REMOTE");
 
-            // Click '{"AssemblyLocation":"C:\\Windows\\Microsoft.NET\\F...' list item
-            Mouse.Click(comboboxlistItemAsSystemObject, new Point(137, 7));
-
-            // Verify that the 'SelectedItem' property of 'NamespaceComboBox' combo box equals '{"AssemblyLocation":"C:\\Windows\\Microsoft.NET\\Framework64\\v4.0.30319\\mscorlib.dll","AssemblyName":"mscorlib.dll","FullName":"System.Object","MethodName":null}'
-            Assert.AreEqual(this.Select_SystemObject_From_DotNet_DLL_Large_View_Namespace_ComboboxExpectedValues.ClassNameComboBoxSelectedItem, classNameComboBox.SelectedItem, "System.Random is not selected in DotNet DLL tool large view namespace combobox.");
+            // Verify that the 'Exists' property of 'Test Connection' button equals 'True'
+            Assert.AreEqual(this.Select_TSTCIREMOTE_From_Server_Source_Wizard_DropdownlistParams.TestConnectionButtonExists, testConnectionButton.Exists, "Server source wizard does not contain a test connection button");
         }
         
         /// <summary>
@@ -6539,30 +6543,6 @@ namespace Warewolf.UITests
             }
         }
         
-        public virtual Select_NewWorkFlowService_From_ContextMenuParams Select_NewWorkFlowService_From_ContextMenuParams
-        {
-            get
-            {
-                if ((this.mSelect_NewWorkFlowService_From_ContextMenuParams == null))
-                {
-                    this.mSelect_NewWorkFlowService_From_ContextMenuParams = new Select_NewWorkFlowService_From_ContextMenuParams();
-                }
-                return this.mSelect_NewWorkFlowService_From_ContextMenuParams;
-            }
-        }
-        
-        public virtual Enter_Dice_Roll_ValuesParams Enter_Dice_Roll_ValuesParams
-        {
-            get
-            {
-                if ((this.mEnter_Dice_Roll_ValuesParams == null))
-                {
-                    this.mEnter_Dice_Roll_ValuesParams = new Enter_Dice_Roll_ValuesParams();
-                }
-                return this.mEnter_Dice_Roll_ValuesParams;
-            }
-        }
-        
         public virtual Assert_Connection_PassedExpectedValues Assert_Connection_PassedExpectedValues
         {
             get
@@ -6620,6 +6600,18 @@ namespace Warewolf.UITests
                     this.mAssign_Value_To_VariableParams = new Assign_Value_To_VariableParams();
                 }
                 return this.mAssign_Value_To_VariableParams;
+            }
+        }
+        
+        public virtual Check_Public_AdministratorParams Check_Public_AdministratorParams
+        {
+            get
+            {
+                if ((this.mCheck_Public_AdministratorParams == null))
+                {
+                    this.mCheck_Public_AdministratorParams = new Check_Public_AdministratorParams();
+                }
+                return this.mCheck_Public_AdministratorParams;
             }
         }
         
@@ -6779,6 +6771,18 @@ namespace Warewolf.UITests
             }
         }
         
+        public virtual Click_ConfigureSetting_From_MenuParams Click_ConfigureSetting_From_MenuParams
+        {
+            get
+            {
+                if ((this.mClick_ConfigureSetting_From_MenuParams == null))
+                {
+                    this.mClick_ConfigureSetting_From_MenuParams = new Click_ConfigureSetting_From_MenuParams();
+                }
+                return this.mClick_ConfigureSetting_From_MenuParams;
+            }
+        }
+        
         public virtual Click_Debug_Output_Assign_CellParams Click_Debug_Output_Assign_CellParams
         {
             get
@@ -6908,6 +6912,30 @@ namespace Warewolf.UITests
                     this.mClick_DotNet_DLL_Large_View_Generate_OutputsExpectedValues = new Click_DotNet_DLL_Large_View_Generate_OutputsExpectedValues();
                 }
                 return this.mClick_DotNet_DLL_Large_View_Generate_OutputsExpectedValues;
+            }
+        }
+        
+        public virtual Click_Duplicate_From_Duplicate_DialogParams Click_Duplicate_From_Duplicate_DialogParams
+        {
+            get
+            {
+                if ((this.mClick_Duplicate_From_Duplicate_DialogParams == null))
+                {
+                    this.mClick_Duplicate_From_Duplicate_DialogParams = new Click_Duplicate_From_Duplicate_DialogParams();
+                }
+                return this.mClick_Duplicate_From_Duplicate_DialogParams;
+            }
+        }
+        
+        public virtual Click_Duplicate_From_ExplorerContextMenuParams Click_Duplicate_From_ExplorerContextMenuParams
+        {
+            get
+            {
+                if ((this.mClick_Duplicate_From_ExplorerContextMenuParams == null))
+                {
+                    this.mClick_Duplicate_From_ExplorerContextMenuParams = new Click_Duplicate_From_ExplorerContextMenuParams();
+                }
+                return this.mClick_Duplicate_From_ExplorerContextMenuParams;
             }
         }
         
@@ -7043,6 +7071,18 @@ namespace Warewolf.UITests
             }
         }
         
+        public virtual Click_Reset_Perfomance_CounterParams Click_Reset_Perfomance_CounterParams
+        {
+            get
+            {
+                if ((this.mClick_Reset_Perfomance_CounterParams == null))
+                {
+                    this.mClick_Reset_Perfomance_CounterParams = new Click_Reset_Perfomance_CounterParams();
+                }
+                return this.mClick_Reset_Perfomance_CounterParams;
+            }
+        }
+        
         public virtual Click_RunDebug_buttonParams Click_RunDebug_buttonParams
         {
             get
@@ -7112,6 +7152,18 @@ namespace Warewolf.UITests
                     this.mClick_Scheduler_RunTaskParams = new Click_Scheduler_RunTaskParams();
                 }
                 return this.mClick_Scheduler_RunTaskParams;
+            }
+        }
+        
+        public virtual Click_Select_Resource_Button_From_Resource_PermissionsParams Click_Select_Resource_Button_From_Resource_PermissionsParams
+        {
+            get
+            {
+                if ((this.mClick_Select_Resource_Button_From_Resource_PermissionsParams == null))
+                {
+                    this.mClick_Select_Resource_Button_From_Resource_PermissionsParams = new Click_Select_Resource_Button_From_Resource_PermissionsParams();
+                }
+                return this.mClick_Select_Resource_Button_From_Resource_PermissionsParams;
             }
         }
         
@@ -7199,30 +7251,6 @@ namespace Warewolf.UITests
             }
         }
         
-        public virtual Click_ConfigureSetting_From_MenuParams Click_ConfigureSetting_From_MenuParams
-        {
-            get
-            {
-                if ((this.mClick_ConfigureSetting_From_MenuParams == null))
-                {
-                    this.mClick_ConfigureSetting_From_MenuParams = new Click_ConfigureSetting_From_MenuParams();
-                }
-                return this.mClick_ConfigureSetting_From_MenuParams;
-            }
-        }
-        
-        public virtual Click_Reset_Perfomance_CounterParams Click_Reset_Perfomance_CounterParams
-        {
-            get
-            {
-                if ((this.mClick_Reset_Perfomance_CounterParams == null))
-                {
-                    this.mClick_Reset_Perfomance_CounterParams = new Click_Reset_Perfomance_CounterParams();
-                }
-                return this.mClick_Reset_Perfomance_CounterParams;
-            }
-        }
-        
         public virtual Click_SQL_Server_Large_View_Test_Inputs_Done_ButtonExpectedValues Click_SQL_Server_Large_View_Test_Inputs_Done_ButtonExpectedValues
         {
             get
@@ -7244,6 +7272,18 @@ namespace Warewolf.UITests
                     this.mClick_Switch_Dialog_Done_ButtonParams = new Click_Switch_Dialog_Done_ButtonParams();
                 }
                 return this.mClick_Switch_Dialog_Done_ButtonParams;
+            }
+        }
+        
+        public virtual Click_UpdateDuplicateRelationshipsParams Click_UpdateDuplicateRelationshipsParams
+        {
+            get
+            {
+                if ((this.mClick_UpdateDuplicateRelationshipsParams == null))
+                {
+                    this.mClick_UpdateDuplicateRelationshipsParams = new Click_UpdateDuplicateRelationshipsParams();
+                }
+                return this.mClick_UpdateDuplicateRelationshipsParams;
             }
         }
         
@@ -7280,6 +7320,42 @@ namespace Warewolf.UITests
                     this.mClick_VariableList_Scalar_Row1_IsInputCheckboxParams = new Click_VariableList_Scalar_Row1_IsInputCheckboxParams();
                 }
                 return this.mClick_VariableList_Scalar_Row1_IsInputCheckboxParams;
+            }
+        }
+        
+        public virtual Click_ViewSwagger_From_ExplorerContextMenuParams Click_ViewSwagger_From_ExplorerContextMenuParams
+        {
+            get
+            {
+                if ((this.mClick_ViewSwagger_From_ExplorerContextMenuParams == null))
+                {
+                    this.mClick_ViewSwagger_From_ExplorerContextMenuParams = new Click_ViewSwagger_From_ExplorerContextMenuParams();
+                }
+                return this.mClick_ViewSwagger_From_ExplorerContextMenuParams;
+            }
+        }
+        
+        public virtual Click_Workflow_CollapseAllParams Click_Workflow_CollapseAllParams
+        {
+            get
+            {
+                if ((this.mClick_Workflow_CollapseAllParams == null))
+                {
+                    this.mClick_Workflow_CollapseAllParams = new Click_Workflow_CollapseAllParams();
+                }
+                return this.mClick_Workflow_CollapseAllParams;
+            }
+        }
+        
+        public virtual Drag_Dice_Onto_Dice_On_The_DesignSurfaceParams Drag_Dice_Onto_Dice_On_The_DesignSurfaceParams
+        {
+            get
+            {
+                if ((this.mDrag_Dice_Onto_Dice_On_The_DesignSurfaceParams == null))
+                {
+                    this.mDrag_Dice_Onto_Dice_On_The_DesignSurfaceParams = new Drag_Dice_Onto_Dice_On_The_DesignSurfaceParams();
+                }
+                return this.mDrag_Dice_Onto_Dice_On_The_DesignSurfaceParams;
             }
         }
         
@@ -7979,6 +8055,30 @@ namespace Warewolf.UITests
             }
         }
         
+        public virtual Enter_Dice_Roll_ValuesParams Enter_Dice_Roll_ValuesParams
+        {
+            get
+            {
+                if ((this.mEnter_Dice_Roll_ValuesParams == null))
+                {
+                    this.mEnter_Dice_Roll_ValuesParams = new Enter_Dice_Roll_ValuesParams();
+                }
+                return this.mEnter_Dice_Roll_ValuesParams;
+            }
+        }
+        
+        public virtual Enter_Duplicate_workflow_nameParams Enter_Duplicate_workflow_nameParams
+        {
+            get
+            {
+                if ((this.mEnter_Duplicate_workflow_nameParams == null))
+                {
+                    this.mEnter_Duplicate_workflow_nameParams = new Enter_Duplicate_workflow_nameParams();
+                }
+                return this.mEnter_Duplicate_workflow_nameParams;
+            }
+        }
+        
         public virtual Enter_InputDebug_valueParams Enter_InputDebug_valueParams
         {
             get
@@ -7988,6 +8088,18 @@ namespace Warewolf.UITests
                     this.mEnter_InputDebug_valueParams = new Enter_InputDebug_valueParams();
                 }
                 return this.mEnter_InputDebug_valueParams;
+            }
+        }
+        
+        public virtual Enter_Public_As_Windows_GroupParams Enter_Public_As_Windows_GroupParams
+        {
+            get
+            {
+                if ((this.mEnter_Public_As_Windows_GroupParams == null))
+                {
+                    this.mEnter_Public_As_Windows_GroupParams = new Enter_Public_As_Windows_GroupParams();
+                }
+                return this.mEnter_Public_As_Windows_GroupParams;
             }
         }
         
@@ -8087,42 +8199,6 @@ namespace Warewolf.UITests
             }
         }
         
-        public virtual Check_Public_AdministratorParams Check_Public_AdministratorParams
-        {
-            get
-            {
-                if ((this.mCheck_Public_AdministratorParams == null))
-                {
-                    this.mCheck_Public_AdministratorParams = new Check_Public_AdministratorParams();
-                }
-                return this.mCheck_Public_AdministratorParams;
-            }
-        }
-        
-        public virtual Click_Select_Resource_Button_From_Resource_PermissionsParams Click_Select_Resource_Button_From_Resource_PermissionsParams
-        {
-            get
-            {
-                if ((this.mClick_Select_Resource_Button_From_Resource_PermissionsParams == null))
-                {
-                    this.mClick_Select_Resource_Button_From_Resource_PermissionsParams = new Click_Select_Resource_Button_From_Resource_PermissionsParams();
-                }
-                return this.mClick_Select_Resource_Button_From_Resource_PermissionsParams;
-            }
-        }
-        
-        public virtual Enter_Public_As_Windows_GroupParams Enter_Public_As_Windows_GroupParams
-        {
-            get
-            {
-                if ((this.mEnter_Public_As_Windows_GroupParams == null))
-                {
-                    this.mEnter_Public_As_Windows_GroupParams = new Enter_Public_As_Windows_GroupParams();
-                }
-                return this.mEnter_Public_As_Windows_GroupParams;
-            }
-        }
-        
         public virtual Filter_variablesParams Filter_variablesParams
         {
             get
@@ -8132,18 +8208,6 @@ namespace Warewolf.UITests
                     this.mFilter_variablesParams = new Filter_variablesParams();
                 }
                 return this.mFilter_variablesParams;
-            }
-        }
-        
-        public virtual Click_ViewSwagger_From_ExplorerContextMenuParams Click_ViewSwagger_From_ExplorerContextMenuParams
-        {
-            get
-            {
-                if ((this.mClick_ViewSwagger_From_ExplorerContextMenuParams == null))
-                {
-                    this.mClick_ViewSwagger_From_ExplorerContextMenuParams = new Click_ViewSwagger_From_ExplorerContextMenuParams();
-                }
-                return this.mClick_ViewSwagger_From_ExplorerContextMenuParams;
             }
         }
         
@@ -8324,6 +8388,18 @@ namespace Warewolf.UITests
                     this.mOpen_DotNet_DLL_Connector_Tool_Large_ViewParams = new Open_DotNet_DLL_Connector_Tool_Large_ViewParams();
                 }
                 return this.mOpen_DotNet_DLL_Connector_Tool_Large_ViewParams;
+            }
+        }
+        
+        public virtual Open_Explorer_First_Item_Dependancies_With_Context_MenuParams Open_Explorer_First_Item_Dependancies_With_Context_MenuParams
+        {
+            get
+            {
+                if ((this.mOpen_Explorer_First_Item_Dependancies_With_Context_MenuParams == null))
+                {
+                    this.mOpen_Explorer_First_Item_Dependancies_With_Context_MenuParams = new Open_Explorer_First_Item_Dependancies_With_Context_MenuParams();
+                }
+                return this.mOpen_Explorer_First_Item_Dependancies_With_Context_MenuParams;
             }
         }
         
@@ -8615,6 +8691,18 @@ namespace Warewolf.UITests
             }
         }
         
+        public virtual Rename_LocalWorkflow_To_SecodWorkFlowParams Rename_LocalWorkflow_To_SecodWorkFlowParams
+        {
+            get
+            {
+                if ((this.mRename_LocalWorkflow_To_SecodWorkFlowParams == null))
+                {
+                    this.mRename_LocalWorkflow_To_SecodWorkFlowParams = new Rename_LocalWorkflow_To_SecodWorkFlowParams();
+                }
+                return this.mRename_LocalWorkflow_To_SecodWorkFlowParams;
+            }
+        }
+        
         public virtual RightClick_Explorer_Localhost_First_ItemParams RightClick_Explorer_Localhost_First_ItemParams
         {
             get
@@ -8624,6 +8712,18 @@ namespace Warewolf.UITests
                     this.mRightClick_Explorer_Localhost_First_ItemParams = new RightClick_Explorer_Localhost_First_ItemParams();
                 }
                 return this.mRightClick_Explorer_Localhost_First_ItemParams;
+            }
+        }
+        
+        public virtual RightClick_LocalhostParams RightClick_LocalhostParams
+        {
+            get
+            {
+                if ((this.mRightClick_LocalhostParams == null))
+                {
+                    this.mRightClick_LocalhostParams = new RightClick_LocalhostParams();
+                }
+                return this.mRightClick_LocalhostParams;
             }
         }
         
@@ -8723,6 +8823,18 @@ namespace Warewolf.UITests
             }
         }
         
+        public virtual Select_NewWorkFlowService_From_ContextMenuParams Select_NewWorkFlowService_From_ContextMenuParams
+        {
+            get
+            {
+                if ((this.mSelect_NewWorkFlowService_From_ContextMenuParams == null))
+                {
+                    this.mSelect_NewWorkFlowService_From_ContextMenuParams = new Select_NewWorkFlowService_From_ContextMenuParams();
+                }
+                return this.mSelect_NewWorkFlowService_From_ContextMenuParams;
+            }
+        }
+        
         public virtual Select_Next_From_DotNet_DLL_Large_View_Action_ComboboxExpectedValues Select_Next_From_DotNet_DLL_Large_View_Action_ComboboxExpectedValues
         {
             get
@@ -8783,6 +8895,18 @@ namespace Warewolf.UITests
             }
         }
         
+        public virtual Select_SystemObject_From_DotNet_DLL_Large_View_Namespace_ComboboxExpectedValues Select_SystemObject_From_DotNet_DLL_Large_View_Namespace_ComboboxExpectedValues
+        {
+            get
+            {
+                if ((this.mSelect_SystemObject_From_DotNet_DLL_Large_View_Namespace_ComboboxExpectedValues == null))
+                {
+                    this.mSelect_SystemObject_From_DotNet_DLL_Large_View_Namespace_ComboboxExpectedValues = new Select_SystemObject_From_DotNet_DLL_Large_View_Namespace_ComboboxExpectedValues();
+                }
+                return this.mSelect_SystemObject_From_DotNet_DLL_Large_View_Namespace_ComboboxExpectedValues;
+            }
+        }
+        
         public virtual Select_SystemRandom_From_DotNet_DLL_Large_View_Namespace_ComboboxExpectedValues Select_SystemRandom_From_DotNet_DLL_Large_View_Namespace_ComboboxExpectedValues
         {
             get
@@ -8792,114 +8916,6 @@ namespace Warewolf.UITests
                     this.mSelect_SystemRandom_From_DotNet_DLL_Large_View_Namespace_ComboboxExpectedValues = new Select_SystemRandom_From_DotNet_DLL_Large_View_Namespace_ComboboxExpectedValues();
                 }
                 return this.mSelect_SystemRandom_From_DotNet_DLL_Large_View_Namespace_ComboboxExpectedValues;
-            }
-        }
-        
-        public virtual Select_TSTCIREMOTE_From_Server_Source_Wizard_DropdownlistParams Select_TSTCIREMOTE_From_Server_Source_Wizard_DropdownlistParams
-        {
-            get
-            {
-                if ((this.mSelect_TSTCIREMOTE_From_Server_Source_Wizard_DropdownlistParams == null))
-                {
-                    this.mSelect_TSTCIREMOTE_From_Server_Source_Wizard_DropdownlistParams = new Select_TSTCIREMOTE_From_Server_Source_Wizard_DropdownlistParams();
-                }
-                return this.mSelect_TSTCIREMOTE_From_Server_Source_Wizard_DropdownlistParams;
-            }
-        }
-        
-        public virtual Click_Workflow_CollapseAllParams Click_Workflow_CollapseAllParams
-        {
-            get
-            {
-                if ((this.mClick_Workflow_CollapseAllParams == null))
-                {
-                    this.mClick_Workflow_CollapseAllParams = new Click_Workflow_CollapseAllParams();
-                }
-                return this.mClick_Workflow_CollapseAllParams;
-            }
-        }
-        
-        public virtual Open_Explorer_First_Item_Dependancies_With_Context_MenuParams Open_Explorer_First_Item_Dependancies_With_Context_MenuParams
-        {
-            get
-            {
-                if ((this.mOpen_Explorer_First_Item_Dependancies_With_Context_MenuParams == null))
-                {
-                    this.mOpen_Explorer_First_Item_Dependancies_With_Context_MenuParams = new Open_Explorer_First_Item_Dependancies_With_Context_MenuParams();
-                }
-                return this.mOpen_Explorer_First_Item_Dependancies_With_Context_MenuParams;
-            }
-        }
-        
-        public virtual Click_Duplicate_From_Duplicate_DialogParams Click_Duplicate_From_Duplicate_DialogParams
-        {
-            get
-            {
-                if ((this.mClick_Duplicate_From_Duplicate_DialogParams == null))
-                {
-                    this.mClick_Duplicate_From_Duplicate_DialogParams = new Click_Duplicate_From_Duplicate_DialogParams();
-                }
-                return this.mClick_Duplicate_From_Duplicate_DialogParams;
-            }
-        }
-        
-        public virtual Click_UpdateDuplicateRelationshipsParams Click_UpdateDuplicateRelationshipsParams
-        {
-            get
-            {
-                if ((this.mClick_UpdateDuplicateRelationshipsParams == null))
-                {
-                    this.mClick_UpdateDuplicateRelationshipsParams = new Click_UpdateDuplicateRelationshipsParams();
-                }
-                return this.mClick_UpdateDuplicateRelationshipsParams;
-            }
-        }
-        
-        public virtual Enter_Duplicate_workflow_nameParams Enter_Duplicate_workflow_nameParams
-        {
-            get
-            {
-                if ((this.mEnter_Duplicate_workflow_nameParams == null))
-                {
-                    this.mEnter_Duplicate_workflow_nameParams = new Enter_Duplicate_workflow_nameParams();
-                }
-                return this.mEnter_Duplicate_workflow_nameParams;
-            }
-        }
-        
-        public virtual Click_Duplicate_From_ExplorerContextMenuParams Click_Duplicate_From_ExplorerContextMenuParams
-        {
-            get
-            {
-                if ((this.mClick_Duplicate_From_ExplorerContextMenuParams == null))
-                {
-                    this.mClick_Duplicate_From_ExplorerContextMenuParams = new Click_Duplicate_From_ExplorerContextMenuParams();
-                }
-                return this.mClick_Duplicate_From_ExplorerContextMenuParams;
-            }
-        }
-        
-        public virtual Rename_LocalWorkflow_To_SecodWorkFlowParams Rename_LocalWorkflow_To_SecodWorkFlowParams
-        {
-            get
-            {
-                if ((this.mRename_LocalWorkflow_To_SecodWorkFlowParams == null))
-                {
-                    this.mRename_LocalWorkflow_To_SecodWorkFlowParams = new Rename_LocalWorkflow_To_SecodWorkFlowParams();
-                }
-                return this.mRename_LocalWorkflow_To_SecodWorkFlowParams;
-            }
-        }
-        
-        public virtual Drag_Dice_Onto_Dice_On_The_DesignSurfaceParams Drag_Dice_Onto_Dice_On_The_DesignSurfaceParams
-        {
-            get
-            {
-                if ((this.mDrag_Dice_Onto_Dice_On_The_DesignSurfaceParams == null))
-                {
-                    this.mDrag_Dice_Onto_Dice_On_The_DesignSurfaceParams = new Drag_Dice_Onto_Dice_On_The_DesignSurfaceParams();
-                }
-                return this.mDrag_Dice_Onto_Dice_On_The_DesignSurfaceParams;
             }
         }
         
@@ -8915,15 +8931,15 @@ namespace Warewolf.UITests
             }
         }
         
-        public virtual Select_SystemObject_From_DotNet_DLL_Large_View_Namespace_ComboboxExpectedValues Select_SystemObject_From_DotNet_DLL_Large_View_Namespace_ComboboxExpectedValues
+        public virtual Select_TSTCIREMOTE_From_Server_Source_Wizard_DropdownlistParams Select_TSTCIREMOTE_From_Server_Source_Wizard_DropdownlistParams
         {
             get
             {
-                if ((this.mSelect_SystemObject_From_DotNet_DLL_Large_View_Namespace_ComboboxExpectedValues == null))
+                if ((this.mSelect_TSTCIREMOTE_From_Server_Source_Wizard_DropdownlistParams == null))
                 {
-                    this.mSelect_SystemObject_From_DotNet_DLL_Large_View_Namespace_ComboboxExpectedValues = new Select_SystemObject_From_DotNet_DLL_Large_View_Namespace_ComboboxExpectedValues();
+                    this.mSelect_TSTCIREMOTE_From_Server_Source_Wizard_DropdownlistParams = new Select_TSTCIREMOTE_From_Server_Source_Wizard_DropdownlistParams();
                 }
-                return this.mSelect_SystemObject_From_DotNet_DLL_Large_View_Namespace_ComboboxExpectedValues;
+                return this.mSelect_TSTCIREMOTE_From_Server_Source_Wizard_DropdownlistParams;
             }
         }
         
@@ -9099,10 +9115,6 @@ namespace Warewolf.UITests
         #region Fields
         private Assert_CancelConnectionButton_ExistsExpectedValues mAssert_CancelConnectionButton_ExistsExpectedValues;
         
-        private Select_NewWorkFlowService_From_ContextMenuParams mSelect_NewWorkFlowService_From_ContextMenuParams;
-        
-        private Enter_Dice_Roll_ValuesParams mEnter_Dice_Roll_ValuesParams;
-        
         private Assert_Connection_PassedExpectedValues mAssert_Connection_PassedExpectedValues;
         
         private Assert_RunDebug_Button_Exist_And_EnabledExpectedValues mAssert_RunDebug_Button_Exist_And_EnabledExpectedValues;
@@ -9112,6 +9124,8 @@ namespace Warewolf.UITests
         private AssertMethod1ExpectedValues mAssertMethod1ExpectedValues;
         
         private Assign_Value_To_VariableParams mAssign_Value_To_VariableParams;
+        
+        private Check_Public_AdministratorParams mCheck_Public_AdministratorParams;
         
         private Click_AddNew_Web_Source_From_toolParams mClick_AddNew_Web_Source_From_toolParams;
         
@@ -9139,6 +9153,8 @@ namespace Warewolf.UITests
         
         private Click_Close_Workflow_Tab_ButtonParams mClick_Close_Workflow_Tab_ButtonParams;
         
+        private Click_ConfigureSetting_From_MenuParams mClick_ConfigureSetting_From_MenuParams;
+        
         private Click_Debug_Output_Assign_CellParams mClick_Debug_Output_Assign_CellParams;
         
         private Click_Debug_Output_BaseConvert_CellParams mClick_Debug_Output_BaseConvert_CellParams;
@@ -9160,6 +9176,10 @@ namespace Warewolf.UITests
         private Click_DotNet_DLL_Large_View_Done_ButtonParams mClick_DotNet_DLL_Large_View_Done_ButtonParams;
         
         private Click_DotNet_DLL_Large_View_Generate_OutputsExpectedValues mClick_DotNet_DLL_Large_View_Generate_OutputsExpectedValues;
+        
+        private Click_Duplicate_From_Duplicate_DialogParams mClick_Duplicate_From_Duplicate_DialogParams;
+        
+        private Click_Duplicate_From_ExplorerContextMenuParams mClick_Duplicate_From_ExplorerContextMenuParams;
         
         private Click_ExpandAndStepIn_NestedWorkflowParams mClick_ExpandAndStepIn_NestedWorkflowParams;
         
@@ -9183,6 +9203,8 @@ namespace Warewolf.UITests
         
         private Click_Output_OnVariable_InVariableListParams mClick_Output_OnVariable_InVariableListParams;
         
+        private Click_Reset_Perfomance_CounterParams mClick_Reset_Perfomance_CounterParams;
+        
         private Click_RunDebug_buttonParams mClick_RunDebug_buttonParams;
         
         private Click_Save_Ribbon_Button_to_Open_Save_DialogParams mClick_Save_Ribbon_Button_to_Open_Save_DialogParams;
@@ -9194,6 +9216,8 @@ namespace Warewolf.UITests
         private Click_Scheduler_Enable_Task_Radio_ButtonParams mClick_Scheduler_Enable_Task_Radio_ButtonParams;
         
         private Click_Scheduler_RunTaskParams mClick_Scheduler_RunTaskParams;
+        
+        private Click_Select_Resource_Button_From_Resource_PermissionsParams mClick_Select_Resource_Button_From_Resource_PermissionsParams;
         
         private Click_Select_Windows_Group_Cancel_ButtonParams mClick_Select_Windows_Group_Cancel_ButtonParams;
         
@@ -9209,19 +9233,23 @@ namespace Warewolf.UITests
         
         private Click_SQL_Server_Large_View_Generate_OutputsExpectedValues mClick_SQL_Server_Large_View_Generate_OutputsExpectedValues;
         
-        private Click_ConfigureSetting_From_MenuParams mClick_ConfigureSetting_From_MenuParams;
-        
-        private Click_Reset_Perfomance_CounterParams mClick_Reset_Perfomance_CounterParams;
-        
         private Click_SQL_Server_Large_View_Test_Inputs_Done_ButtonExpectedValues mClick_SQL_Server_Large_View_Test_Inputs_Done_ButtonExpectedValues;
         
         private Click_Switch_Dialog_Done_ButtonParams mClick_Switch_Dialog_Done_ButtonParams;
+        
+        private Click_UpdateDuplicateRelationshipsParams mClick_UpdateDuplicateRelationshipsParams;
         
         private Click_Variable_IsInputParams mClick_Variable_IsInputParams;
         
         private Click_VariableList_Recordset_Row1_IsInputCheckboxParams mClick_VariableList_Recordset_Row1_IsInputCheckboxParams;
         
         private Click_VariableList_Scalar_Row1_IsInputCheckboxParams mClick_VariableList_Scalar_Row1_IsInputCheckboxParams;
+        
+        private Click_ViewSwagger_From_ExplorerContextMenuParams mClick_ViewSwagger_From_ExplorerContextMenuParams;
+        
+        private Click_Workflow_CollapseAllParams mClick_Workflow_CollapseAllParams;
+        
+        private Drag_Dice_Onto_Dice_On_The_DesignSurfaceParams mDrag_Dice_Onto_Dice_On_The_DesignSurfaceParams;
         
         private Drag_DotNet_DLL_Connector_Onto_DesignSurfaceParams mDrag_DotNet_DLL_Connector_Onto_DesignSurfaceParams;
         
@@ -9339,7 +9367,13 @@ namespace Warewolf.UITests
         
         private Enter_DeployViewOnly_Into_Deploy_Source_FilterParams mEnter_DeployViewOnly_Into_Deploy_Source_FilterParams;
         
+        private Enter_Dice_Roll_ValuesParams mEnter_Dice_Roll_ValuesParams;
+        
+        private Enter_Duplicate_workflow_nameParams mEnter_Duplicate_workflow_nameParams;
+        
         private Enter_InputDebug_valueParams mEnter_InputDebug_valueParams;
+        
+        private Enter_Public_As_Windows_GroupParams mEnter_Public_As_Windows_GroupParams;
         
         private Enter_RunAsUser_Username_And_PasswordParams mEnter_RunAsUser_Username_And_PasswordParams;
         
@@ -9357,15 +9391,7 @@ namespace Warewolf.UITests
         
         private Enter_Text_Into_Workflow_Tests_Row1_Value_Textbox_As_CodedUITestParams mEnter_Text_Into_Workflow_Tests_Row1_Value_Textbox_As_CodedUITestParams;
         
-        private Check_Public_AdministratorParams mCheck_Public_AdministratorParams;
-        
-        private Click_Select_Resource_Button_From_Resource_PermissionsParams mClick_Select_Resource_Button_From_Resource_PermissionsParams;
-        
-        private Enter_Public_As_Windows_GroupParams mEnter_Public_As_Windows_GroupParams;
-        
         private Filter_variablesParams mFilter_variablesParams;
-        
-        private Click_ViewSwagger_From_ExplorerContextMenuParams mClick_ViewSwagger_From_ExplorerContextMenuParams;
         
         private Open_Assign_Tool_Large_ViewParams mOpen_Assign_Tool_Large_ViewParams;
         
@@ -9396,6 +9422,8 @@ namespace Warewolf.UITests
         private Open_Delete_Tool_Large_ViewParams mOpen_Delete_Tool_Large_ViewParams;
         
         private Open_DotNet_DLL_Connector_Tool_Large_ViewParams mOpen_DotNet_DLL_Connector_Tool_Large_ViewParams;
+        
+        private Open_Explorer_First_Item_Dependancies_With_Context_MenuParams mOpen_Explorer_First_Item_Dependancies_With_Context_MenuParams;
         
         private Open_Explorer_First_Item_Tests_With_Context_MenuParams mOpen_Explorer_First_Item_Tests_With_Context_MenuParams;
         
@@ -9445,7 +9473,11 @@ namespace Warewolf.UITests
         
         private PressF11_EnterFullScreenParams mPressF11_EnterFullScreenParams;
         
+        private Rename_LocalWorkflow_To_SecodWorkFlowParams mRename_LocalWorkflow_To_SecodWorkFlowParams;
+        
         private RightClick_Explorer_Localhost_First_ItemParams mRightClick_Explorer_Localhost_First_ItemParams;
+        
+        private RightClick_LocalhostParams mRightClick_LocalhostParams;
         
         private Search_And_Select_HelloWolrdParams mSearch_And_Select_HelloWolrdParams;
         
@@ -9463,6 +9495,8 @@ namespace Warewolf.UITests
         
         private Select_NewDatabaseSource_FromSqlServerToolParams mSelect_NewDatabaseSource_FromSqlServerToolParams;
         
+        private Select_NewWorkFlowService_From_ContextMenuParams mSelect_NewWorkFlowService_From_ContextMenuParams;
+        
         private Select_Next_From_DotNet_DLL_Large_View_Action_ComboboxExpectedValues mSelect_Next_From_DotNet_DLL_Large_View_Action_ComboboxExpectedValues;
         
         private Select_RemoteConnectionIntegration_From_Deploy_Tab_Destination_Server_ComboboxParams mSelect_RemoteConnectionIntegration_From_Deploy_Tab_Destination_Server_ComboboxParams;
@@ -9473,29 +9507,13 @@ namespace Warewolf.UITests
         
         private Select_RSAKLFSVRGENDEV_From_Server_Source_Wizard_DropdownlistExpectedValues mSelect_RSAKLFSVRGENDEV_From_Server_Source_Wizard_DropdownlistExpectedValues;
         
+        private Select_SystemObject_From_DotNet_DLL_Large_View_Namespace_ComboboxExpectedValues mSelect_SystemObject_From_DotNet_DLL_Large_View_Namespace_ComboboxExpectedValues;
+        
         private Select_SystemRandom_From_DotNet_DLL_Large_View_Namespace_ComboboxExpectedValues mSelect_SystemRandom_From_DotNet_DLL_Large_View_Namespace_ComboboxExpectedValues;
-        
-        private Select_TSTCIREMOTE_From_Server_Source_Wizard_DropdownlistParams mSelect_TSTCIREMOTE_From_Server_Source_Wizard_DropdownlistParams;
-        
-        private Click_Workflow_CollapseAllParams mClick_Workflow_CollapseAllParams;
-        
-        private Open_Explorer_First_Item_Dependancies_With_Context_MenuParams mOpen_Explorer_First_Item_Dependancies_With_Context_MenuParams;
-        
-        private Click_Duplicate_From_Duplicate_DialogParams mClick_Duplicate_From_Duplicate_DialogParams;
-        
-        private Click_UpdateDuplicateRelationshipsParams mClick_UpdateDuplicateRelationshipsParams;
-        
-        private Enter_Duplicate_workflow_nameParams mEnter_Duplicate_workflow_nameParams;
-        
-        private Click_Duplicate_From_ExplorerContextMenuParams mClick_Duplicate_From_ExplorerContextMenuParams;
-        
-        private Rename_LocalWorkflow_To_SecodWorkFlowParams mRename_LocalWorkflow_To_SecodWorkFlowParams;
-        
-        private Drag_Dice_Onto_Dice_On_The_DesignSurfaceParams mDrag_Dice_Onto_Dice_On_The_DesignSurfaceParams;
         
         private Select_ToString_From_DotNet_DLL_Large_View_Action_ComboboxExpectedValues mSelect_ToString_From_DotNet_DLL_Large_View_Action_ComboboxExpectedValues;
         
-        private Select_SystemObject_From_DotNet_DLL_Large_View_Namespace_ComboboxExpectedValues mSelect_SystemObject_From_DotNet_DLL_Large_View_Namespace_ComboboxExpectedValues;
+        private Select_TSTCIREMOTE_From_Server_Source_Wizard_DropdownlistParams mSelect_TSTCIREMOTE_From_Server_Source_Wizard_DropdownlistParams;
         
         private Select_UITestingDBSource_From_SQL_Server_Large_View_Source_ComboboxParams mSelect_UITestingDBSource_From_SQL_Server_Large_View_Source_ComboboxParams;
         
@@ -9539,51 +9557,6 @@ namespace Warewolf.UITests
         /// Verify that the 'Exists' property of 'Cancel Test' button equals 'True'
         /// </summary>
         public bool CancelTestButtonExists = true;
-        #endregion
-    }
-    
-    /// <summary>
-    /// Parameters to be passed into 'Select_NewWorkFlowService_From_ContextMenu'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Select_NewWorkFlowService_From_ContextMenuParams
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Verify that the 'Enabled' property of 'New Workflow Service' menu item equals 'True'
-        /// </summary>
-        public bool NewWorkflowServiceEnabled = true;
-        #endregion
-    }
-    
-    /// <summary>
-    /// Parameters to be passed into 'Enter_Dice_Roll_Values'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Enter_Dice_Roll_ValuesParams
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Verify that the 'Exists' property of 'Text' text box equals 'True'
-        /// </summary>
-        public bool FromTextEditExists = true;
-        
-        /// <summary>
-        /// Type '1' in 'Text' text box
-        /// </summary>
-        public string FromTextEditText = "1";
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'Text' text box equals 'True'
-        /// </summary>
-        public bool ToTextEditExists = true;
-        
-        /// <summary>
-        /// Type '6' in 'Text' text box
-        /// </summary>
-        public string ToTextEditText = "6";
         #endregion
     }
     
@@ -9669,6 +9642,31 @@ namespace Warewolf.UITests
         /// Type '50' in 'Text' text box
         /// </summary>
         public string TextEditText = "50";
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Check_Public_Administrator'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Check_Public_AdministratorParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Select 'UI_Public_AdministratorPermissionCheckBox_AutoID' check box
+        /// </summary>
+        public bool Public_AdministratorCheckBoxChecked = true;
+        
+        /// <summary>
+        /// Verify that the 'Checked' property of 'UI_Public_DeployToPermissionCheckBox_AutoID' check box equals 'True'
+        /// </summary>
+        public bool Public_DeployToCheckBoxChecked = true;
+        
+        /// <summary>
+        /// Verify that the 'Checked' property of 'UI_Public_DeployFromPermissionCheckBox_AutoID' check box equals 'True'
+        /// </summary>
+        public bool Public_DeployFromCheckBoxChecked = true;
         #endregion
     }
     
@@ -9953,6 +9951,136 @@ namespace Warewolf.UITests
     }
     
     /// <summary>
+    /// Parameters to be passed into 'Click_ConfigureSetting_From_Menu'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Click_ConfigureSetting_From_MenuParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'System.Windows.Controls.TabItem Header: Content:' tab equals 'True'
+        /// </summary>
+        public bool LoggingTabExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Enabled' property of 'System.Windows.Controls.TabItem Header: Content:' tab equals 'True'
+        /// </summary>
+        public bool LoggingTabEnabled = true;
+        
+        /// <summary>
+        /// Verify that the 'Name' property of 'SECURITY' label equals 'SECURITY'
+        /// </summary>
+        public string SECURITYName = "SECURITY";
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'ServerPermissionsDataGrid' table equals 'True'
+        /// </summary>
+        public bool ServerPermissionsExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of '0' pane equals 'True'
+        /// </summary>
+        public bool WarewolfAdminROWExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'UI_AddRemovebtn_AutoID' button equals 'True'
+        /// </summary>
+        public bool DeleteButtonExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Checked' property of 'UI_Warewolf Administrators_DeployToPermissionCheckBox_AutoID' check box equals 'True'
+        /// </summary>
+        public bool DeployToCheckBoxChecked = true;
+        
+        /// <summary>
+        /// Verify that the 'Enabled' property of 'UI_Warewolf Administrators_DeployToPermissionCheckBox_AutoID' check box equals 'False'
+        /// </summary>
+        public bool DeployToCheckBoxEnabled = false;
+        
+        /// <summary>
+        /// Verify that the 'ReadOnly' property of 'True' cell equals 'True'
+        /// </summary>
+        public bool DeployFromCellReadOnly = true;
+        
+        /// <summary>
+        /// Verify that the 'Checked' property of 'UI_Warewolf Administrators_DeployFromPermissionCheckBox_AutoID' check box equals 'True'
+        /// </summary>
+        public bool DeployFromCheckBoxChecked = true;
+        
+        /// <summary>
+        /// Verify that the 'Enabled' property of 'UI_Warewolf Administrators_DeployFromPermissionCheckBox_AutoID' check box equals 'False'
+        /// </summary>
+        public bool DeployFromCheckBoxEnabled = false;
+        
+        /// <summary>
+        /// Verify that the 'ReadOnly' property of 'True' cell equals 'True'
+        /// </summary>
+        public bool AdministratorCellReadOnly = true;
+        
+        /// <summary>
+        /// Verify that the 'Checked' property of 'UI_Warewolf Administrators_AdministratorPermissionCheck...' check box equals 'True'
+        /// </summary>
+        public bool AdministratorCheckBoxChecked = true;
+        
+        /// <summary>
+        /// Verify that the 'Enabled' property of 'UI_Warewolf Administrators_AdministratorPermissionCheck...' check box equals 'False'
+        /// </summary>
+        public bool AdministratorCheckBoxEnabled = false;
+        
+        /// <summary>
+        /// Verify that the 'ReadOnly' property of 'True' cell equals 'True'
+        /// </summary>
+        public bool ExecuteCellReadOnly = true;
+        
+        /// <summary>
+        /// Verify that the 'Checked' property of 'UI_Warewolf Administrators_ExecutePermissionCheck...' check box equals 'True'
+        /// </summary>
+        public bool ExecuteCheckBoxChecked = true;
+        
+        /// <summary>
+        /// Verify that the 'Enabled' property of 'UI_Warewolf Administrators_ExecutePermissionCheck...' check box equals 'False'
+        /// </summary>
+        public bool ExecuteCheckBoxEnabled = false;
+        
+        /// <summary>
+        /// Verify that the 'ReadOnly' property of 'True' cell equals 'True'
+        /// </summary>
+        public bool ViewCellReadOnly = true;
+        
+        /// <summary>
+        /// Verify that the 'Checked' property of 'UI_Warewolf Administrators_ViewPermissionCheck...' check box equals 'True'
+        /// </summary>
+        public bool ViewCheckBoxChecked = true;
+        
+        /// <summary>
+        /// Verify that the 'Enabled' property of 'UI_Warewolf Administrators_ViewPermissionCheck...' check box equals 'False'
+        /// </summary>
+        public bool ViewCheckBoxEnabled = false;
+        
+        /// <summary>
+        /// Verify that the 'ReadOnly' property of 'True' cell equals 'True'
+        /// </summary>
+        public bool ContributeCellReadOnly = true;
+        
+        /// <summary>
+        /// Verify that the 'Checked' property of 'UI_Warewolf Administrators_ContributePermissionCheck...' check box equals 'True'
+        /// </summary>
+        public bool ContributeCheckBoxChecked = true;
+        
+        /// <summary>
+        /// Verify that the 'Enabled' property of 'UI_Warewolf Administrators_ContributePermissionCheck...' check box equals 'False'
+        /// </summary>
+        public bool ContributeCheckBoxEnabled = false;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of '1' pane equals 'True'
+        /// </summary>
+        public bool PublicROWExists = true;
+        #endregion
+    }
+    
+    /// <summary>
     /// Parameters to be passed into 'Click_Debug_Output_Assign_Cell'
     /// </summary>
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
@@ -10166,6 +10294,41 @@ namespace Warewolf.UITests
     }
     
     /// <summary>
+    /// Parameters to be passed into 'Click_Duplicate_From_Duplicate_Dialog'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Click_Duplicate_From_Duplicate_DialogParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Duplicate' button equals 'True'
+        /// </summary>
+        public bool DuplicateButtonExists = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Click_Duplicate_From_ExplorerContextMenu'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Click_Duplicate_From_ExplorerContextMenuParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Duplicate' menu item equals 'True'
+        /// </summary>
+        public bool DuplicateExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Enabled' property of 'Duplicate' menu item equals 'True'
+        /// </summary>
+        public bool DuplicateEnabled = true;
+        #endregion
+    }
+    
+    /// <summary>
     /// Parameters to be passed into 'Click_ExpandAndStepIn_NestedWorkflow'
     /// </summary>
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
@@ -10342,6 +10505,21 @@ namespace Warewolf.UITests
         /// Select 'UI_IsOutputCheckbox_AutoID' check box
         /// </summary>
         public bool IsOutputCheckboxChecked = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Click_Reset_Perfomance_Counter'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Click_Reset_Perfomance_CounterParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'WarewolfMessageBox' window equals 'True'
+        /// </summary>
+        public bool MessageBoxWindowExists = true;
         #endregion
     }
     
@@ -10531,6 +10709,21 @@ namespace Warewolf.UITests
     }
     
     /// <summary>
+    /// Parameters to be passed into 'Click_Select_Resource_Button_From_Resource_Permissions'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Click_Select_Resource_Button_From_Resource_PermissionsParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'ServicePickerDialog' window equals 'True'
+        /// </summary>
+        public bool ServicePickerDialogExists = true;
+        #endregion
+    }
+    
+    /// <summary>
     /// Parameters to be passed into 'Click_Select_Windows_Group_Cancel_Button'
     /// </summary>
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
@@ -10656,151 +10849,6 @@ namespace Warewolf.UITests
     }
     
     /// <summary>
-    /// Parameters to be passed into 'Click_ConfigureSetting_From_Menu'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Click_ConfigureSetting_From_MenuParams
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Verify that the 'Exists' property of 'System.Windows.Controls.TabItem Header: Content:' tab equals 'True'
-        /// </summary>
-        public bool LoggingTabExists = true;
-        
-        /// <summary>
-        /// Verify that the 'Enabled' property of 'System.Windows.Controls.TabItem Header: Content:' tab equals 'True'
-        /// </summary>
-        public bool LoggingTabEnabled = true;
-        
-        /// <summary>
-        /// Verify that the 'Name' property of 'SECURITY' label equals 'SECURITY'
-        /// </summary>
-        public string SECURITYName = "SECURITY";
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'ServerPermissionsDataGrid' table equals 'True'
-        /// </summary>
-        public bool ServerPermissionsExists = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of '0' pane equals 'True'
-        /// </summary>
-        public bool WarewolfAdminROWExists = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'UI_AddRemovebtn_AutoID' button equals 'True'
-        /// </summary>
-        public bool DeleteButtonExists = true;
-        
-        /// <summary>
-        /// Verify that the 'Checked' property of 'UI_Warewolf Administrators_DeployToPermissionCheckBox_AutoID' check box equals 'True'
-        /// </summary>
-        public bool DeployToCheckBoxChecked = true;
-        
-        /// <summary>
-        /// Verify that the 'Enabled' property of 'UI_Warewolf Administrators_DeployToPermissionCheckBox_AutoID' check box equals 'False'
-        /// </summary>
-        public bool DeployToCheckBoxEnabled = false;
-        
-        /// <summary>
-        /// Verify that the 'ReadOnly' property of 'True' cell equals 'True'
-        /// </summary>
-        public bool DeployFromCellReadOnly = true;
-        
-        /// <summary>
-        /// Verify that the 'Checked' property of 'UI_Warewolf Administrators_DeployFromPermissionCheckBox_AutoID' check box equals 'True'
-        /// </summary>
-        public bool DeployFromCheckBoxChecked = true;
-        
-        /// <summary>
-        /// Verify that the 'Enabled' property of 'UI_Warewolf Administrators_DeployFromPermissionCheckBox_AutoID' check box equals 'False'
-        /// </summary>
-        public bool DeployFromCheckBoxEnabled = false;
-        
-        /// <summary>
-        /// Verify that the 'ReadOnly' property of 'True' cell equals 'True'
-        /// </summary>
-        public bool AdministratorCellReadOnly = true;
-        
-        /// <summary>
-        /// Verify that the 'Checked' property of 'UI_Warewolf Administrators_AdministratorPermissionCheck...' check box equals 'True'
-        /// </summary>
-        public bool AdministratorCheckBoxChecked = true;
-        
-        /// <summary>
-        /// Verify that the 'Enabled' property of 'UI_Warewolf Administrators_AdministratorPermissionCheck...' check box equals 'False'
-        /// </summary>
-        public bool AdministratorCheckBoxEnabled = false;
-        
-        /// <summary>
-        /// Verify that the 'ReadOnly' property of 'True' cell equals 'True'
-        /// </summary>
-        public bool ExecuteCellReadOnly = true;
-        
-        /// <summary>
-        /// Verify that the 'Checked' property of 'UI_Warewolf Administrators_ExecutePermissionCheck...' check box equals 'True'
-        /// </summary>
-        public bool ExecuteCheckBoxChecked = true;
-        
-        /// <summary>
-        /// Verify that the 'Enabled' property of 'UI_Warewolf Administrators_ExecutePermissionCheck...' check box equals 'False'
-        /// </summary>
-        public bool ExecuteCheckBoxEnabled = false;
-        
-        /// <summary>
-        /// Verify that the 'ReadOnly' property of 'True' cell equals 'True'
-        /// </summary>
-        public bool ViewCellReadOnly = true;
-        
-        /// <summary>
-        /// Verify that the 'Checked' property of 'UI_Warewolf Administrators_ViewPermissionCheck...' check box equals 'True'
-        /// </summary>
-        public bool ViewCheckBoxChecked = true;
-        
-        /// <summary>
-        /// Verify that the 'Enabled' property of 'UI_Warewolf Administrators_ViewPermissionCheck...' check box equals 'False'
-        /// </summary>
-        public bool ViewCheckBoxEnabled = false;
-        
-        /// <summary>
-        /// Verify that the 'ReadOnly' property of 'True' cell equals 'True'
-        /// </summary>
-        public bool ContributeCellReadOnly = true;
-        
-        /// <summary>
-        /// Verify that the 'Checked' property of 'UI_Warewolf Administrators_ContributePermissionCheck...' check box equals 'True'
-        /// </summary>
-        public bool ContributeCheckBoxChecked = true;
-        
-        /// <summary>
-        /// Verify that the 'Enabled' property of 'UI_Warewolf Administrators_ContributePermissionCheck...' check box equals 'False'
-        /// </summary>
-        public bool ContributeCheckBoxEnabled = false;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of '1' pane equals 'True'
-        /// </summary>
-        public bool PublicROWExists = true;
-        #endregion
-    }
-    
-    /// <summary>
-    /// Parameters to be passed into 'Click_Reset_Perfomance_Counter'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Click_Reset_Perfomance_CounterParams
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Verify that the 'Exists' property of 'WarewolfMessageBox' window equals 'True'
-        /// </summary>
-        public bool MessageBoxWindowExists = true;
-        #endregion
-    }
-    
-    /// <summary>
     /// Parameters to be passed into 'Click_SQL_Server_Large_View_Test_Inputs_Done_Button'
     /// </summary>
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
@@ -10832,6 +10880,21 @@ namespace Warewolf.UITests
         /// Verify that the 'Exists' property of 'Connector1' custom control equals 'True'
         /// </summary>
         public bool Connector1Exists = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Click_UpdateDuplicateRelationships'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Click_UpdateDuplicateRelationshipsParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Select 'Update duplicated relationships?' check box
+        /// </summary>
+        public bool UpdateDuplicatedRelatChecked = true;
         #endregion
     }
     
@@ -10887,6 +10950,61 @@ namespace Warewolf.UITests
         /// Select 'UI_IsInputCheckbox_AutoID' check box
         /// </summary>
         public bool IsInputCheckboxChecked = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Click_ViewSwagger_From_ExplorerContextMenu'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Click_ViewSwagger_From_ExplorerContextMenuParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'View Swagger' menu item equals 'True'
+        /// </summary>
+        public bool ViewSwaggerExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Enabled' property of 'View Swagger' menu item equals 'True'
+        /// </summary>
+        public bool ViewSwaggerEnabled = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Click_Workflow_CollapseAll'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Click_Workflow_CollapseAllParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'CollapseAll' toggle button equals 'True'
+        /// </summary>
+        public bool CollapseAllToggleButtonExists = true;
+        
+        /// <summary>
+        /// Set to 'Pressed' state 'CollapseAll' toggle button
+        /// </summary>
+        public bool CollapseAllToggleButtonPressed = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Drag_Dice_Onto_Dice_On_The_DesignSurface'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Drag_Dice_Onto_Dice_On_The_DesignSurfaceParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Done' button equals 'True'
+        /// </summary>
+        public bool DoneButtonExists = true;
         #endregion
     }
     
@@ -12271,6 +12389,51 @@ namespace Warewolf.UITests
     }
     
     /// <summary>
+    /// Parameters to be passed into 'Enter_Dice_Roll_Values'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Enter_Dice_Roll_ValuesParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Text' text box equals 'True'
+        /// </summary>
+        public bool FromTextEditExists = true;
+        
+        /// <summary>
+        /// Type '1' in 'Text' text box
+        /// </summary>
+        public string FromTextEditText = "1";
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Text' text box equals 'True'
+        /// </summary>
+        public bool ToTextEditExists = true;
+        
+        /// <summary>
+        /// Type '6' in 'Text' text box
+        /// </summary>
+        public string ToTextEditText = "6";
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Enter_Duplicate_workflow_name'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Enter_Duplicate_workflow_nameParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Type 'DuplicatedWorkFlow' in 'ServiceNameTextBox' text box
+        /// </summary>
+        public string ServiceNameTextBoxText = "DuplicatedWorkFlow";
+        #endregion
+    }
+    
+    /// <summary>
     /// Parameters to be passed into 'Enter_InputDebug_value'
     /// </summary>
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
@@ -12292,6 +12455,21 @@ namespace Warewolf.UITests
         /// Type '100' in 'Text' text box
         /// </summary>
         public string InputValueTextText = "100";
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Enter_Public_As_Windows_Group'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Enter_Public_As_Windows_GroupParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Type 'Public' in 'UI__AddWindowsGroupsTextBox_AutoID' text box
+        /// </summary>
+        public string AddWindowsGroupsEditText = "Public";
         #endregion
     }
     
@@ -12456,61 +12634,6 @@ namespace Warewolf.UITests
     }
     
     /// <summary>
-    /// Parameters to be passed into 'Check_Public_Administrator'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Check_Public_AdministratorParams
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Select 'UI_Public_AdministratorPermissionCheckBox_AutoID' check box
-        /// </summary>
-        public bool Public_AdministratorCheckBoxChecked = true;
-        
-        /// <summary>
-        /// Verify that the 'Checked' property of 'UI_Public_DeployToPermissionCheckBox_AutoID' check box equals 'True'
-        /// </summary>
-        public bool Public_DeployToCheckBoxChecked = true;
-        
-        /// <summary>
-        /// Verify that the 'Checked' property of 'UI_Public_DeployFromPermissionCheckBox_AutoID' check box equals 'True'
-        /// </summary>
-        public bool Public_DeployFromCheckBoxChecked = true;
-        #endregion
-    }
-    
-    /// <summary>
-    /// Parameters to be passed into 'Click_Select_Resource_Button_From_Resource_Permissions'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Click_Select_Resource_Button_From_Resource_PermissionsParams
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Verify that the 'Exists' property of 'ServicePickerDialog' window equals 'True'
-        /// </summary>
-        public bool ServicePickerDialogExists = true;
-        #endregion
-    }
-    
-    /// <summary>
-    /// Parameters to be passed into 'Enter_Public_As_Windows_Group'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Enter_Public_As_Windows_GroupParams
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Type 'Public' in 'UI__AddWindowsGroupsTextBox_AutoID' text box
-        /// </summary>
-        public string AddWindowsGroupsEditText = "Public";
-        #endregion
-    }
-    
-    /// <summary>
     /// Parameters to be passed into 'Filter_variables'
     /// </summary>
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
@@ -12527,26 +12650,6 @@ namespace Warewolf.UITests
         /// Type 'Other' in 'SearchTextBox' text box
         /// </summary>
         public string VariableSearchTextBoxEditText = "Other";
-        #endregion
-    }
-    
-    /// <summary>
-    /// Parameters to be passed into 'Click_ViewSwagger_From_ExplorerContextMenu'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Click_ViewSwagger_From_ExplorerContextMenuParams
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Verify that the 'Exists' property of 'View Swagger' menu item equals 'True'
-        /// </summary>
-        public bool ViewSwaggerExists = true;
-        
-        /// <summary>
-        /// Verify that the 'Enabled' property of 'View Swagger' menu item equals 'True'
-        /// </summary>
-        public bool ViewSwaggerEnabled = true;
         #endregion
     }
     
@@ -12832,6 +12935,21 @@ namespace Warewolf.UITests
         /// Verify that the 'Exists' property of 'LargeDataGrid' table equals 'True'
         /// </summary>
         public bool InputsTableExists = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Open_Explorer_First_Item_Dependancies_With_Context_Menu'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Open_Explorer_First_Item_Dependancies_With_Context_MenuParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Show Version History' menu item equals 'True'
+        /// </summary>
+        public bool ShowVersionHistoryExists = true;
         #endregion
     }
     
@@ -13231,6 +13349,26 @@ namespace Warewolf.UITests
     }
     
     /// <summary>
+    /// Parameters to be passed into 'Rename_LocalWorkflow_To_SecodWorkFlow'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Rename_LocalWorkflow_To_SecodWorkFlowParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Type 'SecondWorkflow' in first text box next to 'ResourceImage' image
+        /// </summary>
+        public string ItemEditText = "SecondWorkflow";
+        
+        /// <summary>
+        /// Type '{Enter}' in first text box next to 'ResourceImage' image
+        /// </summary>
+        public string ItemEditSendKeys = "{Enter}";
+        #endregion
+    }
+    
+    /// <summary>
     /// Parameters to be passed into 'RightClick_Explorer_Localhost_First_Item'
     /// </summary>
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
@@ -13252,6 +13390,21 @@ namespace Warewolf.UITests
         /// Verify that the 'Exists' property of 'Delete' menu item equals 'True'
         /// </summary>
         public bool DeleteExists = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'RightClick_Localhost'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class RightClick_LocalhostParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'View Apis.Json' menu item equals 'True'
+        /// </summary>
+        public bool ViewApisJsonMenuItemExists = true;
         #endregion
     }
     
@@ -13406,6 +13559,21 @@ namespace Warewolf.UITests
     }
     
     /// <summary>
+    /// Parameters to be passed into 'Select_NewWorkFlowService_From_ContextMenu'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Select_NewWorkFlowService_From_ContextMenuParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Enabled' property of 'New Workflow Service' menu item equals 'True'
+        /// </summary>
+        public bool NewWorkflowServiceEnabled = true;
+        #endregion
+    }
+    
+    /// <summary>
     /// Parameters to be passed into 'Select_Next_From_DotNet_DLL_Large_View_Action_Combobox'
     /// </summary>
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
@@ -13511,6 +13679,28 @@ namespace Warewolf.UITests
     }
     
     /// <summary>
+    /// Parameters to be passed into 'Select_SystemObject_From_DotNet_DLL_Large_View_Namespace_Combobox'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Select_SystemObject_From_DotNet_DLL_Large_View_Namespace_ComboboxExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of '{"AssemblyLocation":"C:\\Windows\\Microsoft.NET\\F...' list item equals 'True'
+        /// </summary>
+        public bool ComboboxlistItemAsSystemObjectExists = true;
+        
+        /// <summary>
+        /// Verify that the 'SelectedItem' property of 'NamespaceComboBox' combo box equals '{"AssemblyLocation":"C:\\Windows\\Microsoft.NET\\Framework64\\v4.0.30319\\mscorlib.dll","AssemblyName":"mscorlib.dll","FullName":"System.Object","MethodName":null}'
+        /// </summary>
+        public string ClassNameComboBoxSelectedItem = "{\"AssemblyLocation\":\"C:\\\\Windows\\\\Microsoft.NET\\\\Framework64\\\\v4.0.30319\\\\mscorli" +
+            "b.dll\",\"AssemblyName\":\"mscorlib.dll\",\"FullName\":\"System.Object\",\"MethodName\":nul" +
+            "l}";
+        #endregion
+    }
+    
+    /// <summary>
     /// Parameters to be passed into 'Select_SystemRandom_From_DotNet_DLL_Large_View_Namespace_Combobox'
     /// </summary>
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
@@ -13524,6 +13714,21 @@ namespace Warewolf.UITests
         public string ClassNameComboBoxSelectedItem = "{\"AssemblyLocation\":\"C:\\\\Windows\\\\Microsoft.NET\\\\Framework64\\\\v4.0.30319\\\\mscorli" +
             "b.dll\",\"AssemblyName\":\"mscorlib.dll\",\"FullName\":\"System.Random\",\"MethodName\":nul" +
             "l}";
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Select_ToString_From_DotNet_DLL_Large_View_Action_Combobox'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Select_ToString_From_DotNet_DLL_Large_View_Action_ComboboxExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'SelectedItem' property of 'ActionsComboBox' combo box equals 'ToString'
+        /// </summary>
+        public string ActionsComboBoxSelectedItem = "ToString";
         #endregion
     }
     
@@ -13544,178 +13749,6 @@ namespace Warewolf.UITests
         /// Verify that the 'Exists' property of 'Test Connection' button equals 'True'
         /// </summary>
         public bool TestConnectionButtonExists = true;
-        #endregion
-    }
-    
-    /// <summary>
-    /// Parameters to be passed into 'Click_Workflow_CollapseAll'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Click_Workflow_CollapseAllParams
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Verify that the 'Exists' property of 'CollapseAll' toggle button equals 'True'
-        /// </summary>
-        public bool CollapseAllToggleButtonExists = true;
-        
-        /// <summary>
-        /// Set to 'Pressed' state 'CollapseAll' toggle button
-        /// </summary>
-        public bool CollapseAllToggleButtonPressed = true;
-        #endregion
-    }
-    
-    /// <summary>
-    /// Parameters to be passed into 'Open_Explorer_First_Item_Dependancies_With_Context_Menu'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Open_Explorer_First_Item_Dependancies_With_Context_MenuParams
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Verify that the 'Exists' property of 'Show Version History' menu item equals 'True'
-        /// </summary>
-        public bool ShowVersionHistoryExists = true;
-        #endregion
-    }
-    
-    /// <summary>
-    /// Parameters to be passed into 'Click_Duplicate_From_Duplicate_Dialog'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Click_Duplicate_From_Duplicate_DialogParams
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Verify that the 'Exists' property of 'Duplicate' button equals 'True'
-        /// </summary>
-        public bool DuplicateButtonExists = true;
-        #endregion
-    }
-    
-    /// <summary>
-    /// Parameters to be passed into 'Click_UpdateDuplicateRelationships'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Click_UpdateDuplicateRelationshipsParams
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Select 'Update duplicated relationships?' check box
-        /// </summary>
-        public bool UpdateDuplicatedRelatChecked = true;
-        #endregion
-    }
-    
-    /// <summary>
-    /// Parameters to be passed into 'Enter_Duplicate_workflow_name'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Enter_Duplicate_workflow_nameParams
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Type 'DuplicatedWorkFlow' in 'ServiceNameTextBox' text box
-        /// </summary>
-        public string ServiceNameTextBoxText = "DuplicatedWorkFlow";
-        #endregion
-    }
-    
-    /// <summary>
-    /// Parameters to be passed into 'Click_Duplicate_From_ExplorerContextMenu'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Click_Duplicate_From_ExplorerContextMenuParams
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Verify that the 'Exists' property of 'Duplicate' menu item equals 'True'
-        /// </summary>
-        public bool DuplicateExists = true;
-        
-        /// <summary>
-        /// Verify that the 'Enabled' property of 'Duplicate' menu item equals 'True'
-        /// </summary>
-        public bool DuplicateEnabled = true;
-        #endregion
-    }
-    
-    /// <summary>
-    /// Parameters to be passed into 'Rename_LocalWorkflow_To_SecodWorkFlow'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Rename_LocalWorkflow_To_SecodWorkFlowParams
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Type 'SecondWorkflow' in first text box next to 'ResourceImage' image
-        /// </summary>
-        public string ItemEditText = "SecondWorkflow";
-        
-        /// <summary>
-        /// Type '{Enter}' in first text box next to 'ResourceImage' image
-        /// </summary>
-        public string ItemEditSendKeys = "{Enter}";
-        #endregion
-    }
-    
-    /// <summary>
-    /// Parameters to be passed into 'Drag_Dice_Onto_Dice_On_The_DesignSurface'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Drag_Dice_Onto_Dice_On_The_DesignSurfaceParams
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Verify that the 'Exists' property of 'Done' button equals 'True'
-        /// </summary>
-        public bool DoneButtonExists = true;
-        #endregion
-    }
-    
-    /// <summary>
-    /// Parameters to be passed into 'Select_ToString_From_DotNet_DLL_Large_View_Action_Combobox'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Select_ToString_From_DotNet_DLL_Large_View_Action_ComboboxExpectedValues
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Verify that the 'SelectedItem' property of 'ActionsComboBox' combo box equals 'ToString'
-        /// </summary>
-        public string ActionsComboBoxSelectedItem = "ToString";
-        #endregion
-    }
-    
-    /// <summary>
-    /// Parameters to be passed into 'Select_SystemObject_From_DotNet_DLL_Large_View_Namespace_Combobox'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Select_SystemObject_From_DotNet_DLL_Large_View_Namespace_ComboboxExpectedValues
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Verify that the 'Exists' property of '{"AssemblyLocation":"C:\\Windows\\Microsoft.NET\\F...' list item equals 'True'
-        /// </summary>
-        public bool ComboboxlistItemAsSystemObjectExists = true;
-        
-        /// <summary>
-        /// Verify that the 'SelectedItem' property of 'NamespaceComboBox' combo box equals '{"AssemblyLocation":"C:\\Windows\\Microsoft.NET\\Framework64\\v4.0.30319\\mscorlib.dll","AssemblyName":"mscorlib.dll","FullName":"System.Object","MethodName":null}'
-        /// </summary>
-        public string ClassNameComboBoxSelectedItem = "{\"AssemblyLocation\":\"C:\\\\Windows\\\\Microsoft.NET\\\\Framework64\\\\v4.0.30319\\\\mscorli" +
-            "b.dll\",\"AssemblyName\":\"mscorlib.dll\",\"FullName\":\"System.Object\",\"MethodName\":nul" +
-            "l}";
         #endregion
     }
     
@@ -14900,6 +14933,22 @@ namespace Warewolf.UITests
                 return this.mTests;
             }
         }
+        
+        public WpfMenuItem ViewApisJsonMenuItem
+        {
+            get
+            {
+                if ((this.mViewApisJsonMenuItem == null))
+                {
+                    this.mViewApisJsonMenuItem = new WpfMenuItem(this);
+                    #region Search Criteria
+                    this.mViewApisJsonMenuItem.SearchProperties[WpfMenuItem.PropertyNames.AutomationId] = "ViewApisJson";
+                    this.mViewApisJsonMenuItem.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mViewApisJsonMenuItem;
+            }
+        }
         #endregion
         
         #region Fields
@@ -14940,6 +14989,8 @@ namespace Warewolf.UITests
         private WpfMenuItem mShowVersionHistory;
         
         private WpfMenuItem mTests;
+        
+        private WpfMenuItem mViewApisJsonMenuItem;
         #endregion
     }
     
@@ -27923,6 +27974,23 @@ namespace Warewolf.UITests
             }
         }
         
+        public WpfCustom QuickVariableInputContent
+        {
+            get
+            {
+                if ((this.mQuickVariableInputContent == null))
+                {
+                    this.mQuickVariableInputContent = new WpfCustom(this);
+                    #region Search Criteria
+                    this.mQuickVariableInputContent.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.QuickVariableInputView";
+                    this.mQuickVariableInputContent.SearchProperties[WpfControl.PropertyNames.AutomationId] = "QuickVariableInputContent";
+                    this.mQuickVariableInputContent.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mQuickVariableInputContent;
+            }
+        }
+        
         public WpfEdit DisplayName
         {
             get
@@ -27982,6 +28050,8 @@ namespace Warewolf.UITests
         
         #region Fields
         private WpfToggleButton mOpenQuickVariableInpToggleButton;
+        
+        private WpfCustom mQuickVariableInputContent;
         
         private WpfEdit mDisplayName;
         
@@ -28822,10 +28892,29 @@ namespace Warewolf.UITests
                 return this.mOpenQuickVariableInpToggleButton;
             }
         }
+        
+        public WpfCustom QuickVariableInputContent
+        {
+            get
+            {
+                if ((this.mQuickVariableInputContent == null))
+                {
+                    this.mQuickVariableInputContent = new WpfCustom(this);
+                    #region Search Criteria
+                    this.mQuickVariableInputContent.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.QuickVariableInputView";
+                    this.mQuickVariableInputContent.SearchProperties[WpfControl.PropertyNames.AutomationId] = "QuickVariableInputContent";
+                    this.mQuickVariableInputContent.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mQuickVariableInputContent;
+            }
+        }
         #endregion
         
         #region Fields
         private WpfToggleButton mOpenQuickVariableInpToggleButton;
+        
+        private WpfCustom mQuickVariableInputContent;
         #endregion
     }
     
@@ -29466,6 +29555,23 @@ namespace Warewolf.UITests
             }
         }
         
+        public WpfCustom QuickVariableInputContent
+        {
+            get
+            {
+                if ((this.mQuickVariableInputContent == null))
+                {
+                    this.mQuickVariableInputContent = new WpfCustom(this);
+                    #region Search Criteria
+                    this.mQuickVariableInputContent.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.QuickVariableInputView";
+                    this.mQuickVariableInputContent.SearchProperties[WpfControl.PropertyNames.AutomationId] = "QuickVariableInputContent";
+                    this.mQuickVariableInputContent.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mQuickVariableInputContent;
+            }
+        }
+        
         public LargeView4 LargeView
         {
             get
@@ -29509,6 +29615,8 @@ namespace Warewolf.UITests
         
         #region Fields
         private WpfToggleButton mOpenQuickVariableInpToggleButton;
+        
+        private WpfCustom mQuickVariableInputContent;
         
         private LargeView4 mLargeView;
         
@@ -29886,10 +29994,29 @@ namespace Warewolf.UITests
                 return this.mOpenQuickVariableInpToggleButton;
             }
         }
+        
+        public WpfCustom QuickVariableInputContent
+        {
+            get
+            {
+                if ((this.mQuickVariableInputContent == null))
+                {
+                    this.mQuickVariableInputContent = new WpfCustom(this);
+                    #region Search Criteria
+                    this.mQuickVariableInputContent.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.QuickVariableInputView";
+                    this.mQuickVariableInputContent.SearchProperties[WpfControl.PropertyNames.AutomationId] = "QuickVariableInputContent";
+                    this.mQuickVariableInputContent.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mQuickVariableInputContent;
+            }
+        }
         #endregion
         
         #region Fields
         private WpfToggleButton mOpenQuickVariableInpToggleButton;
+        
+        private WpfCustom mQuickVariableInputContent;
         #endregion
     }
     
@@ -30391,10 +30518,29 @@ namespace Warewolf.UITests
                 return this.mOpenQuickVariableInpToggleButton;
             }
         }
+        
+        public WpfCustom QuickVariableInputContent
+        {
+            get
+            {
+                if ((this.mQuickVariableInputContent == null))
+                {
+                    this.mQuickVariableInputContent = new WpfCustom(this);
+                    #region Search Criteria
+                    this.mQuickVariableInputContent.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.QuickVariableInputView";
+                    this.mQuickVariableInputContent.SearchProperties[WpfControl.PropertyNames.AutomationId] = "QuickVariableInputContent";
+                    this.mQuickVariableInputContent.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mQuickVariableInputContent;
+            }
+        }
         #endregion
         
         #region Fields
         private WpfToggleButton mOpenQuickVariableInpToggleButton;
+        
+        private WpfCustom mQuickVariableInputContent;
         #endregion
     }
     
@@ -30657,10 +30803,29 @@ namespace Warewolf.UITests
                 return this.mOpenQuickVariableInpToggleButton;
             }
         }
+        
+        public WpfCustom QuickVariableInputContent
+        {
+            get
+            {
+                if ((this.mQuickVariableInputContent == null))
+                {
+                    this.mQuickVariableInputContent = new WpfCustom(this);
+                    #region Search Criteria
+                    this.mQuickVariableInputContent.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.QuickVariableInputView";
+                    this.mQuickVariableInputContent.SearchProperties[WpfControl.PropertyNames.AutomationId] = "QuickVariableInputContent";
+                    this.mQuickVariableInputContent.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mQuickVariableInputContent;
+            }
+        }
         #endregion
         
         #region Fields
         private WpfToggleButton mOpenQuickVariableInpToggleButton;
+        
+        private WpfCustom mQuickVariableInputContent;
         #endregion
     }
     
