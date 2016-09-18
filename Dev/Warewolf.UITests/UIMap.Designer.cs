@@ -2103,19 +2103,13 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
-        /// Click_ViewSwagger_From_ExplorerContextMenu - Use 'Click_ViewSwagger_From_ExplorerContextMenuParams' to pass parameters into this method.
+        /// Click_ViewSwagger_From_ExplorerContextMenu
         /// </summary>
         public void Click_ViewSwagger_From_ExplorerContextMenu()
         {
             #region Variable Declarations
             WpfMenuItem viewSwagger = this.MainStudioWindow.ExplorerContextMenu.ViewSwagger;
             #endregion
-
-            // Verify that the 'Exists' property of 'View Swagger' menu item equals 'True'
-            Assert.AreEqual(this.Click_ViewSwagger_From_ExplorerContextMenuParams.ViewSwaggerExists, viewSwagger.Exists, "View Swagger button does not exist");
-
-            // Verify that the 'Enabled' property of 'View Swagger' menu item equals 'True'
-            Assert.AreEqual(this.Click_ViewSwagger_From_ExplorerContextMenuParams.ViewSwaggerEnabled, viewSwagger.Enabled, "View swagger is disabled");
 
             // Click 'View Swagger' menu item
             Mouse.Click(viewSwagger, new Point(82, 16));
@@ -4349,6 +4343,7 @@ namespace Warewolf.UITests
             #region Variable Declarations
             WpfTreeItem firstItem = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem;
             WpfMenuItem showVersionHistory = this.MainStudioWindow.ExplorerContextMenu.ShowVersionHistory;
+            WpfMenuItem viewSwagger = this.MainStudioWindow.ExplorerContextMenu.ViewSwagger;
             #endregion
 
             // Right-Click 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item
@@ -4356,6 +4351,12 @@ namespace Warewolf.UITests
 
             // Verify that the 'Exists' property of 'Show Version History' menu item equals 'True'
             Assert.AreEqual(this.Open_Explorer_First_Item_Dependancies_With_Context_MenuParams.ShowVersionHistoryExists, showVersionHistory.Exists, "Show version history does not exist after right clicking a resource");
+
+            // Verify that the 'Exists' property of 'View Swagger' menu item equals 'True'
+            Assert.AreEqual(this.Open_Explorer_First_Item_Dependancies_With_Context_MenuParams.ViewSwaggerExists, viewSwagger.Exists, "View Swagger button does not exist");
+
+            // Verify that the 'Enabled' property of 'View Swagger' menu item equals 'True'
+            Assert.AreEqual(this.Open_Explorer_First_Item_Dependancies_With_Context_MenuParams.ViewSwaggerEnabled, viewSwagger.Enabled, "View swagger is disabled");
         }
         
         /// <summary>
@@ -4500,9 +4501,9 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
-        /// Open_Large_View_FromContextMenu - Use 'Open_Large_View_FromContextMenuParams' to pass parameters into this method.
+        /// Open_SQL_Large_View_FromContextMenu - Use 'Open_SQL_Large_View_FromContextMenuParams' to pass parameters into this method.
         /// </summary>
-        public void Open_Large_View_FromContextMenu()
+        public void Open_SQL_Large_View_FromContextMenu()
         {
             #region Variable Declarations
             WpfCustom sqlServerDatabase = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase;
@@ -4517,7 +4518,7 @@ namespace Warewolf.UITests
             Mouse.Click(showLargeView, new Point(43, 15));
 
             // Verify that the 'Exists' property of 'New' button equals 'True'
-            Assert.AreEqual(this.Open_Large_View_FromContextMenuParams.NewDbSourceButtonExists, newDbSourceButton.Exists, "\"New button does not exist\"");
+            Assert.AreEqual(this.Open_SQL_Large_View_FromContextMenuParams.NewDbSourceButtonExists, newDbSourceButton.Exists, "\"New button does not exist\"");
         }
         
         /// <summary>
@@ -4767,6 +4768,7 @@ namespace Warewolf.UITests
             #region Variable Declarations
             WpfToggleButton openQuickVariableInpToggleButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.GatherSystemInfo.OpenQuickVariableInpToggleButton;
             WpfCustom gatherSystemInfo = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.GatherSystemInfo;
+            WpfCustom quickVariableInputContent = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.GatherSystemInfo.QuickVariableInputContent;
             #endregion
 
             // Set to 'Pressed' state 'Open Quick Variable Input' toggle button
@@ -4774,6 +4776,9 @@ namespace Warewolf.UITests
 
             // Verify that the 'Exists' property of 'DsfGatherSystemInformationActivity' custom control equals 'True'
             Assert.AreEqual(this.Open_System_Information_Tool_Qvi_Large_ViewParams.GatherSystemInfoExists, gatherSystemInfo.Exists, "System Info QVI window does not exist on the design surface");
+
+            // Verify that the 'Exists' property of 'QuickVariableInputContent' custom control equals 'True'
+            Assert.AreEqual(this.Open_System_Information_Tool_Qvi_Large_ViewParams.QuickVariableInputContentExists, quickVariableInputContent.Exists, "QVI on assign is not open");
         }
         
         /// <summary>
@@ -7298,18 +7303,6 @@ namespace Warewolf.UITests
             }
         }
         
-        public virtual Click_ViewSwagger_From_ExplorerContextMenuParams Click_ViewSwagger_From_ExplorerContextMenuParams
-        {
-            get
-            {
-                if ((this.mClick_ViewSwagger_From_ExplorerContextMenuParams == null))
-                {
-                    this.mClick_ViewSwagger_From_ExplorerContextMenuParams = new Click_ViewSwagger_From_ExplorerContextMenuParams();
-                }
-                return this.mClick_ViewSwagger_From_ExplorerContextMenuParams;
-            }
-        }
-        
         public virtual Click_Workflow_CollapseAllParams Click_Workflow_CollapseAllParams
         {
             get
@@ -8438,15 +8431,15 @@ namespace Warewolf.UITests
             }
         }
         
-        public virtual Open_Large_View_FromContextMenuParams Open_Large_View_FromContextMenuParams
+        public virtual Open_SQL_Large_View_FromContextMenuParams Open_SQL_Large_View_FromContextMenuParams
         {
             get
             {
-                if ((this.mOpen_Large_View_FromContextMenuParams == null))
+                if ((this.mOpen_SQL_Large_View_FromContextMenuParams == null))
                 {
-                    this.mOpen_Large_View_FromContextMenuParams = new Open_Large_View_FromContextMenuParams();
+                    this.mOpen_SQL_Large_View_FromContextMenuParams = new Open_SQL_Large_View_FromContextMenuParams();
                 }
-                return this.mOpen_Large_View_FromContextMenuParams;
+                return this.mOpen_SQL_Large_View_FromContextMenuParams;
             }
         }
         
@@ -9218,8 +9211,6 @@ namespace Warewolf.UITests
         
         private Click_VariableList_Scalar_Row1_IsInputCheckboxParams mClick_VariableList_Scalar_Row1_IsInputCheckboxParams;
         
-        private Click_ViewSwagger_From_ExplorerContextMenuParams mClick_ViewSwagger_From_ExplorerContextMenuParams;
-        
         private Click_Workflow_CollapseAllParams mClick_Workflow_CollapseAllParams;
         
         private Drag_Dice_Onto_Dice_On_The_DesignSurfaceParams mDrag_Dice_Onto_Dice_On_The_DesignSurfaceParams;
@@ -9408,7 +9399,7 @@ namespace Warewolf.UITests
         
         private Open_Json_Tool_Qvi_Large_ViewParams mOpen_Json_Tool_Qvi_Large_ViewParams;
         
-        private Open_Large_View_FromContextMenuParams mOpen_Large_View_FromContextMenuParams;
+        private Open_SQL_Large_View_FromContextMenuParams mOpen_SQL_Large_View_FromContextMenuParams;
         
         private Open_Move_Tool_Large_ViewParams mOpen_Move_Tool_Large_ViewParams;
         
@@ -10908,26 +10899,6 @@ namespace Warewolf.UITests
         /// Select 'UI_IsInputCheckbox_AutoID' check box
         /// </summary>
         public bool IsInputCheckboxChecked = true;
-        #endregion
-    }
-    
-    /// <summary>
-    /// Parameters to be passed into 'Click_ViewSwagger_From_ExplorerContextMenu'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Click_ViewSwagger_From_ExplorerContextMenuParams
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Verify that the 'Exists' property of 'View Swagger' menu item equals 'True'
-        /// </summary>
-        public bool ViewSwaggerExists = true;
-        
-        /// <summary>
-        /// Verify that the 'Enabled' property of 'View Swagger' menu item equals 'True'
-        /// </summary>
-        public bool ViewSwaggerEnabled = true;
         #endregion
     }
     
@@ -12908,6 +12879,16 @@ namespace Warewolf.UITests
         /// Verify that the 'Exists' property of 'Show Version History' menu item equals 'True'
         /// </summary>
         public bool ShowVersionHistoryExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'View Swagger' menu item equals 'True'
+        /// </summary>
+        public bool ViewSwaggerExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Enabled' property of 'View Swagger' menu item equals 'True'
+        /// </summary>
+        public bool ViewSwaggerEnabled = true;
         #endregion
     }
     
@@ -13007,10 +12988,10 @@ namespace Warewolf.UITests
     }
     
     /// <summary>
-    /// Parameters to be passed into 'Open_Large_View_FromContextMenu'
+    /// Parameters to be passed into 'Open_SQL_Large_View_FromContextMenu'
     /// </summary>
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Open_Large_View_FromContextMenuParams
+    public class Open_SQL_Large_View_FromContextMenuParams
     {
         
         #region Fields
@@ -13178,6 +13159,11 @@ namespace Warewolf.UITests
         /// Verify that the 'Exists' property of 'DsfGatherSystemInformationActivity' custom control equals 'True'
         /// </summary>
         public bool GatherSystemInfoExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'QuickVariableInputContent' custom control equals 'True'
+        /// </summary>
+        public bool QuickVariableInputContentExists = true;
         #endregion
     }
     
