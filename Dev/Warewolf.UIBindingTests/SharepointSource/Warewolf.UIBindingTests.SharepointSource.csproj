@@ -1,13 +1,13 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{7D6080FD-9C9A-4A93-A5B3-55C701CD6BEB}</ProjectGuid>
+    <ProjectGuid>{079611EF-39A7-44D8-988C-1373474DEF7D}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Warewolf.AcceptanceTesting.Variables</RootNamespace>
-    <AssemblyName>Warewolf.AcceptanceTesting.Variables</AssemblyName>
+    <RootNamespace>Warewolf.AcceptanceTesting.SharepointSource</RootNamespace>
+    <AssemblyName>Warewolf.AcceptanceTesting.SharepointSource</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -39,26 +39,17 @@
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Caliburn.Micro, Version=1.4.0.0, Culture=neutral, PublicKeyToken=8e5891231f2ed21f, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Caliburn.Micro.1.4\lib\net40\Caliburn.Micro.dll</HintPath>
-    </Reference>
-    <Reference Include="log4net, Version=1.2.15.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
-      <HintPath>..\packages\log4net.2.0.5\lib\net45-full\log4net.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.Practices.Prism.Composition">
-      <HintPath>..\packages\Prism.Composition.5.0.0\lib\NET45\Microsoft.Practices.Prism.Composition.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.Practices.Prism.Mvvm">
       <HintPath>..\packages\Prism.Mvvm.1.1.1\lib\net45\Microsoft.Practices.Prism.Mvvm.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Practices.Prism.SharedInterfaces, Version=1.1.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Prism.Mvvm.1.1.1\lib\net45\Microsoft.Practices.Prism.SharedInterfaces.dll</HintPath>
+    <Reference Include="Microsoft.Practices.Prism.Mvvm.Desktop">
+      <HintPath>..\packages\Prism.Mvvm.1.1.1\lib\net45\Microsoft.Practices.Prism.Mvvm.Desktop.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Practices.Prism.UnityExtensions">
-      <HintPath>..\packages\Prism.UnityExtensions.5.0.1\lib\NET45\Microsoft.Practices.Prism.UnityExtensions.dll</HintPath>
+    <Reference Include="Microsoft.Practices.Prism.PubSubEvents">
+      <HintPath>..\packages\Prism.PubSubEvents.1.0.0\lib\portable-sl4+wp7+windows8+net40\Microsoft.Practices.Prism.PubSubEvents.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Prism.SharedInterfaces">
+      <HintPath>..\packages\Prism.Mvvm.1.1.1\lib\net45\Microsoft.Practices.Prism.SharedInterfaces.dll</HintPath>
     </Reference>
     <Reference Include="Moq">
       <HintPath>..\packages\Moq.4.2.1510.2205\lib\net40\Moq.dll</HintPath>
@@ -95,62 +86,56 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="..\AssemblyCommonInfo.cs">
+    <Compile Include="..\..\AssemblyCommonInfo.cs">
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
-    <Compile Include="VariableList.feature.cs">
+    <Compile Include="Sharepoint.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>VariableList.feature</DependentUpon>
+      <DependentUpon>Sharepoint.feature</DependentUpon>
     </Compile>
-    <Compile Include="VariableListSteps.cs" />
+    <Compile Include="SharepointSteps.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="packages.config">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="VariableList.feature">
+    <None Include="packages.config" />
+    <None Include="Sharepoint.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>VariableList.feature.cs</LastGenOutput>
+      <LastGenOutput>Sharepoint.feature.cs</LastGenOutput>
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Dev2.Common.Interfaces\Dev2.Common.Interfaces.csproj">
+    <ProjectReference Include="..\..\Dev2.Common.Interfaces\Dev2.Common.Interfaces.csproj">
       <Project>{13C0C6E9-7DC3-4DC3-8535-031C263CEE0B}</Project>
       <Name>Dev2.Common.Interfaces</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Dev2.Core\Dev2.Core.csproj">
-      <Project>{6007c1f1-ce38-474a-a88c-0c05a77bc415}</Project>
-      <Name>Dev2.Core</Name>
+    <ProjectReference Include="..\..\Dev2.Infrastructure\Dev2.Infrastructure.csproj">
+      <Project>{615EAE6D-040C-4364-B708-63DC8755CD4F}</Project>
+      <Name>Dev2.Infrastructure</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Dev2.Data\Dev2.Data.csproj">
-      <Project>{4BD0C970-ECD6-470B-B9EE-17ECFE53E5FB}</Project>
-      <Name>Dev2.Data</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Dev2.Runtime.Configuration\Dev2.Runtime.Configuration.csproj">
-      <Project>{9C43D5A2-FEFD-4632-9BF2-EE0E4C05BEBC}</Project>
-      <Name>Dev2.Runtime.Configuration</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Dev2.Studio.Core\Dev2.Studio.Core.csproj">
-      <Project>{A58B157B-960B-4E84-8957-24E4884C5C77}</Project>
+    <ProjectReference Include="..\..\Dev2.Studio.Core\Dev2.Studio.Core.csproj">
+      <Project>{a58b157b-960b-4e84-8957-24e4884c5c77}</Project>
       <Name>Dev2.Studio.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Dev2.Studio\Dev2.Studio.csproj">
-      <Project>{62247A80-2266-4295-A8F6-A05507E2796E}</Project>
+    <ProjectReference Include="..\..\Dev2.Studio\Dev2.Studio.csproj">
+      <Project>{62247a80-2266-4295-a8f6-a05507e2796e}</Project>
       <Name>Dev2.Studio</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Warewolf.AcceptanceTesting.Core\Warewolf.AcceptanceTesting.Core.csproj">
-      <Project>{CB0F5535-5E1D-41F9-A23C-F59FDC816B75}</Project>
-      <Name>Warewolf.AcceptanceTesting.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Warewolf.Studio.Core\Warewolf.Studio.Core.csproj">
-      <Project>{f9fe2ce9-625e-4e7f-8f4c-fce28bb59510}</Project>
+    <ProjectReference Include="..\..\Warewolf.Studio.Core\Warewolf.Studio.Core.csproj">
+      <Project>{F9FE2CE9-625E-4E7F-8F4C-FCE28BB59510}</Project>
       <Name>Warewolf.Studio.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Warewolf.Studio.ViewModels\Warewolf.Studio.ViewModels.csproj">
+    <ProjectReference Include="..\..\Warewolf.Studio.ServerProxyLayer\Warewolf.Studio.ServerProxyLayer.csproj">
+      <Project>{C35C7C88-1EAE-4421-AC03-CEFA26461D6C}</Project>
+      <Name>Warewolf.Studio.ServerProxyLayer</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Warewolf.Studio.ViewModels\Warewolf.Studio.ViewModels.csproj">
       <Project>{C52B12C2-6A1D-4C4F-A878-CF283662A226}</Project>
       <Name>Warewolf.Studio.ViewModels</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Warewolf.Studio.Views\Warewolf.Studio.Views.csproj">
+      <Project>{F0D6A8C9-FF25-40C9-99DB-CCBC21ABDC36}</Project>
+      <Name>Warewolf.Studio.Views</Name>
     </ProjectReference>
   </ItemGroup>
   <Choose>

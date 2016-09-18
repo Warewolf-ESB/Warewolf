@@ -242,7 +242,7 @@
       <DependentUpon>Explorer.feature</DependentUpon>
     </Compile>
     <Compile Include="ExplorerSteps.cs" />
-    <Compile Include="..\AssemblyCommonInfo.cs">
+    <Compile Include="..\..\AssemblyCommonInfo.cs">
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
   </ItemGroup>
@@ -257,71 +257,67 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Dev2.Common.Interfaces\Dev2.Common.Interfaces.csproj">
+    <ProjectReference Include="..\..\Dev2.Common.Interfaces\Dev2.Common.Interfaces.csproj">
       <Project>{13C0C6E9-7DC3-4DC3-8535-031C263CEE0B}</Project>
       <Name>Dev2.Common.Interfaces</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Dev2.Core\Dev2.Core.csproj">
+    <ProjectReference Include="..\..\Dev2.Core\Dev2.Core.csproj">
       <Project>{6007C1F1-CE38-474A-A88C-0C05A77BC415}</Project>
       <Name>Dev2.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Dev2.Data\Dev2.Data.csproj">
+    <ProjectReference Include="..\..\Dev2.Data\Dev2.Data.csproj">
       <Project>{4BD0C970-ECD6-470B-B9EE-17ECFE53E5FB}</Project>
       <Name>Dev2.Data</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Dev2.Infrastructure\Dev2.Infrastructure.csproj">
+    <ProjectReference Include="..\..\Dev2.Infrastructure\Dev2.Infrastructure.csproj">
       <Project>{615EAE6D-040C-4364-B708-63DC8755CD4F}</Project>
       <Name>Dev2.Infrastructure</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Dev2.Studio.Core\Dev2.Studio.Core.csproj">
+    <ProjectReference Include="..\..\Dev2.Studio.Core\Dev2.Studio.Core.csproj">
       <Project>{A58B157B-960B-4E84-8957-24E4884C5C77}</Project>
       <Name>Dev2.Studio.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Dev2.Studio\Dev2.Studio.csproj">
+    <ProjectReference Include="..\..\Dev2.Studio\Dev2.Studio.csproj">
       <Project>{62247a80-2266-4295-a8f6-a05507e2796e}</Project>
       <Name>Dev2.Studio</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Dev2.Util\Dev2.Util.csproj">
+    <ProjectReference Include="..\..\Dev2.Util\Dev2.Util.csproj">
       <Project>{1990550D-EA6F-4DAC-9B5E-8571E86923ED}</Project>
       <Name>Dev2.Util</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Warewolf.AcceptanceTesting.Core\Warewolf.AcceptanceTesting.Core.csproj">
-      <Project>{cb0f5535-5e1d-41f9-a23c-f59fdc816b75}</Project>
-      <Name>Warewolf.AcceptanceTesting.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Warewolf.Core\Warewolf.Core.csproj">
+    <ProjectReference Include="..\..\Warewolf.Core\Warewolf.Core.csproj">
       <Project>{8fd23ce0-02bb-48e1-a914-ba467938ce78}</Project>
       <Name>Warewolf.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Warewolf.Studio.Core\Warewolf.Studio.Core.csproj">
+    <ProjectReference Include="..\..\Warewolf.Studio.Core\Warewolf.Studio.Core.csproj">
       <Project>{f9fe2ce9-625e-4e7f-8f4c-fce28bb59510}</Project>
       <Name>Warewolf.Studio.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Warewolf.Studio.CustomControls\Warewolf.Studio.CustomControls.csproj">
+    <ProjectReference Include="..\..\Warewolf.Studio.CustomControls\Warewolf.Studio.CustomControls.csproj">
       <Project>{1bd5cc42-66c7-4a1b-af1f-e6f2d4372b44}</Project>
       <Name>Warewolf.Studio.CustomControls</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Warewolf.Studio.Models\Warewolf.Studio.Models.csproj">
+    <ProjectReference Include="..\..\Warewolf.Studio.Models\Warewolf.Studio.Models.csproj">
       <Project>{a62da168-5bf3-4c14-b880-4ad83478e3a7}</Project>
       <Name>Warewolf.Studio.Models</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Warewolf.Studio.ServerProxyLayer\Warewolf.Studio.ServerProxyLayer.csproj">
+    <ProjectReference Include="..\..\Warewolf.Studio.ServerProxyLayer\Warewolf.Studio.ServerProxyLayer.csproj">
       <Project>{c35c7c88-1eae-4421-ac03-cefa26461d6c}</Project>
       <Name>Warewolf.Studio.ServerProxyLayer</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Warewolf.Studio.Themes.Luna\Warewolf.Studio.Themes.Luna.csproj">
+    <ProjectReference Include="..\..\Warewolf.Studio.Themes.Luna\Warewolf.Studio.Themes.Luna.csproj">
       <Project>{18717e42-df21-45a4-9527-f0bb95d7135d}</Project>
       <Name>Warewolf.Studio.Themes.Luna</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Warewolf.Studio.ViewModels\Warewolf.Studio.ViewModels.csproj">
+    <ProjectReference Include="..\..\Warewolf.Studio.ViewModels\Warewolf.Studio.ViewModels.csproj">
       <Project>{C52B12C2-6A1D-4C4F-A878-CF283662A226}</Project>
       <Name>Warewolf.Studio.ViewModels</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Warewolf.Studio.Views\Warewolf.Studio.Views.csproj">
+    <ProjectReference Include="..\..\Warewolf.Studio.Views\Warewolf.Studio.Views.csproj">
       <Project>{F0D6A8C9-FF25-40C9-99DB-CCBC21ABDC36}</Project>
       <Name>Warewolf.Studio.Views</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Warewolf.Testing\Warewolf.Testing.csproj">
+    <ProjectReference Include="..\..\Warewolf.Testing\Warewolf.Testing.csproj">
       <Project>{1AD4F06F-BC1C-4C9E-8184-67EAE81C2279}</Project>
       <Name>Warewolf.Testing</Name>
     </ProjectReference>
