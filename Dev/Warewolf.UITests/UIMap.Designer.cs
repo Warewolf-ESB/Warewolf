@@ -1632,11 +1632,11 @@ namespace Warewolf.UITests
         public void Click_Settings_Security_Resource_Permissions_Add_Resource_Button()
         {
             #region Variable Declarations
-            WpfButton addResourceButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1.ResourceCell.AddResourceButton;
+            WpfButton itemButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1.ResourceCell.ItemButton;
             #endregion
 
             // Click '...' button
-            Mouse.Click(addResourceButton, new Point(6, 15));
+            Mouse.Click(itemButton, new Point(6, 15));
         }
         
         /// <summary>
@@ -1728,6 +1728,157 @@ namespace Warewolf.UITests
 
             // Click 'Test' button
             Mouse.Click(testInputsButton, new Point(21, 11));
+        }
+        
+        /// <summary>
+        /// Click_ConfigureSetting_From_Menu - Use 'Click_ConfigureSetting_From_MenuParams' to pass parameters into this method.
+        /// </summary>
+        public void Click_ConfigureSetting_From_Menu()
+        {
+            #region Variable Declarations
+            WpfButton configureSettingsButton = this.MainStudioWindow.SideMenuBar.ConfigureSettingsButton;
+            WpfTabPage loggingTab = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.LoggingTab;
+            WpfText sECURITY = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SECURITY;
+            WpfTable serverPermissions = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions;
+            WpfPane warewolfAdminROW = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.WarewolfAdminROW;
+            WpfButton deleteButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.WarewolfAdminROW.DeleteCell.DeleteButton;
+            WpfCheckBox deployToCheckBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.WarewolfAdminROW.DeployToCell.DeployToCheckBox;
+            WpfCell deployFromCell = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.WarewolfAdminROW.DeployFromCell;
+            WpfCheckBox deployFromCheckBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.WarewolfAdminROW.DeployFromCell.DeployFromCheckBox;
+            WpfCell administratorCell = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.WarewolfAdminROW.AdministratorCell;
+            WpfCheckBox administratorCheckBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.WarewolfAdminROW.AdministratorCell.AdministratorCheckBox;
+            WpfCell executeCell = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.WarewolfAdminROW.ExecuteCell;
+            WpfCheckBox executeCheckBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.WarewolfAdminROW.ExecuteCell.ExecuteCheckBox;
+            WpfCell viewCell = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.WarewolfAdminROW.ViewCell;
+            WpfCheckBox viewCheckBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.WarewolfAdminROW.ViewCell.ViewCheckBox;
+            WpfCell contributeCell = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.WarewolfAdminROW.ContributeCell;
+            WpfCheckBox contributeCheckBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.WarewolfAdminROW.ContributeCell.ContributeCheckBox;
+            WpfPane publicROW = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.PublicROW;
+            #endregion
+
+            // Click 'Configure settings' button
+            Mouse.Click(configureSettingsButton, new Point(7, 13));
+
+            // Verify that the 'Exists' property of 'System.Windows.Controls.TabItem Header: Content:' tab equals 'True'
+            Assert.AreEqual(this.Click_ConfigureSetting_From_MenuParams.LoggingTabExists, loggingTab.Exists, "Logging tab does not exist after the Configure/Setting Menu button is clicked");
+
+            // Verify that the 'Enabled' property of 'System.Windows.Controls.TabItem Header: Content:' tab equals 'True'
+            Assert.AreEqual(this.Click_ConfigureSetting_From_MenuParams.LoggingTabEnabled, loggingTab.Enabled, "Logging tab is disabled after the Configure/Setting Menu button is clicked");
+
+            // Verify that the 'Name' property of 'SECURITY' label equals 'SECURITY'
+            Assert.AreEqual(this.Click_ConfigureSetting_From_MenuParams.SECURITYName, sECURITY.Name, "Current selected tab page is not Security after Configure/Setting Menu button is " +
+                    "clicked");
+
+            // Verify that the 'Exists' property of 'ServerPermissionsDataGrid' table equals 'True'
+            Assert.AreEqual(this.Click_ConfigureSetting_From_MenuParams.ServerPermissionsExists, serverPermissions.Exists, "Current selected tab page is not Security after Configure/Setting Menu button is " +
+                    "clicked");
+
+            // Verify that the 'Exists' property of '0' pane equals 'True'
+            Assert.AreEqual(this.Click_ConfigureSetting_From_MenuParams.WarewolfAdminROWExists, warewolfAdminROW.Exists, "Warewolf Administrators row does not exist");
+
+            // Verify that the 'Exists' property of 'UI_AddRemovebtn_AutoID' button equals 'True'
+            Assert.AreEqual(this.Click_ConfigureSetting_From_MenuParams.DeleteButtonExists, deleteButton.Exists, "DeleteButton does not exist");
+
+            // Verify that the 'Checked' property of 'UI_Warewolf Administrators_DeployToPermissionCheckBox_AutoID' check box equals 'True'
+            Assert.AreEqual(this.Click_ConfigureSetting_From_MenuParams.DeployToCheckBoxChecked, deployToCheckBox.Checked, "DeployTo checkbox is Unchecked");
+
+            // Verify that the 'Enabled' property of 'UI_Warewolf Administrators_DeployToPermissionCheckBox_AutoID' check box equals 'False'
+            Assert.AreEqual(this.Click_ConfigureSetting_From_MenuParams.DeployToCheckBoxEnabled, deployToCheckBox.Enabled, "DeployTo checkbox is enabled");
+
+            // Verify that the 'ReadOnly' property of 'True' cell equals 'True'
+            Assert.AreEqual(this.Click_ConfigureSetting_From_MenuParams.DeployFromCellReadOnly, deployFromCell.ReadOnly, "DeployFrom cell for WarewolfAdministratorsRow is NOT set to ReadOnly ");
+
+            // Verify that the 'Checked' property of 'UI_Warewolf Administrators_DeployFromPermissionCheckBox_AutoID' check box equals 'True'
+            Assert.AreEqual(this.Click_ConfigureSetting_From_MenuParams.DeployFromCheckBoxChecked, deployFromCheckBox.Checked, "DeployFrom checkbox is Unchecked");
+
+            // Verify that the 'Enabled' property of 'UI_Warewolf Administrators_DeployFromPermissionCheckBox_AutoID' check box equals 'False'
+            Assert.AreEqual(this.Click_ConfigureSetting_From_MenuParams.DeployFromCheckBoxEnabled, deployFromCheckBox.Enabled, "DeployFrom checkbox is enabled");
+
+            // Verify that the 'ReadOnly' property of 'True' cell equals 'True'
+            Assert.AreEqual(this.Click_ConfigureSetting_From_MenuParams.AdministratorCellReadOnly, administratorCell.ReadOnly, "Administrator cell for WarewolfAdministratorsRow is NOT set to ReadOnly ");
+
+            // Verify that the 'Checked' property of 'UI_Warewolf Administrators_AdministratorPermissionCheck...' check box equals 'True'
+            Assert.AreEqual(this.Click_ConfigureSetting_From_MenuParams.AdministratorCheckBoxChecked, administratorCheckBox.Checked, "Administrator checkbox is Unchecked");
+
+            // Verify that the 'Enabled' property of 'UI_Warewolf Administrators_AdministratorPermissionCheck...' check box equals 'False'
+            Assert.AreEqual(this.Click_ConfigureSetting_From_MenuParams.AdministratorCheckBoxEnabled, administratorCheckBox.Enabled, "Administrator checkbox is enabled");
+
+            // Verify that the 'ReadOnly' property of 'True' cell equals 'True'
+            Assert.AreEqual(this.Click_ConfigureSetting_From_MenuParams.ExecuteCellReadOnly, executeCell.ReadOnly, "Execute cell for WarewolfAdministratorsRow is NOT set to ReadOnly ");
+
+            // Verify that the 'Checked' property of 'UI_Warewolf Administrators_ExecutePermissionCheck...' check box equals 'True'
+            Assert.AreEqual(this.Click_ConfigureSetting_From_MenuParams.ExecuteCheckBoxChecked, executeCheckBox.Checked, "Execute checkbox is Unchecked");
+
+            // Verify that the 'Enabled' property of 'UI_Warewolf Administrators_ExecutePermissionCheck...' check box equals 'False'
+            Assert.AreEqual(this.Click_ConfigureSetting_From_MenuParams.ExecuteCheckBoxEnabled, executeCheckBox.Enabled, "Execute checkbox is enabled");
+
+            // Verify that the 'ReadOnly' property of 'True' cell equals 'True'
+            Assert.AreEqual(this.Click_ConfigureSetting_From_MenuParams.ViewCellReadOnly, viewCell.ReadOnly, "View cell for WarewolfAdministratorsRow is NOT set to ReadOnly ");
+
+            // Verify that the 'Checked' property of 'UI_Warewolf Administrators_ViewPermissionCheck...' check box equals 'True'
+            Assert.AreEqual(this.Click_ConfigureSetting_From_MenuParams.ViewCheckBoxChecked, viewCheckBox.Checked, "View checkbox is Unchecked");
+
+            // Verify that the 'Enabled' property of 'UI_Warewolf Administrators_ViewPermissionCheck...' check box equals 'False'
+            Assert.AreEqual(this.Click_ConfigureSetting_From_MenuParams.ViewCheckBoxEnabled, viewCheckBox.Enabled, "View checkbox is enabled");
+
+            // Verify that the 'ReadOnly' property of 'True' cell equals 'True'
+            Assert.AreEqual(this.Click_ConfigureSetting_From_MenuParams.ContributeCellReadOnly, contributeCell.ReadOnly, "Contribute cell for WarewolfAdministratorsRow is NOT set to ReadOnly ");
+
+            // Verify that the 'Checked' property of 'UI_Warewolf Administrators_ContributePermissionCheck...' check box equals 'True'
+            Assert.AreEqual(this.Click_ConfigureSetting_From_MenuParams.ContributeCheckBoxChecked, contributeCheckBox.Checked, "Contribute checkbox is Unchecked");
+
+            // Verify that the 'Enabled' property of 'UI_Warewolf Administrators_ContributePermissionCheck...' check box equals 'False'
+            Assert.AreEqual(this.Click_ConfigureSetting_From_MenuParams.ContributeCheckBoxEnabled, contributeCheckBox.Enabled, "Contribute checkbox is enabled");
+
+            // Verify that the 'Exists' property of '1' pane equals 'True'
+            Assert.AreEqual(this.Click_ConfigureSetting_From_MenuParams.PublicROWExists, publicROW.Exists, "Public row does not exist");
+        }
+        
+        /// <summary>
+        /// Select_PerfomanceCounterTab
+        /// </summary>
+        public void Select_PerfomanceCounterTab()
+        {
+            #region Variable Declarations
+            WpfTabPage perfomanceCounterTab = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.PerfomanceCounterTab;
+            #endregion
+
+            // Click 'System.Windows.Controls.TabItem Header: Content:' tab
+            Mouse.Click(perfomanceCounterTab, new Point(124, 14));
+        }
+        
+        /// <summary>
+        /// Click_Reset_Perfomance_Counter - Use 'Click_Reset_Perfomance_CounterParams' to pass parameters into this method.
+        /// </summary>
+        public void Click_Reset_Perfomance_Counter()
+        {
+            #region Variable Declarations
+            WpfHyperlink itemHyperlink = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.PerfomanceCounterTab.PerfmonViewContent.ResetCounter.ItemHyperlink;
+            WpfWindow messageBoxWindow = this.MessageBoxWindow;
+            WpfButton oKButton = this.MessageBoxWindow.OKButton;
+            #endregion
+
+            // Click link
+            Mouse.Click(itemHyperlink, new Point(49, 9));
+
+            // Verify that the 'Exists' property of 'WarewolfMessageBox' window equals 'True'
+            Assert.AreEqual(this.Click_Reset_Perfomance_CounterParams.MessageBoxWindowExists, messageBoxWindow.Exists, "MessageBoxWindow did not show after clicking reset counters");
+
+            // Click 'OK' button
+            Mouse.Click(oKButton, new Point(50, 12));
+        }
+        
+        /// <summary>
+        /// Click_Select_Resource_Button
+        /// </summary>
+        public void Click_Select_Resource_Button()
+        {
+            #region Variable Declarations
+            WpfButton itemButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.PerfomanceCounterTab.PerfmonViewContent.ResourceTable.ResourceCell.ItemButton;
+            #endregion
+
+            // Click '...' button
+            Mouse.Click(itemButton, new Point(9, 8));
         }
         
         /// <summary>
@@ -6664,6 +6815,30 @@ namespace Warewolf.UITests
             }
         }
         
+        public virtual Click_ConfigureSetting_From_MenuParams Click_ConfigureSetting_From_MenuParams
+        {
+            get
+            {
+                if ((this.mClick_ConfigureSetting_From_MenuParams == null))
+                {
+                    this.mClick_ConfigureSetting_From_MenuParams = new Click_ConfigureSetting_From_MenuParams();
+                }
+                return this.mClick_ConfigureSetting_From_MenuParams;
+            }
+        }
+        
+        public virtual Click_Reset_Perfomance_CounterParams Click_Reset_Perfomance_CounterParams
+        {
+            get
+            {
+                if ((this.mClick_Reset_Perfomance_CounterParams == null))
+                {
+                    this.mClick_Reset_Perfomance_CounterParams = new Click_Reset_Perfomance_CounterParams();
+                }
+                return this.mClick_Reset_Perfomance_CounterParams;
+            }
+        }
+        
         public virtual Click_SQL_Server_Large_View_Test_Inputs_Done_ButtonExpectedValues Click_SQL_Server_Large_View_Test_Inputs_Done_ButtonExpectedValues
         {
             get
@@ -8478,6 +8653,10 @@ namespace Warewolf.UITests
         
         private Click_SQL_Server_Large_View_Generate_OutputsExpectedValues mClick_SQL_Server_Large_View_Generate_OutputsExpectedValues;
         
+        private Click_ConfigureSetting_From_MenuParams mClick_ConfigureSetting_From_MenuParams;
+        
+        private Click_Reset_Perfomance_CounterParams mClick_Reset_Perfomance_CounterParams;
+        
         private Click_SQL_Server_Large_View_Test_Inputs_Done_ButtonExpectedValues mClick_SQL_Server_Large_View_Test_Inputs_Done_ButtonExpectedValues;
         
         private Click_Switch_Dialog_Done_ButtonParams mClick_Switch_Dialog_Done_ButtonParams;
@@ -9844,6 +10023,151 @@ namespace Warewolf.UITests
         /// Verify that the 'Exists' property of 'Text' text box equals 'True'
         /// </summary>
         public bool TestDataTextboxExists = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Click_ConfigureSetting_From_Menu'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Click_ConfigureSetting_From_MenuParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'System.Windows.Controls.TabItem Header: Content:' tab equals 'True'
+        /// </summary>
+        public bool LoggingTabExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Enabled' property of 'System.Windows.Controls.TabItem Header: Content:' tab equals 'True'
+        /// </summary>
+        public bool LoggingTabEnabled = true;
+        
+        /// <summary>
+        /// Verify that the 'Name' property of 'SECURITY' label equals 'SECURITY'
+        /// </summary>
+        public string SECURITYName = "SECURITY";
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'ServerPermissionsDataGrid' table equals 'True'
+        /// </summary>
+        public bool ServerPermissionsExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of '0' pane equals 'True'
+        /// </summary>
+        public bool WarewolfAdminROWExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'UI_AddRemovebtn_AutoID' button equals 'True'
+        /// </summary>
+        public bool DeleteButtonExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Checked' property of 'UI_Warewolf Administrators_DeployToPermissionCheckBox_AutoID' check box equals 'True'
+        /// </summary>
+        public bool DeployToCheckBoxChecked = true;
+        
+        /// <summary>
+        /// Verify that the 'Enabled' property of 'UI_Warewolf Administrators_DeployToPermissionCheckBox_AutoID' check box equals 'False'
+        /// </summary>
+        public bool DeployToCheckBoxEnabled = false;
+        
+        /// <summary>
+        /// Verify that the 'ReadOnly' property of 'True' cell equals 'True'
+        /// </summary>
+        public bool DeployFromCellReadOnly = true;
+        
+        /// <summary>
+        /// Verify that the 'Checked' property of 'UI_Warewolf Administrators_DeployFromPermissionCheckBox_AutoID' check box equals 'True'
+        /// </summary>
+        public bool DeployFromCheckBoxChecked = true;
+        
+        /// <summary>
+        /// Verify that the 'Enabled' property of 'UI_Warewolf Administrators_DeployFromPermissionCheckBox_AutoID' check box equals 'False'
+        /// </summary>
+        public bool DeployFromCheckBoxEnabled = false;
+        
+        /// <summary>
+        /// Verify that the 'ReadOnly' property of 'True' cell equals 'True'
+        /// </summary>
+        public bool AdministratorCellReadOnly = true;
+        
+        /// <summary>
+        /// Verify that the 'Checked' property of 'UI_Warewolf Administrators_AdministratorPermissionCheck...' check box equals 'True'
+        /// </summary>
+        public bool AdministratorCheckBoxChecked = true;
+        
+        /// <summary>
+        /// Verify that the 'Enabled' property of 'UI_Warewolf Administrators_AdministratorPermissionCheck...' check box equals 'False'
+        /// </summary>
+        public bool AdministratorCheckBoxEnabled = false;
+        
+        /// <summary>
+        /// Verify that the 'ReadOnly' property of 'True' cell equals 'True'
+        /// </summary>
+        public bool ExecuteCellReadOnly = true;
+        
+        /// <summary>
+        /// Verify that the 'Checked' property of 'UI_Warewolf Administrators_ExecutePermissionCheck...' check box equals 'True'
+        /// </summary>
+        public bool ExecuteCheckBoxChecked = true;
+        
+        /// <summary>
+        /// Verify that the 'Enabled' property of 'UI_Warewolf Administrators_ExecutePermissionCheck...' check box equals 'False'
+        /// </summary>
+        public bool ExecuteCheckBoxEnabled = false;
+        
+        /// <summary>
+        /// Verify that the 'ReadOnly' property of 'True' cell equals 'True'
+        /// </summary>
+        public bool ViewCellReadOnly = true;
+        
+        /// <summary>
+        /// Verify that the 'Checked' property of 'UI_Warewolf Administrators_ViewPermissionCheck...' check box equals 'True'
+        /// </summary>
+        public bool ViewCheckBoxChecked = true;
+        
+        /// <summary>
+        /// Verify that the 'Enabled' property of 'UI_Warewolf Administrators_ViewPermissionCheck...' check box equals 'False'
+        /// </summary>
+        public bool ViewCheckBoxEnabled = false;
+        
+        /// <summary>
+        /// Verify that the 'ReadOnly' property of 'True' cell equals 'True'
+        /// </summary>
+        public bool ContributeCellReadOnly = true;
+        
+        /// <summary>
+        /// Verify that the 'Checked' property of 'UI_Warewolf Administrators_ContributePermissionCheck...' check box equals 'True'
+        /// </summary>
+        public bool ContributeCheckBoxChecked = true;
+        
+        /// <summary>
+        /// Verify that the 'Enabled' property of 'UI_Warewolf Administrators_ContributePermissionCheck...' check box equals 'False'
+        /// </summary>
+        public bool ContributeCheckBoxEnabled = false;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of '1' pane equals 'True'
+        /// </summary>
+        public bool PublicROWExists = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Click_Reset_Perfomance_Counter'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Click_Reset_Perfomance_CounterParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'WarewolfMessageBox' window equals 'True'
+        /// </summary>
+        public bool MessageBoxWindowExists = true;
         #endregion
     }
     
@@ -21449,20 +21773,27 @@ namespace Warewolf.UITests
             }
         }
         
-        public WpfTabPage LoggingTab
+        public LoggingTab LoggingTab
         {
             get
             {
                 if ((this.mLoggingTab == null))
                 {
-                    this.mLoggingTab = new WpfTabPage(this);
-                    #region Search Criteria
-                    this.mLoggingTab.SearchProperties[WpfTabPage.PropertyNames.Name] = "System.Windows.Controls.TabItem Header: Content:";
-                    this.mLoggingTab.SearchProperties[WpfTabPage.PropertyNames.Instance] = "2";
-                    this.mLoggingTab.WindowTitles.Add("Warewolf");
-                    #endregion
+                    this.mLoggingTab = new LoggingTab(this);
                 }
                 return this.mLoggingTab;
+            }
+        }
+        
+        public PerfomanceCounterTab PerfomanceCounterTab
+        {
+            get
+            {
+                if ((this.mPerfomanceCounterTab == null))
+                {
+                    this.mPerfomanceCounterTab = new PerfomanceCounterTab(this);
+                }
+                return this.mPerfomanceCounterTab;
             }
         }
         #endregion
@@ -21470,7 +21801,9 @@ namespace Warewolf.UITests
         #region Fields
         private SecurityTab mSecurityTab;
         
-        private WpfTabPage mLoggingTab;
+        private LoggingTab mLoggingTab;
+        
+        private PerfomanceCounterTab mPerfomanceCounterTab;
         #endregion
     }
     
@@ -21499,10 +21832,28 @@ namespace Warewolf.UITests
                 return this.mSecurityWindow;
             }
         }
+        
+        public WpfText SECURITY
+        {
+            get
+            {
+                if ((this.mSECURITY == null))
+                {
+                    this.mSECURITY = new WpfText(this);
+                    #region Search Criteria
+                    this.mSECURITY.SearchProperties[WpfText.PropertyNames.Name] = "SECURITY";
+                    this.mSECURITY.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mSECURITY;
+            }
+        }
         #endregion
         
         #region Fields
         private SecurityWindow mSecurityWindow;
+        
+        private WpfText mSECURITY;
         #endregion
     }
     
@@ -21521,17 +21872,13 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public WpfTable ServerPermissions
+        public ServerPermissions ServerPermissions
         {
             get
             {
                 if ((this.mServerPermissions == null))
                 {
-                    this.mServerPermissions = new WpfTable(this);
-                    #region Search Criteria
-                    this.mServerPermissions.SearchProperties[WpfTable.PropertyNames.AutomationId] = "ServerPermissionsDataGrid";
-                    this.mServerPermissions.WindowTitles.Add("Warewolf");
-                    #endregion
+                    this.mServerPermissions = new ServerPermissions(this);
                 }
                 return this.mServerPermissions;
             }
@@ -21551,9 +21898,814 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private WpfTable mServerPermissions;
+        private ServerPermissions mServerPermissions;
         
         private ResourcePermissions mResourcePermissions;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class ServerPermissions : WpfTable
+    {
+        
+        public ServerPermissions(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfTable.PropertyNames.AutomationId] = "ServerPermissionsDataGrid";
+            this.WindowTitles.Add("Warewolf");
+            #endregion
+        }
+        
+        #region Properties
+        public WarewolfAdminROW WarewolfAdminROW
+        {
+            get
+            {
+                if ((this.mWarewolfAdminROW == null))
+                {
+                    this.mWarewolfAdminROW = new WarewolfAdminROW(this);
+                }
+                return this.mWarewolfAdminROW;
+            }
+        }
+        
+        public PublicROW PublicROW
+        {
+            get
+            {
+                if ((this.mPublicROW == null))
+                {
+                    this.mPublicROW = new PublicROW(this);
+                }
+                return this.mPublicROW;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WarewolfAdminROW mWarewolfAdminROW;
+        
+        private PublicROW mPublicROW;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class WarewolfAdminROW : WpfPane
+    {
+        
+        public WarewolfAdminROW(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfPane.PropertyNames.ClassName] = "Uia.CellsPanel";
+            this.SearchProperties[WpfPane.PropertyNames.Name] = "0";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public DeleteCell DeleteCell
+        {
+            get
+            {
+                if ((this.mDeleteCell == null))
+                {
+                    this.mDeleteCell = new DeleteCell(this);
+                }
+                return this.mDeleteCell;
+            }
+        }
+        
+        public DeployToCell DeployToCell
+        {
+            get
+            {
+                if ((this.mDeployToCell == null))
+                {
+                    this.mDeployToCell = new DeployToCell(this);
+                }
+                return this.mDeployToCell;
+            }
+        }
+        
+        public DeployFromCell DeployFromCell
+        {
+            get
+            {
+                if ((this.mDeployFromCell == null))
+                {
+                    this.mDeployFromCell = new DeployFromCell(this);
+                }
+                return this.mDeployFromCell;
+            }
+        }
+        
+        public AdministratorCell AdministratorCell
+        {
+            get
+            {
+                if ((this.mAdministratorCell == null))
+                {
+                    this.mAdministratorCell = new AdministratorCell(this);
+                }
+                return this.mAdministratorCell;
+            }
+        }
+        
+        public ViewCell ViewCell
+        {
+            get
+            {
+                if ((this.mViewCell == null))
+                {
+                    this.mViewCell = new ViewCell(this);
+                }
+                return this.mViewCell;
+            }
+        }
+        
+        public ExecuteCell ExecuteCell
+        {
+            get
+            {
+                if ((this.mExecuteCell == null))
+                {
+                    this.mExecuteCell = new ExecuteCell(this);
+                }
+                return this.mExecuteCell;
+            }
+        }
+        
+        public ContributeCell ContributeCell
+        {
+            get
+            {
+                if ((this.mContributeCell == null))
+                {
+                    this.mContributeCell = new ContributeCell(this);
+                }
+                return this.mContributeCell;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private DeleteCell mDeleteCell;
+        
+        private DeployToCell mDeployToCell;
+        
+        private DeployFromCell mDeployFromCell;
+        
+        private AdministratorCell mAdministratorCell;
+        
+        private ViewCell mViewCell;
+        
+        private ExecuteCell mExecuteCell;
+        
+        private ContributeCell mContributeCell;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class DeleteCell : WpfCell
+    {
+        
+        public DeleteCell(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = null;
+            this.SearchProperties[WpfCell.PropertyNames.Value] = "Dev2.Runtime.Configuration.ViewModels.Base.RelayCommand";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfButton DeleteButton
+        {
+            get
+            {
+                if ((this.mDeleteButton == null))
+                {
+                    this.mDeleteButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mDeleteButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "UI_AddRemovebtn_AutoID";
+                    this.mDeleteButton.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mDeleteButton;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfButton mDeleteButton;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class DeployToCell : WpfCell
+    {
+        
+        public DeployToCell(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = null;
+            this.SearchProperties[WpfCell.PropertyNames.Value] = "True";
+            this.SearchProperties[WpfCell.PropertyNames.Instance] = "1";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfCheckBox DeployToCheckBox
+        {
+            get
+            {
+                if ((this.mDeployToCheckBox == null))
+                {
+                    this.mDeployToCheckBox = new WpfCheckBox(this);
+                    #region Search Criteria
+                    this.mDeployToCheckBox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_Warewolf Administrators_DeployToPermissionCheckBox_AutoID";
+                    this.mDeployToCheckBox.SearchProperties[WpfCheckBox.PropertyNames.Instance] = "1";
+                    this.mDeployToCheckBox.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mDeployToCheckBox;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfCheckBox mDeployToCheckBox;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class DeployFromCell : WpfCell
+    {
+        
+        public DeployFromCell(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = null;
+            this.SearchProperties[WpfCell.PropertyNames.Value] = "True";
+            this.SearchProperties[WpfCell.PropertyNames.Instance] = "2";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfCheckBox DeployFromCheckBox
+        {
+            get
+            {
+                if ((this.mDeployFromCheckBox == null))
+                {
+                    this.mDeployFromCheckBox = new WpfCheckBox(this);
+                    #region Search Criteria
+                    this.mDeployFromCheckBox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_Warewolf Administrators_DeployFromPermissionCheckBox_AutoID";
+                    this.mDeployFromCheckBox.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mDeployFromCheckBox;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfCheckBox mDeployFromCheckBox;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class AdministratorCell : WpfCell
+    {
+        
+        public AdministratorCell(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = null;
+            this.SearchProperties[WpfCell.PropertyNames.Value] = "True";
+            this.SearchProperties[WpfCell.PropertyNames.Instance] = "3";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfCheckBox AdministratorCheckBox
+        {
+            get
+            {
+                if ((this.mAdministratorCheckBox == null))
+                {
+                    this.mAdministratorCheckBox = new WpfCheckBox(this);
+                    #region Search Criteria
+                    this.mAdministratorCheckBox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_Warewolf Administrators_AdministratorPermissionCheckBox_AutoID";
+                    this.mAdministratorCheckBox.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mAdministratorCheckBox;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfCheckBox mAdministratorCheckBox;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class ViewCell : WpfCell
+    {
+        
+        public ViewCell(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = null;
+            this.SearchProperties[WpfCell.PropertyNames.Value] = "True";
+            this.SearchProperties[WpfCell.PropertyNames.Instance] = "4";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfCheckBox ViewCheckBox
+        {
+            get
+            {
+                if ((this.mViewCheckBox == null))
+                {
+                    this.mViewCheckBox = new WpfCheckBox(this);
+                    #region Search Criteria
+                    this.mViewCheckBox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_Warewolf Administrators_ViewPermissionCheckBox_AutoID";
+                    this.mViewCheckBox.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mViewCheckBox;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfCheckBox mViewCheckBox;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class ExecuteCell : WpfCell
+    {
+        
+        public ExecuteCell(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = null;
+            this.SearchProperties[WpfCell.PropertyNames.Value] = "True";
+            this.SearchProperties[WpfCell.PropertyNames.Instance] = "5";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfCheckBox ExecuteCheckBox
+        {
+            get
+            {
+                if ((this.mExecuteCheckBox == null))
+                {
+                    this.mExecuteCheckBox = new WpfCheckBox(this);
+                    #region Search Criteria
+                    this.mExecuteCheckBox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_Warewolf Administrators_ExecutePermissionCheckBox_AutoID";
+                    this.mExecuteCheckBox.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mExecuteCheckBox;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfCheckBox mExecuteCheckBox;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class ContributeCell : WpfCell
+    {
+        
+        public ContributeCell(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = null;
+            this.SearchProperties[WpfCell.PropertyNames.Value] = "True";
+            this.SearchProperties[WpfCell.PropertyNames.Instance] = "6";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfCheckBox ContributeCheckBox
+        {
+            get
+            {
+                if ((this.mContributeCheckBox == null))
+                {
+                    this.mContributeCheckBox = new WpfCheckBox(this);
+                    #region Search Criteria
+                    this.mContributeCheckBox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_Warewolf Administrators_ContributePermissionCheckBox_AutoID";
+                    this.mContributeCheckBox.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mContributeCheckBox;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfCheckBox mContributeCheckBox;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class PublicROW : WpfPane
+    {
+        
+        public PublicROW(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfPane.PropertyNames.ClassName] = "Uia.CellsPanel";
+            this.SearchProperties[WpfPane.PropertyNames.Name] = "1";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public Public_DeployToCell Public_DeployToCell
+        {
+            get
+            {
+                if ((this.mPublic_DeployToCell == null))
+                {
+                    this.mPublic_DeployToCell = new Public_DeployToCell(this);
+                }
+                return this.mPublic_DeployToCell;
+            }
+        }
+        
+        public Public_DeployFromCell Public_DeployFromCell
+        {
+            get
+            {
+                if ((this.mPublic_DeployFromCell == null))
+                {
+                    this.mPublic_DeployFromCell = new Public_DeployFromCell(this);
+                }
+                return this.mPublic_DeployFromCell;
+            }
+        }
+        
+        public Public_AdministratorCell Public_AdministratorCell
+        {
+            get
+            {
+                if ((this.mPublic_AdministratorCell == null))
+                {
+                    this.mPublic_AdministratorCell = new Public_AdministratorCell(this);
+                }
+                return this.mPublic_AdministratorCell;
+            }
+        }
+        
+        public Public_ViewCell Public_ViewCell
+        {
+            get
+            {
+                if ((this.mPublic_ViewCell == null))
+                {
+                    this.mPublic_ViewCell = new Public_ViewCell(this);
+                }
+                return this.mPublic_ViewCell;
+            }
+        }
+        
+        public Public_ExecuteCell Public_ExecuteCell
+        {
+            get
+            {
+                if ((this.mPublic_ExecuteCell == null))
+                {
+                    this.mPublic_ExecuteCell = new Public_ExecuteCell(this);
+                }
+                return this.mPublic_ExecuteCell;
+            }
+        }
+        
+        public Public_ContributeCell Public_ContributeCell
+        {
+            get
+            {
+                if ((this.mPublic_ContributeCell == null))
+                {
+                    this.mPublic_ContributeCell = new Public_ContributeCell(this);
+                }
+                return this.mPublic_ContributeCell;
+            }
+        }
+        
+        public WindowsGroup WindowsGroup
+        {
+            get
+            {
+                if ((this.mWindowsGroup == null))
+                {
+                    this.mWindowsGroup = new WindowsGroup(this);
+                }
+                return this.mWindowsGroup;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private Public_DeployToCell mPublic_DeployToCell;
+        
+        private Public_DeployFromCell mPublic_DeployFromCell;
+        
+        private Public_AdministratorCell mPublic_AdministratorCell;
+        
+        private Public_ViewCell mPublic_ViewCell;
+        
+        private Public_ExecuteCell mPublic_ExecuteCell;
+        
+        private Public_ContributeCell mPublic_ContributeCell;
+        
+        private WindowsGroup mWindowsGroup;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Public_DeployToCell : WpfCell
+    {
+        
+        public Public_DeployToCell(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = null;
+            this.SearchProperties[WpfCell.PropertyNames.Instance] = "2";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfCheckBox Public_DeployToCheckBox
+        {
+            get
+            {
+                if ((this.mPublic_DeployToCheckBox == null))
+                {
+                    this.mPublic_DeployToCheckBox = new WpfCheckBox(this);
+                    #region Search Criteria
+                    this.mPublic_DeployToCheckBox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_Public_DeployToPermissionCheckBox_AutoID";
+                    this.mPublic_DeployToCheckBox.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mPublic_DeployToCheckBox;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfCheckBox mPublic_DeployToCheckBox;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Public_DeployFromCell : WpfCell
+    {
+        
+        public Public_DeployFromCell(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = null;
+            this.SearchProperties[WpfCell.PropertyNames.Instance] = "3";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfCheckBox Public_DeployFromCheckBox
+        {
+            get
+            {
+                if ((this.mPublic_DeployFromCheckBox == null))
+                {
+                    this.mPublic_DeployFromCheckBox = new WpfCheckBox(this);
+                    #region Search Criteria
+                    this.mPublic_DeployFromCheckBox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_Public_DeployFromPermissionCheckBox_AutoID";
+                    this.mPublic_DeployFromCheckBox.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mPublic_DeployFromCheckBox;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfCheckBox mPublic_DeployFromCheckBox;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Public_AdministratorCell : WpfCell
+    {
+        
+        public Public_AdministratorCell(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = null;
+            this.SearchProperties[WpfCell.PropertyNames.Instance] = "4";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfCheckBox Public_AdministratorCheckBox
+        {
+            get
+            {
+                if ((this.mPublic_AdministratorCheckBox == null))
+                {
+                    this.mPublic_AdministratorCheckBox = new WpfCheckBox(this);
+                    #region Search Criteria
+                    this.mPublic_AdministratorCheckBox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_Public_AdministratorPermissionCheckBox_AutoID";
+                    this.mPublic_AdministratorCheckBox.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mPublic_AdministratorCheckBox;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfCheckBox mPublic_AdministratorCheckBox;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Public_ViewCell : WpfCell
+    {
+        
+        public Public_ViewCell(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = null;
+            this.SearchProperties[WpfCell.PropertyNames.Instance] = "5";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfCheckBox Public_ViewCheckBox
+        {
+            get
+            {
+                if ((this.mPublic_ViewCheckBox == null))
+                {
+                    this.mPublic_ViewCheckBox = new WpfCheckBox(this);
+                    #region Search Criteria
+                    this.mPublic_ViewCheckBox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_Public_ViewPermissionCheckBox_AutoID";
+                    this.mPublic_ViewCheckBox.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mPublic_ViewCheckBox;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfCheckBox mPublic_ViewCheckBox;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Public_ExecuteCell : WpfCell
+    {
+        
+        public Public_ExecuteCell(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = null;
+            this.SearchProperties[WpfCell.PropertyNames.Instance] = "6";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfCheckBox Public_ExecuteCheckBox
+        {
+            get
+            {
+                if ((this.mPublic_ExecuteCheckBox == null))
+                {
+                    this.mPublic_ExecuteCheckBox = new WpfCheckBox(this);
+                    #region Search Criteria
+                    this.mPublic_ExecuteCheckBox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_Public_ExecutePermissionCheckBox_AutoID";
+                    this.mPublic_ExecuteCheckBox.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mPublic_ExecuteCheckBox;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfCheckBox mPublic_ExecuteCheckBox;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Public_ContributeCell : WpfCell
+    {
+        
+        public Public_ContributeCell(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = null;
+            this.SearchProperties[WpfCell.PropertyNames.Instance] = "7";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfCheckBox Public_ContributeCheckBox
+        {
+            get
+            {
+                if ((this.mPublic_ContributeCheckBox == null))
+                {
+                    this.mPublic_ContributeCheckBox = new WpfCheckBox(this);
+                    #region Search Criteria
+                    this.mPublic_ContributeCheckBox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_Public_ContributePermissionCheckBox_AutoID";
+                    this.mPublic_ContributeCheckBox.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mPublic_ContributeCheckBox;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfCheckBox mPublic_ContributeCheckBox;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class WindowsGroup : WpfCell
+    {
+        
+        public WindowsGroup(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = null;
+            this.SearchProperties[WpfCell.PropertyNames.Value] = "Public";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfButton Select_GroupButton
+        {
+            get
+            {
+                if ((this.mSelect_GroupButton == null))
+                {
+                    this.mSelect_GroupButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mSelect_GroupButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "UI_Public_AddWindowsGroupButton_AutoID";
+                    this.mSelect_GroupButton.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mSelect_GroupButton;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfButton mSelect_GroupButton;
         #endregion
     }
     
@@ -21628,15 +22780,51 @@ namespace Warewolf.UITests
             }
         }
         
-        public PermissionsCell PermissionsCell
+        public ViewCell1 ViewCell
         {
             get
             {
-                if ((this.mPermissionsCell == null))
+                if ((this.mViewCell == null))
                 {
-                    this.mPermissionsCell = new PermissionsCell(this);
+                    this.mViewCell = new ViewCell1(this);
                 }
-                return this.mPermissionsCell;
+                return this.mViewCell;
+            }
+        }
+        
+        public ExecuteCell1 ExecuteCell
+        {
+            get
+            {
+                if ((this.mExecuteCell == null))
+                {
+                    this.mExecuteCell = new ExecuteCell1(this);
+                }
+                return this.mExecuteCell;
+            }
+        }
+        
+        public ContributeCell1 ContributeCell
+        {
+            get
+            {
+                if ((this.mContributeCell == null))
+                {
+                    this.mContributeCell = new ContributeCell1(this);
+                }
+                return this.mContributeCell;
+            }
+        }
+        
+        public DeleteCell1 DeleteCell
+        {
+            get
+            {
+                if ((this.mDeleteCell == null))
+                {
+                    this.mDeleteCell = new DeleteCell1(this);
+                }
+                return this.mDeleteCell;
             }
         }
         #endregion
@@ -21646,7 +22834,13 @@ namespace Warewolf.UITests
         
         private WindowsGroupCell mWindowsGroupCell;
         
-        private PermissionsCell mPermissionsCell;
+        private ViewCell1 mViewCell;
+        
+        private ExecuteCell1 mExecuteCell;
+        
+        private ContributeCell1 mContributeCell;
+        
+        private DeleteCell1 mDeleteCell;
         #endregion
     }
     
@@ -21664,22 +22858,6 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public WpfButton AddResourceButton
-        {
-            get
-            {
-                if ((this.mAddResourceButton == null))
-                {
-                    this.mAddResourceButton = new WpfButton(this);
-                    #region Search Criteria
-                    this.mAddResourceButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "UI__AddResourceButton_AutoID";
-                    this.mAddResourceButton.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mAddResourceButton;
-            }
-        }
-        
         public WpfText AddResourceText
         {
             get
@@ -21688,19 +22866,35 @@ namespace Warewolf.UITests
                 {
                     this.mAddResourceText = new WpfText(this);
                     #region Search Criteria
-                    this.mAddResourceText.SearchProperties[WpfText.PropertyNames.AutomationId] = "UI__AddResourceTextBox_AutoID";
+                    this.mAddResourceText.SearchProperties[WpfText.PropertyNames.Instance] = "1";
                     this.mAddResourceText.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mAddResourceText;
             }
         }
+        
+        public WpfButton ItemButton
+        {
+            get
+            {
+                if ((this.mItemButton == null))
+                {
+                    this.mItemButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mItemButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "UI__AddResourceButton_AutoID";
+                    this.mItemButton.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mItemButton;
+            }
+        }
         #endregion
         
         #region Fields
-        private WpfButton mAddResourceButton;
-        
         private WpfText mAddResourceText;
+        
+        private WpfButton mItemButton;
         #endregion
     }
     
@@ -21759,13 +22953,14 @@ namespace Warewolf.UITests
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class PermissionsCell : WpfCell
+    public class ViewCell1 : WpfCell
     {
         
-        public PermissionsCell(UITestControl searchLimitContainer) : 
+        public ViewCell1(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
+            this.SearchProperties[WpfCell.PropertyNames.Instance] = "3";
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
@@ -21779,14 +22974,34 @@ namespace Warewolf.UITests
                 {
                     this.mViewCheckBox = new WpfCheckBox(this);
                     #region Search Criteria
-                    this.mViewCheckBox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI__ViewPermissionCheckBox_AutoID";
+                    this.mViewCheckBox.SearchProperties[WpfCheckBox.PropertyNames.Instance] = "1";
                     this.mViewCheckBox.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mViewCheckBox;
             }
         }
+        #endregion
         
+        #region Fields
+        private WpfCheckBox mViewCheckBox;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class ExecuteCell1 : WpfCell
+    {
+        
+        public ExecuteCell1(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfCell.PropertyNames.Instance] = "4";
+            this.WindowTitles.Add("Warewolf");
+            #endregion
+        }
+        
+        #region Properties
         public WpfCheckBox ExecuteCheckBox
         {
             get
@@ -21795,14 +23010,34 @@ namespace Warewolf.UITests
                 {
                     this.mExecuteCheckBox = new WpfCheckBox(this);
                     #region Search Criteria
-                    this.mExecuteCheckBox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI__ExecutePermissionCheckBox_AutoID";
+                    this.mExecuteCheckBox.SearchProperties[WpfCheckBox.PropertyNames.Instance] = "1";
                     this.mExecuteCheckBox.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mExecuteCheckBox;
             }
         }
+        #endregion
         
+        #region Fields
+        private WpfCheckBox mExecuteCheckBox;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class ContributeCell1 : WpfCell
+    {
+        
+        public ContributeCell1(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfCell.PropertyNames.Instance] = "5";
+            this.WindowTitles.Add("Warewolf");
+            #endregion
+        }
+        
+        #region Properties
         public WpfCheckBox ContributeCheckBox
         {
             get
@@ -21811,7 +23046,7 @@ namespace Warewolf.UITests
                 {
                     this.mContributeCheckBox = new WpfCheckBox(this);
                     #region Search Criteria
-                    this.mContributeCheckBox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI__ContributePermissionCheckBox_AutoID";
+                    this.mContributeCheckBox.SearchProperties[WpfCheckBox.PropertyNames.Instance] = "1";
                     this.mContributeCheckBox.WindowTitles.Add("Warewolf");
                     #endregion
                 }
@@ -21821,11 +23056,1070 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private WpfCheckBox mViewCheckBox;
-        
-        private WpfCheckBox mExecuteCheckBox;
-        
         private WpfCheckBox mContributeCheckBox;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class DeleteCell1 : WpfCell
+    {
+        
+        public DeleteCell1(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfCell.PropertyNames.Instance] = "6";
+            this.WindowTitles.Add("Warewolf");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfButton DeleteButton
+        {
+            get
+            {
+                if ((this.mDeleteButton == null))
+                {
+                    this.mDeleteButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mDeleteButton.SearchProperties[WpfButton.PropertyNames.Instance] = "1";
+                    this.mDeleteButton.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mDeleteButton;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfButton mDeleteButton;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class LoggingTab : WpfTabPage
+    {
+        
+        public LoggingTab(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfTabPage.PropertyNames.Name] = "System.Windows.Controls.TabItem Header: Content:";
+            this.SearchProperties[WpfTabPage.PropertyNames.Instance] = "2";
+            this.WindowTitles.Add("Warewolf");
+            #endregion
+        }
+        
+        #region Properties
+        public LogSettingsViewConte LogSettingsViewConte
+        {
+            get
+            {
+                if ((this.mLogSettingsViewConte == null))
+                {
+                    this.mLogSettingsViewConte = new LogSettingsViewConte(this);
+                }
+                return this.mLogSettingsViewConte;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private LogSettingsViewConte mLogSettingsViewConte;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class LogSettingsViewConte : WpfCustom
+    {
+        
+        public LogSettingsViewConte(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.LoggingView";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "LogSettingsViewContent";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public StudioLogs StudioLogs
+        {
+            get
+            {
+                if ((this.mStudioLogs == null))
+                {
+                    this.mStudioLogs = new StudioLogs(this);
+                }
+                return this.mStudioLogs;
+            }
+        }
+        
+        public ServerLogs ServerLogs
+        {
+            get
+            {
+                if ((this.mServerLogs == null))
+                {
+                    this.mServerLogs = new ServerLogs(this);
+                }
+                return this.mServerLogs;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private StudioLogs mStudioLogs;
+        
+        private ServerLogs mServerLogs;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class StudioLogs : WpfPane
+    {
+        
+        public StudioLogs(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfPane.PropertyNames.ClassName] = "Uia.ScrollViewer";
+            this.SearchProperties[WpfPane.PropertyNames.Instance] = "2";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public StudioLogFile StudioLogFile
+        {
+            get
+            {
+                if ((this.mStudioLogFile == null))
+                {
+                    this.mStudioLogFile = new StudioLogFile(this);
+                }
+                return this.mStudioLogFile;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private StudioLogFile mStudioLogFile;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class StudioLogFile : WpfText
+    {
+        
+        public StudioLogFile(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfText.PropertyNames.Name] = "   ";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfHyperlink ItemHyperlink
+        {
+            get
+            {
+                if ((this.mItemHyperlink == null))
+                {
+                    this.mItemHyperlink = new WpfHyperlink(this);
+                    #region Search Criteria
+                    this.mItemHyperlink.SearchProperties[WpfHyperlink.PropertyNames.Instance] = "1";
+                    this.mItemHyperlink.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mItemHyperlink;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfHyperlink mItemHyperlink;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class ServerLogs : WpfPane
+    {
+        
+        public ServerLogs(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfPane.PropertyNames.ClassName] = "Uia.ScrollViewer";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public ServerLogFile ServerLogFile
+        {
+            get
+            {
+                if ((this.mServerLogFile == null))
+                {
+                    this.mServerLogFile = new ServerLogFile(this);
+                }
+                return this.mServerLogFile;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private ServerLogFile mServerLogFile;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class ServerLogFile : WpfText
+    {
+        
+        public ServerLogFile(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfText.PropertyNames.Name] = "   ";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfHyperlink ItemHyperlink
+        {
+            get
+            {
+                if ((this.mItemHyperlink == null))
+                {
+                    this.mItemHyperlink = new WpfHyperlink(this);
+                    #region Search Criteria
+                    this.mItemHyperlink.SearchProperties[WpfHyperlink.PropertyNames.Instance] = "1";
+                    this.mItemHyperlink.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mItemHyperlink;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfHyperlink mItemHyperlink;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class PerfomanceCounterTab : WpfTabPage
+    {
+        
+        public PerfomanceCounterTab(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfTabPage.PropertyNames.Name] = "System.Windows.Controls.TabItem Header: Content:";
+            this.SearchProperties[WpfTabPage.PropertyNames.Instance] = "3";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public PerfmonViewContent PerfmonViewContent
+        {
+            get
+            {
+                if ((this.mPerfmonViewContent == null))
+                {
+                    this.mPerfmonViewContent = new PerfmonViewContent(this);
+                }
+                return this.mPerfmonViewContent;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private PerfmonViewContent mPerfmonViewContent;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class PerfmonViewContent : WpfCustom
+    {
+        
+        public PerfmonViewContent(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.PerfCounterView";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "PerfmonViewContent";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public ResourceTable ResourceTable
+        {
+            get
+            {
+                if ((this.mResourceTable == null))
+                {
+                    this.mResourceTable = new ResourceTable(this);
+                }
+                return this.mResourceTable;
+            }
+        }
+        
+        public ServerTable ServerTable
+        {
+            get
+            {
+                if ((this.mServerTable == null))
+                {
+                    this.mServerTable = new ServerTable(this);
+                }
+                return this.mServerTable;
+            }
+        }
+        
+        public ResetCounter ResetCounter
+        {
+            get
+            {
+                if ((this.mResetCounter == null))
+                {
+                    this.mResetCounter = new ResetCounter(this);
+                }
+                return this.mResetCounter;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private ResourceTable mResourceTable;
+        
+        private ServerTable mServerTable;
+        
+        private ResetCounter mResetCounter;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class ResourceTable : WpfTable
+    {
+        
+        public ResourceTable(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfTable.PropertyNames.AutomationId] = "ResourcePermissionsDataGrid";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public ResourceCell1 ResourceCell
+        {
+            get
+            {
+                if ((this.mResourceCell == null))
+                {
+                    this.mResourceCell = new ResourceCell1(this);
+                }
+                return this.mResourceCell;
+            }
+        }
+        
+        public AverageExecTime AverageExecTime
+        {
+            get
+            {
+                if ((this.mAverageExecTime == null))
+                {
+                    this.mAverageExecTime = new AverageExecTime(this);
+                }
+                return this.mAverageExecTime;
+            }
+        }
+        
+        public ConcurrentRequest ConcurrentRequest
+        {
+            get
+            {
+                if ((this.mConcurrentRequest == null))
+                {
+                    this.mConcurrentRequest = new ConcurrentRequest(this);
+                }
+                return this.mConcurrentRequest;
+            }
+        }
+        
+        public RequestPerSecond RequestPerSecond
+        {
+            get
+            {
+                if ((this.mRequestPerSecond == null))
+                {
+                    this.mRequestPerSecond = new RequestPerSecond(this);
+                }
+                return this.mRequestPerSecond;
+            }
+        }
+        
+        public TotalErrors TotalErrors
+        {
+            get
+            {
+                if ((this.mTotalErrors == null))
+                {
+                    this.mTotalErrors = new TotalErrors(this);
+                }
+                return this.mTotalErrors;
+            }
+        }
+        
+        public DeleteCell2 DeleteCell
+        {
+            get
+            {
+                if ((this.mDeleteCell == null))
+                {
+                    this.mDeleteCell = new DeleteCell2(this);
+                }
+                return this.mDeleteCell;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private ResourceCell1 mResourceCell;
+        
+        private AverageExecTime mAverageExecTime;
+        
+        private ConcurrentRequest mConcurrentRequest;
+        
+        private RequestPerSecond mRequestPerSecond;
+        
+        private TotalErrors mTotalErrors;
+        
+        private DeleteCell2 mDeleteCell;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class ResourceCell1 : WpfCell
+    {
+        
+        public ResourceCell1(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = null;
+            this.SearchProperties[WpfCell.PropertyNames.Instance] = "1";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfText ResourceTextBox
+        {
+            get
+            {
+                if ((this.mResourceTextBox == null))
+                {
+                    this.mResourceTextBox = new WpfText(this);
+                    #region Search Criteria
+                    this.mResourceTextBox.SearchProperties[WpfText.PropertyNames.Instance] = "1";
+                    this.mResourceTextBox.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mResourceTextBox;
+            }
+        }
+        
+        public WpfButton ResourceButton
+        {
+            get
+            {
+                if ((this.mResourceButton == null))
+                {
+                    this.mResourceButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mResourceButton.SearchProperties[WpfButton.PropertyNames.Instance] = "2";
+                    this.mResourceButton.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mResourceButton;
+            }
+        }
+        
+        public WpfButton ItemButton
+        {
+            get
+            {
+                if ((this.mItemButton == null))
+                {
+                    this.mItemButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mItemButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "UI__AddResourceButton_AutoID";
+                    this.mItemButton.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mItemButton;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfText mResourceTextBox;
+        
+        private WpfButton mResourceButton;
+        
+        private WpfButton mItemButton;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class AverageExecTime : WpfCell
+    {
+        
+        public AverageExecTime(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = null;
+            this.SearchProperties[WpfCell.PropertyNames.Instance] = "2";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfCheckBox AverageExecTimeCheckbox
+        {
+            get
+            {
+                if ((this.mAverageExecTimeCheckbox == null))
+                {
+                    this.mAverageExecTimeCheckbox = new WpfCheckBox(this);
+                    #region Search Criteria
+                    this.mAverageExecTimeCheckbox.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mAverageExecTimeCheckbox;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfCheckBox mAverageExecTimeCheckbox;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class ConcurrentRequest : WpfCell
+    {
+        
+        public ConcurrentRequest(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = null;
+            this.SearchProperties[WpfCell.PropertyNames.Instance] = "3";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfCheckBox ConcurrentRequestCheckbox
+        {
+            get
+            {
+                if ((this.mConcurrentRequestCheckbox == null))
+                {
+                    this.mConcurrentRequestCheckbox = new WpfCheckBox(this);
+                    #region Search Criteria
+                    this.mConcurrentRequestCheckbox.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mConcurrentRequestCheckbox;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfCheckBox mConcurrentRequestCheckbox;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class RequestPerSecond : WpfCell
+    {
+        
+        public RequestPerSecond(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = null;
+            this.SearchProperties[WpfCell.PropertyNames.Instance] = "4";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfCheckBox RequestPerSecondCheckbox
+        {
+            get
+            {
+                if ((this.mRequestPerSecondCheckbox == null))
+                {
+                    this.mRequestPerSecondCheckbox = new WpfCheckBox(this);
+                    #region Search Criteria
+                    this.mRequestPerSecondCheckbox.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mRequestPerSecondCheckbox;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfCheckBox mRequestPerSecondCheckbox;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class TotalErrors : WpfCell
+    {
+        
+        public TotalErrors(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = null;
+            this.SearchProperties[WpfCell.PropertyNames.Instance] = "5";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfCheckBox TotalErrorsCheckbox
+        {
+            get
+            {
+                if ((this.mTotalErrorsCheckbox == null))
+                {
+                    this.mTotalErrorsCheckbox = new WpfCheckBox(this);
+                    #region Search Criteria
+                    this.mTotalErrorsCheckbox.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mTotalErrorsCheckbox;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfCheckBox mTotalErrorsCheckbox;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class DeleteCell2 : WpfCell
+    {
+        
+        public DeleteCell2(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = null;
+            this.SearchProperties[WpfCell.PropertyNames.Instance] = "6";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfButton DeleteButton
+        {
+            get
+            {
+                if ((this.mDeleteButton == null))
+                {
+                    this.mDeleteButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mDeleteButton.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mDeleteButton;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfButton mDeleteButton;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class ServerTable : WpfTable
+    {
+        
+        public ServerTable(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfTable.PropertyNames.AutomationId] = "ServerPermissionsDataGrid";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public AverageExecCounter AverageExecCounter
+        {
+            get
+            {
+                if ((this.mAverageExecCounter == null))
+                {
+                    this.mAverageExecCounter = new AverageExecCounter(this);
+                }
+                return this.mAverageExecCounter;
+            }
+        }
+        
+        public ConcurrRequest ConcurrRequest
+        {
+            get
+            {
+                if ((this.mConcurrRequest == null))
+                {
+                    this.mConcurrRequest = new ConcurrRequest(this);
+                }
+                return this.mConcurrRequest;
+            }
+        }
+        
+        public RequestPerSeccond RequestPerSeccond
+        {
+            get
+            {
+                if ((this.mRequestPerSeccond == null))
+                {
+                    this.mRequestPerSeccond = new RequestPerSeccond(this);
+                }
+                return this.mRequestPerSeccond;
+            }
+        }
+        
+        public TotalErrors1 TotalErrors
+        {
+            get
+            {
+                if ((this.mTotalErrors == null))
+                {
+                    this.mTotalErrors = new TotalErrors1(this);
+                }
+                return this.mTotalErrors;
+            }
+        }
+        
+        public WorkflowsNotFound WorkflowsNotFound
+        {
+            get
+            {
+                if ((this.mWorkflowsNotFound == null))
+                {
+                    this.mWorkflowsNotFound = new WorkflowsNotFound(this);
+                }
+                return this.mWorkflowsNotFound;
+            }
+        }
+        
+        public NotAuthorisedErrors NotAuthorisedErrors
+        {
+            get
+            {
+                if ((this.mNotAuthorisedErrors == null))
+                {
+                    this.mNotAuthorisedErrors = new NotAuthorisedErrors(this);
+                }
+                return this.mNotAuthorisedErrors;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private AverageExecCounter mAverageExecCounter;
+        
+        private ConcurrRequest mConcurrRequest;
+        
+        private RequestPerSeccond mRequestPerSeccond;
+        
+        private TotalErrors1 mTotalErrors;
+        
+        private WorkflowsNotFound mWorkflowsNotFound;
+        
+        private NotAuthorisedErrors mNotAuthorisedErrors;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class AverageExecCounter : WpfCell
+    {
+        
+        public AverageExecCounter(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = null;
+            this.SearchProperties[WpfCell.PropertyNames.Value] = "True";
+            this.SearchProperties[WpfCell.PropertyNames.Instance] = "1";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfCheckBox AverageExecCounterCheckBox
+        {
+            get
+            {
+                if ((this.mAverageExecCounterCheckBox == null))
+                {
+                    this.mAverageExecCounterCheckBox = new WpfCheckBox(this);
+                    #region Search Criteria
+                    this.mAverageExecCounterCheckBox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_New_DeployToPermissionCheckBox_AutoID";
+                    this.mAverageExecCounterCheckBox.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mAverageExecCounterCheckBox;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfCheckBox mAverageExecCounterCheckBox;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class ConcurrRequest : WpfCell
+    {
+        
+        public ConcurrRequest(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = null;
+            this.SearchProperties[WpfCell.PropertyNames.Value] = "True";
+            this.SearchProperties[WpfCell.PropertyNames.Instance] = "2";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfCheckBox ConcurrRequestCheckBox
+        {
+            get
+            {
+                if ((this.mConcurrRequestCheckBox == null))
+                {
+                    this.mConcurrRequestCheckBox = new WpfCheckBox(this);
+                    #region Search Criteria
+                    this.mConcurrRequestCheckBox.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mConcurrRequestCheckBox;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfCheckBox mConcurrRequestCheckBox;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class RequestPerSeccond : WpfCell
+    {
+        
+        public RequestPerSeccond(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = null;
+            this.SearchProperties[WpfCell.PropertyNames.Value] = "True";
+            this.SearchProperties[WpfCell.PropertyNames.Instance] = "3";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfCheckBox RequestPerSeccondCheckBox
+        {
+            get
+            {
+                if ((this.mRequestPerSeccondCheckBox == null))
+                {
+                    this.mRequestPerSeccondCheckBox = new WpfCheckBox(this);
+                    #region Search Criteria
+                    this.mRequestPerSeccondCheckBox.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mRequestPerSeccondCheckBox;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfCheckBox mRequestPerSeccondCheckBox;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class TotalErrors1 : WpfCell
+    {
+        
+        public TotalErrors1(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = null;
+            this.SearchProperties[WpfCell.PropertyNames.Value] = "True";
+            this.SearchProperties[WpfCell.PropertyNames.Instance] = "4";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfCheckBox TotalErrorsCheckBox
+        {
+            get
+            {
+                if ((this.mTotalErrorsCheckBox == null))
+                {
+                    this.mTotalErrorsCheckBox = new WpfCheckBox(this);
+                    #region Search Criteria
+                    this.mTotalErrorsCheckBox.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mTotalErrorsCheckBox;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfCheckBox mTotalErrorsCheckBox;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class WorkflowsNotFound : WpfCell
+    {
+        
+        public WorkflowsNotFound(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = null;
+            this.SearchProperties[WpfCell.PropertyNames.Value] = "True";
+            this.SearchProperties[WpfCell.PropertyNames.Instance] = "5";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfCheckBox WorkflowsNotFoundCheckBox
+        {
+            get
+            {
+                if ((this.mWorkflowsNotFoundCheckBox == null))
+                {
+                    this.mWorkflowsNotFoundCheckBox = new WpfCheckBox(this);
+                    #region Search Criteria
+                    this.mWorkflowsNotFoundCheckBox.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mWorkflowsNotFoundCheckBox;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfCheckBox mWorkflowsNotFoundCheckBox;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class NotAuthorisedErrors : WpfCell
+    {
+        
+        public NotAuthorisedErrors(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = null;
+            this.SearchProperties[WpfCell.PropertyNames.Value] = "True";
+            this.SearchProperties[WpfCell.PropertyNames.Instance] = "6";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfCheckBox NotAuthorisedErrorsCheckBox
+        {
+            get
+            {
+                if ((this.mNotAuthorisedErrorsCheckBox == null))
+                {
+                    this.mNotAuthorisedErrorsCheckBox = new WpfCheckBox(this);
+                    #region Search Criteria
+                    this.mNotAuthorisedErrorsCheckBox.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mNotAuthorisedErrorsCheckBox;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfCheckBox mNotAuthorisedErrorsCheckBox;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class ResetCounter : WpfText
+    {
+        
+        public ResetCounter(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfText.PropertyNames.Name] = "   ";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfHyperlink ItemHyperlink
+        {
+            get
+            {
+                if ((this.mItemHyperlink == null))
+                {
+                    this.mItemHyperlink = new WpfHyperlink(this);
+                    #region Search Criteria
+                    this.mItemHyperlink.SearchProperties[WpfHyperlink.PropertyNames.Instance] = "1";
+                    this.mItemHyperlink.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mItemHyperlink;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfHyperlink mItemHyperlink;
         #endregion
     }
     

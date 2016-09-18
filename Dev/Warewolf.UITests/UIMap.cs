@@ -1289,7 +1289,27 @@ namespace Warewolf.UITests
             if(test != null)
                 Mouse.Click(test);
         }
+        public void Select_Dice_From_Service_Picker(string tabName)
+        {
+            #region Variable Declarations
+            WpfEdit filterTextbox = this.ServicePickerDialog.Explorer.FilterTextbox;
+            WpfTreeItem subTreeItem1 = this.ServicePickerDialog.Explorer.ExplorerTree.TreeItem1.SubTreeItem1;
+            WpfButton ok = this.ServicePickerDialog.OK;
+            WpfText addResourceText = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1.ResourceCell.AddResourceText;
+            WpfText ResourceText = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.PerfomanceCounterTab.PerfmonViewContent.ResourceTable.ResourceCell.ResourceTextBox;
+            #endregion
 
+            Mouse.Click(filterTextbox, new Point(93, 6));
+            filterTextbox.Text = "Dice";
+            Mouse.Click(subTreeItem1, MouseButtons.Right, ModifierKeys.None, new Point(53, 12));
+            Mouse.Click(subTreeItem1, new Point(53, 12));
+            Mouse.Click(ok, new Point(52, 15));
+
+            if (tabName == "SecurityTab")
+                Assert.AreEqual("Dice", addResourceText.DisplayText, "Resource Name is not set to Dice after selecting Dice from Service picker");
+            else if (tabName == "PerfomanceCounterTab")
+                Assert.AreEqual("Dice", ResourceText.DisplayText, "Resource Name is not set to Dice after selecting Dice from Service picker");
+        }
         private WpfText GetCurrentTest(int testInstance)
         {
             WpfText test;
