@@ -3765,6 +3765,57 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
+        /// Check_Public_Administrator - Use 'Check_Public_AdministratorParams' to pass parameters into this method.
+        /// </summary>
+        public void Check_Public_Administrator()
+        {
+            #region Variable Declarations
+            WpfCheckBox public_AdministratorCheckBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.PublicROW.Public_AdministratorCell.Public_AdministratorCheckBox;
+            WpfCheckBox public_DeployToCheckBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.PublicROW.Public_DeployToCell.Public_DeployToCheckBox;
+            WpfCheckBox public_DeployFromCheckBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.PublicROW.Public_DeployFromCell.Public_DeployFromCheckBox;
+            #endregion
+
+            // Select 'UI_Public_AdministratorPermissionCheckBox_AutoID' check box
+            public_AdministratorCheckBox.Checked = this.Check_Public_AdministratorParams.Public_AdministratorCheckBoxChecked;
+
+            // Verify that the 'Checked' property of 'UI_Public_DeployToPermissionCheckBox_AutoID' check box equals 'True'
+            Assert.AreEqual(this.Check_Public_AdministratorParams.Public_DeployToCheckBoxChecked, public_DeployToCheckBox.Checked, "Public DeployTo checkbox is NOT checked after Checking Administrator.");
+
+            // Verify that the 'Checked' property of 'UI_Public_DeployFromPermissionCheckBox_AutoID' check box equals 'True'
+            Assert.AreEqual(this.Check_Public_AdministratorParams.Public_DeployFromCheckBoxChecked, public_DeployFromCheckBox.Checked, "Public DeployFrom checkbox is NOT checked after Checking Administrator.");
+        }
+        
+        /// <summary>
+        /// Click_Select_Resource_Button_From_Resource_Permissions - Use 'Click_Select_Resource_Button_From_Resource_PermissionsParams' to pass parameters into this method.
+        /// </summary>
+        public void Click_Select_Resource_Button_From_Resource_Permissions()
+        {
+            #region Variable Declarations
+            WpfButton itemButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1.ResourceCell.ItemButton;
+            WpfWindow servicePickerDialog = this.ServicePickerDialog;
+            #endregion
+
+            // Click '...' button
+            Mouse.Click(itemButton, new Point(13, 16));
+
+            // Verify that the 'Exists' property of 'ServicePickerDialog' window equals 'True'
+            Assert.AreEqual(this.Click_Select_Resource_Button_From_Resource_PermissionsParams.ServicePickerDialogExists, servicePickerDialog.Exists, "Service window does not exist after clicking SelectResource button");
+        }
+        
+        /// <summary>
+        /// Enter_Public_As_Windows_Group - Use 'Enter_Public_As_Windows_GroupParams' to pass parameters into this method.
+        /// </summary>
+        public void Enter_Public_As_Windows_Group()
+        {
+            #region Variable Declarations
+            WpfEdit addWindowsGroupsEdit = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1.WindowsGroupCell.AddWindowsGroupsEdit;
+            #endregion
+
+            // Type 'Public' in 'UI__AddWindowsGroupsTextBox_AutoID' text box
+            addWindowsGroupsEdit.Text = this.Enter_Public_As_Windows_GroupParams.AddWindowsGroupsEditText;
+        }
+        
+        /// <summary>
         /// Filter_variables - Use 'Filter_variablesParams' to pass parameters into this method.
         /// </summary>
         public void Filter_variables()
@@ -7703,6 +7754,42 @@ namespace Warewolf.UITests
             }
         }
         
+        public virtual Check_Public_AdministratorParams Check_Public_AdministratorParams
+        {
+            get
+            {
+                if ((this.mCheck_Public_AdministratorParams == null))
+                {
+                    this.mCheck_Public_AdministratorParams = new Check_Public_AdministratorParams();
+                }
+                return this.mCheck_Public_AdministratorParams;
+            }
+        }
+        
+        public virtual Click_Select_Resource_Button_From_Resource_PermissionsParams Click_Select_Resource_Button_From_Resource_PermissionsParams
+        {
+            get
+            {
+                if ((this.mClick_Select_Resource_Button_From_Resource_PermissionsParams == null))
+                {
+                    this.mClick_Select_Resource_Button_From_Resource_PermissionsParams = new Click_Select_Resource_Button_From_Resource_PermissionsParams();
+                }
+                return this.mClick_Select_Resource_Button_From_Resource_PermissionsParams;
+            }
+        }
+        
+        public virtual Enter_Public_As_Windows_GroupParams Enter_Public_As_Windows_GroupParams
+        {
+            get
+            {
+                if ((this.mEnter_Public_As_Windows_GroupParams == null))
+                {
+                    this.mEnter_Public_As_Windows_GroupParams = new Enter_Public_As_Windows_GroupParams();
+                }
+                return this.mEnter_Public_As_Windows_GroupParams;
+            }
+        }
+        
         public virtual Filter_variablesParams Filter_variablesParams
         {
             get
@@ -8800,6 +8887,12 @@ namespace Warewolf.UITests
         private Enter_Text_Into_Assign_Small_View_Row1_Value_Textbox_As_SomeVariable_UsingIntellisenseParams mEnter_Text_Into_Assign_Small_View_Row1_Value_Textbox_As_SomeVariable_UsingIntellisenseParams;
         
         private Enter_Text_Into_Workflow_Tests_Row1_Value_Textbox_As_CodedUITestParams mEnter_Text_Into_Workflow_Tests_Row1_Value_Textbox_As_CodedUITestParams;
+        
+        private Check_Public_AdministratorParams mCheck_Public_AdministratorParams;
+        
+        private Click_Select_Resource_Button_From_Resource_PermissionsParams mClick_Select_Resource_Button_From_Resource_PermissionsParams;
+        
+        private Enter_Public_As_Windows_GroupParams mEnter_Public_As_Windows_GroupParams;
         
         private Filter_variablesParams mFilter_variablesParams;
         
@@ -11823,6 +11916,61 @@ namespace Warewolf.UITests
         /// Verify that the 'Text' property of 'Text' text box equals 'Coded UI Test'
         /// </summary>
         public string TextboxText = "Coded UI Test";
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Check_Public_Administrator'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Check_Public_AdministratorParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Select 'UI_Public_AdministratorPermissionCheckBox_AutoID' check box
+        /// </summary>
+        public bool Public_AdministratorCheckBoxChecked = true;
+        
+        /// <summary>
+        /// Verify that the 'Checked' property of 'UI_Public_DeployToPermissionCheckBox_AutoID' check box equals 'True'
+        /// </summary>
+        public bool Public_DeployToCheckBoxChecked = true;
+        
+        /// <summary>
+        /// Verify that the 'Checked' property of 'UI_Public_DeployFromPermissionCheckBox_AutoID' check box equals 'True'
+        /// </summary>
+        public bool Public_DeployFromCheckBoxChecked = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Click_Select_Resource_Button_From_Resource_Permissions'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Click_Select_Resource_Button_From_Resource_PermissionsParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'ServicePickerDialog' window equals 'True'
+        /// </summary>
+        public bool ServicePickerDialogExists = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Enter_Public_As_Windows_Group'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Enter_Public_As_Windows_GroupParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Type 'Public' in 'UI__AddWindowsGroupsTextBox_AutoID' text box
+        /// </summary>
+        public string AddWindowsGroupsEditText = "Public";
         #endregion
     }
     
