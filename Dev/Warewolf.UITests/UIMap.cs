@@ -1286,6 +1286,12 @@ namespace Warewolf.UITests
             Mouse.Click(duplicateButton, new Point(14, 10));
         }
 
+        public void Assert_MultiAssign_Does_Not_Exist_On_DesignSurface()
+        {
+            var multiAssign = MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign;
+            Assert.IsFalse(multiAssign.Exists);
+        }
+
         public void Assert_Test_Result(string result)
         {
             WpfText passing = MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestsListboxList.Test1.Passing;
@@ -1325,14 +1331,14 @@ namespace Warewolf.UITests
             Assert.AreEqual("Never run", testNeverRun.DisplayText);
             Assert.IsTrue(pending.Exists, "Pending Icon does not exist");
 
-            // Verify that the 'Exists' property of 'Test Name' label equals 'True'
-            //Assert.AreEqual(this.Click_Create_New_TestsParams.TestNameTextExists, testNameText.Exists, "Test1 Name textbox does not exist after clicking Create New Test");
+            //Verify that the 'Exists' property of 'Test Name' label equals 'True'
+            Assert.AreEqual(this.Click_Create_New_TestsParams.TestNameTextExists, testNameText.Exists, "Test1 Name textbox does not exist after clicking Create New Test");
 
-            //// Verify that the 'Checked' property of 'Select or De-Select to run the test' check box equals 'True'
-            //Assert.AreEqual(this.Click_Create_New_TestsParams.TestEnabledSelectorChecked, testEnabledSelector.Checked, "Test 1 is diabled after clicking Create new test from context menu");
+            // Verify that the 'Checked' property of 'Select or De-Select to run the test' check box equals 'True'
+            Assert.AreEqual(this.Click_Create_New_TestsParams.TestEnabledSelectorChecked, testEnabledSelector.Checked, "Test 1 is diabled after clicking Create new test from context menu");
 
-            //// Verify that the 'Exists' property of 'Text' text box equals 'True'
-            //Assert.AreEqual(this.Click_Create_New_TestsParams.TextboxExists, textbox.Exists, "Row 1 input value textbox does not exist on workflow tests tab.");
+            // Verify that the 'Exists' property of 'Text' text box equals 'True'
+            Assert.AreEqual(this.Click_Create_New_TestsParams.TextboxExists, textbox.Exists, "Row 1 input value textbox does not exist on workflow tests tab.");
         }
 
         public void Assert_Display_Text_ContainStar(string control, bool containsStar, int instance = 1)

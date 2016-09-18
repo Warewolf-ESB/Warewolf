@@ -12,7 +12,7 @@ namespace Warewolf.UITests.Tools
         public void SQLServerSourceFromTool()
         {
             Uimap.Drag_Toolbox_SQL_Server_Tool_Onto_DesignSurface();
-            Uimap.Open_Large_View_FromContextMenu();
+            Uimap.Open_SQL_Large_View_FromContextMenu();
             Uimap.Select_NewDatabaseSource_FromSqlServerTool();
             Uimap.Change_Selected_Database_ToMySql_DataBase();
             Uimap.Change_Selected_Database_ToPostgreSql_DataBase();
