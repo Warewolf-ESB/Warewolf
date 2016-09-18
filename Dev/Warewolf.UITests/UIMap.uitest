@@ -17878,7 +17878,78 @@
                                                             <PropertyCondition Name="AutomationId">Random(RandomDesigner)</PropertyCondition>
                                                           </AndCondition>
                                                           <SupportLevel>0</SupportLevel>
-                                                          <Descendants />
+                                                          <Descendants>
+                                                            <UIObject ControlType="Custom" Id="SmallView" FriendlyName="SmallViewContent" SpecialControlType="None">
+                                                              <TechnologyName>UIA</TechnologyName>
+                                                              <WindowTitles>
+                                                                <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                                                              </WindowTitles>
+                                                              <AndCondition>
+                                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                                <PropertyCondition Name="ControlType">Custom</PropertyCondition>
+                                                                <PropertyCondition Name="ClassName">Uia.Small</PropertyCondition>
+                                                                <PropertyCondition Name="AutomationId">SmallViewContent</PropertyCondition>
+                                                              </AndCondition>
+                                                              <SupportLevel>0</SupportLevel>
+                                                              <Descendants>
+                                                                <UIObject ControlType="ComboBox" Id="From" FriendlyName="UI__Lengthstxt_AutoID" SpecialControlType="None">
+                                                                  <TechnologyName>UIA</TechnologyName>
+                                                                  <WindowTitles>
+                                                                    <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                                                                  </WindowTitles>
+                                                                  <AndCondition>
+                                                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                                    <PropertyCondition Name="ControlType">ComboBox</PropertyCondition>
+                                                                    <PropertyCondition Name="AutomationId">UI__Lengthstxt_AutoID</PropertyCondition>
+                                                                  </AndCondition>
+                                                                  <SupportLevel>0</SupportLevel>
+                                                                  <Descendants>
+                                                                    <UIObject ControlType="Edit" Id="FromTextEdit" FriendlyName="Text" SpecialControlType="None">
+                                                                      <TechnologyName>UIA</TechnologyName>
+                                                                      <WindowTitles>
+                                                                        <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                                                                      </WindowTitles>
+                                                                      <AndCondition>
+                                                                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                                        <PropertyCondition Name="ControlType">Edit</PropertyCondition>
+                                                                        <PropertyCondition Name="AutomationId">Text</PropertyCondition>
+                                                                      </AndCondition>
+                                                                      <SupportLevel>0</SupportLevel>
+                                                                      <Descendants />
+                                                                    </UIObject>
+                                                                  </Descendants>
+                                                                </UIObject>
+                                                                <UIObject ControlType="ComboBox" Id="To" FriendlyName="UI__Lengthstxt_AutoID" SpecialControlType="None">
+                                                                  <TechnologyName>UIA</TechnologyName>
+                                                                  <WindowTitles>
+                                                                    <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                                                                  </WindowTitles>
+                                                                  <AndCondition>
+                                                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                                    <PropertyCondition Name="ControlType">ComboBox</PropertyCondition>
+                                                                    <PropertyCondition Name="AutomationId">UI__Lengthstxt_AutoID</PropertyCondition>
+                                                                    <PropertyCondition Name="Instance">3</PropertyCondition>
+                                                                  </AndCondition>
+                                                                  <SupportLevel>0</SupportLevel>
+                                                                  <Descendants>
+                                                                    <UIObject ControlType="Edit" Id="ToTextEdit" FriendlyName="Text" SpecialControlType="None">
+                                                                      <TechnologyName>UIA</TechnologyName>
+                                                                      <WindowTitles>
+                                                                        <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                                                                      </WindowTitles>
+                                                                      <AndCondition>
+                                                                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                                        <PropertyCondition Name="ControlType">Edit</PropertyCondition>
+                                                                        <PropertyCondition Name="AutomationId">Text</PropertyCondition>
+                                                                      </AndCondition>
+                                                                      <SupportLevel>0</SupportLevel>
+                                                                      <Descendants />
+                                                                    </UIObject>
+                                                                  </Descendants>
+                                                                </UIObject>
+                                                              </Descendants>
+                                                            </UIObject>
+                                                          </Descendants>
                                                         </UIObject>
                                                         <UIObject ControlType="Custom" Id="SMTPEmail" FriendlyName="DsfSendEmailActivity" SpecialControlType="None">
                                                           <TechnologyName>UIA</TechnologyName>
