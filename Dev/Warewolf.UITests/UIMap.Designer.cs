@@ -45,6 +45,58 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
+        /// RightClick_Localhost
+        /// </summary>
+        public void RightClick_Localhost()
+        {
+            #region Variable Declarations
+            WpfTreeItem localhost = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost;
+            #endregion
+
+            // Right-Click 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item
+            Mouse.Click(localhost, MouseButtons.Right, ModifierKeys.None, new Point(75, 10));
+        }
+        
+        /// <summary>
+        /// Select_NewWorkFlowService_From_ContextMenu - Use 'Select_NewWorkFlowService_From_ContextMenuParams' to pass parameters into this method.
+        /// </summary>
+        public void Select_NewWorkFlowService_From_ContextMenu()
+        {
+            #region Variable Declarations
+            WpfMenuItem newWorkflowService = this.MainStudioWindow.ExplorerEnvironmentMenu.NewWorkflowService;
+            #endregion
+
+            // Verify that the 'Enabled' property of 'New Workflow Service' menu item equals 'True'
+            Assert.AreEqual(this.Select_NewWorkFlowService_From_ContextMenuParams.NewWorkflowServiceEnabled, newWorkflowService.Enabled, "NewWorkFlowService button is disabled.");
+
+            // Click 'New Workflow Service' menu item
+            Mouse.Click(newWorkflowService, new Point(79, 13));
+        }
+        
+        /// <summary>
+        /// Enter_Dice_Roll_Values - Use 'Enter_Dice_Roll_ValuesParams' to pass parameters into this method.
+        /// </summary>
+        public void Enter_Dice_Roll_Values()
+        {
+            #region Variable Declarations
+            WpfEdit fromTextEdit = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Random.SmallView.From.FromTextEdit;
+            WpfEdit toTextEdit = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Random.SmallView.To.ToTextEdit;
+            #endregion
+
+            // Verify that the 'Exists' property of 'Text' text box equals 'True'
+            Assert.AreEqual(this.Enter_Dice_Roll_ValuesParams.FromTextEditExists, fromTextEdit.Exists, "From textbox does not exist");
+
+            // Type '1' in 'Text' text box
+            fromTextEdit.Text = this.Enter_Dice_Roll_ValuesParams.FromTextEditText;
+
+            // Verify that the 'Exists' property of 'Text' text box equals 'True'
+            Assert.AreEqual(this.Enter_Dice_Roll_ValuesParams.ToTextEditExists, toTextEdit.Exists, "To textbox does not exist");
+
+            // Type '6' in 'Text' text box
+            toTextEdit.Text = this.Enter_Dice_Roll_ValuesParams.ToTextEditText;
+        }
+        
+        /// <summary>
         /// Assert_Connection_Passed - Use 'Assert_Connection_PassedExpectedValues' to pass parameters into this method.
         /// </summary>
         public void Assert_Connection_Passed()
@@ -6230,6 +6282,30 @@ namespace Warewolf.UITests
             }
         }
         
+        public virtual Select_NewWorkFlowService_From_ContextMenuParams Select_NewWorkFlowService_From_ContextMenuParams
+        {
+            get
+            {
+                if ((this.mSelect_NewWorkFlowService_From_ContextMenuParams == null))
+                {
+                    this.mSelect_NewWorkFlowService_From_ContextMenuParams = new Select_NewWorkFlowService_From_ContextMenuParams();
+                }
+                return this.mSelect_NewWorkFlowService_From_ContextMenuParams;
+            }
+        }
+        
+        public virtual Enter_Dice_Roll_ValuesParams Enter_Dice_Roll_ValuesParams
+        {
+            get
+            {
+                if ((this.mEnter_Dice_Roll_ValuesParams == null))
+                {
+                    this.mEnter_Dice_Roll_ValuesParams = new Enter_Dice_Roll_ValuesParams();
+                }
+                return this.mEnter_Dice_Roll_ValuesParams;
+            }
+        }
+        
         public virtual Assert_Connection_PassedExpectedValues Assert_Connection_PassedExpectedValues
         {
             get
@@ -8634,6 +8710,10 @@ namespace Warewolf.UITests
         #region Fields
         private Assert_CancelConnectionButton_ExistsExpectedValues mAssert_CancelConnectionButton_ExistsExpectedValues;
         
+        private Select_NewWorkFlowService_From_ContextMenuParams mSelect_NewWorkFlowService_From_ContextMenuParams;
+        
+        private Enter_Dice_Roll_ValuesParams mEnter_Dice_Roll_ValuesParams;
+        
         private Assert_Connection_PassedExpectedValues mAssert_Connection_PassedExpectedValues;
         
         private Assert_RunDebug_Button_Exist_And_EnabledExpectedValues mAssert_RunDebug_Button_Exist_And_EnabledExpectedValues;
@@ -9048,6 +9128,51 @@ namespace Warewolf.UITests
         /// Verify that the 'Exists' property of 'Cancel Test' button equals 'True'
         /// </summary>
         public bool CancelTestButtonExists = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Select_NewWorkFlowService_From_ContextMenu'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Select_NewWorkFlowService_From_ContextMenuParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Enabled' property of 'New Workflow Service' menu item equals 'True'
+        /// </summary>
+        public bool NewWorkflowServiceEnabled = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Enter_Dice_Roll_Values'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Enter_Dice_Roll_ValuesParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Text' text box equals 'True'
+        /// </summary>
+        public bool FromTextEditExists = true;
+        
+        /// <summary>
+        /// Type '1' in 'Text' text box
+        /// </summary>
+        public string FromTextEditText = "1";
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Text' text box equals 'True'
+        /// </summary>
+        public bool ToTextEditExists = true;
+        
+        /// <summary>
+        /// Type '6' in 'Text' text box
+        /// </summary>
+        public string ToTextEditText = "6";
         #endregion
     }
     
@@ -13706,6 +13831,18 @@ namespace Warewolf.UITests
                 return this.mExpandAllToggleButton;
             }
         }
+        
+        public ExplorerEnvironmentMenu ExplorerEnvironmentMenu
+        {
+            get
+            {
+                if ((this.mExplorerEnvironmentMenu == null))
+                {
+                    this.mExplorerEnvironmentMenu = new ExplorerEnvironmentMenu(this);
+                }
+                return this.mExplorerEnvironmentMenu;
+            }
+        }
         #endregion
         
         #region Fields
@@ -13784,6 +13921,8 @@ namespace Warewolf.UITests
         private ComboboxListItemMySqlDatabase mComboboxListItemMySqlDatabase;
         
         private WpfToggleButton mExpandAllToggleButton;
+        
+        private ExplorerEnvironmentMenu mExplorerEnvironmentMenu;
         #endregion
     }
     
@@ -25097,18 +25236,13 @@ namespace Warewolf.UITests
             }
         }
         
-        public WpfCustom Random
+        public Random1 Random
         {
             get
             {
                 if ((this.mRandom == null))
                 {
-                    this.mRandom = new WpfCustom(this);
-                    #region Search Criteria
-                    this.mRandom.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.RandomDesigner";
-                    this.mRandom.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Random(RandomDesigner)";
-                    this.mRandom.WindowTitles.Add("Warewolf");
-                    #endregion
+                    this.mRandom = new Random1(this);
                 }
                 return this.mRandom;
             }
@@ -25640,7 +25774,7 @@ namespace Warewolf.UITests
         
         private WpfCustom mFormatNumber;
         
-        private WpfCustom mRandom;
+        private Random1 mRandom;
         
         private SMTPEmail mSMTPEmail;
         
@@ -29492,6 +29626,159 @@ namespace Warewolf.UITests
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Random1 : WpfCustom
+    {
+        
+        public Random1(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.RandomDesigner";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Random(RandomDesigner)";
+            this.WindowTitles.Add("Warewolf");
+            #endregion
+        }
+        
+        #region Properties
+        public SmallView5 SmallView
+        {
+            get
+            {
+                if ((this.mSmallView == null))
+                {
+                    this.mSmallView = new SmallView5(this);
+                }
+                return this.mSmallView;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private SmallView5 mSmallView;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class SmallView5 : WpfCustom
+    {
+        
+        public SmallView5(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.Small";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "SmallViewContent";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public From From
+        {
+            get
+            {
+                if ((this.mFrom == null))
+                {
+                    this.mFrom = new From(this);
+                }
+                return this.mFrom;
+            }
+        }
+        
+        public To To
+        {
+            get
+            {
+                if ((this.mTo == null))
+                {
+                    this.mTo = new To(this);
+                }
+                return this.mTo;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private From mFrom;
+        
+        private To mTo;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class From : WpfComboBox
+    {
+        
+        public From(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "UI__Lengthstxt_AutoID";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfEdit FromTextEdit
+        {
+            get
+            {
+                if ((this.mFromTextEdit == null))
+                {
+                    this.mFromTextEdit = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mFromTextEdit.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "Text";
+                    this.mFromTextEdit.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mFromTextEdit;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfEdit mFromTextEdit;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class To : WpfComboBox
+    {
+        
+        public To(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "UI__Lengthstxt_AutoID";
+            this.SearchProperties[WpfComboBox.PropertyNames.Instance] = "3";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfEdit ToTextEdit
+        {
+            get
+            {
+                if ((this.mToTextEdit == null))
+                {
+                    this.mToTextEdit = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mToTextEdit.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "Text";
+                    this.mToTextEdit.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mToTextEdit;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfEdit mToTextEdit;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SMTPEmail : WpfCustom
     {
         
@@ -29619,13 +29906,13 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public SmallView5 SmallView
+        public SmallView6 SmallView
         {
             get
             {
                 if ((this.mSmallView == null))
                 {
-                    this.mSmallView = new SmallView5(this);
+                    this.mSmallView = new SmallView6(this);
                 }
                 return this.mSmallView;
             }
@@ -29694,7 +29981,7 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private SmallView5 mSmallView;
+        private SmallView6 mSmallView;
         
         private LargeView6 mLargeView;
         
@@ -29707,10 +29994,10 @@ namespace Warewolf.UITests
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class SmallView5 : WpfCustom
+    public class SmallView6 : WpfCustom
     {
         
-        public SmallView5(UITestControl searchLimitContainer) : 
+        public SmallView6(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -39661,6 +39948,60 @@ namespace Warewolf.UITests
         
         #region Fields
         private WpfText mMySqlDatabaseText;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class ExplorerEnvironmentMenu : WpfMenu
+    {
+        
+        public ExplorerEnvironmentMenu(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfMenu.PropertyNames.AutomationId] = "ExplorerEnvironmentMenu";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfMenuItem NewWorkflowService
+        {
+            get
+            {
+                if ((this.mNewWorkflowService == null))
+                {
+                    this.mNewWorkflowService = new WpfMenuItem(this);
+                    #region Search Criteria
+                    this.mNewWorkflowService.SearchProperties[WpfMenuItem.PropertyNames.AutomationId] = "NewService";
+                    this.mNewWorkflowService.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mNewWorkflowService;
+            }
+        }
+        
+        public WpfMenuItem NewFolder
+        {
+            get
+            {
+                if ((this.mNewFolder == null))
+                {
+                    this.mNewFolder = new WpfMenuItem(this);
+                    #region Search Criteria
+                    this.mNewFolder.SearchProperties[WpfMenuItem.PropertyNames.AutomationId] = "NewFolder";
+                    this.mNewFolder.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mNewFolder;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfMenuItem mNewWorkflowService;
+        
+        private WpfMenuItem mNewFolder;
         #endregion
     }
     
