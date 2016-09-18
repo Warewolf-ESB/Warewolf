@@ -3888,6 +3888,25 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
+        /// Click_ViewSwagger_From_ExplorerContextMenu - Use 'Click_ViewSwagger_From_ExplorerContextMenuParams' to pass parameters into this method.
+        /// </summary>
+        public void Click_ViewSwagger_From_ExplorerContextMenu()
+        {
+            #region Variable Declarations
+            WpfMenuItem viewSwagger = this.MainStudioWindow.ExplorerContextMenu.ViewSwagger;
+            #endregion
+
+            // Verify that the 'Exists' property of 'View Swagger' menu item equals 'True'
+            Assert.AreEqual(this.Click_ViewSwagger_From_ExplorerContextMenuParams.ViewSwaggerExists, viewSwagger.Exists, "View Swagger button does not exist");
+
+            // Verify that the 'Enabled' property of 'View Swagger' menu item equals 'True'
+            Assert.AreEqual(this.Click_ViewSwagger_From_ExplorerContextMenuParams.ViewSwaggerEnabled, viewSwagger.Enabled, "View swagger is disabled");
+
+            // Click 'View Swagger' menu item
+            Mouse.Click(viewSwagger, new Point(82, 16));
+        }
+        
+        /// <summary>
         /// Open_Assign_Tool_Large_View - Use 'Open_Assign_Tool_Large_ViewParams' to pass parameters into this method.
         /// </summary>
         public void Open_Assign_Tool_Large_View()
@@ -8116,6 +8135,18 @@ namespace Warewolf.UITests
             }
         }
         
+        public virtual Click_ViewSwagger_From_ExplorerContextMenuParams Click_ViewSwagger_From_ExplorerContextMenuParams
+        {
+            get
+            {
+                if ((this.mClick_ViewSwagger_From_ExplorerContextMenuParams == null))
+                {
+                    this.mClick_ViewSwagger_From_ExplorerContextMenuParams = new Click_ViewSwagger_From_ExplorerContextMenuParams();
+                }
+                return this.mClick_ViewSwagger_From_ExplorerContextMenuParams;
+            }
+        }
+        
         public virtual Open_Assign_Tool_Large_ViewParams Open_Assign_Tool_Large_ViewParams
         {
             get
@@ -9333,6 +9364,8 @@ namespace Warewolf.UITests
         private Enter_Public_As_Windows_GroupParams mEnter_Public_As_Windows_GroupParams;
         
         private Filter_variablesParams mFilter_variablesParams;
+        
+        private Click_ViewSwagger_From_ExplorerContextMenuParams mClick_ViewSwagger_From_ExplorerContextMenuParams;
         
         private Open_Assign_Tool_Large_ViewParams mOpen_Assign_Tool_Large_ViewParams;
         
@@ -12494,6 +12527,26 @@ namespace Warewolf.UITests
         /// Type 'Other' in 'SearchTextBox' text box
         /// </summary>
         public string VariableSearchTextBoxEditText = "Other";
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Click_ViewSwagger_From_ExplorerContextMenu'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Click_ViewSwagger_From_ExplorerContextMenuParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'View Swagger' menu item equals 'True'
+        /// </summary>
+        public bool ViewSwaggerExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Enabled' property of 'View Swagger' menu item equals 'True'
+        /// </summary>
+        public bool ViewSwaggerEnabled = true;
         #endregion
     }
     
