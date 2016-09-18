@@ -150,7 +150,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.SignalR.Wrappers.Inter
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.SignalR.Wrappers.New", "Dev2.SignalR.Wrappers.New\Dev2.SignalR.Wrappers.New.csproj", "{335E9126-30E1-4D23-B642-5D6BF82E2C09}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.AcceptanceTesting.Core", "Warewolf.AcceptanceTesting.Core\Warewolf.AcceptanceTesting.Core.csproj", "{CB0F5535-5E1D-41F9-A23C-F59FDC816B75}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.UIBindingTests.Core", "Warewolf.UIBindingTests.Core\Warewolf.UIBindingTests.Core.csproj", "{CB0F5535-5E1D-41F9-A23C-F59FDC816B75}"
 	ProjectSection(ProjectDependencies) = postProject
 		{87AEFD04-29F3-45B6-A7C6-4161F9190876} = {87AEFD04-29F3-45B6-A7C6-4161F9190876}
 		{E0F7C709-A61B-4829-A659-D7780052326A} = {E0F7C709-A61B-4829-A659-D7780052326A}
@@ -181,21 +181,21 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.AcceptanceTesting.
 		{B48FFDF5-6B1B-4279-A93F-2913B9D3BE83} = {B48FFDF5-6B1B-4279-A93F-2913B9D3BE83}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.AcceptanceTesting.Deploy", "Warewolf.AcceptanceTesting.Deploy\Warewolf.AcceptanceTesting.Deploy.csproj", "{410A057A-BCFC-476B-AF27-46D6E442FA04}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.UIBindingTests.Deploy", "Warewolf.UIBindingTests.Deploy\Warewolf.UIBindingTests.Deploy.csproj", "{410A057A-BCFC-476B-AF27-46D6E442FA04}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.AcceptanceTesting.Explorer", "Warewolf.AcceptanceTesting.Explorer\Warewolf.AcceptanceTesting.Explorer.csproj", "{6A7E2E66-2DCC-486E-B34D-5FA7C1096821}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.UIBindingTests.Explorer", "Warewolf.UIBindingTests.Explorer\Warewolf.UIBindingTests.Explorer.csproj", "{6A7E2E66-2DCC-486E-B34D-5FA7C1096821}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.AcceptanceTesting.ServerSource", "Warewolf.AcceptanceTesting.ServerSource\Warewolf.AcceptanceTesting.ServerSource.csproj", "{486F3480-A011-4E3A-878C-E7A23F661045}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.UIBindingTests.ServerSource", "Warewolf.UIBindingTests.ServerSource\Warewolf.UIBindingTests.ServerSource.csproj", "{486F3480-A011-4E3A-878C-E7A23F661045}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.AcceptanceTesting.Variables", "Warewolf.AcceptanceTesting.Variables\Warewolf.AcceptanceTesting.Variables.csproj", "{7D6080FD-9C9A-4A93-A5B3-55C701CD6BEB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.UIBindingTests.Variables", "Warewolf.UIBindingTests.Variables\Warewolf.UIBindingTests.Variables.csproj", "{7D6080FD-9C9A-4A93-A5B3-55C701CD6BEB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.AcceptanceTesting.WebSource", "Warewolf.AcceptanceTesting.WebSource\Warewolf.AcceptanceTesting.WebSource.csproj", "{BE8CC5D9-95D5-4497-910F-E077D4B15FF3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.UIBindingTests.WebSource", "Warewolf.UIBindingTests.WebSource\Warewolf.UIBindingTests.WebSource.csproj", "{BE8CC5D9-95D5-4497-910F-E077D4B15FF3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.AcceptanceTesting.DatabaseSource", "Warewolf.AcceptanceTesting.DatabaseSource\Warewolf.AcceptanceTesting.DatabaseSource.csproj", "{2406B584-C85C-4676-8186-5523618EEB5B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.UIBindingTests.DatabaseSource", "Warewolf.UIBindingTests.DatabaseSource\Warewolf.UIBindingTests.DatabaseSource.csproj", "{2406B584-C85C-4676-8186-5523618EEB5B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.AcceptanceTesting.PluginSource", "Warewolf.AcceptanceTesting.PluginSource\Warewolf.AcceptanceTesting.PluginSource.csproj", "{DE8DF7ED-7B50-4FC9-B107-CC76A4920D7B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.UIBindingTests.PluginSource", "Warewolf.UIBindingTests.PluginSource\Warewolf.UIBindingTests.PluginSource.csproj", "{DE8DF7ED-7B50-4FC9-B107-CC76A4920D7B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.AcceptanceTesting.EmailSource", "Warewolf.AcceptanceTesting.EmailSource\Warewolf.AcceptanceTesting.EmailSource.csproj", "{F99EC086-EBEF-468F-82D7-52E911649DA8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.UIBindingTests.EmailSource", "Warewolf.UIBindingTests.EmailSource\Warewolf.UIBindingTests.EmailSource.csproj", "{F99EC086-EBEF-468F-82D7-52E911649DA8}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.Studio.Models", "Warewolf.Studio.Models\Warewolf.Studio.Models.csproj", "{A62DA168-5BF3-4C14-B880-4AD83478E3A7}"
 EndProject
@@ -203,11 +203,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.Security", "Dev2.W
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.ScheduleExecutor", "Dev2.ScheduleExecutor\Dev2.ScheduleExecutor.csproj", "{6858EA8E-1F83-423C-8F03-260D836C6EDE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.AcceptanceTesting.SharepointSource", "Warewolf.AcceptanceTesting.SharepointSource\Warewolf.AcceptanceTesting.SharepointSource.csproj", "{079611EF-39A7-44D8-988C-1373474DEF7D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.UIBindingTests.SharepointSource", "Warewolf.UIBindingTests.SharepointSource\Warewolf.UIBindingTests.SharepointSource.csproj", "{079611EF-39A7-44D8-988C-1373474DEF7D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.AcceptanceTesting.Decision", "Warewolf.AcceptanceTesting.Decision\Warewolf.AcceptanceTesting.Decision.csproj", "{40809B6B-E7E1-42D0-A3AF-6A6BC267D92B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.UIBindingTests.Decision", "Warewolf.UIBindingTests.Decision\Warewolf.UIBindingTests.Decision.csproj", "{40809B6B-E7E1-42D0-A3AF-6A6BC267D92B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.AcceptanceTesting.Switch", "Warewolf.AcceptanceTesting.Switch\Warewolf.AcceptanceTesting.Switch.csproj", "{681079A2-971B-4BC1-9637-C01BB80C2579}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.UIBindingTests.Switch", "Warewolf.UIBindingTests.Switch\Warewolf.UIBindingTests.Switch.csproj", "{681079A2-971B-4BC1-9637-C01BB80C2579}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "VersionScripts", "VersionScripts", "{BD257381-0CA0-49B8-9FC6-BCEAD24022CA}"
 	ProjectSection(SolutionItems) = preProject
@@ -253,7 +253,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.Storage.Tests", "W
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gma.DataStructures.StringSearch", "Trie\Gma.DataStructures.StringSearch\Gma.DataStructures.StringSearch.csproj", "{17125877-2CF0-42B2-89D3-418E40BDE5D0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.AcceptanceTesting.ExchangeSource", "Warewolf.AcceptanceTesting.ExchangeSource\Warewolf.AcceptanceTesting.ExchangeSource.csproj", "{1F5ED20F-4EEF-4592-B463-7B2911BFB9E0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.UIBindingTests.ExchangeSource", "Warewolf.UIBindingTests.ExchangeSource\Warewolf.UIBindingTests.ExchangeSource.csproj", "{1F5ED20F-4EEF-4592-B463-7B2911BFB9E0}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.Resource", "Warewolf.Resource\Warewolf.Resource.csproj", "{DFF93ECB-FDD1-405E-AE02-9F4BC7571C1B}"
 EndProject
@@ -274,9 +274,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WarewolfCOMIPC", "WarewolfC
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WarewolfCOMIPC.Client", "WarewolfCOMIPC.Client\WarewolfCOMIPC.Client.csproj", "{BCA6F2B3-C102-45B5-8F64-F0CCE2533F1F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.AcceptanceTesting.ComDll", "Warewolf.AcceptanceTesting.ComDll\Warewolf.AcceptanceTesting.ComDll.csproj", "{4B51F904-5A54-4BE2-82BF-F8EE0BBD3170}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.UIBindingTests.ComDll", "Warewolf.UIBindingTests.ComDll\Warewolf.UIBindingTests.ComDll.csproj", "{4B51F904-5A54-4BE2-82BF-F8EE0BBD3170}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.AcceptanceTesting.ComPluginSource", "Warewolf.AcceptanceTesting.ComPluginSource\Warewolf.AcceptanceTesting.ComPluginSource.csproj", "{33A52ABE-7B5E-4B1A-A958-2CAC502C653D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.UIBindingTests.ComPluginSource", "Warewolf.UIBindingTests.ComPluginSource\Warewolf.UIBindingTests.ComPluginSource.csproj", "{33A52ABE-7B5E-4B1A-A958-2CAC502C653D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GACManagerApi", "GACManagerApi\GACManagerApi.csproj", "{2909743E-72FF-48BF-A081-E61A73D2E6EC}"
 EndProject
