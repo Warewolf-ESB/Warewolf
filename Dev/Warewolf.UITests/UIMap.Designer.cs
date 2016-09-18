@@ -87,19 +87,6 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
-        /// AssertMethod1 - Use 'AssertMethod1ExpectedValues' to pass parameters into this method.
-        /// </summary>
-        public void AssertMethod1()
-        {
-            #region Variable Declarations
-            WpfButton yesButton = this.MessageBoxWindow.YesButton;
-            #endregion
-
-            // Verify that the 'Exists' property of 'Yes' button equals 'True'
-            Assert.AreEqual(this.AssertMethod1ExpectedValues.YesButtonExists, yesButton.Exists, "Yes button does not exist on after clicking Delete");
-        }
-        
-        /// <summary>
         /// Assign_Value_To_Variable - Use 'Assign_Value_To_VariableParams' to pass parameters into this method.
         /// </summary>
         public void Assign_Value_To_Variable()
@@ -6579,18 +6566,6 @@ namespace Warewolf.UITests
             }
         }
         
-        public virtual AssertMethod1ExpectedValues AssertMethod1ExpectedValues
-        {
-            get
-            {
-                if ((this.mAssertMethod1ExpectedValues == null))
-                {
-                    this.mAssertMethod1ExpectedValues = new AssertMethod1ExpectedValues();
-                }
-                return this.mAssertMethod1ExpectedValues;
-            }
-        }
-        
         public virtual Assign_Value_To_VariableParams Assign_Value_To_VariableParams
         {
             get
@@ -9121,8 +9096,6 @@ namespace Warewolf.UITests
         
         private Assert_variable_filter_textbox_existExpectedValues mAssert_variable_filter_textbox_existExpectedValues;
         
-        private AssertMethod1ExpectedValues mAssertMethod1ExpectedValues;
-        
         private Assign_Value_To_VariableParams mAssign_Value_To_VariableParams;
         
         private Check_Public_AdministratorParams mCheck_Public_AdministratorParams;
@@ -9607,21 +9580,6 @@ namespace Warewolf.UITests
         /// Verify that the 'Exists' property of 'Filter' label equals 'True'
         /// </summary>
         public bool FilterTextExists = true;
-        #endregion
-    }
-    
-    /// <summary>
-    /// Parameters to be passed into 'AssertMethod1'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class AssertMethod1ExpectedValues
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Verify that the 'Exists' property of 'Yes' button equals 'True'
-        /// </summary>
-        public bool YesButtonExists = true;
         #endregion
     }
     
@@ -16316,10 +16274,48 @@ namespace Warewolf.UITests
                 return this.mItemEdit;
             }
         }
+        
+        public WpfButton ViewIcon
+        {
+            get
+            {
+                if ((this.mViewIcon == null))
+                {
+                    this.mViewIcon = new WpfButton(this);
+                    #region Search Criteria
+                    this.mViewIcon.SearchProperties[WpfButton.PropertyNames.AutomationId] = "EditButton";
+                    this.mViewIcon.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mViewIcon.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mViewIcon;
+            }
+        }
+        
+        public WpfButton ExecuteIcon
+        {
+            get
+            {
+                if ((this.mExecuteIcon == null))
+                {
+                    this.mExecuteIcon = new WpfButton(this);
+                    #region Search Criteria
+                    this.mExecuteIcon.SearchProperties[WpfButton.PropertyNames.AutomationId] = "ExecuteButton";
+                    this.mExecuteIcon.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mExecuteIcon.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mExecuteIcon;
+            }
+        }
         #endregion
         
         #region Fields
         private WpfEdit mItemEdit;
+        
+        private WpfButton mViewIcon;
+        
+        private WpfButton mExecuteIcon;
         #endregion
     }
     
