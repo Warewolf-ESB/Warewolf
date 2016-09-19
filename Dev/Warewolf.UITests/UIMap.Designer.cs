@@ -925,6 +925,7 @@ namespace Warewolf.UITests
         {
             #region Variable Declarations
             WpfButton duplicateButton = this.SaveDialogWindow.DuplicateButton;
+            WpfWindow saveDialogWindow = this.SaveDialogWindow;
             #endregion
 
             // Verify that the 'Exists' property of 'Duplicate' button equals 'True'
@@ -932,6 +933,9 @@ namespace Warewolf.UITests
 
             // Click 'Duplicate' button
             Mouse.Click(duplicateButton, new Point(26, 10));
+
+            // Verify that the 'Exists' property of 'SaveDialogView' window equals 'True'
+            Assert.AreEqual(this.Click_Duplicate_From_Duplicate_DialogParams.SaveDialogWindowExists, saveDialogWindow.Exists, "Save Dialog does not exist after clicking Duplicate button");
         }
         
         /// <summary>
@@ -941,6 +945,7 @@ namespace Warewolf.UITests
         {
             #region Variable Declarations
             WpfMenuItem duplicate = this.MainStudioWindow.ExplorerContextMenu.Duplicate;
+            WpfWindow saveDialogWindow = this.SaveDialogWindow;
             #endregion
 
             // Verify that the 'Exists' property of 'Duplicate' menu item equals 'True'
@@ -951,6 +956,9 @@ namespace Warewolf.UITests
 
             // Click 'Duplicate' menu item
             Mouse.Click(duplicate, new Point(62, 12));
+
+            // Verify that the 'Exists' property of 'SaveDialogView' window equals 'True'
+            Assert.AreEqual(this.Click_Duplicate_From_ExplorerContextMenuParams.SaveDialogWindowExists, saveDialogWindow.Exists, "Save Dialog does not exist after clicking Duplicate button");
         }
         
         /// <summary>
@@ -3924,6 +3932,23 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
+        /// Enter_Text_Into_Workflow_Tests_OutPutTable_Row1_Value_Textbox_As_CodedUITest - Use 'Enter_Text_Into_Workflow_Tests_OutPutTable_Row1_Value_Textbox_As_CodedUITestParams' to pass parameters into this method.
+        /// </summary>
+        public void Enter_Text_Into_Workflow_Tests_OutPutTable_Row1_Value_Textbox_As_CodedUITest()
+        {
+            #region Variable Declarations
+            WpfEdit textbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestOutputsTable.Row1.Cell.IntellisenseComboBox.Textbox;
+            #endregion
+
+            // Type 'Coded UI Test' in 'Text' text box
+            Keyboard.SendKeys(textbox, this.Enter_Text_Into_Workflow_Tests_OutPutTable_Row1_Value_Textbox_As_CodedUITestParams.TextboxSendKeys, ModifierKeys.None);
+
+            // Verify that the 'Text' property of 'Text' text box equals 'Coded UI Test'
+            Assert.AreEqual(this.Enter_Text_Into_Workflow_Tests_OutPutTable_Row1_Value_Textbox_As_CodedUITestParams.TextboxText, textbox.Text, "Workflow tests output tabe row 1 value textbox text does not equal Coded UI Test " +
+                    "after typing that in.");
+        }
+        
+        /// <summary>
         /// Filter_variables - Use 'Filter_variablesParams' to pass parameters into this method.
         /// </summary>
         public void Filter_variables()
@@ -4005,6 +4030,7 @@ namespace Warewolf.UITests
             #region Variable Declarations
             WpfToggleButton openQuickVariableInpToggleButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.BaseConvert.OpenQuickVariableInpToggleButton;
             WpfCustom baseConvert = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.BaseConvert;
+            WpfCustom quickVariableInputContent = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.BaseConvert.QuickVariableInputContent;
             #endregion
 
             // Set to 'Pressed' state 'Open Quick Variable Input' toggle button
@@ -4012,6 +4038,12 @@ namespace Warewolf.UITests
 
             // Verify that the 'Exists' property of 'DsfBaseConvertActivity' custom control equals 'True'
             Assert.AreEqual(this.Open_Base_Conversion_Tool_Qvi_Large_ViewParams.BaseConvertExists, baseConvert.Exists, "Base Conversion QVI Window does not exist on the design surface");
+
+            // Verify that the 'Exists' property of 'QuickVariableInputContent' custom control equals 'True'
+            Assert.AreEqual(this.Open_Base_Conversion_Tool_Qvi_Large_ViewParams.QuickVariableInputContentExists, quickVariableInputContent.Exists, "QVI on BaseConvert is not open");
+
+            // Verify that the 'Exists' property of 'QuickVariableInputContent' custom control equals 'True'
+            Assert.AreEqual(this.Open_Base_Conversion_Tool_Qvi_Large_ViewParams.QuickVariableInputContentExists1, quickVariableInputContent.Exists, "QVI on BaseConvert is not open");
         }
         
         /// <summary>
@@ -4047,6 +4079,7 @@ namespace Warewolf.UITests
             #region Variable Declarations
             WpfToggleButton openQuickVariableInpToggleButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.CaseConvert.OpenQuickVariableInpToggleButton;
             WpfCustom caseConvert = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.CaseConvert;
+            WpfCustom quickVariableInputContent = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.CaseConvert.QuickVariableInputContent;
             #endregion
 
             // Set to 'Pressed' state 'Open Quick Variable Input' toggle button
@@ -4054,6 +4087,9 @@ namespace Warewolf.UITests
 
             // Verify that the 'Exists' property of 'DsfCaseConvertActivity' custom control equals 'True'
             Assert.AreEqual(this.Open_Case_Conversion_Tool_Qvi_Large_ViewParams.CaseConvertExists, caseConvert.Exists, "Case Conversion QVI Window does not exist on the design surface");
+
+            // Verify that the 'Exists' property of 'QuickVariableInputContent' custom control equals 'True'
+            Assert.AreEqual(this.Open_Case_Conversion_Tool_Qvi_Large_ViewParams.QuickVariableInputContentExists, quickVariableInputContent.Exists, "QVI on CaseConvert is not open");
         }
         
         /// <summary>
@@ -4167,6 +4203,7 @@ namespace Warewolf.UITests
             #region Variable Declarations
             WpfToggleButton openQuickVariableInpToggleButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DataMerge.OpenQuickVariableInpToggleButton;
             WpfCustom dataMerge = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DataMerge;
+            WpfCustom quickVariableInputContent = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DataMerge.QuickVariableInputContent;
             #endregion
 
             // Set to 'Pressed' state 'Open Quick Variable Input' toggle button
@@ -4174,6 +4211,9 @@ namespace Warewolf.UITests
 
             // Verify that the 'Exists' property of 'DsfDataMergeActivity' custom control equals 'True'
             Assert.AreEqual(this.Open_Data_Merge_Tool_Qvi_Large_ViewParams.DataMergeExists, dataMerge.Exists, "Data Merge QVi on the design surface does not exist");
+
+            // Verify that the 'Exists' property of 'QuickVariableInputContent' custom control equals 'True'
+            Assert.AreEqual(this.Open_Data_Merge_Tool_Qvi_Large_ViewParams.QuickVariableInputContentExists, quickVariableInputContent.Exists, "QVI on DataMerge is not open");
         }
         
         /// <summary>
@@ -4200,6 +4240,7 @@ namespace Warewolf.UITests
             #region Variable Declarations
             WpfToggleButton openQuickVariableInpToggleButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DataSplit.OpenQuickVariableInpToggleButton;
             WpfCustom dataSplit = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DataSplit;
+            WpfCustom quickVariableInputContent = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DataSplit.QuickVariableInputContent;
             #endregion
 
             // Set to 'Pressed' state 'Open Quick Variable Input' toggle button
@@ -4207,6 +4248,9 @@ namespace Warewolf.UITests
 
             // Verify that the 'Exists' property of 'DsfDataSplitActivity' custom control equals 'True'
             Assert.AreEqual(this.Open_Data_Split_Tool_Qvi_Large_ViewParams.DataSplitExists, dataSplit.Exists, "Data Split Qvi does not exist on the design surface");
+
+            // Verify that the 'Exists' property of 'QuickVariableInputContent' custom control equals 'True'
+            Assert.AreEqual(this.Open_Data_Split_Tool_Qvi_Large_ViewParams.QuickVariableInputContentExists, quickVariableInputContent.Exists, "QVI on DataSplit is not open");
         }
         
         /// <summary>
@@ -4730,7 +4774,6 @@ namespace Warewolf.UITests
             #region Variable Declarations
             WpfToggleButton openQuickVariableInpToggleButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.GatherSystemInfo.OpenQuickVariableInpToggleButton;
             WpfCustom gatherSystemInfo = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.GatherSystemInfo;
-            WpfCustom quickVariableInputContent = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.GatherSystemInfo.QuickVariableInputContent;
             #endregion
 
             // Set to 'Pressed' state 'Open Quick Variable Input' toggle button
@@ -4738,9 +4781,6 @@ namespace Warewolf.UITests
 
             // Verify that the 'Exists' property of 'DsfGatherSystemInformationActivity' custom control equals 'True'
             Assert.AreEqual(this.Open_System_Information_Tool_Qvi_Large_ViewParams.GatherSystemInfoExists, gatherSystemInfo.Exists, "System Info QVI window does not exist on the design surface");
-
-            // Verify that the 'Exists' property of 'QuickVariableInputContent' custom control equals 'True'
-            Assert.AreEqual(this.Open_System_Information_Tool_Qvi_Large_ViewParams.QuickVariableInputContentExists, quickVariableInputContent.Exists, "QVI on assign is not open");
         }
         
         /// <summary>
@@ -4829,6 +4869,7 @@ namespace Warewolf.UITests
             #region Variable Declarations
             WpfToggleButton openQuickVariableInpToggleButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.XPath.OpenQuickVariableInpToggleButton;
             WpfCustom xPath = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.XPath;
+            WpfCustom quickVariableInputContent = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.XPath.QuickVariableInputContent;
             #endregion
 
             // Set to 'Pressed' state 'Open Quick Variable Input' toggle button
@@ -4836,6 +4877,9 @@ namespace Warewolf.UITests
 
             // Verify that the 'Exists' property of 'DsfXPathActivity' custom control equals 'True'
             Assert.AreEqual(this.Open_Xpath_Tool_Qvi_Large_ViewParams.XPathExists, xPath.Exists, "Xpath Qvi does not exist on the design surface");
+
+            // Verify that the 'Exists' property of 'QuickVariableInputContent' custom control equals 'True'
+            Assert.AreEqual(this.Open_Xpath_Tool_Qvi_Large_ViewParams.QuickVariableInputContentExists, quickVariableInputContent.Exists, "QVI on XPath is not open");
         }
         
         /// <summary>
@@ -5674,16 +5718,20 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
-        /// Select_Delete_FromContextMenu
+        /// Select_Delete_FromContextMenu - Use 'Select_Delete_FromContextMenuParams' to pass parameters into this method.
         /// </summary>
         public void Select_Delete_FromContextMenu()
         {
             #region Variable Declarations
             WpfMenuItem delete = this.MainStudioWindow.DesignSurfaceContextMenu.Delete;
+            WpfWindow messageBoxWindow = this.MessageBoxWindow;
             #endregion
 
             // Click 'Delete' menu item
             Mouse.Click(delete, new Point(27, 18));
+
+            // Verify that the 'Exists' property of 'WarewolfMessageBox' window equals 'True'
+            Assert.AreEqual(this.Select_Delete_FromContextMenuParams.MessageBoxWindowExists, messageBoxWindow.Exists, "Delete Dialog does not exist after clicking delete button");
         }
         
         /// <summary>
@@ -5717,16 +5765,20 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
-        /// Select_Deploy_FromExplorerContextMenu
+        /// Select_Deploy_FromExplorerContextMenu - Use 'Select_Deploy_FromExplorerContextMenuParams' to pass parameters into this method.
         /// </summary>
         public void Select_Deploy_FromExplorerContextMenu()
         {
             #region Variable Declarations
             WpfMenuItem deploy = this.MainStudioWindow.ExplorerContextMenu.Deploy;
+            WpfTabPage deployTab = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.DeployTab;
             #endregion
 
             // Click 'Deploy' menu item
             Mouse.Click(deploy, new Point(57, 11));
+
+            // Verify that the 'Exists' property of 'Dev2.ViewModels.DeployWorksurfaceViewModel' tab equals 'True'
+            Assert.AreEqual(this.Select_Deploy_FromExplorerContextMenuParams.DeployTabExists, deployTab.Exists, "DeployTab does not exist after clicking Deploy");
         }
         
         /// <summary>
@@ -6249,16 +6301,20 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
-        /// Select_Show_Version_History
+        /// Select_Show_Version_History - Use 'Select_Show_Version_HistoryParams' to pass parameters into this method.
         /// </summary>
         public void Select_Show_Version_History()
         {
             #region Variable Declarations
             WpfMenuItem showVersionHistory = this.MainStudioWindow.ExplorerContextMenu.ShowVersionHistory;
+            WpfEdit itemEdit = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.ResourceImageImage.ItemEdit;
             #endregion
 
             // Click 'Show Version History' menu item
             Mouse.Click(showVersionHistory, new Point(66, 15));
+
+            // Verify that the 'Text' property of first text box next to 'ResourceImage' image equals 'Exists'
+            Assert.AreEqual(this.Select_Show_Version_HistoryParams.ItemEditText, itemEdit.Text, "Version history does not exist after clicking Show version history.");
         }
         
         /// <summary>
@@ -6482,6 +6538,23 @@ namespace Warewolf.UITests
             // Verify that the 'Enabled' property of 'Test Connection' button equals 'True'
             Assert.AreEqual(this.Type_TestSite_into_Web_Source_Wizard_Address_TextboxParams.TestConnectionButtonEnabled, testConnectionButton.Enabled, "New web source wizard test connection button is not enabled after entering a vali" +
                     "d web address.");
+        }
+        
+        /// <summary>
+        /// Click_View_Api_From_Context_Menu
+        /// </summary>
+        public void Click_View_Api_From_Context_Menu()
+        {
+            #region Variable Declarations
+            WpfTreeItem uIInfragisticsControlsTreeItem = this.UIWarewolfDEV2SANELEMTWindow.UIUI_ExplorerControl_ACustom.UIExplorerTreeTree.UIInfragisticsControlsTreeItem;
+            WpfMenuItem uIViewApisJsonMenuItem = this.UIWarewolfDEV2SANELEMTWindow.UIExplorerEnvironmentMMenu.UIViewApisJsonMenuItem;
+            #endregion
+
+            // Right-Click 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item
+            Mouse.Click(uIInfragisticsControlsTreeItem, MouseButtons.Right, ModifierKeys.None, new Point(85, 11));
+
+            // Click 'View Apis.Json' menu item
+            Mouse.Click(uIViewApisJsonMenuItem, new Point(71, 13));
         }
         
         #region Properties
@@ -8129,6 +8202,18 @@ namespace Warewolf.UITests
             }
         }
         
+        public virtual Enter_Text_Into_Workflow_Tests_OutPutTable_Row1_Value_Textbox_As_CodedUITestParams Enter_Text_Into_Workflow_Tests_OutPutTable_Row1_Value_Textbox_As_CodedUITestParams
+        {
+            get
+            {
+                if ((this.mEnter_Text_Into_Workflow_Tests_OutPutTable_Row1_Value_Textbox_As_CodedUITestParams == null))
+                {
+                    this.mEnter_Text_Into_Workflow_Tests_OutPutTable_Row1_Value_Textbox_As_CodedUITestParams = new Enter_Text_Into_Workflow_Tests_OutPutTable_Row1_Value_Textbox_As_CodedUITestParams();
+                }
+                return this.mEnter_Text_Into_Workflow_Tests_OutPutTable_Row1_Value_Textbox_As_CodedUITestParams;
+            }
+        }
+        
         public virtual Filter_variablesParams Filter_variablesParams
         {
             get
@@ -8669,6 +8754,18 @@ namespace Warewolf.UITests
             }
         }
         
+        public virtual Select_Delete_FromContextMenuParams Select_Delete_FromContextMenuParams
+        {
+            get
+            {
+                if ((this.mSelect_Delete_FromContextMenuParams == null))
+                {
+                    this.mSelect_Delete_FromContextMenuParams = new Select_Delete_FromContextMenuParams();
+                }
+                return this.mSelect_Delete_FromContextMenuParams;
+            }
+        }
+        
         public virtual Select_Delete_FromExplorerContextMenuParams Select_Delete_FromExplorerContextMenuParams
         {
             get
@@ -8678,6 +8775,18 @@ namespace Warewolf.UITests
                     this.mSelect_Delete_FromExplorerContextMenuParams = new Select_Delete_FromExplorerContextMenuParams();
                 }
                 return this.mSelect_Delete_FromExplorerContextMenuParams;
+            }
+        }
+        
+        public virtual Select_Deploy_FromExplorerContextMenuParams Select_Deploy_FromExplorerContextMenuParams
+        {
+            get
+            {
+                if ((this.mSelect_Deploy_FromExplorerContextMenuParams == null))
+                {
+                    this.mSelect_Deploy_FromExplorerContextMenuParams = new Select_Deploy_FromExplorerContextMenuParams();
+                }
+                return this.mSelect_Deploy_FromExplorerContextMenuParams;
             }
         }
         
@@ -8822,6 +8931,18 @@ namespace Warewolf.UITests
                     this.mSelect_RSAKLFSVRGENDEV_From_Server_Source_Wizard_DropdownlistExpectedValues = new Select_RSAKLFSVRGENDEV_From_Server_Source_Wizard_DropdownlistExpectedValues();
                 }
                 return this.mSelect_RSAKLFSVRGENDEV_From_Server_Source_Wizard_DropdownlistExpectedValues;
+            }
+        }
+        
+        public virtual Select_Show_Version_HistoryParams Select_Show_Version_HistoryParams
+        {
+            get
+            {
+                if ((this.mSelect_Show_Version_HistoryParams == null))
+                {
+                    this.mSelect_Show_Version_HistoryParams = new Select_Show_Version_HistoryParams();
+                }
+                return this.mSelect_Show_Version_HistoryParams;
             }
         }
         
@@ -9038,6 +9159,18 @@ namespace Warewolf.UITests
                     this.mSwitchCaseDialog = new SwitchCaseDialog();
                 }
                 return this.mSwitchCaseDialog;
+            }
+        }
+        
+        public UIWarewolfDEV2SANELEMTWindow UIWarewolfDEV2SANELEMTWindow
+        {
+            get
+            {
+                if ((this.mUIWarewolfDEV2SANELEMTWindow == null))
+                {
+                    this.mUIWarewolfDEV2SANELEMTWindow = new UIWarewolfDEV2SANELEMTWindow();
+                }
+                return this.mUIWarewolfDEV2SANELEMTWindow;
             }
         }
         #endregion
@@ -9317,6 +9450,8 @@ namespace Warewolf.UITests
         
         private Enter_Text_Into_Workflow_Tests_Row1_Value_Textbox_As_CodedUITestParams mEnter_Text_Into_Workflow_Tests_Row1_Value_Textbox_As_CodedUITestParams;
         
+        private Enter_Text_Into_Workflow_Tests_OutPutTable_Row1_Value_Textbox_As_CodedUITestParams mEnter_Text_Into_Workflow_Tests_OutPutTable_Row1_Value_Textbox_As_CodedUITestParams;
+        
         private Filter_variablesParams mFilter_variablesParams;
         
         private Open_Assign_Tool_Large_ViewParams mOpen_Assign_Tool_Large_ViewParams;
@@ -9407,7 +9542,11 @@ namespace Warewolf.UITests
         
         private Search_And_Select_HelloWolrdParams mSearch_And_Select_HelloWolrdParams;
         
+        private Select_Delete_FromContextMenuParams mSelect_Delete_FromContextMenuParams;
+        
         private Select_Delete_FromExplorerContextMenuParams mSelect_Delete_FromExplorerContextMenuParams;
+        
+        private Select_Deploy_FromExplorerContextMenuParams mSelect_Deploy_FromExplorerContextMenuParams;
         
         private Select_Dev2TestingDB_From_DB_Source_Wizard_Database_ComboboxParams mSelect_Dev2TestingDB_From_DB_Source_Wizard_Database_ComboboxParams;
         
@@ -9432,6 +9571,8 @@ namespace Warewolf.UITests
         private Select_RemoteConnectionIntegrationConnected_From_Deploy_Tab_Source_Server_ComboboxParams mSelect_RemoteConnectionIntegrationConnected_From_Deploy_Tab_Source_Server_ComboboxParams;
         
         private Select_RSAKLFSVRGENDEV_From_Server_Source_Wizard_DropdownlistExpectedValues mSelect_RSAKLFSVRGENDEV_From_Server_Source_Wizard_DropdownlistExpectedValues;
+        
+        private Select_Show_Version_HistoryParams mSelect_Show_Version_HistoryParams;
         
         private Select_SystemObject_From_DotNet_DLL_Large_View_Namespace_ComboboxExpectedValues mSelect_SystemObject_From_DotNet_DLL_Large_View_Namespace_ComboboxExpectedValues;
         
@@ -9468,6 +9609,8 @@ namespace Warewolf.UITests
         private ServicePickerDialog mServicePickerDialog;
         
         private SwitchCaseDialog mSwitchCaseDialog;
+        
+        private UIWarewolfDEV2SANELEMTWindow mUIWarewolfDEV2SANELEMTWindow;
         #endregion
     }
     
@@ -10161,6 +10304,11 @@ namespace Warewolf.UITests
         /// Verify that the 'Exists' property of 'Duplicate' button equals 'True'
         /// </summary>
         public bool DuplicateButtonExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'SaveDialogView' window equals 'True'
+        /// </summary>
+        public bool SaveDialogWindowExists = true;
         #endregion
     }
     
@@ -10181,6 +10329,11 @@ namespace Warewolf.UITests
         /// Verify that the 'Enabled' property of 'Duplicate' menu item equals 'True'
         /// </summary>
         public bool DuplicateEnabled = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'SaveDialogView' window equals 'True'
+        /// </summary>
+        public bool SaveDialogWindowExists = true;
         #endregion
     }
     
@@ -12470,6 +12623,26 @@ namespace Warewolf.UITests
     }
     
     /// <summary>
+    /// Parameters to be passed into 'Enter_Text_Into_Workflow_Tests_OutPutTable_Row1_Value_Textbox_As_CodedUITest'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Enter_Text_Into_Workflow_Tests_OutPutTable_Row1_Value_Textbox_As_CodedUITestParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Type 'Coded UI Test' in 'Text' text box
+        /// </summary>
+        public string TextboxSendKeys = "Coded UI Test";
+        
+        /// <summary>
+        /// Verify that the 'Text' property of 'Text' text box equals 'Coded UI Test'
+        /// </summary>
+        public string TextboxText = "Coded UI Test";
+        #endregion
+    }
+    
+    /// <summary>
     /// Parameters to be passed into 'Filter_variables'
     /// </summary>
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
@@ -12561,6 +12734,16 @@ namespace Warewolf.UITests
         /// Verify that the 'Exists' property of 'DsfBaseConvertActivity' custom control equals 'True'
         /// </summary>
         public bool BaseConvertExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'QuickVariableInputContent' custom control equals 'True'
+        /// </summary>
+        public bool QuickVariableInputContentExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'QuickVariableInputContent' custom control equals 'True'
+        /// </summary>
+        public bool QuickVariableInputContentExists1 = true;
         #endregion
     }
     
@@ -12606,6 +12789,11 @@ namespace Warewolf.UITests
         /// Verify that the 'Exists' property of 'DsfCaseConvertActivity' custom control equals 'True'
         /// </summary>
         public bool CaseConvertExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'QuickVariableInputContent' custom control equals 'True'
+        /// </summary>
+        public bool QuickVariableInputContentExists = true;
         #endregion
     }
     
@@ -12686,6 +12874,11 @@ namespace Warewolf.UITests
         /// Verify that the 'Exists' property of 'DsfDataMergeActivity' custom control equals 'True'
         /// </summary>
         public bool DataMergeExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'QuickVariableInputContent' custom control equals 'True'
+        /// </summary>
+        public bool QuickVariableInputContentExists = true;
         #endregion
     }
     
@@ -12721,6 +12914,11 @@ namespace Warewolf.UITests
         /// Verify that the 'Exists' property of 'DsfDataSplitActivity' custom control equals 'True'
         /// </summary>
         public bool DataSplitExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'QuickVariableInputContent' custom control equals 'True'
+        /// </summary>
+        public bool QuickVariableInputContentExists = true;
         #endregion
     }
     
@@ -13066,11 +13264,6 @@ namespace Warewolf.UITests
         /// Verify that the 'Exists' property of 'DsfGatherSystemInformationActivity' custom control equals 'True'
         /// </summary>
         public bool GatherSystemInfoExists = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'QuickVariableInputContent' custom control equals 'True'
-        /// </summary>
-        public bool QuickVariableInputContentExists = true;
         #endregion
     }
     
@@ -13151,6 +13344,11 @@ namespace Warewolf.UITests
         /// Verify that the 'Exists' property of 'DsfXPathActivity' custom control equals 'True'
         /// </summary>
         public bool XPathExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'QuickVariableInputContent' custom control equals 'True'
+        /// </summary>
+        public bool QuickVariableInputContentExists = true;
         #endregion
     }
     
@@ -13275,6 +13473,21 @@ namespace Warewolf.UITests
     }
     
     /// <summary>
+    /// Parameters to be passed into 'Select_Delete_FromContextMenu'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Select_Delete_FromContextMenuParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'WarewolfMessageBox' window equals 'True'
+        /// </summary>
+        public bool MessageBoxWindowExists = true;
+        #endregion
+    }
+    
+    /// <summary>
     /// Parameters to be passed into 'Select_Delete_FromExplorerContextMenu'
     /// </summary>
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
@@ -13286,6 +13499,21 @@ namespace Warewolf.UITests
         /// Verify that the 'Exists' property of 'Yes' button equals 'True'
         /// </summary>
         public bool YesButtonExists = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Select_Deploy_FromExplorerContextMenu'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Select_Deploy_FromExplorerContextMenuParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Dev2.ViewModels.DeployWorksurfaceViewModel' tab equals 'True'
+        /// </summary>
+        public bool DeployTabExists = true;
         #endregion
     }
     
@@ -13526,6 +13754,21 @@ namespace Warewolf.UITests
         /// Verify that the 'Text' property of 'Text' text box equals 'RSAKLFSVRGENDEV'
         /// </summary>
         public string TextboxText = "RSAKLFSVRGENDEV";
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Select_Show_Version_History'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Select_Show_Version_HistoryParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Text' property of first text box next to 'ResourceImage' image equals 'Exists'
+        /// </summary>
+        public string ItemEditText = "Exists";
         #endregion
     }
     
@@ -42137,6 +42380,157 @@ namespace Warewolf.UITests
         
         #region Fields
         private WpfButton mDoneButton;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIWarewolfDEV2SANELEMTWindow : WpfWindow
+    {
+        
+        public UIWarewolfDEV2SANELEMTWindow()
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfWindow.PropertyNames.Name] = "Warewolf (DEV2\\SANELE.MTHEMBU)";
+            this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public UIUI_ExplorerControl_ACustom UIUI_ExplorerControl_ACustom
+        {
+            get
+            {
+                if ((this.mUIUI_ExplorerControl_ACustom == null))
+                {
+                    this.mUIUI_ExplorerControl_ACustom = new UIUI_ExplorerControl_ACustom(this);
+                }
+                return this.mUIUI_ExplorerControl_ACustom;
+            }
+        }
+        
+        public UIExplorerEnvironmentMMenu UIExplorerEnvironmentMMenu
+        {
+            get
+            {
+                if ((this.mUIExplorerEnvironmentMMenu == null))
+                {
+                    this.mUIExplorerEnvironmentMMenu = new UIExplorerEnvironmentMMenu(this);
+                }
+                return this.mUIExplorerEnvironmentMMenu;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIUI_ExplorerControl_ACustom mUIUI_ExplorerControl_ACustom;
+        
+        private UIExplorerEnvironmentMMenu mUIExplorerEnvironmentMMenu;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIUI_ExplorerControl_ACustom : WpfCustom
+    {
+        
+        public UIUI_ExplorerControl_ACustom(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ExplorerView";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "UI_ExplorerControl_AutoID";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public UIExplorerTreeTree UIExplorerTreeTree
+        {
+            get
+            {
+                if ((this.mUIExplorerTreeTree == null))
+                {
+                    this.mUIExplorerTreeTree = new UIExplorerTreeTree(this);
+                }
+                return this.mUIExplorerTreeTree;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIExplorerTreeTree mUIExplorerTreeTree;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIExplorerTreeTree : WpfTree
+    {
+        
+        public UIExplorerTreeTree(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfTree.PropertyNames.AutomationId] = "ExplorerTree";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfTreeItem UIInfragisticsControlsTreeItem
+        {
+            get
+            {
+                if ((this.mUIInfragisticsControlsTreeItem == null))
+                {
+                    this.mUIInfragisticsControlsTreeItem = new WpfTreeItem(this);
+                    #region Search Criteria
+                    this.mUIInfragisticsControlsTreeItem.SearchProperties[WpfTreeItem.PropertyNames.Name] = "Infragistics.Controls.Menus.XamDataTreeNodeDataContext";
+                    this.mUIInfragisticsControlsTreeItem.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mUIInfragisticsControlsTreeItem;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfTreeItem mUIInfragisticsControlsTreeItem;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIExplorerEnvironmentMMenu : WpfMenu
+    {
+        
+        public UIExplorerEnvironmentMMenu(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfMenu.PropertyNames.AutomationId] = "ExplorerEnvironmentMenu";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfMenuItem UIViewApisJsonMenuItem
+        {
+            get
+            {
+                if ((this.mUIViewApisJsonMenuItem == null))
+                {
+                    this.mUIViewApisJsonMenuItem = new WpfMenuItem(this);
+                    #region Search Criteria
+                    this.mUIViewApisJsonMenuItem.SearchProperties[WpfMenuItem.PropertyNames.AutomationId] = "ViewApisJson";
+                    this.mUIViewApisJsonMenuItem.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mUIViewApisJsonMenuItem;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfMenuItem mUIViewApisJsonMenuItem;
         #endregion
     }
 }
