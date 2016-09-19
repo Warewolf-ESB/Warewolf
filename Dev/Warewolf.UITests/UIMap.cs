@@ -542,14 +542,27 @@ namespace Warewolf.UITests
 
         public void Enter_Text_Into_Explorer_Filter(string FilterText)
         {
+
+            #region Variable Declarations
+
+            WpfButton executeIcon = MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.ResourceImageImage.ExecuteIcon;
+            WpfButton viewIcon = MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.ResourceImageImage.ViewIcon;
+
+            #endregion
+
             MainStudioWindow.DockManager.SplitPaneLeft.Explorer.SearchTextBox.Text = FilterText;
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerRefreshButton, new Point(10, 10));
+
+            // Verify that the 'Exists' property of 'Permission Icon' window equals 'True'
+            Assert.IsTrue(executeIcon.Exists, "executeIcon button does not exist");
+            Assert.IsTrue(viewIcon.Exists, "viewIcon button does not exist");
+
         }
 
         public void Enter_GroupName_Into_Windows_Group_Dialog(string GroupName)
         {
             SelectWindowsGroupDialog.ItemPanel.ObjectNameTextbox.Text = GroupName;
-            Assert.IsTrue(SelectWindowsGroupDialog.OKPanel.OK.Enabled, "Windows group dialog OK button is not enabled.");
+            Assert.IsTrue(SelectWindowsGroupDialog.OKPanel.OK.Enabled, "Windows group dialog OK button is not enabled.");            
         }
 
         public void Enter_ServiceName_Into_Service_Picker_Dialog(string ServiceName)
