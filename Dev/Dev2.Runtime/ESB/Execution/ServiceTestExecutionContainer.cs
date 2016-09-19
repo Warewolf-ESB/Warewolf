@@ -230,8 +230,12 @@ namespace Dev2.Runtime.ESB.Execution
                 {
                     wfappUtils.DispatchDebugState(DataObject, StateType.End, DataObject.Environment.HasErrors(), DataObject.Environment.FetchErrors(), out invokeErrors, DataObject.StartTime, false, true);
                 }
-                testRunResult.DebugForTest = TestDebugMessageRepo.Instance.FetchDebugItems(resourceID, test.TestName);
-                _request.ExecuteResult = serializer.SerializeToBuilder(testRunResult);
+                if(testRunResult != null)
+                {
+                    if(test != null)
+                        testRunResult.DebugForTest = TestDebugMessageRepo.Instance.FetchDebugItems(resourceID, test.TestName);
+                    _request.ExecuteResult = serializer.SerializeToBuilder(testRunResult);
+                }
                 result = DataObject.DataListID;
             }
             catch (InvalidWorkflowException iwe)
@@ -240,7 +244,8 @@ namespace Dev2.Runtime.ESB.Execution
                 var msg = iwe.Message;
 
                 int start = msg.IndexOf("Flowchart ", StringComparison.Ordinal);
-                to.AddError(start > 0 ? GlobalConstants.NoStartNodeError : iwe.Message);
+                if(to != null)
+                    to.AddError(start > 0 ? GlobalConstants.NoStartNodeError : iwe.Message);
                 var failureMessage = DataObject.Environment.FetchErrors();
                 wfappUtils.DispatchDebugState(DataObject, StateType.End, DataObject.Environment.HasErrors(), failureMessage, out invokeErrors, DataObject.StartTime, false, true);
 
@@ -261,7 +266,8 @@ namespace Dev2.Runtime.ESB.Execution
                     Dev2Logger.Error($"Test {DataObject.TestName} for Resource {DataObject.ServiceName} ID {DataObject.ResourceID} marked invalid in exception for no start node");
                 }
                 testRunResult.DebugForTest = TestDebugMessageRepo.Instance.FetchDebugItems(resourceID, test.TestName);
-                _request.ExecuteResult = serializer.SerializeToBuilder(testRunResult);
+                if(_request != null)
+                    _request.ExecuteResult = serializer.SerializeToBuilder(testRunResult);
             }
             catch (Exception ex)
             {

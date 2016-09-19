@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using Dev2.Runtime.ServiceModel.Data;
+// ReSharper disable UnusedMemberInSuper.Global
+// ReSharper disable UnusedMember.Global
 
 namespace Dev2.Common.Interfaces
 {
