@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.DirectoryServices;
 using System.DirectoryServices.AccountManagement;
 using System.Linq;
 using System.Security.Principal;
@@ -66,10 +67,15 @@ namespace Dev2.Activities.Specs.Scheduler
         [Given(@"""(.*)"" has a username of ""(.*)"" and a Password of ""(.*)""")]
         public void GivenHasAUsernameOfAndAPasswordOf(string scheduleName, string userName, string password)
         {
-            if(!AccountExists("LocalSchedulerAdmin"))
+            if(AccountExists("LocalSchedulerAdmin"))
             {
-                CreateLocalWindowsAccount("LocalSchedulerAdmin", "987Sched#@!", "Administrators");
+                DirectoryEntry localDirectory = new DirectoryEntry("WinNT://" + Environment.MachineName);
+                DirectoryEntries users = localDirectory.Children;
+                DirectoryEntry user = users.Find("LocalSchedulerAdmin");
+                users.Remove(user);
+                
             }
+            CreateLocalWindowsAccount("LocalSchedulerAdmin", "987Sched#@!", "Administrators");            
             _scenarioContext.Add("UserName", userName);
             _scenarioContext.Add("Password", password);
         }
@@ -308,7 +314,7 @@ namespace Dev2.Activities.Specs.Scheduler
         public static SecurityIdentifier GetUserSecurityIdentifier(string name)
         {
             NTAccount acct = new NTAccount(Environment.MachineName, name);
-            SecurityIdentifier id = (SecurityIdentifier)acct.Translate(typeof(SecurityIdentifier));
+            SecurityIdentifier id = (SecurityIdentifier)acct.Translate(typeof(SecurityIdentifier));            
             return id;
         }
 

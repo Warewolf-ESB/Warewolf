@@ -480,13 +480,14 @@ namespace Warewolf.Studio.ViewModels
                     }
                     if (addRow)
                     {
-                        AddBlankRowToRecordset(itemToAdd, recsetCols, indexToInsertAt, indexNum);
+                        
+                        AddBlankRowToRecordset(itemToAdd, recsetCols, indexToInsertAt, indexNum,dataList);
                     }
                 }
             }
         }
 
-        private void AddBlankRowToRecordset(IServiceTestInput dlItem, IList<IScalar> columns, int indexToInsertAt, int indexNum)
+        private void AddBlankRowToRecordset(IServiceTestInput dlItem, IList<IScalar> columns, int indexToInsertAt, int indexNum, IDataListModel dataList)
         {
             IList<IScalar> recsetCols = columns.Distinct(Scalar.Comparer).ToList();
             string colName = null;
@@ -496,7 +497,9 @@ namespace Warewolf.Studio.ViewModels
                 {
                     var recSetName = DataListUtil.ExtractRecordsetNameFromValue(dlItem.Variable);
                     var varName = string.Concat(recSetName, @"(", indexNum, @").", col.Name);
-                    Inputs.Insert(indexToInsertAt + 1, new ServiceTestInput(varName, string.Empty));
+                    var serviceTestInput = new ServiceTestInput(varName, string.Empty);
+                    serviceTestInput.AddNewAction = ()=>AddRow(serviceTestInput, dataList);
+                    Inputs.Insert(indexToInsertAt + 1, serviceTestInput);
                     indexToInsertAt++;
                 }
                 colName = col.Name;
