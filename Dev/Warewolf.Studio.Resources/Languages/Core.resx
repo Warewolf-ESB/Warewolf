@@ -2719,6 +2719,12 @@ You can use File System, URI, SFTP, FTP or FTPS format.</value>
   <data name="ServiceTestEnableRunSelectedTestTooltip" xml:space="preserve">
     <value>Select or De-Select to run the test</value>
   </data>
+  <data name="ServiceTestSelectedTestHelpText" xml:space="preserve">
+    <value>ServiceTestSelectedTestHelpText</value>
+  </data>
+  <data name="ServiceTestGenericHelpText" xml:space="preserve">
+    <value>ServiceTestGenericHelpText</value>
+  </data>
   <data name="ServiceTestEnableRunSelectedTestHelpText" xml:space="preserve">
     <value>Selecting this option will add the test to the test to the Run All command. 
 If this option is not selected, the test will not run part of the Run All list of tests.</value>
