@@ -1554,16 +1554,32 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
-        /// Click_Scheduler_Create_New_Task_Ribbon_Button
+        /// Click_Scheduler_Create_New_Task_Ribbon_Button - Use 'Click_Scheduler_Create_New_Task_Ribbon_ButtonParams' to pass parameters into this method.
         /// </summary>
         public void Click_Scheduler_Create_New_Task_Ribbon_Button()
         {
             #region Variable Declarations
             WpfButton newTaskButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SchedulerTab.SchedulesList.SchedulerListItem.CreateTaskButton.NewTaskButton;
+            WpfText triggerText = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SchedulerTab.TriggerText;
+            WpfRadioButton enabledRadioButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SchedulerTab.EnabledRadioButton;
+            WpfButton resourcePickerButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SchedulerTab.ResourcePickerButton;
+            WpfButton editTriggerButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SchedulerTab.EditTriggerButton;
             #endregion
 
             // Click first button next to '' button
             Mouse.Click(newTaskButton, new Point(151, 13));
+
+            // Verify that the 'Exists' property of 'Triggered at' label equals 'True'
+            Assert.AreEqual(this.Click_Scheduler_Create_New_Task_Ribbon_ButtonParams.TriggerTextExists, triggerText.Exists, "Scheduler TriggerText does not exist after clicking New Scheduler");
+
+            // Verify that the 'Enabled' property of 'Enabled' radio button equals 'True'
+            Assert.AreEqual(this.Click_Scheduler_Create_New_Task_Ribbon_ButtonParams.EnabledRadioButtonEnabled, enabledRadioButton.Enabled, "Scheduler is disabled by default");
+
+            // Verify that the 'Exists' property of '...' button equals 'True'
+            Assert.AreEqual(this.Click_Scheduler_Create_New_Task_Ribbon_ButtonParams.ResourcePickerButtonExists, resourcePickerButton.Exists, "Select WorkFlow button Exists after clicking Scheduler");
+
+            // Verify that the 'Exists' property of '' button equals 'True'
+            Assert.AreEqual(this.Click_Scheduler_Create_New_Task_Ribbon_ButtonParams.EditTriggerButtonExists, editTriggerButton.Exists, "Edit Schedule time buttom exist after clicking scheduler");
         }
         
         /// <summary>
@@ -1619,16 +1635,20 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
-        /// Click_Scheduler_ResourcePicker
+        /// Click_Scheduler_ResourcePicker - Use 'Click_Scheduler_ResourcePickerParams' to pass parameters into this method.
         /// </summary>
         public void Click_Scheduler_ResourcePicker()
         {
             #region Variable Declarations
             WpfButton resourcePickerButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SchedulerTab.ResourcePickerButton;
+            WpfWindow servicePickerDialog = this.ServicePickerDialog;
             #endregion
 
             // Click '...' button
             Mouse.Click(resourcePickerButton, new Point(20, 12));
+
+            // Verify that the 'Exists' property of 'ServicePickerDialog' window equals 'False'
+            Assert.AreEqual(this.Click_Scheduler_ResourcePickerParams.ServicePickerDialogExists, servicePickerDialog.Exists, "Service picker dialog does exist");
         }
         
         /// <summary>
@@ -3923,12 +3943,12 @@ namespace Warewolf.UITests
             WpfEdit textbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestInputsTable.Row1.Cell.IntellisenseComboBox.Textbox;
             #endregion
 
-            // Type 'Coded UI Test' in 'Text' text box
+            // Type 'User' in 'Text' text box
             Keyboard.SendKeys(textbox, this.Enter_Text_Into_Workflow_Tests_Row1_Value_Textbox_As_CodedUITestParams.TextboxSendKeys, ModifierKeys.None);
 
-            // Verify that the 'Text' property of 'Text' text box equals 'Coded UI Test'
-            Assert.AreEqual(this.Enter_Text_Into_Workflow_Tests_Row1_Value_Textbox_As_CodedUITestParams.TextboxText, textbox.Text, "Workflow tests row 1 value textbox text does not equal Coded UI Test after typing" +
-                    " that in.");
+            // Verify that the 'Text' property of 'Text' text box equals 'User'
+            Assert.AreEqual(this.Enter_Text_Into_Workflow_Tests_Row1_Value_Textbox_As_CodedUITestParams.TextboxText, textbox.Text, "Workflow tests row 1 value textbox text does not equal User after typing that in." +
+                    "");
         }
         
         /// <summary>
@@ -3940,12 +3960,12 @@ namespace Warewolf.UITests
             WpfEdit textbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestOutputsTable.Row1.Cell.IntellisenseComboBox.Textbox;
             #endregion
 
-            // Type 'Coded UI Test' in 'Text' text box
+            // Type 'Helo User' in 'Text' text box
             Keyboard.SendKeys(textbox, this.Enter_Text_Into_Workflow_Tests_OutPutTable_Row1_Value_Textbox_As_CodedUITestParams.TextboxSendKeys, ModifierKeys.None);
 
-            // Verify that the 'Text' property of 'Text' text box equals 'Coded UI Test'
-            Assert.AreEqual(this.Enter_Text_Into_Workflow_Tests_OutPutTable_Row1_Value_Textbox_As_CodedUITestParams.TextboxText, textbox.Text, "Workflow tests output tabe row 1 value textbox text does not equal Coded UI Test " +
-                    "after typing that in.");
+            // Verify that the 'Text' property of 'Text' text box equals 'Hello User'
+            Assert.AreEqual(this.Enter_Text_Into_Workflow_Tests_OutPutTable_Row1_Value_Textbox_As_CodedUITestParams.TextboxText, textbox.Text, "Workflow tests output tabe row 1 value textbox text does not equal Helo User afte" +
+                    "r typing that in.");
         }
         
         /// <summary>
@@ -6557,6 +6577,21 @@ namespace Warewolf.UITests
             Mouse.Click(uIViewApisJsonMenuItem, new Point(71, 13));
         }
         
+        /// <summary>
+        /// AssertMethod1 - Use 'AssertMethod1ExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void AssertMethod1()
+        {
+            #region Variable Declarations
+            WpfText uIThefollowingerroroccText = this.MessageBoxWindow.UIThefollowingerroroccText;
+            #endregion
+
+            // Verify that the 'DisplayText' property of 'The following error occurred on save: Error while ...' label equals 'The following error occurred on save:
+            //Error while saving: This task requires that the user account specified has 'Log On As Batch' job rights'
+            Assert.AreEqual(this.AssertMethod1ExpectedValues.UIThefollowingerroroccTextDisplayText, uIThefollowingerroroccText.DisplayText, "User name error message does not appear after inputing unexisting username and Pa" +
+                    "ssword");
+        }
+        
         #region Properties
         public virtual Assert_CancelConnectionButton_ExistsExpectedValues Assert_CancelConnectionButton_ExistsExpectedValues
         {
@@ -7134,6 +7169,18 @@ namespace Warewolf.UITests
             }
         }
         
+        public virtual Click_Scheduler_Create_New_Task_Ribbon_ButtonParams Click_Scheduler_Create_New_Task_Ribbon_ButtonParams
+        {
+            get
+            {
+                if ((this.mClick_Scheduler_Create_New_Task_Ribbon_ButtonParams == null))
+                {
+                    this.mClick_Scheduler_Create_New_Task_Ribbon_ButtonParams = new Click_Scheduler_Create_New_Task_Ribbon_ButtonParams();
+                }
+                return this.mClick_Scheduler_Create_New_Task_Ribbon_ButtonParams;
+            }
+        }
+        
         public virtual Click_Scheduler_Disable_Task_Radio_ButtonParams Click_Scheduler_Disable_Task_Radio_ButtonParams
         {
             get
@@ -7155,6 +7202,18 @@ namespace Warewolf.UITests
                     this.mClick_Scheduler_Enable_Task_Radio_ButtonParams = new Click_Scheduler_Enable_Task_Radio_ButtonParams();
                 }
                 return this.mClick_Scheduler_Enable_Task_Radio_ButtonParams;
+            }
+        }
+        
+        public virtual Click_Scheduler_ResourcePickerParams Click_Scheduler_ResourcePickerParams
+        {
+            get
+            {
+                if ((this.mClick_Scheduler_ResourcePickerParams == null))
+                {
+                    this.mClick_Scheduler_ResourcePickerParams = new Click_Scheduler_ResourcePickerParams();
+                }
+                return this.mClick_Scheduler_ResourcePickerParams;
             }
         }
         
@@ -9066,6 +9125,18 @@ namespace Warewolf.UITests
             }
         }
         
+        public virtual AssertMethod1ExpectedValues AssertMethod1ExpectedValues
+        {
+            get
+            {
+                if ((this.mAssertMethod1ExpectedValues == null))
+                {
+                    this.mAssertMethod1ExpectedValues = new AssertMethod1ExpectedValues();
+                }
+                return this.mAssertMethod1ExpectedValues;
+            }
+        }
+        
         public MainStudioWindow MainStudioWindow
         {
             get
@@ -9272,9 +9343,13 @@ namespace Warewolf.UITests
         
         private Click_Save_Ribbon_Button_With_No_Save_DialogParams mClick_Save_Ribbon_Button_With_No_Save_DialogParams;
         
+        private Click_Scheduler_Create_New_Task_Ribbon_ButtonParams mClick_Scheduler_Create_New_Task_Ribbon_ButtonParams;
+        
         private Click_Scheduler_Disable_Task_Radio_ButtonParams mClick_Scheduler_Disable_Task_Radio_ButtonParams;
         
         private Click_Scheduler_Enable_Task_Radio_ButtonParams mClick_Scheduler_Enable_Task_Radio_ButtonParams;
+        
+        private Click_Scheduler_ResourcePickerParams mClick_Scheduler_ResourcePickerParams;
         
         private Click_Scheduler_RunTaskParams mClick_Scheduler_RunTaskParams;
         
@@ -9593,6 +9668,8 @@ namespace Warewolf.UITests
         private Type_rsaklfsvrgen_into_DB_Source_Wizard_Server_TextboxParams mType_rsaklfsvrgen_into_DB_Source_Wizard_Server_TextboxParams;
         
         private Type_TestSite_into_Web_Source_Wizard_Address_TextboxParams mType_TestSite_into_Web_Source_Wizard_Address_TextboxParams;
+        
+        private AssertMethod1ExpectedValues mAssertMethod1ExpectedValues;
         
         private MainStudioWindow mMainStudioWindow;
         
@@ -10673,6 +10750,36 @@ namespace Warewolf.UITests
     }
     
     /// <summary>
+    /// Parameters to be passed into 'Click_Scheduler_Create_New_Task_Ribbon_Button'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Click_Scheduler_Create_New_Task_Ribbon_ButtonParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Triggered at' label equals 'True'
+        /// </summary>
+        public bool TriggerTextExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Enabled' property of 'Enabled' radio button equals 'True'
+        /// </summary>
+        public bool EnabledRadioButtonEnabled = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of '...' button equals 'True'
+        /// </summary>
+        public bool ResourcePickerButtonExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of '' button equals 'True'
+        /// </summary>
+        public bool EditTriggerButtonExists = true;
+        #endregion
+    }
+    
+    /// <summary>
     /// Parameters to be passed into 'Click_Scheduler_Disable_Task_Radio_Button'
     /// </summary>
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
@@ -10699,6 +10806,21 @@ namespace Warewolf.UITests
         /// Select check box
         /// </summary>
         public bool StatusCheckBoxChecked = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Click_Scheduler_ResourcePicker'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Click_Scheduler_ResourcePickerParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'ServicePickerDialog' window equals 'False'
+        /// </summary>
+        public bool ServicePickerDialogExists = false;
         #endregion
     }
     
@@ -12611,14 +12733,14 @@ namespace Warewolf.UITests
         
         #region Fields
         /// <summary>
-        /// Type 'Coded UI Test' in 'Text' text box
+        /// Type 'User' in 'Text' text box
         /// </summary>
-        public string TextboxSendKeys = "Coded UI Test";
+        public string TextboxSendKeys = "User";
         
         /// <summary>
-        /// Verify that the 'Text' property of 'Text' text box equals 'Coded UI Test'
+        /// Verify that the 'Text' property of 'Text' text box equals 'User'
         /// </summary>
-        public string TextboxText = "Coded UI Test";
+        public string TextboxText = "User";
         #endregion
     }
     
@@ -12631,14 +12753,14 @@ namespace Warewolf.UITests
         
         #region Fields
         /// <summary>
-        /// Type 'Coded UI Test' in 'Text' text box
+        /// Type 'Helo User' in 'Text' text box
         /// </summary>
-        public string TextboxSendKeys = "Coded UI Test";
+        public string TextboxSendKeys = "Helo User";
         
         /// <summary>
-        /// Verify that the 'Text' property of 'Text' text box equals 'Coded UI Test'
+        /// Verify that the 'Text' property of 'Text' text box equals 'Hello User'
         /// </summary>
-        public string TextboxText = "Coded UI Test";
+        public string TextboxText = "Hello User";
         #endregion
     }
     
@@ -13968,6 +14090,23 @@ namespace Warewolf.UITests
         /// Verify that the 'Enabled' property of 'Test Connection' button equals 'True'
         /// </summary>
         public bool TestConnectionButtonEnabled = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'AssertMethod1'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class AssertMethod1ExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'DisplayText' property of 'The following error occurred on save: Error while ...' label equals 'The following error occurred on save:
+        ///Error while saving: This task requires that the user account specified has 'Log On As Batch' job rights'
+        /// </summary>
+        public string UIThefollowingerroroccTextDisplayText = "The following error occurred on save:\r\nError while saving: This task requires tha" +
+            "t the user account specified has \'Log On As Batch\' job rights";
         #endregion
     }
     
@@ -41341,6 +41480,23 @@ namespace Warewolf.UITests
                 return this.mUIPleasesavecurrentlyeText;
             }
         }
+        
+        public WpfText UIThefollowingerroroccText
+        {
+            get
+            {
+                if ((this.mUIThefollowingerroroccText == null))
+                {
+                    this.mUIThefollowingerroroccText = new WpfText(this);
+                    #region Search Criteria
+                    this.mUIThefollowingerroroccText.SearchProperties[WpfText.PropertyNames.Name] = "The following error occurred on save:\r\nError while saving: This task requires tha" +
+                        "t the user account specified has \'Log On As Batch\' job rights";
+                    this.mUIThefollowingerroroccText.WindowTitles.Add("WarewolfMessageBox");
+                    #endregion
+                }
+                return this.mUIThefollowingerroroccText;
+            }
+        }
         #endregion
         
         #region Fields
@@ -41353,6 +41509,8 @@ namespace Warewolf.UITests
         private WpfButton mOKButton;
         
         private WpfText mUIPleasesavecurrentlyeText;
+        
+        private WpfText mUIThefollowingerroroccText;
         #endregion
     }
     
@@ -42420,12 +42578,26 @@ namespace Warewolf.UITests
                 return this.mUIExplorerEnvironmentMMenu;
             }
         }
+        
+        public UIDev2StudioViewModelsCustom UIDev2StudioViewModelsCustom
+        {
+            get
+            {
+                if ((this.mUIDev2StudioViewModelsCustom == null))
+                {
+                    this.mUIDev2StudioViewModelsCustom = new UIDev2StudioViewModelsCustom(this);
+                }
+                return this.mUIDev2StudioViewModelsCustom;
+            }
+        }
         #endregion
         
         #region Fields
         private UIUI_ExplorerControl_ACustom mUIUI_ExplorerControl_ACustom;
         
         private UIExplorerEnvironmentMMenu mUIExplorerEnvironmentMMenu;
+        
+        private UIDev2StudioViewModelsCustom mUIDev2StudioViewModelsCustom;
         #endregion
     }
     
@@ -42531,6 +42703,130 @@ namespace Warewolf.UITests
         
         #region Fields
         private WpfMenuItem mUIViewApisJsonMenuItem;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIDev2StudioViewModelsCustom : WpfCustom
+    {
+        
+        public UIDev2StudioViewModelsCustom(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ContentPane";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Dev2.Studio.ViewModels.WorkSurface.WorkSurfaceContextViewModel";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public UIUI_SchedulerView_AutCustom UIUI_SchedulerView_AutCustom
+        {
+            get
+            {
+                if ((this.mUIUI_SchedulerView_AutCustom == null))
+                {
+                    this.mUIUI_SchedulerView_AutCustom = new UIUI_SchedulerView_AutCustom(this);
+                }
+                return this.mUIUI_SchedulerView_AutCustom;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIUI_SchedulerView_AutCustom mUIUI_SchedulerView_AutCustom;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIUI_SchedulerView_AutCustom : WpfCustom
+    {
+        
+        public UIUI_SchedulerView_AutCustom(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.SchedulerView";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "UI_SchedulerView_AutoID";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfText UIAt742AMeverydayText
+        {
+            get
+            {
+                if ((this.mUIAt742AMeverydayText == null))
+                {
+                    this.mUIAt742AMeverydayText = new WpfText(this);
+                    #region Search Criteria
+                    this.mUIAt742AMeverydayText.SearchProperties[WpfText.PropertyNames.Name] = "At 7:42 AM every day";
+                    this.mUIAt742AMeverydayText.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mUIAt742AMeverydayText;
+            }
+        }
+        
+        public WpfRadioButton UIEnabledRadioButton
+        {
+            get
+            {
+                if ((this.mUIEnabledRadioButton == null))
+                {
+                    this.mUIEnabledRadioButton = new WpfRadioButton(this);
+                    #region Search Criteria
+                    this.mUIEnabledRadioButton.SearchProperties[WpfRadioButton.PropertyNames.AutomationId] = "UI_EnabledRadioButton";
+                    this.mUIEnabledRadioButton.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mUIEnabledRadioButton;
+            }
+        }
+        
+        public WpfButton UIItemButton
+        {
+            get
+            {
+                if ((this.mUIItemButton == null))
+                {
+                    this.mUIItemButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mUIItemButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "UI_WorkflowSelectorButton_AutoID";
+                    this.mUIItemButton.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mUIItemButton;
+            }
+        }
+        
+        public WpfButton UIItemButton1
+        {
+            get
+            {
+                if ((this.mUIItemButton1 == null))
+                {
+                    this.mUIItemButton1 = new WpfButton(this);
+                    #region Search Criteria
+                    this.mUIItemButton1.SearchProperties[WpfButton.PropertyNames.AutomationId] = "UI_EditTriggerButton_AutoID";
+                    this.mUIItemButton1.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mUIItemButton1;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfText mUIAt742AMeverydayText;
+        
+        private WpfRadioButton mUIEnabledRadioButton;
+        
+        private WpfButton mUIItemButton;
+        
+        private WpfButton mUIItemButton1;
         #endregion
     }
 }
