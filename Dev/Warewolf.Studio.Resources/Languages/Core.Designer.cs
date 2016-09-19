@@ -6999,6 +6999,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ServiceTestInputsValueHelpText.
+        /// </summary>
+        public static string ServiceTestInputsValueHelpText {
+            get {
+                return ResourceManager.GetString("ServiceTestInputsValueHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Input value to test against.
         /// </summary>
         public static string ServiceTestInputValueTooltip {
@@ -7017,11 +7026,29 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The name of this test.
+        /// </summary>
+        public static string ServiceTestNameHelpText {
+            get {
+                return ResourceManager.GetString("ServiceTestNameHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to You have to save a new test before duplicate.
         /// </summary>
         public static string ServiceTestNewTestDisabledDuplicateSelectedTestTooltip {
             get {
                 return ResourceManager.GetString("ServiceTestNewTestDisabledDuplicateSelectedTestTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Create a new test.
+        /// </summary>
+        public static string ServiceTestNewTestHelpText {
+            get {
+                return ResourceManager.GetString("ServiceTestNewTestHelpText", resourceCulture);
             }
         }
         
@@ -7049,6 +7076,24 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string ServiceTestNoErrorExpectedTooltip {
             get {
                 return ResourceManager.GetString("ServiceTestNoErrorExpectedTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ServiceTestOutputValueHelpText.
+        /// </summary>
+        public static string ServiceTestOutputValueHelpText {
+            get {
+                return ResourceManager.GetString("ServiceTestOutputValueHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Output value to test against.
+        /// </summary>
+        public static string ServiceTestOutputValueTooltip {
+            get {
+                return ResourceManager.GetString("ServiceTestOutputValueTooltip", resourceCulture);
             }
         }
         
@@ -7135,11 +7180,29 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Runs all tests that are marked as enabled.
+        /// </summary>
+        public static string ServiceTestRunAllTestHelpText {
+            get {
+                return ResourceManager.GetString("ServiceTestRunAllTestHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Open this URL in your default browser to view the tests for this workflow.
         /// </summary>
         public static string ServiceTestRunAllTestsInBrowserTooltip {
             get {
                 return ResourceManager.GetString("ServiceTestRunAllTestsInBrowserTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Run all tests.
+        /// </summary>
+        public static string ServiceTestRunAllTestTooltip {
+            get {
+                return ResourceManager.GetString("ServiceTestRunAllTestTooltip", resourceCulture);
             }
         }
         
