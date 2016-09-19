@@ -87,6 +87,21 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
+        /// AssertMethod1 - Use 'AssertMethod1ExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void AssertMethod1()
+        {
+            #region Variable Declarations
+            WpfText uIThefollowingerroroccText = this.MessageBoxWindow.UIThefollowingerroroccText;
+            #endregion
+
+            // Verify that the 'DisplayText' property of 'The following error occurred on save: Error while ...' label equals 'The following error occurred on save:
+            //Error while saving: This task requires that the user account specified has 'Log On As Batch' job rights'
+            Assert.AreEqual(this.AssertMethod1ExpectedValues.UIThefollowingerroroccTextDisplayText, uIThefollowingerroroccText.DisplayText, "User name error message does not appear after inputing unexisting username and Pa" +
+                    "ssword");
+        }
+        
+        /// <summary>
         /// Assign_Value_To_Variable - Use 'Assign_Value_To_VariableParams' to pass parameters into this method.
         /// </summary>
         public void Assign_Value_To_Variable()
@@ -1521,26 +1536,6 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
-        /// Click_Save_Ribbon_Button_With_No_Save_Dialog - Use 'Click_Save_Ribbon_Button_With_No_Save_DialogParams' to pass parameters into this method.
-        /// </summary>
-        public void Click_Save_Ribbon_Button_With_No_Save_Dialog()
-        {
-            #region Variable Declarations
-            WpfButton saveButton = this.MainStudioWindow.SideMenuBar.SaveButton;
-            #endregion
-
-            // Verify that the 'Exists' property of 'Save this tab' button equals 'True'
-            Assert.AreEqual(this.Click_Save_Ribbon_Button_With_No_Save_DialogParams.SaveButtonExists, saveButton.Exists, "Save ribbon button does not exist");
-
-            // Click 'Save this tab' button
-            Mouse.Click(saveButton, new Point(10, 5));
-
-            // Wait for 2 seconds for user delay between actions; Verify that the 'Enabled' property of 'Save this tab' button equals 'False'
-            Playback.Wait(2000);
-            Assert.AreEqual(this.Click_Save_Ribbon_Button_With_No_Save_DialogParams.SaveButtonEnabled, saveButton.Enabled, "Save ribbon button is still enabled after clicking it.");
-        }
-        
-        /// <summary>
         /// Click_SaveDialog_CancelButton
         /// </summary>
         public void Click_SaveDialog_CancelButton()
@@ -2090,6 +2085,23 @@ namespace Warewolf.UITests
 
             // Select 'UI_IsInputCheckbox_AutoID' check box
             isInputCheckbox.Checked = this.Click_VariableList_Scalar_Row1_IsInputCheckboxParams.IsInputCheckboxChecked;
+        }
+        
+        /// <summary>
+        /// Click_View_Api_From_Context_Menu
+        /// </summary>
+        public void Click_View_Api_From_Context_Menu()
+        {
+            #region Variable Declarations
+            WpfTreeItem uIInfragisticsControlsTreeItem = this.UIWarewolfDEV2SANELEMTWindow.UIUI_ExplorerControl_ACustom.UIExplorerTreeTree.UIInfragisticsControlsTreeItem;
+            WpfMenuItem uIViewApisJsonMenuItem = this.UIWarewolfDEV2SANELEMTWindow.UIExplorerEnvironmentMMenu.UIViewApisJsonMenuItem;
+            #endregion
+
+            // Right-Click 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item
+            Mouse.Click(uIInfragisticsControlsTreeItem, MouseButtons.Right, ModifierKeys.None, new Point(85, 11));
+
+            // Click 'View Apis.Json' menu item
+            Mouse.Click(uIViewApisJsonMenuItem, new Point(71, 13));
         }
         
         /// <summary>
@@ -3935,6 +3947,23 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
+        /// Enter_Text_Into_Workflow_Tests_OutPutTable_Row1_Value_Textbox_As_CodedUITest - Use 'Enter_Text_Into_Workflow_Tests_OutPutTable_Row1_Value_Textbox_As_CodedUITestParams' to pass parameters into this method.
+        /// </summary>
+        public void Enter_Text_Into_Workflow_Tests_OutPutTable_Row1_Value_Textbox_As_CodedUITest()
+        {
+            #region Variable Declarations
+            WpfEdit textbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestOutputsTable.Row1.Cell.IntellisenseComboBox.Textbox;
+            #endregion
+
+            // Type 'Helo User' in 'Text' text box
+            Keyboard.SendKeys(textbox, this.Enter_Text_Into_Workflow_Tests_OutPutTable_Row1_Value_Textbox_As_CodedUITestParams.TextboxSendKeys, ModifierKeys.None);
+
+            // Verify that the 'Text' property of 'Text' text box equals 'Hello User'
+            Assert.AreEqual(this.Enter_Text_Into_Workflow_Tests_OutPutTable_Row1_Value_Textbox_As_CodedUITestParams.TextboxText, textbox.Text, "Workflow tests output tabe row 1 value textbox text does not equal Helo User afte" +
+                    "r typing that in.");
+        }
+        
+        /// <summary>
         /// Enter_Text_Into_Workflow_Tests_Row1_Value_Textbox_As_CodedUITest - Use 'Enter_Text_Into_Workflow_Tests_Row1_Value_Textbox_As_CodedUITestParams' to pass parameters into this method.
         /// </summary>
         public void Enter_Text_Into_Workflow_Tests_Row1_Value_Textbox_As_CodedUITest()
@@ -3952,20 +3981,23 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
-        /// Enter_Text_Into_Workflow_Tests_OutPutTable_Row1_Value_Textbox_As_CodedUITest - Use 'Enter_Text_Into_Workflow_Tests_OutPutTable_Row1_Value_Textbox_As_CodedUITestParams' to pass parameters into this method.
+        /// Enter_User_Details_For_Scheduler - Use 'Enter_User_Details_For_SchedulerParams' to pass parameters into this method.
         /// </summary>
-        public void Enter_Text_Into_Workflow_Tests_OutPutTable_Row1_Value_Textbox_As_CodedUITest()
+        public void Enter_User_Details_For_Scheduler()
         {
             #region Variable Declarations
-            WpfEdit textbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestOutputsTable.Row1.Cell.IntellisenseComboBox.Textbox;
+            WpfEdit userNameTextBoxEdit = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SchedulerTab.UserNameTextBoxEdit;
+            WpfEdit passwordTextBoxEdit = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SchedulerTab.PasswordTextBoxEdit;
             #endregion
 
-            // Type 'Helo User' in 'Text' text box
-            Keyboard.SendKeys(textbox, this.Enter_Text_Into_Workflow_Tests_OutPutTable_Row1_Value_Textbox_As_CodedUITestParams.TextboxSendKeys, ModifierKeys.None);
+            // Type 'user' in 'UI_UserNameTextBox' text box
+            userNameTextBoxEdit.Text = this.Enter_User_Details_For_SchedulerParams.UserNameTextBoxEditText;
 
-            // Verify that the 'Text' property of 'Text' text box equals 'Hello User'
-            Assert.AreEqual(this.Enter_Text_Into_Workflow_Tests_OutPutTable_Row1_Value_Textbox_As_CodedUITestParams.TextboxText, textbox.Text, "Workflow tests output tabe row 1 value textbox text does not equal Helo User afte" +
-                    "r typing that in.");
+            // Click 'UI_PasswordBox' text box
+            Mouse.Click(passwordTextBoxEdit, new Point(53, 16));
+
+            // Type '********' in 'UI_PasswordBox' text box
+            Keyboard.SendKeys(passwordTextBoxEdit, this.Enter_User_Details_For_SchedulerParams.PasswordTextBoxEditSendKeys, true);
         }
         
         /// <summary>
@@ -3986,6 +4018,22 @@ namespace Warewolf.UITests
 
             // Type 'Other' in 'SearchTextBox' text box
             variableSearchTextBoxEdit.Text = this.Filter_variablesParams.VariableSearchTextBoxEditText;
+        }
+        
+        /// <summary>
+        /// Move_Dice_Roll_To_Localhost
+        /// </summary>
+        public void Move_Dice_Roll_To_Localhost()
+        {
+            #region Variable Declarations
+            WpfTreeItem secondItem = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.SecondItem;
+            WpfTreeItem localhost = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost;
+            #endregion
+
+            // Move 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item to 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item
+            localhost.EnsureClickable(new Point(10, 10));
+            Mouse.StartDragging(secondItem, new Point(92, 4));
+            Mouse.StopDragging(localhost, new Point(10, 10));
         }
         
         /// <summary>
@@ -4527,27 +4575,6 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
-        /// Open_SQL_Large_View_FromContextMenu - Use 'Open_SQL_Large_View_FromContextMenuParams' to pass parameters into this method.
-        /// </summary>
-        public void Open_SQL_Large_View_FromContextMenu()
-        {
-            #region Variable Declarations
-            WpfCustom sqlServerDatabase = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase;
-            WpfMenuItem showLargeView = this.MainStudioWindow.DesignSurfaceContextMenu.ShowLargeView;
-            WpfButton newDbSourceButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase.LargeView.NewDbSourceButton;
-            #endregion
-
-            // Right-Click 'DsfSqlServerDatabaseActivity' custom control
-            Mouse.Click(sqlServerDatabase, MouseButtons.Right, ModifierKeys.None, new Point(143, 6));
-
-            // Click 'Show Large View' menu item
-            Mouse.Click(showLargeView, new Point(43, 15));
-
-            // Verify that the 'Exists' property of 'New' button equals 'True'
-            Assert.AreEqual(this.Open_SQL_Large_View_FromContextMenuParams.NewDbSourceButtonExists, newDbSourceButton.Exists, "\"New button does not exist\"");
-        }
-        
-        /// <summary>
         /// Open_Move_Tool_Large_View - Use 'Open_Move_Tool_Large_ViewParams' to pass parameters into this method.
         /// </summary>
         public void Open_Move_Tool_Large_View()
@@ -4754,6 +4781,27 @@ namespace Warewolf.UITests
 
             // Verify that the 'Exists' property of 'DsfSqlBulkInsertActivity' custom control equals 'True'
             Assert.AreEqual(this.Open_SQL_Bulk_Insert_Tool_Qvi_Large_ViewParams.SqlBulkInsertExists, sqlBulkInsert.Exists, "Sql Bulk Insert Qvi window on the design surface does not exist");
+        }
+        
+        /// <summary>
+        /// Open_SQL_Large_View_FromContextMenu - Use 'Open_SQL_Large_View_FromContextMenuParams' to pass parameters into this method.
+        /// </summary>
+        public void Open_SQL_Large_View_FromContextMenu()
+        {
+            #region Variable Declarations
+            WpfCustom sqlServerDatabase = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase;
+            WpfMenuItem showLargeView = this.MainStudioWindow.DesignSurfaceContextMenu.ShowLargeView;
+            WpfButton newDbSourceButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase.LargeView.NewDbSourceButton;
+            #endregion
+
+            // Right-Click 'DsfSqlServerDatabaseActivity' custom control
+            Mouse.Click(sqlServerDatabase, MouseButtons.Right, ModifierKeys.None, new Point(143, 6));
+
+            // Click 'Show Large View' menu item
+            Mouse.Click(showLargeView, new Point(43, 15));
+
+            // Verify that the 'Exists' property of 'New' button equals 'True'
+            Assert.AreEqual(this.Open_SQL_Large_View_FromContextMenuParams.NewDbSourceButtonExists, newDbSourceButton.Exists, "\"New button does not exist\"");
         }
         
         /// <summary>
@@ -5679,26 +5727,6 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
-        /// Search_And_Select_HelloWolrd - Use 'Search_And_Select_HelloWolrdParams' to pass parameters into this method.
-        /// </summary>
-        public void Search_And_Select_HelloWolrd()
-        {
-            #region Variable Declarations
-            WpfEdit searchTextBox = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.SearchTextBox;
-            WpfTreeItem firstItem = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem;
-            #endregion
-
-            // Click 'SearchTextBox' text box
-            Mouse.Click(searchTextBox, new Point(165, 9));
-
-            // Type 'Hello World' in 'SearchTextBox' text box
-            searchTextBox.Text = this.Search_And_Select_HelloWolrdParams.SearchTextBoxText;
-
-            // Right-Click 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item
-            Mouse.Click(firstItem, MouseButtons.Right, ModifierKeys.None, new Point(101, 9));
-        }
-        
-        /// <summary>
         /// Search_And_Select_DiceRoll - Use 'Search_And_Select_DiceRollParams' to pass parameters into this method.
         /// </summary>
         public void Search_And_Select_DiceRoll()
@@ -5713,6 +5741,26 @@ namespace Warewolf.UITests
 
             // Type 'Dice Roll' in 'SearchTextBox' text box
             searchTextBox.Text = this.Search_And_Select_DiceRollParams.SearchTextBoxText;
+
+            // Right-Click 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item
+            Mouse.Click(firstItem, MouseButtons.Right, ModifierKeys.None, new Point(101, 9));
+        }
+        
+        /// <summary>
+        /// Search_And_Select_HelloWolrd - Use 'Search_And_Select_HelloWolrdParams' to pass parameters into this method.
+        /// </summary>
+        public void Search_And_Select_HelloWolrd()
+        {
+            #region Variable Declarations
+            WpfEdit searchTextBox = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.SearchTextBox;
+            WpfTreeItem firstItem = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem;
+            #endregion
+
+            // Click 'SearchTextBox' text box
+            Mouse.Click(searchTextBox, new Point(165, 9));
+
+            // Type 'Hello World' in 'SearchTextBox' text box
+            searchTextBox.Text = this.Search_And_Select_HelloWolrdParams.SearchTextBoxText;
 
             // Right-Click 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item
             Mouse.Click(firstItem, MouseButtons.Right, ModifierKeys.None, new Point(101, 9));
@@ -6115,24 +6163,29 @@ namespace Warewolf.UITests
         public void Select_NewWorkflow_FromExplorerContextMenu()
         {
             #region Variable Declarations
+            WpfTreeItem localhost = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost;
             WpfMenuItem newWorkflow = this.MainStudioWindow.ExplorerContextMenu.NewWorkflow;
             #endregion
+
+            // Right-Click 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item
+            Mouse.Click(localhost, MouseButtons.Right, ModifierKeys.None, new Point(75, 10));
 
             // Click 'New Workflow Service' menu item
             Mouse.Click(newWorkflow, new Point(30, 11));
         }
         
         /// <summary>
-        /// Select_NewWorkFlowService_From_ContextMenu - Use 'Select_NewWorkFlowService_From_ContextMenuParams' to pass parameters into this method.
+        /// Select_NewWorkFlowService_From_ContextMenu
         /// </summary>
         public void Select_NewWorkFlowService_From_ContextMenu()
         {
             #region Variable Declarations
+            WpfTreeItem localhost = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost;
             WpfMenuItem newWorkflowService = this.MainStudioWindow.ExplorerEnvironmentMenu.NewWorkflowService;
             #endregion
 
-            // Verify that the 'Enabled' property of 'New Workflow Service' menu item equals 'True'
-            Assert.AreEqual(this.Select_NewWorkFlowService_From_ContextMenuParams.NewWorkflowServiceEnabled, newWorkflowService.Enabled, "NewWorkFlowService button is disabled.");
+            // Right-Click 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item
+            Mouse.Click(localhost, MouseButtons.Right, ModifierKeys.None, new Point(75, 10));
 
             // Click 'New Workflow Service' menu item
             Mouse.Click(newWorkflowService, new Point(79, 13));
@@ -6580,74 +6633,6 @@ namespace Warewolf.UITests
                     "d web address.");
         }
         
-        /// <summary>
-        /// Click_View_Api_From_Context_Menu
-        /// </summary>
-        public void Click_View_Api_From_Context_Menu()
-        {
-            #region Variable Declarations
-            WpfTreeItem uIInfragisticsControlsTreeItem = this.UIWarewolfDEV2SANELEMTWindow.UIUI_ExplorerControl_ACustom.UIExplorerTreeTree.UIInfragisticsControlsTreeItem;
-            WpfMenuItem uIViewApisJsonMenuItem = this.UIWarewolfDEV2SANELEMTWindow.UIExplorerEnvironmentMMenu.UIViewApisJsonMenuItem;
-            #endregion
-
-            // Right-Click 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item
-            Mouse.Click(uIInfragisticsControlsTreeItem, MouseButtons.Right, ModifierKeys.None, new Point(85, 11));
-
-            // Click 'View Apis.Json' menu item
-            Mouse.Click(uIViewApisJsonMenuItem, new Point(71, 13));
-        }
-        
-        /// <summary>
-        /// AssertMethod1 - Use 'AssertMethod1ExpectedValues' to pass parameters into this method.
-        /// </summary>
-        public void AssertMethod1()
-        {
-            #region Variable Declarations
-            WpfText uIThefollowingerroroccText = this.MessageBoxWindow.UIThefollowingerroroccText;
-            #endregion
-
-            // Verify that the 'DisplayText' property of 'The following error occurred on save: Error while ...' label equals 'The following error occurred on save:
-            //Error while saving: This task requires that the user account specified has 'Log On As Batch' job rights'
-            Assert.AreEqual(this.AssertMethod1ExpectedValues.UIThefollowingerroroccTextDisplayText, uIThefollowingerroroccText.DisplayText, "User name error message does not appear after inputing unexisting username and Pa" +
-                    "ssword");
-        }
-        
-        /// <summary>
-        /// Move_Dice_Roll_To_Localhost
-        /// </summary>
-        public void Move_Dice_Roll_To_Localhost()
-        {
-            #region Variable Declarations
-            WpfTreeItem secondItem = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.SecondItem;
-            WpfTreeItem localhost = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost;
-            #endregion
-
-            // Move 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item to 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item
-            localhost.EnsureClickable(new Point(10, 10));
-            Mouse.StartDragging(secondItem, new Point(92, 4));
-            Mouse.StopDragging(localhost, new Point(10, 10));
-        }
-        
-        /// <summary>
-        /// Enter_User_Details_For_Scheduler - Use 'Enter_User_Details_For_SchedulerParams' to pass parameters into this method.
-        /// </summary>
-        public void Enter_User_Details_For_Scheduler()
-        {
-            #region Variable Declarations
-            WpfEdit userNameTextBoxEdit = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SchedulerTab.UserNameTextBoxEdit;
-            WpfEdit passwordTextBoxEdit = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SchedulerTab.PasswordTextBoxEdit;
-            #endregion
-
-            // Type 'user' in 'UI_UserNameTextBox' text box
-            userNameTextBoxEdit.Text = this.Enter_User_Details_For_SchedulerParams.UserNameTextBoxEditText;
-
-            // Click 'UI_PasswordBox' text box
-            Mouse.Click(passwordTextBoxEdit, new Point(53, 16));
-
-            // Type '********' in 'UI_PasswordBox' text box
-            Keyboard.SendKeys(passwordTextBoxEdit, this.Enter_User_Details_For_SchedulerParams.PasswordTextBoxEditSendKeys, true);
-        }
-        
         #region Properties
         public virtual Assert_CancelConnectionButton_ExistsExpectedValues Assert_CancelConnectionButton_ExistsExpectedValues
         {
@@ -6694,6 +6679,18 @@ namespace Warewolf.UITests
                     this.mAssert_variable_filter_textbox_existExpectedValues = new Assert_variable_filter_textbox_existExpectedValues();
                 }
                 return this.mAssert_variable_filter_textbox_existExpectedValues;
+            }
+        }
+        
+        public virtual AssertMethod1ExpectedValues AssertMethod1ExpectedValues
+        {
+            get
+            {
+                if ((this.mAssertMethod1ExpectedValues == null))
+                {
+                    this.mAssertMethod1ExpectedValues = new AssertMethod1ExpectedValues();
+                }
+                return this.mAssertMethod1ExpectedValues;
             }
         }
         
@@ -7210,18 +7207,6 @@ namespace Warewolf.UITests
                     this.mClick_Save_Ribbon_Button_to_Open_Save_DialogParams = new Click_Save_Ribbon_Button_to_Open_Save_DialogParams();
                 }
                 return this.mClick_Save_Ribbon_Button_to_Open_Save_DialogParams;
-            }
-        }
-        
-        public virtual Click_Save_Ribbon_Button_With_No_Save_DialogParams Click_Save_Ribbon_Button_With_No_Save_DialogParams
-        {
-            get
-            {
-                if ((this.mClick_Save_Ribbon_Button_With_No_Save_DialogParams == null))
-                {
-                    this.mClick_Save_Ribbon_Button_With_No_Save_DialogParams = new Click_Save_Ribbon_Button_With_No_Save_DialogParams();
-                }
-                return this.mClick_Save_Ribbon_Button_With_No_Save_DialogParams;
             }
         }
         
@@ -8305,6 +8290,18 @@ namespace Warewolf.UITests
             }
         }
         
+        public virtual Enter_Text_Into_Workflow_Tests_OutPutTable_Row1_Value_Textbox_As_CodedUITestParams Enter_Text_Into_Workflow_Tests_OutPutTable_Row1_Value_Textbox_As_CodedUITestParams
+        {
+            get
+            {
+                if ((this.mEnter_Text_Into_Workflow_Tests_OutPutTable_Row1_Value_Textbox_As_CodedUITestParams == null))
+                {
+                    this.mEnter_Text_Into_Workflow_Tests_OutPutTable_Row1_Value_Textbox_As_CodedUITestParams = new Enter_Text_Into_Workflow_Tests_OutPutTable_Row1_Value_Textbox_As_CodedUITestParams();
+                }
+                return this.mEnter_Text_Into_Workflow_Tests_OutPutTable_Row1_Value_Textbox_As_CodedUITestParams;
+            }
+        }
+        
         public virtual Enter_Text_Into_Workflow_Tests_Row1_Value_Textbox_As_CodedUITestParams Enter_Text_Into_Workflow_Tests_Row1_Value_Textbox_As_CodedUITestParams
         {
             get
@@ -8317,15 +8314,15 @@ namespace Warewolf.UITests
             }
         }
         
-        public virtual Enter_Text_Into_Workflow_Tests_OutPutTable_Row1_Value_Textbox_As_CodedUITestParams Enter_Text_Into_Workflow_Tests_OutPutTable_Row1_Value_Textbox_As_CodedUITestParams
+        public virtual Enter_User_Details_For_SchedulerParams Enter_User_Details_For_SchedulerParams
         {
             get
             {
-                if ((this.mEnter_Text_Into_Workflow_Tests_OutPutTable_Row1_Value_Textbox_As_CodedUITestParams == null))
+                if ((this.mEnter_User_Details_For_SchedulerParams == null))
                 {
-                    this.mEnter_Text_Into_Workflow_Tests_OutPutTable_Row1_Value_Textbox_As_CodedUITestParams = new Enter_Text_Into_Workflow_Tests_OutPutTable_Row1_Value_Textbox_As_CodedUITestParams();
+                    this.mEnter_User_Details_For_SchedulerParams = new Enter_User_Details_For_SchedulerParams();
                 }
-                return this.mEnter_Text_Into_Workflow_Tests_OutPutTable_Row1_Value_Textbox_As_CodedUITestParams;
+                return this.mEnter_User_Details_For_SchedulerParams;
             }
         }
         
@@ -8593,18 +8590,6 @@ namespace Warewolf.UITests
             }
         }
         
-        public virtual Open_SQL_Large_View_FromContextMenuParams Open_SQL_Large_View_FromContextMenuParams
-        {
-            get
-            {
-                if ((this.mOpen_SQL_Large_View_FromContextMenuParams == null))
-                {
-                    this.mOpen_SQL_Large_View_FromContextMenuParams = new Open_SQL_Large_View_FromContextMenuParams();
-                }
-                return this.mOpen_SQL_Large_View_FromContextMenuParams;
-            }
-        }
-        
         public virtual Open_Move_Tool_Large_ViewParams Open_Move_Tool_Large_ViewParams
         {
             get
@@ -8698,6 +8683,18 @@ namespace Warewolf.UITests
                     this.mOpen_SQL_Bulk_Insert_Tool_Qvi_Large_ViewParams = new Open_SQL_Bulk_Insert_Tool_Qvi_Large_ViewParams();
                 }
                 return this.mOpen_SQL_Bulk_Insert_Tool_Qvi_Large_ViewParams;
+            }
+        }
+        
+        public virtual Open_SQL_Large_View_FromContextMenuParams Open_SQL_Large_View_FromContextMenuParams
+        {
+            get
+            {
+                if ((this.mOpen_SQL_Large_View_FromContextMenuParams == null))
+                {
+                    this.mOpen_SQL_Large_View_FromContextMenuParams = new Open_SQL_Large_View_FromContextMenuParams();
+                }
+                return this.mOpen_SQL_Large_View_FromContextMenuParams;
             }
         }
         
@@ -8857,18 +8854,6 @@ namespace Warewolf.UITests
             }
         }
         
-        public virtual Search_And_Select_HelloWolrdParams Search_And_Select_HelloWolrdParams
-        {
-            get
-            {
-                if ((this.mSearch_And_Select_HelloWolrdParams == null))
-                {
-                    this.mSearch_And_Select_HelloWolrdParams = new Search_And_Select_HelloWolrdParams();
-                }
-                return this.mSearch_And_Select_HelloWolrdParams;
-            }
-        }
-        
         public virtual Search_And_Select_DiceRollParams Search_And_Select_DiceRollParams
         {
             get
@@ -8878,6 +8863,18 @@ namespace Warewolf.UITests
                     this.mSearch_And_Select_DiceRollParams = new Search_And_Select_DiceRollParams();
                 }
                 return this.mSearch_And_Select_DiceRollParams;
+            }
+        }
+        
+        public virtual Search_And_Select_HelloWolrdParams Search_And_Select_HelloWolrdParams
+        {
+            get
+            {
+                if ((this.mSearch_And_Select_HelloWolrdParams == null))
+                {
+                    this.mSearch_And_Select_HelloWolrdParams = new Search_And_Select_HelloWolrdParams();
+                }
+                return this.mSearch_And_Select_HelloWolrdParams;
             }
         }
         
@@ -8986,18 +8983,6 @@ namespace Warewolf.UITests
                     this.mSelect_NewDatabaseSource_FromSqlServerToolParams = new Select_NewDatabaseSource_FromSqlServerToolParams();
                 }
                 return this.mSelect_NewDatabaseSource_FromSqlServerToolParams;
-            }
-        }
-        
-        public virtual Select_NewWorkFlowService_From_ContextMenuParams Select_NewWorkFlowService_From_ContextMenuParams
-        {
-            get
-            {
-                if ((this.mSelect_NewWorkFlowService_From_ContextMenuParams == null))
-                {
-                    this.mSelect_NewWorkFlowService_From_ContextMenuParams = new Select_NewWorkFlowService_From_ContextMenuParams();
-                }
-                return this.mSelect_NewWorkFlowService_From_ContextMenuParams;
             }
         }
         
@@ -9193,30 +9178,6 @@ namespace Warewolf.UITests
             }
         }
         
-        public virtual AssertMethod1ExpectedValues AssertMethod1ExpectedValues
-        {
-            get
-            {
-                if ((this.mAssertMethod1ExpectedValues == null))
-                {
-                    this.mAssertMethod1ExpectedValues = new AssertMethod1ExpectedValues();
-                }
-                return this.mAssertMethod1ExpectedValues;
-            }
-        }
-        
-        public virtual Enter_User_Details_For_SchedulerParams Enter_User_Details_For_SchedulerParams
-        {
-            get
-            {
-                if ((this.mEnter_User_Details_For_SchedulerParams == null))
-                {
-                    this.mEnter_User_Details_For_SchedulerParams = new Enter_User_Details_For_SchedulerParams();
-                }
-                return this.mEnter_User_Details_For_SchedulerParams;
-            }
-        }
-        
         public MainStudioWindow MainStudioWindow
         {
             get
@@ -9335,6 +9296,8 @@ namespace Warewolf.UITests
         
         private Assert_variable_filter_textbox_existExpectedValues mAssert_variable_filter_textbox_existExpectedValues;
         
+        private AssertMethod1ExpectedValues mAssertMethod1ExpectedValues;
+        
         private Assign_Value_To_VariableParams mAssign_Value_To_VariableParams;
         
         private Check_Public_AdministratorParams mCheck_Public_AdministratorParams;
@@ -9420,8 +9383,6 @@ namespace Warewolf.UITests
         private Click_RunDebug_buttonParams mClick_RunDebug_buttonParams;
         
         private Click_Save_Ribbon_Button_to_Open_Save_DialogParams mClick_Save_Ribbon_Button_to_Open_Save_DialogParams;
-        
-        private Click_Save_Ribbon_Button_With_No_Save_DialogParams mClick_Save_Ribbon_Button_With_No_Save_DialogParams;
         
         private Click_Scheduler_Create_New_Task_Ribbon_ButtonParams mClick_Scheduler_Create_New_Task_Ribbon_ButtonParams;
         
@@ -9603,9 +9564,11 @@ namespace Warewolf.UITests
         
         private Enter_Text_Into_Assign_Small_View_Row1_Value_Textbox_As_SomeVariable_UsingIntellisenseParams mEnter_Text_Into_Assign_Small_View_Row1_Value_Textbox_As_SomeVariable_UsingIntellisenseParams;
         
+        private Enter_Text_Into_Workflow_Tests_OutPutTable_Row1_Value_Textbox_As_CodedUITestParams mEnter_Text_Into_Workflow_Tests_OutPutTable_Row1_Value_Textbox_As_CodedUITestParams;
+        
         private Enter_Text_Into_Workflow_Tests_Row1_Value_Textbox_As_CodedUITestParams mEnter_Text_Into_Workflow_Tests_Row1_Value_Textbox_As_CodedUITestParams;
         
-        private Enter_Text_Into_Workflow_Tests_OutPutTable_Row1_Value_Textbox_As_CodedUITestParams mEnter_Text_Into_Workflow_Tests_OutPutTable_Row1_Value_Textbox_As_CodedUITestParams;
+        private Enter_User_Details_For_SchedulerParams mEnter_User_Details_For_SchedulerParams;
         
         private Filter_variablesParams mFilter_variablesParams;
         
@@ -9651,8 +9614,6 @@ namespace Warewolf.UITests
         
         private Open_Json_Tool_Qvi_Large_ViewParams mOpen_Json_Tool_Qvi_Large_ViewParams;
         
-        private Open_SQL_Large_View_FromContextMenuParams mOpen_SQL_Large_View_FromContextMenuParams;
-        
         private Open_Move_Tool_Large_ViewParams mOpen_Move_Tool_Large_ViewParams;
         
         private Open_PostWeb_RequestTool_Large_ViewParams mOpen_PostWeb_RequestTool_Large_ViewParams;
@@ -9668,6 +9629,8 @@ namespace Warewolf.UITests
         private Open_SQL_Bulk_Insert_Tool_Large_ViewParams mOpen_SQL_Bulk_Insert_Tool_Large_ViewParams;
         
         private Open_SQL_Bulk_Insert_Tool_Qvi_Large_ViewParams mOpen_SQL_Bulk_Insert_Tool_Qvi_Large_ViewParams;
+        
+        private Open_SQL_Large_View_FromContextMenuParams mOpen_SQL_Large_View_FromContextMenuParams;
         
         private Open_Sql_Server_Tool_Large_ViewExpectedValues mOpen_Sql_Server_Tool_Large_ViewExpectedValues;
         
@@ -9695,9 +9658,9 @@ namespace Warewolf.UITests
         
         private RightClick_LocalhostParams mRightClick_LocalhostParams;
         
-        private Search_And_Select_HelloWolrdParams mSearch_And_Select_HelloWolrdParams;
-        
         private Search_And_Select_DiceRollParams mSearch_And_Select_DiceRollParams;
+        
+        private Search_And_Select_HelloWolrdParams mSearch_And_Select_HelloWolrdParams;
         
         private Select_Delete_FromContextMenuParams mSelect_Delete_FromContextMenuParams;
         
@@ -9716,8 +9679,6 @@ namespace Warewolf.UITests
         private Select_MSSQLSERVER_From_DB_Source_Wizard_Address_Protocol_DropdownParams mSelect_MSSQLSERVER_From_DB_Source_Wizard_Address_Protocol_DropdownParams;
         
         private Select_NewDatabaseSource_FromSqlServerToolParams mSelect_NewDatabaseSource_FromSqlServerToolParams;
-        
-        private Select_NewWorkFlowService_From_ContextMenuParams mSelect_NewWorkFlowService_From_ContextMenuParams;
         
         private Select_Next_From_DotNet_DLL_Large_View_Action_ComboboxExpectedValues mSelect_Next_From_DotNet_DLL_Large_View_Action_ComboboxExpectedValues;
         
@@ -9750,10 +9711,6 @@ namespace Warewolf.UITests
         private Type_rsaklfsvrgen_into_DB_Source_Wizard_Server_TextboxParams mType_rsaklfsvrgen_into_DB_Source_Wizard_Server_TextboxParams;
         
         private Type_TestSite_into_Web_Source_Wizard_Address_TextboxParams mType_TestSite_into_Web_Source_Wizard_Address_TextboxParams;
-        
-        private AssertMethod1ExpectedValues mAssertMethod1ExpectedValues;
-        
-        private Enter_User_Details_For_SchedulerParams mEnter_User_Details_For_SchedulerParams;
         
         private MainStudioWindow mMainStudioWindow;
         
@@ -9837,6 +9794,23 @@ namespace Warewolf.UITests
         /// Verify that the 'Exists' property of 'Filter' label equals 'True'
         /// </summary>
         public bool FilterTextExists = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'AssertMethod1'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class AssertMethod1ExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'DisplayText' property of 'The following error occurred on save: Error while ...' label equals 'The following error occurred on save:
+        ///Error while saving: This task requires that the user account specified has 'Log On As Batch' job rights'
+        /// </summary>
+        public string UIThefollowingerroroccTextDisplayText = "The following error occurred on save:\r\nError while saving: This task requires tha" +
+            "t the user account specified has \'Log On As Batch\' job rights";
         #endregion
     }
     
@@ -10810,26 +10784,6 @@ namespace Warewolf.UITests
         /// Verify that the 'Exists' property of 'ServiceNameTextBox' text box equals 'True'
         /// </summary>
         public bool ServiceNameTextBoxExists1 = true;
-        #endregion
-    }
-    
-    /// <summary>
-    /// Parameters to be passed into 'Click_Save_Ribbon_Button_With_No_Save_Dialog'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Click_Save_Ribbon_Button_With_No_Save_DialogParams
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Verify that the 'Exists' property of 'Save this tab' button equals 'True'
-        /// </summary>
-        public bool SaveButtonExists = true;
-        
-        /// <summary>
-        /// Wait for 2 seconds for user delay between actions; Verify that the 'Enabled' property of 'Save this tab' button equals 'False'
-        /// </summary>
-        public bool SaveButtonEnabled = false;
         #endregion
     }
     
@@ -12809,6 +12763,26 @@ namespace Warewolf.UITests
     }
     
     /// <summary>
+    /// Parameters to be passed into 'Enter_Text_Into_Workflow_Tests_OutPutTable_Row1_Value_Textbox_As_CodedUITest'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Enter_Text_Into_Workflow_Tests_OutPutTable_Row1_Value_Textbox_As_CodedUITestParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Type 'Helo User' in 'Text' text box
+        /// </summary>
+        public string TextboxSendKeys = "Helo User";
+        
+        /// <summary>
+        /// Verify that the 'Text' property of 'Text' text box equals 'Hello User'
+        /// </summary>
+        public string TextboxText = "Hello User";
+        #endregion
+    }
+    
+    /// <summary>
     /// Parameters to be passed into 'Enter_Text_Into_Workflow_Tests_Row1_Value_Textbox_As_CodedUITest'
     /// </summary>
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
@@ -12829,22 +12803,22 @@ namespace Warewolf.UITests
     }
     
     /// <summary>
-    /// Parameters to be passed into 'Enter_Text_Into_Workflow_Tests_OutPutTable_Row1_Value_Textbox_As_CodedUITest'
+    /// Parameters to be passed into 'Enter_User_Details_For_Scheduler'
     /// </summary>
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Enter_Text_Into_Workflow_Tests_OutPutTable_Row1_Value_Textbox_As_CodedUITestParams
+    public class Enter_User_Details_For_SchedulerParams
     {
         
         #region Fields
         /// <summary>
-        /// Type 'Helo User' in 'Text' text box
+        /// Type 'user' in 'UI_UserNameTextBox' text box
         /// </summary>
-        public string TextboxSendKeys = "Helo User";
+        public string UserNameTextBoxEditText = "user";
         
         /// <summary>
-        /// Verify that the 'Text' property of 'Text' text box equals 'Hello User'
+        /// Type '********' in 'UI_PasswordBox' text box
         /// </summary>
-        public string TextboxText = "Hello User";
+        public string PasswordTextBoxEditSendKeys = "He8mTUyAdZCC71Q9mDVs29xgH7T3gaEA+Frc0JJbw11KkI6kxU4Ln9YMMobjniYD";
         #endregion
     }
     
@@ -13299,21 +13273,6 @@ namespace Warewolf.UITests
     }
     
     /// <summary>
-    /// Parameters to be passed into 'Open_SQL_Large_View_FromContextMenu'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Open_SQL_Large_View_FromContextMenuParams
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Verify that the 'Exists' property of 'New' button equals 'True'
-        /// </summary>
-        public bool NewDbSourceButtonExists = true;
-        #endregion
-    }
-    
-    /// <summary>
     /// Parameters to be passed into 'Open_Move_Tool_Large_View'
     /// </summary>
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
@@ -13435,6 +13394,21 @@ namespace Warewolf.UITests
         /// Verify that the 'Exists' property of 'DsfSqlBulkInsertActivity' custom control equals 'True'
         /// </summary>
         public bool SqlBulkInsertExists = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Open_SQL_Large_View_FromContextMenu'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Open_SQL_Large_View_FromContextMenuParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'New' button equals 'True'
+        /// </summary>
+        public bool NewDbSourceButtonExists = true;
         #endregion
     }
     
@@ -13664,21 +13638,6 @@ namespace Warewolf.UITests
     }
     
     /// <summary>
-    /// Parameters to be passed into 'Search_And_Select_HelloWolrd'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Search_And_Select_HelloWolrdParams
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Type 'Hello World' in 'SearchTextBox' text box
-        /// </summary>
-        public string SearchTextBoxText = "Hello World";
-        #endregion
-    }
-    
-    /// <summary>
     /// Parameters to be passed into 'Search_And_Select_DiceRoll'
     /// </summary>
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
@@ -13690,6 +13649,21 @@ namespace Warewolf.UITests
         /// Type 'Dice Roll' in 'SearchTextBox' text box
         /// </summary>
         public string SearchTextBoxText = "Dice Roll";
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Search_And_Select_HelloWolrd'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Search_And_Select_HelloWolrdParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Type 'Hello World' in 'SearchTextBox' text box
+        /// </summary>
+        public string SearchTextBoxText = "Hello World";
         #endregion
     }
     
@@ -13855,21 +13829,6 @@ namespace Warewolf.UITests
         /// Verify that the 'Exists' property of 'PasswordTextBox' text box equals 'True'
         /// </summary>
         public bool PasswordTextBoxExists = true;
-        #endregion
-    }
-    
-    /// <summary>
-    /// Parameters to be passed into 'Select_NewWorkFlowService_From_ContextMenu'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Select_NewWorkFlowService_From_ContextMenuParams
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Verify that the 'Enabled' property of 'New Workflow Service' menu item equals 'True'
-        /// </summary>
-        public bool NewWorkflowServiceEnabled = true;
         #endregion
     }
     
@@ -14189,43 +14148,6 @@ namespace Warewolf.UITests
         /// Verify that the 'Enabled' property of 'Test Connection' button equals 'True'
         /// </summary>
         public bool TestConnectionButtonEnabled = true;
-        #endregion
-    }
-    
-    /// <summary>
-    /// Parameters to be passed into 'AssertMethod1'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class AssertMethod1ExpectedValues
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Verify that the 'DisplayText' property of 'The following error occurred on save: Error while ...' label equals 'The following error occurred on save:
-        ///Error while saving: This task requires that the user account specified has 'Log On As Batch' job rights'
-        /// </summary>
-        public string UIThefollowingerroroccTextDisplayText = "The following error occurred on save:\r\nError while saving: This task requires tha" +
-            "t the user account specified has \'Log On As Batch\' job rights";
-        #endregion
-    }
-    
-    /// <summary>
-    /// Parameters to be passed into 'Enter_User_Details_For_Scheduler'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Enter_User_Details_For_SchedulerParams
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Type 'user' in 'UI_UserNameTextBox' text box
-        /// </summary>
-        public string UserNameTextBoxEditText = "user";
-        
-        /// <summary>
-        /// Type '********' in 'UI_PasswordBox' text box
-        /// </summary>
-        public string PasswordTextBoxEditSendKeys = "He8mTUyAdZCC71Q9mDVs29xgH7T3gaEA+Frc0JJbw11KkI6kxU4Ln9YMMobjniYD";
         #endregion
     }
     
