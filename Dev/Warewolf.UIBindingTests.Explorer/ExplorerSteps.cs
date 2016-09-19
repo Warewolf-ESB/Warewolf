@@ -546,6 +546,20 @@ namespace Warewolf.UIBindingTests.Explorer
             explorerView.AddNewResource(path, type);
         }
 
+        [When(@"I create (.*) Tests for ""(.*)""")]
+        public void WhenICreateTestsFor(int numberOfTests, string resourcePath)
+        {
+            ScenarioContext.Current.Pending();
+        }
+
+        [Then(@"""(.*)"" has (.*) tests")]
+        public void ThenHasTests(string p0, int p1)
+        {
+            ScenarioContext.Current.Pending();
+        }
+
+
+
         [AfterScenario("Explorer")]
         public void AfterScenario()
         {

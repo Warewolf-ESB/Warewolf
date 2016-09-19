@@ -12,7 +12,7 @@ namespace Warewolf.UITests
         public void ItemDragAndDropUITest()
         {
             Uimap.CreateAndSave_Dice_Workflow();
-            Uimap.Move_File_To_Localhost();
+            //Uimap.Move_File_To_Localhost();
         }
 
         #region Additional test attributes

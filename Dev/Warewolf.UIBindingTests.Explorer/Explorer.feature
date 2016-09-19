@@ -68,6 +68,20 @@ Scenario: Deleting Resource in localhost Server
    Then I should not see the path "localhost\Folder 1\Resource 1"
 
 @Explorer
+Scenario: Deleting Resource in localhost Server with Tests
+   Given the explorer is visible
+   When I open "localhost" server
+   And I create the "localhost\Folder 1\Resource 1" of type "WorkflowService" 
+   And I create 2 Tests for "localhost\Folder 1\Resource 1"
+   Then "localhost\Folder 1\Resource 1" has 2 tests  
+   Then I should see "5" folders
+   Then I should see the path "localhost\Folder 1\Resource 1"
+    And I choose to "OK" Any Popup Messages
+   When I delete "localhost\Folder 1\Resource 1"
+   Then I should not see the path "localhost\Folder 1\Resource 1"
+   And "localhost\Folder 1\Resource 1" has 0 tests
+
+@Explorer
 Scenario: Renaming Folder And Workflow Service
 	Given the explorer is visible
 	And I open "localhost" server

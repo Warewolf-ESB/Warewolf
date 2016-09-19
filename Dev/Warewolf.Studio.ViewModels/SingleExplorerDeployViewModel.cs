@@ -239,11 +239,14 @@ namespace Warewolf.Studio.ViewModels
                 }
                 else
                 {
-                    var selected = Source.SelectedItems.Where(a => a.ResourceType != "Folder");
-                    var notfolders = selected.Select(a => a.ResourceId).ToList();
-                    _shell.DeployResources(Source.Environments.First().Server.EnvironmentID, Destination.ConnectControlViewModel.SelectedConnection.EnvironmentID, notfolders);
+                    var selectedItems = Source.SelectedItems.Where(a => a.ResourceType != "Folder");
+                    var explorerTreeItems = selectedItems as IExplorerTreeItem[] ?? selectedItems.ToArray();
+                  
+                    var notfolders = explorerTreeItems.Select(a => a.ResourceId).ToList();
+                    _shell.DeployResources(Source.Environments.First().Server.EnvironmentID, Destination.ConnectControlViewModel.SelectedConnection.EnvironmentID, notfolders, Destination.DeployTests);
                     DeploySuccessfull = true;
                     DeploySuccessMessage = $"{notfolders.Count} Resource{(notfolders.Count == 1 ? "" : "s")} Deployed Successfully.";
+                
                     await Destination.RefreshSelectedEnvironment();
                     UpdateServerCompareChanged(this, Guid.Empty);
                     _stats.ReCalculate();

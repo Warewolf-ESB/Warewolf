@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Infrastructure.SharedModels;
@@ -60,9 +61,14 @@ namespace Dev2.Studio.Core.Interfaces
         ExecuteMessage Save(IResourceModel instanceObj);
         void Load();
         ExecuteMessage DeleteResourceFromWorkspace(IResourceModel resource);
-        void LoadResourceFromWorkspace(Guid resourceId, Guid? workspaceId);
+        IResourceModel LoadResourceFromWorkspace(Guid resourceId, Guid? workspaceId);
         IContextualResourceModel LoadContextualResourceModel(Guid resourceId);
         Task<ExecuteMessage> GetDependenciesXmlAsync(IContextualResourceModel resourceModel, bool getDependsOnMe);
         Task<IContextualResourceModel> LoadContextualResourceModelAsync(Guid resourceId);
+        TestSaveResult SaveTests(IResourceModel resourceId, List<IServiceTestModelTO> tests);
+        List<IServiceTestModelTO> LoadResourceTests(Guid resourceId);
+        void DeleteResourceTest(Guid resourceId, string testName);
+        List<IServiceTestModelTO> LoadResourceTestsForDeploy(Guid resourceId);
+        TestRunResult ExecuteTest(IContextualResourceModel resourceModel, string testName);
     }
 }

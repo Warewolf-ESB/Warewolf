@@ -38,6 +38,15 @@ namespace Dev2
                         return;
                     }
                 }
+                if (typeOfCommand.BaseType == typeof(Microsoft.Practices.Prism.Commands.DelegateCommandBase))
+                {
+                    var command = commandForCanExecuteChange as Microsoft.Practices.Prism.Commands.DelegateCommandBase;
+                    if (command != null)
+                    {
+                        command.RaiseCanExecuteChanged();
+                        return;
+                    }
+                }
                 if (typeOfCommand == typeof(RelayCommand))
                 {
                     var command = commandForCanExecuteChange as RelayCommand;

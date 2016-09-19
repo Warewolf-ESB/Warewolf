@@ -280,6 +280,8 @@
     <Compile Include="Interfaces\IPartIsUsed.cs" />
     <Compile Include="Interfaces\IRecordsetHandler.cs" />
     <Compile Include="Interfaces\IScalarHandler.cs" />
+    <Compile Include="Interfaces\IServiceTestCommandHandler.cs" />
+    <Compile Include="Interfaces\IServiceTestViewModel.cs" />
     <Compile Include="Messages\DeleteFolderMessage.cs" />
     <Compile Include="Models\DataList\ComplexObjectItemModel.cs" />
     <Compile Include="Models\DataList\DataListHeaderItemModel.cs" />
@@ -371,7 +373,6 @@
     <Compile Include="Network\Enums.cs" />
     <Compile Include="Network\ServerProxy.cs" />
     <Compile Include="Network\WebServer.cs" />
-    <Compile Include="OptomizedObservableCollection.cs" />
     <Compile Include="Security\ClientAuthorizationService.cs" />
     <Compile Include="Security\ClientSecurityService.cs" />
     <Compile Include="Security\AuthorizeCommand.cs" />
@@ -511,7 +512,9 @@
       <Name>WarewolfLanguageParser</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Validation\" />
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

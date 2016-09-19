@@ -43,7 +43,7 @@
     <Grid Margin="{StaticResource ElementBorder}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
@@ -76,22 +76,16 @@
         </ui:IntellisenseTextBox>
 
         <TextBlock Grid.Column="0" Grid.Row="1" Text="Header" Margin="{StaticResource ControlBorderTop}"/>
-      <ui:IntellisenseTextBox Grid.Column="1"
-                              Grid.Row="1"
-                              DefaultText="Host etc."
-                              VerticalAlignment="Stretch"
-                              Margin="{StaticResource ControlBorderTop}"
-                              AllowMultilinePaste="True"
-                              AcceptsReturn="True"
-                              AllowUserInsertLine="True"
-                              TextWrapping="Wrap"
-                              Height="Auto"
-                              AcceptsTab="True"
-                              Padding="2,5,2,2"
-                              VerticalContentAlignment="Top"
-                              VerticalScrollBarVisibility="Auto"
-                              HorizontalScrollBarVisibility="Auto"
-                              Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
+        <ui:IntellisenseTextBox Grid.Column="1"
+                                Grid.Row="1"
+                                DefaultText="Host etc."
+                                AllowMultilinePaste="True"
+                                AcceptsReturn="True"
+                                AllowUserInsertLine="True"
+                                MaxHeight="52"
+                                Margin="{StaticResource ControlBorderTop}"
+                                TextWrapping="Wrap"
+                                Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 Text="{Binding Path=ModelItem.Headers, Mode=TwoWay,  NotifyOnTargetUpdated=True}"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Inputtxt_AutoID}"
                                 ToolTip="{x:Static languages:Core.WebRequestToolTipHeader}">

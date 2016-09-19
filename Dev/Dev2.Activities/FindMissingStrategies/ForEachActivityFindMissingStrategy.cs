@@ -65,15 +65,15 @@ namespace Dev2.FindMissingStrategies
             }
 
             DsfSelectAndApplyActivity selectAndApply = activity as DsfSelectAndApplyActivity;
-            if (selectAndApply != null)
+            if(selectAndApply != null)
             {
                 IFindMissingStrategy strategy;
                 enFindMissingType findMissingType;
                 var boolAct = selectAndApply.ApplyActivityFunc.Handler as DsfNativeActivity<bool>;
-                if (boolAct == null)
+                if(boolAct == null)
                 {
                     DsfNativeActivity<string> stringAct = selectAndApply.ApplyActivityFunc.Handler as DsfNativeActivity<string>;
-                    if (stringAct != null)
+                    if(stringAct != null)
                     {
                         findMissingType = stringAct.GetFindMissingType();
                         strategy = stratFac.CreateFindMissingStrategy(findMissingType);
@@ -97,7 +97,6 @@ namespace Dev2.FindMissingStrategies
                     results.Add(property.ToString());
                 }
             }
-
             return results;
         }
 
