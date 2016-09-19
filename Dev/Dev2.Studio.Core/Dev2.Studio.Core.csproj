@@ -242,7 +242,6 @@
     <Compile Include="AppResources\DependencyInjection\EqualityComparers\EnvironmentModelEqualityComparer.cs" />
     <Compile Include="AppResources\DependencyInjection\EqualityComparers\ResourceModelEqualityComparer.cs" />
     <Compile Include="AppResources\Enums\NavigationViewContextType.cs" />
-    <Compile Include="AppResources\Enums\ReportType.cs" />
     <Compile Include="AppResources\Enums\ResourceType.cs" />
     <Compile Include="AppResources\Enums\WorkSurfaceContext.cs" />
     <Compile Include="AppResources\ExtensionMethods\DependencyObjectExtensions.cs" />

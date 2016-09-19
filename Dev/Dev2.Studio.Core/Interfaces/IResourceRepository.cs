@@ -22,6 +22,8 @@ using Dev2.Data.ServiceModel;
 using Dev2.Data.Settings;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Studio.Core.AppResources.Enums;
+// ReSharper disable UnusedMethodReturnValue.Global
+// ReSharper disable ParameterTypeCanBeEnumerable.Global
 
 // ReSharper disable CheckNamespace
 // ReSharper disable InconsistentNaming
