@@ -237,6 +237,24 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
+        public void TestCreateNewTestCommand()
+        {
+            //arrange
+            _target.ResourceType = "WorkflowService";
+            _target.ResourceId = Guid.NewGuid();
+            _target.IsService = true;
+            _target.CanCreateTest = true;
+            _serverMock.SetupGet(it => it.EnvironmentID).Returns(Guid.NewGuid());
+
+            //act
+            _target.CreateTestCommand.Execute(null);
+            Assert.IsTrue(_target.CreateTestCommand.CanExecute(null));
+
+            //assert
+            _shellViewModelMock.Verify(it => it.CreateTest(_target.ResourceId));
+        }
+
+        [TestMethod]
         public void TestNewSharepointSourceCommand()
         {
             //arrange
@@ -627,6 +645,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _target.CanShowVersions = true;
             _target.CanRename = true;
             _target.CanDuplicate = true;
+            _target.CanCreateTest = true;
             _target.CanDeploy = true;
             _target.CanShowDependencies = true;
             _target.ResourcePath = Guid.NewGuid().ToString();
@@ -652,6 +671,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual(_target.CanShowVersions, createdFolder.CanShowVersions);
             Assert.AreEqual(_target.CanRename, createdFolder.CanRename);
             Assert.AreEqual(_target.CanDuplicate, createdFolder.CanDuplicate);
+            Assert.AreEqual(_target.CanCreateTest, createdFolder.CanCreateTest);
             Assert.AreEqual(_target.CanRollback, createdFolder.CanRollback);
             Assert.AreEqual(_target.CanDeploy, createdFolder.CanDeploy);
             Assert.AreEqual(_target.CanShowDependencies, createdFolder.CanShowDependencies);
@@ -1171,7 +1191,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(_target.ResourcePath.Contains(newName));
             _explorerRepositoryMock.Verify(it => it.Rename(_target, newName));
         }
-
+       
         [TestMethod]
         public void TestResourceNameWithSlashes()
         {
@@ -1658,6 +1678,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(_target.CanView);
             Assert.IsTrue(_target.CanRename);
             Assert.IsTrue(_target.CanDuplicate);
+            Assert.IsTrue(_target.CanCreateTest);
             Assert.IsTrue(_target.CanDelete);
             Assert.IsTrue(_target.CanMove);
             Assert.IsFalse(_target.CanCreateFolder);
@@ -1680,6 +1701,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(_target.CanView);
             Assert.IsTrue(_target.CanRename);
             Assert.IsTrue(_target.CanDuplicate);
+            Assert.IsTrue(_target.CanCreateTest);
             Assert.IsTrue(_target.CanDelete);
             Assert.IsTrue(_target.CanMove);
             Assert.IsFalse(_target.CanCreateFolder);
@@ -1705,6 +1727,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(_target.CanRename);
             Assert.IsTrue(_target.CanMove);
             Assert.IsTrue(_target.CanDuplicate);
+            Assert.IsTrue(_target.CanCreateTest);
             Assert.IsTrue(_target.CanDelete);
             Assert.IsFalse(_target.CanCreateFolder);
             Assert.IsTrue(_target.CanDeploy);

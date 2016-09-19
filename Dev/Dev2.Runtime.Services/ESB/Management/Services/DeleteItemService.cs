@@ -43,7 +43,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             {
                 if(values == null)
                 {
-                    throw new ArgumentNullException("values");
+                    throw new ArgumentNullException(nameof(values));
                 }               
                 StringBuilder itemBeingDeleted;
                 StringBuilder pathBeingDeleted=null;

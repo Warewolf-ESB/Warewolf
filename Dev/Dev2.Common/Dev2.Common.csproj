@@ -151,6 +151,7 @@
     <Compile Include="Patterns\SpookyAction.cs" />
     <Compile Include="PropertyApi.cs" />
     <Compile Include="RecordSetSearchPayload.cs" />
+    <Compile Include="SaveResult.cs" />
     <Compile Include="SharepointSourceTo.cs" />
     <Compile Include="SingleApi.cs" />
     <Compile Include="StringTokenizer\Builders\Dev2TokenizerBuilder.cs" />
@@ -158,6 +159,7 @@
     <Compile Include="StringTokenizer\TokenOps\Dev2EoFOp.cs" />
     <Compile Include="StringTokenizer\TokenOps\Dev2IndexOp.cs" />
     <Compile Include="StringTokenizer\TokenOps\Dev2TokenOp.cs" />
+    <Compile Include="TestSaveResult.cs" />
     <Compile Include="TimeZoneBuilder\DateTimeFormatForwardLookup.cs" />
     <Compile Include="TimeZoneBuilder\DateTimeFormatForwardLookupsForDotNet.cs" />
     <Compile Include="TimeZoneBuilder\DateTimeFormatPart.cs" />

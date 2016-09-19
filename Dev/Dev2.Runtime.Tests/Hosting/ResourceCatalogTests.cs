@@ -407,7 +407,7 @@ namespace Dev2.Tests.Runtime.Hosting
             //------------Execute Test---------------------------
             catalog.SaveResource(workspaceID, resource, resourcePath);
             //------------Assert Results-------------------------
-            xml = XElement.Load(path+"\\"+resourceName + ".xml");
+            xml = XElement.Load(path + "\\" + resourceName + ".xml");
             Assert.IsNotNull(xml);
             var idAttr = xml.Attributes("ID").ToList();
             Assert.AreEqual(1, idAttr.Count);
@@ -484,14 +484,14 @@ namespace Dev2.Tests.Runtime.Hosting
             //------------Execute Test---------------------------
             catalog.SaveResource(workspaceID, resource1, resourcePath1, "", "");
             //------------Assert Results-------------------------
-            xml = XElement.Load(path+"\\"+resourceName + ".xml");
+            xml = XElement.Load(path + "\\" + resourceName + ".xml");
             Assert.IsNotNull(xml);
             var idAttr = xml.Attributes("ID").ToList();
             Assert.AreEqual(1, idAttr.Count);
             var nameAttribute = xml.Attribute("Name");
             Assert.IsNotNull(nameAttribute);
             Assert.AreEqual(resourceName, nameAttribute.Value);
-          
+
         }
 
         [TestMethod]
@@ -1352,7 +1352,7 @@ namespace Dev2.Tests.Runtime.Hosting
         }
 
         #endregion
-        
+
         #endregion
 
         #region GetModels
@@ -2110,6 +2110,8 @@ namespace Dev2.Tests.Runtime.Hosting
             Assert.IsNull(resourceToFind);
         }
 
+        
+
         [TestMethod]
         [Owner("Huggs")]
         public void ResourceCatalog_DeleteResource_FoundResource_ExpectResourceDeleted_VersionsNotDeleted()
@@ -2298,6 +2300,10 @@ namespace Dev2.Tests.Runtime.Hosting
                 return result;
             }
         }
+
+        
+
+        
 
         #endregion
 

@@ -39,20 +39,8 @@ namespace Dev2.Common.Interfaces.Diagnostics.Debug
         /// <param name="workspaceId">The workspace ID to be queried.</param>
         /// <returns>The <see cref="IDebugWriter" /> with the specified ID, or <code>null</code> if not found.</returns>
         IDebugWriter Get(Guid workspaceId);
-
-        /// <summary>
-        ///     Writes the given state to any registered <see cref="IDebugWriter" />'s.
-        ///     <remarks>
-        ///         This must implement the one-way (fire and forget) message exchange pattern.
-        ///     </remarks>
-        /// </summary>
-        /// <param name="debugState">The state to be written.</param>
-        /// <param name="isRemoteInvoke"><code>true</code> if this is a remote invoke; <code>false</code> otherwise.</param>
-        /// <param name="remoteInvokerId">The remote invoker ID.</param>
-        /// <param name="parentInstanceId">The parent instance ID.</param>
-        /// <param name="remoteDebugItems">The remote debug items.</param>
-        // BUG 9706 - 2013.06.22 - TWR : added remote invoke parameters
-        void Write(IDebugState debugState, bool isRemoteInvoke = false, string remoteInvokerId = null,
+        
+        void Write(IDebugState debugState,bool isTestExecution = false,string testName="", bool isRemoteInvoke = false, string remoteInvokerId = null,
             string parentInstanceId = null, IList<IDebugState> remoteDebugItems = null);
     }
 }

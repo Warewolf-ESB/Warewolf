@@ -478,6 +478,37 @@ The more information you can provide us with, the faster we can track the issue 
   <data name="DatabaseSourceServerNewHeaderLabel" xml:space="preserve">
     <value>New Database Source</value>
   </data>
+  <data name="ServiceTestResourceDeletedMessage" xml:space="preserve">
+    <value>The resource for these tests does not exist. The window will be closed when you click OK.</value>
+  </data>
+  <data name="ServiceTestResourceDeletedHeader" xml:space="preserve">
+    <value>Resource not found</value>
+  </data>
+  <data name="ServiceTestResourceCategoryChangedMessage" xml:space="preserve">
+    <value>The resource for these tests has either been moved or renamed. 
+The window will be reloaded when you click OK.</value>
+  </data>
+  <data name="ServiceTestResourceCategoryChangedHeader" xml:space="preserve">
+    <value>Resource moved or renamed</value>
+  </data>
+  <data name="ServiceTestDuplicateTestNameMessage" xml:space="preserve">
+    <value>The name already exists. Please choose a different name.</value>
+  </data>
+  <data name="ServiceTestDuplicateTestNameHeader" xml:space="preserve">
+    <value>Duplicate name error</value>
+  </data>
+  <data name="ServiceTestSaveEditedTestsMessage" xml:space="preserve">
+    <value>Please save currently edited Test(s) before creating a new one.</value>
+  </data>
+  <data name="ServiceTestSaveEditedTestsHeader" xml:space="preserve">
+    <value>Save before continuing</value>
+  </data>
+  <data name="ServiceTestRunAllUnsavedTestsMessage" xml:space="preserve">
+    <value>Please save currently edited Test(s) before running the tests.</value>
+  </data>
+  <data name="ServiceTestRunAllUnsavedTestsHeader" xml:space="preserve">
+    <value>Save before continuing</value>
+  </data>
   <data name="ExplorerMoveFailedMessage" xml:space="preserve">
     <value>An unexpected error occured which prevented the resource from being moved.</value>
   </data>
@@ -826,7 +857,19 @@ The more information you can provide us with, the faster we can track the issue 
   <data name="ServerTestConnectionHelp" xml:space="preserve">
     <value>Test the connection to the remote Warewolf Server.	Make sure the relevant ports (3142, 3143 by default) are open on any firewalls between this server and the remote server.</value>
   </data>
+  <data name="ServiceTestWindowsHelpText" xml:space="preserve">
+    <value>Uses the logged on windows account to authenticate on the remote server.</value>
+  </data>
+  <data name="ServiceTestUserHelpText" xml:space="preserve">
+    <value>Use a specific windows account to authenticate on the remote server.&lt;br/&gt;	&lt;br/&gt;	Use the domain if relevant e.g. DOMAIN\Username</value>
+  </data>
+  <data name="ServiceTestPublicHelpText" xml:space="preserve">
+    <value>Use the public account to authenticate on the remote server.&lt;br/&gt;	&lt;br/&gt;	If there are no resources on the remote server, there will be no Public authentication.</value>
+  </data>
   <data name="PasswordAuthenticationHelp" xml:space="preserve">
+    <value>Enter the password for the account you want to use for authenticating.</value>
+  </data>
+  <data name="ServiceTestPasswordHelpText" xml:space="preserve">
     <value>Enter the password for the account you want to use for authenticating.</value>
   </data>
   <data name="UserAuthenticationHelp" xml:space="preserve">
@@ -834,6 +877,9 @@ The more information you can provide us with, the faster we can track the issue 
   </data>
   <data name="UserNameAuthenticationHelp" xml:space="preserve">
     <value>The full username of the account you want to use to connect to this resource.</value>
+  </data>
+  <data name="ServiceTestUserNameHelpText" xml:space="preserve">
+    <value>The full username of the account you want to use to run this test.</value>
   </data>
   <data name="WindowsAuthenticationHelp" xml:space="preserve">
     <value>Uses the Windows Authentication protocols to authenticate the executing account. </value>
@@ -2649,6 +2695,82 @@ You can use File System, URI, SFTP, FTP or FTPS format.</value>
   <data name="ManageWebSourceViewInBrowserTooltip" xml:space="preserve">
     <value>Open this URL in your default browser</value>
   </data>
+  <data name="ServiceTestRunAllTestsInBrowserTooltip" xml:space="preserve">
+    <value>Open this URL in your default browser to view the tests for this workflow</value>
+  </data>
+  <data name="ServiceTestRunSelectedTestInBrowserTooltip" xml:space="preserve">
+    <value>Open this URL in your default browser to view this test</value>
+  </data>
+  <data name="ServiceTestPassedTooltip" xml:space="preserve">
+    <value>Passed</value>
+  </data>
+  <data name="ServiceTestFailingTooltip" xml:space="preserve">
+    <value>Failing</value>
+  </data>
+  <data name="ServiceTestInvalidTooltip" xml:space="preserve">
+    <value>Invalid</value>
+  </data>
+  <data name="ServiceTestPendingTooltip" xml:space="preserve">
+    <value>Pending</value>
+  </data>
+  <data name="ServiceTestEnableRunSelectedTestTooltip" xml:space="preserve">
+    <value>Select or De-Select to run the test</value>
+  </data>
+  <data name="ServiceTestEnableRunSelectedTestHelpText" xml:space="preserve">
+    <value>Selecting this option will add the test to the test to the Run All command. 
+If this option is not selected, the test will not run part of the Run All list of tests.</value>
+  </data>
+  <data name="TestsDeleteSelectedTestDisabledTooltip" xml:space="preserve">
+    <value>Cannot delete an enabled test</value>
+  </data>
+  <data name="TestsDeleteSelectedTestEnabledTooltip" xml:space="preserve">
+    <value>Delete this test</value>
+  </data>
+  <data name="TestsDeleteSelectedTestHelpText" xml:space="preserve">
+    <value>Delete this test</value>
+  </data>
+  <data name="ServiceTestDuplicateSelectedTestTooltip" xml:space="preserve">
+    <value>Duplicate this test</value>
+  </data>
+  <data name="ServiceTestDuplicateSelectedTestHelpText" xml:space="preserve">
+    <value>Duplicate this test</value>
+  </data>
+  <data name="ServiceTestDisabledDuplicateSelectedTestTooltip" xml:space="preserve">
+    <value>You do not have permissions to duplicate a test</value>
+  </data>
+  <data name="ServiceTestNewTestDisabledDuplicateSelectedTestTooltip" xml:space="preserve">
+    <value>You have to save a new test before duplicate</value>
+  </data>
+  <data name="ServiceTestRunSelectedTestTooltip" xml:space="preserve">
+    <value>Run this test</value>
+  </data>
+  <data name="ServiceTestRunSelectedTestHelpText" xml:space="preserve">
+    <value>Run this test</value>
+  </data>
+  <data name="ServiceTestStopSelectedTestTooltip" xml:space="preserve">
+    <value>Stop this test</value>
+  </data>
+  <data name="ServiceTestStopSelectedTestHelpText" xml:space="preserve">
+    <value>Stop this test</value>
+  </data>
+  <data name="ServiceTestNewTestTooltip" xml:space="preserve">
+    <value>Create a new test</value>
+  </data>
+  <data name="ServiceTestNoErrorExpectedTooltip" xml:space="preserve">
+    <value>The test expects no error</value>
+  </data>
+  <data name="ServiceTestNoErrorExpectedHelpText" xml:space="preserve">
+    <value>The test expects no error</value>
+  </data>
+  <data name="ServiceTestErrorExpectedTooltip" xml:space="preserve">
+    <value>The test expects an error</value>
+  </data>
+  <data name="ServiceTestErrorExpectedHelpText" xml:space="preserve">
+    <value>The test expects an error</value>
+  </data>
+  <data name="ServiceTestInputValueTooltip" xml:space="preserve">
+    <value>Input value to test against</value>
+  </data>
   <data name="ManageWebSourceUserNameTooltip" xml:space="preserve">
     <value>The name of the account</value>
   </data>
@@ -2802,6 +2924,9 @@ You can use File System, URI, SFTP, FTP or FTPS format.</value>
   <data name="ManageDbSourceUserNameTooltip" xml:space="preserve">
     <value>Account Name</value>
   </data>
+  <data name="ServiceTestUserNameTooltip" xml:space="preserve">
+    <value>Username</value>
+  </data>
   <data name="ManageDbSourceTestTooltip" xml:space="preserve">
     <value>Test the connection to the database server</value>
   </data>
@@ -2813,6 +2938,9 @@ You can use File System, URI, SFTP, FTP or FTPS format.</value>
   </data>
   <data name="ManageDbSourcePasswordTooltip" xml:space="preserve">
     <value>Password for the account</value>
+  </data>
+  <data name="ServiceTestPasswordTooltip" xml:space="preserve">
+    <value>Password</value>
   </data>
   <data name="ManageDbSourceDatabaseTooltip" xml:space="preserve">
     <value>Select the database you want to use</value>
@@ -3011,7 +3139,7 @@ To find the character index(s) of a string inside another string, put the string
   </data>
   <data name="FindIndexToolTipCharacters" xml:space="preserve">
     <value>Any variable and/or data goes in here.
-Put the string of the index you are looking for in here.</value>
+Put  the index of the string you are looking for in here.</value>
   </data>
   <data name="ExplorerSearchToolTip" xml:space="preserve">
     <value>Filter the connected resources</value>

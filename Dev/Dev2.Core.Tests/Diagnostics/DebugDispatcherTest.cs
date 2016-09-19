@@ -117,7 +117,7 @@ namespace Dev2.Tests.Diagnostics
         public void WriteWithNull()
         {
 
-            DebugDispatcher.Instance.Write(null);
+            DebugDispatcher.Instance.Write(null,false,"");
 
             // No exception thrown
             Assert.IsTrue(true);
@@ -145,7 +145,7 @@ namespace Dev2.Tests.Diagnostics
             var remoteID = Guid.NewGuid();
 
             //------------Execute Test---------------------------
-            DebugDispatcher.Instance.Write(state.Object, true, remoteID.ToString()); // queue remote item ;)
+            DebugDispatcher.Instance.Write(state.Object, false,"",true, remoteID.ToString()); // queue remote item ;)
 
             //------------Assert Results-------------------------
 

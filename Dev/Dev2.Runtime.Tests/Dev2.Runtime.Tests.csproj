@@ -205,13 +205,13 @@
     <Compile Include="ESB\Execution\WfExecutionContainerTests.cs" />
     <Compile Include="ESB\Plugin\PluginRuntimeHandlerTest.cs" />
     <Compile Include="ESB\Plugin\PluginServiceExecutionFactoryTest.cs" />
-    <Compile Include="FileResourceBuilderTests.cs" />
     <Compile Include="Hosting\ExplorerItemFactoryTests.cs" />
     <Compile Include="Hosting\ResourceDuplicateProviderTests.cs" />
     <Compile Include="Hosting\ResourceUpgraderTests.cs" />
     <Compile Include="Hosting\ResourceUpgradeTest.cs" />
     <Compile Include="Hosting\ServerExplorerRepositoryTests.cs" />
     <Compile Include="Hosting\ServerVersionRepositoryTests.cs" />
+    <Compile Include="Hosting\TestCatalogTests.cs" />
     <Compile Include="Hosting\UpgradePathTests.cs" />
     <Compile Include="Hosting\VersionStrategyTests.cs" />
     <Compile Include="Plugins\DllExtractor.cs" />
@@ -228,6 +228,7 @@
     <Compile Include="Services\DeleteItemsTest.cs" />
     <Compile Include="Security\SecurityConfigFetcher.cs" />
     <Compile Include="Services\DeleteScheduledResourceTest.cs" />
+    <Compile Include="Services\DeleteTestTests.cs" />
     <Compile Include="Services\DeleteVersionTest.cs" />
     <Compile Include="Services\DuplicateFolderServiceTests.cs" />
     <Compile Include="Services\DuplicateResourceServiceTests.cs" />
@@ -235,6 +236,8 @@
     <Compile Include="Services\FetchExplorerIDuplicatesTests.cs" />
     <Compile Include="Services\FetchExplorerItemsTest.cs" />
     <Compile Include="Services\FetchPerformanceCountersTests.cs" />
+    <Compile Include="Services\FetchTestsForDeployTest.cs" />
+    <Compile Include="Services\FetchTestsTest.cs" />
     <Compile Include="Services\FindDependenciesTests.cs" />
     <Compile Include="Services\GetServerVersionTest.cs" />
     <Compile Include="Services\GetVersionTest.cs" />
@@ -296,6 +299,7 @@
     <Compile Include="Services\RenameItemsTest.cs" />
     <Compile Include="Services\RollBackToTest.cs" />
     <Compile Include="Services\SaveScheduledResourceTest.cs" />
+    <Compile Include="Services\SaveTestsTest.cs" />
     <Compile Include="Services\SchedulerTestBase.cs" />
     <Compile Include="Services\SecurityReadTests.cs" />
     <Compile Include="Services\SecurityWriteTests.cs" />

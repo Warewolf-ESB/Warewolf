@@ -83,6 +83,8 @@ namespace Warewolf.Studio.Core
                         return Application.Current.Resources["DropboxSource"];
                     case "Scheduler":
                         return ImageAwesome.CreateImageSource(FontAwesomeIcon.History, _brush);
+                    case "ServiceTestsViewer":
+                        return ImageAwesome.CreateImageSource(FontAwesomeIcon.Flask, _brush);
                     case "Settings":
                         return ImageAwesome.CreateImageSource(FontAwesomeIcon.Cogs, _brush);
                     case "DependencyViewer":

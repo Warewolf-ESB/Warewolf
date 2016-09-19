@@ -135,14 +135,20 @@ namespace Dev2.Diagnostics.Debug
 
         #region Write
 
-        // BUG 9706 - 2013.06.22 - TWR : extracted from DsfNativeActivity.DispatchDebugState
-        public void Write(IDebugState debugState, bool isRemoteInvoke = false, string remoteInvokerId = null, string parentInstanceId = null, IList<IDebugState> remoteDebugItems = null)
+        public void Write(IDebugState debugState,bool isTestExecution,string testName, bool isRemoteInvoke = false, string remoteInvokerId = null, string parentInstanceId = null, IList<IDebugState> remoteDebugItems = null)
         {
             if(debugState == null)
             {
                 return;
             }
 
+            if (isTestExecution)
+            {
+                TestDebugMessageRepo.Instance.AddDebugItem(debugState.OriginatingResourceID,testName,debugState);
+                return;
+            }
+
+            
             // Serialize debugState to a local repo so calling server can manage the data 
             if(isRemoteInvoke)
             {

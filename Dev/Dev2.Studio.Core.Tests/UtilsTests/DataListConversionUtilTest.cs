@@ -9,7 +9,6 @@
 */
 
 using Dev2.Data;
-using Dev2.ViewModels.Workflow;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Core.Tests.UtilsTests
