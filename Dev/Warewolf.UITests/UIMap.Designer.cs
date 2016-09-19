@@ -5699,6 +5699,26 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
+        /// Search_And_Select_DiceRoll - Use 'Search_And_Select_DiceRollParams' to pass parameters into this method.
+        /// </summary>
+        public void Search_And_Select_DiceRoll()
+        {
+            #region Variable Declarations
+            WpfEdit searchTextBox = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.SearchTextBox;
+            WpfTreeItem firstItem = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem;
+            #endregion
+
+            // Click 'SearchTextBox' text box
+            Mouse.Click(searchTextBox, new Point(165, 9));
+
+            // Type 'Dice Roll' in 'SearchTextBox' text box
+            searchTextBox.Text = this.Search_And_Select_DiceRollParams.SearchTextBoxText;
+
+            // Right-Click 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item
+            Mouse.Click(firstItem, MouseButtons.Right, ModifierKeys.None, new Point(101, 9));
+        }
+        
+        /// <summary>
         /// Select_Copy_FromContextMenu
         /// </summary>
         public void Select_Copy_FromContextMenu()
@@ -6590,6 +6610,42 @@ namespace Warewolf.UITests
             //Error while saving: This task requires that the user account specified has 'Log On As Batch' job rights'
             Assert.AreEqual(this.AssertMethod1ExpectedValues.UIThefollowingerroroccTextDisplayText, uIThefollowingerroroccText.DisplayText, "User name error message does not appear after inputing unexisting username and Pa" +
                     "ssword");
+        }
+        
+        /// <summary>
+        /// Move_Dice_Roll_To_Localhost
+        /// </summary>
+        public void Move_Dice_Roll_To_Localhost()
+        {
+            #region Variable Declarations
+            WpfTreeItem secondItem = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.SecondItem;
+            WpfTreeItem localhost = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost;
+            #endregion
+
+            // Move 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item to 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item
+            localhost.EnsureClickable(new Point(10, 10));
+            Mouse.StartDragging(secondItem, new Point(92, 4));
+            Mouse.StopDragging(localhost, new Point(10, 10));
+        }
+        
+        /// <summary>
+        /// Enter_User_Details_For_Scheduler - Use 'Enter_User_Details_For_SchedulerParams' to pass parameters into this method.
+        /// </summary>
+        public void Enter_User_Details_For_Scheduler()
+        {
+            #region Variable Declarations
+            WpfEdit userNameTextBoxEdit = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SchedulerTab.UserNameTextBoxEdit;
+            WpfEdit passwordTextBoxEdit = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SchedulerTab.PasswordTextBoxEdit;
+            #endregion
+
+            // Type 'user' in 'UI_UserNameTextBox' text box
+            userNameTextBoxEdit.Text = this.Enter_User_Details_For_SchedulerParams.UserNameTextBoxEditText;
+
+            // Click 'UI_PasswordBox' text box
+            Mouse.Click(passwordTextBoxEdit, new Point(53, 16));
+
+            // Type '********' in 'UI_PasswordBox' text box
+            Keyboard.SendKeys(passwordTextBoxEdit, this.Enter_User_Details_For_SchedulerParams.PasswordTextBoxEditSendKeys, true);
         }
         
         #region Properties
@@ -8813,6 +8869,18 @@ namespace Warewolf.UITests
             }
         }
         
+        public virtual Search_And_Select_DiceRollParams Search_And_Select_DiceRollParams
+        {
+            get
+            {
+                if ((this.mSearch_And_Select_DiceRollParams == null))
+                {
+                    this.mSearch_And_Select_DiceRollParams = new Search_And_Select_DiceRollParams();
+                }
+                return this.mSearch_And_Select_DiceRollParams;
+            }
+        }
+        
         public virtual Select_Delete_FromContextMenuParams Select_Delete_FromContextMenuParams
         {
             get
@@ -9134,6 +9202,18 @@ namespace Warewolf.UITests
                     this.mAssertMethod1ExpectedValues = new AssertMethod1ExpectedValues();
                 }
                 return this.mAssertMethod1ExpectedValues;
+            }
+        }
+        
+        public virtual Enter_User_Details_For_SchedulerParams Enter_User_Details_For_SchedulerParams
+        {
+            get
+            {
+                if ((this.mEnter_User_Details_For_SchedulerParams == null))
+                {
+                    this.mEnter_User_Details_For_SchedulerParams = new Enter_User_Details_For_SchedulerParams();
+                }
+                return this.mEnter_User_Details_For_SchedulerParams;
             }
         }
         
@@ -9617,6 +9697,8 @@ namespace Warewolf.UITests
         
         private Search_And_Select_HelloWolrdParams mSearch_And_Select_HelloWolrdParams;
         
+        private Search_And_Select_DiceRollParams mSearch_And_Select_DiceRollParams;
+        
         private Select_Delete_FromContextMenuParams mSelect_Delete_FromContextMenuParams;
         
         private Select_Delete_FromExplorerContextMenuParams mSelect_Delete_FromExplorerContextMenuParams;
@@ -9670,6 +9752,8 @@ namespace Warewolf.UITests
         private Type_TestSite_into_Web_Source_Wizard_Address_TextboxParams mType_TestSite_into_Web_Source_Wizard_Address_TextboxParams;
         
         private AssertMethod1ExpectedValues mAssertMethod1ExpectedValues;
+        
+        private Enter_User_Details_For_SchedulerParams mEnter_User_Details_For_SchedulerParams;
         
         private MainStudioWindow mMainStudioWindow;
         
@@ -13595,6 +13679,21 @@ namespace Warewolf.UITests
     }
     
     /// <summary>
+    /// Parameters to be passed into 'Search_And_Select_DiceRoll'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Search_And_Select_DiceRollParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Type 'Dice Roll' in 'SearchTextBox' text box
+        /// </summary>
+        public string SearchTextBoxText = "Dice Roll";
+        #endregion
+    }
+    
+    /// <summary>
     /// Parameters to be passed into 'Select_Delete_FromContextMenu'
     /// </summary>
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
@@ -14107,6 +14206,26 @@ namespace Warewolf.UITests
         /// </summary>
         public string UIThefollowingerroroccTextDisplayText = "The following error occurred on save:\r\nError while saving: This task requires tha" +
             "t the user account specified has \'Log On As Batch\' job rights";
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Enter_User_Details_For_Scheduler'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Enter_User_Details_For_SchedulerParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Type 'user' in 'UI_UserNameTextBox' text box
+        /// </summary>
+        public string UserNameTextBoxEditText = "user";
+        
+        /// <summary>
+        /// Type '********' in 'UI_PasswordBox' text box
+        /// </summary>
+        public string PasswordTextBoxEditSendKeys = "He8mTUyAdZCC71Q9mDVs29xgH7T3gaEA+Frc0JJbw11KkI6kxU4Ln9YMMobjniYD";
         #endregion
     }
     
@@ -42590,6 +42709,22 @@ namespace Warewolf.UITests
                 return this.mUIDev2StudioViewModelsCustom;
             }
         }
+        
+        public WpfWindow UIWpfWindow
+        {
+            get
+            {
+                if ((this.mUIWpfWindow == null))
+                {
+                    this.mUIWpfWindow = new WpfWindow(this);
+                    #region Search Criteria
+                    this.mUIWpfWindow.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
+                    this.mUIWpfWindow.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mUIWpfWindow;
+            }
+        }
         #endregion
         
         #region Fields
@@ -42598,6 +42733,8 @@ namespace Warewolf.UITests
         private UIExplorerEnvironmentMMenu mUIExplorerEnvironmentMMenu;
         
         private UIDev2StudioViewModelsCustom mUIDev2StudioViewModelsCustom;
+        
+        private WpfWindow mUIWpfWindow;
         #endregion
     }
     
@@ -42648,6 +42785,72 @@ namespace Warewolf.UITests
         }
         
         #region Properties
+        public UIInfragisticsControlsTreeItem UIInfragisticsControlsTreeItem
+        {
+            get
+            {
+                if ((this.mUIInfragisticsControlsTreeItem == null))
+                {
+                    this.mUIInfragisticsControlsTreeItem = new UIInfragisticsControlsTreeItem(this);
+                }
+                return this.mUIInfragisticsControlsTreeItem;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIInfragisticsControlsTreeItem mUIInfragisticsControlsTreeItem;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIInfragisticsControlsTreeItem : WpfTreeItem
+    {
+        
+        public UIInfragisticsControlsTreeItem(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfTreeItem.PropertyNames.Name] = "Infragistics.Controls.Menus.XamDataTreeNodeDataContext";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public UIInfragisticsControlsTreeItem1 UIInfragisticsControlsTreeItem1
+        {
+            get
+            {
+                if ((this.mUIInfragisticsControlsTreeItem1 == null))
+                {
+                    this.mUIInfragisticsControlsTreeItem1 = new UIInfragisticsControlsTreeItem1(this);
+                }
+                return this.mUIInfragisticsControlsTreeItem1;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIInfragisticsControlsTreeItem1 mUIInfragisticsControlsTreeItem1;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIInfragisticsControlsTreeItem1 : WpfTreeItem
+    {
+        
+        public UIInfragisticsControlsTreeItem1(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfTreeItem.PropertyNames.Name] = "Infragistics.Controls.Menus.XamDataTreeNodeDataContext";
+            this.SearchProperties[WpfTreeItem.PropertyNames.Instance] = "2";
+            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
         public WpfTreeItem UIInfragisticsControlsTreeItem
         {
             get
@@ -42657,6 +42860,8 @@ namespace Warewolf.UITests
                     this.mUIInfragisticsControlsTreeItem = new WpfTreeItem(this);
                     #region Search Criteria
                     this.mUIInfragisticsControlsTreeItem.SearchProperties[WpfTreeItem.PropertyNames.Name] = "Infragistics.Controls.Menus.XamDataTreeNodeDataContext";
+                    this.mUIInfragisticsControlsTreeItem.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mUIInfragisticsControlsTreeItem.SearchConfigurations.Add(SearchConfiguration.DisambiguateChild);
                     this.mUIInfragisticsControlsTreeItem.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
                     #endregion
                 }
@@ -42817,6 +43022,38 @@ namespace Warewolf.UITests
                 return this.mUIItemButton1;
             }
         }
+        
+        public WpfEdit UIUI_UserNameTextBoxEdit
+        {
+            get
+            {
+                if ((this.mUIUI_UserNameTextBoxEdit == null))
+                {
+                    this.mUIUI_UserNameTextBoxEdit = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mUIUI_UserNameTextBoxEdit.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "UI_UserNameTextBox";
+                    this.mUIUI_UserNameTextBoxEdit.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mUIUI_UserNameTextBoxEdit;
+            }
+        }
+        
+        public WpfEdit UIUI_PasswordBoxEdit
+        {
+            get
+            {
+                if ((this.mUIUI_PasswordBoxEdit == null))
+                {
+                    this.mUIUI_PasswordBoxEdit = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mUIUI_PasswordBoxEdit.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "UI_PasswordBox";
+                    this.mUIUI_PasswordBoxEdit.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mUIUI_PasswordBoxEdit;
+            }
+        }
         #endregion
         
         #region Fields
@@ -42827,6 +43064,10 @@ namespace Warewolf.UITests
         private WpfButton mUIItemButton;
         
         private WpfButton mUIItemButton1;
+        
+        private WpfEdit mUIUI_UserNameTextBoxEdit;
+        
+        private WpfEdit mUIUI_PasswordBoxEdit;
         #endregion
     }
 }
