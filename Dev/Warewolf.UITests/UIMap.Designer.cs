@@ -554,15 +554,10 @@ namespace Warewolf.UITests
             WpfPane warewolfAdminROW = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.WarewolfAdminROW;
             WpfButton deleteButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.WarewolfAdminROW.DeleteCell.DeleteButton;
             WpfCheckBox deployToCheckBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.WarewolfAdminROW.DeployToCell.DeployToCheckBox;
-            WpfCell deployFromCell = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.WarewolfAdminROW.DeployFromCell;
             WpfCheckBox deployFromCheckBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.WarewolfAdminROW.DeployFromCell.DeployFromCheckBox;
-            WpfCell administratorCell = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.WarewolfAdminROW.AdministratorCell;
             WpfCheckBox administratorCheckBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.WarewolfAdminROW.AdministratorCell.AdministratorCheckBox;
-            WpfCell executeCell = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.WarewolfAdminROW.ExecuteCell;
             WpfCheckBox executeCheckBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.WarewolfAdminROW.ExecuteCell.ExecuteCheckBox;
-            WpfCell viewCell = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.WarewolfAdminROW.ViewCell;
             WpfCheckBox viewCheckBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.WarewolfAdminROW.ViewCell.ViewCheckBox;
-            WpfCell contributeCell = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.WarewolfAdminROW.ContributeCell;
             WpfCheckBox contributeCheckBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.WarewolfAdminROW.ContributeCell.ContributeCheckBox;
             WpfPane publicROW = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.PublicROW;
             #endregion
@@ -593,53 +588,20 @@ namespace Warewolf.UITests
             // Verify that the 'Checked' property of 'UI_Warewolf Administrators_DeployToPermissionCheckBox_AutoID' check box equals 'True'
             Assert.AreEqual(this.Click_ConfigureSetting_From_MenuParams.DeployToCheckBoxChecked, deployToCheckBox.Checked, "DeployTo checkbox is Unchecked");
 
-            // Verify that the 'Enabled' property of 'UI_Warewolf Administrators_DeployToPermissionCheckBox_AutoID' check box equals 'False'
-            Assert.AreEqual(this.Click_ConfigureSetting_From_MenuParams.DeployToCheckBoxEnabled, deployToCheckBox.Enabled, "DeployTo checkbox is enabled");
-
-            // Verify that the 'ReadOnly' property of 'True' cell equals 'True'
-            Assert.AreEqual(this.Click_ConfigureSetting_From_MenuParams.DeployFromCellReadOnly, deployFromCell.ReadOnly, "DeployFrom cell for WarewolfAdministratorsRow is NOT set to ReadOnly ");
-
             // Verify that the 'Checked' property of 'UI_Warewolf Administrators_DeployFromPermissionCheckBox_AutoID' check box equals 'True'
             Assert.AreEqual(this.Click_ConfigureSetting_From_MenuParams.DeployFromCheckBoxChecked, deployFromCheckBox.Checked, "DeployFrom checkbox is Unchecked");
-
-            // Verify that the 'Enabled' property of 'UI_Warewolf Administrators_DeployFromPermissionCheckBox_AutoID' check box equals 'False'
-            Assert.AreEqual(this.Click_ConfigureSetting_From_MenuParams.DeployFromCheckBoxEnabled, deployFromCheckBox.Enabled, "DeployFrom checkbox is enabled");
-
-            // Verify that the 'ReadOnly' property of 'True' cell equals 'True'
-            Assert.AreEqual(this.Click_ConfigureSetting_From_MenuParams.AdministratorCellReadOnly, administratorCell.ReadOnly, "Administrator cell for WarewolfAdministratorsRow is NOT set to ReadOnly ");
 
             // Verify that the 'Checked' property of 'UI_Warewolf Administrators_AdministratorPermissionCheck...' check box equals 'True'
             Assert.AreEqual(this.Click_ConfigureSetting_From_MenuParams.AdministratorCheckBoxChecked, administratorCheckBox.Checked, "Administrator checkbox is Unchecked");
 
-            // Verify that the 'Enabled' property of 'UI_Warewolf Administrators_AdministratorPermissionCheck...' check box equals 'False'
-            Assert.AreEqual(this.Click_ConfigureSetting_From_MenuParams.AdministratorCheckBoxEnabled, administratorCheckBox.Enabled, "Administrator checkbox is enabled");
-
-            // Verify that the 'ReadOnly' property of 'True' cell equals 'True'
-            Assert.AreEqual(this.Click_ConfigureSetting_From_MenuParams.ExecuteCellReadOnly, executeCell.ReadOnly, "Execute cell for WarewolfAdministratorsRow is NOT set to ReadOnly ");
-
             // Verify that the 'Checked' property of 'UI_Warewolf Administrators_ExecutePermissionCheck...' check box equals 'True'
             Assert.AreEqual(this.Click_ConfigureSetting_From_MenuParams.ExecuteCheckBoxChecked, executeCheckBox.Checked, "Execute checkbox is Unchecked");
-
-            // Verify that the 'Enabled' property of 'UI_Warewolf Administrators_ExecutePermissionCheck...' check box equals 'False'
-            Assert.AreEqual(this.Click_ConfigureSetting_From_MenuParams.ExecuteCheckBoxEnabled, executeCheckBox.Enabled, "Execute checkbox is enabled");
-
-            // Verify that the 'ReadOnly' property of 'True' cell equals 'True'
-            Assert.AreEqual(this.Click_ConfigureSetting_From_MenuParams.ViewCellReadOnly, viewCell.ReadOnly, "View cell for WarewolfAdministratorsRow is NOT set to ReadOnly ");
 
             // Verify that the 'Checked' property of 'UI_Warewolf Administrators_ViewPermissionCheck...' check box equals 'True'
             Assert.AreEqual(this.Click_ConfigureSetting_From_MenuParams.ViewCheckBoxChecked, viewCheckBox.Checked, "View checkbox is Unchecked");
 
-            // Verify that the 'Enabled' property of 'UI_Warewolf Administrators_ViewPermissionCheck...' check box equals 'False'
-            Assert.AreEqual(this.Click_ConfigureSetting_From_MenuParams.ViewCheckBoxEnabled, viewCheckBox.Enabled, "View checkbox is enabled");
-
-            // Verify that the 'ReadOnly' property of 'True' cell equals 'True'
-            Assert.AreEqual(this.Click_ConfigureSetting_From_MenuParams.ContributeCellReadOnly, contributeCell.ReadOnly, "Contribute cell for WarewolfAdministratorsRow is NOT set to ReadOnly ");
-
             // Verify that the 'Checked' property of 'UI_Warewolf Administrators_ContributePermissionCheck...' check box equals 'True'
             Assert.AreEqual(this.Click_ConfigureSetting_From_MenuParams.ContributeCheckBoxChecked, contributeCheckBox.Checked, "Contribute checkbox is Unchecked");
-
-            // Verify that the 'Enabled' property of 'UI_Warewolf Administrators_ContributePermissionCheck...' check box equals 'False'
-            Assert.AreEqual(this.Click_ConfigureSetting_From_MenuParams.ContributeCheckBoxEnabled, contributeCheckBox.Enabled, "Contribute checkbox is enabled");
 
             // Verify that the 'Exists' property of '1' pane equals 'True'
             Assert.AreEqual(this.Click_ConfigureSetting_From_MenuParams.PublicROWExists, publicROW.Exists, "Public row does not exist");
@@ -9943,29 +9905,9 @@ namespace Warewolf.UITests
         public bool DeployToCheckBoxChecked = true;
         
         /// <summary>
-        /// Verify that the 'Enabled' property of 'UI_Warewolf Administrators_DeployToPermissionCheckBox_AutoID' check box equals 'False'
-        /// </summary>
-        public bool DeployToCheckBoxEnabled = false;
-        
-        /// <summary>
-        /// Verify that the 'ReadOnly' property of 'True' cell equals 'True'
-        /// </summary>
-        public bool DeployFromCellReadOnly = true;
-        
-        /// <summary>
         /// Verify that the 'Checked' property of 'UI_Warewolf Administrators_DeployFromPermissionCheckBox_AutoID' check box equals 'True'
         /// </summary>
         public bool DeployFromCheckBoxChecked = true;
-        
-        /// <summary>
-        /// Verify that the 'Enabled' property of 'UI_Warewolf Administrators_DeployFromPermissionCheckBox_AutoID' check box equals 'False'
-        /// </summary>
-        public bool DeployFromCheckBoxEnabled = false;
-        
-        /// <summary>
-        /// Verify that the 'ReadOnly' property of 'True' cell equals 'True'
-        /// </summary>
-        public bool AdministratorCellReadOnly = true;
         
         /// <summary>
         /// Verify that the 'Checked' property of 'UI_Warewolf Administrators_AdministratorPermissionCheck...' check box equals 'True'
@@ -9973,29 +9915,9 @@ namespace Warewolf.UITests
         public bool AdministratorCheckBoxChecked = true;
         
         /// <summary>
-        /// Verify that the 'Enabled' property of 'UI_Warewolf Administrators_AdministratorPermissionCheck...' check box equals 'False'
-        /// </summary>
-        public bool AdministratorCheckBoxEnabled = false;
-        
-        /// <summary>
-        /// Verify that the 'ReadOnly' property of 'True' cell equals 'True'
-        /// </summary>
-        public bool ExecuteCellReadOnly = true;
-        
-        /// <summary>
         /// Verify that the 'Checked' property of 'UI_Warewolf Administrators_ExecutePermissionCheck...' check box equals 'True'
         /// </summary>
         public bool ExecuteCheckBoxChecked = true;
-        
-        /// <summary>
-        /// Verify that the 'Enabled' property of 'UI_Warewolf Administrators_ExecutePermissionCheck...' check box equals 'False'
-        /// </summary>
-        public bool ExecuteCheckBoxEnabled = false;
-        
-        /// <summary>
-        /// Verify that the 'ReadOnly' property of 'True' cell equals 'True'
-        /// </summary>
-        public bool ViewCellReadOnly = true;
         
         /// <summary>
         /// Verify that the 'Checked' property of 'UI_Warewolf Administrators_ViewPermissionCheck...' check box equals 'True'
@@ -10003,24 +9925,9 @@ namespace Warewolf.UITests
         public bool ViewCheckBoxChecked = true;
         
         /// <summary>
-        /// Verify that the 'Enabled' property of 'UI_Warewolf Administrators_ViewPermissionCheck...' check box equals 'False'
-        /// </summary>
-        public bool ViewCheckBoxEnabled = false;
-        
-        /// <summary>
-        /// Verify that the 'ReadOnly' property of 'True' cell equals 'True'
-        /// </summary>
-        public bool ContributeCellReadOnly = true;
-        
-        /// <summary>
         /// Verify that the 'Checked' property of 'UI_Warewolf Administrators_ContributePermissionCheck...' check box equals 'True'
         /// </summary>
         public bool ContributeCheckBoxChecked = true;
-        
-        /// <summary>
-        /// Verify that the 'Enabled' property of 'UI_Warewolf Administrators_ContributePermissionCheck...' check box equals 'False'
-        /// </summary>
-        public bool ContributeCheckBoxEnabled = false;
         
         /// <summary>
         /// Verify that the 'Exists' property of '1' pane equals 'True'
