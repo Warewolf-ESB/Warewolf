@@ -17,8 +17,9 @@ namespace Warewolf.UITests
             Uimap.Click_Service_Picker_Dialog_OK();
             Uimap.Click_Save_Ribbon_Button_With_No_Save_Dialog();
             Uimap.Click_Scheduler_Disable_Task_Radio_Button();
-            Uimap.Click_Save_Ribbon_Button_With_No_Save_Dialog();
             Uimap.Click_Close_Workflow_Tab_Button();
+            Uimap.Enter_User_Details_For_Scheduler();
+            Uimap.Click_Save_Ribbon_Button_With_No_Save_Dialog();
         }
 
         #region Additional test attributes
