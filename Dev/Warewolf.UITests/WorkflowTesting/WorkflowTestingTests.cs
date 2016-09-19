@@ -20,32 +20,19 @@ namespace Warewolf.UITests
         {
             Uimap.Search_And_Select_HelloWolrd();
             Uimap.Select_Tests_From_Context_Menu();
-            Uimap.Click_Create_New_Tests();
-            Uimap.Assert_Display_Text_ContainStar(Tab, true);
-            Uimap.Assert_Display_Text_ContainStar(Test, true);
+            Uimap.Click_Create_New_Tests(true);
             Uimap.Click_Save_Ribbon_Button_With_No_Save_Dialog();
-            Uimap.Assert_Display_Text_ContainStar(Tab, false);
-            Uimap.Assert_Display_Text_ContainStar(Test, false);
-            Uimap.Click_Create_New_Tests(2);
-            Uimap.Assert_Display_Text_ContainStar(Tab,true);
-            Uimap.Assert_Display_Text_ContainStar(Test, true);
+            Uimap.Click_Create_New_Tests(true, 2);
             Uimap.Click_Save_Ribbon_Button_With_No_Save_Dialog();
             //Remove Check
-            Uimap.Click_EnableDisable_This_Test_CheckBox();
-            Uimap.Assert_Display_Text_ContainStar(Tab, true);
-            Uimap.Assert_Display_Text_ContainStar(Test, true);
+            Uimap.Click_EnableDisable_This_Test_CheckBox(true);
             Uimap.Click_Save_Ribbon_Button_With_No_Save_Dialog();
             //Put the Check back
-            Uimap.Click_EnableDisable_This_Test_CheckBox();
-            Uimap.Assert_Display_Text_ContainStar(Tab, true);
-            Uimap.Assert_Display_Text_ContainStar(Test, true);
+            Uimap.Click_EnableDisable_This_Test_CheckBox(true);
             //Remove Check
-            Uimap.Click_EnableDisable_This_Test_CheckBox();
-            Uimap.Assert_Display_Text_ContainStar(Tab, false);
-            Uimap.Assert_Display_Text_ContainStar(Test, false);
-            Uimap.Click_Create_New_Tests(3);
+            Uimap.Click_EnableDisable_This_Test_CheckBox(false);
+            Uimap.Click_Create_New_Tests(testInstance:3);
             Uimap.Click_Save_Ribbon_Button_With_No_Save_Dialog();
-            Uimap.Assert_Display_Text_ContainStar(Test, false, 0);
         }
 
         [TestMethod]
@@ -56,14 +43,10 @@ namespace Warewolf.UITests
             Uimap.Click_Create_New_Tests();
             Uimap.Update_Test_Name(TestName);
             Uimap.Click_Run_Test_Button();
-            Uimap.Click_Create_New_Tests(2);
-            Uimap.Assert_Display_Text_ContainStar(Tab, true, 2);
-            Uimap.Assert_Display_Text_ContainStar(Test, true, 2);
+            Uimap.Click_Create_New_Tests(true, 2);
             Uimap.Click_Save_Ribbon_Button_With_No_Save_Dialog();
             Uimap.Select_Test_From_TestList();
-            Uimap.Click_EnableDisable_This_Test_CheckBox();
-            Uimap.Assert_Display_Text_ContainStar(Tab, true);
-            Uimap.Assert_Display_Text_ContainStar(Test, true);
+            Uimap.Click_EnableDisable_This_Test_CheckBox(true);
             Uimap.Click_Delete_Test_Button();
         }
 

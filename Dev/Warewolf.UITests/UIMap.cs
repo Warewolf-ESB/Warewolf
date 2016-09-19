@@ -562,7 +562,7 @@ namespace Warewolf.UITests
         public void Enter_GroupName_Into_Windows_Group_Dialog(string GroupName)
         {
             SelectWindowsGroupDialog.ItemPanel.ObjectNameTextbox.Text = GroupName;
-            Assert.IsTrue(SelectWindowsGroupDialog.OKPanel.OK.Enabled, "Windows group dialog OK button is not enabled.");            
+            Assert.IsTrue(SelectWindowsGroupDialog.OKPanel.OK.Enabled, "Windows group dialog OK button is not enabled.");
         }
 
         public void Enter_ServiceName_Into_Service_Picker_Dialog(string ServiceName)
@@ -1007,7 +1007,7 @@ namespace Warewolf.UITests
 
         //}
 
-        public void Click_EnableDisable_This_Test_CheckBox()
+        public void Click_EnableDisable_This_Test_CheckBox(bool nameContainsStar = false)
         {
             WpfCheckBox testEnabledSelector = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestsListboxList.Test1.TestEnabledSelector;
             WpfButton deleteButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestsListboxList.Test1.DeleteButton;
@@ -1019,6 +1019,8 @@ namespace Warewolf.UITests
 
             WaitForControlVisible(deleteButton);
             Assert.IsTrue(deleteButton.Enabled, "Delete button is disabled");
+            Assert_Display_Text_ContainStar(Tab, nameContainsStar);
+            Assert_Display_Text_ContainStar(Test, nameContainsStar);
         }
 
         public void Drag_Dice_Onto_DesignSurface()
@@ -1130,10 +1132,10 @@ namespace Warewolf.UITests
             if (!string.IsNullOrEmpty(BrokenRule))
             {
                 if (BrokenRule.ToUpper().Equals(UnsavedResourceError))
-                // Verify that the 'DisplayText' property of 'Please save currently edited Test(s) before runnin...' label equals 'Please save currently edited Test(s) before running the tests.'
-                Assert.AreEqual(this.Click_RunAll_ButtonParams.UIPleasesavecurrentlyeTextDisplayText, message.DisplayText, "Message is not Equal to Please save currently edited Test(s) before running the t" +
-                        "ests.");
-                if(BrokenRule.ToUpper().Equals(DuplicateNameError))
+                    // Verify that the 'DisplayText' property of 'Please save currently edited Test(s) before runnin...' label equals 'Please save currently edited Test(s) before running the tests.'
+                    Assert.AreEqual(this.Click_RunAll_ButtonParams.UIPleasesavecurrentlyeTextDisplayText, message.DisplayText, "Message is not Equal to Please save currently edited Test(s) before running the t" +
+                            "ests.");
+                if (BrokenRule.ToUpper().Equals(DuplicateNameError))
                     // Verify that the 'DisplayText' property of 'Please save currently edited Test(s) before runnin...' label equals 'Please save currently edited Test(s) before running the tests.'
                     Assert.AreEqual(this.Click_RunAll_ButtonParams.UIThenamealreadyexistsTextDisplayText, message.DisplayText, "Messagebox does not show duplicated name error");
             }
@@ -1314,17 +1316,19 @@ namespace Warewolf.UITests
             if (result == "Passing")
                 Assert.IsTrue(passing.Exists, "Test is not passing");
             if (result == "Failing")
-                    Assert.IsTrue(failing.Exists, "Test is not failing");
+                Assert.IsTrue(failing.Exists, "Test is not failing");
             if (result == "Invalid")
-                        Assert.IsTrue(invalid.Exists, "Test is not invalid");
+                Assert.IsTrue(invalid.Exists, "Test is not invalid");
             if (result == "Pending")
                 Assert.IsTrue(pending.Exists, "Test is not pending");
         }
+        const string Tab = "Tab";
+        const string Test = "Test";
         /// <summary>
         /// Click_Create_New_Tests - Use 'Click_Create_New_TestsParams' to pass parameters into this method.
         /// testInstance = What number is the test you are creating e.g. 4th test, 5th test
         /// </summary>
-        public void Click_Create_New_Tests(int testInstance = 1)
+        public void Click_Create_New_Tests(bool nameContainsStar = false, int testInstance = 1)
         {
             #region Variable Declarations
             WpfButton createTestButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestsListboxList.CreateTest.CreateTestButton;
@@ -1352,10 +1356,13 @@ namespace Warewolf.UITests
 
             // Verify that the 'Exists' property of 'Text' text box equals 'True'
             Assert.AreEqual(this.Click_Create_New_TestsParams.TextboxExists, textbox.Exists, "Row 1 input value textbox does not exist on workflow tests tab.");
+
+            Assert_Display_Text_ContainStar(Tab, nameContainsStar, testInstance);
+            Assert_Display_Text_ContainStar(Test, nameContainsStar, testInstance);
         }
 
-        public void Assert_Display_Text_ContainStar(string control, bool containsStar, int instance = 1)
-        {            
+        private void Assert_Display_Text_ContainStar(string control, bool containsStar, int instance = 1)
+        {
             WpfList testsListBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestsListboxList;
 
             string description = string.Empty;
@@ -1372,7 +1379,7 @@ namespace Warewolf.UITests
                 var wpfListItem = GetCurrentTest(instance);
                 description = wpfListItem.DisplayText;
                 if (containsStar)
-                    Assert.IsTrue(description.Contains("*"), description +" DOES NOT contain a Star");
+                    Assert.IsTrue(description.Contains("*"), description + " DOES NOT contain a Star");
                 else
                     Assert.IsFalse(description.Contains("*"), description + " contains a Star");
             }
@@ -1408,10 +1415,10 @@ namespace Warewolf.UITests
         public void Select_Test_From_TestList(int testInstance = 1)
         {
             var test = GetCurrentTest(testInstance);
-            
+
             // Click 'Warewolf.Studio.ViewModels.ServiceTestModel' list item
             //Mouse.Click(test, new Point(189, 19));
-            if(test != null)
+            if (test != null)
                 Mouse.Click(test);
         }
         public void Select_Dice_From_Service_Picker(string tabName)
@@ -1438,7 +1445,7 @@ namespace Warewolf.UITests
         private WpfText GetCurrentTest(int testInstance)
         {
             WpfText test;
-            switch(testInstance)
+            switch (testInstance)
             {
                 case 1:
                     test = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestsListboxList.Test1.TestNameDisplay;
@@ -1455,6 +1462,42 @@ namespace Warewolf.UITests
             }
             return test;
         }
+
+        /// <summary>
+        /// Click_Save_Ribbon_Button_With_No_Save_Dialog - Use 'Click_Save_Ribbon_Button_With_No_Save_DialogParams' to pass parameters into this method.
+        /// </summary>
+        public void Click_Save_Ribbon_Button_With_No_Save_Dialog()
+        {
+            #region Variable Declarations
+            WpfButton saveButton = this.MainStudioWindow.SideMenuBar.SaveButton;
+            #endregion
+
+            // Verify that the 'Exists' property of 'Save this tab' button equals 'True'
+            Assert.AreEqual(this.Click_Save_Ribbon_Button_With_No_Save_DialogParams.SaveButtonExists, saveButton.Exists, "Save ribbon button does not exist");
+
+            // Click 'Save this tab' button
+            Mouse.Click(saveButton, new Point(10, 5));
+
+            // Wait for 2 seconds for user delay between actions; Verify that the 'Enabled' property of 'Save this tab' button equals 'False'
+            Playback.Wait(2000);
+            Assert.AreEqual(this.Click_Save_Ribbon_Button_With_No_Save_DialogParams.SaveButtonEnabled, saveButton.Enabled, "Save ribbon button is still enabled after clicking it.");
+            Assert_Display_Text_ContainStar(Tab, false);
+            Assert_Display_Text_ContainStar(Test, false);
+        }
+
+        public virtual Click_Save_Ribbon_Button_With_No_Save_DialogParams Click_Save_Ribbon_Button_With_No_Save_DialogParams
+        {
+            get
+            {
+                if ((this.mClick_Save_Ribbon_Button_With_No_Save_DialogParams == null))
+                {
+                    this.mClick_Save_Ribbon_Button_With_No_Save_DialogParams = new Click_Save_Ribbon_Button_With_No_Save_DialogParams();
+                }
+                return this.mClick_Save_Ribbon_Button_With_No_Save_DialogParams;
+            }
+        }
+
+        private Click_Save_Ribbon_Button_With_No_Save_DialogParams mClick_Save_Ribbon_Button_With_No_Save_DialogParams;
     }
     /// <summary>
     /// Parameters to be passed into 'Click_RunAll_Button'
@@ -1517,6 +1560,25 @@ namespace Warewolf.UITests
         /// Verify that the 'Exists' property of 'Text' text box equals 'True'
         /// </summary>
         public bool TextboxExists = true;
+        #endregion
+    }
+    /// <summary>
+    /// Parameters to be passed into 'Click_Save_Ribbon_Button_With_No_Save_Dialog'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Click_Save_Ribbon_Button_With_No_Save_DialogParams
+    {
+
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Save this tab' button equals 'True'
+        /// </summary>
+        public bool SaveButtonExists = true;
+
+        /// <summary>
+        /// Wait for 2 seconds for user delay between actions; Verify that the 'Enabled' property of 'Save this tab' button equals 'False'
+        /// </summary>
+        public bool SaveButtonEnabled = false;
         #endregion
     }
 }

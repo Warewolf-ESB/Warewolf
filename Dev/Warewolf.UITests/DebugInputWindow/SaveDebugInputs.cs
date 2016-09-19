@@ -8,11 +8,12 @@ namespace Warewolf.UITests.DebugInputWindow
     public class SaveDebugInputs
     {
         private const string InputDataText = "Coded UI Test";
+        const string HelloWorld = "Hello World";
 
         [TestMethod]
         public void SaveDebugInputsUITest()
-        {
-            Uimap.Enter_Text_Into_Explorer_Filter("Hello World");
+        {            
+            Uimap.Enter_Text_Into_Explorer_Filter(HelloWorld);
             Uimap.WaitForSpinner(Uimap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);
             Uimap.Open_Explorer_First_Item_With_Context_Menu();
             Uimap.Click_Debug_Ribbon_Button();
