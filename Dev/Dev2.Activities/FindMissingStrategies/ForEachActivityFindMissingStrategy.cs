@@ -41,15 +41,15 @@ namespace Dev2.FindMissingStrategies
             List<string> results = new List<string>();
             Dev2FindMissingStrategyFactory stratFac = new Dev2FindMissingStrategyFactory();
             DsfForEachActivity forEachActivity = activity as DsfForEachActivity;
-            if (forEachActivity != null)
+            if(forEachActivity != null)
             {
                 IFindMissingStrategy strategy;
                 enFindMissingType findMissingType;
                 var boolAct = forEachActivity.DataFunc.Handler as DsfNativeActivity<bool>;
-                if (boolAct == null)
+                if(boolAct == null)
                 {
                     DsfNativeActivity<string> stringAct = forEachActivity.DataFunc.Handler as DsfNativeActivity<string>;
-                    if (stringAct != null)
+                    if(stringAct != null)
                     {
                         findMissingType = stringAct.GetFindMissingType();
                         strategy = stratFac.CreateFindMissingStrategy(findMissingType);
@@ -63,41 +63,38 @@ namespace Dev2.FindMissingStrategies
                     results.AddRange(strategy.GetActivityFields(boolAct));
                 }
             }
-            else
-            {
 
-                DsfSelectAndApplyActivity selectAndApply = activity as DsfSelectAndApplyActivity;
-                if (selectAndApply != null)
+            DsfSelectAndApplyActivity selectAndApply = activity as DsfSelectAndApplyActivity;
+            if(selectAndApply != null)
+            {
+                IFindMissingStrategy strategy;
+                enFindMissingType findMissingType;
+                var boolAct = selectAndApply.ApplyActivityFunc.Handler as DsfNativeActivity<bool>;
+                if(boolAct == null)
                 {
-                    IFindMissingStrategy strategy;
-                    enFindMissingType findMissingType;
-                    var boolAct = selectAndApply.ApplyActivityFunc.Handler as DsfNativeActivity<bool>;
-                    if (boolAct == null)
+                    DsfNativeActivity<string> stringAct = selectAndApply.ApplyActivityFunc.Handler as DsfNativeActivity<string>;
+                    if(stringAct != null)
                     {
-                        DsfNativeActivity<string> stringAct = selectAndApply.ApplyActivityFunc.Handler as DsfNativeActivity<string>;
-                        if (stringAct != null)
-                        {
-                            findMissingType = stringAct.GetFindMissingType();
-                            strategy = stratFac.CreateFindMissingStrategy(findMissingType);
-                            results.AddRange(strategy.GetActivityFields(stringAct));
-                        }
-                    }
-                    else
-                    {
-                        findMissingType = boolAct.GetFindMissingType();
+                        findMissingType = stringAct.GetFindMissingType();
                         strategy = stratFac.CreateFindMissingStrategy(findMissingType);
-                        results.AddRange(strategy.GetActivityFields(boolAct));
+                        results.AddRange(strategy.GetActivityFields(stringAct));
                     }
                 }
-
-                IEnumerable<PropertyInfo> properties = StringAttributeRefectionUtils.ExtractAdornedProperties<FindMissingAttribute>(activity);
-                foreach (PropertyInfo propertyInfo in properties)
+                else
                 {
-                    object property = propertyInfo.GetValue(activity, null);
-                    if (property != null)
-                    {
-                        results.Add(property.ToString());
-                    }
+                    findMissingType = boolAct.GetFindMissingType();
+                    strategy = stratFac.CreateFindMissingStrategy(findMissingType);
+                    results.AddRange(strategy.GetActivityFields(boolAct));
+                }
+            }
+
+            IEnumerable<PropertyInfo> properties = StringAttributeRefectionUtils.ExtractAdornedProperties<FindMissingAttribute>(activity);
+            foreach(PropertyInfo propertyInfo in properties)
+            {
+                object property = propertyInfo.GetValue(activity, null);
+                if(property != null)
+                {
+                    results.Add(property.ToString());
                 }
             }
             return results;
