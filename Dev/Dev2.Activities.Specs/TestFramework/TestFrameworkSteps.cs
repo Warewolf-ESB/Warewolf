@@ -20,6 +20,7 @@ using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Models;
 using Dev2.Studio.Core.Models.DataList;
+using Dev2.Studio.Core.ViewModels;
 using Dev2.Studio.ViewModels.DataList;
 using Dev2.Threading;
 using Dev2.Utilities;
@@ -345,7 +346,7 @@ namespace Dev2.Activities.Specs.TestFramework
             ResourceModel resourceModel;
             if (ScenarioContext.TryGetValue(workflowName, out resourceModel))
             {
-                var testFramework = new ServiceTestViewModel(resourceModel, new SynchronousAsyncWorker(),new Mock<IEventAggregator>().Object,new Mock<IExternalProcessExecutor>().Object);
+                var testFramework = new ServiceTestViewModel(resourceModel, new SynchronousAsyncWorker(),new Mock<IEventAggregator>().Object,new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object);
                 Assert.IsNotNull(testFramework);
                 Assert.IsNotNull(testFramework.ResourceModel);
                 ScenarioContext.Add("testFramework", testFramework);
@@ -1192,7 +1193,7 @@ namespace Dev2.Activities.Specs.TestFramework
             env.ForceLoadResources();
             var res = env.ResourceRepository.FindSingle(model => model.ResourceName.Equals(workflowName, StringComparison.InvariantCultureIgnoreCase), true);
             var contextualResource = env.ResourceRepository.LoadContextualResourceModel(res.ID);
-            var serviceTestVm = new ServiceTestViewModel(contextualResource, new SynchronousAsyncWorker(),new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object);
+            var serviceTestVm = new ServiceTestViewModel(contextualResource, new SynchronousAsyncWorker(),new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object);
             Assert.IsNotNull(serviceTestVm);
             Assert.IsNotNull(serviceTestVm.ResourceModel);
             ScenarioContext.Add("testFramework", serviceTestVm);
