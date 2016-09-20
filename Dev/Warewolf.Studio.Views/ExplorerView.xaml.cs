@@ -30,7 +30,7 @@ namespace Warewolf.Studio.Views
         public ExplorerView()
         {
             InitializeComponent();
-            _explorerViewTestClass = new ExplorerViewTestClass(this);
+            _explorerViewTestClass = new ExplorerViewTestClass(this);            
         }
 
         #region ExplorerViewTestClass
@@ -618,21 +618,12 @@ namespace Warewolf.Studio.Views
         {
             var node = ((XamDataTreeNodeDataContext)((ContentPresenter)((FrameworkElement)sender).TemplatedParent).Content).Node;
 
-
-            if (node != null
-                && node.NodeLayout != null
-                && node.NodeLayout.Tree != null)
+            if (node?.NodeLayout?.Tree != null)
             {
-                var clickedNode = node;
-
-                var selectedNodes = clickedNode.NodeLayout.Tree.SelectionSettings.SelectedNodes;
-                selectedNodes.Clear();
-                selectedNodes.Add(clickedNode);
+                var clickedNode = node;                
                 clickedNode.IsActive = true;
-                clickedNode.IsSelected = true;
-                return;
             }
-            e.Cancel = true;
         }
+
     }
 }
