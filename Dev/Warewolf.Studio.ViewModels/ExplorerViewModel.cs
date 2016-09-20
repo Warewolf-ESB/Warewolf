@@ -184,11 +184,6 @@ namespace Warewolf.Studio.ViewModels
 
             }
             Environments = new ObservableCollection<IEnvironmentViewModel>(Environments);
-            foreach (var environment in Environments)
-            {
-                if (environment.Children != null)
-                    environment.Children = new ObservableCollection<IExplorerItemViewModel>(environment.Children.OrderByDescending(a => a.IsFolder).ThenBy(b => b.ResourceName).ToList());
-            }
             IsRefreshing = false;
             ConnectControlViewModel.LoadNewServers();
         }
@@ -207,11 +202,6 @@ namespace Warewolf.Studio.ViewModels
                 {
                     Filter(SearchText);
                 }
-            }
-            foreach (var environment in Environments)
-            {
-                if (environment.Children != null)
-                    environment.Children = new ObservableCollection<IExplorerItemViewModel>(environment.Children.OrderByDescending(a => a.IsFolder).ThenBy(b => b.ResourceName).ToList());
             }
             environmentViewModel.ForcedRefresh = false;
             IsRefreshing = false;

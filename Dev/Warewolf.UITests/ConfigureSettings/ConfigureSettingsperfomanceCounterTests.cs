@@ -8,6 +8,7 @@ namespace Warewolf.UITests
     public class ConfigureSettingsperfomanceCounter
     {
         [TestMethod]
+        [Ignore]
         public void ConfigureSettingPerfomanceCounter()
         {
             Uimap.Click_ConfigureSetting_From_Menu();

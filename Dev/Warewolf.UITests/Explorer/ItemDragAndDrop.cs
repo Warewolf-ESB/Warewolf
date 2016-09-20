@@ -9,6 +9,7 @@ namespace Warewolf.UITests
     {
         const string Dice = "Dice";
         [TestMethod]
+        [Ignore]
         public void ItemDragAndDropUITest()
         {
             Uimap.Search_And_Select_DiceRoll();

@@ -84,6 +84,7 @@ namespace Warewolf.Studio.ViewModels
                 Tests = models;
                 IsLoading = false;
             });
+            UpdateHelpDescriptor(Resources.Languages.Core.ServiceTestGenericHelpText);
         }
 
         private void SetServerName(IContextualResourceModel resourceModel)

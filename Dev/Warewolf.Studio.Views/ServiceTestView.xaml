@@ -32,7 +32,7 @@
             <converters:SimpleEnumToBoolConverter x:Key="EnumToBoolConverter"/>
         </ResourceDictionary>
     </UserControl.Resources>
-    <Grid Margin="{StaticResource ElementBorder}">
+    <Grid Margin="{StaticResource ElementBorder}" x:Name="MainGrid" MouseLeftButtonUp="MainGrid_OnMouseLeftButtonUp">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
@@ -93,7 +93,8 @@
                             <Grid>
                                 <Grid HorizontalAlignment="Stretch" 
                                       VerticalAlignment="Stretch" 
-                                      Visibility="{Binding IsNewTest,Converter={StaticResource BoolToVisibilityConverterNegative}}">
+                                      x:Name="ListBoxItemGrid"
+                                      Visibility="{Binding IsNewTest,Converter={StaticResource BoolToVisibilityConverterNegative}}" MouseLeftButtonUp="ListBoxItemGrid_OnMouseLeftButtonUp">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="30"/>
                                         <ColumnDefinition Width="30"/>
