@@ -8,7 +8,6 @@ namespace Warewolf.UITests
     public class VariablesTests
     {
         [TestMethod]
-        [Ignore]
         public void AssignValue_Filter_AndDeleteVariable()
         {
             Uimap.Click_New_Workflow_Ribbon_Button();
