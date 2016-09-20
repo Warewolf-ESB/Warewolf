@@ -75,7 +75,7 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.Length
             var length = new DsfRecordsetLengthActivity
             {
                 RecordsetName = recordset,
-                RecordsLength = ResultVariable
+                RecordsLength = ResultVariable, 
             };
 
             TestStartNode = new FlowStep
@@ -151,5 +151,18 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.Length
             actualValue = string.IsNullOrEmpty(actualValue) ? "0" : actualValue;
             Assert.AreEqual(expectedResult, actualValue);
         }
+
+        [Given(@"Length Treat Null as Empty Recordset is not selected")]
+        public void GivenLengthTreatNullAsEmptyRecordsetIsNotSelected()
+        {
+            scenarioContext.Add("treaNullAsZero", false);
+        }
+
+        [Given(@"Length Treat Null as Empty Recordset is selected")]
+        public void GivenLengthTreatNullAsEmptyRecordsetIsSelected()
+        {
+            scenarioContext.Add("treaNullAsZero", true);
+        }
+
     }
 }

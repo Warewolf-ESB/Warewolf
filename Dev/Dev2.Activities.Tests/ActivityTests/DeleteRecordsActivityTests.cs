@@ -280,11 +280,11 @@ namespace Dev2.Tests.Activities.ActivityTests
 
         #region Private Test Methods
 
-        private void SetupArguments(string currentDl, string testData, string recordSetName, string resultVar)
+        private void SetupArguments(string currentDl, string testData, string recordSetName, string resultVar, bool treatNullAsZero =false)
         {
             TestStartNode = new FlowStep
             {
-                Action = new DsfDeleteRecordActivity { RecordsetName = recordSetName, Result = resultVar }
+                Action = new DsfDeleteRecordActivity { RecordsetName = recordSetName, Result = resultVar, TreatNullAsZero = treatNullAsZero }
             };
 
             CurrentDl = testData;
@@ -431,6 +431,34 @@ namespace Dev2.Tests.Activities.ActivityTests
             GetScalarValueFromEnvironment(result.Environment, "res", out actual, out error);
             // remove test datalist ;)
             Assert.AreEqual("Failure", actual);
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void Method_GivenIsNew_ShouldHaveTreatAsNullTrue()
+        {
+            //---------------Set up test pack-------------------
+            var dsfDeleteRecordActivity = new DsfDeleteRecordActivity();
+            //---------------Assert Precondition----------------
+            //---------------Execute Test ----------------------
+            Assert.IsTrue(dsfDeleteRecordActivity.TreatNullAsZero);
+            //---------------Test Result -----------------------
+        }
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        [TestCategory("DsfDeleteRecordActivity_Execute")]
+        public void DsfDeleteRecordActivity_ExecuteTreatNullAsZero_EmptyRecordsetName_Success()
+        {
+            //------------Setup for test--------------------------
+            SetupArguments(ActivityStrings.EmptyRecordSetNoData, ActivityStrings.EmptyRecordSet, "", "[[res]]", true);
+            //------------Execute Test---------------------------
+            IDSFDataObject result = ExecuteProcess();
+            //------------Assert Results-------------------------
+            string actual;
+            string error;
+            GetScalarValueFromEnvironment(result.Environment, "res", out actual, out error);
+            // remove test datalist ;)
+            Assert.AreEqual("Success", actual);
         }
 
         [TestMethod]
