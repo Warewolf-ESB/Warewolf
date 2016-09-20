@@ -25,5 +25,6 @@ namespace Dev2.Common.Interfaces
         bool IsDirty { get; set; }
         AuthenticationType AuthenticationType { get; set; }
         Guid ResourceId { get; set; }
+        List<IServiceTestStep> TestSteps { get; set; }
     }
 }

@@ -376,10 +376,24 @@ namespace Warewolf.Studio.ViewModels
                 Enabled = model.Enabled,
                 ErrorExpected = model.ErrorExpected,
                 NoErrorExpected = model.NoErrorExpected,
-                Inputs = model.Inputs.ToList(),
+                TestSteps = model.TestSteps.Select(step=>new ServiceTestStepTO(step.UniqueId, step.ActivityType,step.Outputs.Select(output => new ServiceTestOutputTO
+                {
+                    Variable = output.Variable,
+                    Value = output.Value
+                } as IServiceTestOutput).ToList(),step.Type) as IServiceTestStep).ToList(),
+                Inputs = model.Inputs.Select(input => new ServiceTestInputTO
+                {
+                    Variable = input.Variable,
+                    Value = input.Value,
+                    EmptyIsNull = input.EmptyIsNull
+                } as IServiceTestInput).ToList(),
+                Outputs = model.Outputs.Select(output => new ServiceTestOutputTO
+                {
+                    Variable = output.Variable,
+                    Value = output.Value
+                } as IServiceTestOutput).ToList(),
                 LastRunDate = model.LastRunDate,
                 OldTestName = model.OldTestName,
-                Outputs = model.Outputs.ToList(),
                 Password = model.Password,
                 IsDirty = model.IsDirty,
                 TestPending = model.TestPending,
@@ -698,5 +712,21 @@ namespace Warewolf.Studio.ViewModels
             var mainViewModel = CustomContainer.Get<IMainViewModel>();
             mainViewModel?.HelpViewModel.UpdateHelpText(helpText);
         }
+    }
+
+    public class ServiceTestStepTO:IServiceTestStep
+    {
+        public ServiceTestStepTO(Guid stepUniqueId, string stepActivityType, List<IServiceTestOutput> outputs, StepType stepType)
+        {
+            UniqueId = stepUniqueId;
+            ActivityType = stepActivityType;
+            Type = stepType;
+            Outputs = outputs;
+        }
+
+        public Guid UniqueId { get; set; }
+        public string ActivityType { get; set; }
+        public StepType Type { get; set; }
+        public List<IServiceTestOutput> Outputs { get; set; }
     }
 }
