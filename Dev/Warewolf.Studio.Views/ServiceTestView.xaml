@@ -78,9 +78,11 @@
                 Margin="{StaticResource ElementBorderTop}">
             <Grid>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="30*" MinWidth="210"/>
+                    <ColumnDefinition Width="20*" MinWidth="210"/>
                     <ColumnDefinition Width="5"/>
-                    <ColumnDefinition Width="70*" MinWidth="350"/>
+                    <ColumnDefinition Width="40*" MinWidth="350"/>
+                    <ColumnDefinition Width="5"/>
+                    <ColumnDefinition Width="40*" MinWidth="350"/>
                 </Grid.ColumnDefinitions>
 
                 <ListBox Grid.Column="0" Style="{StaticResource TestsListBoxStyle}" 
@@ -371,7 +373,7 @@
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="*"/>
-                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
                                 <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="*"/>
                                 <RowDefinition Height="Auto"/>
@@ -461,6 +463,114 @@
                                 </controls:Dev2DataGrid>
                             </Border>
                             <!-- Grid.Row="2" is in place for Assert - V3 -->
+                            <TextBlock Grid.Row="0" Text="Assert" FontWeight="Bold"/>
+
+                            <ListBox Grid.Row="2" 
+                                     Style="{StaticResource ListBoxStyle}" 
+                                     BorderThickness="1,0,1,1"                        
+                                     ItemsSource="{Binding AssertList}" 
+                                     SelectionMode="Single" 
+                                     x:Name="AssertListbox"
+                                     SelectedItem="{Binding SelectedAssert, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" >
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <Grid>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="*"/>
+                                            </Grid.RowDefinitions>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                            </Grid.ColumnDefinitions>
+
+                                            <TextBlock Grid.Row="0" Grid.Column="0" Text="Desciption of the tool" FontWeight="Bold" HorizontalAlignment="Left"/>
+                                            <Button Grid.Row="0" Grid.Column="1" Command="{Binding SelectedAssert.DeleteAssertCommand}">
+                                                <fa:FontAwesome Icon="Trash"/>
+                                            </Button>
+                                            <controls:Dev2DataGrid x:Name="SmallDataGrid"
+                                                                   Grid.Row="1"
+                                                                   Grid.Column="0"
+                                                                   Grid.ColumnSpan="2"
+                                                                   ItemsSource="{Binding FieldsCollection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                                                   Style="{StaticResource SpacedActivityDataGridStyle}"
+                                                                   MinHeight="56"
+                                                                   RowStyle="{StaticResource ActivityGridRowStyle}">
+                                                <DataGrid.Columns>
+                                                    <DataGridTemplateColumn Width="*" Header="Result">
+                                                        <DataGridTemplateColumn.CellTemplate>
+                                                            <DataTemplate>
+                                                                <TextBlock Text="{Binding Result, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                                            </DataTemplate>
+                                                        </DataGridTemplateColumn.CellTemplate>
+                                                    </DataGridTemplateColumn>
+
+                                                    <DataGridTemplateColumn Width="*"
+                                                                HeaderStyle="{StaticResource ActivityMapppingDecisionDataGridHeaderStyle}">
+                                                        <DataGridTemplateColumn.HeaderTemplate>
+                                                            <DataTemplate>
+                                                                <Grid>
+                                                                    <Grid.ColumnDefinitions>
+                                                                        <ColumnDefinition Width="50*"/>
+                                                                        <ColumnDefinition Width="50*"/>
+                                                                    </Grid.ColumnDefinitions>
+                                                                    <RadioButton Grid.Column="0" x:Name="AssertRadioButton" Content="Assert" IsChecked="{Binding SelectedAssert.IsAssert}">
+                                                                        <i:Interaction.Behaviors>
+                                                                            <core:HelpSetter Text="" DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+                                                                        </i:Interaction.Behaviors>
+                                                                    </RadioButton>
+                                                                    <RadioButton Grid.Column="1" x:Name="MockRadioButton" Content="Mock" IsChecked="{Binding SelectedAssert.IsMockChecked}">
+                                                                        <i:Interaction.Behaviors>
+                                                                            <core:HelpSetter Text="" DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+                                                                        </i:Interaction.Behaviors>
+                                                                    </RadioButton>
+                                                                </Grid>
+                                                            </DataTemplate>
+                                                        </DataGridTemplateColumn.HeaderTemplate>
+                                                        <DataGridTemplateColumn.CellTemplate>
+                                                            <DataTemplate>
+                                                                <ComboBox ItemContainerStyle="{StaticResource ComboBoxItemStyle}"
+                                                                          Margin="1"
+                                                                          ItemsSource="{Binding SelectedAssert.AssertOptions}"
+                                                                          SelectedValue="{Binding SelectedAssert.AssertType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}"
+                                                                          IsEnabled="{Binding SelectedAssert.IsAssertChecked}"
+                                                                          ToolTip="{x:Static languages:Core.FindToolTipLookForMatchType}">
+                                                                    <i:Interaction.Behaviors>
+                                                                        <core:HelpSetter Text="" DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+                                                                    </i:Interaction.Behaviors>
+                                                                    <AutomationProperties.AutomationId>
+                                                                        <MultiBinding StringFormat="UI_{0}_Row{1}_SearchType_AutoID">
+                                                                            <Binding Path="DataContext.AutomationID" RelativeSource="{RelativeSource AncestorType=UserControl}" />
+                                                                            <Binding Path="IndexNumber" />
+                                                                        </MultiBinding>
+                                                                    </AutomationProperties.AutomationId>
+                                                                </ComboBox>
+                                                            </DataTemplate>
+                                                        </DataGridTemplateColumn.CellTemplate>
+                                                    </DataGridTemplateColumn>
+
+                                                    <DataGridTemplateColumn Width="*" >
+                                                        <DataGridTemplateColumn.CellTemplate>
+                                                            <DataTemplate>
+                                                                <TextBox Margin="0,0,0,1"
+                                                                         Text="{Binding SelectedAssert.AssertValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                                         ToolTip="{x:Static languages:Core.AssignToolTipNewValue}">
+                                                                    <AutomationProperties.AutomationId>
+                                                                        <MultiBinding StringFormat="UI_{0}_Row{1}_FieldValue_AutoID">
+                                                                            <Binding Path="DataContext.AutomationID" RelativeSource="{RelativeSource AncestorType=UserControl}" />
+                                                                            <Binding Path="IndexNumber" />
+                                                                        </MultiBinding>
+                                                                    </AutomationProperties.AutomationId>
+                                                                </TextBox>
+                                                            </DataTemplate>
+                                                        </DataGridTemplateColumn.CellTemplate>
+                                                    </DataGridTemplateColumn>
+                                                </DataGrid.Columns>
+                                            </controls:Dev2DataGrid>
+                                        </Grid>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
 
                             <TextBlock Grid.Row="3" Text="Outputs" FontWeight="Bold"/>
                             <Border Grid.Row="4" BorderBrush="{StaticResource XamGridBorderBrush}" BorderThickness="1">
@@ -561,6 +671,21 @@
                             </Grid>
                         </Grid>
                     </Grid>
+                </ContentControl>
+                <GridSplitter Grid.Column="3"
+                      Background="#C1C3C5"
+                      HorizontalAlignment="Center"
+                      VerticalAlignment="Stretch"
+                      Width="5" />
+                <ContentControl Grid.Column="4" 
+                                x:Name="WorkflowControl"
+                                Visibility="{Binding SelectedServiceTest, Converter={StaticResource NullToVisibilityConverterNullIsCollapsed}}" 
+                                IsVisibleChanged="WorkflowControl_OnIsVisibleChanged"
+                                Content="{Binding Path=WorkflowDesignerViewModel.DesignerView}"
+                                AutomationProperties.AutomationId="{Binding Path=WorkflowDesignerViewModel.DesignerText}">
+                    <ig:DragDropManager.DropTarget >
+                        <ig:DropTarget IsDropTarget="False" />
+                    </ig:DragDropManager.DropTarget>
                 </ContentControl>
             </Grid>
         </Border>

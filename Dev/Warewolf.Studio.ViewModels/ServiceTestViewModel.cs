@@ -22,6 +22,7 @@ using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.Network;
+using Dev2.Studio.Core.ViewModels;
 using Microsoft.Practices.Prism.Commands;
 using Microsoft.Practices.Prism.Mvvm;
 using Warewolf.Resource.Errors;
@@ -43,7 +44,7 @@ namespace Warewolf.Studio.ViewModels
         private readonly IShellViewModel _shellViewModel;
         private IContextualResourceModel _resourceModel;
 
-        public ServiceTestViewModel(IContextualResourceModel resourceModel, IAsyncWorker asyncWorker, IEventAggregator eventPublisher, IExternalProcessExecutor processExecutor)
+        public ServiceTestViewModel(IContextualResourceModel resourceModel, IAsyncWorker asyncWorker, IEventAggregator eventPublisher, IExternalProcessExecutor processExecutor, IWorkflowDesignerViewModel workflowDesignerViewModel)
         {
 
             if (resourceModel == null)
@@ -85,6 +86,9 @@ namespace Warewolf.Studio.ViewModels
                 IsLoading = false;
             });
             UpdateHelpDescriptor(Resources.Languages.Core.ServiceTestGenericHelpText);
+
+            WorkflowDesignerViewModel = workflowDesignerViewModel;
+            var selectedDesigner = WorkflowDesignerViewModel.SelectedModelItem;
         }
 
         private void SetServerName(IContextualResourceModel resourceModel)
@@ -100,6 +104,7 @@ namespace Warewolf.Studio.ViewModels
         }
 
         private string _serverName;
+        private IWorkflowDesignerViewModel _workflowDesignerViewModel;
 
         private void OnReceivedResourceAffectedMessage(Guid resourceId, CompileMessageList changeList)
         {
@@ -315,6 +320,19 @@ namespace Warewolf.Studio.ViewModels
             {
                 _errorMessage = value;
                 OnPropertyChanged(() => ErrorMessage);
+            }
+        }
+
+        public IWorkflowDesignerViewModel WorkflowDesignerViewModel
+        {
+            get { return _workflowDesignerViewModel; }
+            set
+            {
+                _workflowDesignerViewModel = value;
+
+                var uiElement = _workflowDesignerViewModel.Designer.View;
+
+                OnPropertyChanged(() => WorkflowDesignerViewModel);
             }
         }
 
