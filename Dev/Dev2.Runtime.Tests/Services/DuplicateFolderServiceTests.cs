@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Dev2.Common.Interfaces;
 using Dev2.Communication;
 using Dev2.Runtime.ESB.Management.Services;
 using Dev2.Runtime.Hosting;
@@ -52,6 +53,37 @@ namespace Dev2.Tests.Runtime.Services
             var resourceCatalog = new Mock<IResourceCatalog>();
             resourceCatalog.Setup(catalog => catalog.DuplicateFolder(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<bool>()))
                 .Returns(new ResourceCatalogResult() { Message = "Hi" });
+            var workScpace = new Mock<IWorkspace>();
+            const string guid = "7B71D6B8-3E11-4726-A7A0-AC924977D6E5";
+            DuplicateFolderService resourceService = new DuplicateFolderService(resourceCatalog.Object);
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(resourceService);
+            //---------------Execute Test ----------------------
+
+            var stringBuilder = resourceService.Execute(new Dictionary<string, StringBuilder>
+            {
+                {"ResourceID", new StringBuilder(guid) },
+                {"NewResourceName", new StringBuilder("NewName") },
+                {"sourcePath", new StringBuilder("NewName") },
+                {"destinationPath", new StringBuilder("NewName") },
+            }, workScpace.Object);
+            //---------------Test Result -----------------------
+            resourceCatalog.Verify(catalog => catalog.DuplicateFolder(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<bool>()));
+            var serializer = new Dev2JsonSerializer();
+            var executeMessage = serializer.Deserialize<ExecuteMessage>(stringBuilder);
+            Assert.IsFalse(executeMessage.HasError);
+            Assert.IsFalse(string.IsNullOrEmpty(executeMessage.Message.ToString()));
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void Execute_GivenResourcePayLoad_ShouldDuplicateTests()
+        {
+            //---------------Set up test pack-------------------
+            var resourceCatalog = new Mock<IResourceCatalog>();
+            resourceCatalog.Setup(catalog => catalog.DuplicateFolder(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<bool>()))
+                .Returns(new ResourceCatalogResult { Message = "Hi" });
+            var mockTestCatalog = new Mock<ITestCatalog>();
             var workScpace = new Mock<IWorkspace>();
             const string guid = "7B71D6B8-3E11-4726-A7A0-AC924977D6E5";
             DuplicateFolderService resourceService = new DuplicateFolderService(resourceCatalog.Object);

@@ -28,7 +28,8 @@ namespace Dev2.Studio.Core.Network
     {
         Xml,
         Json,
-        API
+        API,
+        Tests
     }
 
     public static class WebServer
@@ -51,7 +52,7 @@ namespace Dev2.Studio.Core.Network
                 controller.AddPayloadArgument("DebugPayload", payload);
                 controller.ExecuteCommand<string>(clientContext, clientContext.WorkspaceID);
             }, () => { });
-        }
+        }        
 
         public static void OpenInBrowser(IContextualResourceModel resourceModel, string xmlData)
         {
@@ -129,6 +130,9 @@ namespace Dev2.Studio.Core.Network
                     case UrlType.API:
                     urlExtension = "api";
                     break;
+                case UrlType.Tests:
+                    urlExtension = "tests";
+                    break;
                 default:
                     throw new ArgumentOutOfRangeException("urlType");
             }
@@ -139,7 +143,7 @@ namespace Dev2.Studio.Core.Network
                 category = resourceModel.ResourceName;
             }
             var relativeUrl = $"/secure/{category}.{urlExtension}";
-            if (urlType != UrlType.API)
+            if (urlType != UrlType.API && urlType != UrlType.Tests)
             {
                 relativeUrl += "?"+xmlData;
                 relativeUrl += "&wid=" + environmentConnection.WorkspaceID;

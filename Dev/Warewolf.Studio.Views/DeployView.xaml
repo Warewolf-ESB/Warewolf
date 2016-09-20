@@ -117,16 +117,17 @@
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
 
-       
+
                         <TextBlock Grid.Column="0" Grid.Row="1" Text="Services" Foreground="White" FontSize="{StaticResource FontSize-Medium}"/>
                         <TextBlock Grid.Column="1" Grid.Row="1" x:Name="WorkflowsCount" Text="{Binding ServicesCount}" Foreground="White" FontSize="{StaticResource FontSize-Medium}"/>
 
                         <TextBlock Grid.Column="0" Grid.Row="2" Text="Sources" Foreground="White" FontSize="{StaticResource FontSize-Medium}"/>
                         <TextBlock Grid.Column="1" Grid.Row="2" x:Name="SourcesCount" Text="{Binding SourcesCount}" Foreground="White" FontSize="{StaticResource FontSize-Medium}"/>
 
-                       </Grid>
+                    </Grid>
 
                     <StackPanel Grid.Row="2"
                                 HorizontalAlignment="Left"
@@ -143,6 +144,8 @@
                                 <core:HelpSetter Text="{x:Static languages:Core.DeploySelectDependenciesHelp}" DataContext="{Binding}"/>
                             </i:Interaction.Behaviors>
                         </Button>
+                      <TextBlock Text="Also Deploy Tests?" Foreground="White" FontSize="{StaticResource FontSize-Medium}"/>
+                      <CheckBox VerticalAlignment="Center" IsChecked="{Binding Destination.DeployTests}"/>
                     </StackPanel>
                 </Grid>
 

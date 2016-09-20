@@ -34,6 +34,7 @@ using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Communication;
 using Dev2.Core.Tests.Environments;
+using Dev2.Data;
 using Dev2.Data.Binary_Objects;
 using Dev2.Data.Interfaces;
 using Dev2.Diagnostics.Debug;

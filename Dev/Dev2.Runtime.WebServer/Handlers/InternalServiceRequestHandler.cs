@@ -19,14 +19,16 @@ using Dev2.DynamicServices;
 using Dev2.Interfaces;
 using Dev2.Runtime.ESB.Control;
 using Dev2.Runtime.Hosting;
+using Dev2.Runtime.Security;
 using Dev2.Runtime.WebServer.TransferObjects;
+using Dev2.Services.Security;
 using Warewolf.Resource.Errors;
 
 namespace Dev2.Runtime.WebServer.Handlers
 {
     public class InternalServiceRequestHandler : AbstractWebRequestHandler
     {
-        public IPrincipal ExecutingUser { get; set; }
+        public IPrincipal ExecutingUser { private get; set; }
 
         public override void ProcessRequest(ICommunicationContext ctx)
         {
@@ -82,39 +84,56 @@ namespace Dev2.Runtime.WebServer.Handlers
         {
             var channel = new EsbServicesEndpoint();
             var xmlData = string.Empty;
-            if(request.Args != null && request.Args.ContainsKey("DebugPayload"))
+            if (request.Args != null && request.Args.ContainsKey("DebugPayload"))
             {
                 xmlData = request.Args["DebugPayload"].ToString();
                 xmlData = xmlData.Replace("<DataList>", "<XmlData>").Replace("</DataList>", "</XmlData>");
             }
 
-            // we need to adjust for the silly xml structure this system was init built on ;(
-            if(string.IsNullOrEmpty(xmlData))
+            if (string.IsNullOrEmpty(xmlData))
             {
                 xmlData = "<DataList></DataList>";
             }
+            bool isDebug = false;
+            if (request.Args != null && request.Args.ContainsKey("IsDebug"))
+            {
+                var debugString = request.Args["IsDebug"].ToString();
+                if (!bool.TryParse(debugString, out isDebug))
+                {
+                    isDebug = false;
+                }
+            }
 
             IDSFDataObject dataObject = new DsfDataObject(xmlData, dataListID);
+            if (isDebug)
+            {
+                dataObject.IsDebug = true;
+            }
             dataObject.StartTime = DateTime.Now;
             dataObject.EsbChannel = channel;
             dataObject.ServiceName = request.ServiceName;
-           
+
             var resource = ResourceCatalog.Instance.GetResource(workspaceID, request.ServiceName);
             var isManagementResource = false;
-            if(resource != null)
+            if (resource != null)
             {
                 dataObject.ResourceID = resource.ResourceID;
-                isManagementResource =  ResourceCatalog.Instance.ManagementServices.ContainsKey(resource.ResourceID);
+                if (!string.IsNullOrEmpty(request.TestName))
+                {
+                    dataObject.TestName = request.TestName;
+                    dataObject.IsServiceTestExecution = true;
+                }
+                isManagementResource = ResourceCatalog.Instance.ManagementServices.ContainsKey(resource.ResourceID);
             }
+            
             dataObject.ClientID = Guid.Parse(connectionId);
             Common.Utilities.OrginalExecutingUser = ExecutingUser;
             dataObject.ExecutingUser = ExecutingUser;
-            // we need to assign new ThreadID to request coming from here, because it is a fixed connection and will not change ID on its own ;)
-            if(!dataObject.Environment.HasErrors())
+            if (!dataObject.Environment.HasErrors())
             {
                 ErrorResultTO errors;
 
-                if(ExecutingUser == null)
+                if (ExecutingUser == null)
                 {
                     throw new Exception(ErrorResource.NullExecutingUser);
                 }
@@ -125,11 +144,26 @@ namespace Dev2.Runtime.WebServer.Handlers
                     var t = new Thread(() =>
                     {
                         Thread.CurrentPrincipal = ExecutingUser;
-                        if(isManagementResource)
+                        if (isManagementResource)
                         {
                             Thread.CurrentPrincipal = Common.Utilities.ServerUser;
                             ExecutingUser = Common.Utilities.ServerUser;
                             dataObject.ExecutingUser = Common.Utilities.ServerUser;
+                        }
+                        else if (dataObject.IsServiceTestExecution)
+                        {
+                            if (ServerAuthorizationService.Instance != null)
+                            {
+                                var authorizationService = ServerAuthorizationService.Instance;
+                                var hasContribute =
+                                    authorizationService.IsAuthorized(AuthorizationContext.Contribute,
+                                        Guid.Empty.ToString());
+                                if (!hasContribute)
+                                {
+                                    throw new UnauthorizedAccessException(
+                                        "The user does not have permission to execute tests.");
+                                }
+                            }
                         }
                         channel.ExecuteRequest(dataObject, request, workspaceID, out errors);
                     });
@@ -138,14 +172,13 @@ namespace Dev2.Runtime.WebServer.Handlers
 
                     t.Join();
                 }
-                catch(Exception e)
+                catch (Exception e)
                 {
-                    Dev2Logger.Error(e.Message,e);
+                    Dev2Logger.Error(e.Message, e);
                 }
 
 
-
-                if(request.ExecuteResult.Length > 0)
+                if (request.ExecuteResult.Length > 0)
                 {
                     return request.ExecuteResult;
                 }
@@ -153,7 +186,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                 return new StringBuilder();
             }
 
-            ExecuteMessage msg = new ExecuteMessage { HasError = true };
+            ExecuteMessage msg = new ExecuteMessage {HasError = true};
             msg.SetMessage(String.Join(Environment.NewLine, dataObject.Environment.Errors));
 
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();

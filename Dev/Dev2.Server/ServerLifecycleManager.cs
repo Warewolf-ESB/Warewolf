@@ -37,6 +37,7 @@ using Dev2.Diagnostics.Debug;
 using Dev2.Diagnostics.Logging;
 using Dev2.Instrumentation;
 using Dev2.PerformanceCounters.Management;
+using Dev2.Runtime;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Security;
 using Dev2.Runtime.WebServer;
@@ -358,6 +359,7 @@ namespace Dev2
                 LoadPerformanceCounters();
                 LoadServerWorkspace();
                 LoadActivityCache(catalog);
+                LoadTestCatalog();
                 ServerLoop(interactiveMode);
             }
             catch(Exception e)
@@ -807,6 +809,13 @@ namespace Dev2
             ServerExplorerRepository.Instance.Load(GlobalConstants.ServerWorkspaceID);
             WriteLine("done.");
             return catalog;
+        }
+
+        void LoadTestCatalog()
+        {
+            Write("Loading Test catalog...  ");
+            TestCatalog.Instance.Load();
+            WriteLine("done.");
         }
 
         private static void LoadActivityCache(ResourceCatalog catalog)

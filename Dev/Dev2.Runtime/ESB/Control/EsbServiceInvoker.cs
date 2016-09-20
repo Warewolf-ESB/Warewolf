@@ -21,6 +21,7 @@
 
 using System;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using Dev2.Common;
@@ -99,7 +100,6 @@ namespace Dev2.Runtime.ESB
             time.Start();
             errors = new ErrorResultTO();
             const int Update = 0;
-            // BUG 9706 - 2013.06.22 - TWR : added pre debug dispatch
             if(dataObject.Environment.HasErrors())
             {
                 errors.AddError(dataObject.Environment.FetchErrors());
@@ -109,8 +109,6 @@ namespace Dev2.Runtime.ESB
             try
             {
                 var serviceId = dataObject.ResourceID;
-
-                // we need to get better at getting this ;)
 
                 var serviceName = dataObject.ServiceName;
                 if(serviceId == Guid.Empty && string.IsNullOrEmpty(serviceName))
@@ -130,6 +128,19 @@ namespace Dev2.Runtime.ESB
                             theService = _serviceLocator.FindService(serviceName, GlobalConstants.ServerWorkspaceID);
                             if (theService == null)
                             {
+                                if (dataObject.IsServiceTestExecution)
+                                {
+                                    var testResult = new TestRunResult
+                                    {
+                                        Message = "Resource has been deleted",
+                                        Result = RunResult.TestResourceDeleted,
+                                        TestName = dataObject.TestName,
+                                        DebugForTest = new List<IDebugState>()
+                                    };
+                                    var ser = new Dev2JsonSerializer();
+                                    _request.ExecuteResult = ser.SerializeToBuilder(testResult);
+                                }
+
                                 errors.AddError(string.Format(ErrorResource.ServiceNotFound, serviceName));
                             }
 
@@ -146,11 +157,14 @@ namespace Dev2.Runtime.ESB
                             Dev2Logger.Debug("Mapping Action Dependencies");
                             MapServiceActionDependencies(theStart, _serviceLocator);
 
-                            // Invoke based upon type ;)
                             if(theStart != null)
                             {
                                 theStart.DataListSpecification = theService.DataListSpecification;
                                 Dev2Logger.Debug("Getting container");
+                                if (dataObject.IsServiceTestExecution)
+                                {
+                                    theStart.ActionType =Common.Interfaces.Core.DynamicServices.enActionType.TestExecution;
+                                }
                                 var container = GenerateContainer(theStart, dataObject, _workspace);
                                 ErrorResultTO invokeErrors;
                                 result = container.Execute(out invokeErrors, Update);
@@ -228,8 +242,6 @@ namespace Dev2.Runtime.ESB
 
                 return null;
             }
-            // we need a remote container ;)
-            // TODO : Set Output description for shaping ;)
             return GenerateContainer(new ServiceAction { ActionType = Common.Interfaces.Core.DynamicServices.enActionType.RemoteService }, dataObject, null);
         }
 
@@ -274,8 +286,6 @@ namespace Dev2.Runtime.ESB
                 }
 
             }
-            // we need a remote container ;)
-            // TODO : Set Output description for shaping ;)
             return GenerateContainer(new ServiceAction { ActionType = Common.Interfaces.Core.DynamicServices.enActionType.RemoteService }, dataObject, null);
         }
 
@@ -305,6 +315,9 @@ namespace Dev2.Runtime.ESB
 
             switch(serviceAction.ActionType)
             {
+                case Common.Interfaces.Core.DynamicServices.enActionType.TestExecution:
+                    result = new ServiceTestExecutionContainer(serviceAction,dataObj,theWorkspace,_esbChannel, _request);
+                    break;
                 case Common.Interfaces.Core.DynamicServices.enActionType.InvokeManagementDynamicService:
                     result = new InternalServiceContainer(serviceAction, dataObj, theWorkspace, _esbChannel, _request);
                     break;
@@ -378,7 +391,7 @@ namespace Dev2.Runtime.ESB
                     ErrorMessage = errors.MakeDisplayReady()
                 };
 
-                DebugDispatcher.Instance.Write(debugState, dataObject.RemoteInvoke, dataObject.RemoteInvokerID);
+                DebugDispatcher.Instance.Write(debugState, dataObject.IsServiceTestExecution, dataObject.TestName, dataObject.RemoteInvoke, dataObject.RemoteInvokerID);
             }
         }
 

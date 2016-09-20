@@ -24,6 +24,6 @@ namespace Dev2.Studio.Core.Interfaces
         event Action<IContextualResourceModel> OnResourceSaved;
         event Action OnDataListChanged;
 
-        void ClearErrors();
+        void ClearErrors();        
     }
 }

@@ -370,6 +370,10 @@
         <Setter Property="AcceptsReturn" Value="False"/>
         <Setter Property="Height" Value="25"/>
         <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="HorizontalScrollBarVisibility" Value="Hidden"/>
+        <Setter Property="VerticalScrollBarVisibility" Value="Hidden"/>
+        <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Hidden"/>
+        <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Hidden"/>
     </Style>
     <Style x:Key="DatagridIntellisenseTextBoxStyle" TargetType="{x:Type ui:IntellisenseTextBox}" BasedOn="{StaticResource ActivityIntellisenseTextBoxStyle}">
         <Setter Property="HorizontalAlignment" Value="Stretch" />

@@ -257,11 +257,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             string parentServiceName = string.Empty;
             string serviceName = string.Empty;
 
-            // BUG 9634 - 2013.07.17 - TWR - changed isRemoteExecution to check EnvironmentID instead
-            // This is now the wrong behavior - We need to keep the original EnvironmentID when not a remote workflow
-            // This is because we put and empty GUID in when designing against a remote server that uses it's resources
-            // The first time through this value is set correctly when executing those designed resource from our localhost
-            // If we change it as per what was here, we always get a localhost tag instead of the remote host we are design against
             var isRemote = dataObject.IsRemoteWorkflow();
             
             if((isRemote || dataObject.IsRemoteInvokeOverridden) && dataObject.EnvironmentID == Guid.Empty)
@@ -275,11 +270,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
             try
             {
-                //compiler.ClearErrors(dataObject.DataListID);
-
                 if(ServiceServer != Guid.Empty)
                 {
-                    // we need to adjust the originating server id so debug reflect remote server instead of localhost ;)
                     dataObject.RemoteInvokerID = ServiceServer.ToString();
                 }
 
@@ -485,13 +477,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
 
             string parentServiceName = string.Empty;
-            string serviceName = string.Empty;
-
-            // BUG 9634 - 2013.07.17 - TWR - changed isRemoteExecution to check EnvironmentID instead
-            // This is now the wrong behavior - We need to keep the original EnvironmentID when not a remote workflow
-            // This is because we put and empty GUID in when designing against a remote server that uses it's resources
-            // The first time through this value is set correctly when executing those designed resource from our localhost
-            // If we change it as per what was here, we always get a localhost tag instead of the remote host we are design against
+            string serviceName = string.Empty;            
             var isRemote = dataObject.IsRemoteWorkflow();
 
             if ((isRemote || dataObject.IsRemoteInvokeOverridden) && dataObject.EnvironmentID == Guid.Empty)
@@ -505,11 +491,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
             try
             {
-                //compiler.ClearErrors(dataObject.DataListID);
-
                 if (ServiceServer != Guid.Empty)
                 {
-                    // we need to adjust the originating server id so debug reflect remote server instead of localhost ;)
                     dataObject.RemoteInvokerID = ServiceServer.ToString();
                 }
 
@@ -521,9 +504,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     dataObject.ResourceID = resourceId;
                 }
                 
-                // scrub it clean ;)
-
-                // set the parent service
                 parentServiceName = dataObject.ParentServiceName;
                 serviceName = dataObject.ServiceName;
                 dataObject.ParentServiceName = serviceName;
@@ -536,7 +516,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                 if (!DeferExecution)
                 {
-                    // In all cases the ShapeOutput will have merged the execution data up into the current
                     ErrorResultTO tmpErrors = new ErrorResultTO();
 
                     IEsbChannel esbChannel = dataObject.EsbChannel;
@@ -544,28 +523,25 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     {
                         throw new Exception(ErrorResource.NullESBChannel);
                     }
-                        // NEW EXECUTION MODEL ;)
-                        // PBI 7913
-         
 
-                            dataObject.ServiceName = ServiceName; // set up for sub-exection ;)
-                            dataObject.ResourceID = ResourceID.Expression == null ? Guid.Empty : Guid.Parse(ResourceID.Expression.ToString());
-                            BeforeExecutionStart(dataObject, allErrors);
-                            if (dataObject.IsDebugMode() || dataObject.RunWorkflowAsync && !dataObject.IsFromWebServer)
-                            {
-                                DispatchDebugStateAndUpdateRemoteServer(dataObject, StateType.Before, update);
 
-                            }
-                            allErrors.MergeErrors(tmpErrors);
-                            // Execute Request
-                            ExecutionImpl(esbChannel, dataObject, InputMapping, OutputMapping, out tmpErrors, update);
+                    dataObject.ServiceName = ServiceName; // set up for sub-exection ;)
+                    dataObject.ResourceID = ResourceID.Expression == null ? Guid.Empty : Guid.Parse(ResourceID.Expression.ToString());
+                    BeforeExecutionStart(dataObject, allErrors);
+                    if (dataObject.IsDebugMode() || dataObject.RunWorkflowAsync && !dataObject.IsFromWebServer)
+                    {
+                        DispatchDebugStateAndUpdateRemoteServer(dataObject, StateType.Before, update);
 
-                            allErrors.MergeErrors(tmpErrors);
-
-                            AfterExecutionCompleted(tmpErrors);
-                            allErrors.MergeErrors(tmpErrors);
-                            dataObject.ServiceName = ServiceName;
                     }
+                    allErrors.MergeErrors(tmpErrors);
+                    ExecutionImpl(esbChannel, dataObject, InputMapping, OutputMapping, out tmpErrors, update);
+
+                    allErrors.MergeErrors(tmpErrors);
+
+                    AfterExecutionCompleted(tmpErrors);
+                    allErrors.MergeErrors(tmpErrors);
+                    dataObject.ServiceName = ServiceName;
+                }
                 }
                 catch(Exception err)
                 {

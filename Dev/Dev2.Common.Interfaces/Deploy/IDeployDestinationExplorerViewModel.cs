@@ -8,6 +8,7 @@ namespace Dev2.Common.Interfaces.Deploy
     {
         event ServerSate ServerStateChanged;
         Version MinSupportedVersion{get;}
-        Version ServerVersion { get; }        
+        Version ServerVersion { get; }
+        bool DeployTests { get; set; }  
     }
 }

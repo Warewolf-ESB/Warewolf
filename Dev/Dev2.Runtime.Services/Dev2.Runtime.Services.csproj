@@ -188,6 +188,7 @@
     <Compile Include="ESB\Management\Services\AddFolderService.cs" />
     <Compile Include="ESB\Management\Services\ComDllLoaderHandler.cs" />
     <Compile Include="ESB\Management\Services\DeleteItemService.cs" />
+    <Compile Include="ESB\Management\Services\DeleteTest.cs" />
     <Compile Include="ESB\Management\Services\DeleteVersion.cs" />
     <Compile Include="ESB\Management\Services\DuplicateFolderService.cs" />
     <Compile Include="ESB\Management\Services\DuplicateResourceService.cs" />
@@ -206,6 +207,8 @@
     <Compile Include="ESB\Management\Services\FetchPluginSources.cs" />
     <Compile Include="ESB\Management\Services\FetchServerPermissions.cs" />
     <Compile Include="ESB\Management\Services\FetchRabbitMQServiceSources.cs" />
+    <Compile Include="ESB\Management\Services\FetchTests.cs" />
+    <Compile Include="ESB\Management\Services\FetchTestsForDeploy.cs" />
     <Compile Include="ESB\Management\Services\FetchWcfAction.cs" />
     <Compile Include="ESB\Management\Services\FetchWcfSources.cs" />
     <Compile Include="ESB\Management\Services\FetchWebSources.cs" />
@@ -268,6 +271,7 @@
     <Compile Include="ESB\Management\Services\RenameResource.cs" />
     <Compile Include="ESB\Management\Services\SaveServerSource.cs" />
     <Compile Include="ESB\Management\Services\SaveSharePointServiceSource.cs" />
+    <Compile Include="ESB\Management\Services\SaveTests.cs" />
     <Compile Include="ESB\Management\Services\SaveWcfServiceSource.cs" />
     <Compile Include="ESB\Management\Services\SaveWebService.cs" />
     <Compile Include="ESB\Management\Services\SaveRabbitMQServiceSource.cs" />
@@ -419,6 +423,7 @@
     <Compile Include="Configuration\SettingsProvider.cs" />
     <Compile Include="ServiceModel\RabbitMQSources.cs" />
     <Compile Include="ServiceModel\WebSources.cs" />
+    <Compile Include="TestCatalog.cs" />
     <Compile Include="Utilities.cs" />
     <Compile Include="Workspaces\Workspace.cs" />
     <Compile Include="Workspaces\WorkspaceItem.cs" />

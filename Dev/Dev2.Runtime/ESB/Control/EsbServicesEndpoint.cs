@@ -81,7 +81,6 @@ namespace Dev2.Runtime.ESB.Control
                     return resultID;
                 }
 
-                // TODO : Amend here to respect Inputs only when creating shape ;)
                 if (resource?.DataList != null)
                 {
                     Dev2Logger.Debug("Mapping Inputs from Environment");
@@ -110,9 +109,6 @@ namespace Dev2.Runtime.ESB.Control
             {
                 errors.AddError(ex.Message);
             }
-
-
-
             return resultID;
         }
 

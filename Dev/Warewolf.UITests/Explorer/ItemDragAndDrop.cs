@@ -9,10 +9,11 @@ namespace Warewolf.UITests
     {
         const string Dice = "Dice";
         [TestMethod]
+        [Ignore]
         public void ItemDragAndDropUITest()
         {
-            Uimap.CreateAndSave_Dice_Workflow();
-            Uimap.Move_File_To_Localhost();
+            Uimap.Search_And_Select_DiceRoll();
+            Uimap.Move_Dice_Roll_To_Localhost();
         }
 
         #region Additional test attributes

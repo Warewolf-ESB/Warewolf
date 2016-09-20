@@ -22,6 +22,7 @@ using Dev2.DataList.Contract;
 using Dev2.Diagnostics.Debug;
 using Dev2.Interfaces;
 using Microsoft.VisualBasic.Activities;
+using Newtonsoft.Json;
 using Warewolf.Resource.Errors;
 using Warewolf.Storage;
 // ReSharper disable UnusedMember.Global
@@ -37,9 +38,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
     {
         public string SimulationOutput { get; set; }
 
+        [JsonIgnore]
         public OutArgument<bool> HasError { get; set; }
+        [JsonIgnore]
         public OutArgument<bool> IsValid { get; set; }
+        [JsonIgnore]
         public InArgument<string> ExplicitDataList { get; set; }
+        [JsonIgnore]
         public InOutArgument<List<string>> InstructionList { get; set; }
         public string ResultTransformation { get; set; }
         public string InputTransformation { get; set; }
@@ -51,6 +56,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         public bool IsUIStep { get; set; }
         public bool DatabindRecursive { get; set; }
         public string CurrentResult { get; set; }
+        [JsonIgnore]
         public InOutArgument<string> ParentInstanceID { get; set; }
         public IRecordsetScopingObject ScopingObject { get { return null; } set { value = null; } }
 

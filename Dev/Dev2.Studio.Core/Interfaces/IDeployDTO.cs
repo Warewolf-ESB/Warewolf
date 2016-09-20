@@ -26,6 +26,7 @@ namespace Dev2.Studio.Core.Interfaces
             get;
             set;
         }
+        bool DeployTests { get; set; }
 
     }
 }

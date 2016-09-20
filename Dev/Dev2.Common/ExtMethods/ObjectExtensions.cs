@@ -1,29 +1,46 @@
 ﻿using System;
-using System.IO;
-using System.Runtime.Serialization.Formatters.Binary;
+using System.Runtime.Serialization.Formatters;
+using Newtonsoft.Json;
 
 namespace Dev2.Common.ExtMethods
 {
-    /// <summary>
-    /// T Must be serializable
-    /// </summary>
-    public static class ObjectExtensions
+   public class ObjectExtensions
     {
-        public static T DeepCopy<T>(this T other) where T : new() 
+        // ReSharper disable RedundantNameQualifier
+        const Formatting Formatting = Newtonsoft.Json.Formatting.Indented;
+        // ReSharper restore RedundantNameQualifier
+       static readonly JsonSerializerSettings SerializerSettings = new JsonSerializerSettings
+        {
+            TypeNameHandling = TypeNameHandling.Objects,
+            TypeNameAssemblyFormat = FormatterAssemblyStyle.Simple
+        };
+       static readonly JsonSerializerSettings DeSerializerSettings = new JsonSerializerSettings
+        {
+            TypeNameHandling = TypeNameHandling.Auto,
+            TypeNameAssemblyFormat = FormatterAssemblyStyle.Simple
+        };
+
+       private static T Deserialize<T>(string message)
+        {
+            return JsonConvert.DeserializeObject<T>(message, DeSerializerSettings);
+        }
+
+       private static string Serialize<T>(T message)
+        {
+            return JsonConvert.SerializeObject(message, Formatting, SerializerSettings);
+        }
+        public static T DeepCopy<T>(T other) where T : new() 
         {
             try
             {
-               
-                using (MemoryStream ms = new MemoryStream())
-                {
-                    BinaryFormatter formatter = new BinaryFormatter();
-                    formatter.Serialize(ms, other);
-                    ms.Position = 0;
-                    return (T)formatter.Deserialize(ms);
-                }
+                var serialize = Serialize(other);
+                var deserialize = Deserialize<T>(serialize);
+                return deserialize;
             }
-            catch (Exception)
+                // ReSharper disable once UnusedVariable
+            catch (Exception e)
             {
+                Console.WriteLine(e);
                 return default(T);
             }
 

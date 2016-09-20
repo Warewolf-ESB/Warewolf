@@ -130,5 +130,31 @@ namespace Dev2.Communication
             return default(T);
         }
 
+        public void Serialize(StreamWriter streamWriter, object obj)
+        {
+            using (streamWriter)
+            {
+                var jsonSerializer = new JsonSerializer { TypeNameHandling = _serializerSettings.TypeNameHandling, TypeNameAssemblyFormat = _serializerSettings.TypeNameAssemblyFormat };
+                using (var jsonTextWriter = new JsonTextWriter(streamWriter))
+                {
+                    jsonSerializer.Serialize(jsonTextWriter, obj);
+                    jsonTextWriter.Flush();
+                    jsonTextWriter.Close();
+                }
+            }
+        }
+
+        public T Deserialize<T>(StreamReader streamWriter)
+        {
+            using (streamWriter)
+            {
+                var jsonSerializer = new JsonSerializer { TypeNameHandling = _serializerSettings.TypeNameHandling, TypeNameAssemblyFormat = _serializerSettings.TypeNameAssemblyFormat };
+                using (var reader = new JsonTextReader(streamWriter))
+                {
+                    var result = jsonSerializer.Deserialize<T>(reader);
+                    return result;
+                }
+            }
+        }
     }
 }

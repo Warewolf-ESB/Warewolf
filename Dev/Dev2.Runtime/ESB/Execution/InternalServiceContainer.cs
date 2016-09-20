@@ -35,11 +35,16 @@ namespace Dev2.Runtime.ESB.Execution
         public InternalServiceContainer(ServiceAction sa, IDSFDataObject dataObj, IWorkspace theWorkspace, IEsbChannel esbChannel, EsbExecuteRequest request, IEsbManagementServiceLocator managementServiceLocator = null)
             : base(sa, dataObj, theWorkspace, esbChannel, request)
         {
-            var dataListTO = new DataListTO(sa.DataListSpecification.ToString());
+            
             if(request.Args == null)
             {
+                if (sa.DataListSpecification == null)
+                {
+                    sa.DataListSpecification = new StringBuilder("<DataList></DataList>");
+                }
+                var dataListTo = new DataListTO(sa.DataListSpecification.ToString());
                 request.Args = new Dictionary<string, StringBuilder>();
-                foreach(var input in dataListTO.Inputs)
+                foreach(var input in dataListTo.Inputs)
                 {
                     var warewolfEvalResult = dataObj.Environment.Eval(DataListUtil.AddBracketsToValueIfNotExist(input),0);
                     if(warewolfEvalResult.IsWarewolfAtomResult)
