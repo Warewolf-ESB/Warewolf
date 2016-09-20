@@ -542,20 +542,22 @@ namespace Warewolf.UITests
 
         public void Enter_Text_Into_Explorer_Filter(string FilterText)
         {
-
             #region Variable Declarations
 
             WpfButton executeIcon = MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.ResourceImageImage.ExecuteIcon;
             WpfButton viewIcon = MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.ResourceImageImage.ViewIcon;
+            WpfTreeItem firstItem = MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem;
 
             #endregion
 
             MainStudioWindow.DockManager.SplitPaneLeft.Explorer.SearchTextBox.Text = FilterText;
+            WaitForControlNotVisible(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerRefreshButton);
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerRefreshButton, new Point(10, 10));
 
-            // Verify that the 'Exists' property of 'Permission Icon' window equals 'True'
-            Assert.IsTrue(executeIcon.Exists, "executeIcon button does not exist");
-            Assert.IsTrue(viewIcon.Exists, "viewIcon button does not exist");
+            var point = new Point();
+            Mouse.Hover(firstItem);
+            Assert.IsTrue(!executeIcon.TryGetClickablePoint(out point), "executeIcon button does not exist");
+            Assert.IsTrue(!viewIcon.TryGetClickablePoint(out point), "viewIcon button does not exist");
 
         }
 
@@ -639,7 +641,6 @@ namespace Warewolf.UITests
             Enter_Service_Name_Into_Save_Dialog(Name);
             Click_SaveDialog_Save_Button();
             Enter_Text_Into_Explorer_Filter(Name);
-            Click_Explorer_Refresh_Button();
             WaitForControlNotVisible(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.Exists, "Saved " + Name + " does not appear in the explorer tree.");
             Click_Explorer_Filter_Clear_Button();
@@ -1301,12 +1302,6 @@ namespace Warewolf.UITests
             Mouse.Click(duplicateButton, new Point(14, 10));
         }
 
-        public void Assert_MultiAssign_Does_Not_Exist_On_DesignSurface()
-        {
-            var multiAssign = MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign;
-            Assert.IsFalse(multiAssign.Exists);
-        }
-
         public void Assert_Test_Result(string result)
         {
             WpfText passing = MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestsListboxList.Test1.Passing;
@@ -1442,7 +1437,7 @@ namespace Warewolf.UITests
             else if (tabName == "PerfomanceCounterTab")
                 Assert.AreEqual("Dice", ResourceText.DisplayText, "Resource Name is not set to Dice after selecting Dice from Service picker");
         }
-        private WpfText GetCurrentTest(int testInstance)
+        public WpfText GetCurrentTest(int testInstance)
         {
             WpfText test;
             switch (testInstance)
@@ -1481,8 +1476,6 @@ namespace Warewolf.UITests
             // Wait for 2 seconds for user delay between actions; Verify that the 'Enabled' property of 'Save this tab' button equals 'False'
             Playback.Wait(2000);
             Assert.AreEqual(this.Click_Save_Ribbon_Button_With_No_Save_DialogParams.SaveButtonEnabled, saveButton.Enabled, "Save ribbon button is still enabled after clicking it.");
-            Assert_Display_Text_ContainStar(Tab, false);
-            Assert_Display_Text_ContainStar(Test, false);
         }
 
         public virtual Click_Save_Ribbon_Button_With_No_Save_DialogParams Click_Save_Ribbon_Button_With_No_Save_DialogParams
@@ -1498,6 +1491,41 @@ namespace Warewolf.UITests
         }
 
         private Click_Save_Ribbon_Button_With_No_Save_DialogParams mClick_Save_Ribbon_Button_With_No_Save_DialogParams;
+
+        /// <summary>
+        /// DeleteAssign_FromContextMenu - Use 'Select_Delete_FromContextMenuParams' to pass parameters into this method.
+        /// </summary>
+        public void DeleteAssign_FromContextMenu()
+        {
+            #region Variable Declarations
+            WpfMenuItem delete = this.MainStudioWindow.DesignSurfaceContextMenu.Delete;
+            WpfWindow messageBoxWindow = this.MessageBoxWindow;
+            WpfCustom multiAssign = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign;
+            #endregion
+
+            var point = new Point();
+            Assert.IsTrue(multiAssign.TryGetClickablePoint(out point));
+            // Right-Click 'DsfMultiAssignActivity' custom control
+            Mouse.Click(multiAssign, MouseButtons.Right, ModifierKeys.None, new Point(115, 10));
+            
+            // Click 'Delete' menu item
+            Mouse.Click(delete, new Point(27, 18));            
+            Assert.IsFalse(multiAssign.TryGetClickablePoint(out point));
+        }
+
+        public virtual Select_Delete_FromContextMenuParams Select_Delete_FromContextMenuParams
+        {
+            get
+            {
+                if ((this.mSelect_Delete_FromContextMenuParams == null))
+                {
+                    this.mSelect_Delete_FromContextMenuParams = new Select_Delete_FromContextMenuParams();
+                }
+                return this.mSelect_Delete_FromContextMenuParams;
+            }
+        }
+
+        private Select_Delete_FromContextMenuParams mSelect_Delete_FromContextMenuParams;
     }
     /// <summary>
     /// Parameters to be passed into 'Click_RunAll_Button'
@@ -1579,6 +1607,20 @@ namespace Warewolf.UITests
         /// Wait for 2 seconds for user delay between actions; Verify that the 'Enabled' property of 'Save this tab' button equals 'False'
         /// </summary>
         public bool SaveButtonEnabled = false;
+        #endregion
+    }
+    /// <summary>
+    /// Parameters to be passed into 'DeleteAssign_FromContextMenu'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Select_Delete_FromContextMenuParams
+    {
+
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'WarewolfMessageBox' window equals 'True'
+        /// </summary>
+        public bool MessageBoxWindowExists = true;
         #endregion
     }
 }

@@ -5806,23 +5806,6 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
-        /// Select_Delete_FromContextMenu - Use 'Select_Delete_FromContextMenuParams' to pass parameters into this method.
-        /// </summary>
-        public void Select_Delete_FromContextMenu()
-        {
-            #region Variable Declarations
-            WpfMenuItem delete = this.MainStudioWindow.DesignSurfaceContextMenu.Delete;
-            WpfWindow messageBoxWindow = this.MessageBoxWindow;
-            #endregion
-
-            // Click 'Delete' menu item
-            Mouse.Click(delete, new Point(27, 18));
-
-            // Verify that the 'Exists' property of 'WarewolfMessageBox' window equals 'True'
-            Assert.AreEqual(this.Select_Delete_FromContextMenuParams.MessageBoxWindowExists, messageBoxWindow.Exists, "Delete Dialog does not exist after clicking delete button");
-        }
-        
-        /// <summary>
         /// Select_Delete_FromExplorerContextMenu - Use 'Select_Delete_FromExplorerContextMenuParams' to pass parameters into this method.
         /// </summary>
         public void Select_Delete_FromExplorerContextMenu()
@@ -8878,18 +8861,6 @@ namespace Warewolf.UITests
             }
         }
         
-        public virtual Select_Delete_FromContextMenuParams Select_Delete_FromContextMenuParams
-        {
-            get
-            {
-                if ((this.mSelect_Delete_FromContextMenuParams == null))
-                {
-                    this.mSelect_Delete_FromContextMenuParams = new Select_Delete_FromContextMenuParams();
-                }
-                return this.mSelect_Delete_FromContextMenuParams;
-            }
-        }
-        
         public virtual Select_Delete_FromExplorerContextMenuParams Select_Delete_FromExplorerContextMenuParams
         {
             get
@@ -9661,8 +9632,6 @@ namespace Warewolf.UITests
         private Search_And_Select_DiceRollParams mSearch_And_Select_DiceRollParams;
         
         private Search_And_Select_HelloWolrdParams mSearch_And_Select_HelloWolrdParams;
-        
-        private Select_Delete_FromContextMenuParams mSelect_Delete_FromContextMenuParams;
         
         private Select_Delete_FromExplorerContextMenuParams mSelect_Delete_FromExplorerContextMenuParams;
         
@@ -13668,21 +13637,6 @@ namespace Warewolf.UITests
     }
     
     /// <summary>
-    /// Parameters to be passed into 'Select_Delete_FromContextMenu'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Select_Delete_FromContextMenuParams
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Verify that the 'Exists' property of 'WarewolfMessageBox' window equals 'True'
-        /// </summary>
-        public bool MessageBoxWindowExists = true;
-        #endregion
-    }
-    
-    /// <summary>
     /// Parameters to be passed into 'Select_Delete_FromExplorerContextMenu'
     /// </summary>
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
@@ -15760,7 +15714,7 @@ namespace Warewolf.UITests
                 base(searchLimitContainer)
         {
             #region Search Criteria
-            this.SearchProperties.Add(new PropertyExpression(WpfButton.PropertyNames.HelpText, "Create a new service", PropertyExpressionOperator.Contains));
+            this.SearchProperties.Add(new PropertyExpression(WpfButton.PropertyNames.HelpText, "Create a new service [CTRL+W]", PropertyExpressionOperator.Contains));
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
