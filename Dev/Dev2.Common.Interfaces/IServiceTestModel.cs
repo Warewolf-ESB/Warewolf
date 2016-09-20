@@ -39,8 +39,11 @@ namespace Dev2.Common.Interfaces
         bool NeverRunStringVisibility { get; set; }
         IList<IDebugState> DebugForTest { get; set; }
         string DuplicateTestTooltip { get; set; }
+        List<IServiceTestStep> TestSteps { get; }
 
         void SetItem(IServiceTestModel model);
+
+        void AddTestStep(string activityUniqueID, string activityTypeName, List<IServiceTestOutput> serviceTestOutputs);
     }
 
     public interface IServiceTestInput
