@@ -50,12 +50,15 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         [Outputs("CountNumber"), FindMissing]
         public string CountNumber { get; set; }
 
+        public bool TreaNullAsZero { get; set; }
+
         public DsfCountRecordsetActivity()
             : base("Count Records")
         {
             RecordsetName = string.Empty;
             CountNumber = string.Empty;
             DisplayName = "Count Records";
+            TreaNullAsZero = true;
         }
 
         // ReSharper disable RedundantOverridenMember
@@ -85,16 +88,16 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
                 ValidateRecordsetName(RecordsetName, errors);
                 allErrors.MergeErrors(errors);
-                if(!allErrors.HasErrors())
+                if (!allErrors.HasErrors())
                 {
                     try
                     {
                         string rs = DataListUtil.ExtractRecordsetNameFromValue(RecordsetName);
-                        if(CountNumber == string.Empty)
+                        if (CountNumber == string.Empty)
                         {
                             allErrors.AddError(ErrorResource.BlankResultVariable);
                         }
-                        if(dataObject.IsDebugMode())
+                        if (dataObject.IsDebugMode())
                         {
                             AddDebugInputItem(new DebugEvalResult(dataObject.Environment.ToStar(RecordsetName), "Recordset", dataObject.Environment, update));
                         }
@@ -106,7 +109,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         }
                         else
                         {
-                            if (dataObject.Environment.HasRecordSet(RecordsetName))
+                            var hasRecordSet = dataObject.Environment.HasRecordSet(RecordsetName);
+                            if (hasRecordSet)//null check happens here
                             {
                                 var count = dataObject.Environment.GetCount(rs);
                                 var value = count.ToString();
@@ -116,11 +120,22 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                             }
                             else
                             {
-                                allErrors.AddError(String.Format(ErrorResource.NullRecordSet, RecordsetName));
+                                if (TreaNullAsZero)
+                                {
+                                    dataObject.Environment.Assign(CountNumber, 0.ToString(), update);
+                                    AddDebugOutputItem(new DebugEvalResult(CountNumber, "", dataObject.Environment, update));
+
+                                }
+                                else
+                                {
+                                    allErrors.AddError(string.Format(ErrorResource.NullRecordSet, RecordsetName));
+                                }
+
+
                             }
                         }
                     }
-                    catch(Exception e)
+                    catch (Exception e)
                     {
                         AddDebugInputItem(new DebugItemStaticDataParams("", RecordsetName, "Recordset", "="));
                         allErrors.AddError(e.Message);
@@ -133,13 +148,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
                 // Handle Errors
                 var hasErrors = allErrors.HasErrors();
-                if(hasErrors)
+                if (hasErrors)
                 {
                     DisplayAndWriteError("DsfCountRecordsActivity", allErrors);
                     var errorString = allErrors.MakeDataListReady();
                     dataObject.Environment.AddError(errorString);
                 }
-                if(dataObject.IsDebugMode())
+                if (dataObject.IsDebugMode())
                 {
                     DispatchDebugState(dataObject, StateType.Before, update);
                     DispatchDebugState(dataObject, StateType.After, update);
@@ -165,18 +180,18 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             return _debugOutputs;
         }
 
-       
+
 
         #endregion
 
-        
+
 
 
         #endregion Get Inputs/Outputs
 
         public override void UpdateForEachInputs(IList<Tuple<string, string>> updates)
         {
-            if(updates != null && updates.Count == 1)
+            if (updates != null && updates.Count == 1)
             {
                 RecordsetName = updates[0].Item2;
             }
@@ -184,15 +199,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates)
         {
-            if(updates != null)
+            var itemUpdate = updates?.FirstOrDefault(tuple => tuple.Item1 == CountNumber);
+            if (itemUpdate != null)
             {
-                var itemUpdate = updates.FirstOrDefault(tuple => tuple.Item1 == CountNumber);
-                if(itemUpdate != null)
-                {
-                    CountNumber = itemUpdate.Item2;
-                }
+                CountNumber = itemUpdate.Item2;
             }
-
         }
 
 

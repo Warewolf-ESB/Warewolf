@@ -28,7 +28,7 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.Count
         public CountSteps(ScenarioContext scenarioContext)
             : base(scenarioContext)
         {
-            if (scenarioContext == null) throw new ArgumentNullException("scenarioContext");
+            if (scenarioContext == null) throw new ArgumentNullException(nameof(scenarioContext));
             this.scenarioContext = scenarioContext;
         }
 
@@ -37,7 +37,7 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.Count
             List<Tuple<string, string>> variableList;
             scenarioContext.TryGetValue("variableList", out variableList);
 
-            if(variableList == null)
+            if (variableList == null)
             {
                 variableList = new List<Tuple<string, string>>();
                 scenarioContext.Add("variableList", variableList);
@@ -52,19 +52,22 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.Count
 
             string recordSetName;
             scenarioContext.TryGetValue("recordset", out recordSetName);
-            
+
             var recordset = scenarioContext.Get<string>("recordset");
+            bool treaNullAsZero;
+            scenarioContext.TryGetValue("treaNullAsZero", out treaNullAsZero);
 
             var count = new DsfCountRecordsetActivity
-                {
-                    RecordsetName = recordset,
-                    CountNumber = string.IsNullOrEmpty(resultVariable) ? ResultVariable : resultVariable
-                };
+            {
+                RecordsetName = recordset,
+                CountNumber = string.IsNullOrEmpty(resultVariable) ? ResultVariable : resultVariable,
+                TreaNullAsZero = treaNullAsZero
+            };
 
             TestStartNode = new FlowStep
-                {
-                    Action = count
-                };
+            {
+                Action = count
+            };
             scenarioContext.Add("activity", count);
         }
 
@@ -79,27 +82,27 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.Count
         {
             List<TableRow> tableRows = table.Rows.ToList();
 
-            if(tableRows.Count == 0)
+            if (tableRows.Count == 0)
             {
                 var rs = table.Header.ToArray()[0];
 
                 List<Tuple<string, string>> emptyRecordset;
 
                 bool isAdded = scenarioContext.TryGetValue("rs", out emptyRecordset);
-                if(!isAdded)
+                if (!isAdded)
                 {
                     emptyRecordset = new List<Tuple<string, string>>();
-                     scenarioContext.Add("rs", emptyRecordset);
+                    scenarioContext.Add("rs", emptyRecordset);
                 }
                 emptyRecordset.Add(new Tuple<string, string>(rs, "row"));
             }
 
-            foreach(TableRow t in tableRows)
+            foreach (TableRow t in tableRows)
             {
                 List<Tuple<string, string>> variableList;
                 scenarioContext.TryGetValue("variableList", out variableList);
 
-                if(variableList == null)
+                if (variableList == null)
                 {
                     variableList = new List<Tuple<string, string>>();
                     scenarioContext.Add("variableList", variableList);
@@ -133,5 +136,19 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.Count
             actualValue = string.IsNullOrEmpty(actualValue) ? "0" : actualValue;
             Assert.AreEqual(expectedResult, actualValue);
         }
+
+        [Given(@"treat null as Empty Recordset is selected")]
+        public void GivenTreatNullAsEmptyRecordsetIsSelected()
+        {
+            scenarioContext.Add("treaNullAsZero", true);
+        }
+
+        [Given(@"treat null as Empty Recordset is not selected")]
+        public void GivenTreatNullAsEmptyRecordsetIsNotSelected()
+        {
+            scenarioContext.Add("treaNullAsZero", false);
+        }
+
+
     }
 }
