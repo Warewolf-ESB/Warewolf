@@ -39,7 +39,7 @@ namespace Warewolf.UITests
             Uimap.Open_Explorer_First_Item_Dependancies_With_Context_Menu();
             Uimap.Select_Show_Dependencies_In_Explorer_Context_Menu();
             Uimap.Click_Close_Dependecy_Tab();
-            Uimap.Click_View_Api_From_Context_Menu();
+            //Uimap.Click_View_Api_From_Context_Menu();
         }
 
         #region Additional test attributes

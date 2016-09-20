@@ -144,6 +144,32 @@ Error while saving: This task requires that the user account specified has 'Log 
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Assertion</MarkerRegionType>
     </TestStepMarkerAction>
+    <TestStepMarkerAction Comment="" MarkerInformation="AssertMethod2">
+      <ParameterName />
+      <StepId>-1</StepId>
+      <Direction>Start</Direction>
+      <Outcome />
+      <Disabled>false</Disabled>
+      <WorkItemId>0</WorkItemId>
+      <MarkerRegionType>Assertion</MarkerRegionType>
+    </TestStepMarkerAction>
+    <AssertAction UIObjectName="UIMap.MainStudioWindow.DebugInputDialog.TabItemsTabList.InputDataTab.InputsTable.Row1.DescriptionCell.NameText">
+      <ParameterName />
+      <PropertyName>Exists</PropertyName>
+      <ExpectedValue>True</ExpectedValue>
+      <MessageOnValidationFailure />
+      <Type>String</Type>
+      <PropertyCondition>AreEqual</PropertyCondition>
+    </AssertAction>
+    <TestStepMarkerAction Comment="" MarkerInformation="AssertMethod3">
+      <ParameterName />
+      <StepId>-1</StepId>
+      <Direction>Start</Direction>
+      <Outcome />
+      <Disabled>false</Disabled>
+      <WorkItemId>0</WorkItemId>
+      <MarkerRegionType>Assertion</MarkerRegionType>
+    </TestStepMarkerAction>
     <AssertAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.LargeView.DataGrid.Row1.ValueCell.AssignValueCombobox.TextEdit">
       <ParameterName />
       <PropertyName>Exists</PropertyName>
@@ -3176,24 +3202,6 @@ Error while saving: This task requires that the user account specified has 'Log 
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
-    <MouseAction UIObjectName="UIMap.UIWarewolfDEV2SANELEMTWindow.UIUI_ExplorerControl_ACustom.UIExplorerTreeTree.UIInfragisticsControlsTreeItem">
-      <ParameterName />
-      <ModifierKeys>None</ModifierKeys>
-      <IsGlobalHotkey>false</IsGlobalHotkey>
-      <Location X="85" Y="11" />
-      <WheelDirection>0</WheelDirection>
-      <ActionType>Click</ActionType>
-      <MouseButton>Right</MouseButton>
-    </MouseAction>
-    <MouseAction UIObjectName="UIMap.UIWarewolfDEV2SANELEMTWindow.UIExplorerEnvironmentMMenu.UIViewApisJsonMenuItem">
-      <ParameterName />
-      <ModifierKeys>None</ModifierKeys>
-      <IsGlobalHotkey>false</IsGlobalHotkey>
-      <Location X="71" Y="13" />
-      <WheelDirection>0</WheelDirection>
-      <ActionType>Click</ActionType>
-      <MouseButton>Left</MouseButton>
-    </MouseAction>
     <TestStepMarkerAction Comment="" MarkerInformation="Click_View_Api_From_Context_Menu">
       <ParameterName />
       <StepId>-1</StepId>
@@ -5546,7 +5554,7 @@ Error while saving: This task requires that the user account specified has 'Log 
       <Type>String</Type>
       <PropertyCondition>AreEqual</PropertyCondition>
     </AssertAction>
-    <AssertAction UIObjectName="UIMap.MainStudioWindow.DebugInputDialog.TabItemsTabList.InputDataTab.InputsTable.Row1.Cell.InputValueCell.InputValueComboboxl.InputValueText">
+    <AssertAction UIObjectName="UIMap.MainStudioWindow.DebugInputDialog.TabItemsTabList.InputDataTab.InputsTable.Row1.InputValueCell.InputValueComboboxl.InputValueText">
       <ParameterName />
       <PropertyName>Exists</PropertyName>
       <ExpectedValue>True</ExpectedValue>
@@ -5554,7 +5562,7 @@ Error while saving: This task requires that the user account specified has 'Log 
       <Type>String</Type>
       <PropertyCondition>AreEqual</PropertyCondition>
     </AssertAction>
-    <SetValueAction UIObjectName="UIMap.MainStudioWindow.DebugInputDialog.TabItemsTabList.InputDataTab.InputsTable.Row1.Cell.InputValueCell.InputValueComboboxl.InputValueText">
+    <SetValueAction UIObjectName="UIMap.MainStudioWindow.DebugInputDialog.TabItemsTabList.InputDataTab.InputsTable.Row1.InputValueCell.InputValueComboboxl.InputValueText">
       <ParameterName />
       <Value Encoded="false">100</Value>
       <Type>String</Type>
@@ -7311,6 +7319,20 @@ Error while saving: This task requires that the user account specified has 'Log 
       <Text Encoded="false">{F11}</Text>
     </SendKeysAction>
     <TestStepMarkerAction Comment="" MarkerInformation="PressF11_EnterFullScreen">
+      <ParameterName />
+      <StepId>-1</StepId>
+      <Direction>Start</Direction>
+      <Outcome />
+      <Disabled>false</Disabled>
+      <WorkItemId>0</WorkItemId>
+      <MarkerRegionType>Action</MarkerRegionType>
+    </TestStepMarkerAction>
+    <SetValueAction UIObjectName="UIMap.UIWarewolfDEV2SANELEMTWindow.UITabItemsTabList.UIInputDataTabPage.UIDataListInputsTable.UICCell">
+      <ParameterName />
+      <Value Encoded="false">Coded UI Test</Value>
+      <Type>String</Type>
+    </SetValueAction>
+    <TestStepMarkerAction Comment="" MarkerInformation="RecordedMethod1">
       <ParameterName />
       <StepId>-1</StepId>
       <Direction>Start</Direction>
@@ -24690,10 +24712,10 @@ Error while saving: This task requires that the user account specified has 'Log 
                               </AndCondition>
                               <SupportLevel>0</SupportLevel>
                               <Descendants>
-                                <UIObject ControlType="Cell" Id="Cell" FriendlyName="A Coded UI Test" SpecialControlType="None">
+                                <UIObject ControlType="Cell" Id="InputValueCell" FriendlyName="InputValueCell" SpecialControlType="None">
                                   <TechnologyName>UIA</TechnologyName>
                                   <WindowTitles>
-                                    <WindowTitle>Warewolf</WindowTitle>
+                                    <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
                                   </WindowTitles>
                                   <AndCondition>
                                     <PropertyCondition Name="ControlType">Cell</PropertyCondition>
@@ -24703,61 +24725,19 @@ Error while saving: This task requires that the user account specified has 'Log 
                                   </AndCondition>
                                   <SupportLevel>0</SupportLevel>
                                   <Descendants>
-                                    <UIObject ControlType="Cell" Id="InputValueCell" FriendlyName="100" SpecialControlType="None">
+                                    <UIObject ControlType="ComboBox" Id="InputValueComboboxl" FriendlyName="UI_SomeVariabletxt_AutoID" SpecialControlType="None">
                                       <TechnologyName>UIA</TechnologyName>
                                       <WindowTitles>
                                         <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
                                       </WindowTitles>
                                       <AndCondition>
-                                        <PropertyCondition Name="ColumnHeader" />
-                                        <PropertyCondition Name="Value">100</PropertyCondition>
-                                        <PropertyCondition Name="ControlType">Cell</PropertyCondition>
-                                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                      </AndCondition>
-                                      <SupportLevel>0</SupportLevel>
-                                      <Descendants>
-                                        <UIObject ControlType="ComboBox" Id="InputValueComboboxl" FriendlyName="UI_SomeVariabletxt_AutoID" SpecialControlType="None">
-                                          <TechnologyName>UIA</TechnologyName>
-                                          <WindowTitles>
-                                            <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
-                                          </WindowTitles>
-                                          <AndCondition>
-                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                            <PropertyCondition Name="ControlType">ComboBox</PropertyCondition>
-                                            <PropertyCondition Name="AutomationId">UI_SomeVariabletxt_AutoID</PropertyCondition>
-                                          </AndCondition>
-                                          <SupportLevel>0</SupportLevel>
-                                          <Descendants>
-                                            <UIObject ControlType="Edit" Id="InputValueText" FriendlyName="Text" SpecialControlType="None">
-                                              <TechnologyName>UIA</TechnologyName>
-                                              <WindowTitles>
-                                                <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
-                                              </WindowTitles>
-                                              <AndCondition>
-                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                                <PropertyCondition Name="ControlType">Edit</PropertyCondition>
-                                                <PropertyCondition Name="AutomationId">Text</PropertyCondition>
-                                              </AndCondition>
-                                              <SupportLevel>0</SupportLevel>
-                                              <Descendants />
-                                            </UIObject>
-                                          </Descendants>
-                                        </UIObject>
-                                      </Descendants>
-                                    </UIObject>
-                                    <UIObject ControlType="ComboBox" Id="ComboBox" FriendlyName="UI_SomeVariabletxt_AutoID" SpecialControlType="None">
-                                      <TechnologyName>UIA</TechnologyName>
-                                      <WindowTitles>
-                                        <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
-                                      </WindowTitles>
-                                      <AndCondition>
-                                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                         <PropertyCondition Name="ControlType">ComboBox</PropertyCondition>
-                                        <PropertyCondition Name="AutomationId">UI_SomeVariabletxt_AutoID</PropertyCondition>
+                                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                        <PropertyCondition Name="AutomationId">UI_Nametxt_AutoID</PropertyCondition>
                                       </AndCondition>
                                       <SupportLevel>0</SupportLevel>
                                       <Descendants>
-                                        <UIObject ControlType="Edit" Id="Textbox" FriendlyName="Text" SpecialControlType="None">
+                                        <UIObject ControlType="Edit" Id="InputValueText" FriendlyName="Text" SpecialControlType="None">
                                           <TechnologyName>UIA</TechnologyName>
                                           <WindowTitles>
                                             <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
@@ -24771,6 +24751,33 @@ Error while saving: This task requires that the user account specified has 'Log 
                                           <Descendants />
                                         </UIObject>
                                       </Descendants>
+                                    </UIObject>
+                                  </Descendants>
+                                </UIObject>
+                                <UIObject ControlType="Cell" Id="DescriptionCell" FriendlyName="Description" SpecialControlType="None">
+                                  <TechnologyName>UIA</TechnologyName>
+                                  <WindowTitles>
+                                    <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                                  </WindowTitles>
+                                  <AndCondition>
+                                    <PropertyCondition Name="ControlType">Cell</PropertyCondition>
+                                    <PropertyCondition Name="ColumnHeader" />
+                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                  </AndCondition>
+                                  <SupportLevel>0</SupportLevel>
+                                  <Descendants>
+                                    <UIObject ControlType="Text" Id="NameText" FriendlyName="Name" SpecialControlType="None">
+                                      <TechnologyName>UIA</TechnologyName>
+                                      <WindowTitles>
+                                        <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                                      </WindowTitles>
+                                      <AndCondition>
+                                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                        <PropertyCondition Name="ControlType">Text</PropertyCondition>
+                                        <PropertyCondition Name="Name">Name</PropertyCondition>
+                                      </AndCondition>
+                                      <SupportLevel>0</SupportLevel>
+                                      <Descendants />
                                     </UIObject>
                                   </Descendants>
                                 </UIObject>
@@ -26121,240 +26128,61 @@ Error while saving: This task requires that the user account specified has 'Log 
           </AndCondition>
           <SupportLevel>0</SupportLevel>
           <Descendants>
-            <UIObject ControlType="Custom" Id="UIUI_ExplorerControl_ACustom" FriendlyName="UI_ExplorerControl_AutoID" SpecialControlType="None">
+            <UIObject ControlType="TabList" Id="UITabItemsTabList" FriendlyName="TabItems" SpecialControlType="None">
               <TechnologyName>UIA</TechnologyName>
               <WindowTitles>
                 <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
               </WindowTitles>
               <AndCondition>
                 <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                <PropertyCondition Name="ControlType">Custom</PropertyCondition>
-                <PropertyCondition Name="ClassName">Uia.ExplorerView</PropertyCondition>
-                <PropertyCondition Name="AutomationId">UI_ExplorerControl_AutoID</PropertyCondition>
+                <PropertyCondition Name="ControlType">TabList</PropertyCondition>
+                <PropertyCondition Name="AutomationId">TabItems</PropertyCondition>
               </AndCondition>
               <SupportLevel>0</SupportLevel>
               <Descendants>
-                <UIObject ControlType="Tree" Id="UIExplorerTreeTree" FriendlyName="ExplorerTree" SpecialControlType="None">
+                <UIObject ControlType="TabPage" Id="UIInputDataTabPage" FriendlyName="Input Data" SpecialControlType="None">
                   <TechnologyName>UIA</TechnologyName>
                   <WindowTitles>
                     <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
                   </WindowTitles>
                   <AndCondition>
                     <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                    <PropertyCondition Name="ControlType">Tree</PropertyCondition>
-                    <PropertyCondition Name="AutomationId">ExplorerTree</PropertyCondition>
+                    <PropertyCondition Name="ControlType">TabPage</PropertyCondition>
+                    <PropertyCondition Name="AutomationId">UI_InputDataTab_AutoID</PropertyCondition>
                   </AndCondition>
                   <SupportLevel>0</SupportLevel>
                   <Descendants>
-                    <UIObject ControlType="TreeItem" Id="UIInfragisticsControlsTreeItem" FriendlyName="Infragistics.Controls.Menus.XamDataTreeNodeDataCon..." SpecialControlType="None">
+                    <UIObject ControlType="Table" Id="UIDataListInputsTable" FriendlyName="DataListInputs" SpecialControlType="None">
                       <TechnologyName>UIA</TechnologyName>
                       <WindowTitles>
                         <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
                       </WindowTitles>
-                      <SearchConfigurations>
-                        <SearchConfiguration>Expand</SearchConfiguration>
-                      </SearchConfigurations>
                       <AndCondition>
                         <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                        <PropertyCondition Name="ControlType">TreeItem</PropertyCondition>
-                        <PropertyCondition Name="Name">Infragistics.Controls.Menus.XamDataTreeNodeDataContext</PropertyCondition>
+                        <PropertyCondition Name="ControlType">Table</PropertyCondition>
+                        <PropertyCondition Name="AutomationId">DataListInputs</PropertyCondition>
                       </AndCondition>
                       <SupportLevel>0</SupportLevel>
                       <Descendants>
-                        <UIObject ControlType="TreeItem" Id="UIInfragisticsControlsTreeItem1" FriendlyName="Infragistics.Controls.Menus.XamDataTreeNodeDataCon..." SpecialControlType="None">
+                        <UIObject ControlType="Cell" Id="UICCell" FriendlyName="C" SpecialControlType="None">
                           <TechnologyName>UIA</TechnologyName>
                           <WindowTitles>
                             <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
                           </WindowTitles>
-                          <SearchConfigurations>
-                            <SearchConfiguration>Expand</SearchConfiguration>
-                          </SearchConfigurations>
                           <AndCondition>
+                            <PropertyCondition Name="ColumnHeader" />
+                            <PropertyCondition Name="Value">C</PropertyCondition>
+                            <PropertyCondition Name="ControlType">Cell</PropertyCondition>
                             <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                            <PropertyCondition Name="ControlType">TreeItem</PropertyCondition>
-                            <PropertyCondition Name="Name">Infragistics.Controls.Menus.XamDataTreeNodeDataContext</PropertyCondition>
-                            <PropertyCondition Name="Instance">2</PropertyCondition>
                           </AndCondition>
                           <SupportLevel>0</SupportLevel>
-                          <Descendants>
-                            <UIObject ControlType="TreeItem" Id="UIInfragisticsControlsTreeItem" FriendlyName="Infragistics.Controls.Menus.XamDataTreeNodeDataCon..." SpecialControlType="None">
-                              <TechnologyName>UIA</TechnologyName>
-                              <WindowTitles>
-                                <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
-                              </WindowTitles>
-                              <SearchConfigurations>
-                                <SearchConfiguration>Distinct</SearchConfiguration>
-                                <SearchConfiguration>Expand</SearchConfiguration>
-                              </SearchConfigurations>
-                              <AndCondition>
-                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                <PropertyCondition Name="ControlType">TreeItem</PropertyCondition>
-                                <PropertyCondition Name="Name">Infragistics.Controls.Menus.XamDataTreeNodeDataContext</PropertyCondition>
-                              </AndCondition>
-                              <SupportLevel>0</SupportLevel>
-                              <Descendants />
-                            </UIObject>
-                          </Descendants>
+                          <Descendants />
                         </UIObject>
                       </Descendants>
                     </UIObject>
                   </Descendants>
                 </UIObject>
               </Descendants>
-            </UIObject>
-            <UIObject ControlType="Menu" Id="UIExplorerEnvironmentMMenu" FriendlyName="ExplorerEnvironmentMenu" SpecialControlType="None">
-              <TechnologyName>UIA</TechnologyName>
-              <WindowTitles>
-                <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
-              </WindowTitles>
-              <SearchConfigurations>
-                <SearchConfiguration>Expand</SearchConfiguration>
-              </SearchConfigurations>
-              <AndCondition>
-                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                <PropertyCondition Name="ControlType">Menu</PropertyCondition>
-                <PropertyCondition Name="AutomationId">ExplorerEnvironmentMenu</PropertyCondition>
-              </AndCondition>
-              <SupportLevel>0</SupportLevel>
-              <Descendants>
-                <UIObject ControlType="MenuItem" Id="UIViewApisJsonMenuItem" FriendlyName="View Apis.Json" SpecialControlType="None">
-                  <TechnologyName>UIA</TechnologyName>
-                  <WindowTitles>
-                    <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
-                  </WindowTitles>
-                  <SearchConfigurations>
-                    <SearchConfiguration>Expand</SearchConfiguration>
-                  </SearchConfigurations>
-                  <AndCondition>
-                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                    <PropertyCondition Name="ControlType">MenuItem</PropertyCondition>
-                    <PropertyCondition Name="AutomationId">ViewApisJson</PropertyCondition>
-                  </AndCondition>
-                  <SupportLevel>0</SupportLevel>
-                  <Descendants />
-                </UIObject>
-              </Descendants>
-            </UIObject>
-            <UIObject ControlType="Custom" Id="UIDev2StudioViewModelsCustom" FriendlyName="Dev2.Studio.ViewModels.WorkSurface.WorkSurfaceCont..." SpecialControlType="None">
-              <TechnologyName>UIA</TechnologyName>
-              <WindowTitles>
-                <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
-              </WindowTitles>
-              <AndCondition>
-                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                <PropertyCondition Name="ControlType">Custom</PropertyCondition>
-                <PropertyCondition Name="ClassName">Uia.ContentPane</PropertyCondition>
-                <PropertyCondition Name="AutomationId">Dev2.Studio.ViewModels.WorkSurface.WorkSurfaceContextViewModel</PropertyCondition>
-              </AndCondition>
-              <SupportLevel>0</SupportLevel>
-              <Descendants>
-                <UIObject ControlType="Custom" Id="UIUI_SchedulerView_AutCustom" FriendlyName="UI_SchedulerView_AutoID" SpecialControlType="None">
-                  <TechnologyName>UIA</TechnologyName>
-                  <WindowTitles>
-                    <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
-                  </WindowTitles>
-                  <AndCondition>
-                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                    <PropertyCondition Name="ControlType">Custom</PropertyCondition>
-                    <PropertyCondition Name="ClassName">Uia.SchedulerView</PropertyCondition>
-                    <PropertyCondition Name="AutomationId">UI_SchedulerView_AutoID</PropertyCondition>
-                  </AndCondition>
-                  <SupportLevel>0</SupportLevel>
-                  <Descendants>
-                    <UIObject ControlType="Text" Id="UIAt742AMeverydayText" FriendlyName="At 7:42 AM every day" SpecialControlType="None">
-                      <TechnologyName>UIA</TechnologyName>
-                      <WindowTitles>
-                        <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
-                      </WindowTitles>
-                      <AndCondition>
-                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                        <PropertyCondition Name="ControlType">Text</PropertyCondition>
-                        <PropertyCondition Name="Name">At 7:42 AM every day</PropertyCondition>
-                      </AndCondition>
-                      <SupportLevel>0</SupportLevel>
-                      <Descendants />
-                    </UIObject>
-                    <UIObject ControlType="RadioButton" Id="UIEnabledRadioButton" FriendlyName="Enabled" SpecialControlType="None">
-                      <TechnologyName>UIA</TechnologyName>
-                      <WindowTitles>
-                        <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
-                      </WindowTitles>
-                      <AndCondition>
-                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                        <PropertyCondition Name="ControlType">RadioButton</PropertyCondition>
-                        <PropertyCondition Name="AutomationId">UI_EnabledRadioButton</PropertyCondition>
-                      </AndCondition>
-                      <SupportLevel>0</SupportLevel>
-                      <Descendants />
-                    </UIObject>
-                    <UIObject ControlType="Button" Id="UIItemButton" FriendlyName="..." SpecialControlType="None">
-                      <TechnologyName>UIA</TechnologyName>
-                      <WindowTitles>
-                        <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
-                      </WindowTitles>
-                      <AndCondition>
-                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                        <PropertyCondition Name="ControlType">Button</PropertyCondition>
-                        <PropertyCondition Name="AutomationId">UI_WorkflowSelectorButton_AutoID</PropertyCondition>
-                      </AndCondition>
-                      <SupportLevel>0</SupportLevel>
-                      <Descendants />
-                    </UIObject>
-                    <UIObject ControlType="Button" Id="UIItemButton1" FriendlyName="" SpecialControlType="None">
-                      <TechnologyName>UIA</TechnologyName>
-                      <WindowTitles>
-                        <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
-                      </WindowTitles>
-                      <AndCondition>
-                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                        <PropertyCondition Name="ControlType">Button</PropertyCondition>
-                        <PropertyCondition Name="AutomationId">UI_EditTriggerButton_AutoID</PropertyCondition>
-                      </AndCondition>
-                      <SupportLevel>0</SupportLevel>
-                      <Descendants />
-                    </UIObject>
-                    <UIObject ControlType="Edit" Id="UIUI_UserNameTextBoxEdit" FriendlyName="UI_UserNameTextBox" SpecialControlType="None">
-                      <TechnologyName>UIA</TechnologyName>
-                      <WindowTitles>
-                        <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
-                      </WindowTitles>
-                      <AndCondition>
-                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                        <PropertyCondition Name="ControlType">Edit</PropertyCondition>
-                        <PropertyCondition Name="AutomationId">UI_UserNameTextBox</PropertyCondition>
-                      </AndCondition>
-                      <SupportLevel>0</SupportLevel>
-                      <Descendants />
-                    </UIObject>
-                    <UIObject ControlType="Edit" Id="UIUI_PasswordBoxEdit" FriendlyName="UI_PasswordBox" SpecialControlType="None">
-                      <TechnologyName>UIA</TechnologyName>
-                      <WindowTitles>
-                        <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
-                      </WindowTitles>
-                      <AndCondition>
-                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                        <PropertyCondition Name="ControlType">Edit</PropertyCondition>
-                        <PropertyCondition Name="AutomationId">UI_PasswordBox</PropertyCondition>
-                      </AndCondition>
-                      <SupportLevel>0</SupportLevel>
-                      <Descendants />
-                    </UIObject>
-                  </Descendants>
-                </UIObject>
-              </Descendants>
-            </UIObject>
-            <UIObject ControlType="Window" Id="UIWpfWindow" FriendlyName="Wpf" SpecialControlType="None">
-              <TechnologyName>UIA</TechnologyName>
-              <WindowTitles>
-                <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
-              </WindowTitles>
-              <AndCondition>
-                <PropertyCondition Name="ControlType">Window</PropertyCondition>
-                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                <PropertyCondition Name="ClassName" Operator="Contains">HwndWrapper</PropertyCondition>
-              </AndCondition>
-              <SupportLevel>0</SupportLevel>
-              <Descendants />
             </UIObject>
           </Descendants>
         </TopLevelWindow>
