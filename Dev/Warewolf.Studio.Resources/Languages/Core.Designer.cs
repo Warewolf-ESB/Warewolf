@@ -6990,6 +6990,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ServiceTestGenericHelpText.
+        /// </summary>
+        public static string ServiceTestGenericHelpText {
+            get {
+                return ResourceManager.GetString("ServiceTestGenericHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Test the execution of this resource..
         /// </summary>
         public static string ServiceTestHelp {
@@ -7266,6 +7275,15 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string ServiceTestSaveEditedTestsMessage {
             get {
                 return ResourceManager.GetString("ServiceTestSaveEditedTestsMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ServiceTestSelectedTestHelpText.
+        /// </summary>
+        public static string ServiceTestSelectedTestHelpText {
+            get {
+                return ResourceManager.GetString("ServiceTestSelectedTestHelpText", resourceCulture);
             }
         }
         
