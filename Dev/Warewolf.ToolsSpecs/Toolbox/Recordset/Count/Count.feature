@@ -62,10 +62,19 @@ Scenario: Count a number of records in a empty recordset
 	Then the result count should be 0
 	And the execution has "No" error
 
+#WOLF-2058
 Scenario: Count a number of records in a unassigned recordset
 	Given count on record "[[rs()]]"	
+	And treat null as Empty Recordset is not selected
 	When the count tool is executed
 	Then the execution has "An" error
+
+Scenario: Count A Number Of Records In A Unassigned Recordset Null Check Selected
+	Given count on record "[[rs()]]"
+	And treat null as Empty Recordset is selected
+	When the count tool is executed
+	Then the result count should be 0
+	And the execution has "No" error
 
 
 Scenario: Count record with invalid variables
