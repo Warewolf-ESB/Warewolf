@@ -492,10 +492,10 @@ The window will be reloaded when you click OK.</value>
     <value>Resource moved or renamed</value>
   </data>
   <data name="ServiceTestDuplicateTestNameMessage" xml:space="preserve">
-    <value>The name already exists. Please choose a different name.</value>
+    <value>The Test Name already exists. Please choose a unique name.</value>
   </data>
   <data name="ServiceTestDuplicateTestNameHeader" xml:space="preserve">
-    <value>Duplicate name error</value>
+    <value>Duplicate Test Name</value>
   </data>
   <data name="ServiceTestSaveEditedTestsMessage" xml:space="preserve">
     <value>Please save currently edited Test(s) before creating a new one.</value>
@@ -2696,19 +2696,19 @@ You can use File System, URI, SFTP, FTP or FTPS format.</value>
     <value>Open this URL in your default browser</value>
   </data>
   <data name="ServiceTestNameHelpText" xml:space="preserve">
-    <value>The name of this test</value>
+    <value>The name of this test. Test names should be unique and indicate what is being tested. The test is always associated with the service running it.</value>
   </data>
   <data name="ServiceTestRunAllTestsInBrowserTooltip" xml:space="preserve">
     <value>Open this URL in your default browser to view the tests for this workflow</value>
   </data>
   <data name="ServiceTestRunSelectedTestInBrowserTooltip" xml:space="preserve">
-    <value>Open this URL in your default browser to view this test</value>
+    <value>Open this URL in your default browser to execute this test externaly</value>
   </data>
   <data name="ServiceTestPassedTooltip" xml:space="preserve">
     <value>Passed</value>
   </data>
   <data name="ServiceTestFailingTooltip" xml:space="preserve">
-    <value>Failing</value>
+    <value>Failed</value>
   </data>
   <data name="ServiceTestInvalidTooltip" xml:space="preserve">
     <value>Invalid</value>
@@ -2717,17 +2717,17 @@ You can use File System, URI, SFTP, FTP or FTPS format.</value>
     <value>Pending</value>
   </data>
   <data name="ServiceTestEnableRunSelectedTestTooltip" xml:space="preserve">
-    <value>Select or De-Select to run the test</value>
+    <value>Enable or Ignore this test</value>
   </data>
   <data name="ServiceTestSelectedTestHelpText" xml:space="preserve">
-    <value>ServiceTestSelectedTestHelpText</value>
+    <value>Setup and edit this test.</value>
   </data>
   <data name="ServiceTestGenericHelpText" xml:space="preserve">
-    <value>ServiceTestGenericHelpText</value>
+    <value>Use the Tests editor to setup tests that verify your service is working correctly.</value>
   </data>
   <data name="ServiceTestEnableRunSelectedTestHelpText" xml:space="preserve">
-    <value>Selecting this option will add the test to the test to the Run All command. 
-If this option is not selected, the test will not run part of the Run All list of tests.</value>
+    <value>Enables or disables the test. A disabled test will be ignored when requested to run.
+A test must be ignored/disabled before it can be deleted.</value>
   </data>
   <data name="TestsDeleteSelectedTestDisabledTooltip" xml:space="preserve">
     <value>Cannot delete an enabled test</value>
@@ -2742,13 +2742,13 @@ If this option is not selected, the test will not run part of the Run All list o
     <value>Duplicate this test</value>
   </data>
   <data name="ServiceTestDuplicateSelectedTestHelpText" xml:space="preserve">
-    <value>Duplicate this test</value>
+    <value>Duplicates this test so you can quickly make similar tests. All fields will be copied as is.</value>
   </data>
   <data name="ServiceTestDisabledDuplicateSelectedTestTooltip" xml:space="preserve">
     <value>You do not have permissions to duplicate a test</value>
   </data>
   <data name="ServiceTestNewTestDisabledDuplicateSelectedTestTooltip" xml:space="preserve">
-    <value>You have to save a new test before duplicate</value>
+    <value>Please save this test before duplicating it</value>
   </data>
   <data name="ServiceTestRunSelectedTestTooltip" xml:space="preserve">
     <value>Run this test</value>
@@ -2766,31 +2766,31 @@ If this option is not selected, the test will not run part of the Run All list o
     <value>Create a new test</value>
   </data>
   <data name="ServiceTestNewTestHelpText" xml:space="preserve">
-    <value>Create a new test</value>
+    <value>Creates a new test for this resource. You can create as many tests for this resource as you like.</value>
   </data>
   <data name="ServiceTestNoErrorExpectedTooltip" xml:space="preserve">
     <value>The test expects no error</value>
   </data>
   <data name="ServiceTestNoErrorExpectedHelpText" xml:space="preserve">
-    <value>The test expects no error</value>
+    <value>The test expects no error. If this option is selected, it will be aAsserted with all other asserts.</value>
   </data>
   <data name="ServiceTestErrorExpectedTooltip" xml:space="preserve">
     <value>The test expects an error</value>
   </data>
   <data name="ServiceTestErrorExpectedHelpText" xml:space="preserve">
-    <value>The test expects an error</value>
+    <value>The test expects an error. If this option is selected, ALL other asserts will be ignored.</value>
   </data>
   <data name="ServiceTestInputValueTooltip" xml:space="preserve">
     <value>Input value to test against</value>
   </data>
   <data name="ServiceTestInputsValueHelpText" xml:space="preserve">
-    <value>ServiceTestInputsValueHelpText</value>
+    <value>The input value for the service. This is the input to the service for the test you want to run.</value>
   </data>
   <data name="ServiceTestOutputValueTooltip" xml:space="preserve">
     <value>Output value to test against</value>
   </data>
   <data name="ServiceTestOutputValueHelpText" xml:space="preserve">
-    <value>ServiceTestOutputValueHelpText</value>
+    <value>This is the final output of the service that will be asserted.</value>
   </data>
   <data name="ServiceTestRunAllTestTooltip" xml:space="preserve">
     <value>Run all tests</value>
