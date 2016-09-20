@@ -84,6 +84,19 @@ IF EXIST "%DeploymentDirectory%\ServerStarted" DEL "%DeploymentDirectory%\Server
 IF EXIST %windir%\nircmd.exe (nircmd elevate "%DeploymentDirectory%\Warewolf Server.exe") else (START "%DeploymentDirectory%\Warewolf Server.exe" /D "%DeploymentDirectory%" "Warewolf Server.exe")
 @echo Started "%DeploymentDirectory%\Warewolf Server.exe".
 
+REM ** Wait for server start
+@echo off
+:WaitForServerStart
+set /a LoopCounter=0
+:MainLoopBody
+IF EXIST "%DeploymentDirectory%\ServerStarted" goto StartStudio
+set /a LoopCounter=LoopCounter+1
+IF %LoopCounter% EQU 30 echo Timed out waiting for the Warewolf server to start. &exit /b
+@echo Waiting 2 more seconds for %DeploymentDirectory%\ServerStarted file to appear...
+waitfor ServerStart /t 2 
+goto MainLoopBody
+
+:StartStudio
 REM Try use Default Workspace Layout
 IF EXIST "%DeploymentDirectory%\DefaultWorkspaceLayout.xml" COPY /Y "%DeploymentDirectory%\DefaultWorkspaceLayout.xml" "%LocalAppData%\Warewolf\UserInterfaceLayouts\WorkspaceLayout.xml"
 IF EXIST "%DeploymentDirectory%\..\DefaultWorkspaceLayout.xml" COPY /Y "%DeploymentDirectory%\..\DefaultWorkspaceLayout.xml" "%LocalAppData%\Warewolf\UserInterfaceLayouts\WorkspaceLayout.xml"
@@ -93,18 +106,6 @@ IF NOT EXIST "%DeploymentDirectory%\..\Studio\Warewolf Studio.exe" IF EXIST "%~d
 IF EXIST "%DeploymentDirectory%\..\Studio\Warewolf Studio.exe" SET DeploymentDirectory=%DeploymentDirectory%\..\Studio
 
 REM ** Start Warewolf studio from deployed binaries **
-@echo off
-:WaitForServerStart
-set /a LoopCounter=0
-:MainLoopBody
-IF EXIST "%DeploymentDirectory%\ServerStarted" goto StartStudio
-set /a LoopCounter=LoopCounter+1
-IF %LoopCounter% EQU 30 echo Timed out waiting for the Warewolf server to start. &exit /b
-@echo Waiting 2 more seconds for server start...
-waitfor ServerStart /t 2 
-goto MainLoopBody
-
-:StartStudio
 @echo on
 IF EXIST %windir%\nircmd.exe (nircmd elevate "%DeploymentDirectory%\Warewolf Studio.exe") else (START "%DeploymentDirectory%\Warewolf Studio.exe" /D "%DeploymentDirectory%" "Warewolf Studio.exe")
 @echo Started "%DeploymentDirectory%\Warewolf Studio.exe".
