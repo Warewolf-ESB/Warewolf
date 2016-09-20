@@ -96,6 +96,8 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual(recordsetName, act.RecordsetName);
         }
 
+      
+
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("DsfRecordsetLengthActivity_UpdateForEachInputs")]

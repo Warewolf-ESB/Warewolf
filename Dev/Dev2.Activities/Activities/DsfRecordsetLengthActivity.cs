@@ -58,6 +58,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             DisplayName = "Length";
         }
 
+        public bool TreatNullAsZero { get; set; }
+
         // ReSharper disable RedundantOverridenMember
         protected override void CacheMetadata(NativeActivityMetadata metadata)
         {
@@ -121,18 +123,28 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         }
                         else
                         {
-                            var count = 0;
+                        
                             if(dataObject.Environment.HasRecordSet(RecordsetName))
                             {
-                                count = dataObject.Environment.GetLength(rs);
+                                var count = dataObject.Environment.GetLength(rs);
+                                var value = count.ToString();
+                                dataObject.Environment.Assign(RecordsLength, value, update);
+                                AddDebugOutputItem(new DebugItemWarewolfAtomResult(value, RecordsLength, ""));
                             }
                             else
                             {
-                                allErrors.AddError("Recordset: "+RecordsetName+" does not exist.");
+                                if (TreatNullAsZero)
+                                {
+                                    dataObject.Environment.Assign(RecordsLength, 0.ToString(), update);
+                                    AddDebugOutputItem(new DebugItemWarewolfAtomResult(0.ToString(), RecordsLength, ""));
+                                }
+                                else
+                                {
+                                    allErrors.AddError(string.Format(ErrorResource.NullRecordSet, RecordsetName));
+                                }
+                                
                             }
-                            var value = count.ToString();
-                            dataObject.Environment.Assign(RecordsLength, value, update);
-                            AddDebugOutputItem(new DebugItemWarewolfAtomResult(value, RecordsLength, ""));
+                           
                         }
                     }
                     catch(Exception e)

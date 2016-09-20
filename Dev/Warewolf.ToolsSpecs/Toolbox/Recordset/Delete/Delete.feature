@@ -155,6 +155,7 @@ Scenario: Delete a record that does not exist
 Scenario: Delete a record an empty recordset
 	Given I have the following recordset
 	| rs       | row |
+	And delete treat null as Empty Recordset is not selected
 	And I delete a record "[[rs()]]"
 	When the delete tool is executed
 	Then the delete result should be "Failure"
@@ -165,6 +166,21 @@ Scenario: Delete a record an empty recordset
 	And the debug output as  
 	|                      |
 	| [[result]] = Failure |
+
+Scenario: Delete a record With An Empty Recordset And Null Check Selected
+	Given I have the following recordset
+	| rs       | row |
+	And I delete a record "[[rs()]]"
+	And Treat Null as Empty Recordset is selected
+	When the delete tool is executed
+	Then the delete result should be "Success"
+	And the execution has "No" error
+	And the debug inputs as  	
+	| Records          |
+	| [[rs()]]  = |
+	And the debug output as  
+	|                      |
+	| [[result]] = Success|
 
 Scenario: Delete a scalar insted of a recordset
 	Given I have a delete variable "[[var]]" equal to ""

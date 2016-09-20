@@ -22,6 +22,7 @@ using Dev2.Interfaces;
 using Dev2.Util;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 using Warewolf.Core;
+using Warewolf.Resource.Errors;
 using Warewolf.Storage;
 
 // ReSharper disable CheckNamespace
@@ -48,8 +49,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             RecordsetName = string.Empty;
             Result = string.Empty;
+            TreatNullAsZero = true;
         }
 
+        public bool TreatNullAsZero { get; set; }
         // ReSharper disable RedundantOverridenMember
         protected override void CacheMetadata(NativeActivityMetadata metadata)
         {
@@ -74,19 +77,38 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             InitializeDebug(dataObject);
             try
             {
-                ValidateRecordsetName(RecordsetName, errors);
-
-                GetDebug(dataObject, update);
-                dataObject.Environment.EvalDelete(RecordsetName, update);
-                if (!string.IsNullOrEmpty(Result))
+                var hasRecordSet = dataObject.Environment.HasRecordSet(RecordsetName);
+                if (hasRecordSet)//null check happens here
                 {
-                    dataObject.Environment.Assign(Result, "Success", update);
-                    AddDebugOutputItem(new DebugEvalResult(Result, "", dataObject.Environment, update));
+                    ValidateRecordsetName(RecordsetName, errors);
+
+                    GetDebug(dataObject, update);
+                    dataObject.Environment.EvalDelete(RecordsetName, update);
+                    if (!string.IsNullOrEmpty(Result))
+                    {
+                        dataObject.Environment.Assign(Result, "Success", update);
+                        AddDebugOutputItem(new DebugEvalResult(Result, "", dataObject.Environment, update));
+                    }
+                }
+                else
+                {
+                    if (TreatNullAsZero)
+                    {
+                        dataObject.Environment.Assign(Result, "Success", update);
+                        AddDebugOutputItem(new DebugEvalResult(Result, "", dataObject.Environment, update));
+                    }
+                    else
+                    {
+                        allErrors.AddError(string.Format(ErrorResource.NullRecordSet, RecordsetName));
+                    }
+
                 }
             }
             catch(Exception e)
             {
-                allErrors.AddError(e.Message);
+                  allErrors.AddError(e.Message);
+                
+                
             }
             finally
             {

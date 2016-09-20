@@ -304,7 +304,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             //---------------Assert Precondition----------------
             Assert.IsNotNull(dsfCountRecordsetActivity);
             //---------------Execute Test ----------------------
-            var treaNullAsZero = dsfCountRecordsetActivity.TreaNullAsZero;
+            var treaNullAsZero = dsfCountRecordsetActivity.TreatNullAsZero;
             //---------------Test Result -----------------------
             Assert.IsTrue(treaNullAsZero);
         }
@@ -353,7 +353,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         {
             TestStartNode = new FlowStep
             {
-                Action = new DsfCountRecordsetActivity { RecordsetName = recordSetName, CountNumber = countNumber, TreaNullAsZero = treaNullAsZero }
+                Action = new DsfCountRecordsetActivity { RecordsetName = recordSetName, CountNumber = countNumber, TreatNullAsZero = treaNullAsZero }
                 
                 
             };

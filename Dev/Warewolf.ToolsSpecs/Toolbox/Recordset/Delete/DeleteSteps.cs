@@ -29,7 +29,7 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.Delete
         public DeleteSteps(ScenarioContext scenarioContext)
             : base(scenarioContext)
         {
-            if (scenarioContext == null) throw new ArgumentNullException("scenarioContext");
+            if (scenarioContext == null) throw new ArgumentNullException(nameof(scenarioContext));
             this.scenarioContext = scenarioContext;
         }
 
@@ -48,10 +48,13 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.Delete
             BuildShapeAndTestData();
 
             var recordset = scenarioContext.Get<string>("recordset");
+            bool treaNullAsZero;
+            scenarioContext.TryGetValue("treaNullAsZero", out treaNullAsZero);
             var delete = new DsfDeleteRecordActivity
                 {
                     RecordsetName = recordset,
-                    Result = ResultVariable
+                    Result = ResultVariable,
+                    TreatNullAsZero = treaNullAsZero
                 };
 
             TestStartNode = new FlowStep
@@ -180,5 +183,20 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.Delete
         {
             scenarioContext.Add("recordset", recordset);
         }
+
+        [Given(@"delete treat null as Empty Recordset is not selected")]
+        public void GivenDeleteTreatNullAsEmptyRecordsetIsNotSelected()
+        {
+            scenarioContext.Add("treaNullAsZero", false);
+        }
+
+        [Given(@"Treat Null as Empty Recordset is selected")]
+        public void GivenTreatNullAsEmptyRecordsetIsSelected()
+        {
+            scenarioContext.Add("treaNullAsZero", true);
+        }
+
+
+
     }
 }

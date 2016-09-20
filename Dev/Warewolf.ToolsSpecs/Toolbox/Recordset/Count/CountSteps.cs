@@ -61,7 +61,7 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.Count
             {
                 RecordsetName = recordset,
                 CountNumber = string.IsNullOrEmpty(resultVariable) ? ResultVariable : resultVariable,
-                TreaNullAsZero = treaNullAsZero
+                TreatNullAsZero = treaNullAsZero
             };
 
             TestStartNode = new FlowStep

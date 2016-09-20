@@ -50,7 +50,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         [Outputs("CountNumber"), FindMissing]
         public string CountNumber { get; set; }
 
-        public bool TreaNullAsZero { get; set; }
+        public bool TreatNullAsZero { get; set; }
 
         public DsfCountRecordsetActivity()
             : base("Count Records")
@@ -58,7 +58,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             RecordsetName = string.Empty;
             CountNumber = string.Empty;
             DisplayName = "Count Records";
-            TreaNullAsZero = true;
+            TreatNullAsZero = true;
         }
 
         // ReSharper disable RedundantOverridenMember
@@ -120,7 +120,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                             }
                             else
                             {
-                                if (TreaNullAsZero)
+                                if (TreatNullAsZero)
                                 {
                                     dataObject.Environment.Assign(CountNumber, 0.ToString(), update);
                                     AddDebugOutputItem(new DebugEvalResult(CountNumber, "", dataObject.Environment, update));
@@ -130,7 +130,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                 {
                                     allErrors.AddError(string.Format(ErrorResource.NullRecordSet, RecordsetName));
                                 }
-
 
                             }
                         }
