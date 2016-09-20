@@ -97,7 +97,7 @@ REM ** Start Warewolf studio from deployed binaries **
 :WaitForServerStart
 set /a LoopCounter=0
 :MainLoopBody
-IF EXIST "%~dp0Dev2.Server\bin\Debug\ServerStarted" goto StartStudio
+IF EXIST "%DeploymentDirectory%\ServerStarted" goto StartStudio
 set /a LoopCounter=LoopCounter+1
 IF %LoopCounter% EQU 30 echo Timed out waiting for the Warewolf server to start. &exit /b
 @echo Waiting 2 more seconds for server start...
