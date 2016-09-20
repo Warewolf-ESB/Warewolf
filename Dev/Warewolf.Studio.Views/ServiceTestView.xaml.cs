@@ -61,5 +61,19 @@ namespace Warewolf.Studio.Views
                 TestsListbox.SelectedItem = item;
             }
         }
+
+        private void MainGrid_OnMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            var serviceTestViewModel = DataContext as IServiceTestViewModel;
+            serviceTestViewModel?.UpdateHelpDescriptor(Studio.Resources.Languages.Core.ServiceTestGenericHelpText);
+            e.Handled = true;
+        }
+
+        private void ListBoxItemGrid_OnMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            var serviceTestViewModel = DataContext as IServiceTestViewModel;
+            serviceTestViewModel?.UpdateHelpDescriptor(Studio.Resources.Languages.Core.ServiceTestSelectedTestHelpText);
+            e.Handled = true;
+        }
     }
 }

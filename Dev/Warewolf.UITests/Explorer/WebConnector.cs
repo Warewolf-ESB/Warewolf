@@ -10,6 +10,7 @@ namespace Warewolf.UITests
         const string WebSourceName = "UITestingWebSource";
 
         [TestMethod]
+        [Ignore]
         public void BigWebConnectorUITest()
         {
             Uimap.Click_New_Workflow_Ribbon_Button();

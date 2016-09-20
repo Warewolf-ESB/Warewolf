@@ -11,6 +11,7 @@ namespace Warewolf.UITests.DebugInputWindow
         const string HelloWorld = "Hello World";
 
         [TestMethod]
+        [Ignore]
         public void SaveDebugInputsUITest()
         {            
             Uimap.Enter_Text_Into_Explorer_Filter(HelloWorld);
