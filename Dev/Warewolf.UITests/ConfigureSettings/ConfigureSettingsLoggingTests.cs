@@ -30,7 +30,7 @@ namespace Warewolf.UITests
         public void MyTestCleanup()
         {
             Playback.PlaybackError -= Uimap.OnError;
-            //Uimap.TryCloseAllTabs();
+            Uimap.TryCloseAllTabs();
         }
 
         public TestContext TestContext

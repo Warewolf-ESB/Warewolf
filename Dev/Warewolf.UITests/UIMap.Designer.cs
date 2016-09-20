@@ -102,19 +102,6 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
-        /// AssertMethod3 - Use 'AssertMethod3ExpectedValues' to pass parameters into this method.
-        /// </summary>
-        public void AssertMethod3()
-        {
-            #region Variable Declarations
-            WpfText nameText = this.MainStudioWindow.DebugInputDialog.TabItemsTabList.InputDataTab.InputsTable.Row1.DescriptionCell.NameText;
-            #endregion
-
-            // Verify that the 'Exists' property of 'Name' label equals 'True'
-            Assert.AreEqual(this.AssertMethod3ExpectedValues.NameTextExists, nameText.Exists);
-        }
-        
-        /// <summary>
         /// Assign_Value_To_Variable - Use 'Assign_Value_To_VariableParams' to pass parameters into this method.
         /// </summary>
         public void Assign_Value_To_Variable()
@@ -1704,11 +1691,11 @@ namespace Warewolf.UITests
         public void Click_Select_Resource_Button()
         {
             #region Variable Declarations
-            WpfButton itemButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.PerfomanceCounterTab.PerfmonViewContent.ResourceTable.ResourceCell.ItemButton;
+            WpfButton resourceButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.PerfomanceCounterTab.PerfmonViewContent.ResourceTable.ResourceCell.ResourceButton;
             #endregion
 
             // Click '...' button
-            Mouse.Click(itemButton, new Point(9, 8));
+            Mouse.Click(resourceButton, new Point(9, 8));
         }
         
         /// <summary>
@@ -6373,6 +6360,19 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
+        /// Select_SecurityTab
+        /// </summary>
+        public void Select_SecurityTab()
+        {
+            #region Variable Declarations
+            WpfTabPage securityTab = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab;
+            #endregion
+
+            // Click 'System.Windows.Controls.TabItem Header: Content:' tab
+            Mouse.Click(securityTab, new Point(102, 10));
+        }
+        
+        /// <summary>
         /// Select_SetAsStartNode_FromContextMenu
         /// </summary>
         public void Select_SetAsStartNode_FromContextMenu()
@@ -6683,18 +6683,6 @@ namespace Warewolf.UITests
                     this.mAssertMethod1ExpectedValues = new AssertMethod1ExpectedValues();
                 }
                 return this.mAssertMethod1ExpectedValues;
-            }
-        }
-        
-        public virtual AssertMethod3ExpectedValues AssertMethod3ExpectedValues
-        {
-            get
-            {
-                if ((this.mAssertMethod3ExpectedValues == null))
-                {
-                    this.mAssertMethod3ExpectedValues = new AssertMethod3ExpectedValues();
-                }
-                return this.mAssertMethod3ExpectedValues;
             }
         }
         
@@ -9302,8 +9290,6 @@ namespace Warewolf.UITests
         
         private AssertMethod1ExpectedValues mAssertMethod1ExpectedValues;
         
-        private AssertMethod3ExpectedValues mAssertMethod3ExpectedValues;
-        
         private Assign_Value_To_VariableParams mAssign_Value_To_VariableParams;
         
         private Check_Public_AdministratorParams mCheck_Public_AdministratorParams;
@@ -9817,21 +9803,6 @@ namespace Warewolf.UITests
         /// </summary>
         public string UIThefollowingerroroccTextDisplayText = "The following error occurred on save:\r\nError while saving: This task requires tha" +
             "t the user account specified has \'Log On As Batch\' job rights";
-        #endregion
-    }
-    
-    /// <summary>
-    /// Parameters to be passed into 'AssertMethod3'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class AssertMethod3ExpectedValues
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Verify that the 'Exists' property of 'Name' label equals 'True'
-        /// </summary>
-        public bool NameTextExists = true;
         #endregion
     }
     
@@ -24942,7 +24913,7 @@ namespace Warewolf.UITests
                 {
                     this.mResourceButton = new WpfButton(this);
                     #region Search Criteria
-                    this.mResourceButton.SearchProperties[WpfButton.PropertyNames.Instance] = "2";
+                    this.mResourceButton.SearchProperties[WpfButton.PropertyNames.HelpText] = "Resource picker";
                     this.mResourceButton.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
                     #endregion
                 }
@@ -42595,10 +42566,24 @@ namespace Warewolf.UITests
                 return this.mUITabItemsTabList;
             }
         }
+        
+        public UIUI_SettingsView_AutoCustom UIUI_SettingsView_AutoCustom
+        {
+            get
+            {
+                if ((this.mUIUI_SettingsView_AutoCustom == null))
+                {
+                    this.mUIUI_SettingsView_AutoCustom = new UIUI_SettingsView_AutoCustom(this);
+                }
+                return this.mUIUI_SettingsView_AutoCustom;
+            }
+        }
         #endregion
         
         #region Fields
         private UITabItemsTabList mUITabItemsTabList;
+        
+        private UIUI_SettingsView_AutoCustom mUIUI_SettingsView_AutoCustom;
         #endregion
     }
     
@@ -42700,6 +42685,74 @@ namespace Warewolf.UITests
         
         #region Fields
         private WpfCell mUICCell;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIUI_SettingsView_AutoCustom : WpfCustom
+    {
+        
+        public UIUI_SettingsView_AutoCustom(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.SettingsView";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "UI_SettingsView_AutoID";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public UIItemTabList UIItemTabList
+        {
+            get
+            {
+                if ((this.mUIItemTabList == null))
+                {
+                    this.mUIItemTabList = new UIItemTabList(this);
+                }
+                return this.mUIItemTabList;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIItemTabList mUIItemTabList;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIItemTabList : WpfTabList
+    {
+        
+        public UIItemTabList(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfTabPage UISystemWindowsControlTabPage
+        {
+            get
+            {
+                if ((this.mUISystemWindowsControlTabPage == null))
+                {
+                    this.mUISystemWindowsControlTabPage = new WpfTabPage(this);
+                    #region Search Criteria
+                    this.mUISystemWindowsControlTabPage.SearchProperties[WpfTabPage.PropertyNames.Name] = "System.Windows.Controls.TabItem Header: Content:";
+                    this.mUISystemWindowsControlTabPage.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mUISystemWindowsControlTabPage;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfTabPage mUISystemWindowsControlTabPage;
         #endregion
     }
 }
