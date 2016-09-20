@@ -120,6 +120,7 @@
     <Compile Include="DeployDestinationViewModelTests.cs" />
     <Compile Include="DeploySourceExplorerViewModelTests.cs" />
     <Compile Include="DeployViewModelTests.cs" />
+    <Compile Include="DummyServiceTestTests.cs" />
     <Compile Include="EmailAttachmentModelTests.cs" />
     <Compile Include="EmailAttachmentVmTests.cs" />
     <Compile Include="EnvironmentViewModelTests.cs" />
@@ -152,6 +153,11 @@
     <Compile Include="SharepointServerSourceViewModelTests.cs" />
     <Compile Include="SingleEnvironmentExplorerViewModelTests.cs" />
     <Compile Include="SplashViewModelTests.cs" />
+    <Compile Include="ServiceTestCommandHandlerModelTests.cs" />
+    <Compile Include="ServiceTestViewModelTests.cs" />
+    <Compile Include="ServiceTestInputTests.cs" />
+    <Compile Include="ServiceTestModelTests.cs" />
+    <Compile Include="ServiceTestOutputTests.cs" />
     <Compile Include="StudioServerProxyTests.cs" />
     <Compile Include="ToolBox\ToolBoxCategoryViewModelTests.cs" />
     <Compile Include="ToolBox\ToolboxViewModelTests.cs" />
@@ -176,6 +182,10 @@
     <ProjectReference Include="..\Dev2.Common.Interfaces\Dev2.Common.Interfaces.csproj">
       <Project>{13C0C6E9-7DC3-4DC3-8535-031C263CEE0B}</Project>
       <Name>Dev2.Common.Interfaces</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Common\Dev2.Common.csproj">
+      <Project>{84405FDF-0FF8-49A2-8925-8A4AEBA8104A}</Project>
+      <Name>Dev2.Common</Name>
     </ProjectReference>
     <ProjectReference Include="..\Dev2.Core\Dev2.Core.csproj">
       <Project>{6007C1F1-CE38-474A-A88C-0C05A77BC415}</Project>

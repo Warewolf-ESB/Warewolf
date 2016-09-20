@@ -48,6 +48,7 @@ namespace Dev2.Studio.Core.AppResources.Enums
         Exchange,
         // ReSharper disable once InconsistentNaming
         RabbitMQSource,
-        WcfSource
+        WcfSource,
+        ServiceTestsViewer
     }
 }

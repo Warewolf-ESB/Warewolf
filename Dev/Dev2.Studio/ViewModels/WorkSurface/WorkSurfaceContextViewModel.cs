@@ -199,7 +199,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
                 }
             }
 
-            if (WorkSurfaceKey.WorkSurfaceContext == WorkSurfaceContext.Scheduler)
+            if (WorkSurfaceKey.WorkSurfaceContext == WorkSurfaceContext.Scheduler || WorkSurfaceKey.WorkSurfaceContext == WorkSurfaceContext.ServiceTestsViewer)
             {
                 if (DebugOutputViewModel == null)
                 {
@@ -252,16 +252,17 @@ namespace Dev2.Studio.ViewModels.WorkSurface
         public void Handle(DebugOutputMessage message)
         {
             Dev2Logger.Info(message.GetType().Name);
-            if (WorkSurfaceKey.WorkSurfaceContext == WorkSurfaceContext.Scheduler)
+            if (WorkSurfaceKey.WorkSurfaceContext == WorkSurfaceContext.Scheduler || WorkSurfaceKey.WorkSurfaceContext == WorkSurfaceContext.ServiceTestsViewer)
             {
                 DebugOutputViewModel.Clear();
-                var debugState = message.DebugStates.LastOrDefault();
-
-                if (debugState != null)
+                foreach(var debugState in message.DebugStates)
                 {
-                    debugState.StateType = StateType.Clear;
-                    debugState.SessionID = DebugOutputViewModel.SessionID;
-                    DebugOutputViewModel.Append(debugState);
+                    if (debugState != null)
+                    {
+                        debugState.StateType = StateType.Clear;
+                        debugState.SessionID = DebugOutputViewModel.SessionID;
+                        DebugOutputViewModel.Append(debugState);
+                    }
                 }
             }
         }
@@ -482,7 +483,6 @@ namespace Dev2.Studio.ViewModels.WorkSurface
             var result = ContextualResourceModel.Environment.ResourceRepository.StopExecution(ContextualResourceModel);
             DispatchServerDebugMessage(result, ContextualResourceModel);
 
-            //Bug 10912 - Only set the Debug Status to Finished when rendering has completed
             SetDebugStatus(DebugStatus.Finished);
         }
 

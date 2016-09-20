@@ -32,6 +32,7 @@ using Dev2.Runtime.Execution;
 using Dev2.Runtime.Interfaces;
 using Dev2.Simulation;
 using Dev2.Util;
+using Newtonsoft.Json;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Hosting;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 using Warewolf.Storage;
@@ -60,7 +61,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         public IDataListCompiler Compiler { get; set; }
         // ReSharper restore UnusedMember.Global
         // END TODO: Remove legacy properties 
-
+        [JsonIgnore]
         public InOutArgument<List<string>> AmbientDataList { get; set; }
 
         // Moved into interface ;)
@@ -316,7 +317,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     ErrorMessage = "Termination due to error in activity",
                     HasError = true
                 };
-                DebugDispatcher.Instance.Write(debugState);
+                DebugDispatcher.Instance.Write(debugState,dataObject.IsServiceTestExecution,dataObject.TestName);
             }
         }
 
@@ -611,10 +612,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     }
                 }
 
-                // BUG 9706 - 2013.06.22 - TWR : refactored from here to DebugDispatcher
                 _debugState.ClientID = dataObject.ClientID;
                 _debugState.OriginatingResourceID = dataObject.ResourceID;
-                _debugDispatcher.Write(_debugState, dataObject.RemoteInvoke, dataObject.RemoteInvokerID, dataObject.ParentInstanceID, dataObject.RemoteDebugItems);
+                _debugDispatcher.Write(_debugState, dataObject.IsServiceTestExecution, dataObject.TestName, dataObject.RemoteInvoke, dataObject.RemoteInvokerID, dataObject.ParentInstanceID, dataObject.RemoteDebugItems);
 
                 if(stateType == StateType.After )
                 {
@@ -830,17 +830,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 {
                     DoErrorHandling(data, update);
                 }
-
-
-
             }
-
-            
-            if(NextNodes != null && NextNodes.Any())
+            if (NextNodes != null && NextNodes.Any())
             {
-              
-                    return NextNodes.First();
-             }
+                return NextNodes.First();
+            }
             return null;
         }
 

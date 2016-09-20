@@ -129,6 +129,7 @@
     <Compile Include="ESB\Execution\PerfmonExecutionContainer.cs" />
     <Compile Include="ESB\Execution\RemoteDebugItemParser.cs" />
     <Compile Include="ESB\Execution\RemoteWorkflowExecutionContainer.cs" />
+    <Compile Include="ESB\Execution\ServiceTestExecutionContainer.cs" />
     <Compile Include="ESB\Execution\WebServiceContainer.cs" />
     <Compile Include="ESB\Execution\WfExecutionContainer.cs" />
     <Compile Include="ESB\WF\WFApplicationUtils.cs" />
@@ -201,6 +202,10 @@
     <ProjectReference Include="..\Dev2.Services.Execution\Dev2.Services.Execution.csproj">
       <Project>{019A92B9-9209-4930-BC96-381CB8B1C0EA}</Project>
       <Name>Dev2.Services.Execution</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Warewolf.Security\Warewolf.Security.csproj">
+      <Project>{CA5E9373-46FE-41B9-AB2E-BD637F48B456}</Project>
+      <Name>Warewolf.Security</Name>
     </ProjectReference>
     <ProjectReference Include="..\Warewolf.Resource\Warewolf.Resource.csproj">
       <Project>{dff93ecb-fdd1-405e-ae02-9f4bc7571c1b}</Project>

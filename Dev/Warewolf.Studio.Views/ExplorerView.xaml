@@ -644,7 +644,20 @@
 
                                                     <ig:XamMenuSeparator Visibility="{Binding Path=Data.CanDeploy, Converter={StaticResource BoolToVisibilityConverter}}" />
 
-                                                    <ig:XamMenuItem Name="Deploy"
+                                                  <ig:XamMenuItem Name="Test"
+                                                                  Command="{Binding Path=Data.CreateTestCommand}"
+                                                                  CommandParameter="{Binding Path=Data}"
+                                                                  Header="Tests"
+                                                                  Visibility="{Binding Path=Data.CanCreateTest,
+                                                                                         Converter={StaticResource BoolToVisibilityConverter}}">
+                                                    <ig:XamMenuItem.Icon>
+                                                      <fa:FontAwesome FontSize="14"
+                                                                      FontWeight="Light"
+                                                                      Icon="Flask" />
+                                                    </ig:XamMenuItem.Icon>
+                                                  </ig:XamMenuItem>
+
+                                                  <ig:XamMenuItem Name="Deploy"
                                                                     Command="{Binding Path=Data.DeployCommand}"
                                                                     CommandParameter="{Binding Path=Data}"
                                                                     InputGestureText="[Ctrl+D]"

@@ -91,8 +91,21 @@ IF EXIST "%~dp0..\..\Warewolf.UITests\Properties\DefaultWorkspaceLayout.xml" COP
 REM Init paths to Warewolf studio under test
 IF NOT EXIST "%DeploymentDirectory%\..\Studio\Warewolf Studio.exe" IF EXIST "%~dp0..\..\Dev2.Studio\bin\Debug\Warewolf Studio.exe" SET DeploymentDirectory=%~dp0..\..\Dev2.Studio\bin\Debug
 IF EXIST "%DeploymentDirectory%\..\Studio\Warewolf Studio.exe" SET DeploymentDirectory=%DeploymentDirectory%\..\Studio
+
 REM ** Start Warewolf studio from deployed binaries **
+@echo off
+:WaitForServerStart
+set /a LoopCounter=0
+:MainLoopBody
+IF EXIST "%~dp0Dev2.Server\bin\Debug\ServerStarted" goto StartStudio
+set /a LoopCounter=LoopCounter+1
+IF %LoopCounter% EQU 30 echo Timed out waiting for the Warewolf server to start. &exit /b
+@echo Waiting 2 more seconds for server start...
 TIMEOUT 2 /NOBREAK
+goto MainLoopBody
+
+:StartStudio
+@echo on
 IF EXIST %windir%\nircmd.exe (nircmd elevate "%DeploymentDirectory%\Warewolf Studio.exe") else (START "%DeploymentDirectory%\Warewolf Studio.exe" /D "%DeploymentDirectory%" "Warewolf Studio.exe")
 @echo Started "%DeploymentDirectory%\Warewolf Studio.exe".
 

@@ -8,9 +8,15 @@ namespace Warewolf.UITests
     public class ConfigureSettingsPermissionsTests
     {
         [TestMethod]
+        [Ignore]
         public void ConfigureSettingPermission()
         {
-            Uimap.CreateAndSave_Dice_Workflow();
+            Uimap.RightClick_Localhost();
+            Uimap.Select_NewWorkFlowService_From_ContextMenu();
+            Uimap.Drag_Toolbox_Random_Onto_DesignSurface();
+            Uimap.Enter_Dice_Roll_Values();
+            Uimap.Save_With_Ribbon_Button_And_Dialog("Dice");
+            Uimap.Click_Close_Workflow_Tab_Button();
             Uimap.Click_Explorer_Refresh_Button();
             Uimap.Click_ConfigureSetting_From_Menu();
             Uimap.Check_Public_Contribute();

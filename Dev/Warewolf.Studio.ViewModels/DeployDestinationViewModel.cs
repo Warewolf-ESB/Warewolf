@@ -9,6 +9,7 @@ namespace Warewolf.Studio.ViewModels
     public class DeployDestinationViewModel : ExplorerViewModel, IDeployDestinationExplorerViewModel
     {
         bool _isLoading;
+        private bool _deployTests;
         public IDeployStatsViewerViewModel StatsArea { private get; set; }
 
         #region Implementation of IDeployDestinationExplorerViewModel
@@ -78,6 +79,18 @@ namespace Warewolf.Studio.ViewModels
         public virtual Version MinSupportedVersion => Version.Parse(SelectedEnvironment.Server.GetMinSupportedVersion());
 
         public virtual Version ServerVersion => Version.Parse(SelectedEnvironment.Server.GetServerVersion());
+        public bool DeployTests
+        {
+            get
+            {
+                return _deployTests;
+            }
+            set
+            {
+                _deployTests = value;
+                OnPropertyChanged(()=> DeployTests);
+            }
+        }
 
         #endregion
     }

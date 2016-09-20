@@ -630,6 +630,38 @@ namespace Dev2.Studio.ViewModels
             BrowserPopupController.ShowPopup(url.ToString());
         }
 
+        public void CreateTest(Guid resourceId)
+        {
+            var environmentModel = EnvironmentRepository.Get(ActiveEnvironment.ID);
+            if (environmentModel != null)
+            {
+                var contextualResourceModel = environmentModel.ResourceRepository.LoadContextualResourceModel(resourceId);
+
+                var workSurfaceKey = WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.ServiceTestsViewer);
+                workSurfaceKey.EnvironmentID = contextualResourceModel.Environment.ID;
+                workSurfaceKey.ResourceID = contextualResourceModel.ID;
+                workSurfaceKey.ServerID = contextualResourceModel.ServerID;
+
+                _worksurfaceContextManager.ViewTestsForService(contextualResourceModel, workSurfaceKey);
+            }
+        }
+
+        public void CloseResourceTestView(Guid resourceId,Guid serverId,Guid environmentId)
+        {
+            var key = WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.ServiceTestsViewer,resourceId,serverId,environmentId);
+            var testViewModelForResource = FindWorkSurfaceContextViewModel(key);
+            if (testViewModelForResource != null)
+            {
+                DeactivateItem(testViewModelForResource,true);
+            }
+            
+        }
+
+        private WorkSurfaceContextViewModel FindWorkSurfaceContextViewModel(WorkSurfaceKey key)
+        {
+            return Items.FirstOrDefault(c => WorkSurfaceKeyEqualityComparerWithContextKey.Current.Equals(key, c.WorkSurfaceKey));
+        }
+
         public void CloseResource(Guid resourceId, Guid environmentId)
         {
             var environmentModel = EnvironmentRepository.Get(environmentId);
@@ -651,11 +683,11 @@ namespace Dev2.Studio.ViewModels
             }
         }
 
-        public void DeployResources(Guid sourceEnvironmentId, Guid destinationEnvironmentId, IList<Guid> resources)
+        public void DeployResources(Guid sourceEnvironmentId, Guid destinationEnvironmentId, IList<Guid> resources, bool deployTests)
         {
             var environmentModel = EnvironmentRepository.Get(destinationEnvironmentId);
             var sourceEnvironmentModel = EnvironmentRepository.Get(sourceEnvironmentId);
-            var dto = new DeployDto { ResourceModels = resources.Select(a => sourceEnvironmentModel.ResourceRepository.LoadContextualResourceModel(a) as IResourceModel).ToList() };
+            var dto = new DeployDto { ResourceModels = resources.Select(a => sourceEnvironmentModel.ResourceRepository.LoadContextualResourceModel(a) as IResourceModel).ToList(), DeployTests = deployTests};
             environmentModel.ResourceRepository.DeployResources(sourceEnvironmentModel, environmentModel, dto);
             ServerAuthorizationService.Instance.GetResourcePermissions(dto.ResourceModels.First().ID);
             ExplorerViewModel.RefreshEnvironment(destinationEnvironmentId);

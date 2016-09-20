@@ -202,7 +202,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
             {
                 throw new ArgumentNullException(nameof(resourceName));
             }
-
+            Dev2Logger.Debug("Getting Dynamic Objects");
             List<DynamicServiceObjectBase> results;
 
             if (useContains)
@@ -525,7 +525,6 @@ namespace Dev2.Runtime.ResourceCatalogImpl
                 if (!FrequentlyUsedServices.TryGetValue(resource.ResourceName, out objects))
                 {
                     objects = GenerateObjectGraph(resource);
-                    //_frequentlyUsedServices.TryAdd(resource.ResourceName, objects);
                 }
                 else
                 {

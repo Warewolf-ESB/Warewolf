@@ -342,7 +342,6 @@
     <Compile Include="Diagnostics\ErrorSeverity.cs" />
     <Compile Include="Diagnostics\IAppExceptionHandler.cs" />
     <Compile Include="Diagnostics\IAppExceptionPopupController.cs" />
-    <Compile Include="Diagnostics\JsonDebugProvider.cs" />
     <Compile Include="Diagnostics\DebugLineTemplateSelector.cs" />
     <Compile Include="Diagnostics\IDebugLineItem.cs" />
     <Compile Include="Dock\BindingHelper.cs" />
@@ -399,11 +398,10 @@
     <Compile Include="ViewModels\Diagnostics\DebugOutputViewModelUtil.cs" />
     <Compile Include="ViewModels\Diagnostics\DebugStatus.cs" />
     <Compile Include="ViewModels\Diagnostics\IDebugOutputViewModelUtil.cs" />
-    <Compile Include="ViewModels\Diagnostics\ReportsViewerViewModel.cs" />
     <Compile Include="ViewModels\Help\IHelpViewWrapper.cs" />
     <Compile Include="ViewModels\Help\HelpViewWrapper.cs" />
     <Compile Include="ViewModels\SourceViewModel.cs" />
-    <Compile Include="ViewModels\Workflow\DataListConversionUtils.cs" />
+    <Compile Include="ViewModels\StudioTestViewModel.cs" />
     <Compile Include="ViewModels\Workflow\WorkflowDesignerDataPartUtils.cs" />
     <Compile Include="ViewModels\WorksurfaceContextManager.cs" />
     <Compile Include="ViewModels\WorkSurface\IWorkSurfaceContextViewModel.cs" />

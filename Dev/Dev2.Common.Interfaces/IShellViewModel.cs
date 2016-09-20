@@ -54,12 +54,14 @@ namespace Dev2.Common.Interfaces
         void Debug();
         void ShowAboutBox();
         void ShowDependencies(Guid resourceId, IServer server);
-        void DeployResources(Guid sourceEnvironmentId, Guid destinationEnvironmentId, IList<Guid> resources);
+        void DeployResources(Guid sourceEnvironmentId, Guid destinationEnvironmentId, IList<Guid> resources, bool deployTests);
         void AddDeploySurface(IEnumerable<IExplorerTreeItem> items);
         void OpenResource(Guid resourceId, Guid environmentId);
         void CloseResource(Guid resourceId, Guid environmentId);
         void UpdateCurrentDataListWithObjectFromJson(string parentObjectName,string json);
         void ViewSwagger(Guid resourceId, IServer server);
         void ViewApisJson(string resourcePath, Uri webServerUri);
+        void CreateTest(Guid resourceId);
+        void CloseResourceTestView(Guid resourceId, Guid serverId, Guid environmentId);
     }
 }

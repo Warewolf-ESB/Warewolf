@@ -200,5 +200,10 @@ namespace Warewolf.Studio.ViewModels
         {
             _shellViewModel.ViewSwagger(resourceId, server);
         }
+
+        public void CreateTest(Guid resourceId)
+        {
+            _shellViewModel.CreateTest(resourceId);
+        }
     }
 }

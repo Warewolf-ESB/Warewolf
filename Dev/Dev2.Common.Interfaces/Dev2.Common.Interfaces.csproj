@@ -306,12 +306,15 @@
     <Compile Include="IResourceSource.cs" />
     <Compile Include="IServer.cs" />
     <Compile Include="IServerSource.cs" />
+    <Compile Include="IServiceTestModelTO.cs" />
     <Compile Include="ISharepointServerSource.cs" />
     <Compile Include="IShellViewModel.cs" />
     <Compile Include="ISplashView.cs" />
     <Compile Include="ISplashViewModel.cs" />
     <Compile Include="IStudioUpdateManager.cs" />
     <Compile Include="ISuggestionProvider.cs" />
+    <Compile Include="IServiceTestModel.cs" />
+    <Compile Include="ITestCatalog.cs" />
     <Compile Include="IToolboxView.cs" />
     <Compile Include="IUpdatesHelp.cs" />
     <Compile Include="ISharepointListTo.cs" />
