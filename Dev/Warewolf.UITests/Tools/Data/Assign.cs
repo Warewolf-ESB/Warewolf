@@ -45,9 +45,7 @@ namespace Warewolf.UITests.Tools.Data
             Uimap.Click_Assign_Tool_Large_View_Done_Button_With_Row1_Variable_Textbox_As_SomeInvalidVariableName();
             Uimap.Enter_Text_Into_Assign_Large_View_Row1_Variable_Textbox_As_SomeVariable();
             Uimap.Click_Assign_Tool_Large_View_Done_Button();
-            Uimap.RightClick_Assign_OnDesignSurface();
-            Uimap.Select_Delete_FromContextMenu();
-            Uimap.Assert_MultiAssign_Does_Not_Exist_On_DesignSurface();
+            Uimap.DeleteAssign_FromContextMenu();            
         }
 
         #region Additional test attributes

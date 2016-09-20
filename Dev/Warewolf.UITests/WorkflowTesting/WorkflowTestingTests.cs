@@ -33,6 +33,8 @@ namespace Warewolf.UITests
             Uimap.Click_EnableDisable_This_Test_CheckBox(false);
             Uimap.Click_Create_New_Tests(testInstance:3);
             Uimap.Click_Save_Ribbon_Button_With_No_Save_Dialog();
+            Assert.IsFalse(Uimap.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.TabDescription.DisplayText.Contains("*"));
+            Assert.IsFalse(Uimap.GetCurrentTest(1).DisplayText.Contains("*"));
         }
 
         [TestMethod]

@@ -2,28 +2,29 @@
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Warewolf.UITests
+namespace Warewolf.UITests.Deploy
 {
     [CodedUITest]
-    public class DeployTests
+    public class DeployViewOnlyService
     {
-        const string ServerSourceName = "TSTCIREMOTE";
-        const string LocalWorkflowName = "RemoteServerUITestWorkflow";
-        const string RemoteSubWorkflowName = "workflow1";
-        const string LocalWorkflow = "LocalWorkflow";
-        const string WindowsGroup = "Domain Users";
-        private const string ServerAddress = "tst-ci-";
+        private const string WorkflowName = "DeployViewOnly";
+        private const string GroupName = "Public";
 
         [TestMethod]
-        public void Deploy_WorkFlow_To_Remote_Server()
+        public void DeployViewOnlyServiceUITest()
         {
             Uimap.Click_New_Workflow_Ribbon_Button();
-            Uimap.Drag_Toolbox_MultiAssign_Onto_DesignSurface();
-            Uimap.Save_With_Ribbon_Button_And_Dialog(LocalWorkflow);
+            Uimap.Save_With_Ribbon_Button_And_Dialog(WorkflowName);
+            Uimap.Click_Close_Workflow_Tab_Button();
+            Uimap.SetResourcePermissions(WorkflowName, GroupName, true);
             Uimap.Click_Deploy_Ribbon_Button();
-            Uimap.Click_Deploy_Tab_Destination_Server_Combobox();
+            Uimap.Select_RemoteConnectionIntegration_From_Deploy_Tab_Destination_Server_Combobox();
+            Uimap.Click_Deploy_Tab_Destination_Server_Connect_Button();
+            Uimap.Deploy_Service_From_Deploy_View(WorkflowName);
+            Uimap.Select_RemoteConnectionIntegrationConnected_From_Deploy_Tab_Source_Server_Combobox();
+            Uimap.Select_LocalhostConnected_From_Deploy_Tab_Destination_Server_Combobox();
+            Uimap.Deploy_Service_From_Deploy_View(WorkflowName);
         }
-
 
         #region Additional test attributes
 
@@ -32,17 +33,17 @@ namespace Warewolf.UITests
         {
             Uimap.SetGlobalPlaybackSettings();
             Uimap.WaitForStudioStart();
-            Console.WriteLine("Test \"" + TestContext.TestName + "\" starting on " + System.Environment.MachineName);
+            Console.WriteLine("Test \"" + TestContext.TestName + "\" starting on " + Environment.MachineName);
         }
-        
+
         [TestCleanup()]
         public void MyTestCleanup()
         {
             Playback.PlaybackError -= Uimap.OnError;
-            Uimap.TryCloseHangingSaveDialog();
-            Uimap.TryRemoveFromExplorer(LocalWorkflow);
-            Uimap.TryDisconnectFromRemoteServerAndRemoveSourceFromExplorer(ServerSourceName);
-            Uimap.TryCloseAllTabs();
+            Uimap.TryCloseDeployTab();
+            Uimap.TryCloseSettingsTab();
+            Uimap.TryCloseWorkflowTab();
+            Uimap.TryRemoveFromExplorer(WorkflowName);
         }
 
         public TestContext TestContext
