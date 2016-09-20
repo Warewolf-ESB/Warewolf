@@ -2695,6 +2695,9 @@ You can use File System, URI, SFTP, FTP or FTPS format.</value>
   <data name="ManageWebSourceViewInBrowserTooltip" xml:space="preserve">
     <value>Open this URL in your default browser</value>
   </data>
+  <data name="ServiceTestNameHelpText" xml:space="preserve">
+    <value>The name of this test</value>
+  </data>
   <data name="ServiceTestRunAllTestsInBrowserTooltip" xml:space="preserve">
     <value>Open this URL in your default browser to view the tests for this workflow</value>
   </data>
@@ -2715,6 +2718,12 @@ You can use File System, URI, SFTP, FTP or FTPS format.</value>
   </data>
   <data name="ServiceTestEnableRunSelectedTestTooltip" xml:space="preserve">
     <value>Select or De-Select to run the test</value>
+  </data>
+  <data name="ServiceTestSelectedTestHelpText" xml:space="preserve">
+    <value>ServiceTestSelectedTestHelpText</value>
+  </data>
+  <data name="ServiceTestGenericHelpText" xml:space="preserve">
+    <value>ServiceTestGenericHelpText</value>
   </data>
   <data name="ServiceTestEnableRunSelectedTestHelpText" xml:space="preserve">
     <value>Selecting this option will add the test to the test to the Run All command. 
@@ -2756,6 +2765,9 @@ If this option is not selected, the test will not run part of the Run All list o
   <data name="ServiceTestNewTestTooltip" xml:space="preserve">
     <value>Create a new test</value>
   </data>
+  <data name="ServiceTestNewTestHelpText" xml:space="preserve">
+    <value>Create a new test</value>
+  </data>
   <data name="ServiceTestNoErrorExpectedTooltip" xml:space="preserve">
     <value>The test expects no error</value>
   </data>
@@ -2770,6 +2782,21 @@ If this option is not selected, the test will not run part of the Run All list o
   </data>
   <data name="ServiceTestInputValueTooltip" xml:space="preserve">
     <value>Input value to test against</value>
+  </data>
+  <data name="ServiceTestInputsValueHelpText" xml:space="preserve">
+    <value>ServiceTestInputsValueHelpText</value>
+  </data>
+  <data name="ServiceTestOutputValueTooltip" xml:space="preserve">
+    <value>Output value to test against</value>
+  </data>
+  <data name="ServiceTestOutputValueHelpText" xml:space="preserve">
+    <value>ServiceTestOutputValueHelpText</value>
+  </data>
+  <data name="ServiceTestRunAllTestTooltip" xml:space="preserve">
+    <value>Run all tests</value>
+  </data>
+  <data name="ServiceTestRunAllTestHelpText" xml:space="preserve">
+    <value>Runs all tests that are marked as enabled</value>
   </data>
   <data name="ManageWebSourceUserNameTooltip" xml:space="preserve">
     <value>The name of the account</value>

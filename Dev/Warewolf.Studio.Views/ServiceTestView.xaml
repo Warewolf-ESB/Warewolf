@@ -32,7 +32,7 @@
             <converters:SimpleEnumToBoolConverter x:Key="EnumToBoolConverter"/>
         </ResourceDictionary>
     </UserControl.Resources>
-    <Grid Margin="{StaticResource ElementBorder}">
+    <Grid Margin="{StaticResource ElementBorder}" x:Name="MainGrid" MouseLeftButtonUp="MainGrid_OnMouseLeftButtonUp">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
@@ -58,14 +58,18 @@
                            ToolTip="{x:Static languages:Core.ServiceTestRunAllTestsInBrowserTooltip}"
                            Style="{StaticResource HyperLinkStyle}"
                            NavigateUri="{Binding RunAllTestsUrl,UpdateSourceTrigger=PropertyChanged}" >
-                    <TextBlock Text="{Binding RunAllTestsUrl,UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource HoverUnderlineStyle}"></TextBlock>
+                    <TextBlock Text="{Binding RunAllTestsUrl,UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource HoverUnderlineStyle}"/>
                 </Hyperlink>
             </TextBlock>
 
-            <TextBlock Grid.Row="0" Grid.Column="1" Text="Passing:" HorizontalAlignment="Right" />
+            <TextBlock Grid.Row="0" Grid.Column="1" Text="Passing:" HorizontalAlignment="Right" Visibility="Collapsed" />
             <TextBlock Grid.Row="0" Grid.Column="2" Text="{Binding TestPassingResult}" HorizontalAlignment="Right"/>
 
-            <Button Grid.Row="1" Grid.Column="0" Content="Run All" Width="Auto" HorizontalAlignment="Left" Command="{Binding RunAllTestsCommand}"/>
+            <Button Grid.Row="1" Grid.Column="0" Content="Run All" Width="Auto" ToolTip="{x:Static languages:Core.ServiceTestRunAllTestTooltip}" HorizontalAlignment="Left" Command="{Binding RunAllTestsCommand}">
+                <i:Interaction.Behaviors>
+                    <core:HelpSetter Text="{x:Static languages:Core.ServiceTestRunAllTestHelpText}" DataContext="{Binding}" />
+                </i:Interaction.Behaviors>
+            </Button>
         </Grid>
 
         <Border Grid.Row="1"
@@ -89,7 +93,8 @@
                             <Grid>
                                 <Grid HorizontalAlignment="Stretch" 
                                       VerticalAlignment="Stretch" 
-                                      Visibility="{Binding IsNewTest,Converter={StaticResource BoolToVisibilityConverterNegative}}">
+                                      x:Name="ListBoxItemGrid"
+                                      Visibility="{Binding IsNewTest,Converter={StaticResource BoolToVisibilityConverterNegative}}" MouseLeftButtonUp="ListBoxItemGrid_OnMouseLeftButtonUp">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="30"/>
                                         <ColumnDefinition Width="30"/>
@@ -119,7 +124,7 @@
                                               IsChecked="{Binding Enabled}" 
                                               PreviewMouseLeftButtonDown="SelectedTestCheckBox_OnPreviewMouseLeftButtonDown">
                                         <i:Interaction.Behaviors>
-                                            <core:HelpSetter Text="{x:Static languages:Core.ServiceTestEnableRunSelectedTestHelpText}" DataContext="{Binding }" />
+                                            <core:HelpSetter Text="{x:Static languages:Core.ServiceTestEnableRunSelectedTestHelpText}" DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
                                         </i:Interaction.Behaviors>
                                     </CheckBox>
 
@@ -158,7 +163,7 @@
                                             <fa:FontAwesome Icon="Play" FontSize="18" Background="Transparent"/>
                                         </Button.Content>
                                         <i:Interaction.Behaviors>
-                                            <core:HelpSetter Text="{x:Static languages:Core.ServiceTestRunSelectedTestHelpText}" DataContext="{Binding}" />
+                                            <core:HelpSetter Text="{x:Static languages:Core.ServiceTestRunSelectedTestHelpText}" DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
                                         </i:Interaction.Behaviors>
                                     </Button>
 
@@ -174,7 +179,7 @@
                                             <fa:FontAwesome Icon="Stop" FontSize="18" Background="Transparent"/>
                                         </Button.Content>
                                         <i:Interaction.Behaviors>
-                                            <core:HelpSetter Text="{x:Static languages:Core.ServiceTestStopSelectedTestHelpText}" DataContext="{Binding}" />
+                                            <core:HelpSetter Text="{x:Static languages:Core.ServiceTestStopSelectedTestHelpText}" DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
                                         </i:Interaction.Behaviors>
                                     </Button>
 
@@ -191,7 +196,7 @@
                                             <fa:FontAwesome Icon="Trash" FontSize="18"/>
                                         </Button.Content>
                                         <i:Interaction.Behaviors>
-                                            <core:HelpSetter Text="{x:Static languages:Core.TestsDeleteSelectedTestHelpText}" DataContext="{Binding}" />
+                                            <core:HelpSetter Text="{x:Static languages:Core.TestsDeleteSelectedTestHelpText}" DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
                                         </i:Interaction.Behaviors>
                                     </Button>
                                 </Grid>
@@ -216,6 +221,9 @@
                                                 <TextBlock Grid.Column="1" Text="Create a new Test" FontSize="14"/>
                                             </Grid>
                                         </Button.Content>
+                                        <i:Interaction.Behaviors>
+                                            <core:HelpSetter Text="{x:Static languages:Core.ServiceTestNewTestHelpText}" DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+                                        </i:Interaction.Behaviors>
                                     </Button>
                                 </Grid>
                             </Grid>
@@ -243,7 +251,7 @@
                                        ToolTip="{x:Static languages:Core.ServiceTestRunSelectedTestInBrowserTooltip}"
                                        Style="{StaticResource HyperLinkStyle}"
                                        NavigateUri="{Binding SelectedServiceTest.RunSelectedTestUrl,UpdateSourceTrigger=PropertyChanged}" >
-                                <TextBlock Text="{Binding SelectedServiceTest.RunSelectedTestUrl,UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource HoverUnderlineStyle}"></TextBlock>
+                                <TextBlock Text="{Binding SelectedServiceTest.RunSelectedTestUrl,UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource HoverUnderlineStyle}"/>
                             </Hyperlink>
                         </TextBlock>
 
@@ -260,7 +268,12 @@
                                 <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
                             <TextBlock Grid.Row="0" Grid.Column="0" Text="Test Name"/>
-                            <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding SelectedServiceTest.TestName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                            <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding SelectedServiceTest.TestName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                     ToolTip="{Binding SelectedServiceTest.TestName}">
+                                <i:Interaction.Behaviors>
+                                    <core:HelpSetter Text="{x:Static languages:Core.ServiceTestNameHelpText}" DataContext="{Binding}" />
+                                </i:Interaction.Behaviors>
+                            </TextBox>
                             <Button Grid.Row="0" Grid.Column="2" Command="{Binding DuplicateTestCommand}" Margin="{StaticResource ControlBorderLeft}" Style="{StaticResource ServiceTestDuplicateButtonStyle}" 
                                     ToolTip="{Binding SelectedServiceTest.DuplicateTestTooltip}">
                                 <fa:FontAwesome FontSize="12" FontWeight="Light" Icon="Clone" />
@@ -418,6 +431,9 @@
                                                                 <provider:BlankIntellisenseProvider />
                                                             </interfaceImplementors:CompositeIntellisenseProvider>
                                                         </ui:IntellisenseTextBox.IntellisenseProvider>
+                                                        <i:Interaction.Behaviors>
+                                                            <core:HelpSetter Text="{x:Static languages:Core.ServiceTestInputsValueHelpText}" DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+                                                        </i:Interaction.Behaviors>
                                                     </ui:IntellisenseTextBox>
                                                 </DataTemplate>
                                             </DataGridTemplateColumn.CellTemplate>
@@ -435,7 +451,7 @@
                                                                   Unchecked="ToggleButton_OnChecked"
                                                               ToolTip="{x:Static languages:Core.InputEmptyIsNullToolTip}">
                                                         <i:Interaction.Behaviors>
-                                                            <core:HelpSetter Text="{x:Static languages:Core.InputEmptyIsNullDefaultValueHelp}" DataContext="{Binding}" />
+                                                            <core:HelpSetter Text="{x:Static languages:Core.InputEmptyIsNullDefaultValueHelp}" DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
                                                         </i:Interaction.Behaviors>
                                                     </CheckBox>
                                                 </DataTemplate>
@@ -483,11 +499,11 @@
                                                                             Margin="1,0,1,1"
                                                                             AllowMultilinePaste="True"
                                                                             TextWrapping="Wrap"
-                                                                             TextChanged="TxtValue_OnTextChanged"
+                                                                            TextChanged="TxtValue_OnTextChanged"
                                                                             Focusable="True" 
                                                                             IsTabStop="True"
                                                                             AcceptsReturn="True"
-                                                                            ToolTip="{x:Static languages:Core.ServiceTestInputValueTooltip}"
+                                                                            ToolTip="{x:Static languages:Core.ServiceTestOutputValueTooltip}"
                                                                             AllowUserInsertLine="True"
                                                                             SelectAllOnGotFocus="True">
                                                         <AutomationProperties.AutomationId>
@@ -500,6 +516,9 @@
                                                                 <provider:BlankIntellisenseProvider />
                                                             </interfaceImplementors:CompositeIntellisenseProvider>
                                                         </ui:IntellisenseTextBox.IntellisenseProvider>
+                                                        <i:Interaction.Behaviors>
+                                                            <core:HelpSetter Text="{x:Static languages:Core.ServiceTestOutputValueHelpText}" DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+                                                        </i:Interaction.Behaviors>
                                                     </ui:IntellisenseTextBox>
                                                 </DataTemplate>
                                             </DataGridTemplateColumn.CellTemplate>

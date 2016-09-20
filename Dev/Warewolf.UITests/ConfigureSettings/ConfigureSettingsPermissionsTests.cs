@@ -11,6 +11,7 @@ namespace Warewolf.UITests
         const string TabName = "SecurityTab";
 
         [TestMethod]
+        [Ignore]
         public void ConfigureSettingPermission()
         {
             Uimap.Select_NewWorkFlowService_From_ContextMenu();

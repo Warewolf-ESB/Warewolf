@@ -33,7 +33,7 @@ namespace Dev2.Diagnostics.Debug
                         if(list.Contains(ds))
                         {
                             var existingItem = list.FirstOrDefault(state => state.Equals(ds));
-                            if(existingItem.StateType != ds.StateType && ds.StateType!=StateType.Duration)
+                            if(existingItem != null && existingItem.StateType != ds.StateType && ds.StateType!=StateType.Duration)
                             {
                                 list.Add(ds);
                             }

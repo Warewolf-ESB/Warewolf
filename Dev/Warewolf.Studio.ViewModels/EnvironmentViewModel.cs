@@ -16,6 +16,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
+using Dev2.Common.Common;
 using Dev2.Studio.Core;
 using Warewolf.Studio.Core;
 // ReSharper disable InconsistentNaming
@@ -48,6 +49,7 @@ namespace Warewolf.Studio.ViewModels
         private bool _isResourceCheckedEnabled;
         private string _deployResourceCheckboxTooltip;
         private bool? _isResource;
+        private string _filter;
 
         public EnvironmentViewModel(IServer server, IShellViewModel shellViewModel, bool isDialog = false, Action<IExplorerItemViewModel> selectAction = null)
         {            
@@ -449,8 +451,11 @@ namespace Warewolf.Studio.ViewModels
             get
             {
                 if (_children == null)
+                {
                     return new AsyncObservableCollection<IExplorerItemViewModel>();
-                return new AsyncObservableCollection<IExplorerItemViewModel>(_children.Where(a => a.IsVisible));
+                }
+                var orderedCollection = _children.OrderByDescending(a => a.IsFolder).ThenBy(b => b.ResourceName).ToObservableCollection();
+                return String.IsNullOrEmpty(_filter) ? orderedCollection : new AsyncObservableCollection<IExplorerItemViewModel>(orderedCollection.Where(a => a.IsVisible));
             }
             set
             {
@@ -804,6 +809,7 @@ namespace Warewolf.Studio.ViewModels
 
         public void Filter(string filter)
         {
+            _filter = filter;
             foreach (var explorerItemViewModel in _children)
             {
                 explorerItemViewModel.Filter(filter);
