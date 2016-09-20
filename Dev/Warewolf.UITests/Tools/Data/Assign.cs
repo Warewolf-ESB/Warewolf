@@ -14,7 +14,6 @@ namespace Warewolf.UITests.Tools.Data
 
         [TestMethod]
 		[TestCategory("Tools")]
-        [Ignore]
         public void AssignToolUITest()
         {
             Uimap.Click_New_Workflow_Ribbon_Button();

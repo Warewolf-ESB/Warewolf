@@ -10,7 +10,6 @@ namespace Warewolf.UITests
         const string DBSourceName = "UITestingDBSource";
 
         [TestMethod]
-        [Ignore]
         public void BigDBConnectorUITest()
         {
             Uimap.Click_New_Workflow_Ribbon_Button();
