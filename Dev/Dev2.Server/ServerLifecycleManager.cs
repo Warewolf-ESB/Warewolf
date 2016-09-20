@@ -344,6 +344,7 @@ namespace Dev2
             }
 #endif
 
+            PreloadReferences();
             try
             {
                 SetWorkingDirectory();
@@ -820,7 +821,6 @@ namespace Dev2
 
         private static void LoadActivityCache(ResourceCatalog catalog)
         {
-            PreloadReferences();
             CustomContainer.Register<IActivityParser>(new ActivityParser());
             Write("Loading resource activity cache...  ");
             catalog.LoadResourceActivityCache(GlobalConstants.ServerWorkspaceID);
@@ -879,7 +879,6 @@ namespace Dev2
 
         void LoadServerWorkspace()
         {
-
             Write("Loading server workspace...  ");
             // ReSharper disable UnusedVariable
             var instance = WorkspaceRepository.Instance;
