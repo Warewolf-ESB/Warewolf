@@ -116,6 +116,7 @@ namespace Warewolf.Studio.ViewModels
             NeverRunString = "Never run";
             NeverRunStringVisibility = true;
             IsTestRunning = false;
+            TestSteps = new List<IServiceTestStep>();
         }
 
         public ServiceTestModel Item
@@ -440,10 +441,23 @@ namespace Warewolf.Studio.ViewModels
                 OnPropertyChanged(() => IsTestRunning);
             }
         }
+        public List<IServiceTestStep> TestSteps { get; }
 
         public void SetItem(IServiceTestModel model)
         {
             Item = model as ServiceTestModel;
+        }
+
+        public void AddTestStep(string activityUniqueID, string activityTypeName, List<IServiceTestOutput> serviceTestOutputs)
+        {
+            if(string.IsNullOrEmpty(activityUniqueID))
+                throw new ArgumentNullException(nameof(activityUniqueID));
+            if (string.IsNullOrEmpty(activityTypeName))
+                throw new ArgumentNullException(nameof(activityTypeName));
+            if (serviceTestOutputs == null)
+                throw new ArgumentNullException(nameof(serviceTestOutputs));
+            var testStep = new ServiceTestStep(Guid.Parse(activityUniqueID), activityTypeName, serviceTestOutputs, StepType.Mock);
+            TestSteps.Add(testStep);
         }
 
         #endregion
@@ -630,5 +644,21 @@ namespace Warewolf.Studio.ViewModels
         }
 
         #endregion
+    }
+
+    public class ServiceTestStep : IServiceTestStep
+    {
+        public ServiceTestStep(Guid uniqueId, string activityTypeName, List<IServiceTestOutput> serviceTestOutputs, StepType stepType)
+        {
+            UniqueId = uniqueId;
+            ActivityType = activityTypeName;
+            Outputs = serviceTestOutputs;
+            Type = stepType;
+        }
+
+        public Guid UniqueId { get; set; }
+        public string ActivityType { get; set; }
+        public StepType Type { get; set; }
+        public List<IServiceTestOutput> Outputs { get; set; }
     }
 }
