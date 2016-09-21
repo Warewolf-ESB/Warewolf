@@ -1,11 +1,8 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
-using Dev2.Activities.Designers2.Core.Controls;
-using Dev2.Activities.Designers2.MultiAssign;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.UI;
 using Microsoft.Practices.Prism.Mvvm;

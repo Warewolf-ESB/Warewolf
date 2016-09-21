@@ -222,17 +222,9 @@ Scenario: Changing database type after testing connection
    | MySQL                |
    And I type Select The Server as "RSAKLFSVRGENDEV"
    And type options has "Microsoft SQL Server" as the default
-   And Database dropdown is "Collapsed"
    And I Select Authentication Type as "Windows"
-   And "Save" is "Disabled"
    And "Test Connection" is "Enabled"
-   Then Username field is "Collapsed"
-   And Password field is "Collapsed"
-   Then Database dropdown is "Collapsed"
-   And "Test Connection" is "Enabled"
-   And "Cancel Test" is "Disabled"
    When I click "Test Connection"
-   Then "Cancel Test" is "Disabled"
    Then Test Connecton is "Successful"
    Then Database dropdown is "Visible"
    Then I select "Dev2TestingDB" as Database

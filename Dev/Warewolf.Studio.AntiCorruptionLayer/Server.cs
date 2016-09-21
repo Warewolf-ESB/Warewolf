@@ -83,14 +83,14 @@ namespace Warewolf.Studio.AntiCorruptionLayer
 
         public string GetServerVersion()
         {
-            if (_version == null)
-            {
+            //if (_version == null)
+            //{
                 if (!EnvironmentConnection.IsConnected)
                 {
                     EnvironmentConnection.Connect(Guid.Empty);
                 }
                 _version = ProxyLayer.AdminManagerProxy.GetServerVersion();
-            }
+            //}
 
             return _version;
         }
