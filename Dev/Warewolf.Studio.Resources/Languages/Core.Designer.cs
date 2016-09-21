@@ -7044,6 +7044,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The test has never run before.
+        /// </summary>
+        public static string ServiceTestNeverRunTooltip {
+            get {
+                return ResourceManager.GetString("ServiceTestNeverRunTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Please save this test before duplicating it.
         /// </summary>
         public static string ServiceTestNewTestDisabledDuplicateSelectedTestTooltip {
