@@ -407,7 +407,7 @@ namespace Dev2.Runtime.ESB.Execution
             {
                 if(foundTestStep.ActivityType == typeof(DsfDecision).Name)
                 {
-                    var serviceTestOutput = foundTestStep.Outputs.FirstOrDefault(output => output.Variable=="Condition Result");
+                    var serviceTestOutput = foundTestStep.StepOutputs.FirstOrDefault(output => output.Variable=="Condition Result");
                     resource = new TestMockDecisionStep(resource as DsfDecision) {NameOfArmToReturn=serviceTestOutput.Value};
                 }
             }
