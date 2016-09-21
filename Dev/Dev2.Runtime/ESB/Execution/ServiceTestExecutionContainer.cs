@@ -467,6 +467,11 @@ namespace Dev2.Runtime.ESB.Execution
                 DisplayName = act.DisplayName;
         }
 
+        public override List<string> GetOutputs()
+        {
+            return new List<string>();
+        }
+
         #region Overrides of DsfNativeActivity<string>
 
         protected override void OnExecute(NativeActivityContext context)

@@ -35,6 +35,10 @@ namespace Dev2.Tests.Activities.ActivityTests
             IsSimulationEnabled = false;
         }
 
+        public override List<string> GetOutputs()
+        {
+            return new List<string>();
+        }
         public Guid UniqueGuid { get; private set; }
 
         protected override void OnExecute(NativeActivityContext context)

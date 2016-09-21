@@ -58,6 +58,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             DisplayName = "Length";
         }
 
+
+        public override List<string> GetOutputs()
+        {
+            return new List<string> { RecordsLength };
+        }
+
         // ReSharper disable RedundantOverridenMember
         protected override void CacheMetadata(NativeActivityMetadata metadata)
         {

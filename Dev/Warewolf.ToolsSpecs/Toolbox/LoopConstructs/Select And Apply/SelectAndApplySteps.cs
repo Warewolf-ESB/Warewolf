@@ -254,6 +254,10 @@ namespace Warewolf.ToolsSpecs.Toolbox.LoopConstructs.Select_And_Apply
             Called = 0;
         }
 
+        public override List<string> GetOutputs()
+        {
+            return new List<string>();
+        }
         public int Called { get; private set; }
 
         protected override void ExecuteTool(IDSFDataObject dataObject, int update)

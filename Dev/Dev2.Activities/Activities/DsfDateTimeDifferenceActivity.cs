@@ -94,6 +94,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #endregion Ctor
 
+
+
+        public override List<string> GetOutputs()
+        {
+            return new List<string> { Result };
+        }
+
         // ReSharper disable RedundantOverridenMember
         protected override void CacheMetadata(NativeActivityMetadata metadata)
         {

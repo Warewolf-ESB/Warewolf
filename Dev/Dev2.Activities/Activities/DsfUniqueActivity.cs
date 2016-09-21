@@ -81,6 +81,13 @@ namespace Dev2.Activities
             ExecuteTool(dataObject, 0);
         }
 
+
+        public override List<string> GetOutputs()
+        {
+            return Result.Split(',').ToList();
+        }
+
+
         protected override void ExecuteTool(IDSFDataObject dataObject, int update)
         {
 

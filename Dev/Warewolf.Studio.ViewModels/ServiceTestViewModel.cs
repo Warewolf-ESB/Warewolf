@@ -10,6 +10,7 @@ using System.Windows;
 using System.Windows.Input;
 using Caliburn.Micro;
 using Dev2;
+using Dev2.Activities;
 using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
@@ -26,6 +27,7 @@ using Dev2.Studio.Core.Network;
 using Dev2.Studio.Core.ViewModels;
 using Microsoft.Practices.Prism.Commands;
 using Microsoft.Practices.Prism.Mvvm;
+using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Resource.Errors;
 // ReSharper disable ParameterTypeCanBeEnumerable.Local
 
@@ -98,10 +100,45 @@ namespace Warewolf.Studio.ViewModels
         {
             if (modelItem != null)
             {
-                
+                if (modelItem.ItemType == typeof(DsfForEachActivity))
+                {
+                    dynamic test = modelItem;
+                    ModelItem innerActivity = RecursiveForEachCheck(test);
+                    if (innerActivity != null)
+                    {
+                        //Commenting this out to allow for the Foreach tool to expand to large view.
+                        //Do not take out until we have finalized that this is not to be used
+                        //selectedItem = innerActivity;
+                    }
+                }else if(modelItem.ItemType == typeof(DsfSequenceActivity))
+                {
+                    
+                }else if(modelItem.ItemType == typeof(DsfSwitch))
+                {
+                    
+                }else if(modelItem.ItemType == typeof(DsfDecision))
+                {
+
+                }
+                else
+                {
+                    
+                }
             }
         }
 
+        private static ModelItem RecursiveForEachCheck(dynamic activity)
+        {
+            var innerAct = activity.DataFunc.Handler as ModelItem;
+            if (innerAct != null)
+            {
+                if (innerAct.ItemType == typeof(DsfForEachActivity))
+                {
+                    innerAct = RecursiveForEachCheck(innerAct);
+                }
+            }
+            return innerAct;
+        }
         private void NewTestStep()
         {
             SelectedServiceTest.AddTestStep(Guid.NewGuid().ToString(), "Test Activity Name", new List<IServiceTestOutput>());

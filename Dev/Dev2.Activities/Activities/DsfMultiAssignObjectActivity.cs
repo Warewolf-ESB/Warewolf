@@ -79,6 +79,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #endregion Properties
 
+        public override List<string> GetOutputs()
+        {
+            return FieldsCollection.Select(dto => dto.FieldName).ToList();
+        }
+
+
         #region Ctor
 
         public DsfMultiAssignObjectActivity()

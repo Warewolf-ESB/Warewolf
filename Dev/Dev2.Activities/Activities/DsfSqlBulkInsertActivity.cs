@@ -80,6 +80,11 @@ namespace Dev2.Activities
 
         public string BatchSize { get; set; }
 
+        public override List<string> GetOutputs()
+        {
+            return new List<string> { Result };
+        }
+
         internal ISqlBulkInserter SqlBulkInserter
         {
             get

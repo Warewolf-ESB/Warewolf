@@ -50,6 +50,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             Result = string.Empty;
         }
 
+        public override List<string> GetOutputs()
+        {
+            return new List<string> { Result };
+        }
+
+
         // ReSharper disable RedundantOverridenMember
         protected override void CacheMetadata(NativeActivityMetadata metadata)
         {

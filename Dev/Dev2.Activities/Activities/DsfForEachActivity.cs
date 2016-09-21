@@ -771,6 +771,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #endregion Get Inputs/Outputs
 
+
+        public override List<string> GetOutputs()
+        {
+            return new List<string>();
+        }
+
         public override void UpdateForEachInputs(IList<Tuple<string, string>> updates)
         {
             throw new NotImplementedException();

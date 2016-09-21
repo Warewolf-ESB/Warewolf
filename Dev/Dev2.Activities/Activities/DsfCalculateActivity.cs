@@ -161,6 +161,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #endregion Private Methods
 
+        public override List<string> GetOutputs()
+        {
+            return new List<string> { Result };
+        }
+
         #region Get Debug Inputs/Outputs
 
         public override List<DebugItem> GetDebugInputs(IExecutionEnvironment dataList, int update)

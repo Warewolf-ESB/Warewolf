@@ -24,6 +24,11 @@ namespace Dev2.Activities
 
               public DsfSwitch() { }
 
+        public override List<string> GetOutputs()
+        {
+            return new List<string>();
+        }
+
         public Dictionary<string,IDev2Activity> Switches { get; set; }
         public IEnumerable<IDev2Activity> Default { get; set; }
 
@@ -147,6 +152,11 @@ namespace Dev2.Activities
             : base(dsfSwitch.DisplayName)
         {
             _dsfSwitch = dsfSwitch;
+        }
+
+        public override List<string> GetOutputs()
+        {
+            return new List<string>();
         }
 
         public string ConditionToUse { get; set; }

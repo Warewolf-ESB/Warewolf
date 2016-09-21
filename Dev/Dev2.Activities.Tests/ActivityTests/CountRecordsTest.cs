@@ -115,6 +115,22 @@ namespace Dev2.Tests.Activities.ActivityTests
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
+        [TestCategory("DsfCountRecordsetActivity_GetOutputs")]
+        public void DsfCountRecordsetActivity_GetOutputs_Called_ShouldReturnListWithResultValueInIt()
+        {
+            //------------Setup for test--------------------------
+            const string recordsetName = "[[Customers()]]";
+            var act = new DsfCountRecordsetActivity { RecordsetName = recordsetName, CountNumber = "[[res]]" };
+            //------------Execute Test---------------------------
+            var outputs = act.GetOutputs();
+            //------------Assert Results-------------------------
+            Assert.AreEqual(1, outputs.Count);
+            Assert.AreEqual("[[res]]", outputs[0]);
+        }
+
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
         [TestCategory("DsfCountRecordsetActivity_UpdateForEachInputs")]
         public void DsfCountRecordsetActivity_UpdateForEachInputs_MoreThan1Updates_DoesNothing()
         {
