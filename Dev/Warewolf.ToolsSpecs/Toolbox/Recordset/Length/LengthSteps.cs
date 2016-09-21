@@ -71,11 +71,14 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.Length
             scenarioContext.TryGetValue("recordset", out recordSetName);
 
             var recordset = scenarioContext.Get<string>("recordset");
+            bool treaNullAsZero;
+            scenarioContext.TryGetValue("treaNullAsZero", out treaNullAsZero);
 
             var length = new DsfRecordsetLengthActivity
             {
                 RecordsetName = recordset,
                 RecordsLength = ResultVariable, 
+                TreatNullAsZero = treaNullAsZero
             };
 
             TestStartNode = new FlowStep

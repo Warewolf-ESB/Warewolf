@@ -462,6 +462,23 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void Execute_GivenEmptyRecordSetTreatNullAsZeroFalse_ShouldResturnError()
+        {
+            //---------------Set up test pack-------------------
+            SetupArguments(ActivityStrings.EmptyRecordSet, ActivityStrings.EmptyRecordSetNoData, "[[recset1()]]", "[[res]]");
+            //---------------Assert Precondition----------------
+
+            //---------------Execute Test ----------------------
+            IDSFDataObject result = ExecuteProcess();
+            //---------------Test Result -----------------------
+            const string Expected = "Failure";
+            string actual;
+            string error;
+            GetScalarValueFromEnvironment(result.Environment, "res", out actual, out error);
+            Assert.AreEqual(Expected, actual);
+        }
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("DsfDeleteRecordActivity_Execute")]
         public void DsfDeleteRecordActivity_Execute_RecordsetHasFieldName_Failure()

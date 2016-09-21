@@ -80,7 +80,53 @@ namespace Dev2.Tests.Activities.ActivityTests
 
         #endregion Error Test Cases
 
-        
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void DsfRecordsetLengthActivity_GivenIsNew_ShouldTreatNullAsZero()
+        {
+            //---------------Set up test pack-------------------
+            var act = new DsfRecordsetLengthActivity();
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(act);
+            //---------------Execute Test ----------------------
+            //---------------Test Result -----------------------
+            Assert.IsTrue(act.TreatNullAsZero);
+        }
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void Execute_GivenEmptyRecordSet_ShouldResturnZero()
+        {
+            //---------------Set up test pack-------------------
+            SetupArguments(ActivityStrings.EmptyRecordSet, ActivityStrings.EmptyRecordSetNoData, "[[recset1()]]", "[[res]]", true);
+            //---------------Assert Precondition----------------
+
+            //---------------Execute Test ----------------------
+            IDSFDataObject result = ExecuteProcess();
+            //---------------Test Result -----------------------
+            const string Expected = "0";
+            string actual;
+            string error;
+            GetScalarValueFromEnvironment(result.Environment, "res", out actual, out error);
+            Assert.AreEqual(Expected, actual);
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void Execute_GivenEmptyRecordSetTreatNullAsZeroFalse_ShouldResturnError()
+        {
+            //---------------Set up test pack-------------------
+            SetupArguments(ActivityStrings.EmptyRecordSet, ActivityStrings.EmptyRecordSetNoData, "[[recset1()]]", "[[res]]");
+            //---------------Assert Precondition----------------
+
+            //---------------Execute Test ----------------------
+            IDSFDataObject result = ExecuteProcess();
+            //---------------Test Result -----------------------
+            const string Expected = "";
+            string actual;
+            string error;
+            GetScalarValueFromEnvironment(result.Environment, "res", out actual, out error);
+            Assert.AreEqual(Expected, actual);
+        }
 
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
@@ -96,7 +142,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual(recordsetName, act.RecordsetName);
         }
 
-      
+
 
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
@@ -208,11 +254,11 @@ namespace Dev2.Tests.Activities.ActivityTests
 
         #region Private Test Methods
 
-        private void SetupArguments(string currentDL, string testData, string recordSetName, string RecordsLength)
+        private void SetupArguments(string currentDL, string testData, string recordSetName, string RecordsLength, bool treatNullasZero = false)
         {
             TestStartNode = new FlowStep
             {
-                Action = new DsfRecordsetLengthActivity { RecordsetName = recordSetName, RecordsLength = RecordsLength }
+                Action = new DsfRecordsetLengthActivity { RecordsetName = recordSetName, RecordsLength = RecordsLength, TreatNullAsZero = treatNullasZero }
             };
 
             CurrentDl = testData;
