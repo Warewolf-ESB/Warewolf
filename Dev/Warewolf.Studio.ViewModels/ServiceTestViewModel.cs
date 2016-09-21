@@ -104,7 +104,7 @@ namespace Warewolf.Studio.ViewModels
 
         private void NewTestStep()
         {
-            SelectedServiceTest.AddTestStep(Guid.NewGuid().ToString(), "Test Activity Name", new List<IServiceTestOutput>());
+            SelectedServiceTest.AddTestStep(Guid.NewGuid().ToString(), "Test Activity Name", new List<IServiceTestOutput> {new ServiceTestOutput("Var","Val")});
         }
 
         private void SetServerName(IContextualResourceModel resourceModel)
