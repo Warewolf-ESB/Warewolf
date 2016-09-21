@@ -136,6 +136,8 @@
     <Compile Include="Core\WebPutInputRegionTest.cs" />
     <Compile Include="Core\WebPostInputRegionTest.cs" />
     <Compile Include="Core\WebSourceRegionTest.cs" />
+    <Compile Include="CountRecords\CountRecordsDesignerViewModelTests.cs" />
+    <Compile Include="CountRecords\TestCountRecordsDesignerViewModel.cs" />
     <Compile Include="Decision\DecisionTests.cs" />
     <Compile Include="ComDll\ComDllViewModelTests.cs" />
     <Compile Include="DotNetDll\DotNetDllViewModelTests.cs" />
@@ -178,8 +180,8 @@
     <Compile Include="Move\TestMoveDesignerViewModel.cs" />
     <Compile Include="Copy\CopyDesignerViewModelTests.cs" />
     <Compile Include="Copy\TestCopyDesignerViewModel.cs" />
-    <Compile Include="CountRecords\CountRecordsDesignerViewModelTests.cs" />
-    <Compile Include="CountRecords\TestCountRecordsDesignerViewModel.cs" />
+    <Compile Include="CountRecordsNullHandler\CountRecordsDesignerViewModelTests.cs" />
+    <Compile Include="CountRecordsNullHandler\TestCountRecordsDesignerViewModel.cs" />
     <Compile Include="Create\CreateDesignerViewModelTests.cs" />
     <Compile Include="Create\TestCreateDesignerViewModel.cs" />
     <Compile Include="DateTimeDifference\DateTimeDifferenceDesignerViewModelTests.cs" />
