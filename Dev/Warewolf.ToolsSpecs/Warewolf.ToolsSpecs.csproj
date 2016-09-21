@@ -367,6 +367,21 @@
       <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="Toolbox\Scripting\Command\CommandSteps.cs" />
+    <Compile Include="Toolbox\Scripting\javascript\Javascript.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Javascript.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Toolbox\Scripting\Python\Python.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Python.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Toolbox\Scripting\ruby\Ruby.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Ruby.feature</DependentUpon>
+    </Compile>
     <Compile Include="Toolbox\Scripting\Script\Script.feature.cs">
       <DependentUpon>Script.feature</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -639,6 +654,18 @@
     <None Include="Toolbox\Scripting\Command\Command.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Command.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Toolbox\Scripting\javascript\Javascript.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>Javascript.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Toolbox\Scripting\Python\Python.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>Python.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Toolbox\Scripting\ruby\Ruby.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>Ruby.feature.cs</LastGenOutput>
     </None>
     <None Include="Toolbox\Scripting\Script\Script.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>

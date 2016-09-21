@@ -195,6 +195,7 @@
     <Compile Include="ActivityTests\DropBox2016\Upload\DropBoxUploadTests.cs" />
     <Compile Include="ActivityTests\DropBox2016\Upload\DsfDropBoxUploadAcivtityTestShould.cs" />
     <Compile Include="ActivityTests\MultiAssignObjectActivityTest.cs" />
+    <Compile Include="ActivityTests\Scripting\DsfJavascriptActivityTests.cs" />
     <Compile Include="ActivityTests\SelectAndApply\SelectAndApplyActivityTests.cs" />
     <Compile Include="ActivityTests\RabbitMQ\Consume\DsfConsumeRabbitMQActivityTests.cs" />
     <Compile Include="ActivityTests\RabbitMQ\Publish\DsfPublishRabbitMQActivityTests.cs" />
