@@ -665,14 +665,64 @@ Scenario: Run Selected Test Shows Stop Option
 	| outputValue   |       |
 	And save is disabled
 	When I run selected test
-	#Then "Stop" test is visible
 
+Scenario: Run a test with mock step
+	Given the test builder is open with existing service "Hello World"	
+	And Tab Header is "Hello World - Tests"
+	When I click New Test
+	Then a new test is added
+	And Tab Header is "Hello World - Tests *"
+	And test name starts with "Test 1"	
+	And test is enabled
+	And I update inputs as
+	| Variable Name | Value |
+	| Name          | Bob   |
+	And I update outputs as
+	| Variable Name | Value       |
+	| Message       | Hello World. |
+	And I add mock steps as
+	| Step Name                  | Output Variable | Output Value | Activity Type |
+	| If [[Name]] <> (Not Equal) |                 | Blank Input  | Decision      |
+	And I save
+	When I run the test
+	Then test result is Passed
+	Then service debug inputs as
+		| Variable | Value |
+		| [[Name]] | Bob   |	
+	And the service debug outputs as
+	  | Variable    | Value      |
+	  | [[Message]] | Hello World. |
+	When I delete "Test 1"
+	Then The "DeleteConfirmation" popup is shown I click Ok
 
-
-
-
-	
-
+Scenario: Run a test with mock step assign
+	Given the test builder is open with existing service "Hello World"	
+	And Tab Header is "Hello World - Tests"
+	When I click New Test
+	Then a new test is added
+	And Tab Header is "Hello World - Tests *"
+	And test name starts with "Test 1"	
+	And test is enabled
+	And I update inputs as
+	| Variable Name | Value |
+	| Name          | Bob   |
+	And I update outputs as
+	| Variable Name | Value      |
+	| Message       | hello mock |
+	And I add mock steps as
+	| Step Name                   | Output Variable | Output Value | Activity Type |
+	| Set the output variable (1) | Message         | hello mock   | Assign        |
+	And I save
+	When I run the test
+	Then test result is Passed
+	Then service debug inputs as
+		| Variable | Value |
+		| [[Name]] | Bob   |	
+	And the service debug outputs as
+	  | Variable    | Value      |
+	  | [[Message]] | hello mock |
+	When I delete "Test 1"
+	Then The "DeleteConfirmation" popup is shown I click Ok	
 	
 
 

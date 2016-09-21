@@ -1,7 +1,6 @@
 using System;
 using System.Activities;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -24,8 +23,10 @@ using Dev2.Services.Security;
 using Dev2.Workspaces;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Security.Encryption;
 using Warewolf.Storage;
+// ReSharper disable ParameterTypeCanBeEnumerable.Local
 
 // ReSharper disable CyclomaticComplexity
 
@@ -156,29 +157,32 @@ namespace Dev2.Runtime.ESB.Execution
 
         private static void AddRecordsetsInputs(IEnumerable<IServiceTestInput> recSets, IExecutionEnvironment environment)
         {
-            var groupedRecsets = recSets.GroupBy(item => DataListUtil.ExtractRecordsetNameFromValue(item.Variable));
-            foreach (var groupedRecset in groupedRecsets)
+            if(recSets != null)
             {
-                var dataListItems = groupedRecset.GroupBy(item => DataListUtil.ExtractIndexRegionFromRecordset(item.Variable));
-                foreach (var dataListItem in dataListItems)
+                var groupedRecsets = recSets.GroupBy(item => DataListUtil.ExtractRecordsetNameFromValue(item.Variable));
+                foreach (var groupedRecset in groupedRecsets)
                 {
-                    List<IServiceTestInput> recSetsToAssign = new List<IServiceTestInput>();
-                    var empty = true;
-                    foreach (var listItem in dataListItem)
+                    var dataListItems = groupedRecset.GroupBy(item => DataListUtil.ExtractIndexRegionFromRecordset(item.Variable));
+                    foreach (var dataListItem in dataListItems)
                     {
-                        if (!string.IsNullOrEmpty(listItem.Value))
+                        List<IServiceTestInput> recSetsToAssign = new List<IServiceTestInput>();
+                        var empty = true;
+                        foreach (var listItem in dataListItem)
                         {
-                            empty = false;
-                        }
-                        recSetsToAssign.Add(listItem);
-                    }
-                    if (!empty)
-                    {
-                        foreach(var serviceTestInput in recSetsToAssign)
-                        {
-                            if (!serviceTestInput.EmptyIsNull || !string.IsNullOrEmpty(serviceTestInput.Value))
+                            if (!string.IsNullOrEmpty(listItem.Value))
                             {
-                                environment.Assign(DataListUtil.AddBracketsToValueIfNotExist(serviceTestInput.Variable), serviceTestInput.Value, 0);
+                                empty = false;
+                            }
+                            recSetsToAssign.Add(listItem);
+                        }
+                        if (!empty)
+                        {
+                            foreach(var serviceTestInput in recSetsToAssign)
+                            {
+                                if (!serviceTestInput.EmptyIsNull || !string.IsNullOrEmpty(serviceTestInput.Value))
+                                {
+                                    environment.Assign(DataListUtil.AddBracketsToValueIfNotExist(serviceTestInput.Variable), serviceTestInput.Value, 0);
+                                }
                             }
                         }
                     }
@@ -296,15 +300,7 @@ namespace Dev2.Runtime.ESB.Execution
             }
             return result;
         }
-
-        [SuppressMessage("ReSharper", "UnusedMember.Global")]
-        public void Eval(DynamicActivity flowchartProcess, IDSFDataObject dsfDataObject, int update)
-        {
-            IDev2Activity resource = new ActivityParser().Parse(flowchartProcess);
-
-            EvalInner(dsfDataObject, resource, update);
-        }
-
+        
         private TestRunResult Eval(Guid resourceID, IDSFDataObject dataObject,IServiceTestModelTO test)
         {
             Dev2Logger.Debug("Getting Resource to Execute");
@@ -334,7 +330,7 @@ namespace Dev2.Runtime.ESB.Execution
                 {
                     if (!dataObject.StopExecution)
                     {
-                        EvalInner(dataObject, clonedExecPlan, dataObject.ForEachUpdateValue);
+                        EvalInner(dataObject, clonedExecPlan, dataObject.ForEachUpdateValue,test.TestSteps);
                         if (test.Outputs != null)
                         {
                             foreach (var output in test.Outputs)
@@ -402,18 +398,20 @@ namespace Dev2.Runtime.ESB.Execution
             return null;
         }
 
-        static void EvalInner(IDSFDataObject dsfDataObject, IDev2Activity resource, int update)
+        static void EvalInner(IDSFDataObject dsfDataObject, IDev2Activity resource, int update,List<IServiceTestStep> testSteps)
         {
             if (resource == null)
             {
                 throw new InvalidOperationException(GlobalConstants.NoStartNodeError);
             }
             WorkflowExecutionWatcher.HasAWorkflowBeenExecuted = true;
-            var next = resource.Execute(dsfDataObject, update);
+            resource = MockActivity(resource, testSteps);
+            var next = resource.Execute(dsfDataObject, update);            
             while (next != null)
             {
                 if (!dsfDataObject.StopExecution)
                 {
+                    next = MockActivity(next, testSteps);
                     next = next.Execute(dsfDataObject, update);
                     if (dsfDataObject.Environment.Errors.Count > 0)
                     {
@@ -430,5 +428,122 @@ namespace Dev2.Runtime.ESB.Execution
                 }
             }
         }
+
+        private static IDev2Activity MockActivity(IDev2Activity resource, List<IServiceTestStep> testSteps)
+        {
+            var foundTestStep = testSteps.FirstOrDefault(step => step.UniqueId.ToString() == resource.UniqueID);
+            if(foundTestStep != null && foundTestStep.Type == StepType.Mock)
+            {
+                if(foundTestStep.ActivityType == typeof(DsfDecision).Name)
+                {
+                    var serviceTestOutput = foundTestStep.StepOutputs.FirstOrDefault(output => output.Variable == "Condition Result");
+                    resource = new TestMockDecisionStep(resource as DsfDecision) { NameOfArmToReturn = serviceTestOutput.Value };
+                }
+                else if(foundTestStep.ActivityType == typeof(DsfSwitch).Name)
+                {
+                    var serviceTestOutput = foundTestStep.StepOutputs.FirstOrDefault(output => output.Variable == "Condition Result");
+                    resource = new TestMockSwitchStep(resource as DsfSwitch) { ConditionToUse = serviceTestOutput.Value };
+                }
+                else
+                {
+                    resource = new TestMockStep(resource, foundTestStep.StepOutputs);
+                }
+            }
+            return resource;
+        }
+    }
+
+    public class TestMockStep : DsfActivityAbstract<string>
+    {
+        private readonly IDev2Activity _originalActivity;
+        private readonly List<IServiceTestOutput> _outputs;
+
+        public TestMockStep(IDev2Activity originalActivity , List<IServiceTestOutput> outputs)
+        {
+            _originalActivity = originalActivity;
+            _outputs = outputs;
+            var act = originalActivity as DsfBaseActivity;
+            if(act != null)
+                DisplayName = act.DisplayName;
+        }
+
+        #region Overrides of DsfNativeActivity<string>
+
+        protected override void OnExecute(NativeActivityContext context)
+        {
+        }
+
+        public override void UpdateForEachInputs(IList<Tuple<string, string>> updates)
+        {
+        }
+
+        public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates)
+        {
+        }
+
+        public override IList<DsfForEachItem> GetForEachInputs()
+        {
+            return null;
+        }
+
+        public override IList<DsfForEachItem> GetForEachOutputs()
+        {
+            return null;
+        }
+
+        protected override void ExecuteTool(IDSFDataObject dataObject, int update)
+        {
+            AddRecordsetsInputs(_outputs.Where(output => DataListUtil.IsValueRecordset(output.Variable) && !output.Variable.Contains("@")), dataObject.Environment);
+            foreach (var output in _outputs)
+            {
+                var variable = DataListUtil.AddBracketsToValueIfNotExist(output.Variable);
+                var value = output.Value;
+                if (variable.StartsWith("[[@"))
+                {
+                    var jContainer = JsonConvert.DeserializeObject(value) as JObject;
+                    dataObject.Environment.AddToJsonObjects(variable, jContainer);
+                }
+                else if (!DataListUtil.IsValueRecordset(output.Variable))
+                {
+                    dataObject.Environment.Assign(variable, value, 0);
+                }
+            }
+            NextNodes = _originalActivity.NextNodes;
+        }
+
+
+        private static void AddRecordsetsInputs(IEnumerable<IServiceTestOutput> recSets, IExecutionEnvironment environment)
+        {
+            if(recSets != null)
+            {
+                var groupedRecsets = recSets.GroupBy(item => DataListUtil.ExtractRecordsetNameFromValue(item.Variable));
+                foreach (var groupedRecset in groupedRecsets)
+                {
+                    var dataListItems = groupedRecset.GroupBy(item => DataListUtil.ExtractIndexRegionFromRecordset(item.Variable));
+                    foreach (var dataListItem in dataListItems)
+                    {
+                        List<IServiceTestOutput> recSetsToAssign = new List<IServiceTestOutput>();
+                        var empty = true;
+                        foreach (var listItem in dataListItem)
+                        {
+                            if (!string.IsNullOrEmpty(listItem.Value))
+                            {
+                                empty = false;
+                            }
+                            recSetsToAssign.Add(listItem);
+                        }
+                        if (!empty)
+                        {
+                            foreach (var serviceTestInput in recSetsToAssign)
+                            {
+                                environment.Assign(DataListUtil.AddBracketsToValueIfNotExist(serviceTestInput.Variable), serviceTestInput.Value, 0);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        #endregion
     }
 }

@@ -307,6 +307,7 @@
     <Compile Include="IServer.cs" />
     <Compile Include="IServerSource.cs" />
     <Compile Include="IServiceTestModelTO.cs" />
+    <Compile Include="IServiceTestStep.cs" />
     <Compile Include="ISharepointServerSource.cs" />
     <Compile Include="IShellViewModel.cs" />
     <Compile Include="ISplashView.cs" />
@@ -370,6 +371,7 @@
     <Compile Include="ServerStats.cs" />
     <Compile Include="Services\Sql\IDbFactory.cs" />
     <Compile Include="Services\Sql\IDbServer.cs" />
+    <Compile Include="StepType.cs" />
     <Compile Include="StringTokenizer\Interfaces\IDev2Tokenizer.cs" />
     <Compile Include="StringTokenizer\Interfaces\IDev2TokenOp.cs" />
     <Compile Include="Studio\Controller\IPopUp.cs" />

@@ -46,6 +46,8 @@ namespace Warewolf.Studio.ViewModels
         private bool _lastRunDateVisibility;
         private bool _neverRunStringVisibility;
         private IList<IDebugState> _debugForTest;
+        private IServiceTestStep _selectedTestStep;
+        private ObservableCollection<IServiceTestStep> _testSteps;
 
         public string NeverRunString
         {
@@ -116,6 +118,7 @@ namespace Warewolf.Studio.ViewModels
             NeverRunString = "Never run";
             NeverRunStringVisibility = true;
             IsTestRunning = false;
+            TestSteps = new ObservableCollection<IServiceTestStep>();
         }
 
         public ServiceTestModel Item
@@ -441,9 +444,47 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
+        public ObservableCollection<IServiceTestStep> TestSteps
+        {
+            get { return _testSteps; }
+            set
+            {
+                _testSteps = value; 
+                OnPropertyChanged(() => TestSteps);
+            }
+        }
+
+        public IServiceTestStep SelectedTestStep
+        {
+            get { return _selectedTestStep; }
+            set
+            {
+                _selectedTestStep = value; 
+                OnPropertyChanged(() => SelectedTestStep);
+            }
+        }
+
         public void SetItem(IServiceTestModel model)
         {
             Item = model as ServiceTestModel;
+        }
+
+        public void AddTestStep(string activityUniqueID, string activityTypeName, List<IServiceTestOutput> serviceTestOutputs)
+        {
+            if(string.IsNullOrEmpty(activityUniqueID))
+                throw new ArgumentNullException(nameof(activityUniqueID));
+            if (string.IsNullOrEmpty(activityTypeName))
+                throw new ArgumentNullException(nameof(activityTypeName));
+            if (serviceTestOutputs == null)
+                throw new ArgumentNullException(nameof(serviceTestOutputs));
+            var testStep = new ServiceTestStep(Guid.Parse(activityUniqueID), activityTypeName, serviceTestOutputs, StepType.Mock, null);
+            var testStepChild1 = new ServiceTestStep(Guid.Parse(activityUniqueID), activityTypeName, serviceTestOutputs, StepType.Mock, testStep);
+            var testStepChild2 = new ServiceTestStep(Guid.Parse(activityUniqueID), activityTypeName, serviceTestOutputs, StepType.Mock, testStep);
+
+            testStepChild1.Children.Add(testStepChild2);
+            testStep.Children.Add(testStepChild1);
+
+            TestSteps.Add(testStep);
         }
 
         #endregion
@@ -630,5 +671,110 @@ namespace Warewolf.Studio.ViewModels
         }
 
         #endregion
+    }
+
+    public class ServiceTestStep : BindableBase, IServiceTestStep
+    {
+        private string _stepDescription;
+        private List<string> _assertOps;
+        private StepType _type;
+        private string _activityType;
+        private List<IServiceTestOutput> _stepOutputs;
+        private Guid _uniqueId;
+        private IServiceTestStep _parent;
+        private ObservableCollection<IServiceTestStep> _children;
+
+        public ServiceTestStep(Guid uniqueId, string activityTypeName, List<IServiceTestOutput> serviceTestOutputs, StepType stepType, IServiceTestStep parent)
+        {
+            UniqueId = uniqueId;
+            ActivityType = activityTypeName;
+            StepOutputs = serviceTestOutputs;
+            Type = stepType;
+            Parent = parent;
+
+            StepDescription = "New Test Description";
+            AssertOps = new List<string> {"="};
+            Children = new ObservableCollection<IServiceTestStep>();
+        }
+
+        public Guid UniqueId
+        {
+            get { return _uniqueId; }
+            set
+            {
+                _uniqueId = value; 
+                OnPropertyChanged(() => UniqueId);
+            }
+        }
+
+        public string ActivityType
+        {
+            get { return _activityType; }
+            set
+            {
+                _activityType = value; 
+                OnPropertyChanged(() => ActivityType);
+            }
+        }
+
+        public StepType Type
+        {
+            get { return _type; }
+            set
+            {
+                _type = value; 
+                OnPropertyChanged(() => Type);
+            }
+        }
+
+        public List<IServiceTestOutput> StepOutputs
+        {
+            get { return _stepOutputs; }
+            set
+            {
+                _stepOutputs = value; 
+                OnPropertyChanged(() => StepOutputs);
+            }
+        }
+
+        public IServiceTestStep Parent
+        {
+            get { return _parent; }
+            set
+            {
+                _parent = value; 
+                OnPropertyChanged(() => Parent);
+            }
+        }
+
+        public ObservableCollection<IServiceTestStep> Children
+        {
+            get { return _children; }
+            set
+            {
+                _children = value; 
+                OnPropertyChanged(() => Children);
+            }
+        }
+
+        public string StepDescription
+        {
+            get { return _stepDescription; }
+            set
+            {
+                _stepDescription = value; 
+                OnPropertyChanged(() => StepDescription);
+            }
+        }
+
+        public List<string> AssertOps
+        {
+            get { return _assertOps; }
+            set
+            {
+                _assertOps = value;
+                OnPropertyChanged(() => AssertOps);
+            }
+        }
     }
 }
