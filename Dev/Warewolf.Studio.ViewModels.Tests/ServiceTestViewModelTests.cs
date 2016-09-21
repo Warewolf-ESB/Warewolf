@@ -7,15 +7,19 @@ using System.Text;
 using System.Windows;
 using Caliburn.Micro;
 using Dev2;
+using Dev2.Activities;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Help;
 using Dev2.Common.Interfaces.Studio.Controller;
+using Dev2.Communication;
 using Dev2.Data;
 using Dev2.Data.Binary_Objects;
+using Dev2.Data.SystemTemplates.Models;
 using Dev2.Interfaces;
 using Dev2.Providers.Events;
 using Dev2.Runtime.ServiceModel.Data;
+using Dev2.Studio.Core.Activities.Utils;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Models.DataList;
 using Dev2.Studio.Core.ViewModels;
@@ -1367,6 +1371,48 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsNotNull(testFrameworkViewModel.SelectedServiceTest);
             //---------------Test Result -----------------------
             Assert.IsTrue(testFrameworkViewModel.SelectedServiceTest.NeverRunStringVisibility);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        public void ItemSelected_GivenSelectedItemDecision_ShouldHaveAddServiceTestStepShouldHaveArmOptions()
+        {
+            //---------------Set up test pack-------------------
+            var popupController = new Mock<IPopupController>();
+            popupController.Setup(controller => controller.ShowDeleteConfirmation(It.IsAny<string>())).Returns(MessageBoxResult.Yes);
+            CustomContainer.Register(popupController.Object);
+            var mockResourceModel = CreateMockResourceModel();
+            var resourceId = Guid.NewGuid();
+            var dsfDecision = new DsfDecision();
+            var decisionUniqueId = Guid.NewGuid();
+            dsfDecision.UniqueID = decisionUniqueId.ToString();
+            const string expressionText = "{\"TheStack\":[{\"Col1\":\"[[val]]\",\"Col2\":\"5\",\"Col3\":\"\",\"Cols1\":null,\"Cols2\":null,\"Cols3\":null,\"PopulatedColumnCount\":2,\"EvaluationFn\":\"IsEqual\"}],\"TotalDecisions\":1,\"ModelName\":\"Dev2DecisionStack\",\"Mode\":\"AND\",\"TrueArmText\":\"True Path\",\"FalseArmText\":\"False Path\",\"DisplayText\":\"\"}";
+            var ser = new Dev2JsonSerializer();
+            var stack = ser.Deserialize<Dev2DecisionStack>(expressionText);
+            dsfDecision.Conditions = stack;
+            var modelItem = ModelItemUtils.CreateModelItem(dsfDecision);
+            mockResourceModel.Setup(model => model.Environment.ResourceRepository.DeleteResourceTest(It.IsAny<Guid>(), It.IsAny<string>())).Verifiable();
+            mockResourceModel.Setup(model => model.ID).Returns(resourceId);
+            var mockWorkflowDesignerViewModel = new Mock<IWorkflowDesignerViewModel>();
+            mockWorkflowDesignerViewModel.SetupProperty(model => model.ItemSelectedAction);
+            var testFrameworkViewModel = new ServiceTestViewModel(CreateResourceModel(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, mockWorkflowDesignerViewModel.Object);
+            var testModel = new ServiceTestModel(Guid.NewGuid()) { TestName = "Test 2", NameForDisplay = "Test 2" };
+            testFrameworkViewModel.Tests = new ObservableCollection<IServiceTestModel> { testModel };
+            testFrameworkViewModel.SelectedServiceTest = testModel;
+            //---------------Assert Precondition----------------          
+            //---------------Execute Test ----------------------
+            mockWorkflowDesignerViewModel.Object.ItemSelectedAction(modelItem);            
+            //---------------Test Result -----------------------
+            Assert.AreEqual(1,testFrameworkViewModel.SelectedServiceTest.TestSteps.Count);
+            Assert.AreEqual(StepType.Mock,testFrameworkViewModel.SelectedServiceTest.TestSteps[0].Type);
+            Assert.AreEqual(dsfDecision.GetType().Name,testFrameworkViewModel.SelectedServiceTest.TestSteps[0].ActivityType);
+            Assert.AreEqual(1,testFrameworkViewModel.SelectedServiceTest.TestSteps[0].StepOutputs.Count);
+            var serviceTestOutput = testFrameworkViewModel.SelectedServiceTest.TestSteps[0].StepOutputs[0] as ServiceTestOutput;
+            Assert.AreEqual(2, serviceTestOutput.OptionsForValue.Count);
+            Assert.IsTrue(serviceTestOutput.HasOptionsForValue);
+            Assert.AreEqual("True Path", serviceTestOutput.OptionsForValue[0]);
+            Assert.AreEqual("False Path", serviceTestOutput.OptionsForValue[1]);
+            Assert.AreEqual("Condition Result",serviceTestOutput.Variable);
         }
 
         [TestMethod]

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Dev2.Common.Interfaces;
 using Microsoft.Practices.Prism.Mvvm;
 
@@ -52,5 +53,7 @@ namespace Warewolf.Studio.ViewModels
                 OnPropertyChanged(() => AssertOp);
             }
         }
+        public bool HasOptionsForValue { get; set; }
+        public List<string> OptionsForValue { get; set; }
     }
 }
