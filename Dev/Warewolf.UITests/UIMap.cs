@@ -18,6 +18,7 @@ using System.IO;
 
 namespace Warewolf.UITests
 {
+    [TestClass]
     public partial class UIMap
     {
         const int _lenientSearchTimeout = 10000;
@@ -25,7 +26,23 @@ namespace Warewolf.UITests
         const int _strictSearchTimeout = 1000;
         const int _strictMaximumRetryCount = 1;
 
-        public void SetGlobalPlaybackSettings()
+        [AssemblyInitialize]
+        public static void WaitForStudioStart(TestContext testContext)
+        {
+            var Uimap = new UIMap();
+            Console.WriteLine("Waiting for studio to start.");
+            Uimap.WaitForControlVisible(Uimap.MainStudioWindow, _lenientSearchTimeout);
+            if (!Uimap.MainStudioWindow.Exists)
+            {
+                throw new InvalidOperationException("Warewolf studio is not running. You are expected to run \"Dev\\TestScripts\\Studio\\Startup.bat\" as an administrator and wait for it to complete before running any coded UI tests");
+            }
+            Console.WriteLine("Clicking OK on the duplicate resource warning if it exists.");
+            Uimap.TryClickMessageBoxOK();
+            Console.WriteLine("Waiting for explorer localhost spinner to stop.");
+            Uimap.WaitForSpinner(Uimap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);
+        }
+
+        public void SetPlaybackSettings()
         {
             Playback.PlaybackSettings.WaitForReadyLevel = WaitForReadyLevel.Disabled;
             Playback.PlaybackSettings.ShouldSearchFailFast = false;
@@ -151,21 +168,6 @@ namespace Warewolf.UITests
                 Playback.PlaybackSettings.SearchTimeout = _lenientSearchTimeout * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString());
             }
             return controlExists;
-        }
-
-        public void WaitForStudioStart(int timeout = 60000)
-        {
-            Console.WriteLine("Waiting for studio to start.");
-            WaitForControlVisible(MainStudioWindow, timeout);
-            if (!MainStudioWindow.Exists)
-            {
-                throw new InvalidOperationException("Warewolf studio is not running. You are expected to run \"Dev\\TestScripts\\Studio\\Startup.bat\" as an administrator and wait for it to complete before running any coded UI tests");
-            }
-            TryClickMessageBoxOK();
-            WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);
-
-            //TODO: remove this workaround for WOLF-2061
-            MainStudioWindow.SideMenuBar.NewWorkflowButton.WaitForControlEnabled();
         }
 
         private void TryClickMessageBoxOK()
