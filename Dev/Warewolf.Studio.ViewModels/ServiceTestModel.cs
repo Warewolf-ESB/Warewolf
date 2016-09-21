@@ -675,6 +675,8 @@ namespace Warewolf.Studio.ViewModels
         private string _activityType;
         private List<IServiceTestOutput> _stepOutputs;
         private Guid _uniqueId;
+        private IServiceTestStep _parent;
+        private ObservableCollection<IServiceTestStep> _children;
 
         public ServiceTestStep(Guid uniqueId, string activityTypeName, List<IServiceTestOutput> serviceTestOutputs, StepType stepType)
         {
@@ -685,6 +687,8 @@ namespace Warewolf.Studio.ViewModels
 
             StepDescription = "New Test Description";
             AssertOps = new List<string> {"="};
+
+
         }
 
         public Guid UniqueId
@@ -724,6 +728,26 @@ namespace Warewolf.Studio.ViewModels
             {
                 _stepOutputs = value; 
                 OnPropertyChanged(() => StepOutputs);
+            }
+        }
+
+        public IServiceTestStep Parent
+        {
+            get { return _parent; }
+            set
+            {
+                _parent = value; 
+                OnPropertyChanged(() => Parent);
+            }
+        }
+
+        public ObservableCollection<IServiceTestStep> Children
+        {
+            get { return _children; }
+            set
+            {
+                _children = value; 
+                OnPropertyChanged(() => Children);
             }
         }
 
