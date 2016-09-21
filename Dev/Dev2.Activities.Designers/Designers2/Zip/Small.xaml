@@ -46,6 +46,7 @@
                                 Grid.Row="0"
                                 DefaultText="[[PathToZip]]" 
                                 FilterType="All" 
+                                AllowUserInsertLine="False"
                                 WrapInBrackets="False" 
                                 Text="{Binding Path=ModelItem.InputPath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 ToolTip="{x:Static languages:Core.ZipToolTipFileFolder}"
