@@ -2749,6 +2749,9 @@ You can use File System, URI, SFTP, FTP or FTPS format.</value>
   <data name="ServiceTestEnableRunSelectedTestTooltip" xml:space="preserve">
     <value>Enable or Ignore this test</value>
   </data>
+  <data name="ServiceTestNeverRunTooltip" xml:space="preserve">
+    <value>The test has never run before</value>
+  </data>
   <data name="ServiceTestSelectedTestHelpText" xml:space="preserve">
     <value>Setup and edit this test.</value>
   </data>
