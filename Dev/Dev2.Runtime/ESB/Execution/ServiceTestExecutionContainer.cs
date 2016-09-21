@@ -1,7 +1,6 @@
 using System;
 using System.Activities;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -24,8 +23,10 @@ using Dev2.Services.Security;
 using Dev2.Workspaces;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Security.Encryption;
 using Warewolf.Storage;
+// ReSharper disable ParameterTypeCanBeEnumerable.Local
 
 // ReSharper disable CyclomaticComplexity
 
@@ -296,15 +297,7 @@ namespace Dev2.Runtime.ESB.Execution
             }
             return result;
         }
-
-        [SuppressMessage("ReSharper", "UnusedMember.Global")]
-        public void Eval(DynamicActivity flowchartProcess, IDSFDataObject dsfDataObject, int update)
-        {
-            IDev2Activity resource = new ActivityParser().Parse(flowchartProcess);
-
-            EvalInner(dsfDataObject, resource, update);
-        }
-
+        
         private TestRunResult Eval(Guid resourceID, IDSFDataObject dataObject,IServiceTestModelTO test)
         {
             Dev2Logger.Debug("Getting Resource to Execute");
@@ -334,7 +327,7 @@ namespace Dev2.Runtime.ESB.Execution
                 {
                     if (!dataObject.StopExecution)
                     {
-                        EvalInner(dataObject, clonedExecPlan, dataObject.ForEachUpdateValue);
+                        EvalInner(dataObject, clonedExecPlan, dataObject.ForEachUpdateValue,test.TestSteps);
                         if (test.Outputs != null)
                         {
                             foreach (var output in test.Outputs)
@@ -402,13 +395,22 @@ namespace Dev2.Runtime.ESB.Execution
             return null;
         }
 
-        static void EvalInner(IDSFDataObject dsfDataObject, IDev2Activity resource, int update)
+        static void EvalInner(IDSFDataObject dsfDataObject, IDev2Activity resource, int update,List<IServiceTestStep> testSteps)
         {
             if (resource == null)
             {
                 throw new InvalidOperationException(GlobalConstants.NoStartNodeError);
             }
             WorkflowExecutionWatcher.HasAWorkflowBeenExecuted = true;
+            var foundTestStep = testSteps.FirstOrDefault(step => step.UniqueId.ToString() == resource.UniqueID);
+            if(foundTestStep!=null && foundTestStep.Type== StepType.Mock)
+            {
+                if(foundTestStep.ActivityType == typeof(DsfDecision).Name)
+                {
+                    var serviceTestOutput = foundTestStep.Outputs.FirstOrDefault(output => output.Variable=="Condition Result");
+                    resource = new TestMockDecisionStep(resource as DsfDecision) {NameOfArmToReturn=serviceTestOutput.Value};
+                }
+            }
             var next = resource.Execute(dsfDataObject, update);
             while (next != null)
             {
@@ -430,5 +432,61 @@ namespace Dev2.Runtime.ESB.Execution
                 }
             }
         }
+    }
+
+    public class TestMockDecisionStep : DsfActivityAbstract<string>
+    {
+        private readonly DsfDecision _dsfDecision;
+
+        public TestMockDecisionStep(DsfDecision dsfDecision)
+            : base(dsfDecision.DisplayName)
+        {
+            _dsfDecision = dsfDecision;
+        }
+
+        public string NameOfArmToReturn { get; set; }
+
+        #region Overrides of DsfNativeActivity<string>
+
+        protected override void OnExecute(NativeActivityContext context)
+        {
+        }
+
+        public override void UpdateForEachInputs(IList<Tuple<string, string>> updates)
+        {
+        }
+
+        public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates)
+        {
+        }
+
+        public override IList<DsfForEachItem> GetForEachInputs()
+        {
+            return null;
+        }
+
+        public override IList<DsfForEachItem> GetForEachOutputs()
+        {
+            return null;
+        }
+
+        protected override void ExecuteTool(IDSFDataObject dataObject, int update)
+        {
+            var trueArmText = _dsfDecision.Conditions.TrueArmText;
+            var falseArmText = _dsfDecision.Conditions.FalseArmText;
+            if (NameOfArmToReturn == falseArmText)
+            {
+                NextNodes = _dsfDecision.FalseArm;
+                return;
+            }
+            if (NameOfArmToReturn == trueArmText)
+            {
+                NextNodes = _dsfDecision.TrueArm;
+                return;
+            }
+            throw new ArgumentException($"No matching arm for Decision Mock. Mock Arm value '{NameOfArmToReturn}'. Decision Arms True Arm: '{trueArmText}' False Arm: '{falseArmText}'");
+        }
+
+        #endregion
     }
 }

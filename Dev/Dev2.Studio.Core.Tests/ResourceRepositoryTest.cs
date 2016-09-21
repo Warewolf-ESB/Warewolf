@@ -607,8 +607,8 @@ namespace BusinessDesignStudio.Unit.Tests
                 Enabled = true,
                 ErrorExpected = false,
                 NoErrorExpected = true,
-                Inputs = new List<IServiceTestInput> { new ServiceTestInput("var", "val") },
-                Outputs = new List<IServiceTestOutput> { new ServiceTestOutput("var", "val") },
+                Inputs = new List<IServiceTestInput> { new ServiceTestInputTO { Variable = "var", Value = "val" } },
+                Outputs = new List<IServiceTestOutput> { new ServiceTestOutputTO { Variable = "var", Value = "val" } },
                 ResourceId = Guid.NewGuid(),
                 TestSteps = new List<IServiceTestStep> { new ServiceTestStep(Guid.NewGuid(),"type",new List<IServiceTestOutput>(),StepType.Mock ) }                
             };
@@ -649,6 +649,8 @@ namespace BusinessDesignStudio.Unit.Tests
             Assert.IsNotNull(serviceTestModelTos);
             Assert.AreEqual(1, serviceTestModelTos.Count);
             Assert.AreEqual(serviceTestModel.TestName, serviceTestModelTos[0].TestName);
+            Assert.AreEqual(serviceTestModel.TestSteps.Count,serviceTestModelTos[0].TestSteps.Count);
+            Assert.AreEqual(1,serviceTestModelTos[0].TestSteps.Count);
         }
 
         [TestMethod]

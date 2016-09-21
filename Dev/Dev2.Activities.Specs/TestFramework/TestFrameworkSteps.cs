@@ -1296,13 +1296,11 @@ namespace Dev2.Activities.Specs.TestFramework
                                     var armToUse = tableRow["Output Value"];
                                     if (dds.FalseArmText.Equals(armToUse, StringComparison.InvariantCultureIgnoreCase))
                                     {
-                                        var serviceTestOutputs = new List<IServiceTestOutput>();
-                                        serviceTestOutputs.Add(new ServiceTestOutput("Condition Result",dds.FalseArmText));
+                                        var serviceTestOutputs = new List<IServiceTestOutput> { new ServiceTestOutput("Condition Result", dds.FalseArmText) };
                                         test.AddTestStep(activity.UniqueID, typeof(DsfDecision).Name, serviceTestOutputs);
                                     }else if (dds.TrueArmText.Equals(armToUse, StringComparison.InvariantCultureIgnoreCase))
                                     {
-                                        var serviceTestOutputs = new List<IServiceTestOutput>();
-                                        serviceTestOutputs.Add(new ServiceTestOutput("Condition Result", dds.TrueArmText));
+                                        var serviceTestOutputs = new List<IServiceTestOutput> { new ServiceTestOutput("Condition Result", dds.TrueArmText) };
                                         test.AddTestStep(activity.UniqueID, typeof(DsfDecision).Name, serviceTestOutputs);
                                     }
                                 }
