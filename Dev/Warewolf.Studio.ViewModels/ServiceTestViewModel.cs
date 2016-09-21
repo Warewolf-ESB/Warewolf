@@ -1,5 +1,6 @@
 ﻿
 using System;
+using System.Activities.Presentation.Model;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -90,7 +91,15 @@ namespace Warewolf.Studio.ViewModels
             UpdateHelpDescriptor(Resources.Languages.Core.ServiceTestGenericHelpText);
 
             WorkflowDesignerViewModel = workflowDesignerViewModel;
-            var selectedDesigner = WorkflowDesignerViewModel.SelectedModelItem;
+            WorkflowDesignerViewModel.ItemSelectedAction = ItemSelectedAction;
+        }
+
+        private void ItemSelectedAction(ModelItem modelItem)
+        {
+            if (modelItem != null)
+            {
+                
+            }
         }
 
         private void NewTestStep()
