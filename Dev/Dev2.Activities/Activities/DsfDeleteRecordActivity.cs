@@ -106,9 +106,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
             catch(Exception e)
             {
-                  allErrors.AddError(e.Message);
-                
-                
+                 allErrors.AddError(e.Message);
             }
             finally
             {

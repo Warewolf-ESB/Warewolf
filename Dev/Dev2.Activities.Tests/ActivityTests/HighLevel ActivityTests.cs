@@ -215,7 +215,31 @@ namespace Dev2.Tests.Activities.ActivityTests
                 Assert.Fail("Could not find DsfCountRecordsetActivity.");
             }
             PropertyInfo[] properties = GetPropertyInfo(type);
-            Assert.IsTrue(properties.Length == 2);
+            Assert.IsTrue(properties.Length == 3);
+        }
+
+        [TestMethod]
+        public void DsfDeleteRecordsetActivity_Property_Check_Expected_No_Change_To_Properties()
+        {
+            Type type = _activityList.FirstOrDefault(c => c.Name == "DsfDeleteRecordActivity");
+            if (type == null)
+            {
+                Assert.Fail("Could not find DsfDeleteRecordActivity.");
+            }
+            PropertyInfo[] properties = GetPropertyInfo(type);
+            Assert.IsTrue(properties.Length == 3);
+        }
+
+        [TestMethod]
+        public void DsfRecordsetLengthActivity_Property_Check_Expected_No_Change_To_Properties()
+        {
+            Type type = _activityList.FirstOrDefault(c => c.Name == "DsfRecordsetLengthActivity");
+            if (type == null)
+            {
+                Assert.Fail("Could not find DsfRecordsetLengthActivity.");
+            }
+            PropertyInfo[] properties = GetPropertyInfo(type);
+            Assert.IsTrue(properties.Length == 3);
         }
 
         [TestMethod]

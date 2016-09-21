@@ -56,6 +56,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             RecordsetName = string.Empty;
             RecordsLength = string.Empty;
             DisplayName = "Length";
+            TreatNullAsZero = true;
         }
 
         public bool TreatNullAsZero { get; set; }
