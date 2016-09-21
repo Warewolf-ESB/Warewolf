@@ -49,6 +49,10 @@ namespace Dev2.Activities
             set;
         }
 
+        public override List<string> GetOutputs()
+        {
+            return new List<string>();
+        }
         #region Get Debug Inputs/Outputs
 
         public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment dataList, int update)

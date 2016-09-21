@@ -353,6 +353,11 @@ namespace Dev2.Activities
         }
         #endregion
 
+        public override List<string> GetOutputs()
+        {
+            return new List<string>();
+        }
+
         public bool And { private get; set; }
     }
 
@@ -408,6 +413,12 @@ namespace Dev2.Activities
                 return;
             }
             throw new ArgumentException($"No matching arm for Decision Mock. Mock Arm value '{NameOfArmToReturn}'. Decision Arms True Arm: '{trueArmText}' False Arm: '{falseArmText}'");
+        }
+
+
+        public override List<string> GetOutputs()
+        {
+            return new List<string>();
         }
 
         #endregion

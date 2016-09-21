@@ -83,6 +83,11 @@ namespace Dev2.Activities
 
         #endregion
 
+        public override List<string> GetOutputs()
+        {
+            return ResultsCollection.Select(dto => dto.OutputVariable).ToList();
+        }
+
         #region Overridden NativeActivity Methods
 
         protected override void OnExecute(NativeActivityContext context)

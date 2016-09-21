@@ -53,6 +53,11 @@ namespace Dev2.Activities.Sharepoint
             ExecuteTool(dataObject,0);
         }
 
+        public override List<string> GetOutputs()
+        {
+            return new List<string> { Result };
+        }
+
         public override void UpdateForEachInputs(IList<Tuple<string, string>> updates)
         {
         }

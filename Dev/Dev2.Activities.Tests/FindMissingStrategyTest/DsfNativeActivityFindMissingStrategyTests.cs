@@ -56,6 +56,11 @@ namespace Dev2.Tests.Activities.FindMissingStrategyTest
         {
         }
 
+        public override List<string> GetOutputs()
+        {
+            return new List<string>();
+        }
+
         #region Overrides of DsfNativeActivity<string>
 
         /// <summary>

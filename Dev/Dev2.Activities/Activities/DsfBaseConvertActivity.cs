@@ -66,6 +66,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #endregion Ctor
 
+        public override List<string> GetOutputs()
+        {
+            return ConvertCollection.Select(to => to.ToExpression).ToList();
+        }
+
         #region Overridden NativeActivity Methods
 
         // ReSharper disable RedundantOverridenMember

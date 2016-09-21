@@ -138,7 +138,19 @@ namespace ActivityUnitTests.ActivityTests
 
         #endregion Error Test Cases
 
-        
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsfDateTimeDifferenceActivity_GetOutputs")]
+        public void DsfDateTimeDifferenceActivity_GetOutputs_Called_ShouldReturnListWithResultValueInIt()
+        {
+            //------------Setup for test--------------------------
+            var act = new DsfDateTimeDifferenceActivity { Input1 = "", Input2 = "", InputFormat = "", OutputType = "", Result = "[[dtd]]" };
+            //------------Execute Test---------------------------
+            var outputs = act.GetOutputs();
+            //------------Assert Results-------------------------
+            Assert.AreEqual(1, outputs.Count);
+            Assert.AreEqual("[[dtd]]", outputs[0]);
+        }
 
         #region Private Test Methods
 
