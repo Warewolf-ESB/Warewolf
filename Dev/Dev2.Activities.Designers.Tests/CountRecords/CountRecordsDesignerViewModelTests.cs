@@ -75,7 +75,7 @@ namespace Dev2.Activities.Designers.Tests.CountRecords
 
         static ModelItem CreateModelItem()
         {
-            return ModelItemUtils.CreateModelItem(new DsfCountRecordsetActivity());
+            return ModelItemUtils.CreateModelItem(new DsfCountRecordsetNullHandlerActivity());
         }
     }
 }

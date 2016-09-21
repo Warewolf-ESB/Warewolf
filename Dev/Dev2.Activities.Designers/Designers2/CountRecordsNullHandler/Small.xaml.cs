@@ -10,11 +10,11 @@
 
 using System.Windows;
 
-namespace Dev2.Activities.Designers2.CountRecords
+namespace Dev2.Activities.Designers2.CountRecordsNullHandler
 {
-    public partial class Large
+    public partial class Small
     {
-        public Large()
+        public Small()
         {
             InitializeComponent();
         }

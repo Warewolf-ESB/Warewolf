@@ -106,7 +106,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         {
             //------------Setup for test--------------------------
             const string recordsetName = "[[Customers()]]";
-            var act = new DsfCountRecordsetActivity { RecordsetName = recordsetName, CountNumber = "[[res]]" };
+            var act = new DsfCountRecordsetNullHandlerActivity { RecordsetName = recordsetName, CountNumber = "[[res]]" };
             //------------Execute Test---------------------------
             act.UpdateForEachInputs(null);
             //------------Assert Results-------------------------
@@ -120,7 +120,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         {
             //------------Setup for test--------------------------
             const string recordsetName = "[[Customers()]]";
-            var act = new DsfCountRecordsetActivity { RecordsetName = recordsetName, CountNumber = "[[res]]" };
+            var act = new DsfCountRecordsetNullHandlerActivity { RecordsetName = recordsetName, CountNumber = "[[res]]" };
             var tuple1 = new Tuple<string, string>("Test", "Test");
             var tuple2 = new Tuple<string, string>("Test2", "Test2");
             //------------Execute Test---------------------------
@@ -136,7 +136,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         {
             //------------Setup for test--------------------------
             const string recordsetName = "[[Customers()]]";
-            var act = new DsfCountRecordsetActivity { RecordsetName = recordsetName, CountNumber = "[[res]]" };
+            var act = new DsfCountRecordsetNullHandlerActivity { RecordsetName = recordsetName, CountNumber = "[[res]]" };
             var tuple1 = new Tuple<string, string>("Test", "Test");
             //------------Execute Test---------------------------
             act.UpdateForEachInputs(new List<Tuple<string, string>> { tuple1 });
@@ -151,7 +151,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         {
             //------------Setup for test--------------------------
             const string recordsetName = "[[Customers()]]";
-            var act = new DsfCountRecordsetActivity { RecordsetName = recordsetName, CountNumber = "[[res]]" };
+            var act = new DsfCountRecordsetNullHandlerActivity { RecordsetName = recordsetName, CountNumber = "[[res]]" };
             //------------Execute Test---------------------------
             act.UpdateForEachOutputs(null);
             //------------Assert Results-------------------------
@@ -165,7 +165,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         {
             //------------Setup for test--------------------------
             const string recordsetName = "[[Customers()]]";
-            var act = new DsfCountRecordsetActivity { RecordsetName = recordsetName, CountNumber = "[[res]]" };
+            var act = new DsfCountRecordsetNullHandlerActivity { RecordsetName = recordsetName, CountNumber = "[[res]]" };
             var tuple1 = new Tuple<string, string>("Test", "Test");
             var tuple2 = new Tuple<string, string>("Test2", "Test2");
             //------------Execute Test---------------------------
@@ -181,7 +181,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         {
             //------------Setup for test--------------------------
             const string recordsetName = "[[Customers()]]";
-            var act = new DsfCountRecordsetActivity { RecordsetName = recordsetName, CountNumber = "[[res]]" };
+            var act = new DsfCountRecordsetNullHandlerActivity { RecordsetName = recordsetName, CountNumber = "[[res]]" };
             var tuple1 = new Tuple<string, string>("[[res]]", "Test");
             //------------Execute Test---------------------------
             act.UpdateForEachOutputs(new List<Tuple<string, string>> { tuple1 });
@@ -196,7 +196,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         {
             //------------Setup for test--------------------------
             const string recordsetName = "[[Customers()]]";
-            var act = new DsfCountRecordsetActivity { RecordsetName = recordsetName, CountNumber = "[[res]]" };
+            var act = new DsfCountRecordsetNullHandlerActivity { RecordsetName = recordsetName, CountNumber = "[[res]]" };
             //------------Execute Test---------------------------
             var dsfForEachItems = act.GetForEachInputs();
             //------------Assert Results-------------------------
@@ -212,7 +212,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         {
             //------------Setup for test--------------------------
             const string recordsetName = "[[Customers()]]";
-            var act = new DsfCountRecordsetActivity { RecordsetName = recordsetName, CountNumber = "[[res]]" };
+            var act = new DsfCountRecordsetNullHandlerActivity { RecordsetName = recordsetName, CountNumber = "[[res]]" };
             //------------Execute Test---------------------------
             var dsfForEachItems = act.GetForEachOutputs();
             //------------Assert Results-------------------------
@@ -300,7 +300,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         public void TreaNullAsZero_GivenActivityIsNew_ShouldhaveValueTrue()
         {
             //---------------Set up test pack-------------------
-            var dsfCountRecordsetActivity = new DsfCountRecordsetActivity();
+            var dsfCountRecordsetActivity = new DsfCountRecordsetNullHandlerActivity();
             //---------------Assert Precondition----------------
             Assert.IsNotNull(dsfCountRecordsetActivity);
             //---------------Execute Test ----------------------
@@ -353,7 +353,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         {
             TestStartNode = new FlowStep
             {
-                Action = new DsfCountRecordsetActivity { RecordsetName = recordSetName, CountNumber = countNumber, TreatNullAsZero = treaNullAsZero }
+                Action = new DsfCountRecordsetNullHandlerActivity { RecordsetName = recordSetName, CountNumber = countNumber, TreatNullAsZero = treaNullAsZero }
                 
                 
             };

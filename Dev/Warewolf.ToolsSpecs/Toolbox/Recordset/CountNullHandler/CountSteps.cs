@@ -57,7 +57,7 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.Count
             bool treaNullAsZero;
             scenarioContext.TryGetValue("treaNullAsZero", out treaNullAsZero);
 
-            var count = new DsfCountRecordsetActivity
+            var count = new DsfCountRecordsetNullHandlerActivity
             {
                 RecordsetName = recordset,
                 CountNumber = string.IsNullOrEmpty(resultVariable) ? ResultVariable : resultVariable,

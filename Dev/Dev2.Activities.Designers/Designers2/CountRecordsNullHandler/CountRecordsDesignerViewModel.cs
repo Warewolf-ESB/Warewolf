@@ -14,7 +14,7 @@ using Dev2.Activities.Designers2.Core;
 using Dev2.Activities.Utils;
 using Dev2.Interfaces;
 
-namespace Dev2.Activities.Designers2.CountRecords
+namespace Dev2.Activities.Designers2.CountRecordsNullHandler
 {
     public class CountRecordsDesignerViewModel : ActivityDesignerViewModel
     {

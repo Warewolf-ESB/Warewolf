@@ -85,12 +85,12 @@ namespace Dev2.Tests.Activities.FindMissingStrategyTest
         [TestMethod]
         public void GetActivityFieldsOffDsfCountRecordsetActivityExpectedAllFindMissingFieldsToBeReturned()
         {
-            DsfCountRecordsetActivity activity = new DsfCountRecordsetActivity();
-            activity.RecordsetName = "[[RecordsetName]]";
-            activity.CountNumber = "[[CountNumber]]";
+            DsfCountRecordsetNullHandlerActivity nullHandlerActivity = new DsfCountRecordsetNullHandlerActivity();
+            nullHandlerActivity.RecordsetName = "[[RecordsetName]]";
+            nullHandlerActivity.CountNumber = "[[CountNumber]]";
             Dev2FindMissingStrategyFactory fac = new Dev2FindMissingStrategyFactory();
             IFindMissingStrategy strategy = fac.CreateFindMissingStrategy(enFindMissingType.StaticActivity);
-            List<string> actual = strategy.GetActivityFields(activity);
+            List<string> actual = strategy.GetActivityFields(nullHandlerActivity);
             List<string> expected = new List<string> { "[[RecordsetName]]", "[[CountNumber]]" };
             CollectionAssert.AreEqual(expected, actual);
         }

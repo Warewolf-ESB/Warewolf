@@ -243,7 +243,7 @@
     <Compile Include="Activities\DsfSendEmailActivity.cs" />
     <Compile Include="Activities\DsfSequenceActivity.cs" />
     <Compile Include="Activities\DsfSortRecordsActivity.cs" />
-    <Compile Include="Activities\DsfCountRecordsetActivity.cs" />
+    <Compile Include="Activities\DsfCountRecordsetNullHandlerActivity.cs" />
     <Compile Include="Activities\DsfMultiAssignActivity.cs" />
     <Compile Include="Activities\DsfSqlBulkInsertActivity.cs" />
     <Compile Include="Activities\DsfSqlServerDatabaseActivity.cs" />

@@ -32,7 +32,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 // ReSharper restore CheckNamespace
 {
     [ToolDescriptorInfo("RecordSet-CountRecords", "Count", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Recordset", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Recordset_Count_Tags")]
-    public class DsfCountRecordsetActivity : DsfActivityAbstract<string>
+    public class DsfCountRecordsetNullHandlerActivity : DsfActivityAbstract<string>
     {
         #region Fields
 
@@ -52,7 +52,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public bool TreatNullAsZero { get; set; }
 
-        public DsfCountRecordsetActivity()
+        public DsfCountRecordsetNullHandlerActivity()
             : base("Count Records")
         {
             RecordsetName = string.Empty;

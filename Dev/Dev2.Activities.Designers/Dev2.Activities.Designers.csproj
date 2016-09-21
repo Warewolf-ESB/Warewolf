@@ -276,7 +276,7 @@
     <Compile Include="Designers2\Core\WebPostInputRegionClone.cs" />
     <Compile Include="Designers2\Core\Web\Put\WebPutInputRegion.cs" />
     <Compile Include="Designers2\Core\Web\Put\WebPutRegionClone.cs" />
-    <Compile Include="Designers2\CountRecords\Large.xaml.cs">
+    <Compile Include="Designers2\CountRecordsNullHandler\Large.xaml.cs">
       <DependentUpon>Large.xaml</DependentUpon>
     </Compile>
     <Compile Include="Designers2\CreateJSON\Large.xaml.cs">
@@ -482,12 +482,12 @@
     <Compile Include="Designers2\Core\IClosable.cs" />
     <Compile Include="Designers2\Core\IsItemDragged.cs" />
     <Compile Include="Designers2\Core\ZIndexPosition.cs" />
-    <Compile Include="Designers2\CountRecords\CountRecordsDesigner.xaml.cs">
+    <Compile Include="Designers2\CountRecordsNullHandler\CountRecordsDesigner.xaml.cs">
       <DependentUpon>CountRecordsDesigner.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Designers2\CountRecords\CountRecordsDesignerViewModel.cs" />
-    <Compile Include="Designers2\CountRecords\Small.xaml.cs">
+    <Compile Include="Designers2\CountRecordsNullHandler\CountRecordsDesignerViewModel.cs" />
+    <Compile Include="Designers2\CountRecordsNullHandler\Small.xaml.cs">
       <DependentUpon>Small.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
@@ -1247,7 +1247,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Designers2\CountRecords\Large.xaml">
+    <Page Include="Designers2\CountRecordsNullHandler\Large.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -1479,11 +1479,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Designers2\CountRecords\CountRecordsDesigner.xaml">
+    <Page Include="Designers2\CountRecordsNullHandler\CountRecordsDesigner.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Designers2\CountRecords\Small.xaml">
+    <Page Include="Designers2\CountRecordsNullHandler\Small.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

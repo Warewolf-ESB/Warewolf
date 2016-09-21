@@ -8,14 +8,20 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using System.Windows;
 
-namespace Dev2.Activities.Designers2.CountRecords
+namespace Dev2.Activities.Designers2.CountRecordsNullHandler
 {
-    public partial class CountRecordsDesigner
+    public partial class Large
     {
-        public CountRecordsDesigner()
+        public Large()
         {
             InitializeComponent();
+        }
+
+        protected override IInputElement GetInitialFocusElement()
+        {
+            return InitialFocusElement;
         }
     }
 }

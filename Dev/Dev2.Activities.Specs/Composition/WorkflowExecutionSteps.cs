@@ -1624,9 +1624,9 @@ namespace Dev2.Activities.Specs.Composition
         {
             _commonSteps.AddVariableToVariableList(result);
 
-            DsfCountRecordsetActivity countRecordsetActivity = new DsfCountRecordsetActivity { CountNumber = result, RecordsetName = recordSet, DisplayName = activityName };
+            DsfCountRecordsetNullHandlerActivity countRecordsetNullHandlerActivity = new DsfCountRecordsetNullHandlerActivity { CountNumber = result, RecordsetName = recordSet, DisplayName = activityName };
 
-            _commonSteps.AddActivityToActivityList(parentName, activityName, countRecordsetActivity);
+            _commonSteps.AddActivityToActivityList(parentName, activityName, countRecordsetNullHandlerActivity);
         }
 
         [Given(@"""(.*)"" contains Delete ""(.*)"" as")]
