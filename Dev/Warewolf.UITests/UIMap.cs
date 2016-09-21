@@ -1,10 +1,5 @@
 ﻿using System.CodeDom.Compiler;
-using System.Collections.Generic;
-using System.Text.RegularExpressions;
 using System.Windows.Input;
-using Microsoft.VisualStudio.TestTools.UITesting.HtmlControls;
-using Microsoft.VisualStudio.TestTools.UITesting.WinControls;
-using Keyboard = Microsoft.VisualStudio.TestTools.UITesting.Keyboard;
 using MouseButtons = System.Windows.Forms.MouseButtons;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
@@ -18,25 +13,12 @@ using System.IO;
 
 namespace Warewolf.UITests
 {
-    [TestClass]
     public partial class UIMap
     {
         const int _lenientSearchTimeout = 10000;
         const int _lenientMaximumRetryCount = 6;
         const int _strictSearchTimeout = 1000;
         const int _strictMaximumRetryCount = 1;
-        
-        public void WaitForStudioStart()
-        {
-            Console.WriteLine("Waiting for studio to start.");
-            WaitForControlVisible(MainStudioWindow, _lenientSearchTimeout);
-            if (!MainStudioWindow.Exists)
-            {
-                throw new InvalidOperationException("Warewolf studio is not running. You are expected to run \"Dev\\TestScripts\\Studio\\Startup.bat\" as an administrator and wait for it to complete before running any coded UI tests");
-            }
-            Console.WriteLine("Waiting for explorer localhost spinner to stop.");
-            WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);
-        }
 
         public void SetPlaybackSettings()
         {
@@ -54,6 +36,18 @@ namespace Warewolf.UITests
             Playback.PlaybackSettings.SmartMatchOptions = SmartMatchOptions.None;
             Playback.PlaybackError -= OnError;
             Playback.PlaybackError += OnError;
+        }
+        
+        public void WaitForStudioStart()
+        {
+            Console.WriteLine("Waiting for studio to start.");
+            WaitForControlVisible(MainStudioWindow, _lenientSearchTimeout);
+            if (!MainStudioWindow.Exists)
+            {
+                throw new InvalidOperationException("Warewolf studio is not running. You are expected to run \"Dev\\TestScripts\\Studio\\Startup.bat\" as an administrator and wait for it to complete before running any coded UI tests");
+            }
+            Console.WriteLine("Waiting for explorer localhost spinner to stop.");
+            WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);
         }
 
         public void OnError(object sender, PlaybackErrorEventArgs e)
