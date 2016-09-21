@@ -822,9 +822,14 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         private void OnItemSelected(Selection item)
         {
-            NotifyItemSelected(item.PrimarySelection);
-            item.PrimarySelection.SetProperty("IsSelected", true);
+            var primarySelection = item.PrimarySelection;
+            NotifyItemSelected(primarySelection);
+            primarySelection.SetProperty("IsSelected", true);
+            var selectedItem = primarySelection;
+            ItemSelectedAction?.Invoke(selectedItem);
         }
+
+        public Action<ModelItem> ItemSelectedAction { get; set; }
 
         #endregion Internal Methods
 

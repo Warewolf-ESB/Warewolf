@@ -39,8 +39,12 @@ namespace Dev2.Common.Interfaces
         bool NeverRunStringVisibility { get; set; }
         IList<IDebugState> DebugForTest { get; set; }
         string DuplicateTestTooltip { get; set; }
+        ObservableCollection<IServiceTestStep> TestSteps { get; set; }
+        IServiceTestStep SelectedTestStep { get; set; }
 
         void SetItem(IServiceTestModel model);
+
+        void AddTestStep(string activityUniqueID, string activityTypeName, List<IServiceTestOutput> serviceTestOutputs);
     }
 
     public interface IServiceTestInput
@@ -54,5 +58,6 @@ namespace Dev2.Common.Interfaces
     {
         string Variable { get; set; }
         string Value { get; set; }
+        string AssertOp { get; set; }
     }
 }

@@ -107,32 +107,7 @@ namespace Dev2.Runtime
                 {
                     if (dev2Definition.IsRecordSet)
                     {
-                        var rec = DataListUtil.CreateRecordsetDisplayValue(dev2Definition.RecordSetName, dev2Definition.Name, "");
-                        var indexes = serviceTestModelTO.Outputs.Where(output => DataListUtil.ExtractRecordsetNameFromValue(output.Variable) == dev2Definition.RecordSetName).Select(input => DataListUtil.ExtractIndexRegionFromRecordset(input.Variable)).Distinct(StringComparer.OrdinalIgnoreCase).ToList();
-
-                        if (serviceTestModelTO.Outputs.FirstOrDefault(output => DataListUtil.ReplaceRecordsetIndexWithBlank(output.Variable) == rec) == null)
-                        {
-                            if (indexes.Count == 0)
-                            {
-                                serviceTestModelTO.Outputs.Add(new ServiceTestOutputTO
-                                {
-                                    Variable = DataListUtil.CreateRecordsetDisplayValue(dev2Definition.RecordSetName, dev2Definition.Name, "1"),
-                                    Value = ""
-                                });
-                            }
-                            else
-                            {
-                                foreach (var index in indexes)
-                                {
-                                    serviceTestModelTO.Outputs.Add(new ServiceTestOutputTO
-                                    {
-                                        Variable = DataListUtil.CreateRecordsetDisplayValue(dev2Definition.RecordSetName, dev2Definition.Name, index),
-                                        Value = ""
-                                    });
-                                }
-                            }
-
-                        }
+                        ProcessRecordsetOutputs(serviceTestModelTO, dev2Definition);
                     }
                     else
                     {
@@ -169,6 +144,35 @@ namespace Dev2.Runtime
 
         }
 
+        private static void ProcessRecordsetOutputs(IServiceTestModelTO serviceTestModelTO, IDev2Definition dev2Definition)
+        {
+            var rec = DataListUtil.CreateRecordsetDisplayValue(dev2Definition.RecordSetName, dev2Definition.Name, "");
+            var indexes = serviceTestModelTO.Outputs.Where(output => DataListUtil.ExtractRecordsetNameFromValue(output.Variable) == dev2Definition.RecordSetName).Select(input => DataListUtil.ExtractIndexRegionFromRecordset(input.Variable)).Distinct(StringComparer.OrdinalIgnoreCase).ToList();
+
+            if(serviceTestModelTO.Outputs.FirstOrDefault(output => DataListUtil.ReplaceRecordsetIndexWithBlank(output.Variable) == rec) == null)
+            {
+                if(indexes.Count == 0)
+                {
+                    serviceTestModelTO.Outputs.Add(new ServiceTestOutputTO
+                    {
+                        Variable = DataListUtil.CreateRecordsetDisplayValue(dev2Definition.RecordSetName, dev2Definition.Name, "1"),
+                        Value = ""
+                    });
+                }
+                else
+                {
+                    foreach(var index in indexes)
+                    {
+                        serviceTestModelTO.Outputs.Add(new ServiceTestOutputTO
+                        {
+                            Variable = DataListUtil.CreateRecordsetDisplayValue(dev2Definition.RecordSetName, dev2Definition.Name, index),
+                            Value = ""
+                        });
+                    }
+                }
+            }
+        }
+
         private void UpdateInputsForTest(IServiceTestModelTO serviceTestModelTO, IList<IDev2Definition> inputDefs)
         {
             if (inputDefs.Count == 0)
@@ -185,34 +189,7 @@ namespace Dev2.Runtime
                 {
                     if (dev2Definition.IsRecordSet)
                     {
-                        var rec = DataListUtil.CreateRecordsetDisplayValue(dev2Definition.RecordSetName, dev2Definition.Name, "");
-                        var indexes = serviceTestModelTO.Inputs.Where(input => DataListUtil.ExtractRecordsetNameFromValue(input.Variable) == dev2Definition.RecordSetName).Select(input => DataListUtil.ExtractIndexRegionFromRecordset(input.Variable)).Distinct(StringComparer.OrdinalIgnoreCase).ToList();
-
-                        if (serviceTestModelTO.Inputs.FirstOrDefault(input => DataListUtil.ReplaceRecordsetIndexWithBlank(input.Variable) == rec) == null)
-                        {
-                            if (indexes.Count == 0)
-                            {
-                                serviceTestModelTO.Inputs.Add(new ServiceTestInputTO
-                                {
-                                    Variable = DataListUtil.CreateRecordsetDisplayValue(dev2Definition.RecordSetName, dev2Definition.Name, "1"),
-                                    Value = "",
-                                    EmptyIsNull = false
-                                });
-                            }
-                            else
-                            {
-                                foreach (var index in indexes)
-                                {
-                                    serviceTestModelTO.Inputs.Add(new ServiceTestInputTO
-                                    {
-                                        Variable = DataListUtil.CreateRecordsetDisplayValue(dev2Definition.RecordSetName, dev2Definition.Name, index),
-                                        Value = "",
-                                        EmptyIsNull = false
-                                    });
-                                }
-                            }
-                            
-                        }                       
+                        ProcessRecordsetInputs(serviceTestModelTO, dev2Definition);
                     }
                     else
                     {
@@ -246,6 +223,37 @@ namespace Dev2.Runtime
                     }
                 }
                 serviceTestModelTO.Inputs.Sort((input, testInput) => string.Compare(input.Variable, testInput.Variable, StringComparison.InvariantCultureIgnoreCase));
+            }
+        }
+
+        private static void ProcessRecordsetInputs(IServiceTestModelTO serviceTestModelTO, IDev2Definition dev2Definition)
+        {
+            var rec = DataListUtil.CreateRecordsetDisplayValue(dev2Definition.RecordSetName, dev2Definition.Name, "");
+            var indexes = serviceTestModelTO.Inputs.Where(input => DataListUtil.ExtractRecordsetNameFromValue(input.Variable) == dev2Definition.RecordSetName).Select(input => DataListUtil.ExtractIndexRegionFromRecordset(input.Variable)).Distinct(StringComparer.OrdinalIgnoreCase).ToList();
+
+            if(serviceTestModelTO.Inputs.FirstOrDefault(input => DataListUtil.ReplaceRecordsetIndexWithBlank(input.Variable) == rec) == null)
+            {
+                if(indexes.Count == 0)
+                {
+                    serviceTestModelTO.Inputs.Add(new ServiceTestInputTO
+                    {
+                        Variable = DataListUtil.CreateRecordsetDisplayValue(dev2Definition.RecordSetName, dev2Definition.Name, "1"),
+                        Value = "",
+                        EmptyIsNull = false
+                    });
+                }
+                else
+                {
+                    foreach(var index in indexes)
+                    {
+                        serviceTestModelTO.Inputs.Add(new ServiceTestInputTO
+                        {
+                            Variable = DataListUtil.CreateRecordsetDisplayValue(dev2Definition.RecordSetName, dev2Definition.Name, index),
+                            Value = "",
+                            EmptyIsNull = false
+                        });
+                    }
+                }
             }
         }
 
