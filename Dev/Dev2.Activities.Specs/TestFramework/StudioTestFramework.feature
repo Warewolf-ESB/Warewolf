@@ -468,16 +468,6 @@ Scenario: Delete folder with resources deletes all tests
 	Then "PluginSource1" has 0 tests
 	And "Hello bob" has 0 tests
 
-#Scenario: Saved workflow with tests changes the inputs
-#		Given the test builder is open with "WorkflowWithTests"
-#		Then there are 4 tests
-#		And I close the test builder
-#		When I remove input "input" from workflow "WorkflowWithTests" 
-#		And I save Workflow	"WorkflowWithTests"
-#		When the test builder is open with "WorkflowWithTests"
-#		And Tab Header is "WorkflowWithTests - Tests"				
-#		And all test are invalid	
-
 Scenario: Run all unselects all tests on selection shows corect debug
 	Given the test builder is open with "WorkflowWithTests"
 	Then there are 4 tests

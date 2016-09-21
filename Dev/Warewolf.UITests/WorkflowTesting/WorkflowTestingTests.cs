@@ -5,6 +5,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Warewolf.UITests
 {
     [CodedUITest]
+    [Ignore]
     public class WorkflowTestingTests
     {
         const string DuplicateNameError = "DuplicateNameError";

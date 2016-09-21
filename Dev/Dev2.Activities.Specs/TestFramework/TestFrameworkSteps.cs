@@ -1143,7 +1143,7 @@ namespace Dev2.Activities.Specs.TestFramework
             var environmentModel = EnvironmentRepository.Instance.Source;
             var serviceTestModelTos = new List<IServiceTestModelTO>();
             environmentModel.ResourceRepository.ForceLoad();
-            var savedSource = environmentModel.ResourceRepository.All().Single(model => model.ResourceName.Equals(rName, StringComparison.InvariantCultureIgnoreCase));
+            var savedSource = environmentModel.ResourceRepository.All().Single(model => model.Category.Equals(path + "\\" + rName, StringComparison.InvariantCultureIgnoreCase));
             ScenarioContext[rName + "id"] = savedSource.ID;
             var resourceID = ScenarioContext.Get<Guid>(rName + "id");
             lock (_syncRoot)
@@ -1167,7 +1167,7 @@ namespace Dev2.Activities.Specs.TestFramework
             var resourceModel = new ResourceModel(environmentModel)
             {
                 ID = savedSource.ID,
-                Category = path,
+                Category = path + "\\" + rName,
                 ResourceName = rName
             };
             var executeMessage = environmentModel.ResourceRepository.SaveTests(resourceModel, serviceTestModelTos);
