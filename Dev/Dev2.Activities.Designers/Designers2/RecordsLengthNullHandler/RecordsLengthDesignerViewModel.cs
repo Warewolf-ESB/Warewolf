@@ -14,7 +14,7 @@ using Dev2.Activities.Designers2.Core;
 using Dev2.Activities.Utils;
 using Dev2.Interfaces;
 
-namespace Dev2.Activities.Designers2.RecordsLength
+namespace Dev2.Activities.Designers2.RecordsLengthNullHandler
 {
     public class RecordsLengthDesignerViewModel : ActivityDesignerViewModel
     {
@@ -51,10 +51,7 @@ namespace Dev2.Activities.Designers2.RecordsLength
         public override void UpdateHelpDescriptor(string helpText)
         {
             var mainViewModel = CustomContainer.Get<IMainViewModel>();
-            if (mainViewModel != null)
-            {
-                mainViewModel.HelpViewModel.UpdateHelpText(helpText);
-            }
+            mainViewModel?.HelpViewModel.UpdateHelpText(helpText);
         }
     }
 }

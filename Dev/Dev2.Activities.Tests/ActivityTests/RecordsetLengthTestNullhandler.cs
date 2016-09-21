@@ -21,10 +21,10 @@ using Unlimited.Applications.BusinessDesignStudio.Activities;
 namespace Dev2.Tests.Activities.ActivityTests
 {
     /// <summary>
-    /// Summary description for RecordsetLengthTest
+    /// Summary description for RecordsetLengthTestNullhandler
     /// </summary>
     [TestClass]
-    public class RecordsetLengthTest : BaseActivityUnitTest
+    public class RecordsetLengthTestNullhandler : BaseActivityUnitTest
     {
         /// <summary>
         ///Gets or sets the test context which provides
@@ -80,7 +80,53 @@ namespace Dev2.Tests.Activities.ActivityTests
 
         #endregion Error Test Cases
 
-        
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void DsfRecordsetLengthActivity_GivenIsNew_ShouldTreatNullAsZero()
+        {
+            //---------------Set up test pack-------------------
+            var act = new DsfRecordsetNullhandlerLengthActivity();
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(act);
+            //---------------Execute Test ----------------------
+            //---------------Test Result -----------------------
+            Assert.IsTrue(act.TreatNullAsZero);
+        }
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void Execute_GivenEmptyRecordSet_ShouldResturnZero()
+        {
+            //---------------Set up test pack-------------------
+            SetupArguments(ActivityStrings.EmptyRecordSet, ActivityStrings.EmptyRecordSetNoData, "[[recset1()]]", "[[res]]", true);
+            //---------------Assert Precondition----------------
+
+            //---------------Execute Test ----------------------
+            IDSFDataObject result = ExecuteProcess();
+            //---------------Test Result -----------------------
+            const string Expected = "0";
+            string actual;
+            string error;
+            GetScalarValueFromEnvironment(result.Environment, "res", out actual, out error);
+            Assert.AreEqual(Expected, actual);
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void Execute_GivenEmptyRecordSetTreatNullAsZeroFalse_ShouldResturnError()
+        {
+            //---------------Set up test pack-------------------
+            SetupArguments(ActivityStrings.EmptyRecordSet, ActivityStrings.EmptyRecordSetNoData, "[[recset1()]]", "[[res]]");
+            //---------------Assert Precondition----------------
+
+            //---------------Execute Test ----------------------
+            IDSFDataObject result = ExecuteProcess();
+            //---------------Test Result -----------------------
+            const string Expected = "";
+            string actual;
+            string error;
+            GetScalarValueFromEnvironment(result.Environment, "res", out actual, out error);
+            Assert.AreEqual(Expected, actual);
+        }
 
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
@@ -89,12 +135,14 @@ namespace Dev2.Tests.Activities.ActivityTests
         {
             //------------Setup for test--------------------------
             const string recordsetName = "[[Customers()]]";
-            var act = new DsfRecordsetLengthActivity { RecordsetName = recordsetName, RecordsLength = "[[res]]" };
+            var act = new DsfRecordsetNullhandlerLengthActivity { RecordsetName = recordsetName, RecordsLength = "[[res]]" };
             //------------Execute Test---------------------------
             act.UpdateForEachInputs(null);
             //------------Assert Results-------------------------
             Assert.AreEqual(recordsetName, act.RecordsetName);
         }
+
+
 
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
@@ -103,7 +151,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         {
             //------------Setup for test--------------------------
             const string recordsetName = "[[Customers()]]";
-            var act = new DsfRecordsetLengthActivity { RecordsetName = recordsetName, RecordsLength = "[[res]]" };
+            var act = new DsfRecordsetNullhandlerLengthActivity { RecordsetName = recordsetName, RecordsLength = "[[res]]" };
             var tuple1 = new Tuple<string, string>("Test", "Test");
             var tuple2 = new Tuple<string, string>("Test2", "Test2");
             //------------Execute Test---------------------------
@@ -119,7 +167,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         {
             //------------Setup for test--------------------------
             const string recordsetName = "[[Customers()]]";
-            var act = new DsfRecordsetLengthActivity { RecordsetName = recordsetName, RecordsLength = "[[res]]" };
+            var act = new DsfRecordsetNullhandlerLengthActivity { RecordsetName = recordsetName, RecordsLength = "[[res]]" };
             var tuple1 = new Tuple<string, string>("Test", "Test");
             //------------Execute Test---------------------------
             act.UpdateForEachInputs(new List<Tuple<string, string>> { tuple1 });
@@ -134,7 +182,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         {
             //------------Setup for test--------------------------
             const string recordsetName = "[[Customers()]]";
-            var act = new DsfRecordsetLengthActivity { RecordsetName = recordsetName, RecordsLength = "[[res]]" };
+            var act = new DsfRecordsetNullhandlerLengthActivity { RecordsetName = recordsetName, RecordsLength = "[[res]]" };
             //------------Execute Test---------------------------
             act.UpdateForEachOutputs(null);
             //------------Assert Results-------------------------
@@ -148,7 +196,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         {
             //------------Setup for test--------------------------
             const string recordsetName = "[[Customers()]]";
-            var act = new DsfRecordsetLengthActivity { RecordsetName = recordsetName, RecordsLength = "[[res]]" };
+            var act = new DsfRecordsetNullhandlerLengthActivity { RecordsetName = recordsetName, RecordsLength = "[[res]]" };
             var tuple1 = new Tuple<string, string>("Test", "Test");
             var tuple2 = new Tuple<string, string>("Test2", "Test2");
             //------------Execute Test---------------------------
@@ -164,7 +212,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         {
             //------------Setup for test--------------------------
             const string recordsetName = "[[Customers()]]";
-            var act = new DsfRecordsetLengthActivity { RecordsetName = recordsetName, RecordsLength = "[[res]]" };
+            var act = new DsfRecordsetNullhandlerLengthActivity { RecordsetName = recordsetName, RecordsLength = "[[res]]" };
             var tuple1 = new Tuple<string, string>("Test", "Test");
             //------------Execute Test---------------------------
             act.UpdateForEachOutputs(new List<Tuple<string, string>> { tuple1 });
@@ -179,7 +227,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         {
             //------------Setup for test--------------------------
             const string recordsetName = "[[Customers()]]";
-            var act = new DsfRecordsetLengthActivity { RecordsetName = recordsetName, RecordsLength = "[[res]]" };
+            var act = new DsfRecordsetNullhandlerLengthActivity { RecordsetName = recordsetName, RecordsLength = "[[res]]" };
             //------------Execute Test---------------------------
             var dsfForEachItems = act.GetForEachInputs();
             //------------Assert Results-------------------------
@@ -195,7 +243,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         {
             //------------Setup for test--------------------------
             const string recordsetName = "[[Customers()]]";
-            var act = new DsfRecordsetLengthActivity { RecordsetName = recordsetName, RecordsLength = "[[res]]" };
+            var act = new DsfRecordsetNullhandlerLengthActivity { RecordsetName = recordsetName, RecordsLength = "[[res]]" };
             //------------Execute Test---------------------------
             var dsfForEachItems = act.GetForEachOutputs();
             //------------Assert Results-------------------------
@@ -206,11 +254,11 @@ namespace Dev2.Tests.Activities.ActivityTests
 
         #region Private Test Methods
 
-        private void SetupArguments(string currentDL, string testData, string recordSetName, string RecordsLength)
+        private void SetupArguments(string currentDL, string testData, string recordSetName, string RecordsLength, bool treatNullasZero = false)
         {
             TestStartNode = new FlowStep
             {
-                Action = new DsfRecordsetLengthActivity { RecordsetName = recordSetName, RecordsLength = RecordsLength }
+                Action = new DsfRecordsetNullhandlerLengthActivity { RecordsetName = recordSetName, RecordsLength = RecordsLength, TreatNullAsZero = treatNullasZero }
             };
 
             CurrentDl = testData;

@@ -98,7 +98,7 @@ namespace Dev2.Tests.Activities.FindMissingStrategyTest
         [TestMethod]
         public void GetActivityFieldsOffDsfRecordsetLengthActivityExpectedAllFindMissingFieldsToBeReturned()
         {
-            DsfRecordsetLengthActivity activity = new DsfRecordsetLengthActivity();
+            DsfRecordsetNullhandlerLengthActivity activity = new DsfRecordsetNullhandlerLengthActivity();
             activity.RecordsetName = "[[RecordsetName]]";
             activity.RecordsLength = "[[CountNumber]]";
             Dev2FindMissingStrategyFactory fac = new Dev2FindMissingStrategyFactory();

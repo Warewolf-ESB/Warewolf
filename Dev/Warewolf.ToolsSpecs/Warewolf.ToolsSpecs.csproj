@@ -299,12 +299,17 @@
       <DependentUpon>FindRecordsetIndexMultiple.feature</DependentUpon>
     </Compile>
     <Compile Include="Toolbox\Recordset\FindRecordIndexMultiple\FindRecordsetIndexMultipleSteps.cs" />
-    <Compile Include="Toolbox\Recordset\Length\Length.feature.cs">
+    <Compile Include="Toolbox\Recordset\LengthNullHandler\Length.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Length.feature</DependentUpon>
     </Compile>
-    <Compile Include="Toolbox\Recordset\Length\LengthSteps.cs" />
+    <Compile Include="Toolbox\Recordset\LengthSteps.cs" />
+    <Compile Include="Toolbox\Recordset\Length\Length1.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Length.feature</DependentUpon>
+    </Compile>
     <Compile Include="Toolbox\Recordset\Sort\Sort.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -621,9 +626,13 @@
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>FindRecordsetIndexMultiple.feature.cs</LastGenOutput>
     </None>
-    <None Include="Toolbox\Recordset\Length\Length.feature">
+    <None Include="Toolbox\Recordset\LengthNullHandler\Length.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Length.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Toolbox\Recordset\Length\Length.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>Length1.feature.cs</LastGenOutput>
     </None>
     <None Include="Toolbox\Recordset\Sort\Sort.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>

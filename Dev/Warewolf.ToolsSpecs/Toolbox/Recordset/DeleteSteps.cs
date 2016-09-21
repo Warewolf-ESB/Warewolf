@@ -50,12 +50,6 @@ namespace Warewolf.ToolsSpecs.Toolbox.Recordset
             var recordset = scenarioContext.Get<string>("recordset");
             bool treaNullAsZero;
             scenarioContext.TryGetValue("treaNullAsZero", out treaNullAsZero);
-            //var delete = new DsfDeleteRecordNullHandlerActivity
-            //    {
-            //        RecordsetName = recordset,
-            //        Result = ResultVariable,
-            //        TreatNullAsZero = treaNullAsZero
-            //    };
             DsfActivityAbstract<string> delete;
             scenarioContext.TryGetValue("activityMode", out delete);
             if (delete != null)

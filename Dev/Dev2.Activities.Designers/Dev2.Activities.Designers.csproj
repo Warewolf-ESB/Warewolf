@@ -451,14 +451,14 @@
     <Compile Include="Designers2\PostgreSql\Small.xaml.cs">
       <DependentUpon>Small.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Designers2\RecordsLength\RecordsLengthDesigner.xaml.cs">
+    <Compile Include="Designers2\RecordsLengthNullHandler\RecordsLengthDesigner.xaml.cs">
       <DependentUpon>RecordsLengthDesigner.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Designers2\RecordsLength\RecordsLengthDesignerViewModel.cs" />
-    <Compile Include="Designers2\RecordsLength\Large.xaml.cs">
+    <Compile Include="Designers2\RecordsLengthNullHandler\RecordsLengthDesignerViewModel.cs" />
+    <Compile Include="Designers2\RecordsLengthNullHandler\Large.xaml.cs">
       <DependentUpon>Large.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Designers2\RecordsLength\Small.xaml.cs">
+    <Compile Include="Designers2\RecordsLengthNullHandler\Small.xaml.cs">
       <DependentUpon>Small.xaml</DependentUpon>
     </Compile>
     <Compile Include="Designers2\Copy\CopyDesigner.xaml.cs">
@@ -710,6 +710,16 @@
     </Compile>
     <Compile Include="Designers2\ReadFolder\ReadFolderDesignerViewModel.cs" />
     <Compile Include="Designers2\ReadFolder\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\RecordsLength\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\RecordsLength\RecordsLengthDesigner.xaml.cs">
+      <DependentUpon>RecordsLengthDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\RecordsLength\RecordsLengthDesignerViewModel.cs" />
+    <Compile Include="Designers2\RecordsLength\Small.xaml.cs">
       <DependentUpon>Small.xaml</DependentUpon>
     </Compile>
     <Compile Include="Designers2\Rename\Large.xaml.cs">
@@ -1481,15 +1491,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Designers2\RecordsLength\RecordsLengthDesigner.xaml">
+    <Page Include="Designers2\RecordsLengthNullHandler\RecordsLengthDesigner.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Designers2\RecordsLength\Large.xaml">
+    <Page Include="Designers2\RecordsLengthNullHandler\Large.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Designers2\RecordsLength\Small.xaml">
+    <Page Include="Designers2\RecordsLengthNullHandler\Small.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -1714,6 +1724,18 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Designers2\ReadFolder\Small.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\RecordsLength\Large.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\RecordsLength\RecordsLengthDesigner.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\RecordsLength\Small.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

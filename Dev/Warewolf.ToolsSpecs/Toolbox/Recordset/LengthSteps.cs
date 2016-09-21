@@ -24,7 +24,7 @@ using WarewolfParserInterop;
 
 // ReSharper disable NotAccessedVariable
 
-namespace Warewolf.ToolsSpecs.Toolbox.Recordset.Length
+namespace Warewolf.ToolsSpecs.Toolbox.Recordset
 {
     [Binding]
     public class LengthSteps : RecordSetBases
@@ -75,12 +75,30 @@ namespace Warewolf.ToolsSpecs.Toolbox.Recordset.Length
             bool treaNullAsZero;
             scenarioContext.TryGetValue("treaNullAsZero", out treaNullAsZero);
 
-            var length = new DsfRecordsetLengthActivity
+            //var length = new DsfRecordsetNullhandlerLengthActivity
+            //{
+            //    RecordsetName = recordset,
+            //    RecordsLength = ResultVariable, 
+            //    TreatNullAsZero = treaNullAsZero
+            //};
+            DsfActivityAbstract<string> length;
+            scenarioContext.TryGetValue("activityMode", out length);
+            if (length != null)
+
+                length = new DsfRecordsetNullhandlerLengthActivity
+                {
+                    RecordsetName = recordset,
+                    RecordsLength = ResultVariable,
+                    TreatNullAsZero = treaNullAsZero
+                };
+            else
             {
-                RecordsetName = recordset,
-                RecordsLength = ResultVariable, 
-                TreatNullAsZero = treaNullAsZero
-            };
+               length = new DsfRecordsetLengthActivity
+               {
+                   RecordsetName = recordset,
+                   RecordsLength = ResultVariable,
+               };
+            }
 
             TestStartNode = new FlowStep
             {
