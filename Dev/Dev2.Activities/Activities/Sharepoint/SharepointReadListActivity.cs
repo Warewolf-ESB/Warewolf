@@ -54,6 +54,12 @@ namespace Dev2.Activities.Sharepoint
             ExecuteTool(dataObject,0);
         }
 
+
+        public override List<string> GetOutputs()
+        {
+            return ReadListItems.Select(to => to.VariableName).ToList();
+        }
+
         public override void UpdateForEachInputs(IList<Tuple<string, string>> updates)
         {
         }

@@ -85,6 +85,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #endregion
 
+        public override List<string> GetOutputs()
+        {
+            return FieldsCollection.Select(dto => dto.FieldName).ToList();
+        }
+
         #region Overridden NativeActivity Methods
 
         // ReSharper disable RedundantOverridenMember

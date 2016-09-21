@@ -681,5 +681,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         }
 
         #endregion
+
+        public override List<string> GetOutputs()
+        {
+            return ResultsCollection.Select(dto => dto.OutputVariable).ToList();
+        }
     }
 }

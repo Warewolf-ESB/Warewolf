@@ -88,6 +88,11 @@ namespace Dev2.Activities
             }
         }
 
+
+        public override List<string> GetOutputs()
+        {
+            return new List<string> { CommandResult };
+        }
         #region Overrides of DsfNativeActivity<string>
 
         public DsfExecuteCommandLineActivity()

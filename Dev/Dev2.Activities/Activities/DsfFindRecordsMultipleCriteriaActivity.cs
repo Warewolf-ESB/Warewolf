@@ -92,6 +92,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #endregion Ctor
 
+
+        public override List<string> GetOutputs()
+        {
+            return new List<string> { Result };
+        }
+
+
         /// <summary>
         ///     Executes the logic of the activity and calls the backend code to do the work
         ///     Also responsible for adding the results to the data list

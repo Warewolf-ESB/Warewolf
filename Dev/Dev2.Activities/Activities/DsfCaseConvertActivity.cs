@@ -445,5 +445,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         }
 
         #endregion
+
+        public override List<string> GetOutputs()
+        {
+            return ConvertCollection.Select(to => to.Result).ToList();
+        }
     }
 }

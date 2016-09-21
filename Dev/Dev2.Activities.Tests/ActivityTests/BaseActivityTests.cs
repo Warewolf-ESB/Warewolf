@@ -130,6 +130,20 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual("[[Bob]]", dsfForEachItems[0].Name);
             Assert.AreEqual("[[Bob]]", dsfForEachItems[0].Value);
         }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsfBaseActivity_GetOutputs")]
+        public void DsfBaseActivity_GetOutputs_Called_ShouldReturnListWithResultValueInIt()
+        {
+            //------------Setup for test--------------------------
+            var act = new MySimpleActivity { Input1 = "SomeText", Result = "[[Bob]]" };
+            //------------Execute Test---------------------------
+            var outputs = act.GetOutputs();
+            //------------Assert Results-------------------------
+            Assert.AreEqual(1,outputs.Count);
+            Assert.AreEqual("[[Bob]]",outputs[0]);
+        }
     }
 
     internal sealed class MySimpleActivity : DsfBaseActivity

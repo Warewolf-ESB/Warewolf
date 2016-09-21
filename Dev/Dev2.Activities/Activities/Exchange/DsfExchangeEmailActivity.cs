@@ -76,6 +76,12 @@ namespace Dev2.Activities.Exchange
         public new string Result { get; set; }
 
 
+        public override List<string> GetOutputs()
+        {
+            return new List<string> { Result };
+        }
+
+
         #region Overrides of DsfNativeActivity<string>
 
         private bool IsDebug

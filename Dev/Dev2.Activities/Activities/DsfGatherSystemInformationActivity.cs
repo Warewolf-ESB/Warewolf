@@ -59,6 +59,12 @@ namespace Dev2.Activities
             }
         }
 
+
+        public override List<string> GetOutputs()
+        {
+            return SystemInformationCollection.Select(to => to.Result).ToList();
+        }
+
         #region Overrides of DsfNativeActivity<string>
 
         public DsfGatherSystemInformationActivity()

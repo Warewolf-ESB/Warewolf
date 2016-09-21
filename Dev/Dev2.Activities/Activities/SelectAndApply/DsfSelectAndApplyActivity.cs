@@ -31,6 +31,10 @@ namespace Dev2.Activities.SelectAndApply
             };
         }
 
+        public override List<string> GetOutputs()
+        {
+            return new List<string>();
+        }
         protected override void CacheMetadata(NativeActivityMetadata metadata)
         {
             metadata.AddDelegate(ApplyActivityFunc);

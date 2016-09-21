@@ -185,6 +185,26 @@ namespace Dev2.Tests.Activities.ActivityTests
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
+        [TestCategory("DsfBaseActivity_GetOutputs")]
+        public void DsfBaseActivity_GetOutputs_Called_ShouldReturnListWithResultValueInIt()
+        {
+            //------------Setup for test--------------------------
+            const string expression = "[[Numeric(1).num]]";
+            const string roundingType = "Up";
+            const string result = "[[res]]";
+            const string roundingDecimalPlaces = "2";
+            const string decimalPlacesToShow = "2";
+            var act = new DsfNumberFormatActivity { Expression = expression, RoundingType = roundingType, RoundingDecimalPlaces = roundingDecimalPlaces, DecimalPlacesToShow = decimalPlacesToShow, Result = result };
+
+            //------------Execute Test---------------------------
+            var outputs = act.GetOutputs();
+            //------------Assert Results-------------------------
+            Assert.AreEqual(1, outputs.Count);
+            Assert.AreEqual("[[res]]", outputs[0]);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
         [TestCategory("DsfNumberFormatActivity_UpdateForEachInputs")]
         public void DsfNumberFormatActivity_UpdateForEachInputs_MoreThan1Updates_Updates()
         {

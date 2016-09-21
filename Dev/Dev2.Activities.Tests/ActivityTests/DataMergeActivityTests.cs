@@ -335,6 +335,20 @@ Wallis0000Buchan
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
+        [TestCategory("DsfDataMergeActivity_GetOutputs")]
+        public void DsfDataMergeActivity_GetOutputs_Called_ShouldReturnListWithResultValueInIt()
+        {
+            //------------Setup for test--------------------------
+            var act = new DsfDataMergeActivity { Result = "[[res]]", MergeCollection = _mergeCollection };
+            //------------Execute Test---------------------------
+            var outputs = act.GetOutputs();
+            //------------Assert Results-------------------------
+            Assert.AreEqual(1, outputs.Count);
+            Assert.AreEqual("[[res]]", outputs[0]);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
         [TestCategory("DsfDataMergeActivity_UpdateForEachInputs")]
         public void DsfDataMergeActivity_UpdateForEachInputs_MoreThan1Updates_UpdatesMergeCollection()
         {

@@ -415,6 +415,24 @@ namespace Dev2.Tests.Activities.ActivityTests
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
+        [TestCategory("DsfRandomActivity_GetOutputs")]
+        public void DsfRandomActivity_GetOutputs_Called_ShouldReturnListWithResultValueInIt()
+        {
+            //------------Setup for test--------------------------
+            const string From = "[[Numeric(1).num]]";
+            const string To = "Up";
+            const string Result = "[[res]]";
+            const string Length = "2";
+            var act = new DsfRandomActivity { From = From, To = To, Length = Length, Result = Result };
+            //------------Execute Test---------------------------
+            var outputs = act.GetOutputs();
+            //------------Assert Results-------------------------
+            Assert.AreEqual(1, outputs.Count);
+            Assert.AreEqual("[[res]]", outputs[0]);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
         [TestCategory("DsfRandomActivity_UpdateForEachInputs")]
         public void DsfRandomActivity_UpdateForEachInputs_MoreThan1Updates_Updates()
         {

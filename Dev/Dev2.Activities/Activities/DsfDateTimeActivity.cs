@@ -120,6 +120,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             ExecuteTool(dataObject, 0);
         }
 
+
+        public override List<string> GetOutputs()
+        {
+            return new List<string> { Result };
+        }
+
         protected override void ExecuteTool(IDSFDataObject dataObject, int update)
         {
 

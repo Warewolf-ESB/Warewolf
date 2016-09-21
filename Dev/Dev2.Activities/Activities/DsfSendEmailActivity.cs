@@ -158,6 +158,10 @@ namespace Dev2.Activities
 
         #endregion
 
+        public override List<string> GetOutputs()
+        {
+            return new List<string> { Result };
+        }
 
         #region Overrides of DsfNativeActivity<string>
 

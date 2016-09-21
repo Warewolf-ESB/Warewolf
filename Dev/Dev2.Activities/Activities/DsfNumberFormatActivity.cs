@@ -86,6 +86,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #endregion Properties
 
+        public override List<string> GetOutputs()
+        {
+            return new List<string> { Result };
+        }
+
         #region Override Methods
 
         protected override void OnExecute(NativeActivityContext context)
