@@ -9217,6 +9217,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to TreatNullAsZeroToolTip.
+        /// </summary>
+        public static string TreatNullAsZeroToolTip {
+            get {
+                return ResourceManager.GetString("TreatNullAsZeroToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to To identify unique information in a recordset, put the comma separated fields that need to be unique in here. 	&lt;br /&gt;&lt;br /&gt;	Allowed:&lt;br /&gt;	&lt;ol&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;.
         /// </summary>
         public static string UniqueHelpInFields {
