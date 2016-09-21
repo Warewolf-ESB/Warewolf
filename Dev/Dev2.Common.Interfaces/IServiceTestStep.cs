@@ -8,7 +8,7 @@ namespace Dev2.Common.Interfaces
         Guid UniqueId { get; set; }
         string ActivityType { get; set; }
         StepType Type { get; set; }
-        List<IServiceTestOutput> Outputs { get; set; }
+        List<IServiceTestOutput> StepOutputs { get; set; }
 
     }
 }

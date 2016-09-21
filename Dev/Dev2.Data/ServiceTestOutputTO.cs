@@ -6,5 +6,6 @@ namespace Dev2.Data
     {
         public string Variable { get; set; }
         public string Value { get; set; }
+        public string AssertOp { get; set; }
     }
 }

@@ -73,7 +73,9 @@ namespace Warewolf.Studio.ViewModels
             StopTestCommand = new DelegateCommand(StopTest, () => CanStopTest);
             CreateTestCommand = new DelegateCommand(CreateTests);
             DeleteTestCommand = new DelegateCommand<IServiceTestModel>(DeleteTest, CanDeleteTest);
+            DeleteTestStepCommand = new DelegateCommand<IServiceTestStep>(DeleteTestStep);
             DuplicateTestCommand = new DelegateCommand(DuplicateTest, () => CanDuplicateTest);
+            AddNewTestStepCommand = new DelegateCommand(NewTestStep);
             CanSave = true;
             RunAllTestsUrl = WebServer.GetWorkflowUri(resourceModel, "", UrlType.Tests)?.ToString();
             IsLoading = true;
@@ -89,6 +91,11 @@ namespace Warewolf.Studio.ViewModels
 
             WorkflowDesignerViewModel = workflowDesignerViewModel;
             var selectedDesigner = WorkflowDesignerViewModel.SelectedModelItem;
+        }
+
+        private void NewTestStep()
+        {
+            SelectedServiceTest.AddTestStep(Guid.NewGuid().ToString(), "Test Activity Name", new List<IServiceTestOutput>());
         }
 
         private void SetServerName(IContextualResourceModel resourceModel)
@@ -329,9 +336,6 @@ namespace Warewolf.Studio.ViewModels
             set
             {
                 _workflowDesignerViewModel = value;
-
-                var uiElement = _workflowDesignerViewModel.Designer.View;
-
                 OnPropertyChanged(() => WorkflowDesignerViewModel);
             }
         }
@@ -366,6 +370,8 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
+        public ICommand AddNewTestStepCommand { get; set; }
+
         public void Save()
         {
             try
@@ -394,10 +400,11 @@ namespace Warewolf.Studio.ViewModels
                 Enabled = model.Enabled,
                 ErrorExpected = model.ErrorExpected,
                 NoErrorExpected = model.NoErrorExpected,
-                TestSteps = model.TestSteps.Select(step=>new ServiceTestStepTO(step.UniqueId, step.ActivityType,step.Outputs.Select(output => new ServiceTestOutputTO
+                TestSteps = model.TestSteps.Select(step=>new ServiceTestStepTO(step.UniqueId, step.ActivityType,step.StepOutputs.Select(output => new ServiceTestOutputTO
                 {
                     Variable = output.Variable,
-                    Value = output.Value
+                    Value = output.Value,
+                    AssertOp = output.AssertOp
                 } as IServiceTestOutput).ToList(),step.Type) as IServiceTestStep).ToList(),
                 Inputs = model.Inputs.Select(input => new ServiceTestInputTO
                 {
@@ -408,7 +415,8 @@ namespace Warewolf.Studio.ViewModels
                 Outputs = model.Outputs.Select(output => new ServiceTestOutputTO
                 {
                     Variable = output.Variable,
-                    Value = output.Value
+                    Value = output.Value,
+                    AssertOp = output.AssertOp
                 } as IServiceTestOutput).ToList(),
                 LastRunDate = model.LastRunDate,
                 OldTestName = model.OldTestName,
@@ -647,6 +655,14 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
+        private void DeleteTestStep(IServiceTestStep testStep)
+        {
+            if (testStep == null)
+                return;
+
+            SelectedServiceTest.TestSteps.Remove(testStep);
+        }
+
         private ObservableCollection<IServiceTestModel> GetTests()
         {
             try
@@ -697,6 +713,7 @@ namespace Warewolf.Studio.ViewModels
         }
 
         public ICommand DeleteTestCommand { get; set; }
+        public ICommand DeleteTestStepCommand { get; set; }
         public ICommand DuplicateTestCommand { get; set; }
         public ICommand RunAllTestsInBrowserCommand { get; set; }
         public ICommand RunAllTestsCommand { get; set; }
@@ -739,12 +756,12 @@ namespace Warewolf.Studio.ViewModels
             UniqueId = stepUniqueId;
             ActivityType = stepActivityType;
             Type = stepType;
-            Outputs = outputs;
+            StepOutputs = outputs;
         }
 
         public Guid UniqueId { get; set; }
         public string ActivityType { get; set; }
         public StepType Type { get; set; }
-        public List<IServiceTestOutput> Outputs { get; set; }
+        public List<IServiceTestOutput> StepOutputs { get; set; }
     }
 }
