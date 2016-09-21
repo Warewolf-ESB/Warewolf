@@ -179,12 +179,6 @@ namespace Warewolf.UITests
         {
             Uimap.SetPlaybackSettings();
         }
-        
-        [TestCleanup()]
-        public void MyTestCleanup()
-        {
-            Playback.PlaybackError -= Uimap.OnError;
-        }
 
         UIMap Uimap
         {

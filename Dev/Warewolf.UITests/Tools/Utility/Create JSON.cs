@@ -24,12 +24,6 @@ namespace Warewolf.UITests.Tools.Utility
             Uimap.SetPlaybackSettings();
             Uimap.InitializeABlankWorkflow();
         }
-
-        [TestCleanup]
-        public void MyTestCleanup()
-        {
-            Uimap.CleanupABlankWorkflow();
-        }
         
         public TestContext TestContext
         {

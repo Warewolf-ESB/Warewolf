@@ -24,12 +24,6 @@ namespace Warewolf.UITests.Tools.Control_Flow
             Uimap.InitializeABlankWorkflow();
         }
 
-        [TestCleanup]
-        public void MyTestCleanup()
-        {
-            Uimap.CleanupABlankWorkflow();
-        }
-
         UIMap Uimap
         {
             get

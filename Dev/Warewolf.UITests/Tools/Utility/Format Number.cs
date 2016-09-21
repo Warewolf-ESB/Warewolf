@@ -23,12 +23,6 @@ namespace Warewolf.UITests.Tools
             Uimap.InitializeABlankWorkflow();
         }
 
-        [TestCleanup]
-        public void MyTestCleanup()
-        {
-            Uimap.CleanupABlankWorkflow();
-        }
-
         /// <summary>
         ///Gets or sets the test context which provides
         ///information about and functionality for the current test run.
