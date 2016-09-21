@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Dev2.Common.Interfaces;
+// ReSharper disable InconsistentNaming
 
 namespace Dev2.Data
 {
@@ -11,12 +12,12 @@ namespace Dev2.Data
             UniqueId = stepUniqueId;
             ActivityType = stepActivityType;
             Type = stepType;
-            Outputs = outputs;
+            StepOutputs = outputs;
         }
 
         public Guid UniqueId { get; set; }
         public string ActivityType { get; set; }
         public StepType Type { get; set; }
-        public List<IServiceTestOutput> Outputs { get; set; }
+        public List<IServiceTestOutput> StepOutputs { get; set; }
     }
 }

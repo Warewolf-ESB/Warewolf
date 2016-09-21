@@ -1154,6 +1154,11 @@ namespace Dev2.Core.Tests
             get { throw new NotImplementedException(); }
         }
 
+        public StringBuilder DesignerText
+        {
+            get { throw new NotImplementedException(); }
+        }
+
         public void UpdateWorkflowLink(string newLink)
         {
         }
