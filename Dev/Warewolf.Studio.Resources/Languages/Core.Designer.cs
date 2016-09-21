@@ -9217,6 +9217,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to TreatNullAsZeroHelp.
+        /// </summary>
+        public static string TreatNullAsZeroHelp {
+            get {
+                return ResourceManager.GetString("TreatNullAsZeroHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to TreatNullAsZeroToolTip.
         /// </summary>
         public static string TreatNullAsZeroToolTip {

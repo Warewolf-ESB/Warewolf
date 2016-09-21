@@ -30,7 +30,7 @@
         </ResourceDictionary>
     </core:ActivityDesignerTemplate.Resources>
     <core:ActivityDesignerTemplate.RightButtons>
-    <core:ActivityDesignerButton x:Name="DoneButton"
+        <core:ActivityDesignerButton x:Name="DoneButton"
                                      Content="Done"
                                      Margin="0,0,7,12"
                                      IsValidatedBefore="True"
@@ -71,13 +71,18 @@
             </i:Interaction.Behaviors>
         </ui:IntellisenseTextBox>
 
-        <TextBlock Grid.Column="0" Grid.Row="1" Text="Null as Zero" Margin="{StaticResource ControlBorderTop}"/>
-        <CheckBox Grid.Row="1"
+        <TextBlock Grid.Column="0" Grid.Row="1" Text="Null as Zero" Margin="0,-2,0,0"/>
+        <CheckBox x:Name="NullCheckBox"
+                    Grid.Row="1"
                   Grid.Column="1"
-                  Margin="{StaticResource ControlBorderTop}"
+                       Margin="-6,-2,0,0"
                   ToolTip="{x:Static languages:Core.TreatNullAsZeroToolTip}"
                   IsChecked="{Binding Path=ModelItem.TreatNullAsZero, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                   AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_NullAsCheckBox_AutoID}">
+            <i:Interaction.Behaviors>
+                <core1:HelpSetter Text="{x:Static languages:Core.TreatNullAsZeroHelp}" DataContext="{Binding}" />
+            </i:Interaction.Behaviors>
+
         </CheckBox>
 
         <TextBlock Grid.Column="0" Grid.Row="2" Text="Result" Margin="{StaticResource ControlBorderTop}"/>
@@ -99,8 +104,8 @@
                                      Target="{Binding}" />
             </i:Interaction.Behaviors>
         </ui:IntellisenseTextBox>
-       
-            <errors:OnError Grid.Column="0"
+
+        <errors:OnError Grid.Column="0"
                         Grid.Row="3"
                         Grid.ColumnSpan="2" />
     </Grid>
