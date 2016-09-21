@@ -15,6 +15,7 @@ using Dev2.Studio.Core.Activities.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
+// ReSharper disable InconsistentNaming
 
 namespace Dev2.Activities.Designers.Tests.CountRecords
 {
@@ -50,6 +51,26 @@ namespace Dev2.Activities.Designers.Tests.CountRecords
             viewModel.UpdateHelpDescriptor("help");
             //------------Assert Results-------------------------
             mockHelpViewModel.Verify(model => model.UpdateHelpText(It.IsAny<string>()), Times.Once());
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void Constructor_GivenIsNew_ShouldHaveTreatAsNullTrue()
+        {
+            //---------------Set up test pack-------------------
+            var modelItem = CreateModelItem();
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(modelItem);
+            //---------------Execute Test ----------------------
+            var modelProperty = modelItem.Properties["TreatNullAsZero"];
+            var value = modelProperty?.Value;
+            if(value != null)
+            {
+                var currentValue = value.GetCurrentValue();
+                //---------------Test Result -----------------------
+                Assert.IsTrue(bool.Parse(currentValue.ToString()));
+            }
+
         }
 
         static ModelItem CreateModelItem()

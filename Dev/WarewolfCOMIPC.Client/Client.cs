@@ -22,11 +22,14 @@ namespace WarewolfCOMIPC.Client
             string token = Guid.NewGuid().ToString();
 
             // Pass token to child process
-            var psi = new ProcessStartInfo("WarewolfCOMIPC.exe", token) { Verb = "runas" };
-            psi.UseShellExecute = false;
-            psi.ErrorDialog = false;
-            psi.RedirectStandardOutput = false;
-            psi.CreateNoWindow = true;
+            var psi = new ProcessStartInfo("WarewolfCOMIPC.exe", token)
+            {
+                Verb = "runas",
+                UseShellExecute = false,
+                ErrorDialog = false,
+                RedirectStandardOutput = false,
+                CreateNoWindow = true
+            };
             _process = Process.Start(psi);
             _pipe = new NamedPipeClientStream(".", token, PipeDirection.InOut);
             _pipe.Connect();
@@ -53,7 +56,6 @@ namespace WarewolfCOMIPC.Client
         /// </summary>
         /// <param name="clsid"></param>
         /// <param name="function">Name of the function to call.</param>
-        /// <param name="executeType"></param>
         /// <param name="execute"></param>
         /// <param name="args">Array of args to pass to the function.</param>
         /// <returns>Result object returned by the library.</returns>
