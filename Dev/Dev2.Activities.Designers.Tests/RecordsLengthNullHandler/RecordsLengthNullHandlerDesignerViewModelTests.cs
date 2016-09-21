@@ -16,11 +16,11 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
-namespace Dev2.Activities.Designers.Tests.RecordsLength
+namespace Dev2.Activities.Designers.Tests.RecordsLengthNullHandler
 {
     [TestClass]
     // ReSharper disable InconsistentNaming
-    public class RecordsLengthDesignerViewModelTests
+    public class RecordsLengthNullHandlerDesignerViewModelTests
     {
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
@@ -28,7 +28,7 @@ namespace Dev2.Activities.Designers.Tests.RecordsLength
         public void RecordsLengthDesignerViewModel_SetRecordsetNameValue_ModelItemIsValid_RecordSetOnModelItemIsSet()
         {
             var modelItem = CreateModelItem();
-            var viewModel = new TestRecordsLengthDesignerViewModel(modelItem);
+            var viewModel = new TestRecordsLengthnullHandlerDesignerViewModel(modelItem);
             const string ExcpectedVal = "[[Table_Records()]]";
             viewModel.RecordsetNameValue = ExcpectedVal;
             viewModel.Validate();
@@ -47,16 +47,36 @@ namespace Dev2.Activities.Designers.Tests.RecordsLength
             mockHelpViewModel.Setup(model => model.UpdateHelpText(It.IsAny<string>())).Verifiable();
             mockMainViewModel.Setup(model => model.HelpViewModel).Returns(mockHelpViewModel.Object);
             CustomContainer.Register(mockMainViewModel.Object);
-            var viewModel = new TestRecordsLengthDesignerViewModel(CreateModelItem());
+            var viewModel = new TestRecordsLengthnullHandlerDesignerViewModel(CreateModelItem());
             //------------Execute Test---------------------------
             viewModel.UpdateHelpDescriptor("help");
             //------------Assert Results-------------------------
             mockHelpViewModel.Verify(model => model.UpdateHelpText(It.IsAny<string>()), Times.Once());
         }
 
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void Constructor_GivenIsNew_ShouldHaveTreatAsNullTrue()
+        {
+            //---------------Set up test pack-------------------
+            var modelItem = CreateModelItem();
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(modelItem);
+            //---------------Execute Test ----------------------
+            var modelProperty = modelItem.Properties["TreatNullAsZero"];
+            var value = modelProperty?.Value;
+            if (value != null)
+            {
+                var currentValue = value.GetCurrentValue();
+                //---------------Test Result -----------------------
+                Assert.IsTrue(bool.Parse(currentValue.ToString()));
+            }
+
+        }
+
         static ModelItem CreateModelItem()
         {
-            return ModelItemUtils.CreateModelItem(new DsfRecordsetLengthActivity());
+            return ModelItemUtils.CreateModelItem(new DsfRecordsetNullhandlerLengthActivity());
         }
     }
 }

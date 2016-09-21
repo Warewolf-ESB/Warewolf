@@ -217,6 +217,7 @@
     <Compile Include="Activities\DsfOracleDatabaseActivity.cs" />
     <Compile Include="Activities\DsfPostgreSqlActivity.cs" />
     <Compile Include="Activities\DsfRecordsetLengthActivity.cs" />
+    <Compile Include="Activities\DsfRecordsetNullhandlerLengthActivity.cs" />
     <Compile Include="Activities\Debug\DebugItemStaticDataParams.cs" />
     <Compile Include="Activities\Debug\DebugOutputBase.cs" />
     <Compile Include="Activities\DsfFindRecordsMultipleCriteriaActivity.cs" />

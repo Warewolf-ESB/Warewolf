@@ -3,6 +3,10 @@
 	As a Warewolf user
 	I want a tool that takes a record set gives me its length
 
+Background: Setup for workflows for tests
+	Given this feature 
+	Then activity is DsfCountRecordsetNullHandlerActivity
+
 Scenario: Length of a recordset with 3 rows
 	Given I get the length from a recordset that looks like with this shape
 	| [[rs]]    |   |
@@ -167,10 +171,17 @@ Scenario: Length of an null recordset
 	Then the length result should be 0
 	And the execution has "No" error
 
-Scenario: Length of an unassigned recordset
+Scenario: Length Of An Unassigned Recordset With Null Check Not Selected
 	Given get length on record "[[rs()]]"	
+	And Length Treat Null as Empty Recordset is not selected
 	When the length tool is executed
 	Then the execution has "An" error
+
+Scenario: Length Of An Unassigned Recordset With Null Check Selected
+ Given get length on record "[[rs()]]" 
+ And Length Treat Null as Empty Recordset is selected
+ When the length tool is executed
+ Then the execution has "No" error
 
 
 

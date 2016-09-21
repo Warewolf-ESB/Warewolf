@@ -48,7 +48,6 @@ using Dev2.Activities.Designers2.RabbitMQ.Publish;
 using Dev2.Activities.Designers2.Random;
 using Dev2.Activities.Designers2.ReadFile;
 using Dev2.Activities.Designers2.ReadFolder;
-using Dev2.Activities.Designers2.RecordsLength;
 using Dev2.Activities.Designers2.Rename;
 using Dev2.Activities.Designers2.Replace;
 using Dev2.Activities.Designers2.Script;
@@ -94,6 +93,7 @@ using System.Collections.Generic;
 using Dev2.Activities.Designers2.ComDLL;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Dev2.Activities.Designers2.MultiAssignObject;
+
 // ReSharper disable RedundantNameQualifier
 
 // ReSharper disable CheckNamespace
@@ -113,7 +113,8 @@ namespace Dev2.Studio.ActivityDesigners
                 { typeof(DsfSortRecordsActivity), typeof(SortRecordsDesigner) },
                 { typeof(DsfCountRecordsetNullHandlerActivity), typeof(Activities.Designers2.CountRecordsNullHandler.CountRecordsDesigner) },
                 { typeof(DsfCountRecordsetActivity), typeof(Activities.Designers2.CountRecords.CountRecordsDesigner) },
-                { typeof(DsfRecordsetLengthActivity), typeof(RecordsLengthDesigner) },
+                { typeof(DsfRecordsetLengthActivity), typeof(Dev2.Activities.Designers2.RecordsLength.RecordsLengthDesigner) },
+                { typeof(DsfRecordsetNullhandlerLengthActivity), typeof(Dev2.Activities.Designers2.RecordsLengthNullHandler.RecordsLengthDesigner) },
                 { typeof(DsfDeleteRecordNullHandlerActivity), typeof(Dev2.Activities.Designers2.DeleteRecordsNullHandler.DeleteRecordsDesigner) },
                 { typeof(DsfDeleteRecordActivity), typeof(Dev2.Activities.Designers2.DeleteRecords.DeleteRecordsDesigner) },
                 { typeof(DsfUniqueActivity), typeof(UniqueRecordsDesigner) },

@@ -233,10 +233,10 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         public void DsfRecordsetLengthActivity_Property_Check_Expected_No_Change_To_Properties()
         {
-            Type type = _activityList.FirstOrDefault(c => c.Name == "DsfRecordsetLengthActivity");
+            Type type = _activityList.FirstOrDefault(c => c.Name == "DsfRecordsetNullhandlerLengthActivity");
             if (type == null)
             {
-                Assert.Fail("Could not find DsfRecordsetLengthActivity.");
+                Assert.Fail("Could not find DsfRecordsetNullhandlerLengthActivity.");
             }
             PropertyInfo[] properties = GetPropertyInfo(type);
             Assert.IsTrue(properties.Length == 3);

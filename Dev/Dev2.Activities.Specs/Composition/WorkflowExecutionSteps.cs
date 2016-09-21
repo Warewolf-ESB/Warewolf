@@ -1312,7 +1312,7 @@ namespace Dev2.Activities.Specs.Composition
         [Given(@"""(.*)"" contains Length ""(.*)"" on ""(.*)"" into ""(.*)""")]
         public void GivenContainsLengthOnInto(string parentName, string activityName, string recordSet, string result)
         {
-            DsfRecordsetLengthActivity len = new DsfRecordsetLengthActivity { DisplayName = activityName, RecordsLength = result, RecordsetName = recordSet };
+            DsfRecordsetNullhandlerLengthActivity len = new DsfRecordsetNullhandlerLengthActivity { DisplayName = activityName, RecordsLength = result, RecordsetName = recordSet };
             _commonSteps.AddActivityToActivityList(parentName, activityName, len);
         }
 

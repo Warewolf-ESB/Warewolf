@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using Dev2.Activities;
 using Dev2.Activities.Debug;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
+using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract;
 using Dev2.Diagnostics;
@@ -21,6 +22,7 @@ using Dev2.Interfaces;
 using Dev2.Util;
 using Dev2.Validation;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
+using Warewolf.Core;
 using Warewolf.Resource.Errors;
 using Warewolf.Storage;
 
@@ -29,7 +31,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 // ReSharper restore CheckNamespace
 {
 
-    public class DsfRecordsetLengthActivity : DsfActivityAbstract<string>
+    [ToolDescriptorInfo("RecordSet-Length", "Length", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Recordset", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Recordset_Length_Tags")]
+    public class DsfRecordsetNullhandlerLengthActivity : DsfActivityAbstract<string>
     {
         #region Fields
 
@@ -47,13 +50,16 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         [Outputs("Length"), FindMissing]
         public string RecordsLength { get; set; }
 
-        public DsfRecordsetLengthActivity()
+        public DsfRecordsetNullhandlerLengthActivity()
             : base("Length")
         {
             RecordsetName = string.Empty;
             RecordsLength = string.Empty;
             DisplayName = "Length";
+            TreatNullAsZero = true;
         }
+
+        public bool TreatNullAsZero { get; set; }
 
         // ReSharper disable RedundantOverridenMember
         protected override void CacheMetadata(NativeActivityMetadata metadata)
@@ -118,18 +124,28 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         }
                         else
                         {
-                            var count = 0;
+                        
                             if(dataObject.Environment.HasRecordSet(RecordsetName))
                             {
-                                count = dataObject.Environment.GetLength(rs);
+                                var count = dataObject.Environment.GetLength(rs);
+                                var value = count.ToString();
+                                dataObject.Environment.Assign(RecordsLength, value, update);
+                                AddDebugOutputItem(new DebugItemWarewolfAtomResult(value, RecordsLength, ""));
                             }
                             else
                             {
-                                allErrors.AddError("Recordset: "+RecordsetName+" does not exist.");
+                                if (TreatNullAsZero)
+                                {
+                                    dataObject.Environment.Assign(RecordsLength, 0.ToString(), update);
+                                    AddDebugOutputItem(new DebugItemWarewolfAtomResult(0.ToString(), RecordsLength, ""));
+                                }
+                                else
+                                {
+                                    allErrors.AddError(string.Format(ErrorResource.NullRecordSet, RecordsetName));
+                                }
+                                
                             }
-                            var value = count.ToString();
-                            dataObject.Environment.Assign(RecordsLength, value, update);
-                            AddDebugOutputItem(new DebugItemWarewolfAtomResult(value, RecordsLength, ""));
+                           
                         }
                     }
                     catch(Exception e)
@@ -146,7 +162,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 var hasErrors = allErrors.HasErrors();
                 if(hasErrors)
                 {
-                    DisplayAndWriteError("DsfRecordsetLengthActivity", allErrors);
+                    DisplayAndWriteError("DsfRecordsetNullhandlerLengthActivity", allErrors);
                     var errorString = allErrors.MakeDisplayReady();
                     dataObject.Environment.AddError(errorString);
                 }
