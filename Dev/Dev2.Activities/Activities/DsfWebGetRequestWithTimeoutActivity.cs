@@ -79,6 +79,13 @@ namespace Dev2.Activities
             TimeOutText = "100";
         }
 
+
+        public override List<string> GetOutputs()
+        {
+            return new List<string> { Result };
+        }
+
+
         #region Overrides of DsfNativeActivity<string>
 
         /// <summary>

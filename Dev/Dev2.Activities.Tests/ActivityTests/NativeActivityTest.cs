@@ -485,6 +485,12 @@ namespace Dev2.Tests.Activities.ActivityTests
 
         #region Overrides of DsfNativeActivity<string>
 
+
+        public override List<string> GetOutputs()
+        {
+            return new List<string>();
+        }
+
         /// <summary>
         /// When overridden runs the activity's execution logic 
         /// </summary>

@@ -36,6 +36,7 @@ using Newtonsoft.Json;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Hosting;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 using Warewolf.Storage;
+// ReSharper disable ReturnTypeCanBeEnumerable.Global
 
 // ReSharper disable CheckNamespace
 // ReSharper disable InconsistentNaming
@@ -841,6 +842,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         #endregion
 
         protected abstract void ExecuteTool(IDSFDataObject dataObject,int update);
+
+        public abstract List<string> GetOutputs();
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public IEnumerable<IDev2Activity> NextNodes { get; set; }

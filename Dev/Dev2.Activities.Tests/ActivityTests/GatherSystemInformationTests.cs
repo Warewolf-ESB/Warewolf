@@ -495,6 +495,30 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsfGatherSystemInformationActivity_GetOutputs")]
+        public void DsfGatherSystemInformationActivity_GetOutputs_Called_ShouldReturnListWithResultValueInIt()
+        {
+            //------------Setup for test--------------------------
+            IList<GatherSystemInformationTO> systemInformationCollection = new List<GatherSystemInformationTO>
+            {
+                new GatherSystemInformationTO(enTypeOfSystemInformationToGather.CPUTotal, "[[testVar]]", 1),
+                new GatherSystemInformationTO(enTypeOfSystemInformationToGather.Language, "[[testLanguage]]", 2)
+            };
+            var mock = new Mock<IGetSystemInformation>();
+            const string ExpectedValue = "Intel i7";
+            mock.Setup(information => information.GetCPUTotalInformation()).Returns(ExpectedValue);
+            var act = DsfGatherSystemInformationActivity(mock);
+            act.SystemInformationCollection = systemInformationCollection;
+            //------------Execute Test---------------------------
+            var outputs = act.GetOutputs();
+            //------------Assert Results-------------------------
+            Assert.AreEqual(2, outputs.Count);
+            Assert.AreEqual("[[testVar]]", outputs[0]);
+            Assert.AreEqual("[[testLanguage]]", outputs[1]);
+        }
+
+        [TestMethod]
         public void AddListToCollectionWhereNotOverwriteExpectInsertToCollection()
         {
             //------------Setup for test--------------------------

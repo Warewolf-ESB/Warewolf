@@ -592,7 +592,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         }
 
-
+        public override List<string> GetOutputs()
+        {
+            return Outputs.Select(mapping => mapping.MappedTo).ToList();
+        }
 
         #endregion
 

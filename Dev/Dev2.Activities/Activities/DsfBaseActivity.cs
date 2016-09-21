@@ -53,6 +53,15 @@ namespace Dev2.Activities
             ExecuteTool(dataObject, 0);
         }
 
+        #region Overrides of DsfNativeActivity<string>
+
+        public override List<string> GetOutputs()
+        {
+            return new List<string> {Result};
+        }
+
+        #endregion
+
         protected override void ExecuteTool(IDSFDataObject dataObject, int update)
         {
             ErrorResultTO allErrors = new ErrorResultTO();

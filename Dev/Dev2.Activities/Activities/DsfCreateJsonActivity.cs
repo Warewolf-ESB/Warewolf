@@ -61,6 +61,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             DisplayName = "Create JSON";
         }
 
+        public override List<string> GetOutputs()
+        {
+            return new List<string> { JsonString };
+        }
         // ReSharper disable RedundantOverridenMember
         protected override void CacheMetadata(NativeActivityMetadata metadata)
         {
