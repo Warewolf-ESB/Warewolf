@@ -20,8 +20,8 @@ namespace Warewolf.UITests
 {
     public partial class UIMap
     {
-        const int _lenientSearchTimeout = 10000;
-        const int _lenientMaximumRetryCount = 6;
+        const int _lenientSearchTimeout = 8000;
+        const int _lenientMaximumRetryCount = 3;
         const int _strictSearchTimeout = 1000;
         const int _strictMaximumRetryCount = 1;
 
@@ -1002,24 +1002,21 @@ namespace Warewolf.UITests
                 Console.WriteLine("TryClose method failed to close Deploy tab.\n" + e.Message);
             }
         }
-
-        //public void Select_test_From_Test_List()
-        //{
-
-        //}
+        
 
         public void Click_EnableDisable_This_Test_CheckBox(bool nameContainsStar = false)
         {
             WpfCheckBox testEnabledSelector = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestsListboxList.Test1.TestEnabledSelector;
             WpfButton deleteButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestsListboxList.Test1.DeleteButton;
             var beforeClick = testEnabledSelector.Checked;
-
+            
             Mouse.Click(testEnabledSelector);
             WaitForControlVisible(testEnabledSelector);
             Assert.AreNotEqual(beforeClick, testEnabledSelector.Checked);
 
             WaitForControlVisible(deleteButton);
-            Assert.IsTrue(deleteButton.Enabled, "Delete button is disabled");
+            if(beforeClick)
+                Assert.IsTrue(deleteButton.Enabled, "Delete button is disabled");
             Assert_Display_Text_ContainStar(Tab, nameContainsStar);
             Assert_Display_Text_ContainStar(Test, nameContainsStar);
         }
@@ -1109,7 +1106,11 @@ namespace Warewolf.UITests
             // Verify that the 'Enabled' property of 'Run and debug your workflow service' button equals 'False'
             Assert.IsFalse(runAndDebugButton.Enabled, "RunDebug button is enabled");
         }
-
+        public void Select_Test(int instance)
+        {
+            var test = GetCurrentTest(instance);
+            Mouse.Click(test);
+        }
         /// <summary>
         /// Click_RunAll_Button - Use 'Click_RunAll_ButtonParams' to pass parameters into this method.
         /// </summary>
@@ -1348,11 +1349,8 @@ namespace Warewolf.UITests
             //Verify that the 'Exists' property of 'Test Name' label equals 'True'
             Assert.AreEqual(this.Click_Create_New_TestsParams.TestNameTextExists, testNameText.Exists, "Test1 Name textbox does not exist after clicking Create New Test");
 
-            // Verify that the 'Checked' property of 'Select or De-Select to run the test' check box equals 'True'
-            Assert.AreEqual(this.Click_Create_New_TestsParams.TestEnabledSelectorChecked, testEnabledSelector.Checked, "Test 1 is diabled after clicking Create new test from context menu");
-
             // Verify that the 'Exists' property of 'Text' text box equals 'True'
-            Assert.AreEqual(this.Click_Create_New_TestsParams.TextboxExists, textbox.Exists, "Row 1 input value textbox does not exist on workflow tests tab.");
+            ////Assert.AreEqual(this.Click_Create_New_TestsParams.TextboxExists, textbox.Exists, "Row 1 input value textbox does not exist on workflow tests tab.");
 
             Assert_Display_Text_ContainStar(Tab, nameContainsStar, testInstance);
             Assert_Display_Text_ContainStar(Test, nameContainsStar, testInstance);
@@ -1361,7 +1359,7 @@ namespace Warewolf.UITests
         private void Assert_Display_Text_ContainStar(string control, bool containsStar, int instance = 1)
         {
             WpfList testsListBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestsListboxList;
-
+            var test = GetCurrentTest(instance);
             string description = string.Empty;
             if (control == "Tab")
             {
@@ -1373,8 +1371,7 @@ namespace Warewolf.UITests
             }
             else if (control == "Test")
             {
-                var wpfListItem = GetCurrentTest(instance);
-                description = wpfListItem.DisplayText;
+                description = GetTestNameDisplayText(instance, test).DisplayText;
                 if (containsStar)
                     Assert.IsTrue(description.Contains("*"), description + " DOES NOT contain a Star");
                 else
@@ -1390,6 +1387,48 @@ namespace Warewolf.UITests
                 var descriptions = testsListBox.GetContent();
                 Assert.IsFalse(descriptions.Contains("*"));
             }
+        }
+
+        private bool GetTestRunState(int testInstance, WpfListItem test)
+        {            
+            bool value;
+            switch (testInstance)
+            {
+                case 2:
+                    var test2 = test as Test2;
+                    value = test2.TestEnabledSelector.Checked;
+                    break;
+                case 3:
+                    var test3 = test as Test3;
+                    value = test3.TestEnabledSelector.Checked;
+                    break;
+                default:
+                    var test1 = test as Test1;
+                    value = test1.TestEnabledSelector.Checked;
+                    break;
+            }
+            return value;
+        }
+        private WpfText GetTestNameDisplayText(int instance, WpfListItem test)
+        {
+            WpfText property;
+            switch (instance)
+            {                
+                case 2:
+                    var test2 = test as Test2;
+                    property = test2.TestNameDisplay;
+                    break;
+                case 3:
+                    var test3 = test as Test3;
+                    property = test3.TestNameDisplay;
+                    break;
+                default:
+                    var test1 = test as Test1;
+                    property = test1.TestNameDisplay;
+                    break;
+            }
+
+            return property;
         }
 
         public virtual Click_Create_New_TestsParams Click_Create_New_TestsParams
@@ -1412,10 +1451,7 @@ namespace Warewolf.UITests
         public void Select_Test_From_TestList(int testInstance = 1)
         {
             var test = GetCurrentTest(testInstance);
-
-            // Click 'Warewolf.Studio.ViewModels.ServiceTestModel' list item
-            //Mouse.Click(test, new Point(189, 19));
-            if (test != null)
+            if(test != null)
                 Mouse.Click(test);
         }
         public void Select_Dice_From_Service_Picker(string tabName)
@@ -1439,22 +1475,22 @@ namespace Warewolf.UITests
             else if (tabName == "PerfomanceCounterTab")
                 Assert.AreEqual("Dice", ResourceText.DisplayText, "Resource Name is not set to Dice after selecting Dice from Service picker");
         }
-        public WpfText GetCurrentTest(int testInstance)
+        public WpfListItem GetCurrentTest(int testInstance)
         {
-            WpfText test;
+            WpfListItem test;
             switch (testInstance)
             {
                 case 1:
-                    test = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestsListboxList.Test1.TestNameDisplay;
+                    test = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestsListboxList.Test1;
                     break;
                 case 2:
-                    test = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestsListboxList.Test2.TestNameDisplay;
+                    test = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestsListboxList.Test2;
                     break;
                 case 3:
-                    test = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestsListboxList.Test3.TestNameDisplay;
+                    test = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestsListboxList.Test3;
                     break;
                 default:
-                    test = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestsListboxList.Test1.TestNameDisplay;
+                    test = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestsListboxList.Test1;
                     break;
             }
             return test;
@@ -1528,6 +1564,28 @@ namespace Warewolf.UITests
         }
 
         private Select_Delete_FromContextMenuParams mSelect_Delete_FromContextMenuParams;
+
+        public void TryRemoveAllTests()
+        {
+            WpfList testsListBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestsListboxList;
+            
+            var testsExists = true;
+            while (testsExists)
+            {
+                if(testsListBox.GetContent().Length > 1)
+                {
+                    Select_Test(1);
+                    var testEnabledSelector = MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestsListboxList.Test1.TestEnabledSelector;
+                    if(testEnabledSelector.Checked)                    
+                        Mouse.Click(testEnabledSelector);
+                    Click_Delete_Test_Button();
+                    Click_Yes_On_The_Confirm_Delete();
+                }
+                else
+                    testsExists = false;
+                testsListBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestsListboxList;
+            }
+        }
     }
     /// <summary>
     /// Parameters to be passed into 'Click_RunAll_Button'

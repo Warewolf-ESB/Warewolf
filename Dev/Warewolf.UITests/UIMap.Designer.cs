@@ -34237,7 +34237,7 @@ namespace Warewolf.UITests
                 {
                     this.mTestEnabledSelector = new WpfCheckBox(this);
                     #region Search Criteria
-                    this.mTestEnabledSelector.SearchProperties[WpfCheckBox.PropertyNames.HelpText] = "Select or De-Select to run the test";
+                    this.mTestEnabledSelector.SearchProperties[WpfCheckBox.PropertyNames.HelpText] = "Enable or Ignore this test";
                     this.mTestEnabledSelector.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
                     #endregion
                 }
@@ -34254,6 +34254,7 @@ namespace Warewolf.UITests
                     this.mRunButton = new WpfButton(this);
                     #region Search Criteria
                     this.mRunButton.SearchProperties[WpfButton.PropertyNames.Name] = "";
+                    this.mRunButton.SearchProperties[WpfButton.PropertyNames.HelpText] = "Run this test";
                     this.mRunButton.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
                     #endregion
                 }
@@ -34270,6 +34271,7 @@ namespace Warewolf.UITests
                     this.mStopButton = new WpfButton(this);
                     #region Search Criteria
                     this.mStopButton.SearchProperties[WpfButton.PropertyNames.Name] = "";
+                    this.mStopButton.SearchProperties[WpfButton.PropertyNames.HelpText] = "Stop this test";
                     this.mStopButton.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
                     #endregion
                 }
@@ -34286,6 +34288,7 @@ namespace Warewolf.UITests
                     this.mDeleteButton = new WpfButton(this);
                     #region Search Criteria
                     this.mDeleteButton.SearchProperties[WpfButton.PropertyNames.Name] = "";
+                    this.mDeleteButton.SearchProperties[WpfButton.PropertyNames.HelpText] = "Delete this test";
                     this.mDeleteButton.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
                     #endregion
                 }
@@ -34301,6 +34304,7 @@ namespace Warewolf.UITests
                 {
                     this.mTestNameDisplay = new WpfText(this);
                     #region Search Criteria
+                    this.mTestNameDisplay.SearchProperties[WpfText.PropertyNames.HelpText] = "Sanele testing";
                     this.mTestNameDisplay.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
                     #endregion
                 }
@@ -34348,7 +34352,7 @@ namespace Warewolf.UITests
                 {
                     this.mFailing = new WpfText(this);
                     #region Search Criteria
-                    this.mFailing.SearchProperties[WpfText.PropertyNames.HelpText] = "Failing";
+                    this.mFailing.SearchProperties[WpfText.PropertyNames.HelpText] = "Failed";
                     this.mFailing.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
                     #endregion
                 }
@@ -34451,7 +34455,7 @@ namespace Warewolf.UITests
                 {
                     this.mTestEnabledSelector = new WpfCheckBox(this);
                     #region Search Criteria
-                    this.mTestEnabledSelector.SearchProperties[WpfCheckBox.PropertyNames.HelpText] = "Select or De-Select to run the test";
+                    this.mTestEnabledSelector.SearchProperties[WpfCheckBox.PropertyNames.HelpText] = "Enable or Ignore this test";
                     this.mTestEnabledSelector.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
                     #endregion
                 }
@@ -34467,7 +34471,7 @@ namespace Warewolf.UITests
                 {
                     this.mRunButton = new WpfButton(this);
                     #region Search Criteria
-                    this.mRunButton.SearchProperties[WpfButton.PropertyNames.Name] = "";
+                    this.mRunButton.SearchProperties[WpfButton.PropertyNames.HelpText] = "Run this test";
                     this.mRunButton.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
                     #endregion
                 }
@@ -34483,7 +34487,7 @@ namespace Warewolf.UITests
                 {
                     this.mStopButton = new WpfButton(this);
                     #region Search Criteria
-                    this.mStopButton.SearchProperties[WpfButton.PropertyNames.Name] = "";
+                    this.mStopButton.SearchProperties[WpfButton.PropertyNames.HelpText] = "Stop this test";
                     this.mStopButton.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
                     #endregion
                 }
@@ -34499,6 +34503,7 @@ namespace Warewolf.UITests
                 {
                     this.mDeleteButton = new WpfButton(this);
                     #region Search Criteria
+                    this.mDeleteButton.SearchProperties[WpfButton.PropertyNames.HelpText] = "Delete this test";
                     this.mDeleteButton.SearchProperties[WpfButton.PropertyNames.Name] = "";
                     this.mDeleteButton.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
                     #endregion
@@ -34515,6 +34520,7 @@ namespace Warewolf.UITests
                 {
                     this.mTestNameDisplay = new WpfText(this);
                     #region Search Criteria
+                    this.mTestNameDisplay.SearchProperties[WpfText.PropertyNames.HelpText] = "Sanele testing";
                     this.mTestNameDisplay.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
                     #endregion
                 }
@@ -34665,7 +34671,7 @@ namespace Warewolf.UITests
                 {
                     this.mTestEnabledSelector = new WpfCheckBox(this);
                     #region Search Criteria
-                    this.mTestEnabledSelector.SearchProperties[WpfCheckBox.PropertyNames.HelpText] = "Select or De-Select to run the test";
+                    this.mTestEnabledSelector.SearchProperties[WpfCheckBox.PropertyNames.HelpText] = "Enable or Ignore this test";
                     this.mTestEnabledSelector.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
                     #endregion
                 }
@@ -34682,6 +34688,7 @@ namespace Warewolf.UITests
                     this.mRunButton = new WpfButton(this);
                     #region Search Criteria
                     this.mRunButton.SearchProperties[WpfButton.PropertyNames.Name] = "";
+                    this.mRunButton.SearchProperties[WpfButton.PropertyNames.HelpText] = "Run this test";
                     this.mRunButton.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
                     #endregion
                 }
@@ -34698,6 +34705,7 @@ namespace Warewolf.UITests
                     this.mStopButton = new WpfButton(this);
                     #region Search Criteria
                     this.mStopButton.SearchProperties[WpfButton.PropertyNames.Name] = "";
+                    this.mStopButton.SearchProperties[WpfButton.PropertyNames.HelpText] = "Stop this test";
                     this.mStopButton.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
                     #endregion
                 }
@@ -34714,6 +34722,7 @@ namespace Warewolf.UITests
                     this.mDeleteButton = new WpfButton(this);
                     #region Search Criteria
                     this.mDeleteButton.SearchProperties[WpfButton.PropertyNames.Name] = "";
+                    this.mDeleteButton.SearchProperties[WpfButton.PropertyNames.HelpText] = "Delete this test";
                     this.mDeleteButton.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
                     #endregion
                 }
@@ -34729,6 +34738,7 @@ namespace Warewolf.UITests
                 {
                     this.mTestNameDisplay = new WpfText(this);
                     #region Search Criteria
+                    this.mTestNameDisplay.SearchProperties[WpfText.PropertyNames.HelpText] = "Sanele testing";
                     this.mTestNameDisplay.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
                     #endregion
                 }

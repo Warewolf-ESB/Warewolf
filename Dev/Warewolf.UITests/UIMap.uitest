@@ -20872,9 +20872,9 @@ Error while saving: This task requires that the user account specified has 'Log 
                                             <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
                                           </WindowTitles>
                                           <AndCondition>
-                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                             <PropertyCondition Name="ControlType">CheckBox</PropertyCondition>
-                                            <PropertyCondition Name="HelpText">Select or De-Select to run the test</PropertyCondition>
+                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                            <PropertyCondition Name="HelpText">Enable or Ignore this test</PropertyCondition>
                                           </AndCondition>
                                           <SupportLevel>0</SupportLevel>
                                           <Descendants />
@@ -20888,6 +20888,7 @@ Error while saving: This task requires that the user account specified has 'Log 
                                             <PropertyCondition Name="ControlType">Button</PropertyCondition>
                                             <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                             <PropertyCondition Name="Name"></PropertyCondition>
+                                            <PropertyCondition Name="HelpText">Run this test</PropertyCondition>
                                           </AndCondition>
                                           <SupportLevel>0</SupportLevel>
                                           <Descendants />
@@ -20901,6 +20902,7 @@ Error while saving: This task requires that the user account specified has 'Log 
                                             <PropertyCondition Name="ControlType">Button</PropertyCondition>
                                             <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                             <PropertyCondition Name="Name"></PropertyCondition>
+                                            <PropertyCondition Name="HelpText">Stop this test</PropertyCondition>
                                           </AndCondition>
                                           <SupportLevel>0</SupportLevel>
                                           <Descendants />
@@ -20914,6 +20916,7 @@ Error while saving: This task requires that the user account specified has 'Log 
                                             <PropertyCondition Name="ControlType">Button</PropertyCondition>
                                             <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                             <PropertyCondition Name="Name"></PropertyCondition>
+                                            <PropertyCondition Name="HelpText">Delete this test</PropertyCondition>
                                           </AndCondition>
                                           <SupportLevel>0</SupportLevel>
                                           <Descendants />
@@ -20926,6 +20929,7 @@ Error while saving: This task requires that the user account specified has 'Log 
                                           <AndCondition>
                                             <PropertyCondition Name="ControlType">Text</PropertyCondition>
                                             <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                            <PropertyCondition Name="HelpText">Sanele testing</PropertyCondition>
                                           </AndCondition>
                                           <SupportLevel>0</SupportLevel>
                                           <Descendants />
@@ -20964,7 +20968,7 @@ Error while saving: This task requires that the user account specified has 'Log 
                                           <AndCondition>
                                             <PropertyCondition Name="ControlType">Text</PropertyCondition>
                                             <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                            <PropertyCondition Name="HelpText">Failing</PropertyCondition>
+                                            <PropertyCondition Name="HelpText">Failed</PropertyCondition>
                                           </AndCondition>
                                           <SupportLevel>0</SupportLevel>
                                           <Descendants />
@@ -21029,9 +21033,9 @@ Error while saving: This task requires that the user account specified has 'Log 
                                             <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
                                           </WindowTitles>
                                           <AndCondition>
-                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                             <PropertyCondition Name="ControlType">CheckBox</PropertyCondition>
-                                            <PropertyCondition Name="HelpText">Select or De-Select to run the test</PropertyCondition>
+                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                            <PropertyCondition Name="HelpText">Enable or Ignore this test</PropertyCondition>
                                           </AndCondition>
                                           <SupportLevel>0</SupportLevel>
                                           <Descendants />
@@ -21044,7 +21048,7 @@ Error while saving: This task requires that the user account specified has 'Log 
                                           <AndCondition>
                                             <PropertyCondition Name="ControlType">Button</PropertyCondition>
                                             <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                            <PropertyCondition Name="Name"></PropertyCondition>
+                                            <PropertyCondition Name="HelpText">Run this test</PropertyCondition>
                                           </AndCondition>
                                           <SupportLevel>0</SupportLevel>
                                           <Descendants />
@@ -21057,7 +21061,7 @@ Error while saving: This task requires that the user account specified has 'Log 
                                           <AndCondition>
                                             <PropertyCondition Name="ControlType">Button</PropertyCondition>
                                             <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                            <PropertyCondition Name="Name"></PropertyCondition>
+                                            <PropertyCondition Name="HelpText">Stop this test</PropertyCondition>
                                           </AndCondition>
                                           <SupportLevel>0</SupportLevel>
                                           <Descendants />
@@ -21070,6 +21074,7 @@ Error while saving: This task requires that the user account specified has 'Log 
                                           <AndCondition>
                                             <PropertyCondition Name="ControlType">Button</PropertyCondition>
                                             <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                            <PropertyCondition Name="HelpText">Delete this test</PropertyCondition>
                                             <PropertyCondition Name="Name"></PropertyCondition>
                                           </AndCondition>
                                           <SupportLevel>0</SupportLevel>
@@ -21083,6 +21088,7 @@ Error while saving: This task requires that the user account specified has 'Log 
                                           <AndCondition>
                                             <PropertyCondition Name="ControlType">Text</PropertyCondition>
                                             <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                            <PropertyCondition Name="HelpText">Sanele testing</PropertyCondition>
                                           </AndCondition>
                                           <SupportLevel>0</SupportLevel>
                                           <Descendants />
@@ -21184,9 +21190,9 @@ Error while saving: This task requires that the user account specified has 'Log 
                                             <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
                                           </WindowTitles>
                                           <AndCondition>
-                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                             <PropertyCondition Name="ControlType">CheckBox</PropertyCondition>
-                                            <PropertyCondition Name="HelpText">Select or De-Select to run the test</PropertyCondition>
+                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                            <PropertyCondition Name="HelpText">Enable or Ignore this test</PropertyCondition>
                                           </AndCondition>
                                           <SupportLevel>0</SupportLevel>
                                           <Descendants />
@@ -21200,6 +21206,7 @@ Error while saving: This task requires that the user account specified has 'Log 
                                             <PropertyCondition Name="ControlType">Button</PropertyCondition>
                                             <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                             <PropertyCondition Name="Name"></PropertyCondition>
+                                            <PropertyCondition Name="HelpText">Run this test</PropertyCondition>
                                           </AndCondition>
                                           <SupportLevel>0</SupportLevel>
                                           <Descendants />
@@ -21213,6 +21220,7 @@ Error while saving: This task requires that the user account specified has 'Log 
                                             <PropertyCondition Name="ControlType">Button</PropertyCondition>
                                             <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                             <PropertyCondition Name="Name"></PropertyCondition>
+                                            <PropertyCondition Name="HelpText">Stop this test</PropertyCondition>
                                           </AndCondition>
                                           <SupportLevel>0</SupportLevel>
                                           <Descendants />
@@ -21226,6 +21234,7 @@ Error while saving: This task requires that the user account specified has 'Log 
                                             <PropertyCondition Name="ControlType">Button</PropertyCondition>
                                             <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                             <PropertyCondition Name="Name"></PropertyCondition>
+                                            <PropertyCondition Name="HelpText">Delete this test</PropertyCondition>
                                           </AndCondition>
                                           <SupportLevel>0</SupportLevel>
                                           <Descendants />
@@ -21238,6 +21247,7 @@ Error while saving: This task requires that the user account specified has 'Log 
                                           <AndCondition>
                                             <PropertyCondition Name="ControlType">Text</PropertyCondition>
                                             <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                            <PropertyCondition Name="HelpText">Sanele testing</PropertyCondition>
                                           </AndCondition>
                                           <SupportLevel>0</SupportLevel>
                                           <Descendants />
