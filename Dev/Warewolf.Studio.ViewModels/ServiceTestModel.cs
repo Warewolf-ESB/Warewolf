@@ -477,12 +477,19 @@ namespace Warewolf.Studio.ViewModels
                 throw new ArgumentNullException(nameof(activityTypeName));
             if (serviceTestOutputs == null)
                 throw new ArgumentNullException(nameof(serviceTestOutputs));
-            var testStep = new ServiceTestStep(Guid.Parse(activityUniqueID), activityTypeName, serviceTestOutputs, StepType.Mock, null);
-            var testStepChild1 = new ServiceTestStep(Guid.Parse(activityUniqueID), activityTypeName, serviceTestOutputs, StepType.Mock, testStep);
-            var testStepChild2 = new ServiceTestStep(Guid.Parse(activityUniqueID), activityTypeName, serviceTestOutputs, StepType.Mock, testStep);
+            var testStep = new ServiceTestStep(Guid.Parse(activityUniqueID), activityTypeName, serviceTestOutputs, StepType.Mock);
+            var testStepChild1 = new ServiceTestStep(Guid.Parse(activityUniqueID), activityTypeName, serviceTestOutputs, StepType.Mock);
+            var testStepChild2 = new ServiceTestStep(Guid.Parse(activityUniqueID), activityTypeName, serviceTestOutputs, StepType.Mock);
+            var testStepChild3 = new ServiceTestStep(Guid.Parse(activityUniqueID), activityTypeName, serviceTestOutputs, StepType.Mock);
 
+            testStepChild1.Parent = testStep;
             testStepChild1.Children.Add(testStepChild2);
+
+            testStepChild2.Parent = testStepChild1;
             testStep.Children.Add(testStepChild1);
+
+            testStepChild3.Parent = testStep;
+            testStep.Children.Add(testStepChild3);
 
             TestSteps.Add(testStep);
         }
@@ -676,24 +683,25 @@ namespace Warewolf.Studio.ViewModels
     public class ServiceTestStep : BindableBase, IServiceTestStep
     {
         private string _stepDescription;
-        private List<string> _assertOps;
         private StepType _type;
         private string _activityType;
         private List<IServiceTestOutput> _stepOutputs;
         private Guid _uniqueId;
         private IServiceTestStep _parent;
         private ObservableCollection<IServiceTestStep> _children;
+        private bool _assertSelected;
+        private bool _mockSelected;
 
-        public ServiceTestStep(Guid uniqueId, string activityTypeName, List<IServiceTestOutput> serviceTestOutputs, StepType stepType, IServiceTestStep parent)
+        public ServiceTestStep(Guid uniqueId, string activityTypeName, List<IServiceTestOutput> serviceTestOutputs, StepType stepType)
         {
             UniqueId = uniqueId;
             ActivityType = activityTypeName;
             StepOutputs = serviceTestOutputs;
             Type = stepType;
-            Parent = parent;
 
+            AssertSelected = true;
+            MockSelected = false;
             StepDescription = "New Test Description";
-            AssertOps = new List<string> {"="};
             Children = new ObservableCollection<IServiceTestStep>();
         }
 
@@ -722,7 +730,7 @@ namespace Warewolf.Studio.ViewModels
             get { return _type; }
             set
             {
-                _type = value; 
+                _type = value;
                 OnPropertyChanged(() => Type);
             }
         }
@@ -767,13 +775,33 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        public List<string> AssertOps
+        public bool IsExpanderVisible => Children.Count > 0;
+
+        public bool AssertSelected
         {
-            get { return _assertOps; }
+            get { return _assertSelected; }
             set
             {
-                _assertOps = value;
-                OnPropertyChanged(() => AssertOps);
+                _assertSelected = value;
+                if (_assertSelected)
+                {
+                    Type = StepType.Assert;
+                }
+                OnPropertyChanged(() => AssertSelected);
+            }
+        }
+
+        public bool MockSelected
+        {
+            get { return _mockSelected; }
+            set
+            {
+                _mockSelected = value;
+                if (_mockSelected)
+                {
+                    Type = StepType.Mock;
+                }
+                OnPropertyChanged(() => MockSelected);
             }
         }
     }
