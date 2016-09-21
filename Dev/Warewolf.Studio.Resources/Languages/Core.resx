@@ -2695,6 +2695,36 @@ You can use File System, URI, SFTP, FTP or FTPS format.</value>
   <data name="ManageWebSourceViewInBrowserTooltip" xml:space="preserve">
     <value>Open this URL in your default browser</value>
   </data>
+  <data name="ServiceTestStepDeleteStepTooltip" xml:space="preserve">
+    <value>ServiceTestStepDeleteStepTooltip</value>
+  </data>
+  <data name="ServiceTestStepDeleteStepHelpText" xml:space="preserve">
+    <value>ServiceTestStepDeleteStepHelpText</value>
+  </data>
+  <data name="ServiceTestStepAssertValueTooltip" xml:space="preserve">
+    <value>ServiceTestStepAssertValueTooltip</value>
+  </data>
+  <data name="ServiceTestStepAssertValueHelpText" xml:space="preserve">
+    <value>ServiceTestStepAssertValueHelpText</value>
+  </data>
+  <data name="ServiceTestStepAssertOpsTooltip" xml:space="preserve">
+    <value>ServiceTestStepAssertOpsTooltip</value>
+  </data>
+  <data name="ServiceTestStepAssertOpsHelpText" xml:space="preserve">
+    <value>ServiceTestStepAssertOpsHelpText</value>
+  </data>
+  <data name="ServiceTestStepAssertRadioButtonTooltip" xml:space="preserve">
+    <value>ServiceTestStepAssertRadioButtonTooltip</value>
+  </data>
+  <data name="ServiceTestStepAssertRadioButtonHelpText" xml:space="preserve">
+    <value>ServiceTestStepAssertRadioButtonHelpText</value>
+  </data>
+  <data name="ServiceTestStepMockRadioButtonTooltip" xml:space="preserve">
+    <value>ServiceTestStepMockRadioButtonTooltip</value>
+  </data>
+  <data name="ServiceTestStepMockRadioButtonHelpText" xml:space="preserve">
+    <value>ServiceTestStepMockRadioButtonHelpText</value>
+  </data>
   <data name="ServiceTestNameHelpText" xml:space="preserve">
     <value>The name of this test</value>
   </data>
