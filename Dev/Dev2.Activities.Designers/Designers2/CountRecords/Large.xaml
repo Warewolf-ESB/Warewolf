@@ -14,8 +14,8 @@
                                xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna;assembly=Warewolf.Studio.Themes.Luna"
                                Width="320"
                                MinWidth="320"
-                               MinHeight="175"
-                               Height="175"
+                               MinHeight="200"
+                               Height="200"
                                MaxWidth="600"
                                MaxHeight="175"
                                mc:Ignorable="d"
@@ -46,6 +46,7 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
         <TextBlock Grid.Column="0" Grid.Row="0" Text="Recordset" />
@@ -70,8 +71,17 @@
             </i:Interaction.Behaviors>
         </ui:IntellisenseTextBox>
 
-        <TextBlock Grid.Column="0" Grid.Row="1" Text="Result" Margin="{StaticResource ControlBorderTop}"/>
-        <ui:IntellisenseTextBox Grid.Row="1"
+        <TextBlock Grid.Column="0" Grid.Row="1" Text="Null as Zero" Margin="{StaticResource ControlBorderTop}"/>
+        <CheckBox Grid.Row="1"
+                  Grid.Column="1"
+                  Margin="{StaticResource ControlBorderTop}"
+                  ToolTip="{x:Static languages:Core.TreatNullAsZeroToolTip}"
+                  IsChecked="{Binding Path=ModelItem.TreatNullAsZero, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                  AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_NullAsCheckBox_AutoID}">
+        </CheckBox>
+
+        <TextBlock Grid.Column="0" Grid.Row="2" Text="Result" Margin="{StaticResource ControlBorderTop}"/>
+        <ui:IntellisenseTextBox Grid.Row="2"
                                 Grid.Column="1"
                                 Margin="{StaticResource ControlBorderTop}"
                                 DefaultText="[[Count]]"
@@ -89,8 +99,9 @@
                                      Target="{Binding}" />
             </i:Interaction.Behaviors>
         </ui:IntellisenseTextBox>
-        <errors:OnError Grid.Column="0"
-                        Grid.Row="2"
+       
+            <errors:OnError Grid.Column="0"
+                        Grid.Row="3"
                         Grid.ColumnSpan="2" />
     </Grid>
 </core:ActivityDesignerTemplate>
