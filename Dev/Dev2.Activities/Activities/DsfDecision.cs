@@ -355,4 +355,61 @@ namespace Dev2.Activities
 
         public bool And { private get; set; }
     }
+
+
+    public class TestMockDecisionStep : DsfActivityAbstract<string>
+    {
+        private readonly DsfDecision _dsfDecision;
+
+        public TestMockDecisionStep(DsfDecision dsfDecision)
+            : base(dsfDecision.DisplayName)
+        {
+            _dsfDecision = dsfDecision;
+        }
+
+        public string NameOfArmToReturn { get; set; }
+
+        #region Overrides of DsfNativeActivity<string>
+
+        protected override void OnExecute(NativeActivityContext context)
+        {
+        }
+
+        public override void UpdateForEachInputs(IList<Tuple<string, string>> updates)
+        {
+        }
+
+        public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates)
+        {
+        }
+
+        public override IList<DsfForEachItem> GetForEachInputs()
+        {
+            return null;
+        }
+
+        public override IList<DsfForEachItem> GetForEachOutputs()
+        {
+            return null;
+        }
+
+        protected override void ExecuteTool(IDSFDataObject dataObject, int update)
+        {
+            var trueArmText = _dsfDecision.Conditions.TrueArmText;
+            var falseArmText = _dsfDecision.Conditions.FalseArmText;
+            if (NameOfArmToReturn == falseArmText)
+            {
+                NextNodes = _dsfDecision.FalseArm;
+                return;
+            }
+            if (NameOfArmToReturn == trueArmText)
+            {
+                NextNodes = _dsfDecision.TrueArm;
+                return;
+            }
+            throw new ArgumentException($"No matching arm for Decision Mock. Mock Arm value '{NameOfArmToReturn}'. Decision Arms True Arm: '{trueArmText}' False Arm: '{falseArmText}'");
+        }
+
+        #endregion
+    }
 }
