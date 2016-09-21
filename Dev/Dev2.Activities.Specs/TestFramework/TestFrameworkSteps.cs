@@ -1308,6 +1308,26 @@ namespace Dev2.Activities.Specs.TestFramework
 
                         }
                     }
+                    else
+                    {
+                        var foundNode = act.Nodes.FirstOrDefault(node =>
+                        {
+                            var searchNode = node as FlowStep;
+                            if (searchNode != null)
+                            {
+                                return searchNode.Action.DisplayName.TrimEnd(' ').Equals(actNameToFind, StringComparison.InvariantCultureIgnoreCase);
+                            }
+                            return false;
+                        });
+                        var decisionNode = foundNode as FlowStep;
+                        var action = decisionNode.Action;
+                        var activity = (Unlimited.Applications.BusinessDesignStudio.Activities.DsfActivityAbstract<string>)action;
+                        var var = tableRow["Output Variable"];
+                        var value = tableRow["Output Value"];
+                        var serviceTestOutputs = new List<IServiceTestOutput> { new ServiceTestOutput(var, value) };
+                        var type = activity.GetType();
+                        test.AddTestStep(activity.UniqueID, type.Name, serviceTestOutputs);
+                    }
                 }
             }
         }

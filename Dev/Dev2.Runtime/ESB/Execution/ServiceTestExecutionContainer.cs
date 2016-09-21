@@ -157,29 +157,32 @@ namespace Dev2.Runtime.ESB.Execution
 
         private static void AddRecordsetsInputs(IEnumerable<IServiceTestInput> recSets, IExecutionEnvironment environment)
         {
-            var groupedRecsets = recSets.GroupBy(item => DataListUtil.ExtractRecordsetNameFromValue(item.Variable));
-            foreach (var groupedRecset in groupedRecsets)
+            if(recSets != null)
             {
-                var dataListItems = groupedRecset.GroupBy(item => DataListUtil.ExtractIndexRegionFromRecordset(item.Variable));
-                foreach (var dataListItem in dataListItems)
+                var groupedRecsets = recSets.GroupBy(item => DataListUtil.ExtractRecordsetNameFromValue(item.Variable));
+                foreach (var groupedRecset in groupedRecsets)
                 {
-                    List<IServiceTestInput> recSetsToAssign = new List<IServiceTestInput>();
-                    var empty = true;
-                    foreach (var listItem in dataListItem)
+                    var dataListItems = groupedRecset.GroupBy(item => DataListUtil.ExtractIndexRegionFromRecordset(item.Variable));
+                    foreach (var dataListItem in dataListItems)
                     {
-                        if (!string.IsNullOrEmpty(listItem.Value))
+                        List<IServiceTestInput> recSetsToAssign = new List<IServiceTestInput>();
+                        var empty = true;
+                        foreach (var listItem in dataListItem)
                         {
-                            empty = false;
-                        }
-                        recSetsToAssign.Add(listItem);
-                    }
-                    if (!empty)
-                    {
-                        foreach(var serviceTestInput in recSetsToAssign)
-                        {
-                            if (!serviceTestInput.EmptyIsNull || !string.IsNullOrEmpty(serviceTestInput.Value))
+                            if (!string.IsNullOrEmpty(listItem.Value))
                             {
-                                environment.Assign(DataListUtil.AddBracketsToValueIfNotExist(serviceTestInput.Variable), serviceTestInput.Value, 0);
+                                empty = false;
+                            }
+                            recSetsToAssign.Add(listItem);
+                        }
+                        if (!empty)
+                        {
+                            foreach(var serviceTestInput in recSetsToAssign)
+                            {
+                                if (!serviceTestInput.EmptyIsNull || !string.IsNullOrEmpty(serviceTestInput.Value))
+                                {
+                                    environment.Assign(DataListUtil.AddBracketsToValueIfNotExist(serviceTestInput.Variable), serviceTestInput.Value, 0);
+                                }
                             }
                         }
                     }
@@ -490,7 +493,7 @@ namespace Dev2.Runtime.ESB.Execution
 
         protected override void ExecuteTool(IDSFDataObject dataObject, int update)
         {
-            AddRecordsetsInputs(_outputs.Where(output => DataListUtil.IsValueRecordset(output.Variable) && !output.Variable.Contains("@")), DataObject.Environment);
+            AddRecordsetsInputs(_outputs.Where(output => DataListUtil.IsValueRecordset(output.Variable) && !output.Variable.Contains("@")), dataObject.Environment);
             foreach (var output in _outputs)
             {
                 var variable = DataListUtil.AddBracketsToValueIfNotExist(output.Variable);
@@ -498,11 +501,11 @@ namespace Dev2.Runtime.ESB.Execution
                 if (variable.StartsWith("[[@"))
                 {
                     var jContainer = JsonConvert.DeserializeObject(value) as JObject;
-                    DataObject.Environment.AddToJsonObjects(variable, jContainer);
+                    dataObject.Environment.AddToJsonObjects(variable, jContainer);
                 }
                 else if (!DataListUtil.IsValueRecordset(output.Variable))
                 {
-                    DataObject.Environment.Assign(variable, value, 0);
+                    dataObject.Environment.Assign(variable, value, 0);
                 }
             }
             NextNodes = _originalActivity.NextNodes;
@@ -511,27 +514,30 @@ namespace Dev2.Runtime.ESB.Execution
 
         private static void AddRecordsetsInputs(IEnumerable<IServiceTestOutput> recSets, IExecutionEnvironment environment)
         {
-            var groupedRecsets = recSets.GroupBy(item => DataListUtil.ExtractRecordsetNameFromValue(item.Variable));
-            foreach (var groupedRecset in groupedRecsets)
+            if(recSets != null)
             {
-                var dataListItems = groupedRecset.GroupBy(item => DataListUtil.ExtractIndexRegionFromRecordset(item.Variable));
-                foreach (var dataListItem in dataListItems)
+                var groupedRecsets = recSets.GroupBy(item => DataListUtil.ExtractRecordsetNameFromValue(item.Variable));
+                foreach (var groupedRecset in groupedRecsets)
                 {
-                    List<IServiceTestOutput> recSetsToAssign = new List<IServiceTestOutput>();
-                    var empty = true;
-                    foreach (var listItem in dataListItem)
+                    var dataListItems = groupedRecset.GroupBy(item => DataListUtil.ExtractIndexRegionFromRecordset(item.Variable));
+                    foreach (var dataListItem in dataListItems)
                     {
-                        if (!string.IsNullOrEmpty(listItem.Value))
+                        List<IServiceTestOutput> recSetsToAssign = new List<IServiceTestOutput>();
+                        var empty = true;
+                        foreach (var listItem in dataListItem)
                         {
-                            empty = false;
+                            if (!string.IsNullOrEmpty(listItem.Value))
+                            {
+                                empty = false;
+                            }
+                            recSetsToAssign.Add(listItem);
                         }
-                        recSetsToAssign.Add(listItem);
-                    }
-                    if (!empty)
-                    {
-                        foreach (var serviceTestInput in recSetsToAssign)
+                        if (!empty)
                         {
-                            environment.Assign(DataListUtil.AddBracketsToValueIfNotExist(serviceTestInput.Variable), serviceTestInput.Value, 0);
+                            foreach (var serviceTestInput in recSetsToAssign)
+                            {
+                                environment.Assign(DataListUtil.AddBracketsToValueIfNotExist(serviceTestInput.Variable), serviceTestInput.Value, 0);
+                            }
                         }
                     }
                 }
