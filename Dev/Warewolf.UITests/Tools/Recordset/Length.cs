@@ -1,5 +1,4 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UITesting;
+﻿using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Warewolf.UITests.Tools.Recordset
@@ -19,16 +18,9 @@ namespace Warewolf.UITests.Tools.Recordset
         [TestInitialize]
         public void MyTestInitialize()
         {
-            Uimap.SetGlobalPlaybackSettings();
+            Uimap.SetPlaybackSettings();
             Uimap.WaitForStudioStart();
-            Console.WriteLine("Test \"" + TestContext.TestName + "\" starting on " + System.Environment.MachineName);
             Uimap.InitializeABlankWorkflow();
-        }
-
-        [TestCleanup]
-        public void MyTestCleanup()
-        {
-            Uimap.CleanupABlankWorkflow();
         }
 
         /// <summary>
