@@ -33,7 +33,6 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
         <TextBlock Grid.Column="0" Grid.Row="0" Text="Recordset" />
@@ -58,20 +57,9 @@
             </i:Interaction.Behaviors>
         </ui:IntellisenseTextBox>
         
-        <TextBlock Grid.Column="0" Grid.Row="1" Text="Null as Zero" Margin="0,-2,0,0" />
-        <CheckBox  Grid.Row="1"
-                  Grid.Column="1"
-                  Margin="-6,-2,0,0"
-                  ToolTip="{x:Static languages:Core.TreatNullAsZeroToolTip}"
-                  IsChecked="{Binding Path=ModelItem.TreatNullAsZero, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                  AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_NullAsCheckBox_AutoID}">
-            <i:Interaction.Behaviors>
-                <core1:HelpSetter Text="{x:Static languages:Core.TreatNullAsZeroHelp}" DataContext="{Binding}" />
-            </i:Interaction.Behaviors>
-        </CheckBox>
 
-        <TextBlock Grid.Column="0" Grid.Row="2" Text="Result" Margin="{StaticResource ControlBorderTop}"/>
-        <ui:IntellisenseTextBox Grid.Row="2"
+        <TextBlock Grid.Column="0" Grid.Row="1" Text="Result" Margin="{StaticResource ControlBorderTop}"/>
+        <ui:IntellisenseTextBox Grid.Row="1"
                                 Grid.Column="1"
                                 AllowUserInsertLine="False"
                                 Margin="{StaticResource ControlBorderTop}"
