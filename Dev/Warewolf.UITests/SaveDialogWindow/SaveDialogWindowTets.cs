@@ -10,6 +10,13 @@ namespace Warewolf.UITests.DebugInputWindow
         [TestMethod]
         public void SaveDialogWindowUITets()
         {
+            Uimap.Click_New_Workflow_Ribbon_Button();
+            Uimap.Drag_Toolbox_MultiAssign_Onto_DesignSurface();
+            Uimap.Open_Assign_Tool_Large_View();
+            Uimap.Enter_Text_Into_Assign_Large_View_Row1_Variable_Textbox_As_SomeVariable();
+            Uimap.Assign_Value_To_Variable();
+            Uimap.Click_Save_Ribbon_Button_to_Open_Save_Dialog();
+            Uimap.Remove_WorkflowName_From_Save_Dialog();
         }
 
         #region Additional test attributes

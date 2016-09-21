@@ -2306,6 +2306,14 @@ Error while saving: This task requires that the user account specified has 'Log 
       <Type>String</Type>
       <PropertyCondition>AreEqual</PropertyCondition>
     </AssertAction>
+    <AssertAction UIObjectName="UIMap.SaveDialogWindow.ExplorerView.ExplorerTree.localhost">
+      <ParameterName />
+      <PropertyName>Exists</PropertyName>
+      <ExpectedValue>True</ExpectedValue>
+      <MessageOnValidationFailure>Save dialog explorer tree does not exist</MessageOnValidationFailure>
+      <Type>String</Type>
+      <PropertyCondition>AreEqual</PropertyCondition>
+    </AssertAction>
     <AssertAction UIObjectName="UIMap.SaveDialogWindow.ExplorerView">
       <ParameterName />
       <PropertyName>Exists</PropertyName>
@@ -7307,6 +7315,36 @@ Error while saving: This task requires that the user account specified has 'Log 
       <Type>String</Type>
     </SetValueAction>
     <TestStepMarkerAction Comment="" MarkerInformation="RecordedMethod1">
+      <ParameterName />
+      <StepId>-1</StepId>
+      <Direction>Start</Direction>
+      <Outcome />
+      <Disabled>false</Disabled>
+      <WorkItemId>0</WorkItemId>
+      <MarkerRegionType>Action</MarkerRegionType>
+    </TestStepMarkerAction>
+    <SetValueAction UIObjectName="UIMap.SaveDialogWindow.ServiceNameTextBox">
+      <ParameterName />
+      <Value Encoded="false" />
+      <Type>String</Type>
+    </SetValueAction>
+    <AssertAction UIObjectName="UIMap.SaveDialogWindow.ErrorLabel">
+      <ParameterName />
+      <PropertyName>DisplayText</PropertyName>
+      <ExpectedValue>Cannot be null</ExpectedValue>
+      <MessageOnValidationFailure>Name cannot be null validation message does not appear</MessageOnValidationFailure>
+      <Type>String</Type>
+      <PropertyCondition>AreEqual</PropertyCondition>
+    </AssertAction>
+    <AssertAction UIObjectName="UIMap.SaveDialogWindow.SaveButton">
+      <ParameterName />
+      <PropertyName>Enabled</PropertyName>
+      <ExpectedValue>False</ExpectedValue>
+      <MessageOnValidationFailure>Save button on the Save dialog is enabled</MessageOnValidationFailure>
+      <Type>String</Type>
+      <PropertyCondition>AreEqual</PropertyCondition>
+    </AssertAction>
+    <TestStepMarkerAction Comment="" MarkerInformation="Remove_WorkflowName_From_Save_Dialog">
       <ParameterName />
       <StepId>-1</StepId>
       <Direction>Start</Direction>
@@ -19583,10 +19621,10 @@ Error while saving: This task requires that the user account specified has 'Log 
                                                             <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
                                                           </WindowTitles>
                                                           <AndCondition>
-                                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                                             <PropertyCondition Name="ControlType">Custom</PropertyCondition>
+                                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                                             <PropertyCondition Name="ClassName">Uia.ServiceDesigner</PropertyCondition>
-                                                            <PropertyCondition Name="AutomationId">Dice(ServiceDesigner)</PropertyCondition>
+                                                            <PropertyCondition Name="AutomationId">local_DiceWF(ServiceDesigner)</PropertyCondition>
                                                           </AndCondition>
                                                           <SupportLevel>0</SupportLevel>
                                                           <Descendants>
@@ -25703,6 +25741,22 @@ Error while saving: This task requires that the user account specified has 'Log 
                           <Descendants />
                         </UIObject>
                       </Descendants>
+                    </UIObject>
+                    <UIObject ControlType="TreeItem" Id="UIInfragisticsControlsTreeItem" FriendlyName="Infragistics.Controls.Menus.XamDataTreeNodeDataCon..." SpecialControlType="None">
+                      <TechnologyName>UIA</TechnologyName>
+                      <WindowTitles>
+                        <WindowTitle>SaveDialogView</WindowTitle>
+                      </WindowTitles>
+                      <SearchConfigurations>
+                        <SearchConfiguration>Expand</SearchConfiguration>
+                      </SearchConfigurations>
+                      <AndCondition>
+                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                        <PropertyCondition Name="ControlType">TreeItem</PropertyCondition>
+                        <PropertyCondition Name="Name">Infragistics.Controls.Menus.XamDataTreeNodeDataContext</PropertyCondition>
+                      </AndCondition>
+                      <SupportLevel>0</SupportLevel>
+                      <Descendants />
                     </UIObject>
                   </Descendants>
                 </UIObject>

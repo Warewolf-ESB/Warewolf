@@ -1032,12 +1032,13 @@ namespace Warewolf.UITests
             WpfButton doneButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ExternalWorkFlow.DoneButton;
             #endregion
 
+            Enter_Text_Into_Explorer_Filter(Dice);
+            WaitForControlNotVisible(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);
             Mouse.Click(firstItem, new Point(49, 10));
-            flowchart.EnsureClickable(new Point(308, 127));
             Mouse.StartDragging(firstItem, new Point(49, 10));
             Mouse.StopDragging(flowchart, new Point(308, 127));
-            Assert.IsTrue(doneButton.Exists, "Done button does not exist afer dragging dice service onto design surface");
-            Mouse.Click(doneButton, new Point(53, 16));
+            //Assert.IsTrue(doneButton.Exists, "Done button does not exist afer dragging dice service onto design surface");
+            //Mouse.Click(doneButton, new Point(53, 16));
         }
 
 
@@ -1141,13 +1142,14 @@ namespace Warewolf.UITests
                     Assert.AreEqual(this.Click_RunAll_ButtonParams.UIThenamealreadyexistsTextDisplayText, message.DisplayText, "Messagebox does not show duplicated name error");
             }
         }
+
+        const string Dice = "Local_DiceWF";
         public void CreateAndSave_Dice_Workflow()
         {
-            RightClick_Localhost();
             Select_NewWorkFlowService_From_ContextMenu();
             Drag_Toolbox_Random_Onto_DesignSurface();
             Enter_Dice_Roll_Values();
-            Save_With_Ribbon_Button_And_Dialog("Dice");
+            Save_With_Ribbon_Button_And_Dialog(Dice);
             Click_Close_Workflow_Tab_Button();
         }
 

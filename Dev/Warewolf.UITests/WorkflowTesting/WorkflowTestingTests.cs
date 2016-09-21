@@ -11,9 +11,6 @@ namespace Warewolf.UITests
         const string UnsavedResourceError = "UnsavedResourceError";
         const string TestName = "HelloWorld_Test";
         const string DuplicateTestName = "Second_HelloWorld_Test";
-        const string Tab = "Tab";
-        const string Test = "Test";
-        const string All = "All";
         
         [TestMethod]
         public void DirtyTest_Should_Set_Star_Next_To_The_Tab_Name_And_Test_Name()
