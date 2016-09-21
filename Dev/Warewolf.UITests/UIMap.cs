@@ -25,21 +25,17 @@ namespace Warewolf.UITests
         const int _lenientMaximumRetryCount = 6;
         const int _strictSearchTimeout = 1000;
         const int _strictMaximumRetryCount = 1;
-
-        [AssemblyInitialize]
-        public static void WaitForStudioStart(TestContext testContext)
+        
+        public void WaitForStudioStart()
         {
-            var Uimap = new UIMap();
             Console.WriteLine("Waiting for studio to start.");
-            Uimap.WaitForControlVisible(Uimap.MainStudioWindow, _lenientSearchTimeout);
-            if (!Uimap.MainStudioWindow.Exists)
+            WaitForControlVisible(MainStudioWindow, _lenientSearchTimeout);
+            if (!MainStudioWindow.Exists)
             {
                 throw new InvalidOperationException("Warewolf studio is not running. You are expected to run \"Dev\\TestScripts\\Studio\\Startup.bat\" as an administrator and wait for it to complete before running any coded UI tests");
             }
-            Console.WriteLine("Clicking OK on the duplicate resource warning if it exists.");
-            Uimap.TryClickMessageBoxOK();
             Console.WriteLine("Waiting for explorer localhost spinner to stop.");
-            Uimap.WaitForSpinner(Uimap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);
+            WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);
         }
 
         public void SetPlaybackSettings()
@@ -515,8 +511,8 @@ namespace Warewolf.UITests
         {
             control.WaitForControlCondition((uicontrol) =>
             {
-                var point = new Point();
                 TryClickMessageBoxOK();
+                var point = new Point();
                 return control.TryGetClickablePoint(out point);
             }, searchTimeout * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString()));
         }
