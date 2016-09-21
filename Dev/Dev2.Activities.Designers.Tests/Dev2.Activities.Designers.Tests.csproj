@@ -152,7 +152,9 @@
     <Compile Include="Exchange\Email\ExchangeEmailDesignerViewModelTests.cs" />
     <Compile Include="ODBC\TestODBCServerViewModel.cs" />
     <Compile Include="PostgresSqlTests\PostgresSqlDatabaseDesignerViewModelTests.cs" />
+    <Compile Include="DeleteRecords\DeleteRecordsDesignerViewModelTests.cs" />
     <Compile Include="RecordsLength\RecordsLengthDesignerViewModelTests.cs" />
+    <Compile Include="DeleteRecords\TestDeleteRecordsDesignerViewModel.cs" />
     <Compile Include="RecordsLength\TestCountRecordsDesignerViewModel.cs" />
     <Compile Include="DataMerge\DataMergeDesignerViewModelTests.cs" />
     <Compile Include="DataSplit\DataSplitDesignerViewModelSplitTests.cs" />

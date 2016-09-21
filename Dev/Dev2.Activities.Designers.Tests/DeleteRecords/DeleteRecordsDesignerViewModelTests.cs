@@ -16,21 +16,21 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
-namespace Dev2.Activities.Designers.Tests.RecordsLength
+namespace Dev2.Activities.Designers.Tests.DeleteRecords
 {
     [TestClass]
     // ReSharper disable InconsistentNaming
-    public class RecordsLengthDesignerViewModelTests
+    public class DeleteRecordsDesignerViewModelTests
     {
         [TestMethod]
-        [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("RecordsLengthDesignerViewModel_SetRecordsetNameValue")]
-        public void RecordsLengthDesignerViewModel_SetRecordsetNameValue_ModelItemIsValid_RecordSetOnModelItemIsSet()
+        [Owner("Nkosinathi Sangweni")]
+        [TestCategory("DeleteRecordsDesignerViewModel_SetRecordsetNameValue")]
+        public void DeleteRecordsDesignerViewModel_SetRecordsetNameValue_ModelItemIsValid_RecordSetOnModelItemIsSet()
         {
             var modelItem = CreateModelItem();
-            var viewModel = new TestRecordsLengthDesignerViewModel(modelItem);
+            var viewModel = new TestDeleteRecordsDesignerViewModel(modelItem);
             const string ExcpectedVal = "[[Table_Records()]]";
-            viewModel.RecordsetNameValue = ExcpectedVal;
+            viewModel.RecordsetName = ExcpectedVal;
             viewModel.Validate();
             Assert.AreEqual(ExcpectedVal, viewModel.RecordsetName);
             Assert.IsTrue(viewModel.HasLargeView);
@@ -38,8 +38,8 @@ namespace Dev2.Activities.Designers.Tests.RecordsLength
 
         [TestMethod]
         [Owner("Pieter Terblanche")]
-        [TestCategory("RecordsLengthDesignerViewModel_Handle")]
-        public void RecordsLengthDesignerViewModel_UpdateHelp_ShouldCallToHelpViewMode()
+        [TestCategory("DeleteRecordsDesignerViewModel_Handle")]
+        public void DeleteRecordsDesignerViewModel_UpdateHelp_ShouldCallToHelpViewMode()
         {
             //------------Setup for test--------------------------      
             var mockMainViewModel = new Mock<IMainViewModel>();
@@ -47,7 +47,7 @@ namespace Dev2.Activities.Designers.Tests.RecordsLength
             mockHelpViewModel.Setup(model => model.UpdateHelpText(It.IsAny<string>())).Verifiable();
             mockMainViewModel.Setup(model => model.HelpViewModel).Returns(mockHelpViewModel.Object);
             CustomContainer.Register(mockMainViewModel.Object);
-            var viewModel = new TestRecordsLengthDesignerViewModel(CreateModelItem());
+            var viewModel = new TestDeleteRecordsDesignerViewModel(CreateModelItem());
             //------------Execute Test---------------------------
             viewModel.UpdateHelpDescriptor("help");
             //------------Assert Results-------------------------
@@ -76,7 +76,7 @@ namespace Dev2.Activities.Designers.Tests.RecordsLength
 
         static ModelItem CreateModelItem()
         {
-            return ModelItemUtils.CreateModelItem(new DsfRecordsetLengthActivity());
+            return ModelItemUtils.CreateModelItem(new DsfDeleteRecordActivity());
         }
     }
 }
