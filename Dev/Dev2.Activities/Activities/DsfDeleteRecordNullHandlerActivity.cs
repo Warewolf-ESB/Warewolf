@@ -15,18 +15,22 @@ using System.Linq;
 using Dev2.Activities;
 using Dev2.Activities.Debug;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
+using Dev2.Common.Interfaces.Toolbox;
 using Dev2.DataList.Contract;
 using Dev2.Diagnostics;
 using Dev2.Interfaces;
 using Dev2.Util;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
+using Warewolf.Core;
+using Warewolf.Resource.Errors;
 using Warewolf.Storage;
 
 // ReSharper disable CheckNamespace
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 // ReSharper restore CheckNamespace
 {
-    public class DsfDeleteRecordActivity : DsfActivityAbstract<string>
+    [ToolDescriptorInfo("RecordSet-Delete", "Delete", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Recordset", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Recordset_Delete_Tags")]
+    public class DsfDeleteRecordNullHandlerActivity : DsfActivityAbstract<string>
     {
         /// <summary>
         /// Gets or sets the name of the recordset.
@@ -40,13 +44,15 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         [Outputs("Result"), FindMissing]
         public new string Result { get; set; }
 
-        public DsfDeleteRecordActivity()
+        public DsfDeleteRecordNullHandlerActivity()
             : base("Delete Record")
         {
             RecordsetName = string.Empty;
             Result = string.Empty;
+            TreatNullAsZero = true;
         }
 
+        public bool TreatNullAsZero { get; set; }
         // ReSharper disable RedundantOverridenMember
         protected override void CacheMetadata(NativeActivityMetadata metadata)
         {
@@ -71,19 +77,36 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             InitializeDebug(dataObject);
             try
             {
-                ValidateRecordsetName(RecordsetName, errors);
-
-                GetDebug(dataObject, update);
-                dataObject.Environment.EvalDelete(RecordsetName, update);
-                if (!string.IsNullOrEmpty(Result))
+                var hasRecordSet = dataObject.Environment.HasRecordSet(RecordsetName);
+                if (hasRecordSet)//null check happens here
                 {
-                    dataObject.Environment.Assign(Result, "Success", update);
-                    AddDebugOutputItem(new DebugEvalResult(Result, "", dataObject.Environment, update));
+                    ValidateRecordsetName(RecordsetName, errors);
+
+                    GetDebug(dataObject, update);
+                    dataObject.Environment.EvalDelete(RecordsetName, update);
+                    if (!string.IsNullOrEmpty(Result))
+                    {
+                        dataObject.Environment.Assign(Result, "Success", update);
+                        AddDebugOutputItem(new DebugEvalResult(Result, "", dataObject.Environment, update));
+                    }
+                }
+                else
+                {
+                    if (TreatNullAsZero)
+                    {
+                        dataObject.Environment.Assign(Result, "Success", update);
+                        AddDebugOutputItem(new DebugEvalResult(Result, "", dataObject.Environment, update));
+                    }
+                    else
+                    {
+                        allErrors.AddError(string.Format(ErrorResource.NullRecordSet, RecordsetName));
+                    }
+
                 }
             }
             catch(Exception e)
             {
-                allErrors.AddError(e.Message);
+                 allErrors.AddError(e.Message);
             }
             finally
             {

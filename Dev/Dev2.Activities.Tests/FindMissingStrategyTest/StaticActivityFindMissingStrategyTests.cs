@@ -155,12 +155,12 @@ namespace Dev2.Tests.Activities.FindMissingStrategyTest
         [TestMethod]
         public void GetActivityFieldsOffDsfDeleteRecordActivityExpectedAllFindMissingFieldsToBeReturned()
         {
-            DsfDeleteRecordActivity activity = new DsfDeleteRecordActivity();
-            activity.RecordsetName = "[[RecordsetName]]";
-            activity.Result = "[[Result]]";
+            DsfDeleteRecordNullHandlerActivity nullHandlerActivity = new DsfDeleteRecordNullHandlerActivity();
+            nullHandlerActivity.RecordsetName = "[[RecordsetName]]";
+            nullHandlerActivity.Result = "[[Result]]";
             Dev2FindMissingStrategyFactory fac = new Dev2FindMissingStrategyFactory();
             IFindMissingStrategy strategy = fac.CreateFindMissingStrategy(enFindMissingType.StaticActivity);
-            List<string> actual = strategy.GetActivityFields(activity);
+            List<string> actual = strategy.GetActivityFields(nullHandlerActivity);
             List<string> expected = new List<string> { "[[RecordsetName]]", "[[Result]]" };
             CollectionAssert.AreEqual(expected, actual);
         }

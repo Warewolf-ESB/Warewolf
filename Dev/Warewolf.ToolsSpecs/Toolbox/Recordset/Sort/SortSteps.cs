@@ -19,7 +19,7 @@ using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Storage;
 using Warewolf.Tools.Specs.BaseTypes;
 
-namespace Dev2.Activities.Specs.Toolbox.Recordset.Sort
+namespace Warewolf.ToolsSpecs.Toolbox.Recordset.Sort
 {
     [Binding]
     public class SortSteps : RecordSetBases

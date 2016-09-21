@@ -282,12 +282,17 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Count.feature</DependentUpon>
     </Compile>
+    <Compile Include="Toolbox\Recordset\DeleteNullHandler\Delete.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Delete.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Toolbox\Recordset\DeleteSteps.cs" />
     <Compile Include="Toolbox\Recordset\Delete\Delete.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Delete.feature</DependentUpon>
     </Compile>
-    <Compile Include="Toolbox\Recordset\Delete\DeleteSteps.cs" />
     <Compile Include="Toolbox\Recordset\FindRecordIndexMultiple\FindRecordsetIndexMultiple.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -603,6 +608,10 @@
     <None Include="Toolbox\Recordset\Count\Count.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Count.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Toolbox\Recordset\DeleteNullHandler\Delete.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>Delete.feature.cs</LastGenOutput>
     </None>
     <None Include="Toolbox\Recordset\Delete\Delete.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>

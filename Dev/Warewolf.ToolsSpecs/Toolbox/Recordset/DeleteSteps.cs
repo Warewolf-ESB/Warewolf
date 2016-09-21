@@ -19,7 +19,7 @@ using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Storage;
 using Warewolf.Tools.Specs.BaseTypes;
 
-namespace Dev2.Activities.Specs.Toolbox.Recordset.Delete
+namespace Warewolf.ToolsSpecs.Toolbox.Recordset
 {
     [Binding]
     public class DeleteSteps : RecordSetBases
@@ -50,12 +50,30 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.Delete
             var recordset = scenarioContext.Get<string>("recordset");
             bool treaNullAsZero;
             scenarioContext.TryGetValue("treaNullAsZero", out treaNullAsZero);
-            var delete = new DsfDeleteRecordActivity
+            //var delete = new DsfDeleteRecordNullHandlerActivity
+            //    {
+            //        RecordsetName = recordset,
+            //        Result = ResultVariable,
+            //        TreatNullAsZero = treaNullAsZero
+            //    };
+            DsfActivityAbstract<string> delete;
+            scenarioContext.TryGetValue("activityMode", out delete);
+            if (delete != null)
+               
+            delete = new DsfDeleteRecordNullHandlerActivity
+            {
+                RecordsetName = recordset,
+                Result = ResultVariable,
+                TreatNullAsZero = treaNullAsZero
+            };
+            else
+            {
+                delete = new DsfDeleteRecordActivity
                 {
                     RecordsetName = recordset,
                     Result = ResultVariable,
-                    TreatNullAsZero = treaNullAsZero
                 };
+            }
 
             TestStartNode = new FlowStep
                 {

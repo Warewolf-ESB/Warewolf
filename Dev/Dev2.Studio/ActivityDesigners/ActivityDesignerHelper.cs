@@ -23,7 +23,6 @@ using Dev2.Activities.Designers2.DataSplit;
 using Dev2.Activities.Designers2.DateTime;
 using Dev2.Activities.Designers2.DateTimeDifference;
 using Dev2.Activities.Designers2.Delete;
-using Dev2.Activities.Designers2.DeleteRecords;
 using Dev2.Activities.Designers2.DropBox2016.Delete;
 using Dev2.Activities.Designers2.DropBox2016.Download;
 using Dev2.Activities.Designers2.DropBox2016.DropboxFile;
@@ -115,7 +114,8 @@ namespace Dev2.Studio.ActivityDesigners
                 { typeof(DsfCountRecordsetNullHandlerActivity), typeof(Activities.Designers2.CountRecordsNullHandler.CountRecordsDesigner) },
                 { typeof(DsfCountRecordsetActivity), typeof(Activities.Designers2.CountRecords.CountRecordsDesigner) },
                 { typeof(DsfRecordsetLengthActivity), typeof(RecordsLengthDesigner) },
-                { typeof(DsfDeleteRecordActivity), typeof(DeleteRecordsDesigner) },
+                { typeof(DsfDeleteRecordNullHandlerActivity), typeof(Dev2.Activities.Designers2.DeleteRecordsNullHandler.DeleteRecordsDesigner) },
+                { typeof(DsfDeleteRecordActivity), typeof(Dev2.Activities.Designers2.DeleteRecords.DeleteRecordsDesigner) },
                 { typeof(DsfUniqueActivity), typeof(UniqueRecordsDesigner) },
                 { typeof(DsfCalculateActivity), typeof(CalculateDesigner) },
                 { typeof(DsfAggregateCalculateActivity), typeof(AggregateCalculateDesigner) },

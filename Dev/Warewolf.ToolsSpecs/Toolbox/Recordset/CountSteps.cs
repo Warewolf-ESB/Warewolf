@@ -18,7 +18,7 @@ using TechTalk.SpecFlow;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Tools.Specs.BaseTypes;
 
-namespace Warewolf.ToolsSpecs.Toolbox.Recordset.CountNullHandler
+namespace Warewolf.ToolsSpecs.Toolbox.Recordset
 {
     [Binding]
     public class CountSteps : RecordSetBases

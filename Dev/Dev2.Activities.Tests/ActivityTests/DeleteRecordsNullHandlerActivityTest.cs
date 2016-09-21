@@ -23,7 +23,7 @@ namespace Dev2.Tests.Activities.ActivityTests
     /// </summary>
     [TestClass]
     // ReSharper disable InconsistentNaming
-    public class DeleteRecordsActivityTest : BaseActivityUnitTest
+    public class DeleteRecordsNullHandlerActivityTest : BaseActivityUnitTest
     {
         /// <summary>
         ///Gets or sets the test context which provides
@@ -280,11 +280,11 @@ namespace Dev2.Tests.Activities.ActivityTests
 
         #region Private Test Methods
 
-        private void SetupArguments(string currentDl, string testData, string recordSetName, string resultVar)
+        private void SetupArguments(string currentDl, string testData, string recordSetName, string resultVar, bool treatNullAsZero =false)
         {
             TestStartNode = new FlowStep
             {
-                Action = new DsfDeleteRecordActivity { RecordsetName = recordSetName, Result = resultVar }
+                Action = new DsfDeleteRecordNullHandlerActivity { RecordsetName = recordSetName, Result = resultVar, TreatNullAsZero = treatNullAsZero }
             };
 
             CurrentDl = testData;
@@ -302,7 +302,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         {
             //------------Setup for test--------------------------
             const string recordsetName = "[[Numeric()]]";
-            var act = new DsfDeleteRecordActivity { RecordsetName = recordsetName, Result = "[[res]]" };
+            var act = new DsfDeleteRecordNullHandlerActivity { RecordsetName = recordsetName, Result = "[[res]]" };
             //------------Execute Test---------------------------
             act.UpdateForEachInputs(null);
             //------------Assert Results-------------------------
@@ -316,7 +316,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         {
             //------------Setup for test--------------------------
             const string recordsetName = "[[Numeric()]]";
-            var act = new DsfDeleteRecordActivity { RecordsetName = recordsetName, Result = "[[res]]" };
+            var act = new DsfDeleteRecordNullHandlerActivity { RecordsetName = recordsetName, Result = "[[res]]" };
             var tuple1 = new Tuple<string, string>("Test", "Test");
             var tuple2 = new Tuple<string, string>(recordsetName, "Test2");
             //------------Execute Test---------------------------
@@ -332,7 +332,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         {
             //------------Setup for test--------------------------
             const string recordsetName = "[[Numeric()]]";
-            var act = new DsfDeleteRecordActivity { RecordsetName = recordsetName, Result = "[[res]]" };
+            var act = new DsfDeleteRecordNullHandlerActivity { RecordsetName = recordsetName, Result = "[[res]]" };
             var tuple1 = new Tuple<string, string>("Test", "Test");
             //------------Execute Test---------------------------
             act.UpdateForEachInputs(new List<Tuple<string, string>> { tuple1 });
@@ -347,7 +347,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         {
             //------------Setup for test--------------------------
             const string result = "[[res]]";
-            var act = new DsfDeleteRecordActivity { RecordsetName = "[[Numeric()]]", Result = result };
+            var act = new DsfDeleteRecordNullHandlerActivity { RecordsetName = "[[Numeric()]]", Result = result };
             act.UpdateForEachOutputs(null);
             //------------Assert Results-------------------------
             Assert.AreEqual(result, act.Result);
@@ -360,7 +360,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         {
             //------------Setup for test--------------------------
             const string result = "[[res]]";
-            var act = new DsfDeleteRecordActivity { RecordsetName = "[[Numeric()]]", Result = result };
+            var act = new DsfDeleteRecordNullHandlerActivity { RecordsetName = "[[Numeric()]]", Result = result };
             var tuple1 = new Tuple<string, string>("Test", "Test");
             var tuple2 = new Tuple<string, string>("Test2", "Test2");
             //------------Execute Test---------------------------
@@ -375,7 +375,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         public void DsfDeleteRecordActivity_UpdateForEachOutputs_1Updates_UpdateResult()
         {
             //------------Setup for test--------------------------
-            var act = new DsfDeleteRecordActivity { RecordsetName = "[[Numeric()]]", Result = "[[res]]" };
+            var act = new DsfDeleteRecordNullHandlerActivity { RecordsetName = "[[Numeric()]]", Result = "[[res]]" };
             var tuple1 = new Tuple<string, string>("[[res]]", "Test");
             //------------Execute Test---------------------------
             act.UpdateForEachOutputs(new List<Tuple<string, string>> { tuple1 });
@@ -390,7 +390,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         {
             //------------Setup for test--------------------------
             const string recordsetName = "[[Numeric()]]";
-            var act = new DsfDeleteRecordActivity { RecordsetName = recordsetName, Result = "[[res]]" };
+            var act = new DsfDeleteRecordNullHandlerActivity { RecordsetName = recordsetName, Result = "[[res]]" };
             //------------Execute Test---------------------------
             var dsfForEachItems = act.GetForEachInputs();
             //------------Assert Results-------------------------
@@ -405,7 +405,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         public void DsfDeleteRecordActivity_GetForEachOutputs_WhenHasResult_ReturnsOutputList()
         {
             //------------Setup for test--------------------------
-            var act = new DsfDeleteRecordActivity { RecordsetName = "[[Numeric()]]", Result = "[[res]]" };
+            var act = new DsfDeleteRecordNullHandlerActivity { RecordsetName = "[[Numeric()]]", Result = "[[res]]" };
             //------------Execute Test---------------------------
             var dsfForEachItems = act.GetForEachOutputs();
             //------------Assert Results-------------------------
@@ -433,6 +433,51 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual("Failure", actual);
         }
 
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void Method_GivenIsNew_ShouldHaveTreatAsNullTrue()
+        {
+            //---------------Set up test pack-------------------
+            var dsfDeleteRecordActivity = new DsfDeleteRecordNullHandlerActivity();
+            //---------------Assert Precondition----------------
+            //---------------Execute Test ----------------------
+            Assert.IsTrue(dsfDeleteRecordActivity.TreatNullAsZero);
+            //---------------Test Result -----------------------
+        }
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        [TestCategory("DsfDeleteRecordActivity_Execute")]
+        public void DsfDeleteRecordActivity_ExecuteTreatNullAsZero_EmptyRecordsetName_Success()
+        {
+            //------------Setup for test--------------------------
+            SetupArguments(ActivityStrings.EmptyRecordSetNoData, ActivityStrings.EmptyRecordSet, "", "[[res]]", true);
+            //------------Execute Test---------------------------
+            IDSFDataObject result = ExecuteProcess();
+            //------------Assert Results-------------------------
+            string actual;
+            string error;
+            GetScalarValueFromEnvironment(result.Environment, "res", out actual, out error);
+            // remove test datalist ;)
+            Assert.AreEqual("Success", actual);
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void Execute_GivenEmptyRecordSetTreatNullAsZeroFalse_ShouldResturnError()
+        {
+            //---------------Set up test pack-------------------
+            SetupArguments(ActivityStrings.EmptyRecordSet, ActivityStrings.EmptyRecordSetNoData, "[[recset1()]]", "[[res]]");
+            //---------------Assert Precondition----------------
+
+            //---------------Execute Test ----------------------
+            IDSFDataObject result = ExecuteProcess();
+            //---------------Test Result -----------------------
+            const string Expected = "Failure";
+            string actual;
+            string error;
+            GetScalarValueFromEnvironment(result.Environment, "res", out actual, out error);
+            Assert.AreEqual(Expected, actual);
+        }
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("DsfDeleteRecordActivity_Execute")]
