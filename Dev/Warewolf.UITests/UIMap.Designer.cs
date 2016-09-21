@@ -1482,6 +1482,7 @@ namespace Warewolf.UITests
             WpfButton cancelButton = this.SaveDialogWindow.CancelButton;
             WpfText errorLabel = this.SaveDialogWindow.ErrorLabel;
             WpfTree explorerTree = this.SaveDialogWindow.ExplorerView.ExplorerTree;
+            WpfTreeItem localhost = this.SaveDialogWindow.ExplorerView.ExplorerTree.localhost;
             WpfCustom explorerView = this.SaveDialogWindow.ExplorerView;
             WpfEdit searchTextBox = this.SaveDialogWindow.ExplorerView.SearchTextBox;
             WpfText nameLabel = this.SaveDialogWindow.NameLabel;
@@ -1506,6 +1507,9 @@ namespace Warewolf.UITests
 
             // Verify that the 'Exists' property of 'ExplorerTree' tree equals 'True'
             Assert.AreEqual(this.Click_Save_Ribbon_Button_to_Open_Save_DialogParams.ExplorerTreeExists, explorerTree.Exists, "Save dialog explorer tree does not exist");
+
+            // Verify that the 'Exists' property of 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item equals 'True'
+            Assert.AreEqual(this.Click_Save_Ribbon_Button_to_Open_Save_DialogParams.localhostExists, localhost.Exists, "Save dialog explorer tree does not exist");
 
             // Verify that the 'Exists' property of 'ExplorerView' custom control equals 'True'
             Assert.AreEqual(this.Click_Save_Ribbon_Button_to_Open_Save_DialogParams.ExplorerViewExists, explorerView.Exists, "Save dialog explorer view does not exist");
@@ -4986,6 +4990,27 @@ namespace Warewolf.UITests
 
             // Type 'Coded UI Test' in 'C' cell
             uICCell.Value = this.RecordedMethod1Params.UICCellValue;
+        }
+        
+        /// <summary>
+        /// Remove_WorkflowName_From_Save_Dialog - Use 'Remove_WorkflowName_From_Save_DialogParams' to pass parameters into this method.
+        /// </summary>
+        public void Remove_WorkflowName_From_Save_Dialog()
+        {
+            #region Variable Declarations
+            WpfEdit serviceNameTextBox = this.SaveDialogWindow.ServiceNameTextBox;
+            WpfText errorLabel = this.SaveDialogWindow.ErrorLabel;
+            WpfButton saveButton = this.SaveDialogWindow.SaveButton;
+            #endregion
+
+            // Type '' in 'ServiceNameTextBox' text box
+            serviceNameTextBox.Text = this.Remove_WorkflowName_From_Save_DialogParams.ServiceNameTextBoxText;
+
+            // Verify that the 'DisplayText' property of ''Name' cannot be empty.' label equals 'Cannot be null'
+            Assert.AreEqual(this.Remove_WorkflowName_From_Save_DialogParams.ErrorLabelDisplayText, errorLabel.DisplayText, "Name cannot be null validation message does not appear");
+
+            // Verify that the 'Enabled' property of 'Save' button equals 'False'
+            Assert.AreEqual(this.Remove_WorkflowName_From_Save_DialogParams.SaveButtonEnabled, saveButton.Enabled, "Save button on the Save dialog is enabled");
         }
         
         /// <summary>
@@ -8822,6 +8847,18 @@ namespace Warewolf.UITests
             }
         }
         
+        public virtual Remove_WorkflowName_From_Save_DialogParams Remove_WorkflowName_From_Save_DialogParams
+        {
+            get
+            {
+                if ((this.mRemove_WorkflowName_From_Save_DialogParams == null))
+                {
+                    this.mRemove_WorkflowName_From_Save_DialogParams = new Remove_WorkflowName_From_Save_DialogParams();
+                }
+                return this.mRemove_WorkflowName_From_Save_DialogParams;
+            }
+        }
+        
         public virtual Rename_LocalWorkflow_To_SecodWorkFlowParams Rename_LocalWorkflow_To_SecodWorkFlowParams
         {
             get
@@ -9645,6 +9682,8 @@ namespace Warewolf.UITests
         private PressF11_EnterFullScreenParams mPressF11_EnterFullScreenParams;
         
         private RecordedMethod1Params mRecordedMethod1Params;
+        
+        private Remove_WorkflowName_From_Save_DialogParams mRemove_WorkflowName_From_Save_DialogParams;
         
         private Rename_LocalWorkflow_To_SecodWorkFlowParams mRename_LocalWorkflow_To_SecodWorkFlowParams;
         
@@ -10731,6 +10770,11 @@ namespace Warewolf.UITests
         /// Verify that the 'Exists' property of 'ExplorerTree' tree equals 'True'
         /// </summary>
         public bool ExplorerTreeExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item equals 'True'
+        /// </summary>
+        public bool localhostExists = true;
         
         /// <summary>
         /// Verify that the 'Exists' property of 'ExplorerView' custom control equals 'True'
@@ -13581,6 +13625,31 @@ namespace Warewolf.UITests
         /// Type 'Coded UI Test' in 'C' cell
         /// </summary>
         public string UICCellValue = "Coded UI Test";
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Remove_WorkflowName_From_Save_Dialog'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Remove_WorkflowName_From_Save_DialogParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Type '' in 'ServiceNameTextBox' text box
+        /// </summary>
+        public string ServiceNameTextBoxText = "";
+        
+        /// <summary>
+        /// Verify that the 'DisplayText' property of ''Name' cannot be empty.' label equals 'Cannot be null'
+        /// </summary>
+        public string ErrorLabelDisplayText = "Cannot be null";
+        
+        /// <summary>
+        /// Verify that the 'Enabled' property of 'Save' button equals 'False'
+        /// </summary>
+        public bool SaveButtonEnabled = false;
         #endregion
     }
     
@@ -31964,7 +32033,7 @@ namespace Warewolf.UITests
         {
             #region Search Criteria
             this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ServiceDesigner";
-            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Dice(ServiceDesigner)";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "local_DiceWF(ServiceDesigner)";
             this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
             #endregion
         }
@@ -41874,10 +41943,28 @@ namespace Warewolf.UITests
                 return this.mlocalhost;
             }
         }
+        
+        public WpfTreeItem UIInfragisticsControlsTreeItem
+        {
+            get
+            {
+                if ((this.mUIInfragisticsControlsTreeItem == null))
+                {
+                    this.mUIInfragisticsControlsTreeItem = new WpfTreeItem(this);
+                    #region Search Criteria
+                    this.mUIInfragisticsControlsTreeItem.SearchProperties[WpfTreeItem.PropertyNames.Name] = "Infragistics.Controls.Menus.XamDataTreeNodeDataContext";
+                    this.mUIInfragisticsControlsTreeItem.WindowTitles.Add("SaveDialogView");
+                    #endregion
+                }
+                return this.mUIInfragisticsControlsTreeItem;
+            }
+        }
         #endregion
         
         #region Fields
         private localhost1 mlocalhost;
+        
+        private WpfTreeItem mUIInfragisticsControlsTreeItem;
         #endregion
     }
     
