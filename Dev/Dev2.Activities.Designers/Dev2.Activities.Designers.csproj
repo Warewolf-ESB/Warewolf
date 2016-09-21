@@ -279,6 +279,10 @@
     <Compile Include="Designers2\CountRecordsNullHandler\Large.xaml.cs">
       <DependentUpon>Large.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Designers2\CountRecords\CountRecordsDesigner.xaml.cs" />
+    <Compile Include="Designers2\CountRecords\CountRecordsDesignerViewModel.cs" />
+    <Compile Include="Designers2\CountRecords\Large.xaml.cs" />
+    <Compile Include="Designers2\CountRecords\Small.xaml.cs" />
     <Compile Include="Designers2\CreateJSON\Large.xaml.cs">
       <DependentUpon>Large.xaml</DependentUpon>
     </Compile>
@@ -1248,6 +1252,18 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Designers2\CountRecordsNullHandler\Large.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\CountRecords\CountRecordsDesigner.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\CountRecords\Large.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\CountRecords\Small.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

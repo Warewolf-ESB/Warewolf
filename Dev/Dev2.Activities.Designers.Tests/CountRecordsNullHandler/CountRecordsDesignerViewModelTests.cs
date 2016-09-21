@@ -16,7 +16,9 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
-namespace Dev2.Activities.Designers.Tests.CountRecords
+// ReSharper disable InconsistentNaming
+
+namespace Dev2.Activities.Designers.Tests.CountRecordsNullHandler
 {
     [TestClass]
     public class CountRecordsDesignerViewModelTests
@@ -52,9 +54,29 @@ namespace Dev2.Activities.Designers.Tests.CountRecords
             mockHelpViewModel.Verify(model => model.UpdateHelpText(It.IsAny<string>()), Times.Once());
         }
 
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void Constructor_GivenIsNew_ShouldHaveTreatAsNullTrue()
+        {
+            //---------------Set up test pack-------------------
+            var modelItem = CreateModelItem();
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(modelItem);
+            //---------------Execute Test ----------------------
+            var modelProperty = modelItem.Properties["TreatNullAsZero"];
+            var value = modelProperty?.Value;
+            if(value != null)
+            {
+                var currentValue = value.GetCurrentValue();
+                //---------------Test Result -----------------------
+                Assert.IsTrue(bool.Parse(currentValue.ToString()));
+            }
+
+        }
+
         static ModelItem CreateModelItem()
         {
-            return ModelItemUtils.CreateModelItem(new DsfCountRecordsetActivity());
+            return ModelItemUtils.CreateModelItem(new DsfCountRecordsetNullHandlerActivity());
         }
     }
 }

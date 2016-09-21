@@ -93,9 +93,9 @@ using Dev2.Studio.ViewModels.Workflow;
 using System;
 using System.Collections.Generic;
 using Dev2.Activities.Designers2.ComDLL;
-using Dev2.Activities.Designers2.CountRecordsNullHandler;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Dev2.Activities.Designers2.MultiAssignObject;
+// ReSharper disable RedundantNameQualifier
 
 // ReSharper disable CheckNamespace
 namespace Dev2.Studio.ActivityDesigners
@@ -112,7 +112,8 @@ namespace Dev2.Studio.ActivityDesigners
                 { typeof(DsfFindRecordsMultipleCriteriaActivity), typeof(FindRecordsMultipleCriteriaDesigner) },
                 { typeof(DsfSqlBulkInsertActivity), typeof(SqlBulkInsertDesigner) },
                 { typeof(DsfSortRecordsActivity), typeof(SortRecordsDesigner) },
-                { typeof(DsfCountRecordsetNullHandlerActivity), typeof(CountRecordsDesigner) },
+                { typeof(DsfCountRecordsetNullHandlerActivity), typeof(Activities.Designers2.CountRecordsNullHandler.CountRecordsDesigner) },
+                { typeof(DsfCountRecordsetActivity), typeof(Activities.Designers2.CountRecords.CountRecordsDesigner) },
                 { typeof(DsfRecordsetLengthActivity), typeof(RecordsLengthDesigner) },
                 { typeof(DsfDeleteRecordActivity), typeof(DeleteRecordsDesigner) },
                 { typeof(DsfUniqueActivity), typeof(UniqueRecordsDesigner) },

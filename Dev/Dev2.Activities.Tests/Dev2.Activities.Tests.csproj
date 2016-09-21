@@ -178,6 +178,7 @@
     <Compile Include="ActivityTests\CalculateActivityTest.cs" />
     <Compile Include="ActivityTests\CaseConvertActivityTests.cs" />
     <Compile Include="ActivityTests\CommentActivityTests.cs" />
+    <Compile Include="ActivityTests\CountRecordsTest.cs" />
     <Compile Include="ActivityTests\DropBox2016\Delete\DropBoxDeleteTests.cs" />
     <Compile Include="ActivityTests\DropBox2016\Download\DropBoxDownloadTests.cs" />
     <Compile Include="ActivityTests\DropBox2016\Download\DsfDropBoxDownloadAcivtityTestShould.cs" />
@@ -205,7 +206,7 @@
     <Compile Include="ActivityTests\RecordsLengthTest.cs" />
     <Compile Include="ActivityTests\DataMergeActivityTests.cs" />
     <Compile Include="ActivityTests\DataSplitActivityTest.cs" />
-    <Compile Include="ActivityTests\CountRecordsTest.cs" />
+    <Compile Include="ActivityTests\CountRecordsTestNullHandler.cs" />
     <Compile Include="ActivityTests\DateTimeActivityTests.cs" />
     <Compile Include="ActivityTests\DateTimeDifferenceTests.cs" />
     <Compile Include="ActivityTests\DeleteRecordsActivityTests.cs" />

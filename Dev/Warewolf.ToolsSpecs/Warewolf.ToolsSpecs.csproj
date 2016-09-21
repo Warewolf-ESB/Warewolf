@@ -271,12 +271,17 @@
     </Compile>
     <Compile Include="Toolbox\LoopConstructs\Select And Apply\SelectAndApplySteps.cs" />
     <Compile Include="Toolbox\RabbitMQ\Publish\PublishRabbitMQSteps.cs" />
-    <Compile Include="Toolbox\Recordset\CountNullHandler\Count.feature.cs">
+    <Compile Include="Toolbox\Recordset\CountNullHandler\CountNullHandler.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CountNullHandler.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Toolbox\Recordset\CountSteps.cs" />
+    <Compile Include="Toolbox\Recordset\Count\Count.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Count.feature</DependentUpon>
     </Compile>
-    <Compile Include="Toolbox\Recordset\CountNullHandler\CountSteps.cs" />
     <Compile Include="Toolbox\Recordset\Delete\Delete.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -591,7 +596,11 @@
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>PublishRabbitMQ.feature.cs</LastGenOutput>
     </None>
-    <None Include="Toolbox\Recordset\CountNullHandler\Count.feature">
+    <None Include="Toolbox\Recordset\CountNullHandler\CountNullHandler.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>CountNullHandler.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Toolbox\Recordset\Count\Count.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Count.feature.cs</LastGenOutput>
     </None>

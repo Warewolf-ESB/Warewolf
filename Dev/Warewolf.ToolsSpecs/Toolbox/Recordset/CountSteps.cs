@@ -18,7 +18,7 @@ using TechTalk.SpecFlow;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Tools.Specs.BaseTypes;
 
-namespace Dev2.Activities.Specs.Toolbox.Recordset.Count
+namespace Warewolf.ToolsSpecs.Toolbox.Recordset.CountNullHandler
 {
     [Binding]
     public class CountSteps : RecordSetBases
@@ -56,13 +56,23 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.Count
             var recordset = scenarioContext.Get<string>("recordset");
             bool treaNullAsZero;
             scenarioContext.TryGetValue("treaNullAsZero", out treaNullAsZero);
-
-            var count = new DsfCountRecordsetNullHandlerActivity
+            DsfActivityAbstract<string> count;
+            scenarioContext.TryGetValue("activityMode", out count);
+            if (count != null)
+                count = new DsfCountRecordsetNullHandlerActivity
+                {
+                    RecordsetName = recordset,
+                    CountNumber = string.IsNullOrEmpty(resultVariable) ? ResultVariable : resultVariable,
+                    TreatNullAsZero = treaNullAsZero
+                };
+            else
             {
-                RecordsetName = recordset,
-                CountNumber = string.IsNullOrEmpty(resultVariable) ? ResultVariable : resultVariable,
-                TreatNullAsZero = treaNullAsZero
-            };
+                count = new DsfCountRecordsetActivity
+                {
+                    RecordsetName = recordset,
+                    CountNumber = string.IsNullOrEmpty(resultVariable) ? ResultVariable : resultVariable
+                };
+            }
 
             TestStartNode = new FlowStep
             {
@@ -148,6 +158,19 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.Count
         {
             scenarioContext.Add("treaNullAsZero", false);
         }
+
+        [Given(@"this feature")]
+        public void GivenThisFeature()
+        {
+
+        }
+        [Then(@"activity is DsfCountRecordsetNullHandlerActivity")]
+        public void ThenActivityIsDsfCountRecordsetNullHandlerActivity()
+        {
+            scenarioContext.Add("activityMode", new DsfCountRecordsetNullHandlerActivity());
+        }
+
+
 
 
     }
