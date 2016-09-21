@@ -9,6 +9,7 @@
 */
 
 using System.Activities.Presentation.Model;
+using Dev2.Activities.Designers.Tests.DeleteRecords;
 using Dev2.Common.Interfaces.Help;
 using Dev2.Interfaces;
 using Dev2.Studio.Core.Activities.Utils;
@@ -16,11 +17,11 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
-namespace Dev2.Activities.Designers.Tests.DeleteRecords
+namespace Dev2.Activities.Designers.Tests.DeleteRecordsNullHandler
 {
     [TestClass]
     // ReSharper disable InconsistentNaming
-    public class DeleteRecordsDesignerViewModelTests
+    public class DeleteRecordsNullHandlerDesignerViewModelTests
     {
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]

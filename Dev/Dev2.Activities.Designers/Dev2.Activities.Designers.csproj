@@ -303,8 +303,18 @@
     <Compile Include="Designers2\Decision\Large.xaml.cs">
       <DependentUpon>Large.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Designers2\DeleteRecordsNullHandler\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\DeleteRecords\DeleteRecordsDesigner.xaml.cs">
+      <DependentUpon>DeleteRecordsDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\DeleteRecords\DeleteRecordsDesignerViewModel.cs" />
     <Compile Include="Designers2\DeleteRecords\Large.xaml.cs">
       <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\DeleteRecords\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
     </Compile>
     <Compile Include="Designers2\DropBox2016\Delete\DropBoxDeleteDesigner.xaml.cs">
       <DependentUpon>DropBoxDeleteDesigner.xaml</DependentUpon>
@@ -555,12 +565,12 @@
       <DependentUpon>Small.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Designers2\DeleteRecords\DeleteRecordsDesigner.xaml.cs">
+    <Compile Include="Designers2\DeleteRecordsNullHandler\DeleteRecordsDesigner.xaml.cs">
       <DependentUpon>DeleteRecordsDesigner.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Designers2\DeleteRecords\DeleteRecordsDesignerViewModel.cs" />
-    <Compile Include="Designers2\DeleteRecords\Small.xaml.cs">
+    <Compile Include="Designers2\DeleteRecordsNullHandler\DeleteRecordsDesignerViewModel.cs" />
+    <Compile Include="Designers2\DeleteRecordsNullHandler\Small.xaml.cs">
       <DependentUpon>Small.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
@@ -1291,7 +1301,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Designers2\DeleteRecordsNullHandler\Large.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\DeleteRecords\DeleteRecordsDesigner.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Designers2\DeleteRecords\Large.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\DeleteRecords\Small.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -1555,11 +1577,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Designers2\DeleteRecords\DeleteRecordsDesigner.xaml">
+    <Page Include="Designers2\DeleteRecordsNullHandler\DeleteRecordsDesigner.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Designers2\DeleteRecords\Small.xaml">
+    <Page Include="Designers2\DeleteRecordsNullHandler\Small.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

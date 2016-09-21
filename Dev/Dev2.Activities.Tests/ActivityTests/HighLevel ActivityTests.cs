@@ -221,10 +221,10 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         public void DsfDeleteRecordsetActivity_Property_Check_Expected_No_Change_To_Properties()
         {
-            Type type = _activityList.FirstOrDefault(c => c.Name == "DsfDeleteRecordActivity");
+            Type type = _activityList.FirstOrDefault(c => c.Name == "DsfDeleteRecordNullHandlerActivity");
             if (type == null)
             {
-                Assert.Fail("Could not find DsfDeleteRecordActivity.");
+                Assert.Fail("Could not find DsfDeleteRecordNullHandlerActivity.");
             }
             PropertyInfo[] properties = GetPropertyInfo(type);
             Assert.IsTrue(properties.Length == 3);

@@ -140,6 +140,8 @@
     <Compile Include="CountRecords\TestCountRecordsDesignerViewModel.cs" />
     <Compile Include="Decision\DecisionTests.cs" />
     <Compile Include="ComDll\ComDllViewModelTests.cs" />
+    <Compile Include="DeleteRecords\DeleteRecordsDesignerViewModelTests.cs" />
+    <Compile Include="DeleteRecords\TestDeleteRecordsDesignerViewModel.cs" />
     <Compile Include="DotNetDll\DotNetDllViewModelTests.cs" />
     <Compile Include="DropBox2016\Delete\DropBoxDeleteViewModelTest.cs" />
     <Compile Include="DropBox2016\Download\DropBoxDownloadViewModelTest.cs" />
@@ -154,9 +156,9 @@
     <Compile Include="Exchange\Email\ExchangeEmailDesignerViewModelTests.cs" />
     <Compile Include="ODBC\TestODBCServerViewModel.cs" />
     <Compile Include="PostgresSqlTests\PostgresSqlDatabaseDesignerViewModelTests.cs" />
-    <Compile Include="DeleteRecords\DeleteRecordsDesignerViewModelTests.cs" />
+    <Compile Include="DeleteRecordsNullHandler\DeleteRecordsNullHandlerDesignerViewModelTests.cs" />
     <Compile Include="RecordsLength\RecordsLengthDesignerViewModelTests.cs" />
-    <Compile Include="DeleteRecords\TestDeleteRecordsDesignerViewModel.cs" />
+    <Compile Include="DeleteRecordsNullHandler\TestDeleteRecordsDesignerViewModel.cs" />
     <Compile Include="RecordsLength\TestCountRecordsDesignerViewModel.cs" />
     <Compile Include="DataMerge\DataMergeDesignerViewModelTests.cs" />
     <Compile Include="DataSplit\DataSplitDesignerViewModelSplitTests.cs" />
@@ -323,11 +325,11 @@
       <Name>Warewolf.Testing</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>

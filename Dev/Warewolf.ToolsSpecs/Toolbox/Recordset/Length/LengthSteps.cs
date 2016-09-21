@@ -21,9 +21,10 @@ using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Storage;
 using Warewolf.Tools.Specs.BaseTypes;
 using WarewolfParserInterop;
+
 // ReSharper disable NotAccessedVariable
 
-namespace Dev2.Activities.Specs.Toolbox.Recordset.Length
+namespace Warewolf.ToolsSpecs.Toolbox.Recordset.Length
 {
     [Binding]
     public class LengthSteps : RecordSetBases
