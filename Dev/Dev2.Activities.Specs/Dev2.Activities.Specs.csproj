@@ -47,6 +47,11 @@
     <Compile Include="..\AssemblyCommonInfo.cs">
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
+    <Compile Include="Composition\ExampleWorkflowExecution.feature.cs">
+      <DependentUpon>ExampleWorkflowExecution.feature</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="Composition\SubworkflowExecution.feature.cs">
       <DependentUpon>SubworkflowExecution.feature</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -244,6 +249,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="Composition\ExampleWorkflowExecution.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>ExampleWorkflowExecution.feature.cs</LastGenOutput>
+    </None>
     <None Include="Composition\SubworkflowExecution.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>SubworkflowExecution.feature.cs</LastGenOutput>
