@@ -101,44 +101,44 @@ namespace Warewolf.Studio.Views
 
         private void WorkflowControl_OnIsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
-            var elements = GetControls(WorkflowControl);
+            //var elements = GetControls(WorkflowControl);
 
-            var toggleButtons = elements.Where(a => a.GetType() == typeof (System.Windows.Controls.Primitives.ToggleButton));
-            foreach (var toggleButton in toggleButtons)
-            {
-                if (toggleButton.Name == "expandAllButton" || toggleButton.Name == "collapseAllButton")
-                {
-                    toggleButton.Visibility = Visibility.Collapsed;
-                }
-            }
-            //var activityToggleButtons = elements.Where(a => a.GetType() == typeof (CustomControls.ActivityDesignerToggleButton));
-            //foreach (var toggleButton in activityToggleButtons)
+            //var toggleButtons = elements.Where(a => a.GetType() == typeof (System.Windows.Controls.Primitives.ToggleButton));
+            //foreach (var toggleButton in toggleButtons)
             //{
-            //    toggleButton.Visibility = Visibility.Collapsed;
+            //    if (toggleButton.Name == "expandAllButton" || toggleButton.Name == "collapseAllButton")
+            //    {
+            //        toggleButton.Visibility = Visibility.Collapsed;
+            //    }
             //}
-            //var dev2Grids = elements.Where(a => a.GetType() == typeof (Dev2DataGrid));
-            //foreach (var toggleButton in dev2Grids)
+            ////var activityToggleButtons = elements.Where(a => a.GetType() == typeof (CustomControls.ActivityDesignerToggleButton));
+            ////foreach (var toggleButton in activityToggleButtons)
+            ////{
+            ////    toggleButton.Visibility = Visibility.Collapsed;
+            ////}
+            ////var dev2Grids = elements.Where(a => a.GetType() == typeof (Dev2DataGrid));
+            ////foreach (var toggleButton in dev2Grids)
+            ////{
+            ////    toggleButton.IsEnabled = false;
+            ////}
+
+            //var multiAssigns = elements.Where(a => a.GetType() == typeof (MultiAssignDesigner));
+            //foreach (var assign in multiAssigns)
             //{
-            //    toggleButton.IsEnabled = false;
+            //    //assign.IsEnabled = false;
+            //    //var assignVm = assign.DataContext as MultiAssignDesignerViewModel;
+            //    //if (assignVm != null)
+            //    //{
+            //    //    assignVm.HasLargeView = false;
+            //    //    assignVm.ThumbVisibility = Visibility.Collapsed;
+            //    //}
             //}
 
-            var multiAssigns = elements.Where(a => a.GetType() == typeof (MultiAssignDesigner));
-            foreach (var assign in multiAssigns)
-            {
-                //assign.IsEnabled = false;
-                //var assignVm = assign.DataContext as MultiAssignDesignerViewModel;
-                //if (assignVm != null)
-                //{
-                //    assignVm.HasLargeView = false;
-                //    assignVm.ThumbVisibility = Visibility.Collapsed;
-                //}
-            }
-
-            var thumbs = elements.Where(a => a.GetType() == typeof (System.Windows.Controls.Primitives.Thumb));
-            foreach (var thumb in thumbs)
-            {
-                thumb.Visibility = Visibility.Collapsed;
-            }
+            //var thumbs = elements.Where(a => a.GetType() == typeof (System.Windows.Controls.Primitives.Thumb));
+            //foreach (var thumb in thumbs)
+            //{
+            //    thumb.Visibility = Visibility.Collapsed;
+            //}
         }
     }
 }

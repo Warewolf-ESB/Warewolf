@@ -46,6 +46,8 @@ namespace Warewolf.Studio.ViewModels
         private bool _lastRunDateVisibility;
         private bool _neverRunStringVisibility;
         private IList<IDebugState> _debugForTest;
+        private IServiceTestStep _selectedTestStep;
+        private ObservableCollection<IServiceTestStep> _testSteps;
 
         public string NeverRunString
         {
@@ -116,7 +118,7 @@ namespace Warewolf.Studio.ViewModels
             NeverRunString = "Never run";
             NeverRunStringVisibility = true;
             IsTestRunning = false;
-            TestSteps = new List<IServiceTestStep>();
+            TestSteps = new ObservableCollection<IServiceTestStep>();
         }
 
         public ServiceTestModel Item
@@ -441,7 +443,26 @@ namespace Warewolf.Studio.ViewModels
                 OnPropertyChanged(() => IsTestRunning);
             }
         }
-        public List<IServiceTestStep> TestSteps { get; }
+
+        public ObservableCollection<IServiceTestStep> TestSteps
+        {
+            get { return _testSteps; }
+            set
+            {
+                _testSteps = value; 
+                OnPropertyChanged(() => TestSteps);
+            }
+        }
+
+        public IServiceTestStep SelectedTestStep
+        {
+            get { return _selectedTestStep; }
+            set
+            {
+                _selectedTestStep = value; 
+                OnPropertyChanged(() => SelectedTestStep);
+            }
+        }
 
         public void SetItem(IServiceTestModel model)
         {
@@ -646,19 +667,84 @@ namespace Warewolf.Studio.ViewModels
         #endregion
     }
 
-    public class ServiceTestStep : IServiceTestStep
+    public class ServiceTestStep : BindableBase, IServiceTestStep
     {
+        private string _stepDescription;
+        private List<string> _assertOps;
+        private StepType _type;
+        private string _activityType;
+        private List<IServiceTestOutput> _stepOutputs;
+        private Guid _uniqueId;
+
         public ServiceTestStep(Guid uniqueId, string activityTypeName, List<IServiceTestOutput> serviceTestOutputs, StepType stepType)
         {
             UniqueId = uniqueId;
             ActivityType = activityTypeName;
-            Outputs = serviceTestOutputs;
+            StepOutputs = serviceTestOutputs;
             Type = stepType;
+
+            StepDescription = "New Test Description";
+            AssertOps = new List<string> {"="};
         }
 
-        public Guid UniqueId { get; set; }
-        public string ActivityType { get; set; }
-        public StepType Type { get; set; }
-        public List<IServiceTestOutput> Outputs { get; set; }
+        public Guid UniqueId
+        {
+            get { return _uniqueId; }
+            set
+            {
+                _uniqueId = value; 
+                OnPropertyChanged(() => UniqueId);
+            }
+        }
+
+        public string ActivityType
+        {
+            get { return _activityType; }
+            set
+            {
+                _activityType = value; 
+                OnPropertyChanged(() => ActivityType);
+            }
+        }
+
+        public StepType Type
+        {
+            get { return _type; }
+            set
+            {
+                _type = value; 
+                OnPropertyChanged(() => Type);
+            }
+        }
+
+        public List<IServiceTestOutput> StepOutputs
+        {
+            get { return _stepOutputs; }
+            set
+            {
+                _stepOutputs = value; 
+                OnPropertyChanged(() => StepOutputs);
+            }
+        }
+
+        public string StepDescription
+        {
+            get { return _stepDescription; }
+            set
+            {
+                _stepDescription = value; 
+                OnPropertyChanged(() => StepDescription);
+            }
+        }
+
+        public List<string> AssertOps
+        {
+            get { return _assertOps; }
+            set
+            {
+                _assertOps = value;
+                OnPropertyChanged(() => AssertOps);
+            }
+        }
     }
 }
