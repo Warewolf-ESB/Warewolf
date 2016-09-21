@@ -37,6 +37,7 @@ namespace Warewolf.UITests
         public void MyTestInitialize()
         {
             Uimap.SetPlaybackSettings();
+            Uimap.WaitForStudioStart();
         }
 
         UIMap Uimap
