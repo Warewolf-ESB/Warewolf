@@ -29,35 +29,6 @@ namespace Warewolf.UITests.Tools
             Uimap.InitializeABlankWorkflow();
         }
 
-        [TestCleanup()]
-        public void MyTestCleanup()
-        {
-            Playback.PlaybackError -= Uimap.OnError;
-            Uimap.TryCloseHangingSaveDialog();
-            Uimap.TryRemoveFromExplorer(WebSourceName);
-            Uimap.TryCloseWorkflowTabs();
-            Uimap.TryCloseNewWebSourceWizardTab();
-        }
-
-
-        /// <summary>
-        ///Gets or sets the test context which provides
-        ///information about and functionality for the current test run.
-        ///</summary>
-        public TestContext TestContext
-        {
-            get
-            {
-                return testContextInstance;
-            }
-            set
-            {
-                testContextInstance = value;
-            }
-        }
-
-        private TestContext testContextInstance;
-
         UIMap Uimap
         {
             get

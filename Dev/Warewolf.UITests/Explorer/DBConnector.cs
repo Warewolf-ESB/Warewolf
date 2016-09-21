@@ -45,16 +45,6 @@ namespace Warewolf.UITests
         {
             Uimap.SetPlaybackSettings();
         }
-        
-        [TestCleanup()]
-        public void MyTestCleanup()
-        {
-            Playback.PlaybackError -= Uimap.OnError;
-            Uimap.TryCloseHangingSaveDialog();
-            Uimap.TryRemoveFromExplorer(DBSourceName);
-            Uimap.TryClearToolboxFilter();
-            Uimap.TryCloseWorkflowTabs();
-        }
 
         UIMap Uimap
         {

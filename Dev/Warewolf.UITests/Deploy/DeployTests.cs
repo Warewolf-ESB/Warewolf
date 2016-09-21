@@ -33,16 +33,6 @@ namespace Warewolf.UITests
         {
             Uimap.SetPlaybackSettings();
         }
-        
-        [TestCleanup()]
-        public void MyTestCleanup()
-        {
-            Playback.PlaybackError -= Uimap.OnError;
-            //Uimap.TryCloseHangingSaveDialog();
-            Uimap.TryRemoveFromExplorer(LocalWorkflow);
-            //Uimap.TryDisconnectFromRemoteServerAndRemoveSourceFromExplorer(ServerSourceName);
-            //Uimap.TryCloseAllTabs();
-        }
 
         UIMap Uimap
         {

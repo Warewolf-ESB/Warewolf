@@ -48,18 +48,6 @@ namespace Warewolf.UITests
         public void MyTestInitialize()
         {
             Uimap.SetPlaybackSettings();
-            Console.WriteLine("Test \"" + TestContext.TestName + "\" starting on " + Environment.MachineName);
-        }
-        
-        [TestCleanup()]
-        public void MyTestCleanup()
-        {
-            Playback.PlaybackError -= Uimap.OnError;
-            Uimap.TryCloseHangingSaveDialog();
-            Uimap.TryRemoveFromExplorer(PluginSourceName);
-            Uimap.TryClearToolboxFilter();
-            Uimap.TryCloseNewPluginSourceWizardTab();
-            Uimap.TryCloseWorkflowTabs();
         }
 
         UIMap Uimap
@@ -77,6 +65,6 @@ namespace Warewolf.UITests
 
         private UIMap _uiMap;
 
-#endregion
+        #endregion
     }
 }
