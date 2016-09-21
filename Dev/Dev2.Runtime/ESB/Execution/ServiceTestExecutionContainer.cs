@@ -433,24 +433,24 @@ namespace Dev2.Runtime.ESB.Execution
             {
                 if(foundTestStep.ActivityType == typeof(DsfDecision).Name)
                 {
-                    var serviceTestOutput = foundTestStep.Outputs.FirstOrDefault(output => output.Variable == "Condition Result");
+                    var serviceTestOutput = foundTestStep.StepOutputs.FirstOrDefault(output => output.Variable == "Condition Result");
                     resource = new TestMockDecisionStep(resource as DsfDecision) { NameOfArmToReturn = serviceTestOutput.Value };
                 }
                 else if(foundTestStep.ActivityType == typeof(DsfSwitch).Name)
                 {
-                    var serviceTestOutput = foundTestStep.Outputs.FirstOrDefault(output => output.Variable == "Condition Result");
+                    var serviceTestOutput = foundTestStep.StepOutputs.FirstOrDefault(output => output.Variable == "Condition Result");
                     resource = new TestMockSwitchStep(resource as DsfSwitch) { ConditionToUse = serviceTestOutput.Value };
                 }
                 else
                 {
-                    resource = new TestMockStep(resource, foundTestStep.Outputs);
+                    resource = new TestMockStep(resource, foundTestStep.StepOutputs);
                 }
             }
             return resource;
         }
     }
 
-    internal class TestMockStep : DsfActivityAbstract<string>
+    public class TestMockStep : DsfActivityAbstract<string>
     {
         private readonly IDev2Activity _originalActivity;
         private readonly List<IServiceTestOutput> _outputs;
