@@ -20,9 +20,7 @@ namespace Warewolf.UITests.Tools.Control_Flow
         [TestInitialize]
         public void MyTestInitialize()
         {
-            Uimap.SetGlobalPlaybackSettings();
-            Uimap.WaitForStudioStart();
-            Console.WriteLine("Test \"" + TestContext.TestName + "\" starting on " + System.Environment.MachineName);
+            Uimap.SetPlaybackSettings();
             Uimap.InitializeABlankWorkflow();
         }
 
@@ -31,20 +29,6 @@ namespace Warewolf.UITests.Tools.Control_Flow
         {
             Uimap.CleanupABlankWorkflow();
         }
-
-        public TestContext TestContext
-        {
-            get
-            {
-                return testContextInstance;
-            }
-            set
-            {
-                testContextInstance = value;
-            }
-        }
-
-        private TestContext testContextInstance;
 
         UIMap Uimap
         {

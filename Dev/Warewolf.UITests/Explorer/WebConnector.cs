@@ -36,8 +36,7 @@ namespace Warewolf.UITests
         [TestInitialize()]
         public void MyTestInitialize()
         {
-            Uimap.SetGlobalPlaybackSettings();
-            Uimap.WaitForStudioStart();
+            Uimap.SetPlaybackSettings();
             Console.WriteLine("Test \"" + TestContext.TestName + "\" starting on " + Environment.MachineName);
         }
         
@@ -51,20 +50,6 @@ namespace Warewolf.UITests
             Uimap.TryCloseNewWebSourceWizardTab();
             Uimap.TryCloseWorkflowTabs();
         }
-
-        public TestContext TestContext
-        {
-            get
-            {
-                return testContextInstance;
-            }
-            set
-            {
-                testContextInstance = value;
-            }
-        }
-
-        private TestContext testContextInstance;
 
         UIMap Uimap
         {
