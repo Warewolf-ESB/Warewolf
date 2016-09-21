@@ -16,7 +16,6 @@ using Dev2.Activities.Designers2.CaseConvert;
 using Dev2.Activities.Designers2.CommandLine;
 using Dev2.Activities.Designers2.Comment;
 using Dev2.Activities.Designers2.Copy;
-using Dev2.Activities.Designers2.CountRecords;
 using Dev2.Activities.Designers2.Create;
 using Dev2.Activities.Designers2.CreateJSON;
 using Dev2.Activities.Designers2.DataMerge;
@@ -94,6 +93,7 @@ using Dev2.Studio.ViewModels.Workflow;
 using System;
 using System.Collections.Generic;
 using Dev2.Activities.Designers2.ComDLL;
+using Dev2.Activities.Designers2.CountRecordsNullHandler;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Dev2.Activities.Designers2.MultiAssignObject;
 
@@ -112,7 +112,7 @@ namespace Dev2.Studio.ActivityDesigners
                 { typeof(DsfFindRecordsMultipleCriteriaActivity), typeof(FindRecordsMultipleCriteriaDesigner) },
                 { typeof(DsfSqlBulkInsertActivity), typeof(SqlBulkInsertDesigner) },
                 { typeof(DsfSortRecordsActivity), typeof(SortRecordsDesigner) },
-                { typeof(DsfCountRecordsetActivity), typeof(CountRecordsDesigner) },
+                { typeof(DsfCountRecordsetNullHandlerActivity), typeof(CountRecordsDesigner) },
                 { typeof(DsfRecordsetLengthActivity), typeof(RecordsLengthDesigner) },
                 { typeof(DsfDeleteRecordActivity), typeof(DeleteRecordsDesigner) },
                 { typeof(DsfUniqueActivity), typeof(UniqueRecordsDesigner) },

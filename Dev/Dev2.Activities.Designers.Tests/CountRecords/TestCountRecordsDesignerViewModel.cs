@@ -9,7 +9,7 @@
 */
 
 using System.Activities.Presentation.Model;
-using Dev2.Activities.Designers2.CountRecords;
+using Dev2.Activities.Designers2.CountRecordsNullHandler;
 
 namespace Dev2.Activities.Designers.Tests.CountRecords
 {

@@ -10,7 +10,7 @@
 // ------------------------------------------------------------------------------
 #region Designer generated code
 #pragma warning disable
-namespace Warewolf.ToolsSpecs.Toolbox.Recordset.Count
+namespace Warewolf.ToolsSpecs.Toolbox.Recordset.CountNullHandler
 {
     using TechTalk.SpecFlow;
     
@@ -48,7 +48,7 @@ namespace Warewolf.ToolsSpecs.Toolbox.Recordset.Count
             if (((testRunner.FeatureContext != null) 
                         && (testRunner.FeatureContext.FeatureInfo.Title != "Count")))
             {
-                Warewolf.ToolsSpecs.Toolbox.Recordset.Count.CountFeature.FeatureSetup(null);
+                Warewolf.ToolsSpecs.Toolbox.Recordset.CountNullHandler.CountFeature.FeatureSetup(null);
             }
         }
         
