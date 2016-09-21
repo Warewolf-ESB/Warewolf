@@ -391,7 +391,7 @@
                                 <RowDefinition Height="Auto"/>
                             </Grid.RowDefinitions>
 
-                            <TextBlock Grid.Row="0" Text="Inputs" FontWeight="Bold"/>
+                            <TextBlock Grid.Row="0" Text="Test Inputs" FontWeight="Bold"/>
                             <Border Grid.Row="1" BorderBrush="{StaticResource XamGridBorderBrush}" BorderThickness="1" MaxHeight="150">
                                 <controls:Dev2DataGrid ItemsSource="{Binding SelectedServiceTest.Inputs, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                                        AutoGenerateColumns="False"
@@ -454,7 +454,7 @@
                                         </DataGridTemplateColumn>
                                         <DataGridTemplateColumn Width="*"
                                                                 MinWidth="125"
-                                                                Header="EmptyIsNull"
+                                                                Header="Empty Is Null"
                                                                 HeaderStyle="{StaticResource ActivityMapppingDataGridHeaderStyle}"
                                                                 d:DataContext="{d:DesignInstance Type=interfaces:IServiceTestInput}">
                                             <DataGridTemplateColumn.CellTemplate>

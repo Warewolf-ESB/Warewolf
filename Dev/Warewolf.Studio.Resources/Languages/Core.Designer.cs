@@ -6908,7 +6908,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Duplicate this test.
+        ///   Looks up a localized string similar to Duplicates this test so you can quickly make similar tests. All fields will be copied as is..
         /// </summary>
         public static string ServiceTestDuplicateSelectedTestHelpText {
             get {
@@ -6926,7 +6926,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Duplicate name error.
+        ///   Looks up a localized string similar to Duplicate Test Name.
         /// </summary>
         public static string ServiceTestDuplicateTestNameHeader {
             get {
@@ -6935,7 +6935,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The name already exists. Please choose a different name..
+        ///   Looks up a localized string similar to The Test Name already exists. Please choose a unique name..
         /// </summary>
         public static string ServiceTestDuplicateTestNameMessage {
             get {
@@ -6944,8 +6944,8 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Selecting this option will add the test to the test to the Run All command. 
-        ///If this option is not selected, the test will not run part of the Run All list of tests..
+        ///   Looks up a localized string similar to Enables or disables the test. A disabled test will be ignored when requested to run.
+        ///A test must be ignored/disabled before it can be deleted..
         /// </summary>
         public static string ServiceTestEnableRunSelectedTestHelpText {
             get {
@@ -6954,7 +6954,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Select or De-Select to run the test.
+        ///   Looks up a localized string similar to Enable or Ignore this test.
         /// </summary>
         public static string ServiceTestEnableRunSelectedTestTooltip {
             get {
@@ -6963,7 +6963,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The test expects an error.
+        ///   Looks up a localized string similar to The test expects an error. If this option is selected, ALL other asserts will be ignored..
         /// </summary>
         public static string ServiceTestErrorExpectedHelpText {
             get {
@@ -6981,7 +6981,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Failing.
+        ///   Looks up a localized string similar to Failed.
         /// </summary>
         public static string ServiceTestFailingTooltip {
             get {
@@ -6990,7 +6990,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ServiceTestGenericHelpText.
+        ///   Looks up a localized string similar to Use the Tests editor to setup tests that verify your service is working correctly..
         /// </summary>
         public static string ServiceTestGenericHelpText {
             get {
@@ -7008,7 +7008,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ServiceTestInputsValueHelpText.
+        ///   Looks up a localized string similar to The input value for the service. This is the input to the service for the test you want to run..
         /// </summary>
         public static string ServiceTestInputsValueHelpText {
             get {
@@ -7035,7 +7035,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The name of this test.
+        ///   Looks up a localized string similar to The name of this test. Test names should be unique and indicate what is being tested. The test is always associated with the service running it..
         /// </summary>
         public static string ServiceTestNameHelpText {
             get {
@@ -7044,7 +7044,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to You have to save a new test before duplicate.
+        ///   Looks up a localized string similar to Please save this test before duplicating it.
         /// </summary>
         public static string ServiceTestNewTestDisabledDuplicateSelectedTestTooltip {
             get {
@@ -7053,7 +7053,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Create a new test.
+        ///   Looks up a localized string similar to Creates a new test for this resource. You can create as many tests for this resource as you like..
         /// </summary>
         public static string ServiceTestNewTestHelpText {
             get {
@@ -7071,7 +7071,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The test expects no error.
+        ///   Looks up a localized string similar to The test expects no error. If this option is selected, it will be aAsserted with all other asserts..
         /// </summary>
         public static string ServiceTestNoErrorExpectedHelpText {
             get {
@@ -7089,7 +7089,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ServiceTestOutputValueHelpText.
+        ///   Looks up a localized string similar to This is the final output of the service that will be asserted..
         /// </summary>
         public static string ServiceTestOutputValueHelpText {
             get {
@@ -7243,7 +7243,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Open this URL in your default browser to view this test.
+        ///   Looks up a localized string similar to Open this URL in your default browser to execute this test externaly.
         /// </summary>
         public static string ServiceTestRunSelectedTestInBrowserTooltip {
             get {
@@ -7279,7 +7279,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ServiceTestSelectedTestHelpText.
+        ///   Looks up a localized string similar to Setup and edit this test..
         /// </summary>
         public static string ServiceTestSelectedTestHelpText {
             get {

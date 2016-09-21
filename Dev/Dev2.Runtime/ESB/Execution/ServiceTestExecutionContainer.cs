@@ -157,29 +157,32 @@ namespace Dev2.Runtime.ESB.Execution
 
         private static void AddRecordsetsInputs(IEnumerable<IServiceTestInput> recSets, IExecutionEnvironment environment)
         {
-            var groupedRecsets = recSets.GroupBy(item => DataListUtil.ExtractRecordsetNameFromValue(item.Variable));
-            foreach (var groupedRecset in groupedRecsets)
+            if(recSets != null)
             {
-                var dataListItems = groupedRecset.GroupBy(item => DataListUtil.ExtractIndexRegionFromRecordset(item.Variable));
-                foreach (var dataListItem in dataListItems)
+                var groupedRecsets = recSets.GroupBy(item => DataListUtil.ExtractRecordsetNameFromValue(item.Variable));
+                foreach (var groupedRecset in groupedRecsets)
                 {
-                    List<IServiceTestInput> recSetsToAssign = new List<IServiceTestInput>();
-                    var empty = true;
-                    foreach (var listItem in dataListItem)
+                    var dataListItems = groupedRecset.GroupBy(item => DataListUtil.ExtractIndexRegionFromRecordset(item.Variable));
+                    foreach (var dataListItem in dataListItems)
                     {
-                        if (!string.IsNullOrEmpty(listItem.Value))
+                        List<IServiceTestInput> recSetsToAssign = new List<IServiceTestInput>();
+                        var empty = true;
+                        foreach (var listItem in dataListItem)
                         {
-                            empty = false;
-                        }
-                        recSetsToAssign.Add(listItem);
-                    }
-                    if (!empty)
-                    {
-                        foreach(var serviceTestInput in recSetsToAssign)
-                        {
-                            if (!serviceTestInput.EmptyIsNull || !string.IsNullOrEmpty(serviceTestInput.Value))
+                            if (!string.IsNullOrEmpty(listItem.Value))
                             {
-                                environment.Assign(DataListUtil.AddBracketsToValueIfNotExist(serviceTestInput.Variable), serviceTestInput.Value, 0);
+                                empty = false;
+                            }
+                            recSetsToAssign.Add(listItem);
+                        }
+                        if (!empty)
+                        {
+                            foreach(var serviceTestInput in recSetsToAssign)
+                            {
+                                if (!serviceTestInput.EmptyIsNull || !string.IsNullOrEmpty(serviceTestInput.Value))
+                                {
+                                    environment.Assign(DataListUtil.AddBracketsToValueIfNotExist(serviceTestInput.Variable), serviceTestInput.Value, 0);
+                                }
                             }
                         }
                     }
@@ -402,20 +405,13 @@ namespace Dev2.Runtime.ESB.Execution
                 throw new InvalidOperationException(GlobalConstants.NoStartNodeError);
             }
             WorkflowExecutionWatcher.HasAWorkflowBeenExecuted = true;
-            var foundTestStep = testSteps.FirstOrDefault(step => step.UniqueId.ToString() == resource.UniqueID);
-            if(foundTestStep!=null && foundTestStep.Type== StepType.Mock)
-            {
-                if(foundTestStep.ActivityType == typeof(DsfDecision).Name)
-                {
-                    var serviceTestOutput = foundTestStep.StepOutputs.FirstOrDefault(output => output.Variable=="Condition Result");
-                    resource = new TestMockDecisionStep(resource as DsfDecision) {NameOfArmToReturn=serviceTestOutput.Value};
-                }
-            }
-            var next = resource.Execute(dsfDataObject, update);
+            resource = MockActivity(resource, testSteps);
+            var next = resource.Execute(dsfDataObject, update);            
             while (next != null)
             {
                 if (!dsfDataObject.StopExecution)
                 {
+                    next = MockActivity(next, testSteps);
                     next = next.Execute(dsfDataObject, update);
                     if (dsfDataObject.Environment.Errors.Count > 0)
                     {
@@ -432,19 +428,44 @@ namespace Dev2.Runtime.ESB.Execution
                 }
             }
         }
+
+        private static IDev2Activity MockActivity(IDev2Activity resource, List<IServiceTestStep> testSteps)
+        {
+            var foundTestStep = testSteps.FirstOrDefault(step => step.UniqueId.ToString() == resource.UniqueID);
+            if(foundTestStep != null && foundTestStep.Type == StepType.Mock)
+            {
+                if(foundTestStep.ActivityType == typeof(DsfDecision).Name)
+                {
+                    var serviceTestOutput = foundTestStep.StepOutputs.FirstOrDefault(output => output.Variable == "Condition Result");
+                    resource = new TestMockDecisionStep(resource as DsfDecision) { NameOfArmToReturn = serviceTestOutput.Value };
+                }
+                else if(foundTestStep.ActivityType == typeof(DsfSwitch).Name)
+                {
+                    var serviceTestOutput = foundTestStep.StepOutputs.FirstOrDefault(output => output.Variable == "Condition Result");
+                    resource = new TestMockSwitchStep(resource as DsfSwitch) { ConditionToUse = serviceTestOutput.Value };
+                }
+                else
+                {
+                    resource = new TestMockStep(resource, foundTestStep.StepOutputs);
+                }
+            }
+            return resource;
+        }
     }
 
-    public class TestMockDecisionStep : DsfActivityAbstract<string>
+    public class TestMockStep : DsfActivityAbstract<string>
     {
-        private readonly DsfDecision _dsfDecision;
+        private readonly IDev2Activity _originalActivity;
+        private readonly List<IServiceTestOutput> _outputs;
 
-        public TestMockDecisionStep(DsfDecision dsfDecision)
-            : base(dsfDecision.DisplayName)
+        public TestMockStep(IDev2Activity originalActivity , List<IServiceTestOutput> outputs)
         {
-            _dsfDecision = dsfDecision;
+            _originalActivity = originalActivity;
+            _outputs = outputs;
+            var act = originalActivity as DsfBaseActivity;
+            if(act != null)
+                DisplayName = act.DisplayName;
         }
-
-        public string NameOfArmToReturn { get; set; }
 
         #region Overrides of DsfNativeActivity<string>
 
@@ -472,19 +493,55 @@ namespace Dev2.Runtime.ESB.Execution
 
         protected override void ExecuteTool(IDSFDataObject dataObject, int update)
         {
-            var trueArmText = _dsfDecision.Conditions.TrueArmText;
-            var falseArmText = _dsfDecision.Conditions.FalseArmText;
-            if (NameOfArmToReturn == falseArmText)
+            AddRecordsetsInputs(_outputs.Where(output => DataListUtil.IsValueRecordset(output.Variable) && !output.Variable.Contains("@")), dataObject.Environment);
+            foreach (var output in _outputs)
             {
-                NextNodes = _dsfDecision.FalseArm;
-                return;
+                var variable = DataListUtil.AddBracketsToValueIfNotExist(output.Variable);
+                var value = output.Value;
+                if (variable.StartsWith("[[@"))
+                {
+                    var jContainer = JsonConvert.DeserializeObject(value) as JObject;
+                    dataObject.Environment.AddToJsonObjects(variable, jContainer);
+                }
+                else if (!DataListUtil.IsValueRecordset(output.Variable))
+                {
+                    dataObject.Environment.Assign(variable, value, 0);
+                }
             }
-            if (NameOfArmToReturn == trueArmText)
+            NextNodes = _originalActivity.NextNodes;
+        }
+
+
+        private static void AddRecordsetsInputs(IEnumerable<IServiceTestOutput> recSets, IExecutionEnvironment environment)
+        {
+            if(recSets != null)
             {
-                NextNodes = _dsfDecision.TrueArm;
-                return;
+                var groupedRecsets = recSets.GroupBy(item => DataListUtil.ExtractRecordsetNameFromValue(item.Variable));
+                foreach (var groupedRecset in groupedRecsets)
+                {
+                    var dataListItems = groupedRecset.GroupBy(item => DataListUtil.ExtractIndexRegionFromRecordset(item.Variable));
+                    foreach (var dataListItem in dataListItems)
+                    {
+                        List<IServiceTestOutput> recSetsToAssign = new List<IServiceTestOutput>();
+                        var empty = true;
+                        foreach (var listItem in dataListItem)
+                        {
+                            if (!string.IsNullOrEmpty(listItem.Value))
+                            {
+                                empty = false;
+                            }
+                            recSetsToAssign.Add(listItem);
+                        }
+                        if (!empty)
+                        {
+                            foreach (var serviceTestInput in recSetsToAssign)
+                            {
+                                environment.Assign(DataListUtil.AddBracketsToValueIfNotExist(serviceTestInput.Variable), serviceTestInput.Value, 0);
+                            }
+                        }
+                    }
+                }
             }
-            throw new ArgumentException($"No matching arm for Decision Mock. Mock Arm value '{NameOfArmToReturn}'. Decision Arms True Arm: '{trueArmText}' False Arm: '{falseArmText}'");
         }
 
         #endregion
