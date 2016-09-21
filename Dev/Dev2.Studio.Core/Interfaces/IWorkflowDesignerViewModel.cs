@@ -9,6 +9,7 @@
 */
 
 using System.Activities.Presentation;
+using System.Text;
 using System.Windows;
 using Dev2.Studio.Core.Interfaces;
 
@@ -21,6 +22,7 @@ namespace Dev2.Studio.Core.ViewModels
         string WorkflowName { get; }
         WorkflowDesigner Designer { get; }
         UIElement DesignerView { get; }
+        StringBuilder DesignerText { get; }
         void UpdateWorkflowLink(string newLink);
         void Dispose();
         bool NotifyItemSelected(object primarySelection);
