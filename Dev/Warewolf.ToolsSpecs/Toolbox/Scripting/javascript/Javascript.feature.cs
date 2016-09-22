@@ -74,7 +74,7 @@ namespace Warewolf.ToolsSpecs.Toolbox.Scripting.Javascript
 #line 7
   testRunner.Given("this Javascript feature", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 8
-  testRunner.Then("activity is DsfCountRecordsetNullHandlerActivity", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+  testRunner.Then("activity is DsfJavascriptActivity", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
         }
         

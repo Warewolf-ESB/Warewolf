@@ -11,6 +11,7 @@
 using System;
 using System.Activities.Statements;
 using System.Collections.Generic;
+using Dev2.Activities.Scripting;
 using Dev2.Common.Interfaces.Enums;
 using Dev2.Data.Util;
 using Dev2.Interfaces;
@@ -31,6 +32,20 @@ namespace Dev2.Activities.Specs.Toolbox.Scripting.Script
             if (scenarioContext == null) throw new ArgumentNullException(nameof(scenarioContext));
             this.scenarioContext = scenarioContext;
         }
+        [Given(@"this Javascript feature")]
+        public void GivenThisJavascriptFeature()
+        {
+            
+        }
+
+        [Then(@"activity is DsfJavascriptActivity")]
+        public void ThenActivityIsDsfJavascriptActivity()
+        {
+            scenarioContext.Add("javascript", new DsfJavascriptActivity());
+
+
+                }
+
 
         protected override void BuildDataList()
         {
@@ -50,19 +65,41 @@ namespace Dev2.Activities.Specs.Toolbox.Scripting.Script
             scenarioContext.TryGetValue("scriptToExecute", out scriptToExecute);
             enScriptType language;
             scenarioContext.TryGetValue("language", out language);
+            DsfJavascriptActivity javascriptActivity;
+            scenarioContext.TryGetValue("javascript", out javascriptActivity);
 
-            var dsfScripting = new DsfScriptingActivity
+            if (javascriptActivity != null)
+            {
+                javascriptActivity.Script = scriptToExecute;
+                javascriptActivity.Result = ResultVariable;
+
+                TestStartNode = new FlowStep
+                {
+                    Action = javascriptActivity
+                };
+                scenarioContext.Add("activity", javascriptActivity);
+            }
+            else
+            {
+                DsfScriptingActivity dsfScripting = new DsfScriptingActivity
                 {
                     Script = scriptToExecute,
                     ScriptType = language,
                     Result = ResultVariable
                 };
 
-            TestStartNode = new FlowStep
+                TestStartNode = new FlowStep
                 {
                     Action = dsfScripting
                 };
-            scenarioContext.Add("activity", dsfScripting);
+                scenarioContext.Add("activity", dsfScripting);
+
+            }
+
+            
+
+
+           
         }
 
         [Given(@"I have a script variable ""(.*)"" with this value ""(.*)""")]

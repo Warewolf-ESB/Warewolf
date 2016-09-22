@@ -5,7 +5,7 @@
 
 Background: Setup for workflows for tests
 		Given this Javascript feature 
-		Then activity is DsfCountRecordsetNullHandlerActivity
+		Then activity is DsfJavascriptActivity
 
 Scenario: Execute Javascript Variable is 1
 	Given I have a script variable "[[val]]" with this value "1"
