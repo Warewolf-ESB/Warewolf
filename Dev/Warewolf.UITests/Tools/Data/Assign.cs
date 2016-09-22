@@ -35,7 +35,6 @@ namespace Warewolf.UITests.Tools.Data
 
         [TestMethod]
 		[TestCategory("Tools")]
-        [Ignore]//Failing because of "Delete Dialog does not exist after clicking delete button"
         public void DeleteAssignToolFromContextMenuUITest()
         {
             Uimap.Click_New_Workflow_Ribbon_Button();
