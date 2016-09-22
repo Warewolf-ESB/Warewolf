@@ -8,7 +8,6 @@ namespace Warewolf.UITests.Tools
     {
         const string WebSourceName = "UITestingWebSourceFromTool";
         [TestMethod]
-        [Ignore]//Failing due to "executeIcon button does not exist"
         [TestCategory("Tools")]
         public void WebSourceFromTool()
         {

@@ -14,7 +14,6 @@ namespace Warewolf.UITests
         const string WorkflowName = "SavedBlank";
 
         [TestMethod]
-        [Ignore]//Failing due to "executeIcon button does not exist"
         public void RefreshExplorerAfterDeletingResourceFromDiskUITest()
         {
             Uimap.Click_New_Workflow_Ribbon_Button();
