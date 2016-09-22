@@ -381,11 +381,11 @@
                         <Grid Grid.Row="1" Margin="{StaticResource ControlBorderTop}">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="*" MaxHeight="150"/>
+                                <RowDefinition Height="*" MaxHeight="144"/>
                                 <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="*"/>
                                 <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="*" MaxHeight="150"/>
+                                <RowDefinition Height="*" MaxHeight="144"/>
                                 <RowDefinition Height="Auto"/>
                             </Grid.RowDefinitions>
 
@@ -471,11 +471,8 @@
                                 </controls:Dev2DataGrid>
                             </Border>
 
-                            <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Stretch">
-                                <TextBlock Text="Assert" FontWeight="Bold" HorizontalAlignment="Left"/>
-                                <Button Command="{Binding AddNewTestStepCommand}" HorizontalAlignment="Right"/>
-                            </StackPanel>
-
+                            <TextBlock Grid.Row="2" Text="Assert" FontWeight="Bold" HorizontalAlignment="Left"/>
+                            
                             <ig:XamDataTree Grid.Row="3" 
                                             x:Name="StepTestDataTree"
                                             ItemsSource="{Binding SelectedServiceTest.TestSteps}"
@@ -533,7 +530,8 @@
 									                                           Grid.ColumnSpan="2"
 									                                           ItemsSource="{Binding Path=Data.StepOutputs, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
 									                                           Style="{StaticResource SpacedActivityDataGridStyle}"
-									                                           MinHeight="56"
+                                                                               Height="Auto"
+									                                           MaxHeight="107"
                                                                                HeadersVisibility="All"
 									                                           RowStyle="{StaticResource ActivityGridRowStyle}">
                                                             <DataGrid.Columns>
@@ -586,7 +584,7 @@
                                                                                       ToolTip="{x:Static languages:Core.ServiceTestStepAssertOpsTooltip}"
                                                                                       AutomationProperties.AutomationId="UI_AssertOps_AutoID">
                                                                                 <i:Interaction.Behaviors>
-                                                                                    <core:HelpSetter Text="{x:Static languages:Core.ServiceTestStepAssertOpsTooltip}" DataContext="{Binding DataContext, ElementName=ServiceTestUserControl}" />
+                                                                                    <core:HelpSetter Text="{x:Static languages:Core.ServiceTestStepAssertOpsHelpText}" DataContext="{Binding DataContext, ElementName=ServiceTestUserControl}" />
                                                                                 </i:Interaction.Behaviors>
                                                                             </ComboBox>
                                                                         </DataTemplate>
@@ -612,10 +610,10 @@
                                                                                           ItemsSource="{Binding Path=OptionsForValue}"
                                                                                           SelectedValue="{Binding Path=Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}"
                                                                                           Visibility="{Binding Path=HasOptionsForValue, Converter={StaticResource BoolToVisibilityConverterPositive}}"
-                                                                                          ToolTip="{x:Static languages:Core.ServiceTestStepAssertOpsTooltip}"
+                                                                                          ToolTip="{x:Static languages:Core.ServiceTestStepOptionsForValueTooltip}"
                                                                                           AutomationProperties.AutomationId="UI_OptionsForValue_AutoID">
                                                                                     <i:Interaction.Behaviors>
-                                                                                        <core:HelpSetter Text="{x:Static languages:Core.ServiceTestStepAssertOpsTooltip}" DataContext="{Binding DataContext, ElementName=ServiceTestUserControl}" />
+                                                                                        <core:HelpSetter Text="{x:Static languages:Core.ServiceTestStepOptionsForValueHelpText}" DataContext="{Binding DataContext, ElementName=ServiceTestUserControl}" />
                                                                                     </i:Interaction.Behaviors>
                                                                                 </ComboBox>
                                                                             </StackPanel>

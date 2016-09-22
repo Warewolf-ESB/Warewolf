@@ -32,7 +32,6 @@ namespace Dev2.Studio.Core.Interfaces
         bool IsDirty { get; }
         string ErrorMessage { get; set; }
         IWorkflowDesignerViewModel WorkflowDesignerViewModel { get; set; }
-        ICommand AddNewTestStepCommand { get; set; }
         ICommand DeleteTestStepCommand { get; set; }
 
         void Save();

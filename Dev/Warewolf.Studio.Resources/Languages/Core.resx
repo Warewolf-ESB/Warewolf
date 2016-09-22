@@ -2713,6 +2713,12 @@ You can use File System, URI, SFTP, FTP or FTPS format.</value>
   <data name="ServiceTestStepAssertOpsHelpText" xml:space="preserve">
     <value>ServiceTestStepAssertOpsHelpText</value>
   </data>
+  <data name="ServiceTestStepOptionsForValueTooltip" xml:space="preserve">
+    <value>ServiceTestStepOptionsForValueTooltip</value>
+  </data>
+  <data name="ServiceTestStepOptionsForValueHelpText" xml:space="preserve">
+    <value>ServiceTestStepOptionsForValueHelpText</value>
+  </data>
   <data name="ServiceTestStepAssertRadioButtonTooltip" xml:space="preserve">
     <value>ServiceTestStepAssertRadioButtonTooltip</value>
   </data>
