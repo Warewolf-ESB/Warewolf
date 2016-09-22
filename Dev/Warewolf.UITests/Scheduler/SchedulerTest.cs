@@ -7,7 +7,6 @@ namespace Warewolf.UITests
     public class SchedulerTest
     {
         [TestMethod]
-        [Ignore]
         public void SchedulerUITest()
         {
             Uimap.Click_Scheduler_Ribbon_Button();
