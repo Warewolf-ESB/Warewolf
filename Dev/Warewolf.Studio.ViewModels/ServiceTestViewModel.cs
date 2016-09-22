@@ -158,7 +158,17 @@ namespace Warewolf.Studio.ViewModels
                 }
                 else
                 {
-
+                    var computedValue = modelItem.GetCurrentValue(); 
+                    var dsfActivityAbstract = computedValue as DsfActivityAbstract<string>;
+                    var outputs = dsfActivityAbstract?.GetOutputs();
+                    if(outputs!=null && outputs.Count > 0)
+                    {
+                        var serviceTestOutputs = outputs.Select(output => new ServiceTestOutput(output, "")
+                        {
+                            HasOptionsForValue = false
+                        }).Cast<IServiceTestOutput>().ToList();
+                        SelectedServiceTest.AddTestStep(dsfActivityAbstract.UniqueID, modelItem.ItemType.Name, serviceTestOutputs);
+                    }
                 }
             }
         }
