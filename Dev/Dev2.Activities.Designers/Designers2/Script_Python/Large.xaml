@@ -43,30 +43,15 @@
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-      
-        
-        <CheckBox Grid.Column="1"
-                  Grid.Row="0"
-                  Margin="-6,-2,0,0"
-                  Content="Escape sequences in variables"
-                  IsChecked="{Binding Path=ModelItem.EscapeScript, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                  ToolTip="{x:Static languages:Core.ScriptingToolTipEscapeScript}">
-            <i:Interaction.Behaviors>
-                <core1:HelpSetter Text="{x:Static languages:Core.ScriptingHelpEscapeScript}" DataContext="{Binding}" />
-                <errors:ErrorsSetter Source="{Binding}"
-                                     SourcePropertyName="ModelItem.EscapeScript"
-                                     SourcePropertyValue="{Binding  ModelItem.EscapeScript, UpdateSourceTrigger=PropertyChanged}"
-                                     Target="{Binding}" />
-            </i:Interaction.Behaviors>
-        </CheckBox>
+       
 
-        <TextBlock Grid.Column="0" Grid.Row="1" Text="Include File" Margin="{StaticResource ControlBorderTop}"/>
-        <Grid Grid.Column="1" Grid.Row="1" Margin="0,0,0,1">
+        <TextBlock Grid.Column="0" Grid.Row="0" Text="Include File" Margin="{StaticResource ControlBorderTop}"/>
+        <Grid Grid.Column="1" Grid.Row="0" Margin="0,0,0,1">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
@@ -97,7 +82,21 @@
                 </i:Interaction.Behaviors>
             </Button>
         </Grid>
-        
+        <CheckBox Grid.Column="1"
+                  Grid.Row="1"
+                  Margin="-6,-2,0,0"
+                  Content="Escape sequences in variables"
+                  IsChecked="{Binding Path=ModelItem.EscapeScript, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                  ToolTip="{x:Static languages:Core.ScriptingToolTipEscapeScript}">
+            <i:Interaction.Behaviors>
+                <core1:HelpSetter Text="{x:Static languages:Core.ScriptingHelpEscapeScript}" DataContext="{Binding}" />
+                <errors:ErrorsSetter Source="{Binding}"
+                                     SourcePropertyName="ModelItem.EscapeScript"
+                                     SourcePropertyValue="{Binding  ModelItem.EscapeScript, UpdateSourceTrigger=PropertyChanged}"
+                                     Target="{Binding}" />
+            </i:Interaction.Behaviors>
+        </CheckBox>
+
         <ui:IntellisenseTextBox  Grid.ColumnSpan="2"
                                  Grid.Column="0"
                                  Grid.Row="2" 
