@@ -10,7 +10,6 @@ namespace Warewolf.UITests.DebugInputWindow
         private const string InputDataText = "Coded UI Test";
 
         [TestMethod]
-        [Ignore]
         public void SaveDebugInputsUITest()
         {
             Uimap.Enter_Text_Into_Explorer_Filter("Hello World");
