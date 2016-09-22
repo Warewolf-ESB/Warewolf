@@ -13,6 +13,7 @@ namespace Warewolf.UITests
         private const string ServerAddress = "tst-ci-";
 
         [TestMethod]
+        [Ignore]
         public void BigRemoteSubworkflowUITest()
         {
             Uimap.Click_New_Workflow_Ribbon_Button();
