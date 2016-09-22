@@ -699,8 +699,8 @@ namespace Warewolf.Studio.ViewModels
             StepOutputs = serviceTestOutputs;
             Type = stepType;
 
-            AssertSelected = true;
-            MockSelected = false;
+            AssertSelected = stepType == StepType.Assert;
+            MockSelected = stepType == StepType.Mock;
             StepDescription = "New Test Description";
             Children = new ObservableCollection<IServiceTestStep>();
         }

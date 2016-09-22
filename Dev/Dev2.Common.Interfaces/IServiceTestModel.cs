@@ -59,6 +59,5 @@ namespace Dev2.Common.Interfaces
         string Variable { get; set; }
         string Value { get; set; }
         string AssertOp { get; set; }
-        List<string> AssertOps { get; set; }
     }
 }
