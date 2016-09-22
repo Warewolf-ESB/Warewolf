@@ -1,4 +1,5 @@
-﻿Feature: GatherSystemInformation
+﻿@Utils
+Feature: GatherSystemInformation
 	In order to use system information
 	As a warewolf user
 	I want a tool that I retrieve system info

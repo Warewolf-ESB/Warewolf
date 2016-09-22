@@ -1,4 +1,5 @@
-﻿Feature: Random
+﻿@Utils
+Feature: Random
 	In order to generate random values
 	As a Warewolf user
 	I want a tool that can generate, numbers, guids and letters

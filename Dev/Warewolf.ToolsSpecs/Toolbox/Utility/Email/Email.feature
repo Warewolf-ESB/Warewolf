@@ -1,4 +1,5 @@
-﻿Feature: Email
+﻿@Utils
+Feature: Email
 	In order to automate sending emails
 	As Warewolf user
 	I want tool that I can use to send emails
