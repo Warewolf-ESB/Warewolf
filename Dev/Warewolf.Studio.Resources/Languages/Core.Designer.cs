@@ -5352,6 +5352,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to python.
+        /// </summary>
+        public static string python_Tag {
+            get {
+                return ResourceManager.GetString("python_Tag", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Append will add the variables onto the list of variables already in the input grid. The values of the last row will be repeated for all of these additional values..
         /// </summary>
         public static string QuickVariableAppendHelpText {

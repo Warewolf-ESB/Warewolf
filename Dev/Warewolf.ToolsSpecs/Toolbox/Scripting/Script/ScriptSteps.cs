@@ -35,8 +35,21 @@ namespace Dev2.Activities.Specs.Toolbox.Scripting.Script
         [Given(@"this Javascript feature")]
         public void GivenThisJavascriptFeature()
         {
+
+        }
+
+        [Given(@"this Python feature")]
+        public void GivenThisPythonFeature()
+        {
+
+        }
+
+        [Given(@"this Ruby feature")]
+        public void GivenThisRubyFeature()
+        {
             
         }
+
 
         [Then(@"activity is DsfJavascriptActivity")]
         public void ThenActivityIsDsfJavascriptActivity()
@@ -44,7 +57,21 @@ namespace Dev2.Activities.Specs.Toolbox.Scripting.Script
             scenarioContext.Add("javascript", new DsfJavascriptActivity());
 
 
-                }
+        }
+
+        [Then(@"activity is DsfPythonActivity")]
+        public void ThenActivityIsDsfPythonActivity()
+        {
+            scenarioContext.Add("pythonActivity", new DsfPythonActivity());
+        }
+
+        [Then(@"activity is DsfRubyActivity")]
+        public void ThenActivityIsDsfRubyActivity()
+        {
+            scenarioContext.Add("rubyActivity", new DsfRubyActivity());
+        }
+
+
 
 
         protected override void BuildDataList()
@@ -52,7 +79,7 @@ namespace Dev2.Activities.Specs.Toolbox.Scripting.Script
             List<Tuple<string, string>> variableList;
             scenarioContext.TryGetValue("variableList", out variableList);
 
-            if(variableList == null)
+            if (variableList == null)
             {
                 variableList = new List<Tuple<string, string>>();
                 scenarioContext.Add("variableList", variableList);
@@ -78,28 +105,37 @@ namespace Dev2.Activities.Specs.Toolbox.Scripting.Script
                     Action = javascriptActivity
                 };
                 scenarioContext.Add("activity", javascriptActivity);
+                return;
             }
-            else
+
+            DsfPythonActivity pythonActivity;
+            scenarioContext.TryGetValue("pythonActivity", out pythonActivity);
+
+            if (pythonActivity != null)
             {
-                DsfScriptingActivity dsfScripting = new DsfScriptingActivity
-                {
-                    Script = scriptToExecute,
-                    ScriptType = language,
-                    Result = ResultVariable
-                };
+                pythonActivity.Script = scriptToExecute;
+                pythonActivity.Result = ResultVariable;
 
                 TestStartNode = new FlowStep
                 {
-                    Action = dsfScripting
+                    Action = pythonActivity
                 };
-                scenarioContext.Add("activity", dsfScripting);
-
+                scenarioContext.Add("activity", pythonActivity);
+                return;
             }
 
-            
+            DsfScriptingActivity dsfScripting = new DsfScriptingActivity
+            {
+                Script = scriptToExecute,
+                ScriptType = language,
+                Result = ResultVariable
+            };
 
-
-           
+            TestStartNode = new FlowStep
+            {
+                Action = dsfScripting
+            };
+            scenarioContext.Add("activity", dsfScripting);
         }
 
         [Given(@"I have a script variable ""(.*)"" with this value ""(.*)""")]
@@ -108,7 +144,7 @@ namespace Dev2.Activities.Specs.Toolbox.Scripting.Script
             List<Tuple<string, string>> variableList;
             scenarioContext.TryGetValue("variableList", out variableList);
 
-            if(variableList == null)
+            if (variableList == null)
             {
                 variableList = new List<Tuple<string, string>>();
                 scenarioContext.Add("variableList", variableList);
@@ -121,7 +157,7 @@ namespace Dev2.Activities.Specs.Toolbox.Scripting.Script
         public void GivenIHaveThisScriptToExecute(string scriptFileName)
         {
             string scriptToExecute;
-            if(DataListUtil.IsEvaluated(scriptFileName))
+            if (DataListUtil.IsEvaluated(scriptFileName))
             {
                 scriptToExecute = scriptFileName;
             }
@@ -155,7 +191,7 @@ namespace Dev2.Activities.Specs.Toolbox.Scripting.Script
             string actualValue;
             expectedResult = expectedResult.Replace('"', ' ').Trim();
             var result = scenarioContext.Get<IDSFDataObject>("result");
-            GetScalarValueFromEnvironment(result.Environment,ResultVariable,out actualValue,out error);
+            GetScalarValueFromEnvironment(result.Environment, ResultVariable, out actualValue, out error);
             if (string.IsNullOrEmpty(expectedResult))
             {
                 Assert.IsTrue(string.IsNullOrEmpty(actualValue));
