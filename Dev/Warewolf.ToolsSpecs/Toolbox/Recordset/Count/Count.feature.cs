@@ -68,26 +68,14 @@ namespace Warewolf.ToolsSpecs.Toolbox.Recordset.Count
             testRunner.CollectScenarioErrors();
         }
         
-        public virtual void FeatureBackground()
-        {
-#line 6
-#line 7
-  testRunner.Given("this feature", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 8
-  testRunner.Then("activity is DsfCountRecordsetNullHandlerActivity", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-        }
-        
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Count a number of records in a recordset with 3 rows")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Count")]
         public virtual void CountANumberOfRecordsInARecordsetWith3Rows()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Count a number of records in a recordset with 3 rows", ((string[])(null)));
-#line 10
+#line 7
 this.ScenarioSetup(scenarioInfo);
-#line 6
-this.FeatureBackground();
 #line hidden
             TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
                         "[[rs]]",
@@ -101,15 +89,15 @@ this.FeatureBackground();
             table1.AddRow(new string[] {
                         "rs().row",
                         "3"});
-#line 11
+#line 8
  testRunner.Given("I have a recordset with this shape", ((string)(null)), table1, "Given ");
-#line 16
+#line 13
  testRunner.And("count on record \"[[rs()]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 17
+#line 14
  testRunner.When("the count tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 18
+#line 15
  testRunner.Then("the result count should be 3", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 19
+#line 16
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
@@ -120,14 +108,14 @@ this.FeatureBackground();
                         "[[rs(2).row]] = 2"});
             table2.AddRow(new string[] {
                         "[[rs(3).row]] = 3"});
-#line 20
+#line 17
  testRunner.And("the debug inputs as", ((string)(null)), table2, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table3 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table3.AddRow(new string[] {
                         "[[result]] = 3"});
-#line 25
+#line 22
  testRunner.And("the debug output as", ((string)(null)), table3, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -139,10 +127,8 @@ this.FeatureBackground();
         public virtual void CountANumberOfRecordsInARecordsetWith8Rows()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Count a number of records in a recordset with 8 rows", ((string[])(null)));
-#line 29
+#line 26
 this.ScenarioSetup(scenarioInfo);
-#line 6
-this.FeatureBackground();
 #line hidden
             TechTalk.SpecFlow.Table table4 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
@@ -171,15 +157,15 @@ this.FeatureBackground();
             table4.AddRow(new string[] {
                         "rs().row",
                         "8"});
-#line 30
+#line 27
  testRunner.Given("I have a recordset with this shape", ((string)(null)), table4, "Given ");
-#line 40
+#line 37
  testRunner.And("count on record \"[[rs()]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 41
+#line 38
  testRunner.When("the count tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 42
+#line 39
  testRunner.Then("the result count should be 8", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 43
+#line 40
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table5 = new TechTalk.SpecFlow.Table(new string[] {
@@ -200,14 +186,14 @@ this.FeatureBackground();
                         "[[rs(7).row]] =  7"});
             table5.AddRow(new string[] {
                         "[[rs(8).row]] =  8"});
-#line 44
+#line 41
  testRunner.And("the debug inputs as", ((string)(null)), table5, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table6 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table6.AddRow(new string[] {
                         "[[result]] = 8"});
-#line 54
+#line 51
  testRunner.And("the debug output as", ((string)(null)), table6, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -219,10 +205,8 @@ this.FeatureBackground();
         public virtual void CountANumberOfRecordsInAEmptyRecordset()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Count a number of records in a empty recordset", ((string[])(null)));
-#line 60
+#line 57
 this.ScenarioSetup(scenarioInfo);
-#line 6
-this.FeatureBackground();
 #line hidden
             TechTalk.SpecFlow.Table table7 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
@@ -230,15 +214,15 @@ this.FeatureBackground();
             table7.AddRow(new string[] {
                         "[[rs().row]]",
                         "NULL"});
-#line 61
+#line 58
  testRunner.Given("I have a recordset with this shape", ((string)(null)), table7, "Given ");
-#line 64
+#line 61
  testRunner.And("count on record \"[[rs()]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 65
+#line 62
  testRunner.When("the count tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 66
+#line 63
  testRunner.Then("the result count should be 0", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 67
+#line 64
  testRunner.And("the execution has \"No\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -250,15 +234,13 @@ this.FeatureBackground();
         public virtual void CountANumberOfRecordsInAUnassignedRecordset()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Count a number of records in a unassigned recordset", ((string[])(null)));
-#line 69
+#line 66
 this.ScenarioSetup(scenarioInfo);
-#line 6
-this.FeatureBackground();
-#line 70
+#line 67
  testRunner.Given("count on record \"[[rs()]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 71
+#line 68
  testRunner.When("the count tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 72
+#line 69
  testRunner.Then("the execution has \"An\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -270,10 +252,8 @@ this.FeatureBackground();
         public virtual void CountRecordWithInvalidVariables()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Count record with invalid variables", ((string[])(null)));
-#line 75
+#line 72
 this.ScenarioSetup(scenarioInfo);
-#line 6
-this.FeatureBackground();
 #line hidden
             TechTalk.SpecFlow.Table table8 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
@@ -302,25 +282,25 @@ this.FeatureBackground();
             table8.AddRow(new string[] {
                         "rs().row",
                         "8"});
-#line 76
+#line 73
  testRunner.Given("I have a recordset with this shape", ((string)(null)), table8, "Given ");
-#line 86
+#line 83
  testRunner.And("count on record \"[[rs().#$]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 87
+#line 84
  testRunner.When("the count tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 88
+#line 85
  testRunner.Then("the result count should be 0", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 89
+#line 86
  testRunner.And("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table9 = new TechTalk.SpecFlow.Table(new string[] {
                         "Recordset"});
-#line 90
+#line 87
  testRunner.And("the debug inputs as", ((string)(null)), table9, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table10 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-#line 92
+#line 89
  testRunner.And("the debug output as", ((string)(null)), table10, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -332,10 +312,8 @@ this.FeatureBackground();
         public virtual void CountOnlyOneColumnRecord()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Count only one column record", ((string[])(null)));
-#line 95
+#line 92
 this.ScenarioSetup(scenarioInfo);
-#line 6
-this.FeatureBackground();
 #line hidden
             TechTalk.SpecFlow.Table table11 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
@@ -364,25 +342,25 @@ this.FeatureBackground();
             table11.AddRow(new string[] {
                         "rs().row",
                         "8"});
-#line 96
+#line 93
  testRunner.Given("I have a recordset with this shape", ((string)(null)), table11, "Given ");
-#line 106
+#line 103
  testRunner.And("count on record \"[[rs(*).row]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 107
+#line 104
  testRunner.When("the count tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 108
+#line 105
  testRunner.Then("the result count should be 0", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 109
+#line 106
  testRunner.And("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table12 = new TechTalk.SpecFlow.Table(new string[] {
                         "Recordset"});
-#line 110
+#line 107
  testRunner.And("the debug inputs as", ((string)(null)), table12, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table13 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-#line 112
+#line 109
  testRunner.And("the debug output as", ((string)(null)), table13, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -394,10 +372,8 @@ this.FeatureBackground();
         public virtual void CountOnlyOneColoumnRecord()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Count only one coloumn record", ((string[])(null)));
-#line 115
+#line 112
 this.ScenarioSetup(scenarioInfo);
-#line 6
-this.FeatureBackground();
 #line hidden
             TechTalk.SpecFlow.Table table14 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
@@ -426,25 +402,25 @@ this.FeatureBackground();
             table14.AddRow(new string[] {
                         "fs().row",
                         "8"});
-#line 116
+#line 113
  testRunner.Given("I have a recordset with this shape", ((string)(null)), table14, "Given ");
-#line 126
+#line 123
  testRunner.And("count on record \"[[rs().row]],[[fs().row]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 127
+#line 124
  testRunner.When("the count tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 128
+#line 125
  testRunner.Then("the result count should be 0", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 129
+#line 126
  testRunner.And("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table15 = new TechTalk.SpecFlow.Table(new string[] {
                         "Recordset"});
-#line 130
+#line 127
  testRunner.And("the debug inputs as", ((string)(null)), table15, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table16 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-#line 132
+#line 129
  testRunner.And("the debug output as", ((string)(null)), table16, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -456,10 +432,8 @@ this.FeatureBackground();
         public virtual void CountANumberOfRecordsWhenTwoRecordsetsAreDefined_()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Count a number of records when two recordsets are defined.", ((string[])(null)));
-#line 135
+#line 132
 this.ScenarioSetup(scenarioInfo);
-#line 6
-this.FeatureBackground();
 #line hidden
             TechTalk.SpecFlow.Table table17 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
@@ -488,15 +462,15 @@ this.FeatureBackground();
             table17.AddRow(new string[] {
                         "rs().row",
                         "e"});
-#line 136
+#line 133
  testRunner.Given("I have a recordset with this shape", ((string)(null)), table17, "Given ");
-#line 146
+#line 143
  testRunner.And("count on record \"[[rs()]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 147
+#line 144
  testRunner.When("the count tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 148
+#line 145
  testRunner.Then("the result count should be 5", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 149
+#line 146
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table18 = new TechTalk.SpecFlow.Table(new string[] {
@@ -511,14 +485,14 @@ this.FeatureBackground();
                         "[[rs(4).row]] =  d"});
             table18.AddRow(new string[] {
                         "[[rs(5).row]] =  e"});
-#line 150
+#line 147
  testRunner.And("the debug inputs as", ((string)(null)), table18, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table19 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table19.AddRow(new string[] {
                         "[[result]] = 5"});
-#line 157
+#line 154
  testRunner.And("the debug output as", ((string)(null)), table19, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -530,10 +504,8 @@ this.FeatureBackground();
         public virtual void ExecutingCountWithTwoVariablesInResultField()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Executing Count with two variables in result field", ((string[])(null)));
-#line 161
+#line 158
 this.ScenarioSetup(scenarioInfo);
-#line 6
-this.FeatureBackground();
 #line hidden
             TechTalk.SpecFlow.Table table20 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
@@ -550,17 +522,17 @@ this.FeatureBackground();
             table20.AddRow(new string[] {
                         "rs(4).row",
                         "4"});
-#line 162
+#line 159
  testRunner.Given("I have a recordset with this shape", ((string)(null)), table20, "Given ");
-#line 168
+#line 165
  testRunner.And("count on record \"[[rs()]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 169
+#line 166
     testRunner.And("result variable as \"[[b]][[a]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 170
+#line 167
  testRunner.When("the count tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 171
+#line 168
  testRunner.Then("the result count should be 0", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 172
+#line 169
  testRunner.And("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table21 = new TechTalk.SpecFlow.Table(new string[] {
@@ -573,12 +545,12 @@ this.FeatureBackground();
                         "[[rs(3).row]] = 3"});
             table21.AddRow(new string[] {
                         "[[rs(4).row]] = 4"});
-#line 173
+#line 170
  testRunner.And("the debug inputs as", ((string)(null)), table21, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table22 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-#line 179
+#line 176
  testRunner.And("the debug output as", ((string)(null)), table22, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -587,10 +559,8 @@ this.FeatureBackground();
         public virtual void EnsureVariablesOfDifferentTypesProduceDesiredResults(string count, string val, string error, string message, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Ensure variables of different types produce desired results", exampleTags);
-#line 182
+#line 179
 this.ScenarioSetup(scenarioInfo);
-#line 6
-this.FeatureBackground();
 #line hidden
             TechTalk.SpecFlow.Table table23 = new TechTalk.SpecFlow.Table(new string[] {
                         "[[rs]]",
@@ -604,15 +574,15 @@ this.FeatureBackground();
             table23.AddRow(new string[] {
                         "rs().row",
                         "3"});
-#line 183
+#line 180
  testRunner.Given("I have a recordset with this shape", ((string)(null)), table23, "Given ");
-#line 188
+#line 185
  testRunner.And("count on record \"<count>\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 189
+#line 186
  testRunner.When("the count tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 190
+#line 187
  testRunner.Then(string.Format("the result count should be \"{0}\"", val), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 191
+#line 188
  testRunner.And(string.Format("the execution has \"{0}\" error", error), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();

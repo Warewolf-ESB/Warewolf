@@ -6235,6 +6235,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ruby.
+        /// </summary>
+        public static string ruby_Tag {
+            get {
+                return ResourceManager.GetString("ruby_Tag", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Save the Resource.
         /// </summary>
         public static string SaveButtonTooltip {
