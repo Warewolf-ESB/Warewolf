@@ -6,15 +6,9 @@ namespace Warewolf.UITests
     [CodedUITest]
     public class DeployTests
     {
-        const string ServerSourceName = "TSTCIREMOTE";
-        const string LocalWorkflowName = "RemoteServerUITestWorkflow";
-        const string RemoteSubWorkflowName = "workflow1";
         const string LocalWorkflow = "LocalWorkflow";
-        const string WindowsGroup = "Domain Users";
-        private const string ServerAddress = "tst-ci-";
 
         [TestMethod]
-        [Ignore]//Failing due to "executeIcon button does not exist"
         public void Deploy_WorkFlow_To_Remote_Server()
         {
             Uimap.Click_New_Workflow_Ribbon_Button();

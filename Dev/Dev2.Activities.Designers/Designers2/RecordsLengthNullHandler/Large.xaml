@@ -6,7 +6,7 @@
                                xmlns:ui="clr-namespace:Dev2.UI;assembly=Dev2.Intellisense"
                                xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
                                xmlns:core="clr-namespace:Dev2.Activities.Designers2.Core"
-    xmlns:errors="clr-namespace:Dev2.Activities.Designers2.Core.Errors"
+                               xmlns:errors="clr-namespace:Dev2.Activities.Designers2.Core.Errors"
                                xmlns:core1="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
                                xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
                                xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna;assembly=Warewolf.Studio.Themes.Luna"
@@ -38,11 +38,10 @@
     </core:ActivityDesignerTemplate.RightButtons>
     <Grid Margin="{StaticResource ElementBorder}">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="{Binding ElementName=NullZeroTextBlock, Path=ActualWidth}" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
@@ -69,21 +68,31 @@
                                      Target="{Binding}" />
             </i:Interaction.Behaviors>
         </ui:IntellisenseTextBox>
-        <TextBlock Grid.Column="0" Grid.Row="1" Text="Null as Zero" Margin="0,-2,0,0" />
-        <CheckBox x:Name="nullCheckBox"
-                    Grid.Row="1"
-                  Grid.Column="1"
-                  Margin="-6,-2,0,0"
-                  ToolTip="{x:Static languages:Core.TreatNullAsZeroToolTip}"
-                  IsChecked="{Binding Path=ModelItem.TreatNullAsZero, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                  AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_NullAsCheckBox_AutoID}">
-            <i:Interaction.Behaviors>
-                <core1:HelpSetter Text="{x:Static languages:Core.TreatNullAsZeroHelp}" DataContext="{Binding}" />
-            </i:Interaction.Behaviors>
-        </CheckBox>
+        
+        <Grid Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="1" Margin="0,-2,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <TextBlock x:Name="NullZeroTextBlock" Grid.Column="0" Grid.Row="0" Text="Null as Zero" />
+            <CheckBox x:Name="NullCheckBox"
+                      Grid.Column="1"
+                      Grid.Row="0"
+                      Margin="-6,-0,0,0"
+                      ToolTip="{x:Static languages:Core.TreatNullAsZeroToolTip}"
+                      IsChecked="{Binding Path=ModelItem.TreatNullAsZero, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                      AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_NullAsCheckBox_AutoID}">
+                <i:Interaction.Behaviors>
+                    <core1:HelpSetter Text="{x:Static languages:Core.TreatNullAsZeroHelp}" DataContext="{Binding}" />
+                </i:Interaction.Behaviors>
+            </CheckBox>
 
-        <TextBlock Grid.Column="0" Grid.Row="2" Text="Result" Margin="0,-1,0,0"/>
-        <ui:IntellisenseTextBox Grid.Row="2"
+            <TextBlock Grid.Column="0" Grid.Row="1" Text="Result" Margin="0,-1,0,0"/>
+            <ui:IntellisenseTextBox Grid.Row="1"
                                 Grid.Column="1"
                                 Margin="0,-1,0,0"
                                 DefaultText="[[Length]]"
@@ -93,16 +102,18 @@
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 Text="{Binding Path=ModelItem.RecordsLength, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Resulttxt_AutoID}">
-            <i:Interaction.Behaviors>
-                <core1:HelpSetter Text="{x:Static languages:Core.LengthHelpResult}" DataContext="{Binding}" />
-                <errors:ErrorsSetter Source="{Binding}"
+                <i:Interaction.Behaviors>
+                    <core1:HelpSetter Text="{x:Static languages:Core.LengthHelpResult}" DataContext="{Binding}" />
+                    <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="ModelItem.RecordsLength"
                                      SourcePropertyValue="{Binding ModelItem.RecordsLength, UpdateSourceTrigger=PropertyChanged}"
                                      Target="{Binding}" />
-            </i:Interaction.Behaviors>
-        </ui:IntellisenseTextBox>
+                </i:Interaction.Behaviors>
+            </ui:IntellisenseTextBox>
+        </Grid>
+
         <errors:OnError Grid.Column="0"
-                        Grid.Row="3"
+                        Grid.Row="2"
                         Grid.ColumnSpan="2" />
     </Grid>
 </core:ActivityDesignerTemplate>

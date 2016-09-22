@@ -6,7 +6,6 @@
                        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                        xmlns:sap="clr-namespace:System.Activities.Presentation;assembly=System.Activities.Presentation"
                        xmlns:core="clr-namespace:Dev2.Activities.Designers2.Core"
-                     xmlns:designers2="clr-namespace:Dev2.Activities.Designers2"
                        xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna;assembly=Warewolf.Studio.Themes.Luna"
                        xmlns:local="clr-namespace:Dev2.Activities.Designers2.CountRecordsNullHandler"
                        mc:Ignorable="d"

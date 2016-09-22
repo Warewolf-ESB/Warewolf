@@ -6,7 +6,7 @@
                        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                        xmlns:sap="clr-namespace:System.Activities.Presentation;assembly=System.Activities.Presentation"
                        xmlns:core="clr-namespace:Dev2.Activities.Designers2.Core"
-    xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna;assembly=Warewolf.Studio.Themes.Luna"
+                       xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna;assembly=Warewolf.Studio.Themes.Luna"
                        xmlns:local="clr-namespace:Dev2.Activities.Designers2.RecordsLengthNullHandler"
                        mc:Ignorable="d"
                        d:DataContext="{d:DesignInstance local:RecordsLengthDesignerViewModel}"

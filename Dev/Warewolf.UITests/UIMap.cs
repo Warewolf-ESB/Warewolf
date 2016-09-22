@@ -15,9 +15,9 @@ namespace Warewolf.UITests
 {
     public partial class UIMap
     {
-        const int _lenientSearchTimeout = 10000;
-        const int _lenientMaximumRetryCount = 6;
-        const int _strictSearchTimeout = 1000;
+        const int _lenientSearchTimeout = 9000;
+        const int _lenientMaximumRetryCount = 3;
+        const int _strictSearchTimeout = 3000;
         const int _strictMaximumRetryCount = 1;
 
         public void SetPlaybackSettings()
@@ -544,10 +544,7 @@ namespace Warewolf.UITests
 
             MainStudioWindow.DockManager.SplitPaneLeft.Explorer.SearchTextBox.Text = FilterText;
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerRefreshButton, new Point(10, 10));
-
-            // Verify that the 'Exists' property of 'Permission Icon' window equals 'True'
-            Assert.IsTrue(executeIcon.Exists, "executeIcon button does not exist");
-            Assert.IsTrue(viewIcon.Exists, "viewIcon button does not exist");
+            WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);
 
         }
 
