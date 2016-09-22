@@ -26,6 +26,14 @@ namespace Warewolf.UITests
             Uimap.Click_Assign_Tool_url();
         }
 
+        [TestMethod]
+        public void Recordsets_Usage_in_Debug_Input()
+        {
+            Uimap.Click_New_Workflow_Ribbon_Button();
+            Uimap.Drag_Toolbox_MultiAssign_Onto_DesignSurface();
+            Uimap.Open_Assign_Tool_Large_View();
+        }
+
         #region Additional test attributes
 
         [TestInitialize()]
