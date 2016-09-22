@@ -1022,20 +1022,20 @@ namespace Warewolf.UITests
                 Console.WriteLine("TryClose method failed to close Deploy tab.\n" + e.Message);
             }
         }
-        
+
 
         public void Click_EnableDisable_This_Test_CheckBox(bool nameContainsStar = false)
         {
             WpfCheckBox testEnabledSelector = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestsListboxList.Test1.TestEnabledSelector;
             WpfButton deleteButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.TestsTabPage.ServiceTestView.TestsListboxList.Test1.DeleteButton;
             var beforeClick = testEnabledSelector.Checked;
-            
+
             Mouse.Click(testEnabledSelector);
             WaitForControlVisible(testEnabledSelector);
             Assert.AreNotEqual(beforeClick, testEnabledSelector.Checked);
 
             WaitForControlVisible(deleteButton);
-            if(beforeClick)
+            if (beforeClick)
                 Assert.IsTrue(deleteButton.Enabled, "Delete button is disabled");
             Assert_Display_Text_ContainStar(Tab, nameContainsStar);
             Assert_Display_Text_ContainStar(Test, nameContainsStar);
@@ -1410,7 +1410,7 @@ namespace Warewolf.UITests
         }
 
         private bool GetTestRunState(int testInstance, WpfListItem test)
-        {            
+        {
             bool value;
             switch (testInstance)
             {
@@ -1433,7 +1433,7 @@ namespace Warewolf.UITests
         {
             WpfText property;
             switch (instance)
-            {                
+            {
                 case 2:
                     var test2 = test as Test2;
                     property = test2.TestNameDisplay;
@@ -1471,7 +1471,7 @@ namespace Warewolf.UITests
         public void Select_Test_From_TestList(int testInstance = 1)
         {
             var test = GetCurrentTest(testInstance);
-            if(test != null)
+            if (test != null)
                 Mouse.Click(test);
         }
         public void Select_Dice_From_Service_Picker(string tabName)
@@ -1565,9 +1565,9 @@ namespace Warewolf.UITests
             Assert.IsTrue(multiAssign.TryGetClickablePoint(out point));
             // Right-Click 'DsfMultiAssignActivity' custom control
             Mouse.Click(multiAssign, MouseButtons.Right, ModifierKeys.None, new Point(115, 10));
-            
+
             // Click 'Delete' menu item
-            Mouse.Click(delete, new Point(27, 18));            
+            Mouse.Click(delete, new Point(27, 18));
             Assert.IsFalse(multiAssign.TryGetClickablePoint(out point));
         }
 
@@ -1585,6 +1585,71 @@ namespace Warewolf.UITests
 
         private Select_Delete_FromContextMenuParams mSelect_Delete_FromContextMenuParams;
 
+
+        /// <summary>
+        /// Enter_Recordset_values - Use 'Enter_Recordset_valuesParams' to pass parameters into this method.
+        /// </summary>
+        public void Enter_Recordset_values()
+        {
+            #region Variable Declarations
+            WpfCell variableCell = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.LargeView.DataGrid.Row1.VariableCell;
+            WpfEdit textbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.LargeView.DataGrid.Row1.VariableCell.Listbox.Textbox;
+            WpfEdit textEdit = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.LargeView.DataGrid.Row1.ValueCell.AssignValueCombobox.TextEdit;
+            WpfEdit textbox1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.LargeView.DataGrid.Row2.VariableCell.Listbox.Textbox;
+            WpfEdit textbox2 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.LargeView.DataGrid.Row3.VariableCell.Listbox.Textbox;
+            WpfEdit textEdit1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.LargeView.DataGrid.Row3.ValueCell.AssignValueCombobox.TextEdit;
+            WpfEdit textbox3 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.LargeView.DataGrid.Row4.VariableCell.Listbox.Textbox;
+            WpfEdit textEdit2 = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.LargeView.DataGrid.Row4.ValueCell.AssignValueCombobox.TextEdit;
+            #endregion
+
+            // Click 'Item: Unlimited.Applications.BusinessDesignStudio....' cell
+            Mouse.Click(variableCell, new Point(33, 28));
+
+            // Type '[[rec().a]]' in 'UI__Row1_FieldName_AutoID' text box
+            textbox.Text = this.Enter_Recordset_valuesParams.TextboxText;
+
+            // Type '5' in 'Text' text box
+            textEdit.Text = this.Enter_Recordset_valuesParams.TextEditText;
+
+            // Type '{Tab}' in 'Text' text box
+            Keyboard.SendKeys(textEdit, this.Enter_Recordset_valuesParams.TextEditSendKeys, ModifierKeys.None);
+
+            // Type '[[rec().b]]' in 'UI__Row2_FieldName_AutoID' text box
+            textbox1.Text = this.Enter_Recordset_valuesParams.TextboxText1;
+
+            WaitForControlVisible(textbox2);
+            // Type '[[var]]' in 'UI__Row3_FieldName_AutoID' text box
+            textbox2.Text = this.Enter_Recordset_valuesParams.TextboxText2;
+
+            // Type '{Tab}' in 'UI__Row3_FieldName_AutoID' text box
+            Keyboard.SendKeys(textbox2, this.Enter_Recordset_valuesParams.TextboxSendKeys, ModifierKeys.None);
+
+            // Type '1' in 'Text' text box
+            textEdit1.Text = this.Enter_Recordset_valuesParams.TextEditText1;
+
+            // Type '{Tab}' in 'Text' text box
+            Keyboard.SendKeys(textEdit1, this.Enter_Recordset_valuesParams.TextEditSendKeys1, ModifierKeys.None);
+
+            // Type '[[mr()]]' in 'UI__Row4_FieldName_AutoID' text box
+            textbox3.Text = this.Enter_Recordset_valuesParams.TextboxText3;
+
+            // Type '{Tab}' in 'Text' text box
+            Keyboard.SendKeys(textEdit2, this.Enter_Recordset_valuesParams.TextEditSendKeys2, ModifierKeys.None);
+        }
+
+        public virtual Enter_Recordset_valuesParams Enter_Recordset_valuesParams
+        {
+            get
+            {
+                if ((this.mEnter_Recordset_valuesParams == null))
+                {
+                    this.mEnter_Recordset_valuesParams = new Enter_Recordset_valuesParams();
+                }
+                return this.mEnter_Recordset_valuesParams;
+            }
+        }
+
+        private Enter_Recordset_valuesParams mEnter_Recordset_valuesParams;
     }
     /// <summary>
     /// Parameters to be passed into 'Click_RunAll_Button'
@@ -1680,6 +1745,65 @@ namespace Warewolf.UITests
         /// Verify that the 'Exists' property of 'WarewolfMessageBox' window equals 'True'
         /// </summary>
         public bool MessageBoxWindowExists = true;
+        #endregion
+    }
+    /// <summary>
+    /// Parameters to be passed into 'Enter_Recordset_values'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Enter_Recordset_valuesParams
+    {
+
+        #region Fields
+        /// <summary>
+        /// Type '[[rec().a]]' in 'UI__Row1_FieldName_AutoID' text box
+        /// </summary>
+        public string TextboxText = "[[rec().a]]";
+
+        /// <summary>
+        /// Type '5' in 'Text' text box
+        /// </summary>
+        public string TextEditText = "5";
+
+        /// <summary>
+        /// Type '{Tab}' in 'Text' text box
+        /// </summary>
+        public string TextEditSendKeys = "{Tab}";
+
+        /// <summary>
+        /// Type '[[rec().b]]' in 'UI__Row2_FieldName_AutoID' text box
+        /// </summary>
+        public string TextboxText1 = "[[rec().b]]";
+
+        /// <summary>
+        /// Type '[[var]]' in 'UI__Row3_FieldName_AutoID' text box
+        /// </summary>
+        public string TextboxText2 = "[[var]]";
+
+        /// <summary>
+        /// Type '{Tab}' in 'UI__Row3_FieldName_AutoID' text box
+        /// </summary>
+        public string TextboxSendKeys = "{Tab}";
+
+        /// <summary>
+        /// Type '1' in 'Text' text box
+        /// </summary>
+        public string TextEditText1 = "1";
+
+        /// <summary>
+        /// Type '{Tab}' in 'Text' text box
+        /// </summary>
+        public string TextEditSendKeys1 = "{Tab}";
+
+        /// <summary>
+        /// Type '[[mr()]]' in 'UI__Row4_FieldName_AutoID' text box
+        /// </summary>
+        public string TextboxText3 = "[[mr()]]";
+
+        /// <summary>
+        /// Type '{Tab}' in 'Text' text box
+        /// </summary>
+        public string TextEditSendKeys2 = "{Tab}";
         #endregion
     }
 }
